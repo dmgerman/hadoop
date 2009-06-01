@@ -223,7 +223,7 @@ literal|"-ld"
 block|}
 return|;
 block|}
-comment|/**     * Get the Unix command for setting the maximum virtual memory available    * to a given child process. This is only relevant when we are forking a    * process from within the {@link org.apache.hadoop.mapred.Mapper} or the     * {@link org.apache.hadoop.mapred.Reducer} implementations     * e.g.<a href="{@docRoot}/org/apache/hadoop/mapred/pipes/package-summary.html">Hadoop Pipes</a>     * or<a href="{@docRoot}/org/apache/hadoop/streaming/package-summary.html">Hadoop Streaming</a>.    *     * It also checks to ensure that we are running on a *nix platform else     * (e.g. in Cygwin/Windows) it returns<code>null</code>.    * @param conf configuration    * @return a<code>String[]</code> with the ulimit command arguments or     *<code>null</code> if we are running on a non *nix platform or    *         if the limit is unspecified.    */
+comment|/**     * Get the Unix command for setting the maximum virtual memory available    * to a given child process. This is only relevant when we are forking a    * process from within the Mapper or the Reducer implementations.    * see also Hadoop Pipes and Streaming.    *     * It also checks to ensure that we are running on a *nix platform else     * (e.g. in Cygwin/Windows) it returns<code>null</code>.    * @param conf configuration    * @return a<code>String[]</code> with the ulimit command arguments or     *<code>null</code> if we are running on a non *nix platform or    *         if the limit is unspecified.    */
 DECL|method|getUlimitMemoryCommand (Configuration conf)
 specifier|public
 specifier|static
