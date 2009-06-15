@@ -1229,9 +1229,7 @@ name|webAppContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add an internal servlet in the server.    * @param name The name of the servlet (can be passed as null)    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    * @deprecated this is a temporary method    */
-annotation|@
-name|Deprecated
+comment|/**    * Add an internal servlet in the server.     * Note: This method is to be used for adding servlets that facilitate    * internal communication and not for user facing functionality. For    * servlets added using this method, filters are not enabled.     *     * @param name The name of the servlet (can be passed as null)    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    */
 DECL|method|addInternalServlet (String name, String pathSpec, Class<? extends HttpServlet> clazz)
 specifier|public
 name|void

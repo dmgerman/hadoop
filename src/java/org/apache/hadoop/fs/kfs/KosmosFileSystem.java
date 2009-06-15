@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  *  * Licensed under the Apache License, Version 2.0  * (the "License"); you may not use this file except in compliance with  * the License. You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or  * implied. See the License for the specific language governing  * permissions and limitations under the License.  *  * @author: Sriram Rao (Kosmix Corp.)  *   * Implements the Hadoop FS interfaces to allow applications to store  *files in Kosmos File System (KFS).  */
+comment|/**  *  * Licensed under the Apache License, Version 2.0  * (the "License"); you may not use this file except in compliance with  * the License. You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or  * implied. See the License for the specific language governing  * permissions and limitations under the License.  *  *   * Implements the Hadoop FS interfaces to allow applications to store  *files in Kosmos File System (KFS).  */
 end_comment
 
 begin_package
@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -73,6 +83,20 @@ operator|.
 name|fs
 operator|.
 name|BlockLocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CreateFlag
 import|;
 end_import
 
@@ -563,8 +587,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|Deprecated
 DECL|method|isDirectory (Path path)
 specifier|public
 name|boolean
@@ -607,8 +629,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|Deprecated
 DECL|method|isFile (Path path)
 specifier|public
 name|boolean
@@ -931,7 +951,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (Path file, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path file, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -942,8 +962,11 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|boolean
-name|overwrite
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|int
 name|bufferSize
@@ -960,6 +983,42 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|overwrite
+init|=
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|OVERWRITE
+argument_list|)
+decl_stmt|;
+name|boolean
+name|create
+init|=
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|CREATE
+argument_list|)
+decl_stmt|;
+name|boolean
+name|append
+init|=
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|exists
@@ -981,6 +1040,23 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|append
+condition|)
+block|{
+return|return
+name|append
+argument_list|(
+name|file
+argument_list|,
+name|bufferSize
+argument_list|,
+name|progress
+argument_list|)
+return|;
+block|}
 else|else
 block|{
 throw|throw
@@ -993,6 +1069,25 @@ name|file
 argument_list|)
 throw|;
 block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|append
+operator|&&
+operator|!
+name|create
+condition|)
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File does not exist: "
+operator|+
+name|file
+argument_list|)
+throw|;
 block|}
 name|Path
 name|parent

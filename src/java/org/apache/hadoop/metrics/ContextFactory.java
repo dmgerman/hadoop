@@ -638,6 +638,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|Properties
 name|properties
 init|=
@@ -701,11 +703,15 @@ name|propertyValue
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
 name|is
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

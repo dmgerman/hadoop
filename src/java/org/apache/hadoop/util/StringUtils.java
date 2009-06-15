@@ -370,7 +370,15 @@ operator|<
 literal|1024
 condition|)
 block|{
-comment|// nothing
+comment|// since no division has occurred, don't format with a decimal point
+return|return
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|number
+argument_list|)
+return|;
 block|}
 elseif|else
 if|if

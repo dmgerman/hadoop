@@ -710,10 +710,12 @@ argument_list|,
 name|maxListingLength
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|list (String prefix, int maxListingLength, String priorLastKey)
+DECL|method|list (String prefix, int maxListingLength, String priorLastKey, boolean recursive)
 specifier|public
 name|PartialListing
 name|list
@@ -726,6 +728,9 @@ name|maxListingLength
 parameter_list|,
 name|String
 name|priorLastKey
+parameter_list|,
+name|boolean
+name|recursive
 parameter_list|)
 throws|throws
 name|IOException
@@ -735,37 +740,11 @@ name|list
 argument_list|(
 name|prefix
 argument_list|,
-name|PATH_DELIMITER
-argument_list|,
-name|maxListingLength
-argument_list|,
-name|priorLastKey
-argument_list|)
-return|;
-block|}
-DECL|method|listAll (String prefix, int maxListingLength, String priorLastKey)
-specifier|public
-name|PartialListing
-name|listAll
-parameter_list|(
-name|String
-name|prefix
-parameter_list|,
-name|int
-name|maxListingLength
-parameter_list|,
-name|String
-name|priorLastKey
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|list
-argument_list|(
-name|prefix
-argument_list|,
+name|recursive
+condition|?
 literal|null
+else|:
+name|PATH_DELIMITER
 argument_list|,
 name|maxListingLength
 argument_list|,
@@ -1042,10 +1021,10 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|rename (String srcKey, String dstKey)
+DECL|method|copy (String srcKey, String dstKey)
 specifier|public
 name|void
-name|rename
+name|copy
 parameter_list|(
 name|String
 name|srcKey
@@ -1064,7 +1043,7 @@ name|dstKey
 argument_list|,
 name|metadataMap
 operator|.
-name|remove
+name|get
 argument_list|(
 name|srcKey
 argument_list|)
@@ -1078,7 +1057,7 @@ name|dstKey
 argument_list|,
 name|dataMap
 operator|.
-name|remove
+name|get
 argument_list|(
 name|srcKey
 argument_list|)

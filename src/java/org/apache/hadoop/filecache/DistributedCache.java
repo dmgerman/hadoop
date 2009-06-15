@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Distribute application-specific large, read-only files efficiently.  *   *<p><code>DistributedCache</code> is a facility provided by the Map-Reduce  * framework to cache files (text, archives, jars etc.) needed by applications.  *</p>  *   *<p>Applications specify the files, via urls (hdfs:// or http://) to be   * cached via the org.apache.hadoop.mapred.JobConf.  * The<code>DistributedCache</code> assumes that the  * files specified via hdfs:// urls are already present on the   * {@link FileSystem} at the path specified by the url.</p>  *   *<p>The framework will copy the necessary files on to the slave node before   * any tasks for the job are executed on that node. Its efficiency stems from   * the fact that the files are only copied once per job and the ability to   * cache archives which are un-archived on the slaves.</p>   *  *<p><code>DistributedCache</code> can be used to distribute simple, read-only  * data/text files and/or more complex types such as archives, jars etc.   * Archives (zip, tar and tgz/tar.gz files) are un-archived at the slave nodes.   * Jars may be optionally added to the classpath of the tasks, a rudimentary   * software distribution mechanism.  Files have execution permissions.  * Optionally users can also direct it to symlink the distributed cache file(s)  * into the working directory of the task.</p>  *   *<p><code>DistributedCache</code> tracks modification timestamps of the cache   * files. Clearly the cache files should not be modified by the application   * or externally while the job is executing.</p>  *   *<p>Here is an illustrative example on how to use the   *<code>DistributedCache</code>:</p>  *<p><blockquote><pre>  *     // Setting up the cache for the application  *       *     1. Copy the requisite files to the<code>FileSystem</code>:  *       *     $ bin/hadoop fs -copyFromLocal lookup.dat /myapp/lookup.dat    *     $ bin/hadoop fs -copyFromLocal map.zip /myapp/map.zip    *     $ bin/hadoop fs -copyFromLocal mylib.jar /myapp/mylib.jar  *     $ bin/hadoop fs -copyFromLocal mytar.tar /myapp/mytar.tar  *     $ bin/hadoop fs -copyFromLocal mytgz.tgz /myapp/mytgz.tgz  *     $ bin/hadoop fs -copyFromLocal mytargz.tar.gz /myapp/mytargz.tar.gz  *       *     2. Setup the application's<code>JobConf</code>:  *       *     JobConf job = new JobConf();  *     DistributedCache.addCacheFile(new URI("/myapp/lookup.dat#lookup.dat"),   *                                   job);  *     DistributedCache.addCacheArchive(new URI("/myapp/map.zip", job);  *     DistributedCache.addFileToClassPath(new Path("/myapp/mylib.jar"), job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytar.tar", job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytgz.tgz", job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytargz.tar.gz", job);  *       *     3. Use the cached files in the org.apache.hadoop.mapred.Mapper  *     or org.apache.hadoop.mapred.Reducer:  *       *     public static class MapClass extends MapReduceBase    *     implements Mapper&lt;K, V, K, V&gt; {  *       *       private Path[] localArchives;  *       private Path[] localFiles;  *         *       public void configure(JobConf job) {  *         // Get the cached archives/files  *         localArchives = DistributedCache.getLocalCacheArchives(job);  *         localFiles = DistributedCache.getLocalCacheFiles(job);  *       }  *         *       public void map(K key, V value,   *                       OutputCollector&lt;K, V&gt; output, Reporter reporter)   *       throws IOException {  *         // Use data from the cached archives/files here  *         // ...  *         // ...  *         output.collect(k, v);  *       }  *     }  *       *</pre></blockquote></p>  *   */
+comment|/**  * Distribute application-specific large, read-only files efficiently.  *   *<p><code>DistributedCache</code> is a facility provided by the Map-Reduce  * framework to cache files (text, archives, jars etc.) needed by applications.  *</p>  *   *<p>Applications specify the files, via urls (hdfs:// or http://) to be cached   * via the org.apache.hadoop.mapred.JobConf. The  *<code>DistributedCache</code> assumes that the files specified via urls are  * already present on the {@link FileSystem} at the path specified by the url  * and are accessible by every machine in the cluster.</p>  *   *<p>The framework will copy the necessary files on to the slave node before   * any tasks for the job are executed on that node. Its efficiency stems from   * the fact that the files are only copied once per job and the ability to   * cache archives which are un-archived on the slaves.</p>   *  *<p><code>DistributedCache</code> can be used to distribute simple, read-only  * data/text files and/or more complex types such as archives, jars etc.   * Archives (zip, tar and tgz/tar.gz files) are un-archived at the slave nodes.   * Jars may be optionally added to the classpath of the tasks, a rudimentary   * software distribution mechanism.  Files have execution permissions.  * Optionally users can also direct it to symlink the distributed cache file(s)  * into the working directory of the task.</p>  *   *<p><code>DistributedCache</code> tracks modification timestamps of the cache   * files. Clearly the cache files should not be modified by the application   * or externally while the job is executing.</p>  *   *<p>Here is an illustrative example on how to use the   *<code>DistributedCache</code>:</p>  *<p><blockquote><pre>  *     // Setting up the cache for the application  *       *     1. Copy the requisite files to the<code>FileSystem</code>:  *       *     $ bin/hadoop fs -copyFromLocal lookup.dat /myapp/lookup.dat    *     $ bin/hadoop fs -copyFromLocal map.zip /myapp/map.zip    *     $ bin/hadoop fs -copyFromLocal mylib.jar /myapp/mylib.jar  *     $ bin/hadoop fs -copyFromLocal mytar.tar /myapp/mytar.tar  *     $ bin/hadoop fs -copyFromLocal mytgz.tgz /myapp/mytgz.tgz  *     $ bin/hadoop fs -copyFromLocal mytargz.tar.gz /myapp/mytargz.tar.gz  *       *     2. Setup the application's<code>JobConf</code>:  *       *     JobConf job = new JobConf();  *     DistributedCache.addCacheFile(new URI("/myapp/lookup.dat#lookup.dat"),   *                                   job);  *     DistributedCache.addCacheArchive(new URI("/myapp/map.zip", job);  *     DistributedCache.addFileToClassPath(new Path("/myapp/mylib.jar"), job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytar.tar", job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytgz.tgz", job);  *     DistributedCache.addCacheArchive(new URI("/myapp/mytargz.tar.gz", job);  *       *     3. Use the cached files in the org.apache.hadoop.mapred.Mapper  *     or org.apache.hadoop.mapred.Reducer:  *       *     public static class MapClass extends MapReduceBase    *     implements Mapper&lt;K, V, K, V&gt; {  *       *       private Path[] localArchives;  *       private Path[] localFiles;  *         *       public void configure(JobConf job) {  *         // Get the cached archives/files  *         localArchives = DistributedCache.getLocalCacheArchives(job);  *         localFiles = DistributedCache.getLocalCacheFiles(job);  *       }  *         *       public void map(K key, V value,   *                       OutputCollector&lt;K, V&gt; output, Reporter reporter)   *       throws IOException {  *         // Use data from the cached archives/files here  *         // ...  *         // ...  *         output.collect(k, v);  *       }  *     }  *       *</pre></blockquote></p>  *   */
 end_comment
 
 begin_class
@@ -179,7 +179,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(hdfs://hostname:port/absolute_path_to_file#LINKNAME). If no schema     * or hostname:port is provided the file is assumed to be in the filesystem    * being used in the Configuration    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param fileStatus The file status on the dfs.    * @param isArchive if the cache is an archive or a file. In case it is an    *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will    *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred is    *  returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException    */
+comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(scheme://scheme-specific-part/absolute_path_to_file#LINKNAME).    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param fileStatus The file status on the dfs.    * @param isArchive if the cache is an archive or a file. In case it is an    *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will    *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred is    *  returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException    */
 DECL|method|getLocalCache (URI cache, Configuration conf, Path baseDir, FileStatus fileStatus, boolean isArchive, long confFileStamp, Path currentWorkDir)
 specifier|public
 specifier|static
@@ -231,7 +231,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(hdfs://hostname:port/absolute_path_to_file#LINKNAME). If no schema     * or hostname:port is provided the file is assumed to be in the filesystem    * being used in the Configuration    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param fileStatus The file status on the dfs.    * @param isArchive if the cache is an archive or a file. In case it is an    *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will    *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred is    *  returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @param honorSymLinkConf if this is false, then the symlinks are not    * created even if conf says so (this is required for an optimization in task    * launches    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException    */
+comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(scheme://scheme-specific-part/absolute_path_to_file#LINKNAME).    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param fileStatus The file status on the dfs.    * @param isArchive if the cache is an archive or a file. In case it is an    *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will    *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred is    *  returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @param honorSymLinkConf if this is false, then the symlinks are not    * created even if conf says so (this is required for an optimization in task    * launches    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException    */
 DECL|method|getLocalCache (URI cache, Configuration conf, Path baseDir, FileStatus fileStatus, boolean isArchive, long confFileStamp, Path currentWorkDir, boolean honorSymLinkConf)
 specifier|public
 specifier|static
@@ -434,7 +434,7 @@ return|return
 name|localizedPath
 return|;
 block|}
-comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(hdfs://hostname:port/absolute_path_to_file#LINKNAME). If no schema     * or hostname:port is provided the file is assumed to be in the filesystem    * being used in the Configuration    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param isArchive if the cache is an archive or a file. In case it is an     *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will     *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred     *  is returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException     */
+comment|/**    * Get the locally cached file or archive; it could either be     * previously cached (and valid) or copy it from the {@link FileSystem} now.    *     * @param cache the cache to be localized, this should be specified as     * new URI(scheme://scheme-specific-part/absolute_path_to_file#LINKNAME).    * @param conf The Confguration file which contains the filesystem    * @param baseDir The base cache Dir where you wnat to localize the files/archives    * @param isArchive if the cache is an archive or a file. In case it is an     *  archive with a .zip or .jar or .tar or .tgz or .tar.gz extension it will     *  be unzipped/unjarred/untarred automatically     *  and the directory where the archive is unzipped/unjarred/untarred     *  is returned as the Path.    *  In case of a file, the path to the file is returned    * @param confFileStamp this is the hdfs file modification timestamp to verify that the     * file to be cached hasn't changed since the job started    * @param currentWorkDir this is the directory where you would want to create symlinks     * for the locally cached files/archives    * @return the path to directory where the archives are unjarred in case of archives,    * the path to the file where the file is copied locally     * @throws IOException     */
 DECL|method|getLocalCache (URI cache, Configuration conf, Path baseDir, boolean isArchive, long confFileStamp, Path currentWorkDir)
 specifier|public
 specifier|static
@@ -880,7 +880,9 @@ block|}
 name|FileSystem
 name|fs
 init|=
-name|getFileSystem
+name|FileSystem
+operator|.
+name|get
 argument_list|(
 name|cache
 argument_list|,
@@ -1843,53 +1845,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getFileSystem (URI cache, Configuration conf)
-specifier|private
-specifier|static
-name|FileSystem
-name|getFileSystem
-parameter_list|(
-name|URI
-name|cache
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-literal|"hdfs"
-operator|.
-name|equals
-argument_list|(
-name|cache
-operator|.
-name|getScheme
-argument_list|()
-argument_list|)
-condition|)
-return|return
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|cache
-argument_list|,
-name|conf
-argument_list|)
-return|;
-else|else
-return|return
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|conf
-argument_list|)
-return|;
-block|}
 comment|/**    * Set the configuration with the given set of archives    * @param archives The list of archives that need to be localized    * @param conf Configuration which will be changed    */
 DECL|method|setCacheArchives (URI[] archives, Configuration conf)
 specifier|public
@@ -2353,12 +2308,7 @@ argument_list|()
 else|:
 name|classpath
 operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"path.separator"
-argument_list|)
+literal|","
 operator|+
 name|file
 operator|.
@@ -2409,46 +2359,39 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|ArrayList
+argument_list|<
 name|String
-name|classpath
+argument_list|>
+name|list
 init|=
+operator|(
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+operator|)
 name|conf
 operator|.
-name|get
+name|getStringCollection
 argument_list|(
 literal|"mapred.job.classpath.files"
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|classpath
+name|list
+operator|.
+name|size
+argument_list|()
 operator|==
-literal|null
+literal|0
 condition|)
+block|{
 return|return
 literal|null
 return|;
-name|ArrayList
-name|list
-init|=
-name|Collections
-operator|.
-name|list
-argument_list|(
-operator|new
-name|StringTokenizer
-argument_list|(
-name|classpath
-argument_list|,
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"path.separator"
-argument_list|)
-argument_list|)
-argument_list|)
-decl_stmt|;
+block|}
 name|Path
 index|[]
 name|paths
@@ -2488,9 +2431,6 @@ operator|=
 operator|new
 name|Path
 argument_list|(
-operator|(
-name|String
-operator|)
 name|list
 operator|.
 name|get
@@ -2547,12 +2487,7 @@ argument_list|()
 else|:
 name|classpath
 operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"path.separator"
-argument_list|)
+literal|","
 operator|+
 name|archive
 operator|.
@@ -2603,46 +2538,39 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|ArrayList
+argument_list|<
 name|String
-name|classpath
+argument_list|>
+name|list
 init|=
+operator|(
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+operator|)
 name|conf
 operator|.
-name|get
+name|getStringCollection
 argument_list|(
 literal|"mapred.job.classpath.archives"
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|classpath
+name|list
+operator|.
+name|size
+argument_list|()
 operator|==
-literal|null
+literal|0
 condition|)
+block|{
 return|return
 literal|null
 return|;
-name|ArrayList
-name|list
-init|=
-name|Collections
-operator|.
-name|list
-argument_list|(
-operator|new
-name|StringTokenizer
-argument_list|(
-name|classpath
-argument_list|,
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"path.separator"
-argument_list|)
-argument_list|)
-argument_list|)
-decl_stmt|;
+block|}
 name|Path
 index|[]
 name|paths
@@ -2682,9 +2610,6 @@ operator|=
 operator|new
 name|Path
 argument_list|(
-operator|(
-name|String
-operator|)
 name|list
 operator|.
 name|get

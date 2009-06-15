@@ -555,7 +555,7 @@ if|if
 condition|(
 operator|!
 name|b
-operator|||
+operator|&&
 operator|!
 name|tmpDir
 operator|.
@@ -642,7 +642,7 @@ if|if
 condition|(
 operator|!
 name|b
-operator|||
+operator|&&
 operator|!
 name|workDir
 operator|.

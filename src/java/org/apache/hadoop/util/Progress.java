@@ -26,6 +26,34 @@ name|ArrayList
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
 begin_comment
 comment|/** Utility to assist with generation of progress reports.  Applications build  * a hierarchy of {@link Progress} instances, each modelling a phase of  * execution.  The root is constructed with {@link #Progress()}.  Nodes for  * sub-phases are created by calling {@link #addPhase()}.  */
 end_comment
@@ -36,6 +64,22 @@ specifier|public
 class|class
 name|Progress
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|Progress
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|status
 specifier|private
 name|String
@@ -73,10 +117,40 @@ specifier|private
 name|Progress
 name|parent
 decl_stmt|;
+comment|// Each phase can have different progress weightage. For example, in
+comment|// Map Task, map phase accounts for 66.7% and sort phase for 33.3%.
+comment|// User needs to give weightages as parameters to all phases(when adding
+comment|// phases) in a Progress object, if he wants to give weightage to any of the
+comment|// phases. So when nodes are added without specifying weightage, it means
+comment|// fixed weightage for all phases.
+DECL|field|fixedWeightageForAllPhases
+specifier|private
+name|boolean
+name|fixedWeightageForAllPhases
+init|=
+literal|false
+decl_stmt|;
 DECL|field|progressPerPhase
 specifier|private
 name|float
 name|progressPerPhase
+init|=
+literal|0.0f
+decl_stmt|;
+DECL|field|progressWeightagesForPhases
+specifier|private
+name|ArrayList
+argument_list|<
+name|Float
+argument_list|>
+name|progressWeightagesForPhases
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Float
+argument_list|>
+argument_list|()
 decl_stmt|;
 comment|/** Creates a new root node. */
 DECL|method|Progress ()
@@ -111,12 +185,47 @@ return|return
 name|phase
 return|;
 block|}
-comment|/** Adds a node to the tree. */
+comment|/** Adds a node to the tree. Gives equal weightage to all phases */
 DECL|method|addPhase ()
 specifier|public
 specifier|synchronized
 name|Progress
 name|addPhase
+parameter_list|()
+block|{
+name|Progress
+name|phase
+init|=
+name|addNewPhase
+argument_list|()
+decl_stmt|;
+comment|// set equal weightage for all phases
+name|progressPerPhase
+operator|=
+literal|1.0f
+operator|/
+operator|(
+name|float
+operator|)
+name|phases
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
+name|fixedWeightageForAllPhases
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|phase
+return|;
+block|}
+comment|/** Adds a new phase. Caller needs to set progress weightage */
+DECL|method|addNewPhase ()
+specifier|private
+specifier|synchronized
+name|Progress
+name|addNewPhase
 parameter_list|()
 block|{
 name|Progress
@@ -140,6 +249,167 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+return|return
+name|phase
+return|;
+block|}
+comment|/** Adds a named node with a specified progress weightage to the tree. */
+DECL|method|addPhase (String status, float weightage)
+specifier|public
+name|Progress
+name|addPhase
+parameter_list|(
+name|String
+name|status
+parameter_list|,
+name|float
+name|weightage
+parameter_list|)
+block|{
+name|Progress
+name|phase
+init|=
+name|addPhase
+argument_list|(
+name|weightage
+argument_list|)
+decl_stmt|;
+name|phase
+operator|.
+name|setStatus
+argument_list|(
+name|status
+argument_list|)
+expr_stmt|;
+return|return
+name|phase
+return|;
+block|}
+comment|/** Adds a node with a specified progress weightage to the tree. */
+DECL|method|addPhase (float weightage)
+specifier|public
+specifier|synchronized
+name|Progress
+name|addPhase
+parameter_list|(
+name|float
+name|weightage
+parameter_list|)
+block|{
+name|Progress
+name|phase
+init|=
+operator|new
+name|Progress
+argument_list|()
+decl_stmt|;
+name|progressWeightagesForPhases
+operator|.
+name|add
+argument_list|(
+name|weightage
+argument_list|)
+expr_stmt|;
+name|phases
+operator|.
+name|add
+argument_list|(
+name|phase
+argument_list|)
+expr_stmt|;
+name|phase
+operator|.
+name|setParent
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+comment|// Ensure that the sum of weightages does not cross 1.0
+name|float
+name|sum
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|phases
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|sum
+operator|+=
+name|progressWeightagesForPhases
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|sum
+operator|>
+literal|1.0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Sum of weightages can not be more than 1.0; But sum = "
+operator|+
+name|sum
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|phase
+return|;
+block|}
+comment|/** Adds n nodes to the tree. Gives equal weightage to all phases */
+DECL|method|addPhases (int n)
+specifier|public
+specifier|synchronized
+name|void
+name|addPhases
+parameter_list|(
+name|int
+name|n
+parameter_list|)
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|n
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|addNewPhase
+argument_list|()
+expr_stmt|;
+block|}
+comment|// set equal weightage for all phases
 name|progressPerPhase
 operator|=
 literal|1.0f
@@ -152,8 +422,37 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
+name|fixedWeightageForAllPhases
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**    * returns progress weightage of the given phase    * @param phaseNum the phase number of the phase(child node) for which we need    *                 progress weightage    * @return returns the progress weightage of the specified phase    */
+DECL|method|getProgressWeightage (int phaseNum)
+name|float
+name|getProgressWeightage
+parameter_list|(
+name|int
+name|phaseNum
+parameter_list|)
+block|{
+if|if
+condition|(
+name|fixedWeightageForAllPhases
+condition|)
+block|{
 return|return
-name|phase
+name|progressPerPhase
+return|;
+comment|// all phases are of equal weightage
+block|}
+return|return
+name|progressWeightagesForPhases
+operator|.
+name|get
+argument_list|(
+name|phaseNum
+argument_list|)
 return|;
 block|}
 DECL|method|getParent ()
@@ -273,8 +572,8 @@ name|progress
 expr_stmt|;
 block|}
 comment|/** Returns the overall progress of the root. */
-comment|// this method probably does not need to be synchronized as getINternal() is synchronized
-comment|// and the node's parent never changes. Still, it doesn't hurt.
+comment|// this method probably does not need to be synchronized as getInternal() is
+comment|// synchronized and the node's parent never changes. Still, it doesn't hurt.
 DECL|method|get ()
 specifier|public
 specifier|synchronized
@@ -310,6 +609,19 @@ name|getInternal
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns progress in this node. get() would give overall progress of the    * root node(not just given current node).    */
+DECL|method|getProgress ()
+specifier|public
+specifier|synchronized
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+name|getInternal
+argument_list|()
+return|;
+block|}
 comment|/** Computes progress in this node. */
 DECL|method|getInternal ()
 specifier|private
@@ -336,26 +648,87 @@ block|{
 name|float
 name|subProgress
 init|=
+literal|0.0f
+decl_stmt|;
+name|float
+name|progressFromCurrentPhase
+init|=
+literal|0.0f
+decl_stmt|;
+if|if
+condition|(
 name|currentPhase
 operator|<
 name|phaseCount
-condition|?
+condition|)
+block|{
+name|subProgress
+operator|=
 name|phase
 argument_list|()
 operator|.
 name|getInternal
 argument_list|()
-else|:
+expr_stmt|;
+name|progressFromCurrentPhase
+operator|=
+name|getProgressWeightage
+argument_list|(
+name|currentPhase
+argument_list|)
+operator|*
+name|subProgress
+expr_stmt|;
+block|}
+name|float
+name|progressFromCompletedPhases
+init|=
 literal|0.0f
 decl_stmt|;
-return|return
+if|if
+condition|(
+name|fixedWeightageForAllPhases
+condition|)
+block|{
+comment|// same progress weightage for each phase
+name|progressFromCompletedPhases
+operator|=
 name|progressPerPhase
 operator|*
-operator|(
 name|currentPhase
+expr_stmt|;
+block|}
+else|else
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|currentPhase
+condition|;
+name|i
+operator|++
+control|)
+block|{
+comment|// progress weightages of phases could be different. Add them
+name|progressFromCompletedPhases
+operator|+=
+name|getProgressWeightage
+argument_list|(
+name|i
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|progressFromCompletedPhases
 operator|+
-name|subProgress
-operator|)
+name|progressFromCurrentPhase
 return|;
 block|}
 else|else

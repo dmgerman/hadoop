@@ -530,6 +530,21 @@ name|int
 name|defaultPort
 parameter_list|)
 block|{
+if|if
+condition|(
+name|target
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Target address cannot be null."
+argument_list|)
+throw|;
+block|}
 name|int
 name|colonIndex
 init|=

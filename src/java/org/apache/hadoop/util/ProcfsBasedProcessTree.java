@@ -219,6 +219,13 @@ argument_list|(
 literal|"^([0-9-]+)\\s([^\\s]+)\\s[^\\s]\\s([0-9-]+)\\s([0-9-]+)\\s([0-9-]+)\\s([0-9-]+\\s){16}([0-9]+)(\\s[0-9-]+){16}"
 argument_list|)
 decl_stmt|;
+comment|// to enable testing, using this variable which can be configured
+comment|// to a test directory.
+DECL|field|procfsDir
+specifier|private
+name|String
+name|procfsDir
+decl_stmt|;
 DECL|field|pid
 specifier|private
 name|Integer
@@ -293,6 +300,36 @@ name|sigkillInterval
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|pid
+argument_list|,
+name|setsidUsed
+argument_list|,
+name|sigkillInterval
+argument_list|,
+name|PROCFS
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Build a new process tree rooted at the pid.    *     * This method is provided mainly for testing purposes, where    * the root of the proc file system can be adjusted.    *     * @param pid root of the process tree    * @param setsidUsed true, if setsid was used for the root pid    * @param sigkillInterval how long to wait between a SIGTERM and SIGKILL     *                        when killing a process tree    * @param procfsDir the root of a proc file system - only used for testing.     */
+DECL|method|ProcfsBasedProcessTree (String pid, boolean setsidUsed, long sigkillInterval, String procfsDir)
+specifier|public
+name|ProcfsBasedProcessTree
+parameter_list|(
+name|String
+name|pid
+parameter_list|,
+name|boolean
+name|setsidUsed
+parameter_list|,
+name|long
+name|sigkillInterval
+parameter_list|,
+name|String
+name|procfsDir
+parameter_list|)
+block|{
+name|this
 operator|.
 name|pid
 operator|=
@@ -310,6 +347,12 @@ expr_stmt|;
 name|sleeptimeBeforeSigkill
 operator|=
 name|sigkillInterval
+expr_stmt|;
+name|this
+operator|.
+name|procfsDir
+operator|=
+name|procfsDir
 expr_stmt|;
 block|}
 comment|/**    * Sets SIGKILL interval    * @deprecated Use {@link ProcfsBasedProcessTree#ProcfsBasedProcessTree(    *                  String, boolean, long)} instead    * @param interval The time to wait before sending SIGKILL    *                 after sending SIGTERM    */
@@ -439,6 +482,26 @@ name|ProcessInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// cache the processTree to get the age for processes
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|ProcessInfo
+argument_list|>
+name|oldProcs
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|Integer
+argument_list|,
+name|ProcessInfo
+argument_list|>
+argument_list|(
+name|processTree
+argument_list|)
+decl_stmt|;
 name|processTree
 operator|.
 name|clear
@@ -472,6 +535,8 @@ condition|(
 name|constructProcessInfo
 argument_list|(
 name|pInfo
+argument_list|,
+name|procfsDir
 argument_list|)
 operator|!=
 literal|null
@@ -676,6 +741,68 @@ name|getChildren
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|// update age values.
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Integer
+argument_list|,
+name|ProcessInfo
+argument_list|>
+name|procs
+range|:
+name|processTree
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|ProcessInfo
+name|oldInfo
+init|=
+name|oldProcs
+operator|.
+name|get
+argument_list|(
+name|procs
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|oldInfo
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|procs
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|procs
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|updateAge
+argument_list|(
+name|oldInfo
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 if|if
 condition|(
@@ -1036,6 +1163,24 @@ name|long
 name|getCumulativeVmem
 parameter_list|()
 block|{
+comment|// include all processes.. all processes will be older than 0.
+return|return
+name|getCumulativeVmem
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *     * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age.    */
+DECL|method|getCumulativeVmem (int olderThanAge)
+specifier|public
+name|long
+name|getCumulativeVmem
+parameter_list|(
+name|int
+name|olderThanAge
+parameter_list|)
+block|{
 name|long
 name|total
 init|=
@@ -1054,9 +1199,20 @@ control|)
 block|{
 if|if
 condition|(
+operator|(
 name|p
 operator|!=
 literal|null
+operator|)
+operator|&&
+operator|(
+name|p
+operator|.
+name|getAge
+argument_list|()
+operator|>
+name|olderThanAge
+operator|)
 condition|)
 block|{
 name|total
@@ -1147,7 +1303,7 @@ operator|(
 operator|new
 name|File
 argument_list|(
-name|PROCFS
+name|procfsDir
 argument_list|)
 operator|)
 operator|.
@@ -1193,8 +1349,8 @@ operator|(
 operator|new
 name|File
 argument_list|(
-name|PROCFS
-operator|+
+name|procfsDir
+argument_list|,
 name|dir
 argument_list|)
 operator|)
@@ -1249,12 +1405,35 @@ name|ProcessInfo
 name|pinfo
 parameter_list|)
 block|{
+return|return
+name|constructProcessInfo
+argument_list|(
+name|pinfo
+argument_list|,
+name|PROCFS
+argument_list|)
+return|;
+block|}
+comment|/**    * Construct the ProcessInfo using the process' PID and procfs rooted at the    * specified directory and return the same. It is provided mainly to assist    * testing purposes.    *     * Returns null on failing to read from procfs,    *    * @param pinfo ProcessInfo that needs to be updated    * @param procfsDir root of the proc file system    * @return updated ProcessInfo, null on errors.    */
+DECL|method|constructProcessInfo (ProcessInfo pinfo, String procfsDir)
+specifier|private
+specifier|static
+name|ProcessInfo
+name|constructProcessInfo
+parameter_list|(
+name|ProcessInfo
+name|pinfo
+parameter_list|,
+name|String
+name|procfsDir
+parameter_list|)
+block|{
 name|ProcessInfo
 name|ret
 init|=
 literal|null
 decl_stmt|;
-comment|// Read "/proc/<pid>/stat" file
+comment|// Read "procfsDir/<pid>/stat" file - typically /proc/<pid>/stat
 name|BufferedReader
 name|in
 init|=
@@ -1267,19 +1446,37 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+name|File
+name|pidDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|procfsDir
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|pinfo
+operator|.
+name|getPid
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|fReader
 operator|=
 operator|new
 name|FileReader
 argument_list|(
-name|PROCFS
-operator|+
-name|pinfo
-operator|.
-name|getPid
-argument_list|()
-operator|+
+operator|new
+name|File
+argument_list|(
+name|pidDir
+argument_list|,
 literal|"/stat"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|in
@@ -1343,7 +1540,7 @@ block|{
 comment|// Set ( name ) ( ppid ) ( pgrpId ) (session ) (vsize )
 name|pinfo
 operator|.
-name|update
+name|updateProcessInfo
 argument_list|(
 name|m
 operator|.
@@ -1596,6 +1793,12 @@ name|Long
 name|vmem
 decl_stmt|;
 comment|// virtual memory usage
+comment|// how many times has this process been seen alive
+DECL|field|age
+specifier|private
+name|int
+name|age
+decl_stmt|;
 DECL|field|children
 specifier|private
 name|List
@@ -1630,6 +1833,13 @@ name|valueOf
 argument_list|(
 name|pid
 argument_list|)
+expr_stmt|;
+comment|// seeing this the first time.
+name|this
+operator|.
+name|age
+operator|=
+literal|1
 expr_stmt|;
 block|}
 DECL|method|getPid ()
@@ -1692,6 +1902,16 @@ return|return
 name|vmem
 return|;
 block|}
+DECL|method|getAge ()
+specifier|public
+name|int
+name|getAge
+parameter_list|()
+block|{
+return|return
+name|age
+return|;
+block|}
 DECL|method|isParent (ProcessInfo p)
 specifier|public
 name|boolean
@@ -1722,10 +1942,10 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|update (String name, Integer ppid, Integer pgrpId, Integer sessionId, Long vmem)
+DECL|method|updateProcessInfo (String name, Integer ppid, Integer pgrpId, Integer sessionId, Long vmem)
 specifier|public
 name|void
-name|update
+name|updateProcessInfo
 parameter_list|(
 name|String
 name|name
@@ -1772,6 +1992,26 @@ operator|.
 name|vmem
 operator|=
 name|vmem
+expr_stmt|;
+block|}
+DECL|method|updateAge (ProcessInfo oldInfo)
+specifier|public
+name|void
+name|updateAge
+parameter_list|(
+name|ProcessInfo
+name|oldInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|age
+operator|=
+name|oldInfo
+operator|.
+name|age
+operator|+
+literal|1
 expr_stmt|;
 block|}
 DECL|method|addChild (ProcessInfo p)

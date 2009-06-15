@@ -167,7 +167,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|list (String prefix, int maxListingLength, String priorLastKey)
+DECL|method|list (String prefix, int maxListingLength, String priorLastKey, boolean recursive)
 name|PartialListing
 name|list
 parameter_list|(
@@ -179,22 +179,9 @@ name|maxListingLength
 parameter_list|,
 name|String
 name|priorLastKey
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-DECL|method|listAll (String prefix, int maxListingLength, String priorLastKey)
-name|PartialListing
-name|listAll
-parameter_list|(
-name|String
-name|prefix
 parameter_list|,
-name|int
-name|maxListingLength
-parameter_list|,
-name|String
-name|priorLastKey
+name|boolean
+name|recursive
 parameter_list|)
 throws|throws
 name|IOException
@@ -209,9 +196,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|rename (String srcKey, String dstKey)
+DECL|method|copy (String srcKey, String dstKey)
 name|void
-name|rename
+name|copy
 parameter_list|(
 name|String
 name|srcKey

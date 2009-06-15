@@ -144,6 +144,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -253,6 +263,20 @@ operator|.
 name|fs
 operator|.
 name|BufferedFSInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CreateFlag
 import|;
 end_import
 
@@ -435,7 +459,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * A {@link FileSystem} for reading and writing files stored on  *<a href="http://aws.amazon.com/s3">Amazon S3</a>.  * Unlike {@link org.apache.hadoop.fs.s3.S3FileSystem} this implementation  * stores files on S3 in their  * native form so they can be read by other S3 tools.  *</p>  * @see org.apache.hadoop.fs.s3.S3FileSystem  */
+comment|/**  *<p>  * A {@link FileSystem} for reading and writing files stored on  *<a href="http://aws.amazon.com/s3">Amazon S3</a>.  * Unlike {@link org.apache.hadoop.fs.s3.S3FileSystem} this implementation  * stores files on S3 in their  * native form so they can be read by other S3 tools.  *  * A note about directories. S3 of course has no "native" support for them.  * The idiom we choose then is: for any directory created by this class,  * we use an empty object "#{dirpath}_$folder$" as a marker.  * Further, to interoperate with other S3 tools, we also accept the following:  *  - an object "#{dirpath}/' denoting a directory marker  *  - if there exists any objects with the prefix "#{dirpath}/", then the  *    directory is said to exist  *  - if both a file with the name of a directory and a marker for that  *    directory exists, then the *file masks the directory*, and the directory  *    is never returned.  *</p>  * @see org.apache.hadoop.fs.s3.S3FileSystem  */
 end_comment
 
 begin_class
@@ -470,21 +494,6 @@ name|String
 name|FOLDER_SUFFIX
 init|=
 literal|"_$folder$"
-decl_stmt|;
-DECL|field|MAX_S3_FILE_SIZE
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|MAX_S3_FILE_SIZE
-init|=
-literal|5
-operator|*
-literal|1024
-operator|*
-literal|1024
-operator|*
-literal|1024L
 decl_stmt|;
 DECL|field|PATH_DELIMITER
 specifier|static
@@ -554,6 +563,8 @@ operator|=
 name|key
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -607,6 +618,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -675,6 +688,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -689,6 +704,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -705,6 +722,21 @@ name|in
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opening key '"
+operator|+
+name|key
+operator|+
+literal|"' for reading at position '"
+operator|+
+name|pos
+operator|+
+literal|"'"
+argument_list|)
 expr_stmt|;
 name|in
 operator|=
@@ -724,6 +756,8 @@ operator|=
 name|pos
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 specifier|synchronized
@@ -737,6 +771,8 @@ return|return
 name|pos
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -830,6 +866,23 @@ name|backupFile
 operator|=
 name|newBackupFile
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"OutputStream for key '"
+operator|+
+name|key
+operator|+
+literal|"' writing to tempfile '"
+operator|+
+name|this
+operator|.
+name|backupFile
+operator|+
+literal|"'"
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -1009,6 +1062,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"OutputStream for key '"
+operator|+
+name|key
+operator|+
+literal|"' closed. Now beginning upload"
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|byte
@@ -1069,6 +1133,17 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"OutputStream for key '"
+operator|+
+name|key
+operator|+
+literal|"' upload complete"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1395,6 +1470,15 @@ argument_list|,
 name|methodPolicy
 argument_list|)
 expr_stmt|;
+name|methodNameToPolicyMap
+operator|.
+name|put
+argument_list|(
+literal|"rename"
+argument_list|,
+name|methodPolicy
+argument_list|)
+expr_stmt|;
 return|return
 operator|(
 name|NativeFileSystemStore
@@ -1425,6 +1509,38 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|path
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|path
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// allow uris without trailing slash after bucket to refer to root,
+comment|// like s3n://mybucket
+return|return
+literal|""
+return|;
+block|}
+if|if
+condition|(
 operator|!
 name|path
 operator|.
@@ -1442,7 +1558,9 @@ name|path
 argument_list|)
 throw|;
 block|}
-return|return
+name|String
+name|ret
+init|=
 name|path
 operator|.
 name|toUri
@@ -1455,8 +1573,54 @@ name|substring
 argument_list|(
 literal|1
 argument_list|)
-return|;
+decl_stmt|;
 comment|// remove initial slash
+if|if
+condition|(
+name|ret
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+argument_list|)
+operator|&&
+operator|(
+name|ret
+operator|.
+name|indexOf
+argument_list|(
+literal|"/"
+argument_list|)
+operator|!=
+name|ret
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
+operator|)
+condition|)
+block|{
+name|ret
+operator|=
+name|ret
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|ret
+operator|.
+name|length
+argument_list|()
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|ret
+return|;
 block|}
 DECL|method|keyToPath (String key)
 specifier|private
@@ -1510,6 +1674,8 @@ argument_list|)
 return|;
 block|}
 comment|/** This optional operation is not yet supported. */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -1537,7 +1703,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -1548,8 +1714,11 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|boolean
-name|overwrite
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|int
 name|bufferSize
@@ -1572,21 +1741,103 @@ name|exists
 argument_list|(
 name|f
 argument_list|)
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
+condition|)
+block|{
+return|return
+name|append
+argument_list|(
+name|f
+argument_list|,
+name|bufferSize
+argument_list|,
+name|progress
+argument_list|)
+return|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
-name|overwrite
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|OVERWRITE
+argument_list|)
 condition|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"File already exists:"
+literal|"File already exists: "
 operator|+
 name|f
 argument_list|)
 throw|;
 block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
+operator|&&
+operator|!
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|CREATE
+argument_list|)
+condition|)
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"File already exists: "
+operator|+
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating new file '"
+operator|+
+name|f
+operator|+
+literal|"' in S3"
+argument_list|)
+expr_stmt|;
 name|Path
 name|absolutePath
 init|=
@@ -1628,7 +1879,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|delete (Path f, boolean recursive)
+DECL|method|delete (Path f, boolean recurse)
 specifier|public
 name|boolean
 name|delete
@@ -1637,7 +1888,7 @@ name|Path
 name|f
 parameter_list|,
 name|boolean
-name|recursive
+name|recurse
 parameter_list|)
 throws|throws
 name|IOException
@@ -1661,6 +1912,17 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Delete called for '"
+operator|+
+name|f
+operator|+
+literal|"' but file does not exist, so returning false"
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -1689,21 +1951,15 @@ name|isDir
 argument_list|()
 condition|)
 block|{
-name|FileStatus
-index|[]
-name|contents
-init|=
+if|if
+condition|(
+operator|!
+name|recurse
+operator|&&
 name|listStatus
 argument_list|(
 name|f
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|recursive
-operator|&&
-name|contents
 operator|.
 name|length
 operator|>
@@ -1714,44 +1970,92 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Directory "
+literal|"Can not delete "
 operator|+
 name|f
-operator|.
-name|toString
-argument_list|()
 operator|+
-literal|" is not empty."
+literal|" at is a not empty directory and recurse option is false"
 argument_list|)
 throw|;
 block|}
+name|createParent
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting directory '"
+operator|+
+name|f
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
+name|String
+name|priorLastKey
+init|=
+literal|null
+decl_stmt|;
+do|do
+block|{
+name|PartialListing
+name|listing
+init|=
+name|store
+operator|.
+name|list
+argument_list|(
+name|key
+argument_list|,
+name|S3_MAX_LISTING_LENGTH
+argument_list|,
+name|priorLastKey
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
 for|for
 control|(
-name|FileStatus
-name|p
+name|FileMetadata
+name|file
 range|:
-name|contents
+name|listing
+operator|.
+name|getFiles
+argument_list|()
 control|)
 block|{
-if|if
-condition|(
-operator|!
+name|store
+operator|.
 name|delete
 argument_list|(
-name|p
+name|file
 operator|.
-name|getPath
+name|getKey
 argument_list|()
-argument_list|,
-name|recursive
 argument_list|)
+expr_stmt|;
+block|}
+name|priorLastKey
+operator|=
+name|listing
+operator|.
+name|getPriorLastKey
+argument_list|()
+expr_stmt|;
+block|}
+do|while
+condition|(
+name|priorLastKey
+operator|!=
+literal|null
 condition|)
+do|;
+try|try
 block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
 name|store
 operator|.
 name|delete
@@ -1762,8 +2066,33 @@ name|FOLDER_SUFFIX
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|//this is fine, we don't require a marker
+block|}
+block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting file '"
+operator|+
+name|f
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
+name|createParent
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
 name|store
 operator|.
 name|delete
@@ -1823,6 +2152,17 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus retrieving metadata for key '"
+operator|+
+name|key
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
 name|FileMetadata
 name|meta
 init|=
@@ -1840,6 +2180,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus returning 'file' for key '"
+operator|+
+name|key
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
 return|return
 name|newFile
 argument_list|(
@@ -1863,6 +2214,23 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus returning 'directory' for key '"
+operator|+
+name|key
+operator|+
+literal|"' as '"
+operator|+
+name|key
+operator|+
+name|FOLDER_SUFFIX
+operator|+
+literal|"' exists"
+argument_list|)
+expr_stmt|;
 return|return
 name|newDirectory
 argument_list|(
@@ -1870,6 +2238,17 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus listing key '"
+operator|+
+name|key
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
 name|PartialListing
 name|listing
 init|=
@@ -1903,6 +2282,17 @@ operator|>
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus returning 'directory' for key '"
+operator|+
+name|key
+operator|+
+literal|"' as it has contents"
+argument_list|)
+expr_stmt|;
 return|return
 name|newDirectory
 argument_list|(
@@ -1910,13 +2300,26 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getFileStatus could not find key '"
+operator|+
+name|key
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
+literal|"No such file or directory '"
+operator|+
 name|absolutePath
 operator|+
-literal|": No such file or directory."
+literal|"'"
 argument_list|)
 throw|;
 block|}
@@ -2045,6 +2448,8 @@ argument_list|,
 name|S3_MAX_LISTING_LENGTH
 argument_list|,
 name|priorLastKey
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 for|for
@@ -2085,6 +2490,24 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|fileMetadata
+operator|.
+name|getKey
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|key
+operator|+
+literal|"/"
+argument_list|)
+condition|)
+block|{
+comment|// this is just the directory we have been asked to list
+block|}
+elseif|else
 if|if
 condition|(
 name|relativePath
@@ -2238,7 +2661,10 @@ argument_list|(
 operator|new
 name|FileStatus
 index|[
-literal|0
+name|status
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 return|;
@@ -2268,7 +2694,8 @@ literal|false
 argument_list|,
 literal|1
 argument_list|,
-name|MAX_S3_FILE_SIZE
+name|getDefaultBlockSize
+argument_list|()
 argument_list|,
 name|meta
 operator|.
@@ -2303,7 +2730,7 @@ literal|true
 argument_list|,
 literal|1
 argument_list|,
-name|MAX_S3_FILE_SIZE
+literal|0
 argument_list|,
 literal|0
 argument_list|,
@@ -2442,7 +2869,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Can't make directory for path %s since it is a file."
+literal|"Can't make directory for path '%s' since it is a file."
 argument_list|,
 name|f
 argument_list|)
@@ -2456,6 +2883,17 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Making dir '"
+operator|+
+name|f
+operator|+
+literal|"' in S3"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -2494,26 +2932,46 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|exists
+name|FileStatus
+name|fs
+init|=
+name|getFileStatus
 argument_list|(
 name|f
 argument_list|)
+decl_stmt|;
+comment|// will throw if the file doesn't exist
+if|if
+condition|(
+name|fs
+operator|.
+name|isDir
+argument_list|()
 condition|)
 block|{
 throw|throw
 operator|new
-name|FileNotFoundException
+name|IOException
 argument_list|(
+literal|"'"
+operator|+
 name|f
-operator|.
-name|toString
-argument_list|()
+operator|+
+literal|"' is a directory"
 argument_list|)
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opening '"
+operator|+
+name|f
+operator|+
+literal|"' for reading"
+argument_list|)
+expr_stmt|;
 name|Path
 name|absolutePath
 init|=
@@ -2616,138 +3074,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|existsAndIsFile (Path f)
-specifier|private
-name|boolean
-name|existsAndIsFile
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|Path
-name|absolutePath
-init|=
-name|makeAbsolute
-argument_list|(
-name|f
-argument_list|)
-decl_stmt|;
-name|String
-name|key
-init|=
-name|pathToKey
-argument_list|(
-name|absolutePath
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|key
-operator|.
-name|length
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-name|FileMetadata
-name|meta
-init|=
-name|store
-operator|.
-name|retrieveMetadata
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|meta
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// S3 object with given key exists, so this is a file
-return|return
-literal|true
-return|;
-block|}
-if|if
-condition|(
-name|store
-operator|.
-name|retrieveMetadata
-argument_list|(
-name|key
-operator|+
-name|FOLDER_SUFFIX
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// Signifies empty directory
-return|return
-literal|false
-return|;
-block|}
-name|PartialListing
-name|listing
-init|=
-name|store
-operator|.
-name|list
-argument_list|(
-name|key
-argument_list|,
-literal|1
-argument_list|,
-literal|null
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|listing
-operator|.
-name|getFiles
-argument_list|()
-operator|.
-name|length
-operator|>
-literal|0
-operator|||
-name|listing
-operator|.
-name|getCommonPrefixes
-argument_list|()
-operator|.
-name|length
-operator|>
-literal|0
-condition|)
-block|{
-comment|// Non-empty directory
-return|return
-literal|false
-return|;
-block|}
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-name|absolutePath
-operator|+
-literal|": No such file or directory"
-argument_list|)
-throw|;
-block|}
 annotation|@
 name|Override
 DECL|method|rename (Path src, Path dst)
@@ -2790,6 +3116,20 @@ return|return
 literal|false
 return|;
 block|}
+specifier|final
+name|String
+name|debugPreamble
+init|=
+literal|"Renaming '"
+operator|+
+name|src
+operator|+
+literal|"' to '"
+operator|+
+name|dst
+operator|+
+literal|"' - "
+decl_stmt|;
 comment|// Figure out the final destination
 name|String
 name|dstKey
@@ -2799,24 +3139,44 @@ block|{
 name|boolean
 name|dstIsFile
 init|=
-name|existsAndIsFile
+operator|!
+name|getFileStatus
 argument_list|(
 name|dst
 argument_list|)
+operator|.
+name|isDir
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
 name|dstIsFile
 condition|)
 block|{
-comment|// Attempting to overwrite a file using rename()
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as dst is an already existing file"
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
 block|}
 else|else
 block|{
-comment|// Move to within the existent directory
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"using dst as output directory"
+argument_list|)
+expr_stmt|;
 name|dstKey
 operator|=
 name|pathToKey
@@ -2844,7 +3204,15 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
-comment|// dst doesn't exist, so we can proceed
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"using dst as output destination"
+argument_list|)
+expr_stmt|;
 name|dstKey
 operator|=
 name|pathToKey
@@ -2872,10 +3240,18 @@ name|isDir
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as dst parent exists and is a file"
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
-comment|// parent dst is a file
 block|}
 block|}
 catch|catch
@@ -2884,47 +3260,96 @@ name|FileNotFoundException
 name|ex
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as dst parent does not exist"
+argument_list|)
+expr_stmt|;
 return|return
 literal|false
 return|;
-comment|// parent dst does not exist
 block|}
 block|}
-try|try
-block|{
 name|boolean
 name|srcIsFile
-init|=
-name|existsAndIsFile
+decl_stmt|;
+try|try
+block|{
+name|srcIsFile
+operator|=
+operator|!
+name|getFileStatus
 argument_list|(
 name|src
 argument_list|)
-decl_stmt|;
+operator|.
+name|isDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as src does not exist"
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
 if|if
 condition|(
 name|srcIsFile
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"src is file, so doing copy then delete in S3"
+argument_list|)
+expr_stmt|;
 name|store
 operator|.
-name|rename
+name|copy
 argument_list|(
 name|srcKey
 argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Move the folder object
 name|store
 operator|.
 name|delete
 argument_list|(
 name|srcKey
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
 operator|+
-name|FOLDER_SUFFIX
+literal|"src is directory, so copying contents"
 argument_list|)
 expr_stmt|;
 name|store
@@ -2936,7 +3361,19 @@ operator|+
 name|FOLDER_SUFFIX
 argument_list|)
 expr_stmt|;
-comment|// Move everything inside the folder
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|keysToDelete
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|String
 name|priorLastKey
 init|=
@@ -2949,13 +3386,15 @@ name|listing
 init|=
 name|store
 operator|.
-name|listAll
+name|list
 argument_list|(
 name|srcKey
 argument_list|,
 name|S3_MAX_LISTING_LENGTH
 argument_list|,
 name|priorLastKey
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 for|for
@@ -2969,9 +3408,19 @@ name|getFiles
 argument_list|()
 control|)
 block|{
+name|keysToDelete
+operator|.
+name|add
+argument_list|(
+name|file
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|store
 operator|.
-name|rename
+name|copy
 argument_list|(
 name|file
 operator|.
@@ -3010,15 +3459,42 @@ operator|!=
 literal|null
 condition|)
 do|;
-block|}
-name|createParent
+name|LOG
+operator|.
+name|debug
 argument_list|(
-name|src
+name|debugPreamble
+operator|+
+literal|"all files in src copied, now removing src files"
 argument_list|)
 expr_stmt|;
-return|return
-literal|true
-return|;
+for|for
+control|(
+name|String
+name|key
+range|:
+name|keysToDelete
+control|)
+block|{
+name|store
+operator|.
+name|delete
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|store
+operator|.
+name|delete
+argument_list|(
+name|srcKey
+operator|+
+name|FOLDER_SUFFIX
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3026,11 +3502,45 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
-comment|// Source file does not exist;
+comment|//this is fine, we don't require a marker
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"done"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-literal|false
+literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getDefaultBlockSize ()
+specifier|public
+name|long
+name|getDefaultBlockSize
+parameter_list|()
+block|{
+return|return
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+literal|"fs.s3n.block.size"
+argument_list|,
+literal|64
+operator|*
+literal|1024
+operator|*
+literal|1024
+argument_list|)
+return|;
 block|}
 comment|/**    * Set the working directory to the given directory.    */
 annotation|@
