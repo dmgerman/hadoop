@@ -123,7 +123,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** An implementation of a round-robin scheme for disk allocation for creating  * files. The way it works is that it is kept track what disk was last  * allocated for a file write. For the current request, the next disk from  * the set of disks would be allocated if the free space on the disk is   * sufficient enough to accomodate the file that is being considered for  * creation. If the space requirements cannot be met, the next disk in order  * would be tried and so on till a disk is found with sufficient capacity.  * Once a disk with sufficient space is identified, a check is done to make  * sure that the disk is writable. Also, there is an API provided that doesn't  * take the space requirements into consideration but just checks whether the  * disk under consideration is writable (this should be used for cases where  * the file size is not known apriori). An API is provided to read a path that  * was created earlier. That API works by doing a scan of all the disks for the  * input pathname.  * This implementation also provides the functionality of having multiple   * allocators per JVM (one for each unique functionality or context, like   * mapred, dfs-client, etc.). It ensures that there is only one instance of  * an allocator per context per JVM.  * Note:  * 1. The contexts referred above are actually the configuration items defined  * in the Configuration class like "mapred.local.dir" (for which we want to   * control the dir allocations). The context-strings are exactly those   * configuration items.  * 2. This implementation does not take into consideration cases where  * a disk becomes read-only or goes out of space while a file is being written  * to (disks are shared between multiple processes, and so the latter situation  * is probable).  * 3. In the class implementation, "Disk" is referred to as "Dir", which  * actually points to the configured directory on the Disk which will be the  * parent for all file write/read allocations.  */
+comment|/** An implementation of a round-robin scheme for disk allocation for creating  * files. The way it works is that it is kept track what disk was last  * allocated for a file write. For the current request, the next disk from  * the set of disks would be allocated if the free space on the disk is   * sufficient enough to accommodate the file that is being considered for  * creation. If the space requirements cannot be met, the next disk in order  * would be tried and so on till a disk is found with sufficient capacity.  * Once a disk with sufficient space is identified, a check is done to make  * sure that the disk is writable. Also, there is an API provided that doesn't  * take the space requirements into consideration but just checks whether the  * disk under consideration is writable (this should be used for cases where  * the file size is not known apriori). An API is provided to read a path that  * was created earlier. That API works by doing a scan of all the disks for the  * input pathname.  * This implementation also provides the functionality of having multiple   * allocators per JVM (one for each unique functionality or context, like   * mapred, dfs-client, etc.). It ensures that there is only one instance of  * an allocator per context per JVM.  * Note:  * 1. The contexts referred above are actually the configuration items defined  * in the Configuration class like "mapred.local.dir" (for which we want to   * control the dir allocations). The context-strings are exactly those   * configuration items.  * 2. This implementation does not take into consideration cases where  * a disk becomes read-only or goes out of space while a file is being written  * to (disks are shared between multiple processes, and so the latter situation  * is probable).  * 3. In the class implementation, "Disk" is referred to as "Dir", which  * actually points to the configured directory on the Disk which will be the  * parent for all file write/read allocations.  */
 end_comment
 
 begin_class
@@ -159,6 +159,17 @@ DECL|field|contextCfgItemName
 specifier|private
 name|String
 name|contextCfgItemName
+decl_stmt|;
+comment|/** Used when size of file to be allocated is unknown. */
+DECL|field|SIZE_UNKNOWN
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SIZE_UNKNOWN
+init|=
+operator|-
+literal|1
 decl_stmt|;
 comment|/**Create an allocator object    * @param contextCfgItemName    */
 DECL|method|LocalDirAllocator (String contextCfgItemName)
@@ -251,14 +262,13 @@ name|getLocalPathForWrite
 argument_list|(
 name|pathStr
 argument_list|,
-operator|-
-literal|1
+name|SIZE_UNKNOWN
 argument_list|,
 name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Get a path from the local FS. Pass size as -1 if not known apriori. We    *  round-robin over the set of disks (via the configured dirs) and return    *  the first complete path which has enough space     *  @param pathStr the requested path (this will be created on the first     *  available disk)    *  @param size the size of the file that is going to be written    *  @param conf the Configuration object    *  @return the complete path to the file on a local disk    *  @throws IOException    */
+comment|/** Get a path from the local FS. Pass size as     *  SIZE_UNKNOWN if not known apriori. We    *  round-robin over the set of disks (via the configured dirs) and return    *  the first complete path which has enough space     *  @param pathStr the requested path (this will be created on the first     *  available disk)    *  @param size the size of the file that is going to be written    *  @param conf the Configuration object    *  @return the complete path to the file on a local disk    *  @throws IOException    */
 DECL|method|getLocalPathForWrite (String pathStr, long size, Configuration conf)
 specifier|public
 name|Path
@@ -952,8 +962,7 @@ name|getLocalPathForWrite
 argument_list|(
 name|path
 argument_list|,
-operator|-
-literal|1
+name|SIZE_UNKNOWN
 argument_list|,
 name|conf
 argument_list|)
@@ -1026,8 +1035,7 @@ if|if
 condition|(
 name|size
 operator|==
-operator|-
-literal|1
+name|SIZE_UNKNOWN
 condition|)
 block|{
 comment|//do roulette selection: pick dir with probability
@@ -1268,7 +1276,7 @@ name|pathStr
 argument_list|)
 throw|;
 block|}
-comment|/** Creates a file on the local FS. Pass size as -1 if not known apriori. We      *  round-robin over the set of disks (via the configured dirs) and return      *  a file on the first path which has enough space. The file is guaranteed      *  to go away when the JVM exits.      */
+comment|/** Creates a file on the local FS. Pass size as       * {@link LocalDirAllocator.SIZE_UNKNOWN} if not known apriori. We      *  round-robin over the set of disks (via the configured dirs) and return      *  a file on the first path which has enough space. The file is guaranteed      *  to go away when the JVM exits.      */
 DECL|method|createTmpFileForWrite (String pathStr, long size, Configuration conf)
 specifier|public
 name|File
