@@ -5866,8 +5866,8 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Delete all files that match the file pattern<i>srcf</i>.    * @param srcf a file pattern specifying source files    * @param recursive if need to delete subdirs    * @throws IOException      * @see org.apache.hadoop.fs.FileSystem#globStatus(Path)    */
-DECL|method|delete (String srcf, final boolean recursive)
+comment|/**    * Delete all files that match the file pattern<i>srcf</i>.    * @param srcf a file pattern specifying source files    * @param recursive if need to delete subdirs    * @param skipTrash Should we skip the trash, if it's enabled?    * @throws IOException      * @see org.apache.hadoop.fs.FileSystem#globStatus(Path)    */
+DECL|method|delete (String srcf, final boolean recursive, final boolean skipTrash)
 name|void
 name|delete
 parameter_list|(
@@ -5877,6 +5877,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|recursive
+parameter_list|,
+specifier|final
+name|boolean
+name|skipTrash
 parameter_list|)
 throws|throws
 name|IOException
@@ -5920,6 +5924,8 @@ argument_list|,
 name|srcFs
 argument_list|,
 name|recursive
+argument_list|,
+name|skipTrash
 argument_list|)
 expr_stmt|;
 block|}
@@ -5940,7 +5946,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* delete a file */
-DECL|method|delete (Path src, FileSystem srcFs, boolean recursive)
+DECL|method|delete (Path src, FileSystem srcFs, boolean recursive, boolean skipTrash)
 specifier|private
 name|void
 name|delete
@@ -5953,6 +5959,9 @@ name|srcFs
 parameter_list|,
 name|boolean
 name|recursive
+parameter_list|,
+name|boolean
+name|skipTrash
 parameter_list|)
 throws|throws
 name|IOException
@@ -5982,6 +5991,12 @@ literal|"\", use -rmr instead"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+operator|!
+name|skipTrash
+condition|)
+block|{
 name|Trash
 name|trashTmp
 init|=
@@ -6016,6 +6031,7 @@ name|src
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
 block|}
 if|if
 condition|(
@@ -7014,9 +7030,9 @@ literal|"hadoop fs [-fs<local | file system URI>] [-conf<configuration file>]\n\
 operator|+
 literal|"[-D<property=value>] [-ls<path>] [-lsr<path>] [-df [<path>]] [-du<path>]\n\t"
 operator|+
-literal|"[-dus<path>] [-mv<src><dst>] [-cp<src><dst>] [-rm<src>]\n\t"
+literal|"[-dus<path>] [-mv<src><dst>] [-cp<src><dst>] [-rm [-skipTrash]<src>]\n\t"
 operator|+
-literal|"[-rmr<src>] [-put<localsrc> ...<dst>] [-copyFromLocal<localsrc> ...<dst>]\n\t"
+literal|"[-rmr [-skipTrash]<src>] [-put<localsrc> ...<dst>] [-copyFromLocal<localsrc> ...<dst>]\n\t"
 operator|+
 literal|"[-moveFromLocal<localsrc> ...<dst>] ["
 operator|+
@@ -7195,16 +7211,24 @@ decl_stmt|;
 name|String
 name|rm
 init|=
-literal|"-rm<src>: \tDelete all files that match the specified file pattern.\n"
+literal|"-rm [-skipTrash]<src>: \tDelete all files that match the specified file pattern.\n"
 operator|+
-literal|"\t\tEquivlent to the Unix command \"rm<src>\"\n"
+literal|"\t\tEquivalent to the Unix command \"rm<src>\"\n"
+operator|+
+literal|"\t\t-skipTrash option bypasses trash, if enabled, and immediately\n"
+operator|+
+literal|"deletes<src>"
 decl_stmt|;
 name|String
 name|rmr
 init|=
-literal|"-rmr<src>: \tRemove all directories which match the specified file \n"
+literal|"-rmr [-skipTrash]<src>: \tRemove all directories which match the specified file \n"
 operator|+
-literal|"\t\tpattern. Equivlent to the Unix command \"rm -rf<src>\"\n"
+literal|"\t\tpattern. Equivalent to the Unix command \"rm -rf<src>\"\n"
+operator|+
+literal|"\t\t-skipTrash option bypasses trash, if enabled, and immediately\n"
+operator|+
+literal|"deletes<src>"
 decl_stmt|;
 name|String
 name|put
@@ -8413,6 +8437,49 @@ name|i
 init|=
 name|startindex
 decl_stmt|;
+name|boolean
+name|rmSkipTrash
+init|=
+literal|false
+decl_stmt|;
+comment|// Check for -skipTrash option in rm/rmr
+if|if
+condition|(
+operator|(
+literal|"-rm"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+operator|||
+literal|"-rmr"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+operator|)
+operator|&&
+literal|"-skipTrash"
+operator|.
+name|equals
+argument_list|(
+name|argv
+index|[
+name|i
+index|]
+argument_list|)
+condition|)
+block|{
+name|rmSkipTrash
+operator|=
+literal|true
+expr_stmt|;
+name|i
+operator|++
+expr_stmt|;
+block|}
 comment|//
 comment|// for each source file, issue the command
 comment|//
@@ -8494,6 +8561,8 @@ name|i
 index|]
 argument_list|,
 literal|false
+argument_list|,
+name|rmSkipTrash
 argument_list|)
 expr_stmt|;
 block|}
@@ -8516,6 +8585,8 @@ name|i
 index|]
 argument_list|,
 literal|true
+argument_list|,
+name|rmSkipTrash
 argument_list|)
 expr_stmt|;
 block|}
@@ -9404,7 +9475,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-rm<path>]"
+literal|"           [-rm [-skipTrash]<path>]"
 argument_list|)
 expr_stmt|;
 name|System
@@ -9413,7 +9484,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-rmr<path>]"
+literal|"           [-rmr [-skipTrash]<path>]"
 argument_list|)
 expr_stmt|;
 name|System
