@@ -357,7 +357,7 @@ operator|=
 name|path
 expr_stmt|;
 block|}
-comment|/*     * @return the length of this file, in blocks    */
+comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
 DECL|method|getLen ()
 specifier|public
 name|long
