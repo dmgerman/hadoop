@@ -1180,11 +1180,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|testCalls ()
+DECL|method|testCalls (Configuration conf)
 specifier|public
 name|void
 name|testCalls
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -2097,6 +2100,43 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Switch off setting socketTimeout values on RPC sockets.    * Verify that RPC calls still work ok.    */
+DECL|method|testNoPings ()
+specifier|public
+name|void
+name|testNoPings
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+literal|"ipc.client.ping"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+operator|new
+name|TestRPC
+argument_list|(
+literal|"testnoPings"
+argument_list|)
+operator|.
+name|testCalls
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -2117,7 +2157,9 @@ literal|"test"
 argument_list|)
 operator|.
 name|testCalls
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 block|}
