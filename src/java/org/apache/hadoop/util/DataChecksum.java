@@ -167,7 +167,7 @@ argument_list|(
 name|CHECKSUM_CRC32
 argument_list|,
 operator|new
-name|CRC32
+name|PureJavaCrc32
 argument_list|()
 argument_list|,
 name|CHECKSUM_CRC32_SIZE
