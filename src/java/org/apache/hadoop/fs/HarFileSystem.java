@@ -72,6 +72,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -2622,7 +2632,7 @@ literal|"Har: Create not allowed"
 argument_list|)
 throw|;
 block|}
-DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -2633,8 +2643,11 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|boolean
-name|overwrite
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
 parameter_list|,
 name|int
 name|bufferSize
