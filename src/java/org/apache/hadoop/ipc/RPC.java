@@ -900,6 +900,16 @@ name|Invoker
 implements|implements
 name|InvocationHandler
 block|{
+DECL|field|protocol
+specifier|private
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|VersionedProtocol
+argument_list|>
+name|protocol
+decl_stmt|;
 DECL|field|address
 specifier|private
 name|InetSocketAddress
@@ -922,10 +932,18 @@ name|isClosed
 init|=
 literal|false
 decl_stmt|;
-DECL|method|Invoker (InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|Invoker (Class<? extends VersionedProtocol> protocol, InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
 specifier|public
 name|Invoker
 parameter_list|(
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|VersionedProtocol
+argument_list|>
+name|protocol
+parameter_list|,
 name|InetSocketAddress
 name|address
 parameter_list|,
@@ -939,6 +957,12 @@ name|SocketFactory
 name|factory
 parameter_list|)
 block|{
+name|this
+operator|.
+name|protocol
+operator|=
+name|protocol
+expr_stmt|;
 name|this
 operator|.
 name|address
@@ -1030,10 +1054,7 @@ argument_list|)
 argument_list|,
 name|address
 argument_list|,
-name|method
-operator|.
-name|getDeclaringClass
-argument_list|()
+name|protocol
 argument_list|,
 name|ticket
 argument_list|)
@@ -1214,13 +1235,18 @@ name|serverVersion
 return|;
 block|}
 block|}
-DECL|method|waitForProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf )
+DECL|method|waitForProxy ( Class<? extends VersionedProtocol> protocol, long clientVersion, InetSocketAddress addr, Configuration conf )
 specifier|public
 specifier|static
 name|VersionedProtocol
 name|waitForProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+extends|extends
+name|VersionedProtocol
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -1253,12 +1279,17 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get a proxy connection to a remote server    * @param protocol protocol class    * @param clientVersion client version    * @param addr remote address    * @param conf configuration to use    * @param timeout time in milliseconds before giving up    * @return the proxy    * @throws IOException if the far end through a RemoteException    */
-DECL|method|waitForProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf, long timeout )
+DECL|method|waitForProxy ( Class<? extends VersionedProtocol> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, long timeout )
 specifier|static
 name|VersionedProtocol
 name|waitForProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+extends|extends
+name|VersionedProtocol
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -1390,7 +1421,7 @@ block|}
 block|}
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, SocketFactory factory)
+DECL|method|getProxy ( Class<? extends VersionedProtocol> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, SocketFactory factory)
 specifier|public
 specifier|static
 name|VersionedProtocol
@@ -1399,6 +1430,8 @@ parameter_list|(
 name|Class
 argument_list|<
 name|?
+extends|extends
+name|VersionedProtocol
 argument_list|>
 name|protocol
 parameter_list|,
@@ -1466,7 +1499,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|getProxy ( Class<? extends VersionedProtocol> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
 specifier|public
 specifier|static
 name|VersionedProtocol
@@ -1475,6 +1508,8 @@ parameter_list|(
 name|Class
 argument_list|<
 name|?
+extends|extends
+name|VersionedProtocol
 argument_list|>
 name|protocol
 parameter_list|,
@@ -1521,6 +1556,8 @@ argument_list|,
 operator|new
 name|Invoker
 argument_list|(
+name|protocol
+argument_list|,
 name|addr
 argument_list|,
 name|ticket
@@ -1576,7 +1613,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Construct a client-side proxy object with the default SocketFactory    *     * @param protocol    * @param clientVersion    * @param addr    * @param conf    * @return a proxy instance    * @throws IOException    */
-DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|getProxy ( Class<? extends VersionedProtocol> protocol, long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
 specifier|static
 name|VersionedProtocol
@@ -1585,6 +1622,8 @@ parameter_list|(
 name|Class
 argument_list|<
 name|?
+extends|extends
+name|VersionedProtocol
 argument_list|>
 name|protocol
 parameter_list|,
