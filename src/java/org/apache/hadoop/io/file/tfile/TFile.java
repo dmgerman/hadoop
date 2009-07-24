@@ -659,6 +659,29 @@ name|COMPARATOR_JCLASS
 init|=
 literal|"jclass:"
 decl_stmt|;
+comment|/**    * Make a raw comparator from a string name.    *     * @param name    *          Comparator name    * @return A RawComparable comparator.    */
+DECL|method|makeComparator (String name)
+specifier|static
+specifier|public
+name|Comparator
+argument_list|<
+name|RawComparable
+argument_list|>
+name|makeComparator
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|TFileMeta
+operator|.
+name|makeComparator
+argument_list|(
+name|name
+argument_list|)
+return|;
+block|}
 comment|// Prevent the instantiation of TFiles
 DECL|method|TFile ()
 specifier|private
@@ -5655,7 +5678,6 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 DECL|method|makeComparator (String comparator)
-specifier|private
 specifier|static
 name|BytesComparator
 name|makeComparator
