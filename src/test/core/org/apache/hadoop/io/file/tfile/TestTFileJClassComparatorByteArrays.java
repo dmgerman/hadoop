@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -120,6 +130,8 @@ argument_list|<
 name|byte
 index|[]
 argument_list|>
+implements|,
+name|Serializable
 block|{
 annotation|@
 name|Override

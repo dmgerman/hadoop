@@ -610,7 +610,7 @@ name|fsOut
 argument_list|,
 name|fsOutputBuffer
 operator|.
-name|get
+name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1163,6 +1163,8 @@ name|SIZE
 return|;
 block|}
 comment|/**      * Return a string representation of the version.      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

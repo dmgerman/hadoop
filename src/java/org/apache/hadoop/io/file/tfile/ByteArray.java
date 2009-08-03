@@ -79,14 +79,14 @@ name|this
 argument_list|(
 name|other
 operator|.
-name|get
+name|getBytes
 argument_list|()
 argument_list|,
 literal|0
 argument_list|,
 name|other
 operator|.
-name|getSize
+name|getLength
 argument_list|()
 argument_list|)
 expr_stmt|;

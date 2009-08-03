@@ -241,6 +241,7 @@ name|conf
 decl_stmt|;
 DECL|field|minBlockSize
 specifier|private
+specifier|static
 specifier|final
 name|int
 name|minBlockSize
@@ -249,6 +250,7 @@ literal|512
 decl_stmt|;
 DECL|field|largeVal
 specifier|private
+specifier|static
 specifier|final
 name|int
 name|largeVal
@@ -262,6 +264,7 @@ decl_stmt|;
 DECL|field|localFormatter
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|localFormatter
 init|=

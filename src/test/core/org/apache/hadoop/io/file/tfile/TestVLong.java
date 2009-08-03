@@ -962,10 +962,15 @@ decl_stmt|;
 name|long
 name|a
 init|=
+operator|(
+operator|(
+name|long
+operator|)
 name|rng
 operator|.
 name|nextInt
 argument_list|()
+operator|)
 operator|<<
 literal|32
 decl_stmt|;
