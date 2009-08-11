@@ -114,7 +114,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|readFile (FileSystem fs, Path name)
+DECL|method|readFile (FileSystem fs, Path name, int buflen)
 specifier|static
 name|String
 name|readFile
@@ -124,6 +124,9 @@ name|fs
 parameter_list|,
 name|Path
 name|name
+parameter_list|,
+name|int
+name|buflen
 parameter_list|)
 throws|throws
 name|IOException
@@ -135,7 +138,7 @@ init|=
 operator|new
 name|byte
 index|[
-literal|1024
+name|buflen
 index|]
 decl_stmt|;
 name|int
@@ -195,6 +198,25 @@ operator|+=
 name|n
 control|)
 empty_stmt|;
+name|assertEquals
+argument_list|(
+name|offset
+argument_list|,
+name|Math
+operator|.
+name|min
+argument_list|(
+name|b
+operator|.
+name|length
+argument_list|,
+name|in
+operator|.
+name|getPos
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|in
 operator|.
 name|close

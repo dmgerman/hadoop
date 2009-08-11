@@ -494,6 +494,16 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|count
+operator|<
+literal|0
+condition|)
+name|count
+operator|=
+literal|0
+expr_stmt|;
 block|}
 comment|/*    * Read characters into a portion of an array, reading from the underlying    * stream at most once if necessary.    */
 DECL|method|read1 (byte b[], int off, int len)
