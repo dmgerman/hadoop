@@ -271,7 +271,59 @@ specifier|private
 name|AtomicBoolean
 name|timedOut
 decl_stmt|;
-comment|/**     * Get the Unix command for setting the maximum virtual memory available    * to a given child process. This is only relevant when we are forking a    * process from within the Mapper or the Reducer implementations.    * see also Hadoop Pipes and Streaming.    *     * It also checks to ensure that we are running on a *nix platform else     * (e.g. in Cygwin/Windows) it returns<code>null</code>.    * @param conf configuration    * @return a<code>String[]</code> with the ulimit command arguments or     *<code>null</code> if we are running on a non *nix platform or    *         if the limit is unspecified.    */
+comment|/** a Unix command to get ulimit of a process. */
+DECL|field|ULIMIT_COMMAND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ULIMIT_COMMAND
+init|=
+literal|"ulimit"
+decl_stmt|;
+comment|/**     * Get the Unix command for setting the maximum virtual memory available    * to a given child process. This is only relevant when we are forking a    * process from within the Mapper or the Reducer implementations.    * Also see Hadoop Pipes and Hadoop Streaming.    *     * It also checks to ensure that we are running on a *nix platform else     * (e.g. in Cygwin/Windows) it returns<code>null</code>.    * @param memoryLimit virtual memory limit    * @return a<code>String[]</code> with the ulimit command arguments or     *<code>null</code> if we are running on a non *nix platform or    *         if the limit is unspecified.    */
+DECL|method|getUlimitMemoryCommand (int memoryLimit)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getUlimitMemoryCommand
+parameter_list|(
+name|int
+name|memoryLimit
+parameter_list|)
+block|{
+comment|// ulimit isn't supported on Windows
+if|if
+condition|(
+name|WINDOWS
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|new
+name|String
+index|[]
+block|{
+name|ULIMIT_COMMAND
+block|,
+literal|"-v"
+block|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|memoryLimit
+argument_list|)
+block|}
+return|;
+block|}
+comment|/**     * Get the Unix command for setting the maximum virtual memory available    * to a given child process. This is only relevant when we are forking a    * process from within the Mapper or the Reducer implementations.    * see also Hadoop Pipes and Streaming.    *     * It also checks to ensure that we are running on a *nix platform else     * (e.g. in Cygwin/Windows) it returns<code>null</code>.    * @param conf configuration    * @return a<code>String[]</code> with the ulimit command arguments or     *<code>null</code> if we are running on a non *nix platform or    *         if the limit is unspecified.    * @deprecated Use {@link #getUlimitMemoryCommand(int)}    */
+annotation|@
+name|Deprecated
 DECL|method|getUlimitMemoryCommand (Configuration conf)
 specifier|public
 specifier|static
@@ -327,21 +379,10 @@ name|ulimit
 argument_list|)
 decl_stmt|;
 return|return
-operator|new
-name|String
-index|[]
-block|{
-literal|"ulimit"
-block|,
-literal|"-v"
-block|,
-name|String
-operator|.
-name|valueOf
+name|getUlimitMemoryCommand
 argument_list|(
 name|memoryLimit
 argument_list|)
-block|}
 return|;
 block|}
 comment|/** Set to true on Windows platforms */
