@@ -703,6 +703,27 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|kfsImpl
+operator|.
+name|exists
+argument_list|(
+name|srep
+argument_list|)
+condition|)
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File "
+operator|+
+name|path
+operator|+
+literal|" does not exist."
+argument_list|)
+throw|;
+if|if
+condition|(
 name|kfsImpl
 operator|.
 name|isFile
@@ -1351,16 +1372,8 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|(
 operator|!
 name|recursive
-operator|)
-operator|&&
-operator|(
-name|dirEntries
-operator|!=
-literal|null
-operator|)
 operator|&&
 operator|(
 name|dirEntries
@@ -1386,13 +1399,6 @@ literal|" is not empty."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|dirEntries
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
 name|int
@@ -1429,7 +1435,6 @@ argument_list|,
 name|recursive
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|kfsImpl

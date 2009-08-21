@@ -2753,13 +2753,6 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|stats
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
 name|FileStatus
@@ -2833,7 +2826,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

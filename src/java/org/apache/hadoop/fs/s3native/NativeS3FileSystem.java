@@ -2649,9 +2649,17 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File "
+operator|+
+name|f
+operator|+
+literal|" does not exist."
+argument_list|)
+throw|;
 block|}
 return|return
 name|status

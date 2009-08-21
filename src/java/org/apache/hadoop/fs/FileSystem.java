@@ -2540,7 +2540,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f    *          given path    * @return the statuses of the files/directories in the given patch    * @throws IOException    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f given path    * @return the statuses of the files/directories in the given patch    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path f)
 specifier|public
 specifier|abstract
@@ -2552,6 +2552,8 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 function_decl|;
 comment|/*    * Filter files/directories in the given path using the user-supplied path    * filter. Results are added to the given array<code>results</code>.    */
@@ -2573,6 +2575,8 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 name|FileStatus
@@ -2584,13 +2588,6 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|listing
-operator|!=
-literal|null
-condition|)
-block|{
 for|for
 control|(
 name|int
@@ -2637,8 +2634,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
-comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws IOException    *           if encounter any problem while fetching the status    */
+comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -2652,6 +2648,8 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 name|ArrayList
@@ -2692,7 +2690,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @exception IOException    */
+comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -2704,6 +2702,8 @@ index|[]
 name|files
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 return|return
@@ -2715,7 +2715,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @exception IOException    */
+comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -2730,6 +2730,8 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 name|ArrayList

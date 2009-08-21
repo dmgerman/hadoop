@@ -743,16 +743,16 @@ block|{
 comment|// expected
 block|}
 block|}
-DECL|method|testListStatusReturnsNullForNonExistentFile ()
+DECL|method|testListStatusThrowsExceptionForNonExistentFile ()
 specifier|public
 name|void
-name|testListStatusReturnsNullForNonExistentFile
+name|testListStatusThrowsExceptionForNonExistentFile
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assertNull
-argument_list|(
+try|try
+block|{
 name|fs
 operator|.
 name|listStatus
@@ -762,8 +762,21 @@ argument_list|(
 literal|"/test/hadoop/file"
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Should throw FileNotFoundException"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fnfe
+parameter_list|)
+block|{
+comment|// expected
+block|}
 block|}
 DECL|method|testListStatus ()
 specifier|public
