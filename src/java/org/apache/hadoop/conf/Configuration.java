@@ -1023,6 +1023,30 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|classLoader
+operator|=
+name|other
+operator|.
+name|classLoader
+expr_stmt|;
+name|this
+operator|.
+name|loadDefaults
+operator|=
+name|other
+operator|.
+name|loadDefaults
+expr_stmt|;
+name|setQuietMode
+argument_list|(
+name|other
+operator|.
+name|getQuietMode
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Add a default resource. Resources are loaded in the order of the resources     * added.    * @param name file name. File should be present in the classpath.    */
 DECL|method|addDefaultResource (String name)
@@ -5302,6 +5326,18 @@ name|quietmode
 operator|=
 name|quietmode
 expr_stmt|;
+block|}
+DECL|method|getQuietMode ()
+specifier|synchronized
+name|boolean
+name|getQuietMode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quietmode
+return|;
 block|}
 comment|/** For debugging.  List non-default properties to the terminal and exit. */
 DECL|method|main (String[] args)
