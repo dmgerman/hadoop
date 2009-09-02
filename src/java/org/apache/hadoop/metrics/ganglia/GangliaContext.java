@@ -432,7 +432,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|buffer
-specifier|private
+specifier|protected
 name|byte
 index|[]
 name|buffer
@@ -444,12 +444,12 @@ name|BUFFER_SIZE
 index|]
 decl_stmt|;
 DECL|field|offset
-specifier|private
+specifier|protected
 name|int
 name|offset
 decl_stmt|;
 DECL|field|metricsServers
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|?
@@ -499,7 +499,7 @@ argument_list|>
 name|dmaxTable
 decl_stmt|;
 DECL|field|datagramSocket
-specifier|private
+specifier|protected
 name|DatagramSocket
 name|datagramSocket
 decl_stmt|;
@@ -751,7 +751,7 @@ block|}
 block|}
 block|}
 DECL|method|emitMetric (String name, String type, String value)
-specifier|private
+specifier|protected
 name|void
 name|emitMetric
 parameter_list|(
@@ -875,7 +875,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getUnits (String metricName)
-specifier|private
+specifier|protected
 name|String
 name|getUnits
 parameter_list|(
@@ -910,7 +910,7 @@ name|result
 return|;
 block|}
 DECL|method|getSlope (String metricName)
-specifier|private
+specifier|protected
 name|int
 name|getSlope
 parameter_list|(
@@ -957,7 +957,7 @@ return|;
 comment|// see gmetric.c
 block|}
 DECL|method|getTmax (String metricName)
-specifier|private
+specifier|protected
 name|int
 name|getTmax
 parameter_list|(
@@ -1010,7 +1010,7 @@ return|;
 block|}
 block|}
 DECL|method|getDmax (String metricName)
-specifier|private
+specifier|protected
 name|int
 name|getDmax
 parameter_list|(
@@ -1053,7 +1053,7 @@ block|}
 block|}
 comment|/**    * Puts a string into the buffer by first writing the size of the string    * as an int, followed by the bytes of the string, padded if necessary to    * a multiple of 4.    */
 DECL|method|xdr_string (String s)
-specifier|private
+specifier|protected
 name|void
 name|xdr_string
 parameter_list|(
@@ -1146,7 +1146,7 @@ block|}
 block|}
 comment|/**    * Puts an integer into the buffer as 4 bytes, big-endian.    */
 DECL|method|xdr_int (int i)
-specifier|private
+specifier|protected
 name|void
 name|xdr_int
 parameter_list|(
