@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.io.file.tfile
+DECL|package|org.apache.hadoop.io
 package|package
 name|org
 operator|.
@@ -13,10 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|io
-operator|.
-name|file
-operator|.
-name|tfile
 package|;
 end_package
 
@@ -56,6 +52,7 @@ end_comment
 
 begin_class
 DECL|class|BoundedByteArrayOutputStream
+specifier|public
 class|class
 name|BoundedByteArrayOutputStream
 extends|extends
@@ -78,6 +75,7 @@ specifier|private
 name|int
 name|count
 decl_stmt|;
+comment|/**    * Create a BoundedByteArrayOutputStream with the specified    * capacity    * @param capacity The capacity of the underlying byte array    */
 DECL|method|BoundedByteArrayOutputStream (int capacity)
 specifier|public
 name|BoundedByteArrayOutputStream
@@ -94,6 +92,7 @@ name|capacity
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create a BoundedByteArrayOutputStream with the specified    * capacity and limit.    * @param capacity The capacity of the underlying byte array    * @param limit The maximum limit upto which data can be written    */
 DECL|method|BoundedByteArrayOutputStream (int capacity, int limit)
 specifier|public
 name|BoundedByteArrayOutputStream
@@ -311,6 +310,7 @@ operator|+=
 name|len
 expr_stmt|;
 block|}
+comment|/**    * Reset the limit     * @param newlim New Limit    */
 DECL|method|reset (int newlim)
 specifier|public
 name|void
@@ -350,6 +350,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+comment|/** Reset the buffer */
 DECL|method|reset ()
 specifier|public
 name|void
@@ -371,6 +372,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+comment|/** Return the current limit */
 DECL|method|getLimit ()
 specifier|public
 name|int
@@ -381,6 +383,7 @@ return|return
 name|limit
 return|;
 block|}
+comment|/** Returns the underlying buffer.    *  Data is only valid to {@link #size()}.    */
 DECL|method|getBuffer ()
 specifier|public
 name|byte
@@ -392,6 +395,7 @@ return|return
 name|buffer
 return|;
 block|}
+comment|/** Returns the length of the valid data     * currently in the buffer.    */
 DECL|method|size ()
 specifier|public
 name|int
