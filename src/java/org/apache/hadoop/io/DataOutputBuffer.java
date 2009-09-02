@@ -26,22 +26,6 @@ name|*
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|DataOutputBuffer
-operator|.
-name|Buffer
-import|;
-end_import
-
 begin_comment
 comment|/** A reusable {@link DataOutput} implementation that writes to an in-memory  * buffer.  *  *<p>This saves memory over creating a new DataOutputStream and  * ByteArrayOutputStream each time data is written.  *  *<p>Typical usage is something like the following:<pre>  *  * DataOutputBuffer buffer = new DataOutputBuffer();  * while (... loop condition ...) {  *   buffer.reset();  *   ... write buffer using DataOutput methods ...  *   byte[] data = buffer.getData();  *   int dataLength = buffer.getLength();  *   ... write data to its ultimate destination ...  * }  *</pre>  *    */
 end_comment
@@ -55,7 +39,7 @@ extends|extends
 name|DataOutputStream
 block|{
 DECL|class|Buffer
-specifier|public
+specifier|private
 specifier|static
 class|class
 name|Buffer
@@ -104,22 +88,6 @@ name|super
 argument_list|(
 name|size
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|Buffer (byte[] buf)
-specifier|public
-name|Buffer
-parameter_list|(
-name|byte
-index|[]
-name|buf
-parameter_list|)
-block|{
-name|super
-operator|.
-name|buf
-operator|=
-name|buf
 expr_stmt|;
 block|}
 DECL|method|write (DataInput in, int len)
@@ -243,25 +211,6 @@ operator|new
 name|Buffer
 argument_list|(
 name|size
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|DataOutputBuffer (byte[] buf)
-specifier|public
-name|DataOutputBuffer
-parameter_list|(
-name|byte
-index|[]
-name|buf
-parameter_list|)
-block|{
-name|this
-argument_list|(
-operator|new
-name|Buffer
-argument_list|(
-name|buf
 argument_list|)
 argument_list|)
 expr_stmt|;
