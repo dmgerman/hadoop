@@ -70,15 +70,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|Map
 import|;
 end_import
 
@@ -92,7 +88,7 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|Configured
+name|Configuration
 import|;
 end_import
 
@@ -125,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A {@link Serialization} for {@link Writable}s that delegates to  * {@link Writable#write(java.io.DataOutput)} and  * {@link Writable#readFields(java.io.DataInput)}.  */
+comment|/**  * A {@link SerializationBase} for {@link Writable}s that delegates to  * {@link Writable#write(java.io.DataOutput)} and  * {@link Writable#readFields(java.io.DataInput)}.  */
 end_comment
 
 begin_class
@@ -134,9 +130,7 @@ specifier|public
 class|class
 name|WritableSerialization
 extends|extends
-name|Configured
-implements|implements
-name|Serialization
+name|SerializationBase
 argument_list|<
 name|Writable
 argument_list|>
@@ -146,9 +140,7 @@ specifier|static
 class|class
 name|WritableDeserializer
 extends|extends
-name|Configured
-implements|implements
-name|Deserializer
+name|DeserializerBase
 argument_list|<
 name|Writable
 argument_list|>
@@ -192,6 +184,8 @@ operator|=
 name|c
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|open (InputStream in)
 specifier|public
 name|void
@@ -228,6 +222,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|deserialize (Writable w)
 specifier|public
 name|Writable
@@ -283,6 +279,8 @@ return|return
 name|writable
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -302,17 +300,49 @@ DECL|class|WritableSerializer
 specifier|static
 class|class
 name|WritableSerializer
-implements|implements
-name|Serializer
+extends|extends
+name|SerializerBase
 argument_list|<
 name|Writable
 argument_list|>
 block|{
+DECL|field|metadata
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+decl_stmt|;
 DECL|field|dataOut
 specifier|private
 name|DataOutputStream
 name|dataOut
 decl_stmt|;
+DECL|method|WritableSerializer (Map<String, String> metadata)
+specifier|public
+name|WritableSerializer
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+parameter_list|)
+block|{
+name|this
+operator|.
+name|metadata
+operator|=
+name|metadata
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|open (OutputStream out)
 specifier|public
 name|void
@@ -349,6 +379,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|serialize (Writable w)
 specifier|public
 name|void
@@ -368,6 +400,8 @@ name|dataOut
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -382,20 +416,83 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getMetadata ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getMetadata
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|metadata
+return|;
 block|}
-DECL|method|accept (Class<?> c)
+block|}
+annotation|@
+name|Override
+DECL|method|accept (Map<String, String> metadata)
 specifier|public
 name|boolean
 name|accept
 parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+parameter_list|)
+block|{
+if|if
+condition|(
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|metadata
+operator|.
+name|get
+argument_list|(
+name|SERIALIZATION_KEY
+argument_list|)
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 name|Class
 argument_list|<
 name|?
 argument_list|>
 name|c
-parameter_list|)
-block|{
+init|=
+name|getClassFromMetadata
+argument_list|(
+name|metadata
+argument_list|)
+decl_stmt|;
 return|return
+name|c
+operator|==
+literal|null
+condition|?
+literal|false
+else|:
 name|Writable
 operator|.
 name|class
@@ -406,21 +503,63 @@ name|c
 argument_list|)
 return|;
 block|}
-DECL|method|getDeserializer (Class<Writable> c)
+annotation|@
+name|Override
+DECL|method|getSerializer (Map<String, String> metadata)
 specifier|public
-name|Deserializer
+name|SerializerBase
+argument_list|<
+name|Writable
+argument_list|>
+name|getSerializer
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+parameter_list|)
+block|{
+return|return
+operator|new
+name|WritableSerializer
+argument_list|(
+name|metadata
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDeserializer (Map<String, String> metadata)
+specifier|public
+name|DeserializerBase
 argument_list|<
 name|Writable
 argument_list|>
 name|getDeserializer
 parameter_list|(
-name|Class
+name|Map
 argument_list|<
-name|Writable
+name|String
+argument_list|,
+name|String
 argument_list|>
-name|c
+name|metadata
 parameter_list|)
 block|{
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|c
+init|=
+name|getClassFromMetadata
+argument_list|(
+name|metadata
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|WritableDeserializer
@@ -430,27 +569,6 @@ argument_list|()
 argument_list|,
 name|c
 argument_list|)
-return|;
-block|}
-DECL|method|getSerializer (Class<Writable> c)
-specifier|public
-name|Serializer
-argument_list|<
-name|Writable
-argument_list|>
-name|getSerializer
-parameter_list|(
-name|Class
-argument_list|<
-name|Writable
-argument_list|>
-name|c
-parameter_list|)
-block|{
-return|return
-operator|new
-name|WritableSerializer
-argument_list|()
 return|;
 block|}
 block|}

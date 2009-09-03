@@ -141,6 +141,35 @@ name|buffer
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|DeserializerComparator (DeserializerBase<T> deserializer)
+specifier|protected
+name|DeserializerComparator
+parameter_list|(
+name|DeserializerBase
+argument_list|<
+name|T
+argument_list|>
+name|deserializer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+operator|.
+name|deserializer
+operator|=
+name|deserializer
+expr_stmt|;
+name|this
+operator|.
+name|deserializer
+operator|.
+name|open
+argument_list|(
+name|buffer
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

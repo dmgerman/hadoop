@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -34,40 +44,62 @@ name|java
 operator|.
 name|io
 operator|.
-name|OutputStream
+name|InputStream
 import|;
 end_import
 
-begin_comment
-comment|/**  *<p>  * Provides a facility for serializing objects of type<T> to an  * {@link OutputStream}.  *</p>  *   *<p>  * Serializers are stateful, but must not buffer the output since  * other producers may write to the output between calls to  * {@link #serialize(Object)}.  *</p>  * @param<T>  */
-end_comment
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configured
+import|;
+end_import
 
-begin_interface
-annotation|@
-name|Deprecated
-DECL|interface|Serializer
+begin_class
+DECL|class|DeserializerBase
 specifier|public
-interface|interface
-name|Serializer
+specifier|abstract
+class|class
+name|DeserializerBase
 parameter_list|<
 name|T
 parameter_list|>
+extends|extends
+name|Configured
+implements|implements
+name|Closeable
+implements|,
+name|Deserializer
+argument_list|<
+name|T
+argument_list|>
 block|{
-comment|/**    *<p>Prepare the serializer for writing.</p>    */
-DECL|method|open (OutputStream out)
+comment|/**    *<p>Prepare the deserializer for reading.</p>    */
+DECL|method|open (InputStream in)
+specifier|public
+specifier|abstract
 name|void
 name|open
 parameter_list|(
-name|OutputStream
-name|out
+name|InputStream
+name|in
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *<p>Serialize<code>t</code> to the underlying output stream.</p>    */
-DECL|method|serialize (T t)
-name|void
-name|serialize
+comment|/**    *<p>    * Deserialize the next object from the underlying input stream.    * If the object<code>t</code> is non-null then this deserializer    *<i>may</i> set its internal state to the next object read from the input    * stream. Otherwise, if the object<code>t</code> is null a new    * deserialized object will be created.    *</p>    * @return the deserialized object    */
+DECL|method|deserialize (T t)
+specifier|public
+specifier|abstract
+name|T
+name|deserialize
 parameter_list|(
 name|T
 name|t
@@ -75,16 +107,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    *<p>Close the underlying output stream and clear up any resources.</p>    */
-DECL|method|close ()
-name|void
-name|close
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

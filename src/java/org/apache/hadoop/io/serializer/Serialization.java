@@ -23,6 +23,8 @@ comment|/**  *<p>  * Encapsulates a {@link Serializer}/{@link Deserializer} pair
 end_comment
 
 begin_interface
+annotation|@
+name|Deprecated
 DECL|interface|Serialization
 specifier|public
 interface|interface

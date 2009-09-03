@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -90,7 +100,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|Deserializer
+name|DeserializerBase
 import|;
 end_import
 
@@ -106,7 +116,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|Serialization
+name|SerializationBase
 import|;
 end_import
 
@@ -138,7 +148,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|Serializer
+name|SerializerBase
 import|;
 end_import
 
@@ -157,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DefaultStringifier is the default implementation of the {@link Stringifier}  * interface which stringifies the objects using base64 encoding of the  * serialized version of the objects. The {@link Serializer} and  * {@link Deserializer} are obtained from the {@link SerializationFactory}.  *<br>  * DefaultStringifier offers convenience methods to store/load objects to/from  * the configuration.  *   * @param<T> the class of the objects to stringify  */
+comment|/**  * DefaultStringifier is the default implementation of the {@link Stringifier}  * interface which stringifies the objects using base64 encoding of the  * serialized version of the objects. The {@link SerializerBase} and  * {@link DeserializerBase} are obtained from the {@link SerializationFactory}.  *<br>  * DefaultStringifier offers convenience methods to store/load objects to/from  * the configuration.  *   * @param<T> the class of the objects to stringify  */
 end_comment
 
 begin_class
@@ -185,7 +195,7 @@ literal|","
 decl_stmt|;
 DECL|field|serializer
 specifier|private
-name|Serializer
+name|SerializerBase
 argument_list|<
 name|T
 argument_list|>
@@ -193,7 +203,7 @@ name|serializer
 decl_stmt|;
 DECL|field|deserializer
 specifier|private
-name|Deserializer
+name|DeserializerBase
 argument_list|<
 name|T
 argument_list|>
@@ -232,6 +242,21 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+init|=
+name|SerializationBase
+operator|.
+name|getMetadataFromClass
+argument_list|(
+name|c
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|serializer
@@ -240,7 +265,7 @@ name|factory
 operator|.
 name|getSerializer
 argument_list|(
-name|c
+name|metadata
 argument_list|)
 expr_stmt|;
 name|this
@@ -251,7 +276,7 @@ name|factory
 operator|.
 name|getDeserializer
 argument_list|(
-name|c
+name|metadata
 argument_list|)
 expr_stmt|;
 name|this
@@ -472,7 +497,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stores the item in the configuration with the given keyName.    *     * @param<K>  the class of the item    * @param conf the configuration to store    * @param item the object to be stored    * @param keyName the name of the key to use    * @throws IOException : forwards Exceptions from the underlying     * {@link Serialization} classes.     */
+comment|/**    * Stores the item in the configuration with the given keyName.    *     * @param<K>  the class of the item    * @param conf the configuration to store    * @param item the object to be stored    * @param keyName the name of the key to use    * @throws IOException : forwards Exceptions from the underlying     * {@link SerializationBase} classes.     */
 DECL|method|store (Configuration conf, K item, String keyName)
 specifier|public
 specifier|static
@@ -536,7 +561,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Restores the object from the configuration.    *     * @param<K> the class of the item    * @param conf the configuration to use    * @param keyName the name of the key to use    * @param itemClass the class of the item    * @return restored object    * @throws IOException : forwards Exceptions from the underlying     * {@link Serialization} classes.    */
+comment|/**    * Restores the object from the configuration.    *     * @param<K> the class of the item    * @param conf the configuration to use    * @param keyName the name of the key to use    * @param itemClass the class of the item    * @return restored object    * @throws IOException : forwards Exceptions from the underlying     * {@link SerializationBase} classes.    */
 DECL|method|load (Configuration conf, String keyName, Class<K> itemClass)
 specifier|public
 specifier|static
@@ -608,7 +633,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Stores the array of items in the configuration with the given keyName.    *     * @param<K> the class of the item    * @param conf the configuration to use     * @param items the objects to be stored    * @param keyName the name of the key to use    * @throws IndexOutOfBoundsException if the items array is empty    * @throws IOException : forwards Exceptions from the underlying     * {@link Serialization} classes.             */
+comment|/**    * Stores the array of items in the configuration with the given keyName.    *     * @param<K> the class of the item    * @param conf the configuration to use     * @param items the objects to be stored    * @param keyName the name of the key to use    * @throws IndexOutOfBoundsException if the items array is empty    * @throws IOException : forwards Exceptions from the underlying     * {@link SerializationBase} classes.             */
 DECL|method|storeArray (Configuration conf, K[] items, String keyName)
 specifier|public
 specifier|static
@@ -713,7 +738,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Restores the array of objects from the configuration.    *     * @param<K> the class of the item    * @param conf the configuration to use    * @param keyName the name of the key to use    * @param itemClass the class of the item    * @return restored object    * @throws IOException : forwards Exceptions from the underlying     * {@link Serialization} classes.    */
+comment|/**    * Restores the array of objects from the configuration.    *     * @param<K> the class of the item    * @param conf the configuration to use    * @param keyName the name of the key to use    * @param itemClass the class of the item    * @return restored object    * @throws IOException : forwards Exceptions from the underlying     * {@link SerializationBase} classes.    */
 DECL|method|loadArray (Configuration conf, String keyName, Class<K> itemClass)
 specifier|public
 specifier|static

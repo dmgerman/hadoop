@@ -34,57 +34,115 @@ name|java
 operator|.
 name|io
 operator|.
-name|OutputStream
+name|InputStream
 import|;
 end_import
 
-begin_comment
-comment|/**  *<p>  * Provides a facility for serializing objects of type<T> to an  * {@link OutputStream}.  *</p>  *   *<p>  * Serializers are stateful, but must not buffer the output since  * other producers may write to the output between calls to  * {@link #serialize(Object)}.  *</p>  * @param<T>  */
-end_comment
-
-begin_interface
+begin_class
 annotation|@
-name|Deprecated
-DECL|interface|Serializer
-specifier|public
-interface|interface
-name|Serializer
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+DECL|class|LegacyDeserializer
+class|class
+name|LegacyDeserializer
 parameter_list|<
 name|T
 parameter_list|>
+extends|extends
+name|DeserializerBase
+argument_list|<
+name|T
+argument_list|>
 block|{
-comment|/**    *<p>Prepare the serializer for writing.</p>    */
-DECL|method|open (OutputStream out)
+DECL|field|deserializer
+specifier|private
+name|Deserializer
+argument_list|<
+name|T
+argument_list|>
+name|deserializer
+decl_stmt|;
+DECL|method|LegacyDeserializer (Deserializer<T> deserializer)
+specifier|public
+name|LegacyDeserializer
+parameter_list|(
+name|Deserializer
+argument_list|<
+name|T
+argument_list|>
+name|deserializer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deserializer
+operator|=
+name|deserializer
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|open (InputStream in)
+specifier|public
 name|void
 name|open
 parameter_list|(
-name|OutputStream
-name|out
+name|InputStream
+name|in
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    *<p>Serialize<code>t</code> to the underlying output stream.</p>    */
-DECL|method|serialize (T t)
-name|void
-name|serialize
+block|{
+name|deserializer
+operator|.
+name|open
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|deserialize (T t)
+specifier|public
+name|T
+name|deserialize
 parameter_list|(
 name|T
 name|t
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    *<p>Close the underlying output stream and clear up any resources.</p>    */
+block|{
+return|return
+name|deserializer
+operator|.
+name|deserialize
+argument_list|(
+name|t
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|close ()
+specifier|public
 name|void
 name|close
 parameter_list|()
 throws|throws
 name|IOException
-function_decl|;
+block|{
+name|deserializer
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 
