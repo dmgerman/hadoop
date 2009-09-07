@@ -1298,7 +1298,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getExecString ()
-specifier|protected
+specifier|public
 name|String
 index|[]
 name|getExecString
