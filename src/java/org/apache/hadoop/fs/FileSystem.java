@@ -1480,6 +1480,55 @@ argument_list|)
 block|}
 return|;
 block|}
+comment|/**    * Return a set of server default configuration values    * @return server default configuration values    * @throws IOException    */
+DECL|method|getServerDefaults ()
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+name|getConf
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|FsServerDefaults
+argument_list|(
+name|getDefaultBlockSize
+argument_list|()
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"io.bytes.per.checksum"
+argument_list|,
+literal|512
+argument_list|)
+argument_list|,
+literal|64
+operator|*
+literal|1024
+argument_list|,
+name|getDefaultReplication
+argument_list|()
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"io.file.buffer.size"
+argument_list|,
+literal|4096
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
 DECL|method|open (Path f, int bufferSize)
 specifier|public
