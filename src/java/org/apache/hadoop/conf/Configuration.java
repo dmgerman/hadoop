@@ -1297,6 +1297,12 @@ argument_list|(
 literal|"core-site.xml"
 argument_list|)
 expr_stmt|;
+comment|//Add code for managing deprecated key mapping
+comment|//for example
+comment|//addDeprecation("oldKey1",new String[]{"newkey1","newkey2"});
+comment|//adds deprecation for oldKey1 to two new keys(newkey1, newkey2).
+comment|//so get or set of oldKey1 will correctly populate/access values of
+comment|//newkey1 and newkey2
 block|}
 DECL|field|properties
 specifier|private
@@ -4866,154 +4872,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// process for deprecation.
-name|processDeprecation
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Flag to ensure that the classes mentioned in the value of the property    *<code>hadoop.conf.extra.classes</code> are loaded only once for    * all instances of<code>Configuration</code>    */
-DECL|field|loadedDeprecation
-specifier|private
-specifier|static
-name|AtomicBoolean
-name|loadedDeprecation
-init|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|false
-argument_list|)
-decl_stmt|;
-DECL|field|extraConfKey
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|extraConfKey
-init|=
-literal|"hadoop.conf.extra.classes"
-decl_stmt|;
-comment|/**    * adds all the deprecations to the deprecatedKeyMap and updates the values of    * the appropriate keys    */
-DECL|method|processDeprecation ()
-specifier|private
-name|void
-name|processDeprecation
-parameter_list|()
-block|{
-name|populateDeprecationMapping
-argument_list|()
-expr_stmt|;
 name|processDeprecatedKeys
 argument_list|()
 expr_stmt|;
-block|}
-comment|/**    * Loads all the classes in mapred and hdfs that extend Configuration and that    * have deprecations to be added into deprecatedKeyMap    */
-DECL|method|populateDeprecationMapping ()
-specifier|private
-specifier|synchronized
-name|void
-name|populateDeprecationMapping
-parameter_list|()
-block|{
-if|if
-condition|(
-operator|!
-name|loadedDeprecation
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-comment|// load classes from mapred and hdfs which extend Configuration and have
-comment|// deprecations added in their static blocks
-name|String
-name|classnames
-init|=
-name|substituteVars
-argument_list|(
-name|properties
-operator|.
-name|getProperty
-argument_list|(
-name|extraConfKey
-argument_list|)
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|classnames
-operator|==
-literal|null
-condition|)
-block|{
-return|return;
-block|}
-name|String
-index|[]
-name|classes
-init|=
-name|StringUtils
-operator|.
-name|getStrings
-argument_list|(
-name|classnames
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|String
-name|className
-range|:
-name|classes
-control|)
-block|{
-try|try
-block|{
-name|Class
-operator|.
-name|forName
-argument_list|(
-name|className
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ClassNotFoundException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|className
-operator|+
-literal|" is not in the classpath"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// make deprecatedKeyMap unmodifiable in order to prevent changes to
-comment|// it in user's code.
-name|deprecatedKeyMap
-operator|=
-name|Collections
-operator|.
-name|unmodifiableMap
-argument_list|(
-name|deprecatedKeyMap
-argument_list|)
-expr_stmt|;
-comment|// ensure that deprecation processing is done only once for all
-comment|// instances of this object
-name|loadedDeprecation
-operator|.
-name|set
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Updates the keys that are replacing the deprecated keys and removes the     * deprecated keys from memory.    */
 DECL|method|processDeprecatedKeys ()

@@ -382,16 +382,12 @@ literal|"</property>\n"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|MyConf
-specifier|static
-class|class
-name|MyConf
-extends|extends
-name|Configuration
+DECL|method|addDeprecationToConfiguration ()
+specifier|private
+name|void
+name|addDeprecationToConfiguration
+parameter_list|()
 block|{
-static|static
-block|{
-comment|// add deprecation mappings.
 name|Configuration
 operator|.
 name|addDeprecation
@@ -675,7 +671,6 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 comment|/**    * This test is to check the precedence order between being final and     * deprecation.Based on the order of occurrence of deprecated key and     * its corresponding mapping key, various cases arise.    * The precedence order being followed is:    * 1. Final Parameter     * 2. Deprecated key's value.    * @throws IOException     *     * @throws IOException    * @throws ClassNotFoundException     */
 annotation|@
 name|Test
@@ -701,20 +696,6 @@ argument_list|)
 expr_stmt|;
 name|startConfig
 argument_list|()
-expr_stmt|;
-name|appendProperty
-argument_list|(
-literal|"hadoop.conf.extra.classes"
-argument_list|,
-name|MyConf
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|",myconf1"
-argument_list|)
 expr_stmt|;
 comment|// load keys with default values. Some of them are set to final to
 comment|// test the precedence order between deprecation and being final
@@ -850,6 +831,9 @@ argument_list|(
 name|CONFIG
 argument_list|)
 decl_stmt|;
+name|addDeprecationToConfiguration
+argument_list|()
+expr_stmt|;
 name|conf
 operator|.
 name|addResource
