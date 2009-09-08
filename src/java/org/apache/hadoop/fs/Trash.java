@@ -692,7 +692,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Can't create trash directory: "
+literal|"Can't create(mkdir) trash directory: "
 operator|+
 name|baseTrashPath
 argument_list|)
