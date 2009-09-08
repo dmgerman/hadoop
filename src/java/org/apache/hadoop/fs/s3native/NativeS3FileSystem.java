@@ -2637,6 +2637,13 @@ operator|.
 name|isEmpty
 argument_list|()
 operator|&&
+name|key
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+operator|&&
 name|store
 operator|.
 name|retrieveMetadata
