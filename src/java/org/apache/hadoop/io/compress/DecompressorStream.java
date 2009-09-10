@@ -112,6 +112,8 @@ parameter_list|,
 name|int
 name|bufferSize
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
@@ -176,6 +178,8 @@ parameter_list|,
 name|Decompressor
 name|decompressor
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 argument_list|(
@@ -187,7 +191,7 @@ literal|512
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow derived classes to directly set the underlying stream.    *     * @param in Underlying input stream.    */
+comment|/**    * Allow derived classes to directly set the underlying stream.    *     * @param in Underlying input stream.  * @throws IOException    */
 DECL|method|DecompressorStream (InputStream in)
 specifier|protected
 name|DecompressorStream
@@ -195,6 +199,8 @@ parameter_list|(
 name|InputStream
 name|in
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(

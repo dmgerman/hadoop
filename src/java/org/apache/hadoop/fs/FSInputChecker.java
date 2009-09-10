@@ -969,11 +969,16 @@ block|{
 return|return
 name|chunkPos
 operator|-
-operator|(
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|0L
+argument_list|,
 name|count
 operator|-
 name|pos
-operator|)
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -988,9 +993,16 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|0
+argument_list|,
 name|count
 operator|-
 name|pos
+argument_list|)
 return|;
 block|}
 comment|/**    * Skips over and discards<code>n</code> bytes of data from the    * input stream.    *    *<p>This method may skip more bytes than are remaining in the backing    * file. This produces no exception and the number of bytes skipped    * may include some number of bytes that were beyond the EOF of the    * backing file. Attempting to read from the stream after skipping past    * the end will result in -1 indicating the end of the file.    *    *<p>If<code>n</code> is negative, no bytes are skipped.    *    * @param      n   the number of bytes to be skipped.    * @return     the actual number of bytes skipped.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if the chunk to skip to is corrupted    */

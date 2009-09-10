@@ -38,6 +38,34 @@ name|InputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|PositionedReadable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Seekable
+import|;
+end_import
+
 begin_comment
 comment|/**  * A compression input stream.  *  *<p>Implementations are assumed to be buffered.  This permits clients to  * reposition the underlying input stream then call {@link #resetState()},  * without having to also synchronize client buffers.  */
 end_comment
@@ -50,6 +78,8 @@ class|class
 name|CompressionInputStream
 extends|extends
 name|InputStream
+implements|implements
+name|Seekable
 block|{
 comment|/**    * The input stream to be compressed.     */
 DECL|field|in
@@ -58,7 +88,14 @@ specifier|final
 name|InputStream
 name|in
 decl_stmt|;
-comment|/**    * Create a compression input stream that reads    * the decompressed bytes from the given stream.    *     * @param in The input stream to be compressed.    */
+DECL|field|maxAvailableData
+specifier|protected
+name|long
+name|maxAvailableData
+init|=
+literal|0L
+decl_stmt|;
+comment|/**    * Create a compression input stream that reads    * the decompressed bytes from the given stream.    *     * @param in The input stream to be compressed.    * @throws IOException    */
 DECL|method|CompressionInputStream (InputStream in)
 specifier|protected
 name|CompressionInputStream
@@ -66,7 +103,36 @@ parameter_list|(
 name|InputStream
 name|in
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|in
+operator|instanceof
+name|Seekable
+operator|)
+operator|||
+operator|!
+operator|(
+name|in
+operator|instanceof
+name|PositionedReadable
+operator|)
+condition|)
+block|{
+name|this
+operator|.
+name|maxAvailableData
+operator|=
+name|in
+operator|.
+name|available
+argument_list|()
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|in
@@ -118,6 +184,103 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * This method returns the current position in the stream.    *    * @return Current position in stream as a long    */
+DECL|method|getPos ()
+specifier|public
+name|long
+name|getPos
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|in
+operator|instanceof
+name|Seekable
+operator|)
+operator|||
+operator|!
+operator|(
+name|in
+operator|instanceof
+name|PositionedReadable
+operator|)
+condition|)
+block|{
+comment|//This way of getting the current position will not work for file
+comment|//size which can be fit in an int and hence can not be returned by
+comment|//available method.
+return|return
+operator|(
+name|this
+operator|.
+name|maxAvailableData
+operator|-
+name|this
+operator|.
+name|in
+operator|.
+name|available
+argument_list|()
+operator|)
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|this
+operator|.
+name|in
+operator|)
+operator|.
+name|getPos
+argument_list|()
+return|;
+block|}
+block|}
+comment|/**    * This method is current not supported.    *    * @throws UnsupportedOperationException    */
+DECL|method|seek (long pos)
+specifier|public
+name|void
+name|seek
+parameter_list|(
+name|long
+name|pos
+parameter_list|)
+throws|throws
+name|UnsupportedOperationException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+comment|/**    * This method is current not supported.    *    * @throws UnsupportedOperationException    */
+DECL|method|seekToNewSource (long targetPos)
+specifier|public
+name|boolean
+name|seekToNewSource
+parameter_list|(
+name|long
+name|targetPos
+parameter_list|)
+throws|throws
+name|UnsupportedOperationException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 block|}
 end_class
 

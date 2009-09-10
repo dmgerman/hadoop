@@ -74,7 +74,7 @@ name|noUncompressedBytes
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    * @param bufferSize size of buffer    */
+comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    * @param bufferSize size of buffer  * @throws IOException    */
 DECL|method|BlockDecompressorStream (InputStream in, Decompressor decompressor, int bufferSize)
 specifier|public
 name|BlockDecompressorStream
@@ -88,6 +88,8 @@ parameter_list|,
 name|int
 name|bufferSize
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
@@ -99,7 +101,7 @@ name|bufferSize
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    */
+comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use  * @throws IOException    */
 DECL|method|BlockDecompressorStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|BlockDecompressorStream
@@ -110,6 +112,8 @@ parameter_list|,
 name|Decompressor
 name|decompressor
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
@@ -126,6 +130,8 @@ parameter_list|(
 name|InputStream
 name|in
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(

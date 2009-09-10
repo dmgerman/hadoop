@@ -66,6 +66,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Seekable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|bzip2
+operator|.
+name|BZip2Constants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|compress
@@ -140,17 +172,7 @@ specifier|public
 class|class
 name|BZip2Codec
 implements|implements
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|CompressionCodec
+name|SplittableCompressionCodec
 block|{
 DECL|field|HEADER
 specifier|private
@@ -173,12 +195,33 @@ operator|.
 name|length
 argument_list|()
 decl_stmt|;
+DECL|field|SUB_HEADER
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|SUB_HEADER
+init|=
+literal|"h9"
+decl_stmt|;
+DECL|field|SUB_HEADER_LEN
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SUB_HEADER_LEN
+init|=
+name|SUB_HEADER
+operator|.
+name|length
+argument_list|()
+decl_stmt|;
 comment|/**   * Creates a new instance of BZip2Codec   */
 DECL|method|BZip2Codec ()
 specifier|public
 name|BZip2Codec
 parameter_list|()
-block|{   }
+block|{ }
 comment|/**   * Creates CompressionOutputStream for BZip2   *   * @param out   *            The output Stream   * @return The BZip2 CompressionOutputStream   * @throws java.io.IOException   *             Throws IO exception   */
 DECL|method|createOutputStream (OutputStream out)
 specifier|public
@@ -199,7 +242,7 @@ name|out
 argument_list|)
 return|;
 block|}
-comment|/**    * This functionality is currently not supported.    *    * @throws java.lang.UnsupportedOperationException    *             Throws UnsupportedOperationException    */
+comment|/**   * Creates a compressor using given OutputStream.    *   * @return CompressionOutputStream     @throws java.io.IOException    */
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
 specifier|public
 name|CompressionOutputStream
@@ -221,7 +264,7 @@ name|out
 argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @throws java.lang.UnsupportedOperationException   *             Throws UnsupportedOperationException   */
+comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyCompressor.class   */
 DECL|method|getCompressorType ()
 specifier|public
 name|Class
@@ -249,7 +292,7 @@ operator|.
 name|class
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @throws java.lang.UnsupportedOperationException   *             Throws UnsupportedOperationException   */
+comment|/**   * This functionality is currently not supported.   *   * @return Compressor   */
 DECL|method|createCompressor ()
 specifier|public
 name|Compressor
@@ -282,7 +325,7 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @throws java.lang.UnsupportedOperationException   *             Throws UnsupportedOperationException   */
+comment|/**   * This functionality is currently not supported.   *   * @return CompressionInputStream   */
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|CompressionInputStream
@@ -304,7 +347,175 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @throws java.lang.UnsupportedOperationException   *             Throws UnsupportedOperationException   */
+comment|/**    * Creates CompressionInputStream to be used to read off uncompressed data    * in one of the two reading modes. i.e. Continuous or Blocked reading modes    *    * @param seekableIn The InputStream    * @param start The start offset into the compressed stream    * @param end The end offset into the compressed stream    * @param readMode Controls whether progress is reported continuously or    *                 only at block boundaries.    *    * @return CompressionInputStream for BZip2 aligned at block boundaries    */
+DECL|method|createInputStream (InputStream seekableIn, Decompressor decompressor, long start, long end, READ_MODE readMode)
+specifier|public
+name|SplitCompressionInputStream
+name|createInputStream
+parameter_list|(
+name|InputStream
+name|seekableIn
+parameter_list|,
+name|Decompressor
+name|decompressor
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|,
+name|READ_MODE
+name|readMode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|seekableIn
+operator|instanceof
+name|Seekable
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"seekableIn must be an instance of "
+operator|+
+name|Seekable
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+throw|;
+block|}
+comment|//find the position of first BZip2 start up marker
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|seekableIn
+operator|)
+operator|.
+name|seek
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// BZip2 start of block markers are of 6 bytes.  But the very first block
+comment|// also has "BZh9", making it 10 bytes.  This is the common case.  But at
+comment|// time stream might start without a leading BZ.
+specifier|final
+name|long
+name|FIRST_BZIP2_BLOCK_MARKER_POSITION
+init|=
+name|CBZip2InputStream
+operator|.
+name|numberOfBytesTillNextMarker
+argument_list|(
+name|seekableIn
+argument_list|)
+decl_stmt|;
+name|long
+name|adjStart
+init|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|0L
+argument_list|,
+name|start
+operator|-
+name|FIRST_BZIP2_BLOCK_MARKER_POSITION
+argument_list|)
+decl_stmt|;
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|seekableIn
+operator|)
+operator|.
+name|seek
+argument_list|(
+name|adjStart
+argument_list|)
+expr_stmt|;
+name|SplitCompressionInputStream
+name|in
+init|=
+operator|new
+name|BZip2CompressionInputStream
+argument_list|(
+name|seekableIn
+argument_list|,
+name|adjStart
+argument_list|,
+name|end
+argument_list|,
+name|readMode
+argument_list|)
+decl_stmt|;
+comment|// The following if clause handles the following case:
+comment|// Assume the following scenario in BZip2 compressed stream where
+comment|// . represent compressed data.
+comment|// .....[48 bit Block].....[48 bit   Block].....[48 bit Block]...
+comment|// ........................[47 bits][1 bit].....[48 bit Block]...
+comment|// ................................^[Assume a Byte alignment here]
+comment|// ........................................^^[current position of stream]
+comment|// .....................^^[We go back 10 Bytes in stream and find a Block marker]
+comment|// ........................................^^[We align at wrong position!]
+comment|// ...........................................................^^[While this pos is correct]
+if|if
+condition|(
+name|in
+operator|.
+name|getPos
+argument_list|()
+operator|<=
+name|start
+condition|)
+block|{
+operator|(
+operator|(
+name|Seekable
+operator|)
+name|seekableIn
+operator|)
+operator|.
+name|seek
+argument_list|(
+name|start
+argument_list|)
+expr_stmt|;
+name|in
+operator|=
+operator|new
+name|BZip2CompressionInputStream
+argument_list|(
+name|seekableIn
+argument_list|,
+name|start
+argument_list|,
+name|end
+argument_list|,
+name|readMode
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|in
+return|;
+block|}
+comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyDecompressor.class   */
 DECL|method|getDecompressorType ()
 specifier|public
 name|Class
@@ -332,7 +543,7 @@ operator|.
 name|class
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @throws java.lang.UnsupportedOperationException   *             Throws UnsupportedOperationException   */
+comment|/**   * This functionality is currently not supported.   *   * @return Decompressor   */
 DECL|method|createDecompressor ()
 specifier|public
 name|Decompressor
@@ -619,13 +830,14 @@ expr_stmt|;
 block|}
 block|}
 comment|// end of class BZip2CompressionOutputStream
+comment|/**    * This class is capable to de-compress BZip2 data in two modes;    * CONTINOUS and BYBLOCK.  BYBLOCK mode makes it possible to    * do decompression starting any arbitrary position in the stream.    *    * So this facility can easily be used to parallelize decompression    * of a large BZip2 file for performance reasons.  (It is exactly    * done so for Hadoop framework.  See LineRecordReader for an    * example).  So one can break the file (of course logically) into    * chunks for parallel processing.  These "splits" should be like    * default Hadoop splits (e.g as in FileInputFormat getSplit metod).    * So this code is designed and tested for FileInputFormat's way    * of splitting only.    */
 DECL|class|BZip2CompressionInputStream
 specifier|private
 specifier|static
 class|class
 name|BZip2CompressionInputStream
 extends|extends
-name|CompressionInputStream
+name|SplitCompressionInputStream
 block|{
 comment|// class data starts here//
 DECL|field|input
@@ -636,6 +848,72 @@ decl_stmt|;
 DECL|field|needsReset
 name|boolean
 name|needsReset
+decl_stmt|;
+DECL|field|bufferedIn
+specifier|private
+name|BufferedInputStream
+name|bufferedIn
+decl_stmt|;
+DECL|field|isHeaderStripped
+specifier|private
+name|boolean
+name|isHeaderStripped
+init|=
+literal|false
+decl_stmt|;
+DECL|field|isSubHeaderStripped
+specifier|private
+name|boolean
+name|isSubHeaderStripped
+init|=
+literal|false
+decl_stmt|;
+DECL|field|readMode
+specifier|private
+name|READ_MODE
+name|readMode
+init|=
+name|READ_MODE
+operator|.
+name|CONTINUOUS
+decl_stmt|;
+DECL|field|startingPos
+specifier|private
+name|long
+name|startingPos
+init|=
+literal|0L
+decl_stmt|;
+comment|// Following state machine handles different states of compressed stream
+comment|// position
+comment|// HOLD : Don't advertise compressed stream position
+comment|// ADVERTISE : Read 1 more character and advertise stream position
+comment|// See more comments about it before updatePos method.
+DECL|enum|POS_ADVERTISEMENT_STATE_MACHINE
+specifier|private
+enum|enum
+name|POS_ADVERTISEMENT_STATE_MACHINE
+block|{
+DECL|enumConstant|HOLD
+DECL|enumConstant|ADVERTISE
+name|HOLD
+block|,
+name|ADVERTISE
+block|}
+empty_stmt|;
+DECL|field|posSM
+name|POS_ADVERTISEMENT_STATE_MACHINE
+name|posSM
+init|=
+name|POS_ADVERTISEMENT_STATE_MACHINE
+operator|.
+name|HOLD
+decl_stmt|;
+DECL|field|compressedStreamPosition
+name|long
+name|compressedStreamPosition
+init|=
+literal|0
 decl_stmt|;
 comment|// class data ends here//
 DECL|method|BZip2CompressionInputStream (InputStream in)
@@ -648,14 +926,141 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+argument_list|(
+name|in
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|,
+name|READ_MODE
+operator|.
+name|CONTINUOUS
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|BZip2CompressionInputStream (InputStream in, long start, long end, READ_MODE readMode)
+specifier|public
+name|BZip2CompressionInputStream
+parameter_list|(
+name|InputStream
+name|in
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|,
+name|READ_MODE
+name|readMode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|super
 argument_list|(
 name|in
+argument_list|,
+name|start
+argument_list|,
+name|end
 argument_list|)
 expr_stmt|;
 name|needsReset
 operator|=
-literal|true
+literal|false
+expr_stmt|;
+name|bufferedIn
+operator|=
+operator|new
+name|BufferedInputStream
+argument_list|(
+name|super
+operator|.
+name|in
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|startingPos
+operator|=
+name|super
+operator|.
+name|getPos
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|readMode
+operator|=
+name|readMode
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|startingPos
+operator|==
+literal|0
+condition|)
+block|{
+comment|// We only strip header if it is start of file
+name|bufferedIn
+operator|=
+name|readStreamHeader
+argument_list|()
+expr_stmt|;
+block|}
+name|input
+operator|=
+operator|new
+name|CBZip2InputStream
+argument_list|(
+name|bufferedIn
+argument_list|,
+name|readMode
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|isHeaderStripped
+condition|)
+block|{
+name|input
+operator|.
+name|updateReportedByteCount
+argument_list|(
+name|HEADER_LEN
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|isSubHeaderStripped
+condition|)
+block|{
+name|input
+operator|.
+name|updateReportedByteCount
+argument_list|(
+name|SUB_HEADER_LEN
+argument_list|)
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|updatePos
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|readStreamHeader ()
@@ -669,11 +1074,6 @@ block|{
 comment|// We are flexible enough to allow the compressed stream not to
 comment|// start with the header of BZ. So it works fine either we have
 comment|// the header or not.
-name|BufferedInputStream
-name|bufferedIn
-init|=
-literal|null
-decl_stmt|;
 if|if
 condition|(
 name|super
@@ -683,16 +1083,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|bufferedIn
-operator|=
-operator|new
-name|BufferedInputStream
-argument_list|(
-name|super
-operator|.
-name|in
-argument_list|)
-expr_stmt|;
 name|bufferedIn
 operator|.
 name|mark
@@ -759,6 +1149,57 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
+else|else
+block|{
+name|this
+operator|.
+name|isHeaderStripped
+operator|=
+literal|true
+expr_stmt|;
+comment|// In case of BYBLOCK mode, we also want to strip off
+comment|// remaining two character of the header.
+if|if
+condition|(
+name|this
+operator|.
+name|readMode
+operator|==
+name|READ_MODE
+operator|.
+name|BYBLOCK
+condition|)
+block|{
+name|actualRead
+operator|=
+name|bufferedIn
+operator|.
+name|read
+argument_list|(
+name|headerBytes
+argument_list|,
+literal|0
+argument_list|,
+name|SUB_HEADER_LEN
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|actualRead
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|isSubHeaderStripped
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+block|}
 block|}
 block|}
 if|if
@@ -806,6 +1247,7 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+comment|/**     * This method updates compressed stream position exactly when the     * client of this code has read off at least one byte passed any BZip2     * end of block marker.     *     * This mechanism is very helpful to deal with data level record     * boundaries. Please see constructor and next methods of     * org.apache.hadoop.mapred.LineRecordReader as an example usage of this     * feature.  We elaborate it with an example in the following:     *     * Assume two different scenarios of the BZip2 compressed stream, where     * [m] represent end of block, \n is line delimiter and . represent compressed     * data.     *     * ............[m]......\n.......     *     * ..........\n[m]......\n.......     *     * Assume that end is right after [m].  In the first case the reading     * will stop at \n and there is no need to read one more line.  (To see the     * reason of reading one more line in the next() method is explained in LineRecordReader.)     * While in the second example LineRecordReader needs to read one more line     * (till the second \n).  Now since BZip2Codecs only update position     * at least one byte passed a maker, so it is straight forward to differentiate     * between the two cases mentioned.     *     */
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -833,7 +1275,13 @@ name|internalReset
 argument_list|()
 expr_stmt|;
 block|}
-return|return
+name|int
+name|result
+init|=
+literal|0
+decl_stmt|;
+name|result
+operator|=
 name|this
 operator|.
 name|input
@@ -846,6 +1294,120 @@ name|off
 argument_list|,
 name|len
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+name|BZip2Constants
+operator|.
+name|END_OF_BLOCK
+condition|)
+block|{
+name|this
+operator|.
+name|posSM
+operator|=
+name|POS_ADVERTISEMENT_STATE_MACHINE
+operator|.
+name|ADVERTISE
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|posSM
+operator|==
+name|POS_ADVERTISEMENT_STATE_MACHINE
+operator|.
+name|ADVERTISE
+condition|)
+block|{
+name|result
+operator|=
+name|this
+operator|.
+name|input
+operator|.
+name|read
+argument_list|(
+name|b
+argument_list|,
+name|off
+argument_list|,
+name|off
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// This is the precise time to update compressed stream position
+comment|// to the client of this code.
+name|this
+operator|.
+name|updatePos
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|posSM
+operator|=
+name|POS_ADVERTISEMENT_STATE_MACHINE
+operator|.
+name|HOLD
+expr_stmt|;
+block|}
+return|return
+name|result
+return|;
+block|}
+DECL|method|read ()
+specifier|public
+name|int
+name|read
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|byte
+name|b
+index|[]
+init|=
+operator|new
+name|byte
+index|[
+literal|1
+index|]
+decl_stmt|;
+name|int
+name|result
+init|=
+name|this
+operator|.
+name|read
+argument_list|(
+name|b
+argument_list|,
+literal|0
+argument_list|,
+literal|1
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|result
+operator|<
+literal|0
+operator|)
+condition|?
+name|result
+else|:
+name|b
+index|[
+literal|0
+index|]
 return|;
 block|}
 DECL|method|internalReset ()
@@ -877,6 +1439,10 @@ operator|new
 name|CBZip2InputStream
 argument_list|(
 name|bufferedIn
+argument_list|,
+name|this
+operator|.
+name|readMode
 argument_list|)
 expr_stmt|;
 block|}
@@ -889,38 +1455,62 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// Cannot read from bufferedIn at this point because bufferedIn might not be ready
+comment|// Cannot read from bufferedIn at this point because bufferedIn
+comment|// might not be ready
 comment|// yet, as in SequenceFile.Reader implementation.
 name|needsReset
 operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|read ()
+DECL|method|getPos ()
 specifier|public
-name|int
-name|read
+name|long
+name|getPos
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-if|if
-condition|(
-name|needsReset
-condition|)
-block|{
-name|internalReset
-argument_list|()
-expr_stmt|;
-block|}
 return|return
+name|this
+operator|.
+name|compressedStreamPosition
+return|;
+block|}
+comment|/*      * As the comments before read method tell that      * compressed stream is advertised when at least      * one byte passed EOB have been read off.  But      * there is an exception to this rule.  When we      * construct the stream we advertise the position      * exactly at EOB.  In the following method      * shouldAddOn boolean captures this exception.      *      */
+DECL|method|updatePos (boolean shouldAddOn)
+specifier|private
+name|void
+name|updatePos
+parameter_list|(
+name|boolean
+name|shouldAddOn
+parameter_list|)
+block|{
+name|int
+name|addOn
+init|=
+name|shouldAddOn
+condition|?
+literal|1
+else|:
+literal|0
+decl_stmt|;
+name|this
+operator|.
+name|compressedStreamPosition
+operator|=
+name|this
+operator|.
+name|startingPos
+operator|+
 name|this
 operator|.
 name|input
 operator|.
-name|read
+name|getProcessedByteCount
 argument_list|()
-return|;
+operator|+
+name|addOn
+expr_stmt|;
 block|}
 block|}
 comment|// end of BZip2CompressionInputStream

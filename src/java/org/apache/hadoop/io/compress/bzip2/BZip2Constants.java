@@ -102,6 +102,28 @@ name|NUM_OVERSHOOT_BYTES
 init|=
 literal|20
 decl_stmt|;
+comment|/**    * End of a BZip2 block    */
+DECL|field|END_OF_BLOCK
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|END_OF_BLOCK
+init|=
+operator|-
+literal|2
+decl_stmt|;
+comment|/**    * End of BZip2 stream.    */
+DECL|field|END_OF_STREAM
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|END_OF_STREAM
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**   * This array really shouldn't be here. Again, for historical purposes it   * is.   *   *<p>   * FIXME: This array should be in a private or package private location,   * since it could be modified by malicious code.   *</p>   */
 DECL|field|rNums
 specifier|final

@@ -364,7 +364,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Allow subclasses to directly set the inflater stream.      */
+comment|/**      * Allow subclasses to directly set the inflater stream.      * @throws IOException      */
 DECL|method|GzipInputStream (DecompressorStream in)
 specifier|protected
 name|GzipInputStream
@@ -372,6 +372,8 @@ parameter_list|(
 name|DecompressorStream
 name|in
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
