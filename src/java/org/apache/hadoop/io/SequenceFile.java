@@ -6145,6 +6145,11 @@ specifier|private
 name|boolean
 name|syncSeen
 decl_stmt|;
+DECL|field|headerEnd
+specifier|private
+name|long
+name|headerEnd
+decl_stmt|;
 DECL|field|end
 specifier|private
 name|long
@@ -6928,6 +6933,14 @@ name|sync
 argument_list|)
 expr_stmt|;
 comment|// read sync bytes
+name|headerEnd
+operator|=
+name|in
+operator|.
+name|getPos
+argument_list|()
+expr_stmt|;
+comment|// record end of header
 block|}
 comment|// Initialize... *not* if this we are constructing a temporary Reader
 if|if
@@ -9582,6 +9595,28 @@ name|seek
 argument_list|(
 name|end
 argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|position
+operator|<
+name|headerEnd
+condition|)
+block|{
+comment|// seek directly to first record
+name|in
+operator|.
+name|seek
+argument_list|(
+name|headerEnd
+argument_list|)
+expr_stmt|;
+comment|// note the sync marker "seen" in the header
+name|syncSeen
+operator|=
+literal|true
 expr_stmt|;
 return|return;
 block|}
