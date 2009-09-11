@@ -282,20 +282,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicBoolean
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|regex
 operator|.
 name|Matcher
@@ -1148,6 +1134,32 @@ name|containsKey
 argument_list|(
 name|key
 argument_list|)
+return|;
+block|}
+comment|/**    * Check whether or not the deprecated key has been specified in the    * configuration file rather than the new key    *     * Returns false if the specified key is not included in the deprecated    * key mapping.    *     * @param oldKey Old configuration key     * @return If the old configuration key was specified rather than the new one    */
+DECL|method|deprecatedKeyWasSet (String oldKey)
+specifier|public
+name|boolean
+name|deprecatedKeyWasSet
+parameter_list|(
+name|String
+name|oldKey
+parameter_list|)
+block|{
+return|return
+name|isDeprecated
+argument_list|(
+name|oldKey
+argument_list|)
+operator|&&
+name|deprecatedKeyMap
+operator|.
+name|get
+argument_list|(
+name|oldKey
+argument_list|)
+operator|.
+name|accessed
 return|;
 block|}
 comment|/**    * Checks for the presence of the property<code>name</code> in the    * deprecation map. Returns the first of the list of new keys if present    * in the deprecation map or the<code>name</code> itself.    * @param name the property name    * @return the first property in the list of properties mapping    *         the<code>name</code> or the<code>name</code> itself.    */
