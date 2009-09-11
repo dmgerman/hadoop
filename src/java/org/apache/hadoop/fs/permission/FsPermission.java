@@ -849,7 +849,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** umask property label */
+comment|/** umask property label Deprecated key may be removed in version .23 */
 DECL|field|DEPRECATED_UMASK_LABEL
 specifier|public
 specifier|static
@@ -877,6 +877,32 @@ name|DEFAULT_UMASK
 init|=
 literal|0022
 decl_stmt|;
+block|{
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+name|DEPRECATED_UMASK_LABEL
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|UMASK_LABEL
+block|}
+argument_list|,
+name|DEPRECATED_UMASK_LABEL
+operator|+
+literal|" is deprecated, "
+operator|+
+literal|"use "
+operator|+
+name|UMASK_LABEL
+operator|+
+literal|" with octal or symbolic specifications."
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Get the user file creation mask (umask) */
 DECL|method|getUMask (Configuration conf)
 specifier|public
@@ -920,6 +946,26 @@ literal|null
 condition|)
 block|{
 comment|// UMASK_LABEL is set
+if|if
+condition|(
+name|conf
+operator|.
+name|deprecatedKeyWasSet
+argument_list|(
+name|DEPRECATED_UMASK_LABEL
+argument_list|)
+condition|)
+name|umask
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|confUmask
+argument_list|)
+expr_stmt|;
+comment|// Evaluate as decimal value
+else|else
 name|umask
 operator|=
 operator|new
@@ -931,56 +977,6 @@ operator|.
 name|getUMask
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// check for deprecated key label
-name|int
-name|oldStyleValue
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-name|Integer
-operator|.
-name|MIN_VALUE
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|oldStyleValue
-operator|!=
-name|Integer
-operator|.
-name|MIN_VALUE
-condition|)
-block|{
-comment|// Property was set with old key
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-operator|+
-literal|" configuration key is deprecated. "
-operator|+
-literal|"Convert to "
-operator|+
-name|UMASK_LABEL
-operator|+
-literal|", using octal or symbolic umask "
-operator|+
-literal|"specifications."
-argument_list|)
-expr_stmt|;
-name|umask
-operator|=
-name|oldStyleValue
-expr_stmt|;
-block|}
 block|}
 block|}
 return|return
