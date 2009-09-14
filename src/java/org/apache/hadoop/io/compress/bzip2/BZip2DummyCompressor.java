@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|compress
@@ -225,6 +239,19 @@ operator|new
 name|UnsupportedOperationException
 argument_list|()
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|reinit (Configuration conf)
+specifier|public
+name|void
+name|reinit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// do nothing
 block|}
 block|}
 end_class

@@ -94,6 +94,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ReflectionUtils
@@ -411,8 +425,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Get a {@link Compressor} for the given {@link CompressionCodec} from the     * pool or a new one.    *    * @param codec the<code>CompressionCodec</code> for which to get the     *<code>Compressor</code>    * @return<code>Compressor</code> for the given     *<code>CompressionCodec</code> from the pool or a new one    */
-DECL|method|getCompressor (CompressionCodec codec)
+comment|/**    * Get a {@link Compressor} for the given {@link CompressionCodec} from the     * pool or a new one.    *    * @param codec the<code>CompressionCodec</code> for which to get the     *<code>Compressor</code>    * @param conf the<code>Configuration</code> object which contains confs for creating or reinit the compressor    * @return<code>Compressor</code> for the given     *<code>CompressionCodec</code> from the pool or a new one    */
+DECL|method|getCompressor (CompressionCodec codec, Configuration conf)
 specifier|public
 specifier|static
 name|Compressor
@@ -420,6 +434,9 @@ name|getCompressor
 parameter_list|(
 name|CompressionCodec
 name|codec
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|Compressor
@@ -459,6 +476,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|compressor
+operator|.
+name|reinit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -469,6 +493,25 @@ expr_stmt|;
 block|}
 return|return
 name|compressor
+return|;
+block|}
+DECL|method|getCompressor (CompressionCodec codec)
+specifier|public
+specifier|static
+name|Compressor
+name|getCompressor
+parameter_list|(
+name|CompressionCodec
+name|codec
+parameter_list|)
+block|{
+return|return
+name|getCompressor
+argument_list|(
+name|codec
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 comment|/**    * Get a {@link Decompressor} for the given {@link CompressionCodec} from the    * pool or a new one.    *      * @param codec the<code>CompressionCodec</code> for which to get the     *<code>Decompressor</code>    * @return<code>Decompressor</code> for the given     *<code>CompressionCodec</code> the pool or a new one    */

@@ -28,6 +28,20 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Specification of a stream-based 'compressor' which can be    * plugged into a {@link CompressionOutputStream} to compress data.  * This is modelled after {@link java.util.zip.Deflater}  *   */
 end_comment
@@ -139,6 +153,16 @@ specifier|public
 name|void
 name|end
 parameter_list|()
+function_decl|;
+comment|/**    * Prepare the compressor to be used in a new stream with settings defined in    * the given Configuration    *     * @param conf Configuration from which new setting are fetched    */
+DECL|method|reinit (Configuration conf)
+specifier|public
+name|void
+name|reinit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 function_decl|;
 block|}
 end_interface
