@@ -292,6 +292,25 @@ control|)
 block|{
 if|if
 condition|(
+name|nodes
+index|[
+name|i
+index|]
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"#"
+argument_list|)
+condition|)
+block|{
+comment|// Everything from now on is a comment
+break|break;
+block|}
+if|if
+condition|(
 operator|!
 name|nodes
 index|[
@@ -304,6 +323,22 @@ literal|""
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Adding "
+operator|+
+name|nodes
+index|[
+name|i
+index|]
+operator|+
+literal|" to the list of hosts from "
+operator|+
+name|filename
+argument_list|)
+expr_stmt|;
 name|set
 operator|.
 name|add
