@@ -75,10 +75,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestFileSystem
+DECL|class|TestFileSystemCaching
 specifier|public
 class|class
-name|TestFileSystem
+name|TestFileSystemCaching
 block|{
 annotation|@
 name|Test
