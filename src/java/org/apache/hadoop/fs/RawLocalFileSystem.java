@@ -245,21 +245,8 @@ parameter_list|()
 block|{
 name|workingDir
 operator|=
-operator|new
-name|Path
-argument_list|(
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.dir"
-argument_list|)
-argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|this
-argument_list|)
+name|getInitialWorkingDirectory
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Convert a path to a File. */
@@ -504,7 +491,7 @@ name|result
 return|;
 block|}
 block|}
-comment|/*******************************************************    * For open()'s FSInputStream    *******************************************************/
+comment|/*******************************************************    * For open()'s FSInputStream.    *******************************************************/
 DECL|class|LocalFSFileInputStream
 class|class
 name|LocalFSFileInputStream
@@ -512,6 +499,7 @@ extends|extends
 name|FSInputStream
 block|{
 DECL|field|fis
+specifier|private
 name|FileInputStream
 name|fis
 decl_stmt|;
@@ -930,6 +918,7 @@ implements|implements
 name|Syncable
 block|{
 DECL|field|fos
+specifier|private
 name|FileOutputStream
 name|fos
 decl_stmt|;
@@ -1320,6 +1309,76 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|primitiveCreate
+argument_list|(
+name|f
+argument_list|,
+name|permission
+operator|.
+name|applyUMask
+argument_list|(
+name|FsPermission
+operator|.
+name|getUMask
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|,
+name|flag
+argument_list|,
+name|bufferSize
+argument_list|,
+name|replication
+argument_list|,
+name|blockSize
+argument_list|,
+name|progress
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+specifier|protected
+name|FSDataOutputStream
+name|primitiveCreate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|FsPermission
+name|absolutePermission
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|long
+name|blockSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|,
+name|int
+name|bytesPerChecksum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 name|flag
@@ -1352,6 +1411,7 @@ operator|.
 name|CREATE
 argument_list|)
 condition|)
+block|{
 return|return
 name|create
 argument_list|(
@@ -1365,9 +1425,10 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|,
-name|progress
+literal|null
 argument_list|)
 return|;
+block|}
 block|}
 return|return
 name|append
@@ -1376,7 +1437,7 @@ name|f
 argument_list|,
 name|bufferSize
 argument_list|,
-name|progress
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1409,7 +1470,7 @@ name|setPermission
 argument_list|(
 name|f
 argument_list|,
-name|permission
+name|absolutePermission
 argument_list|)
 expr_stmt|;
 return|return
@@ -1839,11 +1900,48 @@ if|if
 condition|(
 name|b
 condition|)
+block|{
 name|setPermission
 argument_list|(
 name|f
 argument_list|,
 name|permission
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|b
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|primitiveMkdir (Path f, FsPermission absolutePermission)
+specifier|protected
+name|boolean
+name|primitiveMkdir
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|FsPermission
+name|absolutePermission
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|boolean
+name|b
+init|=
+name|mkdirs
+argument_list|(
+name|f
+argument_list|)
+decl_stmt|;
+name|setPermission
+argument_list|(
+name|f
+argument_list|,
+name|absolutePermission
 argument_list|)
 expr_stmt|;
 return|return
@@ -1859,6 +1957,10 @@ name|getHomeDirectory
 parameter_list|()
 block|{
 return|return
+name|this
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1869,10 +1971,6 @@ argument_list|(
 literal|"user.home"
 argument_list|)
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|this
 argument_list|)
 return|;
 block|}
@@ -1903,6 +2001,32 @@ parameter_list|()
 block|{
 return|return
 name|workingDir
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getInitialWorkingDirectory ()
+specifier|protected
+name|Path
+name|getInitialWorkingDirectory
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|makeQualified
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.dir"
+argument_list|)
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/** {@inheritDoc} */
@@ -2165,6 +2289,10 @@ operator|.
 name|lastModified
 argument_list|()
 argument_list|,
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -2173,10 +2301,6 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fs
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2480,7 +2604,7 @@ block|}
 comment|/**    * Use the command chown to set owner.    */
 annotation|@
 name|Override
-DECL|method|setOwner (Path p, String username, String groupname )
+DECL|method|setOwner (Path p, String username, String groupname)
 specifier|public
 name|void
 name|setOwner
@@ -2577,7 +2701,7 @@ block|}
 comment|/**    * Use the command chmod to set permission.    */
 annotation|@
 name|Override
-DECL|method|setPermission (Path p, FsPermission permission )
+DECL|method|setPermission (Path p, FsPermission permission)
 specifier|public
 name|void
 name|setPermission

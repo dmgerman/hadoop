@@ -82,16 +82,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|EnumSet
 import|;
 end_import
@@ -1049,6 +1039,14 @@ operator|.
 name|makeQualified
 argument_list|(
 name|this
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getWorkingDirectory
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -1478,6 +1476,57 @@ name|getLen
 argument_list|()
 argument_list|)
 block|}
+return|;
+block|}
+comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    */
+DECL|method|getFileBlockLocations (Path p, long start, long len)
+specifier|public
+name|BlockLocation
+index|[]
+name|getFileBlockLocations
+parameter_list|(
+name|Path
+name|p
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|len
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|p
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NullPointerException
+argument_list|()
+throw|;
+block|}
+name|FileStatus
+name|file
+init|=
+name|getFileStatus
+argument_list|(
+name|p
+argument_list|)
+decl_stmt|;
+return|return
+name|getFileBlockLocations
+argument_list|(
+name|file
+argument_list|,
+name|start
+argument_list|,
+name|len
+argument_list|)
 return|;
 block|}
 comment|/**    * Return a set of server default configuration values    * @return server default configuration values    * @throws IOException    */
@@ -2012,7 +2061,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open.    * @param permission    * @param flag determines the semantic of this create.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @see CreateFlag    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open.    * @param permission - applied against umask    * @param flag determines the semantic of this create.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    * @see CreateFlag    */
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 specifier|abstract
@@ -2046,6 +2095,100 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/*    * This version of the create method assumes that the permission     * of create does not matter.    * It has been added to support the FileContext that processes the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    */
+annotation|@
+name|Deprecated
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+specifier|protected
+name|FSDataOutputStream
+name|primitiveCreate
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|FsPermission
+name|absolutePermission
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|long
+name|blockSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|,
+name|int
+name|bytesPerChecksum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Default impl  assumes that permissions do not matter and
+comment|// nor does the bytesPerChecksum  hence
+comment|// calling the regular create is good enough.
+comment|// FSs that implement permissions should override this.
+return|return
+name|this
+operator|.
+name|create
+argument_list|(
+name|f
+argument_list|,
+name|absolutePermission
+argument_list|,
+name|flag
+argument_list|,
+name|bufferSize
+argument_list|,
+name|replication
+argument_list|,
+name|blockSize
+argument_list|,
+name|progress
+argument_list|)
+return|;
+block|}
+comment|/**    * This version of the mkdirs method assumes that the permission.    * It has been added to support the FileContext that processes the the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    */
+annotation|@
+name|Deprecated
+DECL|method|primitiveMkdir (Path f, FsPermission absolutePermission)
+specifier|protected
+name|boolean
+name|primitiveMkdir
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|FsPermission
+name|absolutePermission
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Default impl is to assume that permissions do not matter and hence
+comment|// calling the regular mkdirs is good enough.
+comment|// FSs that implement permissions should override this.
+return|return
+name|this
+operator|.
+name|mkdirs
+argument_list|(
+name|f
+argument_list|,
+name|absolutePermission
+argument_list|)
+return|;
+block|}
 comment|/**    * Creates the given Path as a brand-new zero-length file.  If    * create fails, or if it already existed, return false.    */
 DECL|method|createNewFile (Path f)
 specifier|public
@@ -4226,6 +4369,10 @@ name|getHomeDirectory
 parameter_list|()
 block|{
 return|return
+name|this
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -4238,10 +4385,6 @@ argument_list|(
 literal|"user.name"
 argument_list|)
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|this
 argument_list|)
 return|;
 block|}
@@ -4264,6 +4407,17 @@ name|Path
 name|getWorkingDirectory
 parameter_list|()
 function_decl|;
+comment|/**    * Note: with the new FilesContext class, getWorkingDirectory()    * will be removed.     * The working directory is implemented in FilesContext.    *     * Some file systems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an inital workingDir.    *     * @return if there is built in notion of workingDir then it    * is returned; else a null is returned.    */
+DECL|method|getInitialWorkingDirectory ()
+specifier|protected
+name|Path
+name|getInitialWorkingDirectory
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Call {@link #mkdirs(Path, FsPermission)} with default permission.    */
 DECL|method|mkdirs (Path f)
 specifier|public

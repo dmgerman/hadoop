@@ -569,6 +569,20 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Construct a path from a URI    */
+DECL|method|Path (URI aUri)
+specifier|public
+name|Path
+parameter_list|(
+name|URI
+name|aUri
+parameter_list|)
+block|{
+name|uri
+operator|=
+name|aUri
+expr_stmt|;
+block|}
 comment|/** Construct a Path from components. */
 DECL|method|Path (String scheme, String authority, String path)
 specifier|public
@@ -886,11 +900,11 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** True if the directory of this path is absolute. */
-DECL|method|isAbsolute ()
+comment|/**    *  True if the path component (i.e. directory) of this URI is absolute.    */
+DECL|method|isUriPathAbsolute ()
 specifier|public
 name|boolean
-name|isAbsolute
+name|isUriPathAbsolute
 parameter_list|()
 block|{
 name|int
@@ -922,6 +936,19 @@ name|SEPARATOR
 argument_list|,
 name|start
 argument_list|)
+return|;
+block|}
+comment|/** True if the directory of this path is absolute. */
+comment|/**    * There is some ambiguity here. An absolute path is a slash    * relative name without a scheme or an authority.    * So either this method was incorrectly named or its    * implementation is incorrect.    */
+DECL|method|isAbsolute ()
+specifier|public
+name|boolean
+name|isAbsolute
+parameter_list|()
+block|{
+return|return
+name|isUriPathAbsolute
+argument_list|()
 return|;
 block|}
 comment|/** Returns the final component of this path.*/
@@ -1435,7 +1462,9 @@ return|return
 name|depth
 return|;
 block|}
-comment|/** Returns a qualified path object. */
+comment|/**    *  Returns a qualified path object.    *      *  Deprecated - use {@link #makeQualified(URI, Path)}    */
+annotation|@
+name|Deprecated
 DECL|method|makeQualified (FileSystem fs)
 specifier|public
 name|Path
@@ -1443,6 +1472,34 @@ name|makeQualified
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|)
+block|{
+return|return
+name|makeQualified
+argument_list|(
+name|fs
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|fs
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/** Returns a qualified path object. */
+DECL|method|makeQualified (URI defaultUri, Path workingDir )
+specifier|public
+name|Path
+name|makeQualified
+parameter_list|(
+name|URI
+name|defaultUri
+parameter_list|,
+name|Path
+name|workingDir
 parameter_list|)
 block|{
 name|Path
@@ -1462,10 +1519,7 @@ operator|=
 operator|new
 name|Path
 argument_list|(
-name|fs
-operator|.
-name|getWorkingDirectory
-argument_list|()
+name|workingDir
 argument_list|,
 name|this
 argument_list|)
@@ -1477,14 +1531,6 @@ init|=
 name|path
 operator|.
 name|toUri
-argument_list|()
-decl_stmt|;
-name|URI
-name|fsUri
-init|=
-name|fs
-operator|.
-name|getUri
 argument_list|()
 decl_stmt|;
 name|String
@@ -1514,7 +1560,7 @@ name|authority
 operator|!=
 literal|null
 operator|||
-name|fsUri
+name|defaultUri
 operator|.
 name|getAuthority
 argument_list|()
@@ -1534,7 +1580,7 @@ condition|)
 block|{
 name|scheme
 operator|=
-name|fsUri
+name|defaultUri
 operator|.
 name|getScheme
 argument_list|()
@@ -1549,7 +1595,7 @@ condition|)
 block|{
 name|authority
 operator|=
-name|fsUri
+name|defaultUri
 operator|.
 name|getAuthority
 argument_list|()
