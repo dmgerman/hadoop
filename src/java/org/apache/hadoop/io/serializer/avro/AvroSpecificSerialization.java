@@ -257,7 +257,7 @@ operator|.
 name|newInstance
 argument_list|()
 operator|.
-name|schema
+name|getSchema
 argument_list|()
 argument_list|)
 return|;
@@ -299,7 +299,7 @@ block|{
 return|return
 name|t
 operator|.
-name|schema
+name|getSchema
 argument_list|()
 return|;
 block|}

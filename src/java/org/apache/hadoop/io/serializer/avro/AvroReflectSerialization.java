@@ -426,6 +426,9 @@ name|ReflectDatumReader
 argument_list|(
 name|ReflectData
 operator|.
+name|get
+argument_list|()
+operator|.
 name|getSchema
 argument_list|(
 name|clazz
@@ -471,6 +474,9 @@ parameter_list|)
 block|{
 return|return
 name|ReflectData
+operator|.
+name|get
+argument_list|()
 operator|.
 name|getSchema
 argument_list|(

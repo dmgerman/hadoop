@@ -260,6 +260,9 @@ argument_list|)
 else|:
 name|GenericData
 operator|.
+name|get
+argument_list|()
+operator|.
 name|induce
 argument_list|(
 name|t
