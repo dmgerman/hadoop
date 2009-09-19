@@ -98,6 +98,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -866,7 +880,9 @@ specifier|final
 name|String
 name|UMASK_LABEL
 init|=
-literal|"dfs.umaskmode"
+name|CommonConfigurationKeys
+operator|.
+name|FS_PERMISSIONS_UMASK_KEY
 decl_stmt|;
 DECL|field|DEFAULT_UMASK
 specifier|public
@@ -875,34 +891,10 @@ specifier|final
 name|int
 name|DEFAULT_UMASK
 init|=
-literal|0022
-decl_stmt|;
-block|{
-name|Configuration
+name|CommonConfigurationKeys
 operator|.
-name|addDeprecation
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-name|UMASK_LABEL
-block|}
-argument_list|,
-name|DEPRECATED_UMASK_LABEL
-operator|+
-literal|" is deprecated, "
-operator|+
-literal|"use "
-operator|+
-name|UMASK_LABEL
-operator|+
-literal|" with octal or symbolic specifications."
-argument_list|)
-expr_stmt|;
-block|}
+name|FS_PERMISSIONS_UMASK_DEFAULT
+decl_stmt|;
 comment|/** Get the user file creation mask (umask) */
 DECL|method|getUMask (Configuration conf)
 specifier|public

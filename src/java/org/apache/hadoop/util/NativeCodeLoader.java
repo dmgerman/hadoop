@@ -58,6 +58,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * A helper to load the native hadoop code i.e. libhadoop.so.  * This handles the fallback to either the bundled libhadoop-Linux-i386-32.so  * or the default java implementations where appropriate.  *    */
 end_comment
@@ -198,9 +212,13 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"hadoop.native.lib"
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_KEY
 argument_list|,
-literal|true
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -221,7 +239,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"hadoop.native.lib"
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_KEY
 argument_list|,
 name|loadNativeLibraries
 argument_list|)

@@ -108,8 +108,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
 begin_comment
-comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via topology.script.file.name .  */
+comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via net.topology.script.file.name .  */
 end_comment
 
 begin_class
@@ -151,7 +165,9 @@ specifier|final
 name|int
 name|DEFAULT_ARG_COUNT
 init|=
-literal|100
+name|CommonConfigurationKeys
+operator|.
+name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_DEFAULT
 decl_stmt|;
 DECL|field|SCRIPT_FILENAME_KEY
 specifier|static
@@ -159,7 +175,9 @@ specifier|final
 name|String
 name|SCRIPT_FILENAME_KEY
 init|=
-literal|"topology.script.file.name"
+name|CommonConfigurationKeys
+operator|.
+name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 decl_stmt|;
 DECL|field|SCRIPT_ARG_COUNT_KEY
 specifier|static
@@ -167,7 +185,9 @@ specifier|final
 name|String
 name|SCRIPT_ARG_COUNT_KEY
 init|=
-literal|"topology.script.number.args"
+name|CommonConfigurationKeys
+operator|.
+name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
 decl_stmt|;
 DECL|method|ScriptBasedMapping (Configuration conf)
 specifier|public

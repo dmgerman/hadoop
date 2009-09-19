@@ -148,6 +148,20 @@ name|NativeCodeLoader
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * A collection of factories to create the right   * zlib/gzip compressor/decompressor instances.  *   */
 end_comment
@@ -247,9 +261,13 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"hadoop.native.lib"
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_KEY
 argument_list|,
-literal|true
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
 argument_list|)
 return|;
 block|}

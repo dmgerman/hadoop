@@ -224,6 +224,20 @@ name|WritableUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * AccessTokenHandler can be instantiated in 2 modes, master mode and slave  * mode. Master can generate new access keys and export access keys to slaves,  * while slaves can only import and use access keys received from master. Both  * master and slave can generate and verify access tokens. Typically, master  * mode is used by NN and slave mode is used by DN.  */
 end_comment
@@ -257,7 +271,9 @@ specifier|final
 name|String
 name|STRING_ENABLE_ACCESS_TOKEN
 init|=
-literal|"dfs.access.token.enable"
+name|CommonConfigurationKeys
+operator|.
+name|FS_ACCESS_TOKEN_ENABLE_KEY
 decl_stmt|;
 DECL|field|STRING_ACCESS_KEY_UPDATE_INTERVAL
 specifier|public
@@ -266,7 +282,9 @@ specifier|final
 name|String
 name|STRING_ACCESS_KEY_UPDATE_INTERVAL
 init|=
-literal|"dfs.access.key.update.interval"
+name|CommonConfigurationKeys
+operator|.
+name|FS_ACCESS_KEY_UPDATE_INTERVAL_KEY
 decl_stmt|;
 DECL|field|STRING_ACCESS_TOKEN_LIFETIME
 specifier|public
@@ -275,7 +293,9 @@ specifier|final
 name|String
 name|STRING_ACCESS_TOKEN_LIFETIME
 init|=
-literal|"dfs.access.token.lifetime"
+name|CommonConfigurationKeys
+operator|.
+name|FS_ACCESS_TOKEN_LIFETIME_KEY
 decl_stmt|;
 DECL|field|isMaster
 specifier|private

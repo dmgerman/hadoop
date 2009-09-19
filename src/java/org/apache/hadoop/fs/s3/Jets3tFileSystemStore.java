@@ -606,9 +606,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|S3FileSystemConfigKeys
+operator|.
+name|S3_STREAM_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|S3FileSystemConfigKeys
+operator|.
+name|S3_STREAM_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
