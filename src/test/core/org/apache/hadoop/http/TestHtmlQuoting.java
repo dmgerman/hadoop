@@ -148,6 +148,16 @@ literal|"ab\ncdef"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertFalse
+argument_list|(
+name|HtmlQuoting
+operator|.
+name|needsQuoting
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|testQuoting ()
 annotation|@
@@ -219,6 +229,18 @@ literal|"\""
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|null
+argument_list|,
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|runRoundTrip (String str)
 specifier|private
@@ -277,6 +299,11 @@ expr_stmt|;
 name|runRoundTrip
 argument_list|(
 literal|"A string\n with no quotable chars in it!"
+argument_list|)
+expr_stmt|;
+name|runRoundTrip
+argument_list|(
+literal|null
 argument_list|)
 expr_stmt|;
 name|StringBuilder
