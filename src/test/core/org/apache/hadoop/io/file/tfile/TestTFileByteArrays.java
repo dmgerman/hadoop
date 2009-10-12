@@ -3627,7 +3627,7 @@ name|scanner
 init|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 name|composeSortedKey
 argument_list|(
@@ -3811,7 +3811,7 @@ name|scanner
 init|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 name|composeSortedKey
 argument_list|(
@@ -4019,7 +4019,7 @@ name|scanner
 init|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 name|composeSortedKey
 argument_list|(
@@ -4211,7 +4211,7 @@ name|scanner
 init|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 name|composeSortedKey
 argument_list|(

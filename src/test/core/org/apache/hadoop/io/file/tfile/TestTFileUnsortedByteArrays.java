@@ -524,7 +524,7 @@ name|scanner
 init|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 literal|"aaa"
 operator|.

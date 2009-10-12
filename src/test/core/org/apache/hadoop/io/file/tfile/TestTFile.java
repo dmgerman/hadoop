@@ -2214,7 +2214,7 @@ name|scanner
 operator|=
 name|reader
 operator|.
-name|createScanner
+name|createScannerByKey
 argument_list|(
 name|getSomeKey
 argument_list|(

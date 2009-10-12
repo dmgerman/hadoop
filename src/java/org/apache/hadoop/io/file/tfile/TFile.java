@@ -2035,7 +2035,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * TFile Reader. Users may only read TFiles by creating TFile.Reader.Scanner.    * objects. A scanner may scan the whole TFile ({@link Reader#createScanner()}    * ) , a portion of TFile based on byte offsets (    * {@link Reader#createScanner(long, long)}), or a portion of TFile with keys    * fall in a certain key range (for sorted TFile only,    * {@link Reader#createScanner(byte[], byte[])} or    * {@link Reader#createScanner(RawComparable, RawComparable)}).    */
+comment|/**    * TFile Reader. Users may only read TFiles by creating TFile.Reader.Scanner.    * objects. A scanner may scan the whole TFile ({@link Reader#createScanner()}    * ) , a portion of TFile based on byte offsets (    * {@link Reader#createScannerByByteRange(long, long)}), or a portion of TFile with keys    * fall in a certain key range (for sorted TFile only,    * {@link Reader#createScannerByKey(byte[], byte[])} or    * {@link Reader#createScannerByKey(RawComparable, RawComparable)}).    */
 DECL|class|Reader
 specifier|public
 specifier|static
@@ -2916,6 +2916,50 @@ literal|0
 argument_list|)
 return|;
 block|}
+DECL|method|getLocationByRecordNum (long recNum)
+name|Location
+name|getLocationByRecordNum
+parameter_list|(
+name|long
+name|recNum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkTFileDataIndex
+argument_list|()
+expr_stmt|;
+return|return
+name|tfileIndex
+operator|.
+name|getLocationByRecordNum
+argument_list|(
+name|recNum
+argument_list|)
+return|;
+block|}
+DECL|method|getRecordNumByLocation (Location location)
+name|long
+name|getRecordNumByLocation
+parameter_list|(
+name|Location
+name|location
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkTFileDataIndex
+argument_list|()
+expr_stmt|;
+return|return
+name|tfileIndex
+operator|.
+name|getRecordNumByLocation
+argument_list|(
+name|location
+argument_list|)
+return|;
+block|}
 DECL|method|compareKeys (byte[] a, int o1, int l1, byte[] b, int o2, int l2)
 name|int
 name|compareKeys
@@ -3051,6 +3095,28 @@ literal|0
 argument_list|)
 return|;
 block|}
+comment|/**      * Get the RecordNum for the first key-value pair in a compressed block      * whose byte offset in the TFile is greater than or equal to the specified      * offset.      *       * @param offset      *          the user supplied offset.      * @return the RecordNum to the corresponding entry. If no such entry      *         exists, it returns the total entry count.      * @throws IOException      */
+DECL|method|getRecordNumNear (long offset)
+specifier|public
+name|long
+name|getRecordNumNear
+parameter_list|(
+name|long
+name|offset
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getRecordNumByLocation
+argument_list|(
+name|getLocationNear
+argument_list|(
+name|offset
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**      * Get a sample key that is within a block whose starting offset is greater      * than or equal to the specified offset.      *       * @param offset      *          The file offset.      * @return the key that fits the requirement; or null if no such key exists      *         (which could happen if the offset is close to the end of the      *         TFile).      * @throws IOException      */
 DECL|method|getKeyNear (long offset)
 specifier|public
@@ -3123,10 +3189,10 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Get a scanner that covers a portion of TFile based on byte offsets.      *       * @param offset      *          The beginning byte offset in the TFile.      * @param length      *          The length of the region.      * @return The actual coverage of the returned scanner tries to match the      *         specified byte-region but always round up to the compression      *         block boundaries. It is possible that the returned scanner      *         contains zero key-value pairs even if length is positive.      * @throws IOException      */
-DECL|method|createScanner (long offset, long length)
+DECL|method|createScannerByByteRange (long offset, long length)
 specifier|public
 name|Scanner
-name|createScanner
+name|createScannerByByteRange
 parameter_list|(
 name|long
 name|offset
@@ -3151,7 +3217,9 @@ name|length
 argument_list|)
 return|;
 block|}
-comment|/**      * Get a scanner that covers a portion of TFile based on keys.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      */
+comment|/**      * Get a scanner that covers a portion of TFile based on keys.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      *       * @deprecated Use {@link #createScannerByKey(byte[], byte[])} instead.      */
+annotation|@
+name|Deprecated
 DECL|method|createScanner (byte[] beginKey, byte[] endKey)
 specifier|public
 name|Scanner
@@ -3169,7 +3237,33 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|createScanner
+name|createScannerByKey
+argument_list|(
+name|beginKey
+argument_list|,
+name|endKey
+argument_list|)
+return|;
+block|}
+comment|/**      * Get a scanner that covers a portion of TFile based on keys.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      */
+DECL|method|createScannerByKey (byte[] beginKey, byte[] endKey)
+specifier|public
+name|Scanner
+name|createScannerByKey
+parameter_list|(
+name|byte
+index|[]
+name|beginKey
+parameter_list|,
+name|byte
+index|[]
+name|endKey
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createScannerByKey
 argument_list|(
 operator|(
 name|beginKey
@@ -3213,11 +3307,37 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**      * Get a scanner that covers a specific key range.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      */
+comment|/**      * Get a scanner that covers a specific key range.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      *       * @deprecated Use {@link #createScannerByKey(RawComparable, RawComparable)}      *             instead.      */
+annotation|@
+name|Deprecated
 DECL|method|createScanner (RawComparable beginKey, RawComparable endKey)
 specifier|public
 name|Scanner
 name|createScanner
+parameter_list|(
+name|RawComparable
+name|beginKey
+parameter_list|,
+name|RawComparable
+name|endKey
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createScannerByKey
+argument_list|(
+name|beginKey
+argument_list|,
+name|endKey
+argument_list|)
+return|;
+block|}
+comment|/**      * Get a scanner that covers a specific key range.      *       * @param beginKey      *          Begin key of the scan (inclusive). If null, scan from the first      *          key-value entry of the TFile.      * @param endKey      *          End key of the scan (exclusive). If null, scan up to the last      *          key-value entry of the TFile.      * @return The actual coverage of the returned scanner will cover all keys      *         greater than or equal to the beginKey and less than the endKey.      * @throws IOException      */
+DECL|method|createScannerByKey (RawComparable beginKey, RawComparable endKey)
+specifier|public
+name|Scanner
+name|createScannerByKey
 parameter_list|(
 name|RawComparable
 name|beginKey
@@ -3275,6 +3395,67 @@ argument_list|,
 name|beginKey
 argument_list|,
 name|endKey
+argument_list|)
+return|;
+block|}
+comment|/**      * Create a scanner that covers a range of records.      *       * @param beginRecNum      *          The RecordNum for the first record (inclusive).      * @param endRecNum      *          The RecordNum for the last record (exclusive). To scan the whole      *          file, either specify endRecNum==-1 or endRecNum==getEntryCount().      * @return The TFile scanner that covers the specified range of records.      * @throws IOException      */
+DECL|method|createScannerByRecordNum (long beginRecNum, long endRecNum)
+specifier|public
+name|Scanner
+name|createScannerByRecordNum
+parameter_list|(
+name|long
+name|beginRecNum
+parameter_list|,
+name|long
+name|endRecNum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|beginRecNum
+operator|<
+literal|0
+condition|)
+name|beginRecNum
+operator|=
+literal|0
+expr_stmt|;
+if|if
+condition|(
+name|endRecNum
+argument_list|<
+literal|0
+operator|||
+name|endRecNum
+argument_list|>
+name|getEntryCount
+argument_list|()
+condition|)
+block|{
+name|endRecNum
+operator|=
+name|getEntryCount
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|Scanner
+argument_list|(
+name|this
+argument_list|,
+name|getLocationByRecordNum
+argument_list|(
+name|beginRecNum
+argument_list|)
+argument_list|,
+name|getLocationByRecordNum
+argument_list|(
+name|endRecNum
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -4424,6 +4605,24 @@ return|return
 operator|new
 name|Entry
 argument_list|()
+return|;
+block|}
+comment|/**        * Get the RecordNum corresponding to the entry pointed by the cursor.        * @return The RecordNum corresponding to the entry pointed by the cursor.        * @throws IOException        */
+DECL|method|getRecordNum ()
+specifier|public
+name|long
+name|getRecordNum
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|reader
+operator|.
+name|getRecordNumByLocation
+argument_list|(
+name|currentLocation
+argument_list|)
 return|;
 block|}
 comment|/**        * Internal API. Comparing the key at cursor to user-specified key.        *         * @param other        *          user-specified key.        * @return negative if key at cursor is smaller than user key; 0 if equal;        *         and positive if key at cursor greater than user key.        * @throws IOException        */
@@ -5955,11 +6154,27 @@ name|TFileIndexEntry
 argument_list|>
 name|index
 decl_stmt|;
+DECL|field|recordNumIndex
+specifier|private
+specifier|final
+name|ArrayList
+argument_list|<
+name|Long
+argument_list|>
+name|recordNumIndex
+decl_stmt|;
 DECL|field|comparator
 specifier|private
 specifier|final
 name|BytesComparator
 name|comparator
+decl_stmt|;
+DECL|field|sum
+specifier|private
+name|long
+name|sum
+init|=
+literal|0
 decl_stmt|;
 comment|/**      * For reading from file.      *       * @throws IOException      */
 DECL|method|TFileIndex (int entryCount, DataInput in, BytesComparator comparator)
@@ -5984,6 +6199,17 @@ operator|new
 name|ArrayList
 argument_list|<
 name|TFileIndexEntry
+argument_list|>
+argument_list|(
+name|entryCount
+argument_list|)
+expr_stmt|;
+name|recordNumIndex
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Long
 argument_list|>
 argument_list|(
 name|entryCount
@@ -6154,6 +6380,20 @@ argument_list|(
 name|idx
 argument_list|)
 expr_stmt|;
+name|sum
+operator|+=
+name|idx
+operator|.
+name|entries
+argument_list|()
+expr_stmt|;
+name|recordNumIndex
+operator|.
+name|add
+argument_list|(
+name|sum
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -6252,6 +6492,7 @@ return|return
 name|ret
 return|;
 block|}
+comment|/**      * @param key      *          input key.      * @return the ID of the first block that contains key> input key. Or -1      *         if no such block exists.      */
 DECL|method|upperBound (RawComparable key)
 specifier|public
 name|int
@@ -6340,6 +6581,15 @@ name|TFileIndexEntry
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|recordNumIndex
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Long
+argument_list|>
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|comparator
@@ -6355,6 +6605,111 @@ parameter_list|()
 block|{
 return|return
 name|firstKey
+return|;
+block|}
+DECL|method|getLocationByRecordNum (long recNum)
+specifier|public
+name|Reader
+operator|.
+name|Location
+name|getLocationByRecordNum
+parameter_list|(
+name|long
+name|recNum
+parameter_list|)
+block|{
+name|int
+name|idx
+init|=
+name|Utils
+operator|.
+name|upperBound
+argument_list|(
+name|recordNumIndex
+argument_list|,
+name|recNum
+argument_list|)
+decl_stmt|;
+name|long
+name|lastRecNum
+init|=
+operator|(
+name|idx
+operator|==
+literal|0
+operator|)
+condition|?
+literal|0
+else|:
+name|recordNumIndex
+operator|.
+name|get
+argument_list|(
+name|idx
+operator|-
+literal|1
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|Reader
+operator|.
+name|Location
+argument_list|(
+name|idx
+argument_list|,
+name|recNum
+operator|-
+name|lastRecNum
+argument_list|)
+return|;
+block|}
+DECL|method|getRecordNumByLocation (Reader.Location location)
+specifier|public
+name|long
+name|getRecordNumByLocation
+parameter_list|(
+name|Reader
+operator|.
+name|Location
+name|location
+parameter_list|)
+block|{
+name|int
+name|blkIndex
+init|=
+name|location
+operator|.
+name|getBlockIndex
+argument_list|()
+decl_stmt|;
+name|long
+name|lastRecNum
+init|=
+operator|(
+name|blkIndex
+operator|==
+literal|0
+operator|)
+condition|?
+literal|0
+else|:
+name|recordNumIndex
+operator|.
+name|get
+argument_list|(
+name|blkIndex
+operator|-
+literal|1
+argument_list|)
+decl_stmt|;
+return|return
+name|lastRecNum
+operator|+
+name|location
+operator|.
+name|getRecordIndex
+argument_list|()
 return|;
 block|}
 DECL|method|setFirstKey (byte[] key, int offset, int length)
@@ -6459,6 +6814,20 @@ operator|.
 name|add
 argument_list|(
 name|keyEntry
+argument_list|)
+expr_stmt|;
+name|sum
+operator|+=
+name|keyEntry
+operator|.
+name|entries
+argument_list|()
+expr_stmt|;
+name|recordNumIndex
+operator|.
+name|add
+argument_list|(
+name|sum
 argument_list|)
 expr_stmt|;
 block|}
