@@ -137,7 +137,7 @@ name|getProperty
 argument_list|(
 literal|"test.build.data"
 argument_list|,
-literal|"/tmp"
+literal|"build/test/data"
 argument_list|)
 argument_list|)
 operator|.
