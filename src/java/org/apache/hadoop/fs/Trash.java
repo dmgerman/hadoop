@@ -717,9 +717,11 @@ operator|+
 name|baseTrashPath
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
+name|cause
+operator|=
+name|e
+expr_stmt|;
+break|break;
 block|}
 try|try
 block|{
