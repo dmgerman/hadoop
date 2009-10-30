@@ -914,8 +914,6 @@ class|class
 name|LocalFSFileOutputStream
 extends|extends
 name|OutputStream
-implements|implements
-name|Syncable
 block|{
 DECL|field|fos
 specifier|private
@@ -1066,24 +1064,6 @@ argument_list|)
 throw|;
 comment|// assume native fs error
 block|}
-block|}
-comment|/** {@inheritDoc} */
-DECL|method|sync ()
-specifier|public
-name|void
-name|sync
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|fos
-operator|.
-name|getFD
-argument_list|()
-operator|.
-name|sync
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|/** {@inheritDoc} */

@@ -338,7 +338,11 @@ return|return
 name|wrappedStream
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// Syncable
+annotation|@
+name|Deprecated
 DECL|method|sync ()
 specifier|public
 name|void
@@ -362,6 +366,82 @@ name|wrappedStream
 operator|)
 operator|.
 name|sync
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+comment|// Syncable
+DECL|method|hflush ()
+specifier|public
+name|void
+name|hflush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|wrappedStream
+operator|instanceof
+name|Syncable
+condition|)
+block|{
+operator|(
+operator|(
+name|Syncable
+operator|)
+name|wrappedStream
+operator|)
+operator|.
+name|hflush
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|wrappedStream
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+comment|// Syncable
+DECL|method|hsync ()
+specifier|public
+name|void
+name|hsync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|wrappedStream
+operator|instanceof
+name|Syncable
+condition|)
+block|{
+operator|(
+operator|(
+name|Syncable
+operator|)
+name|wrappedStream
+operator|)
+operator|.
+name|hsync
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|wrappedStream
+operator|.
+name|flush
 argument_list|()
 expr_stmt|;
 block|}

@@ -27,7 +27,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** This interface declare the sync() operation. */
+comment|/** This interface for flush/sync operation. */
 end_comment
 
 begin_interface
@@ -36,11 +36,31 @@ specifier|public
 interface|interface
 name|Syncable
 block|{
-comment|/**    * Synchronize all buffer with the underlying devices.    * @throws IOException    */
+comment|/**    * @deprecated As of HADOOP 0.21.0, replaced by hflush    * @see #hflush()    */
 DECL|method|sync ()
+annotation|@
+name|Deprecated
 specifier|public
 name|void
 name|sync
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/** Flush out the data in client's user buffer. After the return of    * this call, new readers will see the data.    * @throws IOException if any error occurs    */
+DECL|method|hflush ()
+specifier|public
+name|void
+name|hflush
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/** Similar to posix fsync, flush out the data in client's user buffer     * all the way to the disk device (but the disk may have it in its cache).    * @throws IOException if error occurs    */
+DECL|method|hsync ()
+specifier|public
+name|void
+name|hsync
 parameter_list|()
 throws|throws
 name|IOException
