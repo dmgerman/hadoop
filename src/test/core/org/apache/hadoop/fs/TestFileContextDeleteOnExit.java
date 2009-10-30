@@ -347,7 +347,7 @@ name|size
 argument_list|,
 name|FileContext
 operator|.
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|size
 argument_list|()
@@ -361,7 +361,7 @@ name|set
 init|=
 name|FileContext
 operator|.
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|get
 argument_list|(
@@ -468,7 +468,7 @@ name|removeShutdownHook
 argument_list|(
 name|FileContext
 operator|.
-name|finalizer
+name|FINALIZER
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -544,14 +544,14 @@ comment|// trigger deleteOnExit and ensure the registered
 comment|// paths are cleaned up
 name|FileContext
 operator|.
-name|finalizer
+name|FINALIZER
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 name|FileContext
 operator|.
-name|finalizer
+name|FINALIZER
 operator|.
 name|join
 argument_list|()

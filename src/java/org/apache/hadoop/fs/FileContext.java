@@ -240,7 +240,7 @@ name|InterfaceAudience
 operator|.
 name|LimitedPrivate
 operator|.
-name|Project
+name|*
 import|;
 end_import
 
@@ -320,22 +320,8 @@ name|IOUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Progressable
-import|;
-end_import
-
 begin_comment
-comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop filesystem.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   * *** Path Names ***  *   * The Hadoop filesystem supports a URI name space and URI names.  * It offers a a forest of filesystems that can be referenced using fully  * qualified URIs.  *   * Two common Hadoop filesystems implementations are  *   the local filesystem: file:///path  *   the hdfs filesystem hdfs://nnAddress:nnPort/path  *     * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in your environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (say your admin moves you from cluster1 to cluster2).  *    * Too facilitate this Hadoop supports a notion of a default filesystem.  * The user can set his default filesystem, although this is  * typically set up for you in your environment in your default config.  * A default filesystem implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS; in particular, changing  * the default filesystem DOES NOT change the working directory,  *   *  Hence Hadoop path names can be one of:  *       fully qualified URI:  scheme://authority/path  *       slash relative names: /path    - relative to the default filesystem  *       wd-relative names:    path        - relative to the working dir  *         *       Relative paths with scheme (scheme:foo/bar) are illegal  *    *  ****The Role of the FileContext and configuration defaults****  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These, in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}  *    *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All filesystem instances  *  (i.e. deployments of filesystems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or   *  one can choose to used the SS properties.  *    *  The filesystem related SS defaults are  *    - the home directory (default is "/user/<userName>")  *    - the initial wd (only for local fs)  *    - replication factor  *    - block size  *    - buffer size  *    - bytesPerChecksum (if used).  *  *   * *** Usage Model for the FileContext class ***  *   * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *            Unspecified values come from core-defaults.xml in the release jar.  *              *     myFiles = getFileContext(); // uses the default config   *     myFiles.create(path, ...);  *     myFiles.setWorkingDir(path)  *     myFiles.open (path, ...);     *       * Example 2: Use a specific config, ignoring $HADOOP_CONFIG  *    configX = someConfigSomeOnePassedToYou.  *    myFContext = getFileContext(configX); //configX not changed but passeddown  *    myFContext.create(path, ...);  *    myFContext.setWorkingDir(path)  *                                               * Other ways of creating new FileContexts:  *   getLocalFSFileContext(...)  // local filesystem is the default FS  *   getLocalFileContext(URI, ...) // where specified URI is default FS.  *      */
+comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop filesystem.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop filesystem supports a URI name space and URI names.  * It offers a a forest of filesystems that can be referenced using fully  * qualified URIs.  * Two common Hadoop filesystems implementations are  *<ul>  *<li> the local filesystem: file:///path  *<li> the hdfs filesystem hdfs://nnAddress:nnPort/path  *</ul>    * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  * To facilitate this, Hadoop supports a notion of a default filesystem.  * The user can set his default filesystem, although this is  * typically set up for you in your environment via your default config.  * A default filesystem implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI:  scheme://authority/path  *<li> slash relative names: /path    - relative to the default filesystem  *<li> wd-relative names:    path        - relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *   in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All filesystem instances  *  (i.e. deployments of filesystems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The filesystem related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> bytesPerChecksum (if used).  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); //configX not changed but passeddown  *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
 end_comment
 
 begin_class
@@ -370,10 +356,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * List of files that should be deleted on JVM shutdown    */
-DECL|field|deleteOnExit
-specifier|final
+DECL|field|DEFAULT_PERM
+specifier|public
 specifier|static
+specifier|final
+name|FsPermission
+name|DEFAULT_PERM
+init|=
+name|FsPermission
+operator|.
+name|getDefault
+argument_list|()
+decl_stmt|;
+comment|/**    * List of files that should be deleted on JVM shutdown.    */
+DECL|field|DELETE_ON_EXIT
+specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|FileContext
@@ -383,7 +381,7 @@ argument_list|<
 name|Path
 argument_list|>
 argument_list|>
-name|deleteOnExit
+name|DELETE_ON_EXIT
 init|=
 operator|new
 name|IdentityHashMap
@@ -397,25 +395,51 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/** JVM shutdown hook thread */
-DECL|field|finalizer
-specifier|final
+comment|/** JVM shutdown hook thread. */
+DECL|field|FINALIZER
 specifier|static
+specifier|final
 name|FileContextFinalizer
-name|finalizer
+name|FINALIZER
 init|=
 operator|new
 name|FileContextFinalizer
 argument_list|()
 decl_stmt|;
-comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask    *    */
+DECL|field|DEFAULT_FILTER
+specifier|private
+specifier|static
+specifier|final
+name|PathFilter
+name|DEFAULT_FILTER
+init|=
+operator|new
+name|PathFilter
+argument_list|()
+block|{
+specifier|public
+name|boolean
+name|accept
+parameter_list|(
+specifier|final
+name|Path
+name|file
+parameter_list|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+decl_stmt|;
+comment|/**    * The FileContext is defined by.    *  1) defaultFS (slash)    *  2) wd    *  3) umask    */
 DECL|field|defaultFS
 specifier|private
 specifier|final
-name|FileSystem
+name|AbstractFileSystem
 name|defaultFS
 decl_stmt|;
-comment|// the default FS for this FileContext.
+comment|//default FS for this FileContext.
 DECL|field|workingDir
 specifier|private
 name|Path
@@ -433,16 +457,12 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-comment|// passed to the filesystem below
-comment|// When we move to new AbstractFileSystem
-comment|// then it is not really needed except for
-comment|// undocumented config vars;
-DECL|method|FileContext (final FileSystem defFs, final FsPermission theUmask, final Configuration aConf)
+DECL|method|FileContext (final AbstractFileSystem defFs, final FsPermission theUmask, final Configuration aConf)
 specifier|private
 name|FileContext
 parameter_list|(
 specifier|final
-name|FileSystem
+name|AbstractFileSystem
 name|defFs
 parameter_list|,
 specifier|final
@@ -471,7 +491,7 @@ name|conf
 operator|=
 name|aConf
 expr_stmt|;
-comment|/*      * Init the wd.      * WorkingDir is implemented at the FileContext layer       * NOT at the FileSystem layer.       * If the DefaultFS, such as localFilesystem has a notion of      *  builtin WD, we use that as the initial WD.      *  Otherwise the WD is initialized to the home directory.      */
+comment|/*      * Init the wd.      * WorkingDir is implemented at the FileContext layer       * NOT at the AbstractFileSystem layer.       * If the DefaultFS, such as localFilesystem has a notion of      *  builtin WD, we use that as the initial WD.      *  Otherwise the WD is initialized to the home directory.      */
 name|workingDir
 operator|=
 name|defaultFS
@@ -546,7 +566,7 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|deleteOnExit
+name|DELETE_ON_EXIT
 init|)
 block|{
 name|Set
@@ -563,7 +583,7 @@ argument_list|>
 argument_list|>
 name|set
 init|=
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|entrySet
 argument_list|()
@@ -641,7 +661,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|clear
 argument_list|()
@@ -689,7 +709,7 @@ block|}
 comment|/**    * Get the filesystem of supplied path.    * @param absOrFqPath - absolute or fully qualified path    * @return the filesystem of the path    * @throws IOException    */
 DECL|method|getFSofPath (final Path absOrFqPath)
 specifier|private
-name|FileSystem
+name|AbstractFileSystem
 name|getFSofPath
 parameter_list|(
 specifier|final
@@ -731,8 +751,6 @@ literal|"FileContext Bug: path is relative"
 argument_list|)
 throw|;
 block|}
-comment|// TBD cleanup this impl once we create a new FileSystem to replace current
-comment|// one - see HADOOP-6223.
 try|try
 block|{
 comment|// Is it the default FS for this FileContext?
@@ -755,7 +773,7 @@ parameter_list|)
 block|{
 comment|// it is different FileSystem
 return|return
-name|FileSystem
+name|AbstractFileSystem
 operator|.
 name|get
 argument_list|(
@@ -769,16 +787,16 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Protected Static Factory methods for getting a FileContexts    * that take a FileSystem as input. To be used for testing.    * Protected since new FileSystem will be protected.    * Note new file contexts are created for each call.    */
+comment|/**    * Protected Static Factory methods for getting a FileContexts    * that take a AbstractFileSystem as input. To be used for testing.    */
 comment|/**    * Create a FileContext with specified FS as default     * using the specified config.    *     * @param defFS    * @param aConf    * @return new FileContext with specifed FS as default.    * @throws IOException if the filesystem with specified cannot be created    */
-DECL|method|getFileContext (final FileSystem defFS, final Configuration aConf)
+DECL|method|getFileContext (final AbstractFileSystem defFS, final Configuration aConf)
 specifier|protected
 specifier|static
 name|FileContext
 name|getFileContext
 parameter_list|(
 specifier|final
-name|FileSystem
+name|AbstractFileSystem
 name|defFS
 parameter_list|,
 specifier|final
@@ -805,15 +823,15 @@ name|aConf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileContext for specified FileSystem using the default config.    *     * @param defaultFS    * @return a FileSystem for the specified URI    * @throws IOException if the filesysem with specified cannot be created    */
-DECL|method|getFileContext (final FileSystem defaultFS)
+comment|/**    * Create a FileContext for specified filesystem using the default config.    *     * @param defaultFS    * @return a FileContext with the specified AbstractFileSystem    *                 as the default FS.    * @throws IOException if the filesystem with specified cannot be created    */
+DECL|method|getFileContext ( final AbstractFileSystem defaultFS)
 specifier|protected
 specifier|static
 name|FileContext
 name|getFileContext
 parameter_list|(
 specifier|final
-name|FileSystem
+name|AbstractFileSystem
 name|defaultFS
 parameter_list|)
 throws|throws
@@ -830,34 +848,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|field|LOCAL_FS_URI
-specifier|public
-specifier|static
-specifier|final
-name|URI
-name|LOCAL_FS_URI
-init|=
-name|URI
-operator|.
-name|create
-argument_list|(
-literal|"file:///"
-argument_list|)
-decl_stmt|;
-DECL|field|DEFAULT_PERM
-specifier|public
-specifier|static
-specifier|final
-name|FsPermission
-name|DEFAULT_PERM
-init|=
-name|FsPermission
-operator|.
-name|getDefault
-argument_list|()
-decl_stmt|;
-comment|/**    * Static Factory methods for getting a FileContext.    * Note new file contexts are created for each call.    * The only singleton is the local FS context using the default config.    *     * Methods that use the default config: the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * The keys relevant to the FileContext layer are extracted at time of    * construction. Changes to the config after the call are ignore    * by the FileContext layer.     * The conf is passed to lower layers like FileSystem and HDFS which    * pick up their own config variables.    */
-comment|/**    * Create a FileContext using the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * @throws IOException if default FileSystem in the config  cannot be created    */
+comment|/**    * Static Factory methods for getting a FileContext.    * Note new file contexts are created for each call.    * The only singleton is the local FS context using the default config.    *     * Methods that use the default config: the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * The keys relevant to the FileContext layer are extracted at time of    * construction. Changes to the config after the call are ignore    * by the FileContext layer.     * The conf is passed to lower layers like AbstractFileSystem and HDFS which    * pick up their own config variables.    */
+comment|/**    * Create a FileContext using the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * @throws IOException if default filesystem in the config  cannot be created    */
 DECL|method|getFileContext ()
 specifier|public
 specifier|static
@@ -905,6 +897,8 @@ name|localFsSingleton
 operator|=
 name|getFileContext
 argument_list|(
+name|FsConstants
+operator|.
 name|LOCAL_FS_URI
 argument_list|)
 expr_stmt|;
@@ -913,7 +907,7 @@ return|return
 name|localFsSingleton
 return|;
 block|}
-comment|/**    * Create a FileContext for specified URI using the default config.    *     * @param defaultFsUri    * @return a FileSystem for the specified URI    * @throws IOException if the filesysem with specified cannot be created    */
+comment|/**    * Create a FileContext for specified URI using the default config.    *     * @param defaultFsUri    * @return a FileContext with the specified URI as the default FS.    * @throws IOException if the filesysem with specified cannot be created    */
 DECL|method|getFileContext (final URI defaultFsUri)
 specifier|public
 specifier|static
@@ -959,7 +953,7 @@ block|{
 return|return
 name|getFileContext
 argument_list|(
-name|FileSystem
+name|AbstractFileSystem
 operator|.
 name|get
 argument_list|(
@@ -972,7 +966,7 @@ name|aConf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileContext using the passed config.    *     * @param aConf    * @return new FileContext    * @throws IOException  if default FileSystem in the config  cannot be created    */
+comment|/**    * Create a FileContext using the passed config.    * Generally it is better to use {@link #getFileContext(URI, Configuration)}    * instead of this one.    *     *     * @param aConf    * @return new FileContext    * @throws IOException  if default filesystem in the config  cannot be created    */
 DECL|method|getFileContext (final Configuration aConf)
 specifier|public
 specifier|static
@@ -1022,6 +1016,8 @@ block|{
 return|return
 name|getFileContext
 argument_list|(
+name|FsConstants
+operator|.
 name|LOCAL_FS_URI
 argument_list|,
 name|aConf
@@ -1040,7 +1036,7 @@ name|Unstable
 comment|/* return type will change to AFS once                                   HADOOP-6223 is completed */
 DECL|method|getDefaultFileSystem ()
 specifier|protected
-name|FileSystem
+name|AbstractFileSystem
 name|getDefaultFileSystem
 parameter_list|()
 block|{
@@ -1173,14 +1169,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create or overwrite file on indicated path and returns an output stream    * for writing into the file.    * @param f the file name to open    * @param createFlag gives the semantics  of create: overwrite, append etc.    * @param opts  - varargs of CreateOpt:    *     Progress - to report progress on the operation - default null    *     Permission - umask is applied against permisssion:    *                  default FsPermissions:getDefault()    *                  @see #setPermission(Path, FsPermission)    *     CreateParent - create missing parent path    *                  default is to not create parents    *         *                The defaults for the following are  SS defaults of the    *                file server implementing the tart path.    *                Not all parameters make sense for all kinds of filesystem    *                - eg. localFS ignores Blocksize, replication, checksum    *    BufferSize - buffersize used in FSDataOutputStream    *    Blocksize - block size for file blocks    *    ReplicationFactor - replication for blocks    *    BytesPerChecksum - bytes per checksum    *                         *        * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-comment|// call to primitiveCreate
-DECL|method|create (final Path f, final EnumSet<CreateFlag> createFlag, CreateOpts... opts)
+comment|/**    * Create or overwrite file on indicated path and returns an output stream    * for writing into the file.    * @param f the file name to open    * @param createFlag gives the semantics  of create: overwrite, append etc.    * @param opts  - varargs of CreateOpt:    *<ul>    *<li>   Progress - to report progress on the operation - default null    *<li>   Permission - umask is applied against permisssion:    *                  default is FsPermissions:getDefault()     *<li>   CreateParent - create missing parent path; default is to not    *                   create parents    *<li> The defaults for the following are  SS defaults of the    *      file server implementing the target path.     *      Not all parameters make sense for all kinds of filesystem    *                - eg. localFS ignores Blocksize, replication, checksum    *<ul>    *<li>  BufferSize - buffersize used in FSDataOutputStream    *<li>  Blocksize - block size for file blocks    *<li>  ReplicationFactor - replication for blocks    *<li>  BytesPerChecksum - bytes per checksum    *</ul>    *</ul>    *                           * @throws IOException    *     * @see #setPermission(Path, FsPermission)    */
+DECL|method|create (final Path f, final EnumSet<CreateFlag> createFlag, Options.CreateOpts... opts)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -1196,6 +1186,8 @@ name|CreateFlag
 argument_list|>
 name|createFlag
 parameter_list|,
+name|Options
+operator|.
 name|CreateOpts
 modifier|...
 name|opts
@@ -1211,7 +1203,7 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-name|FileSystem
+name|AbstractFileSystem
 name|fsOfAbsF
 init|=
 name|getFSofPath
@@ -1221,190 +1213,90 @@ argument_list|)
 decl_stmt|;
 comment|// If one of the options is a permission, extract it& apply umask
 comment|// If not, add a default Perms and apply umask;
-comment|// FileSystem#create
+comment|// AbstractFileSystem#create
+name|CreateOpts
+operator|.
+name|Perms
+name|permOpt
+init|=
+operator|(
+name|CreateOpts
+operator|.
+name|Perms
+operator|)
+name|CreateOpts
+operator|.
+name|getOpt
+argument_list|(
+name|CreateOpts
+operator|.
+name|Perms
+operator|.
+name|class
+argument_list|,
+name|opts
+argument_list|)
+decl_stmt|;
 name|FsPermission
 name|permission
 init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-name|opts
+operator|(
+name|permOpt
 operator|!=
 literal|null
-condition|)
-block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|opts
-operator|.
-name|length
-condition|;
-operator|++
-name|i
-control|)
-block|{
-if|if
-condition|(
-name|opts
-index|[
-name|i
-index|]
-operator|instanceof
-name|CreateOpts
-operator|.
-name|Perms
-condition|)
-block|{
-if|if
-condition|(
-name|permission
-operator|!=
-literal|null
-condition|)
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"multiple permissions varargs"
-argument_list|)
-throw|;
-name|permission
-operator|=
-operator|(
-operator|(
-name|CreateOpts
-operator|.
-name|Perms
 operator|)
-name|opts
-index|[
-name|i
-index|]
-operator|)
+condition|?
+name|permOpt
 operator|.
 name|getValue
 argument_list|()
-expr_stmt|;
-name|opts
-index|[
-name|i
-index|]
-operator|=
-name|CreateOpts
-operator|.
-name|perms
-argument_list|(
-name|permission
-operator|.
-name|applyUMask
-argument_list|(
-name|umask
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-name|CreateOpts
-index|[]
-name|theOpts
-init|=
-name|opts
-decl_stmt|;
-if|if
-condition|(
-name|permission
-operator|==
-literal|null
-condition|)
-block|{
-comment|// no permission was set
-name|CreateOpts
-index|[]
-name|newOpts
-init|=
-operator|new
-name|CreateOpts
-index|[
-name|opts
-operator|.
-name|length
-operator|+
-literal|1
-index|]
-decl_stmt|;
-name|System
-operator|.
-name|arraycopy
-argument_list|(
-name|opts
-argument_list|,
-literal|0
-argument_list|,
-name|newOpts
-argument_list|,
-literal|0
-argument_list|,
-name|opts
-operator|.
-name|length
-argument_list|)
-expr_stmt|;
-name|newOpts
-index|[
-name|opts
-operator|.
-name|length
-index|]
-operator|=
-name|CreateOpts
-operator|.
-name|perms
-argument_list|(
+else|:
 name|FsPermission
 operator|.
 name|getDefault
 argument_list|()
+decl_stmt|;
+name|permission
+operator|=
+name|permission
 operator|.
 name|applyUMask
 argument_list|(
 name|umask
 argument_list|)
+expr_stmt|;
+name|CreateOpts
+index|[]
+name|updatedOpts
+init|=
+name|CreateOpts
+operator|.
+name|setOpt
+argument_list|(
+name|CreateOpts
+operator|.
+name|perms
+argument_list|(
+name|permission
 argument_list|)
-expr_stmt|;
-name|theOpts
-operator|=
-name|newOpts
-expr_stmt|;
-block|}
+argument_list|,
+name|opts
+argument_list|)
+decl_stmt|;
 return|return
 name|fsOfAbsF
 operator|.
-name|primitiveCreate
+name|create
 argument_list|(
 name|absF
 argument_list|,
 name|createFlag
 argument_list|,
-name|theOpts
+name|updatedOpts
 argument_list|)
 return|;
 block|}
 comment|/**    * Make the given file and all non-existent parents into    * directories.    *     * @param dir - the dir to make    * @param permission - permissions is set permission&~umask    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    * @throws IOException when operation fails not authorized or     *   if parent does not exist and createParent is false.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-comment|// call to primitiveMkdir
 DECL|method|mkdir (final Path dir, final FsPermission permission, final boolean createParent)
 specifier|public
 name|void
@@ -1459,7 +1351,7 @@ argument_list|(
 name|absDir
 argument_list|)
 operator|.
-name|primitiveMkdir
+name|mkdir
 argument_list|(
 name|absDir
 argument_list|,
@@ -1622,12 +1514,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Renames Path src to Path dst    *<ul>    *<li    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails    * if the dst already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites    * the dst if it is a file or an empty directory. Rename fails if dst is    * a non-empty directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for    * details    *<p>    *     * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|rename (final Path src, final Path dst, final Rename... options)
+DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
 specifier|public
 name|void
 name|rename
@@ -1641,6 +1528,8 @@ name|Path
 name|dst
 parameter_list|,
 specifier|final
+name|Options
+operator|.
 name|Rename
 modifier|...
 name|options
@@ -1666,7 +1555,7 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
-name|FileSystem
+name|AbstractFileSystem
 name|srcFS
 init|=
 name|getFSofPath
@@ -1674,7 +1563,7 @@ argument_list|(
 name|absSrc
 argument_list|)
 decl_stmt|;
-name|FileSystem
+name|AbstractFileSystem
 name|dstFS
 init|=
 name|getFSofPath
@@ -1703,7 +1592,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Renames across FileSystems not supported"
+literal|"Renames across AbstractFileSystems not supported"
 argument_list|)
 throw|;
 block|}
@@ -2057,7 +1946,7 @@ block|{
 return|return
 name|defaultFS
 operator|.
-name|getStatus
+name|getFsStatus
 argument_list|(
 literal|null
 argument_list|)
@@ -2078,7 +1967,7 @@ argument_list|(
 name|absF
 argument_list|)
 operator|.
-name|getStatus
+name|getFsStatus
 argument_list|(
 name|absF
 argument_list|)
@@ -2274,18 +2163,18 @@ return|;
 block|}
 synchronized|synchronized
 init|(
-name|deleteOnExit
+name|DELETE_ON_EXIT
 init|)
 block|{
 if|if
 condition|(
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|isEmpty
 argument_list|()
 operator|&&
 operator|!
-name|finalizer
+name|FINALIZER
 operator|.
 name|isAlive
 argument_list|()
@@ -2298,7 +2187,7 @@ argument_list|()
 operator|.
 name|addShutdownHook
 argument_list|(
-name|finalizer
+name|FINALIZER
 argument_list|)
 expr_stmt|;
 block|}
@@ -2308,7 +2197,7 @@ name|Path
 argument_list|>
 name|set
 init|=
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|get
 argument_list|(
@@ -2331,7 +2220,7 @@ name|Path
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|deleteOnExit
+name|DELETE_ON_EXIT
 operator|.
 name|put
 argument_list|(
@@ -2475,6 +2364,164 @@ name|results
 operator|.
 name|size
 argument_list|()
+index|]
+argument_list|)
+return|;
+block|}
+comment|/**      * Return the {@link ContentSummary} of path f.      * @param f      * @return the {@link ContentSummary} of path f.      * @throws IOException      */
+DECL|method|getContentSummary (Path f)
+specifier|public
+name|ContentSummary
+name|getContentSummary
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileStatus
+name|status
+init|=
+name|FileContext
+operator|.
+name|this
+operator|.
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|status
+operator|.
+name|isDir
+argument_list|()
+condition|)
+block|{
+comment|// f is a file
+return|return
+operator|new
+name|ContentSummary
+argument_list|(
+name|status
+operator|.
+name|getLen
+argument_list|()
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+comment|// f is a directory
+name|long
+index|[]
+name|summary
+init|=
+block|{
+literal|0
+block|,
+literal|0
+block|,
+literal|1
+block|}
+decl_stmt|;
+for|for
+control|(
+name|FileStatus
+name|s
+range|:
+name|FileContext
+operator|.
+name|this
+operator|.
+name|listStatus
+argument_list|(
+name|f
+argument_list|)
+control|)
+block|{
+name|ContentSummary
+name|c
+init|=
+name|s
+operator|.
+name|isDir
+argument_list|()
+condition|?
+name|getContentSummary
+argument_list|(
+name|s
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+else|:
+operator|new
+name|ContentSummary
+argument_list|(
+name|s
+operator|.
+name|getLen
+argument_list|()
+argument_list|,
+literal|1
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|summary
+index|[
+literal|0
+index|]
+operator|+=
+name|c
+operator|.
+name|getLength
+argument_list|()
+expr_stmt|;
+name|summary
+index|[
+literal|1
+index|]
+operator|+=
+name|c
+operator|.
+name|getFileCount
+argument_list|()
+expr_stmt|;
+name|summary
+index|[
+literal|2
+index|]
+operator|+=
+name|c
+operator|.
+name|getDirectoryCount
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|ContentSummary
+argument_list|(
+name|summary
+index|[
+literal|0
+index|]
+argument_list|,
+name|summary
+index|[
+literal|1
+index|]
+argument_list|,
+name|summary
+index|[
+literal|2
 index|]
 argument_list|)
 return|;
@@ -2760,6 +2807,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|URI
+name|uri
+init|=
+name|getFSofPath
+argument_list|(
+name|fixRelativePart
+argument_list|(
+name|pathPattern
+argument_list|)
+argument_list|)
+operator|.
+name|getUri
+argument_list|()
+decl_stmt|;
 name|String
 name|filename
 init|=
@@ -2795,35 +2856,29 @@ literal|1
 condition|)
 block|{
 name|Path
-name|p
+name|absPathPattern
 init|=
 name|fixRelativePart
 argument_list|(
 name|pathPattern
 argument_list|)
 decl_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|getFSofPath
-argument_list|(
-name|p
-argument_list|)
-decl_stmt|;
-name|URI
-name|uri
-init|=
-name|fs
-operator|.
-name|getUri
-argument_list|()
-decl_stmt|;
 return|return
 name|globStatusInternal
 argument_list|(
 name|uri
 argument_list|,
-name|p
+operator|new
+name|Path
+argument_list|(
+name|absPathPattern
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
 argument_list|,
 name|filter
 argument_list|)
@@ -2847,42 +2902,22 @@ decl_stmt|;
 for|for
 control|(
 name|String
-name|filePattern
+name|iFilePattern
 range|:
 name|filePatterns
 control|)
 block|{
 name|Path
-name|p
+name|iAbsFilePattern
 init|=
+name|fixRelativePart
+argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|filePattern
+name|iFilePattern
 argument_list|)
-decl_stmt|;
-name|p
-operator|=
-name|fixRelativePart
-argument_list|(
-name|p
 argument_list|)
-expr_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|getFSofPath
-argument_list|(
-name|p
-argument_list|)
-decl_stmt|;
-name|URI
-name|uri
-init|=
-name|fs
-operator|.
-name|getUri
-argument_list|()
 decl_stmt|;
 name|FileStatus
 index|[]
@@ -2892,7 +2927,7 @@ name|globStatusInternal
 argument_list|(
 name|uri
 argument_list|,
-name|p
+name|iAbsFilePattern
 argument_list|,
 name|filter
 argument_list|)
@@ -2931,6 +2966,7 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**      *       * @param uri for all the inPathPattern      * @param inPathPattern - without the scheme& authority (take from uri)      * @param filter      * @return      * @throws IOException      */
 DECL|method|globStatusInternal ( final URI uri, final Path inPathPattern, final PathFilter filter)
 specifier|private
 name|FileStatus
@@ -2967,20 +3003,38 @@ name|level
 init|=
 literal|0
 decl_stmt|;
-comment|// comes in as full path, but just in case
-specifier|final
-name|Path
-name|pathPattern
-init|=
-name|fixRelativePart
-argument_list|(
+assert|assert
+operator|(
 name|inPathPattern
-argument_list|)
-decl_stmt|;
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+operator|==
+literal|null
+operator|&&
+name|inPathPattern
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getAuthority
+argument_list|()
+operator|==
+literal|null
+operator|&&
+name|inPathPattern
+operator|.
+name|isUriPathAbsolute
+argument_list|()
+operator|)
+assert|;
 name|String
 name|filename
 init|=
-name|pathPattern
+name|inPathPattern
 operator|.
 name|toUri
 argument_list|()
@@ -3011,7 +3065,7 @@ block|{
 name|Path
 name|p
 init|=
-name|pathPattern
+name|inPathPattern
 operator|.
 name|makeQualified
 argument_list|(
@@ -3046,15 +3100,8 @@ operator|.
 name|SEPARATOR
 argument_list|)
 decl_stmt|;
-comment|// get the first component
-if|if
-condition|(
-name|pathPattern
-operator|.
-name|isAbsolute
-argument_list|()
-condition|)
-block|{
+comment|// Path is absolute, first component is "/" hence first component
+comment|// is the uri root
 name|parents
 index|[
 literal|0
@@ -3063,32 +3110,23 @@ operator|=
 operator|new
 name|Path
 argument_list|(
+operator|new
 name|Path
-operator|.
-name|SEPARATOR
+argument_list|(
+name|uri
+argument_list|)
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|level
 operator|=
 literal|1
 expr_stmt|;
-block|}
-else|else
-block|{
-name|parents
-index|[
-literal|0
-index|]
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|Path
-operator|.
-name|CUR_DIR
-argument_list|)
-expr_stmt|;
-block|}
 comment|// glob the paths that match the parent path, ie. [0, components.length-1]
 name|boolean
 index|[]
@@ -3825,32 +3863,6 @@ return|;
 block|}
 block|}
 block|}
-DECL|field|DEFAULT_FILTER
-specifier|private
-specifier|static
-specifier|final
-name|PathFilter
-name|DEFAULT_FILTER
-init|=
-operator|new
-name|PathFilter
-argument_list|()
-block|{
-specifier|public
-name|boolean
-name|accept
-parameter_list|(
-specifier|final
-name|Path
-name|file
-parameter_list|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-block|}
-decl_stmt|;
 comment|/* A class that could decide if a string matches the glob or not */
 DECL|class|GlobFilter
 specifier|private
@@ -4761,7 +4773,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Deletes all the paths in deleteOnExit on JVM shutdown    */
+comment|/**    * Deletes all the paths in deleteOnExit on JVM shutdown.    */
 DECL|class|FileContextFinalizer
 specifier|static
 class|class

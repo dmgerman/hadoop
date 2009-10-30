@@ -466,6 +466,21 @@ return|return
 name|path
 return|;
 block|}
+DECL|method|setPath (final Path p)
+specifier|public
+name|void
+name|setPath
+parameter_list|(
+specifier|final
+name|Path
+name|p
+parameter_list|)
+block|{
+name|path
+operator|=
+name|p
+expr_stmt|;
+block|}
 comment|/* These are provided so that these values could be loaded lazily     * by a filesystem (e.g. local file system).    */
 comment|/**    * Sets permission.    * @param permission if permission is null, default value is set    */
 DECL|method|setPermission (FsPermission permission)
