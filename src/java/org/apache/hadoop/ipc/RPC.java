@@ -2571,6 +2571,26 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|e
+operator|instanceof
+name|IOException
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected throwable object "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|IOException
 name|ioe
 init|=
