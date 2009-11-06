@@ -16,6 +16,20 @@ name|http
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Initialize a javax.servlet.Filter.   */
 end_comment
@@ -27,14 +41,18 @@ specifier|abstract
 class|class
 name|FilterInitializer
 block|{
-comment|/**    * Initialize a Filter to a FilterContainer.    * @param container The filter container    */
-DECL|method|initFilter (FilterContainer container)
+comment|/**    * Initialize a Filter to a FilterContainer.    * @param container The filter container    * @param conf Configuration for run-time parameters    */
+DECL|method|initFilter (FilterContainer container, Configuration conf)
+specifier|public
 specifier|abstract
 name|void
 name|initFilter
 parameter_list|(
 name|FilterContainer
 name|container
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 function_decl|;
 block|}

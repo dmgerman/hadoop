@@ -824,6 +824,8 @@ operator|.
 name|initFilter
 argument_list|(
 name|this
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

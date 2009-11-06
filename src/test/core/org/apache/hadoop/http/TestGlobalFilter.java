@@ -367,12 +367,16 @@ specifier|public
 name|Initializer
 parameter_list|()
 block|{}
-DECL|method|initFilter (FilterContainer container)
+DECL|method|initFilter (FilterContainer container, Configuration conf)
+specifier|public
 name|void
 name|initFilter
 parameter_list|(
 name|FilterContainer
 name|container
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|container
