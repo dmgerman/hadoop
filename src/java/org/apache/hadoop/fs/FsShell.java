@@ -8190,7 +8190,9 @@ if|if
 condition|(
 name|Count
 operator|.
-name|matches
+name|NAME
+operator|.
+name|equals
 argument_list|(
 name|cmd
 argument_list|)
