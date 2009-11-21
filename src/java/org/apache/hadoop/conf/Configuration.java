@@ -282,6 +282,18 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|CopyOnWriteArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Matcher
@@ -735,14 +747,14 @@ DECL|field|defaultResources
 specifier|private
 specifier|static
 specifier|final
-name|ArrayList
+name|CopyOnWriteArrayList
 argument_list|<
 name|String
 argument_list|>
 name|defaultResources
 init|=
 operator|new
-name|ArrayList
+name|CopyOnWriteArrayList
 argument_list|<
 name|String
 argument_list|>
@@ -6502,12 +6514,12 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|toString (ArrayList resources, StringBuffer sb)
+DECL|method|toString (List resources, StringBuffer sb)
 specifier|private
 name|void
 name|toString
 parameter_list|(
-name|ArrayList
+name|List
 name|resources
 parameter_list|,
 name|StringBuffer
