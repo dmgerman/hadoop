@@ -7132,7 +7132,7 @@ literal|"The full syntax is: \n\n"
 operator|+
 literal|"hadoop fs [-fs<local | file system URI>] [-conf<configuration file>]\n\t"
 operator|+
-literal|"[-D<property=value>] [-ls<path>] [-lsr<path>] [-df [<path>]] [-du<path>]\n\t"
+literal|"[-D<property=value>] [-ls<path>] [-lsr<path>] [-df [<path>]] [-du [-s] [-h]<path>]\n\t"
 operator|+
 literal|"[-dus<path>] [-mv<src><dst>] [-cp<src><dst>] [-rm [-skipTrash]<src>]\n\t"
 operator|+
@@ -7271,28 +7271,34 @@ decl_stmt|;
 name|String
 name|du
 init|=
-literal|"-du<path>: \tShow the amount of space, in bytes, used by the files that \n"
+literal|"-du [-s] [-h]<path>: \tShow the amount of space, in bytes, used by the files that \n"
 operator|+
-literal|"\t\tmatch the specified file pattern.  Equivalent to the unix\n"
+literal|"\t\tmatch the specified file pattern. The following flags are optional:\n"
 operator|+
-literal|"\t\tcommand \"du -sb<path>/*\" in case of a directory, \n"
+literal|"\t\t  -s   Rather than showing the size of each individual file that\n"
 operator|+
-literal|"\t\tand to \"du -b<path>\" in case of a file.\n"
+literal|"\t\t       matches the pattern, shows the total (summary) size.\n"
+operator|+
+literal|"\t\t  -h   Formats the sizes of files in a human-readable fashion\n"
+operator|+
+literal|"\t\t       rather than a number of bytes.\n"
+operator|+
+literal|"\n"
+operator|+
+literal|"\t\tNote that, even without the -s option, this only shows size summaries\n"
+operator|+
+literal|"\t\tone level deep into a directory.\n"
 operator|+
 literal|"\t\tThe output is in the form \n"
 operator|+
-literal|"\t\t\tname(full path) size (in bytes)\n"
+literal|"\t\t\tsize\tname(full path)\n"
 decl_stmt|;
 name|String
 name|dus
 init|=
 literal|"-dus<path>: \tShow the amount of space, in bytes, used by the files that \n"
 operator|+
-literal|"\t\tmatch the specified file pattern.  Equivalent to the unix\n"
-operator|+
-literal|"\t\tcommand \"du -sb\"  The output is in the form \n"
-operator|+
-literal|"\t\t\tname(full path) size (in bytes)\n"
+literal|"\t\tmatch the specified file pattern. This is equivalent to -du -s above.\n"
 decl_stmt|;
 name|String
 name|mv
@@ -9548,7 +9554,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-du<path>]"
+literal|"           [-du [-s] [-h]<path>]"
 argument_list|)
 expr_stmt|;
 name|System
