@@ -6337,7 +6337,7 @@ specifier|private
 name|DeserializerBase
 name|valDeserializer
 decl_stmt|;
-comment|/** Open the named file. */
+comment|/**      * Construct a reader by opening a file from the given file system.      * @param fs The file system used to open the file.      * @param file The file being read.      * @param conf Configuration      * @throws IOException      */
 DECL|method|Reader (FileSystem fs, Path file, Configuration conf)
 specifier|public
 name|Reader
@@ -6375,6 +6375,49 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Construct a reader by the given input stream.      * @param in An input stream.      * @param buffersize The buffer size used to read the file.      * @param start The starting position.      * @param length The length being read.      * @param conf Configuration      * @throws IOException      */
+DECL|method|Reader (FSDataInputStream in, int buffersize, long start, long length, Configuration conf)
+specifier|public
+name|Reader
+parameter_list|(
+name|FSDataInputStream
+name|in
+parameter_list|,
+name|int
+name|buffersize
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|in
+argument_list|,
+name|buffersize
+argument_list|,
+name|start
+argument_list|,
+name|length
+argument_list|,
+name|conf
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|Reader (FileSystem fs, Path file, int bufferSize, Configuration conf, boolean tempReader)
 specifier|private
 name|Reader
@@ -6403,6 +6446,8 @@ name|fs
 argument_list|,
 name|file
 argument_list|,
+literal|null
+argument_list|,
 name|bufferSize
 argument_list|,
 literal|0
@@ -6423,7 +6468,8 @@ name|tempReader
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Reader (FileSystem fs, Path file, int bufferSize, long start, long length, Configuration conf, boolean tempReader)
+comment|/**      * Private constructor.      * @param fs The file system used to open the file.      *           It is not used if the given input stream is not null.        * @param file The file being read.      * @param in An input stream of the file.  If it is null,      *           the file will be opened from the given file system.      * @param bufferSize The buffer size used to read the file.      * @param start The starting position.      * @param length The length being read.      * @param conf Configuration      * @param tempReader Is this temporary?       * @throws IOException      */
+DECL|method|Reader (FileSystem fs, Path file, FSDataInputStream in, int bufferSize, long start, long length, Configuration conf, boolean tempReader)
 specifier|private
 name|Reader
 parameter_list|(
@@ -6432,6 +6478,9 @@ name|fs
 parameter_list|,
 name|Path
 name|file
+parameter_list|,
+name|FSDataInputStream
+name|in
 parameter_list|,
 name|int
 name|bufferSize
@@ -6451,6 +6500,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|fs
+operator|==
+literal|null
+operator|&&
+name|in
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"fs == null&& in == null"
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|file
@@ -6461,6 +6529,12 @@ name|this
 operator|.
 name|in
 operator|=
+name|in
+operator|!=
+literal|null
+condition|?
+name|in
+else|:
 name|openFile
 argument_list|(
 name|fs
@@ -6494,6 +6568,8 @@ name|this
 operator|.
 name|end
 operator|=
+name|this
+operator|.
 name|in
 operator|.
 name|getPos
@@ -6525,13 +6601,15 @@ name|cleanup
 argument_list|(
 name|LOG
 argument_list|,
+name|this
+operator|.
 name|in
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Override this method to specialize the type of      * {@link FSDataInputStream} returned.      */
+comment|/**      * Override this method to specialize the type of      * {@link FSDataInputStream} returned.      * @param fs The file system used to open the file.      * @param file The file being read.      * @param bufferSize The buffer size used to read the file.      * @param length The length being read if it is>= 0.  Otherwise,      *               the length is not available.      * @return The opened stream.      * @throws IOException      */
 DECL|method|openFile (FileSystem fs, Path file, int bufferSize, long length)
 specifier|protected
 name|FSDataInputStream
@@ -6636,7 +6714,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|file
+name|this
 operator|+
 literal|" not a SequenceFile"
 argument_list|)
@@ -9785,6 +9863,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|file
+operator|==
+literal|null
+condition|?
+literal|"<unknown>"
+else|:
 name|file
 operator|.
 name|toString
@@ -13958,6 +14042,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|segmentPathName
+argument_list|,
+literal|null
 argument_list|,
 name|bufferSize
 argument_list|,
