@@ -855,6 +855,17 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't get unix username, using "
+operator|+
+name|DEFAULT_USERNAME
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|userName
 operator|=
 name|DEFAULT_USERNAME
@@ -903,6 +914,17 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't get unix groups, using "
+operator|+
+name|DEFAULT_GROUP
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|groupNames
 operator|=
 operator|new
