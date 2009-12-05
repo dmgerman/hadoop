@@ -1009,7 +1009,16 @@ name|IllegalArgumentException
 name|iae
 parameter_list|)
 block|{
-name|assertEquals
+name|assertTrue
+argument_list|(
+literal|"Exception should specify parsing error and invalid umask: "
+operator|+
+name|iae
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|isCorrectExceptionMessage
 argument_list|(
 name|iae
 operator|.
@@ -1018,9 +1027,45 @@ argument_list|()
 argument_list|,
 name|b
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|isCorrectExceptionMessage (String msg, String umask)
+specifier|private
+name|boolean
+name|isCorrectExceptionMessage
+parameter_list|(
+name|String
+name|msg
+parameter_list|,
+name|String
+name|umask
+parameter_list|)
+block|{
+return|return
+name|msg
+operator|.
+name|contains
+argument_list|(
+literal|"Unable to parse"
+argument_list|)
+operator|&&
+name|msg
+operator|.
+name|contains
+argument_list|(
+name|umask
+argument_list|)
+operator|&&
+name|msg
+operator|.
+name|contains
+argument_list|(
+literal|"octal or symbolic"
+argument_list|)
+return|;
 block|}
 comment|// Ensure that when the deprecated decimal umask key is used, it is correctly
 comment|// parsed as such and converted correctly to an FsPermission value

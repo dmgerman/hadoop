@@ -54,34 +54,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -158,22 +130,6 @@ name|FsPermission
 implements|implements
 name|Writable
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|FsPermission
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|field|FACTORY
 specifier|static
 specifier|final
@@ -863,7 +819,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** umask property label Deprecated key may be removed in version .23 */
+comment|/** umask property label deprecated key and code in getUMask method    *  to accommodate it may be removed in version .23 */
 DECL|field|DEPRECATED_UMASK_LABEL
 specifier|public
 specifier|static
@@ -938,6 +894,8 @@ literal|null
 condition|)
 block|{
 comment|// UMASK_LABEL is set
+try|try
+block|{
 if|if
 condition|(
 name|conf
@@ -969,6 +927,41 @@ operator|.
 name|getUMask
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+comment|// Provide more explanation for user-facing message
+name|String
+name|type
+init|=
+name|iae
+operator|instanceof
+name|NumberFormatException
+condition|?
+literal|"decimal"
+else|:
+literal|"octal or symbolic"
+decl_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unable to parse "
+operator|+
+name|confUmask
+operator|+
+literal|" as "
+operator|+
+name|type
+operator|+
+literal|" umask."
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 return|return
