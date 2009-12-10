@@ -2466,15 +2466,6 @@ operator|+
 literal|" after webserver start"
 argument_list|)
 expr_stmt|;
-name|Random
-name|r
-init|=
-operator|new
-name|Random
-argument_list|(
-literal|1000
-argument_list|)
-decl_stmt|;
 for|for
 control|(
 name|int
@@ -2520,10 +2511,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|r
-operator|.
-name|nextInt
-argument_list|()
+literal|1000
 argument_list|)
 expr_stmt|;
 name|listener
