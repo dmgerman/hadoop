@@ -42,6 +42,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|RawComparator
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Wraps a legacy {@link Serialization} as a {@link SerializationBase}.  *</p>  *   * @param<T>  */
 end_comment
@@ -334,6 +348,36 @@ name|c
 argument_list|)
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRawComparator (Map<String, String> metadata)
+specifier|public
+name|RawComparator
+argument_list|<
+name|T
+argument_list|>
+name|getRawComparator
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+parameter_list|)
+block|{
+comment|// Since this method is being added to an API meant to provide legacy
+comment|// compatability with deprecated serializers, leaving this as an incomplete
+comment|// stub.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"LegacySerialization does not provide raw comparators"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

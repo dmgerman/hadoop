@@ -52,6 +52,20 @@ name|Configured
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|RawComparator
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Encapsulates a {@link SerializerBase}/{@link DeserializerBase} pair.  *</p>  *   * @param<T>  */
 end_comment
@@ -345,6 +359,25 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/** Provide a raw comparator for the specified serializable class.    * Requires a serialization-specific metadata entry to name the class    * to compare (e.g., "Serialized-Class" for JavaSerialization and    * WritableSerialization).    * @param metadata a set of string mappings providing serialization-specific    * arguments that parameterize the data being serialized/compared.    * @return a {@link RawComparator} for the given metadata.    * @throws UnsupportedOperationException if it cannot instantiate a RawComparator    * for this given metadata.    */
+DECL|method|getRawComparator (Map<String,String> metadata)
+specifier|public
+specifier|abstract
+name|RawComparator
+argument_list|<
+name|T
+argument_list|>
+name|getRawComparator
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|metadata
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

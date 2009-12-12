@@ -382,14 +382,11 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getSchema (Object t, Map<String, String> metadata)
+DECL|method|getSchema (Map<String, String> metadata)
 specifier|protected
 name|Schema
 name|getSchema
 parameter_list|(
-name|Object
-name|t
-parameter_list|,
 name|Map
 argument_list|<
 name|String
@@ -399,6 +396,17 @@ argument_list|>
 name|metadata
 parameter_list|)
 block|{
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|c
+init|=
+name|getClassFromMetadata
+argument_list|(
+name|metadata
+argument_list|)
+decl_stmt|;
 return|return
 name|ReflectData
 operator|.
@@ -407,10 +415,7 @@ argument_list|()
 operator|.
 name|getSchema
 argument_list|(
-name|t
-operator|.
-name|getClass
-argument_list|()
+name|c
 argument_list|)
 return|;
 block|}
