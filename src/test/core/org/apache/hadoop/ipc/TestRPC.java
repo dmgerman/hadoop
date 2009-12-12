@@ -985,6 +985,10 @@ name|RPC
 operator|.
 name|getServer
 argument_list|(
+name|TestProtocol
+operator|.
+name|class
+argument_list|,
 operator|new
 name|TestImpl
 argument_list|()
@@ -1198,6 +1202,10 @@ name|RPC
 operator|.
 name|getServer
 argument_list|(
+name|TestProtocol
+operator|.
+name|class
+argument_list|,
 operator|new
 name|TestImpl
 argument_list|()
@@ -1718,10 +1726,6 @@ name|Object
 index|[]
 name|voids
 init|=
-operator|(
-name|Object
-index|[]
-operator|)
 name|RPC
 operator|.
 name|call
@@ -1910,6 +1914,10 @@ name|RPC
 operator|.
 name|getServer
 argument_list|(
+name|TestProtocol
+operator|.
+name|class
+argument_list|,
 operator|new
 name|TestImpl
 argument_list|()
