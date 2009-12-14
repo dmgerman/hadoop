@@ -434,25 +434,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Using "
-operator|+
-name|impl
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" for "
-operator|+
-name|protocol
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|engine
 operator|=
 operator|(
