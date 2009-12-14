@@ -7535,6 +7535,11 @@ operator|+
 literal|"\t\tThis is equivalent to -chown ... :GROUP ...\n"
 decl_stmt|;
 name|String
+name|expunge
+init|=
+literal|"-expunge: Empty the Trash.\n"
+decl_stmt|;
+name|String
 name|help
 init|=
 literal|"-help [cmd]: \tDisplays help for given command or all commands if none\n"
@@ -7726,6 +7731,27 @@ operator|.
 name|println
 argument_list|(
 name|rm
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"expunge"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|expunge
 argument_list|)
 expr_stmt|;
 block|}
