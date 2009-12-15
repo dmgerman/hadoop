@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Filesystem disk space usage statistics.  Uses the unix 'df' program.  * Tested on Linux, FreeBSD, Cygwin. */
+comment|/** Filesystem disk space usage statistics.  * Uses the unix 'df' program to get mount points, and java.io.File for  * space utilization. Tested on Linux, FreeBSD, Cygwin. */
 end_comment
 
 begin_class
@@ -120,6 +120,7 @@ name|DF
 extends|extends
 name|Shell
 block|{
+comment|/** Default DF refresh interval. */
 DECL|field|DF_INTERVAL_DEFAULT
 specifier|public
 specifier|static
@@ -131,36 +132,22 @@ literal|3
 operator|*
 literal|1000
 decl_stmt|;
-comment|// default DF refresh interval
 DECL|field|dirPath
 specifier|private
+specifier|final
 name|String
 name|dirPath
+decl_stmt|;
+DECL|field|dirFile
+specifier|private
+specifier|final
+name|File
+name|dirFile
 decl_stmt|;
 DECL|field|filesystem
 specifier|private
 name|String
 name|filesystem
-decl_stmt|;
-DECL|field|capacity
-specifier|private
-name|long
-name|capacity
-decl_stmt|;
-DECL|field|used
-specifier|private
-name|long
-name|used
-decl_stmt|;
-DECL|field|available
-specifier|private
-name|long
-name|available
-decl_stmt|;
-DECL|field|percentUsed
-specifier|private
-name|int
-name|percentUsed
 decl_stmt|;
 DECL|field|mount
 specifier|private
@@ -385,6 +372,18 @@ operator|.
 name|getCanonicalPath
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|dirFile
+operator|=
+operator|new
+name|File
+argument_list|(
+name|this
+operator|.
+name|dirPath
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getOSType ()
 specifier|protected
@@ -397,6 +396,7 @@ name|OS_TYPE
 return|;
 block|}
 comment|/// ACCESSORS
+comment|/** @return the canonical path to the volume we're checking. */
 DECL|method|getDirPath ()
 specifier|public
 name|String
@@ -407,6 +407,7 @@ return|return
 name|dirPath
 return|;
 block|}
+comment|/** @return a string indicating which filesystem volume we're checking. */
 DECL|method|getFilesystem ()
 specifier|public
 name|String
@@ -422,66 +423,96 @@ return|return
 name|filesystem
 return|;
 block|}
+comment|/** @return the capacity of the measured filesystem in bytes. */
 DECL|method|getCapacity ()
 specifier|public
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|run
-argument_list|()
-expr_stmt|;
 return|return
-name|capacity
+name|dirFile
+operator|.
+name|getTotalSpace
+argument_list|()
 return|;
 block|}
+comment|/** @return the total used space on the filesystem in bytes. */
 DECL|method|getUsed ()
 specifier|public
 name|long
 name|getUsed
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|run
-argument_list|()
-expr_stmt|;
 return|return
-name|used
+name|dirFile
+operator|.
+name|getTotalSpace
+argument_list|()
+operator|-
+name|dirFile
+operator|.
+name|getFreeSpace
+argument_list|()
 return|;
 block|}
+comment|/** @return the usable space remaining on the filesystem in bytes. */
 DECL|method|getAvailable ()
 specifier|public
 name|long
 name|getAvailable
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|run
-argument_list|()
-expr_stmt|;
 return|return
-name|available
+name|dirFile
+operator|.
+name|getUsableSpace
+argument_list|()
 return|;
 block|}
+comment|/** @return the amount of the volume full, as a percent. */
 DECL|method|getPercentUsed ()
 specifier|public
 name|int
 name|getPercentUsed
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|run
+name|double
+name|cap
+init|=
+operator|(
+name|double
+operator|)
+name|getCapacity
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+name|double
+name|used
+init|=
+operator|(
+name|cap
+operator|-
+operator|(
+name|double
+operator|)
+name|getAvailable
+argument_list|()
+operator|)
+decl_stmt|;
 return|return
-name|percentUsed
+call|(
+name|int
+call|)
+argument_list|(
+name|used
+operator|*
+literal|100.0
+operator|/
+name|cap
+argument_list|)
 return|;
 block|}
+comment|/** @return the filesystem mount point for the indicated volume */
 DECL|method|getMount ()
 specifier|public
 name|String
@@ -514,25 +545,29 @@ name|filesystem
 operator|+
 literal|"\t"
 operator|+
-name|capacity
+name|getCapacity
+argument_list|()
 operator|/
 literal|1024
 operator|+
 literal|"\t"
 operator|+
-name|used
+name|getUsed
+argument_list|()
 operator|/
 literal|1024
 operator|+
 literal|"\t"
 operator|+
-name|available
+name|getAvailable
+argument_list|()
 operator|/
 literal|1024
 operator|+
 literal|"\t"
 operator|+
-name|percentUsed
+name|getPercentUsed
+argument_list|()
 operator|+
 literal|"%\t"
 operator|+
@@ -680,10 +715,6 @@ block|{
 case|case
 name|OS_TYPE_AIX
 case|:
-name|this
-operator|.
-name|capacity
-operator|=
 name|Long
 operator|.
 name|parseLong
@@ -693,13 +724,8 @@ operator|.
 name|nextToken
 argument_list|()
 argument_list|)
-operator|*
-literal|1024
 expr_stmt|;
-name|this
-operator|.
-name|available
-operator|=
+comment|// capacity
 name|Long
 operator|.
 name|parseLong
@@ -709,13 +735,8 @@ operator|.
 name|nextToken
 argument_list|()
 argument_list|)
-operator|*
-literal|1024
 expr_stmt|;
-name|this
-operator|.
-name|percentUsed
-operator|=
+comment|// available
 name|Integer
 operator|.
 name|parseInt
@@ -726,6 +747,7 @@ name|nextToken
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// pct used
 name|tokens
 operator|.
 name|nextToken
@@ -745,18 +767,6 @@ operator|.
 name|nextToken
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|used
-operator|=
-name|this
-operator|.
-name|capacity
-operator|-
-name|this
-operator|.
-name|available
-expr_stmt|;
 break|break;
 case|case
 name|OS_TYPE_WIN
@@ -771,10 +781,6 @@ case|case
 name|OS_TYPE_UNIX
 case|:
 default|default:
-name|this
-operator|.
-name|capacity
-operator|=
 name|Long
 operator|.
 name|parseLong
@@ -784,13 +790,8 @@ operator|.
 name|nextToken
 argument_list|()
 argument_list|)
-operator|*
-literal|1024
 expr_stmt|;
-name|this
-operator|.
-name|used
-operator|=
+comment|// capacity
 name|Long
 operator|.
 name|parseLong
@@ -800,13 +801,8 @@ operator|.
 name|nextToken
 argument_list|()
 argument_list|)
-operator|*
-literal|1024
 expr_stmt|;
-name|this
-operator|.
-name|available
-operator|=
+comment|// used
 name|Long
 operator|.
 name|parseLong
@@ -816,13 +812,8 @@ operator|.
 name|nextToken
 argument_list|()
 argument_list|)
-operator|*
-literal|1024
 expr_stmt|;
-name|this
-operator|.
-name|percentUsed
-operator|=
+comment|// available
 name|Integer
 operator|.
 name|parseInt
@@ -833,6 +824,7 @@ name|nextToken
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// pct used
 name|this
 operator|.
 name|mount
