@@ -60,6 +60,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -542,24 +552,50 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-return|return
-name|URI
-operator|.
-name|create
-argument_list|(
-name|fixName
-argument_list|(
+try|try
+block|{
+name|String
+name|uri
+init|=
 name|conf
 operator|.
 name|get
 argument_list|(
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-name|DEFAULT_FS
+literal|null
 argument_list|)
+decl_stmt|;
+name|checkName
+argument_list|(
+name|uri
 argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|URI
+argument_list|(
+name|uri
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// fs.default.name not set, or set to an invalid value. Create
+comment|// one based on a known-good URI
+return|return
+name|URI
+operator|.
+name|create
+argument_list|(
+name|DEFAULT_FS
+argument_list|)
+return|;
+block|}
 block|}
 comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
 DECL|method|setDefaultUri (Configuration conf, URI uri)
@@ -588,7 +624,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
+comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    * @throws IOException if the URI is invalid.    */
 DECL|method|setDefaultUri (Configuration conf, String uri)
 specifier|public
 specifier|static
@@ -601,7 +637,14 @@ parameter_list|,
 name|String
 name|uri
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+name|checkName
+argument_list|(
+name|uri
+argument_list|)
+expr_stmt|;
 name|setDefaultUri
 argument_list|(
 name|conf
@@ -610,10 +653,7 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|fixName
-argument_list|(
 name|uri
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -655,85 +695,152 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
-comment|/** Update old-format filesystem names, for back-compatibility.  This should    * eventually be replaced with a checkName() method that throws an exception    * for old-format names. */
-DECL|method|fixName (String name)
+comment|/** Checks that a FileSystem name is given in an understandable format.    * The old "local" alias for "file:///" is unsupported, as are any    * URIs without a scheme component.    * @throws IOException if a name is in an unsupported format    */
+DECL|method|checkName (String name)
 specifier|private
 specifier|static
-name|String
-name|fixName
+name|void
+name|checkName
 parameter_list|(
 name|String
 name|name
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-comment|// convert old-format name to new-format name
 if|if
 condition|(
+literal|null
+operator|==
 name|name
-operator|.
-name|equals
-argument_list|(
-literal|"local"
-argument_list|)
 condition|)
 block|{
-comment|// "local" is now "file:///".
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"\"local\" is a deprecated filesystem name."
-operator|+
-literal|" Use \"file:///\" instead."
+literal|"Null FS name provided to checkName()"
 argument_list|)
-expr_stmt|;
-name|name
-operator|=
-literal|"file:///"
-expr_stmt|;
+throw|;
 block|}
 elseif|else
 if|if
 condition|(
-name|name
+literal|"local"
 operator|.
-name|indexOf
+name|equals
 argument_list|(
-literal|'/'
+name|name
 argument_list|)
-operator|==
-operator|-
-literal|1
 condition|)
 block|{
-comment|// unqualified is "hdfs://"
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-literal|"\""
-operator|+
-name|name
-operator|+
-literal|"\" is a deprecated filesystem name."
-operator|+
-literal|" Use \"hdfs://"
-operator|+
-name|name
-operator|+
-literal|"/\" instead."
+literal|"FileSystem 'local' is not supported; use 'file:///'"
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
+else|else
+block|{
+comment|// Try parsing this into a URI
+try|try
+block|{
+name|URI
+name|uri
+init|=
+operator|new
+name|URI
+argument_list|(
 name|name
-operator|=
-literal|"hdfs://"
+argument_list|)
+decl_stmt|;
+comment|// No scheme; don't know how to parse this.
+if|if
+condition|(
+literal|null
+operator|==
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"FileSystem name '"
 operator|+
 name|name
-expr_stmt|;
-block|}
-return|return
+operator|+
+literal|"' is provided in an unsupported format. (Try 'hdfs://"
+operator|+
 name|name
-return|;
+operator|+
+literal|"' instead?)"
+argument_list|)
+throw|;
+block|}
+comment|// This may have been a misparse. java.net.URI specifies that
+comment|// a URI is of the form:
+comment|// URI ::= [SCHEME-PART:]SCHEME-SPECIFIC-PART
+comment|//
+comment|// The scheme-specific-part may be parsed in numerous ways, but if
+comment|// it starts with a '/' character, that makes it a "hierarchical URI",
+comment|// subject to the following parsing:
+comment|// SCHEME-SPECIFIC-PART ::= "//" AUTHORITY-PART
+comment|// AUTHORITY-PART ::= [USER-INFO-PART] HOSTNAME [ ":" PORT ]
+comment|//
+comment|// In Hadoop, we require a host-based authority as well.
+comment|// java.net.URI parses left-to-right, so deprecated hostnames of the
+comment|// form 'foo:8020' will have 'foo' as their scheme and '8020' as their
+comment|// scheme-specific-part. We don't want this behavior.
+if|if
+condition|(
+literal|null
+operator|==
+name|uri
+operator|.
+name|getAuthority
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"FileSystem name '"
+operator|+
+name|name
+operator|+
+literal|"' is provided in an unsupported format. (Try 'hdfs://"
+operator|+
+name|name
+operator|+
+literal|"' instead?)"
+argument_list|)
+throw|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|use
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"FileSystem name cannot be understood as a URI"
+argument_list|,
+name|use
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 comment|/**    * Get the local file syste    * @param conf the configuration to configure the file system with    * @return a LocalFileSystem    */
 DECL|method|getLocal (Configuration conf)
