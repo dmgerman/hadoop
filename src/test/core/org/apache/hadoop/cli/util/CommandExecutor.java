@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|cli
+operator|.
+name|CLITestHelper
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -55,20 +69,6 @@ operator|.
 name|util
 operator|.
 name|StringTokenizer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|cli
-operator|.
-name|TestCLI
 import|;
 end_import
 
@@ -183,7 +183,7 @@ argument_list|,
 operator|new
 name|File
 argument_list|(
-name|TestCLI
+name|CLITestHelper
 operator|.
 name|TEST_CACHE_DATA_DIR
 argument_list|)
