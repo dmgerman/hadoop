@@ -3186,6 +3186,60 @@ return|return
 name|result
 return|;
 block|}
+comment|/**        * Quote the url so that users specifying the HOST HTTP header        * can't inject attacks.        */
+annotation|@
+name|Override
+DECL|method|getRequestURL ()
+specifier|public
+name|StringBuffer
+name|getRequestURL
+parameter_list|()
+block|{
+name|String
+name|url
+init|=
+name|rawRequest
+operator|.
+name|getRequestURL
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|StringBuffer
+argument_list|(
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
+name|url
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**        * Quote the server name so that users specifying the HOST HTTP header        * can't inject attacks.        */
+annotation|@
+name|Override
+DECL|method|getServerName ()
+specifier|public
+name|String
+name|getServerName
+parameter_list|()
+block|{
+return|return
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
+name|rawRequest
+operator|.
+name|getServerName
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -3241,6 +3295,24 @@ operator|)
 name|request
 argument_list|)
 decl_stmt|;
+specifier|final
+name|HttpServletResponse
+name|httpResponse
+init|=
+operator|(
+name|HttpServletResponse
+operator|)
+name|response
+decl_stmt|;
+comment|// set the default to UTF-8 so that we don't need to worry about IE7
+comment|// choosing to interpret the special characters as UTF-7
+name|httpResponse
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/html;charset=utf-8"
+argument_list|)
+expr_stmt|;
 name|chain
 operator|.
 name|doFilter
