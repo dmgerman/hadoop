@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
 name|framework
@@ -88,7 +78,33 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileContextTestHelper
+operator|.
+name|*
 import|;
 end_import
 
@@ -144,64 +160,6 @@ specifier|protected
 name|FileContext
 name|fc2
 decl_stmt|;
-DECL|field|BLOCK_SIZE
-specifier|private
-specifier|static
-name|int
-name|BLOCK_SIZE
-init|=
-literal|1024
-decl_stmt|;
-DECL|field|data
-specifier|private
-specifier|static
-name|byte
-index|[]
-name|data
-init|=
-operator|new
-name|byte
-index|[
-name|BLOCK_SIZE
-operator|*
-literal|2
-index|]
-decl_stmt|;
-comment|// two blocks of data
-block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|data
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|data
-index|[
-name|i
-index|]
-operator|=
-call|(
-name|byte
-call|)
-argument_list|(
-name|i
-operator|%
-literal|10
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|//Helper method to make path qualified
 DECL|method|qualifiedPath (String path, FileContext fc)
 specifier|protected
@@ -230,66 +188,16 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|// Helper method to create file and write data to file
-DECL|method|createFile (Path path, FileContext fc)
-specifier|protected
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
 name|void
-name|createFile
-parameter_list|(
-name|Path
-name|path
-parameter_list|,
-name|FileContext
-name|fc
-parameter_list|)
+name|setUp
+parameter_list|()
 throws|throws
-name|IOException
-block|{
-name|FSDataOutputStream
-name|out
-init|=
-name|fc
-operator|.
-name|create
-argument_list|(
-name|path
-argument_list|,
-name|EnumSet
-operator|.
-name|of
-argument_list|(
-name|CreateFlag
-operator|.
-name|CREATE
-argument_list|)
-argument_list|,
-name|Options
-operator|.
-name|CreateOpts
-operator|.
-name|createParent
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|out
-operator|.
-name|write
-argument_list|(
-name|data
-argument_list|,
-literal|0
-argument_list|,
-name|data
-operator|.
-name|length
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
+name|Exception
+block|{ }
 annotation|@
 name|After
 DECL|method|tearDown ()
@@ -385,9 +293,9 @@ expr_stmt|;
 comment|// Now create file
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Ensure fc2 has the created file
@@ -448,9 +356,9 @@ expr_stmt|;
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -511,9 +419,9 @@ expr_stmt|;
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Create same file with fc1
@@ -521,9 +429,9 @@ try|try
 block|{
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc2
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -597,9 +505,9 @@ expr_stmt|;
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Ensure using fc2 that file is created
@@ -1075,14 +983,14 @@ expr_stmt|;
 comment|// Create file on fc1 using fc2 context
 name|createFile
 argument_list|(
+name|fc1
+argument_list|,
 name|qualifiedPath
 argument_list|(
 literal|"test/hadoop/file"
 argument_list|,
 name|fc2
 argument_list|)
-argument_list|,
-name|fc1
 argument_list|)
 expr_stmt|;
 name|Path
@@ -1339,9 +1247,9 @@ expr_stmt|;
 comment|// First create a file on file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Ensure file exist
@@ -1439,9 +1347,9 @@ comment|// TestCase2 : Create , Delete , Delete file
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Ensure file exist
@@ -1559,9 +1467,9 @@ comment|// TestCase2 : Create , Delete , Delete file
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Ensure file exist
@@ -2024,9 +1932,9 @@ decl_stmt|;
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|testPath
-argument_list|,
 name|fc1
+argument_list|,
+name|testPath
 argument_list|)
 expr_stmt|;
 comment|// Get modification time using fc2 and fc1
@@ -2099,9 +2007,9 @@ decl_stmt|;
 comment|// Create a file on fc2's file system using fc1
 name|createFile
 argument_list|(
-name|path2
-argument_list|,
 name|fc1
+argument_list|,
+name|path2
 argument_list|)
 expr_stmt|;
 name|FsStatus
