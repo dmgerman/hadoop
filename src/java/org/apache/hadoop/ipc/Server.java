@@ -524,6 +524,20 @@ name|AuthorizationException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
 begin_comment
 comment|/** An abstract IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Client  */
 end_comment
@@ -4302,19 +4316,45 @@ argument_list|)
 throw|;
 block|}
 comment|// TODO: Get the user name from the GSS API for Kerberbos-based security
-comment|// Create the user subject
+comment|// Create the user subject; however use the groups as defined on the
+comment|// server-side, don't trust the user groups provided by the client
+name|UserGroupInformation
+name|ugi
+init|=
+name|header
+operator|.
+name|getUgi
+argument_list|()
+decl_stmt|;
+name|user
+operator|=
+literal|null
+expr_stmt|;
+if|if
+condition|(
+name|ugi
+operator|!=
+literal|null
+condition|)
+block|{
 name|user
 operator|=
 name|SecurityUtil
 operator|.
 name|getSubject
 argument_list|(
+name|conf
+argument_list|,
 name|header
 operator|.
 name|getUgi
 argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|processData ()
 specifier|private
@@ -4379,7 +4419,7 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// read param
+comment|//read param
 name|param
 operator|.
 name|readFields

@@ -703,6 +703,24 @@ name|HADOOP_UTIL_HASH_TYPE_DEFAULT
 init|=
 literal|"murmur"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_GROUP_MAPPING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUP_MAPPING
+init|=
+literal|"hadoop.security.group.mapping"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_SECS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUPS_CACHE_SECS
+init|=
+literal|"hadoop.security.groups.cache.secs"
+decl_stmt|;
 block|}
 end_class
 

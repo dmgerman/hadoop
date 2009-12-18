@@ -393,23 +393,28 @@ name|length
 argument_list|()
 operator|==
 literal|0
-operator|||
-name|groupNames
-operator|==
-literal|null
-operator|||
-name|groupNames
-operator|.
-name|length
-operator|==
-literal|0
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Parameters should not be null or an empty string/array"
+literal|"username should not be null nor empty"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|groupNames
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"group names array should not be null"
 argument_list|)
 throw|;
 block|}

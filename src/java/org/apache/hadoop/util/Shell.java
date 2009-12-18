@@ -201,6 +201,35 @@ literal|"groups"
 block|}
 return|;
 block|}
+comment|/** a Unix command to get a given user's groups list */
+DECL|method|getGROUPS_FOR_USER_COMMAND (final String user)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getGROUPS_FOR_USER_COMMAND
+parameter_list|(
+specifier|final
+name|String
+name|user
+parameter_list|)
+block|{
+comment|//'groups username' command return is non-consistent across different unixes
+return|return
+operator|new
+name|String
+index|[]
+block|{
+literal|"bash"
+block|,
+literal|"-c"
+block|,
+literal|"id -Gn "
+operator|+
+name|user
+block|}
+return|;
+block|}
 comment|/** a Unix command to set permission */
 DECL|field|SET_PERMISSION_COMMAND
 specifier|public
