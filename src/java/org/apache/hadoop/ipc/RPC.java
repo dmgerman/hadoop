@@ -670,6 +670,7 @@ return|;
 block|}
 comment|/**    * Get a proxy connection to a remote server    * @param protocol protocol class    * @param clientVersion client version    * @param addr remote address    * @param conf configuration to use    * @param timeout time in milliseconds before giving up    * @return the proxy    * @throws IOException if the far end through a RemoteException    */
 DECL|method|waitForProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf, long timeout)
+specifier|public
 specifier|static
 name|Object
 name|waitForProxy
