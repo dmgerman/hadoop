@@ -72,6 +72,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|CodeSource
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|Permissions
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -382,6 +402,25 @@ name|permission
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}    * @return a writable permission collection    */
+annotation|@
+name|Override
+DECL|method|getPermissions (CodeSource codesource)
+specifier|public
+name|PermissionCollection
+name|getPermissions
+parameter_list|(
+name|CodeSource
+name|codesource
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Permissions
+argument_list|()
+return|;
+block|}
+comment|/**    * {@inheritDoc}    * @return a writable permission collection    */
 annotation|@
 name|Override
 DECL|method|getPermissions (ProtectionDomain domain)
@@ -796,6 +835,28 @@ name|principal
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * For debugging: identify ourselves and the policyproviders     *    * @return a string representation of the object.    */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Hadoop ConfiguredPolicy "
+operator|+
+name|super
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" Policy provider "
+operator|+
+name|policyProvider
+return|;
 block|}
 block|}
 end_class
