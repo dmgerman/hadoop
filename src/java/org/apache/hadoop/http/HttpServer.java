@@ -623,6 +623,22 @@ name|MAX_RETRIES
 init|=
 literal|10
 decl_stmt|;
+DECL|field|STATE_DESCRIPTION_ALIVE
+specifier|static
+specifier|final
+name|String
+name|STATE_DESCRIPTION_ALIVE
+init|=
+literal|" - alive"
+decl_stmt|;
+DECL|field|STATE_DESCRIPTION_NOT_LIVE
+specifier|static
+specifier|final
+name|String
+name|STATE_DESCRIPTION_NOT_LIVE
+init|=
+literal|" - not live"
+decl_stmt|;
 comment|/** Same as this(name, bindAddress, port, findPort, null); */
 DECL|method|HttpServer (String name, String bindAddress, int port, boolean findPort )
 specifier|public
@@ -2616,11 +2632,36 @@ operator|!
 name|findPort
 condition|)
 block|{
-throw|throw
-operator|(
 name|BindException
-operator|)
+name|be
+init|=
+operator|new
+name|BindException
+argument_list|(
+literal|"Port in use: "
+operator|+
+name|listener
+operator|.
+name|getHost
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|listener
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|be
+operator|.
+name|initCause
+argument_list|(
 name|ex
+argument_list|)
+expr_stmt|;
+throw|throw
+name|be
 throw|;
 block|}
 block|}
@@ -2728,6 +2769,68 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Test for the availability of the web server    * @return true if the web server is started, false otherwise    */
+DECL|method|isAlive ()
+specifier|public
+name|boolean
+name|isAlive
+parameter_list|()
+block|{
+return|return
+name|webServer
+operator|!=
+literal|null
+operator|&&
+name|webServer
+operator|.
+name|isStarted
+argument_list|()
+return|;
+block|}
+comment|/**    * Return the host and port of the HttpServer, if live    * @return the classname and any HTTP URL    */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|listener
+operator|!=
+literal|null
+condition|?
+operator|(
+literal|"HttpServer at http://"
+operator|+
+name|listener
+operator|.
+name|getHost
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|listener
+operator|.
+name|getLocalPort
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+operator|(
+name|isAlive
+argument_list|()
+condition|?
+name|STATE_DESCRIPTION_ALIVE
+else|:
+name|STATE_DESCRIPTION_NOT_LIVE
+operator|)
+operator|)
+else|:
+literal|"Inactive HttpServer"
+return|;
 block|}
 comment|/**    * A very simple servlet to serve up a text representation of the current    * stack traces. It both returns the stacks to the caller and logs them.    * Currently the stack traces are done sequentially rather than exactly the    * same data.    */
 DECL|class|StackServlet
