@@ -588,6 +588,23 @@ name|MAX_QUEUE_SIZE_PER_HANDLER
 init|=
 literal|100
 decl_stmt|;
+comment|/**    * Initial and max size of response buffer    */
+DECL|field|INITIAL_RESP_BUF_SIZE
+specifier|static
+name|int
+name|INITIAL_RESP_BUF_SIZE
+init|=
+literal|10240
+decl_stmt|;
+DECL|field|MAX_RESP_BUF_SIZE
+specifier|static
+name|int
+name|MAX_RESP_BUF_SIZE
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -4606,7 +4623,7 @@ init|=
 operator|new
 name|ByteArrayOutputStream
 argument_list|(
-literal|10240
+name|INITIAL_RESP_BUF_SIZE
 argument_list|)
 decl_stmt|;
 while|while
@@ -4861,6 +4878,46 @@ argument_list|,
 name|error
 argument_list|)
 expr_stmt|;
+comment|// Discard the large buf and reset it back to
+comment|// smaller size to freeup heap
+if|if
+condition|(
+name|buf
+operator|.
+name|size
+argument_list|()
+operator|>
+name|MAX_RESP_BUF_SIZE
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Large response size "
+operator|+
+name|buf
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" for call "
+operator|+
+name|call
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|buf
+operator|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|(
+name|INITIAL_RESP_BUF_SIZE
+argument_list|)
+expr_stmt|;
+block|}
 name|responder
 operator|.
 name|doRespond
