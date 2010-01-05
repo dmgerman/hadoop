@@ -90,6 +90,26 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|IntBuffer
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a generic input stream for verifying checksums for  * data before it is read by a user.  */
 end_comment
@@ -137,34 +157,50 @@ name|verifyChecksum
 init|=
 literal|true
 decl_stmt|;
+DECL|field|maxChunkSize
+specifier|private
+name|int
+name|maxChunkSize
+decl_stmt|;
+comment|// data bytes for checksum (eg 512)
 DECL|field|buf
 specifier|private
 name|byte
 index|[]
 name|buf
 decl_stmt|;
+comment|// buffer for non-chunk-aligned reading
 DECL|field|checksum
 specifier|private
 name|byte
 index|[]
 name|checksum
 decl_stmt|;
+DECL|field|checksumInts
+specifier|private
+name|IntBuffer
+name|checksumInts
+decl_stmt|;
+comment|// wrapper on checksum buffer
 DECL|field|pos
 specifier|private
 name|int
 name|pos
 decl_stmt|;
+comment|// the position of the reader inside buf
 DECL|field|count
 specifier|private
 name|int
 name|count
 decl_stmt|;
+comment|// the number of bytes currently in buf
 DECL|field|numOfRetries
 specifier|private
 name|int
 name|numOfRetries
 decl_stmt|;
 comment|// cached file position
+comment|// this should always be a multiple of maxChunkSize
 DECL|field|chunkPos
 specifier|private
 name|long
@@ -172,6 +208,29 @@ name|chunkPos
 init|=
 literal|0
 decl_stmt|;
+comment|// Number of checksum chunks that can be read at once into a user
+comment|// buffer. Chosen by benchmarks - higher values do not reduce
+comment|// CPU usage. The size of the data reads made to the underlying stream
+comment|// will be CHUNKS_PER_READ * maxChunkSize.
+DECL|field|CHUNKS_PER_READ
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|CHUNKS_PER_READ
+init|=
+literal|32
+decl_stmt|;
+DECL|field|CHECKSUM_SIZE
+specifier|protected
+specifier|static
+specifier|final
+name|int
+name|CHECKSUM_SIZE
+init|=
+literal|4
+decl_stmt|;
+comment|// 32-bit checksum
 comment|/** Constructor    *     * @param file The name of the file to be read    * @param numOfRetries Number of read retries when ChecksumError occurs    */
 DECL|method|FSInputChecker ( Path file, int numOfRetries)
 specifier|protected
@@ -240,7 +299,7 @@ name|checksumSize
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Reads in next checksum chunk data into<code>buf</code> at<code>offset</code>    * and checksum into<code>checksum</code>.    * The method is used for implementing read, therefore, it should be optimized    * for sequential reading    * @param pos chunkPos    * @param buf desitination buffer    * @param offset offset in buf at which to store data    * @param len maximun number of bytes to read    * @return number of bytes read    */
+comment|/**    * Reads in checksum chunks into<code>buf</code> at<code>offset</code>    * and checksum into<code>checksum</code>.    * Since checksums can be disabled, there are two cases implementors need    * to worry about:    *    *  (a) needChecksum() will return false:    *     - len can be any positive value    *     - checksum will be null    *     Implementors should simply pass through to the underlying data stream.    * or    *  (b) needChecksum() will return true:    *    - len>= maxChunkSize    *    - checksum.length is a multiple of CHECKSUM_SIZE    *    Implementors should read an integer number of data chunks into    *    buf. The amount read should be bounded by len or by     *    checksum.length / CHECKSUM_SIZE * maxChunkSize. Note that len may    *    be a value that is not a multiple of maxChunkSize, in which case    *    the implementation may return less than len.    *    * The method is used for implementing read, therefore, it should be optimized    * for sequential reading.    *    * @param pos chunkPos    * @param buf desitination buffer    * @param offset offset in buf at which to store data    * @param len maximum number of bytes to read    * @param checksum the data buffer into which to write checksums    * @return number of bytes read    */
 DECL|method|readChunk (long pos, byte[] buf, int offset, int len, byte[] checksum)
 specifier|abstract
 specifier|protected
@@ -489,9 +548,7 @@ name|buf
 argument_list|,
 literal|0
 argument_list|,
-name|buf
-operator|.
-name|length
+name|maxChunkSize
 argument_list|)
 expr_stmt|;
 if|if
@@ -542,9 +599,7 @@ if|if
 condition|(
 name|len
 operator|>=
-name|buf
-operator|.
-name|length
+name|maxChunkSize
 condition|)
 block|{
 comment|// read a chunk to user buffer directly; avoid one copy
@@ -628,8 +683,8 @@ return|return
 name|cnt
 return|;
 block|}
-comment|/* Read up one checksum chunk to array<i>b</i> at pos<i>off</i>    * It requires a checksum chunk boundary    * in between<cur_pos, cur_pos+len>     * and it stops reading at the boundary or at the end of the stream;    * Otherwise an IllegalArgumentException is thrown.    * This makes sure that all data read are checksum verified.    *     * @param b   the buffer into which the data is read.    * @param off the start offset in array<code>b</code>    *            at which the data is written.    * @param len the maximum number of bytes to read.    * @return    the total number of bytes read into the buffer, or    *<code>-1</code> if there is no more data because the end of    *            the stream has been reached.    * @throws IOException if an I/O error occurs.    */
-DECL|method|readChecksumChunk (byte b[], int off, int len)
+comment|/* Read up one or more checksum chunk to array<i>b</i> at pos<i>off</i>    * It requires at least one checksum chunk boundary    * in between<cur_pos, cur_pos+len>     * and it stops reading at the last boundary or at the end of the stream;    * Otherwise an IllegalArgumentException is thrown.    * This makes sure that all data read are checksum verified.    *     * @param b   the buffer into which the data is read.    * @param off the start offset in array<code>b</code>    *            at which the data is written.    * @param len the maximum number of bytes to read.    * @return    the total number of bytes read into the buffer, or    *<code>-1</code> if there is no more data because the end of    *            the stream has been reached.    * @throws IOException if an I/O error occurs.    */
+DECL|method|readChecksumChunk (byte b[], final int off, final int len)
 specifier|private
 name|int
 name|readChecksumChunk
@@ -638,9 +693,11 @@ name|byte
 name|b
 index|[]
 parameter_list|,
+specifier|final
 name|int
 name|off
 parameter_list|,
+specifier|final
 name|int
 name|len
 parameter_list|)
@@ -704,20 +761,13 @@ name|needChecksum
 argument_list|()
 condition|)
 block|{
-name|sum
-operator|.
-name|update
+name|verifySums
 argument_list|(
 name|b
 argument_list|,
 name|off
 argument_list|,
 name|read
-argument_list|)
-expr_stmt|;
-name|verifySum
-argument_list|(
-name|chunkPos
 argument_list|)
 expr_stmt|;
 block|}
@@ -819,27 +869,97 @@ return|return
 name|read
 return|;
 block|}
-comment|/* verify checksum for the chunk.    * @throws ChecksumException if there is a mismatch    */
-DECL|method|verifySum (long errPos)
+DECL|method|verifySums (final byte b[], final int off, int read)
 specifier|private
 name|void
-name|verifySum
+name|verifySums
 parameter_list|(
-name|long
-name|errPos
+specifier|final
+name|byte
+name|b
+index|[]
+parameter_list|,
+specifier|final
+name|int
+name|off
+parameter_list|,
+name|int
+name|read
 parameter_list|)
 throws|throws
 name|ChecksumException
 block|{
-name|long
-name|crc
+name|int
+name|leftToVerify
 init|=
-name|getChecksum
+name|read
+decl_stmt|;
+name|int
+name|verifyOff
+init|=
+literal|0
+decl_stmt|;
+name|checksumInts
+operator|.
+name|rewind
+argument_list|()
+expr_stmt|;
+name|checksumInts
+operator|.
+name|limit
+argument_list|(
+operator|(
+name|read
+operator|-
+literal|1
+operator|)
+operator|/
+name|maxChunkSize
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+while|while
+condition|(
+name|leftToVerify
+operator|>
+literal|0
+condition|)
+block|{
+name|sum
+operator|.
+name|update
+argument_list|(
+name|b
+argument_list|,
+name|off
+operator|+
+name|verifyOff
+argument_list|,
+name|Math
+operator|.
+name|min
+argument_list|(
+name|leftToVerify
+argument_list|,
+name|maxChunkSize
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|int
+name|expected
+init|=
+name|checksumInts
+operator|.
+name|get
 argument_list|()
 decl_stmt|;
-name|long
-name|sumValue
+name|int
+name|calculated
 init|=
+operator|(
+name|int
+operator|)
 name|sum
 operator|.
 name|getValue
@@ -852,11 +972,18 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|crc
+name|expected
 operator|!=
-name|sumValue
+name|calculated
 condition|)
 block|{
+name|long
+name|errPos
+init|=
+name|chunkPos
+operator|+
+name|verifyOff
+decl_stmt|;
 throw|throw
 operator|new
 name|ChecksumException
@@ -868,27 +995,32 @@ operator|+
 literal|" at "
 operator|+
 name|errPos
+operator|+
+literal|" exp: "
+operator|+
+name|expected
+operator|+
+literal|" got: "
+operator|+
+name|calculated
 argument_list|,
 name|errPos
 argument_list|)
 throw|;
 block|}
+name|leftToVerify
+operator|-=
+name|maxChunkSize
+expr_stmt|;
+name|verifyOff
+operator|+=
+name|maxChunkSize
+expr_stmt|;
 block|}
-comment|/* calculate checksum value */
-DECL|method|getChecksum ()
-specifier|private
-name|long
-name|getChecksum
-parameter_list|()
-block|{
-return|return
-name|checksum2long
-argument_list|(
-name|checksum
-argument_list|)
-return|;
 block|}
-comment|/** Convert a checksum byte array to a long */
+comment|/**    * Convert a checksum byte array to a long    * This is deprecated since 0.22 since it is no longer in use    * by this class.    */
+annotation|@
+name|Deprecated
 DECL|method|checksum2long (byte[] checksum)
 specifier|static
 specifier|public
@@ -1233,7 +1365,7 @@ return|;
 block|}
 block|}
 comment|/**    * Set the checksum related parameters    * @param verifyChecksum whether to verify checksum    * @param sum which type of checksum to use    * @param maxChunkSize maximun chunk size    * @param checksumSize checksum size    */
-DECL|method|set (boolean verifyChecksum, Checksum sum, int maxChunkSize, int checksumSize )
+DECL|method|set (boolean verifyChecksum, Checksum sum, int maxChunkSize, int checksumSize)
 specifier|final
 specifier|protected
 specifier|synchronized
@@ -1253,6 +1385,25 @@ name|int
 name|checksumSize
 parameter_list|)
 block|{
+comment|// The code makes assumptions that checksums are always 32-bit.
+assert|assert
+operator|!
+name|verifyChecksum
+operator|||
+name|sum
+operator|==
+literal|null
+operator|||
+name|checksumSize
+operator|==
+name|CHECKSUM_SIZE
+assert|;
+name|this
+operator|.
+name|maxChunkSize
+operator|=
+name|maxChunkSize
+expr_stmt|;
 name|this
 operator|.
 name|verifyChecksum
@@ -1275,6 +1426,8 @@ index|[
 name|maxChunkSize
 index|]
 expr_stmt|;
+comment|// The size of the checksum array here determines how much we can
+comment|// read in a single call to readChunk
 name|this
 operator|.
 name|checksum
@@ -1282,8 +1435,24 @@ operator|=
 operator|new
 name|byte
 index|[
+name|CHUNKS_PER_READ
+operator|*
 name|checksumSize
 index|]
+expr_stmt|;
+name|this
+operator|.
+name|checksumInts
+operator|=
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|checksum
+argument_list|)
+operator|.
+name|asIntBuffer
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
