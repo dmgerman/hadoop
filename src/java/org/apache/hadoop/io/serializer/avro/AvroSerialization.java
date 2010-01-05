@@ -646,16 +646,9 @@ block|{
 name|Schema
 name|schema
 init|=
-name|Schema
-operator|.
-name|parse
+name|getSchema
 argument_list|(
 name|metadata
-operator|.
-name|get
-argument_list|(
-name|AVRO_SCHEMA_KEY
-argument_list|)
 argument_list|)
 decl_stmt|;
 return|return

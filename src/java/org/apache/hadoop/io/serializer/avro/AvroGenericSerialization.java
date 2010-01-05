@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Serialization for Avro Generic classes. For a class to be accepted by this   * serialization it must have metadata with key  * {@link SerializationBase#SERIALIZATION_KEY} set to {@link AvroGenericSerialization}'s  * fully-qualified classname.  * The schema used is the one set by {@link AvroSerialization#AVRO_SCHEMA_KEY}.  */
+comment|/**  * Serialization for Avro Generic classes. For a class to be accepted by this   * serialization it must have a schema specified.  * The schema used is the one set by {@link AvroSerialization#AVRO_SCHEMA_KEY}.  */
 end_comment
 
 begin_class
@@ -164,6 +164,19 @@ argument_list|>
 name|metadata
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|checkSerializationKey
+argument_list|(
+name|metadata
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|metadata
 operator|.
