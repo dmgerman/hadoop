@@ -314,14 +314,11 @@ argument_list|(
 name|in
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|before
-operator|.
-name|equals
-argument_list|(
+argument_list|,
 name|after
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// test that it reads correctly with DataInput
@@ -348,14 +345,11 @@ operator|.
 name|readUTF
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|before
-operator|.
-name|equals
-argument_list|(
+argument_list|,
 name|after2
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// test that it is compatible with Java's other decoder
@@ -382,14 +376,11 @@ argument_list|,
 literal|"UTF-8"
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|before
-operator|.
-name|equals
-argument_list|(
+argument_list|,
 name|after3
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
