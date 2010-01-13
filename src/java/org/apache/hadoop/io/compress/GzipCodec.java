@@ -692,9 +692,7 @@ name|GzipZlibCompressor
 operator|.
 name|class
 else|:
-name|BuiltInZlibDeflater
-operator|.
-name|class
+literal|null
 return|;
 block|}
 DECL|method|createInputStream (InputStream in)
@@ -837,9 +835,7 @@ name|GzipZlibDecompressor
 operator|.
 name|class
 else|:
-name|BuiltInZlibInflater
-operator|.
-name|class
+literal|null
 return|;
 block|}
 DECL|method|getDefaultExtension ()
