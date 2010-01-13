@@ -67,10 +67,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Represents typeID for a struct   */
+comment|/**   * Represents typeID for a struct   *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|StructTypeID
 specifier|public
 class|class

@@ -39,10 +39,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Container for the Hadoop Record DDL.  * The main components of the file are filename, list of included files,  * and records defined in that file.  */
+comment|/**  * Container for the Hadoop Record DDL.  * The main components of the file are filename, list of included files,  * and records defined in that file.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|JFile
 specifier|public
 class|class

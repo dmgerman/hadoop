@@ -25,10 +25,12 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * This exception is thrown when parse errors are encountered.  * You can explicitly create objects of this exception type by  * calling the method generateParseException in the generated  * parser.  *  * You can modify this class to customize your error reporting  * mechanisms so long as you retain the public fields.  */
+comment|/**  * This exception is thrown when parse errors are encountered.  * You can explicitly create objects of this exception type by  * calling the method generateParseException in the generated  * parser.  *  * You can modify this class to customize your error reporting  * mechanisms so long as you retain the public fields.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|ParseException
 specifier|public
 class|class

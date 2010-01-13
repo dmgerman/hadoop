@@ -53,10 +53,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Various utility functions for Hadooop record I/O platform.  */
+comment|/**  * Various utility functions for Hadooop record I/O platform.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|Utils
 specifier|public
 class|class

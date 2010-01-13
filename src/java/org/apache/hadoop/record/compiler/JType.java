@@ -29,10 +29,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract Base class for all types supported by Hadoop Record I/O.  */
+comment|/**  * Abstract Base class for all types supported by Hadoop Record I/O.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|JType
 specifier|abstract
 specifier|public

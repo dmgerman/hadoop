@@ -67,10 +67,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A record's Type Information object which can read/write itself.   *   * Type information for a record comprises metadata about the record,   * as well as a collection of type information for each field in the record.   */
+comment|/**   * A record's Type Information object which can read/write itself.   *   * Type information for a record comprises metadata about the record,   * as well as a collection of type information for each field in the record.   *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|RecordTypeInfo
 specifier|public
 class|class

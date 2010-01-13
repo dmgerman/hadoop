@@ -17,10 +17,12 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Interface that acts as an iterator for deserializing maps.  * The deserializer returns an instance that the record uses to  * read vectors and maps. An example of usage is as follows:  *  *<code>  * Index idx = startVector(...);  * while (!idx.done()) {  *   .... // read element of a vector  *   idx.incr();  * }  *</code>  */
+comment|/**  * Interface that acts as an iterator for deserializing maps.  * The deserializer returns an instance that the record uses to  * read vectors and maps. An example of usage is as follows:  *  *<code>  * Index idx = startVector(...);  * while (!idx.done()) {  *   .... // read element of a vector  *   idx.incr();  * }  *</code>  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Deprecated
 DECL|interface|Index
 specifier|public
 interface|interface

@@ -25,10 +25,12 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * An implementation of interface CharStream, where the stream is assumed to  * contain only ASCII characters (without unicode processing).  */
+comment|/**  * An implementation of interface CharStream, where the stream is assumed to  * contain only ASCII characters (without unicode processing).  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|SimpleCharStream
 specifier|public
 class|class

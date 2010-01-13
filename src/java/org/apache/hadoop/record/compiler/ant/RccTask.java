@@ -131,10 +131,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Hadoop record compiler ant Task  *<p> This task takes the given record definition files and compiles them into  * java or c++  * files. It is then up to the user to compile the generated files.  *  *<p> The task requires the<code>file</code> or the nested fileset element to be  * specified. Optional attributes are<code>language</code> (set the output  * language, default is "java"),  *<code>destdir</code> (name of the destination directory for generated java/c++  * code, default is ".") and<code>failonerror</code> (specifies error handling  * behavior. default is true).  *<p><h4>Usage</h4>  *<pre>  *&lt;recordcc  *       destdir="${basedir}/gensrc"  *       language="java"&gt;  *&lt;fileset include="**\/*.jr" /&gt;  *&lt;/recordcc&gt;  *</pre>  */
+comment|/**  * Hadoop record compiler ant Task  *<p> This task takes the given record definition files and compiles them into  * java or c++  * files. It is then up to the user to compile the generated files.  *  *<p> The task requires the<code>file</code> or the nested fileset element to be  * specified. Optional attributes are<code>language</code> (set the output  * language, default is "java"),  *<code>destdir</code> (name of the destination directory for generated java/c++  * code, default is ".") and<code>failonerror</code> (specifies error handling  * behavior. default is true).  *<p><h4>Usage</h4>  *<pre>  *&lt;recordcc  *       destdir="${basedir}/gensrc"  *       language="java"&gt;  *&lt;fileset include="**\/*.jr" /&gt;  *&lt;/recordcc&gt;  *</pre>  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|RccTask
 specifier|public
 class|class

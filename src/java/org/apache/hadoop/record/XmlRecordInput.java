@@ -97,10 +97,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * XML Deserializer.  */
+comment|/**  * XML Deserializer.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|XmlRecordInput
 specifier|public
 class|class

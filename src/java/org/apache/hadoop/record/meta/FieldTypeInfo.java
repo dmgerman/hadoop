@@ -43,10 +43,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Represents a type information for a field, which is made up of its   * ID (name) and its type (a TypeID object).  */
+comment|/**   * Represents a type information for a field, which is made up of its   * ID (name) and its type (a TypeID object).  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|FieldTypeInfo
 specifier|public
 class|class

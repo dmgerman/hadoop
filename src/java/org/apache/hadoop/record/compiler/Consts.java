@@ -53,10 +53,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * const definitions for Record I/O compiler  */
+comment|/**  * const definitions for Record I/O compiler  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|Consts
 specifier|public
 class|class

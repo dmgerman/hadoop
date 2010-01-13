@@ -27,10 +27,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface that all the Deserializers have to implement.  */
+comment|/**  * Interface that all the Deserializers have to implement.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Deprecated
 DECL|interface|RecordInput
 specifier|public
 interface|interface

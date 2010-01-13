@@ -19,10 +19,12 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Code generator for "buffer" type.  */
+comment|/**  * Code generator for "buffer" type.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|JBuffer
 specifier|public
 class|class

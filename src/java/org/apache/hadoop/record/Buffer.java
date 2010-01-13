@@ -27,10 +27,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A byte sequence that is used as a Java native type for buffer.  * It is resizable and distinguishes between the count of the seqeunce and  * the current capacity.  *   */
+comment|/**  * A byte sequence that is used as a Java native type for buffer.  * It is resizable and distinguishes between the count of the seqeunce and  * the current capacity.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|Buffer
 specifier|public
 class|class

@@ -24,7 +24,13 @@ name|generated
 package|;
 end_package
 
+begin_comment
+comment|/**  * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
+end_comment
+
 begin_interface
+annotation|@
+name|Deprecated
 DECL|interface|RccConstants
 specifier|public
 interface|interface
