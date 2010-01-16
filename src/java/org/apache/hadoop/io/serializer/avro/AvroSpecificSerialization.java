@@ -220,7 +220,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getReader (Map<String, String> metadata)
-specifier|protected
+specifier|public
 name|DatumReader
 name|getReader
 parameter_list|(
@@ -264,7 +264,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getSchema (Map<String, String> metadata)
-specifier|protected
+specifier|public
 name|Schema
 name|getSchema
 parameter_list|(
@@ -303,7 +303,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getWriter (Map<String, String> metadata)
-specifier|protected
+specifier|public
 name|DatumWriter
 name|getWriter
 parameter_list|(

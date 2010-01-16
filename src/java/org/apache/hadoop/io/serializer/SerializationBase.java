@@ -295,7 +295,7 @@ name|metadata
 parameter_list|)
 function_decl|;
 DECL|method|getClassFromMetadata (Map<String, String> metadata)
-specifier|protected
+specifier|public
 name|Class
 argument_list|<
 name|?

@@ -270,7 +270,7 @@ return|;
 block|}
 comment|/**    * Return an Avro Schema instance for the given class and metadata.    */
 DECL|method|getSchema (Map<String, String> metadata)
-specifier|protected
+specifier|public
 specifier|abstract
 name|Schema
 name|getSchema
@@ -286,7 +286,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Create and return Avro DatumWriter for the given metadata.    */
 DECL|method|getWriter (Map<String, String> metadata)
-specifier|protected
+specifier|public
 specifier|abstract
 name|DatumWriter
 argument_list|<
@@ -305,7 +305,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Create and return Avro DatumReader for the given metadata.    */
 DECL|method|getReader (Map<String, String> metadata)
-specifier|protected
+specifier|public
 specifier|abstract
 name|DatumReader
 argument_list|<
