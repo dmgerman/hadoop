@@ -303,6 +303,7 @@ index|[]
 block|{}
 decl_stmt|;
 DECL|field|serialFactory
+specifier|volatile
 specifier|private
 specifier|static
 name|SerializationFactory

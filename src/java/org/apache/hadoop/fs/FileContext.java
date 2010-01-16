@@ -368,6 +368,15 @@ operator|.
 name|getDefault
 argument_list|()
 decl_stmt|;
+DECL|field|localFsSingleton
+specifier|volatile
+specifier|private
+specifier|static
+name|FileContext
+name|localFsSingleton
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * List of files that should be deleted on JVM shutdown.    */
 DECL|field|DELETE_ON_EXIT
 specifier|static
@@ -868,14 +877,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|field|localFsSingleton
-specifier|private
-specifier|static
-name|FileContext
-name|localFsSingleton
-init|=
-literal|null
-decl_stmt|;
 comment|/**    *     * @return a FileContext for the local filesystem using the default config.    * @throws IOException     */
 DECL|method|getLocalFSFileContext ()
 specifier|public
