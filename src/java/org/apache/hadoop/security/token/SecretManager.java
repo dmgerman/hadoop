@@ -135,9 +135,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create the password for the given identifier.    * @param identifier the identifier to use    * @return the new password    */
+comment|/**    * Create the password for the given identifier.    * identifier may be modified inside this method.    * @param identifier the identifier to use    * @return the new password    */
 DECL|method|createPassword (T identifier)
-specifier|public
+specifier|protected
 specifier|abstract
 name|byte
 index|[]

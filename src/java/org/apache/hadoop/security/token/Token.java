@@ -144,13 +144,6 @@ argument_list|>
 name|mgr
 parameter_list|)
 block|{
-name|identifier
-operator|=
-name|id
-operator|.
-name|getBytes
-argument_list|()
-expr_stmt|;
 name|password
 operator|=
 name|mgr
@@ -159,6 +152,13 @@ name|createPassword
 argument_list|(
 name|id
 argument_list|)
+expr_stmt|;
+name|identifier
+operator|=
+name|id
+operator|.
+name|getBytes
+argument_list|()
 expr_stmt|;
 name|kind
 operator|=
