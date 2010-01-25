@@ -2070,7 +2070,7 @@ name|call
 init|=
 name|calls
 operator|.
-name|remove
+name|get
 argument_list|(
 name|id
 argument_list|)
@@ -2120,6 +2120,13 @@ operator|.
 name|setValue
 argument_list|(
 name|value
+argument_list|)
+expr_stmt|;
+name|calls
+operator|.
+name|remove
+argument_list|(
+name|id
 argument_list|)
 expr_stmt|;
 block|}
