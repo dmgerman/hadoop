@@ -76,7 +76,7 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Refresh {@link User} to {@link Group} mappings.    * @param conf    * @throws IOException    */
+comment|/**    * Refresh user to group mappings.    * @param conf    * @throws IOException    */
 DECL|method|refreshUserToGroupsMappings (Configuration conf)
 specifier|public
 name|void

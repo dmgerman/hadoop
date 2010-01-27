@@ -137,7 +137,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple shell-based implementation of {@link GroupMappingServiceProvider} which  * exec's the<code>groups</code> shell command to fetch the {@link Group}  * memberships of a given {@link User}.  */
+comment|/**  * A simple shell-based implementation of {@link GroupMappingServiceProvider}   * that exec's the<code>groups</code> shell command to fetch the group  * memberships of a given user.  */
 end_comment
 
 begin_class

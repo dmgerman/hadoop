@@ -45,7 +45,7 @@ DECL|interface|GroupMappingServiceProvider
 interface|interface
 name|GroupMappingServiceProvider
 block|{
-comment|/**    * Get all various {@link Group} memberships of a given {@link User}.    * Returns EMPTY list in case of non-existing user    * @param user<code>User</code> name    * @return<code>Group</code> memberships of<code>user</code>    * @throws IOException    */
+comment|/**    * Get all various group memberships of a given user.    * Returns EMPTY list in case of non-existing user    * @param user User's name    * @return group memberships of user    * @throws IOException    */
 DECL|method|getGroups (String user)
 specifier|public
 name|List

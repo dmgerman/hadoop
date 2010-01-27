@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.security
+DECL|package|org.apache.hadoop.security.authorize
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|security
+operator|.
+name|authorize
 package|;
 end_package
 
@@ -46,7 +48,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityUtil
+name|authorize
 operator|.
 name|AccessControlList
 import|;
@@ -93,7 +95,7 @@ name|assertTrue
 argument_list|(
 name|acl
 operator|.
-name|allAllowed
+name|isAllAllowed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -109,7 +111,7 @@ name|assertTrue
 argument_list|(
 name|acl
 operator|.
-name|allAllowed
+name|isAllAllowed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -125,7 +127,7 @@ name|assertTrue
 argument_list|(
 name|acl
 operator|.
-name|allAllowed
+name|isAllAllowed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -141,7 +143,7 @@ name|assertTrue
 argument_list|(
 name|acl
 operator|.
-name|allAllowed
+name|isAllAllowed
 argument_list|()
 argument_list|)
 expr_stmt|;

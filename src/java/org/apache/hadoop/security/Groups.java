@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A user-to-groups mapping service.  *   * {@link Groups} allows for server to get the various {@link Group} memberships  * of a given {@link User} via the {@link #getGroups(String)} call, thus ensuring   * a consistent user-to-groups mapping and protects against vagaries of different   * mappings on servers and clients in a Hadoop cluster.   */
+comment|/**  * A user-to-groups mapping service.  *   * {@link Groups} allows for server to get the various group memberships  * of a given user via the {@link #getGroups(String)} call, thus ensuring   * a consistent user-to-groups mapping and protects against vagaries of   * different mappings on servers and clients in a Hadoop cluster.   */
 end_comment
 
 begin_class
@@ -257,7 +257,7 @@ name|cacheTimeout
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the {@link Group} memberships of a given {@link User}.    * @param user<code>User</code> name    * @return the<code>Group</code> memberships of<code>user</code>    * @throws IOException    */
+comment|/**    * Get the group memberships of a given user.    * @param user User's name    * @return the group memberships of the user    * @throws IOException    */
 DECL|method|getGroups (String user)
 specifier|public
 name|List
@@ -457,6 +457,52 @@ return|return
 name|groups
 return|;
 block|}
+block|}
+DECL|field|GROUPS
+specifier|private
+specifier|static
+name|Groups
+name|GROUPS
+init|=
+literal|null
+decl_stmt|;
+comment|/**    * Get the groups being used to map user-to-groups.    * @return the groups being used to map user-to-groups.    */
+DECL|method|getUserToGroupsMappingService (Configuration conf)
+specifier|public
+specifier|static
+name|Groups
+name|getUserToGroupsMappingService
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|GROUPS
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|" Creating new Groups object"
+argument_list|)
+expr_stmt|;
+name|GROUPS
+operator|=
+operator|new
+name|Groups
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|GROUPS
+return|;
 block|}
 block|}
 end_class

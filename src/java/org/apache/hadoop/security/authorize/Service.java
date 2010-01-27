@@ -43,10 +43,13 @@ specifier|private
 name|String
 name|key
 decl_stmt|;
-DECL|field|permission
+DECL|field|protocol
 specifier|private
-name|Permission
-name|permission
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
 decl_stmt|;
 DECL|method|Service (String key, Class<?> protocol)
 specifier|public
@@ -70,13 +73,9 @@ name|key
 expr_stmt|;
 name|this
 operator|.
-name|permission
-operator|=
-operator|new
-name|ConnectionPermission
-argument_list|(
 name|protocol
-argument_list|)
+operator|=
+name|protocol
 expr_stmt|;
 block|}
 comment|/**    * Get the configuration key for the service.    * @return the configuration key for the service    */
@@ -90,15 +89,18 @@ return|return
 name|key
 return|;
 block|}
-comment|/**    * Get the {@link Permission} required to access the service.    * @return the {@link Permission} required to access the service    */
-DECL|method|getPermission ()
+comment|/**    * Get the protocol for the service    * @return the {@link Class} for the protocol    */
+DECL|method|getProtocol ()
 specifier|public
-name|Permission
-name|getPermission
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|getProtocol
 parameter_list|()
 block|{
 return|return
-name|permission
+name|protocol
 return|;
 block|}
 block|}

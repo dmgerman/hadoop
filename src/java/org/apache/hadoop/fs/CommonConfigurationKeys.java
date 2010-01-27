@@ -721,6 +721,15 @@ name|HADOOP_SECURITY_GROUPS_CACHE_SECS
 init|=
 literal|"hadoop.security.groups.cache.secs"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_AUTHENTICATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_AUTHENTICATION
+init|=
+literal|"hadoop.security.authentication"
+decl_stmt|;
 block|}
 end_class
 
