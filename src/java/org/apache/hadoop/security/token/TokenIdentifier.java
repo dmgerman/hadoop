@@ -101,6 +101,14 @@ name|Text
 name|getKind
 parameter_list|()
 function_decl|;
+comment|/**    * Get the username encoded in the token identifier    * @return the username    */
+DECL|method|getUsername ()
+specifier|public
+specifier|abstract
+name|Text
+name|getUsername
+parameter_list|()
+function_decl|;
 comment|/**    * Get the bytes for the token identifier    * @return the bytes of the identifier    */
 DECL|method|getBytes ()
 specifier|public

@@ -405,6 +405,7 @@ function_decl|;
 block|}
 DECL|class|TestImpl
 specifier|public
+specifier|static
 class|class
 name|TestImpl
 implements|implements
@@ -972,6 +973,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TestProtocol
@@ -1897,6 +1900,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TestProtocol

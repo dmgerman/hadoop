@@ -80,6 +80,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|SecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|TokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -156,9 +188,11 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 function_decl|;
 comment|/** Construct a server for a protocol implementation instance. */
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
+DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
 name|RPC
 operator|.
 name|Server
@@ -184,6 +218,14 @@ name|verbose
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
 parameter_list|)
 throws|throws
 name|IOException

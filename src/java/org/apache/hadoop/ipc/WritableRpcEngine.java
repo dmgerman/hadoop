@@ -192,6 +192,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|SecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|TokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|*
@@ -1205,6 +1237,8 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|Invocation
 index|[]
@@ -1379,7 +1413,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
+DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 name|Server
 name|getServer
@@ -1404,6 +1438,14 @@ name|verbose
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
 parameter_list|)
 throws|throws
 name|IOException
@@ -1423,6 +1465,8 @@ argument_list|,
 name|numHandlers
 argument_list|,
 name|verbose
+argument_list|,
+name|secretManager
 argument_list|)
 return|;
 block|}
@@ -1480,6 +1524,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1536,7 +1582,7 @@ index|]
 return|;
 block|}
 comment|/** Construct an RPC server.      * @param instance the instance whose methods will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      */
-DECL|method|Server (Object instance, Configuration conf, String bindAddress, int port, int numHandlers, boolean verbose)
+DECL|method|Server (Object instance, Configuration conf, String bindAddress, int port, int numHandlers, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 name|Server
 parameter_list|(
@@ -1557,6 +1603,14 @@ name|numHandlers
 parameter_list|,
 name|boolean
 name|verbose
+parameter_list|,
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
 parameter_list|)
 throws|throws
 name|IOException
@@ -1585,6 +1639,8 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+argument_list|,
+name|secretManager
 argument_list|)
 expr_stmt|;
 name|this

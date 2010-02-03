@@ -161,6 +161,14 @@ parameter_list|)
 throws|throws
 name|InvalidToken
 function_decl|;
+comment|/**    * Create an empty token identifier.    * @return the newly created empty token identifier    */
+DECL|method|createIdentifier ()
+specifier|public
+specifier|abstract
+name|T
+name|createIdentifier
+parameter_list|()
+function_decl|;
 comment|/**    * The name of the hashing algorithm.    */
 DECL|field|DEFAULT_HMAC_ALGORITHM
 specifier|private
