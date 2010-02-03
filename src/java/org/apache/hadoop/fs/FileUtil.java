@@ -274,6 +274,39 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|fullyDeleteContents
+argument_list|(
+name|dir
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|dir
+operator|.
+name|delete
+argument_list|()
+return|;
+block|}
+comment|/**    * Delete the contents of a directory, not the directory itself.  If    * we return false, the directory may be partially-deleted.    */
+DECL|method|fullyDeleteContents (File dir)
+specifier|public
+specifier|static
+name|boolean
+name|fullyDeleteContents
+parameter_list|(
+name|File
+name|dir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|File
 name|contents
 index|[]
@@ -384,10 +417,7 @@ block|}
 block|}
 block|}
 return|return
-name|dir
-operator|.
-name|delete
-argument_list|()
+literal|true
 return|;
 block|}
 comment|/**    * Recursively delete a directory.    *     * @param fs {@link FileSystem} on which the path is present    * @param dir directory to recursively delete     * @throws IOException    * @deprecated Use {@link FileSystem#delete(Path, boolean)}    */
