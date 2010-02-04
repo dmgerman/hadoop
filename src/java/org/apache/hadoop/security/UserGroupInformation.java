@@ -814,6 +814,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|value
+operator|==
+literal|null
+operator|||
 literal|"simple"
 operator|.
 name|equals
@@ -830,10 +834,6 @@ block|}
 elseif|else
 if|if
 condition|(
-name|value
-operator|==
-literal|null
-operator|||
 literal|"kerberos"
 operator|.
 name|equals
