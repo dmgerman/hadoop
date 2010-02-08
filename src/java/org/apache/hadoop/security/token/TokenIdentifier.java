@@ -80,6 +80,20 @@ name|Writable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
 begin_comment
 comment|/**  * An identifier that identifies a token, may contain public information   * about a token, including its kind (or type).  */
 end_comment
@@ -101,12 +115,12 @@ name|Text
 name|getKind
 parameter_list|()
 function_decl|;
-comment|/**    * Get the username encoded in the token identifier    * @return the username    */
-DECL|method|getUsername ()
+comment|/**    * Get the Ugi with the username encoded in the token identifier    *     * @return the username. null is returned if username in the identifier is    *         empty or null.    */
+DECL|method|getUser ()
 specifier|public
 specifier|abstract
-name|Text
-name|getUsername
+name|UserGroupInformation
+name|getUser
 parameter_list|()
 function_decl|;
 comment|/**    * Get the bytes for the token identifier    * @return the bytes of the identifier    */
