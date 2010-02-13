@@ -575,7 +575,7 @@ name|localDirs
 operator|=
 name|conf
 operator|.
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|contextCfgItemName
 argument_list|)
