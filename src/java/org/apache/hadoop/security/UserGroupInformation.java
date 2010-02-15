@@ -756,6 +756,26 @@ specifier|static
 name|Groups
 name|groups
 decl_stmt|;
+comment|/** The last authentication time */
+DECL|field|lastUnsuccessfulAuthenticationAttemptTime
+specifier|private
+specifier|static
+name|long
+name|lastUnsuccessfulAuthenticationAttemptTime
+decl_stmt|;
+DECL|field|MIN_TIME_BEFORE_RELOGIN
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|MIN_TIME_BEFORE_RELOGIN
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
 comment|/**Environment variable pointing to the token cache file*/
 DECL|field|HADOOP_TOKEN_FILE_LOCATION
 specifier|public
@@ -971,6 +991,12 @@ specifier|private
 specifier|final
 name|Subject
 name|subject
+decl_stmt|;
+DECL|field|login
+specifier|private
+specifier|static
+name|LoginContext
+name|login
 decl_stmt|;
 DECL|field|OS_LOGIN_MODULE_NAME
 specifier|private
@@ -1327,6 +1353,15 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
+name|USER_KERBEROS_OPTIONS
+operator|.
+name|put
+argument_list|(
+literal|"renewTGT"
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
 name|String
 name|ticketCache
 init|=
@@ -1425,24 +1460,6 @@ operator|.
 name|put
 argument_list|(
 literal|"storeKey"
-argument_list|,
-literal|"true"
-argument_list|)
-expr_stmt|;
-name|KEYTAB_KERBEROS_OPTIONS
-operator|.
-name|put
-argument_list|(
-literal|"useTicketCache"
-argument_list|,
-literal|"true"
-argument_list|)
-expr_stmt|;
-name|KEYTAB_KERBEROS_OPTIONS
-operator|.
-name|put
-argument_list|(
-literal|"renewTGT"
 argument_list|,
 literal|"true"
 argument_list|)
@@ -1682,9 +1699,6 @@ condition|)
 block|{
 try|try
 block|{
-name|LoginContext
-name|login
-decl_stmt|;
 if|if
 condition|(
 name|isSecurityEnabled
@@ -1821,9 +1835,8 @@ name|user
 expr_stmt|;
 try|try
 block|{
-name|LoginContext
 name|login
-init|=
+operator|=
 operator|new
 name|LoginContext
 argument_list|(
@@ -1831,7 +1844,7 @@ name|HadoopConfiguration
 operator|.
 name|KEYTAB_KERBEROS_CONFIG_NAME
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|login
 operator|.
 name|login
@@ -1871,6 +1884,178 @@ name|le
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Re-Login a user in from a keytab file. Loads a user identity from a keytab    * file and login them in. They become the currently logged-in user. This    * method assumes that {@link #loginUserFromKeytab(String, String)} had     * happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
+DECL|method|reloginFromKeytab ()
+specifier|public
+specifier|synchronized
+name|void
+name|reloginFromKeytab
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|isSecurityEnabled
+argument_list|()
+condition|)
+return|return;
+if|if
+condition|(
+name|login
+operator|==
+literal|null
+operator|||
+name|keytabFile
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"loginUserFromKeyTab must be done first"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|lastUnsuccessfulAuthenticationAttemptTime
+operator|<
+name|MIN_TIME_BEFORE_RELOGIN
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Not attempting to re-login since the last re-login was "
+operator|+
+literal|"attempted less than "
+operator|+
+operator|(
+name|MIN_TIME_BEFORE_RELOGIN
+operator|/
+literal|1000
+operator|)
+operator|+
+literal|" seconds"
+operator|+
+literal|" before."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initiating logout for "
+operator|+
+name|getUserName
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//clear up the kerberos state. But the tokens are not cleared! As per
+comment|//the Java kerberos login module code, only the kerberos credentials
+comment|//are cleared
+name|login
+operator|.
+name|logout
+argument_list|()
+expr_stmt|;
+comment|//login and also update the subject field of this instance to
+comment|//have the new credentials (pass it to the LoginContext constructor)
+name|login
+operator|=
+operator|new
+name|LoginContext
+argument_list|(
+name|HadoopConfiguration
+operator|.
+name|KEYTAB_KERBEROS_CONFIG_NAME
+argument_list|,
+name|getSubject
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initiating re-login for "
+operator|+
+name|keytabPrincipal
+argument_list|)
+expr_stmt|;
+name|login
+operator|.
+name|login
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|LoginException
+name|le
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Login failure for "
+operator|+
+name|keytabPrincipal
+operator|+
+literal|" from keytab "
+operator|+
+name|keytabFile
+argument_list|,
+name|le
+argument_list|)
+throw|;
+block|}
+block|}
+specifier|public
+specifier|synchronized
+specifier|static
+name|void
+DECL|method|setLastUnsuccessfulAuthenticationAttemptTime (long time)
+name|setLastUnsuccessfulAuthenticationAttemptTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|lastUnsuccessfulAuthenticationAttemptTime
+operator|=
+name|time
+expr_stmt|;
+block|}
+DECL|method|isLoginKeytabBased ()
+specifier|public
+specifier|synchronized
+specifier|static
+name|boolean
+name|isLoginKeytabBased
+parameter_list|()
+block|{
+return|return
+name|keytabFile
+operator|!=
+literal|null
+return|;
 block|}
 comment|/**    * Create a user from a login name. It is intended to be used for remote    * users in RPC, since it won't have any credentials.    * @param user the full user principal name, must not be empty or null    * @return the UserGroupInformation for the remote user.    */
 DECL|method|createRemoteUser (String user)
