@@ -953,7 +953,7 @@ name|start
 argument_list|)
 return|;
 block|}
-comment|/** True if the directory of this path is absolute. */
+comment|/** True if the path component of this URI is absolute. */
 comment|/**    * There is some ambiguity here. An absolute path is a slash    * relative name without a scheme or an authority.    * So either this method was incorrectly named or its    * implementation is incorrect.    */
 DECL|method|isAbsolute ()
 specifier|public

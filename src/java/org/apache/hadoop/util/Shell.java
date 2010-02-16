@@ -259,6 +259,26 @@ name|SET_GROUP_COMMAND
 init|=
 literal|"chgrp"
 decl_stmt|;
+comment|/** a Unix command to create a link */
+DECL|field|LINK_COMMAND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LINK_COMMAND
+init|=
+literal|"ln"
+decl_stmt|;
+comment|/** a Unix command to get a link target */
+DECL|field|READ_LINK_COMMAND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|READ_LINK_COMMAND
+init|=
+literal|"readlink"
+decl_stmt|;
 comment|/** Return a Unix command to get permission information. */
 DECL|method|getGET_PERMISSION_COMMAND ()
 specifier|public

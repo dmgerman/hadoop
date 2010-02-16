@@ -529,6 +529,8 @@ name|file
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|this
 argument_list|(
@@ -561,6 +563,8 @@ name|bufferSize
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|super
 argument_list|(
@@ -846,6 +850,8 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 comment|// parameter check
 if|if
@@ -1314,6 +1320,8 @@ name|getFileLength
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 if|if
 condition|(
@@ -1446,6 +1454,8 @@ name|bufferSize
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 return|return
 operator|new
@@ -1862,6 +1872,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 try|try
 block|{
@@ -1899,6 +1911,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 try|try
 block|{
@@ -1943,6 +1957,8 @@ name|replication
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|boolean
 name|value
@@ -2014,6 +2030,8 @@ name|dst
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 if|if
 condition|(
@@ -2115,6 +2133,8 @@ name|recursive
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|FileStatus
 name|fstatus

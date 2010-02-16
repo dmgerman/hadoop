@@ -415,7 +415,7 @@ return|return
 name|statistics
 return|;
 block|}
-comment|/**    * Prohibits names which contain a ".", "..". ":" or "/"     */
+comment|/**    * Prohibits names which contain a ".", "..", ":" or "/"     */
 DECL|method|isValidName (String src)
 specifier|private
 specifier|static
@@ -1480,6 +1480,8 @@ name|opts
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|checkPath
 argument_list|(
@@ -2073,6 +2075,8 @@ name|createParent
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#mkdir(Path, FsPermission, boolean)} except that the Path    * f must be fully qualified and the permission is absolute (ie umask has been    * applied).    */
 DECL|method|mkdir (final Path dir, final FsPermission permission, final boolean createParent)
@@ -2095,6 +2099,8 @@ name|createParent
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#delete(Path, boolean)} except that Path f must be for    * this filesystem.    */
 DECL|method|delete (final Path f, final boolean recursive)
@@ -2113,6 +2119,8 @@ name|recursive
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path)} except that Path f must be for this    * filesystem.    */
 DECL|method|open (final Path f)
@@ -2126,6 +2134,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 return|return
 name|open
@@ -2140,7 +2150,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path, int)} except that Path f must be for this    * filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path, int)} except that Path f must be for this    * filesystem.    * @throws UnresolvedLinkException     */
 DECL|method|open (final Path f, int bufferSize)
 specifier|protected
 specifier|abstract
@@ -2156,6 +2166,8 @@ name|bufferSize
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this filesystem.    */
 DECL|method|setReplication (final Path f, final short replication)
@@ -2174,6 +2186,8 @@ name|replication
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this filesystem.    */
 DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
@@ -2199,6 +2213,8 @@ name|options
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 name|boolean
 name|overwrite
@@ -2263,6 +2279,8 @@ name|dst
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this filesystem.    */
 DECL|method|renameInternal (final Path src, final Path dst, boolean overwrite)
@@ -2283,13 +2301,15 @@ name|overwrite
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 comment|// Default implementation deals with overwrite in a non-atomic way
 specifier|final
 name|FileStatus
 name|srcStatus
 init|=
-name|getFileStatus
+name|getFileLinkStatus
 argument_list|(
 name|src
 argument_list|)
@@ -2320,7 +2340,7 @@ try|try
 block|{
 name|dstStatus
 operator|=
-name|getFileStatus
+name|getFileLinkStatus
 argument_list|(
 name|dst
 argument_list|)
@@ -2456,7 +2476,7 @@ specifier|final
 name|FileStatus
 name|parentStatus
 init|=
-name|getFileStatus
+name|getFileLinkStatus
 argument_list|(
 name|parent
 argument_list|)
@@ -2487,6 +2507,12 @@ name|parentStatus
 operator|.
 name|isDir
 argument_list|()
+operator|&&
+operator|!
+name|parentStatus
+operator|.
+name|isSymlink
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -2510,6 +2536,68 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Returns true if the file system supports symlinks, false otherwise.    */
+DECL|method|supportsSymlinks ()
+specifier|protected
+name|boolean
+name|supportsSymlinks
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * The specification of this method matches that of      * {@link FileContext#createSymlink(Path, Path, boolean)};    */
+DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
+specifier|protected
+name|void
+name|createSymlink
+parameter_list|(
+specifier|final
+name|Path
+name|target
+parameter_list|,
+specifier|final
+name|Path
+name|link
+parameter_list|,
+specifier|final
+name|boolean
+name|createParent
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|UnresolvedLinkException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"File system does not support symlinks"
+argument_list|)
+throw|;
+block|}
+comment|/**    * The specification of this method matches that of      * {@link FileContext#getLinkTarget(Path)};    */
+DECL|method|getLinkTarget (final Path f)
+specifier|protected
+name|Path
+name|getLinkTarget
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|/* We should never get here. Any file system that threw an      * UnresolvedLinkException, causing this function to be called,      * needs to override this method.      */
+throw|throw
+operator|new
+name|AssertionError
+argument_list|()
+throw|;
+block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setPermission(Path, FsPermission)} except that Path f    * must be for this filesystem.    */
 DECL|method|setPermission (final Path f, final FsPermission permission)
 specifier|protected
@@ -2527,6 +2615,8 @@ name|permission
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setOwner(Path, String, String)} except that Path f must    * be for this filesystem.    */
 DECL|method|setOwner (final Path f, final String username, final String groupname)
@@ -2549,6 +2639,8 @@ name|groupname
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setTimes(Path, long, long)} except that Path f must be    * for this filesystem.    */
 DECL|method|setTimes (final Path f, final long mtime, final long atime)
@@ -2571,6 +2663,8 @@ name|atime
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileChecksum(Path)} except that Path f must be for    * this filesystem.    */
 DECL|method|getFileChecksum (final Path f)
@@ -2585,8 +2679,10 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileStatus(Path)}     * except that an UnresolvedLinkException may be thrown if a symlink is     * encountered in the path.    */
 DECL|method|getFileStatus (final Path f)
 specifier|protected
 specifier|abstract
@@ -2599,7 +2695,31 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileLinkStatus(Path)}    * except that an UnresolvedLinkException may be thrown if a symlink is      * encountered in the path leading up to the final path component.    * If the file system does not support symlinks then the behavior is    * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.    */
+DECL|method|getFileLinkStatus (final Path f)
+specifier|protected
+name|FileStatus
+name|getFileLinkStatus
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|UnresolvedLinkException
+block|{
+return|return
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileBlockLocations(Path, long, long)} except that    * Path f must be for this filesystem.    */
 DECL|method|getFileBlockLocations (final Path f, final long start, final long len)
 specifier|protected
@@ -2622,6 +2742,8 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)} except that Path f must be for this    * filesystem.    */
 DECL|method|getFsStatus (final Path f)
@@ -2635,6 +2757,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 block|{
 comment|// default impl gets FsStatus of root
 return|return
@@ -2642,7 +2766,7 @@ name|getFsStatus
 argument_list|()
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)} except that Path f must be for this    * filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)}.    */
 DECL|method|getFsStatus ()
 specifier|protected
 specifier|abstract
@@ -2666,6 +2790,8 @@ name|f
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|UnresolvedLinkException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this filesystem.    */
 DECL|method|setVerifyChecksum (final boolean verifyChecksum)
