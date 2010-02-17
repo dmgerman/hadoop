@@ -212,6 +212,18 @@ name|ServiceAuthorizationManager
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/** Unit tests for RPC. */
 end_comment
@@ -2113,6 +2125,28 @@ operator|.
 name|testCalls
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test stopping a non-registered proxy    * @throws Exception    */
+DECL|method|testStopNonRegisteredProxy ()
+specifier|public
+name|void
+name|testStopNonRegisteredProxy
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+name|mock
+argument_list|(
+name|TestProtocol
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
