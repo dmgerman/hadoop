@@ -2427,6 +2427,20 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * @return null since no checksum algorithm is implemented.    */
+DECL|method|getFileChecksum (Path f)
+specifier|public
+name|FileChecksum
+name|getFileChecksum
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Returns a har input stream which fakes end of     * file. It reads the index files to get the part     * file name and the size and start of the file.    */
 annotation|@
 name|Override
