@@ -35,6 +35,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Text
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -179,6 +193,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
 import|;
 end_import
 
@@ -916,10 +944,10 @@ name|getPassword
 argument_list|()
 return|;
 block|}
-comment|/**    * Renew a delegation token. Canceled tokens are not renewed. Return true if    * the token is successfully renewed; false otherwise.    */
+comment|/**    * Renew a delegation token.    * @param token the token to renew    * @param renewer the full principal name of the user doing the renewal    * @return the new expiration time    * @throws InvalidToken if the token is invalid    * @throws AccessControlException if the user can't renew token    */
 DECL|method|renewToken (Token<TokenIdent> token, String renewer)
 specifier|public
-name|Boolean
+name|long
 name|renewToken
 parameter_list|(
 name|Token
@@ -995,16 +1023,13 @@ operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|InvalidToken
 argument_list|(
 literal|"Renewal request for unknown token"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 block|}
 if|if
@@ -1017,20 +1042,17 @@ operator|<
 name|now
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|InvalidToken
 argument_list|(
-literal|"Client "
+literal|"User "
 operator|+
 name|renewer
 operator|+
-literal|" tries to renew an expired token"
+literal|" tried to renew an expired token"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 if|if
 condition|(
@@ -1040,7 +1062,24 @@ name|getRenewer
 argument_list|()
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"User "
+operator|+
+name|renewer
+operator|+
+literal|" tried to renew a token without "
+operator|+
+literal|"a renewer"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|id
 operator|.
@@ -1056,9 +1095,9 @@ name|renewer
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|AccessControlException
 argument_list|(
 literal|"Client "
 operator|+
@@ -1073,10 +1112,7 @@ operator|.
 name|getRenewer
 argument_list|()
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|DelegationKey
 name|key
@@ -1108,9 +1144,9 @@ operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|InvalidToken
 argument_list|(
 literal|"Unable to find master key for keyId="
 operator|+
@@ -1119,19 +1155,16 @@ operator|.
 name|getMasterKeyId
 argument_list|()
 operator|+
-literal|" from cache. Failed to renew an unexpired token with sequenceNumber="
+literal|" from cache. Failed to renew an unexpired token"
+operator|+
+literal|" with sequenceNumber="
 operator|+
 name|id
 operator|.
 name|getSequenceNumber
 argument_list|()
-operator|+
-literal|", issued by this key"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|byte
 index|[]
@@ -1166,20 +1199,19 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|AccessControlException
 argument_list|(
 literal|"Client "
 operator|+
 name|renewer
 operator|+
-literal|" is trying to renew a token with wrong password"
+literal|" is trying to renew a token with "
+operator|+
+literal|"wrong password"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|DelegationTokenInformation
 name|info
@@ -1220,13 +1252,16 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|true
+name|info
+operator|.
+name|getRenewDate
+argument_list|()
 return|;
 block|}
-comment|/**    * Cancel a token by removing it from cache. Return true if     * token exists in cache; false otherwise.    */
+comment|/**    * Cancel a token by removing it from cache.    * @throws InvalidToken for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
 DECL|method|cancelToken (Token<TokenIdent> token, String canceller)
 specifier|public
-name|Boolean
+name|void
 name|cancelToken
 parameter_list|(
 name|Token
@@ -1279,43 +1314,19 @@ if|if
 condition|(
 name|id
 operator|.
-name|getRenewer
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Renewer is null: Invalid Identifier"
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-if|if
-condition|(
-name|id
-operator|.
 name|getUser
 argument_list|()
 operator|==
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|InvalidToken
 argument_list|(
-literal|"owner is null: Invalid Identifier"
+literal|"Token with no owner"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|String
 name|owner
@@ -1328,15 +1339,12 @@ operator|.
 name|getUserName
 argument_list|()
 decl_stmt|;
-name|String
+name|Text
 name|renewer
 init|=
 name|id
 operator|.
 name|getRenewer
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 decl_stmt|;
 if|if
@@ -1349,27 +1357,33 @@ argument_list|(
 name|owner
 argument_list|)
 operator|&&
+operator|(
+name|renewer
+operator|==
+literal|null
+operator|||
 operator|!
 name|canceller
 operator|.
 name|equals
 argument_list|(
 name|renewer
+operator|.
+name|toString
+argument_list|()
 argument_list|)
+operator|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|AccessControlException
 argument_list|(
 name|canceller
 operator|+
 literal|" is not authorized to cancel the token"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|DelegationTokenInformation
 name|info
@@ -1391,11 +1405,21 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+if|if
+condition|(
 name|info
-operator|!=
+operator|==
 literal|null
-return|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"Token not found"
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Convert the byte[] to a secret key    * @param key the byte[] to create the secret key from    * @return the secret key    */
 DECL|method|createSecretKey (byte[] key)
