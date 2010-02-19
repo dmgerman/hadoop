@@ -6125,6 +6125,19 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|call
+operator|.
+name|connection
+operator|.
+name|responseQueue
+init|)
+block|{
+comment|// setupResponse() needs to be sync'ed together with
+comment|// responder.doResponse() since setupResponse may use
+comment|// SASL to encrypt response data and SASL enforces
+comment|// its own message ordering.
 name|setupResponse
 argument_list|(
 name|buf
@@ -6199,6 +6212,7 @@ argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
