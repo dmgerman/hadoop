@@ -106,6 +106,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|BytesWritable
@@ -582,11 +596,16 @@ name|INITIAL_RESP_BUF_SIZE
 operator|=
 literal|1
 expr_stmt|;
-name|Server
+name|conf
 operator|.
-name|MAX_RESP_BUF_SIZE
-operator|=
+name|setInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY
+argument_list|,
 literal|1
+argument_list|)
 expr_stmt|;
 name|testServerResponder
 argument_list|(
@@ -601,6 +620,13 @@ argument_list|,
 literal|5
 argument_list|)
 expr_stmt|;
+name|conf
+operator|=
+operator|new
+name|Configuration
+argument_list|()
+expr_stmt|;
+comment|// reset configuration
 block|}
 DECL|method|testServerResponder ()
 specifier|public
