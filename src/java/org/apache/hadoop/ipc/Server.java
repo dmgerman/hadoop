@@ -723,6 +723,11 @@ specifier|final
 name|boolean
 name|authorize
 decl_stmt|;
+DECL|field|isSecurityEnabled
+specifier|private
+name|boolean
+name|isSecurityEnabled
+decl_stmt|;
 comment|/**    * The first four bytes of Hadoop RPC connections    */
 DECL|field|HEADER
 specifier|public
@@ -3795,6 +3800,11 @@ specifier|private
 name|boolean
 name|saslContextEstablished
 decl_stmt|;
+DECL|field|skipInitialSaslHandshake
+specifier|private
+name|boolean
+name|skipInitialSaslHandshake
+decl_stmt|;
 DECL|field|rpcHeaderBuffer
 specifier|private
 name|ByteBuffer
@@ -4723,6 +4733,66 @@ parameter_list|)
 block|{         }
 block|}
 block|}
+DECL|method|askClientToUseSimpleAuth ()
+specifier|private
+name|void
+name|askClientToUseSimpleAuth
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|saslCall
+operator|.
+name|connection
+operator|=
+name|this
+expr_stmt|;
+name|saslResponse
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|DataOutputStream
+name|out
+init|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|saslResponse
+argument_list|)
+decl_stmt|;
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|SaslRpcServer
+operator|.
+name|SWITCH_TO_SIMPLE_AUTH
+argument_list|)
+expr_stmt|;
+name|saslCall
+operator|.
+name|setResponse
+argument_list|(
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|saslResponse
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|responder
+operator|.
+name|doRespond
+argument_list|(
+name|saslCall
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|readAndProcess ()
 specifier|public
 name|int
@@ -4894,10 +4964,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|UserGroupInformation
-operator|.
 name|isSecurityEnabled
-argument_list|()
 operator|&&
 name|authMethod
 operator|==
@@ -4917,10 +4984,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|UserGroupInformation
-operator|.
 name|isSecurityEnabled
-argument_list|()
 operator|&&
 name|authMethod
 operator|!=
@@ -4929,13 +4993,22 @@ operator|.
 name|SIMPLE
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Authentication is not supported"
-argument_list|)
-throw|;
+name|askClientToUseSimpleAuth
+argument_list|()
+expr_stmt|;
+name|authMethod
+operator|=
+name|AuthMethod
+operator|.
+name|SIMPLE
+expr_stmt|;
+comment|// client has already sent the initial Sasl message and we
+comment|// should ignore it. Both client and server should fall back
+comment|// to simple auth from now on.
+name|skipInitialSaslHandshake
+operator|=
+literal|true
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -5093,6 +5166,21 @@ operator|.
 name|flip
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|skipInitialSaslHandshake
+condition|)
+block|{
+name|data
+operator|=
+literal|null
+expr_stmt|;
+name|skipInitialSaslHandshake
+operator|=
+literal|false
+expr_stmt|;
+continue|continue;
+block|}
 name|boolean
 name|isHeaderRead
 init|=
@@ -6581,6 +6669,15 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|isSecurityEnabled
+operator|=
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+expr_stmt|;
 comment|// Start the listener here and let it bind to the port
 name|listener
 operator|=
@@ -6935,6 +7032,19 @@ block|{
 return|return
 name|conf
 return|;
+block|}
+comment|/** for unit testing only, should be called before server is started */
+DECL|method|disableSecurity ()
+name|void
+name|disableSecurity
+parameter_list|()
+block|{
+name|this
+operator|.
+name|isSecurityEnabled
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/** Sets the socket buffer size used for responding to RPCs */
 DECL|method|setSocketSendBufSize (int size)

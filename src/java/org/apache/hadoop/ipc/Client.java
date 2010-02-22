@@ -916,14 +916,12 @@ decl_stmt|;
 comment|// connection id
 DECL|field|authMethod
 specifier|private
-specifier|final
 name|AuthMethod
 name|authMethod
 decl_stmt|;
 comment|// authentication method
 DECL|field|useSasl
 specifier|private
-specifier|final
 name|boolean
 name|useSasl
 decl_stmt|;
@@ -1627,7 +1625,7 @@ block|}
 DECL|method|setupSaslConnection (final InputStream in2, final OutputStream out2)
 specifier|private
 specifier|synchronized
-name|void
+name|boolean
 name|setupSaslConnection
 parameter_list|(
 specifier|final
@@ -1639,17 +1637,7 @@ name|OutputStream
 name|out2
 parameter_list|)
 throws|throws
-name|javax
-operator|.
-name|security
-operator|.
-name|sasl
-operator|.
-name|SaslException
-throws|,
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 try|try
 block|{
@@ -1665,6 +1653,7 @@ argument_list|,
 name|serverPrincipal
 argument_list|)
 expr_stmt|;
+return|return
 name|saslRpcClient
 operator|.
 name|saslConnect
@@ -1673,7 +1662,7 @@ name|in2
 argument_list|,
 name|out2
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1713,6 +1702,9 @@ expr_stmt|;
 comment|//try setting up the connection again
 try|try
 block|{
+name|disposeSasl
+argument_list|()
+expr_stmt|;
 name|saslRpcClient
 operator|=
 operator|new
@@ -1725,6 +1717,7 @@ argument_list|,
 name|serverPrincipal
 argument_list|)
 expr_stmt|;
+return|return
 name|saslRpcClient
 operator|.
 name|saslConnect
@@ -1733,7 +1726,7 @@ name|in2
 argument_list|,
 name|out2
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -2010,6 +2003,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
 name|ticket
 operator|.
 name|doAs
@@ -2017,35 +2012,33 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|Object
+name|Boolean
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|Object
+name|Boolean
 name|run
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
+return|return
 name|setupSaslConnection
 argument_list|(
 name|in2
 argument_list|,
 name|out2
 argument_list|)
-expr_stmt|;
-return|return
-literal|null
 return|;
 block|}
 block|}
-argument_list|)
-expr_stmt|;
+block|)
+block|)
+block|{
+comment|// Sasl connect is successful. Let's set up Sasl i/o streams.
 name|inStream
 operator|=
 name|saslRpcClient
@@ -2064,6 +2057,39 @@ argument_list|(
 name|outStream
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// fall back to simple auth because server told us so.
+name|authMethod
+operator|=
+name|AuthMethod
+operator|.
+name|SIMPLE
+expr_stmt|;
+name|header
+operator|=
+operator|new
+name|ConnectionHeader
+argument_list|(
+name|header
+operator|.
+name|getProtocol
+argument_list|()
+argument_list|,
+name|header
+operator|.
+name|getUgi
+argument_list|()
+argument_list|,
+name|authMethod
+argument_list|)
+expr_stmt|;
+name|useSasl
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2121,16 +2147,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|writeHeader
-argument_list|()
-expr_stmt|;
+parameter_list|()
+constructor_decl|;
 comment|// update last activity time
 name|touch
-argument_list|()
-expr_stmt|;
+parameter_list|()
+constructor_decl|;
 comment|// start the receiver thread after the socket connection has been set up
 name|start
-argument_list|()
-expr_stmt|;
+parameter_list|()
+constructor_decl|;
 block|}
 catch|catch
 parameter_list|(
@@ -2148,7 +2174,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/* Handle connection failures      *      * If the current number of retries is equal to the max number of retries,      * stop retrying and throw the exception; Otherwise backoff 1 second and      * try connecting again.      *      * This Method is only called from inside setupIOstreams(), which is      * synchronized. Hence the sleep is synchronized; the locks will be retained.      *      * @param curRetries current number of retries      * @param maxRetries max number of retries allowed      * @param ioe failure reason      * @throws IOException if max number of retries is reached      */
+end_comment
+
+begin_function
 DECL|method|handleConnectionFailure ( int curRetries, int maxRetries, IOException ioe)
 specifier|private
 name|void
@@ -2242,7 +2274,13 @@ literal|" time(s)."
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/* Write the RPC header */
+end_comment
+
+begin_function
 DECL|method|writeRpcHeader (OutputStream outStream)
 specifier|private
 name|void
@@ -2302,7 +2340,13 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/* Write the protocol header for each connection      * Out is not synchronized because only the first thread does this.      */
+end_comment
+
+begin_function
 DECL|method|writeHeader ()
 specifier|private
 name|void
@@ -2357,7 +2401,13 @@ name|bufLen
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/* wait till someone signals us to start reading RPC response or      * it is idle too long, it is marked as to be closed,       * or the client is marked as not running.      *       * Return true if it is time to read a response; false otherwise.      */
+end_comment
+
+begin_function
 DECL|method|waitForWork ()
 specifier|private
 specifier|synchronized
@@ -2505,6 +2555,9 @@ literal|false
 return|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|getRemoteAddress ()
 specifier|public
 name|InetSocketAddress
@@ -2515,7 +2568,13 @@ return|return
 name|server
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/* Send a ping to the server if the time elapsed       * since last I/O activity is equal to or greater than the ping interval      */
+end_comment
+
+begin_function
 DECL|method|sendPing ()
 specifier|private
 specifier|synchronized
@@ -2572,6 +2631,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|run ()
 specifier|public
 name|void
@@ -2637,7 +2699,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/** Initiates a call by sending the parameter to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      */
+end_comment
+
+begin_function
 DECL|method|sendParam (Call call)
 specifier|public
 name|void
@@ -2787,7 +2855,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/* Receive a response.      * Because only one receiver, so no synchronization on in.      */
+end_comment
+
+begin_function
 DECL|method|receiveResponse ()
 specifier|private
 name|void
@@ -2987,6 +3061,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|markClosed (IOException e)
 specifier|private
 specifier|synchronized
@@ -3018,7 +3095,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/** Close the connection. */
+end_comment
+
+begin_function
 DECL|method|close ()
 specifier|private
 specifier|synchronized
@@ -3181,7 +3264,13 @@ literal|": closed"
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/* Cleanup all calls and mark them as done */
+end_comment
+
+begin_function
 DECL|method|cleanupCalls ()
 specifier|private
 name|void
@@ -3241,10 +3330,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
+end_function
+
+begin_comment
+unit|}
 comment|/** Call implementation used for parallel calls. */
+end_comment
+
+begin_class
 DECL|class|ParallelCall
-specifier|private
+unit|private
 class|class
 name|ParallelCall
 extends|extends
@@ -3308,7 +3403,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/** Result collector for parallel calls. */
+end_comment
+
+begin_class
 DECL|class|ParallelResults
 specifier|private
 specifier|static
@@ -3397,7 +3498,13 @@ expr_stmt|;
 comment|// then notify waiting caller
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/** Construct an IPC client whose values are of the given {@link Writable}    * class. */
+end_comment
+
+begin_constructor
 DECL|method|Client (Class<? extends Writable> valueClass, Configuration conf, SocketFactory factory)
 specifier|public
 name|Client
@@ -3520,7 +3627,13 @@ operator|=
 name|factory
 expr_stmt|;
 block|}
+end_constructor
+
+begin_comment
 comment|/**    * Construct an IPC client with the default SocketFactory    * @param valueClass    * @param conf    */
+end_comment
+
+begin_constructor
 DECL|method|Client (Class<? extends Writable> valueClass, Configuration conf)
 specifier|public
 name|Client
@@ -3552,7 +3665,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+end_constructor
+
+begin_comment
 comment|/** Return the socket factory of this client    *    * @return this client's socket factory    */
+end_comment
+
+begin_function
 DECL|method|getSocketFactory ()
 name|SocketFactory
 name|getSocketFactory
@@ -3562,7 +3681,13 @@ return|return
 name|socketFactory
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/** Stop all threads related to this client.  No further calls may be made    * using this client. */
+end_comment
+
+begin_function
 DECL|method|stop ()
 specifier|public
 name|void
@@ -3652,7 +3777,13 @@ parameter_list|)
 block|{       }
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
+end_comment
+
+begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress address)
@@ -3682,7 +3813,13 @@ literal|null
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
+end_comment
+
+begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress addr, UserGroupInformation ticket)
@@ -3717,7 +3854,13 @@ name|ticket
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception. */
+end_comment
+
+begin_function
 DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket)
 specifier|public
 name|Writable
@@ -3885,7 +4028,13 @@ return|;
 block|}
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Take an IOException and the address we were trying to connect to    * and return an IOException with the input exception as the cause.    * The new exception provides the stack trace of the place where     * the exception is thrown and some extra diagnostics information.    * If the exception is ConnectException or SocketTimeoutException,     * return a new one of the same type; Otherwise return an IOException.    *     * @param addr target address    * @param exception the relevant exception    * @return an exception to throw    */
+end_comment
+
+begin_function
 DECL|method|wrapException (InetSocketAddress addr, IOException exception)
 specifier|private
 name|IOException
@@ -3983,7 +4132,13 @@ argument_list|)
 return|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**     * Makes a set of calls in parallel.  Each parameter is sent to the    * corresponding address.  When all values are available, or have timed out    * or errored, the collected results are returned in an array.  The array    * contains nulls for calls that timed out or errored.    * @deprecated Use {@link #call(Writable[], InetSocketAddress[], Class, UserGroupInformation)} instead     */
+end_comment
+
+begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable[] params, InetSocketAddress[] addresses)
@@ -4018,7 +4173,13 @@ literal|null
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/** Makes a set of calls in parallel.  Each parameter is sent to the    * corresponding address.  When all values are available, or have timed out    * or errored, the collected results are returned in an array.  The array    * contains nulls for calls that timed out or errored.  */
+end_comment
+
+begin_function
 DECL|method|call (Writable[] params, InetSocketAddress[] addresses, Class<?> protocol, UserGroupInformation ticket)
 specifier|public
 name|Writable
@@ -4209,7 +4370,13 @@ name|values
 return|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/** Get a connection from the pool, or create a new one and add it to the    * pool.  Connections to a given host/port are reused. */
+end_comment
+
+begin_function
 DECL|method|getConnection (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, Call call)
 specifier|private
 name|Connection
@@ -4337,7 +4504,13 @@ return|return
 name|connection
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * This class holds the address and the user ticket. The client connections    * to servers are uniquely identified by<remoteAddress, protocol, ticket>    */
+end_comment
+
+begin_class
 DECL|class|ConnectionId
 specifier|private
 specifier|static
@@ -4521,8 +4694,8 @@ argument_list|)
 return|;
 block|}
 block|}
-block|}
 end_class
 
+unit|}
 end_unit
 

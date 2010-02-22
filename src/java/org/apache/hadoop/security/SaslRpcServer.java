@@ -351,6 +351,16 @@ literal|"true"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|SWITCH_TO_SIMPLE_AUTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SWITCH_TO_SIMPLE_AUTH
+init|=
+operator|-
+literal|88
+decl_stmt|;
 DECL|method|encodeIdentifier (byte[] identifier)
 specifier|static
 name|String

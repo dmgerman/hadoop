@@ -48,16 +48,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -139,38 +129,6 @@ operator|.
 name|SaslRpcServer
 operator|.
 name|AuthMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|TokenIdentifier
 import|;
 end_import
 
@@ -416,14 +374,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
 name|authMethod
 operator|==
 name|AuthMethod
@@ -431,7 +381,7 @@ operator|.
 name|KERBEROS
 condition|)
 block|{
-comment|//Send effective user for Kerberos auth
+comment|// Send effective user for Kerberos auth
 name|out
 operator|.
 name|writeBoolean
@@ -457,9 +407,17 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|authMethod
+operator|==
+name|AuthMethod
+operator|.
+name|DIGEST
+condition|)
 block|{
-comment|//Don't send user for token auth
+comment|// Don't send user for token auth
 name|out
 operator|.
 name|writeBoolean
@@ -467,7 +425,6 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 else|else
 block|{
