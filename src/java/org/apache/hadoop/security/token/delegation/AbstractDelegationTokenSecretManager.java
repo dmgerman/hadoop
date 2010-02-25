@@ -314,9 +314,9 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**     * Cache of currently valid tokens, mapping from DelegationTokenIdentifier     * to DelegationTokenInformation. Protected by its own lock.    */
+comment|/**     * Cache of currently valid tokens, mapping from DelegationTokenIdentifier     * to DelegationTokenInformation. Protected by this object lock.    */
 DECL|field|currentTokens
-specifier|private
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -335,16 +335,17 @@ name|DelegationTokenInformation
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Sequence number to create DelegationTokenIdentifier    */
+comment|/**    * Sequence number to create DelegationTokenIdentifier.    * Protected by this object lock.    */
 DECL|field|delegationTokenSequenceNumber
-specifier|private
+specifier|protected
 name|int
 name|delegationTokenSequenceNumber
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Access to allKeys is protected by this object lock    */
 DECL|field|allKeys
-specifier|private
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -363,14 +364,15 @@ name|DelegationKey
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Access to currentId and currentKey is protected by this object lock.    */
+comment|/**    * Access to currentId is protected by this object lock.    */
 DECL|field|currentId
-specifier|private
+specifier|protected
 name|int
 name|currentId
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Access to currentKey is protected by this object lock    */
 DECL|field|currentKey
 specifier|private
 name|DelegationKey
@@ -402,7 +404,7 @@ name|Thread
 name|tokenRemoverThread
 decl_stmt|;
 DECL|field|running
-specifier|private
+specifier|protected
 specifier|volatile
 name|boolean
 name|running
@@ -562,10 +564,22 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/** Update the current master key */
+DECL|method|logUpdateMasterKey (DelegationKey key)
+specifier|protected
+name|void
+name|logUpdateMasterKey
+parameter_list|(
+name|DelegationKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return;
+block|}
+comment|/**     * Update the current master key     * This is called once by startThreads before tokenRemoverThread is created,     * and only by tokenRemoverThread afterwards.    */
 DECL|method|updateCurrentKey ()
 specifier|private
-specifier|synchronized
 name|void
 name|updateCurrentKey
 parameter_list|()
@@ -580,15 +594,28 @@ literal|"Updating the current master key for generating delegation tokens"
 argument_list|)
 expr_stmt|;
 comment|/* Create a new currentKey with an estimated expiry date. */
-name|currentId
-operator|++
-expr_stmt|;
-name|currentKey
+name|int
+name|newCurrentId
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|newCurrentId
 operator|=
+name|currentId
+operator|+
+literal|1
+expr_stmt|;
+block|}
+name|DelegationKey
+name|newKey
+init|=
 operator|new
 name|DelegationKey
 argument_list|(
-name|currentId
+name|newCurrentId
 argument_list|,
 name|System
 operator|.
@@ -602,6 +629,28 @@ argument_list|,
 name|generateSecret
 argument_list|()
 argument_list|)
+decl_stmt|;
+comment|//Log must be invoked outside the lock on 'this'
+name|logUpdateMasterKey
+argument_list|(
+name|newKey
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|currentId
+operator|=
+name|newKey
+operator|.
+name|getKeyId
+argument_list|()
+expr_stmt|;
+name|currentKey
+operator|=
+name|newKey
 expr_stmt|;
 name|allKeys
 operator|.
@@ -616,15 +665,19 @@ name|currentKey
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Update the current master key for generating delegation tokens */
+block|}
+comment|/**     * Update the current master key for generating delegation tokens     * It should be called only by tokenRemoverThread.    */
 DECL|method|rollMasterKey ()
-specifier|public
-specifier|synchronized
 name|void
 name|rollMasterKey
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 name|removeExpiredKeys
 argument_list|()
@@ -642,7 +695,7 @@ operator|+
 name|tokenMaxLifetime
 argument_list|)
 expr_stmt|;
-comment|/*      * currentKey might have been removed by removeExpiredKeys(), if      * updateMasterKey() isn't called at expected interval. Add it back to      * allKeys just in case.      */
+comment|/*        * currentKey might have been removed by removeExpiredKeys(), if        * updateMasterKey() isn't called at expected interval. Add it back to        * allKeys just in case.        */
 name|allKeys
 operator|.
 name|put
@@ -655,6 +708,7 @@ argument_list|,
 name|currentKey
 argument_list|)
 expr_stmt|;
+block|}
 name|updateCurrentKey
 argument_list|()
 expr_stmt|;
@@ -744,6 +798,7 @@ annotation|@
 name|Override
 DECL|method|createPassword (TokenIdent identifier)
 specifier|protected
+specifier|synchronized
 name|byte
 index|[]
 name|createPassword
@@ -755,12 +810,6 @@ block|{
 name|int
 name|sequenceNum
 decl_stmt|;
-name|int
-name|id
-decl_stmt|;
-name|DelegationKey
-name|key
-decl_stmt|;
 name|long
 name|now
 init|=
@@ -769,25 +818,11 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-name|id
-operator|=
-name|currentId
-expr_stmt|;
-name|key
-operator|=
-name|currentKey
-expr_stmt|;
 name|sequenceNum
 operator|=
 operator|++
 name|delegationTokenSequenceNumber
 expr_stmt|;
-block|}
 name|identifier
 operator|.
 name|setIssueDate
@@ -808,7 +843,7 @@ name|identifier
 operator|.
 name|setMasterKeyId
 argument_list|(
-name|id
+name|currentId
 argument_list|)
 expr_stmt|;
 name|identifier
@@ -829,17 +864,12 @@ operator|.
 name|getBytes
 argument_list|()
 argument_list|,
-name|key
+name|currentKey
 operator|.
 name|getKey
 argument_list|()
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|currentTokens
-init|)
-block|{
 name|currentTokens
 operator|.
 name|put
@@ -857,15 +887,15 @@ name|password
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|password
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|retrievePassword (TokenIdent identifier )
+DECL|method|retrievePassword (TokenIdent identifier)
 specifier|public
+specifier|synchronized
 name|byte
 index|[]
 name|retrievePassword
@@ -879,23 +909,13 @@ block|{
 name|DelegationTokenInformation
 name|info
 init|=
-literal|null
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|currentTokens
-init|)
-block|{
-name|info
-operator|=
 name|currentTokens
 operator|.
 name|get
 argument_list|(
 name|identifier
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 if|if
 condition|(
 name|info
@@ -947,6 +967,7 @@ block|}
 comment|/**    * Renew a delegation token.    * @param token the token to renew    * @param renewer the full principal name of the user doing the renewal    * @return the new expiration time    * @throws InvalidToken if the token is invalid    * @throws AccessControlException if the user can't renew token    */
 DECL|method|renewToken (Token<TokenIdent> token, String renewer)
 specifier|public
+specifier|synchronized
 name|long
 name|renewToken
 parameter_list|(
@@ -1006,32 +1027,6 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|currentTokens
-init|)
-block|{
-if|if
-condition|(
-name|currentTokens
-operator|.
-name|get
-argument_list|(
-name|id
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidToken
-argument_list|(
-literal|"Renewal request for unknown token"
-argument_list|)
-throw|;
-block|}
-block|}
 if|if
 condition|(
 name|id
@@ -1117,15 +1112,6 @@ block|}
 name|DelegationKey
 name|key
 init|=
-literal|null
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-name|key
-operator|=
 name|allKeys
 operator|.
 name|get
@@ -1135,8 +1121,7 @@ operator|.
 name|getMasterKeyId
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 if|if
 condition|(
 name|key
@@ -1213,12 +1198,9 @@ literal|"wrong password"
 argument_list|)
 throw|;
 block|}
-name|DelegationTokenInformation
-name|info
+name|long
+name|renewTime
 init|=
-operator|new
-name|DelegationTokenInformation
-argument_list|(
 name|Math
 operator|.
 name|min
@@ -1232,15 +1214,38 @@ name|now
 operator|+
 name|tokenRenewInterval
 argument_list|)
+decl_stmt|;
+name|DelegationTokenInformation
+name|info
+init|=
+operator|new
+name|DelegationTokenInformation
+argument_list|(
+name|renewTime
 argument_list|,
 name|password
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
+if|if
+condition|(
 name|currentTokens
-init|)
+operator|.
+name|get
+argument_list|(
+name|id
+argument_list|)
+operator|==
+literal|null
+condition|)
 block|{
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"Renewal request for unknown token"
+argument_list|)
+throw|;
+block|}
 name|currentTokens
 operator|.
 name|put
@@ -1250,18 +1255,15 @@ argument_list|,
 name|info
 argument_list|)
 expr_stmt|;
-block|}
 return|return
-name|info
-operator|.
-name|getRenewDate
-argument_list|()
+name|renewTime
 return|;
 block|}
-comment|/**    * Cancel a token by removing it from cache.    * @throws InvalidToken for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
+comment|/**    * Cancel a token by removing it from cache.    * @return Identifier of the canceled token    * @throws InvalidToken for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
 DECL|method|cancelToken (Token<TokenIdent> token, String canceller)
 specifier|public
-name|void
+specifier|synchronized
+name|TokenIdent
 name|cancelToken
 parameter_list|(
 name|Token
@@ -1390,11 +1392,6 @@ name|info
 init|=
 literal|null
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|currentTokens
-init|)
-block|{
 name|info
 operator|=
 name|currentTokens
@@ -1404,7 +1401,6 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|info
@@ -1420,6 +1416,9 @@ literal|"Token not found"
 argument_list|)
 throw|;
 block|}
+return|return
+name|id
+return|;
 block|}
 comment|/**    * Convert the byte[] to a secret key    * @param key the byte[] to create the secret key from    * @return the secret key    */
 DECL|method|createSecretKey (byte[] key)
@@ -1442,9 +1441,9 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** Utility class to encapsulate a token's renew date and password. */
+comment|/** Class to encapsulate a token's renew date and password. */
 DECL|class|DelegationTokenInformation
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|DelegationTokenInformation
@@ -1459,6 +1458,7 @@ index|[]
 name|password
 decl_stmt|;
 DECL|method|DelegationTokenInformation (long renewDate, byte[] password)
+specifier|public
 name|DelegationTokenInformation
 parameter_list|(
 name|long
@@ -1484,6 +1484,7 @@ expr_stmt|;
 block|}
 comment|/** returns renew date */
 DECL|method|getRenewDate ()
+specifier|public
 name|long
 name|getRenewDate
 parameter_list|()
@@ -1507,6 +1508,7 @@ block|}
 comment|/** Remove expired delegation tokens from cache */
 DECL|method|removeExpiredToken ()
 specifier|private
+specifier|synchronized
 name|void
 name|removeExpiredToken
 parameter_list|()
@@ -1519,11 +1521,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|currentTokens
-init|)
-block|{
 name|Iterator
 argument_list|<
 name|DelegationTokenInformation
@@ -1572,7 +1569,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
 DECL|method|stopThreads ()
 specifier|public
 specifier|synchronized
@@ -1598,11 +1594,19 @@ name|running
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
+name|tokenRemoverThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|tokenRemoverThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|class|ExpiredTokenRemover
 specifier|private
