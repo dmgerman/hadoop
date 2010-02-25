@@ -750,6 +750,25 @@ name|HADOOP_SECURITY_AUTHENTICATION
 init|=
 literal|"hadoop.security.authentication"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_AUTHORIZATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_AUTHORIZATION
+init|=
+literal|"hadoop.security.authorization"
+decl_stmt|;
+comment|/**    * ACL denoting the administrator ACLs for a hadoop cluster.    */
+DECL|field|HADOOP_CLUSTER_ADMINISTRATORS_PROPERTY
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|HADOOP_CLUSTER_ADMINISTRATORS_PROPERTY
+init|=
+literal|"hadoop.cluster.administrators"
+decl_stmt|;
 block|}
 end_class
 

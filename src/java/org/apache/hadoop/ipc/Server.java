@@ -449,6 +449,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -6662,9 +6676,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|ServiceAuthorizationManager
+name|CommonConfigurationKeys
 operator|.
-name|SERVICE_AUTHORIZATION_CONFIG
+name|HADOOP_SECURITY_AUTHORIZATION
 argument_list|,
 literal|false
 argument_list|)

@@ -204,6 +204,25 @@ name|ServletException
 throws|,
 name|IOException
 block|{
+comment|// Do the authorization
+if|if
+condition|(
+operator|!
+name|HttpServer
+operator|.
+name|hasAdministratorAccess
+argument_list|(
+name|getServletContext
+argument_list|()
+argument_list|,
+name|request
+argument_list|,
+name|response
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 name|String
 name|format
 init|=

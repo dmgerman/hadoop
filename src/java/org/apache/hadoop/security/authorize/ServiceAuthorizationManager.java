@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -111,7 +125,9 @@ name|AccessControlList
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Configuration key for controlling service-level authorization for Hadoop.    */
+comment|/**    * Configuration key for controlling service-level authorization for Hadoop.    *     * @deprecated Use    *             {@link CommonConfigurationKeys#HADOOP_SECURITY_AUTHORIZATION}    *             Instead.    */
+annotation|@
+name|Deprecated
 DECL|field|SERVICE_AUTHORIZATION_CONFIG
 specifier|public
 specifier|static
