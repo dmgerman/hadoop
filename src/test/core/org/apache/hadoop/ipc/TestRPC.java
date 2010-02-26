@@ -2047,19 +2047,11 @@ condition|(
 name|expectFailure
 condition|)
 block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Expected 1 but got "
-operator|+
-name|server
-operator|.
-name|getRpcMetrics
-argument_list|()
-operator|.
-name|authorizationFailures
-operator|.
-name|getCurrentIntervalValue
-argument_list|()
+literal|"Wrong number of authorizationFailures "
+argument_list|,
+literal|1
 argument_list|,
 name|server
 operator|.
@@ -2070,26 +2062,16 @@ name|authorizationFailures
 operator|.
 name|getCurrentIntervalValue
 argument_list|()
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Expected 1 but got "
-operator|+
-name|server
-operator|.
-name|getRpcMetrics
-argument_list|()
-operator|.
-name|authorizationSuccesses
-operator|.
-name|getCurrentIntervalValue
-argument_list|()
+literal|"Wrong number of authorizationSuccesses "
+argument_list|,
+literal|1
 argument_list|,
 name|server
 operator|.
@@ -2100,26 +2082,16 @@ name|authorizationSuccesses
 operator|.
 name|getCurrentIntervalValue
 argument_list|()
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
 comment|//since we don't have authentication turned ON, we should see
-comment|//>0 for the authentication successes and 0 for failure
-name|assertTrue
+comment|// 0 for the authentication successes and 0 for failure
+name|assertEquals
 argument_list|(
-literal|"Expected 0 but got "
-operator|+
-name|server
-operator|.
-name|getRpcMetrics
-argument_list|()
-operator|.
-name|authenticationFailures
-operator|.
-name|getCurrentIntervalValue
-argument_list|()
+literal|"Wrong number of authenticationFailures "
+argument_list|,
+literal|0
 argument_list|,
 name|server
 operator|.
@@ -2130,23 +2102,13 @@ name|authenticationFailures
 operator|.
 name|getCurrentIntervalValue
 argument_list|()
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Expected greater than 0 but got "
-operator|+
-name|server
-operator|.
-name|getRpcMetrics
-argument_list|()
-operator|.
-name|authenticationSuccesses
-operator|.
-name|getCurrentIntervalValue
-argument_list|()
+literal|"Wrong number of authenticationSuccesses "
+argument_list|,
+literal|0
 argument_list|,
 name|server
 operator|.
@@ -2157,8 +2119,6 @@ name|authenticationSuccesses
 operator|.
 name|getCurrentIntervalValue
 argument_list|()
-operator|>
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

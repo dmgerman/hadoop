@@ -244,6 +244,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|Server
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -720,7 +734,14 @@ name|TokenIdentifier
 argument_list|>
 name|secretManager
 decl_stmt|;
-DECL|method|SaslDigestCallbackHandler ( SecretManager<TokenIdentifier> secretManager)
+DECL|field|connection
+specifier|private
+name|Server
+operator|.
+name|Connection
+name|connection
+decl_stmt|;
+DECL|method|SaslDigestCallbackHandler ( SecretManager<TokenIdentifier> secretManager, Server.Connection connection)
 specifier|public
 name|SaslDigestCallbackHandler
 parameter_list|(
@@ -729,6 +750,11 @@ argument_list|<
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|Server
+operator|.
+name|Connection
+name|connection
 parameter_list|)
 block|{
 name|this
@@ -736,6 +762,12 @@ operator|.
 name|secretManager
 operator|=
 name|secretManager
+expr_stmt|;
+name|this
+operator|.
+name|connection
+operator|=
+name|connection
 expr_stmt|;
 block|}
 DECL|method|getPassword (TokenIdentifier tokenid)
@@ -902,6 +934,25 @@ argument_list|(
 name|tokenIdentifier
 argument_list|)
 decl_stmt|;
+name|UserGroupInformation
+name|user
+init|=
+literal|null
+decl_stmt|;
+name|user
+operator|=
+name|tokenIdentifier
+operator|.
+name|getUser
+argument_list|()
+expr_stmt|;
+comment|// may throw exception
+name|connection
+operator|.
+name|attemptingUser
+operator|=
+name|user
+expr_stmt|;
 if|if
 condition|(
 name|LOG

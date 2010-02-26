@@ -44,6 +44,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -137,6 +165,45 @@ name|SERVICE_AUTHORIZATION_CONFIG
 init|=
 literal|"hadoop.security.authorization"
 decl_stmt|;
+DECL|field|auditLOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|auditLOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+literal|"SecurityLogger."
+operator|+
+name|ServiceAuthorizationManager
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
+DECL|field|AUTHZ_SUCCESSFULL_FOR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|AUTHZ_SUCCESSFULL_FOR
+init|=
+literal|"Authorization successfull for "
+decl_stmt|;
+DECL|field|AUTHZ_FAILED_FOR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|AUTHZ_FAILED_FOR
+init|=
+literal|"Authorization failed for "
+decl_stmt|;
 comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @throws AuthorizationException on authorization failure    */
 DECL|method|authorize (UserGroupInformation user, Class<?> protocol )
 specifier|public
@@ -196,6 +263,19 @@ name|user
 argument_list|)
 condition|)
 block|{
+name|auditLOG
+operator|.
+name|warn
+argument_list|(
+name|AUTHZ_FAILED_FOR
+operator|+
+name|user
+operator|+
+literal|" for protocol="
+operator|+
+name|protocol
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|AuthorizationException
@@ -203,9 +283,6 @@ argument_list|(
 literal|"User "
 operator|+
 name|user
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" is not authorized for protocol "
 operator|+
@@ -213,6 +290,19 @@ name|protocol
 argument_list|)
 throw|;
 block|}
+name|auditLOG
+operator|.
+name|info
+argument_list|(
+name|AUTHZ_SUCCESSFULL_FOR
+operator|+
+name|user
+operator|+
+literal|" for protocol="
+operator|+
+name|protocol
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|refresh (Configuration conf, PolicyProvider provider)
 specifier|public

@@ -780,6 +780,45 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|auditLOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|auditLOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+literal|"SecurityLogger."
+operator|+
+name|Server
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
+DECL|field|AUTH_FAILED_FOR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|AUTH_FAILED_FOR
+init|=
+literal|"Auth failed for "
+decl_stmt|;
+DECL|field|AUTH_SUCCESSFULL_FOR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|AUTH_SUCCESSFULL_FOR
+init|=
+literal|"Auth successfull for "
+decl_stmt|;
 DECL|field|SERVER
 specifier|private
 specifier|static
@@ -3675,7 +3714,7 @@ block|}
 block|}
 comment|/** Reads calls from a connection and queues them for handling. */
 DECL|class|Connection
-specifier|private
+specifier|public
 class|class
 name|Connection
 block|{
@@ -3814,6 +3853,14 @@ name|user
 init|=
 literal|null
 decl_stmt|;
+DECL|field|attemptingUser
+specifier|public
+name|UserGroupInformation
+name|attemptingUser
+init|=
+literal|null
+decl_stmt|;
+comment|// user name before auth
 comment|// Fake 'call' for failed authorization response
 DECL|field|AUTHROIZATION_FAILED_CALLID
 specifier|private
@@ -4275,6 +4322,8 @@ operator|new
 name|SaslDigestCallbackHandler
 argument_list|(
 name|secretManager
+argument_list|,
+name|this
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4492,6 +4541,30 @@ operator|.
 name|inc
 argument_list|()
 expr_stmt|;
+name|String
+name|clientIP
+init|=
+name|this
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+comment|// attempting user could be null
+name|auditLOG
+operator|.
+name|warn
+argument_list|(
+name|AUTH_FAILED_FOR
+operator|+
+name|clientIP
+operator|+
+literal|":"
+operator|+
+name|attemptingUser
+argument_list|,
+name|se
+argument_list|)
+expr_stmt|;
 throw|throw
 name|se
 throw|;
@@ -4636,6 +4709,22 @@ operator|.
 name|info
 argument_list|(
 literal|"SASL server successfully authenticated client: "
+operator|+
+name|user
+argument_list|)
+expr_stmt|;
+name|rpcMetrics
+operator|.
+name|authenticationSuccesses
+operator|.
+name|inc
+argument_list|()
+expr_stmt|;
+name|auditLOG
+operator|.
+name|info
+argument_list|(
+name|AUTH_SUCCESSFULL_FOR
 operator|+
 name|user
 argument_list|)
@@ -5599,13 +5688,6 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|rpcMetrics
-operator|.
-name|authenticationSuccesses
-operator|.
-name|inc
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|headerRead
