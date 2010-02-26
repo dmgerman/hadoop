@@ -463,22 +463,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -771,16 +755,6 @@ name|byte
 name|CURRENT_VERSION
 init|=
 literal|4
-decl_stmt|;
-comment|/**    * How many calls/handler are allowed in the queue.    */
-DECL|field|MAX_QUEUE_SIZE_PER_HANDLER
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|MAX_QUEUE_SIZE_PER_HANDLER
-init|=
-literal|100
 decl_stmt|;
 comment|/**    * Initial and max size of response buffer    */
 DECL|field|INITIAL_RESP_BUF_SIZE
@@ -6587,7 +6561,18 @@ name|maxQueueSize
 operator|=
 name|handlerCount
 operator|*
-name|MAX_QUEUE_SIZE_PER_HANDLER
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_SERVER_HANDLER_QUEUE_SIZE_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -6597,8 +6582,12 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
+name|CommonConfigurationKeys
+operator|.
 name|IPC_SERVER_RPC_MAX_RESPONSE_SIZE_KEY
 argument_list|,
+name|CommonConfigurationKeys
+operator|.
 name|IPC_SERVER_RPC_MAX_RESPONSE_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;

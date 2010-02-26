@@ -678,6 +678,26 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
+comment|/**    * How many calls per handler are allowed in the queue.    */
+DECL|field|IPC_SERVER_HANDLER_QUEUE_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SERVER_HANDLER_QUEUE_SIZE_KEY
+init|=
+literal|"ipc.server.handler.queue.size"
+decl_stmt|;
+comment|/**    * The default number of calls per handler in the queue.    */
+DECL|field|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
+init|=
+literal|100
+decl_stmt|;
 DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
 specifier|public
 specifier|static
