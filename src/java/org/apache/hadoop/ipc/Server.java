@@ -530,6 +530,22 @@ name|ipc
 operator|.
 name|metrics
 operator|.
+name|RpcDetailedMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|metrics
+operator|.
 name|RpcMetrics
 import|;
 end_import
@@ -1140,6 +1156,11 @@ DECL|field|rpcMetrics
 specifier|protected
 name|RpcMetrics
 name|rpcMetrics
+decl_stmt|;
+DECL|field|rpcDetailedMetrics
+specifier|protected
+name|RpcDetailedMetrics
+name|rpcDetailedMetrics
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -6578,8 +6599,8 @@ argument_list|,
 name|error
 argument_list|)
 expr_stmt|;
-comment|// Discard the large buf and reset it back to
-comment|// smaller size to freeup heap
+comment|// Discard the large buf and reset it back to smaller size
+comment|// to free up heap
 if|if
 condition|(
 name|buf
@@ -6989,6 +7010,25 @@ name|port
 argument_list|)
 argument_list|,
 name|this
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rpcDetailedMetrics
+operator|=
+operator|new
+name|RpcDetailedMetrics
+argument_list|(
+name|serverName
+argument_list|,
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|this
+operator|.
+name|port
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -7512,6 +7552,23 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|rpcDetailedMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcDetailedMetrics
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/** Wait for the server to be stopped.    * Does not wait for all subthreads to finish.    *  See {@link #stop()}.    */
 DECL|method|join ()
@@ -7712,7 +7769,6 @@ comment|//should not be more than 64KB.
 comment|/**    * This is a wrapper around {@link WritableByteChannel#write(ByteBuffer)}.    * If the amount of data is large, it writes to channel in smaller chunks.     * This is to avoid jdk from creating many direct buffers as the size of     * buffer increases. This also minimizes extra copies in NIO layer    * as a result of multiple write operations required to write a large     * buffer.      *    * @see WritableByteChannel#write(ByteBuffer)    */
 DECL|method|channelWrite (WritableByteChannel channel, ByteBuffer buffer)
 specifier|private
-specifier|static
 name|int
 name|channelWrite
 parameter_list|(
@@ -7725,7 +7781,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+name|int
+name|count
+init|=
 operator|(
 name|buffer
 operator|.
@@ -7750,12 +7808,31 @@ name|channel
 argument_list|,
 name|buffer
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|count
+operator|>
+literal|0
+condition|)
+block|{
+name|rpcMetrics
+operator|.
+name|sentBytes
+operator|.
+name|inc
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|count
 return|;
 block|}
 comment|/**    * This is a wrapper around {@link ReadableByteChannel#read(ByteBuffer)}.    * If the amount of data is large, it writes to channel in smaller chunks.     * This is to avoid jdk from creating many direct buffers as the size of     * ByteBuffer increases. There should not be any performance degredation.    *     * @see ReadableByteChannel#read(ByteBuffer)    */
 DECL|method|channelRead (ReadableByteChannel channel, ByteBuffer buffer)
 specifier|private
-specifier|static
 name|int
 name|channelRead
 parameter_list|(
@@ -7768,7 +7845,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+name|int
+name|count
+init|=
 operator|(
 name|buffer
 operator|.
@@ -7793,6 +7872,26 @@ literal|null
 argument_list|,
 name|buffer
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|count
+operator|>
+literal|0
+condition|)
+block|{
+name|rpcMetrics
+operator|.
+name|receivedBytes
+operator|.
+name|inc
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|count
 return|;
 block|}
 comment|/**    * Helper for {@link #channelRead(ReadableByteChannel, ByteBuffer)}    * and {@link #channelWrite(WritableByteChannel, ByteBuffer)}. Only    * one of readCh or writeCh should be non-null.    *     * @see #channelRead(ReadableByteChannel, ByteBuffer)    * @see #channelWrite(WritableByteChannel, ByteBuffer)    */

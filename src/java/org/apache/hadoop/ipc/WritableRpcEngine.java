@@ -1825,7 +1825,7 @@ init|=
 operator|(
 name|MetricsTimeVaryingRate
 operator|)
-name|rpcMetrics
+name|rpcDetailedMetrics
 operator|.
 name|registry
 operator|.
@@ -1856,7 +1856,7 @@ operator|.
 name|getMethodName
 argument_list|()
 argument_list|,
-name|rpcMetrics
+name|rpcDetailedMetrics
 operator|.
 name|registry
 argument_list|)
@@ -1888,7 +1888,7 @@ operator|=
 operator|(
 name|MetricsTimeVaryingRate
 operator|)
-name|rpcMetrics
+name|rpcDetailedMetrics
 operator|.
 name|registry
 operator|.

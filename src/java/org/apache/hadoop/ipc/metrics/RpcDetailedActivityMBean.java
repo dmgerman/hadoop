@@ -77,14 +77,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *   * This is the JMX MBean for reporting the RPC layer Activity.  * The MBean is register using the name  *        "hadoop:service=<RpcServiceName>,name=RpcActivityForPort<port>"  *   * Many of the activity metrics are sampled and averaged on an interval   * which can be specified in the metrics config file.  *<p>  * For the metrics that are sampled and averaged, one must specify   * a metrics context that does periodic update calls. Most metrics contexts do.  * The default Null metrics context however does NOT. So if you aren't  * using any other metrics context then you can turn on the viewing and averaging  * of sampled metrics by  specifying the following two lines  *  in the hadoop-meterics.properties file:  *<pre>  *        rpc.class=org.apache.hadoop.metrics.spi.NullContextWithUpdateThread  *        rpc.period=10  *</pre>  *<p>  * Note that the metrics are collected regardless of the context used.  * The context with the update thread is used to average the data periodically  *  *  *  * Impl details: We use a dynamic mbean that gets the list of the metrics  * from the metrics registry passed as an argument to the constructor  */
+comment|/**  *   * This is the JMX MBean for reporting the RPC layer Activity. The MBean is  * register using the name  * "hadoop:service=<RpcServiceName>,name=RpcDetailedActivityForPort<port>"  *   * Many of the activity metrics are sampled and averaged on an interval which  * can be specified in the metrics config file.  *<p>  * For the metrics that are sampled and averaged, one must specify a metrics  * context that does periodic update calls. Most metrics contexts do. The  * default Null metrics context however does NOT. So if you aren't using any  * other metrics context then you can turn on the viewing and averaging of  * sampled metrics by specifying the following two lines in the  * hadoop-meterics.properties file:  *   *<pre>  *        rpc.class=org.apache.hadoop.metrics.spi.NullContextWithUpdateThread  *        rpc.period=10  *</pre>  *<p>  * Note that the metrics are collected regardless of the context used. The  * context with the update thread is used to average the data periodically  *   * Impl details: We use a dynamic mbean that gets the list of the metrics from  * the metrics registry passed as an argument to the constructor  */
 end_comment
 
 begin_class
-DECL|class|RpcActivityMBean
+DECL|class|RpcDetailedActivityMBean
 specifier|public
 class|class
-name|RpcActivityMBean
+name|RpcDetailedActivityMBean
 extends|extends
 name|MetricsDynamicMBeanBase
 block|{
@@ -94,10 +94,10 @@ specifier|final
 name|ObjectName
 name|mbeanName
 decl_stmt|;
-comment|/**    *     * @param mr - the metrics registry that has all the metrics    * @param serviceName - the service name for the rpc service     * @param port - the rpc port.    */
-DECL|method|RpcActivityMBean (final MetricsRegistry mr, final String serviceName, final String port)
+comment|/**    * @param mr - the metrics registry that has all the metrics    * @param serviceName - the service name for the rpc service    * @param port - the rpc port.    */
+DECL|method|RpcDetailedActivityMBean (final MetricsRegistry mr, final String serviceName, final String port)
 specifier|public
-name|RpcActivityMBean
+name|RpcDetailedActivityMBean
 parameter_list|(
 specifier|final
 name|MetricsRegistry
@@ -116,7 +116,7 @@ name|super
 argument_list|(
 name|mr
 argument_list|,
-literal|"Rpc layer statistics"
+literal|"Rpc layer detailed statistics"
 argument_list|)
 expr_stmt|;
 name|mbeanName
@@ -127,7 +127,7 @@ name|registerMBean
 argument_list|(
 name|serviceName
 argument_list|,
-literal|"RpcActivityForPort"
+literal|"RpcDetailedActivityForPort"
 operator|+
 name|port
 argument_list|,
