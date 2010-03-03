@@ -1717,27 +1717,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|srcFs
-operator|.
-name|getFileStatus
-argument_list|(
-name|p
-argument_list|)
-operator|.
-name|isDir
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Source must be a file."
-argument_list|)
-throw|;
-block|}
 name|printToStdout
 argument_list|(
 name|srcFs
