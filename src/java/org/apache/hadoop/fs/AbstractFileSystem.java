@@ -156,6 +156,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -262,6 +274,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|InvalidPathException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Progressable
@@ -269,7 +309,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides an interface for implementors of a Hadoop filesystem  * (analogous to the VFS of Unix). Applications do not access this class;  * instead they access files across all filesystems using {@link FileContext}.  *   * Pathnames passed to AbstractFileSystem can be fully qualified URI that  * matches the "this" filesystem (ie same scheme and authority)   * or a Slash-relative name that is assumed to be relative  * to the root of the "this" filesystem .  */
+comment|/**  * This class provides an interface for implementors of a Hadoop file system  * (analogous to the VFS of Unix). Applications do not access this class;  * instead they access files across all file systems using {@link FileContext}.  *   * Pathnames passed to AbstractFileSystem can be fully qualified URI that  * matches the "this" file system (ie same scheme and authority)   * or a Slash-relative name that is assumed to be relative  * to the root of the "this" file system .  */
 end_comment
 
 begin_class
@@ -303,7 +343,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** Recording statistics per a filesystem class. */
+comment|/** Recording statistics per a file system class. */
 specifier|private
 specifier|static
 specifier|final
@@ -335,7 +375,7 @@ name|Statistics
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/** Cache of constructors for each filesystem class. */
+comment|/** Cache of constructors for each file system class. */
 DECL|field|CONSTRUCTOR_CACHE
 specifier|private
 specifier|static
@@ -607,7 +647,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Create a file system instance for the specified uri using the conf.    * The conf is used to find the class name that implements the filesystem.    * The conf is also passed to the filesystem for its configuration.    * @param uri    * @param conf    * @return    * @throws IOException    */
+comment|/**    * Create a file system instance for the specified uri using the conf. The    * conf is used to find the class name that implements the file system. The    * conf is also passed to the file system for its configuration.    *    * @param uri URI of the file system    * @param conf Configuration for the file system    *     * @return Returns the file system for the given URI    *    * @throws UnsupportedFileSystemException file system for<code>uri</code> is    *           not found    */
 DECL|method|createFileSystem (URI uri, Configuration conf)
 specifier|private
 specifier|static
@@ -621,7 +661,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 name|Class
 argument_list|<
@@ -654,7 +694,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedFileSystemException
 argument_list|(
 literal|"No AbstractFileSystem for scheme: "
 operator|+
@@ -771,8 +811,6 @@ specifier|synchronized
 name|void
 name|printStatistics
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 for|for
 control|(
@@ -823,7 +861,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The main factory method for creating a filesystem.    * Get a filesystem for the URI's scheme and authority.    * The scheme of the URI determines a configuration property name,    *<tt>fs.AbstractFileSystem.<i>scheme</i>.impl</tt> whose value names    * the AbstractFileSystem class.     * The entire URI and conf is passed to the AbstractFileSystem factory    * method.    * @param uri for the file system to be created.    * @param conf which is passed to the filesystem impl.    */
+comment|/**    * The main factory method for creating a file system. Get a file system for    * the URI's scheme and authority. The scheme of the<code>uri</code>    * determines a configuration property name,    *<tt>fs.AbstractFileSystem.<i>scheme</i>.impl</tt> whose value names the    * AbstractFileSystem class.    *     * The entire URI and conf is passed to the AbstractFileSystem factory method.    *     * @param uri for the file system to be created.    * @param conf which is passed to the file system impl.    *     * @return file system for the given URI.    *     * @throws UnsupportedFileSystemException if the file system for    *<code>uri</code> is not supported.    */
 DECL|method|get (final URI uri, final Configuration conf)
 specifier|static
 name|AbstractFileSystem
@@ -838,7 +876,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|createFileSystem
@@ -849,7 +887,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructor to be called by subclasses.    *     * @param uri for this file system.    * @param supportedScheme the scheme supported by the implementor    * @param authorityNeeded if true then theURI must have authority, if false    *          then the URI must have null authority.    * @throws URISyntaxException    */
+comment|/**    * Constructor to be called by subclasses.    *     * @param uri for this file system.    * @param supportedScheme the scheme supported by the implementor    * @param authorityNeeded if true then theURI must have authority, if false    *          then the URI must have null authority.    *    * @throws URISyntaxException<code>uri</code> has syntax error    */
 DECL|method|AbstractFileSystem (final URI uri, final String supportedScheme, final boolean authorityNeeded, final int defaultPort)
 specifier|protected
 name|AbstractFileSystem
@@ -926,7 +964,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Uri without scheme: "
 operator|+
@@ -947,7 +985,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Uri scheme "
 operator|+
@@ -960,7 +998,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the URI for the file system based on the given URI. The path, query    * part of the given URI is stripped out and default filesystem port is used    * to form the URI.    *     * @param uri FileSystem URI.    * @param authorityNeeded if true authority cannot be null in the URI. If    *          false authority must be null.    * @param defaultPort default port to use if port is not specified in the URI.    * @return URI of the file system    * @throws URISyntaxException     */
+comment|/**    * Get the URI for the file system based on the given URI. The path, query    * part of the given URI is stripped out and default file system port is used    * to form the URI.    *     * @param uri FileSystem URI.    * @param authorityNeeded if true authority cannot be null in the URI. If    *          false authority must be null.    * @param defaultPort default port to use if port is not specified in the URI.    *     * @return URI of the file system    *     * @throws URISyntaxException<code>uri</code> has syntax error    */
 DECL|method|getUri (URI uri, String supportedScheme, boolean authorityNeeded, int defaultPort)
 specifier|private
 name|URI
@@ -988,7 +1026,7 @@ argument_list|,
 name|supportedScheme
 argument_list|)
 expr_stmt|;
-comment|// A filesystem implementation that requires authority must always
+comment|// A file system implementation that requires authority must always
 comment|// specify default port
 if|if
 condition|(
@@ -1001,7 +1039,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"FileSystem implementation error -  default port "
 operator|+
@@ -1034,7 +1072,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Scheme with non-null authority: "
 operator|+
@@ -1061,7 +1099,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Uri without authority: "
 operator|+
@@ -1107,7 +1145,7 @@ name|port
 argument_list|)
 return|;
 block|}
-comment|/**    * The default port of this filesystem.    * @return default port of this filesystem's Uri scheme    * A uri with a port of -1 => default port;    */
+comment|/**    * The default port of this file system.    *     * @return default port of this file system's Uri scheme    *         A uri with a port of -1 => default port;    */
 DECL|method|getUriDefaultPort ()
 specifier|protected
 specifier|abstract
@@ -1115,7 +1153,7 @@ name|int
 name|getUriDefaultPort
 parameter_list|()
 function_decl|;
-comment|/**    * Returns a URI whose scheme and authority identify this FileSystem.    * @return the uri of this filesystem.    */
+comment|/**    * Returns a URI whose scheme and authority identify this FileSystem.    *     * @return the uri of this file system.    */
 DECL|method|getUri ()
 specifier|protected
 name|URI
@@ -1126,7 +1164,7 @@ return|return
 name|myUri
 return|;
 block|}
-comment|/**    * Check that a Path belongs to this FileSystem.    *     * If the path is fully qualified URI, then its scheme and authority    * matches that of this file system. Otherwise the path must be     * slash-relative name.    */
+comment|/**    * Check that a Path belongs to this FileSystem.    *     * If the path is fully qualified URI, then its scheme and authority    * matches that of this file system. Otherwise the path must be     * slash-relative name.    *     * @throws InvalidPathException if the path is invalid    */
 DECL|method|checkPath (Path path)
 specifier|protected
 name|void
@@ -1186,7 +1224,7 @@ return|return;
 block|}
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|InvalidPathException
 argument_list|(
 literal|"relative paths not allowed:"
 operator|+
@@ -1198,7 +1236,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|InvalidPathException
 argument_list|(
 literal|"Path without scheme with non-null autorhrity:"
 operator|+
@@ -1268,7 +1306,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|InvalidPathException
 argument_list|(
 literal|"Wrong FS: "
 operator|+
@@ -1331,7 +1369,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|InvalidPathException
 argument_list|(
 literal|"Wrong FS: "
 operator|+
@@ -1347,7 +1385,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the path-part of a pathname. Checks that URI matches this filesystem    * and that the path-part is a valid name.    * @param p    * @return path-part of the Path p    */
+comment|/**    * Get the path-part of a pathname. Checks that URI matches this file system    * and that the path-part is a valid name.    *     * @param p path    *     * @return path-part of the Path p    */
 DECL|method|getUriPath (final Path p)
 specifier|protected
 name|String
@@ -1385,7 +1423,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|InvalidPathException
 argument_list|(
 literal|"Path part "
 operator|+
@@ -1403,7 +1441,7 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Some file systems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *     * @return the initial workingDir if the filesystem if it has such a notion    * otherwise return a null.    */
+comment|/**    * Some file systems like LocalFileSystem have an initial workingDir    * that is used as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *     * @return the initial workingDir if the file system has such a notion    *         otherwise return a null.    */
 DECL|method|getInitialWorkingDirectory ()
 specifier|protected
 name|Path
@@ -1414,7 +1452,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**     * Return the current user's home directory in this filesystem.    * The default implementation returns "/user/$USER/".    */
+comment|/**     * Return the current user's home directory in this file system.    * The default implementation returns "/user/$USER/".    *     * @return current user's home directory.    */
 DECL|method|getHomeDirectory ()
 specifier|protected
 name|Path
@@ -1444,7 +1482,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of server default configuration values.    * @return server default configuration values    * @throws IOException    */
+comment|/**    * Return a set of server default configuration values.    *     * @return server default configuration values    *     * @throws IOException an I/O error occurred    */
 DECL|method|getServerDefaults ()
 specifier|protected
 specifier|abstract
@@ -1479,9 +1517,19 @@ modifier|...
 name|opts
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnsupportedFileSystemException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 block|{
 name|checkPath
 argument_list|(
@@ -1559,9 +1607,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"BlockSize option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1605,9 +1653,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"BufferSize option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1651,9 +1699,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"ReplicationFactor option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1697,9 +1745,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"BytesPerChecksum option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1742,9 +1790,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"Perms option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1787,9 +1835,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"Progress option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1832,9 +1880,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"multiple varargs of same kind"
+literal|"CreateParent option is set multiple times"
 argument_list|)
 throw|;
 block|}
@@ -1857,7 +1905,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Unkown CreateOpts of type "
 operator|+
@@ -1881,7 +1929,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"no permission supplied"
 argument_list|)
@@ -2005,7 +2053,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"blockSize should be a multiple of checksumsize"
 argument_list|)
@@ -2074,11 +2122,21 @@ name|boolean
 name|createParent
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnsupportedFileSystemException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#mkdir(Path, FsPermission, boolean)} except that the Path    * f must be fully qualified and the permission is absolute (ie umask has been    * applied).    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#mkdir(Path, FsPermission, boolean)} except that the Path    * f must be fully qualified and the permission is absolute (i.e.     * umask has been applied).    */
 DECL|method|mkdir (final Path dir, final FsPermission permission, final boolean createParent)
 specifier|protected
 specifier|abstract
@@ -2098,11 +2156,17 @@ name|boolean
 name|createParent
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#delete(Path, boolean)} except that Path f must be for    * this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#delete(Path, boolean)} except that Path f must be for    * this file system.    */
 DECL|method|delete (final Path f, final boolean recursive)
 specifier|protected
 specifier|abstract
@@ -2118,11 +2182,15 @@ name|boolean
 name|recursive
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path)} except that Path f must be for this    * filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path)} except that Path f must be for this    * file system.    */
 DECL|method|open (final Path f)
 specifier|protected
 name|FSDataInputStream
@@ -2133,9 +2201,13 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 block|{
 return|return
 name|open
@@ -2150,7 +2222,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path, int)} except that Path f must be for this    * filesystem.    * @throws UnresolvedLinkException     */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path, int)} except that Path f must be for this    * file system.    */
 DECL|method|open (final Path f, int bufferSize)
 specifier|protected
 specifier|abstract
@@ -2165,11 +2237,15 @@ name|int
 name|bufferSize
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this file system.    */
 DECL|method|setReplication (final Path f, final short replication)
 specifier|protected
 specifier|abstract
@@ -2185,11 +2261,15 @@ name|short
 name|replication
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system.    */
 DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
 specifier|protected
 specifier|final
@@ -2212,9 +2292,17 @@ modifier|...
 name|options
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 block|{
 name|boolean
 name|overwrite
@@ -2262,7 +2350,7 @@ name|overwrite
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this filesystem and NO OVERWRITE is performed.    *     * Filesystems that do not have a built in overwrite need implement only this    * method and can take advantage of the default impl of the other    * {@link #renameInternal(Path, Path, boolean)}    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system and NO OVERWRITE is performed.    *     * File systems that do not have a built in overwrite need implement only this    * method and can take advantage of the default impl of the other    * {@link #renameInternal(Path, Path, boolean)}    */
 DECL|method|renameInternal (final Path src, final Path dst)
 specifier|protected
 specifier|abstract
@@ -2278,11 +2366,19 @@ name|Path
 name|dst
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system.    */
 DECL|method|renameInternal (final Path src, final Path dst, boolean overwrite)
 specifier|protected
 name|void
@@ -2300,9 +2396,17 @@ name|boolean
 name|overwrite
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 block|{
 comment|// Default implementation deals with overwrite in a non-atomic way
 specifier|final
@@ -2598,7 +2702,7 @@ name|AssertionError
 argument_list|()
 throw|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setPermission(Path, FsPermission)} except that Path f    * must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#setPermission(Path, FsPermission)} except that Path f    * must be for this file system.    */
 DECL|method|setPermission (final Path f, final FsPermission permission)
 specifier|protected
 specifier|abstract
@@ -2614,11 +2718,15 @@ name|FsPermission
 name|permission
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setOwner(Path, String, String)} except that Path f must    * be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#setOwner(Path, String, String)} except that Path f must    * be for this file system.    */
 DECL|method|setOwner (final Path f, final String username, final String groupname)
 specifier|protected
 specifier|abstract
@@ -2638,11 +2746,15 @@ name|String
 name|groupname
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setTimes(Path, long, long)} except that Path f must be    * for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#setTimes(Path, long, long)} except that Path f must be    * for this file system.    */
 DECL|method|setTimes (final Path f, final long mtime, final long atime)
 specifier|protected
 specifier|abstract
@@ -2662,11 +2774,15 @@ name|long
 name|atime
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileChecksum(Path)} except that Path f must be for    * this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileChecksum(Path)} except that Path f must be for    * this file system.    */
 DECL|method|getFileChecksum (final Path f)
 specifier|protected
 specifier|abstract
@@ -2678,9 +2794,13 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileStatus(Path)}     * except that an UnresolvedLinkException may be thrown if a symlink is     * encountered in the path.    */
 DECL|method|getFileStatus (final Path f)
@@ -2694,9 +2814,13 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileLinkStatus(Path)}    * except that an UnresolvedLinkException may be thrown if a symlink is      * encountered in the path leading up to the final path component.    * If the file system does not support symlinks then the behavior is    * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.    */
 DECL|method|getFileLinkStatus (final Path f)
@@ -2709,9 +2833,13 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
 throws|,
-name|UnresolvedLinkException
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|IOException
 block|{
 return|return
 name|getFileStatus
@@ -2720,7 +2848,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileBlockLocations(Path, long, long)} except that    * Path f must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileBlockLocations(Path, long, long)} except that    * Path f must be for this file system.    */
 DECL|method|getFileBlockLocations (final Path f, final long start, final long len)
 specifier|protected
 specifier|abstract
@@ -2741,11 +2869,15 @@ name|long
 name|len
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)} except that Path f must be for this    * filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)} except that Path f must be for this    * file system.    */
 DECL|method|getFsStatus (final Path f)
 specifier|protected
 name|FsStatus
@@ -2756,9 +2888,13 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 block|{
 comment|// default impl gets FsStatus of root
 return|return
@@ -2774,9 +2910,13 @@ name|FsStatus
 name|getFsStatus
 parameter_list|()
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#listStatus(Path)} except that Path f must be for this    * filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#listStatus(Path)} except that Path f must be for this    * file system.    */
 DECL|method|listStatus (final Path f)
 specifier|protected
 specifier|abstract
@@ -2789,11 +2929,15 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
-name|IOException
+name|AccessControlException
+throws|,
+name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this filesystem.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this file system.    */
 DECL|method|setVerifyChecksum (final boolean verifyChecksum)
 specifier|protected
 specifier|abstract
@@ -2805,6 +2949,8 @@ name|boolean
 name|verifyChecksum
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 function_decl|;
 block|}

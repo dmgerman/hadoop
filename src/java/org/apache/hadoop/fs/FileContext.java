@@ -206,6 +206,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -284,6 +296,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|Rename
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -304,8 +332,78 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RpcClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RpcServerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|UnexpectedServerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|InvalidPathException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
 begin_comment
-comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop filesystem.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop filesystem supports a URI name space and URI names.  * It offers a a forest of filesystems that can be referenced using fully  * qualified URIs.  * Two common Hadoop filesystems implementations are  *<ul>  *<li> the local filesystem: file:///path  *<li> the hdfs filesystem hdfs://nnAddress:nnPort/path  *</ul>    * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  * To facilitate this, Hadoop supports a notion of a default filesystem.  * The user can set his default filesystem, although this is  * typically set up for you in your environment via your default config.  * A default filesystem implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI:  scheme://authority/path  *<li> slash relative names: /path    - relative to the default filesystem  *<li> wd-relative names:    path        - relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *   in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All filesystem instances  *  (i.e. deployments of filesystems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The filesystem related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> bytesPerChecksum (if used).  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); // configX is not changed,  *                                              // is passed down   *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
+comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop file system.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop file system supports a URI name space and URI names.  * It offers a forest of file systems that can be referenced using fully  * qualified URIs.  * Two common Hadoop file systems implementations are  *<ul>  *<li> the local file system: file:///path  *<li> the hdfs file system hdfs://nnAddress:nnPort/path  *</ul>  *   * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  *   * To facilitate this, Hadoop supports a notion of a default file system.  * The user can set his default file system, although this is  * typically set up for you in your environment via your default config.  * A default file system implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI: scheme://authority/path  *<li> slash relative names: /path relative to the default file system  *<li> wd-relative names: path  relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *    *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *  in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *    *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All file system instances  *  (i.e. deployments of file systems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The file system related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> bytesPerChecksum (if used).  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); // configX is not changed,  *                                              // is passed down   *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
 end_comment
 
 begin_class
@@ -661,7 +759,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Pathnames with scheme and relative path are illegal.    * @param path to be checked    * @throws IllegalArgumentException if of type scheme:foo/bar    */
+comment|/**    * Pathnames with scheme and relative path are illegal.    * @param path to be checked    */
 DECL|method|checkNotSchemeWithRelative (final Path path)
 specifier|private
 specifier|static
@@ -692,14 +790,14 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Unsupported name: has scheme but relative path-part"
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the filesystem of supplied path.    * @param absOrFqPath - absolute or fully qualified path    * @return the filesystem of the path    * @throws IOException    */
+comment|/**    * Get the file system of supplied path.    *     * @param absOrFqPath - absolute or fully qualified path    * @return the file system of the path    *     * @throws UnsupportedFileSystemException If the file system for    *<code>absOrFqPath</code> is not supported.    */
 DECL|method|getFSofPath (final Path absOrFqPath)
 specifier|private
 name|AbstractFileSystem
@@ -710,7 +808,7 @@ name|Path
 name|absOrFqPath
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 name|checkNotSchemeWithRelative
 argument_list|(
@@ -738,7 +836,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"FileContext Bug: path is relative"
 argument_list|)
@@ -781,7 +879,7 @@ return|;
 block|}
 block|}
 comment|/**    * Protected Static Factory methods for getting a FileContexts    * that take a AbstractFileSystem as input. To be used for testing.    */
-comment|/**    * Create a FileContext with specified FS as default     * using the specified config.    *     * @param defFS    * @param aConf    * @return new FileContext with specifed FS as default.    * @throws IOException if the filesystem with specified cannot be created    */
+comment|/**    * Create a FileContext with specified FS as default using the specified    * config.    *     * @param defFS    * @param aConf    * @return new FileContext with specifed FS as default.    */
 DECL|method|getFileContext (final AbstractFileSystem defFS, final Configuration aConf)
 specifier|protected
 specifier|static
@@ -796,8 +894,6 @@ specifier|final
 name|Configuration
 name|aConf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 operator|new
@@ -816,7 +912,7 @@ name|aConf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileContext for specified filesystem using the default config.    *     * @param defaultFS    * @return a FileContext with the specified AbstractFileSystem    *                 as the default FS.    * @throws IOException if the filesystem with specified cannot be created    */
+comment|/**    * Create a FileContext for specified file system using the default config.    *     * @param defaultFS    * @return a FileContext with the specified AbstractFileSystem    *                 as the default FS.    */
 DECL|method|getFileContext ( final AbstractFileSystem defaultFS)
 specifier|protected
 specifier|static
@@ -827,8 +923,6 @@ specifier|final
 name|AbstractFileSystem
 name|defaultFS
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|getFileContext
@@ -842,7 +936,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Static Factory methods for getting a FileContext.    * Note new file contexts are created for each call.    * The only singleton is the local FS context using the default config.    *     * Methods that use the default config: the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * The keys relevant to the FileContext layer are extracted at time of    * construction. Changes to the config after the call are ignore    * by the FileContext layer.     * The conf is passed to lower layers like AbstractFileSystem and HDFS which    * pick up their own config variables.    */
-comment|/**    * Create a FileContext using the default config read from the    * $HADOOP_CONFIG/core.xml,    * Unspecified key-values for config are defaulted from core-defaults.xml    * in the release jar.    *     * @throws IOException if default filesystem in the config  cannot be created    */
+comment|/**    * Create a FileContext using the default config read from the    * $HADOOP_CONFIG/core.xml, Unspecified key-values for config are defaulted    * from core-defaults.xml in the release jar.    *     * @throws UnsupportedFileSystemException If the file system from the default    *           configuration is not supported    */
 DECL|method|getFileContext ()
 specifier|public
 specifier|static
@@ -850,7 +944,7 @@ name|FileContext
 name|getFileContext
 parameter_list|()
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|getFileContext
@@ -861,7 +955,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    *     * @return a FileContext for the local filesystem using the default config.    * @throws IOException     */
+comment|/**    * @return a FileContext for the local file system using the default config.    * @throws UnsupportedFileSystemException If the file system for    *           {@link FsConstants#LOCAL_FS_URI} is not supported.    */
 DECL|method|getLocalFSFileContext ()
 specifier|public
 specifier|static
@@ -869,7 +963,7 @@ name|FileContext
 name|getLocalFSFileContext
 parameter_list|()
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 if|if
 condition|(
@@ -892,7 +986,7 @@ return|return
 name|localFsSingleton
 return|;
 block|}
-comment|/**    * Create a FileContext for specified URI using the default config.    *     * @param defaultFsUri    * @return a FileContext with the specified URI as the default FS.    * @throws IOException if the filesysem with specified cannot be created    */
+comment|/**    * Create a FileContext for specified URI using the default config.    *     * @param defaultFsUri    * @return a FileContext with the specified URI as the default FS.    *     * @throws UnsupportedFileSystemException If the file system for    *<code>defaultFsUri</code> is not supported    */
 DECL|method|getFileContext (final URI defaultFsUri)
 specifier|public
 specifier|static
@@ -904,7 +998,7 @@ name|URI
 name|defaultFsUri
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|getFileContext
@@ -917,7 +1011,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileContext for specified default URI using the specified config.    *     * @param defaultFsUri    * @param aConf    * @return new FileContext for specified uri    * @throws IOException if the filesysem with specified cannot be created    */
+comment|/**    * Create a FileContext for specified default URI using the specified config.    *     * @param defaultFsUri    * @param aConf    * @return new FileContext for specified uri    * @throws UnsupportedFileSystemException If the file system with specified is    *           not supported    */
 DECL|method|getFileContext (final URI defaultFsUri, final Configuration aConf)
 specifier|public
 specifier|static
@@ -933,7 +1027,7 @@ name|Configuration
 name|aConf
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|getFileContext
@@ -951,7 +1045,7 @@ name|aConf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileContext using the passed config.    * Generally it is better to use {@link #getFileContext(URI, Configuration)}    * instead of this one.    *     *     * @param aConf    * @return new FileContext    * @throws IOException  if default filesystem in the config  cannot be created    */
+comment|/**    * Create a FileContext using the passed config. Generally it is better to use    * {@link #getFileContext(URI, Configuration)} instead of this one.    *     *     * @param aConf    * @return new FileContext    * @throws UnsupportedFileSystemException If file system in the config    *           is not supported    */
 DECL|method|getFileContext (final Configuration aConf)
 specifier|public
 specifier|static
@@ -963,7 +1057,7 @@ name|Configuration
 name|aConf
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|getFileContext
@@ -984,7 +1078,7 @@ name|aConf
 argument_list|)
 return|;
 block|}
-comment|/**    * @param aConf - from which the FileContext is configured    * @return a FileContext for the local filesystem using the specified config.    * @throws IOException     */
+comment|/**    * @param aConf - from which the FileContext is configured    * @return a FileContext for the local file system using the specified config.    *     * @throws UnsupportedFileSystemException If default file system in the config    *           is not supported    *     */
 DECL|method|getLocalFSFileContext (final Configuration aConf)
 specifier|public
 specifier|static
@@ -996,7 +1090,7 @@ name|Configuration
 name|aConf
 parameter_list|)
 throws|throws
-name|IOException
+name|UnsupportedFileSystemException
 block|{
 return|return
 name|getFileContext
@@ -1131,7 +1225,7 @@ operator|=
 name|newUmask
 expr_stmt|;
 block|}
-comment|/**    * Make the path fully qualified if it is isn't.     * A Fully-qualified path has scheme and authority specified and an absolute    * path.    * Use the default filesystem and working dir in this FileContext to qualify.    * @param path    * @return qualified path    */
+comment|/**    * Make the path fully qualified if it is isn't.     * A Fully-qualified path has scheme and authority specified and an absolute    * path.    * Use the default file system and working dir in this FileContext to qualify.    * @param path    * @return qualified path    */
 DECL|method|makeQualified (final Path path)
 specifier|public
 name|Path
@@ -1157,7 +1251,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create or overwrite file on indicated path and returns an output stream    * for writing into the file.    * @param f the file name to open    * @param createFlag gives the semantics  of create: overwrite, append etc.    * @param opts  - varargs of CreateOpt:    *<ul>    *<li>   Progress - to report progress on the operation - default null    *<li>   Permission - umask is applied against permisssion:    *                  default is FsPermissions:getDefault()     *<li>   CreateParent - create missing parent path; default is to not    *                   create parents    *<li> The defaults for the following are  SS defaults of the    *      file server implementing the target path.     *      Not all parameters make sense for all kinds of filesystem    *                - eg. localFS ignores Blocksize, replication, checksum    *<ul>    *<li>  BufferSize - buffersize used in FSDataOutputStream    *<li>  Blocksize - block size for file blocks    *<li>  ReplicationFactor - replication for blocks    *<li>  BytesPerChecksum - bytes per checksum    *</ul>    *</ul>    *                           * @throws IOException    *     * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create or overwrite file on indicated path and returns an output stream for    * writing into the file.    *     * @param f the file name to open    * @param createFlag gives the semantics of create: overwrite, append etc.    * @param opts file creation options; see {@link Options.CreateOpts}.    *<ul>    *<li>Progress - to report progress on the operation - default null    *<li>Permission - umask is applied against permisssion: default is    *          FsPermissions:getDefault()    *     *<li>CreateParent - create missing parent path; default is to not    *          to create parents    *<li>The defaults for the following are SS defaults of the file    *          server implementing the target path. Not all parameters make sense    *          for all kinds of file system - eg. localFS ignores Blocksize,    *          replication, checksum    *<ul>    *<li>BufferSize - buffersize used in FSDataOutputStream    *<li>Blocksize - block size for file blocks    *<li>ReplicationFactor - replication for blocks    *<li>BytesPerChecksum - bytes per checksum    *</ul>    *</ul>    *     * @return {@link FSDataOutputStream} for created file    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>f</code> already exists    * @throws FileNotFoundException If parent of<code>f</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>f</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
 DECL|method|create (final Path f, final EnumSet<CreateFlag> createFlag, Options.CreateOpts... opts)
 specifier|public
 name|FSDataOutputStream
@@ -1181,6 +1275,18 @@ modifier|...
 name|opts
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 name|Path
@@ -1312,7 +1418,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Make the given file and all non-existent parents into    * directories.    *     * @param dir - the dir to make    * @param permission - permissions is set permission&~umask    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    * @throws IOException when operation fails not authorized or     *   if parent does not exist and createParent is false.    */
+comment|/**    * Make(create) a directory and all the non-existent parents.    *     * @param dir - the dir to make    * @param permission - permissions is set permission&~umask    * @param createParent - if true then missing parent dirs are created if false    *          then parent must exist    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If directory<code>dir</code> already    *           exists    * @throws FileNotFoundException If parent of<code>dir</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>dir</code> is not a    *           directory    * @throws UnresolvedLinkException If symbolic link<code>dir</code> could not    *           be resolved    * @throws UnsupportedFileSystemException If file system for<code>dir</code>    *         is not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>dir</code> is not valid    */
 DECL|method|mkdir (final Path dir, final FsPermission permission, final boolean createParent)
 specifier|public
 name|void
@@ -1331,6 +1437,18 @@ name|boolean
 name|createParent
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1413,7 +1531,7 @@ name|absDir
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete a file.    * @param f the path to delete.    * @param recursive if path is a directory and set to     * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.     * @return  true if delete is successful else false.     * @throws IOException    */
+comment|/**    * Delete a file.    * @param f the path to delete.    * @param recursive if path is a directory and set to     * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is invalid    */
 DECL|method|delete (final Path f, final boolean recursive)
 specifier|public
 name|boolean
@@ -1428,6 +1546,14 @@ name|boolean
 name|recursive
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 name|Path
@@ -1489,7 +1615,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataInputStream at the indicated Path using    * default buffersize.    * @param f the file name to open    */
+comment|/**    * Opens an FSDataInputStream at the indicated Path using    * default buffersize.    * @param f the file name to open    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code>    *         is not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|open (final Path f)
 specifier|public
 name|FSDataInputStream
@@ -1500,6 +1626,14 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1555,7 +1689,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Opens an FSDataInputStream at the indicated Path.    *     * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|open (final Path f, final int bufferSize)
 specifier|public
 name|FSDataInputStream
@@ -1570,6 +1704,14 @@ name|int
 name|bufferSize
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1627,7 +1769,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**   * Set replication for an existing file.   *    * @param f file name   * @param replication new replication   * @throws IOException   * @return true if successful;   *         false if file does not exist or is a directory   */
+comment|/**    * Set replication for an existing file.    *     * @param f file name    * @param replication new replication    *    * @return true if successful    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>f</code> does not exist    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|setReplication (final Path f, final short replication)
 specifier|public
 name|boolean
@@ -1642,6 +1784,12 @@ name|short
 name|replication
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1704,7 +1852,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Renames Path src to Path dst    *<ul>    *<li    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails    * if the dst already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites    * the dst if it is a file or an empty directory. Rename fails if dst is    * a non-empty directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for    * details    *<p>    *     * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    */
+comment|/**    * Renames Path src to Path dst    *<ul>    *<li    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails if the dst    * already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites the dst if    * it is a file or an empty directory. Rename fails if dst is a non-empty    * directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for details    *<p>    *     * @param src path to be renamed    * @param dst new path after rename    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>dst</code> is not a    *           directory    * @throws UnsupportedFileSystemException If file system for<code>src</code>    *           and<code>dst</code> is not supported    * @throws UnresolvedLinkException If symbolic link<code>src</code> or    *<code>dst</code> could not be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    */
 DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
 specifier|public
 name|void
@@ -1726,6 +1874,18 @@ modifier|...
 name|options
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1867,7 +2027,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set permission of a path.    * @param f    * @param permission - the new absolute permission (umask is not applied)    */
+comment|/**    * Set permission of a path.    * @param f    * @param permission - the new absolute permission (umask is not applied)    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code>    *         is not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|setPermission (final Path f, final FsPermission permission)
 specifier|public
 name|void
@@ -1882,6 +2042,14 @@ name|FsPermission
 name|permission
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -1940,7 +2108,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param f The path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    */
+comment|/**    * Set owner of a path (i.e. a file or a directory). The parameters username    * and groupname cannot both be null.    *     * @param f The path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws HadoopIllegalArgumentException If<code>username</code> or    *<code>groupname</code> is invalid.    */
 DECL|method|setOwner (final Path f, final String username, final String groupname)
 specifier|public
 name|void
@@ -1959,6 +2127,14 @@ name|String
 name|groupname
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 if|if
@@ -1978,7 +2154,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"username and groupname cannot both be null"
 argument_list|)
@@ -2042,7 +2218,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set access time of a file.    * @param f The path    * @param mtime Set the modification time of this file.    *        The number of milliseconds since epoch (Jan 1, 1970).     *        A value of -1 means that this call should not set modification time.    * @param atime Set the access time of this file.    *        The number of milliseconds since Jan 1, 1970.     *        A value of -1 means that this call should not set access time.    */
+comment|/**    * Set access time of a file.    * @param f The path    * @param mtime Set the modification time of this file.    *        The number of milliseconds since epoch (Jan 1, 1970).     *        A value of -1 means that this call should not set modification time.    * @param atime Set the access time of this file.    *        The number of milliseconds since Jan 1, 1970.     *        A value of -1 means that this call should not set access time.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|setTimes (final Path f, final long mtime, final long atime)
 specifier|public
 name|void
@@ -2061,6 +2237,14 @@ name|long
 name|atime
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2121,7 +2305,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the checksum of a file.    *    * @param f The file path    * @return The file checksum.  The default return value is null,    *  which indicates that no checksum algorithm is implemented    *  in the corresponding FileSystem.    */
+comment|/**    * Get the checksum of a file.    *    * @param f file path    *    * @return The file checksum.  The default return value is null,    *  which indicates that no checksum algorithm is implemented    *  in the corresponding FileSystem.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|getFileChecksum (final Path f)
 specifier|public
 name|FileChecksum
@@ -2132,6 +2316,12 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2187,7 +2377,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the verify checksum flag for the  filesystem denoted by the path.    * This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param verifyChecksum    * @param f - set the verifyChecksum for the Filesystem containing this path    * @throws IOException     */
+comment|/**    * Set the verify checksum flag for the  file system denoted by the path.    * This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param verifyChecksum    * @param f set the verifyChecksum for the Filesystem containing this path    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|setVerifyChecksum (final boolean verifyChecksum, final Path f)
 specifier|public
 name|void
@@ -2202,6 +2392,12 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2227,7 +2423,7 @@ name|verifyChecksum
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    *    * @return a FileStatus object    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|getFileStatus (final Path f)
 specifier|public
 name|FileStatus
@@ -2238,6 +2434,14 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2422,7 +2626,7 @@ else|:
 name|target
 return|;
 block|}
-comment|/**    * Return a file status object that represents the path. If the path     * refers to a symlink then the FileStatus of the symlink is returned.    * The behavior is equivalent to #getFileStatus() if the underlying    * file system does not support symbolic links.    * @param  f The path we want information from.    * @return A FileStatus object    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation.    */
+comment|/**    * Return a file status object that represents the path. If the path     * refers to a symlink then the FileStatus of the symlink is returned.    * The behavior is equivalent to #getFileStatus() if the underlying    * file system does not support symbolic links.    * @param  f The path we want information from.    * @return A FileStatus object    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    */
 DECL|method|getFileLinkStatus (final Path f)
 specifier|public
 name|FileStatus
@@ -2433,6 +2637,12 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2519,7 +2729,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the un-interpreted target of the given symbolic link.    * Transparently resolves all links up to the final path component.    * @param f    * @return The un-interpreted target of the symbolic link.    * @throws FileNotFoundException when the path does not exist;    *         IOException if the last path component of f is not a symlink.    */
+comment|/**    * Returns the un-interpreted target of the given symbolic link.    * Transparently resolves all links up to the final path component.    * @param f    * @return The un-interpreted target of the symbolic link.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If path<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    */
 DECL|method|getLinkTarget (final Path f)
 specifier|public
 name|Path
@@ -2530,6 +2740,12 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2593,7 +2809,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Return blockLocation of the given file for the given offset and len.    *  For a nonexistent file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *     * @param p - get blocklocations of this file    * @param start position (byte offset)    * @param len (in bytes)    * @return block locations for given file at specified offset of len    * @throws IOException    */
+comment|/**    * Return blockLocation of the given file for the given offset and len.    *  For a nonexistent file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *     * @param f - get blocklocations of this file    * @param start position (byte offset)    * @param len (in bytes)    *    * @return block locations for given file at specified offset of len    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is invalid    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2613,7 +2829,7 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|method|getFileBlockLocations (final Path p, final long start, final long len)
+DECL|method|getFileBlockLocations (final Path f, final long start, final long len)
 specifier|public
 name|BlockLocation
 index|[]
@@ -2621,7 +2837,7 @@ name|getFileBlockLocations
 parameter_list|(
 specifier|final
 name|Path
-name|p
+name|f
 parameter_list|,
 specifier|final
 name|long
@@ -2632,6 +2848,14 @@ name|long
 name|len
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2640,7 +2864,7 @@ name|absF
 init|=
 name|fixRelativePart
 argument_list|(
-name|p
+name|f
 argument_list|)
 decl_stmt|;
 return|return
@@ -2693,7 +2917,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a status object describing the use and capacity of the    * filesystem denoted by the Path argument p.    * If the filesystem has multiple partitions, the    * use and capacity of the partition pointed to by the specified    * path is reflected.    *     * @param f Path for which status should be obtained. null means the    * root partition of the default filesystem.     * @return a FsStatus object    * @throws IOException    *           see specific implementation    */
+comment|/**    * Returns a status object describing the use and capacity of the    * file system denoted by the Parh argument p.    * If the file system has multiple partitions, the    * use and capacity of the partition pointed to by the specified    * path is reflected.    *     * @param f Path for which status should be obtained. null means the    * root partition of the default file system.     *    * @return a FsStatus object    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|getFsStatus (final Path f)
 specifier|public
 name|FsStatus
@@ -2704,6 +2928,14 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 if|if
@@ -2773,7 +3005,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, isDirectory, isFile, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storign a fully qualified URI.     * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file sytem. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    * @throws IOException    */
+comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, isDirectory, isFile, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storign a fully qualified URI.     * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file sytem. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    *    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>linkcode> already exists    * @throws FileNotFoundException If<code>target</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException If symbolic link<code>target</code> could not    *           be resolved    * @throws UnsupportedFileSystemException If file system for     *<code>target</code> or<code>link</code> is not supported    * @throws IOException If an I/O error occurred    */
 DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
 specifier|public
 name|void
@@ -2792,6 +3024,18 @@ name|boolean
 name|createParent
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -2852,7 +3096,7 @@ name|nonRelLink
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Does the file exist?    * Note: Avoid using this method if you already have FileStatus in hand.    * Instead reuse the FileStatus     * @param f the  file or dir to be checked    */
+comment|/**    * Does the file exist?    * Note: Avoid using this method if you already have FileStatus in hand.    * Instead reuse the FileStatus     * @param f the  file or dir to be checked    *    * @throws AccessControlException If access is denied    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|exists (final Path f)
 specifier|public
 name|boolean
@@ -2863,6 +3107,8 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 try|try
@@ -2886,8 +3132,28 @@ return|return
 literal|false
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|UnsupportedFileSystemException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
 block|}
-comment|/**    * Is a directory?    * Note: Avoid using this method if you already have FileStatus in hand.    * Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    *     * @param f Path to evaluate    * @return True iff the named path is a directory.    * @throws IOException    */
+catch|catch
+parameter_list|(
+name|UnresolvedLinkException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+comment|/**    * Is a directory?    * Note: Avoid using this method if you already have FileStatus in hand.    * Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    *     * @param f Path to evaluate    *    * @return True iff the named path is a directory.    *    * @throws AccessControlException If access is denied    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|isDirectory (final Path f)
 specifier|public
 name|boolean
@@ -2898,6 +3164,10 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 try|try
@@ -2930,10 +3200,9 @@ block|{
 return|return
 literal|false
 return|;
-comment|// f does not exist
 block|}
 block|}
-comment|/** True iff the named path is a regular file.    * Note: Avoid using this method  if you already have FileStatus in hand    * Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    */
+comment|/** True iff the named path is a regular file.    * Note: Avoid using this method  if you already have FileStatus in hand    * Instead reuse the FileStatus returned by getFileStatus() or listStatus()    * methods.    *    * @param f Path to evaluate    *    * @throws AccessControlException If access is denied    * @throws UnsupportedFileSystemException If file system for<code>f</code>    *         is not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|isFile (final Path f)
 specifier|public
 name|boolean
@@ -2944,6 +3213,10 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 try|try
@@ -2980,7 +3253,7 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f is the path    * @return the statuses of the files/directories in the given path    * @throws IOException    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f is the path    *    * @return the statuses of the files/directories in the given path    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnresolvedLinkException If symbolic link<code>f</code> could not    *           be resolved    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|listStatus (final Path f)
 specifier|public
 name|FileStatus
@@ -2992,6 +3265,14 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 specifier|final
@@ -3049,7 +3330,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Mark a path to be deleted on JVM shutdown.    *     * @param f the existing path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException    */
+comment|/**    * Mark a path to be deleted on JVM shutdown.    *     * @param f the existing path to delete.    *    * @return  true if deleteOnExit is successful, otherwise false.    *    * @throws AccessControlException If access is denied    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|deleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -3059,6 +3340,8 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 if|if
@@ -3177,7 +3460,7 @@ specifier|public
 class|class
 name|Util
 block|{
-comment|/**      * Return a list of file status objects that corresponds to supplied paths      * excluding those non-existent paths.      *       * @param paths are the list of paths we want information from      * @return a list of FileStatus objects      * @throws IOException      */
+comment|/**      * Return a list of file status objects that corresponds to supplied paths      * excluding those non-existent paths.      *       * @param paths list of paths we want information from      *      * @return a list of FileStatus objects      *      * @throws AccessControlException If access is denied      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|getFileStatus (Path[] paths)
 specifier|private
 name|FileStatus
@@ -3189,6 +3472,8 @@ index|[]
 name|paths
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 if|if
@@ -3281,7 +3566,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**      * Return the {@link ContentSummary} of path f.      * @param f      * @return the {@link ContentSummary} of path f.      * @throws IOException      */
+comment|/**      * Return the {@link ContentSummary} of path f.      * @param f path      *      * @return the {@link ContentSummary} of path f.      *      * @throws AccessControlException If access is denied      * @throws FileNotFoundException If<code>f</code> does not exist      * @throws UnsupportedFileSystemException If file system for       *<code>f</code> is not supported      * @throws UnresolvedLinkException If symbolic link<code>f</code> could not      *           be resolved      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|getContentSummary (Path f)
 specifier|public
 name|ContentSummary
@@ -3291,6 +3576,14 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|UnresolvedLinkException
+throws|,
 name|IOException
 block|{
 name|FileStatus
@@ -3439,7 +3732,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**      * Filter files/directories in the given list of paths using default      * path filter.      *       * @param files is the list of paths      * @return a list of statuses for the files under the given paths after      *         applying the filter default Path filter      * @exception IOException      */
+comment|/**      * See {@link #listStatus(Path[], PathFilter)}      */
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -3451,6 +3744,10 @@ index|[]
 name|files
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 return|return
@@ -3462,7 +3759,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**      * Filter files/directories in the given path using the user-supplied path      * filter.      *       * @param f is the path name      * @param filter is the user-supplied path filter      * @return an array of FileStatus objects for the files under the given path      *         after applying the filter      * @throws IOException      *           if encounter any problem while fetching the status      */
+comment|/**      * Filter files/directories in the given path using the user-supplied path      * filter.      *       * @param f is the path name      * @param filter is the user-supplied path filter      *      * @return an array of FileStatus objects for the files under the given path      *         after applying the filter      *      * @throws AccessControlException If access is denied      * @throws FileNotFoundException If<code>f</code> does not exist      * @throws UnsupportedFileSystemException If file system for       *<code>pathPattern</code> is not supported      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -3476,6 +3773,12 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 name|ArrayList
@@ -3516,7 +3819,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**      * Filter files/directories in the given list of paths using user-supplied      * path filter.      *       * @param files is a list of paths      * @param filter is the filter      * @return a list of statuses for the files under the given paths after      *         applying the filter      * @exception IOException      */
+comment|/**      * Filter files/directories in the given list of paths using user-supplied      * path filter.      *       * @param files is a list of paths      * @param filter is the filter      *      * @return a list of statuses for the files under the given paths after      *         applying the filter      *      * @throws AccessControlException If access is denied      * @throws FileNotFoundException If a file in<code>files</code> does not       *           exist      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -3531,6 +3834,10 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 name|ArrayList
@@ -3611,6 +3918,10 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 name|FileStatus
@@ -3680,7 +3991,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**      *<p>Return all the files that match filePattern and are not checksum      * files. Results are sorted by their names.      *       *<p>      * A filename pattern is composed of<i>regular</i> characters and      *<i>special pattern matching</i> characters, which are:      *      *<dl>      *<dd>      *<dl>      *<p>      *<dt><tt> ?</tt>      *<dd> Matches any single character.      *      *<p>      *<dt><tt> *</tt>      *<dd> Matches zero or more characters.      *      *<p>      *<dt><tt> [<i>abc</i>]</tt>      *<dd> Matches a single character from character set      *<tt>{<i>a,b,c</i>}</tt>.      *      *<p>      *<dt><tt> [<i>a</i>-<i>b</i>]</tt>      *<dd> Matches a single character from the character range      *<tt>{<i>a...b</i>}</tt>. Note: character<tt><i>a</i></tt> must be      *     lexicographically less than or equal to character<tt><i>b</i></tt>.      *      *<p>      *<dt><tt> [^<i>a</i>]</tt>      *<dd> Matches a single char that is not from character set or range      *<tt>{<i>a</i>}</tt>.  Note that the<tt>^</tt> character must occur      *     immediately to the right of the opening bracket.      *      *<p>      *<dt><tt> \<i>c</i></tt>      *<dd> Removes (escapes) any special meaning of character<i>c</i>.      *      *<p>      *<dt><tt> {ab,cd}</tt>      *<dd> Matches a string from the string set<tt>{<i>ab, cd</i>}</tt>      *          *<p>      *<dt><tt> {ab,c{de,fh}}</tt>      *<dd> Matches a string from string set<tt>{<i>ab, cde, cfh</i>}</tt>      *      *</dl>      *</dd>      *</dl>      *      * @param pathPattern a regular expression specifying a pth pattern       * @return an array of paths that match the path pattern      * @throws IOException      */
+comment|/**      *<p>Return all the files that match filePattern and are not checksum      * files. Results are sorted by their names.      *       *<p>      * A filename pattern is composed of<i>regular</i> characters and      *<i>special pattern matching</i> characters, which are:      *      *<dl>      *<dd>      *<dl>      *<p>      *<dt><tt> ?</tt>      *<dd> Matches any single character.      *      *<p>      *<dt><tt> *</tt>      *<dd> Matches zero or more characters.      *      *<p>      *<dt><tt> [<i>abc</i>]</tt>      *<dd> Matches a single character from character set      *<tt>{<i>a,b,c</i>}</tt>.      *      *<p>      *<dt><tt> [<i>a</i>-<i>b</i>]</tt>      *<dd> Matches a single character from the character range      *<tt>{<i>a...b</i>}</tt>. Note: character<tt><i>a</i></tt> must be      *     lexicographically less than or equal to character<tt><i>b</i></tt>.      *      *<p>      *<dt><tt> [^<i>a</i>]</tt>      *<dd> Matches a single char that is not from character set or range      *<tt>{<i>a</i>}</tt>.  Note that the<tt>^</tt> character must occur      *     immediately to the right of the opening bracket.      *      *<p>      *<dt><tt> \<i>c</i></tt>      *<dd> Removes (escapes) any special meaning of character<i>c</i>.      *      *<p>      *<dt><tt> {ab,cd}</tt>      *<dd> Matches a string from the string set<tt>{<i>ab, cd</i>}</tt>      *          *<p>      *<dt><tt> {ab,c{de,fh}}</tt>      *<dd> Matches a string from string set<tt>{<i>ab, cde, cfh</i>}</tt>      *      *</dl>      *</dd>      *</dl>      *      * @param pathPattern a regular expression specifying a pth pattern      *      * @return an array of paths that match the path pattern      *      * @throws AccessControlException If access is denied      * @throws UnsupportedFileSystemException If file system for       *<code>pathPattern</code> is not supported      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|globStatus (Path pathPattern)
 specifier|public
 name|FileStatus
@@ -3691,6 +4002,10 @@ name|Path
 name|pathPattern
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 return|return
@@ -3702,7 +4017,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**      * Return an array of FileStatus objects whose path names match pathPattern      * and is accepted by the user-supplied path filter. Results are sorted by      * their path names.      * Return null if pathPattern has no glob and the path does not exist.      * Return an empty array if pathPattern has a glob and no path matches it.       *       * @param pathPattern      *          a regular expression specifying the path pattern      * @param filter      *          a user-supplied path filter      * @return an array of FileStatus objects      * @throws IOException if any I/O error occurs when fetching file status      */
+comment|/**      * Return an array of FileStatus objects whose path names match pathPattern      * and is accepted by the user-supplied path filter. Results are sorted by      * their path names.      * Return null if pathPattern has no glob and the path does not exist.      * Return an empty array if pathPattern has a glob and no path matches it.       *       * @param pathPattern regular expression specifying the path pattern      * @param filter user-supplied path filter      *      * @return an array of FileStatus objects      *      * @throws AccessControlException If access is denied      * @throws UnsupportedFileSystemException If file system for       *<code>pathPattern</code> is not supported      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|globStatus (final Path pathPattern, final PathFilter filter)
 specifier|public
 name|FileStatus
@@ -3718,6 +4033,10 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 name|URI
@@ -3879,8 +4198,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**      *       * @param uri for all the inPathPattern      * @param inPathPattern - without the scheme& authority (take from uri)      * @param filter      * @return      * @throws IOException      */
-DECL|method|globStatusInternal ( final URI uri, final Path inPathPattern, final PathFilter filter)
+comment|/**      *       * @param uri for all the inPathPattern      * @param inPathPattern - without the scheme& authority (take from uri)      * @param filter      *      * @return an array of FileStatus objects      *      * @throws AccessControlException If access is denied      * @throws IOException If an I/O error occurred      */
+DECL|method|globStatusInternal (final URI uri, final Path inPathPattern, final PathFilter filter)
 specifier|private
 name|FileStatus
 index|[]
@@ -3899,6 +4218,8 @@ name|PathFilter
 name|filter
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 name|Path
@@ -4383,6 +4704,10 @@ index|[]
 name|hasGlob
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 block|{
 if|if
@@ -4514,7 +4839,7 @@ name|hasGlob
 argument_list|)
 return|;
 block|}
-comment|/**      * Copy file from src to dest.      * @param src      * @param dst      * @return true if copy is successful      * @throws IOException      */
+comment|/**      * Copy file from src to dest. See      * {@link #copy(Path, Path, boolean, boolean)}      */
 DECL|method|copy (final Path src, final Path dst)
 specifier|public
 name|boolean
@@ -4529,6 +4854,18 @@ name|Path
 name|dst
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 return|return
@@ -4544,7 +4881,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**      * Copy from src to dst, optionally deleting src and overwriting dst.      * @param src      * @param dst      * @param deleteSource - delete src if true      * @param overwrite  overwrite dst if true; throw IOException if dst exists      *         and overwrite is false.      * @return true if copy is successful      * @throws IOException      */
+comment|/**      * Copy from src to dst, optionally deleting src and overwriting dst.      * @param src      * @param dst      * @param deleteSource - delete src if true      * @param overwrite  overwrite dst if true; throw IOException if dst exists      *         and overwrite is false.      *      * @return true if copy is successful      *      * @throws AccessControlException If access is denied      * @throws FileAlreadyExistsException If<code>dst</code> already exists      * @throws FileNotFoundException If<code>src</code> does not exist      * @throws ParentNotDirectoryException If parent of<code>dst</code> is not      *           a directory      * @throws UnresolvedLinkException If symbolic link<code>src</code> could       *           not be resolved      * @throws UnsupportedFileSystemException If file system for       *<code>src</code> or<code>dst</code> is not supported      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      *       * RuntimeExceptions:      * @throws InvalidPathException If path<code>dst</code> is invalid      */
 DECL|method|copy (final Path src, final Path dst, boolean deleteSource, boolean overwrite)
 specifier|public
 name|boolean
@@ -4565,6 +4902,18 @@ name|boolean
 name|overwrite
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
 name|IOException
 block|{
 name|checkNotSchemeWithRelative
@@ -4841,8 +5190,6 @@ specifier|final
 name|String
 name|filePattern
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|setRegex
 argument_list|(
@@ -4861,8 +5208,6 @@ specifier|final
 name|PathFilter
 name|filter
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|userFilter
 operator|=
@@ -4916,8 +5261,6 @@ parameter_list|(
 name|String
 name|filePattern
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|int
 name|len
@@ -5399,12 +5742,10 @@ specifier|final
 name|int
 name|pos
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 throw|throw
 operator|new
-name|IOException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Illegal file pattern: "
 operator|+
@@ -5440,6 +5781,8 @@ name|boolean
 name|overwrite
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 if|if
@@ -5782,7 +6125,7 @@ name|MAX_PATH_LINKS
 init|=
 literal|32
 decl_stmt|;
-comment|/**      * Generic helper function overridden on instantiation to perform a       * specific operation on the given file system using the given path      * which may result in an UnresolvedLinkException.       * @param fs AbstractFileSystem to perform the operation on.      * @param p Path given the file system.      * @return Generic type determined by the specific implementation.      * @throws IOException on error.      * @throws UnresolvedLinkException when a symlink is encountered.      */
+comment|/**      * Generic helper function overridden on instantiation to perform a       * specific operation on the given file system using the given path      * which may result in an UnresolvedLinkException.       * @param fs AbstractFileSystem to perform the operation on.      * @param p Path given the file system.      * @return Generic type determined by the specific implementation.      * @throws UnresolvedLinkException If symbolic link<code>path</code> could       *           not be resolved      * @throws IOException an I/O error occured      */
 DECL|method|next (final AbstractFileSystem fs, final Path p)
 specifier|public
 specifier|abstract
