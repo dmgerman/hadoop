@@ -42,6 +42,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|avro
+operator|.
+name|reflect
+operator|.
+name|Stringable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -55,6 +69,8 @@ comment|/** Names a file or directory in a {@link FileSystem}.  * Path strings u
 end_comment
 
 begin_class
+annotation|@
+name|Stringable
 DECL|class|Path
 specifier|public
 class|class

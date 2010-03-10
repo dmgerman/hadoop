@@ -1401,6 +1401,28 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|testAvroReflect ()
+specifier|public
+name|void
+name|testAvroReflect
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|AvroTestUtil
+operator|.
+name|testReflect
+argument_list|(
+operator|new
+name|Text
+argument_list|(
+literal|"foo"
+argument_list|)
+argument_list|,
+literal|"{\"type\":\"string\",\"java-class\":\"org.apache.hadoop.io.Text\"}"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

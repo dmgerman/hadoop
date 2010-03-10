@@ -174,6 +174,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|avro
+operator|.
+name|reflect
+operator|.
+name|Stringable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|commons
 operator|.
 name|logging
@@ -201,6 +215,8 @@ comment|/** This class stores text using standard UTF8 encoding.  It provides me
 end_comment
 
 begin_class
+annotation|@
+name|Stringable
 DECL|class|Text
 specifier|public
 class|class
