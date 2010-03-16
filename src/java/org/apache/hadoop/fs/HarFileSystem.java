@@ -40,6 +40,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -53,6 +63,16 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLDecoder
 import|;
 end_import
 
@@ -177,7 +197,7 @@ specifier|final
 name|int
 name|VERSION
 init|=
-literal|1
+literal|2
 decl_stmt|;
 comment|// uri representation of this Har filesystem
 DECL|field|uri
@@ -446,12 +466,13 @@ name|archivePath
 argument_list|)
 throw|;
 block|}
+comment|// make it always backwards-compatible
 if|if
 condition|(
 name|this
 operator|.
 name|version
-operator|!=
+operator|>
 name|HarFileSystem
 operator|.
 name|VERSION
@@ -881,6 +902,39 @@ comment|// do nothing should not happen
 block|}
 return|return
 name|tmp
+return|;
+block|}
+DECL|method|decodeFileName (String fname)
+specifier|private
+name|String
+name|decodeFileName
+parameter_list|(
+name|String
+name|fname
+parameter_list|)
+throws|throws
+name|UnsupportedEncodingException
+block|{
+if|if
+condition|(
+name|version
+operator|==
+literal|2
+condition|)
+block|{
+return|return
+name|URLDecoder
+operator|.
+name|decode
+argument_list|(
+name|fname
+argument_list|,
+literal|"UTF-8"
+argument_list|)
+return|;
+block|}
+return|return
+name|fname
 return|;
 block|}
 comment|/**    * return the top level archive.    */
@@ -2131,6 +2185,19 @@ argument_list|(
 literal|" "
 argument_list|)
 decl_stmt|;
+name|parsed
+index|[
+literal|0
+index|]
+operator|=
+name|decodeFileName
+argument_list|(
+name|parsed
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|harPath
@@ -2198,7 +2265,6 @@ comment|// filename "dir"/"file" partFileName startIndex length
 comment|//<space seperated children>
 DECL|class|HarStatus
 specifier|private
-specifier|static
 class|class
 name|HarStatus
 block|{
@@ -2236,6 +2302,8 @@ parameter_list|(
 name|String
 name|harString
 parameter_list|)
+throws|throws
+name|UnsupportedEncodingException
 block|{
 name|String
 index|[]
@@ -2252,10 +2320,13 @@ name|this
 operator|.
 name|name
 operator|=
+name|decodeFileName
+argument_list|(
 name|splits
 index|[
 literal|0
 index|]
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -2348,10 +2419,13 @@ name|children
 operator|.
 name|add
 argument_list|(
+name|decodeFileName
+argument_list|(
 name|splits
 index|[
 name|i
 index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
