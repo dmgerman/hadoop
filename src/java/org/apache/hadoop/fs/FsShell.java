@@ -2014,6 +2014,25 @@ return|return
 name|ret
 return|;
 block|}
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|r
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|forMagic (Path p, FileSystem srcFs)
 specifier|private
