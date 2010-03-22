@@ -2666,11 +2666,11 @@ name|toString
 parameter_list|()
 block|{
 comment|// print the number of racks
-name|StringBuffer
+name|StringBuilder
 name|tree
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|tree

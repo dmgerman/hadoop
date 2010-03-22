@@ -1134,10 +1134,10 @@ condition|(
 name|superuser
 condition|)
 block|{
-name|StringBuffer
+name|CharSequence
 name|sb
 init|=
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"sudo smartctl -i "
 operator|+
@@ -1219,11 +1219,11 @@ literal|null
 expr_stmt|;
 block|}
 comment|// now remove disks that dont exist
-name|StringBuffer
+name|StringBuilder
 name|resetSB
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 for|for
@@ -1509,10 +1509,10 @@ name|String
 name|cmd
 parameter_list|)
 block|{
-name|StringBuffer
+name|CharSequence
 name|sb
 init|=
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"which "
 operator|+
@@ -1535,7 +1535,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Runs a shell command in the system and provides a StringBuffer    * with the output of the command.    *     *  @param cmd an array of string that form the command to run     *      *  @return a StringBuffer that contains the output of the command     */
+comment|/**    * Runs a shell command in the system and provides a StringBuilder    * with the output of the command.    *<p>This method is deprecated. See related method that returns a CharSequence as oppposed to a StringBuffer.    *     *  @param cmd an array of string that form the command to run     *      *  @return a text that contains the output of the command     *  @see #runCommandGeneric(String[])    *  @deprecated    */
 DECL|method|runCommand (String[] cmd)
 specifier|public
 specifier|static
@@ -1547,11 +1547,34 @@ index|[]
 name|cmd
 parameter_list|)
 block|{
+return|return
+operator|new
 name|StringBuffer
+argument_list|(
+name|runCommandGeneric
+argument_list|(
+name|cmd
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Runs a shell command in the system and provides a StringBuilder    * with the output of the command.    *     *  @param cmd an array of string that form the command to run     *      *  @return a text that contains the output of the command     */
+DECL|method|runCommandGeneric (String[] cmd)
+specifier|public
+specifier|static
+name|CharSequence
+name|runCommandGeneric
+parameter_list|(
+name|String
+index|[]
+name|cmd
+parameter_list|)
+block|{
+name|StringBuilder
 name|retval
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 name|MAX_OUTPUT_LENGTH
 argument_list|)
@@ -1642,7 +1665,7 @@ return|return
 name|retval
 return|;
 block|}
-comment|/**    * Runs a shell command in the system and provides a StringBuffer    * with the output of the command.    *     *  @param cmd the command to run     *      *  @return a StringBuffer that contains the output of the command     */
+comment|/**    * Runs a shell command in the system and provides a StringBuilder    * with the output of the command.    *<p>This method is deprecated in favor of the one that returns CharSequence as opposed to StringBuffer    *  @param cmd the command to run     *      *  @return a text that contains the output of the command     *  @see #runCommandGeneric(String)    *  @deprecated    */
 DECL|method|runCommand (String cmd)
 specifier|public
 specifier|static
@@ -1654,7 +1677,29 @@ name|cmd
 parameter_list|)
 block|{
 return|return
-name|runCommand
+operator|new
+name|StringBuffer
+argument_list|(
+name|runCommandGeneric
+argument_list|(
+name|cmd
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Runs a shell command in the system and provides a StringBuilder    * with the output of the command.    *     *  @param cmd the command to run     *      *  @return a text that contains the output of the command     */
+DECL|method|runCommandGeneric (String cmd)
+specifier|public
+specifier|static
+name|CharSequence
+name|runCommandGeneric
+parameter_list|(
+name|String
+name|cmd
+parameter_list|)
+block|{
+return|return
+name|runCommandGeneric
 argument_list|(
 name|cmd
 operator|.

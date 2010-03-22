@@ -549,7 +549,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Pack a SerializedRecord into an array of bytes    *     * @param sr the SerializedRecord to be packed    */
+comment|/**    * Pack a SerializedRecord into an array of bytes    *<p>    * This method is deprecated.     * @param sr the SerializedRecord to be packed    * @return Packed representation fo the Serialized Record    * @see #packConcurrent(SerializedRecord)    * @deprecated    */
 DECL|method|pack (SerializedRecord sr)
 specifier|public
 specifier|static
@@ -560,11 +560,33 @@ name|SerializedRecord
 name|sr
 parameter_list|)
 block|{
+return|return
+operator|new
 name|StringBuffer
+argument_list|(
+name|packConcurrent
+argument_list|(
+name|sr
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Pack a SerializedRecord into an array of bytes    *     * @param sr the SerializedRecord to be packed    * @return Packed representation fo the Serialized Record    */
+DECL|method|packConcurrent (SerializedRecord sr)
+specifier|public
+specifier|static
+name|CharSequence
+name|packConcurrent
+parameter_list|(
+name|SerializedRecord
+name|sr
+parameter_list|)
+block|{
+name|StringBuilder
 name|sb
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|ArrayList

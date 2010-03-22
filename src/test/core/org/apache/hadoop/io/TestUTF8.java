@@ -87,11 +87,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|StringBuffer
+name|StringBuilder
 name|buffer
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|int

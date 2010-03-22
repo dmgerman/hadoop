@@ -126,11 +126,11 @@ name|void
 name|putIndent
 parameter_list|()
 block|{
-name|StringBuffer
+name|StringBuilder
 name|sb
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 literal|""
 argument_list|)

@@ -1939,11 +1939,11 @@ operator|new
 name|Text
 argument_list|()
 decl_stmt|;
-name|StringBuffer
+name|StringBuilder
 name|sb
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|indices
@@ -2079,7 +2079,7 @@ return|return
 name|seed
 return|;
 block|}
-DECL|method|genRandom (Text t, int len, StringBuffer sb)
+DECL|method|genRandom (Text t, int len, StringBuilder sb)
 specifier|private
 specifier|static
 name|void
@@ -2091,7 +2091,7 @@ parameter_list|,
 name|int
 name|len
 parameter_list|,
-name|StringBuffer
+name|StringBuilder
 name|sb
 parameter_list|)
 block|{

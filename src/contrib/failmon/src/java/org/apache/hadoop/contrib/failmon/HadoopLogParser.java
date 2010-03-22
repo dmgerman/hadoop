@@ -469,7 +469,7 @@ name|startupInfo
 init|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"grep --max-count=1 STARTUP_MSG:\\s*host "
 operator|+

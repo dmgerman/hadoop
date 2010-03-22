@@ -111,12 +111,12 @@ parameter_list|)
 throws|throws
 name|UnknownHostException
 block|{
-name|StringBuffer
+name|CharSequence
 name|sb
 init|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"/sbin/ifconfig "
 operator|+

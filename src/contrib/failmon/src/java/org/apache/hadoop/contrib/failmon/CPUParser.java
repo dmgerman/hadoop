@@ -72,12 +72,12 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|StringBuffer
+name|CharSequence
 name|sb
 init|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"cat /proc/cpuinfo"
 argument_list|)

@@ -1192,11 +1192,11 @@ parameter_list|()
 block|{
 comment|// we can't use uri.toString(), which escapes everything, because we want
 comment|// illegal characters unescaped in the string, for glob processing, etc.
-name|StringBuffer
+name|StringBuilder
 name|buffer
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 if|if

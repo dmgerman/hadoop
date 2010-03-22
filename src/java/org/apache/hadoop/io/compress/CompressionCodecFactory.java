@@ -162,7 +162,7 @@ operator|.
 name|put
 argument_list|(
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 name|suffix
 argument_list|)
@@ -184,11 +184,11 @@ name|String
 name|toString
 parameter_list|()
 block|{
-name|StringBuffer
+name|StringBuilder
 name|buf
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -547,11 +547,11 @@ argument_list|>
 name|classes
 parameter_list|)
 block|{
-name|StringBuffer
+name|StringBuilder
 name|buf
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -775,7 +775,7 @@ name|String
 name|reversedFilename
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 name|filename
 argument_list|)

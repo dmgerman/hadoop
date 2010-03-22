@@ -161,7 +161,7 @@ operator|+
 literal|".source"
 argument_list|)
 decl_stmt|;
-name|StringBuffer
+name|CharSequence
 name|sb
 decl_stmt|;
 if|if
@@ -174,7 +174,7 @@ name|sb
 operator|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"sudo smartctl --all "
 operator|+
@@ -186,7 +186,7 @@ name|sb
 operator|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"cat "
 operator|+
@@ -632,8 +632,8 @@ return|return
 name|retval
 return|;
 block|}
-comment|/**    * Reads attributes in the following format:    *     * ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE    * 3 Spin_Up_Time             0x0027   180   177   063    Pre-fail  Always       -       10265    * 4 Start_Stop_Count         0x0032   253   253   000    Old_age   Always       -       34    * 5 Reallocated_Sector_Ct    0x0033   253   253   063    Pre-fail  Always       -       0    * 6 Read_Channel_Margin      0x0001   253   253   100    Pre-fail  Offline      -       0    * 7 Seek_Error_Rate          0x000a   253   252   000    Old_age   Always       -       0    * 8 Seek_Time_Performance    0x0027   250   224   187    Pre-fail  Always       -       53894    * 9 Power_On_Minutes         0x0032   210   210   000    Old_age   Always       -       878h+00m    * 10 Spin_Retry_Count        0x002b   253   252   157    Pre-fail  Always       -       0    * 11 Calibration_Retry_Count 0x002b   253   252   223    Pre-fail  Always       -       0    * 12 Power_Cycle_Count       0x0032   253   253   000    Old_age   Always       -       49    * 192 PowerOff_Retract_Count 0x0032   253   253   000    Old_age   Always       -       0    * 193 Load_Cycle_Count       0x0032   253   253   000    Old_age   Always       -       0    * 194 Temperature_Celsius    0x0032   037   253   000    Old_age   Always       -       37    * 195 Hardware_ECC_Recovered 0x000a   253   252   000    Old_age   Always       -       2645    *     * This format is mostly found in IDE and SATA disks.    *     * @param er the EventRecord in which to store attributes found    * @param sb the StringBuffer with the text to parse    *     * @return the EventRecord in which new attributes are stored.    */
-DECL|method|readColumns (EventRecord er, StringBuffer sb)
+comment|/**    * Reads attributes in the following format:    *     * ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE    * 3 Spin_Up_Time             0x0027   180   177   063    Pre-fail  Always       -       10265    * 4 Start_Stop_Count         0x0032   253   253   000    Old_age   Always       -       34    * 5 Reallocated_Sector_Ct    0x0033   253   253   063    Pre-fail  Always       -       0    * 6 Read_Channel_Margin      0x0001   253   253   100    Pre-fail  Offline      -       0    * 7 Seek_Error_Rate          0x000a   253   252   000    Old_age   Always       -       0    * 8 Seek_Time_Performance    0x0027   250   224   187    Pre-fail  Always       -       53894    * 9 Power_On_Minutes         0x0032   210   210   000    Old_age   Always       -       878h+00m    * 10 Spin_Retry_Count        0x002b   253   252   157    Pre-fail  Always       -       0    * 11 Calibration_Retry_Count 0x002b   253   252   223    Pre-fail  Always       -       0    * 12 Power_Cycle_Count       0x0032   253   253   000    Old_age   Always       -       49    * 192 PowerOff_Retract_Count 0x0032   253   253   000    Old_age   Always       -       0    * 193 Load_Cycle_Count       0x0032   253   253   000    Old_age   Always       -       0    * 194 Temperature_Celsius    0x0032   037   253   000    Old_age   Always       -       37    * 195 Hardware_ECC_Recovered 0x000a   253   252   000    Old_age   Always       -       2645    *     * This format is mostly found in IDE and SATA disks.    *     * @param er the EventRecord in which to store attributes found    * @param sb the text to parse    *     * @return the EventRecord in which new attributes are stored.    */
+DECL|method|readColumns (EventRecord er, CharSequence sb)
 specifier|private
 name|EventRecord
 name|readColumns
@@ -641,7 +641,7 @@ parameter_list|(
 name|EventRecord
 name|er
 parameter_list|,
-name|StringBuffer
+name|CharSequence
 name|sb
 parameter_list|)
 block|{

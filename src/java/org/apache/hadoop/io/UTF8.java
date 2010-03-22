@@ -599,11 +599,11 @@ name|String
 name|toString
 parameter_list|()
 block|{
-name|StringBuffer
+name|StringBuilder
 name|buffer
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 name|length
 argument_list|)
@@ -967,11 +967,11 @@ operator|.
 name|readUnsignedShort
 argument_list|()
 decl_stmt|;
-name|StringBuffer
+name|StringBuilder
 name|buffer
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|(
 name|bytes
 argument_list|)
@@ -992,7 +992,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|readChars (DataInput in, StringBuffer buffer, int nBytes)
+DECL|method|readChars (DataInput in, StringBuilder buffer, int nBytes)
 specifier|private
 specifier|static
 name|void
@@ -1001,7 +1001,7 @@ parameter_list|(
 name|DataInput
 name|in
 parameter_list|,
-name|StringBuffer
+name|StringBuilder
 name|buffer
 parameter_list|,
 name|int

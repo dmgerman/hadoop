@@ -86,15 +86,15 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|StringBuffer
+name|CharSequence
 name|sb
 decl_stmt|;
-comment|//sb = Environment.runCommand("sensors -A");
+comment|//sb = Environment.runCommandGeneric("sensors -A");
 name|sb
 operator|=
 name|Environment
 operator|.
-name|runCommand
+name|runCommandGeneric
 argument_list|(
 literal|"cat sensors.out"
 argument_list|)
@@ -181,7 +181,7 @@ name|retval
 return|;
 block|}
 comment|/**    * Reads and parses lines that provide the output    * of a group of sensors with the same functionality.    *     * @param er the EventRecord to which the new attributes are added    * @param sb the text to parse    * @param prefix a String prefix specifying the common prefix of the    * sensors' names in the group (e.g. "fan", "in", "temp"    *     * @return the EventRecord created    */
-DECL|method|readGroup (EventRecord er, StringBuffer sb, String prefix)
+DECL|method|readGroup (EventRecord er, CharSequence sb, String prefix)
 specifier|private
 name|EventRecord
 name|readGroup
@@ -189,7 +189,7 @@ parameter_list|(
 name|EventRecord
 name|er
 parameter_list|,
-name|StringBuffer
+name|CharSequence
 name|sb
 parameter_list|,
 name|String

@@ -761,11 +761,11 @@ name|String
 name|toString
 parameter_list|()
 block|{
-name|StringBuffer
+name|StringBuilder
 name|result
 init|=
 operator|new
-name|StringBuffer
+name|StringBuilder
 argument_list|()
 decl_stmt|;
 name|toString
@@ -780,13 +780,13 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|toString (StringBuffer buffer)
+DECL|method|toString (StringBuilder buffer)
 specifier|private
 specifier|synchronized
 name|void
 name|toString
 parameter_list|(
-name|StringBuffer
+name|StringBuilder
 name|buffer
 parameter_list|)
 block|{
