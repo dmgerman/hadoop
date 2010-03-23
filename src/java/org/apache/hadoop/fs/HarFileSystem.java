@@ -1630,6 +1630,10 @@ name|parent
 operator|.
 name|getName
 argument_list|()
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
 decl_stmt|;
 name|Path
 name|harPath
@@ -1690,6 +1694,8 @@ decl_stmt|;
 name|String
 name|child
 init|=
+name|decodeFileName
+argument_list|(
 name|lineFeed
 operator|.
 name|substring
@@ -1701,6 +1707,7 @@ operator|.
 name|indexOf
 argument_list|(
 literal|" "
+argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
