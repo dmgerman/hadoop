@@ -358,6 +358,28 @@ operator|.
 name|otheraction
 expr_stmt|;
 block|}
+comment|/**    * Construct by given mode, either in octal or symbolic format.    * @param mode mode as a string, either in octal or symbolic format    * @throws IllegalArgumentException if<code>mode</code> is invalid    */
+DECL|method|FsPermission (String mode)
+specifier|public
+name|FsPermission
+parameter_list|(
+name|String
+name|mode
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|UmaskParser
+argument_list|(
+name|mode
+argument_list|)
+operator|.
+name|getUMask
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Return user {@link FsAction}. */
 DECL|method|getUserAction ()
 specifier|public
@@ -916,17 +938,13 @@ argument_list|)
 expr_stmt|;
 comment|// Evaluate as decimal value
 else|else
-name|umask
-operator|=
+return|return
 operator|new
-name|UmaskParser
+name|FsPermission
 argument_list|(
 name|confUmask
 argument_list|)
-operator|.
-name|getUMask
-argument_list|()
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
