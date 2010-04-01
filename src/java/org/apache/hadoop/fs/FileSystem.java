@@ -6344,7 +6344,6 @@ literal|1
 argument_list|)
 decl_stmt|;
 DECL|method|get (URI uri, Configuration conf)
-specifier|synchronized
 name|FileSystem
 name|get
 parameter_list|(
@@ -6381,7 +6380,6 @@ return|;
 block|}
 comment|/** The objects inserted into the cache using this method are all unique */
 DECL|method|getUnique (URI uri, Configuration conf)
-specifier|synchronized
 name|FileSystem
 name|getUnique
 parameter_list|(
@@ -6440,6 +6438,50 @@ name|IOException
 block|{
 name|FileSystem
 name|fs
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|fs
+operator|=
+name|map
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|fs
+return|;
+block|}
+name|fs
+operator|=
+name|createFileSystem
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|// refetch the lock again
+name|FileSystem
+name|oldfs
 init|=
 name|map
 operator|.
@@ -6450,20 +6492,24 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fs
-operator|==
+name|oldfs
+operator|!=
 literal|null
 condition|)
 block|{
+comment|// a file system is created while lock is releasing
 name|fs
-operator|=
-name|createFileSystem
-argument_list|(
-name|uri
-argument_list|,
-name|conf
-argument_list|)
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
+comment|// close the new file system
+return|return
+name|oldfs
+return|;
+comment|// return the old file system
+block|}
+comment|// now insert the new file system into the map
 if|if
 condition|(
 name|map
@@ -6524,10 +6570,10 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 return|return
 name|fs
 return|;
+block|}
 block|}
 DECL|method|remove (Key key, FileSystem fs)
 specifier|synchronized
