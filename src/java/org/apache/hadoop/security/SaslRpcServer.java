@@ -292,6 +292,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|SecretManager
@@ -620,9 +636,12 @@ operator|)
 literal|80
 argument_list|,
 literal|""
+argument_list|,
+name|AuthenticationMethod
+operator|.
+name|SIMPLE
 argument_list|)
 block|,
-comment|// no authentication
 DECL|enumConstant|KERBEROS
 name|KERBEROS
 argument_list|(
@@ -632,9 +651,12 @@ operator|)
 literal|81
 argument_list|,
 literal|"GSSAPI"
+argument_list|,
+name|AuthenticationMethod
+operator|.
+name|KERBEROS
 argument_list|)
 block|,
-comment|// SASL Kerberos authentication
 DECL|enumConstant|DIGEST
 name|DIGEST
 argument_list|(
@@ -644,9 +666,12 @@ operator|)
 literal|82
 argument_list|,
 literal|"DIGEST-MD5"
+argument_list|,
+name|AuthenticationMethod
+operator|.
+name|TOKEN
 argument_list|)
 block|;
-comment|// SASL DIGEST-MD5 authentication
 comment|/** The code for this method. */
 DECL|field|code
 specifier|public
@@ -660,7 +685,13 @@ specifier|final
 name|String
 name|mechanismName
 decl_stmt|;
-DECL|method|AuthMethod (byte code, String mechanismName)
+DECL|field|authenticationMethod
+specifier|public
+specifier|final
+name|AuthenticationMethod
+name|authenticationMethod
+decl_stmt|;
+DECL|method|AuthMethod (byte code, String mechanismName, AuthenticationMethod authMethod)
 specifier|private
 name|AuthMethod
 parameter_list|(
@@ -669,6 +700,9 @@ name|code
 parameter_list|,
 name|String
 name|mechanismName
+parameter_list|,
+name|AuthenticationMethod
+name|authMethod
 parameter_list|)
 block|{
 name|this
@@ -682,6 +716,12 @@ operator|.
 name|mechanismName
 operator|=
 name|mechanismName
+expr_stmt|;
+name|this
+operator|.
+name|authenticationMethod
+operator|=
+name|authMethod
 expr_stmt|;
 block|}
 DECL|field|FIRST_CODE

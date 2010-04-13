@@ -653,6 +653,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
 import|;
 end_import
 
@@ -5622,8 +5638,41 @@ name|user
 operator|=
 name|protocolUser
 expr_stmt|;
+if|if
+condition|(
+name|user
+operator|!=
+literal|null
+condition|)
+block|{
+name|user
+operator|.
+name|setAuthenticationMethod
+argument_list|(
+name|AuthMethod
+operator|.
+name|SIMPLE
+operator|.
+name|authenticationMethod
+argument_list|)
+expr_stmt|;
 block|}
-elseif|else
+block|}
+else|else
+block|{
+comment|// user is authenticated
+name|user
+operator|.
+name|setAuthenticationMethod
+argument_list|(
+name|authMethod
+operator|.
+name|authenticationMethod
+argument_list|)
+expr_stmt|;
+comment|//Now we check if this is a proxy user case. If the protocol user is
+comment|//different from the 'user', it is a proxy user scenario. However,
+comment|//this is not allowed if user authenticated with DIGEST.
 if|if
 condition|(
 operator|(
@@ -5677,8 +5726,14 @@ throw|;
 block|}
 else|else
 block|{
-comment|//Effective user can be different from authenticated user
-comment|//for simple auth or kerberos auth
+comment|// Effective user can be different from authenticated user
+comment|// for simple auth or kerberos auth
+comment|// The user is the real user. Now we create a proxy user
+name|UserGroupInformation
+name|realUser
+init|=
+name|user
+decl_stmt|;
 name|user
 operator|=
 name|UserGroupInformation
@@ -5690,9 +5745,20 @@ operator|.
 name|getUserName
 argument_list|()
 argument_list|,
-name|user
+name|realUser
 argument_list|)
 expr_stmt|;
+comment|// Now the user is a proxy user, set Authentication method Proxy.
+name|user
+operator|.
+name|setAuthenticationMethod
+argument_list|(
+name|AuthenticationMethod
+operator|.
+name|PROXY
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
