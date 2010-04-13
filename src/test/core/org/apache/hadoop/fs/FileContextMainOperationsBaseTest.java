@@ -4462,7 +4462,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4508,7 +4508,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4605,7 +4605,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4638,7 +4638,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4796,7 +4796,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4917,7 +4917,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4951,7 +4951,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5035,7 +5035,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5081,7 +5081,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5315,6 +5315,156 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testRenameDirectoryAsEmptyDirectory ()
+specifier|public
+name|void
+name|testRenameDirectoryAsEmptyDirectory
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+operator|!
+name|renameSupported
+argument_list|()
+condition|)
+return|return;
+name|Path
+name|src
+init|=
+name|getTestRootPath
+argument_list|(
+name|fc
+argument_list|,
+literal|"test/hadoop/dir"
+argument_list|)
+decl_stmt|;
+name|fc
+operator|.
+name|mkdir
+argument_list|(
+name|src
+argument_list|,
+name|FileContext
+operator|.
+name|DEFAULT_PERM
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|createFile
+argument_list|(
+name|getTestRootPath
+argument_list|(
+name|fc
+argument_list|,
+literal|"test/hadoop/dir/file1"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|createFile
+argument_list|(
+name|getTestRootPath
+argument_list|(
+name|fc
+argument_list|,
+literal|"test/hadoop/dir/subdir/file2"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Path
+name|dst
+init|=
+name|getTestRootPath
+argument_list|(
+name|fc
+argument_list|,
+literal|"test/new/newdir"
+argument_list|)
+decl_stmt|;
+name|fc
+operator|.
+name|mkdir
+argument_list|(
+name|dst
+argument_list|,
+name|FileContext
+operator|.
+name|DEFAULT_PERM
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// Fails without overwrite option
+try|try
+block|{
+name|rename
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|,
+name|Rename
+operator|.
+name|NONE
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Expected exception was not thrown"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Expected (cannot over-write non-empty destination)
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|FileAlreadyExistsException
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Succeeds with the overwrite option
+name|rename
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|,
+name|Rename
+operator|.
+name|OVERWRITE
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testRenameDirectoryAsNonEmptyDirectory ()
 specifier|public
 name|void
@@ -5430,7 +5580,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5440,6 +5590,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+comment|// Expected (cannot over-write non-empty destination)
 name|Assert
 operator|.
 name|assertTrue
@@ -5453,7 +5604,7 @@ name|FileAlreadyExistsException
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Succeeds with overwrite option
+comment|// Fails even with the overwrite option
 try|try
 block|{
 name|rename
@@ -5477,7 +5628,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5487,7 +5638,7 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
-comment|// Expected exception
+comment|// Expected (cannot over-write non-empty destination)
 block|}
 block|}
 annotation|@
@@ -5569,7 +5720,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5603,7 +5754,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected exception is not thrown"
+literal|"Expected exception was not thrown"
 argument_list|)
 expr_stmt|;
 block|}
