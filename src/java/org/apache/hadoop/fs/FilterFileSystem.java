@@ -437,6 +437,27 @@ name|recursive
 argument_list|)
 return|;
 block|}
+comment|/**    * Mark a path to be deleted when FileSystem is closed.    * When the JVM shuts down,    * all FileSystem objects will be closed automatically.    * Then,    * the marked path will be deleted as a result of closing the FileSystem.    *    * The path has to exist in the file system.    *     * @param f the path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException    */
+DECL|method|deleteOnExit (Path f)
+specifier|public
+name|boolean
+name|deleteOnExit
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|deleteOnExit
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 comment|/** List files in a directory. */
 DECL|method|listStatus (Path f)
 specifier|public
@@ -598,6 +619,77 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The src files are on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path[] srcs, Path dst)
+specifier|public
+name|void
+name|copyFromLocalFile
+parameter_list|(
+name|boolean
+name|delSrc
+parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
+name|Path
+index|[]
+name|srcs
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|.
+name|copyFromLocalFile
+argument_list|(
+name|delSrc
+argument_list|,
+name|overwrite
+argument_list|,
+name|srcs
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
+specifier|public
+name|void
+name|copyFromLocalFile
+parameter_list|(
+name|boolean
+name|delSrc
+parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|.
+name|copyFromLocalFile
+argument_list|(
+name|delSrc
+argument_list|,
+name|overwrite
+argument_list|,
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * delSrc indicates if the src will be removed or not.    */
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
@@ -678,6 +770,22 @@ argument_list|,
 name|tmpLocalFile
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** Return the total size of all files in the filesystem.*/
+DECL|method|getUsed ()
+specifier|public
+name|long
+name|getUsed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getUsed
+argument_list|()
+return|;
 block|}
 comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time. */
 DECL|method|getDefaultBlockSize ()
@@ -832,6 +940,38 @@ argument_list|,
 name|username
 argument_list|,
 name|groupname
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|setTimes (Path p, long mtime, long atime )
+specifier|public
+name|void
+name|setTimes
+parameter_list|(
+name|Path
+name|p
+parameter_list|,
+name|long
+name|mtime
+parameter_list|,
+name|long
+name|atime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|.
+name|setTimes
+argument_list|(
+name|p
+argument_list|,
+name|mtime
+argument_list|,
+name|atime
 argument_list|)
 expr_stmt|;
 block|}
