@@ -6617,6 +6617,37 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+comment|// Remove redundant error class name from the beginning of the stack trace
+name|String
+name|exceptionHdr
+init|=
+name|errorClass
+operator|+
+literal|": "
+decl_stmt|;
+if|if
+condition|(
+name|error
+operator|.
+name|startsWith
+argument_list|(
+name|exceptionHdr
+argument_list|)
+condition|)
+block|{
+name|error
+operator|=
+name|error
+operator|.
+name|substring
+argument_list|(
+name|exceptionHdr
+operator|.
+name|length
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|CurCall
 operator|.
