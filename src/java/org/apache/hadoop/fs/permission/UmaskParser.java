@@ -66,7 +66,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"\\G\\s*([ugoa]*)([+=-]+)([rwx]+)([,\\s]*)\\s*"
+literal|"\\G\\s*([ugoa]*)([+=-]+)([rwx]*)([,\\s]*)\\s*"
 argument_list|)
 decl_stmt|;
 DECL|field|umaskMode
@@ -106,12 +106,31 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * To be used for file/directory creation only. Symbolic umask is applied    * relative to file mode creation mask; the permission op characters '+'    * results in clearing the corresponding bit in the mask, '-' results in bits    * for indicated permission to be set in the mask.    *     * For octal umask, the specified bits are set in the file mode creation mask.    *     * @return umask    */
 DECL|method|getUMask ()
 specifier|public
 name|short
 name|getUMask
 parameter_list|()
 block|{
+if|if
+condition|(
+name|symbolic
+condition|)
+block|{
+comment|// Return the complement of octal equivalent of umask that was computed
+return|return
+call|(
+name|short
+call|)
+argument_list|(
+operator|~
+name|umaskMode
+operator|&
+literal|0777
+argument_list|)
+return|;
+block|}
 return|return
 name|umaskMode
 return|;

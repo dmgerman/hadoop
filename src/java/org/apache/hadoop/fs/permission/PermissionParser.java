@@ -51,6 +51,13 @@ DECL|class|PermissionParser
 class|class
 name|PermissionParser
 block|{
+DECL|field|symbolic
+specifier|protected
+name|boolean
+name|symbolic
+init|=
+literal|false
+decl_stmt|;
 DECL|field|userMode
 specifier|protected
 name|short
@@ -528,6 +535,10 @@ literal|","
 argument_list|)
 expr_stmt|;
 block|}
+name|symbolic
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|applyOctalPattern (String modeStr, Matcher matcher)
 specifier|private

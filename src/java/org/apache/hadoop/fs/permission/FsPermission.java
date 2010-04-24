@@ -917,7 +917,7 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_PERMISSIONS_UMASK_DEFAULT
 decl_stmt|;
-comment|/** Get the user file creation mask (umask) */
+comment|/**     * Get the user file creation mask (umask)    *     * {@code UMASK_LABEL} config param has umask value that is either symbolic     * or octal.    *     * Symbolic umask is applied relative to file mode creation mask;     * the permission op characters '+' clears the corresponding bit in the mask,     * '-' sets bits in the mask.    *     * Octal umask, the specified bits are set in the file mode creation mask.    *     * {@code DEPRECATED_UMASK_LABEL} config param has umask value set to decimal.    */
 DECL|method|getUMask (Configuration conf)
 specifier|public
 specifier|static
