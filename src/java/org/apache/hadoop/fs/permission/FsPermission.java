@@ -54,6 +54,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -130,6 +158,22 @@ name|FsPermission
 implements|implements
 name|Writable
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FsPermission
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|FACTORY
 specifier|static
 specifier|final
@@ -889,8 +933,8 @@ name|umask
 init|=
 name|DEFAULT_UMASK
 decl_stmt|;
-comment|// Attempt to pull value from configuration, trying new key first and then
-comment|// deprecated key, along with a warning, if not present
+comment|// To ensure backward compatibility first use the deprecated key.
+comment|// If the deprecated key is not present then check for the new key
 if|if
 condition|(
 name|conf
@@ -908,6 +952,22 @@ argument_list|(
 name|UMASK_LABEL
 argument_list|)
 decl_stmt|;
+name|int
+name|oldUmask
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DEPRECATED_UMASK_LABEL
+argument_list|,
+name|Integer
+operator|.
+name|MIN_VALUE
+argument_list|)
+decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|confUmask
@@ -915,36 +975,18 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// UMASK_LABEL is set
-try|try
-block|{
-if|if
-condition|(
-name|conf
-operator|.
-name|deprecatedKeyWasSet
-argument_list|(
-name|DEPRECATED_UMASK_LABEL
-argument_list|)
-condition|)
 name|umask
 operator|=
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|confUmask
-argument_list|)
-expr_stmt|;
-comment|// Evaluate as decimal value
-else|else
-return|return
 operator|new
-name|FsPermission
+name|UmaskParser
 argument_list|(
 name|confUmask
 argument_list|)
-return|;
+operator|.
+name|getUMask
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -964,11 +1006,14 @@ literal|"decimal"
 else|:
 literal|"octal or symbolic"
 decl_stmt|;
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Unable to parse "
+name|String
+name|error
+init|=
+literal|"Unable to parse configuration "
+operator|+
+name|UMASK_LABEL
+operator|+
+literal|" with value "
 operator|+
 name|confUmask
 operator|+
@@ -977,8 +1022,72 @@ operator|+
 name|type
 operator|+
 literal|" umask."
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|error
+argument_list|)
+expr_stmt|;
+comment|// If oldUmask is not set, then throw the exception
+if|if
+condition|(
+name|oldUmask
+operator|==
+name|Integer
+operator|.
+name|MIN_VALUE
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|error
 argument_list|)
 throw|;
+block|}
+block|}
+if|if
+condition|(
+name|oldUmask
+operator|!=
+name|Integer
+operator|.
+name|MIN_VALUE
+condition|)
+block|{
+comment|// Property was set with old key
+if|if
+condition|(
+name|umask
+operator|!=
+name|oldUmask
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|DEPRECATED_UMASK_LABEL
+operator|+
+literal|" configuration key is deprecated. "
+operator|+
+literal|"Convert to "
+operator|+
+name|UMASK_LABEL
+operator|+
+literal|", using octal or symbolic umask "
+operator|+
+literal|"specifications."
+argument_list|)
+expr_stmt|;
+comment|// Old and new umask values do not match - Use old umask
+name|umask
+operator|=
+name|oldUmask
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1019,9 +1128,28 @@ parameter_list|)
 block|{
 name|conf
 operator|.
-name|setInt
+name|set
 argument_list|(
 name|UMASK_LABEL
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%1$03o"
+argument_list|,
+name|umask
+operator|.
+name|toShort
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DEPRECATED_UMASK_LABEL
 argument_list|,
 name|umask
 operator|.

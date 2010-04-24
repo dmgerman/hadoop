@@ -1186,32 +1186,6 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/**    * Check whether or not the deprecated key has been specified in the    * configuration file rather than the new key    *     * Returns false if the specified key is not included in the deprecated    * key mapping.    *     * @param oldKey Old configuration key     * @return If the old configuration key was specified rather than the new one    */
-DECL|method|deprecatedKeyWasSet (String oldKey)
-specifier|public
-name|boolean
-name|deprecatedKeyWasSet
-parameter_list|(
-name|String
-name|oldKey
-parameter_list|)
-block|{
-return|return
-name|isDeprecated
-argument_list|(
-name|oldKey
-argument_list|)
-operator|&&
-name|deprecatedKeyMap
-operator|.
-name|get
-argument_list|(
-name|oldKey
-argument_list|)
-operator|.
-name|accessed
-return|;
-block|}
 comment|/**    * Checks for the presence of the property<code>name</code> in the    * deprecation map. Returns the first of the list of new keys if present    * in the deprecation map or the<code>name</code> itself.    * @param name the property name    * @return the first property in the list of properties mapping    *         the<code>name</code> or the<code>name</code> itself.    */
 DECL|method|handleDeprecation (String name)
 specifier|private
@@ -7376,30 +7350,6 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY
 block|}
-argument_list|)
-expr_stmt|;
-name|Configuration
-operator|.
-name|addDeprecation
-argument_list|(
-literal|"dfs.umask"
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-name|CommonConfigurationKeys
-operator|.
-name|FS_PERMISSIONS_UMASK_KEY
-block|}
-argument_list|,
-literal|"dfs.umask is deprecated, use "
-operator|+
-name|CommonConfigurationKeys
-operator|.
-name|FS_PERMISSIONS_UMASK_KEY
-operator|+
-literal|" with octal or symbolic specifications."
 argument_list|)
 expr_stmt|;
 name|Configuration
