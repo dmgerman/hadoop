@@ -312,7 +312,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Returning cached groups for '"
 operator|+
@@ -353,7 +353,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Returning fetched groups for '"
 operator|+
