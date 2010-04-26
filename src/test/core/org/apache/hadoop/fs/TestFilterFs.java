@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -111,6 +121,22 @@ name|String
 name|supportedScheme
 parameter_list|)
 block|{ }
+DECL|method|listStatusIterator (Path f)
+specifier|public
+name|Iterator
+argument_list|<
+name|FileStatus
+argument_list|>
+name|listStatusIterator
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 DECL|method|testFilterFileSystem ()
 specifier|public
