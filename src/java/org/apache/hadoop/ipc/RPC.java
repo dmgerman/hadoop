@@ -66,6 +66,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|NoRouteToHostException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|SocketTimeoutException
 import|;
 end_import
@@ -784,6 +794,27 @@ expr_stmt|;
 name|ioe
 operator|=
 name|te
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoRouteToHostException
+name|nrthe
+parameter_list|)
+block|{
+comment|// perhaps a VIP is failing over
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No route to host for server: "
+operator|+
+name|addr
+argument_list|)
+expr_stmt|;
+name|ioe
+operator|=
+name|nrthe
 expr_stmt|;
 block|}
 comment|// check if timed out
