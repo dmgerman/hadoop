@@ -40,24 +40,6 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/**   * Thrown when a symbolic link is encountered in a path.  */
 end_comment
@@ -69,9 +51,7 @@ operator|.
 name|LimitedPrivate
 argument_list|(
 block|{
-name|Project
-operator|.
-name|HDFS
+literal|"HDFS"
 block|}
 argument_list|)
 DECL|class|UnresolvedLinkException

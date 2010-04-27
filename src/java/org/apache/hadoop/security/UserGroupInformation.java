@@ -24,46 +24,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-operator|.
-name|Project
-operator|.
-name|HDFS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-operator|.
-name|Project
-operator|.
-name|MAPREDUCE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -2425,9 +2385,9 @@ operator|.
 name|LimitedPrivate
 argument_list|(
 block|{
-name|HDFS
+literal|"HDFS"
 block|,
-name|MAPREDUCE
+literal|"MapReduce"
 block|}
 argument_list|)
 DECL|method|createUserForTesting (String user, String[] userGroups)
@@ -2502,9 +2462,9 @@ operator|.
 name|LimitedPrivate
 argument_list|(
 block|{
-name|HDFS
+literal|"HDFS"
 block|,
-name|MAPREDUCE
+literal|"MapReduce"
 block|}
 argument_list|)
 DECL|method|createProxyUserForTesting (String user, UserGroupInformation realUser, String[] userGroups)

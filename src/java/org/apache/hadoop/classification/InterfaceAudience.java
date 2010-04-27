@@ -47,7 +47,7 @@ annotation_defn|@interface
 name|Public
 block|{}
 empty_stmt|;
-comment|/**    * Intended only for the project(s) specified in the annotation    */
+comment|/**    * Intended only for the project(s) specified in the annotation.    * For example, "Common", "HDFS", "MapReduce", "ZooKeeper", "HBase".    */
 DECL|annotation|LimitedPrivate
 annotation|@
 name|Documented
@@ -55,41 +55,8 @@ specifier|public
 annotation_defn|@interface
 name|LimitedPrivate
 block|{
-DECL|enum|Project
-DECL|enumConstant|COMMON
-DECL|enumConstant|AVRO
-DECL|enumConstant|CHUKWA
-DECL|enumConstant|HBASE
-DECL|enumConstant|HDFS
-specifier|public
-enum|enum
-name|Project
-block|{
-name|COMMON
-block|,
-name|AVRO
-block|,
-name|CHUKWA
-block|,
-name|HBASE
-block|,
-name|HDFS
-block|,
-DECL|enumConstant|HIVE
-DECL|enumConstant|MAPREDUCE
-DECL|enumConstant|PIG
-DECL|enumConstant|ZOOKEEPER
-name|HIVE
-block|,
-name|MAPREDUCE
-block|,
-name|PIG
-block|,
-name|ZOOKEEPER
-block|}
-empty_stmt|;
 DECL|method|value ()
-name|Project
+name|String
 index|[]
 name|value
 parameter_list|()

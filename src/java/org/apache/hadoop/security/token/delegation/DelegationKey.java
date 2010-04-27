@@ -102,46 +102,6 @@ name|WritableUtils
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-operator|.
-name|Project
-operator|.
-name|HDFS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-operator|.
-name|Project
-operator|.
-name|MAPREDUCE
-import|;
-end_import
-
 begin_comment
 comment|/**  * Key used for generating and verifying delegation tokens  */
 end_comment
@@ -153,9 +113,9 @@ operator|.
 name|LimitedPrivate
 argument_list|(
 block|{
-name|HDFS
+literal|"HDFS"
 block|,
-name|MAPREDUCE
+literal|"MapReduce"
 block|}
 argument_list|)
 DECL|class|DelegationKey
