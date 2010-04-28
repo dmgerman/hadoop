@@ -110,6 +110,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|ConnectException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|channels
@@ -1136,6 +1146,60 @@ argument_list|,
 name|timeout
 argument_list|)
 expr_stmt|;
+block|}
+comment|// There is a very rare case allowed by the TCP specification, such that
+comment|// if we are trying to connect to an endpoint on the local machine,
+comment|// and we end up choosing an ephemeral port equal to the destination port,
+comment|// we will actually end up getting connected to ourself (ie any data we
+comment|// send just comes right back). This is only possible if the target
+comment|// daemon is down, so we'll treat it like connection refused.
+if|if
+condition|(
+name|socket
+operator|.
+name|getLocalPort
+argument_list|()
+operator|==
+name|socket
+operator|.
+name|getPort
+argument_list|()
+operator|&&
+name|socket
+operator|.
+name|getLocalAddress
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|socket
+operator|.
+name|getInetAddress
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Detected a loopback TCP socket, disconnecting it"
+argument_list|)
+expr_stmt|;
+name|socket
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|ConnectException
+argument_list|(
+literal|"Localhost targeted connection resulted in a loopback. "
+operator|+
+literal|"No daemon is listening on the target port."
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**     * Given a string representation of a host, return its ip address    * in textual presentation.    *     * @param name a string representation of a host:    *             either a textual representation its IP address or its host name    * @return its IP address in the string format    */
