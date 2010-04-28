@@ -2490,6 +2490,64 @@ condition|)
 block|{
 if|if
 condition|(
+name|dst
+operator|.
+name|equals
+argument_list|(
+name|src
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileAlreadyExistsException
+argument_list|(
+literal|"The source "
+operator|+
+name|src
+operator|+
+literal|" and destination "
+operator|+
+name|dst
+operator|+
+literal|" are the same"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|srcStatus
+operator|.
+name|isSymlink
+argument_list|()
+operator|&&
+name|dst
+operator|.
+name|equals
+argument_list|(
+name|srcStatus
+operator|.
+name|getSymlink
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileAlreadyExistsException
+argument_list|(
+literal|"Cannot rename symlink "
+operator|+
+name|src
+operator|+
+literal|" to its target "
+operator|+
+name|dst
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|srcStatus
 operator|.
 name|isDir
