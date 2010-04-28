@@ -714,7 +714,7 @@ block|}
 block|}
 DECL|method|changePermissions (FileSystem fs, String cmd, String argv[], int startIndex, FsShell shell)
 specifier|static
-name|void
+name|int
 name|changePermissions
 parameter_list|(
 name|FileSystem
@@ -869,6 +869,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+return|return
 name|shell
 operator|.
 name|runCmdHandler
@@ -881,7 +882,7 @@ name|startIndex
 argument_list|,
 name|recursive
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class
