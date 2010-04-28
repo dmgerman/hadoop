@@ -881,10 +881,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -893,10 +893,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|isFile
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -919,10 +919,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -931,10 +931,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|isFile
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -957,10 +957,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -969,10 +969,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|isFile
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -989,10 +989,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|parentDir
 argument_list|)
 argument_list|)
@@ -1001,10 +1001,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|isFile
 argument_list|(
+name|fc
+argument_list|,
 name|parentDir
 argument_list|)
 argument_list|)
@@ -1021,10 +1021,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|grandparentDir
 argument_list|)
 argument_list|)
@@ -1033,10 +1033,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|isFile
 argument_list|(
+name|fc
+argument_list|,
 name|grandparentDir
 argument_list|)
 argument_list|)
@@ -1066,10 +1066,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -1092,10 +1092,10 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDir
 argument_list|)
 argument_list|)
@@ -1156,10 +1156,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testSubDir
 argument_list|)
 argument_list|)
@@ -1210,10 +1210,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDeepSubDir
 argument_list|)
 argument_list|)
@@ -1340,10 +1340,10 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -1775,10 +1775,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -1890,10 +1890,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2086,10 +2086,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2201,10 +2201,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2350,10 +2350,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2534,10 +2534,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2683,10 +2683,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2800,10 +2800,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -2968,10 +2968,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -3136,10 +3136,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -3287,10 +3287,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -3404,10 +3404,10 @@ block|, }
 decl_stmt|;
 if|if
 condition|(
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|testDirs
 index|[
 literal|0
@@ -3705,10 +3705,10 @@ name|assertTrue
 argument_list|(
 literal|"Exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -3836,10 +3836,10 @@ name|assertFalse
 argument_list|(
 literal|"No longer exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -3893,10 +3893,10 @@ name|assertTrue
 argument_list|(
 literal|"Exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -3999,10 +3999,10 @@ name|assertTrue
 argument_list|(
 literal|"Exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -4055,10 +4055,10 @@ name|assertFalse
 argument_list|(
 literal|"Parent doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 operator|.
 name|getParent
@@ -4077,10 +4077,10 @@ name|assertTrue
 argument_list|(
 literal|"Exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -4112,10 +4112,10 @@ name|assertTrue
 argument_list|(
 literal|"Parent exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 operator|.
 name|getParent
@@ -4150,10 +4150,10 @@ name|assertFalse
 argument_list|(
 literal|"Doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|path
 argument_list|)
 argument_list|)
@@ -4240,10 +4240,10 @@ name|assertTrue
 argument_list|(
 literal|"File exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|file
 argument_list|)
 argument_list|)
@@ -4254,10 +4254,10 @@ name|assertTrue
 argument_list|(
 literal|"Dir exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -4268,10 +4268,10 @@ name|assertTrue
 argument_list|(
 literal|"Subdir exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|subdir
 argument_list|)
 argument_list|)
@@ -4309,10 +4309,10 @@ name|assertTrue
 argument_list|(
 literal|"File still exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|file
 argument_list|)
 argument_list|)
@@ -4323,10 +4323,10 @@ name|assertTrue
 argument_list|(
 literal|"Dir still exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -4337,10 +4337,10 @@ name|assertTrue
 argument_list|(
 literal|"Subdir still exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|subdir
 argument_list|)
 argument_list|)
@@ -4367,10 +4367,10 @@ name|assertFalse
 argument_list|(
 literal|"File doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|file
 argument_list|)
 argument_list|)
@@ -4381,10 +4381,10 @@ name|assertFalse
 argument_list|(
 literal|"Dir doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -4395,10 +4395,10 @@ name|assertFalse
 argument_list|(
 literal|"Subdir doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|subdir
 argument_list|)
 argument_list|)
@@ -4444,10 +4444,10 @@ name|assertTrue
 argument_list|(
 literal|"Dir exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -4474,10 +4474,10 @@ name|assertFalse
 argument_list|(
 literal|"Dir doesn't exist"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -5718,10 +5718,10 @@ name|assertFalse
 argument_list|(
 literal|"Nested file1 exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -5737,10 +5737,10 @@ name|assertFalse
 argument_list|(
 literal|"Nested file2 exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -5756,10 +5756,10 @@ name|assertTrue
 argument_list|(
 literal|"Renamed nested file1 exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -5775,10 +5775,10 @@ name|assertTrue
 argument_list|(
 literal|"Renamed nested exists"
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -6597,10 +6597,10 @@ literal|"Source exists"
 argument_list|,
 name|srcExists
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|src
 argument_list|)
 argument_list|)
@@ -6613,10 +6613,10 @@ literal|"Destination exists"
 argument_list|,
 name|dstExists
 argument_list|,
-name|fc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|dst
 argument_list|)
 argument_list|)

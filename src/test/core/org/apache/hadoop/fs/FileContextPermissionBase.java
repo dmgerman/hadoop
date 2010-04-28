@@ -285,13 +285,13 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|cleanupFile (FileContext theFc, Path name)
+DECL|method|cleanupFile (FileContext fc, Path name)
 specifier|private
 name|void
 name|cleanupFile
 parameter_list|(
 name|FileContext
-name|theFc
+name|fc
 parameter_list|,
 name|Path
 name|name
@@ -303,15 +303,15 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|theFc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|name
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|theFc
+name|fc
 operator|.
 name|delete
 argument_list|(
@@ -325,10 +325,10 @@ operator|.
 name|assertTrue
 argument_list|(
 operator|!
-name|theFc
-operator|.
 name|exists
 argument_list|(
+name|fc
+argument_list|,
 name|name
 argument_list|)
 argument_list|)
