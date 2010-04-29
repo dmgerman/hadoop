@@ -641,6 +641,58 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
+comment|/** @deprecated call #getUri() instead.*/
+annotation|@
+name|Deprecated
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|getUri
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/** @deprecated call #get(URI,Configuration) instead. */
+annotation|@
+name|Deprecated
+DECL|method|getNamed (String name, Configuration conf)
+specifier|public
+specifier|static
+name|FileSystem
+name|getNamed
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|get
+argument_list|(
+name|URI
+operator|.
+name|create
+argument_list|(
+name|fixName
+argument_list|(
+name|name
+argument_list|)
+argument_list|)
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
 comment|/** Update old-format filesystem names, for back-compatibility.  This should    * eventually be replaced with a checkName() method that throws an exception    * for old-format names. */
 DECL|method|fixName (String name)
 specifier|private
@@ -3064,6 +3116,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get replication.    *     * @deprecated Use getFileStatus() instead    * @param src file name    * @return file replication    * @throws IOException    */
+annotation|@
+name|Deprecated
+DECL|method|getReplication (Path src)
+specifier|public
+name|short
+name|getReplication
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getFileStatus
+argument_list|(
+name|src
+argument_list|)
+operator|.
+name|getReplication
+argument_list|()
+return|;
+block|}
 comment|/**    * Set replication for an existing file.    *     * @param src file name    * @param replication new replication    * @throws IOException    * @return true if successful;    *         false if file does not exist or is a directory    */
 DECL|method|setReplication (Path src, short replication)
 specifier|public
@@ -3405,6 +3481,29 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Delete a file     * @deprecated Use {@link #delete(Path, boolean)} instead.    */
+annotation|@
+name|Deprecated
+DECL|method|delete (Path f)
+specifier|public
+name|boolean
+name|delete
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|delete
+argument_list|(
+name|f
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
 comment|/** Delete a file.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to     * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.     * @return  true if delete is successful else false.     * @throws IOException    */
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
@@ -3643,6 +3742,31 @@ literal|false
 return|;
 comment|// f does not exist
 block|}
+block|}
+comment|/** The number of bytes in a file. */
+comment|/** @deprecated Use getFileStatus() instead */
+annotation|@
+name|Deprecated
+DECL|method|getLength (Path f)
+specifier|public
+name|long
+name|getLength
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+operator|.
+name|getLen
+argument_list|()
+return|;
 block|}
 comment|/** Return the {@link ContentSummary} of a given {@link Path}. */
 DECL|method|getContentSummary (Path f)
@@ -5920,6 +6044,31 @@ expr_stmt|;
 block|}
 return|return
 name|used
+return|;
+block|}
+comment|/**    * Get the block size for a particular file.    * @param f the filename    * @return the number of bytes in a block    */
+comment|/** @deprecated Use getFileStatus() instead */
+annotation|@
+name|Deprecated
+DECL|method|getBlockSize (Path f)
+specifier|public
+name|long
+name|getBlockSize
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+operator|.
+name|getBlockSize
+argument_list|()
 return|;
 block|}
 comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time. */
