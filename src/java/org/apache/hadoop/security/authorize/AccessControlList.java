@@ -312,7 +312,7 @@ name|contains
 argument_list|(
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 argument_list|)
 condition|)
