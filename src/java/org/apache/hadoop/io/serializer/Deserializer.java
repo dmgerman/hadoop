@@ -43,8 +43,6 @@ comment|/**  *<p>  * Provides a facility for deserializing objects of type<T> fr
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 DECL|interface|Deserializer
 specifier|public
 interface|interface

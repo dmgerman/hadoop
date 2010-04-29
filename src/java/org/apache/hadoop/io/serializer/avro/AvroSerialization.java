@@ -52,16 +52,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -69,20 +59,6 @@ operator|.
 name|avro
 operator|.
 name|Schema
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|io
-operator|.
-name|DecoderFactory
 import|;
 end_import
 
@@ -148,11 +124,25 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|avro
 operator|.
 name|io
 operator|.
-name|RawComparator
+name|DecoderFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configured
 import|;
 end_import
 
@@ -168,7 +158,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|DeserializerBase
+name|Deserializer
 import|;
 end_import
 
@@ -184,7 +174,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|SerializationBase
+name|Serialization
 import|;
 end_import
 
@@ -200,7 +190,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|SerializerBase
+name|Serializer
 import|;
 end_import
 
@@ -218,7 +208,9 @@ parameter_list|<
 name|T
 parameter_list|>
 extends|extends
-name|SerializationBase
+name|Configured
+implements|implements
+name|Serialization
 argument_list|<
 name|T
 argument_list|>
@@ -232,74 +224,65 @@ name|AVRO_SCHEMA_KEY
 init|=
 literal|"Avro-Schema"
 decl_stmt|;
-DECL|method|getDeserializer (Map<String, String> metadata)
+DECL|method|getDeserializer (Class<T> c)
 specifier|public
-name|DeserializerBase
+name|Deserializer
 argument_list|<
 name|T
 argument_list|>
 name|getDeserializer
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|c
 parameter_list|)
 block|{
 return|return
 operator|new
 name|AvroDeserializer
 argument_list|(
-name|metadata
+name|c
 argument_list|)
 return|;
 block|}
-DECL|method|getSerializer (Map<String, String> metadata)
+DECL|method|getSerializer (Class<T> c)
 specifier|public
-name|SerializerBase
+name|Serializer
 argument_list|<
 name|T
 argument_list|>
 name|getSerializer
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|c
 parameter_list|)
 block|{
 return|return
 operator|new
 name|AvroSerializer
 argument_list|(
-name|metadata
+name|c
 argument_list|)
 return|;
 block|}
-comment|/**    * Return an Avro Schema instance for the given class and metadata.    */
-DECL|method|getSchema (Map<String, String> metadata)
+comment|/**    * Return an Avro Schema instance for the given class.    */
+DECL|method|getSchema (T t)
 specifier|public
 specifier|abstract
 name|Schema
 name|getSchema
 parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|metadata
+name|T
+name|t
 parameter_list|)
 function_decl|;
-comment|/**    * Create and return Avro DatumWriter for the given metadata.    */
-DECL|method|getWriter (Map<String, String> metadata)
+comment|/**    * Create and return Avro DatumWriter for the given class.    */
+DECL|method|getWriter (Class<T> clazz)
 specifier|public
 specifier|abstract
 name|DatumWriter
@@ -308,17 +291,15 @@ name|T
 argument_list|>
 name|getWriter
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|clazz
 parameter_list|)
 function_decl|;
-comment|/**    * Create and return Avro DatumReader for the given metadata.    */
-DECL|method|getReader (Map<String, String> metadata)
+comment|/**    * Create and return Avro DatumReader for the given class.    */
+DECL|method|getReader (Class<T> clazz)
 specifier|public
 specifier|abstract
 name|DatumReader
@@ -327,34 +308,22 @@ name|T
 argument_list|>
 name|getReader
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|clazz
 parameter_list|)
 function_decl|;
 DECL|class|AvroSerializer
 class|class
 name|AvroSerializer
-extends|extends
-name|SerializerBase
+implements|implements
+name|Serializer
 argument_list|<
 name|T
 argument_list|>
 block|{
-DECL|field|metadata
-specifier|private
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|metadata
-decl_stmt|;
 DECL|field|writer
 specifier|private
 name|DatumWriter
@@ -373,56 +342,23 @@ specifier|private
 name|OutputStream
 name|outStream
 decl_stmt|;
-DECL|field|schema
-specifier|private
-name|Schema
-name|schema
-decl_stmt|;
-DECL|method|AvroSerializer (Map<String, String> metadata)
+DECL|method|AvroSerializer (Class<T> clazz)
 name|AvroSerializer
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|clazz
 parameter_list|)
 block|{
-name|this
-operator|.
-name|metadata
-operator|=
-name|metadata
-expr_stmt|;
 name|this
 operator|.
 name|writer
 operator|=
 name|getWriter
 argument_list|(
-name|metadata
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|schema
-operator|=
-name|getSchema
-argument_list|(
-name|this
-operator|.
-name|metadata
-argument_list|)
-expr_stmt|;
-name|writer
-operator|.
-name|setSchema
-argument_list|(
-name|this
-operator|.
-name|schema
+name|clazz
 argument_list|)
 expr_stmt|;
 block|}
@@ -488,6 +424,16 @@ name|IOException
 block|{
 name|writer
 operator|.
+name|setSchema
+argument_list|(
+name|getSchema
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|writer
+operator|.
 name|write
 argument_list|(
 name|t
@@ -496,31 +442,12 @@ name|encoder
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|getMetadata ()
-specifier|public
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|getMetadata
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|metadata
-return|;
-block|}
 block|}
 DECL|class|AvroDeserializer
 class|class
 name|AvroDeserializer
-extends|extends
-name|DeserializerBase
+implements|implements
+name|Deserializer
 argument_list|<
 name|T
 argument_list|>
@@ -543,16 +470,14 @@ specifier|private
 name|InputStream
 name|inStream
 decl_stmt|;
-DECL|method|AvroDeserializer (Map<String, String> metadata)
+DECL|method|AvroDeserializer (Class<T> clazz)
 name|AvroDeserializer
 parameter_list|(
-name|Map
+name|Class
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|metadata
+name|clazz
 parameter_list|)
 block|{
 name|this
@@ -561,7 +486,7 @@ name|reader
 operator|=
 name|getReader
 argument_list|(
-name|metadata
+name|clazz
 argument_list|)
 expr_stmt|;
 block|}
@@ -637,47 +562,6 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|/**    * Provides a raw comparator for Avro-encoded serialized data.    * Requires that {@link AvroSerialization#AVRO_SCHEMA_KEY} be provided    * in the metadata argument.    * @param metadata the Avro-serialization-specific parameters being    * provided that detail the schema for the data to deserialize and compare.    * @return a RawComparator parameterized for the specified Avro schema.    */
-DECL|method|getRawComparator (Map<String, String> metadata)
-specifier|public
-name|RawComparator
-argument_list|<
-name|T
-argument_list|>
-name|getRawComparator
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|metadata
-parameter_list|)
-block|{
-name|Schema
-name|schema
-init|=
-name|getSchema
-argument_list|(
-name|metadata
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|AvroComparator
-argument_list|(
-name|schema
-argument_list|)
-return|;
 block|}
 block|}
 end_class

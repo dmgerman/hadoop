@@ -224,23 +224,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|DeserializerBase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|serializer
-operator|.
-name|SerializationBase
+name|Deserializer
 import|;
 end_import
 
@@ -272,7 +256,7 @@ name|io
 operator|.
 name|serializer
 operator|.
-name|SerializerBase
+name|Serializer
 import|;
 end_import
 
@@ -1335,22 +1319,7 @@ operator|.
 name|getClass
 argument_list|()
 decl_stmt|;
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|metadata
-init|=
-name|SerializationBase
-operator|.
-name|getMetadataFromClass
-argument_list|(
-name|cls
-argument_list|)
-decl_stmt|;
-name|SerializerBase
+name|Serializer
 argument_list|<
 name|T
 argument_list|>
@@ -1360,7 +1329,7 @@ name|factory
 operator|.
 name|getSerializer
 argument_list|(
-name|metadata
+name|cls
 argument_list|)
 decl_stmt|;
 name|serializer
@@ -1384,7 +1353,7 @@ operator|.
 name|moveData
 argument_list|()
 expr_stmt|;
-name|DeserializerBase
+name|Deserializer
 argument_list|<
 name|T
 argument_list|>
@@ -1394,7 +1363,7 @@ name|factory
 operator|.
 name|getDeserializer
 argument_list|(
-name|metadata
+name|cls
 argument_list|)
 decl_stmt|;
 name|deserializer
