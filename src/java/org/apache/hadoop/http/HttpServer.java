@@ -612,6 +612,14 @@ name|FILTER_INITIALIZER_PROPERTY
 init|=
 literal|"hadoop.http.filter.initializers"
 decl_stmt|;
+DECL|field|HTTP_MAX_THREADS
+specifier|static
+specifier|final
+name|String
+name|HTTP_MAX_THREADS
+init|=
+literal|"hadoop.http.max.threads"
+decl_stmt|;
 comment|// The ServletContext attribute where the daemon Configuration
 comment|// gets stored.
 DECL|field|CONF_CONTEXT_ATTRIBUTE
@@ -807,13 +815,44 @@ argument_list|(
 name|listener
 argument_list|)
 expr_stmt|;
+name|int
+name|maxThreads
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|HTTP_MAX_THREADS
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+decl_stmt|;
+comment|// If HTTP_MAX_THREADS is not configured, QueueThreadPool() will use the
+comment|// default value (currently 254).
+name|QueuedThreadPool
+name|threadPool
+init|=
+name|maxThreads
+operator|==
+operator|-
+literal|1
+condition|?
+operator|new
+name|QueuedThreadPool
+argument_list|()
+else|:
+operator|new
+name|QueuedThreadPool
+argument_list|(
+name|maxThreads
+argument_list|)
+decl_stmt|;
 name|webServer
 operator|.
 name|setThreadPool
 argument_list|(
-operator|new
-name|QueuedThreadPool
-argument_list|()
+name|threadPool
 argument_list|)
 expr_stmt|;
 specifier|final
