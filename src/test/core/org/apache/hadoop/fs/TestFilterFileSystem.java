@@ -535,6 +535,29 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+DECL|method|delete (Path f)
+specifier|public
+name|boolean
+name|delete
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 DECL|method|getReplication (Path src)
 specifier|public
 name|short
