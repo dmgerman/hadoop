@@ -5770,6 +5770,8 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+try|try
+block|{
 name|FileStatus
 name|dstFs
 init|=
@@ -5778,8 +5780,6 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|dstFs
