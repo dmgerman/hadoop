@@ -325,11 +325,23 @@ operator|)
 condition|?
 operator|new
 name|ZlibCompressor
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 else|:
 operator|new
 name|BuiltInZlibDeflater
+argument_list|(
+name|ZlibFactory
+operator|.
+name|getCompressionLevel
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|compressionLevel
 argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Return the appropriate type of the zlib decompressor.     *     * @param conf configuration    * @return the appropriate type of the zlib decompressor.    */
