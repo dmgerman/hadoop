@@ -339,6 +339,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|deletionSucceeded
+init|=
+literal|true
+decl_stmt|;
 name|File
 name|contents
 index|[]
@@ -395,9 +400,12 @@ name|delete
 argument_list|()
 condition|)
 block|{
-return|return
+name|deletionSucceeded
+operator|=
 literal|false
-return|;
+expr_stmt|;
+continue|continue;
+comment|// continue deletion of other files/dirs under dir
 block|}
 block|}
 else|else
@@ -441,15 +449,18 @@ index|]
 argument_list|)
 condition|)
 block|{
-return|return
+name|deletionSucceeded
+operator|=
 literal|false
-return|;
+expr_stmt|;
+continue|continue;
+comment|// continue deletion of other files/dirs under dir
 block|}
 block|}
 block|}
 block|}
 return|return
-literal|true
+name|deletionSucceeded
 return|;
 block|}
 comment|/**    * Recursively delete a directory.    *     * @param fs {@link FileSystem} on which the path is present    * @param dir directory to recursively delete     * @throws IOException    * @deprecated Use {@link FileSystem#delete(Path, boolean)}    */
