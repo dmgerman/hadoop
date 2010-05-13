@@ -237,9 +237,16 @@ argument_list|)
 operator|*
 literal|1000
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Group mapping impl="
 operator|+
