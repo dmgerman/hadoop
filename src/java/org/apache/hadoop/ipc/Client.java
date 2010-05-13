@@ -1230,7 +1230,7 @@ name|serverKey
 init|=
 name|krbInfo
 operator|.
-name|value
+name|serverPrincipal
 argument_list|()
 decl_stmt|;
 if|if

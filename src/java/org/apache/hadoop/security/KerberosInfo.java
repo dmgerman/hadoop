@@ -53,10 +53,17 @@ annotation_defn|@interface
 name|KerberosInfo
 block|{
 comment|/** Key for getting server's Kerberos principal name from Configuration */
-DECL|method|value ()
+DECL|method|serverPrincipal ()
 name|String
-name|value
+name|serverPrincipal
 parameter_list|()
+function_decl|;
+DECL|method|clientPrincipal ()
+name|String
+name|clientPrincipal
+parameter_list|()
+default|default
+literal|""
 function_decl|;
 block|}
 end_annotation_defn

@@ -1007,6 +1007,8 @@ block|}
 annotation|@
 name|KerberosInfo
 argument_list|(
+name|serverPrincipal
+operator|=
 name|SERVER_PRINCIPAL_KEY
 argument_list|)
 annotation|@

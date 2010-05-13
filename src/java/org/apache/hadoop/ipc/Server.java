@@ -8200,6 +8200,9 @@ argument_list|(
 name|user
 argument_list|,
 name|protocol
+argument_list|,
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
