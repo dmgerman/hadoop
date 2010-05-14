@@ -1240,6 +1240,40 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"server principal key for protocol="
+operator|+
+name|protocol
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" is "
+operator|+
+name|serverKey
+operator|+
+literal|" and val ="
+operator|+
+name|conf
+operator|.
+name|get
+argument_list|(
+name|serverKey
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|serverPrincipal
 operator|=
 name|conf

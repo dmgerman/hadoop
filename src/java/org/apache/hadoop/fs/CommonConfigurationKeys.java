@@ -807,6 +807,15 @@ name|HADOOP_CLUSTER_ADMINISTRATORS_PROPERTY
 init|=
 literal|"hadoop.cluster.administrators"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
+init|=
+literal|"hadoop.security.service.user.name.key"
+decl_stmt|;
 block|}
 end_class
 
