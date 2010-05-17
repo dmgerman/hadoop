@@ -173,6 +173,24 @@ name|FS_CLIENT_BUFFER_DIR_KEY
 init|=
 literal|"fs.client.buffer.dir"
 decl_stmt|;
+DECL|field|FS_TRASH_CHECKPOINT_INTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_TRASH_CHECKPOINT_INTERVAL_KEY
+init|=
+literal|"fs.trash.checkpoint.interval"
+decl_stmt|;
+DECL|field|FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 comment|//TBD: Code is not updated to use following keys.
 comment|//These keys will be used in later versions
 comment|//
