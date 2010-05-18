@@ -10211,7 +10211,12 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Bad connection to FS. command aborted."
+literal|"Bad connection to FS. Command aborted. Exception: "
+operator|+
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
