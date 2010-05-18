@@ -54,7 +54,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Starts a daemon from user specified conf dir.     * @param newConfLocation is dir where new conf resides.     * @throws IOException    */
+comment|/**    * Starts a daemon from user specified conf dir.     * @param newConfLocation is dir where new conf resides.     * @throws IOException if start of process fails from new location.    */
 DECL|method|start (String newConfLocation)
 name|void
 name|start
@@ -73,7 +73,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Stops a given daemon running from user specified     * conf dir.</br>    * @throws IOException    * @param newConfLocation dir location where new conf resides.     */
+comment|/**    * Stops a given daemon running from user specified     * conf dir.</br>    * @param newConfLocation dir location where new conf resides.     * @throws IOException if kill fails from new conf location.    */
 DECL|method|kill (String newConfLocation)
 name|void
 name|kill
@@ -93,7 +93,7 @@ argument_list|>
 name|getRole
 parameter_list|()
 function_decl|;
-comment|/**    * Pushed the configuration to new configuration directory     * @param localDir    * @throws IOException    */
+comment|/**    * Pushed the configuration to new configuration directory     * @param localDir The local directory which has config files that will be     * pushed to the remote location    * @throws IOException is thrown if the pushConfig results in a error.     */
 DECL|method|pushConfig (String localDir)
 name|void
 name|pushConfig

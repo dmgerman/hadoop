@@ -189,7 +189,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Create a Daemon client.<br/>    *     * @param conf client to be used by proxy to connect to Daemon.    * @param process the Daemon process to manage the particular daemon.    *     * @throws IOException    */
+comment|/**    * Create a Daemon client.<br/>    *     * @param conf client to be used by proxy to connect to Daemon.    * @param process the Daemon process to manage the particular daemon.    *     * @throws IOException on RPC error    */
 DECL|method|AbstractDaemonClient (Configuration conf, RemoteProcess process)
 specifier|public
 name|AbstractDaemonClient
@@ -243,7 +243,7 @@ operator|=
 name|connected
 expr_stmt|;
 block|}
-comment|/**    * Create an RPC proxy to the daemon<br/>    *     * @throws IOException    */
+comment|/**    * Create an RPC proxy to the daemon<br/>    *     * @throws IOException on RPC error    */
 DECL|method|connect ()
 specifier|public
 specifier|abstract
@@ -296,7 +296,7 @@ name|getHostName
 argument_list|()
 return|;
 block|}
-comment|/**    * Gets if the Daemon is ready to accept RPC connections.<br/>    *     * @return true if daemon is ready.    * @throws IOException    */
+comment|/**    * Gets if the Daemon is ready to accept RPC connections.<br/>    *     * @return true if daemon is ready.    * @throws IOException on RPC error    */
 DECL|method|isReady ()
 specifier|public
 name|boolean
@@ -313,7 +313,7 @@ name|isReady
 argument_list|()
 return|;
 block|}
-comment|/**    * Kills the Daemon process<br/>    * @throws IOException    */
+comment|/**    * Kills the Daemon process<br/>    * @throws IOException on RPC error    */
 DECL|method|kill ()
 specifier|public
 name|void
@@ -328,7 +328,7 @@ name|kill
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Checks if the Daemon process is alive or not<br/>    *     * @throws IOException    */
+comment|/**    * Checks if the Daemon process is alive or not<br/>    * @throws IOException on RPC error    */
 DECL|method|ping ()
 specifier|public
 name|void
@@ -344,7 +344,7 @@ name|ping
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Start up the Daemon process.<br/>    * @throws IOException    */
+comment|/**    * Start up the Daemon process.<br/>    * @throws IOException on RPC error    */
 DECL|method|start ()
 specifier|public
 name|void
@@ -359,7 +359,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get system level view of the Daemon process.    *     * @return returns system level view of the Daemon process.    *     * @throws IOException    */
+comment|/**    * Get system level view of the Daemon process.    *     * @return returns system level view of the Daemon process.    *     * @throws IOException on RPC error.     */
 DECL|method|getProcessInfo ()
 specifier|public
 name|ProcessInfo
@@ -403,7 +403,7 @@ name|local
 argument_list|)
 return|;
 block|}
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param path    *          given path    * @param local    *          whether the path is local or not    * @return the statuses of the files/directories in the given patch    * @throws IOException    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param path    *          given path    * @param local    *          whether the path is local or not    * @return the statuses of the files/directories in the given patch    * @throws IOException on RPC error.     */
 DECL|method|listStatus (String path, boolean local)
 specifier|public
 name|FileStatus
@@ -431,7 +431,7 @@ name|local
 argument_list|)
 return|;
 block|}
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory recursive/nonrecursively depending on parameters    *     * @param path    *          given path    * @param local    *          whether the path is local or not    * @param recursive     *          whether to recursively get the status    * @return the statuses of the files/directories in the given patch    * @throws IOException    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory recursive/nonrecursively depending on parameters    *     * @param path    *          given path    * @param local    *          whether the path is local or not    * @param recursive     *          whether to recursively get the status    * @return the statuses of the files/directories in the given patch    * @throws IOException is thrown on RPC error.     */
 DECL|method|listStatus (String path, boolean local, boolean recursive)
 specifier|public
 name|FileStatus
@@ -622,7 +622,7 @@ name|excludeExpList
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets number of times ERROR log messages where logged in Daemon logs.     *<br/>    * Pattern used for searching is ERROR.<br/>    * @param excludeExpList list of exception to exclude     * @return number of occurrence of error message.    * @throws IOException    */
+comment|/**    * Gets number of times ERROR log messages where logged in Daemon logs.     *<br/>    * Pattern used for searching is ERROR.<br/>    * @param excludeExpList list of exception to exclude     * @return number of occurrence of error message.    * @throws IOException is thrown on RPC error.     */
 DECL|method|getNumberOfErrorStatementsInLog (String[] excludeExpList)
 specifier|public
 name|int
@@ -657,7 +657,7 @@ name|excludeExpList
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets number of times Warning log messages where logged in Daemon logs.     *<br/>    * Pattern used for searching is WARN.<br/>    * @param excludeExpList list of exception to exclude     * @return number of occurrence of warning message.    * @throws IOException    */
+comment|/**    * Gets number of times Warning log messages where logged in Daemon logs.     *<br/>    * Pattern used for searching is WARN.<br/>    * @param excludeExpList list of exception to exclude     * @return number of occurrence of warning message.    * @throws IOException thrown on RPC error.     */
 DECL|method|getNumberOfWarnStatementsInLog (String[] excludeExpList)
 specifier|public
 name|int
@@ -692,7 +692,7 @@ name|excludeExpList
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets number of time given Exception were present in log file.<br/>    *     * @param e exception class.    * @param excludeExpList list of exceptions to exclude.     * @return number of exceptions in log    * @throws IOException    */
+comment|/**    * Gets number of time given Exception were present in log file.<br/>    *     * @param e exception class.    * @param excludeExpList list of exceptions to exclude.     * @return number of exceptions in log    * @throws IOException is thrown on RPC error.     */
 DECL|method|getNumberOfExceptionsInLog (Exception e, String[] excludeExpList)
 specifier|public
 name|int
@@ -736,7 +736,7 @@ name|excludeExpList
 argument_list|)
 return|;
 block|}
-comment|/**    * Number of times ConcurrentModificationException present in log file.     *<br/>    * @param excludeExpList list of exceptions to exclude.    * @return number of times exception in log file.    * @throws IOException    */
+comment|/**    * Number of times ConcurrentModificationException present in log file.     *<br/>    * @param excludeExpList list of exceptions to exclude.    * @return number of times exception in log file.    * @throws IOException is thrown on RPC error.     */
 DECL|method|getNumberOfConcurrentModificationExceptionsInLog ( String[] excludeExpList)
 specifier|public
 name|int
@@ -775,7 +775,7 @@ specifier|private
 name|int
 name|concurrentExceptionCount
 decl_stmt|;
-comment|/**    * Populate the initial exception counts to be used to assert once a testcase    * is done there was no exception in the daemon when testcase was run.    * @param excludeExpList list of exceptions to exclude    * @throws IOException    */
+comment|/**    * Populate the initial exception counts to be used to assert once a testcase    * is done there was no exception in the daemon when testcase was run.    * @param excludeExpList list of exceptions to exclude    * @throws IOException is thrown on RPC error.     */
 DECL|method|populateExceptionCount (String [] excludeExpList)
 specifier|protected
 name|void
@@ -837,7 +837,7 @@ name|concurrentExceptionCount
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert if the new exceptions were logged into the log file.    *<br/>    *<b><i>    * Pre-req for the method is that populateExceptionCount() has     * to be called before calling this method.</b></i>    * @param excludeExpList list of exceptions to exclude    * @throws IOException    */
+comment|/**    * Assert if the new exceptions were logged into the log file.    *<br/>    *<b><i>    * Pre-req for the method is that populateExceptionCount() has     * to be called before calling this method.</b></i>    * @param excludeExpList list of exceptions to exclude    * @throws IOException is thrown on RPC error.     */
 DECL|method|assertNoExceptionsOccurred (String [] excludeExpList)
 specifier|protected
 name|void

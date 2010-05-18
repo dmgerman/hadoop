@@ -114,7 +114,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Starts the daemon from the user specified conf dir.    * @param newConfLocation the dir where the new conf files reside.    * @throws IOException    */
+comment|/**    * Starts the daemon from the user specified conf dir.    * @param newConfLocation the dir where the new conf files reside.    * @throws IOException if start from new conf fails.     */
 DECL|method|start (String newConfLocation)
 name|void
 name|start
@@ -125,7 +125,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Stops the daemon running from user specified conf dir.    *     * @param newConfLocation    *          the dir where ther new conf files reside.    * @throws IOException    */
+comment|/**    * Stops the daemon running from user specified conf dir.    *     * @param newConfLocation the dir where the new conf files reside.    * @throws IOException if stop from new conf fails.     */
 DECL|method|stop (String newConfLocation)
 name|void
 name|stop
@@ -144,7 +144,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets if multi-user support is enabled for this cluster.     *<br/>    * @return true if multi-user support is enabled.    * @throws IOException    */
+comment|/**    * Gets if multi-user support is enabled for this cluster.     *<br/>    * @return true if multi-user support is enabled.    * @throws IOException if RPC returns error.     */
 DECL|method|isMultiUserSupported ()
 name|boolean
 name|isMultiUserSupported
@@ -152,7 +152,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * The pushConfig is used to push a new config to the daemons.    * @param localDir    * @return is the remoteDir location where config will be pushed    * @throws IOException    */
+comment|/**    * The pushConfig is used to push a new config to the daemons.    * @param localDir    * @return is the remoteDir location where config will be pushed    * @throws IOException if pushConfig fails.    */
 DECL|method|pushConfig (String localDir)
 name|String
 name|pushConfig
