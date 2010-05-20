@@ -116,7 +116,7 @@ literal|"hadoop.proxyuser."
 operator|+
 name|userName
 operator|+
-literal|".users"
+literal|".groups"
 return|;
 block|}
 comment|/*    * Return configuration key for superuser ip addresses    *     * @param userName name of the superuser    * @return configuration key for superuser ip-addresses    */
@@ -135,7 +135,7 @@ literal|"hadoop.proxyuser."
 operator|+
 name|userName
 operator|+
-literal|".ip-addresses"
+literal|".hosts"
 return|;
 block|}
 comment|/*    * Authorize the superuser which is doing doAs    *     * @param user ugi of the effective or proxy user which contains a real user    * @param remoteAddress the ip address of client    * @param conf configuration    * @throws AuthorizationException    */
