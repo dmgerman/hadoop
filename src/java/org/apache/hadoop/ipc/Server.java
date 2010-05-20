@@ -898,12 +898,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|auditLOG
+DECL|field|AUDITLOG
 specifier|public
 specifier|static
 specifier|final
 name|Log
-name|auditLOG
+name|AUDITLOG
 init|=
 name|LogFactory
 operator|.
@@ -5090,7 +5090,7 @@ name|toString
 argument_list|()
 decl_stmt|;
 comment|// attempting user could be null
-name|auditLOG
+name|AUDITLOG
 operator|.
 name|warn
 argument_list|(
@@ -5101,8 +5101,6 @@ operator|+
 literal|":"
 operator|+
 name|attemptingUser
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -5213,7 +5211,7 @@ operator|.
 name|inc
 argument_list|()
 expr_stmt|;
-name|auditLOG
+name|AUDITLOG
 operator|.
 name|info
 argument_list|(

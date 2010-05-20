@@ -1239,7 +1239,7 @@ name|Log4JLogger
 operator|)
 name|Server
 operator|.
-name|auditLOG
+name|AUDITLOG
 operator|)
 operator|.
 name|getLogger
