@@ -1568,6 +1568,18 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * is secretMgr running    * @return true if secret mgr is running    */
+DECL|method|isRunning ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isRunning
+parameter_list|()
+block|{
+return|return
+name|running
+return|;
+block|}
 DECL|class|ExpiredTokenRemover
 specifier|private
 class|class
