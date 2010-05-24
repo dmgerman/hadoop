@@ -2704,6 +2704,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 while|while
 condition|(
 name|waitForWork
@@ -2713,6 +2715,39 @@ block|{
 comment|//wait here for work - read or close connection
 name|receiveResponse
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+comment|// This truly is unexpected, since we catch IOException in receiveResponse
+comment|// -- this is only to be really sure that we don't leave a client hanging
+comment|// forever.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpected error reading responses on connection "
+operator|+
+name|this
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+name|markClosed
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+literal|"Error reading responses"
+argument_list|,
+name|t
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 name|close
