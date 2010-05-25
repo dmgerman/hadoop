@@ -269,6 +269,28 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * It uses for suspending the process.    * @param pid process id.    * @return true if the process is suspended otherwise false.    * @throws IOException if an I/O error occurs.    */
+DECL|method|suspendProcess (String pid)
+name|boolean
+name|suspendProcess
+parameter_list|(
+name|String
+name|pid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * It uses for resuming the suspended process.    * @param pid process id    * @return true if suspended process is resumed otherwise false.    * @throws IOException if an I/O error occurs.    */
+DECL|method|resumeProcess (String pid)
+name|boolean
+name|resumeProcess
+parameter_list|(
+name|String
+name|pid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
