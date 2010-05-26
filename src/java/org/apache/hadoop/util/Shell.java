@@ -180,12 +180,12 @@ init|=
 literal|"whoami"
 decl_stmt|;
 comment|/** a Unix command to get the current user's groups list */
-DECL|method|getGROUPS_COMMAND ()
+DECL|method|getGroupsCommand ()
 specifier|public
 specifier|static
 name|String
 index|[]
-name|getGROUPS_COMMAND
+name|getGroupsCommand
 parameter_list|()
 block|{
 return|return
@@ -202,12 +202,12 @@ block|}
 return|;
 block|}
 comment|/** a Unix command to get a given user's groups list */
-DECL|method|getGROUPS_FOR_USER_COMMAND (final String user)
+DECL|method|getGroupsForUserCommand (final String user)
 specifier|public
 specifier|static
 name|String
 index|[]
-name|getGROUPS_FOR_USER_COMMAND
+name|getGroupsForUserCommand
 parameter_list|(
 specifier|final
 name|String

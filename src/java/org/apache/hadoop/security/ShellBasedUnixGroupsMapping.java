@@ -277,7 +277,7 @@ name|execCommand
 argument_list|(
 name|Shell
 operator|.
-name|getGROUPS_FOR_USER_COMMAND
+name|getGroupsForUserCommand
 argument_list|(
 name|user
 argument_list|)

@@ -179,12 +179,12 @@ name|SERVICE_AUTHORIZATION_CONFIG
 init|=
 literal|"hadoop.security.authorization"
 decl_stmt|;
-DECL|field|auditLOG
+DECL|field|AUDITLOG
 specifier|public
 specifier|static
 specifier|final
 name|Log
-name|auditLOG
+name|AUDITLOG
 init|=
 name|LogFactory
 operator|.
@@ -356,7 +356,7 @@ name|user
 argument_list|)
 condition|)
 block|{
-name|auditLOG
+name|AUDITLOG
 operator|.
 name|warn
 argument_list|(
@@ -383,7 +383,7 @@ name|protocol
 argument_list|)
 throw|;
 block|}
-name|auditLOG
+name|AUDITLOG
 operator|.
 name|info
 argument_list|(

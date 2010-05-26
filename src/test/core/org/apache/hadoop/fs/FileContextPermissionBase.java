@@ -820,7 +820,7 @@ name|execCommand
 argument_list|(
 name|Shell
 operator|.
-name|getGROUPS_COMMAND
+name|getGroupsCommand
 argument_list|()
 argument_list|)
 decl_stmt|;
