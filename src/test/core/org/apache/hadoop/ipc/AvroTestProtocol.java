@@ -30,20 +30,6 @@ name|AvroRemoteException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|util
-operator|.
-name|Utf8
-import|;
-end_import
-
 begin_interface
 annotation|@
 name|SuppressWarnings
@@ -74,11 +60,11 @@ name|void
 name|ping
 parameter_list|()
 function_decl|;
-DECL|method|echo (Utf8 value)
-name|Utf8
+DECL|method|echo (String value)
+name|String
 name|echo
 parameter_list|(
-name|Utf8
+name|String
 name|value
 parameter_list|)
 function_decl|;

@@ -102,20 +102,6 @@ name|AvroRemoteException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|util
-operator|.
-name|Utf8
-import|;
-end_import
-
 begin_comment
 comment|/** Unit tests for AvroRpc. */
 end_comment
@@ -205,12 +191,12 @@ name|void
 name|ping
 parameter_list|()
 block|{}
-DECL|method|echo (Utf8 value)
+DECL|method|echo (String value)
 specifier|public
-name|Utf8
+name|String
 name|echo
 parameter_list|(
-name|Utf8
+name|String
 name|value
 parameter_list|)
 block|{
@@ -350,29 +336,21 @@ operator|.
 name|ping
 argument_list|()
 expr_stmt|;
-name|Utf8
-name|utf8Result
+name|String
+name|echo
 init|=
 name|proxy
 operator|.
 name|echo
 argument_list|(
-operator|new
-name|Utf8
-argument_list|(
 literal|"hello world"
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-operator|new
-name|Utf8
-argument_list|(
 literal|"hello world"
-argument_list|)
 argument_list|,
-name|utf8Result
+name|echo
 argument_list|)
 expr_stmt|;
 name|int

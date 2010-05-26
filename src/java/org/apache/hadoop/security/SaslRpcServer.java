@@ -454,10 +454,15 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getIdentifier (String id, SecretManager<TokenIdentifier> secretManager)
+DECL|method|getIdentifier (String id, SecretManager<T> secretManager)
 specifier|public
 specifier|static
+parameter_list|<
+name|T
+extends|extends
 name|TokenIdentifier
+parameter_list|>
+name|T
 name|getIdentifier
 parameter_list|(
 name|String
@@ -465,7 +470,7 @@ name|id
 parameter_list|,
 name|SecretManager
 argument_list|<
-name|TokenIdentifier
+name|T
 argument_list|>
 name|secretManager
 parameter_list|)
@@ -481,7 +486,7 @@ argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
-name|TokenIdentifier
+name|T
 name|tokenIdentifier
 init|=
 name|secretManager
@@ -1165,6 +1170,14 @@ name|isAuthorized
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|String
 name|username
 init|=
@@ -1184,13 +1197,6 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
 name|LOG
 operator|.
 name|debug
@@ -1202,6 +1208,7 @@ operator|+
 name|username
 argument_list|)
 expr_stmt|;
+block|}
 name|ac
 operator|.
 name|setAuthorizedID

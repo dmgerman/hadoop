@@ -2643,6 +2643,51 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Add a TokenIdentifier to this UGI. The TokenIdentifier has typically been    * authenticated by the RPC layer as belonging to the user represented by this    * UGI.    *     * @param tokenId    *          tokenIdentifier to be added    * @return true on successful add of new tokenIdentifier    */
+DECL|method|addTokenIdentifier (TokenIdentifier tokenId)
+specifier|public
+specifier|synchronized
+name|boolean
+name|addTokenIdentifier
+parameter_list|(
+name|TokenIdentifier
+name|tokenId
+parameter_list|)
+block|{
+return|return
+name|subject
+operator|.
+name|getPublicCredentials
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|tokenId
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the set of TokenIdentifiers belonging to this UGI    *     * @return the set of TokenIdentifiers belonging to this UGI    */
+DECL|method|getTokenIdentifiers ()
+specifier|public
+specifier|synchronized
+name|Set
+argument_list|<
+name|TokenIdentifier
+argument_list|>
+name|getTokenIdentifiers
+parameter_list|()
+block|{
+return|return
+name|subject
+operator|.
+name|getPublicCredentials
+argument_list|(
+name|TokenIdentifier
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
 comment|/**    * Add a token to this UGI    *     * @param token Token to be added    * @return true on successful add of new token    */
 DECL|method|addToken (Token<? extends TokenIdentifier> token)
 specifier|public
