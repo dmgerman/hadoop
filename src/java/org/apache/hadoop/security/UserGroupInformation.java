@@ -732,13 +732,6 @@ specifier|static
 name|Groups
 name|groups
 decl_stmt|;
-comment|/** The last authentication time */
-DECL|field|lastUnsuccessfulAuthenticationAttemptTime
-specifier|private
-specifier|static
-name|long
-name|lastUnsuccessfulAuthenticationAttemptTime
-decl_stmt|;
 DECL|field|MIN_TIME_BEFORE_RELOGIN
 specifier|public
 specifier|static
@@ -761,6 +754,14 @@ name|String
 name|HADOOP_TOKEN_FILE_LOCATION
 init|=
 literal|"HADOOP_TOKEN_FILE_LOCATION"
+decl_stmt|;
+comment|/** The last relogin attempt */
+DECL|field|lastReloginTime
+specifier|private
+name|long
+name|lastReloginTime
+init|=
+literal|0
 decl_stmt|;
 comment|/**     * A method to initialize the fields that depend on a configuration.    * Must be called before useKerberos or groups is used.    */
 DECL|method|ensureInitialized ()
@@ -970,7 +971,6 @@ name|subject
 decl_stmt|;
 DECL|field|login
 specifier|private
-specifier|static
 name|LoginContext
 name|login
 decl_stmt|;
@@ -1675,6 +1675,24 @@ condition|)
 block|{
 try|try
 block|{
+name|Subject
+name|subject
+init|=
+operator|new
+name|Subject
+argument_list|()
+decl_stmt|;
+name|loginUser
+operator|=
+operator|new
+name|UserGroupInformation
+argument_list|(
+name|subject
+argument_list|)
+expr_stmt|;
+name|LoginContext
+name|login
+decl_stmt|;
 if|if
 condition|(
 name|isSecurityEnabled
@@ -1689,6 +1707,8 @@ argument_list|(
 name|HadoopConfiguration
 operator|.
 name|USER_KERBEROS_CONFIG_NAME
+argument_list|,
+name|subject
 argument_list|)
 expr_stmt|;
 block|}
@@ -1702,6 +1722,8 @@ argument_list|(
 name|HadoopConfiguration
 operator|.
 name|SIMPLE_CONFIG_NAME
+argument_list|,
+name|subject
 argument_list|)
 expr_stmt|;
 block|}
@@ -1709,6 +1731,12 @@ name|login
 operator|.
 name|login
 argument_list|()
+expr_stmt|;
+name|loginUser
+operator|.
+name|login
+operator|=
+name|login
 expr_stmt|;
 name|loginUser
 operator|=
@@ -1809,6 +1837,16 @@ name|keytabPrincipal
 operator|=
 name|user
 expr_stmt|;
+name|Subject
+name|subject
+init|=
+operator|new
+name|Subject
+argument_list|()
+decl_stmt|;
+name|LoginContext
+name|login
+decl_stmt|;
 try|try
 block|{
 name|login
@@ -1819,6 +1857,8 @@ argument_list|(
 name|HadoopConfiguration
 operator|.
 name|KEYTAB_KERBEROS_CONFIG_NAME
+argument_list|,
+name|subject
 argument_list|)
 expr_stmt|;
 name|login
@@ -1831,11 +1871,14 @@ operator|=
 operator|new
 name|UserGroupInformation
 argument_list|(
-name|login
-operator|.
-name|getSubject
-argument_list|()
+name|subject
 argument_list|)
+expr_stmt|;
+name|loginUser
+operator|.
+name|login
+operator|=
+name|login
 expr_stmt|;
 block|}
 catch|catch
@@ -1897,14 +1940,19 @@ literal|"loginUserFromKeyTab must be done first"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
+name|long
+name|now
+init|=
 name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|now
 operator|-
-name|lastUnsuccessfulAuthenticationAttemptTime
+name|lastReloginTime
 operator|<
 name|MIN_TIME_BEFORE_RELOGIN
 condition|)
@@ -1930,6 +1978,14 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// register most recent relogin
+name|lastReloginTime
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|LOG
@@ -2002,22 +2058,6 @@ name|le
 argument_list|)
 throw|;
 block|}
-block|}
-specifier|public
-specifier|synchronized
-specifier|static
-name|void
-DECL|method|setLastUnsuccessfulAuthenticationAttemptTime (long time)
-name|setLastUnsuccessfulAuthenticationAttemptTime
-parameter_list|(
-name|long
-name|time
-parameter_list|)
-block|{
-name|lastUnsuccessfulAuthenticationAttemptTime
-operator|=
-name|time
-expr_stmt|;
 block|}
 DECL|method|isLoginKeytabBased ()
 specifier|public
