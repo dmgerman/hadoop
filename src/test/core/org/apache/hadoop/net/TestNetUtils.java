@@ -64,6 +64,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|SocketException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|InetSocketAddress
 import|;
 end_import
@@ -223,6 +233,28 @@ operator|.
 name|contains
 argument_list|(
 literal|"resulted in a loopback"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SocketException
+name|se
+parameter_list|)
+block|{
+comment|// Some TCP stacks will actually throw their own Invalid argument exception
+comment|// here. This is also OK.
+name|assertTrue
+argument_list|(
+name|se
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Invalid argument"
 argument_list|)
 argument_list|)
 expr_stmt|;
