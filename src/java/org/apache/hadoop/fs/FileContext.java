@@ -1159,10 +1159,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|status
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -3457,14 +3456,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|status
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
-comment|// f is a file
 return|return
 operator|new
 name|ContentSummary
@@ -3480,7 +3477,6 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|// f is a directory
 name|long
 index|[]
 name|summary
@@ -3529,7 +3525,7 @@ name|c
 init|=
 name|s
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|?
 name|getContentSummary
@@ -4912,7 +4908,7 @@ if|if
 condition|(
 name|fs
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -5746,7 +5742,7 @@ if|if
 condition|(
 name|dstFs
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

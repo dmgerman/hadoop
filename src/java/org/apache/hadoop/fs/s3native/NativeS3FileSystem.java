@@ -2057,7 +2057,7 @@ if|if
 condition|(
 name|status
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -2979,10 +2979,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|fileStatus
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -3070,7 +3069,7 @@ if|if
 condition|(
 name|fs
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3268,13 +3267,12 @@ block|{
 name|boolean
 name|dstIsFile
 init|=
-operator|!
 name|getFileStatus
 argument_list|(
 name|dst
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 decl_stmt|;
 if|if
@@ -3356,7 +3354,6 @@ try|try
 block|{
 if|if
 condition|(
-operator|!
 name|getFileStatus
 argument_list|(
 name|dst
@@ -3365,7 +3362,7 @@ name|getParent
 argument_list|()
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -3410,13 +3407,12 @@ try|try
 block|{
 name|srcIsFile
 operator|=
-operator|!
 name|getFileStatus
 argument_list|(
 name|src
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 expr_stmt|;
 block|}

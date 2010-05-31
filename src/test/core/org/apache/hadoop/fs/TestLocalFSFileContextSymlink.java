@@ -446,8 +446,14 @@ name|isSymlink
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// NB: isDir is true since we need !isDir to imply file (HADOOP-6584)
-comment|//assertTrue(fsd.isDir());
+name|assertFalse
+argument_list|(
+name|fsd
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|""

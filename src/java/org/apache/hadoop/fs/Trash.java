@@ -1386,7 +1386,7 @@ condition|(
 operator|!
 name|home
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 continue|continue;

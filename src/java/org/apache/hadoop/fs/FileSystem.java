@@ -2911,7 +2911,7 @@ condition|(
 operator|!
 name|stat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3042,7 +3042,7 @@ condition|(
 operator|!
 name|stat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3395,12 +3395,12 @@ if|if
 condition|(
 name|srcStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 operator|!=
 name|dstStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3443,7 +3443,7 @@ if|if
 condition|(
 name|dstStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3532,7 +3532,7 @@ condition|(
 operator|!
 name|parentStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -3786,7 +3786,7 @@ argument_list|(
 name|f
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 return|;
 block|}
@@ -3817,13 +3817,12 @@ block|{
 try|try
 block|{
 return|return
-operator|!
 name|getFileStatus
 argument_list|(
 name|f
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 return|;
 block|}
@@ -3886,10 +3885,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|status
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -3938,7 +3936,7 @@ name|c
 init|=
 name|s
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|?
 name|getContentSummary

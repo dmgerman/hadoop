@@ -2438,25 +2438,6 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|srcStatus
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"rename source "
-operator|+
-name|src
-operator|+
-literal|" not found."
-argument_list|)
-throw|;
-block|}
 name|FileStatus
 name|dstStatus
 decl_stmt|;
@@ -2546,16 +2527,17 @@ name|dst
 argument_list|)
 throw|;
 block|}
+comment|// It's OK to rename a file to a symlink and vice versa
 if|if
 condition|(
 name|srcStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 operator|!=
 name|dstStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -2567,11 +2549,11 @@ literal|"Source "
 operator|+
 name|src
 operator|+
-literal|" Destination "
+literal|" and destination "
 operator|+
 name|dst
 operator|+
-literal|" both should be either file or directory"
+literal|" must both be directories"
 argument_list|)
 throw|;
 block|}
@@ -2585,7 +2567,7 @@ throw|throw
 operator|new
 name|FileAlreadyExistsException
 argument_list|(
-literal|"rename destination "
+literal|"Rename destination "
 operator|+
 name|dst
 operator|+
@@ -2598,7 +2580,7 @@ if|if
 condition|(
 name|dstStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -2629,7 +2611,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"rename cannot overwrite non empty destination directory "
+literal|"Rename cannot overwrite non empty destination directory "
 operator|+
 name|dst
 argument_list|)
@@ -2659,7 +2641,7 @@ specifier|final
 name|FileStatus
 name|parentStatus
 init|=
-name|getFileLinkStatus
+name|getFileStatus
 argument_list|(
 name|parent
 argument_list|)
@@ -2667,34 +2649,8 @@ decl_stmt|;
 if|if
 condition|(
 name|parentStatus
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"rename destination parent "
-operator|+
-name|parent
-operator|+
-literal|" not found."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|parentStatus
 operator|.
-name|isDir
-argument_list|()
-operator|&&
-operator|!
-name|parentStatus
-operator|.
-name|isSymlink
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -2702,7 +2658,7 @@ throw|throw
 operator|new
 name|ParentNotDirectoryException
 argument_list|(
-literal|"rename destination parent "
+literal|"Rename destination parent "
 operator|+
 name|parent
 operator|+

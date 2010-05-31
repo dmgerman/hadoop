@@ -444,7 +444,36 @@ return|return
 name|length
 return|;
 block|}
+comment|/**    * Is this a file?    * @return true if this is a file    */
+DECL|method|isFile ()
+specifier|public
+name|boolean
+name|isFile
+parameter_list|()
+block|{
+return|return
+operator|!
+name|isdir
+operator|&&
+operator|!
+name|isSymlink
+argument_list|()
+return|;
+block|}
 comment|/**    * Is this a directory?    * @return true if this is a directory    */
+DECL|method|isDirectory ()
+specifier|public
+name|boolean
+name|isDirectory
+parameter_list|()
+block|{
+return|return
+name|isdir
+return|;
+block|}
+comment|/**    * Old interface, instead use the explicit {@link FileStatus#isFile()},     * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}     * @return true if this is a directory.    * @deprecated Use {@link FileStatus#isFile()},      * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}     * instead.    */
+annotation|@
+name|Deprecated
 DECL|method|isDir ()
 specifier|public
 name|boolean
@@ -453,6 +482,19 @@ parameter_list|()
 block|{
 return|return
 name|isdir
+return|;
+block|}
+comment|/**    * Is this a symbolic link?    * @return true if this is a symbolic link    */
+DECL|method|isSymlink ()
+specifier|public
+name|boolean
+name|isSymlink
+parameter_list|()
+block|{
+return|return
+name|symlink
+operator|!=
+literal|null
 return|;
 block|}
 comment|/**    * Get the block size of the file.    * @return the number of bytes    */
@@ -635,19 +677,6 @@ literal|""
 else|:
 name|group
 expr_stmt|;
-block|}
-comment|/**    * Is this a symbolic link?    * @return true if this is a symbolic link    */
-DECL|method|isSymlink ()
-specifier|public
-name|boolean
-name|isSymlink
-parameter_list|()
-block|{
-return|return
-name|symlink
-operator|!=
-literal|null
-return|;
 block|}
 comment|/**    * @return The contents of the symbolic link.    */
 DECL|method|getSymlink ()

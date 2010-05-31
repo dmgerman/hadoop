@@ -2765,7 +2765,7 @@ if|if
 condition|(
 name|stat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

@@ -700,7 +700,7 @@ name|when
 argument_list|(
 name|stat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 operator|.
@@ -742,7 +742,7 @@ argument_list|(
 name|stat
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 expr_stmt|;
 name|verify

@@ -1520,8 +1520,19 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// NB: isDir is true since we need !isDir to imply file (HADOOP-6584)
-comment|//assertTrue(isDir(fc, linkToFile));
+name|assertFalse
+argument_list|(
+name|fc
+operator|.
+name|getFileLinkStatus
+argument_list|(
+name|linkToFile
+argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|isSymlink
@@ -1641,8 +1652,19 @@ name|linkToDir
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// NB: isDir is true since we need !isDir to imply file (HADOOP-6584)
-comment|//assertTrue(fc.getFileLinkStatus(linkToDir).isDir());
+name|assertFalse
+argument_list|(
+name|fc
+operator|.
+name|getFileLinkStatus
+argument_list|(
+name|linkToDir
+argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|fc
@@ -1741,8 +1763,19 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// NB: isDir is true since we need !isDir to imply file (HADOOP-6584)
-comment|//assertTrue(fc.getFileLinkStatus(link).isDir());
+name|assertFalse
+argument_list|(
+name|fc
+operator|.
+name|getFileLinkStatus
+argument_list|(
+name|link
+argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|fc
@@ -2083,7 +2116,7 @@ argument_list|(
 name|linkAbs
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2102,20 +2135,6 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// NB: These are links to files so ensure !isDir is true
-name|assertFalse
-argument_list|(
-name|fc
-operator|.
-name|getFileStatus
-argument_list|(
-name|linkAbs
-argument_list|)
-operator|.
-name|isDir
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Check getFileLinkStatus
 name|assertTrue
 argument_list|(
@@ -2127,8 +2146,19 @@ name|linkAbs
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// NB: isDir is true since we need !isDir to imply file (HADOOP-6584)
-comment|//assertTrue(fc.getFileLinkStatus(linkAbs).isDir());
+name|assertFalse
+argument_list|(
+name|fc
+operator|.
+name|getFileLinkStatus
+argument_list|(
+name|linkAbs
+argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Check getSymlink always returns a qualified target, except
 comment|// when partially qualified paths are used (see tests below).
 name|assertEquals
@@ -3527,7 +3557,7 @@ argument_list|(
 name|linkToDir
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3647,7 +3677,7 @@ argument_list|(
 name|fileViaLink
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3758,15 +3788,12 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
-operator|.
-name|getFileStatus
+name|isDir
 argument_list|(
+name|fc
+argument_list|,
 name|subDirViaLink
 argument_list|)
-operator|.
-name|isDir
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|fc
@@ -4301,7 +4328,7 @@ argument_list|(
 name|fileViaLink
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5055,7 +5082,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected. Both should be either a file or directory.
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
@@ -5459,7 +5496,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected. Both should be either a file or directory.
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
@@ -5570,7 +5617,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected. Both should be either a file or directory.
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
@@ -5668,7 +5725,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected. Both should be either a file or directory.
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
@@ -5793,6 +5860,16 @@ name|e
 parameter_list|)
 block|{
 comment|// Expected
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|FileAlreadyExistsException
+argument_list|)
+expr_stmt|;
 block|}
 name|fc
 operator|.
@@ -5943,6 +6020,16 @@ name|e
 parameter_list|)
 block|{
 comment|// Expected
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|FileAlreadyExistsException
+argument_list|)
+expr_stmt|;
 block|}
 name|fc
 operator|.
@@ -6345,6 +6432,16 @@ name|e
 parameter_list|)
 block|{
 comment|// Expected
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|FileAlreadyExistsException
+argument_list|)
+expr_stmt|;
 block|}
 name|fc
 operator|.
@@ -6484,7 +6581,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{
@@ -6513,7 +6620,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Also fails when dir2 has a sub-directory
 name|fc
@@ -6557,7 +6674,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Expected
+comment|// Expected. Both must be directories.
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|IOException
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -6756,7 +6883,7 @@ argument_list|(
 name|link2
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7366,6 +7493,218 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+comment|/** Test rename a file to path with destination that has symlink parent */
+DECL|method|testRenameFileWithDestParentSymlink ()
+specifier|public
+name|void
+name|testRenameFileWithDestParentSymlink
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Path
+name|link
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"link"
+argument_list|)
+decl_stmt|;
+name|Path
+name|file1
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"file1"
+argument_list|)
+decl_stmt|;
+name|Path
+name|file2
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"file2"
+argument_list|)
+decl_stmt|;
+name|Path
+name|file3
+init|=
+operator|new
+name|Path
+argument_list|(
+name|link
+argument_list|,
+literal|"file3"
+argument_list|)
+decl_stmt|;
+name|Path
+name|dir2
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir2
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Renaming /dir1/file1 to non-existant file /dir1/link/file3 is OK
+comment|// if link points to a directory...
+name|fc
+operator|.
+name|createSymlink
+argument_list|(
+name|dir2
+argument_list|,
+name|link
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|createAndWriteFile
+argument_list|(
+name|file1
+argument_list|)
+expr_stmt|;
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|file1
+argument_list|,
+name|file3
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|exists
+argument_list|(
+name|fc
+argument_list|,
+name|file1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|exists
+argument_list|(
+name|fc
+argument_list|,
+name|file3
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|file3
+argument_list|,
+name|file1
+argument_list|)
+expr_stmt|;
+comment|// But fails if link is dangling...
+name|fc
+operator|.
+name|delete
+argument_list|(
+name|link
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|fc
+operator|.
+name|createSymlink
+argument_list|(
+name|file2
+argument_list|,
+name|link
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|file1
+argument_list|,
+name|file3
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|FileNotFoundException
+argument_list|)
+expr_stmt|;
+block|}
+comment|// And if link points to a file...
+name|createAndWriteFile
+argument_list|(
+name|file2
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|file1
+argument_list|,
+name|file3
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+name|assertTrue
+argument_list|(
+name|unwrapException
+argument_list|(
+name|e
+argument_list|)
+operator|instanceof
+name|ParentNotDirectoryException
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
 comment|/** Operate on a file using a path with an intermediate symlink */
 DECL|method|testAccessFileViaSymlink ()
 specifier|public
@@ -7702,7 +8041,7 @@ argument_list|(
 name|dirViaLink
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

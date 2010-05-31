@@ -1112,7 +1112,7 @@ argument_list|(
 name|f
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

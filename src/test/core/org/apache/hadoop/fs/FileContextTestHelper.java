@@ -733,7 +733,6 @@ block|{
 try|try
 block|{
 return|return
-operator|!
 name|fc
 operator|.
 name|getFileStatus
@@ -741,7 +740,7 @@ argument_list|(
 name|p
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 return|;
 block|}
@@ -781,7 +780,7 @@ argument_list|(
 name|p
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 return|;
 block|}

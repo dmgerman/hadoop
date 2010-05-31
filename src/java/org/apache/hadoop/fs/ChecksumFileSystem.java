@@ -2170,7 +2170,7 @@ if|if
 condition|(
 name|fstatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

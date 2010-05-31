@@ -943,7 +943,7 @@ if|if
 condition|(
 name|fileStat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -1668,10 +1668,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|fileStat
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -2045,10 +2044,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|fileStat
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -2744,7 +2742,6 @@ block|{
 try|try
 block|{
 return|return
-operator|!
 name|getFileStatus
 argument_list|(
 name|client
@@ -2752,7 +2749,7 @@ argument_list|,
 name|file
 argument_list|)
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 return|;
 block|}

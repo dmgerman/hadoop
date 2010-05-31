@@ -274,7 +274,7 @@ argument_list|(
 name|p
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

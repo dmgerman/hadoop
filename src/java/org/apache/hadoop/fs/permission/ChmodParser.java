@@ -133,7 +133,7 @@ name|exeOk
 init|=
 name|file
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 operator|||
 operator|(

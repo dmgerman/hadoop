@@ -331,7 +331,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -540,7 +540,7 @@ argument_list|(
 name|path
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -613,7 +613,7 @@ argument_list|(
 name|path
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -689,7 +689,7 @@ argument_list|(
 name|path
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -716,7 +716,7 @@ argument_list|(
 name|dest
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

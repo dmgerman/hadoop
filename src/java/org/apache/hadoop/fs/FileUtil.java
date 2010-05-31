@@ -778,7 +778,7 @@ condition|(
 operator|!
 name|sdst
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 throw|throw
@@ -996,7 +996,7 @@ if|if
 condition|(
 name|srcStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -1236,7 +1236,6 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|!
 name|srcFS
 operator|.
 name|getFileStatus
@@ -1244,7 +1243,7 @@ argument_list|(
 name|srcDir
 argument_list|)
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 return|return
@@ -1292,13 +1291,12 @@ control|)
 block|{
 if|if
 condition|(
-operator|!
 name|contents
 index|[
 name|i
 index|]
 operator|.
-name|isDir
+name|isFile
 argument_list|()
 condition|)
 block|{
@@ -1712,7 +1710,7 @@ if|if
 condition|(
 name|srcStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -1886,7 +1884,7 @@ if|if
 condition|(
 name|sdst
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
