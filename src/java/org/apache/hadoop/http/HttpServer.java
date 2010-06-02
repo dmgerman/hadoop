@@ -40,6 +40,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|BindException
@@ -860,7 +870,9 @@ name|String
 name|appDir
 init|=
 name|getWebAppsPath
-argument_list|()
+argument_list|(
+name|name
+argument_list|)
 decl_stmt|;
 name|ContextHandlerCollection
 name|contexts
@@ -1993,14 +2005,17 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the pathname to the webapps files.    * @return the pathname as a URL    * @throws IOException if 'webapps' directory cannot be found on CLASSPATH.    */
-DECL|method|getWebAppsPath ()
-specifier|protected
+comment|/**    * Get the pathname to the webapps files.    * @param appName eg "secondary" or "datanode"    * @return the pathname as a URL    * @throws FileNotFoundException if 'webapps' directory cannot be found on CLASSPATH.    */
+DECL|method|getWebAppsPath (String appName)
+specifier|private
 name|String
 name|getWebAppsPath
-parameter_list|()
+parameter_list|(
+name|String
+name|appName
+parameter_list|)
 throws|throws
-name|IOException
+name|FileNotFoundException
 block|{
 name|URL
 name|url
@@ -2013,7 +2028,9 @@ argument_list|()
 operator|.
 name|getResource
 argument_list|(
-literal|"webapps"
+literal|"webapps/"
+operator|+
+name|appName
 argument_list|)
 decl_stmt|;
 if|if
@@ -2024,16 +2041,37 @@ literal|null
 condition|)
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
-literal|"webapps not found in CLASSPATH"
+literal|"webapps/"
+operator|+
+name|appName
+operator|+
+literal|" not found in CLASSPATH"
 argument_list|)
 throw|;
-return|return
+name|String
+name|urlString
+init|=
 name|url
 operator|.
 name|toString
 argument_list|()
+decl_stmt|;
+return|return
+name|urlString
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|urlString
+operator|.
+name|lastIndexOf
+argument_list|(
+literal|'/'
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Get the port that the server is on    * @return the port    */

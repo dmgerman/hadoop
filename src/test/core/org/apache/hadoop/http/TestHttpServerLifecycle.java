@@ -17,18 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -38,118 +26,14 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
 begin_class
 DECL|class|TestHttpServerLifecycle
 specifier|public
 class|class
 name|TestHttpServerLifecycle
+extends|extends
+name|HttpServerFunctionalTest
 block|{
-comment|/**    * Create but do not start the server    * @return the server instance in the member variable "server"    * @throws Exception on any failure    */
-DECL|method|createServer ()
-specifier|private
-name|HttpServer
-name|createServer
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-operator|new
-name|File
-argument_list|(
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"build.webapps"
-argument_list|,
-literal|"build/webapps"
-argument_list|)
-operator|+
-literal|"/test"
-argument_list|)
-operator|.
-name|mkdirs
-argument_list|()
-expr_stmt|;
-name|HttpServer
-name|server
-init|=
-operator|new
-name|HttpServer
-argument_list|(
-literal|"test"
-argument_list|,
-literal|"0.0.0.0"
-argument_list|,
-literal|0
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-return|return
-name|server
-return|;
-block|}
-comment|/**    * Create and start the server    * @return the newly started server    * @throws Exception on any failure    */
-DECL|method|createAndStartServer ()
-specifier|private
-name|HttpServer
-name|createAndStartServer
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|HttpServer
-name|server
-init|=
-name|createServer
-argument_list|()
-decl_stmt|;
-name|server
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-return|return
-name|server
-return|;
-block|}
-comment|/**    * If the server is non null, stop it    * @throws Exception on any failure    */
-DECL|method|stop (HttpServer server)
-specifier|private
-name|void
-name|stop
-parameter_list|(
-name|HttpServer
-name|server
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-if|if
-condition|(
-name|server
-operator|!=
-literal|null
-condition|)
-block|{
-name|server
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Check that a server is alive by probing the {@link HttpServer#isAlive()} method    * and the text of its toString() description    * @param server server    */
 DECL|method|assertAlive (HttpServer server)
 specifier|private
@@ -224,7 +108,7 @@ block|{
 name|HttpServer
 name|server
 init|=
-name|createServer
+name|createTestServer
 argument_list|()
 decl_stmt|;
 name|assertNotLive
@@ -246,7 +130,7 @@ block|{
 name|HttpServer
 name|server
 init|=
-name|createServer
+name|createTestServer
 argument_list|()
 decl_stmt|;
 name|stop
@@ -275,7 +159,7 @@ try|try
 block|{
 name|server
 operator|=
-name|createServer
+name|createTestServer
 argument_list|()
 expr_stmt|;
 name|assertNotLive
@@ -359,7 +243,7 @@ block|{
 name|HttpServer
 name|server
 init|=
-name|createAndStartServer
+name|createAndStartTestServer
 argument_list|()
 decl_stmt|;
 name|assertAlive
@@ -392,7 +276,7 @@ block|{
 name|HttpServer
 name|server
 init|=
-name|createAndStartServer
+name|createAndStartTestServer
 argument_list|()
 decl_stmt|;
 name|assertAlive

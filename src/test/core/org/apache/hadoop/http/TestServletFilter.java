@@ -190,17 +190,23 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestServletFilter
 specifier|public
 class|class
 name|TestServletFilter
 extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
+name|HttpServerFunctionalTest
 block|{
 DECL|field|LOG
 specifier|static
@@ -476,6 +482,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testServletFilter ()
 specifier|public
 name|void
@@ -513,17 +521,8 @@ expr_stmt|;
 name|HttpServer
 name|http
 init|=
-operator|new
-name|HttpServer
+name|createTestServer
 argument_list|(
-literal|".."
-argument_list|,
-literal|"localhost"
-argument_list|,
-literal|0
-argument_list|,
-literal|true
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
