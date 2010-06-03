@@ -96,10 +96,10 @@ name|CommonConfigurationKeys
 operator|.
 name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 argument_list|)
-DECL|interface|RefreshUserToGroupMappingsProtocol
+DECL|interface|RefreshUserMappingsProtocol
 specifier|public
 interface|interface
-name|RefreshUserToGroupMappingsProtocol
+name|RefreshUserMappingsProtocol
 extends|extends
 name|VersionedProtocol
 block|{
@@ -118,6 +118,18 @@ DECL|method|refreshUserToGroupsMappings (Configuration conf)
 specifier|public
 name|void
 name|refreshUserToGroupsMappings
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Refresh superuser proxy group list    * @param conf    * @throws IOException    */
+DECL|method|refreshSuperUserGroupsConfiguration (Configuration conf)
+specifier|public
+name|void
+name|refreshSuperUserGroupsConfiguration
 parameter_list|(
 name|Configuration
 name|conf
