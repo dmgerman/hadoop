@@ -106,6 +106,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|sasl
+operator|.
+name|Sasl
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -1436,6 +1448,25 @@ argument_list|,
 name|addr
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+comment|//QOP must be auth
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|SaslRpcServer
+operator|.
+name|SASL_PROPS
+operator|.
+name|get
+argument_list|(
+name|Sasl
+operator|.
+name|QOP
+argument_list|)
+argument_list|,
+literal|"auth"
 argument_list|)
 expr_stmt|;
 name|proxy

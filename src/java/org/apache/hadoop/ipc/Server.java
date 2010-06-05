@@ -4394,6 +4394,13 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
+DECL|field|useWrap
+specifier|private
+name|boolean
+name|useWrap
+init|=
+literal|false
+decl_stmt|;
 DECL|method|Connection (SelectionKey key, SocketChannel channel, long lastContact)
 specifier|public
 name|Connection
@@ -5187,17 +5194,9 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"SASL server context established. Negotiated QoP is "
 operator|+
@@ -5211,7 +5210,35 @@ name|QOP
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
+name|String
+name|qop
+init|=
+operator|(
+name|String
+operator|)
+name|saslServer
+operator|.
+name|getNegotiatedProperty
+argument_list|(
+name|Sasl
+operator|.
+name|QOP
+argument_list|)
+decl_stmt|;
+name|useWrap
+operator|=
+name|qop
+operator|!=
+literal|null
+operator|&&
+operator|!
+literal|"auth"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|qop
+argument_list|)
+expr_stmt|;
 name|user
 operator|=
 name|getAuthorizedUgi
@@ -5275,6 +5302,20 @@ operator|+
 literal|" for processing by saslServer.unwrap()"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|useWrap
+condition|)
+block|{
+name|processOneRpc
+argument_list|(
+name|saslToken
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|byte
 index|[]
 name|plaintextData
@@ -5297,6 +5338,7 @@ argument_list|(
 name|plaintextData
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|doSaslReply (SaslStatus status, Writable rv, String errorClass, String error)
@@ -5801,16 +5843,21 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-operator|!
-name|useSasl
-operator|&&
+operator|(
 name|dataLength
 operator|==
 name|Client
 operator|.
 name|PING_CALL_ID
+operator|)
+operator|&&
+operator|(
+operator|!
+name|useWrap
+operator|)
 condition|)
 block|{
+comment|// covers the !useSasl too
 name|dataLengthBuffer
 operator|.
 name|clear
@@ -5819,7 +5866,29 @@ expr_stmt|;
 return|return
 literal|0
 return|;
-comment|//ping message
+comment|// ping message
+block|}
+if|if
+condition|(
+name|dataLength
+operator|<
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpected data length "
+operator|+
+name|dataLength
+operator|+
+literal|"!! from "
+operator|+
+name|getHostAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|data
 operator|=
@@ -7551,6 +7620,19 @@ operator|new
 name|Responder
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|isSecurityEnabled
+condition|)
+block|{
+name|SaslRpcServer
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|closeConnection (Connection connection)
 specifier|private
@@ -7693,6 +7775,15 @@ name|error
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|call
+operator|.
+name|connection
+operator|.
+name|useWrap
+condition|)
+block|{
 name|wrapWithSasl
 argument_list|(
 name|response
@@ -7700,6 +7791,7 @@ argument_list|,
 name|call
 argument_list|)
 expr_stmt|;
+block|}
 name|call
 operator|.
 name|setResponse
