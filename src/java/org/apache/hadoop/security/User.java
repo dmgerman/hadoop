@@ -28,6 +28,20 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|auth
+operator|.
+name|login
+operator|.
+name|LoginContext
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -72,6 +86,13 @@ name|authMethod
 init|=
 literal|null
 decl_stmt|;
+DECL|field|login
+specifier|private
+name|LoginContext
+name|login
+init|=
+literal|null
+decl_stmt|;
 DECL|method|User (String name)
 specifier|public
 name|User
@@ -85,10 +106,12 @@ argument_list|(
 name|name
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|User (String name, AuthenticationMethod authMethod)
+DECL|method|User (String name, AuthenticationMethod authMethod, LoginContext login)
 specifier|public
 name|User
 parameter_list|(
@@ -97,6 +120,9 @@ name|name
 parameter_list|,
 name|AuthenticationMethod
 name|authMethod
+parameter_list|,
+name|LoginContext
+name|login
 parameter_list|)
 block|{
 name|fullName
@@ -182,6 +208,12 @@ operator|.
 name|authMethod
 operator|=
 name|authMethod
+expr_stmt|;
+name|this
+operator|.
+name|login
+operator|=
+name|login
 expr_stmt|;
 block|}
 comment|/**    * Get the full name of the user.    */
@@ -338,6 +370,34 @@ block|{
 return|return
 name|authMethod
 return|;
+block|}
+comment|/**    * Returns login object    * @return login    */
+DECL|method|getLogin ()
+specifier|public
+name|LoginContext
+name|getLogin
+parameter_list|()
+block|{
+return|return
+name|login
+return|;
+block|}
+comment|/**    * Set the login object    * @param login    */
+DECL|method|setLogin (LoginContext login)
+specifier|public
+name|void
+name|setLogin
+parameter_list|(
+name|LoginContext
+name|login
+parameter_list|)
+block|{
+name|this
+operator|.
+name|login
+operator|=
+name|login
+expr_stmt|;
 block|}
 block|}
 end_class
