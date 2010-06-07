@@ -560,6 +560,27 @@ parameter_list|()
 throws|throws
 name|LoginException
 block|{
+comment|// if we already have a user, we are done.
+if|if
+condition|(
+operator|!
+name|subject
+operator|.
+name|getPrincipals
+argument_list|(
+name|User
+operator|.
+name|class
+argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 name|Principal
 name|user
 init|=
