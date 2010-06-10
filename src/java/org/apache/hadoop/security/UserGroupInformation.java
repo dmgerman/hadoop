@@ -922,6 +922,35 @@ name|HadoopConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// give the configuration on how to translate Kerberos names
+try|try
+block|{
+name|KerberosName
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Problem with Kerberos auth_to_local name "
+operator|+
+literal|"configuration"
+argument_list|,
+name|ioe
+argument_list|)
+throw|;
+block|}
 name|isInitialized
 operator|=
 literal|true
