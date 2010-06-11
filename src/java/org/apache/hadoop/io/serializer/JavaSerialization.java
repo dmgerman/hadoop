@@ -96,6 +96,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|RawComparator
@@ -107,6 +135,14 @@ comment|/**  *<p>  * An experimental {@link Serialization} for Java {@link Seria
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|JavaSerialization
 specifier|public
 class|class
@@ -316,6 +352,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|accept (Class<?> c)
 specifier|public
 name|boolean
@@ -339,6 +379,10 @@ name|c
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getDeserializer (Class<Serializable> c)
 specifier|public
 name|Deserializer
@@ -363,6 +407,10 @@ argument_list|>
 argument_list|()
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getSerializer (Class<Serializable> c)
 specifier|public
 name|Serializer

@@ -56,11 +56,47 @@ name|NoSuchElementException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/** Provide an cyclic {@link Iterator} for a {@link NavigableMap}.  * The {@link Iterator} navigates the entries of the map  * according to the map's ordering.  * If the {@link Iterator} hits the last entry of the map,  * it will then continue from the first entry.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|CyclicIteration
 specifier|public
 class|class

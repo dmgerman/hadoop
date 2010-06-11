@@ -38,11 +38,47 @@ name|OutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link org.apache.hadoop.io.compress.CompressorStream} which works  * with 'block-based' based compression algorithms, as opposed to   * 'stream-based' compression algorithms.  *  * It should be noted that this wrapper does not guarantee that blocks will  * be sized for the compressor. If the  * {@link org.apache.hadoop.io.compress.Compressor} requires buffering to  * effect meaningful compression, it is responsible for it.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|BlockCompressorStream
 specifier|public
 class|class

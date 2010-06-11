@@ -40,6 +40,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**   * Thrown when a symbolic link is encountered in a path.  */
 end_comment
@@ -54,6 +68,10 @@ block|{
 literal|"HDFS"
 block|}
 argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|UnresolvedLinkException
 specifier|public
 class|class

@@ -52,11 +52,47 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implements a<i>counting Bloom filter</i>, as defined by Fan et al. in a ToN  * 2000 paper.  *<p>  * A counting Bloom filter is an improvement to standard a Bloom filter as it  * allows dynamic additions and deletions of set membership information.  This   * is achieved through the use of a counting vector instead of a bit vector.  *<p>  * Originally created by  *<a href="http://www.one-lab.org">European Commission One-Lab Project 034819</a>.  *  * @see Filter The general behavior of a filter  *   * @see<a href="http://portal.acm.org/citation.cfm?id=343571.343572">Summary cache: a scalable wide-area web cache sharing protocol</a>  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|CountingBloomFilter
 specifier|public
 specifier|final

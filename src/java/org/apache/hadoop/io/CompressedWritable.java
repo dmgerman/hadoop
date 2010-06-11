@@ -122,11 +122,47 @@ name|InflaterInputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/** A base-class for Writables which store themselves compressed and lazily  * inflate on field access.  This is useful for large objects whose fields are  * not be altered during a map or reduce operation: leaving the field data  * compressed makes copying the instance from one file to another much  * faster. */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|CompressedWritable
 specifier|public
 specifier|abstract

@@ -74,6 +74,34 @@ name|Log
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|// Keeps track of which datanodes/tasktrackers are allowed to connect to the
 end_comment
@@ -83,6 +111,21 @@ comment|// namenode/jobtracker.
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|HostsFileReader
 specifier|public
 class|class

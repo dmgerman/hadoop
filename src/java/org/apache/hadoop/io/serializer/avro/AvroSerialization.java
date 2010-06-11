@@ -140,6 +140,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configured
@@ -199,6 +227,14 @@ comment|/**  * Base class for providing serialization to Avro types.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|AvroSerialization
 specifier|public
 specifier|abstract
@@ -215,6 +251,10 @@ argument_list|<
 name|T
 argument_list|>
 block|{
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|AVRO_SCHEMA_KEY
 specifier|public
 specifier|static
@@ -224,6 +264,10 @@ name|AVRO_SCHEMA_KEY
 init|=
 literal|"Avro-Schema"
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getDeserializer (Class<T> c)
 specifier|public
 name|Deserializer
@@ -247,6 +291,10 @@ name|c
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getSerializer (Class<T> c)
 specifier|public
 name|Serializer
@@ -271,6 +319,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Return an Avro Schema instance for the given class.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getSchema (T t)
 specifier|public
 specifier|abstract
@@ -282,6 +334,10 @@ name|t
 parameter_list|)
 function_decl|;
 comment|/**    * Create and return Avro DatumWriter for the given class.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getWriter (Class<T> clazz)
 specifier|public
 specifier|abstract
@@ -299,6 +355,10 @@ name|clazz
 parameter_list|)
 function_decl|;
 comment|/**    * Create and return Avro DatumReader for the given class.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getReader (Class<T> clazz)
 specifier|public
 specifier|abstract

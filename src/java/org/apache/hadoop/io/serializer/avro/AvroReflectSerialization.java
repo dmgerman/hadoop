@@ -122,8 +122,36 @@ name|ReflectDatumWriter
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
-comment|/**  * Serialization for Avro Reflect classes. For a class to be accepted by this   * serialization, it must either be in the package list configured via   * {@link AvroReflectSerialization#AVRO_REFLECT_PACKAGES} or implement   * {@link AvroReflectSerializable} interface.  *  */
+comment|/**  * Serialization for Avro Reflect classes. For a class to be accepted by this   * serialization, it must either be in the package list configured via   *<code>avro.reflect.pkgs</code> or implement   * {@link AvroReflectSerializable} interface.  *  */
 end_comment
 
 begin_class
@@ -132,6 +160,14 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|AvroReflectSerialization
 specifier|public
 class|class
@@ -143,6 +179,10 @@ name|Object
 argument_list|>
 block|{
 comment|/**    * Key to configure packages that contain classes to be serialized and     * deserialized using this class. Multiple packages can be specified using     * comma-separated list.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|AVRO_REFLECT_PACKAGES
 specifier|public
 specifier|static
@@ -160,6 +200,10 @@ name|String
 argument_list|>
 name|packages
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|accept (Class<?> c)
@@ -266,6 +310,10 @@ block|}
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|getReader (Class<Object> clazz)
 specifier|public
@@ -305,6 +353,10 @@ throw|;
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|getSchema (Object t)
 specifier|public
@@ -330,6 +382,10 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|getWriter (Class<Object> clazz)

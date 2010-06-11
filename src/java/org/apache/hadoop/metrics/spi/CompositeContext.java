@@ -110,6 +110,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics
 operator|.
 name|ContextFactory
@@ -187,6 +215,14 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|CompositeContext
 specifier|public
 class|class
@@ -244,11 +280,19 @@ name|MetricsContext
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|CompositeContext ()
 specifier|public
 name|CompositeContext
 parameter_list|()
 block|{   }
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|init (String contextName, ContextFactory factory)
 specifier|public
 name|void
@@ -368,6 +412,10 @@ block|}
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|newRecord (String recordName)
 specifier|public
@@ -412,6 +460,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|emitRecord (String contextName, String recordName, OutputRecord outRec)
@@ -513,6 +565,10 @@ block|}
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|flush ()
 specifier|protected
@@ -567,6 +623,10 @@ block|}
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|startMonitoring ()
 specifier|public
@@ -616,6 +676,10 @@ block|}
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|stopMonitoring ()
 specifier|public
@@ -639,6 +703,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Return true if all subcontexts are monitoring.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|isMonitoring ()
@@ -673,6 +741,10 @@ name|ret
 return|;
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
@@ -695,6 +767,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|registerUpdater (Updater updater)
@@ -723,6 +799,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|unregisterUpdater (Updater updater)

@@ -16,11 +16,47 @@ name|fs
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  *CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  * and pass it to {@link org.apache.hadoop.fs.FileSystem #create(Path f, FsPermission permission,  * EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize,  * Progressable progress)}.  *   *<p>  * Combine {@link #OVERWRITE} with either {@link #CREATE}   * or {@link #APPEND} does the same as only use   * {@link #OVERWRITE}.<br>  * Combine {@link #CREATE} with {@link #APPEND} has the semantic:  *<ol>  *<li> create the file if it does not exist;  *<li> append the file if it already exists.  *</ol>  *****************************************************************/
 end_comment
 
 begin_enum
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|enum|CreateFlag
 specifier|public
 enum|enum

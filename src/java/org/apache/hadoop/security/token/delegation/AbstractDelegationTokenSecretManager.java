@@ -42,6 +42,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -242,6 +256,10 @@ block|,
 literal|"MapReduce"
 block|}
 argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 specifier|public
 specifier|abstract
 DECL|class|AbstractDelegationTokenSecretManager
@@ -1402,6 +1420,10 @@ argument_list|)
 return|;
 block|}
 comment|/** Class to encapsulate a token's renew date and password. */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DelegationTokenInformation
 specifier|public
 specifier|static

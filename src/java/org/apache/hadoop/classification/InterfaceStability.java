@@ -33,6 +33,14 @@ comment|/**  * Annotation to inform users of how much to rely on a particular pa
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|InterfaceStability
 specifier|public
 class|class

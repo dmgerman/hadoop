@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics
 operator|.
 name|MetricsRecord
@@ -37,6 +51,10 @@ comment|/**  *   * This is base class for all metrics  *  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|MetricsBase
 specifier|public
 specifier|abstract

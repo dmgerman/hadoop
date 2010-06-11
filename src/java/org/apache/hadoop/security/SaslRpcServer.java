@@ -72,7 +72,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeMap
+name|Map
 import|;
 end_import
 
@@ -82,7 +82,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|TreeMap
 import|;
 end_import
 
@@ -244,6 +244,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -261,6 +289,22 @@ operator|.
 name|ipc
 operator|.
 name|Server
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
 import|;
 end_import
 
@@ -306,22 +350,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
-operator|.
-name|AuthenticationMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|token
 operator|.
 name|SecretManager
@@ -335,6 +363,21 @@ comment|/**  * A utility class for dealing with SASL on RPC server  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|SaslRpcServer
 specifier|public
 class|class
@@ -743,6 +786,10 @@ literal|"[/@]"
 argument_list|)
 return|;
 block|}
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|enum|SaslStatus
 specifier|public
 enum|enum
@@ -783,6 +830,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Authentication method */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|enum|AuthMethod
 specifier|public
 specifier|static
@@ -1002,6 +1053,10 @@ block|}
 block|}
 empty_stmt|;
 comment|/** CallbackHandler for SASL DIGEST-MD5 mechanism */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|SaslDigestCallbackHandler
 specifier|public
 specifier|static
@@ -1378,6 +1433,10 @@ block|}
 block|}
 block|}
 comment|/** CallbackHandler for SASL GSSAPI Kerberos mechanism */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|SaslGssCallbackHandler
 specifier|public
 specifier|static

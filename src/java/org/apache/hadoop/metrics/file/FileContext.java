@@ -76,6 +76,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics
 operator|.
 name|ContextFactory
@@ -119,6 +147,14 @@ comment|/**  * Metrics context for writing metrics to a file.<p/>  *  * This cla
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|FileContext
 specifier|public
 class|class
@@ -127,6 +163,10 @@ extends|extends
 name|AbstractMetricsContext
 block|{
 comment|/* Configuration attribute names */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|FILE_NAME_PROPERTY
 specifier|protected
 specifier|static
@@ -136,6 +176,10 @@ name|FILE_NAME_PROPERTY
 init|=
 literal|"fileName"
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|PERIOD_PROPERTY
 specifier|protected
 specifier|static
@@ -161,11 +205,19 @@ init|=
 literal|null
 decl_stmt|;
 comment|/** Creates a new instance of FileContext */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|FileContext ()
 specifier|public
 name|FileContext
 parameter_list|()
 block|{}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|init (String contextName, ContextFactory factory)
 specifier|public
 name|void
@@ -218,6 +270,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns the configured file name, or null.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|getFileName ()
 specifier|public
 name|String
@@ -246,6 +302,10 @@ return|;
 block|}
 block|}
 comment|/**    * Starts or restarts monitoring, by opening in append-mode, the    * file specified by the<code>fileName</code> attribute,    * if specified. Otherwise the data will be written to standard    * output.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|startMonitoring ()
 specifier|public
 name|void
@@ -300,6 +360,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Stops monitoring, closing the file.    * @see #close()    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|stopMonitoring ()
 specifier|public
 name|void
@@ -330,6 +394,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Emits a metrics record to a file.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|emitRecord (String contextName, String recordName, OutputRecord outRec)
 specifier|public
 name|void
@@ -476,6 +544,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Flushes the output writer, forcing updates to disk.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|flush ()
 specifier|public
 name|void

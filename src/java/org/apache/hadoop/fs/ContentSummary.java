@@ -54,6 +54,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -65,6 +93,14 @@ comment|/** Store the summary of a content (a directory or a file). */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|ContentSummary
 specifier|public
 class|class
@@ -269,6 +305,10 @@ name|spaceQuota
 return|;
 block|}
 comment|/** {@inheritDoc} */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -324,6 +364,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** {@inheritDoc} */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

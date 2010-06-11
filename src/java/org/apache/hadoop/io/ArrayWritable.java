@@ -38,11 +38,47 @@ name|Array
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**   * A Writable for arrays containing instances of a class. The elements of this  * writable must all be instances of the same class. If this writable will be  * the input for a Reducer, you will need to create a subclass that sets the  * value to be of the proper type.  *  * For example:  *<code>  * public class IntArrayWritable extends ArrayWritable {  *   public IntArrayWritable() {   *     super(IntWritable.class);   *   }	  * }  *</code>  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|ArrayWritable
 specifier|public
 class|class

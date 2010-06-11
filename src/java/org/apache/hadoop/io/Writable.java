@@ -46,11 +46,47 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A serializable object which implements a simple, efficient, serialization   * protocol, based on {@link DataInput} and {@link DataOutput}.  *  *<p>Any<code>key</code> or<code>value</code> type in the Hadoop Map-Reduce  * framework implements this interface.</p>  *   *<p>Implementations typically implement a static<code>read(DataInput)</code>  * method which constructs a new instance, calls {@link #readFields(DataInput)}   * and returns the instance.</p>  *   *<p>Example:</p>  *<p><blockquote><pre>  *     public class MyWritable implements Writable {  *       // Some data       *       private int counter;  *       private long timestamp;  *         *       public void write(DataOutput out) throws IOException {  *         out.writeInt(counter);  *         out.writeLong(timestamp);  *       }  *         *       public void readFields(DataInput in) throws IOException {  *         counter = in.readInt();  *         timestamp = in.readLong();  *       }  *         *       public static MyWritable read(DataInput in) throws IOException {  *         MyWritable w = new MyWritable();  *         w.readFields(in);  *         return w;  *       }  *     }  *</pre></blockquote></p>  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|interface|Writable
 specifier|public
 interface|interface

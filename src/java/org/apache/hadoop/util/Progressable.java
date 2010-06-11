@@ -16,11 +16,47 @@ name|util
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A facility for reporting progress.  *   *<p>Clients and/or applications can use the provided<code>Progressable</code>  * to explicitly report progress to the Hadoop framework. This is especially  * important for operations which take an insignificant amount of time since,  * in-lieu of the reported progress, the framework has to assume that an error  * has occured and time-out the operation.</p>  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|interface|Progressable
 specifier|public
 interface|interface

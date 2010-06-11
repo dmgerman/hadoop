@@ -54,6 +54,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Server
@@ -217,6 +231,10 @@ comment|/**  *   * This class is for maintaining  the various RPC statistics  * 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|RpcMetrics
 specifier|public
 class|class

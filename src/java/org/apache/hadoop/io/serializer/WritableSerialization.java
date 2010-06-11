@@ -86,6 +86,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -139,6 +167,14 @@ comment|/**  * A {@link Serialization} for {@link Writable}s that delegates to  
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|WritableSerialization
 specifier|public
 class|class
@@ -408,6 +444,10 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|accept (Class<?> c)
 specifier|public
@@ -433,6 +473,10 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
 name|Override
 DECL|method|getSerializer (Class<Writable> c)
 specifier|public
@@ -455,6 +499,10 @@ name|WritableSerializer
 argument_list|()
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
 name|Override
 DECL|method|getDeserializer (Class<Writable> c)

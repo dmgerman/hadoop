@@ -18,11 +18,29 @@ name|metrics
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * This is the JMX management interface for the RPC layer.  * Many of the statistics are sampled and averaged on an interval   * which can be specified in the metrics config file.  *<p>  * For the statistics that are sampled and averaged, one must specify   * a metrics context that does periodic update calls. Most do.  * The default Null metrics context however does NOT. So if you aren't  * using any other metrics context then you can turn on the viewing and averaging  * of sampled metrics by  specifying the following two lines  *  in the hadoop-meterics.properties file:  *<pre>  *        rpc.class=org.apache.hadoop.metrics.spi.NullContextWithUpdateThread  *        rpc.period=10  *</pre>  *<p>  * Note that the metrics are collected regardless of the context used.  * The context with the update thread is used to average the data periodically  *  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|RpcMgtMBean
 specifier|public
 interface|interface

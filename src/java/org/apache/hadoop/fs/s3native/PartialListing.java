@@ -18,11 +18,47 @@ name|s3native
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Holds information on a directory listing for a  * {@link NativeFileSystemStore}.  * This includes the {@link FileMetadata files} and directories  * (their names) contained in a directory.  *</p>  *<p>  * This listing may be returned in chunks, so a<code>priorLastKey</code>  * is provided so that the next chunk may be requested.  *</p>  * @see NativeFileSystemStore#list(String, int, String)  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|PartialListing
 class|class
 name|PartialListing

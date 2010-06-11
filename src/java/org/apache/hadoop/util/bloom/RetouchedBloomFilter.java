@@ -102,11 +102,47 @@ name|Random
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implements a<i>retouched Bloom filter</i>, as defined in the CoNEXT 2006 paper.  *<p>  * It allows the removal of selected false positives at the cost of introducing  * random false negatives, and with the benefit of eliminating some random false  * positives at the same time.  *   *<p>  * Originally created by  *<a href="http://www.one-lab.org">European Commission One-Lab Project 034819</a>.  *   * @see Filter The general behavior of a filter  * @see BloomFilter A Bloom filter  * @see RemoveScheme The different selective clearing algorithms  *   * @see<a href="http://www-rp.lip6.fr/site_npa/site_rp/_publications/740-rbf_cameraready.pdf">Retouched Bloom Filters: Allowing Networked Applications to Trade Off Selected False Positives Against False Negatives</a>  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|RetouchedBloomFilter
 specifier|public
 specifier|final

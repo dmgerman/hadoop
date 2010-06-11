@@ -46,6 +46,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|RawComparator
@@ -57,6 +85,14 @@ comment|/**  *<p>  * A {@link RawComparator} that uses a {@link JavaSerializatio
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|JavaSerializationComparator
 specifier|public
 class|class
@@ -77,6 +113,10 @@ argument_list|<
 name|T
 argument_list|>
 block|{
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|JavaSerializationComparator ()
 specifier|public
 name|JavaSerializationComparator
@@ -97,6 +137,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|compare (T o1, T o2)
 specifier|public
 name|int

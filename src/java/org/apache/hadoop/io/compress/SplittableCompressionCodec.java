@@ -38,11 +38,47 @@ name|InputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is meant to be implemented by those compression codecs  * which are capable to compress / de-compress a stream starting at any  * arbitrary position.  *  * Especially the process of de-compressing a stream starting at some arbitrary  * position is challenging.  Most of the codecs are only able to successfully  * de-compress a stream, if they start from the very beginning till the end.  * One of the reasons is the stored state at the beginning of the stream which  * is crucial for de-compression.  *  * Yet there are few codecs which do not save the whole state at the beginning  * of the stream and hence can be used to de-compress stream starting at any  * arbitrary points.  This interface is meant to be used by such codecs.  Such  * codecs are highly valuable, especially in the context of Hadoop, because  * an input compressed file can be split and hence can be worked on by multiple  * machines in parallel.  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|interface|SplittableCompressionCodec
 specifier|public
 interface|interface

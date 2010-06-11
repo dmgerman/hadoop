@@ -26,11 +26,47 @@ name|Closeable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Service plug-in interface.  *   * Service plug-ins may be used to expose functionality of datanodes or  * namenodes using arbitrary RPC protocols. Plug-ins are instantiated by the  * service instance, and are notified of service life-cycle events using the  * methods defined by this class.  *   * Service plug-ins are started after the service instance is started, and  * stopped before the service instance is stopped.  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|interface|ServicePlugin
 specifier|public
 interface|interface

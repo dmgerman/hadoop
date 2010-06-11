@@ -80,11 +80,36 @@ name|InstanceAlreadyExistsException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * This util class provides a method to register an MBean using  * our standard naming convention as described in the doc  *  for {link {@link #registerMBean(String, String, Object)}  *  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|class|MBeanUtil
 specifier|public
 class|class

@@ -18,11 +18,47 @@ name|spi
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Null metrics context: a metrics context which does nothing.  Used as the  * default context, so that no performance data is emitted if no configuration  * data is found.  *   */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|NullContext
 specifier|public
 class|class
@@ -31,12 +67,20 @@ extends|extends
 name|AbstractMetricsContext
 block|{
 comment|/** Creates a new instance of NullContext */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|NullContext ()
 specifier|public
 name|NullContext
 parameter_list|()
 block|{   }
 comment|/**    * Do-nothing version of startMonitoring    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|startMonitoring ()
 specifier|public
 name|void
@@ -44,6 +88,10 @@ name|startMonitoring
 parameter_list|()
 block|{   }
 comment|/**    * Do-nothing version of emitRecord    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|emitRecord (String contextName, String recordName, OutputRecord outRec)
 specifier|protected
 name|void
@@ -60,6 +108,10 @@ name|outRec
 parameter_list|)
 block|{}
 comment|/**    * Do-nothing version of update    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|update (MetricsRecordImpl record)
 specifier|protected
 name|void
@@ -70,6 +122,10 @@ name|record
 parameter_list|)
 block|{   }
 comment|/**    * Do-nothing version of remove    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|remove (MetricsRecordImpl record)
 specifier|protected
 name|void

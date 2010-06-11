@@ -26,6 +26,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics
 operator|.
 name|ContextFactory
@@ -51,6 +79,14 @@ comment|/**  * A null context which has a thread calling   * periodically when m
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|NullContextWithUpdateThread
 specifier|public
 class|class
@@ -68,11 +104,19 @@ init|=
 literal|"period"
 decl_stmt|;
 comment|/** Creates a new instance of NullContextWithUpdateThread */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|NullContextWithUpdateThread ()
 specifier|public
 name|NullContextWithUpdateThread
 parameter_list|()
 block|{   }
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|init (String contextName, ContextFactory factory)
 specifier|public
 name|void
@@ -101,6 +145,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Do-nothing version of emitRecord    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|emitRecord (String contextName, String recordName, OutputRecord outRec)
 specifier|protected
 name|void
@@ -117,6 +165,10 @@ name|outRec
 parameter_list|)
 block|{}
 comment|/**    * Do-nothing version of update    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|update (MetricsRecordImpl record)
 specifier|protected
 name|void
@@ -127,6 +179,10 @@ name|record
 parameter_list|)
 block|{   }
 comment|/**    * Do-nothing version of remove    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|remove (MetricsRecordImpl record)
 specifier|protected
 name|void

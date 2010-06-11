@@ -54,6 +54,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -93,6 +121,14 @@ comment|/****************************************************  * Provides server
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|FsServerDefaults
 specifier|public
 class|class
@@ -264,6 +300,10 @@ block|}
 comment|// /////////////////////////////////////////
 comment|// Writable
 comment|// /////////////////////////////////////////
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -311,6 +351,10 @@ name|fileBufferSize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

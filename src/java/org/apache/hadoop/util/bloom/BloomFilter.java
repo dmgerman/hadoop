@@ -62,11 +62,47 @@ name|BitSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implements a<i>Bloom filter</i>, as defined by Bloom in 1970.  *<p>  * The Bloom filter is a data structure that was introduced in 1970 and that has been adopted by   * the networking research community in the past decade thanks to the bandwidth efficiencies that it  * offers for the transmission of set membership information between networked hosts.  A sender encodes   * the information into a bit vector, the Bloom filter, that is more compact than a conventional   * representation. Computation and space costs for construction are linear in the number of elements.    * The receiver uses the filter to test whether various elements are members of the set. Though the   * filter will occasionally return a false positive, it will never return a false negative. When creating   * the filter, the sender can choose its desired point in a trade-off between the false positive rate and the size.   *   *<p>  * Originally created by  *<a href="http://www.one-lab.org">European Commission One-Lab Project 034819</a>.  *   * @see Filter The general behavior of a filter  *   * @see<a href="http://portal.acm.org/citation.cfm?id=362692&dl=ACM&coll=portal">Space/Time Trade-Offs in Hash Coding with Allowable Errors</a>  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|BloomFilter
 specifier|public
 class|class

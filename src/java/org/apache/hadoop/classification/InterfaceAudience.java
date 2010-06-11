@@ -33,6 +33,14 @@ comment|/**  * Annotation to inform users of a package, class or method's intend
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|InterfaceAudience
 specifier|public
 class|class

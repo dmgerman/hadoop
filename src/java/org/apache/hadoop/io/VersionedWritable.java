@@ -46,11 +46,47 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/** A base class for Writables that provides version checking.  *  *<p>This is useful when a class may evolve, so that instances written by the  * old version of the class may still be processed by the new version.  To  * handle this situation, {@link #readFields(DataInput)}  * implementations should catch {@link VersionMismatchException}.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|VersionedWritable
 specifier|public
 specifier|abstract

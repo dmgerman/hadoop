@@ -166,6 +166,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -463,6 +491,14 @@ comment|/**  * A TFile is a container of key-value pairs. Both keys and values a
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|TFile
 specifier|public
 class|class
@@ -721,6 +757,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * TFile Writer.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Writer
 specifier|public
 specifier|static
@@ -2036,6 +2076,10 @@ block|}
 block|}
 block|}
 comment|/**    * TFile Reader. Users may only read TFiles by creating TFile.Reader.Scanner.    * objects. A scanner may scan the whole TFile ({@link Reader#createScanner()}    * ) , a portion of TFile based on byte offsets (    * {@link Reader#createScannerByByteRange(long, long)}), or a portion of TFile with keys    * fall in a certain key range (for sorted TFile only,    * {@link Reader#createScannerByKey(byte[], byte[])} or    * {@link Reader#createScannerByKey(RawComparable, RawComparable)}).    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Reader
 specifier|public
 specifier|static
