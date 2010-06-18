@@ -358,6 +358,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -1593,17 +1609,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|HADOOP_CLUSTER_ADMINISTRATORS_PROPERTY
-argument_list|,
-literal|"userA,userB groupC,groupD"
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
 name|HttpServer
 operator|.
 name|FILTER_INITIALIZER_PROPERTY
@@ -1739,6 +1744,12 @@ argument_list|,
 literal|true
 argument_list|,
 name|conf
+argument_list|,
+operator|new
+name|AccessControlList
+argument_list|(
+literal|"userA,userB groupC,groupD"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|myServer
