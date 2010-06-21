@@ -1293,7 +1293,7 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -1304,11 +1304,8 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
+name|boolean
+name|overwrite
 parameter_list|,
 name|int
 name|bufferSize
@@ -1325,25 +1322,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
-name|primitiveCreate
+name|FSDataOutputStream
+name|out
+init|=
+name|create
 argument_list|(
 name|f
 argument_list|,
-name|permission
-operator|.
-name|applyUMask
-argument_list|(
-name|FsPermission
-operator|.
-name|getUMask
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-argument_list|)
-argument_list|,
-name|flag
+name|overwrite
 argument_list|,
 name|bufferSize
 argument_list|,
@@ -1352,10 +1338,17 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|progress
-argument_list|,
-operator|-
-literal|1
 argument_list|)
+decl_stmt|;
+name|setPermission
+argument_list|(
+name|f
+argument_list|,
+name|permission
+argument_list|)
+expr_stmt|;
+return|return
+name|out
 return|;
 block|}
 annotation|@

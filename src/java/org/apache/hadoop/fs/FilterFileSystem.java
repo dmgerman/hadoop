@@ -342,7 +342,7 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -353,11 +353,8 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
+name|boolean
+name|overwrite
 parameter_list|,
 name|int
 name|bufferSize
@@ -383,7 +380,7 @@ name|f
 argument_list|,
 name|permission
 argument_list|,
-name|flag
+name|overwrite
 argument_list|,
 name|bufferSize
 argument_list|,

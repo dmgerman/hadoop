@@ -42,16 +42,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|zip
 operator|.
 name|CRC32
@@ -1858,7 +1848,7 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -1869,11 +1859,8 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
+name|boolean
+name|overwrite
 parameter_list|,
 name|int
 name|bufferSize
@@ -1935,14 +1922,7 @@ name|this
 argument_list|,
 name|f
 argument_list|,
-name|flag
-operator|.
-name|contains
-argument_list|(
-name|CreateFlag
-operator|.
-name|OVERWRITE
-argument_list|)
+name|overwrite
 argument_list|,
 name|bufferSize
 argument_list|,
