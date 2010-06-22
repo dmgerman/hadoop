@@ -157,26 +157,20 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * Refresh user to group mappings.    * @param conf    * @throws IOException    */
-DECL|method|refreshUserToGroupsMappings (Configuration conf)
+DECL|method|refreshUserToGroupsMappings ()
 specifier|public
 name|void
 name|refreshUserToGroupsMappings
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Refresh superuser proxy group list    * @param conf    * @throws IOException    */
-DECL|method|refreshSuperUserGroupsConfiguration (Configuration conf)
+comment|/**    * Refresh superuser proxy group list    * @throws IOException    */
+DECL|method|refreshSuperUserGroupsConfiguration ()
 specifier|public
 name|void
 name|refreshSuperUserGroupsConfiguration
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

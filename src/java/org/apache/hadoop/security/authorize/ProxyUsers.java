@@ -182,13 +182,13 @@ name|CONF_HADOOP_PROXYUSER_RE
 init|=
 literal|"hadoop\\.proxyuser\\."
 decl_stmt|;
-DECL|field|conf
+DECL|field|init
 specifier|private
 specifier|static
-name|Configuration
-name|conf
+name|boolean
+name|init
 init|=
-literal|null
+literal|false
 decl_stmt|;
 comment|// list of groups and hosts per proxyuser
 DECL|field|proxyGroups
@@ -244,7 +244,24 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/**    * reread the conf and get new values for "hadoop.proxyuser.*.groups/hosts"    */
-DECL|method|refreshSuperUserGroupsConfiguration (Configuration cn)
+DECL|method|refreshSuperUserGroupsConfiguration ()
+specifier|public
+specifier|static
+name|void
+name|refreshSuperUserGroupsConfiguration
+parameter_list|()
+block|{
+comment|//load server side configuration;
+name|refreshSuperUserGroupsConfiguration
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * refresh configuration    * @param conf    */
+DECL|method|refreshSuperUserGroupsConfiguration (Configuration conf)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -252,13 +269,9 @@ name|void
 name|refreshSuperUserGroupsConfiguration
 parameter_list|(
 name|Configuration
-name|cn
+name|conf
 parameter_list|)
 block|{
-name|conf
-operator|=
-name|cn
-expr_stmt|;
 comment|// remove alle existing stuff
 name|proxyGroups
 operator|.
@@ -387,6 +400,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|init
+operator|=
+literal|true
+expr_stmt|;
 block|}
 comment|/**    * Returns configuration key for effective user groups allowed for a superuser    *     * @param userName name of the superuser    * @return configuration key for superuser groups    */
 DECL|method|getProxySuperuserGroupConfKey (String userName)
@@ -456,15 +473,12 @@ name|AuthorizationException
 block|{
 if|if
 condition|(
-name|conf
-operator|==
-literal|null
+operator|!
+name|init
 condition|)
 block|{
 name|refreshSuperUserGroupsConfiguration
-argument_list|(
-name|newConf
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -518,6 +532,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|allowedUserGroups
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|allowedUserGroups
 operator|.
@@ -601,6 +619,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|ipList
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|ipList
 operator|.

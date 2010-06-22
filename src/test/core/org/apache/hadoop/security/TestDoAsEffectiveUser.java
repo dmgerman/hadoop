@@ -866,6 +866,11 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|refreshConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|server
@@ -1088,6 +1093,11 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|refreshConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|server

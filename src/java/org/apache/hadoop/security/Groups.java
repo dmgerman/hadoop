@@ -517,6 +517,23 @@ init|=
 literal|null
 decl_stmt|;
 comment|/**    * Get the groups being used to map user-to-groups.    * @return the groups being used to map user-to-groups.    */
+DECL|method|getUserToGroupsMappingService ()
+specifier|public
+specifier|static
+name|Groups
+name|getUserToGroupsMappingService
+parameter_list|()
+block|{
+return|return
+name|getUserToGroupsMappingService
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the groups being used to map user-to-groups.    * @param Configuration    * @return the groups being used to map user-to-groups.    */
 DECL|method|getUserToGroupsMappingService (Configuration conf)
 specifier|public
 specifier|static
