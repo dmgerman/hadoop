@@ -606,7 +606,7 @@ name|boolean
 name|needsInput
 parameter_list|()
 block|{
-comment|// Consume remanining compressed data?
+comment|// Consume remaining compressed data?
 if|if
 condition|(
 name|uncompressedDirectBuf
@@ -670,7 +670,7 @@ name|boolean
 name|finished
 parameter_list|()
 block|{
-comment|// Check if 'zlib' says its 'finished' and
+comment|// Check if 'zlib' says it's 'finished' and
 comment|// all compressed data has been consumed
 return|return
 operator|(
@@ -819,7 +819,7 @@ argument_list|(
 name|n
 argument_list|)
 expr_stmt|;
-comment|// Get atmost 'len' bytes
+comment|// Get at most 'len' bytes
 name|n
 operator|=
 name|Math
@@ -851,7 +851,7 @@ return|return
 name|n
 return|;
 block|}
-comment|/**    * Returns the total number of compressed bytes output so far.    *    * @return the total (non-negative) number of compressed bytes output so far    */
+comment|/**    * Returns the total number of uncompressed bytes output so far.    *    * @return the total (non-negative) number of uncompressed bytes output so far    */
 DECL|method|getBytesWritten ()
 specifier|public
 specifier|synchronized
@@ -869,7 +869,7 @@ name|stream
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the total number of uncompressed bytes input so far.</p>    *    * @return the total (non-negative) number of uncompressed bytes input so far    */
+comment|/**    * Returns the total number of compressed bytes input so far.</p>    *    * @return the total (non-negative) number of compressed bytes input so far    */
 DECL|method|getBytesRead ()
 specifier|public
 specifier|synchronized
@@ -887,6 +887,28 @@ name|stream
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the number of bytes remaining in the input buffers; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.</p>    *    * @return the total (non-negative) number of unprocessed bytes in input    */
+DECL|method|getRemaining ()
+specifier|public
+specifier|synchronized
+name|int
+name|getRemaining
+parameter_list|()
+block|{
+name|checkStream
+argument_list|()
+expr_stmt|;
+return|return
+name|userBufLen
+operator|+
+name|getRemaining
+argument_list|(
+name|stream
+argument_list|)
+return|;
+comment|// userBuf + compressedDirectBuf
+block|}
+comment|/**    * Resets everything including the input buffers (user and direct).</p>    */
 DECL|method|reset ()
 specifier|public
 specifier|synchronized
@@ -1054,6 +1076,17 @@ specifier|native
 specifier|static
 name|long
 name|getBytesWritten
+parameter_list|(
+name|long
+name|strm
+parameter_list|)
+function_decl|;
+DECL|method|getRemaining (long strm)
+specifier|private
+specifier|native
+specifier|static
+name|int
+name|getRemaining
 parameter_list|(
 name|long
 name|strm

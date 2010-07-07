@@ -135,6 +135,13 @@ name|closed
 init|=
 literal|false
 decl_stmt|;
+DECL|field|lastBytesSent
+specifier|private
+name|int
+name|lastBytesSent
+init|=
+literal|0
+decl_stmt|;
 DECL|method|DecompressorStream (InputStream in, Decompressor decompressor, int bufferSize)
 specifier|public
 name|DecompressorStream
@@ -227,7 +234,7 @@ literal|512
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow derived classes to directly set the underlying stream.    *     * @param in Underlying input stream.  * @throws IOException    */
+comment|/**    * Allow derived classes to directly set the underlying stream.    *     * @param in Underlying input stream.    * @throws IOException    */
 DECL|method|DecompressorStream (InputStream in)
 specifier|protected
 name|DecompressorStream
@@ -423,11 +430,6 @@ if|if
 condition|(
 name|decompressor
 operator|.
-name|finished
-argument_list|()
-operator|||
-name|decompressor
-operator|.
 name|needsDictionary
 argument_list|()
 condition|)
@@ -445,49 +447,149 @@ if|if
 condition|(
 name|decompressor
 operator|.
-name|needsInput
+name|finished
 argument_list|()
 condition|)
 block|{
+comment|// First see if there was any leftover buffered input from previous
+comment|// stream; if not, attempt to refill buffer.  If refill -> EOF, we're
+comment|// all done; else reset, fix up input buffer, and get ready for next
+comment|// concatenated substream/"member".
+name|int
+name|nRemaining
+init|=
+name|decompressor
+operator|.
+name|getRemaining
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nRemaining
+operator|==
+literal|0
+condition|)
+block|{
+name|int
+name|m
+init|=
 name|getCompressedData
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|m
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+comment|// apparently the previous end-of-stream was also end-of-file:
+comment|// return success, as if we had never called getCompressedData()
+name|eof
+operator|=
+literal|true
 expr_stmt|;
-block|}
-block|}
 return|return
-name|n
+operator|-
+literal|1
 return|;
 block|}
-DECL|method|getCompressedData ()
-specifier|protected
-name|void
-name|getCompressedData
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|checkStream
+name|decompressor
+operator|.
+name|reset
 argument_list|()
 expr_stmt|;
-name|int
-name|n
-init|=
-name|in
+name|decompressor
 operator|.
-name|read
+name|setInput
 argument_list|(
 name|buffer
 argument_list|,
 literal|0
 argument_list|,
-name|buffer
-operator|.
-name|length
+name|m
 argument_list|)
+expr_stmt|;
+name|lastBytesSent
+operator|=
+name|m
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// looks like it's a concatenated stream:  reset low-level zlib (or
+comment|// other engine) and buffers, then "resend" remaining input data
+name|decompressor
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|int
+name|leftoverOffset
+init|=
+name|lastBytesSent
+operator|-
+name|nRemaining
+decl_stmt|;
+assert|assert
+operator|(
+name|leftoverOffset
+operator|>=
+literal|0
+operator|)
+assert|;
+comment|// this recopies userBuf -> direct buffer if using native libraries:
+name|decompressor
+operator|.
+name|setInput
+argument_list|(
+name|buffer
+argument_list|,
+name|leftoverOffset
+argument_list|,
+name|nRemaining
+argument_list|)
+expr_stmt|;
+comment|// NOTE:  this is the one place we do NOT want to save the number
+comment|// of bytes sent (nRemaining here) into lastBytesSent:  since we
+comment|// are resending what we've already sent before, offset is nonzero
+comment|// in general (only way it could be zero is if it already equals
+comment|// nRemaining), which would then screw up the offset calculation
+comment|// _next_ time around.  IOW, getRemaining() is in terms of the
+comment|// original, zero-offset bufferload, so lastBytesSent must be as
+comment|// well.  Cheesy ASCII art:
+comment|//
+comment|//<------------ m, lastBytesSent ----------->
+comment|//          +===============================================+
+comment|// buffer:  |1111111111|22222222222222222|333333333333|     |
+comment|//          +===============================================+
+comment|//     #1:<-- off -->|<-------- nRemaining --------->
+comment|//     #2:<----------- off ----------->|<-- nRem. -->
+comment|//     #3:  (final substream:  nRemaining == 0; eof = true)
+comment|//
+comment|// If lastBytesSent is anything other than m, as shown, then "off"
+comment|// will be calculated incorrectly.
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|decompressor
+operator|.
+name|needsInput
+argument_list|()
+condition|)
+block|{
+name|int
+name|m
+init|=
+name|getCompressedData
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|n
+name|m
 operator|==
 operator|-
 literal|1
@@ -509,9 +611,45 @@ name|buffer
 argument_list|,
 literal|0
 argument_list|,
-name|n
+name|m
 argument_list|)
 expr_stmt|;
+name|lastBytesSent
+operator|=
+name|m
+expr_stmt|;
+block|}
+block|}
+return|return
+name|n
+return|;
+block|}
+DECL|method|getCompressedData ()
+specifier|protected
+name|int
+name|getCompressedData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkStream
+argument_list|()
+expr_stmt|;
+comment|// note that the _caller_ is now required to call setInput() or throw
+return|return
+name|in
+operator|.
+name|read
+argument_list|(
+name|buffer
+argument_list|,
+literal|0
+argument_list|,
+name|buffer
+operator|.
+name|length
+argument_list|)
+return|;
 block|}
 DECL|method|checkStream ()
 specifier|protected

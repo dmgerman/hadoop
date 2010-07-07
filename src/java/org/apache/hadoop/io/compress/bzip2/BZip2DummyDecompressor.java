@@ -142,6 +142,20 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRemaining ()
+specifier|public
+name|int
+name|getRemaining
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void

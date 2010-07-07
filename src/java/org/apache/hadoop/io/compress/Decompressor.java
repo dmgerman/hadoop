@@ -74,7 +74,7 @@ specifier|public
 interface|interface
 name|Decompressor
 block|{
-comment|/**    * Sets input data for decompression.     * This should be called whenever #needsInput() returns     *<code>true</code> indicating that more input data is required.    *     * @param b Input data    * @param off Start offset    * @param len Length    */
+comment|/**    * Sets input data for decompression.     * This should be called if and only if {@link #needsInput()} returns     *<code>true</code> indicating that more input data is required.    * (Both native and non-native versions of various Decompressors require    * that the data passed in via<code>b[]</code> remain unmodified until    * the caller is explicitly notified--via {@link #needsInput()}--that the    * buffer may be safely modified.  With this requirement, an extra    * buffer-copy can be avoided.)    *     * @param b Input data    * @param off Start offset    * @param len Length    */
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -91,7 +91,7 @@ name|int
 name|len
 parameter_list|)
 function_decl|;
-comment|/**    * Returns true if the input data buffer is empty and     * #setInput() should be called to provide more input.     *     * @return<code>true</code> if the input data buffer is empty and     * #setInput() should be called in order to provide more input.    */
+comment|/**    * Returns true if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called to    * provide more input.     *     * @return<code>true</code> if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called in    * order to provide more input.    */
 DECL|method|needsInput ()
 specifier|public
 name|boolean
@@ -122,14 +122,14 @@ name|boolean
 name|needsDictionary
 parameter_list|()
 function_decl|;
-comment|/**    * Returns true if the end of the compressed     * data output stream has been reached.    * @return<code>true</code> if the end of the compressed    * data output stream has been reached.    */
+comment|/**    * Returns true if the end of the decompressed     * data output stream has been reached.    * @return<code>true</code> if the end of the decompressed    * data output stream has been reached.    */
 DECL|method|finished ()
 specifier|public
 name|boolean
 name|finished
 parameter_list|()
 function_decl|;
-comment|/**    * Fills specified buffer with uncompressed data. Returns actual number    * of bytes of uncompressed data. A return value of 0 indicates that    * #needsInput() should be called in order to determine if more input    * data is required.    *     * @param b Buffer for the compressed data    * @param off Start offset of the data    * @param len Size of the buffer    * @return The actual number of bytes of compressed data.    * @throws IOException    */
+comment|/**    * Fills specified buffer with uncompressed data. Returns actual number    * of bytes of uncompressed data. A return value of 0 indicates that    * {@link #needsInput()} should be called in order to determine if more    * input data is required.    *     * @param b Buffer for the compressed data    * @param off Start offset of the data    * @param len Size of the buffer    * @return The actual number of bytes of compressed data.    * @throws IOException    */
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -148,7 +148,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Resets decompressor so that a new set of input data can be processed.    */
+comment|/**    * Returns the number of bytes remaining in the compressed-data buffer;    * typically called after the decompressor has finished decompressing    * the current gzip stream (a.k.a. "member").    */
+DECL|method|getRemaining ()
+specifier|public
+name|int
+name|getRemaining
+parameter_list|()
+function_decl|;
+comment|/**    * Resets decompressor and input and output buffers so that a new set of    * input data can be processed.    */
 DECL|method|reset ()
 specifier|public
 name|void

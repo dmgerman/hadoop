@@ -110,7 +110,7 @@ name|noUncompressedBytes
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    * @param bufferSize size of buffer  * @throws IOException    */
+comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    * @param bufferSize size of buffer    * @throws IOException    */
 DECL|method|BlockDecompressorStream (InputStream in, Decompressor decompressor, int bufferSize)
 specifier|public
 name|BlockDecompressorStream
@@ -137,7 +137,7 @@ name|bufferSize
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use  * @throws IOException    */
+comment|/**    * Create a {@link BlockDecompressorStream}.    *     * @param in input stream    * @param decompressor decompressor to use    * @throws IOException    */
 DECL|method|BlockDecompressorStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|BlockDecompressorStream
@@ -289,8 +289,23 @@ name|needsInput
 argument_list|()
 condition|)
 block|{
+name|int
+name|m
+init|=
 name|getCompressedData
 argument_list|()
+decl_stmt|;
+comment|// Send the read data to the decompressor
+name|decompressor
+operator|.
+name|setInput
+argument_list|(
+name|buffer
+argument_list|,
+literal|0
+argument_list|,
+name|m
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -305,7 +320,7 @@ return|;
 block|}
 DECL|method|getCompressedData ()
 specifier|protected
-name|void
+name|int
 name|getCompressedData
 parameter_list|()
 throws|throws
@@ -314,7 +329,7 @@ block|{
 name|checkStream
 argument_list|()
 expr_stmt|;
-comment|// Get the size of the compressed chunk
+comment|// Get the size of the compressed chunk (always non-negative)
 name|int
 name|len
 init|=
@@ -384,7 +399,9 @@ block|{
 throw|throw
 operator|new
 name|EOFException
-argument_list|()
+argument_list|(
+literal|"Unexpected end of block in input stream"
+argument_list|)
 throw|;
 block|}
 name|n
@@ -392,18 +409,9 @@ operator|+=
 name|count
 expr_stmt|;
 block|}
-comment|// Send the read data to the decompressor
-name|decompressor
-operator|.
-name|setInput
-argument_list|(
-name|buffer
-argument_list|,
-literal|0
-argument_list|,
+return|return
 name|len
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|resetState ()
 specifier|public
