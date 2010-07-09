@@ -206,7 +206,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|TokenStorage
+name|Credentials
 import|;
 end_import
 
@@ -248,6 +248,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
 import|;
 end_import
@@ -275,10 +285,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestTokenStorage
+DECL|class|TestCredentials
 specifier|public
 class|class
-name|TestTokenStorage
+name|TestCredentials
 block|{
 DECL|field|DEFAULT_HMAC_ALGORITHM
 specifier|private
@@ -326,6 +336,20 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|After
+DECL|method|tearDown ()
+specifier|public
+name|void
+name|tearDown
+parameter_list|()
+block|{
+name|tmpDir
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
@@ -348,11 +372,11 @@ throws|,
 name|NoSuchAlgorithmException
 block|{
 comment|// create tokenStorage Object
-name|TokenStorage
+name|Credentials
 name|ts
 init|=
 operator|new
-name|TokenStorage
+name|Credentials
 argument_list|()
 decl_stmt|;
 name|Token
@@ -612,7 +636,7 @@ decl_stmt|;
 name|ts
 operator|=
 operator|new
-name|TokenStorage
+name|Credentials
 argument_list|()
 expr_stmt|;
 name|ts
@@ -810,6 +834,11 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+name|tmpFileName
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

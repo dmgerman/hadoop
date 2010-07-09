@@ -1893,7 +1893,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|TokenStorage
+name|Credentials
 operator|.
 name|readTokensAndLoadInUGI
 argument_list|(

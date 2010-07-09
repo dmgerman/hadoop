@@ -210,7 +210,7 @@ name|AccessControlList
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Configuration key for controlling service-level authorization for Hadoop.    *     * @deprecated Use    *             {@link CommonConfigurationKeys#HADOOP_SECURITY_AUTHORIZATION}    *             Instead.    */
+comment|/**    * Configuration key for controlling service-level authorization for Hadoop.    *     * @deprecated Use    *             {@link CommonConfigurationKeys#HADOOP_SECURITY_AUTHORIZATION}    *             instead.    */
 annotation|@
 name|Deprecated
 DECL|field|SERVICE_AUTHORIZATION_CONFIG
