@@ -234,6 +234,34 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that provides the facilities of reading and writing   * secret keys and Tokens.  */
 end_comment
@@ -261,6 +289,22 @@ name|Credentials
 implements|implements
 name|Writable
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|Credentials
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|secretKeysMap
 specifier|private
 name|Map
@@ -373,6 +417,13 @@ argument_list|>
 name|t
 parameter_list|)
 block|{
+if|if
+condition|(
+name|t
+operator|!=
+literal|null
+condition|)
+block|{
 name|tokenMap
 operator|.
 name|put
@@ -382,6 +433,19 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Null token ignored for "
+operator|+
+name|alias
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Return all the tokens in the in-memory map    */
 DECL|method|getAllTokens ()
