@@ -1195,7 +1195,7 @@ name|hadoopLocalConfDir
 return|;
 block|}
 comment|/**    * It uses to restart the cluster with new configuration at runtime.<br/>    * @param props attributes for new configuration.    * @param configFile configuration file.    * @throws IOException if an I/O error occurs.    */
-DECL|method|restartClusterWithNewConfig (Hashtable<String,Long> props, String configFile)
+DECL|method|restartClusterWithNewConfig (Hashtable<String,?> props, String configFile)
 specifier|public
 name|void
 name|restartClusterWithNewConfig
@@ -1204,7 +1204,7 @@ name|Hashtable
 argument_list|<
 name|String
 argument_list|,
-name|Long
+name|?
 argument_list|>
 name|props
 parameter_list|,
@@ -1276,7 +1276,7 @@ operator|.
 name|nextElement
 argument_list|()
 decl_stmt|;
-name|Long
+name|Object
 name|propValue
 init|=
 name|props
@@ -1288,13 +1288,13 @@ argument_list|)
 decl_stmt|;
 name|initConf
 operator|.
-name|setLong
+name|set
 argument_list|(
 name|propKey
 argument_list|,
 name|propValue
 operator|.
-name|longValue
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
