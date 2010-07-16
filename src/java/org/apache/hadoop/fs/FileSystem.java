@@ -186,7 +186,7 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicLong
+name|AtomicInteger
 import|;
 end_import
 
@@ -196,9 +196,11 @@ name|java
 operator|.
 name|util
 operator|.
-name|regex
+name|concurrent
 operator|.
-name|Pattern
+name|atomic
+operator|.
+name|AtomicLong
 import|;
 end_import
 
@@ -283,22 +285,6 @@ operator|.
 name|conf
 operator|.
 name|Configured
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Options
-operator|.
-name|CreateOpts
 import|;
 end_import
 
@@ -6327,6 +6313,33 @@ operator|new
 name|AtomicLong
 argument_list|()
 decl_stmt|;
+DECL|field|readOps
+specifier|private
+name|AtomicInteger
+name|readOps
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
+decl_stmt|;
+DECL|field|largeReadOps
+specifier|private
+name|AtomicInteger
+name|largeReadOps
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
+decl_stmt|;
+DECL|field|writeOps
+specifier|private
+name|AtomicInteger
+name|writeOps
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
+decl_stmt|;
 DECL|method|Statistics (String scheme)
 specifier|public
 name|Statistics
@@ -6378,6 +6391,60 @@ name|newBytes
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Increment the number of read operations      * @param count number of read operations      */
+DECL|method|incrementReadOps (int count)
+specifier|public
+name|void
+name|incrementReadOps
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|readOps
+operator|.
+name|getAndAdd
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Increment the number of large read operations      * @param count number of large read operations      */
+DECL|method|incrementLargeReadOps (int count)
+specifier|public
+name|void
+name|incrementLargeReadOps
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|largeReadOps
+operator|.
+name|getAndAdd
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Increment the number of write operations      * @param count number of write operations      */
+DECL|method|incrementWriteOps (int count)
+specifier|public
+name|void
+name|incrementWriteOps
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|writeOps
+operator|.
+name|getAndAdd
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Get the total number of bytes read      * @return the number of bytes      */
 DECL|method|getBytesRead ()
 specifier|public
@@ -6406,6 +6473,53 @@ name|get
 argument_list|()
 return|;
 block|}
+comment|/**      * Get the number of file system read operations such as list files      * @return number of read operations      */
+DECL|method|getReadOps ()
+specifier|public
+name|int
+name|getReadOps
+parameter_list|()
+block|{
+return|return
+name|readOps
+operator|.
+name|get
+argument_list|()
+operator|+
+name|largeReadOps
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**      * Get the number of large file system read operations such as list files      * under a large directory      * @return number of large read operations      */
+DECL|method|getLargeReadOps ()
+specifier|public
+name|int
+name|getLargeReadOps
+parameter_list|()
+block|{
+return|return
+name|largeReadOps
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**      * Get the number of file system write operations such as create, append       * rename etc.      * @return number of write operations      */
+DECL|method|getWriteOps ()
+specifier|public
+name|int
+name|getWriteOps
+parameter_list|()
+block|{
+return|return
+name|writeOps
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -6415,11 +6529,23 @@ block|{
 return|return
 name|bytesRead
 operator|+
-literal|" bytes read and "
+literal|" bytes read, "
 operator|+
 name|bytesWritten
 operator|+
-literal|" bytes written"
+literal|" bytes written, "
+operator|+
+name|readOps
+operator|+
+literal|" read ops, "
+operator|+
+name|largeReadOps
+operator|+
+literal|" large read ops, "
+operator|+
+name|writeOps
+operator|+
+literal|" write ops"
 return|;
 block|}
 comment|/**      * Reset the counts of bytes to 0.      */
