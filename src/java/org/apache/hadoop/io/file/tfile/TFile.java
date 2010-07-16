@@ -1508,6 +1508,13 @@ name|tfileMeta
 operator|.
 name|isSorted
 argument_list|()
+operator|&&
+name|tfileMeta
+operator|.
+name|getRecordCount
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 name|byte
