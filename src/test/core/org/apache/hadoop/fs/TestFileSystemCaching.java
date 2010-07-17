@@ -767,25 +767,19 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|ugiA
-operator|=
+name|UserGroupInformation
+name|ugiA2
+init|=
 name|UserGroupInformation
 operator|.
 name|createRemoteUser
 argument_list|(
 literal|"foo"
 argument_list|)
-expr_stmt|;
-name|ugiA
-operator|.
-name|addToken
-argument_list|(
-name|t1
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|fsA
 operator|=
-name|ugiA
+name|ugiA2
 operator|.
 name|doAs
 argument_list|(
@@ -821,8 +815,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|//Although the users in the UGI are same, ugiA has tokens in it, and
-comment|//we should end up with different filesystems corresponding to the two UGIs
+comment|// Although the users in the UGI are same, they have different subjects
+comment|// and so are different.
 name|assertNotSame
 argument_list|(
 name|fsA
@@ -831,22 +825,13 @@ name|fsA1
 argument_list|)
 expr_stmt|;
 name|ugiA
-operator|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-literal|"foo"
-argument_list|)
-expr_stmt|;
-name|ugiA
 operator|.
 name|addToken
 argument_list|(
 name|t1
 argument_list|)
 expr_stmt|;
-name|fsA1
+name|fsA
 operator|=
 name|ugiA
 operator|.
@@ -884,8 +869,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|//Now the users in the UGI are the same, and they also have the same token.
-comment|//We should have the same filesystem for both
+comment|// Make sure that different UGI's with the same subject lead to the same
+comment|// file system.
 name|assertSame
 argument_list|(
 name|fsA

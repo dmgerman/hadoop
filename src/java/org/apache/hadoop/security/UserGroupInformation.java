@@ -3363,9 +3363,7 @@ else|else
 block|{
 return|return
 name|subject
-operator|.
-name|equals
-argument_list|(
+operator|==
 operator|(
 operator|(
 name|UserGroupInformation
@@ -3374,7 +3372,6 @@ name|o
 operator|)
 operator|.
 name|subject
-argument_list|)
 return|;
 block|}
 block|}
@@ -3388,10 +3385,12 @@ name|hashCode
 parameter_list|()
 block|{
 return|return
-name|subject
+name|System
 operator|.
-name|hashCode
-argument_list|()
+name|identityHashCode
+argument_list|(
+name|subject
+argument_list|)
 return|;
 block|}
 comment|/**    * Get the underlying subject from this ugi.    * @return the subject that represents this user.    */
