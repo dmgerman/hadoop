@@ -2028,6 +2028,19 @@ name|le
 argument_list|)
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Login successful for user "
+operator|+
+name|keytabPrincipal
+operator|+
+literal|" using keytab file "
+operator|+
+name|keytabFile
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Re-Login a user in from a keytab file. Loads a user identity from a keytab    * file and login them in. They become the currently logged-in user. This    * method assumes that {@link #loginUserFromKeytab(String, String)} had     * happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
 DECL|method|reloginFromKeytab ()

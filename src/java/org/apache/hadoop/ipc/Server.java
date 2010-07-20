@@ -4249,6 +4249,11 @@ specifier|private
 name|String
 name|hostAddress
 decl_stmt|;
+DECL|field|hostName
+specifier|private
+name|String
+name|hostName
+decl_stmt|;
 DECL|field|remotePort
 specifier|private
 name|int
@@ -4503,6 +4508,15 @@ operator|.
 name|getHostAddress
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|hostName
+operator|=
+name|addr
+operator|.
+name|getCanonicalHostName
+argument_list|()
+expr_stmt|;
 block|}
 name|this
 operator|.
@@ -4584,6 +4598,16 @@ parameter_list|()
 block|{
 return|return
 name|hostAddress
+return|;
+block|}
+DECL|method|getHostName ()
+specifier|public
+name|String
+name|getHostName
+parameter_list|()
+block|{
+return|return
+name|hostName
 return|;
 block|}
 DECL|method|setLastContact (long lastContact)
@@ -6630,6 +6654,9 @@ argument_list|(
 name|user
 argument_list|,
 name|header
+argument_list|,
+name|getHostName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -8245,8 +8272,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param connection incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
-DECL|method|authorize (UserGroupInformation user, ConnectionHeader connection )
+comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param connection incoming connection    * @param hostname fully-qualified domain name of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
+DECL|method|authorize (UserGroupInformation user, ConnectionHeader connection, String hostname )
 specifier|public
 name|void
 name|authorize
@@ -8256,6 +8283,9 @@ name|user
 parameter_list|,
 name|ConnectionHeader
 name|connection
+parameter_list|,
+name|String
+name|hostname
 parameter_list|)
 throws|throws
 name|AuthorizationException
@@ -8318,6 +8348,8 @@ name|protocol
 argument_list|,
 name|getConf
 argument_list|()
+argument_list|,
+name|hostname
 argument_list|)
 expr_stmt|;
 block|}

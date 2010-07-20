@@ -156,6 +156,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|KerberosName
 import|;
 end_import
@@ -301,8 +315,8 @@ name|AUTHZ_FAILED_FOR
 init|=
 literal|"Authorization failed for "
 decl_stmt|;
-comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @throws AuthorizationException on authorization failure    */
-DECL|method|authorize (UserGroupInformation user, Class<?> protocol, Configuration conf )
+comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @param conf configuration to use    * @param hostname fully qualified domain name of the client    * @throws AuthorizationException on authorization failure    */
+DECL|method|authorize (UserGroupInformation user, Class<?> protocol, Configuration conf, String hostname )
 specifier|public
 specifier|static
 name|void
@@ -319,6 +333,9 @@ name|protocol
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|hostname
 parameter_list|)
 throws|throws
 name|AuthorizationException
@@ -400,15 +417,72 @@ literal|""
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|hostname
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|AuthorizationException
+argument_list|(
+literal|"Can't authorize client when client hostname is null"
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
 name|clientPrincipal
 operator|=
+name|SecurityUtil
+operator|.
+name|getServerPrincipal
+argument_list|(
 name|conf
 operator|.
 name|get
 argument_list|(
 name|clientKey
 argument_list|)
+argument_list|,
+name|hostname
+argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|(
+name|AuthorizationException
+operator|)
+operator|new
+name|AuthorizationException
+argument_list|(
+literal|"Can't figure out Kerberos principal name for connection from "
+operator|+
+name|hostname
+operator|+
+literal|" for user="
+operator|+
+name|user
+operator|+
+literal|" protocol="
+operator|+
+name|protocol
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 comment|// when authorizing use the short name only
