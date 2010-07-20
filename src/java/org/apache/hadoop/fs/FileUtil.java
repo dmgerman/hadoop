@@ -329,7 +329,7 @@ name|stats
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete a directory and all its contents.  If    * we return false, the directory may be partially-deleted.    */
+comment|/**    * Delete a directory and all its contents.  If    * we return false, the directory may be partially-deleted.    * (1) If dir is symlink to a file, the symlink is deleted. The file pointed    *     to by the symlink is not deleted.    * (2) If dir is symlink to a directory, symlink is deleted. The directory    *     pointed to by symlink is not deleted.    * (3) If dir is a normal file, it is deleted.    * (4) If dir is a normal directory, then dir and all its contents recursively    *     are deleted.    */
 DECL|method|fullyDelete (File dir)
 specifier|public
 specifier|static
@@ -342,6 +342,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|dir
+operator|.
+name|delete
+argument_list|()
+condition|)
+block|{
+comment|// dir is (a) normal file, (b) symlink to a file, (c) empty directory or
+comment|// (d) symlink to a directory
+return|return
+literal|true
+return|;
+block|}
+comment|// handle nonempty directory deletion
 if|if
 condition|(
 operator|!
@@ -362,7 +377,7 @@ name|delete
 argument_list|()
 return|;
 block|}
-comment|/**    * Delete the contents of a directory, not the directory itself.  If    * we return false, the directory may be partially-deleted.    */
+comment|/**    * Delete the contents of a directory, not the directory itself.  If    * we return false, the directory may be partially-deleted.    * If dir is a symlink to a directory, all the contents of the actual    * directory pointed to by dir will be deleted.    */
 DECL|method|fullyDeleteContents (File dir)
 specifier|public
 specifier|static
@@ -436,6 +451,7 @@ name|delete
 argument_list|()
 condition|)
 block|{
+comment|// normal file or symlink to another file
 name|deletionSucceeded
 operator|=
 literal|false
@@ -446,8 +462,8 @@ block|}
 block|}
 else|else
 block|{
-comment|//try deleting the directory
-comment|// this might be a symlink
+comment|// Either directory or symlink to another directory.
+comment|// Try deleting the directory as this might be a symlink
 name|boolean
 name|b
 init|=
