@@ -1203,7 +1203,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"tokenCacheFile"
+literal|"mapreduce.job.credentials.json"
 argument_list|,
 name|localFs
 operator|.

@@ -664,7 +664,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"tokenCacheFile"
+literal|"mapreduce.job.credentials.json"
 argument_list|)
 decl_stmt|;
 name|assertNotNull
