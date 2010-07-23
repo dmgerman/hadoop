@@ -1408,6 +1408,38 @@ expr_stmt|;
 name|waitForClusterToStart
 argument_list|()
 expr_stmt|;
+name|cleanupNewConf
+argument_list|(
+name|newConfDir
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * It uses to delete the new configuration folder.    * @param path - configuration directory path.    * @throws IOException if an I/O error occurs.    */
+DECL|method|cleanupNewConf (String path)
+specifier|public
+name|void
+name|cleanupNewConf
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|File
+name|file
+init|=
+operator|new
+name|File
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|file
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * It uses to wait until the cluster is stopped.<br/>    * @throws IOException if an I/O error occurs.    */
 DECL|method|waitForClusterToStop ()
