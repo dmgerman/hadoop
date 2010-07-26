@@ -120,10 +120,10 @@ argument_list|()
 decl_stmt|;
 comment|// registry
 comment|/** Get a comparator for a {@link WritableComparable} implementation. */
-DECL|method|get (Class<? extends WritableComparable> c)
 specifier|public
 specifier|static
 specifier|synchronized
+DECL|method|get (Class<? extends WritableComparable> c)
 name|WritableComparator
 name|get
 parameter_list|(
@@ -152,6 +152,31 @@ name|comparator
 operator|==
 literal|null
 condition|)
+block|{
+comment|// force the static initializers to run
+name|forceInit
+argument_list|(
+name|c
+argument_list|)
+expr_stmt|;
+comment|// look to see if it is defined now
+name|comparator
+operator|=
+name|comparators
+operator|.
+name|get
+argument_list|(
+name|c
+argument_list|)
+expr_stmt|;
+comment|// if not, use the generic one
+if|if
+condition|(
+name|comparator
+operator|==
+literal|null
+condition|)
+block|{
 name|comparator
 operator|=
 operator|new
@@ -162,9 +187,73 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|comparators
+operator|.
+name|put
+argument_list|(
+name|c
+argument_list|,
+name|comparator
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|comparator
 return|;
+block|}
+comment|/**    * Force initialization of the static members.    * As of Java 5, referencing a class doesn't force it to initialize. Since    * this class requires that the classes be initialized to declare their    * comparators, we force that initialization to happen.    * @param cls the class to initialize    */
+DECL|method|forceInit (Class<?> cls)
+specifier|private
+specifier|static
+name|void
+name|forceInit
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|cls
+parameter_list|)
+block|{
+try|try
+block|{
+name|Class
+operator|.
+name|forName
+argument_list|(
+name|cls
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|true
+argument_list|,
+name|cls
+operator|.
+name|getClassLoader
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassNotFoundException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Can't initialize class "
+operator|+
+name|cls
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/** Register an optimized comparator for a {@link WritableComparable}    * implementation. */
 DECL|method|define (Class c, WritableComparator comparator)
