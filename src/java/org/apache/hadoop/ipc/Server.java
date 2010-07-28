@@ -1421,7 +1421,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/*Returns a handle to the rpcMetrics (required in tests)*/
+comment|/**    * Returns a handle to the rpcMetrics (required in tests)    * @return rpc metrics    */
 DECL|method|getRpcMetrics ()
 specifier|public
 name|RpcMetrics

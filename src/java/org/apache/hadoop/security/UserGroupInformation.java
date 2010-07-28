@@ -2492,6 +2492,7 @@ name|subject
 argument_list|)
 return|;
 block|}
+comment|/**    * existing types of authentications' methods    */
 annotation|@
 name|InterfaceStability
 operator|.
@@ -2520,7 +2521,7 @@ block|,
 DECL|enumConstant|PROXY
 name|PROXY
 block|;   }
-comment|/* Create a proxy user using username of the effective user and the ugi of the    * real user.    *    * @param effective    *          user, UGI for real user.    * @return    */
+comment|/**    * Create a proxy user using username of the effective user and the ugi of the    * real user.    *    * @param effective    *          user, UGI for real user.    * @return    */
 DECL|method|createProxyUser (String user, UserGroupInformation realUser)
 specifier|public
 specifier|static
@@ -2614,6 +2615,7 @@ name|subject
 argument_list|)
 return|;
 block|}
+comment|/**    * get RealUser (vs. EffectiveUser)    * @return realUser running over proxy user    */
 DECL|method|getRealUser ()
 specifier|public
 name|UserGroupInformation

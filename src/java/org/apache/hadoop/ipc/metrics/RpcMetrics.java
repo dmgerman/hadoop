@@ -370,6 +370,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The metrics variables are public:    *  - they can be set directly by calling their set/inc methods    *  -they can also be read directly - e.g. JMX does this.    */
+comment|/**    * metrics - number of bytes received    */
 DECL|field|receivedBytes
 specifier|public
 specifier|final
@@ -384,6 +385,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of bytes sent    */
 DECL|field|sentBytes
 specifier|public
 specifier|final
@@ -398,6 +400,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - rpc queue time    */
 DECL|field|rpcQueueTime
 specifier|public
 specifier|final
@@ -412,8 +415,10 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - rpc processing time    */
 DECL|field|rpcProcessingTime
 specifier|public
+specifier|final
 name|MetricsTimeVaryingRate
 name|rpcProcessingTime
 init|=
@@ -425,6 +430,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of open connections    */
 DECL|field|numOpenConnections
 specifier|public
 specifier|final
@@ -439,6 +445,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - length of the queue    */
 DECL|field|callQueueLen
 specifier|public
 specifier|final
@@ -453,6 +460,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of failed authentications    */
 DECL|field|authenticationFailures
 specifier|public
 specifier|final
@@ -467,6 +475,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of successful authentications    */
 DECL|field|authenticationSuccesses
 specifier|public
 specifier|final
@@ -481,6 +490,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of failed authorizations    */
 DECL|field|authorizationFailures
 specifier|public
 specifier|final
@@ -495,6 +505,7 @@ argument_list|,
 name|registry
 argument_list|)
 decl_stmt|;
+comment|/**    * metrics - number of successful authorizations    */
 DECL|field|authorizationSuccesses
 specifier|public
 specifier|final
@@ -573,6 +584,7 @@ name|update
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * shutdown the metrics    */
 DECL|method|shutdown ()
 specifier|public
 name|void
