@@ -137,6 +137,23 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|listLocatedStatus (final Path f)
+specifier|public
+name|Iterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|listLocatedStatus
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 DECL|method|testFilterFileSystem ()
 specifier|public

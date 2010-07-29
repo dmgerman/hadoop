@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -675,6 +685,27 @@ name|pathPattern
 parameter_list|,
 name|PathFilter
 name|filter
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+DECL|method|listFiles ( final Path path, final boolean isRecursive)
+specifier|public
+name|Iterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|listFiles
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|boolean
+name|isRecursive
 parameter_list|)
 block|{
 return|return
