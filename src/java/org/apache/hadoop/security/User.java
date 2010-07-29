@@ -134,6 +134,7 @@ name|shortName
 decl_stmt|;
 DECL|field|authMethod
 specifier|private
+specifier|volatile
 name|AuthenticationMethod
 name|authMethod
 init|=
@@ -141,10 +142,19 @@ literal|null
 decl_stmt|;
 DECL|field|login
 specifier|private
+specifier|volatile
 name|LoginContext
 name|login
 init|=
 literal|null
+decl_stmt|;
+DECL|field|lastLogin
+specifier|private
+specifier|volatile
+name|long
+name|lastLogin
+init|=
+literal|0
 decl_stmt|;
 DECL|method|User (String name)
 specifier|public
@@ -409,6 +419,32 @@ name|login
 operator|=
 name|login
 expr_stmt|;
+block|}
+comment|/**    * Set the last login time.    * @param time the number of milliseconds since the beginning of time    */
+DECL|method|setLastLogin (long time)
+specifier|public
+name|void
+name|setLastLogin
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|lastLogin
+operator|=
+name|time
+expr_stmt|;
+block|}
+comment|/**    * Get the time of the last login.    * @return the number of milliseconds since the beginning of time.    */
+DECL|method|getLastLogin ()
+specifier|public
+name|long
+name|getLastLogin
+parameter_list|()
+block|{
+return|return
+name|lastLogin
+return|;
 block|}
 block|}
 end_class

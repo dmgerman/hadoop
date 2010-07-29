@@ -1768,11 +1768,6 @@ operator|.
 name|KERBEROS
 operator|&&
 comment|//try setting up the connection again
-name|UserGroupInformation
-operator|.
-name|isLoginKeytabBased
-argument_list|()
-operator|&&
 comment|// relogin only in case it is the login user (e.g. JT)
 comment|// or superuser (like oozie).
 operator|(
@@ -1807,11 +1802,28 @@ block|{
 try|try
 block|{
 comment|//try re-login
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isLoginKeytabBased
+argument_list|()
+condition|)
+block|{
 name|loginUser
 operator|.
 name|reloginFromKeytab
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|loginUser
+operator|.
+name|reloginFromTicketCache
+argument_list|()
+expr_stmt|;
+block|}
 name|disposeSasl
 argument_list|()
 expr_stmt|;
