@@ -2000,11 +2000,7 @@ comment|// user.
 name|Credentials
 name|cred
 init|=
-operator|new
 name|Credentials
-argument_list|()
-decl_stmt|;
-name|cred
 operator|.
 name|readTokenStorageFile
 argument_list|(
@@ -2018,7 +2014,7 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 for|for
 control|(
 name|Token

@@ -77,6 +77,8 @@ implements|implements
 name|Seekable
 implements|,
 name|PositionedReadable
+implements|,
+name|Closeable
 block|{
 DECL|method|FSDataInputStream (InputStream in)
 specifier|public

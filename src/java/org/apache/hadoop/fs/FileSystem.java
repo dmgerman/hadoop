@@ -358,20 +358,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|MultipleIOException
@@ -388,7 +374,37 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
 import|;
 end_import
 
@@ -789,6 +805,37 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
+comment|/**    * Get the default port for this file system.    * @return the default port or 0 if there isn't one    */
+DECL|method|getDefaultPort ()
+specifier|protected
+name|int
+name|getDefaultPort
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+comment|/**    * Get a canonical name for this file system.    * @return a URI string that uniquely identifies this file system    */
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|SecurityUtil
+operator|.
+name|buildDTServiceName
+argument_list|(
+name|getUri
+argument_list|()
+argument_list|,
+name|getDefaultPort
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/** @deprecated call #getUri() instead.*/
 annotation|@
 name|Deprecated
@@ -1400,6 +1447,25 @@ operator|.
 name|getWorkingDirectory
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/**    * Get a new delegation token for this file system.    * @param renewer the account name that is allowed to renew the token.    * @return a new delegation token    * @throws IOException    */
+DECL|method|getDelegationToken (String renewer)
+specifier|public
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|getDelegationToken
+parameter_list|(
+name|String
+name|renewer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
 return|;
 block|}
 comment|/** create a file with the provided permission    * The permission of the file is set to be the provided permission as in    * setPermission, not permission&~umask    *     * It is implemented using two RPCs. It is understood that it is inefficient,    * but the implementation is thread-safe. The other option is to change the    * value of umask in configuration to be 0, but it is not thread-safe.    *     * @param fs file system handle    * @param file the name of the file to be created    * @param permission the permission of the file    * @return an output stream    * @throws IOException    */
