@@ -3058,7 +3058,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f must be for this    * file system.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f     * must be for this file system.    */
 DECL|method|listLocatedStatus (final Path f)
 specifier|protected
 name|Iterator
@@ -3100,6 +3100,7 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+comment|/**        *  {@inheritDoc}        *  @return {@inheritDog}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        */
 annotation|@
 name|Override
 specifier|public
@@ -3114,6 +3115,7 @@ name|hasNext
 argument_list|()
 return|;
 block|}
+comment|/**        *  {@inheritDoc}        *  @return {@inheritDoc}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        *  @exception {@inheritDoc}        */
 annotation|@
 name|Override
 specifier|public
@@ -3131,7 +3133,11 @@ block|{
 throw|throw
 operator|new
 name|NoSuchElementException
-argument_list|()
+argument_list|(
+literal|"No more entry in "
+operator|+
+name|f
+argument_list|)
 throw|;
 block|}
 name|FileStatus

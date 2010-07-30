@@ -4636,7 +4636,7 @@ name|hasGlob
 argument_list|)
 return|;
 block|}
-comment|/**    * List the statuses and block locations of the files in the given path     * if the path is a directory.    * If the given path is a file, return the file's status and block locations.    * if recursive is true, list all file statuses and block locations in    * the subtree rooted at the given path.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses and block locations of the files in the given path.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    * Files across symbolic links are also returned.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    * If any IO exception (for example a sub-directory gets deleted while    * listing is being executed), next() or hasNext() of the returned iterator    * may throw a RuntimeException with the IO exception as the cause.    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
 name|Iterator
@@ -4702,6 +4702,7 @@ name|f
 parameter_list|)
 constructor_decl|;
 block|}
+comment|/**        *  {@inheritDoc}        *  @return {@inheritDog}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        */
 annotation|@
 name|Override
 specifier|public
@@ -4849,6 +4850,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**        *  {@inheritDoc}        *  @return {@inheritDoc}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        *  @exception {@inheritDoc}        */
 annotation|@
 name|Override
 specifier|public

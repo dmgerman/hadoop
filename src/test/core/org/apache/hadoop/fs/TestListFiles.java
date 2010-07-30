@@ -621,6 +621,7 @@ argument_list|(
 name|DIR1
 argument_list|)
 expr_stmt|;
+comment|// test empty directory
 name|Iterator
 argument_list|<
 name|LocatedFileStatus
@@ -663,6 +664,7 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// testing directory with 1 file
 name|writeFile
 argument_list|(
 name|fs
@@ -672,7 +674,6 @@ argument_list|,
 name|FILE_LEN
 argument_list|)
 expr_stmt|;
-comment|// test empty directory
 name|itor
 operator|=
 name|fs
@@ -745,7 +746,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-comment|// testing directory with 1 file
 name|itor
 operator|=
 name|fs
