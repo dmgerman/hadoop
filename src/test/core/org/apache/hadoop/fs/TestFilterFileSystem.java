@@ -752,6 +752,42 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|listLocatedStatus (Path f)
+specifier|public
+name|Iterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|listLocatedStatus
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+DECL|method|listLocatedStatus (Path f, final PathFilter filter)
+specifier|public
+name|Iterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|listLocatedStatus
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|PathFilter
+name|filter
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 DECL|method|copyFromLocalFile (Path src, Path dst)
 specifier|public
 name|void

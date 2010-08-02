@@ -48,6 +48,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -508,6 +518,30 @@ return|return
 name|fs
 operator|.
 name|listStatus
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+comment|/** List files and its block locations in a directory. */
+DECL|method|listLocatedStatus (Path f)
+specifier|public
+name|Iterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|listLocatedStatus
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|listLocatedStatus
 argument_list|(
 name|f
 argument_list|)
