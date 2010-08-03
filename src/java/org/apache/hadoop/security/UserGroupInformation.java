@@ -1117,6 +1117,12 @@ specifier|final
 name|boolean
 name|isKeytab
 decl_stmt|;
+DECL|field|isKrbTkt
+specifier|private
+specifier|final
+name|boolean
+name|isKrbTkt
+decl_stmt|;
 DECL|field|OS_LOGIN_MODULE_NAME
 specifier|private
 specifier|static
@@ -1820,6 +1826,36 @@ operator|.
 name|isEmpty
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|isKrbTkt
+operator|=
+operator|!
+name|subject
+operator|.
+name|getPrivateCredentials
+argument_list|(
+name|KerberosTicket
+operator|.
+name|class
+argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * checks if logged in using kerberos    * @return true if the subject logged via keytab or has a Kerberos TGT    */
+DECL|method|hasKerberosCredentials ()
+specifier|public
+name|boolean
+name|hasKerberosCredentials
+parameter_list|()
+block|{
+return|return
+name|isKeytab
+operator|||
+name|isKrbTkt
+return|;
 block|}
 comment|/**    * Return the current user, including any doAs in the current stack.    * @return the current user    * @throws IOException if login fails    */
 DECL|method|getCurrentUser ()
@@ -2748,7 +2784,8 @@ name|AuthenticationMethod
 operator|.
 name|KERBEROS
 operator|||
-name|isKeytab
+operator|!
+name|isKrbTkt
 condition|)
 return|return;
 name|LoginContext
@@ -3200,7 +3237,7 @@ block|,
 DECL|enumConstant|PROXY
 name|PROXY
 block|;   }
-comment|/**    * Create a proxy user using username of the effective user and the ugi of the    * real user.    *    * @param effective    *          user, UGI for real user.    * @return    */
+comment|/**    * Create a proxy user using username of the effective user and the ugi of the    * real user.    * @param user    * @param realUser    * @return proxyUser ugi    */
 DECL|method|createProxyUser (String user, UserGroupInformation realUser)
 specifier|public
 specifier|static

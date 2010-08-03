@@ -182,6 +182,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 operator|.
 name|Entry
@@ -1672,6 +1682,10 @@ operator|.
 name|dispose
 argument_list|()
 expr_stmt|;
+name|saslRpcClient
+operator|=
+literal|null
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1681,59 +1695,14 @@ parameter_list|)
 block|{         }
 block|}
 block|}
-DECL|method|setupSaslConnection (final InputStream in2, final OutputStream out2)
+DECL|method|shouldAuthenticateOverKrb ()
 specifier|private
 specifier|synchronized
 name|boolean
-name|setupSaslConnection
-parameter_list|(
-specifier|final
-name|InputStream
-name|in2
-parameter_list|,
-specifier|final
-name|OutputStream
-name|out2
-parameter_list|)
+name|shouldAuthenticateOverKrb
+parameter_list|()
 throws|throws
 name|IOException
-block|{
-try|try
-block|{
-name|saslRpcClient
-operator|=
-operator|new
-name|SaslRpcClient
-argument_list|(
-name|authMethod
-argument_list|,
-name|token
-argument_list|,
-name|serverPrincipal
-argument_list|)
-expr_stmt|;
-return|return
-name|saslRpcClient
-operator|.
-name|saslConnect
-argument_list|(
-name|in2
-argument_list|,
-name|out2
-argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|javax
-operator|.
-name|security
-operator|.
-name|sasl
-operator|.
-name|SaslException
-name|je
-parameter_list|)
 block|{
 name|UserGroupInformation
 name|loginUser
@@ -1767,66 +1736,60 @@ name|AuthMethod
 operator|.
 name|KERBEROS
 operator|&&
-comment|//try setting up the connection again
+name|loginUser
+operator|!=
+literal|null
+operator|&&
+comment|// Make sure user logged in using Kerberos either keytab or TGT
+name|loginUser
+operator|.
+name|hasKerberosCredentials
+argument_list|()
+operator|&&
 comment|// relogin only in case it is the login user (e.g. JT)
 comment|// or superuser (like oozie).
 operator|(
-operator|(
-name|currentUser
-operator|!=
-literal|null
-operator|&&
-name|currentUser
+name|loginUser
 operator|.
 name|equals
 argument_list|(
-name|loginUser
+name|currentUser
 argument_list|)
-operator|)
 operator|||
-operator|(
-name|realUser
-operator|!=
-literal|null
-operator|&&
-name|realUser
+name|loginUser
 operator|.
 name|equals
 argument_list|(
-name|loginUser
+name|realUser
 argument_list|)
 operator|)
-operator|)
 condition|)
 block|{
-try|try
-block|{
-comment|//try re-login
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isLoginKeytabBased
-argument_list|()
-condition|)
-block|{
-name|loginUser
-operator|.
-name|reloginFromKeytab
-argument_list|()
-expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
-else|else
-block|{
-name|loginUser
-operator|.
-name|reloginFromTicketCache
-argument_list|()
-expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
-name|disposeSasl
-argument_list|()
-expr_stmt|;
+DECL|method|setupSaslConnection (final InputStream in2, final OutputStream out2)
+specifier|private
+specifier|synchronized
+name|boolean
+name|setupSaslConnection
+parameter_list|(
+specifier|final
+name|InputStream
+name|in2
+parameter_list|,
+specifier|final
+name|OutputStream
+name|out2
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|saslRpcClient
 operator|=
 operator|new
@@ -1850,87 +1813,15 @@ name|out2
 argument_list|)
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|javax
-operator|.
-name|security
-operator|.
-name|sasl
-operator|.
-name|SaslException
-name|jee
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Couldn't setup connection for "
-operator|+
-name|loginUser
-operator|.
-name|getUserName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|serverPrincipal
-operator|+
-literal|" even after relogin."
-argument_list|)
-expr_stmt|;
-throw|throw
-name|jee
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-name|ie
-operator|.
-name|initCause
-argument_list|(
-name|je
-argument_list|)
-expr_stmt|;
-throw|throw
-name|ie
-throw|;
-block|}
-block|}
-throw|throw
-name|je
-throw|;
-block|}
-block|}
-comment|/** Connect to the server and set up the I/O streams. It then sends      * a header to the server and starts      * the connection thread that waits for responses.      */
-DECL|method|setupIOstreams ()
+DECL|method|setupConnection ()
 specifier|private
 specifier|synchronized
 name|void
-name|setupIOstreams
+name|setupConnection
 parameter_list|()
 throws|throws
-name|InterruptedException
+name|IOException
 block|{
-if|if
-condition|(
-name|socket
-operator|!=
-literal|null
-operator|||
-name|shouldCloseConnection
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 name|short
 name|ioFailures
 init|=
@@ -1941,26 +1832,6 @@ name|timeoutFailures
 init|=
 literal|0
 decl_stmt|;
-try|try
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Connecting to "
-operator|+
-name|server
-argument_list|)
-expr_stmt|;
-block|}
 while|while
 condition|(
 literal|true
@@ -2012,7 +1883,7 @@ argument_list|(
 name|pingInterval
 argument_list|)
 expr_stmt|;
-break|break;
+return|return;
 block|}
 catch|catch
 parameter_list|(
@@ -2020,7 +1891,7 @@ name|SocketTimeoutException
 name|toe
 parameter_list|)
 block|{
-comment|/* The max number of retries is 45,              * which amounts to 20s*45 = 15 minutes retries.              */
+comment|/*            * The max number of retries is 45, which amounts to 20s*45 = 15            * minutes retries.            */
 name|handleConnectionFailure
 argument_list|(
 name|timeoutFailures
@@ -2050,6 +1921,297 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**      * If multiple clients with the same principal try to connect to the same      * server at the same time, the server assumes a replay attack is in      * progress. This is a feature of kerberos. In order to work around this,      * what is done is that the client backs off randomly and tries to initiate      * the connection again. The other problem is to do with ticket expiry. To      * handle that, a relogin is attempted.      */
+DECL|method|handleSaslConnectionFailure ( final int currRetries, final int maxRetries, final Exception ex, final Random rand, final UserGroupInformation ugi)
+specifier|private
+specifier|synchronized
+name|void
+name|handleSaslConnectionFailure
+parameter_list|(
+specifier|final
+name|int
+name|currRetries
+parameter_list|,
+specifier|final
+name|int
+name|maxRetries
+parameter_list|,
+specifier|final
+name|Exception
+name|ex
+parameter_list|,
+specifier|final
+name|Random
+name|rand
+parameter_list|,
+specifier|final
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+block|{
+specifier|public
+name|Object
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+specifier|final
+name|short
+name|MAX_BACKOFF
+init|=
+literal|5000
+decl_stmt|;
+name|closeConnection
+argument_list|()
+expr_stmt|;
+name|disposeSasl
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|shouldAuthenticateOverKrb
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|currRetries
+operator|<
+name|maxRetries
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception encountered while connecting to "
+operator|+
+literal|"the server : "
+operator|+
+name|ex
+argument_list|)
+expr_stmt|;
+comment|// try re-login
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isLoginKeytabBased
+argument_list|()
+condition|)
+block|{
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+operator|.
+name|reloginFromKeytab
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+operator|.
+name|reloginFromTicketCache
+argument_list|()
+expr_stmt|;
+block|}
+comment|// have granularity of milliseconds
+comment|//we are sleeping with the Connection lock held but since this
+comment|//connection instance is being used for connecting to the server
+comment|//in question, it is okay
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+operator|(
+name|rand
+operator|.
+name|nextInt
+argument_list|(
+name|MAX_BACKOFF
+argument_list|)
+operator|+
+literal|1
+operator|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+name|String
+name|msg
+init|=
+literal|"Couldn't setup connection for "
+operator|+
+name|UserGroupInformation
+operator|.
+name|getLoginUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|serverPrincipal
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|(
+name|IOException
+operator|)
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|ex
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception encountered while connecting to "
+operator|+
+literal|"the server : "
+operator|+
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|ex
+operator|instanceof
+name|RemoteException
+condition|)
+throw|throw
+operator|(
+name|RemoteException
+operator|)
+name|ex
+throw|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ex
+argument_list|)
+throw|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Connect to the server and set up the I/O streams. It then sends      * a header to the server and starts      * the connection thread that waits for responses.      */
+DECL|method|setupIOstreams ()
+specifier|private
+specifier|synchronized
+name|void
+name|setupIOstreams
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+if|if
+condition|(
+name|socket
+operator|!=
+literal|null
+operator|||
+name|shouldCloseConnection
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+try|try
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to "
+operator|+
+name|server
+argument_list|)
+expr_stmt|;
+block|}
+name|short
+name|numRetries
+init|=
+literal|0
+decl_stmt|;
+specifier|final
+name|short
+name|MAX_RETRIES
+init|=
+literal|5
+decl_stmt|;
+name|Random
+name|rand
+init|=
+literal|null
+decl_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|setupConnection
+argument_list|()
+expr_stmt|;
 name|InputStream
 name|inStream
 init|=
@@ -2128,8 +2290,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
+name|boolean
+name|continueSasl
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|continueSasl
+operator|=
 name|ticket
 operator|.
 name|doAs
@@ -2160,8 +2329,49 @@ argument_list|)
 return|;
 block|}
 block|}
-block|)
-block|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+if|if
+condition|(
+name|rand
+operator|==
+literal|null
+condition|)
+block|{
+name|rand
+operator|=
+operator|new
+name|Random
+argument_list|()
+expr_stmt|;
+block|}
+name|handleSaslConnectionFailure
+argument_list|(
+name|numRetries
+operator|++
+argument_list|,
+name|MAX_RETRIES
+argument_list|,
+name|ex
+argument_list|,
+name|rand
+argument_list|,
+name|ticket
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+name|continueSasl
+condition|)
 block|{
 comment|// Sasl connect is successful. Let's set up Sasl i/o streams.
 name|inStream
@@ -2272,16 +2482,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|writeHeader
-parameter_list|()
-constructor_decl|;
+argument_list|()
+expr_stmt|;
 comment|// update last activity time
 name|touch
-parameter_list|()
-constructor_decl|;
-comment|// start the receiver thread after the socket connection has been set up
+argument_list|()
+expr_stmt|;
+comment|// start the receiver thread after the socket connection has been set
+comment|// up
 name|start
-parameter_list|()
-constructor_decl|;
+argument_list|()
+expr_stmt|;
+return|return;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2299,38 +2512,22 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-end_class
-
-begin_comment
-comment|/* Handle connection failures      *      * If the current number of retries is equal to the max number of retries,      * stop retrying and throw the exception; Otherwise backoff 1 second and      * try connecting again.      *      * This Method is only called from inside setupIOstreams(), which is      * synchronized. Hence the sleep is synchronized; the locks will be retained.      *      * @param curRetries current number of retries      * @param maxRetries max number of retries allowed      * @param ioe failure reason      * @throws IOException if max number of retries is reached      */
-end_comment
-
-begin_function
-DECL|method|handleConnectionFailure ( int curRetries, int maxRetries, IOException ioe)
+DECL|method|closeConnection ()
 specifier|private
 name|void
-name|handleConnectionFailure
-parameter_list|(
-name|int
-name|curRetries
-parameter_list|,
-name|int
-name|maxRetries
-parameter_list|,
-name|IOException
-name|ioe
-parameter_list|)
-throws|throws
-name|IOException
+name|closeConnection
+parameter_list|()
 block|{
-comment|// close the current connection
 if|if
 condition|(
 name|socket
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+return|return;
+block|}
+comment|// close the current connection
 try|try
 block|{
 name|socket
@@ -2355,12 +2552,33 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 comment|// set socket to null so that the next call to setupIOstreams
 comment|// can start the process of connect all over again.
 name|socket
 operator|=
 literal|null
+expr_stmt|;
+block|}
+comment|/* Handle connection failures      *      * If the current number of retries is equal to the max number of retries,      * stop retrying and throw the exception; Otherwise backoff 1 second and      * try connecting again.      *      * This Method is only called from inside setupIOstreams(), which is      * synchronized. Hence the sleep is synchronized; the locks will be retained.      *      * @param curRetries current number of retries      * @param maxRetries max number of retries allowed      * @param ioe failure reason      * @throws IOException if max number of retries is reached      */
+DECL|method|handleConnectionFailure ( int curRetries, int maxRetries, IOException ioe)
+specifier|private
+name|void
+name|handleConnectionFailure
+parameter_list|(
+name|int
+name|curRetries
+parameter_list|,
+name|int
+name|maxRetries
+parameter_list|,
+name|IOException
+name|ioe
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|closeConnection
+argument_list|()
 expr_stmt|;
 comment|// throw the exception if the maximum number of retries is reached
 if|if
@@ -2407,13 +2625,7 @@ literal|" time(s)."
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* Write the RPC header */
-end_comment
-
-begin_function
 DECL|method|writeRpcHeader (OutputStream outStream)
 specifier|private
 name|void
@@ -2473,13 +2685,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* Write the protocol header for each connection      * Out is not synchronized because only the first thread does this.      */
-end_comment
-
-begin_function
 DECL|method|writeHeader ()
 specifier|private
 name|void
@@ -2534,13 +2740,7 @@ name|bufLen
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* wait till someone signals us to start reading RPC response or      * it is idle too long, it is marked as to be closed,       * or the client is marked as not running.      *       * Return true if it is time to read a response; false otherwise.      */
-end_comment
-
-begin_function
 DECL|method|waitForWork ()
 specifier|private
 specifier|synchronized
@@ -2688,9 +2888,6 @@ literal|false
 return|;
 block|}
 block|}
-end_function
-
-begin_function
 DECL|method|getRemoteAddress ()
 specifier|public
 name|InetSocketAddress
@@ -2701,13 +2898,7 @@ return|return
 name|server
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/* Send a ping to the server if the time elapsed       * since last I/O activity is equal to or greater than the ping interval      */
-end_comment
-
-begin_function
 DECL|method|sendPing ()
 specifier|private
 specifier|synchronized
@@ -2764,9 +2955,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-end_function
-
-begin_function
 DECL|method|run ()
 specifier|public
 name|void
@@ -2867,13 +3055,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/** Initiates a call by sending the parameter to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      */
-end_comment
-
-begin_function
 DECL|method|sendParam (Call call)
 specifier|public
 name|void
@@ -3023,13 +3205,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/* Receive a response.      * Because only one receiver, so no synchronization on in.      */
-end_comment
-
-begin_function
 DECL|method|receiveResponse ()
 specifier|private
 name|void
@@ -3229,9 +3405,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-end_function
-
-begin_function
 DECL|method|markClosed (IOException e)
 specifier|private
 specifier|synchronized
@@ -3263,13 +3436,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/** Close the connection. */
-end_comment
-
-begin_function
 DECL|method|close ()
 specifier|private
 specifier|synchronized
@@ -3432,13 +3599,7 @@ literal|": closed"
 argument_list|)
 expr_stmt|;
 block|}
-end_function
-
-begin_comment
 comment|/* Cleanup all calls and mark them as done */
-end_comment
-
-begin_function
 DECL|method|cleanupCalls ()
 specifier|private
 name|void
@@ -3498,16 +3659,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-end_function
-
-begin_comment
-unit|}
+block|}
 comment|/** Call implementation used for parallel calls. */
-end_comment
-
-begin_class
 DECL|class|ParallelCall
-unit|private
+specifier|private
 class|class
 name|ParallelCall
 extends|extends
@@ -3571,13 +3726,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-end_class
-
-begin_comment
 comment|/** Result collector for parallel calls. */
-end_comment
-
-begin_class
 DECL|class|ParallelResults
 specifier|private
 specifier|static
@@ -3666,13 +3815,7 @@ expr_stmt|;
 comment|// then notify waiting caller
 block|}
 block|}
-end_class
-
-begin_comment
 comment|/** Construct an IPC client whose values are of the given {@link Writable}    * class. */
-end_comment
-
-begin_constructor
 DECL|method|Client (Class<? extends Writable> valueClass, Configuration conf, SocketFactory factory)
 specifier|public
 name|Client
@@ -3795,13 +3938,7 @@ operator|=
 name|factory
 expr_stmt|;
 block|}
-end_constructor
-
-begin_comment
 comment|/**    * Construct an IPC client with the default SocketFactory    * @param valueClass    * @param conf    */
-end_comment
-
-begin_constructor
 DECL|method|Client (Class<? extends Writable> valueClass, Configuration conf)
 specifier|public
 name|Client
@@ -3833,13 +3970,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_constructor
-
-begin_comment
 comment|/** Return the socket factory of this client    *    * @return this client's socket factory    */
-end_comment
-
-begin_function
 DECL|method|getSocketFactory ()
 name|SocketFactory
 name|getSocketFactory
@@ -3849,13 +3980,7 @@ return|return
 name|socketFactory
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/** Stop all threads related to this client.  No further calls may be made    * using this client. */
-end_comment
-
-begin_function
 DECL|method|stop ()
 specifier|public
 name|void
@@ -3945,13 +4070,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
-end_comment
-
-begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress address)
@@ -3981,13 +4100,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
-end_comment
-
-begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress addr, UserGroupInformation ticket)
@@ -4022,13 +4135,7 @@ name|ticket
 argument_list|)
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception. */
-end_comment
-
-begin_function
 DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket)
 specifier|public
 name|Writable
@@ -4196,13 +4303,7 @@ return|;
 block|}
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/**    * Take an IOException and the address we were trying to connect to    * and return an IOException with the input exception as the cause.    * The new exception provides the stack trace of the place where     * the exception is thrown and some extra diagnostics information.    * If the exception is ConnectException or SocketTimeoutException,     * return a new one of the same type; Otherwise return an IOException.    *     * @param addr target address    * @param exception the relevant exception    * @return an exception to throw    */
-end_comment
-
-begin_function
 DECL|method|wrapException (InetSocketAddress addr, IOException exception)
 specifier|private
 name|IOException
@@ -4300,13 +4401,7 @@ argument_list|)
 return|;
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/**     * Makes a set of calls in parallel.  Each parameter is sent to the    * corresponding address.  When all values are available, or have timed out    * or errored, the collected results are returned in an array.  The array    * contains nulls for calls that timed out or errored.    * @deprecated Use {@link #call(Writable[], InetSocketAddress[], Class, UserGroupInformation)} instead     */
-end_comment
-
-begin_function
 annotation|@
 name|Deprecated
 DECL|method|call (Writable[] params, InetSocketAddress[] addresses)
@@ -4341,13 +4436,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/** Makes a set of calls in parallel.  Each parameter is sent to the    * corresponding address.  When all values are available, or have timed out    * or errored, the collected results are returned in an array.  The array    * contains nulls for calls that timed out or errored.  */
-end_comment
-
-begin_function
 DECL|method|call (Writable[] params, InetSocketAddress[] addresses, Class<?> protocol, UserGroupInformation ticket)
 specifier|public
 name|Writable
@@ -4538,13 +4627,7 @@ name|values
 return|;
 block|}
 block|}
-end_function
-
-begin_comment
 comment|/** Get a connection from the pool, or create a new one and add it to the    * pool.  Connections to a given host/port are reused. */
-end_comment
-
-begin_function
 DECL|method|getConnection (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, Call call)
 specifier|private
 name|Connection
@@ -4672,13 +4755,7 @@ return|return
 name|connection
 return|;
 block|}
-end_function
-
-begin_comment
 comment|/**    * This class holds the address and the user ticket. The client connections    * to servers are uniquely identified by<remoteAddress, protocol, ticket>    */
-end_comment
-
-begin_class
 DECL|class|ConnectionId
 specifier|private
 specifier|static
@@ -4886,8 +4963,8 @@ operator|)
 return|;
 block|}
 block|}
+block|}
 end_class
 
-unit|}
 end_unit
 
