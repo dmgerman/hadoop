@@ -982,6 +982,11 @@ specifier|private
 name|DataOutputStream
 name|out
 decl_stmt|;
+DECL|field|rpcTimeout
+specifier|private
+name|int
+name|rpcTimeout
+decl_stmt|;
 comment|// currently active calls
 DECL|field|calls
 specifier|private
@@ -1077,6 +1082,15 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
+name|rpcTimeout
+operator|=
+name|remoteId
+operator|.
+name|getRpcTimeout
+argument_list|()
+expr_stmt|;
 name|UserGroupInformation
 name|ticket
 init|=
@@ -1529,7 +1543,7 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* Process timeout exception        * if the connection is not going to be closed, send a ping.        * otherwise, throw the timeout exception.        */
+comment|/* Process timeout exception        * if the connection is not going to be closed or         * is not configured to have a RPC timeout, send a ping.        * (if rpcTimeout is not set to be 0, then RPC should timeout.        * otherwise, throw the timeout exception.        */
 DECL|method|handleTimeout (SocketTimeoutException e)
 specifier|private
 name|void
@@ -1553,6 +1567,10 @@ name|running
 operator|.
 name|get
 argument_list|()
+operator|||
+name|rpcTimeout
+operator|>
+literal|0
 condition|)
 block|{
 throw|throw
@@ -1874,6 +1892,19 @@ argument_list|,
 literal|20000
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rpcTimeout
+operator|>
+literal|0
+condition|)
+block|{
+name|pingInterval
+operator|=
+name|rpcTimeout
+expr_stmt|;
+comment|// rpcTimeout overwrites pingInterval
+block|}
 name|this
 operator|.
 name|socket
@@ -4132,11 +4163,13 @@ argument_list|,
 literal|null
 argument_list|,
 name|ticket
+argument_list|,
+literal|0
 argument_list|)
 return|;
 block|}
 comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception. */
-DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket)
+DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
 specifier|public
 name|Writable
 name|call
@@ -4155,6 +4188,9 @@ name|protocol
 parameter_list|,
 name|UserGroupInformation
 name|ticket
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -4180,6 +4216,8 @@ argument_list|,
 name|protocol
 argument_list|,
 name|ticket
+argument_list|,
+name|rpcTimeout
 argument_list|,
 name|call
 argument_list|)
@@ -4545,6 +4583,8 @@ name|protocol
 argument_list|,
 name|ticket
 argument_list|,
+literal|0
+argument_list|,
 name|call
 argument_list|)
 decl_stmt|;
@@ -4628,7 +4668,7 @@ return|;
 block|}
 block|}
 comment|/** Get a connection from the pool, or create a new one and add it to the    * pool.  Connections to a given host/port are reused. */
-DECL|method|getConnection (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, Call call)
+DECL|method|getConnection (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Call call)
 specifier|private
 name|Connection
 name|getConnection
@@ -4644,6 +4684,9 @@ name|protocol
 parameter_list|,
 name|UserGroupInformation
 name|ticket
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|,
 name|Call
 name|call
@@ -4686,6 +4729,8 @@ argument_list|,
 name|protocol
 argument_list|,
 name|ticket
+argument_list|,
+name|rpcTimeout
 argument_list|)
 decl_stmt|;
 do|do
@@ -4786,7 +4831,12 @@ name|PRIME
 init|=
 literal|16777619
 decl_stmt|;
-DECL|method|ConnectionId (InetSocketAddress address, Class<?> protocol, UserGroupInformation ticket)
+DECL|field|rpcTimeout
+specifier|private
+name|int
+name|rpcTimeout
+decl_stmt|;
+DECL|method|ConnectionId (InetSocketAddress address, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
 name|ConnectionId
 parameter_list|(
 name|InetSocketAddress
@@ -4800,6 +4850,9 @@ name|protocol
 parameter_list|,
 name|UserGroupInformation
 name|ticket
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 block|{
 name|this
@@ -4819,6 +4872,12 @@ operator|.
 name|ticket
 operator|=
 name|ticket
+expr_stmt|;
+name|this
+operator|.
+name|rpcTimeout
+operator|=
+name|rpcTimeout
 expr_stmt|;
 block|}
 DECL|method|getAddress ()
@@ -4849,6 +4908,16 @@ parameter_list|()
 block|{
 return|return
 name|ticket
+return|;
+block|}
+DECL|method|getRpcTimeout ()
+specifier|private
+name|int
+name|getRpcTimeout
+parameter_list|()
+block|{
+return|return
+name|rpcTimeout
 return|;
 block|}
 annotation|@
@@ -4917,6 +4986,12 @@ operator|.
 name|ticket
 operator|)
 operator|)
+operator|&&
+name|rpcTimeout
+operator|==
+name|id
+operator|.
+name|rpcTimeout
 return|;
 block|}
 return|return
@@ -4925,6 +5000,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// simply use the default Object#hashcode() ?
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -4940,25 +5016,34 @@ argument_list|()
 operator|+
 name|PRIME
 operator|*
+operator|(
+name|PRIME
+operator|*
+operator|(
+name|PRIME
+operator|*
 name|System
 operator|.
 name|identityHashCode
 argument_list|(
 name|protocol
 argument_list|)
+operator|^
+name|System
+operator|.
+name|identityHashCode
+argument_list|(
+name|ticket
+argument_list|)
 operator|)
 operator|^
-operator|(
-name|ticket
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-name|ticket
+name|System
 operator|.
-name|hashCode
-argument_list|()
+name|identityHashCode
+argument_list|(
+name|rpcTimeout
+argument_list|)
+operator|)
 operator|)
 return|;
 block|}

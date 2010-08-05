@@ -292,6 +292,9 @@ decl_stmt|;
 DECL|field|parameterClasses
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 index|[]
 name|parameterClasses
 decl_stmt|;
@@ -363,6 +366,9 @@ comment|/** The parameter classes. */
 DECL|method|getParameterClasses ()
 specifier|public
 name|Class
+argument_list|<
+name|?
+argument_list|>
 index|[]
 name|getParameterClasses
 parameter_list|()
@@ -854,6 +860,9 @@ block|{
 DECL|field|protocol
 specifier|private
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 decl_stmt|;
 DECL|field|address
@@ -865,6 +874,11 @@ DECL|field|ticket
 specifier|private
 name|UserGroupInformation
 name|ticket
+decl_stmt|;
+DECL|field|rpcTimeout
+specifier|private
+name|int
+name|rpcTimeout
 decl_stmt|;
 DECL|field|client
 specifier|private
@@ -878,11 +892,14 @@ name|isClosed
 init|=
 literal|false
 decl_stmt|;
-DECL|method|Invoker (Class protocol, InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|Invoker (Class<?> protocol, InetSocketAddress address, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
 name|Invoker
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|InetSocketAddress
@@ -896,6 +913,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 block|{
 name|this
@@ -915,6 +935,12 @@ operator|.
 name|ticket
 operator|=
 name|ticket
+expr_stmt|;
+name|this
+operator|.
+name|rpcTimeout
+operator|=
+name|rpcTimeout
 expr_stmt|;
 name|this
 operator|.
@@ -998,6 +1024,8 @@ argument_list|,
 name|protocol
 argument_list|,
 name|ticket
+argument_list|,
+name|rpcTimeout
 argument_list|)
 decl_stmt|;
 if|if
@@ -1068,12 +1096,15 @@ block|}
 block|}
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -1090,6 +1121,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -1125,6 +1159,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|factory
+argument_list|,
+name|rpcTimeout
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1413,12 +1449,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 name|Server
 name|getServer
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Object

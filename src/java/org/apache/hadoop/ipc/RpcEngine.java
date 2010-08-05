@@ -128,11 +128,14 @@ interface|interface
 name|RpcEngine
 block|{
 comment|/** Construct a client-side proxy object. */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -149,6 +152,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -192,13 +198,16 @@ throws|,
 name|InterruptedException
 function_decl|;
 comment|/** Construct a server for a protocol implementation instance. */
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
 name|RPC
 operator|.
 name|Server
 name|getServer
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Object

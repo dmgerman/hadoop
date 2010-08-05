@@ -672,13 +672,16 @@ name|serverVersion
 return|;
 block|}
 block|}
-DECL|method|waitForProxy ( Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf )
+DECL|method|waitForProxy ( Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf )
 specifier|public
 specifier|static
 name|Object
 name|waitForProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -710,14 +713,17 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a proxy connection to a remote server    * @param protocol protocol class    * @param clientVersion client version    * @param addr remote address    * @param conf configuration to use    * @param timeout time in milliseconds before giving up    * @return the proxy    * @throws IOException if the far end through a RemoteException    */
-DECL|method|waitForProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf, long timeout)
+comment|/**    * Get a proxy connection to a remote server    * @param protocol protocol class    * @param clientVersion client version    * @param addr remote address    * @param conf configuration to use    * @param connTimeout time in milliseconds before giving up    * @return the proxy    * @throws IOException if the far end through a RemoteException    */
+DECL|method|waitForProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, long connTimeout)
 specifier|public
 specifier|static
 name|Object
 name|waitForProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -728,6 +734,54 @@ name|addr
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|long
+name|connTimeout
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|waitForProxy
+argument_list|(
+name|protocol
+argument_list|,
+name|clientVersion
+argument_list|,
+name|addr
+argument_list|,
+name|conf
+argument_list|,
+literal|0
+argument_list|,
+name|connTimeout
+argument_list|)
+return|;
+block|}
+comment|/**      * Get a proxy connection to a remote server      * @param protocol protocol class      * @param clientVersion client version      * @param addr remote address      * @param conf configuration to use      * @param rpcTimeout timeout for each RPC      * @param timeout time in milliseconds before giving up      * @return the proxy      * @throws IOException if the far end through a RemoteException      */
+DECL|method|waitForProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, int rpcTimeout, long timeout)
+specifier|public
+specifier|static
+name|Object
+name|waitForProxy
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|,
 name|long
 name|timeout
@@ -762,7 +816,21 @@ name|clientVersion
 argument_list|,
 name|addr
 argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|,
 name|conf
+argument_list|,
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|rpcTimeout
 argument_list|)
 return|;
 block|}
@@ -870,13 +938,16 @@ block|}
 block|}
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf, SocketFactory factory)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, SocketFactory factory)
 specifier|public
 specifier|static
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -920,13 +991,16 @@ argument_list|)
 return|;
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
 specifier|public
 specifier|static
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -943,6 +1017,59 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getProxy
+argument_list|(
+name|protocol
+argument_list|,
+name|clientVersion
+argument_list|,
+name|addr
+argument_list|,
+name|ticket
+argument_list|,
+name|conf
+argument_list|,
+name|factory
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Construct a client-side proxy that implements the named protocol,    * talking to a server at the named address.    *     * @param protocol protocol    * @param clientVersion client's version    * @param addr server address    * @param ticket security ticket    * @param conf configuration    * @param factory socket factory    * @param rpcTimeout max time for each rpc; 0 means no timeout    * @return the proxy    * @throws IOException if any error occurs    */
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+specifier|public
+specifier|static
+name|Object
+name|getProxy
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|,
+name|UserGroupInformation
+name|ticket
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|SocketFactory
+name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -984,17 +1111,22 @@ argument_list|,
 name|conf
 argument_list|,
 name|factory
+argument_list|,
+name|rpcTimeout
 argument_list|)
 return|;
 block|}
 comment|/**    * Construct a client-side proxy object with the default SocketFactory    *     * @param protocol    * @param clientVersion    * @param addr    * @param conf    * @return a proxy instance    * @throws IOException    */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
 specifier|static
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long

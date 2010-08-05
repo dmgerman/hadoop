@@ -534,7 +534,7 @@ specifier|private
 name|InetSocketAddress
 name|remote
 decl_stmt|;
-DECL|method|ClientTransceiver (InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|ClientTransceiver (InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
 name|ClientTransceiver
 parameter_list|(
@@ -549,6 +549,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -577,6 +580,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|factory
+argument_list|,
+name|rpcTimeout
 argument_list|)
 expr_stmt|;
 name|this
@@ -686,12 +691,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
 name|Object
 name|getProxy
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|long
@@ -708,6 +716,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -741,6 +752,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|factory
+argument_list|,
+name|rpcTimeout
 argument_list|)
 argument_list|)
 return|;
@@ -814,7 +827,7 @@ specifier|final
 name|ReflectRequestor
 name|requestor
 decl_stmt|;
-DECL|method|Invoker (Class<?> protocol, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory)
+DECL|method|Invoker (Class<?> protocol, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
 name|Invoker
 parameter_list|(
@@ -835,6 +848,9 @@ name|conf
 parameter_list|,
 name|SocketFactory
 name|factory
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -853,6 +869,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|factory
+argument_list|,
+name|rpcTimeout
 argument_list|)
 expr_stmt|;
 name|this
@@ -927,11 +945,14 @@ name|ReflectResponder
 implements|implements
 name|TunnelProtocol
 block|{
-DECL|method|TunnelResponder (Class iface, Object impl)
+DECL|method|TunnelResponder (Class<?> iface, Object impl)
 specifier|public
 name|TunnelResponder
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iface
 parameter_list|,
 name|Object
@@ -1024,7 +1045,7 @@ argument_list|()
 throw|;
 block|}
 comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class iface, Object impl, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
+DECL|method|getServer (Class<?> iface, Object impl, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
 specifier|public
 name|RPC
 operator|.
@@ -1032,6 +1053,9 @@ name|Server
 name|getServer
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|iface
 parameter_list|,
 name|Object
