@@ -4626,10 +4626,10 @@ name|hasGlob
 argument_list|)
 return|;
 block|}
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.     * Return the file's status and block locations If the path is a file.    *     * If a returned status is a file, it contains the file's block locations.    *     * @param f is the path    * @param filter path filter    *    * @return an iterator that traverses statuses of the files/directories     *         in the given path    * If any IO exception (for example the input directory gets deleted while    * listing is being executed), next() or hasNext() of the returned iterator    * may throw a RuntimeException with the IO exception as the cause.    *    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws IOException If an I/O error occurred    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.     * Return the file's status and block locations If the path is a file.    *     * If a returned status is a file, it contains the file's block locations.    *     * @param f is the path    *    * @return an iterator that traverses statuses of the files/directories     *         in the given path    *    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws IOException If an I/O error occurred    */
 DECL|method|listLocatedStatus (final Path f)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4656,7 +4656,7 @@ block|}
 comment|/**    * Listing a directory    * The returned results include its block location if it is a file    * The results are filtered by the given path filter    * @param f a path    * @param filter a path filter    * @return an iterator that traverses statuses of the files/directories     *         in the given path    * @throws FileNotFoundException if<code>f</code> does not exist    * @throws IOException if any I/O error occurred    */
 DECL|method|listLocatedStatus (final Path f, final PathFilter filter)
 specifier|protected
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4677,7 +4677,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4702,7 +4702,6 @@ name|i
 init|=
 literal|0
 decl_stmt|;
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDog}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        */
 annotation|@
 name|Override
 specifier|public
@@ -4718,13 +4717,14 @@ operator|.
 name|length
 return|;
 block|}
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDoc}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        *  @exception {@inheritDoc}        */
 annotation|@
 name|Override
 specifier|public
 name|LocatedFileStatus
 name|next
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4752,8 +4752,6 @@ name|i
 operator|++
 index|]
 decl_stmt|;
-try|try
-block|{
 name|BlockLocation
 index|[]
 name|locs
@@ -4790,49 +4788,13 @@ name|locs
 argument_list|)
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|(
-name|RuntimeException
-operator|)
-operator|new
-name|RuntimeException
-argument_list|()
-operator|.
-name|initCause
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Remove is not supported"
-argument_list|)
-throw|;
-block|}
 block|}
 return|;
 block|}
-comment|/**    * List the statuses and block locations of the files in the given path.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    * If any IO exception (for example a sub-directory gets deleted while    * listing is being executed), next() or hasNext() of the returned iterator    * may throw a RuntimeException with the IO exception as the cause.    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses and block locations of the files in the given path.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4853,7 +4815,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4862,7 +4824,7 @@ block|{
 specifier|private
 name|Stack
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4872,14 +4834,15 @@ init|=
 operator|new
 name|Stack
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Iterator
+specifier|private
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4890,16 +4853,18 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+specifier|private
 name|LocatedFileStatus
 name|curFile
 decl_stmt|;
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDog}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        */
 annotation|@
 name|Override
 specifier|public
 name|boolean
 name|hasNext
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 while|while
 condition|(
@@ -4954,7 +4919,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**        * Process the input stat.        * If it is a file, return the file stat.        * If it is a directory, tranverse the directory if recursive is true;        * ignore it if recursive is false.        * @param stat input status        * @throws RuntimeException if any io error occurs; the io exception        * is set as the cause of RuntimeException        */
+comment|/**        * Process the input stat.        * If it is a file, return the file stat.        * If it is a directory, traverse the directory if recursive is true;        * ignore it if recursive is false.        * @param stat input status        * @throws IOException if any IO error occurs        */
 specifier|private
 name|void
 name|handleFileStat
@@ -4962,8 +4927,8 @@ parameter_list|(
 name|LocatedFileStatus
 name|stat
 parameter_list|)
-block|{
-try|try
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -5005,34 +4970,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|(
-name|RuntimeException
-operator|)
-operator|new
-name|RuntimeException
-argument_list|()
-operator|.
-name|initCause
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
-block|}
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDoc}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        *  @exception {@inheritDoc}        */
 annotation|@
 name|Override
 specifier|public
 name|LocatedFileStatus
 name|next
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -5064,21 +5009,6 @@ argument_list|(
 literal|"No more entry in "
 operator|+
 name|f
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Remove is not supported"
 argument_list|)
 throw|;
 block|}

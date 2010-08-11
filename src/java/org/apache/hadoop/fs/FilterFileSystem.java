@@ -526,7 +526,7 @@ block|}
 comment|/** List files and its block locations in a directory. */
 DECL|method|listLocatedStatus (Path f)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>

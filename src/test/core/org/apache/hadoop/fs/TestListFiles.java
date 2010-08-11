@@ -446,7 +446,7 @@ argument_list|,
 name|FILE_LEN
 argument_list|)
 expr_stmt|;
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -622,7 +622,7 @@ name|DIR1
 argument_list|)
 expr_stmt|;
 comment|// test empty directory
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>

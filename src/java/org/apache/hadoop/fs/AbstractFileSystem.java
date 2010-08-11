@@ -2584,7 +2584,7 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -2954,7 +2954,7 @@ function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#listStatus(Path)} except that Path f must be for this    * file system.    */
 DECL|method|listStatusIterator (final Path f)
 specifier|protected
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -2975,7 +2975,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -3040,28 +3040,13 @@ operator|++
 index|]
 return|;
 block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Remove is not supported"
-argument_list|)
-throw|;
-block|}
 block|}
 return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f     * must be for this file system.    */
 DECL|method|listLocatedStatus (final Path f)
 specifier|protected
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -3082,14 +3067,14 @@ name|IOException
 block|{
 return|return
 operator|new
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
 argument_list|()
 block|{
 specifier|private
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -3100,13 +3085,14 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDog}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        */
 annotation|@
 name|Override
 specifier|public
 name|boolean
 name|hasNext
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
 name|itor
@@ -3115,13 +3101,14 @@ name|hasNext
 argument_list|()
 return|;
 block|}
-comment|/**        *  {@inheritDoc}        *  @return {@inheritDoc}         *  @throws Runtimeexception if any IOException occurs during traversal;        *  the IOException is set as the cause of the RuntimeException        *  @exception {@inheritDoc}        */
 annotation|@
 name|Override
 specifier|public
 name|LocatedFileStatus
 name|next
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -3148,8 +3135,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|BlockLocation
 index|[]
 name|locs
@@ -3191,42 +3176,6 @@ argument_list|,
 name|locs
 argument_list|)
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|(
-name|RuntimeException
-operator|)
-operator|new
-name|RuntimeException
-argument_list|()
-operator|.
-name|initCause
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Remove is not supported"
-argument_list|)
-throw|;
 block|}
 block|}
 return|;

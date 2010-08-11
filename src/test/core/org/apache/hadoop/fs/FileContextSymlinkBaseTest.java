@@ -4064,7 +4064,7 @@ operator|==
 literal|3
 argument_list|)
 expr_stmt|;
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -8068,7 +8068,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>

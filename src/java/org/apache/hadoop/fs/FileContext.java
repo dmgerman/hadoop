@@ -122,16 +122,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -143,16 +133,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|NoSuchElementException
 import|;
 end_import
 
@@ -3072,7 +3052,7 @@ block|}
 comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *     * @param f is the path    *    * @return an iterator that traverses statuses of the files/directories     *         in the given path    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
 DECL|method|listStatus (final Path f)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -3104,7 +3084,7 @@ return|return
 operator|new
 name|FSLinkResolver
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -3112,7 +3092,7 @@ argument_list|>
 argument_list|()
 block|{
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -3151,9 +3131,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.     * Return the file's status and block locations If the path is a file.    *     * If a returned status is a file, it contains the file's block locations.    *     * @param f is the path    *    * @return an iterator that traverses statuses of the files/directories     *         in the given path    * If any IO exception (for example the input directory gets deleted while    * listing is being executed), next() or hasNext() of the returned iterator    * may throw a RuntimeException with the io exception as the cause.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws     *           undeclared exception to RPC server    */
-DECL|method|listLocatedStatus (final Path f)
+DECL|method|listLocatedStatus ( final Path f)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -3185,7 +3165,7 @@ return|return
 operator|new
 name|FSLinkResolver
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -3193,7 +3173,7 @@ argument_list|>
 argument_list|()
 block|{
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -3588,7 +3568,7 @@ block|,
 literal|1
 block|}
 decl_stmt|;
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|FileStatus
 argument_list|>
@@ -4035,7 +4015,7 @@ block|}
 comment|/**      * List the statuses and block locations of the files in the given path.      *       * If the path is a directory,       *   if recursive is false, returns files in the directory;      *   if recursive is true, return files in the subtree rooted at the path.      *   The subtree is traversed in the depth-first order.      * If the path is a file, return the file's status and block locations.      * Files across symbolic links are also returned.      *       * @param f is the path      * @param recursive if the subdirectories need to be traversed recursively      *      * @return an iterator that traverses statuses of the files      * If any IO exception (for example a sub-directory gets deleted while      * listing is being executed), next() or hasNext() of the returned iterator      * may throw a RuntimeException with the IO exception as the cause.      *      * @throws AccessControlException If access is denied      * @throws FileNotFoundException If<code>f</code> does not exist      * @throws UnsupportedFileSystemException If file system for<code>f</code>      *         is not supported      * @throws IOException If an I/O error occurred      *       * Exceptions applicable to file systems accessed over RPC:      * @throws RpcClientException If an exception occurred in the RPC client      * @throws RpcServerException If an exception occurred in the RPC server      * @throws UnexpectedServerException If server implementation throws       *           undeclared exception to RPC server      */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4060,7 +4040,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4069,7 +4049,7 @@ block|{
 specifier|private
 name|Stack
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4079,14 +4059,14 @@ init|=
 operator|new
 name|Stack
 argument_list|<
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Iterator
+name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
 argument_list|>
@@ -4100,13 +4080,15 @@ decl_stmt|;
 name|LocatedFileStatus
 name|curFile
 decl_stmt|;
-comment|/**          *  {@inheritDoc}          *  @return {@inheritDog}           *  @throws Runtimeexception if any IOException occurs during traversal;          *  the IOException is set as the cause of the RuntimeException          */
+comment|/**          * Returns<tt>true</tt> if the iterator has more files.          *          * @return<tt>true</tt> if the iterator has more files.          * @throws AccessControlException if not allowed to access next          *                                file's status or locations          * @throws FileNotFoundException if next file does not exist any more          * @throws UnsupportedFileSystemException if next file's           *                                        fs is unsupported          * @throws IOException for all other IO errors          *                     for example, NameNode is not avaialbe or          *                     NameNode throws IOException due to an error          *                     while getting the status or block locations          */
 annotation|@
 name|Override
 specifier|public
 name|boolean
 name|hasNext
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 while|while
 condition|(
@@ -4161,7 +4143,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**          * Process the input stat.          * If it is a file, return the file stat.          * If it is a directory, tranverse the directory if recursive is true;          * ignore it if recursive is false.          * If it is a symlink, resolve the symlink first and then process it          * depending on if it is a file or directory.          * @param stat input status          * @throws RuntimeException if any io error occurs; the io exception          * is set as the cause of RuntimeException          */
+comment|/**          * Process the input stat.          * If it is a file, return the file stat.          * If it is a directory, traverse the directory if recursive is true;          * ignore it if recursive is false.          * If it is a symlink, resolve the symlink first and then process it          * depending on if it is a file or directory.          * @param stat input status          * @throws AccessControlException if access is denied          * @throws FileNotFoundException if file is not found          * @throws UnsupportedFileSystemException if fs is not supported          * @throws IOException for all other IO errors          */
 specifier|private
 name|void
 name|handleFileStat
@@ -4169,8 +4151,8 @@ parameter_list|(
 name|LocatedFileStatus
 name|stat
 parameter_list|)
-block|{
-try|try
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4274,34 +4256,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|(
-name|RuntimeException
-operator|)
-operator|new
-name|RuntimeException
-argument_list|()
-operator|.
-name|initCause
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
-block|}
-comment|/**          *  {@inheritDoc}          *  @return {@inheritDoc}           *  @throws Runtimeexception if any IOException occurs during traversal;          *  the IOException is set as the cause of the RuntimeException          *  @exception {@inheritDoc}          */
+comment|/**          * Returns the next file's status with its block locations          *          * @throws AccessControlException if not allowed to access next          *                                file's status or locations          * @throws FileNotFoundException if next file does not exist any more          * @throws UnsupportedFileSystemException if next file's           *                                        fs is unsupported          * @throws IOException for all other IO errors          *                     for example, NameNode is not avaialbe or          *                     NameNode throws IOException due to an error          *                     while getting the status or block locations          */
 annotation|@
 name|Override
 specifier|public
 name|LocatedFileStatus
 name|next
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4333,21 +4296,6 @@ argument_list|(
 literal|"No more entry in "
 operator|+
 name|f
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|remove
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Remove is not supported"
 argument_list|)
 throw|;
 block|}
