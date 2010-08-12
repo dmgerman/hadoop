@@ -3615,14 +3615,12 @@ name|remoteUser
 operator|+
 literal|" is unauthorized to access this page. "
 operator|+
-literal|"Only \""
+literal|"AccessControlList for accessing this page : "
 operator|+
 name|adminsAcl
 operator|.
 name|toString
 argument_list|()
-operator|+
-literal|"\" can access this page."
 argument_list|)
 expr_stmt|;
 return|return

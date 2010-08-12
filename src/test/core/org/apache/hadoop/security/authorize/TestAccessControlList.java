@@ -162,6 +162,207 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Check if AccessControlList.toString() works as expected.
+comment|// Also validate if getAclString() for various cases.
+DECL|method|testAclString ()
+specifier|public
+name|void
+name|testAclString
+parameter_list|()
+block|{
+name|AccessControlList
+name|acl
+decl_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|"*"
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"All users are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|validateGetAclString
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|" "
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"No users are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|"user1,user2"
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"Users [user1, user2] are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|validateGetAclString
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|"user1,user2 "
+argument_list|)
+expr_stmt|;
+comment|// with space
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"Users [user1, user2] are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|validateGetAclString
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|" group1,group2"
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"Members of the groups [group1, group2] are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|validateGetAclString
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+name|acl
+operator|=
+operator|new
+name|AccessControlList
+argument_list|(
+literal|"user1,user2 group1,group2"
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"Users [user1, user2] and "
+operator|+
+literal|"members of the groups [group1, group2] are allowed"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|validateGetAclString
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Validates if getAclString() is working as expected. i.e. if we can build
+comment|// a new ACL instance from the value returned by getAclString().
+DECL|method|validateGetAclString (AccessControlList acl)
+specifier|private
+name|void
+name|validateGetAclString
+parameter_list|(
+name|AccessControlList
+name|acl
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|acl
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+operator|new
+name|AccessControlList
+argument_list|(
+name|acl
+operator|.
+name|getAclString
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|testAccessControlList ()
 specifier|public
 name|void
@@ -548,7 +749,7 @@ operator|=
 operator|new
 name|AccessControlList
 argument_list|(
-literal|""
+literal|" "
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -579,11 +780,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|""
+literal|" "
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -626,11 +827,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"drwho"
+literal|"drwho "
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -677,7 +878,7 @@ literal|"drwho tardis"
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -793,7 +994,7 @@ literal|"drwho,joe tardis,users"
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -871,7 +1072,7 @@ literal|"drwho tardis"
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -911,11 +1112,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"drwho"
+literal|"drwho "
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -974,11 +1175,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|""
+literal|" "
 argument_list|,
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1226,7 +1427,7 @@ name|assertFalse
 argument_list|(
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 operator|.
 name|contains
@@ -1254,7 +1455,7 @@ name|assertFalse
 argument_list|(
 name|acl
 operator|.
-name|toString
+name|getAclString
 argument_list|()
 operator|.
 name|contains
