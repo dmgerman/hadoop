@@ -928,7 +928,14 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"token is expired or doesn't exist"
+literal|"token ("
+operator|+
+name|identifier
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|") can't be found in cache"
 argument_list|)
 throw|;
 block|}
@@ -954,7 +961,14 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"token is expired"
+literal|"token ("
+operator|+
+name|identifier
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|") is expired"
 argument_list|)
 throw|;
 block|}
