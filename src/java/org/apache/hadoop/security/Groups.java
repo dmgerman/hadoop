@@ -533,7 +533,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the groups being used to map user-to-groups.    * @param Configuration    * @return the groups being used to map user-to-groups.    */
+comment|/**    * Get the groups being used to map user-to-groups.    * @param conf    * @return the groups being used to map user-to-groups.    */
 DECL|method|getUserToGroupsMappingService (Configuration conf)
 specifier|public
 specifier|static

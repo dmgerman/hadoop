@@ -156,7 +156,7 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Refresh user to group mappings.    * @param conf    * @throws IOException    */
+comment|/**    * Refresh user to group mappings.    * @throws IOException    */
 DECL|method|refreshUserToGroupsMappings ()
 specifier|public
 name|void

@@ -4101,7 +4101,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation, int)} instead     */
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress address)
@@ -4131,7 +4131,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(Writable, InetSocketAddress, Class, UserGroupInformation, int)} instead     */
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, InetSocketAddress addr, UserGroupInformation ticket)
