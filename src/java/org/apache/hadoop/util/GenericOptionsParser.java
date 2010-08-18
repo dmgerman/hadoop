@@ -317,7 +317,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>GenericOptionsParser</code> is a utility to parse command line  * arguments generic to the Hadoop framework.   *   *<code>GenericOptionsParser</code> recognizes several standarad command   * line arguments, enabling applications to easily specify a namenode, a   * jobtracker, additional configuration resources etc.  *   *<h4 id="GenericOptions">Generic Options</h4>  *   *<p>The supported generic options are:</p>  *<p><blockquote><pre>  *     -conf&lt;configuration file&gt;     specify a configuration file  *     -D&lt;property=value&gt;            use value for given property  *     -fs&lt;local|namenode:port&gt;      specify a namenode  *     -jt&lt;local|jobtracker:port&gt;    specify a job tracker  *     -files&lt;comma separated list of files&gt;    specify comma separated  *                            files to be copied to the map reduce cluster  *     -libjars&lt;comma separated list of jars&gt;   specify comma separated  *                            jar files to include in the classpath.  *     -archives&lt;comma separated list of archives&gt;    specify comma  *             separated archives to be unarchived on the compute machines.   *</pre></blockquote></p>  *   *<p>The general command line syntax is:</p>  *<p><tt><pre>  * bin/hadoop command [genericOptions] [commandOptions]  *</pre></tt></p>  *   *<p>Generic command line arguments<strong>might</strong> modify   *<code>Configuration</code> objects, given to constructors.</p>  *   *<p>The functionality is implemented using Commons CLI.</p>  *  *<p>Examples:</p>  *<p><blockquote><pre>  * $ bin/hadoop dfs -fs darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *   * $ bin/hadoop dfs -D fs.default.name=darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *       * $ bin/hadoop dfs -conf hadoop-site.xml -ls /data  * list /data directory in dfs with conf specified in hadoop-site.xml  *       * $ bin/hadoop job -D mapred.job.tracker=darwin:50020 -submit job.xml  * submit a job to job tracker darwin:50020  *       * $ bin/hadoop job -jt darwin:50020 -submit job.xml  * submit a job to job tracker darwin:50020  *       * $ bin/hadoop job -jt local -submit job.xml  * submit a job to local runner  *   * $ bin/hadoop jar -libjars testlib.jar   * -archives test.tgz -files file.txt inputjar args  * job submission with libjars, files and archives  *</pre></blockquote></p>  *  * @see Tool  * @see ToolRunner  */
+comment|/**  *<code>GenericOptionsParser</code> is a utility to parse command line  * arguments generic to the Hadoop framework.   *   *<code>GenericOptionsParser</code> recognizes several standarad command   * line arguments, enabling applications to easily specify a namenode, a   * jobtracker, additional configuration resources etc.  *   *<h4 id="GenericOptions">Generic Options</h4>  *   *<p>The supported generic options are:</p>  *<p><blockquote><pre>  *     -conf&lt;configuration file&gt;     specify a configuration file  *     -D&lt;property=value&gt;            use value for given property  *     -fs&lt;local|namenode:port&gt;      specify a namenode  *     -jt&lt;local|jobtracker:port&gt;    specify a job tracker  *     -files&lt;comma separated list of files&gt;    specify comma separated  *                            files to be copied to the map reduce cluster  *     -libjars&lt;comma separated list of jars&gt;   specify comma separated  *                            jar files to include in the classpath.  *     -archives&lt;comma separated list of archives&gt;    specify comma  *             separated archives to be unarchived on the compute machines.   *</pre></blockquote></p>  *   *<p>The general command line syntax is:</p>  *<p><tt><pre>  * bin/hadoop command [genericOptions] [commandOptions]  *</pre></tt></p>  *   *<p>Generic command line arguments<strong>might</strong> modify   *<code>Configuration</code> objects, given to constructors.</p>  *   *<p>The functionality is implemented using Commons CLI.</p>  *  *<p>Examples:</p>  *<p><blockquote><pre>  * $ bin/hadoop dfs -fs darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *   * $ bin/hadoop dfs -D fs.default.name=darwin:8020 -ls /data  * list /data directory in dfs with namenode darwin:8020  *       * $ bin/hadoop dfs -conf core-site.xml -conf hdfs-site.xml -ls /data  * list /data directory in dfs with multiple conf files specified.  *       * $ bin/hadoop job -D mapred.job.tracker=darwin:50020 -submit job.xml  * submit a job to job tracker darwin:50020  *       * $ bin/hadoop job -jt darwin:50020 -submit job.xml  * submit a job to job tracker darwin:50020  *       * $ bin/hadoop job -jt local -submit job.xml  * submit a job to local runner  *   * $ bin/hadoop jar -libjars testlib.jar   * -archives test.tgz -files file.txt inputjar args  * job submission with libjars, files and archives  *</pre></blockquote></p>  *  * @see Tool  * @see ToolRunner  */
 end_comment
 
 begin_class
@@ -381,9 +381,7 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
-operator|new
-name|Options
-argument_list|()
+name|opts
 argument_list|,
 name|args
 argument_list|)
@@ -1591,11 +1589,10 @@ name|finalArr
 argument_list|)
 return|;
 block|}
-comment|/**    * Parse the user-specified options, get the generic options, and modify    * configuration accordingly    * @param conf Configuration to be modified    * @param args User-specified arguments    * @return Command-specific arguments    */
+comment|/**    * Parse the user-specified options, get the generic options, and modify    * configuration accordingly    * @param opts Options to use for parsing args.    * @param conf Configuration to be modified    * @param args User-specified arguments    */
 DECL|method|parseGeneralOptions (Options opts, Configuration conf, String[] args)
 specifier|private
-name|String
-index|[]
+name|void
 name|parseGeneralOptions
 parameter_list|(
 name|Options
@@ -1647,12 +1644,6 @@ argument_list|,
 name|commandLine
 argument_list|)
 expr_stmt|;
-return|return
-name|commandLine
-operator|.
-name|getArgs
-argument_list|()
-return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1689,9 +1680,6 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|args
-return|;
 block|}
 comment|/**    * Print the usage message for generic command-line options supported.    *     * @param out stream to print the usage message to.    */
 DECL|method|printGenericCommandUsage (PrintStream out)
