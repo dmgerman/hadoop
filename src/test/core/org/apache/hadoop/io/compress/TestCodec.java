@@ -521,6 +521,24 @@ operator|.
 name|zlib
 operator|.
 name|ZlibCompressor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|zlib
+operator|.
+name|ZlibCompressor
 operator|.
 name|CompressionLevel
 import|;
@@ -4231,19 +4249,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
-DECL|method|testGzipCodecWrite ()
+DECL|method|testGzipCodecWrite (boolean useNative)
 specifier|public
 name|void
 name|testGzipCodecWrite
-parameter_list|()
+parameter_list|(
+name|boolean
+name|useNative
+parameter_list|)
 throws|throws
 name|IOException
 block|{
 comment|// Create a gzipped file using a compressor from the CodecPool,
 comment|// and try to read it back via the regular GZIPInputStream.
-comment|// Don't use native libs for this test.
+comment|// Use native libs per the parameter
 name|Configuration
 name|conf
 init|=
@@ -4259,9 +4278,37 @@ name|CommonConfigurationKeys
 operator|.
 name|IO_NATIVE_LIB_AVAILABLE_KEY
 argument_list|,
-literal|false
+name|useNative
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|useNative
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|ZlibFactory
+operator|.
+name|isNativeZlibLoaded
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"testGzipCodecWrite skipped: native libs not loaded"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+block|}
+else|else
+block|{
 name|assertFalse
 argument_list|(
 literal|"ZlibFactory is using native libs against request"
@@ -4274,6 +4321,7 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Ensure that the CodecPool has a BuiltInZlibDeflater in it.
 name|Compressor
 name|zlibCompressor
@@ -4296,6 +4344,12 @@ name|assertTrue
 argument_list|(
 literal|"ZlibFactory returned unexpected deflator"
 argument_list|,
+name|useNative
+condition|?
+name|zlibCompressor
+operator|instanceof
+name|ZlibCompressor
+else|:
 name|zlibCompressor
 operator|instanceof
 name|BuiltInZlibDeflater
@@ -4496,6 +4550,38 @@ argument_list|(
 name|fileName
 argument_list|,
 name|msg
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testGzipCodecWriteJava ()
+specifier|public
+name|void
+name|testGzipCodecWriteJava
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|testGzipCodecWrite
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testGzipNativeCodecWrite ()
+specifier|public
+name|void
+name|testGzipNativeCodecWrite
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|testGzipCodecWrite
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
