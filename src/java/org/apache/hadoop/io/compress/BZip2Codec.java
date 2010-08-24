@@ -1440,10 +1440,14 @@ operator|)
 condition|?
 name|result
 else|:
+operator|(
 name|b
 index|[
 literal|0
 index|]
+operator|&
+literal|0xff
+operator|)
 return|;
 block|}
 DECL|method|internalReset ()
