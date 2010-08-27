@@ -3386,6 +3386,13 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|calls
+operator|.
+name|remove
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
 block|}
 elseif|else
 if|if
