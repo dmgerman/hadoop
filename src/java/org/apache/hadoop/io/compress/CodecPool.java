@@ -519,6 +519,14 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -526,6 +534,7 @@ argument_list|(
 literal|"Got recycled compressor"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|compressor
@@ -598,6 +607,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -605,6 +622,7 @@ argument_list|(
 literal|"Got recycled decompressor"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|decompressor

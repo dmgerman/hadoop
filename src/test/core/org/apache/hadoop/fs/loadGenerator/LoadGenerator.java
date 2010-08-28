@@ -1230,6 +1230,14 @@ expr_stmt|;
 block|}
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1237,6 +1245,7 @@ argument_list|(
 literal|"Done with testing.  Waiting for threads to finish."
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|DFSClientThread

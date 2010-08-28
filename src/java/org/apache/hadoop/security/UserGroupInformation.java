@@ -2572,6 +2572,14 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2590,6 +2598,7 @@ operator|+
 name|nextRefresh
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|now
@@ -2616,6 +2625,14 @@ argument_list|,
 literal|"-R"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2623,6 +2640,7 @@ argument_list|(
 literal|"renewed ticket"
 argument_list|)
 expr_stmt|;
+block|}
 name|reloginFromTicketCache
 argument_list|()
 expr_stmt|;

@@ -145,6 +145,14 @@ decl_stmt|;
 static|static
 block|{
 comment|// Try to load native hadoop library and set fallback flag appropriately
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -152,6 +160,7 @@ argument_list|(
 literal|"Trying to load the custom-built native-hadoop library..."
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|System
@@ -180,6 +189,14 @@ name|t
 parameter_list|)
 block|{
 comment|// Ignore failure to load
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -203,6 +220,7 @@ literal|"java.library.path"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(

@@ -360,6 +360,14 @@ name|now
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -371,6 +379,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|groups
 operator|.
@@ -401,6 +410,14 @@ argument_list|,
 name|groups
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -412,6 +429,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|groups
 operator|.
@@ -551,6 +569,14 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -558,6 +584,7 @@ argument_list|(
 literal|" Creating new Groups object"
 argument_list|)
 expr_stmt|;
+block|}
 name|GROUPS
 operator|=
 operator|new

@@ -324,6 +324,14 @@ name|DEFAULT_PROB
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -337,6 +345,7 @@ operator|+
 name|ret
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Make sure that probability level is valid.
 if|if
 condition|(

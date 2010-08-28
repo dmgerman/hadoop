@@ -1655,6 +1655,14 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1664,6 +1672,7 @@ operator|+
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|caught
 operator|=
 literal|true

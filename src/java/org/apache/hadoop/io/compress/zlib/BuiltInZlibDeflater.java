@@ -286,6 +286,14 @@ name|DEFAULT_STRATEGY
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -293,6 +301,7 @@ argument_list|(
 literal|"Reinit compressor with new compression configuration"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

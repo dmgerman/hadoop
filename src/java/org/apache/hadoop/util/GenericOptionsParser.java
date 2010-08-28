@@ -1188,6 +1188,14 @@ literal|" does not exist."
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1197,6 +1205,7 @@ operator|+
 name|fileName
 argument_list|)
 expr_stmt|;
+block|}
 name|conf
 operator|.
 name|set

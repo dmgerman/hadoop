@@ -7966,9 +7966,16 @@ expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
+operator|(
 name|valLength
 operator|<
 literal|0
+operator|)
+operator|&&
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -8115,9 +8122,16 @@ expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
+operator|(
 name|valLength
 operator|<
 literal|0
+operator|)
+operator|&&
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -10297,6 +10311,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -10304,6 +10326,7 @@ argument_list|(
 literal|"running sort pass"
 argument_list|)
 expr_stmt|;
+block|}
 name|SortPass
 name|sortPass
 init|=
@@ -10840,6 +10863,14 @@ operator|++
 expr_stmt|;
 block|}
 comment|// buffer is full -- sort& flush it
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -10849,6 +10880,7 @@ operator|+
 name|segments
 argument_list|)
 expr_stmt|;
+block|}
 name|rawBuffer
 operator|=
 name|rawKeys
@@ -12136,6 +12168,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -12143,6 +12183,7 @@ argument_list|(
 literal|"running merge pass"
 argument_list|)
 expr_stmt|;
+block|}
 name|Writer
 name|writer
 init|=
@@ -13246,6 +13287,14 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -13255,6 +13304,7 @@ operator|+
 name|outputFile
 argument_list|)
 expr_stmt|;
+block|}
 name|Writer
 name|writer
 init|=

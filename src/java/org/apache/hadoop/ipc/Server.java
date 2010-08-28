@@ -3271,6 +3271,14 @@ comment|//
 comment|// If there were some calls that have not been sent out for a
 comment|// long time, discard them.
 comment|//
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3278,6 +3286,7 @@ argument_list|(
 literal|"Checking for old call responses."
 argument_list|)
 expr_stmt|;
+block|}
 name|ArrayList
 argument_list|<
 name|Call

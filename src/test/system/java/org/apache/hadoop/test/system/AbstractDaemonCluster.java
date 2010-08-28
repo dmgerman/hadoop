@@ -1776,6 +1776,14 @@ name|Exception
 name|exp
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1788,6 +1796,7 @@ operator|+
 literal|" is waiting to come up."
 argument_list|)
 expr_stmt|;
+block|}
 name|waitFor
 argument_list|(
 literal|60000
@@ -1855,6 +1864,14 @@ operator|.
 name|ping
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1867,6 +1884,7 @@ operator|+
 literal|" is waiting state to stop."
 argument_list|)
 expr_stmt|;
+block|}
 name|waitFor
 argument_list|(
 literal|60000

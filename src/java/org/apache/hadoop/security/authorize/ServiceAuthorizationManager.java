@@ -532,6 +532,14 @@ expr_stmt|;
 comment|// just keep going
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -552,6 +560,7 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 operator|(

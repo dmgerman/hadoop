@@ -278,6 +278,14 @@ name|int
 name|count
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -289,6 +297,7 @@ operator|+
 literal|" records in debug"
 argument_list|)
 expr_stmt|;
+block|}
 name|RandomDatum
 index|[]
 name|data
@@ -380,6 +389,14 @@ argument_list|,
 name|file
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -393,6 +410,7 @@ operator|+
 literal|" debug"
 argument_list|)
 expr_stmt|;
+block|}
 name|ArrayFile
 operator|.
 name|Writer
@@ -482,6 +500,14 @@ operator|new
 name|RandomDatum
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -495,6 +521,7 @@ operator|+
 literal|" debug"
 argument_list|)
 expr_stmt|;
+block|}
 name|ArrayFile
 operator|.
 name|Reader
@@ -623,6 +650,14 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -636,6 +671,7 @@ operator|+
 literal|" debug"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/** For debugging and testing. */
 DECL|method|main (String[] args)

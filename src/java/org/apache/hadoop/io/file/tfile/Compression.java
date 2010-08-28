@@ -1271,6 +1271,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1283,6 +1291,7 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**            * Following statement is necessary to get around bugs in 0.18 where a            * compressor is referenced after returned back to the codec pool.            */
 name|compressor
@@ -1315,6 +1324,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1327,6 +1344,7 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|CodecPool
 operator|.
 name|returnCompressor
@@ -1394,6 +1412,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1406,6 +1432,7 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**            * Following statement is necessary to get around bugs in 0.18 where a            * decompressor is referenced after returned back to the codec pool.            */
 name|decompressor
@@ -1438,6 +1465,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1450,6 +1485,7 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|CodecPool
 operator|.
 name|returnDecompressor

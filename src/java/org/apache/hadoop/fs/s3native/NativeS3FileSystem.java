@@ -1875,6 +1875,14 @@ name|f
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1886,6 +1894,7 @@ operator|+
 literal|"' in S3"
 argument_list|)
 expr_stmt|;
+block|}
 name|Path
 name|absolutePath
 init|=
@@ -1960,6 +1969,14 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1971,6 +1988,7 @@ operator|+
 literal|"' but file does not exist, so returning false"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -2031,6 +2049,14 @@ argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2042,6 +2068,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|priorLastKey
 init|=
@@ -2125,6 +2152,14 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2136,6 +2171,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 name|createParent
 argument_list|(
 name|f
@@ -2200,6 +2236,14 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2211,6 +2255,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 name|FileMetadata
 name|meta
 init|=
@@ -2228,6 +2273,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2239,6 +2292,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|newFile
 argument_list|(
@@ -2262,6 +2316,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2279,6 +2341,7 @@ operator|+
 literal|"' exists"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|newDirectory
 argument_list|(
@@ -2286,6 +2349,14 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2297,6 +2368,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 name|PartialListing
 name|listing
 init|=
@@ -2330,6 +2402,14 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2341,6 +2421,7 @@ operator|+
 literal|"' as it has contents"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|newDirectory
 argument_list|(
@@ -2348,6 +2429,14 @@ name|absolutePath
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2359,6 +2448,7 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|FileNotFoundException
@@ -2945,6 +3035,14 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2956,6 +3054,7 @@ operator|+
 literal|"' in S3"
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|key
 init|=
@@ -3218,6 +3317,14 @@ condition|(
 name|dstIsFile
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3227,11 +3334,20 @@ operator|+
 literal|"returning false as dst is an already existing file"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
 block|}
 else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
@@ -3242,6 +3358,7 @@ operator|+
 literal|"using dst as output directory"
 argument_list|)
 expr_stmt|;
+block|}
 name|dstKey
 operator|=
 name|pathToKey
@@ -3269,6 +3386,14 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3278,6 +3403,7 @@ operator|+
 literal|"using dst as output destination"
 argument_list|)
 expr_stmt|;
+block|}
 name|dstKey
 operator|=
 name|pathToKey
@@ -3304,6 +3430,14 @@ name|isFile
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3313,6 +3447,7 @@ operator|+
 literal|"returning false as dst parent exists and is a file"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -3324,6 +3459,14 @@ name|FileNotFoundException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3333,6 +3476,7 @@ operator|+
 literal|"returning false as dst parent does not exist"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -3360,6 +3504,14 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3369,6 +3521,7 @@ operator|+
 literal|"returning false as src does not exist"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -3376,6 +3529,14 @@ block|}
 if|if
 condition|(
 name|srcIsFile
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -3387,6 +3548,7 @@ operator|+
 literal|"src is file, so doing copy then delete in S3"
 argument_list|)
 expr_stmt|;
+block|}
 name|store
 operator|.
 name|copy
@@ -3406,6 +3568,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3415,6 +3585,7 @@ operator|+
 literal|"src is directory, so copying contents"
 argument_list|)
 expr_stmt|;
+block|}
 name|store
 operator|.
 name|storeEmptyFile
@@ -3522,6 +3693,14 @@ operator|!=
 literal|null
 condition|)
 do|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3531,6 +3710,7 @@ operator|+
 literal|"all files in src copied, now removing src files"
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|String
@@ -3567,6 +3747,14 @@ parameter_list|)
 block|{
 comment|//this is fine, we don't require a marker
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3576,6 +3764,7 @@ operator|+
 literal|"done"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 literal|true

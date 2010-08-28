@@ -2030,6 +2030,14 @@ operator|<
 name|maxRetries
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2041,6 +2049,7 @@ operator|+
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 comment|// try re-login
 if|if
 condition|(
