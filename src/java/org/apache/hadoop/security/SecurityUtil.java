@@ -754,7 +754,7 @@ name|getCanonicalHostName
 argument_list|()
 return|;
 block|}
-comment|/**    * If a keytab has been provided, login as that user. Substitute $host in    * user's Kerberos principal name with a dynamically looked-up fully-qualified    * domain name of the current host.    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @throws IOException    */
+comment|/**    * Login as a principal specified in config. Substitute $host in    * user's Kerberos principal name with a dynamically looked-up fully-qualified    * domain name of the current host.    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @throws IOException    */
 DECL|method|login (final Configuration conf, final String keytabFileKey, final String userNameKey)
 specifier|public
 specifier|static
@@ -789,7 +789,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * If a keytab has been provided, login as that user. Substitute $host in    * user's Kerberos principal name with hostname.    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @param hostname    *          hostname to use for substitution    * @throws IOException    */
+comment|/**    * Login as a principal specified in config. Substitute $host in user's Kerberos principal     * name with hostname. If non-secure mode - return. If no keytab available -    * bail out with an exception    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @param hostname    *          hostname to use for substitution    * @throws IOException    */
 DECL|method|login (final Configuration conf, final String keytabFileKey, final String userNameKey, String hostname)
 specifier|public
 specifier|static
@@ -814,6 +814,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+return|return;
 name|String
 name|keytabFilename
 init|=
@@ -829,8 +838,23 @@ condition|(
 name|keytabFilename
 operator|==
 literal|null
+operator|||
+name|keytabFilename
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
 condition|)
-return|return;
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Running in secure mode, but config doesn't have a keytab"
+argument_list|)
+throw|;
+block|}
 name|String
 name|principalConfig
 init|=
