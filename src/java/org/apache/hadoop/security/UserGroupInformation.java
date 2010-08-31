@@ -1140,13 +1140,60 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the configuration values for UGI.    * @param conf the configuration to use    */
+comment|/**    * Initialize UGI and related classes.    * @param conf the configuration to use    */
 DECL|method|initialize (Configuration conf)
 specifier|private
 specifier|static
 specifier|synchronized
 name|void
 name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|initUGI
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// give the configuration on how to translate Kerberos names
+try|try
+block|{
+name|KerberosName
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Problem with Kerberos auth_to_local name "
+operator|+
+literal|"configuration"
+argument_list|,
+name|ioe
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Set the configuration values for UGI.    * @param conf the configuration to use    */
+DECL|method|initUGI (Configuration conf)
+specifier|private
+specifier|static
+specifier|synchronized
+name|void
+name|initUGI
 parameter_list|(
 name|Configuration
 name|conf
@@ -1254,35 +1301,6 @@ name|HadoopConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// give the configuration on how to translate Kerberos names
-try|try
-block|{
-name|KerberosName
-operator|.
-name|setConfiguration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"Problem with Kerberos auth_to_local name "
-operator|+
-literal|"configuration"
-argument_list|,
-name|ioe
-argument_list|)
-throw|;
-block|}
 name|isInitialized
 operator|=
 literal|true
