@@ -506,6 +506,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
@@ -704,6 +706,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 for|for
@@ -1420,6 +1424,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1706,6 +1712,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1821,6 +1829,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1965,6 +1975,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2068,6 +2080,8 @@ argument_list|,
 name|MIN_SLEEP_TIME
 operator|/
 literal|2
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2117,6 +2131,8 @@ operator|*
 name|PING_INTERVAL
 operator|+
 name|MIN_SLEEP_TIME
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
