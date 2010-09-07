@@ -20,11 +20,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
+name|io
 operator|.
-name|reflect
-operator|.
-name|Method
+name|IOException
 import|;
 end_import
 
@@ -32,9 +30,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|lang
 operator|.
-name|IOException
+name|reflect
+operator|.
+name|Method
 import|;
 end_import
 
@@ -55,6 +55,34 @@ operator|.
 name|net
 operator|.
 name|SocketFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -104,26 +132,17 @@ name|TokenIdentifier
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
 begin_comment
 comment|/** An RPC implementation. */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|interface|RpcEngine
+specifier|public
 interface|interface
 name|RpcEngine
 block|{

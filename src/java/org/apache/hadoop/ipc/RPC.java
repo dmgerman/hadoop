@@ -383,8 +383,9 @@ name|ENGINE_PROP
 init|=
 literal|"rpc.engine"
 decl_stmt|;
-comment|// set a protocol to use a non-default RpcEngine
+comment|/**    * Set a protocol to use a non-default RpcEngine.    * @param conf configuration to use    * @param protocol the protocol interface    * @param engine the RpcEngine impl    */
 DECL|method|setProtocolEngine (Configuration conf, Class protocol, Class engine)
+specifier|public
 specifier|static
 name|void
 name|setProtocolEngine

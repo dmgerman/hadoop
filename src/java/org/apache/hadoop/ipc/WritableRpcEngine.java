@@ -279,7 +279,12 @@ comment|/** An RpcEngine implementation for Writable data. */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|WritableRpcEngine
+specifier|public
 class|class
 name|WritableRpcEngine
 implements|implements
