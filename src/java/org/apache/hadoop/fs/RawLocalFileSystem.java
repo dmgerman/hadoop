@@ -655,10 +655,12 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|markSupport ()
+annotation|@
+name|Override
+DECL|method|markSupported ()
 specifier|public
 name|boolean
-name|markSupport
+name|markSupported
 parameter_list|()
 block|{
 return|return
