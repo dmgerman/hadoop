@@ -132,6 +132,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|WritableFactories
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -165,6 +193,36 @@ name|AccessControlList
 implements|implements
 name|Writable
 block|{
+static|static
+block|{
+comment|// register a ctor
+name|WritableFactories
+operator|.
+name|setFactory
+argument_list|(
+name|AccessControlList
+operator|.
+name|class
+argument_list|,
+operator|new
+name|WritableFactory
+argument_list|()
+block|{
+specifier|public
+name|Writable
+name|newInstance
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AccessControlList
+argument_list|()
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Indicates an ACL string that represents access to all users
 DECL|field|WILDCARD_ACL_VALUE
 specifier|public
@@ -208,6 +266,12 @@ specifier|private
 name|boolean
 name|allAllowed
 decl_stmt|;
+comment|/**    * This constructor exists primarily for AccessControlList to be Writable.    */
+DECL|method|AccessControlList ()
+specifier|public
+name|AccessControlList
+parameter_list|()
+block|{   }
 comment|/**    * Construct a new ACL from a String representation of the same.    *     * The String is a a comma separated list of users and groups.    * The user list comes first and is separated by a space followed     * by the group list. For e.g. "user1,user2 group1,group2"    *     * @param aclString String representation of the ACL    */
 DECL|method|AccessControlList (String aclString)
 specifier|public
