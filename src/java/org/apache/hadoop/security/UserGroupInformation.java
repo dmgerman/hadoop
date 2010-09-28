@@ -2383,46 +2383,8 @@ return|return
 name|isKeytab
 return|;
 block|}
-comment|/**Spawn a thread to do periodic renewals of kerberos credentials*/
-DECL|method|spawnAutoRenewalThreadForUserCreds ()
-specifier|private
-name|void
-name|spawnAutoRenewalThreadForUserCreds
-parameter_list|()
-block|{
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-comment|//spawn thread only if we have kerb credentials
-if|if
-condition|(
-name|user
-operator|.
-name|getAuthenticationMethod
-argument_list|()
-operator|==
-name|AuthenticationMethod
-operator|.
-name|KERBEROS
-operator|&&
-operator|!
-name|isKeytab
-condition|)
-block|{
-name|Thread
-name|t
-init|=
-operator|new
-name|Thread
-argument_list|(
-operator|new
-name|Runnable
-argument_list|()
-block|{
-comment|/**            * Get the Kerberos TGT            * @return the user's TGT or null if none was found            */
+comment|/**    * Get the Kerberos TGT    * @return the user's TGT or null if none was found    */
+DECL|method|getTGT ()
 specifier|private
 name|KerberosTicket
 name|getTGT
@@ -2488,6 +2450,7 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|getRefreshTime (KerberosTicket tgt)
 specifier|private
 name|long
 name|getRefreshTime
@@ -2535,6 +2498,45 @@ name|TICKET_RENEW_WINDOW
 argument_list|)
 return|;
 block|}
+comment|/**Spawn a thread to do periodic renewals of kerberos credentials*/
+DECL|method|spawnAutoRenewalThreadForUserCreds ()
+specifier|private
+name|void
+name|spawnAutoRenewalThreadForUserCreds
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+comment|//spawn thread only if we have kerb credentials
+if|if
+condition|(
+name|user
+operator|.
+name|getAuthenticationMethod
+argument_list|()
+operator|==
+name|AuthenticationMethod
+operator|.
+name|KERBEROS
+operator|&&
+operator|!
+name|isKeytab
+condition|)
+block|{
+name|Thread
+name|t
+init|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
 specifier|public
 name|void
 name|run
@@ -2966,6 +2968,37 @@ operator|!
 name|isKeytab
 condition|)
 return|return;
+name|KerberosTicket
+name|tgt
+init|=
+name|getTGT
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|tgt
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+comment|//Return if TGT is valid and is not going to expire soon.
+if|if
+condition|(
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|<
+name|getRefreshTime
+argument_list|(
+name|tgt
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 name|LoginContext
 name|login
 init|=
@@ -2999,17 +3032,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|hasSufficientTimeElapsed
-argument_list|(
-name|now
-argument_list|)
-condition|)
-block|{
-return|return;
-block|}
 name|long
 name|start
 init|=
@@ -3035,16 +3057,23 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//clear up the kerberos state. But the tokens are not cleared! As per
-comment|//the Java kerberos login module code, only the kerberos credentials
-comment|//are cleared
+synchronized|synchronized
+init|(
+name|UserGroupInformation
+operator|.
+name|class
+init|)
+block|{
+comment|// clear up the kerberos state. But the tokens are not cleared! As per
+comment|// the Java kerberos login module code, only the kerberos credentials
+comment|// are cleared
 name|login
 operator|.
 name|logout
 argument_list|()
 expr_stmt|;
-comment|//login and also update the subject field of this instance to
-comment|//have the new credentials (pass it to the LoginContext constructor)
+comment|// login and also update the subject field of this instance to
+comment|// have the new credentials (pass it to the LoginContext constructor)
 name|login
 operator|=
 operator|new
@@ -3098,6 +3127,7 @@ argument_list|(
 name|login
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
