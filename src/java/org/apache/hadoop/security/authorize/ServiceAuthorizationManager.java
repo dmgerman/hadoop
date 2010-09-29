@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -240,7 +250,6 @@ argument_list|)
 decl_stmt|;
 DECL|field|protocolToAcl
 specifier|private
-specifier|static
 name|Map
 argument_list|<
 name|Class
@@ -318,7 +327,6 @@ decl_stmt|;
 comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @param conf configuration to use    * @param hostname fully qualified domain name of the client    * @throws AuthorizationException on authorization failure    */
 DECL|method|authorize (UserGroupInformation user, Class<?> protocol, Configuration conf, String hostname )
 specifier|public
-specifier|static
 name|void
 name|authorize
 parameter_list|(
@@ -632,7 +640,6 @@ expr_stmt|;
 block|}
 DECL|method|refresh (Configuration conf, PolicyProvider provider)
 specifier|public
-specifier|static
 specifier|synchronized
 name|void
 name|refresh
@@ -763,6 +770,25 @@ name|protocolToAcl
 operator|=
 name|newAcls
 expr_stmt|;
+block|}
+comment|// Package-protected for use in tests.
+DECL|method|getProtocolsWithAcls ()
+name|Set
+argument_list|<
+name|Class
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|getProtocolsWithAcls
+parameter_list|()
+block|{
+return|return
+name|protocolToAcl
+operator|.
+name|keySet
+argument_list|()
+return|;
 block|}
 block|}
 end_class
