@@ -248,7 +248,7 @@ argument_list|(
 name|comparator
 argument_list|)
 argument_list|,
-name|keyClass
+name|valueClass
 argument_list|(
 name|NullWritable
 operator|.
