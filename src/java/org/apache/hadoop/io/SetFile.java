@@ -255,7 +255,7 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)

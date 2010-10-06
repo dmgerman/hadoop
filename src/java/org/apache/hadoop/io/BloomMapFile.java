@@ -602,13 +602,10 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
-argument_list|)
 argument_list|,
-name|compressionCodec
-argument_list|(
 name|codec
 argument_list|)
 argument_list|,
@@ -674,7 +671,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -738,7 +735,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -798,13 +795,10 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
-argument_list|)
 argument_list|,
-name|compressionCodec
-argument_list|(
 name|codec
 argument_list|)
 argument_list|,
@@ -865,7 +859,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -924,7 +918,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)

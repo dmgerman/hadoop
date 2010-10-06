@@ -525,7 +525,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -596,13 +596,10 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
-argument_list|)
 argument_list|,
-name|compressionCodec
-argument_list|(
 name|codec
 argument_list|)
 argument_list|,
@@ -666,7 +663,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -770,7 +767,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -830,7 +827,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
@@ -898,13 +895,10 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
-argument_list|)
 argument_list|,
-name|compressionCodec
-argument_list|(
 name|codec
 argument_list|)
 argument_list|,
@@ -1066,16 +1060,16 @@ return|;
 block|}
 specifier|public
 specifier|static
-DECL|method|compressionType (CompressionType value)
+DECL|method|compression (CompressionType type)
 name|SequenceFile
 operator|.
 name|Writer
 operator|.
 name|Option
-name|compressionType
+name|compression
 parameter_list|(
 name|CompressionType
-name|value
+name|type
 parameter_list|)
 block|{
 return|return
@@ -1083,24 +1077,27 @@ name|SequenceFile
 operator|.
 name|Writer
 operator|.
-name|compressionType
+name|compression
 argument_list|(
-name|value
+name|type
 argument_list|)
 return|;
 block|}
 specifier|public
 specifier|static
-DECL|method|compressionCodec (CompressionCodec value)
+DECL|method|compression (CompressionType type, CompressionCodec codec)
 name|SequenceFile
 operator|.
 name|Writer
 operator|.
 name|Option
-name|compressionCodec
+name|compression
 parameter_list|(
+name|CompressionType
+name|type
+parameter_list|,
 name|CompressionCodec
-name|value
+name|codec
 parameter_list|)
 block|{
 return|return
@@ -1108,9 +1105,11 @@ name|SequenceFile
 operator|.
 name|Writer
 operator|.
-name|compressionCodec
+name|compression
 argument_list|(
-name|value
+name|type
+argument_list|,
+name|codec
 argument_list|)
 return|;
 block|}
@@ -1449,7 +1448,7 @@ name|SequenceFile
 operator|.
 name|Writer
 operator|.
-name|compressionType
+name|compression
 argument_list|(
 name|CompressionType
 operator|.

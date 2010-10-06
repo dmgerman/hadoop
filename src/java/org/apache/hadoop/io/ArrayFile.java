@@ -262,7 +262,7 @@ argument_list|(
 name|valClass
 argument_list|)
 argument_list|,
-name|compressionType
+name|compression
 argument_list|(
 name|compress
 argument_list|)
