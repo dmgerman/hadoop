@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertArrayEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -38,23 +74,25 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|apache
 operator|.
-name|TestCase
+name|hadoop
+operator|.
+name|test
+operator|.
+name|UnitTestcaseTimeLimit
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-operator|.
-name|assertArrayEquals
+name|Test
 import|;
 end_import
 
@@ -64,7 +102,7 @@ specifier|public
 class|class
 name|TestStringUtils
 extends|extends
-name|TestCase
+name|UnitTestcaseTimeLimit
 block|{
 DECL|field|NULL_STR
 specifier|final
@@ -147,6 +185,8 @@ name|ESCAPED_STR_WITH_BOTH2
 init|=
 literal|"\\,A\\\\\\,\\,B\\\\\\\\\\,"
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testEscapeString ()
 specifier|public
 name|void
@@ -228,6 +268,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSplit ()
 specifier|public
 name|void
@@ -485,6 +527,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSimpleSplit ()
 specifier|public
 name|void
@@ -547,6 +591,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testUnescapeString ()
 specifier|public
 name|void
@@ -697,6 +743,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTraditionalBinaryPrefix ()
 specifier|public
 name|void
@@ -817,6 +865,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testJoin ()
 specifier|public
 name|void
@@ -942,6 +992,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetTrimmedStrings ()
 specifier|public
 name|void
@@ -1071,6 +1123,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCamelize ()
 specifier|public
 name|void
