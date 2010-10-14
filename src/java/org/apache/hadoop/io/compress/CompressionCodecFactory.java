@@ -176,6 +176,19 @@ name|codecs
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * A map from class names to the codecs    */
+DECL|field|codecsByClassName
+specifier|private
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|CompressionCodec
+argument_list|>
+name|codecsByClassName
+init|=
+literal|null
+decl_stmt|;
 DECL|method|addCodec (CompressionCodec codec)
 specifier|private
 name|void
@@ -207,6 +220,21 @@ name|reverse
 argument_list|()
 operator|.
 name|toString
+argument_list|()
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codecsByClassName
+operator|.
+name|put
+argument_list|(
+name|codec
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
 argument_list|()
 argument_list|,
 name|codec
@@ -690,6 +718,17 @@ name|CompressionCodec
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|codecsByClassName
+operator|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|CompressionCodec
+argument_list|>
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|Class
@@ -878,6 +917,36 @@ block|}
 block|}
 return|return
 name|result
+return|;
+block|}
+comment|/**    * Find the relevant compression codec for the codec's canonical class name.    * @param classname the canonical class name of the codec    * @return the codec object    */
+DECL|method|getCodecByClassName (String classname)
+specifier|public
+name|CompressionCodec
+name|getCodecByClassName
+parameter_list|(
+name|String
+name|classname
+parameter_list|)
+block|{
+if|if
+condition|(
+name|codecsByClassName
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|codecsByClassName
+operator|.
+name|get
+argument_list|(
+name|classname
+argument_list|)
 return|;
 block|}
 comment|/**    * Removes a suffix from a filename, if it has it.    * @param filename the filename to strip    * @param suffix the suffix to remove    * @return the shortened filename    */
