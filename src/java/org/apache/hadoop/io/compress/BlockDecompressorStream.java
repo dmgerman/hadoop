@@ -225,24 +225,6 @@ name|noUncompressedBytes
 operator|=
 literal|0
 expr_stmt|;
-comment|// EOF if originalBlockSize is 0
-comment|// This will occur only when decompressing previous compressed empty file
-if|if
-condition|(
-name|originalBlockSize
-operator|==
-literal|0
-condition|)
-block|{
-name|eof
-operator|=
-literal|true
-expr_stmt|;
-return|return
-operator|-
-literal|1
-return|;
-block|}
 block|}
 name|int
 name|n
