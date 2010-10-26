@@ -1860,6 +1860,15 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
+name|KEYTAB_KERBEROS_OPTIONS
+operator|.
+name|put
+argument_list|(
+literal|"refreshKrb5Config"
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|field|KEYTAB_KERBEROS_LOGIN
 specifier|private
