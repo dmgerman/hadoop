@@ -958,7 +958,7 @@ return|return
 name|name
 return|;
 block|}
-comment|/**    * Get the local file syste    * @param conf the configuration to configure the file system with    * @return a LocalFileSystem    */
+comment|/**    * Get the local file system.    * @param conf the configuration to configure the file system with    * @return a LocalFileSystem    */
 DECL|method|getLocal (Configuration conf)
 specifier|public
 specifier|static
