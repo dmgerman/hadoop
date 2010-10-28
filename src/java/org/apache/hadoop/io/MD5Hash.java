@@ -397,6 +397,21 @@ name|length
 argument_list|)
 return|;
 block|}
+comment|/**    * Create a thread local MD5 digester    */
+DECL|method|getDigester ()
+specifier|public
+specifier|static
+name|MessageDigest
+name|getDigester
+parameter_list|()
+block|{
+return|return
+name|DIGESTER_FACTORY
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 comment|/** Construct a hash value for the content from the InputStream. */
 DECL|method|digest (InputStream in)
 specifier|public
@@ -427,9 +442,7 @@ specifier|final
 name|MessageDigest
 name|digester
 init|=
-name|DIGESTER_FACTORY
-operator|.
-name|get
+name|getDigester
 argument_list|()
 decl_stmt|;
 for|for
@@ -501,9 +514,7 @@ decl_stmt|;
 name|MessageDigest
 name|digester
 init|=
-name|DIGESTER_FACTORY
-operator|.
-name|get
+name|getDigester
 argument_list|()
 decl_stmt|;
 name|digester
