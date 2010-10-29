@@ -1669,6 +1669,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|setConfiguration
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|String
