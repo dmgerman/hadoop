@@ -3467,7 +3467,16 @@ decl_stmt|;
 name|int
 name|indexInterval
 init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|Writer
+operator|.
+name|INDEX_INTERVAL
+argument_list|,
 literal|128
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
