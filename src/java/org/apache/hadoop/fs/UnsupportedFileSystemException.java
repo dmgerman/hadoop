@@ -85,6 +85,7 @@ literal|1L
 decl_stmt|;
 comment|/**    * Constructs exception with the specified detail message.     * @param message exception message.    */
 DECL|method|UnsupportedFileSystemException (final String message)
+specifier|public
 name|UnsupportedFileSystemException
 parameter_list|(
 specifier|final

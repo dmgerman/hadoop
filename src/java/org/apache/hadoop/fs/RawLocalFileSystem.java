@@ -285,6 +285,40 @@ name|getInitialWorkingDirectory
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|makeAbsolute (Path f)
+specifier|private
+name|Path
+name|makeAbsolute
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+if|if
+condition|(
+name|f
+operator|.
+name|isAbsolute
+argument_list|()
+condition|)
+block|{
+return|return
+name|f
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|workingDir
+argument_list|,
+name|f
+argument_list|)
+return|;
+block|}
+block|}
 comment|/** Convert a path to a File. */
 DECL|method|pathToFile (Path path)
 specifier|public
@@ -1999,7 +2033,15 @@ parameter_list|)
 block|{
 name|workingDir
 operator|=
+name|makeAbsolute
+argument_list|(
 name|newDir
+argument_list|)
+expr_stmt|;
+name|checkPath
+argument_list|(
+name|workingDir
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

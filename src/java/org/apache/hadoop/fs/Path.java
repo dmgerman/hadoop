@@ -967,6 +967,34 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Is an absolute path (ie a slash relative path part)    *  AND  a scheme is null AND  authority is null.    */
+DECL|method|isAbsoluteAndSchemeAuthorityNull ()
+specifier|public
+name|boolean
+name|isAbsoluteAndSchemeAuthorityNull
+parameter_list|()
+block|{
+return|return
+operator|(
+name|isUriPathAbsolute
+argument_list|()
+operator|&&
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+operator|==
+literal|null
+operator|&&
+name|uri
+operator|.
+name|getAuthority
+argument_list|()
+operator|==
+literal|null
+operator|)
+return|;
+block|}
 comment|/**    *  True if the path component (i.e. directory) of this URI is absolute.    */
 DECL|method|isUriPathAbsolute ()
 specifier|public
