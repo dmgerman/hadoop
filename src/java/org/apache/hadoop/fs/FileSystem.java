@@ -560,6 +560,44 @@ name|Path
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * This method adds a file system for testing so that we can find it later. It    * is only for testing.    * @param uri the uri to store it under    * @param conf the configuration to store it under    * @param fs the file system to store    * @throws IOException    */
+DECL|method|addFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
+specifier|static
+name|void
+name|addFileSystemForTesting
+parameter_list|(
+name|URI
+name|uri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CACHE
+operator|.
+name|map
+operator|.
+name|put
+argument_list|(
+operator|new
+name|Cache
+operator|.
+name|Key
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+argument_list|,
+name|fs
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get a filesystem instance based on the uri, the passed    * configuration and the user    * @param uri    * @param conf    * @param user    * @return the filesystem instance    * @throws IOException    * @throws InterruptedException    */
 DECL|method|get (final URI uri, final Configuration conf, final String user)
 specifier|public
