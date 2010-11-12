@@ -221,7 +221,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getUriDefaultPort ()
-specifier|protected
+specifier|public
 name|int
 name|getUriDefaultPort
 parameter_list|()
@@ -235,7 +235,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getServerDefaults ()
-specifier|protected
+specifier|public
 name|FsServerDefaults
 name|getServerDefaults
 parameter_list|()

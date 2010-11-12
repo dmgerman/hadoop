@@ -112,16 +112,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -871,7 +861,7 @@ block|}
 comment|/**    * Protected Static Factory methods for getting a FileContexts    * that take a AbstractFileSystem as input. To be used for testing.    */
 comment|/**    * Create a FileContext with specified FS as default using the specified    * config.    *     * @param defFS    * @param aConf    * @return new FileContext with specifed FS as default.    */
 DECL|method|getFileContext (final AbstractFileSystem defFS, final Configuration aConf)
-specifier|protected
+specifier|public
 specifier|static
 name|FileContext
 name|getFileContext
@@ -1104,7 +1094,7 @@ operator|.
 name|Unstable
 comment|/* return type will change to AFS once                                   HADOOP-6223 is completed */
 DECL|method|getDefaultFileSystem ()
-specifier|protected
+specifier|public
 name|AbstractFileSystem
 name|getDefaultFileSystem
 parameter_list|()
@@ -1113,7 +1103,7 @@ return|return
 name|defaultFS
 return|;
 block|}
-comment|/**    * Set the working directory for wd-relative names (such a "foo/bar").    * @param newWDir    * @throws IOException    *     * newWdir can be one of     *     - relative path:  "foo/bar";    *     - absolute without scheme: "/foo/bar"    *     - fully qualified with scheme: "xx://auth/foo/bar"    *  Illegal WDs:    *      - relative with scheme: "xx:foo/bar"     */
+comment|/**    * Set the working directory for wd-relative names (such a "foo/bar"). Working    * directory feature is provided by simply prefixing relative names with the    * working dir. Note this is different from Unix where the wd is actually set    * to the inode. Hence setWorkingDir does not follow symlinks etc. This works    * better in a distributed environment that has multiple independent roots.    * {@link #getWorkingDirectory()} should return what setWorkingDir() set.    *     * @param newWDir new working directory    * @throws IOException     *<br>    *           NewWdir can be one of:    *<ul>    *<li>relative path: "foo/bar";</li>    *<li>absolute without scheme: "/foo/bar"</li>    *<li>fully qualified with scheme: "xx://auth/foo/bar"</li>    *</ul>    *<br>    *           Illegal WDs:    *<ul>    *<li>relative with scheme: "xx:foo/bar"</li>    *<li>non existent directory</li>    *</ul>    */
 DECL|method|setWorkingDirectory (final Path newWDir)
 specifier|public
 name|void
@@ -1136,15 +1126,12 @@ specifier|final
 name|Path
 name|newWorkingDir
 init|=
-name|resolve
-argument_list|(
 operator|new
 name|Path
 argument_list|(
 name|workingDir
 argument_list|,
 name|newWDir
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|FileStatus

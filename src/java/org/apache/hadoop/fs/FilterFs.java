@@ -243,7 +243,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getStatistics ()
-specifier|protected
+specifier|public
 name|Statistics
 name|getStatistics
 parameter_list|()
@@ -257,8 +257,28 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|makeQualified (Path path)
+specifier|public
+name|Path
+name|makeQualified
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+name|myFs
+operator|.
+name|makeQualified
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getInitialWorkingDirectory ()
-specifier|protected
+specifier|public
 name|Path
 name|getInitialWorkingDirectory
 parameter_list|()
@@ -273,7 +293,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getHomeDirectory ()
-specifier|protected
+specifier|public
 name|Path
 name|getHomeDirectory
 parameter_list|()
@@ -288,7 +308,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|createInternal (Path f, EnumSet<CreateFlag> flag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
-specifier|protected
+specifier|public
 name|FSDataOutputStream
 name|createInternal
 parameter_list|(
@@ -360,7 +380,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|delete (Path f, boolean recursive)
-specifier|protected
+specifier|public
 name|boolean
 name|delete
 parameter_list|(
@@ -394,7 +414,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFileBlockLocations (Path f, long start, long len)
-specifier|protected
+specifier|public
 name|BlockLocation
 index|[]
 name|getFileBlockLocations
@@ -434,7 +454,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFileChecksum (Path f)
-specifier|protected
+specifier|public
 name|FileChecksum
 name|getFileChecksum
 parameter_list|(
@@ -463,7 +483,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFileStatus (Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 name|getFileStatus
 parameter_list|(
@@ -492,7 +512,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFileLinkStatus (final Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 name|getFileLinkStatus
 parameter_list|(
@@ -522,7 +542,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFsStatus (final Path f)
-specifier|protected
+specifier|public
 name|FsStatus
 name|getFsStatus
 parameter_list|(
@@ -551,7 +571,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getFsStatus ()
-specifier|protected
+specifier|public
 name|FsStatus
 name|getFsStatus
 parameter_list|()
@@ -568,7 +588,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getServerDefaults ()
-specifier|protected
+specifier|public
 name|FsServerDefaults
 name|getServerDefaults
 parameter_list|()
@@ -585,7 +605,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getUriDefaultPort ()
-specifier|protected
+specifier|public
 name|int
 name|getUriDefaultPort
 parameter_list|()
@@ -600,7 +620,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getUri ()
-specifier|protected
+specifier|public
 name|URI
 name|getUri
 parameter_list|()
@@ -615,7 +635,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|checkPath (Path path)
-specifier|protected
+specifier|public
 name|void
 name|checkPath
 parameter_list|(
@@ -634,7 +654,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getUriPath (final Path p)
-specifier|protected
+specifier|public
 name|String
 name|getUriPath
 parameter_list|(
@@ -655,7 +675,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|listStatus (Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 index|[]
 name|listStatus
@@ -685,7 +705,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|mkdir (Path dir, FsPermission permission, boolean createParent)
-specifier|protected
+specifier|public
 name|void
 name|mkdir
 parameter_list|(
@@ -723,7 +743,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|open (final Path f)
-specifier|protected
+specifier|public
 name|FSDataInputStream
 name|open
 parameter_list|(
@@ -757,7 +777,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
-specifier|protected
+specifier|public
 name|FSDataInputStream
 name|open
 parameter_list|(
@@ -791,7 +811,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|renameInternal (Path src, Path dst)
-specifier|protected
+specifier|public
 name|void
 name|renameInternal
 parameter_list|(
@@ -835,7 +855,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|renameInternal (final Path src, final Path dst, boolean overwrite)
-specifier|protected
+specifier|public
 name|void
 name|renameInternal
 parameter_list|(
@@ -878,7 +898,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setOwner (Path f, String username, String groupname)
-specifier|protected
+specifier|public
 name|void
 name|setOwner
 parameter_list|(
@@ -916,7 +936,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setPermission (Path f, FsPermission permission)
-specifier|protected
+specifier|public
 name|void
 name|setPermission
 parameter_list|(
@@ -949,7 +969,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setReplication (Path f, short replication)
-specifier|protected
+specifier|public
 name|boolean
 name|setReplication
 parameter_list|(
@@ -983,7 +1003,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setTimes (Path f, long mtime, long atime)
-specifier|protected
+specifier|public
 name|void
 name|setTimes
 parameter_list|(
@@ -1021,7 +1041,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setVerifyChecksum (boolean verifyChecksum)
-specifier|protected
+specifier|public
 name|void
 name|setVerifyChecksum
 parameter_list|(
@@ -1044,7 +1064,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|supportsSymlinks ()
-specifier|protected
+specifier|public
 name|boolean
 name|supportsSymlinks
 parameter_list|()
@@ -1059,7 +1079,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|createSymlink (Path target, Path link, boolean createParent)
-specifier|protected
+specifier|public
 name|void
 name|createSymlink
 parameter_list|(
@@ -1092,7 +1112,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getLinkTarget (final Path f)
-specifier|protected
+specifier|public
 name|Path
 name|getLinkTarget
 parameter_list|(

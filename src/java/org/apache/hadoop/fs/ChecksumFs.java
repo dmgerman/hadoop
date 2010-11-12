@@ -1796,7 +1796,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
-specifier|protected
+specifier|public
 name|FSDataOutputStream
 name|createInternal
 parameter_list|(
@@ -2268,7 +2268,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|listStatus (Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 index|[]
 name|listStatus

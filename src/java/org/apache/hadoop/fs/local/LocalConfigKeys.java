@@ -201,7 +201,7 @@ operator|*
 literal|1024
 decl_stmt|;
 DECL|method|getServerDefaults ()
-specifier|protected
+specifier|public
 specifier|static
 name|FsServerDefaults
 name|getServerDefaults

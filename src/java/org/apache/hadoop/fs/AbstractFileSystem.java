@@ -94,16 +94,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -466,7 +456,7 @@ name|URI
 name|myUri
 decl_stmt|;
 DECL|method|getStatistics ()
-specifier|protected
+specifier|public
 name|Statistics
 name|getStatistics
 parameter_list|()
@@ -669,7 +659,7 @@ return|;
 block|}
 comment|/**    * Create a file system instance for the specified uri using the conf. The    * conf is used to find the class name that implements the file system. The    * conf is also passed to the file system for its configuration.    *    * @param uri URI of the file system    * @param conf Configuration for the file system    *     * @return Returns the file system for the given URI    *    * @throws UnsupportedFileSystemException file system for<code>uri</code> is    *           not found    */
 DECL|method|createFileSystem (URI uri, Configuration conf)
-specifier|private
+specifier|public
 specifier|static
 name|AbstractFileSystem
 name|createFileSystem
@@ -741,7 +731,7 @@ return|;
 block|}
 comment|/**    * Get the statistics for a particular file system.    * @param cls the class to lookup    * @return a statistics object    */
 DECL|method|getStatistics (String scheme, Class<? extends AbstractFileSystem> cls)
-specifier|protected
+specifier|public
 specifier|static
 specifier|synchronized
 name|Statistics
@@ -799,7 +789,7 @@ name|result
 return|;
 block|}
 DECL|method|clearStatistics ()
-specifier|protected
+specifier|public
 specifier|static
 specifier|synchronized
 name|void
@@ -825,7 +815,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|printStatistics ()
-specifier|protected
+specifier|public
 specifier|static
 specifier|synchronized
 name|void
@@ -883,6 +873,7 @@ block|}
 block|}
 comment|/**    * The main factory method for creating a file system. Get a file system for    * the URI's scheme and authority. The scheme of the<code>uri</code>    * determines a configuration property name,    *<tt>fs.AbstractFileSystem.<i>scheme</i>.impl</tt> whose value names the    * AbstractFileSystem class.    *     * The entire URI and conf is passed to the AbstractFileSystem factory method.    *     * @param uri for the file system to be created.    * @param conf which is passed to the file system impl.    *     * @return file system for the given URI.    *     * @throws UnsupportedFileSystemException if the file system for    *<code>uri</code> is not supported.    */
 DECL|method|get (final URI uri, final Configuration conf)
+specifier|public
 specifier|static
 name|AbstractFileSystem
 name|get
@@ -909,7 +900,7 @@ return|;
 block|}
 comment|/**    * Constructor to be called by subclasses.    *     * @param uri for this file system.    * @param supportedScheme the scheme supported by the implementor    * @param authorityNeeded if true then theURI must have authority, if false    *          then the URI must have null authority.    *    * @throws URISyntaxException<code>uri</code> has syntax error    */
 DECL|method|AbstractFileSystem (final URI uri, final String supportedScheme, final boolean authorityNeeded, final int defaultPort)
-specifier|protected
+specifier|public
 name|AbstractFileSystem
 parameter_list|(
 specifier|final
@@ -955,8 +946,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Check that the Uri's scheme matches    * @param uri    * @param supportedScheme    */
 DECL|method|checkScheme (URI uri, String supportedScheme)
-specifier|protected
+specifier|public
 name|void
 name|checkScheme
 parameter_list|(
@@ -1167,7 +1159,7 @@ return|;
 block|}
 comment|/**    * The default port of this file system.    *     * @return default port of this file system's Uri scheme    *         A uri with a port of -1 => default port;    */
 DECL|method|getUriDefaultPort ()
-specifier|protected
+specifier|public
 specifier|abstract
 name|int
 name|getUriDefaultPort
@@ -1175,7 +1167,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Returns a URI whose scheme and authority identify this FileSystem.    *     * @return the uri of this file system.    */
 DECL|method|getUri ()
-specifier|protected
+specifier|public
 name|URI
 name|getUri
 parameter_list|()
@@ -1186,7 +1178,7 @@ return|;
 block|}
 comment|/**    * Check that a Path belongs to this FileSystem.    *     * If the path is fully qualified URI, then its scheme and authority    * matches that of this file system. Otherwise the path must be     * slash-relative name.    *     * @throws InvalidPathException if the path is invalid    */
 DECL|method|checkPath (Path path)
-specifier|protected
+specifier|public
 name|void
 name|checkPath
 parameter_list|(
@@ -1407,7 +1399,7 @@ block|}
 block|}
 comment|/**    * Get the path-part of a pathname. Checks that URI matches this file system    * and that the path-part is a valid name.    *     * @param p path    *     * @return path-part of the Path p    */
 DECL|method|getUriPath (final Path p)
-specifier|protected
+specifier|public
 name|String
 name|getUriPath
 parameter_list|(
@@ -1461,9 +1453,38 @@ return|return
 name|s
 return|;
 block|}
+comment|/**    * Make the path fully qualified to this file system    * @param path    * @return the qualified path    */
+DECL|method|makeQualified (Path path)
+specifier|public
+name|Path
+name|makeQualified
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+name|checkPath
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+name|path
+operator|.
+name|makeQualified
+argument_list|(
+name|this
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
 comment|/**    * Some file systems like LocalFileSystem have an initial workingDir    * that is used as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *     * @return the initial workingDir if the file system has such a notion    *         otherwise return a null.    */
 DECL|method|getInitialWorkingDirectory ()
-specifier|protected
+specifier|public
 name|Path
 name|getInitialWorkingDirectory
 parameter_list|()
@@ -1474,7 +1495,7 @@ return|;
 block|}
 comment|/**     * Return the current user's home directory in this file system.    * The default implementation returns "/user/$USER/".    *     * @return current user's home directory.    */
 DECL|method|getHomeDirectory ()
-specifier|protected
+specifier|public
 name|Path
 name|getHomeDirectory
 parameter_list|()
@@ -1504,7 +1525,7 @@ return|;
 block|}
 comment|/**    * Return a set of server default configuration values.    *     * @return server default configuration values    *     * @throws IOException an I/O error occurred    */
 DECL|method|getServerDefaults ()
-specifier|protected
+specifier|public
 specifier|abstract
 name|FsServerDefaults
 name|getServerDefaults
@@ -1514,7 +1535,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#create(Path, EnumSet, Options.CreateOpts...)} except    * that the Path f must be fully qualified and the permission is absolute    * (i.e. umask has been applied).    */
 DECL|method|create (final Path f, final EnumSet<CreateFlag> createFlag, Options.CreateOpts... opts)
-specifier|protected
+specifier|public
 specifier|final
 name|FSDataOutputStream
 name|create
@@ -2106,7 +2127,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link #create(Path, EnumSet, Options.CreateOpts...)} except that the opts    * have been declared explicitly.    */
 DECL|method|createInternal (Path f, EnumSet<CreateFlag> flag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
-specifier|protected
+specifier|public
 specifier|abstract
 name|FSDataOutputStream
 name|createInternal
@@ -2158,7 +2179,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#mkdir(Path, FsPermission, boolean)} except that the Path    * f must be fully qualified and the permission is absolute (i.e.     * umask has been applied).    */
 DECL|method|mkdir (final Path dir, final FsPermission permission, final boolean createParent)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|mkdir
@@ -2188,7 +2209,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#delete(Path, boolean)} except that Path f must be for    * this file system.    */
 DECL|method|delete (final Path f, final boolean recursive)
-specifier|protected
+specifier|public
 specifier|abstract
 name|boolean
 name|delete
@@ -2212,7 +2233,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path)} except that Path f must be for this    * file system.    */
 DECL|method|open (final Path f)
-specifier|protected
+specifier|public
 name|FSDataInputStream
 name|open
 parameter_list|(
@@ -2244,7 +2265,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#open(Path, int)} except that Path f must be for this    * file system.    */
 DECL|method|open (final Path f, int bufferSize)
-specifier|protected
+specifier|public
 specifier|abstract
 name|FSDataInputStream
 name|open
@@ -2267,7 +2288,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setReplication(Path, short)} except that Path f must be    * for this file system.    */
 DECL|method|setReplication (final Path f, final short replication)
-specifier|protected
+specifier|public
 specifier|abstract
 name|boolean
 name|setReplication
@@ -2291,7 +2312,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system.    */
 DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
-specifier|protected
+specifier|public
 specifier|final
 name|void
 name|rename
@@ -2372,7 +2393,7 @@ expr_stmt|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system and NO OVERWRITE is performed.    *     * File systems that do not have a built in overwrite need implement only this    * method and can take advantage of the default impl of the other    * {@link #renameInternal(Path, Path, boolean)}    */
 DECL|method|renameInternal (final Path src, final Path dst)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|renameInternal
@@ -2400,7 +2421,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path    * f must be for this file system.    */
 DECL|method|renameInternal (final Path src, final Path dst, boolean overwrite)
-specifier|protected
+specifier|public
 name|void
 name|renameInternal
 parameter_list|(
@@ -2677,7 +2698,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns true if the file system supports symlinks, false otherwise.    */
 DECL|method|supportsSymlinks ()
-specifier|protected
+specifier|public
 name|boolean
 name|supportsSymlinks
 parameter_list|()
@@ -2688,7 +2709,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of      * {@link FileContext#createSymlink(Path, Path, boolean)};    */
 DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
-specifier|protected
+specifier|public
 name|void
 name|createSymlink
 parameter_list|(
@@ -2719,7 +2740,7 @@ throw|;
 block|}
 comment|/**    * The specification of this method matches that of      * {@link FileContext#getLinkTarget(Path)};    */
 DECL|method|getLinkTarget (final Path f)
-specifier|protected
+specifier|public
 name|Path
 name|getLinkTarget
 parameter_list|(
@@ -2739,7 +2760,7 @@ throw|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setPermission(Path, FsPermission)} except that Path f    * must be for this file system.    */
 DECL|method|setPermission (final Path f, final FsPermission permission)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|setPermission
@@ -2763,7 +2784,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setOwner(Path, String, String)} except that Path f must    * be for this file system.    */
 DECL|method|setOwner (final Path f, final String username, final String groupname)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|setOwner
@@ -2791,7 +2812,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setTimes(Path, long, long)} except that Path f must be    * for this file system.    */
 DECL|method|setTimes (final Path f, final long mtime, final long atime)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|setTimes
@@ -2819,7 +2840,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileChecksum(Path)} except that Path f must be for    * this file system.    */
 DECL|method|getFileChecksum (final Path f)
-specifier|protected
+specifier|public
 specifier|abstract
 name|FileChecksum
 name|getFileChecksum
@@ -2839,7 +2860,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileStatus(Path)}     * except that an UnresolvedLinkException may be thrown if a symlink is     * encountered in the path.    */
 DECL|method|getFileStatus (final Path f)
-specifier|protected
+specifier|public
 specifier|abstract
 name|FileStatus
 name|getFileStatus
@@ -2859,7 +2880,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileLinkStatus(Path)}    * except that an UnresolvedLinkException may be thrown if a symlink is      * encountered in the path leading up to the final path component.    * If the file system does not support symlinks then the behavior is    * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.    */
 DECL|method|getFileLinkStatus (final Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 name|getFileLinkStatus
 parameter_list|(
@@ -2885,7 +2906,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFileBlockLocations(Path, long, long)} except that    * Path f must be for this file system.    */
 DECL|method|getFileBlockLocations (final Path f, final long start, final long len)
-specifier|protected
+specifier|public
 specifier|abstract
 name|BlockLocation
 index|[]
@@ -2914,7 +2935,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)} except that Path f must be for this    * file system.    */
 DECL|method|getFsStatus (final Path f)
-specifier|protected
+specifier|public
 name|FsStatus
 name|getFsStatus
 parameter_list|(
@@ -2939,7 +2960,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#getFsStatus(Path)}.    */
 DECL|method|getFsStatus ()
-specifier|protected
+specifier|public
 specifier|abstract
 name|FsStatus
 name|getFsStatus
@@ -2953,7 +2974,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#listStatus(Path)} except that Path f must be for this    * file system.    */
 DECL|method|listStatusIterator (final Path f)
-specifier|protected
+specifier|public
 name|RemoteIterator
 argument_list|<
 name|FileStatus
@@ -3045,7 +3066,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f     * must be for this file system.    */
 DECL|method|listLocatedStatus (final Path f)
-specifier|protected
+specifier|public
 name|RemoteIterator
 argument_list|<
 name|LocatedFileStatus
@@ -3182,7 +3203,7 @@ return|;
 block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext.Util#listStatus(Path)} except that Path f must be     * for this file system.    */
 DECL|method|listStatus (final Path f)
-specifier|protected
+specifier|public
 specifier|abstract
 name|FileStatus
 index|[]
@@ -3203,7 +3224,7 @@ name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this file system.    */
 DECL|method|setVerifyChecksum (final boolean verifyChecksum)
-specifier|protected
+specifier|public
 specifier|abstract
 name|void
 name|setVerifyChecksum

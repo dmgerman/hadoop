@@ -720,11 +720,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-comment|/** Test setWorkingDirectory resolves symlinks */
-DECL|method|testSetWDResolvesLinks ()
+comment|/** Test setWorkingDirectory not resolves symlinks */
+DECL|method|testSetWDNotResolvesLinks ()
 specifier|public
 name|void
-name|testSetWDResolvesLinks
+name|testSetWDNotResolvesLinks
 parameter_list|()
 throws|throws
 name|IOException
@@ -769,18 +769,6 @@ argument_list|(
 name|linkToDir
 argument_list|)
 expr_stmt|;
-comment|// Local file system does not resolve symlinks, others do.
-if|if
-condition|(
-literal|"file"
-operator|.
-name|equals
-argument_list|(
-name|getScheme
-argument_list|()
-argument_list|)
-condition|)
-block|{
 name|assertEquals
 argument_list|(
 name|linkToDir
@@ -797,26 +785,6 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|assertEquals
-argument_list|(
-name|dir
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|fc
-operator|.
-name|getWorkingDirectory
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test

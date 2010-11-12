@@ -231,6 +231,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|fc
+specifier|protected
 specifier|static
 name|FileContext
 name|fc

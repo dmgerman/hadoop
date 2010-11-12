@@ -298,7 +298,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getUriDefaultPort ()
-specifier|protected
+specifier|public
 name|int
 name|getUriDefaultPort
 parameter_list|()
@@ -312,7 +312,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getServerDefaults ()
-specifier|protected
+specifier|public
 name|FsServerDefaults
 name|getServerDefaults
 parameter_list|()
@@ -329,7 +329,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|supportsSymlinks ()
-specifier|protected
+specifier|public
 name|boolean
 name|supportsSymlinks
 parameter_list|()
@@ -341,7 +341,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|createSymlink (Path target, Path link, boolean createParent)
-specifier|protected
+specifier|public
 name|void
 name|createSymlink
 parameter_list|(
@@ -554,7 +554,7 @@ comment|/**    * Return a FileStatus representing the given path. If the path re
 annotation|@
 name|Override
 DECL|method|getFileLinkStatus (final Path f)
-specifier|protected
+specifier|public
 name|FileStatus
 name|getFileLinkStatus
 parameter_list|(
@@ -717,7 +717,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|getLinkTarget (Path f)
-specifier|protected
+specifier|public
 name|Path
 name|getLinkTarget
 parameter_list|(

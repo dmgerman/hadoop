@@ -97,6 +97,30 @@ name|FTP_SCHEME
 init|=
 literal|"ftp"
 decl_stmt|;
+comment|/**    * ViewFs: viewFs file system (ie the mount file system on client side)    */
+DECL|field|VIEWFS_URI
+specifier|public
+specifier|static
+specifier|final
+name|URI
+name|VIEWFS_URI
+init|=
+name|URI
+operator|.
+name|create
+argument_list|(
+literal|"viewfs:///"
+argument_list|)
+decl_stmt|;
+DECL|field|VIEWFS_SCHEME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|VIEWFS_SCHEME
+init|=
+literal|"viewfs"
+decl_stmt|;
 block|}
 end_interface
 
