@@ -120,7 +120,7 @@ specifier|final
 name|String
 name|BUILD_WEBAPPS_DIR
 init|=
-literal|"build/webapps"
+literal|"build/test/webapps"
 decl_stmt|;
 comment|/** name of the test webapp: {@value} */
 DECL|field|TEST
@@ -207,7 +207,7 @@ name|webapps
 operator|+
 name|File
 operator|.
-name|pathSeparator
+name|separatorChar
 operator|+
 name|TEST
 argument_list|)
@@ -221,31 +221,13 @@ name|exists
 argument_list|()
 condition|)
 block|{
-name|assertTrue
+name|fail
 argument_list|(
-literal|"Unable to create the test dir "
+literal|"Test webapp dir "
 operator|+
 name|testWebappDir
-argument_list|,
-name|testWebappDir
-operator|.
-name|mkdirs
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|assertTrue
-argument_list|(
-literal|"Not a directory "
 operator|+
-name|testWebappDir
-argument_list|,
-name|testWebappDir
-operator|.
-name|isDirectory
-argument_list|()
+literal|" missing"
 argument_list|)
 expr_stmt|;
 block|}
