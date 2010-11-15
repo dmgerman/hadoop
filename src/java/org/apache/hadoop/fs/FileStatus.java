@@ -468,6 +468,22 @@ name|path
 operator|=
 name|path
 expr_stmt|;
+comment|// The variables isdir and symlink indicate the type:
+comment|// 1. isdir implies directory, in which case symlink must be null.
+comment|// 2. !isdir implies a file or symlink, symlink != null implies a
+comment|//    symlink, otherwise it's a file.
+assert|assert
+operator|(
+name|isdir
+operator|&&
+name|symlink
+operator|==
+literal|null
+operator|)
+operator|||
+operator|!
+name|isdir
+assert|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
 DECL|method|getLen ()
