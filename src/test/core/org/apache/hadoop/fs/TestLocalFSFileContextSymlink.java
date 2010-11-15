@@ -108,6 +108,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileContextTestHelper
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -163,9 +179,16 @@ specifier|protected
 name|String
 name|testBaseDir1
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
-literal|"/tmp/test1"
+name|getAbsoluteTestRootDir
+argument_list|(
+name|fc
+argument_list|)
+operator|+
+literal|"/test1"
 return|;
 block|}
 DECL|method|testBaseDir2 ()
@@ -173,9 +196,16 @@ specifier|protected
 name|String
 name|testBaseDir2
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
-literal|"/tmp/test2"
+name|getAbsoluteTestRootDir
+argument_list|(
+name|fc
+argument_list|)
+operator|+
+literal|"/test2"
 return|;
 block|}
 DECL|method|testURI ()
@@ -769,7 +799,10 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-literal|"/tmp/test2/linkToFile"
+name|linkNew
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
