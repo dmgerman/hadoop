@@ -212,6 +212,11 @@ specifier|private
 name|long
 name|length
 decl_stmt|;
+DECL|field|corrupt
+specifier|private
+name|boolean
+name|corrupt
+decl_stmt|;
 comment|/**    * Default Constructor    */
 DECL|method|BlockLocation ()
 specifier|public
@@ -258,6 +263,43 @@ name|long
 name|length
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|names
+argument_list|,
+name|hosts
+argument_list|,
+name|offset
+argument_list|,
+name|length
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor with host, name, offset, length and corrupt flag    */
+DECL|method|BlockLocation (String[] names, String[] hosts, long offset, long length, boolean corrupt)
+specifier|public
+name|BlockLocation
+parameter_list|(
+name|String
+index|[]
+name|names
+parameter_list|,
+name|String
+index|[]
+name|hosts
+parameter_list|,
+name|long
+name|offset
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|boolean
+name|corrupt
+parameter_list|)
+block|{
 if|if
 condition|(
 name|names
@@ -333,6 +375,12 @@ name|String
 index|[
 literal|0
 index|]
+expr_stmt|;
+name|this
+operator|.
+name|corrupt
+operator|=
+name|corrupt
 expr_stmt|;
 block|}
 comment|/**    * Constructor with host, name, network topology, offset and length    */
@@ -365,9 +413,54 @@ name|names
 argument_list|,
 name|hosts
 argument_list|,
+name|topologyPaths
+argument_list|,
 name|offset
 argument_list|,
 name|length
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor with host, name, network topology, offset, length     * and corrupt flag    */
+DECL|method|BlockLocation (String[] names, String[] hosts, String[] topologyPaths, long offset, long length, boolean corrupt)
+specifier|public
+name|BlockLocation
+parameter_list|(
+name|String
+index|[]
+name|names
+parameter_list|,
+name|String
+index|[]
+name|hosts
+parameter_list|,
+name|String
+index|[]
+name|topologyPaths
+parameter_list|,
+name|long
+name|offset
+parameter_list|,
+name|long
+name|length
+parameter_list|,
+name|boolean
+name|corrupt
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|names
+argument_list|,
+name|hosts
+argument_list|,
+name|offset
+argument_list|,
+name|length
+argument_list|,
+name|corrupt
 argument_list|)
 expr_stmt|;
 if|if
@@ -550,6 +643,17 @@ return|return
 name|length
 return|;
 block|}
+comment|/**    * Get the corrupt flag.    */
+DECL|method|isCorrupt ()
+specifier|public
+name|boolean
+name|isCorrupt
+parameter_list|()
+block|{
+return|return
+name|corrupt
+return|;
+block|}
 comment|/**    * Set the start offset of file associated with this block    */
 DECL|method|setOffset (long offset)
 specifier|public
@@ -582,6 +686,23 @@ operator|.
 name|length
 operator|=
 name|length
+expr_stmt|;
+block|}
+comment|/**    * Set the corrupt flag.    */
+DECL|method|setCorrupt (boolean corrupt)
+specifier|public
+name|void
+name|setCorrupt
+parameter_list|(
+name|boolean
+name|corrupt
+parameter_list|)
+block|{
+name|this
+operator|.
+name|corrupt
+operator|=
+name|corrupt
 expr_stmt|;
 block|}
 comment|/**    * Set the hosts hosting this block    */
@@ -731,6 +852,13 @@ operator|.
 name|writeLong
 argument_list|(
 name|length
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+name|corrupt
 argument_list|)
 expr_stmt|;
 name|out
@@ -900,6 +1028,15 @@ operator|=
 name|in
 operator|.
 name|readLong
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|corrupt
+operator|=
+name|in
+operator|.
+name|readBoolean
 argument_list|()
 expr_stmt|;
 name|int
@@ -1109,6 +1246,19 @@ argument_list|(
 name|length
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|corrupt
+condition|)
+block|{
+name|result
+operator|.
+name|append
+argument_list|(
+literal|"(corrupt)"
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|String
