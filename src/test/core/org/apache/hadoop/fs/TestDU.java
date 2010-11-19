@@ -228,6 +228,7 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+specifier|final
 name|int
 name|writtenSize
 init|=
@@ -236,6 +237,16 @@ operator|*
 literal|1024
 decl_stmt|;
 comment|// writing 32K
+comment|// Allow for extra 4K on-disk slack for local file systems
+comment|// that may store additional file metadata (eg ext attrs).
+specifier|final
+name|int
+name|slack
+init|=
+literal|4
+operator|*
+literal|1024
+decl_stmt|;
 name|File
 name|file
 init|=
@@ -291,11 +302,21 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|writtenSize
+literal|"Invalid on-disk size"
 argument_list|,
 name|duSize
+operator|>=
+name|writtenSize
+operator|&&
+name|writtenSize
+operator|<=
+operator|(
+name|duSize
+operator|+
+name|slack
+operator|)
 argument_list|)
 expr_stmt|;
 comment|//test with 0 interval, will not launch thread
@@ -326,11 +347,21 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|writtenSize
+literal|"Invalid on-disk size"
 argument_list|,
 name|duSize
+operator|>=
+name|writtenSize
+operator|&&
+name|writtenSize
+operator|<=
+operator|(
+name|duSize
+operator|+
+name|slack
+operator|)
 argument_list|)
 expr_stmt|;
 comment|//test without launching thread
@@ -351,11 +382,21 @@ operator|.
 name|getUsed
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|writtenSize
+literal|"Invalid on-disk size"
 argument_list|,
 name|duSize
+operator|>=
+name|writtenSize
+operator|&&
+name|writtenSize
+operator|<=
+operator|(
+name|duSize
+operator|+
+name|slack
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
