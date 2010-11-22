@@ -237,6 +237,13 @@ name|uncompressedDirectBufLen
 init|=
 literal|0
 decl_stmt|;
+DECL|field|keepUncompressedBuf
+specifier|private
+name|boolean
+name|keepUncompressedBuf
+init|=
+literal|false
+decl_stmt|;
 DECL|field|compressedDirectBuf
 specifier|private
 name|Buffer
@@ -825,6 +832,10 @@ name|userBufLen
 operator|=
 name|len
 expr_stmt|;
+name|uncompressedDirectBufOff
+operator|=
+literal|0
+expr_stmt|;
 name|setInputFromSavedData
 argument_list|()
 expr_stmt|;
@@ -844,38 +855,28 @@ name|directBufferSize
 argument_list|)
 expr_stmt|;
 block|}
+comment|//copy enough data from userBuf to uncompressedDirectBuf
 DECL|method|setInputFromSavedData ()
 specifier|synchronized
 name|void
 name|setInputFromSavedData
 parameter_list|()
 block|{
-name|uncompressedDirectBufOff
-operator|=
-literal|0
-expr_stmt|;
-name|uncompressedDirectBufLen
-operator|=
+name|int
+name|len
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
 name|userBufLen
-expr_stmt|;
-if|if
-condition|(
-name|uncompressedDirectBufLen
-operator|>
-name|directBufferSize
-condition|)
-block|{
-name|uncompressedDirectBufLen
-operator|=
-name|directBufferSize
-expr_stmt|;
-block|}
-comment|// Reinitialize zlib's input direct buffer
+argument_list|,
 name|uncompressedDirectBuf
 operator|.
-name|rewind
+name|remaining
 argument_list|()
-expr_stmt|;
+argument_list|)
+decl_stmt|;
 operator|(
 operator|(
 name|ByteBuffer
@@ -889,17 +890,23 @@ name|userBuf
 argument_list|,
 name|userBufOff
 argument_list|,
-name|uncompressedDirectBufLen
+name|len
 argument_list|)
-expr_stmt|;
-comment|// Note how much data is being fed to zlib
-name|userBufOff
-operator|+=
-name|uncompressedDirectBufLen
 expr_stmt|;
 name|userBufLen
 operator|-=
+name|len
+expr_stmt|;
+name|userBufOff
+operator|+=
+name|len
+expr_stmt|;
 name|uncompressedDirectBufLen
+operator|=
+name|uncompressedDirectBuf
+operator|.
+name|position
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|setDictionary (byte[] b, int off, int len)
@@ -996,10 +1003,25 @@ literal|false
 return|;
 block|}
 comment|// Check if zlib has consumed all input
+comment|// compress should be invoked if keepUncompressedBuf true
 if|if
 condition|(
+name|keepUncompressedBuf
+operator|&&
 name|uncompressedDirectBufLen
-operator|<=
+operator|>
+literal|0
+condition|)
+return|return
+literal|false
+return|;
+if|if
+condition|(
+name|uncompressedDirectBuf
+operator|.
+name|remaining
+argument_list|()
+operator|>
 literal|0
 condition|)
 block|{
@@ -1017,9 +1039,27 @@ return|;
 block|}
 else|else
 block|{
+comment|// copy enough data from userBuf to uncompressedDirectBuf
 name|setInputFromSavedData
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|uncompressedDirectBuf
+operator|.
+name|remaining
+argument_list|()
+operator|>
+literal|0
+condition|)
+comment|// uncompressedDirectBuf is not full
+return|return
+literal|true
+return|;
+else|else
+return|return
+literal|false
+return|;
 block|}
 block|}
 return|return
@@ -1194,6 +1234,42 @@ argument_list|(
 name|n
 argument_list|)
 expr_stmt|;
+comment|// Check if zlib consumed all input buffer
+comment|// set keepUncompressedBuf properly
+if|if
+condition|(
+name|uncompressedDirectBufLen
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// zlib consumed all input buffer
+name|keepUncompressedBuf
+operator|=
+literal|false
+expr_stmt|;
+name|uncompressedDirectBuf
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|uncompressedDirectBufOff
+operator|=
+literal|0
+expr_stmt|;
+name|uncompressedDirectBufLen
+operator|=
+literal|0
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// zlib did not consume all input buffer
+name|keepUncompressedBuf
+operator|=
+literal|true
+expr_stmt|;
+block|}
 comment|// Get atmost 'len' bytes
 name|n
 operator|=
@@ -1295,6 +1371,10 @@ operator|=
 name|uncompressedDirectBufLen
 operator|=
 literal|0
+expr_stmt|;
+name|keepUncompressedBuf
+operator|=
+literal|false
 expr_stmt|;
 name|compressedDirectBuf
 operator|.
