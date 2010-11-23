@@ -702,6 +702,34 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
+DECL|method|listCorruptFileBlocks (String path, String cookie)
+specifier|public
+name|CorruptFileBlocks
+name|listCorruptFileBlocks
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|cookie
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|myFs
+operator|.
+name|listCorruptFileBlocks
+argument_list|(
+name|path
+argument_list|,
+name|cookie
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|mkdir (Path dir, FsPermission permission, boolean createParent)

@@ -3798,6 +3798,37 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
+DECL|method|listCorruptFileBlocks (String path, String cookie)
+specifier|public
+name|CorruptFileBlocks
+name|listCorruptFileBlocks
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|cookie
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" does not support"
+operator|+
+literal|" listCorruptFileBlocks"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public

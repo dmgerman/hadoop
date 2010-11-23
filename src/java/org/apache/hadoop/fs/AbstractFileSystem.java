@@ -3222,6 +3222,37 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
+DECL|method|listCorruptFileBlocks (String path, String cookie)
+specifier|public
+name|CorruptFileBlocks
+name|listCorruptFileBlocks
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|cookie
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" does not support"
+operator|+
+literal|" listCorruptFileBlocks"
+argument_list|)
+throw|;
+block|}
 comment|/**    * The specification of this method matches that of    * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f    * must be for this file system.    */
 DECL|method|setVerifyChecksum (final boolean verifyChecksum)
 specifier|public
