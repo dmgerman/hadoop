@@ -2184,9 +2184,45 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Unset a previously set property.    */
+DECL|method|unset (String name)
+specifier|public
+specifier|synchronized
+name|void
+name|unset
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|name
+operator|=
+name|handleDeprecation
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|getOverlay
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|getProps
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Sets a property if it is currently unset.    * @param name the property name    * @param value the new value    */
 DECL|method|setIfUnset (String name, String value)
 specifier|public
+specifier|synchronized
 name|void
 name|setIfUnset
 parameter_list|(
