@@ -217,7 +217,7 @@ throws|,
 name|InterruptedException
 function_decl|;
 comment|/** Construct a server for a protocol implementation instance. */
-DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
 name|RPC
 operator|.
 name|Server
@@ -240,6 +240,12 @@ name|port
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
 parameter_list|,
 name|boolean
 name|verbose

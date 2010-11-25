@@ -7425,6 +7425,12 @@ name|paramClass
 argument_list|,
 name|handlerCount
 argument_list|,
+operator|-
+literal|1
+argument_list|,
+operator|-
+literal|1
+argument_list|,
 name|conf
 argument_list|,
 name|Integer
@@ -7438,13 +7444,13 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Constructs a server listening on the named port and address.  Parameters passed must    * be of the named class.  The<code>handlerCount</handlerCount> determines    * the number of handler threads that will be used to process calls.    *     */
+comment|/** Constructs a server listening on the named port and address.  Parameters passed must    * be of the named class.  The<code>handlerCount</handlerCount> determines    * the number of handler threads that will be used to process calls.    * If queueSizePerHandler or numReaders are not -1 they will be used instead of parameters    * from configuration. Otherwise the configuration will be picked up.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|Server (String bindAddress, int port, Class<? extends Writable> paramClass, int handlerCount, Configuration conf, String serverName, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|Server (String bindAddress, int port, Class<? extends Writable> paramClass, int handlerCount, int numReaders, int queueSizePerHandler, Configuration conf, String serverName, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|protected
 name|Server
 parameter_list|(
@@ -7464,6 +7470,12 @@ name|paramClass
 parameter_list|,
 name|int
 name|handlerCount
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
 parameter_list|,
 name|Configuration
 name|conf
@@ -7518,6 +7530,23 @@ name|socketSendBufferSize
 operator|=
 literal|0
 expr_stmt|;
+if|if
+condition|(
+name|queueSizePerHandler
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|maxQueueSize
+operator|=
+name|queueSizePerHandler
+expr_stmt|;
+block|}
+else|else
+block|{
 name|this
 operator|.
 name|maxQueueSize
@@ -7537,6 +7566,7 @@ operator|.
 name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|maxRespSize
@@ -7554,6 +7584,23 @@ operator|.
 name|IPC_SERVER_RPC_MAX_RESPONSE_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|numReaders
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|this
+operator|.
+name|readThreads
+operator|=
+name|numReaders
+expr_stmt|;
+block|}
+else|else
+block|{
 name|this
 operator|.
 name|readThreads
@@ -7571,6 +7618,7 @@ operator|.
 name|IPC_SERVER_RPC_READ_THREADS_DEFAULT
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|callQueue
@@ -8470,6 +8518,28 @@ name|callQueue
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+comment|/**    * The maximum size of the rpc call queue of this server.    * @return The maximum size of the rpc call queue.    */
+DECL|method|getMaxQueueSize ()
+specifier|public
+name|int
+name|getMaxQueueSize
+parameter_list|()
+block|{
+return|return
+name|maxQueueSize
+return|;
+block|}
+comment|/**    * The number of reader threads for this server.    * @return The number of reader threads.    */
+DECL|method|getNumReaders ()
+specifier|public
+name|int
+name|getNumReaders
+parameter_list|()
+block|{
+return|return
+name|readThreads
 return|;
 block|}
 comment|/**    * When the read or write buffer size is larger than this limit, i/o will be     * done in chunks of this size. Most RPC requests and responses would be    * be smaller.    */

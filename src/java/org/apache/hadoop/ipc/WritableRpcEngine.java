@@ -1485,7 +1485,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 name|Server
 name|getServer
@@ -1507,6 +1507,12 @@ name|port
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
 parameter_list|,
 name|boolean
 name|verbose
@@ -1538,6 +1544,10 @@ argument_list|,
 name|port
 argument_list|,
 name|numHandlers
+argument_list|,
+name|numReaders
+argument_list|,
+name|queueSizePerHandler
 argument_list|,
 name|verbose
 argument_list|,
@@ -1596,6 +1606,12 @@ name|bindAddress
 argument_list|,
 name|port
 argument_list|,
+literal|1
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+operator|-
 literal|1
 argument_list|,
 literal|false
@@ -1657,7 +1673,7 @@ index|]
 return|;
 block|}
 comment|/** Construct an RPC server.      * @param instance the instance whose methods will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      */
-DECL|method|Server (Object instance, Configuration conf, String bindAddress, int port, int numHandlers, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|Server (Object instance, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 name|Server
 parameter_list|(
@@ -1675,6 +1691,12 @@ name|port
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
 parameter_list|,
 name|boolean
 name|verbose
@@ -1701,6 +1723,10 @@ operator|.
 name|class
 argument_list|,
 name|numHandlers
+argument_list|,
+name|numReaders
+argument_list|,
+name|queueSizePerHandler
 argument_list|,
 name|conf
 argument_list|,

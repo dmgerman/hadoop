@@ -1176,7 +1176,7 @@ argument_list|()
 throw|;
 block|}
 comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class<?> iface, Object impl, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
+DECL|method|getServer (Class<?> iface, Object impl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager )
 specifier|public
 name|RPC
 operator|.
@@ -1200,6 +1200,12 @@ name|port
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|,
+name|int
+name|numReaders
+parameter_list|,
+name|int
+name|queueSizePerHandler
 parameter_list|,
 name|boolean
 name|verbose
@@ -1240,6 +1246,10 @@ argument_list|,
 name|port
 argument_list|,
 name|numHandlers
+argument_list|,
+name|numReaders
+argument_list|,
+name|queueSizePerHandler
 argument_list|,
 name|verbose
 argument_list|,
