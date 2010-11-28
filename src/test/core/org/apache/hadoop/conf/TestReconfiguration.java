@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -43,6 +33,18 @@ operator|.
 name|junit
 operator|.
 name|Before
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -71,8 +73,6 @@ DECL|class|TestReconfiguration
 specifier|public
 class|class
 name|TestReconfiguration
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf1
 specifier|private
@@ -255,6 +255,13 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+literal|"expected 3 changed properties but got "
+operator|+
+name|changes
+operator|.
+name|size
+argument_list|()
+argument_list|,
 name|changes
 operator|.
 name|size
@@ -416,6 +423,8 @@ block|}
 block|}
 name|assertTrue
 argument_list|(
+literal|"not all changes have been applied"
+argument_list|,
 name|changeFound
 operator|&&
 name|unsetFound
@@ -568,6 +577,10 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -586,6 +599,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP2
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -604,6 +621,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP3
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -622,6 +643,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP4
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -637,6 +662,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP5
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -652,6 +681,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|" should be reconfigurable "
+argument_list|,
 name|dummy
 operator|.
 name|isPropertyReconfigurable
@@ -662,6 +695,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP2
+operator|+
+literal|" should be reconfigurable "
+argument_list|,
 name|dummy
 operator|.
 name|isPropertyReconfigurable
@@ -672,6 +709,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|PROP3
+operator|+
+literal|" should not be reconfigurable "
+argument_list|,
 name|dummy
 operator|.
 name|isPropertyReconfigurable
@@ -682,6 +723,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP4
+operator|+
+literal|" should be reconfigurable "
+argument_list|,
 name|dummy
 operator|.
 name|isPropertyReconfigurable
@@ -692,6 +737,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|PROP5
+operator|+
+literal|" should not be reconfigurable "
+argument_list|,
 name|dummy
 operator|.
 name|isPropertyReconfigurable
@@ -720,6 +769,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|" set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -750,6 +803,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"received unexpected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -774,6 +829,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|"set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -801,6 +860,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"received unexpected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -825,6 +886,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|"set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -855,6 +920,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"received unexpected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -879,6 +946,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP4
+operator|+
+literal|"set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -906,6 +977,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"received unexpected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -930,6 +1003,10 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|PROP4
+operator|+
+literal|"set to wrong value "
+argument_list|,
 name|dummy
 operator|.
 name|getConf
@@ -960,6 +1037,8 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
+literal|"received unexpected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -996,6 +1075,8 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+literal|"did not receive expected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -1032,6 +1113,8 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+literal|"did not receive expected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -1068,6 +1151,8 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+literal|"did not receive expected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -1104,6 +1189,8 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+literal|"did not receive expected exception"
+argument_list|,
 name|exceptionCaught
 argument_list|)
 expr_stmt|;
@@ -1234,6 +1321,8 @@ block|}
 block|}
 name|assertFalse
 argument_list|(
+literal|"dummy thread should not be alive"
+argument_list|,
 name|dummyThread
 operator|.
 name|isAlive
@@ -1264,6 +1353,10 @@ comment|// do nothing
 block|}
 name|assertTrue
 argument_list|(
+name|PROP1
+operator|+
+literal|" is set to wrong value"
+argument_list|,
 name|dummy
 operator|.
 name|getConf
