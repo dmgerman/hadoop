@@ -407,7 +407,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Premeture EOF from inputStream"
+literal|"Premature EOF from inputStream"
 argument_list|)
 throw|;
 block|}
@@ -465,7 +465,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Premeture EOF from inputStream"
+literal|"Premature EOF from inputStream"
 argument_list|)
 throw|;
 block|}
