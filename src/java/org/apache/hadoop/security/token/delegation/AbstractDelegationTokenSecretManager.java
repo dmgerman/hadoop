@@ -446,7 +446,6 @@ block|}
 comment|/** should be called before this object is used */
 DECL|method|startThreads ()
 specifier|public
-specifier|synchronized
 name|void
 name|startThreads
 parameter_list|()
@@ -456,6 +455,11 @@ block|{
 name|updateCurrentKey
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|running
 operator|=
 literal|true
@@ -475,6 +479,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().    * */
 DECL|method|addKey (DelegationKey key)
