@@ -523,6 +523,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Return the number of valid bytes currently in the buffer.    */
+DECL|method|getBufferedDataSize ()
+specifier|protected
+specifier|synchronized
+name|int
+name|getBufferedDataSize
+parameter_list|()
+block|{
+return|return
+name|count
+return|;
+block|}
 comment|/** Generate checksum for the data chunk and output data chunk& checksum    * to the underlying output stream. If keep is true then keep the    * current checksum intact, do not reset it.    */
 DECL|method|writeChecksumChunk (byte b[], int off, int len, boolean keep)
 specifier|private
