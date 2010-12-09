@@ -526,16 +526,16 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|listCorruptFileBlocks (String path, String cookie)
+DECL|method|listCorruptFileBlocks (Path path)
 specifier|public
-name|CorruptFileBlocks
+name|RemoteIterator
+argument_list|<
+name|Path
+argument_list|>
 name|listCorruptFileBlocks
 parameter_list|(
-name|String
+name|Path
 name|path
-parameter_list|,
-name|String
-name|cookie
 parameter_list|)
 throws|throws
 name|IOException
@@ -546,8 +546,6 @@ operator|.
 name|listCorruptFileBlocks
 argument_list|(
 name|path
-argument_list|,
-name|cookie
 argument_list|)
 return|;
 block|}

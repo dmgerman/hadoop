@@ -3222,17 +3222,17 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
-DECL|method|listCorruptFileBlocks (String path, String cookie)
+comment|/**    * @return an iterator over the corrupt files under the given path    * (may contain duplicates if a file has more than one corrupt block)    * @throws IOException    */
+DECL|method|listCorruptFileBlocks (Path path)
 specifier|public
-name|CorruptFileBlocks
+name|RemoteIterator
+argument_list|<
+name|Path
+argument_list|>
 name|listCorruptFileBlocks
 parameter_list|(
-name|String
+name|Path
 name|path
-parameter_list|,
-name|String
-name|cookie
 parameter_list|)
 throws|throws
 name|IOException

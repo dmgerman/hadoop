@@ -3117,19 +3117,17 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * @return a list in which each entry describes a corrupt file/block    * @throws IOException    */
-DECL|method|listCorruptFileBlocks (final String path, final String cookie)
+comment|/**    * @return an iterator over the corrupt files under the given path    * (may contain duplicates if a file has more than one corrupt block)    * @throws IOException    */
+DECL|method|listCorruptFileBlocks (Path path)
 specifier|public
-name|CorruptFileBlocks
+name|RemoteIterator
+argument_list|<
+name|Path
+argument_list|>
 name|listCorruptFileBlocks
 parameter_list|(
-specifier|final
-name|String
+name|Path
 name|path
-parameter_list|,
-specifier|final
-name|String
-name|cookie
 parameter_list|)
 throws|throws
 name|IOException
@@ -3140,25 +3138,27 @@ name|absF
 init|=
 name|fixRelativePart
 argument_list|(
-operator|new
-name|Path
-argument_list|(
 name|path
-argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
 operator|new
 name|FSLinkResolver
 argument_list|<
-name|CorruptFileBlocks
+name|RemoteIterator
+argument_list|<
+name|Path
+argument_list|>
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|CorruptFileBlocks
+name|RemoteIterator
+argument_list|<
+name|Path
+argument_list|>
 name|next
 parameter_list|(
 specifier|final
@@ -3180,14 +3180,6 @@ operator|.
 name|listCorruptFileBlocks
 argument_list|(
 name|p
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-argument_list|,
-name|cookie
 argument_list|)
 return|;
 block|}
