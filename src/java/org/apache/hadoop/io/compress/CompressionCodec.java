@@ -136,7 +136,7 @@ name|Compressor
 name|createCompressor
 parameter_list|()
 function_decl|;
-comment|/**    * Create a stream decompressor that will read from the given input stream.    *     * @param in the stream to read compressed bytes from    * @return a stream to read uncompressed bytes from    * @throws IOException    */
+comment|/**    * Create a {@link CompressionInputStream} that will read from the given    * input stream.    *     * @param in the stream to read compressed bytes from    * @return a stream to read uncompressed bytes from    * @throws IOException    */
 DECL|method|createInputStream (InputStream in)
 name|CompressionInputStream
 name|createInputStream
