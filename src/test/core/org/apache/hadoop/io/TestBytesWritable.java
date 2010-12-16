@@ -201,6 +201,21 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+comment|// ensure that copyBytes is exactly the right length
+name|assertEquals
+argument_list|(
+name|size
+operator|*
+literal|4
+argument_list|,
+name|buf
+operator|.
+name|copyBytes
+argument_list|()
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
 comment|// shrink the buffer
 name|buf
 operator|.
