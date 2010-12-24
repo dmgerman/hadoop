@@ -207,6 +207,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Returns list of groups for a user    *    * @param user get groups for this user    * @return list of groups for a given user    */
 annotation|@
 name|Override
 DECL|method|getGroups (String user)
@@ -229,6 +230,38 @@ argument_list|(
 name|user
 argument_list|)
 return|;
+block|}
+comment|/**    * Caches groups, no need to do that for this provider    */
+annotation|@
+name|Override
+DECL|method|cacheGroupsRefresh ()
+specifier|public
+name|void
+name|cacheGroupsRefresh
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// does nothing in this provider of user to groups mapping
+block|}
+comment|/**     * Adds groups to cache, no need to do that for this provider    *    * @param groups unused    */
+annotation|@
+name|Override
+DECL|method|cacheGroupsAdd (List<String> groups)
+specifier|public
+name|void
+name|cacheGroupsAdd
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|groups
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// does nothing in this provider of user to groups mapping
 block|}
 comment|/**     * Get the current user's group list from Unix by running the command 'groups'    * NOTE. For non-existing user it will return EMPTY list    * @param user user name    * @return the groups list that the<code>user</code> belongs to    * @throws IOException if encounter any error when running the command    */
 DECL|method|getUnixGroups (final String user)

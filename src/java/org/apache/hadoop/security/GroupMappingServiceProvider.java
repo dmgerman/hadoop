@@ -97,6 +97,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Refresh the cache of groups and user mapping    * @throws IOException    */
+DECL|method|cacheGroupsRefresh ()
+specifier|public
+name|void
+name|cacheGroupsRefresh
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Caches the group user information    * @param groups list of groups to add to cache    * @throws IOException    */
+DECL|method|cacheGroupsAdd (List<String> groups)
+specifier|public
+name|void
+name|cacheGroupsAdd
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|groups
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

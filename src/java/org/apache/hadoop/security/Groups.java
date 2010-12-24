@@ -451,12 +451,77 @@ argument_list|(
 literal|"clearing userToGroupsMap cache"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|impl
+operator|.
+name|cacheGroupsRefresh
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error refreshing groups cache"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|userToGroupsMap
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Add groups to cache    *    * @param groups list of groups to add to cache    */
+DECL|method|cacheGroupsAdd (List<String> groups)
+specifier|public
+name|void
+name|cacheGroupsAdd
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|groups
+parameter_list|)
+block|{
+try|try
+block|{
+name|impl
+operator|.
+name|cacheGroupsAdd
+argument_list|(
+name|groups
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error caching groups"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Class to hold the cached groups    */
 DECL|class|CachedGroups
 specifier|private
 specifier|static
@@ -476,6 +541,7 @@ name|String
 argument_list|>
 name|groups
 decl_stmt|;
+comment|/**      * Create and initialize group cache      */
 DECL|method|CachedGroups (List<String> groups)
 name|CachedGroups
 parameter_list|(
@@ -502,6 +568,7 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**      * Returns time of last cache update      *      * @return time of last cache update      */
 DECL|method|getTimestamp ()
 specifier|public
 name|long
@@ -512,6 +579,7 @@ return|return
 name|timestamp
 return|;
 block|}
+comment|/**      * Get list of cached groups      *      * @return cached groups      */
 DECL|method|getGroups ()
 specifier|public
 name|List
@@ -552,9 +620,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the groups being used to map user-to-groups.    * @param conf    * @return the groups being used to map user-to-groups.    */
-DECL|method|getUserToGroupsMappingService (Configuration conf)
+DECL|method|getUserToGroupsMappingService ( Configuration conf)
 specifier|public
 specifier|static
+specifier|synchronized
 name|Groups
 name|getUserToGroupsMappingService
 parameter_list|(

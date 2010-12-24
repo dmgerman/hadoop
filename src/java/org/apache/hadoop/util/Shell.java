@@ -273,6 +273,35 @@ name|user
 block|}
 return|;
 block|}
+comment|/** a Unix command to get a given netgroup's user list */
+DECL|method|getUsersForNetgroupCommand (final String netgroup)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getUsersForNetgroupCommand
+parameter_list|(
+specifier|final
+name|String
+name|netgroup
+parameter_list|)
+block|{
+comment|//'groups username' command return is non-consistent across different unixes
+return|return
+operator|new
+name|String
+index|[]
+block|{
+literal|"bash"
+block|,
+literal|"-c"
+block|,
+literal|"getent netgroup "
+operator|+
+name|netgroup
+block|}
+return|;
+block|}
 comment|/** a Unix command to set permission */
 DECL|field|SET_PERMISSION_COMMAND
 specifier|public
