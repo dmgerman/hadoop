@@ -2036,6 +2036,45 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the value of the<code>name</code> property as a trimmed<code>String</code>,     *<code>null</code> if no such property exists.     * If the key is deprecated, it returns the value of    * the first key which replaces the deprecated key and is not null    *     * Values are processed for<a href="#VariableExpansion">variable expansion</a>     * before being returned.     *     * @param name the property name.    * @return the value of the<code>name</code> or its replacing property,     *         or null if no such property exists.    */
+DECL|method|getTrimmed (String name)
+specifier|public
+name|String
+name|getTrimmed
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|String
+name|value
+init|=
+name|get
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|value
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|value
+operator|.
+name|trim
+argument_list|()
+return|;
+block|}
+block|}
 comment|/**    * Get the value of the<code>name</code> property, without doing    *<a href="#VariableExpansion">variable expansion</a>.If the key is     * deprecated, it returns the value of the first key which replaces     * the deprecated key and is not null.    *     * @param name the property name.    * @return the value of the<code>name</code> property or     *         its replacing property and null if no such property exists.    */
 DECL|method|getRaw (String name)
 specifier|public
@@ -2328,7 +2367,7 @@ block|{
 name|String
 name|valueString
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
@@ -2432,7 +2471,7 @@ block|{
 name|String
 name|valueString
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
@@ -2630,7 +2669,7 @@ block|{
 name|String
 name|valueString
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
@@ -2708,7 +2747,7 @@ block|{
 name|String
 name|valueString
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
@@ -3742,6 +3781,9 @@ expr_stmt|;
 block|}
 block|}
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|clazz
 init|=
 name|map
@@ -3819,7 +3861,7 @@ name|String
 index|[]
 name|classnames
 init|=
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|name
 argument_list|)
@@ -3925,7 +3967,7 @@ block|{
 name|String
 name|valueString
 init|=
-name|get
+name|getTrimmed
 argument_list|(
 name|name
 argument_list|)
