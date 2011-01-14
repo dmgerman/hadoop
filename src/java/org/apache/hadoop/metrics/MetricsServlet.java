@@ -602,18 +602,6 @@ condition|)
 block|{
 return|return;
 block|}
-name|PrintWriter
-name|out
-init|=
-operator|new
-name|PrintWriter
-argument_list|(
-name|response
-operator|.
-name|getOutputStream
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|String
 name|format
 init|=
@@ -648,6 +636,23 @@ name|format
 argument_list|)
 condition|)
 block|{
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|"application/json; charset=utf-8"
+argument_list|)
+expr_stmt|;
+name|PrintWriter
+name|out
+init|=
+name|response
+operator|.
+name|getWriter
+argument_list|()
+decl_stmt|;
+try|try
+block|{
 comment|// Uses Jetty's built-in JSON support to convert the map into JSON.
 name|out
 operator|.
@@ -667,7 +672,26 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 else|else
+block|{
+name|PrintWriter
+name|out
+init|=
+name|response
+operator|.
+name|getWriter
+argument_list|()
+decl_stmt|;
+try|try
 block|{
 name|printMap
 argument_list|(
@@ -680,11 +704,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|out
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Prints metrics data in a multi-line text form.    */
 DECL|method|printMap (PrintWriter out, Map<String, Map<String, List<TagsMetricsPair>>> map)

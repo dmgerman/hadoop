@@ -302,7 +302,7 @@ name|response
 operator|.
 name|setContentType
 argument_list|(
-literal|"text/xml"
+literal|"text/xml; charset=utf-8"
 argument_list|)
 expr_stmt|;
 block|}
@@ -321,21 +321,17 @@ name|response
 operator|.
 name|setContentType
 argument_list|(
-literal|"text/javascript"
+literal|"application/json; charset=utf-8"
 argument_list|)
 expr_stmt|;
 block|}
-name|OutputStreamWriter
+name|Writer
 name|out
 init|=
-operator|new
-name|OutputStreamWriter
-argument_list|(
 name|response
 operator|.
-name|getOutputStream
+name|getWriter
 argument_list|()
-argument_list|)
 decl_stmt|;
 try|try
 block|{

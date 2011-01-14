@@ -3729,19 +3729,10 @@ block|}
 name|PrintWriter
 name|out
 init|=
-operator|new
-name|PrintWriter
-argument_list|(
-name|HtmlQuoting
-operator|.
-name|quoteOutputStream
-argument_list|(
 name|response
 operator|.
-name|getOutputStream
+name|getWriter
 argument_list|()
-argument_list|)
-argument_list|)
 decl_stmt|;
 name|ReflectionUtils
 operator|.
@@ -4288,16 +4279,28 @@ condition|(
 name|mime
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+name|httpResponse
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/plain; charset=utf-8"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 name|mime
 operator|.
-name|equals
+name|startsWith
 argument_list|(
 literal|"text/html"
 argument_list|)
 condition|)
 block|{
-comment|// no extension or HTML with unspecified encoding, we want to
+comment|// HTML with unspecified encoding, we want to
 comment|// force HTML with utf-8 encoding
 comment|// This is to avoid the following security issue:
 comment|// http://openmya.hacker.jp/hasegawa/security/utf7cs.html
@@ -4306,6 +4309,25 @@ operator|.
 name|setContentType
 argument_list|(
 literal|"text/html; charset=utf-8"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|mime
+operator|.
+name|startsWith
+argument_list|(
+literal|"application/xml"
+argument_list|)
+condition|)
+block|{
+name|httpResponse
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/xml; charset=utf-8"
 argument_list|)
 expr_stmt|;
 block|}
