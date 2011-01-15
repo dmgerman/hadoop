@@ -4342,15 +4342,15 @@ specifier|private
 name|String
 name|hostAddress
 decl_stmt|;
-DECL|field|hostName
-specifier|private
-name|String
-name|hostName
-decl_stmt|;
 DECL|field|remotePort
 specifier|private
 name|int
 name|remotePort
+decl_stmt|;
+DECL|field|addr
+specifier|private
+name|InetAddress
+name|addr
 decl_stmt|;
 DECL|field|header
 name|ConnectionHeader
@@ -4568,14 +4568,15 @@ operator|.
 name|socket
 argument_list|()
 expr_stmt|;
-name|InetAddress
+name|this
+operator|.
 name|addr
-init|=
+operator|=
 name|socket
 operator|.
 name|getInetAddress
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|addr
@@ -4599,15 +4600,6 @@ operator|=
 name|addr
 operator|.
 name|getHostAddress
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|hostName
-operator|=
-name|addr
-operator|.
-name|getCanonicalHostName
 argument_list|()
 expr_stmt|;
 block|}
@@ -4693,14 +4685,14 @@ return|return
 name|hostAddress
 return|;
 block|}
-DECL|method|getHostName ()
+DECL|method|getHostInetAddress ()
 specifier|public
-name|String
-name|getHostName
+name|InetAddress
+name|getHostInetAddress
 parameter_list|()
 block|{
 return|return
-name|hostName
+name|addr
 return|;
 block|}
 DECL|method|setLastContact (long lastContact)
@@ -6748,7 +6740,7 @@ name|user
 argument_list|,
 name|header
 argument_list|,
-name|getHostName
+name|getHostInetAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8413,8 +8405,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param connection incoming connection    * @param hostname fully-qualified domain name of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
-DECL|method|authorize (UserGroupInformation user, ConnectionHeader connection, String hostname )
+comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param connection incoming connection    * @param addr InetAddress of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
+DECL|method|authorize (UserGroupInformation user, ConnectionHeader connection, InetAddress addr )
 specifier|public
 name|void
 name|authorize
@@ -8425,8 +8417,8 @@ parameter_list|,
 name|ConnectionHeader
 name|connection
 parameter_list|,
-name|String
-name|hostname
+name|InetAddress
+name|addr
 parameter_list|)
 throws|throws
 name|AuthorizationException
@@ -8490,7 +8482,7 @@ argument_list|,
 name|getConf
 argument_list|()
 argument_list|,
-name|hostname
+name|addr
 argument_list|)
 expr_stmt|;
 block|}

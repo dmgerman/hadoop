@@ -5448,9 +5448,6 @@ name|address
 operator|.
 name|getAddress
 argument_list|()
-operator|.
-name|getCanonicalHostName
-argument_list|()
 argument_list|)
 return|;
 block|}

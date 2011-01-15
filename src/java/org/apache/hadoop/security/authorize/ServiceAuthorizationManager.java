@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|IdentityHashMap
@@ -180,20 +190,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|KerberosName
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -324,8 +320,8 @@ name|AUTHZ_FAILED_FOR
 init|=
 literal|"Authorization failed for "
 decl_stmt|;
-comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @param conf configuration to use    * @param hostname fully qualified domain name of the client    * @throws AuthorizationException on authorization failure    */
-DECL|method|authorize (UserGroupInformation user, Class<?> protocol, Configuration conf, String hostname )
+comment|/**    * Authorize the user to access the protocol being used.    *     * @param user user accessing the service     * @param protocol service being accessed    * @param conf configuration to use    * @param addr InetAddress of the client    * @throws AuthorizationException on authorization failure    */
+DECL|method|authorize (UserGroupInformation user, Class<?> protocol, Configuration conf, InetAddress addr )
 specifier|public
 name|void
 name|authorize
@@ -342,8 +338,8 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
-name|String
-name|hostname
+name|InetAddress
+name|addr
 parameter_list|)
 throws|throws
 name|AuthorizationException
@@ -425,21 +421,6 @@ literal|""
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|hostname
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|AuthorizationException
-argument_list|(
-literal|"Can't authorize client when client hostname is null"
-argument_list|)
-throw|;
-block|}
 try|try
 block|{
 name|clientPrincipal
@@ -455,7 +436,7 @@ argument_list|(
 name|clientKey
 argument_list|)
 argument_list|,
-name|hostname
+name|addr
 argument_list|)
 expr_stmt|;
 block|}
@@ -474,7 +455,7 @@ name|AuthorizationException
 argument_list|(
 literal|"Can't figure out Kerberos principal name for connection from "
 operator|+
-name|hostname
+name|addr
 operator|+
 literal|" for user="
 operator|+
@@ -493,97 +474,21 @@ throw|;
 block|}
 block|}
 block|}
-comment|// when authorizing use the short name only
-name|String
-name|shortName
-init|=
-name|clientPrincipal
-decl_stmt|;
-if|if
-condition|(
-name|clientPrincipal
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|shortName
-operator|=
-operator|new
-name|KerberosName
-argument_list|(
-name|clientPrincipal
-argument_list|)
-operator|.
-name|getShortName
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"couldn't get short name from "
-operator|+
-name|clientPrincipal
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-comment|// just keep going
-block|}
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"for protocol authorization compare ("
-operator|+
-name|clientPrincipal
-operator|+
-literal|"): "
-operator|+
-name|shortName
-operator|+
-literal|" with "
-operator|+
-name|user
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 operator|(
-name|shortName
+name|clientPrincipal
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|shortName
+name|clientPrincipal
 operator|.
 name|equals
 argument_list|(
 name|user
 operator|.
-name|getShortUserName
+name|getUserName
 argument_list|()
 argument_list|)
 operator|)
@@ -608,6 +513,10 @@ operator|+
 literal|" for protocol="
 operator|+
 name|protocol
+operator|+
+literal|", expected client Kerberos principal is "
+operator|+
+name|clientPrincipal
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -621,6 +530,10 @@ operator|+
 literal|" is not authorized for protocol "
 operator|+
 name|protocol
+operator|+
+literal|", expected client Kerberos principal is "
+operator|+
+name|clientPrincipal
 argument_list|)
 throw|;
 block|}
