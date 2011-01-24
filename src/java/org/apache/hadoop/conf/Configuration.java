@@ -6053,12 +6053,6 @@ init|=
 name|asXmlDocument
 argument_list|()
 decl_stmt|;
-name|Properties
-name|properties
-init|=
-name|getProps
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|DOMSource
