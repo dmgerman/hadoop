@@ -324,6 +324,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/** Wrapper around chmod(2) */
+DECL|method|chmod (String path, int mode)
+specifier|public
+specifier|static
+specifier|native
+name|void
+name|chmod
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|int
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/** Initialize the JNI method ID and class ID cache */
 DECL|method|initNative ()
 specifier|private
