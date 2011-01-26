@@ -6189,6 +6189,10 @@ literal|"\n"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|getProps
+argument_list|()
+expr_stmt|;
+comment|// ensure properties is set
 for|for
 control|(
 name|Enumeration
