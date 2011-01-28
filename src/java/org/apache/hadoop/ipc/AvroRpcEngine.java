@@ -635,9 +635,6 @@ name|this
 operator|.
 name|tunnel
 operator|=
-operator|(
-name|TunnelProtocol
-operator|)
 name|ENGINE
 operator|.
 name|getProxy
@@ -658,6 +655,9 @@ name|factory
 argument_list|,
 name|rpcTimeout
 argument_list|)
+operator|.
+name|getProxy
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -765,15 +765,26 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address. */
-DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+comment|/** Construct a client-side proxy object that implements the named protocol,    * talking to a server at the named address.     * @param<T>*/
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
 specifier|public
-name|Object
+parameter_list|<
+name|T
+parameter_list|>
+name|ProtocolProxy
+argument_list|<
+name|T
+argument_list|>
 name|getProxy
 parameter_list|(
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|protocol
 parameter_list|,
@@ -799,6 +810,17 @@ throws|throws
 name|IOException
 block|{
 return|return
+operator|new
+name|ProtocolProxy
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
+name|protocol
+argument_list|,
+operator|(
+name|T
+operator|)
 name|Proxy
 operator|.
 name|newProxyInstance
@@ -830,6 +852,9 @@ name|factory
 argument_list|,
 name|rpcTimeout
 argument_list|)
+argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1096,6 +1121,8 @@ name|impl
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProtocolVersion (String protocol, long version)
 specifier|public
 name|long
@@ -1112,6 +1139,35 @@ name|IOException
 block|{
 return|return
 name|VERSION
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProtocolSignature ( String protocol, long version, int clientMethodsHashCode)
+specifier|public
+name|ProtocolSignature
+name|getProtocolSignature
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|version
+parameter_list|,
+name|int
+name|clientMethodsHashCode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|ProtocolSignature
+argument_list|(
+name|VERSION
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 DECL|method|call (final BufferListWritable request)

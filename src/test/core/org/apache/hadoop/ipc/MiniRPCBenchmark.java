@@ -590,6 +590,59 @@ throw|;
 block|}
 annotation|@
 name|Override
+comment|// VersionedProtocol
+DECL|method|getProtocolSignature (String protocol, long clientVersion, int clientMethodsHashCode)
+specifier|public
+name|ProtocolSignature
+name|getProtocolSignature
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHashCode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|protocol
+operator|.
+name|equals
+argument_list|(
+name|MiniProtocol
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+return|return
+operator|new
+name|ProtocolSignature
+argument_list|(
+name|versionID
+argument_list|,
+literal|null
+argument_list|)
+return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unknown protocol: "
+operator|+
+name|protocol
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 comment|// MiniProtocol
 DECL|method|getDelegationToken (Text renewer)
 specifier|public

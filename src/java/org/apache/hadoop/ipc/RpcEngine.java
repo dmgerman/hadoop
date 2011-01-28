@@ -146,14 +146,20 @@ specifier|public
 interface|interface
 name|RpcEngine
 block|{
-comment|/** Construct a client-side proxy object. */
-DECL|method|getProxy (Class<?> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
-name|Object
+comment|/** Construct a client-side proxy object.     * @param<T>*/
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+parameter_list|<
+name|T
+parameter_list|>
+name|ProtocolProxy
+argument_list|<
+name|T
+argument_list|>
 name|getProxy
 parameter_list|(
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|protocol
 parameter_list|,
