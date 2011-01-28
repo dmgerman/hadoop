@@ -784,7 +784,9 @@ name|timeOutTimer
 operator|=
 operator|new
 name|Timer
-argument_list|()
+argument_list|(
+literal|"Shell command timeout"
+argument_list|)
 expr_stmt|;
 name|timeoutTimerTask
 operator|=
@@ -1062,17 +1064,9 @@ finally|finally
 block|{
 if|if
 condition|(
-operator|(
 name|timeOutTimer
 operator|!=
 literal|null
-operator|)
-operator|&&
-operator|!
-name|timedOut
-operator|.
-name|get
-argument_list|()
 condition|)
 block|{
 name|timeOutTimer
