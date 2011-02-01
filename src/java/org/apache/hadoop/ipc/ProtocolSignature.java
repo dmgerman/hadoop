@@ -785,11 +785,11 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getProtocolSigature (VersionedProtocol server, String protocol, long clientVersion, int clientMethodsHash)
+DECL|method|getProtocolSignature (VersionedProtocol server, String protocol, long clientVersion, int clientMethodsHash)
 specifier|public
 specifier|static
 name|ProtocolSignature
-name|getProtocolSigature
+name|getProtocolSignature
 parameter_list|(
 name|VersionedProtocol
 name|server
@@ -870,6 +870,43 @@ argument_list|,
 name|serverVersion
 argument_list|,
 name|inter
+argument_list|)
+return|;
+block|}
+comment|/**    * @deprecated Misspelled method name - to be removed after references    * to this typo have been fixed in HDFS and MapRed.    */
+annotation|@
+name|Deprecated
+DECL|method|getProtocolSigature (VersionedProtocol server, String protocol, long clientVersion, int clientMethodsHash)
+specifier|public
+specifier|static
+name|ProtocolSignature
+name|getProtocolSigature
+parameter_list|(
+name|VersionedProtocol
+name|server
+parameter_list|,
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getProtocolSignature
+argument_list|(
+name|server
+argument_list|,
+name|protocol
+argument_list|,
+name|clientVersion
+argument_list|,
+name|clientMethodsHash
 argument_list|)
 return|;
 block|}
