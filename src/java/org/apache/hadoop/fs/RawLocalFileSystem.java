@@ -2943,10 +2943,14 @@ operator|.
 name|length
 index|]
 operator|=
-name|f
+name|FileUtil
 operator|.
-name|getCanonicalPath
-argument_list|()
+name|makeShellPath
+argument_list|(
+name|f
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 name|String
 name|output
