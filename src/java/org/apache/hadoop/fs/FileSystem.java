@@ -7071,6 +7071,54 @@ operator|=
 name|scheme
 expr_stmt|;
 block|}
+comment|/**      * Copy constructor.      *       * @param st      *          The input Statistics object which is cloned.      */
+DECL|method|Statistics (Statistics st)
+specifier|public
+name|Statistics
+parameter_list|(
+name|Statistics
+name|st
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scheme
+operator|=
+name|st
+operator|.
+name|scheme
+expr_stmt|;
+name|this
+operator|.
+name|bytesRead
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+name|st
+operator|.
+name|bytesRead
+operator|.
+name|longValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|bytesWritten
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+name|st
+operator|.
+name|bytesWritten
+operator|.
+name|longValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Increment the bytes read in the statistics      * @param newBytes the additional bytes read      */
 DECL|method|incrementBytesRead (long newBytes)
 specifier|public

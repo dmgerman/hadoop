@@ -260,6 +260,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+operator|.
+name|Statistics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Options
 operator|.
 name|CreateOpts
@@ -1814,7 +1830,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Renames Path src to Path dst    *<ul>    *<li    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails if the dst    * already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites the dst if    * it is a file or an empty directory. Rename fails if dst is a non-empty    * directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for details    *<p>    *     * @param src path to be renamed    * @param dst new path after rename    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>dst</code> is not a    *           directory    * @throws UnsupportedFileSystemException If file system for<code>src</code>    *           and<code>dst</code> is not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    */
+comment|/**    * Renames Path src to Path dst    *<ul>    *<li    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails if the dst    * already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites the dst if    * it is a file or an empty directory. Rename fails if dst is a non-empty    * directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for details    *<p>    *     * @param src path to be renamed    * @param dst new path after rename    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Options.Rename#OVERWRITE}     *           option false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>dst</code> is not a    *           directory    * @throws UnsupportedFileSystemException If file system for<code>src</code>    *           and<code>dst</code> is not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    */
 DECL|method|rename (final Path src, final Path dst, final Options.Rename... options)
 specifier|public
 name|void
@@ -6114,6 +6130,74 @@ return|return
 name|in
 return|;
 block|}
+block|}
+comment|/**    * Get the statistics for a particular file system    *     * @param uri    *          the uri to lookup the statistics. Only scheme and authority part    *          of the uri are used as the key to store and lookup.    * @return a statistics object    */
+DECL|method|getStatistics (URI uri)
+specifier|public
+specifier|static
+name|Statistics
+name|getStatistics
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+return|return
+name|AbstractFileSystem
+operator|.
+name|getStatistics
+argument_list|(
+name|uri
+argument_list|)
+return|;
+block|}
+comment|/**    * Clears all the statistics stored in AbstractFileSystem, for all the file    * systems.    */
+DECL|method|clearStatistics ()
+specifier|public
+specifier|static
+name|void
+name|clearStatistics
+parameter_list|()
+block|{
+name|AbstractFileSystem
+operator|.
+name|clearStatistics
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Prints the statistics to standard output. File System is identified by the    * scheme and authority.    */
+DECL|method|printStatistics ()
+specifier|public
+specifier|static
+name|void
+name|printStatistics
+parameter_list|()
+block|{
+name|AbstractFileSystem
+operator|.
+name|printStatistics
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * @return Map of uri and statistics for each filesystem instantiated. The uri    *         consists of scheme and authority for the filesystem.    */
+DECL|method|getAllStatistics ()
+specifier|public
+specifier|static
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|Statistics
+argument_list|>
+name|getAllStatistics
+parameter_list|()
+block|{
+return|return
+name|AbstractFileSystem
+operator|.
+name|getAllStatistics
+argument_list|()
+return|;
 block|}
 block|}
 end_class
