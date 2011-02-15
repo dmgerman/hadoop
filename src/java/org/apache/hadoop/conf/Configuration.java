@@ -4299,7 +4299,7 @@ name|String
 index|[]
 name|dirs
 init|=
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|dirsProp
 argument_list|)
@@ -4496,7 +4496,7 @@ name|String
 index|[]
 name|dirs
 init|=
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|dirsProp
 argument_list|)
