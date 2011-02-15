@@ -1727,11 +1727,6 @@ argument_list|,
 literal|128
 argument_list|)
 decl_stmt|;
-DECL|field|readPool
-specifier|private
-name|ExecutorService
-name|readPool
-decl_stmt|;
 DECL|method|Listener ()
 specifier|public
 name|Listener
@@ -1804,15 +1799,6 @@ index|[
 name|readThreads
 index|]
 expr_stmt|;
-name|readPool
-operator|=
-name|Executors
-operator|.
-name|newFixedThreadPool
-argument_list|(
-name|readThreads
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|int
@@ -1842,6 +1828,18 @@ init|=
 operator|new
 name|Reader
 argument_list|(
+literal|"Socket Reader #"
+operator|+
+operator|(
+name|i
+operator|+
+literal|1
+operator|)
+operator|+
+literal|" for port "
+operator|+
+name|port
+argument_list|,
 name|readSelector
 argument_list|)
 decl_stmt|;
@@ -1852,12 +1850,10 @@ index|]
 operator|=
 name|reader
 expr_stmt|;
-name|readPool
-operator|.
-name|execute
-argument_list|(
 name|reader
-argument_list|)
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Register accepts on the server socket with the selector.
@@ -1893,8 +1889,8 @@ DECL|class|Reader
 specifier|private
 class|class
 name|Reader
-implements|implements
-name|Runnable
+extends|extends
+name|Thread
 block|{
 DECL|field|adding
 specifier|private
@@ -1911,13 +1907,21 @@ name|readSelector
 init|=
 literal|null
 decl_stmt|;
-DECL|method|Reader (Selector readSelector)
+DECL|method|Reader (String name, Selector readSelector)
 name|Reader
 parameter_list|(
+name|String
+name|name
+parameter_list|,
 name|Selector
 name|readSelector
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|readSelector
@@ -1935,7 +1939,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting SocketReader"
+literal|"Starting "
+operator|+
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 synchronized|synchronized
@@ -2144,6 +2151,42 @@ operator|.
 name|notify
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+assert|assert
+operator|!
+name|running
+assert|;
+name|readSelector
+operator|.
+name|wakeup
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/** cleanup connections from connectionList. Choose a random range      * to scan and also have a limit on the number of the connections      * that will be cleanedup per run. The criteria for cleanup is the time      * for which the connection was idle. If 'force' is true then all       * connections will be looked at for the cleanup.      */
@@ -3096,11 +3139,20 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|readPool
+for|for
+control|(
+name|Reader
+name|r
+range|:
+name|readers
+control|)
+block|{
+name|r
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|getSelector ()
 specifier|synchronized
