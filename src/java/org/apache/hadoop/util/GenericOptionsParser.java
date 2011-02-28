@@ -1345,6 +1345,22 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The libjars file "
+operator|+
+name|tmp
+operator|+
+literal|" is not on the local "
+operator|+
+literal|"filesystem. Ignoring."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|cp
