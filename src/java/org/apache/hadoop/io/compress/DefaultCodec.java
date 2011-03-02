@@ -34,7 +34,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|OutputStream
+name|InputStream
 import|;
 end_import
 
@@ -44,7 +44,35 @@ name|java
 operator|.
 name|io
 operator|.
-name|InputStream
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -118,7 +146,7 @@ name|compress
 operator|.
 name|zlib
 operator|.
-name|*
+name|ZlibFactory
 import|;
 end_import
 
@@ -140,6 +168,22 @@ name|Configurable
 implements|,
 name|CompressionCodec
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|DefaultCodec
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|conf
 name|Configuration
 name|conf
@@ -181,6 +225,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// This may leak memory if called in a loop. The createCompressor() call
+comment|// may cause allocation of an untracked direct-backed buffer if native
+comment|// libs are being used (even if you close the stream).  A Compressor
+comment|// object should be reused between successive calls.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"DefaultCodec.createOutputStream() may leak memory. "
+operator|+
+literal|"Create a compressor first."
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|CompressorStream
