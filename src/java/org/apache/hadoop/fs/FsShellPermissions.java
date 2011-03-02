@@ -56,6 +56,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -143,6 +157,15 @@ DECL|class|FsShellPermissions
 class|class
 name|FsShellPermissions
 block|{
+DECL|field|LOG
+specifier|static
+name|Log
+name|LOG
+init|=
+name|FsShell
+operator|.
+name|LOG
+decl_stmt|;
 comment|/*========== chmod ==========*/
 comment|/*    * The pattern is almost as flexible as mode allowed by chmod shell command.    * The main restriction is that we recognize only rwxXt. To reduce errors we    * also enforce octal mode specifications of either 3 digits without a sticky    * bit setting or four digits with a sticky bit setting.    */
 DECL|field|CHMOD_USAGE
@@ -302,6 +325,20 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error changing permissions of "
+operator|+
+name|file
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|err
@@ -648,6 +685,20 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error changing ownership of "
+operator|+
+name|file
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|err

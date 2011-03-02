@@ -104,6 +104,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -390,6 +418,21 @@ name|Configured
 implements|implements
 name|Tool
 block|{
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FsShell
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|fs
 specifier|protected
 name|FileSystem
@@ -5301,7 +5344,19 @@ parameter_list|(
 name|IOException
 name|e
 parameter_list|)
-block|{         }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error getting file status of "
+operator|+
+name|dst
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|(
@@ -5514,6 +5569,20 @@ name|RemoteException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error renaming "
+operator|+
+name|argv
+index|[
+name|i
+index|]
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// This is a error returned by hadoop server. Print
 comment|// out the first line of the error mesage.
@@ -5598,6 +5667,20 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error renaming "
+operator|+
+name|argv
+index|[
+name|i
+index|]
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// IO exception encountered locally.
 comment|//
@@ -5911,6 +5994,20 @@ name|RemoteException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error copying "
+operator|+
+name|argv
+index|[
+name|i
+index|]
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// This is a error returned by hadoop server. Print
 comment|// out the first line of the error mesage.
@@ -5995,6 +6092,20 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error copying "
+operator|+
+name|argv
+index|[
+name|i
+index|]
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// IO exception encountered locally.
 comment|//
@@ -6239,6 +6350,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error with trash"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|Exception
 name|cause
 init|=
@@ -6812,6 +6932,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error listing "
+operator|+
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|err
@@ -7141,6 +7272,17 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error getting status for "
+operator|+
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|String
 name|msg
 init|=
@@ -9033,6 +9175,15 @@ name|RemoteException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// This is a error returned by hadoop server. Print
 comment|// out the first line of the error message.
@@ -9117,6 +9268,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// IO exception encountered locally.
 comment|//
@@ -10312,6 +10472,15 @@ name|VersionMismatch
 name|v
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Version mismatch"
+argument_list|,
+name|v
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|err
@@ -10333,6 +10502,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|System
 operator|.
 name|err
@@ -11264,6 +11442,15 @@ name|IllegalArgumentException
 name|arge
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|arge
+argument_list|)
+expr_stmt|;
 name|exitCode
 operator|=
 operator|-
@@ -11302,6 +11489,15 @@ name|RemoteException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// This is a error returned by hadoop server. Print
 comment|// out the first line of the error mesage, ignore the stack trace.
@@ -11385,6 +11581,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 comment|//
 comment|// IO exception encountered locally.
 comment|//
@@ -11421,6 +11626,15 @@ name|Exception
 name|re
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
 name|exitCode
 operator|=
 operator|-
