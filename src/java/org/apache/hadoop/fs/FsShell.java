@@ -2929,13 +2929,6 @@ block|}
 name|FileStatus
 name|items
 index|[]
-init|=
-name|srcFs
-operator|.
-name|listStatus
-argument_list|(
-name|src
-argument_list|)
 decl_stmt|;
 try|try
 block|{
