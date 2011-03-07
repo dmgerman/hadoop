@@ -3009,6 +3009,13 @@ literal|": readAndProcess threw exception "
 operator|+
 name|e
 operator|+
+literal|" from client "
+operator|+
+name|c
+operator|.
+name|getHostAddress
+argument_list|()
+operator|+
 literal|". Count of bytes read: "
 operator|+
 name|count
