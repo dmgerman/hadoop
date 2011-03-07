@@ -807,11 +807,8 @@ operator|new
 name|RuntimeException
 argument_list|(
 literal|"Should not have happened "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1069,11 +1066,8 @@ operator|new
 name|RuntimeException
 argument_list|(
 literal|"Should not have happened "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 throw|;
 block|}
