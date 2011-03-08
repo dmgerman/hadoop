@@ -3735,9 +3735,12 @@ specifier|static
 name|boolean
 name|isLoginKeytabBased
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
-name|loginUser
+name|getLoginUser
+argument_list|()
 operator|.
 name|isKeytab
 return|;
