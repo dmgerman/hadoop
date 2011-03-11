@@ -18,6 +18,18 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -78,6 +90,48 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// always a daemon
+block|}
+comment|/**    * Provide a factory for named daemon threads,    * for use in ExecutorServices constructors    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+DECL|class|DaemonFactory
+specifier|public
+specifier|static
+class|class
+name|DaemonFactory
+extends|extends
+name|Daemon
+implements|implements
+name|ThreadFactory
+block|{
+annotation|@
+name|Override
+DECL|method|newThread (Runnable runnable)
+specifier|public
+name|Thread
+name|newThread
+parameter_list|(
+name|Runnable
+name|runnable
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Daemon
+argument_list|(
+name|runnable
+argument_list|)
+return|;
+block|}
 block|}
 DECL|field|runnable
 name|Runnable
