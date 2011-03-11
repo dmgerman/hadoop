@@ -506,7 +506,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Got brand-new compressor"
+literal|"Got brand-new compressor ["
+operator|+
+name|codec
+operator|.
+name|getDefaultExtension
+argument_list|()
+operator|+
+literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -601,7 +608,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Got brand-new decompressor"
+literal|"Got brand-new decompressor ["
+operator|+
+name|codec
+operator|.
+name|getDefaultExtension
+argument_list|()
+operator|+
+literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
