@@ -581,6 +581,21 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns whether the trash is enabled for this filesystem    */
+DECL|method|isEnabled ()
+specifier|public
+name|boolean
+name|isEnabled
+parameter_list|()
+block|{
+return|return
+operator|(
+name|deletionInterval
+operator|!=
+literal|0
+operator|)
+return|;
+block|}
 comment|/** Move a file or directory to the current trash directory.    * @return false if the item is already in the trash or trash is disabled    */
 DECL|method|moveToTrash (Path path)
 specifier|public
@@ -595,9 +610,9 @@ name|IOException
 block|{
 if|if
 condition|(
-name|deletionInterval
-operator|==
-literal|0
+operator|!
+name|isEnabled
+argument_list|()
 condition|)
 return|return
 literal|false
