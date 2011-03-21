@@ -895,6 +895,8 @@ decl_stmt|;
 comment|// 1 : Introduce ping and server does not throw away RPCs
 comment|// 3 : Introduce the protocol into the RPC connection header
 comment|// 4 : Introduced SASL security layer
+comment|// 5 : Introduced use of {@link ArrayPrimitiveWritable$Internal}
+comment|//     in ObjectWritable to efficiently transmit arrays of primitives
 DECL|field|CURRENT_VERSION
 specifier|public
 specifier|static
@@ -902,7 +904,7 @@ specifier|final
 name|byte
 name|CURRENT_VERSION
 init|=
-literal|4
+literal|5
 decl_stmt|;
 comment|/**    * Initial and max size of response buffer    */
 DECL|field|INITIAL_RESP_BUF_SIZE
