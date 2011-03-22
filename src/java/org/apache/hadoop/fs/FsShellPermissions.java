@@ -189,12 +189,9 @@ name|ChmodHandler
 extends|extends
 name|CmdHandler
 block|{
-DECL|method|ChmodHandler (FileSystem fs, String modeStr)
+DECL|method|ChmodHandler (String modeStr)
 name|ChmodHandler
 parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
 name|String
 name|modeStr
 parameter_list|)
@@ -204,8 +201,6 @@ block|{
 name|super
 argument_list|(
 literal|"chmod"
-argument_list|,
-name|fs
 argument_list|)
 expr_stmt|;
 try|try
@@ -453,31 +448,26 @@ name|group
 init|=
 literal|null
 decl_stmt|;
-DECL|method|ChownHandler (String cmd, FileSystem fs)
+DECL|method|ChownHandler (String cmd)
 specifier|protected
 name|ChownHandler
 parameter_list|(
 name|String
 name|cmd
-parameter_list|,
-name|FileSystem
-name|fs
 parameter_list|)
 block|{
 comment|//for chgrp
 name|super
 argument_list|(
 name|cmd
-argument_list|,
-name|fs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ChownHandler (FileSystem fs, String ownerStr)
+DECL|method|ChownHandler (String cmd, String ownerStr)
 name|ChownHandler
 parameter_list|(
-name|FileSystem
-name|fs
+name|String
+name|cmd
 parameter_list|,
 name|String
 name|ownerStr
@@ -487,11 +477,20 @@ name|IOException
 block|{
 name|super
 argument_list|(
-literal|"chown"
-argument_list|,
-name|fs
+name|cmd
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|cmd
+operator|.
+name|equals
+argument_list|(
+literal|"chown"
+argument_list|)
+condition|)
+return|return;
 name|Matcher
 name|matcher
 init|=
@@ -736,12 +735,9 @@ name|ChgrpHandler
 extends|extends
 name|ChownHandler
 block|{
-DECL|method|ChgrpHandler (FileSystem fs, String groupStr)
+DECL|method|ChgrpHandler (String groupStr)
 name|ChgrpHandler
 parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
 name|String
 name|groupStr
 parameter_list|)
@@ -751,8 +747,6 @@ block|{
 name|super
 argument_list|(
 literal|"chgrp"
-argument_list|,
-name|fs
 argument_list|)
 expr_stmt|;
 name|Matcher
@@ -799,14 +793,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|changePermissions (FileSystem fs, String cmd, String argv[], int startIndex, FsShell shell)
+DECL|method|changePermissions (String cmd, String argv[], int startIndex, FsShell shell)
 specifier|static
 name|int
 name|changePermissions
 parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
 name|String
 name|cmd
 parameter_list|,
@@ -894,8 +885,6 @@ operator|=
 operator|new
 name|ChmodHandler
 argument_list|(
-name|fs
-argument_list|,
 name|argv
 index|[
 name|startIndex
@@ -920,8 +909,6 @@ operator|=
 operator|new
 name|ChownHandler
 argument_list|(
-name|fs
-argument_list|,
 name|argv
 index|[
 name|startIndex
@@ -946,8 +933,6 @@ operator|=
 operator|new
 name|ChgrpHandler
 argument_list|(
-name|fs
-argument_list|,
 name|argv
 index|[
 name|startIndex

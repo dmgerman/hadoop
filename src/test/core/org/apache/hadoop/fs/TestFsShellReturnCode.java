@@ -232,8 +232,6 @@ name|FsShellPermissions
 operator|.
 name|changePermissions
 argument_list|(
-name|fs
-argument_list|,
 name|cmd
 argument_list|,
 name|argv

@@ -6800,15 +6800,12 @@ return|return
 name|cmdName
 return|;
 block|}
-DECL|method|CmdHandler (String cmdName, FileSystem fs)
+DECL|method|CmdHandler (String cmdName)
 specifier|protected
 name|CmdHandler
 parameter_list|(
 name|String
 name|cmdName
-parameter_list|,
-name|FileSystem
-name|fs
 parameter_list|)
 block|{
 name|this
@@ -10897,8 +10894,6 @@ name|FsShellPermissions
 operator|.
 name|changePermissions
 argument_list|(
-name|fs
-argument_list|,
 name|cmd
 argument_list|,
 name|argv
