@@ -7722,9 +7722,11 @@ decl_stmt|;
 name|String
 name|touchz
 init|=
-literal|"-touchz<path>: Write a timestamp in yyyy-MM-dd HH:mm:ss format\n"
+literal|"-touchz<path>: Creates a file of zero length\n"
 operator|+
-literal|"\t\tin a file at<path>. An error is returned if the file exists with non-zero length\n"
+literal|"\t\t at<path> with current time as the timestamp of that<path>.\n"
+operator|+
+literal|"\t\t An error is returned if the file exists with non-zero length\n"
 decl_stmt|;
 name|String
 name|test
