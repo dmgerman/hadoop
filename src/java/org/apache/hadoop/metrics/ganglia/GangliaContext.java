@@ -643,6 +643,34 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * method to close the datagram socket    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|datagramSocket
+operator|!=
+literal|null
+condition|)
+block|{
+name|datagramSocket
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|InterfaceAudience
 operator|.
