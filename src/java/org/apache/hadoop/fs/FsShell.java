@@ -1144,6 +1144,23 @@ argument_list|(
 name|srcpath
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|srcs
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|srcpath
+operator|+
+literal|": No such file or directory"
+argument_list|)
+throw|;
+block|}
 name|boolean
 name|dstIsDir
 init|=
