@@ -72,6 +72,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|NetworkInterface
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|Socket
 import|;
 end_import
@@ -83,6 +93,16 @@ operator|.
 name|net
 operator|.
 name|SocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|SocketException
 import|;
 end_import
 
@@ -981,7 +1001,7 @@ return|return
 name|addr
 return|;
 block|}
-comment|/**    * Same as getInputStream(socket, socket.getSoTimeout()).<br><br>    *     * From documentation for {@link #getInputStream(Socket, long)}:<br>    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *    * Any socket created using socket factories returned by {@link #NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see #getInputStream(Socket, long)    *     * @param socket    * @return InputStream for reading from the socket.    * @throws IOException    */
+comment|/**    * Same as getInputStream(socket, socket.getSoTimeout()).<br><br>    *     * From documentation for {@link #getInputStream(Socket, long)}:<br>    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *    * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see #getInputStream(Socket, long)    *     * @param socket    * @return InputStream for reading from the socket.    * @throws IOException    */
 DECL|method|getInputStream (Socket socket)
 specifier|public
 specifier|static
@@ -1006,7 +1026,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *     * Any socket created using socket factories returned by {@link #NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. This may not always apply. zero    *        for waiting as long as necessary.    * @return InputStream for reading from the socket.    * @throws IOException    */
+comment|/**    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *     * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. This may not always apply. zero    *        for waiting as long as necessary.    * @return InputStream for reading from the socket.    * @throws IOException    */
 DECL|method|getInputStream (Socket socket, long timeout)
 specifier|public
 specifier|static
@@ -1046,7 +1066,7 @@ name|timeout
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as getOutputStream(socket, 0). Timeout of zero implies write will    * wait until data is available.<br><br>    *     * From documentation for {@link #getOutputStream(Socket, long)} :<br>    * Returns OutputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketOutputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getOutputStream()} is returned. In the later    * case, the timeout argument is ignored and the write will wait until     * data is available.<br><br>    *     * Any socket created using socket factories returned by {@link #NetUtils},    * must use this interface instead of {@link Socket#getOutputStream()}.    *     * @see #getOutputStream(Socket, long)    *     * @param socket    * @return OutputStream for writing to the socket.    * @throws IOException    */
+comment|/**    * Same as getOutputStream(socket, 0). Timeout of zero implies write will    * wait until data is available.<br><br>    *     * From documentation for {@link #getOutputStream(Socket, long)} :<br>    * Returns OutputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketOutputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getOutputStream()} is returned. In the later    * case, the timeout argument is ignored and the write will wait until     * data is available.<br><br>    *     * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getOutputStream()}.    *     * @see #getOutputStream(Socket, long)    *     * @param socket    * @return OutputStream for writing to the socket.    * @throws IOException    */
 DECL|method|getOutputStream (Socket socket)
 specifier|public
 specifier|static
@@ -1068,7 +1088,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns OutputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketOutputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getOutputStream()} is returned. In the later    * case, the timeout argument is ignored and the write will wait until     * data is available.<br><br>    *     * Any socket created using socket factories returned by {@link #NetUtils},    * must use this interface instead of {@link Socket#getOutputStream()}.    *     * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. This may not always apply. zero    *        for waiting as long as necessary.    * @return OutputStream for writing to the socket.    * @throws IOException       */
+comment|/**    * Returns OutputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketOutputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getOutputStream()} is returned. In the later    * case, the timeout argument is ignored and the write will wait until     * data is available.<br><br>    *     * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getOutputStream()}.    *     * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. This may not always apply. zero    *        for waiting as long as necessary.    * @return OutputStream for writing to the socket.    * @throws IOException       */
 DECL|method|getOutputStream (Socket socket, long timeout)
 specifier|public
 specifier|static
@@ -1372,7 +1392,6 @@ return|return
 name|hostNames
 return|;
 block|}
-comment|/**    * Attempt to obtain the host name of a name specified by ip address.      * Check that the node name is an ip addr and if so, attempt to determine    * its host name.  If the name is not an IP addr, or the actual name cannot    * be determined, return null.    *     * @return Host name or null    */
 DECL|field|ipPattern
 specifier|private
 specifier|static
@@ -1388,6 +1407,7 @@ argument_list|(
 literal|"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:?\\d*"
 argument_list|)
 decl_stmt|;
+comment|/**    * Attempt to obtain the host name of a name specified by ip address.      * Check that the node name is an ip addr and if so, attempt to determine    * its host name.  If the name is not an IP addr, or the actual name cannot    * be determined, return null.    *     * @return Host name or null    */
 DECL|method|getHostNameOfIP (String ip)
 specifier|public
 specifier|static
@@ -1497,6 +1517,75 @@ operator|+
 name|uhe
 return|;
 block|}
+block|}
+comment|/**    * Checks if {@code host} is a local host name and return {@link InetAddress}    * corresponding to that address.    *     * @param host the specified host    * @return a valid local {@link InetAddress} or null    * @throws SocketException if an I/O error occurs    */
+DECL|method|getLocalInetAddress (String host)
+specifier|public
+specifier|static
+name|InetAddress
+name|getLocalInetAddress
+parameter_list|(
+name|String
+name|host
+parameter_list|)
+throws|throws
+name|SocketException
+block|{
+if|if
+condition|(
+name|host
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|InetAddress
+name|addr
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|addr
+operator|=
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|host
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|NetworkInterface
+operator|.
+name|getByInetAddress
+argument_list|(
+name|addr
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|addr
+operator|=
+literal|null
+expr_stmt|;
+comment|// Not a local address
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|ignore
+parameter_list|)
+block|{ }
+return|return
+name|addr
+return|;
 block|}
 block|}
 end_class
