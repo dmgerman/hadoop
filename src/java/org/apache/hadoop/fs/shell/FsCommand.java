@@ -151,6 +151,8 @@ else|:
 name|name
 return|;
 block|}
+comment|// abstract method that normally is invoked by runall() which is
+comment|// overridden below
 DECL|method|run (Path path)
 specifier|protected
 name|void
@@ -169,6 +171,24 @@ argument_list|(
 literal|"not supposed to get here"
 argument_list|)
 throw|;
+block|}
+comment|/** @deprecated use {@link #run(String...argv)} */
+annotation|@
+name|Deprecated
+annotation|@
+name|Override
+DECL|method|runAll ()
+specifier|public
+name|int
+name|runAll
+parameter_list|()
+block|{
+return|return
+name|run
+argument_list|(
+name|args
+argument_list|)
+return|;
 block|}
 block|}
 end_class

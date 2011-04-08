@@ -64,6 +64,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -464,19 +474,37 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Invokes the command handler.  The default behavior is to process options,    * expand arguments, and then process each argument.    *<pre>    * run    * \-> {@link #processOptions(LinkedList)}    * \-> {@link #expandArguments(LinkedList)} -> {@link #expandArgument(String)}*    * \-> {@link #processArguments(LinkedList)}    *     \-> {@link #processArgument(PathData)}*    *         \-> {@link #processPathArgument(PathData)}    *             \-> {@link #processPaths(PathData, PathData...)}    *                 \-> {@link #processPath(PathData)}*    *         \-> {@link #processNonexistentPathArgument(PathData)}    *</pre>    * Most commands will chose to implement just    * {@link #processOptions(LinkedList)} and {@link #processPath(PathData)}    *     * @param args the list of command line arguments    * @return the exit code for the command    * @throws IllegalArgumentException if called with invalid arguments    */
-DECL|method|run (LinkedList<String> args)
+comment|/**    * Invokes the command handler.  The default behavior is to process options,    * expand arguments, and then process each argument.    *<pre>    * run    * \-> {@link #processOptions(LinkedList)}    * \-> {@link #expandArguments(LinkedList)} -> {@link #expandArgument(String)}*    * \-> {@link #processArguments(LinkedList)}    *     \-> {@link #processArgument(PathData)}*    *         \-> {@link #processPathArgument(PathData)}    *             \-> {@link #processPaths(PathData, PathData...)}    *                 \-> {@link #processPath(PathData)}*    *         \-> {@link #processNonexistentPathArgument(PathData)}    *</pre>    * Most commands will chose to implement just    * {@link #processOptions(LinkedList)} and {@link #processPath(PathData)}    *     * @param argv the list of command line arguments    * @return the exit code for the command    * @throws IllegalArgumentException if called with invalid arguments    */
+DECL|method|run (String...argv)
 specifier|public
 name|int
 name|run
 parameter_list|(
+name|String
+modifier|...
+name|argv
+parameter_list|)
+block|{
 name|LinkedList
 argument_list|<
 name|String
 argument_list|>
 name|args
-parameter_list|)
-block|{
+init|=
+operator|new
+name|LinkedList
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|argv
+argument_list|)
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|processOptions

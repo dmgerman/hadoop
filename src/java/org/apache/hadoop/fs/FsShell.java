@@ -11243,34 +11243,6 @@ condition|)
 block|{
 comment|// TODO: next two lines are a temporary crutch until this entire
 comment|// block is overhauled
-name|LinkedList
-argument_list|<
-name|String
-argument_list|>
-name|args
-init|=
-operator|new
-name|LinkedList
-argument_list|<
-name|String
-argument_list|>
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|argv
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|String
-name|cmdName
-init|=
-name|args
-operator|.
-name|removeFirst
-argument_list|()
-decl_stmt|;
 name|Count
 name|runner
 init|=
@@ -11290,7 +11262,7 @@ name|runner
 operator|.
 name|setCommandName
 argument_list|(
-name|cmdName
+name|cmd
 argument_list|)
 expr_stmt|;
 comment|// TODO: will change with factory
@@ -11300,7 +11272,18 @@ name|runner
 operator|.
 name|run
 argument_list|(
-name|args
+name|Arrays
+operator|.
+name|copyOfRange
+argument_list|(
+name|argv
+argument_list|,
+literal|1
+argument_list|,
+name|argv
+operator|.
+name|length
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
