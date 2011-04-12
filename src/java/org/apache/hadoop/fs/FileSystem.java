@@ -2409,6 +2409,17 @@ name|FsPermission
 operator|.
 name|getDefault
 argument_list|()
+operator|.
+name|applyUMask
+argument_list|(
+name|FsPermission
+operator|.
+name|getUMask
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+argument_list|)
 argument_list|,
 name|overwrite
 argument_list|,
