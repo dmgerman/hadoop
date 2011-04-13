@@ -1688,6 +1688,10 @@ name|of
 argument_list|(
 name|CreateFlag
 operator|.
+name|CREATE
+argument_list|,
+name|CreateFlag
+operator|.
 name|OVERWRITE
 argument_list|)
 argument_list|,
