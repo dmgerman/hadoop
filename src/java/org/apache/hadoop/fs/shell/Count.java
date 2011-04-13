@@ -138,6 +138,29 @@ name|Count
 extends|extends
 name|FsCommand
 block|{
+comment|/**    * Register the names for the count command    * @param factory the command factory that will instantiate this class    */
+DECL|method|registerCommands (CommandFactory factory)
+specifier|public
+specifier|static
+name|void
+name|registerCommands
+parameter_list|(
+name|CommandFactory
+name|factory
+parameter_list|)
+block|{
+name|factory
+operator|.
+name|addClass
+argument_list|(
+name|Count
+operator|.
+name|class
+argument_list|,
+literal|"-count"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|field|NAME
 specifier|public
 specifier|static

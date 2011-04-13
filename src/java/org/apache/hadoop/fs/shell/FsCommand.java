@@ -108,6 +108,25 @@ name|FsCommand
 extends|extends
 name|Command
 block|{
+comment|/**    * Register the command classes used by the fs subcommand    * @param factory where to register the class    */
+DECL|method|registerCommands (CommandFactory factory)
+specifier|public
+specifier|static
+name|void
+name|registerCommands
+parameter_list|(
+name|CommandFactory
+name|factory
+parameter_list|)
+block|{
+name|Count
+operator|.
+name|registerCommands
+argument_list|(
+name|factory
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|FsCommand ()
 specifier|protected
 name|FsCommand
