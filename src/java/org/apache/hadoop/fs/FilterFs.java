@@ -68,6 +68,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -137,6 +147,22 @@ operator|.
 name|security
 operator|.
 name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
 import|;
 end_import
 
@@ -1155,6 +1181,51 @@ operator|.
 name|getLinkTarget
 argument_list|(
 name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+comment|// AbstractFileSystem
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|myFs
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// AbstractFileSystem
+DECL|method|getDelegationTokens (String renewer)
+specifier|public
+name|List
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|getDelegationTokens
+parameter_list|(
+name|String
+name|renewer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|myFs
+operator|.
+name|getDelegationTokens
+argument_list|(
+name|renewer
 argument_list|)
 return|;
 block|}
