@@ -18,48 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|HadoopIllegalArgumentException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -87,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/****************************************************************  * CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  *<p>  *   * Use the CreateFlag as follows:  *<ol>  *<li> CREATE - to create a file if it does not exist,   * else throw FileAlreadyExists.</li>  *<li> APPEND - to append to a file if it exists,   * else throw FileNotFoundException.</li>  *<li> OVERWRITE - to truncate a file if it exists,   * else throw FileNotFoundException.</li>  *<li> CREATE|APPEND - to create a file if it does not exist,   * else append to an existing file.</li>  *<li> CREATE|OVERWRITE - to create a file if it does not exist,   * else overwrite an existing file.</li>  *</ol>  *   * Following combination is not valid and will result in   * {@link HadoopIllegalArgumentException}:  *<ol>  *<li> APPEND|OVERWRITE</li>  *<li> CREATE|APPEND|OVERWRITE</li>  *</ol>  *****************************************************************/
+comment|/****************************************************************  *CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  * and pass it to {@link org.apache.hadoop.fs.FileSystem #create(Path f, FsPermission permission,  * EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize,  * Progressable progress)}.  *   *<p>  * Combine {@link #OVERWRITE} with either {@link #CREATE}   * or {@link #APPEND} does the same as only use   * {@link #OVERWRITE}.<br>  * Combine {@link #CREATE} with {@link #APPEND} has the semantic:  *<ol>  *<li> create the file if it does not exist;  *<li> append the file if it already exists.  *</ol>  *****************************************************************/
 end_comment
 
 begin_enum
@@ -98,13 +56,13 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 DECL|enum|CreateFlag
 specifier|public
 enum|enum
 name|CreateFlag
 block|{
-comment|/**    * Create a file. See javadoc for more description    * already exists    */
+comment|/**    * create the file if it does not exist, and throw an IOException if it    * already exists    */
 DECL|enumConstant|CREATE
 name|CREATE
 argument_list|(
@@ -114,7 +72,7 @@ operator|)
 literal|0x01
 argument_list|)
 block|,
-comment|/**    * Truncate/overwrite a file. Same as POSIX O_TRUNC. See javadoc for description.    */
+comment|/**    * create the file if it does not exist, if it exists, overwrite it.    */
 DECL|enumConstant|OVERWRITE
 name|OVERWRITE
 argument_list|(
@@ -124,7 +82,7 @@ operator|)
 literal|0x02
 argument_list|)
 block|,
-comment|/**    * Append to a file. See javadoc for more description.    */
+comment|/**    * append to a file, and throw an IOException if it does not exist    */
 DECL|enumConstant|APPEND
 name|APPEND
 argument_list|(
@@ -136,7 +94,6 @@ argument_list|)
 block|;
 DECL|field|mode
 specifier|private
-specifier|final
 name|short
 name|mode
 decl_stmt|;
@@ -163,153 +120,6 @@ block|{
 return|return
 name|mode
 return|;
-block|}
-comment|/**    * Validate the CreateFlag for create operation    * @param path Object representing the path; usually String or {@link Path}    * @param pathExists pass true if the path exists in the file system    * @param flag set of CreateFlag    * @throws IOException on error    * @throws HadoopIllegalArgumentException if the CreateFlag is invalid    */
-DECL|method|validate (Object path, boolean pathExists, EnumSet<CreateFlag> flag)
-specifier|public
-specifier|static
-name|void
-name|validate
-parameter_list|(
-name|Object
-name|path
-parameter_list|,
-name|boolean
-name|pathExists
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|flag
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|flag
-operator|==
-literal|null
-operator|||
-name|flag
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
-argument_list|(
-name|flag
-operator|+
-literal|" does not specify any options"
-argument_list|)
-throw|;
-block|}
-specifier|final
-name|boolean
-name|append
-init|=
-name|flag
-operator|.
-name|contains
-argument_list|(
-name|APPEND
-argument_list|)
-decl_stmt|;
-specifier|final
-name|boolean
-name|overwrite
-init|=
-name|flag
-operator|.
-name|contains
-argument_list|(
-name|OVERWRITE
-argument_list|)
-decl_stmt|;
-comment|// Both append and overwrite is an error
-if|if
-condition|(
-name|append
-operator|&&
-name|overwrite
-condition|)
-block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
-argument_list|(
-name|flag
-operator|+
-literal|"Both append and overwrite options cannot be enabled."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|pathExists
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-operator|(
-name|append
-operator|||
-name|overwrite
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileAlreadyExistsException
-argument_list|(
-literal|"File already exists: "
-operator|+
-name|path
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|". Append or overwrite option must be specified in "
-operator|+
-name|flag
-argument_list|)
-throw|;
-block|}
-block|}
-elseif|else
-if|if
-condition|(
-operator|!
-name|flag
-operator|.
-name|contains
-argument_list|(
-name|CREATE
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"Non existing file: "
-operator|+
-name|path
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|". Create option is not specified in "
-operator|+
-name|flag
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 end_enum
