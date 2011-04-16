@@ -47,14 +47,8 @@ import|;
 end_import
 
 begin_class
-DECL|class|CLICommands
-specifier|public
-class|class
-name|CLICommands
-block|{
 DECL|class|FSCmdExecutor
 specifier|public
-specifier|static
 class|class
 name|FSCmdExecutor
 extends|extends
@@ -134,7 +128,6 @@ argument_list|,
 name|args
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 end_class
