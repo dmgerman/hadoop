@@ -49,7 +49,7 @@ DECL|field|testCommands
 specifier|private
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|testCommands
 init|=
@@ -59,7 +59,7 @@ DECL|field|cleanupCommands
 specifier|private
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|cleanupCommands
 init|=
@@ -87,95 +87,6 @@ specifier|public
 name|CLITestData
 parameter_list|()
 block|{    }
-comment|/**    * Class to define Test Command. includes type of the command and command itself    * Valid types FS, DFSADMIN, MRADMIN and ARCHIVE.    */
-DECL|class|TestCmd
-specifier|static
-specifier|public
-class|class
-name|TestCmd
-block|{
-DECL|enum|CommandType
-specifier|public
-enum|enum
-name|CommandType
-block|{
-DECL|enumConstant|FS
-name|FS
-block|,
-DECL|enumConstant|DFSADMIN
-name|DFSADMIN
-block|,
-DECL|enumConstant|MRADMIN
-name|MRADMIN
-block|,
-DECL|enumConstant|ARCHIVE
-name|ARCHIVE
-block|}
-DECL|field|type
-specifier|private
-specifier|final
-name|CommandType
-name|type
-decl_stmt|;
-DECL|field|cmd
-specifier|private
-specifier|final
-name|String
-name|cmd
-decl_stmt|;
-DECL|method|TestCmd (String str, CommandType type)
-specifier|public
-name|TestCmd
-parameter_list|(
-name|String
-name|str
-parameter_list|,
-name|CommandType
-name|type
-parameter_list|)
-block|{
-name|cmd
-operator|=
-name|str
-expr_stmt|;
-name|this
-operator|.
-name|type
-operator|=
-name|type
-expr_stmt|;
-block|}
-DECL|method|getType ()
-specifier|public
-name|CommandType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|type
-return|;
-block|}
-DECL|method|getCmd ()
-specifier|public
-name|String
-name|getCmd
-parameter_list|()
-block|{
-return|return
-name|cmd
-return|;
-block|}
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|cmd
-return|;
-block|}
-block|}
 comment|/**    * @return the testDesc    */
 DECL|method|getTestDesc ()
 specifier|public
@@ -209,7 +120,7 @@ DECL|method|getTestCommands ()
 specifier|public
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|getTestCommands
 parameter_list|()
@@ -219,14 +130,14 @@ name|testCommands
 return|;
 block|}
 comment|/**    * @param testCommands the testCommands to set    */
-DECL|method|setTestCommands (ArrayList<TestCmd> testCommands)
+DECL|method|setTestCommands (ArrayList<CLICommand> testCommands)
 specifier|public
 name|void
 name|setTestCommands
 parameter_list|(
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|testCommands
 parameter_list|)
@@ -305,7 +216,7 @@ DECL|method|getCleanupCommands ()
 specifier|public
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|getCleanupCommands
 parameter_list|()
@@ -315,14 +226,14 @@ name|cleanupCommands
 return|;
 block|}
 comment|/**    * @param cleanupCommands the cleanupCommands to set    */
-DECL|method|setCleanupCommands (ArrayList<TestCmd> cleanupCommands)
+DECL|method|setCleanupCommands (ArrayList<CLICommand> cleanupCommands)
 specifier|public
 name|void
 name|setCleanupCommands
 parameter_list|(
 name|ArrayList
 argument_list|<
-name|TestCmd
+name|CLICommand
 argument_list|>
 name|cleanupCommands
 parameter_list|)
