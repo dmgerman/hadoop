@@ -181,7 +181,7 @@ literal|"-"
 operator|+
 name|NAME
 operator|+
-literal|"[-q]<path>"
+literal|" [-q]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
