@@ -2695,7 +2695,7 @@ name|get
 argument_list|(
 literal|"hadoop.kerberos.kinit.command"
 argument_list|,
-literal|"/usr/kerberos/bin/kinit"
+literal|"kinit"
 argument_list|)
 decl_stmt|;
 name|KerberosTicket
