@@ -389,6 +389,30 @@ operator|=
 name|cmdName
 expr_stmt|;
 block|}
+DECL|method|setRecursive (boolean flag)
+specifier|protected
+name|void
+name|setRecursive
+parameter_list|(
+name|boolean
+name|flag
+parameter_list|)
+block|{
+name|recursive
+operator|=
+name|flag
+expr_stmt|;
+block|}
+DECL|method|isRecursive ()
+specifier|protected
+name|boolean
+name|isRecursive
+parameter_list|()
+block|{
+return|return
+name|recursive
+return|;
+block|}
 comment|/**     * Execute the command on the input path    *     * @param path the input path    * @throws IOException if any error occurs    */
 DECL|method|run (Path path)
 specifier|abstract
@@ -533,6 +557,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO: -1 should be reserved for syntax error, 1 should be failure
 return|return
 operator|(
 name|numErrors
@@ -542,6 +567,7 @@ operator|)
 condition|?
 name|exitCode
 else|:
+operator|-
 literal|1
 return|;
 block|}
@@ -770,9 +796,32 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"Can not find listing for "
-operator|+
+name|getFnfText
+argument_list|(
 name|item
+operator|.
+name|path
+argument_list|)
+argument_list|)
+throw|;
+block|}
+comment|/**    *  TODO: A crutch until the text is standardized across commands...    *  Eventually an exception that takes the path as an argument will    *  replace custom text    *  @param path the thing that doesn't exist    *  @returns String in printf format    */
+DECL|method|getFnfText (Path path)
+specifier|protected
+name|String
+name|getFnfText
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|path
+operator|+
+literal|": No such file or directory"
 argument_list|)
 throw|;
 block|}
@@ -949,9 +998,10 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"Can not find listing for "
-operator|+
-name|pattern
+name|getFnfText
+argument_list|(
+name|path
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -1147,11 +1197,35 @@ name|String
 name|getUsage
 parameter_list|()
 block|{
-return|return
+name|String
+name|cmd
+init|=
+literal|"-"
+operator|+
+name|getCommandName
+argument_list|()
+decl_stmt|;
+name|String
+name|usage
+init|=
 name|getCommandField
 argument_list|(
 literal|"USAGE"
 argument_list|)
+decl_stmt|;
+return|return
+name|usage
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+name|cmd
+else|:
+name|cmd
+operator|+
+literal|" "
+operator|+
+name|usage
 return|;
 block|}
 comment|/**    * The long usage suitable for help output    * @return text of the usage    */
