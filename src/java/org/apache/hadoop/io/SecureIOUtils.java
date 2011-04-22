@@ -318,7 +318,7 @@ specifier|static
 name|FileSystem
 name|rawFilesystem
 decl_stmt|;
-comment|/**    * Open the given File for read access, verifying the expected user/group    * constraints.    * @param f the file that we are trying to open    * @param expectedOwner the expected user owner for the file    * @param expectedGroup the expected group owner for the file    * @throws IOException if an IO Error occurred, or the user/group does not     * match    */
+comment|/**    * Open the given File for read access, verifying the expected user/group    * constraints if security is enabled.    *    * Note that this function provides no additional checks if Hadoop    * security is disabled, since doing the checks would be too expensive    * when native libraries are not available.    *    * @param f the file that we are trying to open    * @param expectedOwner the expected user owner for the file    * @param expectedGroup the expected group owner for the file    * @throws IOException if an IO Error occurred, or security is enabled and    * the user/group does not match    */
 DECL|method|openForRead (File f, String expectedOwner, String expectedGroup)
 specifier|public
 specifier|static
@@ -339,46 +339,13 @@ name|IOException
 block|{
 if|if
 condition|(
-name|skipSecurity
+operator|!
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 condition|)
 block|{
-comment|// Subject to race conditions but this is the best we can do
-name|FileStatus
-name|status
-init|=
-name|rawFilesystem
-operator|.
-name|getFileStatus
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|f
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|checkStat
-argument_list|(
-name|f
-argument_list|,
-name|status
-operator|.
-name|getOwner
-argument_list|()
-argument_list|,
-name|status
-operator|.
-name|getGroup
-argument_list|()
-argument_list|,
-name|expectedOwner
-argument_list|,
-name|expectedGroup
-argument_list|)
-expr_stmt|;
 return|return
 operator|new
 name|FileInputStream
@@ -387,6 +354,35 @@ name|f
 argument_list|)
 return|;
 block|}
+return|return
+name|forceSecureOpenForRead
+argument_list|(
+name|f
+argument_list|,
+name|expectedOwner
+argument_list|,
+name|expectedGroup
+argument_list|)
+return|;
+block|}
+comment|/**    * Same as openForRead() except that it will run even if security is off.    * This is used by unit tests.    */
+DECL|method|forceSecureOpenForRead (File f, String expectedOwner, String expectedGroup)
+specifier|static
+name|FileInputStream
+name|forceSecureOpenForRead
+parameter_list|(
+name|File
+name|f
+parameter_list|,
+name|String
+name|expectedOwner
+parameter_list|,
+name|String
+name|expectedGroup
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|FileInputStream
 name|fis
 init|=

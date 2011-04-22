@@ -372,13 +372,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|expected
-operator|=
-name|IOException
-operator|.
-name|class
-argument_list|)
 DECL|method|testReadIncorrectlyRestrictedWithSecurity ()
 specifier|public
 name|void
@@ -387,9 +380,29 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// this will only run if libs are available
+name|assumeTrue
+argument_list|(
+name|NativeIO
+operator|.
+name|isAvailable
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Running test with native libs..."
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 name|SecureIOUtils
 operator|.
-name|openForRead
+name|forceSecureOpenForRead
 argument_list|(
 name|testFilePath
 argument_list|,
@@ -406,6 +419,15 @@ argument_list|(
 literal|"Didn't throw expection for wrong ownership!"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// expected
+block|}
 block|}
 annotation|@
 name|Test
