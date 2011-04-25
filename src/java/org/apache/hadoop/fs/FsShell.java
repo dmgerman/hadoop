@@ -7254,7 +7254,7 @@ name|TAIL_USAGE
 operator|+
 literal|":  Show the last 1KB of the file. \n"
 operator|+
-literal|"\t\tThe -f option shows apended data as the file grows. \n"
+literal|"\t\tThe -f option shows appended data as the file grows. \n"
 decl_stmt|;
 name|String
 name|chmod
