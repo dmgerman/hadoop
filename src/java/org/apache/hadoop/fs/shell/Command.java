@@ -805,7 +805,7 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-comment|/**    *  TODO: A crutch until the text is standardized across commands...    *  Eventually an exception that takes the path as an argument will    *  replace custom text    *  @param path the thing that doesn't exist    *  @returns String in printf format    */
+comment|/**    *  TODO: A crutch until the text is standardized across commands...    *  Eventually an exception that takes the path as an argument will    *  replace custom text, until then, commands can supply custom text    *  for backwards compatibility    *  @param path the thing that doesn't exist    *  @returns String in printf format    */
 DECL|method|getFnfText (Path path)
 specifier|protected
 name|String
@@ -815,15 +815,11 @@ name|Path
 name|path
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
+return|return
 name|path
 operator|+
 literal|": No such file or directory"
-argument_list|)
-throw|;
+return|;
 block|}
 comment|/**    *  Iterates over the given expanded paths and invokes    *  {@link #processPath(PathData)} on each element.  If "recursive" is true,    *  will do a post-visit DFS on directories.    *  @param parent if called via a recurse, will be the parent dir, else null    *  @param items a list of {@link PathData} objects to process    *  @throws IOException if anything goes wrong...    */
 DECL|method|processPaths (PathData parent, PathData ... items)
