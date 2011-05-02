@@ -389,16 +389,6 @@ name|TunnelProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|//WritableRpcEngine expects a versionID in every protocol.
-DECL|field|versionID
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|versionID
-init|=
-literal|0L
-decl_stmt|;
 comment|/** All Avro methods and responses go through this. */
 DECL|method|call (BufferListWritable request)
 name|BufferListWritable
@@ -864,7 +854,7 @@ name|rpcTimeout
 argument_list|)
 argument_list|)
 argument_list|,
-literal|false
+literal|null
 argument_list|)
 return|;
 block|}
