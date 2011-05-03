@@ -1568,10 +1568,9 @@ name|NullContext
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Number 4 includes getProtocolVersion()
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|server
 operator|.
@@ -2178,6 +2177,9 @@ name|IOException
 block|{
 try|try
 block|{
+name|TestProtocol
+name|proxy
+init|=
 name|RPC
 operator|.
 name|waitForProxy
@@ -2201,6 +2203,13 @@ argument_list|,
 name|conf
 argument_list|,
 literal|15000L
+argument_list|)
+decl_stmt|;
+name|proxy
+operator|.
+name|echo
+argument_list|(
+literal|""
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2787,6 +2796,13 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|proxy
+operator|.
+name|echo
+argument_list|(
+literal|""
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2940,6 +2956,13 @@ argument_list|,
 name|mulitServerAddr
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+name|proxy
+operator|.
+name|echo
+argument_list|(
+literal|""
 argument_list|)
 expr_stmt|;
 block|}

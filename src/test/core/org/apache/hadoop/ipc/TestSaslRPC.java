@@ -2071,6 +2071,11 @@ argument_list|,
 name|newConf
 argument_list|)
 expr_stmt|;
+name|proxy1
+operator|.
+name|getAuthMethod
+argument_list|()
+expr_stmt|;
 name|Client
 name|client
 init|=
@@ -2127,6 +2132,11 @@ argument_list|,
 name|newConf
 argument_list|)
 expr_stmt|;
+name|proxy2
+operator|.
+name|getAuthMethod
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"number of connections in cache is wrong"
@@ -2170,6 +2180,11 @@ name|addr
 argument_list|,
 name|newConf
 argument_list|)
+expr_stmt|;
+name|proxy3
+operator|.
+name|getAuthMethod
+argument_list|()
 expr_stmt|;
 name|ConnectionId
 index|[]
