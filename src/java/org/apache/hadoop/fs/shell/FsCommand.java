@@ -150,6 +150,15 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
+name|SetReplication
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
 name|Tail
 operator|.
 name|class
