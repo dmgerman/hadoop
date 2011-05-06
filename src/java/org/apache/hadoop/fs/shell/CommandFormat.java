@@ -130,6 +130,12 @@ name|Boolean
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|ignoreUnknownOpts
+name|boolean
+name|ignoreUnknownOpts
+init|=
+literal|false
+decl_stmt|;
 comment|/** constructor */
 DECL|method|CommandFormat (String n, int min, int max, String ... possibleOpt)
 specifier|public
@@ -168,6 +174,21 @@ name|opt
 range|:
 name|possibleOpt
 control|)
+block|{
+if|if
+condition|(
+name|opt
+operator|==
+literal|null
+condition|)
+block|{
+name|ignoreUnknownOpts
+operator|=
+literal|true
+expr_stmt|;
+block|}
+else|else
+block|{
 name|options
 operator|.
 name|put
@@ -179,6 +200,8 @@ operator|.
 name|FALSE
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 comment|/** Parse parameters starting from the given position    * Consider using the variant that directly takes a List    *     * @param args an array of input arguments    * @param pos the position at which starts to parse    * @return a list of parameters    */
 DECL|method|parse (String[] args, int pos)
@@ -305,7 +328,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|options
 operator|.
 name|containsKey
@@ -314,14 +336,6 @@ name|opt
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|UnknownOptionException
-argument_list|(
-name|arg
-argument_list|)
-throw|;
-block|}
 name|args
 operator|.
 name|remove
@@ -340,13 +354,24 @@ operator|.
 name|TRUE
 argument_list|)
 expr_stmt|;
+continue|continue;
 block|}
-else|else
-block|{
+if|if
+condition|(
+operator|!
+name|ignoreUnknownOpts
+condition|)
+throw|throw
+operator|new
+name|UnknownOptionException
+argument_list|(
+name|arg
+argument_list|)
+throw|;
+block|}
 name|pos
 operator|++
 expr_stmt|;
-block|}
 block|}
 name|int
 name|psize

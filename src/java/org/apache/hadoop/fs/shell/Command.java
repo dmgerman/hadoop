@@ -532,7 +532,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: -1 should be reserved for syntax error, 1 should be failure
 return|return
 operator|(
 name|numErrors
@@ -542,7 +541,18 @@ operator|)
 condition|?
 name|exitCode
 else|:
-operator|-
+name|exitCodeForError
+argument_list|()
+return|;
+block|}
+comment|/**    * The exit code to be returned if any errors occur during execution.    * This method is needed to account for the inconsistency in the exit    * codes returned by various commands.    * @return a non-zero exit code    */
+DECL|method|exitCodeForError ()
+specifier|protected
+name|int
+name|exitCodeForError
+parameter_list|()
+block|{
+return|return
 literal|1
 return|;
 block|}
