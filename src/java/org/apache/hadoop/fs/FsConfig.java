@@ -17,6 +17,102 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|FS_HOME_DIR_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|FS_HOME_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -58,22 +154,6 @@ block|{}
 comment|// Configuration keys  and default values in the config file
 comment|// TBD note we should deprecate the keys constants elsewhere
 comment|// The Keys
-DECL|field|FS_DEFAULT_NAME_KEY
-specifier|static
-specifier|final
-name|String
-name|FS_DEFAULT_NAME_KEY
-init|=
-literal|"fs.default.name"
-decl_stmt|;
-DECL|field|FS_HOME_DIR_ROOT_KEY
-specifier|static
-specifier|final
-name|String
-name|FS_HOME_DIR_ROOT_KEY
-init|=
-literal|"fs.homeDir"
-decl_stmt|;
 DECL|field|FS_REPLICATION_FACTOR_KEY
 specifier|static
 specifier|final
@@ -90,34 +170,9 @@ name|FS_BLOCK_SIZE_KEY
 init|=
 literal|"dfs.block.size"
 decl_stmt|;
-DECL|field|IO_BUFFER_SIZE_KEY
-specifier|static
-specifier|final
-name|String
-name|IO_BUFFER_SIZE_KEY
-init|=
-literal|"io.file.buffer.size"
-decl_stmt|;
 comment|// The default values
 comment|// Default values of SERVER_DEFAULT(-1) implies use the ones from
 comment|// the target file system where files are created.
-DECL|field|FS_DEFAULT_NAME
-specifier|static
-specifier|final
-name|String
-name|FS_DEFAULT_NAME
-init|=
-literal|"file:///"
-decl_stmt|;
-DECL|field|FS_HOME_DIR_ROOT
-specifier|static
-specifier|final
-name|String
-name|FS_HOME_DIR_ROOT
-init|=
-literal|"/user"
-decl_stmt|;
-comment|// relative to FS_DEFAULT
 DECL|field|FS_DEFAULT_REPLICATION_FACTOR
 specifier|static
 specifier|final
@@ -138,14 +193,6 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-DECL|field|IO_BUFFER_SIZE
-specifier|static
-specifier|final
-name|int
-name|IO_BUFFER_SIZE
-init|=
-literal|4096
-decl_stmt|;
 DECL|method|getDefaultFsURI (final Configuration conf)
 specifier|public
 specifier|static
@@ -164,7 +211,7 @@ name|get
 argument_list|(
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
-name|FS_DEFAULT_NAME
+name|FS_DEFAULT_NAME_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -184,9 +231,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|FS_HOME_DIR_ROOT_KEY
+name|FS_HOME_DIR_KEY
 argument_list|,
-name|FS_HOME_DIR_ROOT
+name|FS_HOME_DIR_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -253,9 +300,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|IO_BUFFER_SIZE_KEY
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-name|IO_BUFFER_SIZE
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -359,7 +406,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|FS_HOME_DIR_ROOT_KEY
+name|FS_HOME_DIR_KEY
 argument_list|,
 name|path
 argument_list|)
@@ -431,7 +478,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|IO_BUFFER_SIZE_KEY
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 name|bs
 argument_list|)

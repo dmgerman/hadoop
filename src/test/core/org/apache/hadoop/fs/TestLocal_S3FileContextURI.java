@@ -17,6 +17,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -76,9 +92,7 @@ name|S3Conf
 operator|.
 name|set
 argument_list|(
-name|FsConfig
-operator|.
-name|FS_DEFAULT_NAME
+name|FS_DEFAULT_NAME_DEFAULT
 argument_list|,
 name|S3Conf
 operator|.

@@ -367,6 +367,26 @@ init|=
 literal|1000000
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|IO_FILE_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_FILE_BUFFER_SIZE_KEY
+init|=
+literal|"io.file.buffer.size"
+decl_stmt|;
+comment|/** Default value for IO_FILE_BUFFER_SIZE_KEY */
+DECL|field|IO_FILE_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+init|=
+literal|4096
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IO_SKIP_CHECKSUM_ERRORS_KEY
 specifier|public
 specifier|static
