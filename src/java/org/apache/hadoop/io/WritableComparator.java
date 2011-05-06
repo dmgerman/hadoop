@@ -187,15 +187,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|comparators
-operator|.
-name|put
-argument_list|(
-name|c
-argument_list|,
-name|comparator
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 return|return
@@ -255,7 +246,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Register an optimized comparator for a {@link WritableComparable}    * implementation. */
+comment|/** Register an optimized comparator for a {@link WritableComparable}    * implementation. Comparators registered with this method must be    * thread-safe. */
 DECL|method|define (Class c, WritableComparator comparator)
 specifier|public
 specifier|static
