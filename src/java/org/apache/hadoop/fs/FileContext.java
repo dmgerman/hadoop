@@ -312,22 +312,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Options
-operator|.
-name|Rename
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -1433,6 +1417,20 @@ parameter_list|()
 block|{
 return|return
 name|ugi
+return|;
+block|}
+comment|/**    * Return the current user's home directory in this file system.    * The default implementation returns "/user/$USER/".    * @return the home directory    */
+DECL|method|getHomeDirectory ()
+specifier|public
+name|Path
+name|getHomeDirectory
+parameter_list|()
+block|{
+return|return
+name|defaultFS
+operator|.
+name|getHomeDirectory
+argument_list|()
 return|;
 block|}
 comment|/**    *     * @return the umask of this FileContext    */

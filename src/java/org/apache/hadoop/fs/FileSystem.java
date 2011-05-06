@@ -406,42 +406,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|SecretManager
-operator|.
-name|InvalidToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|AbstractDelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Progressable
@@ -1513,7 +1477,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a new delegation token for this file system.    * @param renewer the account name that is allowed to renew the token.    * @return a new delegation token    * @throws IOException    */
+comment|/**    * Deprecated  - use @link {@link #getDelegationTokens(String)}    * Get a new delegation token for this file system.    * @param renewer the account name that is allowed to renew the token.    * @return a new delegation token    * @throws IOException    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -1525,6 +1489,8 @@ block|,
 literal|"MapReduce"
 block|}
 argument_list|)
+annotation|@
+name|Deprecated
 DECL|method|getDelegationToken (String renewer)
 specifier|public
 name|Token
@@ -1543,7 +1509,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get one or more delegation tokens associated with the filesystem. Normally    * a file system returns a single delegation token. A file system that manages    * multiple file systems underneath, could return set of delegation tokens for    * all the file systems it manages.    *     * @param renewer the account name that is allowed to renew the token.    * @return list of new delegation tokens    * @throws IOException    */
+comment|/**    * Get one or more delegation tokens associated with the filesystem. Normally    * a file system returns a single delegation token. A file system that manages    * multiple file systems underneath, could return set of delegation tokens for    * all the file systems it manages.    *     * @param renewer the account name that is allowed to renew the token.    * @return list of new delegation tokens    *    If delegation tokens not supported then return a list of size zero.    * @throws IOException    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -1573,7 +1539,17 @@ throws|throws
 name|IOException
 block|{
 return|return
-literal|null
+operator|new
+name|ArrayList
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+argument_list|(
+literal|0
+argument_list|)
 return|;
 block|}
 comment|/** create a file with the provided permission    * The permission of the file is set to be the provided permission as in    * setPermission, not permission&~umask    *     * It is implemented using two RPCs. It is understood that it is inefficient,    * but the implementation is thread-safe. The other option is to change the    * value of umask in configuration to be 0, but it is not thread-safe.    *     * @param fs file system handle    * @param file the name of the file to be created    * @param permission the permission of the file    * @return an output stream    * @throws IOException    */
@@ -2102,6 +2078,34 @@ argument_list|,
 literal|4096
 argument_list|)
 argument_list|)
+return|;
+block|}
+comment|/**    * Return the fully-qualified path of path f resolving the path    * through any symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException    */
+DECL|method|resolvePath (final Path p)
+specifier|public
+name|Path
+name|resolvePath
+parameter_list|(
+specifier|final
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkPath
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+return|return
+name|getFileStatus
+argument_list|(
+name|p
+argument_list|)
+operator|.
+name|getPath
+argument_list|()
 return|;
 block|}
 comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */

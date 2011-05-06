@@ -439,7 +439,7 @@ comment|/*    * Create files with numBlocks blocks each with block size blockSiz
 DECL|method|createFile (FileContext fc, Path path, int numBlocks, CreateOpts... options)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileContext
@@ -541,11 +541,16 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+return|return
+name|data
+operator|.
+name|length
+return|;
 block|}
 DECL|method|createFile (FileContext fc, Path path, int numBlocks, int blockSize)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileContext
@@ -563,6 +568,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|createFile
 argument_list|(
 name|fc
@@ -583,12 +589,12 @@ operator|.
 name|createParent
 argument_list|()
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|createFile (FileContext fc, Path path)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileContext
@@ -600,6 +606,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|createFile
 argument_list|(
 name|fc
@@ -613,12 +620,12 @@ operator|.
 name|createParent
 argument_list|()
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|createFile (FileContext fc, String name)
 specifier|public
 specifier|static
-name|Path
+name|long
 name|createFile
 parameter_list|(
 name|FileContext
@@ -640,21 +647,19 @@ argument_list|,
 name|name
 argument_list|)
 decl_stmt|;
+return|return
 name|createFile
 argument_list|(
 name|fc
 argument_list|,
 name|path
 argument_list|)
-expr_stmt|;
-return|return
-name|path
 return|;
 block|}
 DECL|method|createFileNonRecursive (FileContext fc, String name)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFileNonRecursive
 parameter_list|(
 name|FileContext
@@ -676,18 +681,19 @@ argument_list|,
 name|name
 argument_list|)
 decl_stmt|;
+return|return
 name|createFileNonRecursive
 argument_list|(
 name|fc
 argument_list|,
 name|path
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|createFileNonRecursive (FileContext fc, Path path)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFileNonRecursive
 parameter_list|(
 name|FileContext
@@ -699,6 +705,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|createFile
 argument_list|(
 name|fc
@@ -712,7 +719,7 @@ operator|.
 name|donotCreateParent
 argument_list|()
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|appendToFile (FileContext fc, Path path, int numBlocks, CreateOpts... options)
 specifier|public

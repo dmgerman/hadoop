@@ -321,19 +321,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|fSys
-operator|.
-name|delete
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|LOCAL_FS_ROOT_URI
-argument_list|)
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|getDefaultWorkingDirectory ()
 specifier|protected

@@ -446,7 +446,7 @@ comment|/*    * Create files with numBlocks blocks each with block size blockSiz
 DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize, boolean createParent)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileSystem
@@ -517,11 +517,16 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+return|return
+name|data
+operator|.
+name|length
+return|;
 block|}
 DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileSystem
@@ -539,6 +544,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|createFile
 argument_list|(
 name|fSys
@@ -551,12 +557,12 @@ name|blockSize
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|createFile (FileSystem fSys, Path path)
 specifier|public
 specifier|static
-name|void
+name|long
 name|createFile
 parameter_list|(
 name|FileSystem
@@ -568,6 +574,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|createFile
 argument_list|(
 name|fSys
@@ -580,12 +587,12 @@ name|DEFAULT_BLOCK_SIZE
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|createFile (FileSystem fSys, String name)
 specifier|public
 specifier|static
-name|Path
+name|long
 name|createFile
 parameter_list|(
 name|FileSystem
@@ -607,15 +614,13 @@ argument_list|,
 name|name
 argument_list|)
 decl_stmt|;
+return|return
 name|createFile
 argument_list|(
 name|fSys
 argument_list|,
 name|path
 argument_list|)
-expr_stmt|;
-return|return
-name|path
 return|;
 block|}
 DECL|method|exists (FileSystem fSys, Path p)

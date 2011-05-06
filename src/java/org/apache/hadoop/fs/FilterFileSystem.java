@@ -308,6 +308,29 @@ name|len
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|resolvePath (final Path p)
+specifier|public
+name|Path
+name|resolvePath
+parameter_list|(
+specifier|final
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|resolvePath
+argument_list|(
+name|p
+argument_list|)
+return|;
+block|}
 comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
 DECL|method|open (Path f, int bufferSize)
 specifier|public
@@ -1173,6 +1196,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|primitiveMkdir (Path f, FsPermission abdolutePermission)
 specifier|protected
 name|boolean
@@ -1217,6 +1245,11 @@ block|}
 annotation|@
 name|Override
 comment|// FileSystem
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|getDelegationToken (String renewer)
 specifier|public
 name|Token
