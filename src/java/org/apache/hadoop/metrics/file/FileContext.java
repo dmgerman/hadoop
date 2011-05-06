@@ -143,7 +143,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Metrics context for writing metrics to a file.<p/>  *  * This class is configured by setting ContextFactory attributes which in turn  * are usually configured through a properties file.  All the attributes are  * prefixed by the contextName. For example, the properties file might contain:  *<pre>  * myContextName.fileName=/tmp/metrics.log  * myContextName.period=5  *</pre>  */
+comment|/**  * Metrics context for writing metrics to a file.<p/>  *  * This class is configured by setting ContextFactory attributes which in turn  * are usually configured through a properties file.  All the attributes are  * prefixed by the contextName. For example, the properties file might contain:  *<pre>  * myContextName.fileName=/tmp/metrics.log  * myContextName.period=5  *</pre>  * @deprecated use {@link org.apache.hadoop.metrics2.sink.FileSink} instead.  */
 end_comment
 
 begin_class
@@ -155,6 +155,8 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
+annotation|@
+name|Deprecated
 DECL|class|FileContext
 specifier|public
 class|class
