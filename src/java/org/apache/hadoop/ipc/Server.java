@@ -5364,9 +5364,17 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"SASL server context established. Negotiated QoP is "
 operator|+
@@ -5380,6 +5388,7 @@ name|QOP
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|qop
 init|=
@@ -5419,15 +5428,24 @@ name|getAuthorizationID
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"SASL server successfully authenticated client: "
 operator|+
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 name|rpcMetrics
 operator|.
 name|authenticationSuccesses
