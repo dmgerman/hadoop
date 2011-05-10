@@ -480,15 +480,6 @@ operator|.
 name|getDefault
 argument_list|()
 decl_stmt|;
-DECL|field|localFsSingleton
-specifier|volatile
-specifier|private
-specifier|static
-name|FileContext
-name|localFsSingleton
-init|=
-literal|null
-decl_stmt|;
 comment|/**    * List of files that should be deleted on JVM shutdown.    */
 DECL|field|DELETE_ON_EXIT
 specifier|static
@@ -1124,25 +1115,13 @@ parameter_list|()
 throws|throws
 name|UnsupportedFileSystemException
 block|{
-if|if
-condition|(
-name|localFsSingleton
-operator|==
-literal|null
-condition|)
-block|{
-name|localFsSingleton
-operator|=
+return|return
 name|getFileContext
 argument_list|(
 name|FsConstants
 operator|.
 name|LOCAL_FS_URI
 argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|localFsSingleton
 return|;
 block|}
 comment|/**    * Create a FileContext for specified URI using the default config.    *     * @param defaultFsUri    * @return a FileContext with the specified URI as the default FS.    *     * @throws UnsupportedFileSystemException If the file system for    *<code>defaultFsUri</code> is not supported    */
