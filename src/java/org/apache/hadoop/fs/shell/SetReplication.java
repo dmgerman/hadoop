@@ -100,7 +100,11 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|shell
+operator|.
+name|PathExceptions
+operator|.
+name|PathIOException
 import|;
 end_import
 
@@ -366,13 +370,20 @@ operator|.
 name|isSymlink
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
-name|IOException
+name|PathIOException
 argument_list|(
+name|item
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 literal|"Symlinks unsupported"
 argument_list|)
 throw|;
+block|}
 if|if
 condition|(
 name|item
@@ -629,23 +640,6 @@ literal|" done"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-literal|"File does not exist: "
-operator|+
-name|path
-return|;
 block|}
 block|}
 end_class

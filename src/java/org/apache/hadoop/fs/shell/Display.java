@@ -140,7 +140,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
+name|Path
 import|;
 end_import
 
@@ -154,7 +154,11 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|shell
+operator|.
+name|PathExceptions
+operator|.
+name|PathIsDirectoryException
 import|;
 end_import
 
@@ -340,69 +344,6 @@ literal|"-text"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-comment|// TODO: this is a pretty inconsistent way to output the path...!!
-comment|//       but, it's backwards compatible
-try|try
-block|{
-name|FileSystem
-name|fs
-init|=
-name|path
-operator|.
-name|getFileSystem
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|path
-operator|=
-name|fs
-operator|.
-name|makeQualified
-argument_list|(
-name|path
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// shouldn't happen, so just use path as-is
-name|displayWarning
-argument_list|(
-literal|"can't fully qualify "
-operator|+
-name|path
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-literal|"File does not exist: "
-operator|+
-name|path
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-return|;
-block|}
 comment|/**    * Displays file content to stdout    */
 DECL|class|Cat
 specifier|public
@@ -512,6 +453,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|item
+operator|.
+name|stat
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|PathIsDirectoryException
+argument_list|(
+name|item
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|item
 operator|.
 name|fs

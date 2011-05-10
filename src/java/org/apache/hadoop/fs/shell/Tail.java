@@ -100,7 +100,11 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|shell
+operator|.
+name|PathExceptions
+operator|.
+name|PathIsDirectoryException
 import|;
 end_import
 
@@ -332,9 +336,12 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PathIsDirectoryException
 argument_list|(
-literal|"Source must be a file."
+name|item
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -496,23 +503,6 @@ expr_stmt|;
 block|}
 return|return
 name|offset
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-literal|"File does not exist: "
-operator|+
-name|path
 return|;
 block|}
 block|}

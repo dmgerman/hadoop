@@ -122,6 +122,24 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|shell
+operator|.
+name|PathExceptions
+operator|.
+name|PathIsNotDirectoryException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates a Path (path), its FileStatus (stat), and its FileSystem (fs).  * The stat field will be null if the path does not exist.  */
 end_comment
@@ -481,11 +499,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PathIsNotDirectoryException
 argument_list|(
-name|path
-operator|+
-literal|": Not a directory"
+name|string
 argument_list|)
 throw|;
 block|}

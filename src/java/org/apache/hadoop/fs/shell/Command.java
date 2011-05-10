@@ -194,6 +194,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|shell
+operator|.
+name|PathExceptions
+operator|.
+name|PathNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -682,16 +700,9 @@ block|{
 comment|// it's a glob that failed to match
 throw|throw
 operator|new
-name|FileNotFoundException
-argument_list|(
-name|getFnfText
-argument_list|(
-operator|new
-name|Path
+name|PathNotFoundException
 argument_list|(
 name|arg
-argument_list|)
-argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -817,35 +828,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO: this should be more posix-like: ex. "No such file or directory"
 throw|throw
 operator|new
-name|FileNotFoundException
-argument_list|(
-name|getFnfText
+name|PathNotFoundException
 argument_list|(
 name|item
 operator|.
-name|path
-argument_list|)
+name|toString
+argument_list|()
 argument_list|)
 throw|;
-block|}
-comment|/**    *  TODO: A crutch until the text is standardized across commands...    *  Eventually an exception that takes the path as an argument will    *  replace custom text, until then, commands can supply custom text    *  for backwards compatibility    *  @param path the thing that doesn't exist    *  @returns String in printf format    */
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-name|path
-operator|+
-literal|": No such file or directory"
-return|;
 block|}
 comment|/**    *  Iterates over the given expanded paths and invokes    *  {@link #processPath(PathData)} on each element.  If "recursive" is true,    *  will do a post-visit DFS on directories.    *  @param parent if called via a recurse, will be the parent dir, else null    *  @param items a list of {@link PathData} objects to process    *  @throws IOException if anything goes wrong...    */
 DECL|method|processPaths (PathData parent, PathData ... items)

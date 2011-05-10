@@ -118,20 +118,6 @@ name|FsShell
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
 begin_comment
 comment|/**  * Count the number of directories, files, bytes, quota, and remaining quota.  */
 end_comment
@@ -381,24 +367,6 @@ operator|.
 name|path
 argument_list|)
 expr_stmt|;
-block|}
-comment|// TODO: remove when the error is commonized...
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-literal|"Can not find listing for "
-operator|+
-name|path
-return|;
 block|}
 block|}
 end_class

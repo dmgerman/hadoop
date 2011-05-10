@@ -272,28 +272,6 @@ literal|"-chgrp"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-comment|// TODO: printing the path twice is silly for backwards compatibility
-return|return
-literal|"could not get status for '"
-operator|+
-name|path
-operator|+
-literal|"': File does not exist: "
-operator|+
-name|path
-return|;
-block|}
 comment|/**    * The pattern is almost as flexible as mode allowed by chmod shell command.    * The main restriction is that we recognize only rwxXt. To reduce errors we    * also enforce octal mode specifications of either 3 digits without a sticky    * bit setting or four digits with a sticky bit setting.    */
 DECL|class|Chmod
 specifier|public

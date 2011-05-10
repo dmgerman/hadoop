@@ -697,29 +697,6 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|// TODO: remove when the error is commonized...
-annotation|@
-name|Override
-DECL|method|getFnfText (Path path)
-specifier|protected
-name|String
-name|getFnfText
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-literal|"Cannot access "
-operator|+
-name|path
-operator|.
-name|toUri
-argument_list|()
-operator|+
-literal|": No such file or directory."
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|exitCodeForError ()
