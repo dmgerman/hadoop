@@ -494,6 +494,13 @@ return|return
 name|name
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|miniClusterMode
+condition|)
+block|{
 throw|throw
 operator|new
 name|MetricsException
@@ -505,6 +512,7 @@ operator|+
 literal|" already exists!"
 argument_list|)
 throw|;
+block|}
 block|}
 return|return
 name|sourceNames

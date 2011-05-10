@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.metrics.jvm
+DECL|package|org.apache.hadoop.log
 package|package
 name|org
 operator|.
@@ -12,17 +12,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|metrics
-operator|.
-name|jvm
+name|log
 package|;
 end_package
 
 begin_comment
-comment|/**  * A log4J Appender that simply counts logging events in three levels:  * fatal, error and warn.  */
+comment|/**  * A log4J Appender that simply counts logging events in three levels:  * fatal, error and warn. The class name is used in log4j.properties  * @deprecated use {@link org.apache.hadoop.log.metrics.EventCounter} instead  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|EventCounter
 specifier|public
 class|class
