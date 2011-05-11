@@ -155,6 +155,15 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
+name|Delete
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
 name|Display
 operator|.
 name|class

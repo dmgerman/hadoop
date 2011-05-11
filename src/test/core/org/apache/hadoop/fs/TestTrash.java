@@ -1496,12 +1496,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|val
-operator|==
-operator|-
+literal|"exit code"
+argument_list|,
 literal|1
+argument_list|,
+name|val
 argument_list|)
 expr_stmt|;
 name|assertTrue
