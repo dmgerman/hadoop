@@ -182,7 +182,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[<path> ...]"
+literal|"[-R] [<path> ...]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -205,7 +205,9 @@ literal|"\tfileName(full path)<r n> size \n"
 operator|+
 literal|"where n is the number of replicas specified for the file \n"
 operator|+
-literal|"and size is the size of the file, in bytes."
+literal|"and size is the size of the file, in bytes.\n"
+operator|+
+literal|"  -R  Recursively list the contents of directories"
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected
@@ -728,32 +730,6 @@ name|NAME
 init|=
 literal|"lsr"
 decl_stmt|;
-DECL|field|USAGE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|USAGE
-init|=
-name|Ls
-operator|.
-name|USAGE
-decl_stmt|;
-DECL|field|DESCRIPTION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DESCRIPTION
-init|=
-literal|"Recursively list the contents that match the specified\n"
-operator|+
-literal|"file pattern.  Behaves very similarly to hadoop fs -ls,\n"
-operator|+
-literal|"except that the data is shown for all the entries in the\n"
-operator|+
-literal|"subtree."
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|processOptions (LinkedList<String> args)
@@ -784,6 +760,18 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReplacementCommand ()
+specifier|public
+name|String
+name|getReplacementCommand
+parameter_list|()
+block|{
+return|return
+literal|"ls -R"
+return|;
 block|}
 block|}
 block|}

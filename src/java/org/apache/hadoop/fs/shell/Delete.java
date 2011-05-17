@@ -204,7 +204,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-skipTrash]<src> ..."
+literal|"[-r|-R] [-skipTrash]<src> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -219,7 +219,9 @@ literal|"Equivalent to the Unix command \"rm<src>\"\n"
 operator|+
 literal|"-skipTrash option bypasses trash, if enabled, and immediately\n"
 operator|+
-literal|"deletes<src>"
+literal|"deletes<src>\n"
+operator|+
+literal|"  -[rR]  Recursively deletes directories"
 decl_stmt|;
 DECL|field|skipTrash
 specifier|private
@@ -265,6 +267,8 @@ name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,
+literal|"r"
+argument_list|,
 literal|"R"
 argument_list|,
 literal|"skipTrash"
@@ -279,6 +283,13 @@ argument_list|)
 expr_stmt|;
 name|deleteDirs
 operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"r"
+argument_list|)
+operator|||
 name|cf
 operator|.
 name|getOpt
@@ -471,32 +482,6 @@ name|NAME
 init|=
 literal|"rmr"
 decl_stmt|;
-DECL|field|USAGE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|USAGE
-init|=
-name|Rm
-operator|.
-name|USAGE
-decl_stmt|;
-DECL|field|DESCRIPTION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DESCRIPTION
-init|=
-literal|"Remove all directories which match the specified file\n"
-operator|+
-literal|"pattern. Equivalent to the Unix command \"rm -rf<src>\"\n"
-operator|+
-literal|"-skipTrash option bypasses trash, if enabled, and immediately\n"
-operator|+
-literal|"deletes<src>"
-decl_stmt|;
 DECL|method|processOptions (LinkedList<String> args)
 specifier|protected
 name|void
@@ -515,7 +500,7 @@ name|args
 operator|.
 name|addFirst
 argument_list|(
-literal|"-R"
+literal|"-r"
 argument_list|)
 expr_stmt|;
 name|super
@@ -525,6 +510,18 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReplacementCommand ()
+specifier|public
+name|String
+name|getReplacementCommand
+parameter_list|()
+block|{
+return|return
+literal|"rm -r"
+return|;
 block|}
 block|}
 comment|/** empty the trash */

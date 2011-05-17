@@ -444,6 +444,11 @@ operator|.
 name|append
 argument_list|(
 name|item
+operator|.
+name|path
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;

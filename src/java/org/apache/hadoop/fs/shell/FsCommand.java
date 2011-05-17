@@ -182,6 +182,15 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
+name|FsUsage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
 name|Ls
 operator|.
 name|class

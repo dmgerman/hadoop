@@ -524,6 +524,23 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|isDeprecated
+argument_list|()
+condition|)
+block|{
+name|displayWarning
+argument_list|(
+literal|"DEPRECATED: Please use '"
+operator|+
+name|getReplacementCommand
+argument_list|()
+operator|+
+literal|"' instead."
+argument_list|)
+expr_stmt|;
+block|}
 name|processOptions
 argument_list|(
 name|args
@@ -1083,6 +1100,11 @@ decl_stmt|;
 name|String
 name|usage
 init|=
+name|isDeprecated
+argument_list|()
+condition|?
+literal|""
+else|:
 name|getCommandField
 argument_list|(
 literal|"USAGE"
@@ -1111,10 +1133,48 @@ name|getDescription
 parameter_list|()
 block|{
 return|return
+name|isDeprecated
+argument_list|()
+condition|?
+literal|"(DEPRECATED) Same as '"
+operator|+
+name|getReplacementCommand
+argument_list|()
+operator|+
+literal|"'"
+else|:
 name|getCommandField
 argument_list|(
 literal|"DESCRIPTION"
 argument_list|)
+return|;
+block|}
+comment|/**    * Is the command deprecated?    * @return boolean    */
+DECL|method|isDeprecated ()
+specifier|public
+specifier|final
+name|boolean
+name|isDeprecated
+parameter_list|()
+block|{
+return|return
+operator|(
+name|getReplacementCommand
+argument_list|()
+operator|!=
+literal|null
+operator|)
+return|;
+block|}
+comment|/**    * The replacement for a deprecated command    * @return null if not deprecated, else alternative command    */
+DECL|method|getReplacementCommand ()
+specifier|public
+name|String
+name|getReplacementCommand
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 comment|/**    * Get a public static class field    * @param field the field to retrieve    * @return String of the field    */
