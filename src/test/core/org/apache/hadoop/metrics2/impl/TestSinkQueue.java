@@ -30,6 +30,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CountDownLatch
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -120,6 +132,7 @@ name|TestSinkQueue
 block|{
 DECL|field|LOG
 specifier|private
+specifier|static
 specifier|final
 name|Log
 name|LOG
@@ -336,6 +349,28 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|testEmptyBlocking
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|testEmptyBlocking
+argument_list|(
+literal|100
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testEmptyBlocking (int awhile)
+specifier|private
+name|void
+name|testEmptyBlocking
+parameter_list|(
+name|int
+name|awhile
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 specifier|final
 name|SinkQueue
 argument_list|<
@@ -462,12 +497,22 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+comment|// Should work with or without sleep
+if|if
+condition|(
+name|awhile
+operator|>
+literal|0
+condition|)
+block|{
 name|Thread
 operator|.
-name|yield
-argument_list|()
+name|sleep
+argument_list|(
+name|awhile
+argument_list|)
 expr_stmt|;
-comment|// Let the other block
+block|}
 name|q
 operator|.
 name|enqueue
@@ -1310,9 +1355,16 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"should've thrown CME"
+argument_list|)
+expr_stmt|;
 name|fail
 argument_list|(
-literal|"should've thrown"
+literal|"should've thrown CME"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1331,6 +1383,8 @@ name|int
 modifier|...
 name|values
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 specifier|final
 name|SinkQueue
@@ -1364,6 +1418,16 @@ name|i
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
+name|CountDownLatch
+name|barrier
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 name|Thread
 name|t
 init|=
@@ -1380,6 +1444,14 @@ parameter_list|()
 block|{
 try|try
 block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// causes failure without barrier
 name|q
 operator|.
 name|consume
@@ -1409,6 +1481,11 @@ name|info
 argument_list|(
 literal|"sleeping"
 argument_list|)
+expr_stmt|;
+name|barrier
+operator|.
+name|countDown
+argument_list|()
 expr_stmt|;
 name|Thread
 operator|.
@@ -1464,12 +1541,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|Thread
+name|barrier
 operator|.
-name|yield
+name|await
 argument_list|()
 expr_stmt|;
-comment|// Let the consumer consume
 name|LOG
 operator|.
 name|debug
