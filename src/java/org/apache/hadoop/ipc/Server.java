@@ -1134,9 +1134,7 @@ name|call
 operator|.
 name|connection
 operator|.
-name|socket
-operator|.
-name|getInetAddress
+name|getHostInetAddress
 argument_list|()
 return|;
 block|}
@@ -1171,6 +1169,23 @@ name|addr
 operator|.
 name|getHostAddress
 argument_list|()
+return|;
+block|}
+comment|/** Return true if the invocation was through an RPC.    */
+DECL|method|isRpcInvocation ()
+specifier|public
+specifier|static
+name|boolean
+name|isRpcInvocation
+parameter_list|()
+block|{
+return|return
+name|CurCall
+operator|.
+name|get
+argument_list|()
+operator|!=
+literal|null
 return|;
 block|}
 DECL|field|bindAddress
