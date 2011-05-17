@@ -437,6 +437,14 @@ name|other
 operator|.
 name|otheraction
 expr_stmt|;
+name|this
+operator|.
+name|stickyBit
+operator|=
+name|other
+operator|.
+name|stickyBit
+expr_stmt|;
 block|}
 comment|/**    * Construct by given mode, either in octal or symbolic format.    * @param mode mode as a string, either in octal or symbolic format    * @throws IllegalArgumentException if<code>mode</code> is invalid    */
 DECL|method|FsPermission (String mode)
