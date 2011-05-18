@@ -1496,6 +1496,12 @@ name|str
 parameter_list|)
 block|{
 return|return
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
 name|Arrays
 operator|.
 name|asList
@@ -1503,6 +1509,7 @@ argument_list|(
 name|getTrimmedStrings
 argument_list|(
 name|str
+argument_list|)
 argument_list|)
 argument_list|)
 return|;

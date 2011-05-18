@@ -3584,9 +3584,11 @@ name|String
 argument_list|>
 name|empty
 init|=
-name|Collections
-operator|.
-name|emptyList
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
 argument_list|()
 decl_stmt|;
 return|return
