@@ -308,6 +308,17 @@ name|targetPos
 argument_list|)
 return|;
 block|}
+comment|// Returns the underlying input stream. This is used by unit tests.
+DECL|method|getWrappedStream ()
+specifier|public
+name|InputStream
+name|getWrappedStream
+parameter_list|()
+block|{
+return|return
+name|in
+return|;
+block|}
 block|}
 end_class
 
