@@ -762,9 +762,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-throw|throw
-operator|new
-name|MetricsConfigException
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"Cannot locate configuration: tried "
 operator|+
@@ -780,7 +780,19 @@ argument_list|(
 name|fileNames
 argument_list|)
 argument_list|)
-throw|;
+expr_stmt|;
+comment|// default to an empty configuration
+return|return
+operator|new
+name|MetricsConfig
+argument_list|(
+operator|new
+name|PropertiesConfiguration
+argument_list|()
+argument_list|,
+name|prefix
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

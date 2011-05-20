@@ -1050,7 +1050,7 @@ name|MetricsConfigException
 name|e
 parameter_list|)
 block|{
-comment|// Usually because hadoop-metrics2.properties is missing
+comment|// Configuration errors (e.g., typos) should not be fatal.
 comment|// We can always start the metrics system later via JMX.
 name|LOG
 operator|.
@@ -3289,6 +3289,7 @@ name|refCount
 operator|<=
 literal|0
 condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3300,6 +3301,11 @@ name|Throwable
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+comment|// already shutdown
+block|}
 if|if
 condition|(
 operator|--

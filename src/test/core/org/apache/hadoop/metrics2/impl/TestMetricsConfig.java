@@ -596,7 +596,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Should throw if missing config files    */
+comment|/**    * Should not throw if missing config files    */
 DECL|method|testMissingFiles ()
 annotation|@
 name|Test
@@ -605,8 +605,9 @@ name|void
 name|testMissingFiles
 parameter_list|()
 block|{
-try|try
-block|{
+name|MetricsConfig
+name|config
+init|=
 name|MetricsConfig
 operator|.
 name|create
@@ -615,34 +616,13 @@ literal|"JobTracker"
 argument_list|,
 literal|"non-existent.properties"
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|MetricsConfigException
-name|e
-parameter_list|)
-block|{
+decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"expected the 'cannot locate configuration' exception"
-argument_list|,
-name|e
+name|config
 operator|.
-name|getMessage
+name|isEmpty
 argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-literal|"Cannot locate configuration"
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|fail
-argument_list|(
-literal|"should've thrown"
 argument_list|)
 expr_stmt|;
 block|}
