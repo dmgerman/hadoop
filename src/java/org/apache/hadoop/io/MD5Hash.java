@@ -405,11 +405,21 @@ name|MessageDigest
 name|getDigester
 parameter_list|()
 block|{
-return|return
+name|MessageDigest
+name|digester
+init|=
 name|DIGESTER_FACTORY
 operator|.
 name|get
 argument_list|()
+decl_stmt|;
+name|digester
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+return|return
+name|digester
 return|;
 block|}
 comment|/** Construct a hash value for the content from the InputStream. */
