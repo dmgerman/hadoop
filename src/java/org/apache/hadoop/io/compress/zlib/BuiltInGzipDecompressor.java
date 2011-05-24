@@ -84,11 +84,29 @@ name|Decompressor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|DoNotPool
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link Decompressor} based on the popular gzip compressed file format.  * http://www.gzip.org/  *  */
 end_comment
 
 begin_class
+annotation|@
+name|DoNotPool
 DECL|class|BuiltInGzipDecompressor
 specifier|public
 class|class
