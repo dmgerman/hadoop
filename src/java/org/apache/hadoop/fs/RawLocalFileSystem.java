@@ -1518,10 +1518,12 @@ name|isDirectory
 argument_list|()
 operator|&&
 operator|(
-name|f
+name|FileUtil
 operator|.
 name|listFiles
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 operator|.
 name|length
 operator|!=
