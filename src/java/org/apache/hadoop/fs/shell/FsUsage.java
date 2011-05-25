@@ -265,7 +265,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[<path> ...]"
+literal|"[-h] [<path> ...]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -280,7 +280,11 @@ literal|"If the filesystem has multiple partitions, and no path to a\n"
 operator|+
 literal|"particular partition is specified, then the status of the root\n"
 operator|+
-literal|"partitions will be shown."
+literal|"partitions will be shown.\n"
+operator|+
+literal|"  -h   Formats the sizes of files in a human-readable fashion\n"
+operator|+
+literal|"       rather than a number of bytes.\n\n"
 decl_stmt|;
 annotation|@
 name|Override
