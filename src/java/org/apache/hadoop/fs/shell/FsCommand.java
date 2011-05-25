@@ -137,7 +137,7 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
-name|Copy
+name|CopyCommands
 operator|.
 name|class
 argument_list|)
@@ -201,6 +201,15 @@ operator|.
 name|registerCommands
 argument_list|(
 name|Mkdir
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
+name|MoveCommands
 operator|.
 name|class
 argument_list|)

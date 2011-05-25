@@ -699,19 +699,6 @@ literal|0
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|exitCodeForError ()
-specifier|protected
-name|int
-name|exitCodeForError
-parameter_list|()
-block|{
-return|return
-operator|-
-literal|1
-return|;
-block|}
 comment|/**    * Get a recursive listing of all files in that match the file patterns.    * Same as "-ls -R"    */
 DECL|class|Lsr
 specifier|public

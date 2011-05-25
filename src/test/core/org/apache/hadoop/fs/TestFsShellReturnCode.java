@@ -270,7 +270,7 @@ name|LocalFileSystemExtn
 operator|.
 name|class
 argument_list|,
-name|RawLocalFileSystem
+name|LocalFileSystem
 operator|.
 name|class
 argument_list|)
@@ -1591,14 +1591,13 @@ operator|.
 name|toString
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Return code should be -1"
+literal|"Return code should be 1"
+argument_list|,
+literal|1
 argument_list|,
 name|run
-operator|==
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1844,6 +1843,27 @@ DECL|class|LocalFileSystemExtn
 specifier|static
 class|class
 name|LocalFileSystemExtn
+extends|extends
+name|LocalFileSystem
+block|{
+DECL|method|LocalFileSystemExtn ()
+specifier|public
+name|LocalFileSystemExtn
+parameter_list|()
+block|{
+name|super
+argument_list|(
+operator|new
+name|RawLocalFileSystemExtn
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|class|RawLocalFileSystemExtn
+specifier|static
+class|class
+name|RawLocalFileSystemExtn
 extends|extends
 name|RawLocalFileSystem
 block|{

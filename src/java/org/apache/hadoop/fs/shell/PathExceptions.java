@@ -117,10 +117,20 @@ decl_stmt|;
 comment|// NOTE: this really should be a Path, but a Path is buggy and won't
 comment|// return the exact string used to construct the path, and it mangles
 comment|// uris with no authority
+DECL|field|operation
+specifier|private
+name|String
+name|operation
+decl_stmt|;
 DECL|field|path
 specifier|private
 name|String
 name|path
+decl_stmt|;
+DECL|field|targetPath
+specifier|private
+name|String
+name|targetPath
 decl_stmt|;
 comment|/**      * Constructor a generic I/O error exception      *  @param path for the exception      */
 DECL|method|PathIOException (String path)
@@ -213,6 +223,7 @@ operator|=
 name|path
 expr_stmt|;
 block|}
+comment|/** Format:      * cmd: {operation} `path' {to `target'}: error string      */
 annotation|@
 name|Override
 DECL|method|getMessage ()
@@ -221,20 +232,72 @@ name|String
 name|getMessage
 parameter_list|()
 block|{
-name|String
+name|StringBuilder
 name|message
 init|=
-literal|"`"
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|operation
+operator|!=
+literal|null
+condition|)
+block|{
+name|message
+operator|.
+name|append
+argument_list|(
+name|operation
 operator|+
+literal|" "
+argument_list|)
+expr_stmt|;
+block|}
+name|message
+operator|.
+name|append
+argument_list|(
+name|formatPath
+argument_list|(
 name|path
+argument_list|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|targetPath
+operator|!=
+literal|null
+condition|)
+block|{
+name|message
+operator|.
+name|append
+argument_list|(
+literal|" to "
 operator|+
-literal|"': "
+name|formatPath
+argument_list|(
+name|targetPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|message
+operator|.
+name|append
+argument_list|(
+literal|": "
 operator|+
 name|super
 operator|.
 name|getMessage
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|getCause
@@ -244,7 +307,9 @@ literal|null
 condition|)
 block|{
 name|message
-operator|+=
+operator|.
+name|append
+argument_list|(
 literal|": "
 operator|+
 name|getCause
@@ -252,10 +317,14 @@ argument_list|()
 operator|.
 name|getMessage
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 return|return
 name|message
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 comment|/** @return Path that generated the exception */
@@ -271,6 +340,80 @@ name|Path
 argument_list|(
 name|path
 argument_list|)
+return|;
+block|}
+comment|/** @return Path if the operation involved copying or moving, else null */
+DECL|method|getTargetPath ()
+specifier|public
+name|Path
+name|getTargetPath
+parameter_list|()
+block|{
+return|return
+operator|(
+name|targetPath
+operator|!=
+literal|null
+operator|)
+condition|?
+operator|new
+name|Path
+argument_list|(
+name|targetPath
+argument_list|)
+else|:
+literal|null
+return|;
+block|}
+comment|/**      * Optional operation that will preface the path      * @param operation a string      */
+DECL|method|setOperation (String operation)
+specifier|public
+name|void
+name|setOperation
+parameter_list|(
+name|String
+name|operation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|operation
+operator|=
+name|operation
+expr_stmt|;
+block|}
+comment|/**      * Optional path if the exception involved two paths, ex. a copy operation      * @param targetPath the of the operation      */
+DECL|method|setTargetPath (String targetPath)
+specifier|public
+name|void
+name|setTargetPath
+parameter_list|(
+name|String
+name|targetPath
+parameter_list|)
+block|{
+name|this
+operator|.
+name|targetPath
+operator|=
+name|targetPath
+expr_stmt|;
+block|}
+DECL|method|formatPath (String path)
+specifier|private
+name|String
+name|formatPath
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+return|return
+literal|"`"
+operator|+
+name|path
+operator|+
+literal|"'"
 return|;
 block|}
 block|}
@@ -499,6 +642,41 @@ argument_list|(
 name|path
 argument_list|,
 literal|"Operation not permitted"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/** ENOTSUP */
+DECL|class|PathOperationException
+specifier|public
+specifier|static
+class|class
+name|PathOperationException
+extends|extends
+name|PathExistsException
+block|{
+DECL|field|serialVersionUID
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|0L
+decl_stmt|;
+comment|/** @param path for the exception */
+DECL|method|PathOperationException (String path)
+specifier|public
+name|PathOperationException
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|path
+argument_list|,
+literal|"Operation not supported"
 argument_list|)
 expr_stmt|;
 block|}
