@@ -1831,14 +1831,6 @@ name|i
 operator|++
 control|)
 block|{
-name|Selector
-name|readSelector
-init|=
-name|Selector
-operator|.
-name|open
-argument_list|()
-decl_stmt|;
 name|Reader
 name|reader
 init|=
@@ -1856,8 +1848,6 @@ operator|+
 literal|" for port "
 operator|+
 name|port
-argument_list|,
-name|readSelector
 argument_list|)
 decl_stmt|;
 name|readers
@@ -1919,20 +1909,18 @@ literal|false
 decl_stmt|;
 DECL|field|readSelector
 specifier|private
+specifier|final
 name|Selector
 name|readSelector
-init|=
-literal|null
 decl_stmt|;
-DECL|method|Reader (String name, Selector readSelector)
+DECL|method|Reader (String name)
 name|Reader
 parameter_list|(
 name|String
 name|name
-parameter_list|,
-name|Selector
-name|readSelector
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
@@ -1943,7 +1931,10 @@ name|this
 operator|.
 name|readSelector
 operator|=
-name|readSelector
+name|Selector
+operator|.
+name|open
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|run ()
@@ -1962,10 +1953,51 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
+try|try
+block|{
+name|doRunLoop
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+try|try
+block|{
+name|readSelector
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error closing read selector in "
+operator|+
 name|this
-init|)
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|doRunLoop ()
+specifier|private
+specifier|synchronized
+name|void
+name|doRunLoop
+parameter_list|()
 block|{
 while|while
 condition|(
@@ -2079,14 +2111,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|" caught: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" unexpectedly interrupted"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2106,7 +2133,6 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3225,6 +3251,7 @@ name|Thread
 block|{
 DECL|field|writeSelector
 specifier|private
+specifier|final
 name|Selector
 name|writeSelector
 decl_stmt|;
@@ -3303,6 +3330,63 @@ operator|.
 name|this
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|doRunLoop
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping "
+operator|+
+name|this
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|writeSelector
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Couldn't close write selector in "
+operator|+
+name|this
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|doRunLoop ()
+specifier|private
+name|void
+name|doRunLoop
+parameter_list|()
+block|{
 name|long
 name|lastPurgeTime
 init|=
@@ -3627,30 +3711,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception in Responder "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception in Responder"
+argument_list|,
 name|e
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping "
-operator|+
-name|this
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|doAsyncWrite (SelectionKey key)
 specifier|private
@@ -7424,14 +7491,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|" caught: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" unexpectedly interrupted"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -7449,14 +7511,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|" caught: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" caught an exception"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
