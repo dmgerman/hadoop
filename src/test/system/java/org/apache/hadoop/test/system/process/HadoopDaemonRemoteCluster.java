@@ -219,7 +219,7 @@ name|CONF_HADOOPNEWCONFDIR
 init|=
 literal|"test.system.hdrc.hadoopnewconfdir"
 decl_stmt|;
-comment|/**    * Key used to configure the HADOOP_HOME to be used by the    * HadoopDaemonRemoteCluster.    */
+comment|/**    * Key used to configure the HADOOP_PREFIX to be used by the    * HadoopDaemonRemoteCluster.    */
 DECL|field|CONF_HADOOPHOME
 specifier|public
 specifier|final
@@ -807,7 +807,7 @@ name|error
 argument_list|(
 literal|"No configuration "
 operator|+
-literal|"for the HADOOP_HOME and HADOOP_CONF_DIR passed"
+literal|"for the HADOOP_PREFIX and HADOOP_CONF_DIR passed"
 argument_list|)
 expr_stmt|;
 throw|throw
