@@ -136,6 +136,11 @@ name|int
 name|len
 parameter_list|)
 block|{
+name|int
+name|localCrc
+init|=
+name|crc
+decl_stmt|;
 while|while
 condition|(
 name|len
@@ -152,7 +157,7 @@ name|off
 operator|++
 index|]
 operator|^
-name|crc
+name|localCrc
 decl_stmt|;
 name|int
 name|c1
@@ -164,7 +169,7 @@ operator|++
 index|]
 operator|^
 operator|(
-name|crc
+name|localCrc
 operator|>>>=
 literal|8
 operator|)
@@ -179,7 +184,7 @@ operator|++
 index|]
 operator|^
 operator|(
-name|crc
+name|localCrc
 operator|>>>=
 literal|8
 operator|)
@@ -194,12 +199,12 @@ operator|++
 index|]
 operator|^
 operator|(
-name|crc
+name|localCrc
 operator|>>>=
 literal|8
 operator|)
 decl_stmt|;
-name|crc
+name|localCrc
 operator|=
 operator|(
 name|T8_7
@@ -233,7 +238,7 @@ literal|0xff
 index|]
 operator|)
 expr_stmt|;
-name|crc
+name|localCrc
 operator|^=
 operator|(
 name|T8_3
@@ -295,10 +300,10 @@ operator|>
 literal|0
 condition|)
 block|{
-name|crc
+name|localCrc
 operator|=
 operator|(
-name|crc
+name|localCrc
 operator|>>>
 literal|8
 operator|)
@@ -306,7 +311,7 @@ operator|^
 name|T8_0
 index|[
 operator|(
-name|crc
+name|localCrc
 operator|^
 name|b
 index|[
@@ -322,6 +327,11 @@ name|len
 operator|--
 expr_stmt|;
 block|}
+comment|// Publish crc out to object
+name|crc
+operator|=
+name|localCrc
+expr_stmt|;
 block|}
 comment|/** {@inheritDoc} */
 DECL|method|update (int b)
