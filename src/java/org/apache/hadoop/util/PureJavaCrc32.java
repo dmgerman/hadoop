@@ -64,11 +64,11 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Stable
 DECL|class|PureJavaCrc32
 specifier|public
 class|class
@@ -82,6 +82,7 @@ specifier|private
 name|int
 name|crc
 decl_stmt|;
+comment|/** Create a new PureJavaCrc32 object. */
 DECL|method|PureJavaCrc32 ()
 specifier|public
 name|PureJavaCrc32
