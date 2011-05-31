@@ -102,7 +102,7 @@ name|getProperty
 argument_list|(
 literal|"test.build.data"
 argument_list|,
-literal|"build/test/data/work-dir/localfs"
+literal|"/tmp"
 argument_list|)
 decl_stmt|;
 DECL|field|fc
@@ -167,7 +167,7 @@ name|Path
 argument_list|(
 name|TEST_ROOT_DIR_LOCAL
 operator|+
-literal|"/file1"
+literal|"/TestFileContextResolveAfs1"
 argument_list|)
 decl_stmt|;
 name|Path
@@ -176,11 +176,11 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"file:///"
+literal|"file://"
 operator|+
 name|TEST_ROOT_DIR_LOCAL
 operator|+
-literal|"/file2"
+literal|"/TestFileContextResolveAfs2"
 argument_list|)
 decl_stmt|;
 name|localFs
