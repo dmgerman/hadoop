@@ -54,6 +54,16 @@ name|CONFIG_VIEWFS_PREFIX
 init|=
 literal|"fs.viewfs.mounttable"
 decl_stmt|;
+comment|/**    * Prefix for the home dir for the mount table - if not specified    * then the hadoop default value (/user) is used.    */
+DECL|field|CONFIG_VIEWFS_HOMEDIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONFIG_VIEWFS_HOMEDIR
+init|=
+literal|"homedir"
+decl_stmt|;
 comment|/**    * Config variable name for the default mount table.    */
 DECL|field|CONFIG_VIEWFS_DEFAULT_MOUNT_TABLE
 specifier|public

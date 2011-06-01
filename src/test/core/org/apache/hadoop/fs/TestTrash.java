@@ -78,16 +78,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -283,14 +273,14 @@ name|p
 return|;
 block|}
 comment|// check that the specified file is in Trash
-DECL|method|checkTrash (FileSystem fs, Path trashRoot, Path path)
+DECL|method|checkTrash (FileSystem trashFs, Path trashRoot, Path path)
 specifier|protected
 specifier|static
 name|void
 name|checkTrash
 parameter_list|(
 name|FileSystem
-name|fs
+name|trashFs
 parameter_list|,
 name|Path
 name|trashRoot
@@ -322,7 +312,11 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-name|fs
+literal|"Could not find file in trash: "
+operator|+
+name|p
+argument_list|,
+name|trashFs
 operator|.
 name|exists
 argument_list|(
@@ -484,6 +478,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test trash for the shell's delete command for the file system fs    * @param fs    * @param base - the base path where files are created    * @throws IOException    */
 DECL|method|trashShell (final FileSystem fs, final Path base)
 specifier|protected
 specifier|static
@@ -512,7 +507,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 name|fs
 operator|.
@@ -523,6 +518,52 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|trashShell
+argument_list|(
+name|conf
+argument_list|,
+name|base
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    *     * Test trash for the shell's delete command for the default file system    * specified in the paramter conf    * @param conf     * @param base - the base path where files are created    * @param trashRoot - the expected place where the trashbin resides    * @throws IOException    */
+DECL|method|trashShell (final Configuration conf, final Path base, FileSystem trashRootFs, Path trashRoot)
+specifier|public
+specifier|static
+name|void
+name|trashShell
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|Path
+name|base
+parameter_list|,
+name|FileSystem
+name|trashRootFs
+parameter_list|,
+name|Path
+name|trashRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileSystem
+name|fs
+init|=
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -581,11 +622,33 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Path
+if|if
+condition|(
 name|trashRoot
-init|=
+operator|==
 literal|null
-decl_stmt|;
+condition|)
+block|{
+name|trashRoot
+operator|=
+name|shell
+operator|.
+name|getCurrentTrashDir
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|trashRootFs
+operator|==
+literal|null
+condition|)
+block|{
+name|trashRootFs
+operator|=
+name|fs
+expr_stmt|;
+block|}
 comment|// First create a new directory with mkdirs
 name|Path
 name|myPath
@@ -767,20 +830,18 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
-name|trashRoot
-operator|=
-name|shell
-operator|.
-name|getCurrentTrashDir
-argument_list|()
-expr_stmt|;
 name|checkTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 name|myFile
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1076,7 +1137,7 @@ literal|1
 decl_stmt|;
 name|writeFile
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|toErase
 argument_list|)
@@ -1133,7 +1194,7 @@ argument_list|)
 expr_stmt|;
 name|checkNotInTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
@@ -1145,7 +1206,7 @@ argument_list|)
 expr_stmt|;
 name|checkNotInTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
@@ -1227,7 +1288,7 @@ block|}
 comment|// verify that after expunging the Trash, it really goes away
 name|checkNotInTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
@@ -1335,7 +1396,7 @@ argument_list|)
 expr_stmt|;
 name|checkTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
@@ -1414,7 +1475,7 @@ argument_list|)
 expr_stmt|;
 name|checkTrash
 argument_list|(
-name|fs
+name|trashRootFs
 argument_list|,
 name|trashRoot
 argument_list|,
@@ -1507,7 +1568,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fs
+name|trashRootFs
 operator|.
 name|exists
 argument_list|(
@@ -1579,6 +1640,8 @@ block|{
 comment|// Clear out trash
 name|assertEquals
 argument_list|(
+literal|"-expunge failed"
+argument_list|,
 literal|0
 argument_list|,
 name|shell
@@ -1627,7 +1690,18 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
-name|fs
+literal|"Expected TrashRoot ("
+operator|+
+name|trashRoot
+operator|+
+literal|") to exist in file system:"
+operator|+
+name|trashRootFs
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|trashRootFs
 operator|.
 name|exists
 argument_list|(
@@ -1764,7 +1838,7 @@ expr_stmt|;
 block|}
 name|assertFalse
 argument_list|(
-name|fs
+name|trashRootFs
 operator|.
 name|exists
 argument_list|(
@@ -2304,7 +2378,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 literal|"invalid://host/bar/foo"
 argument_list|)
@@ -2412,7 +2486,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 name|fs
 operator|.
@@ -2835,7 +2909,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 name|fs
 operator|.

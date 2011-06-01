@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is for  setup and teardown for viewFileSystem so that  * it can be tested via the standard FileSystem tests.  *   * If tests launched via ant (build.xml) the test root is absolute path  * If tests launched via eclipse, the test root is   * is a test dir below the working directory. (see FileSystemTestHelper).  * Since viewFs has no built-in wd, its wd is /user/<username>.  *   * We set a viewFileSystems with mount point for   * /<firstComponent>" pointing to the target fs's  testdir   */
+comment|/**  * This class is for  setup and teardown for viewFileSystem so that  * it can be tested via the standard FileSystem tests.  *   * If tests launched via ant (build.xml) the test root is absolute path  * If tests launched via eclipse, the test root is   * is a test dir below the working directory. (see FileSystemTestHelper).  * Since viewFs has no built-in wd, its wd is /user/<username>   *          (or /User/<username> on mac)  *   * We set a viewFileSystems with mount point for   * /<firstComponent>" pointing to the target fs's  testdir   */
 end_comment
 
 begin_class
@@ -115,12 +115,15 @@ class|class
 name|ViewFileSystemTestSetup
 block|{
 comment|/**    *     * @param fsTarget - the target fs of the view fs.    * @return return the ViewFS File context to be used for tests    * @throws Exception    */
-DECL|method|setupForViewFs (FileSystem fsTarget)
+DECL|method|setupForViewFs (Configuration conf, FileSystem fsTarget)
 specifier|static
 specifier|public
 name|FileSystem
 name|setupForViewFs
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|FileSystem
 name|fsTarget
 parameter_list|)
@@ -128,12 +131,6 @@ throws|throws
 name|Exception
 block|{
 comment|/**      * create the test root on local_fs - the  mount table will point here      */
-name|Configuration
-name|conf
-init|=
-name|configWithViewfsScheme
-argument_list|()
-decl_stmt|;
 name|Path
 name|targetOfTests
 init|=
@@ -161,27 +158,29 @@ argument_list|(
 name|targetOfTests
 argument_list|)
 expr_stmt|;
+comment|// Now set up a link from viewfs to targetfs for the first component of
+comment|// path of testdir. For example, if testdir is /user/<userid>/xx then
+comment|// a link from /user to targetfs://user.
 name|String
-name|srcTestFirstDir
-decl_stmt|;
-if|if
-condition|(
-name|FileSystemTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|.
-name|startsWith
-argument_list|(
-literal|"/"
-argument_list|)
-condition|)
-block|{
-name|int
-name|indexOf2ndSlash
+name|testDir
 init|=
 name|FileSystemTestHelper
 operator|.
-name|TEST_ROOT_DIR
+name|getTestRootPath
+argument_list|(
+name|fsTarget
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+name|int
+name|indexOf2ndSlash
+init|=
+name|testDir
 operator|.
 name|indexOf
 argument_list|(
@@ -190,11 +189,10 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-name|srcTestFirstDir
-operator|=
-name|FileSystemTestHelper
-operator|.
-name|TEST_ROOT_DIR
+name|String
+name|testDirFirstComponent
+init|=
+name|testDir
 operator|.
 name|substring
 argument_list|(
@@ -202,27 +200,25 @@ literal|0
 argument_list|,
 name|indexOf2ndSlash
 argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|srcTestFirstDir
-operator|=
-literal|"/user"
-expr_stmt|;
-block|}
-comment|//System.out.println("srcTestFirstDir=" + srcTestFirstDir);
-comment|// Set up the defaultMT in the config with mount point links
-comment|// The test dir is root is below  /user/<userid>
+decl_stmt|;
 name|ConfigUtil
 operator|.
 name|addLink
 argument_list|(
 name|conf
 argument_list|,
-name|srcTestFirstDir
+name|testDirFirstComponent
 argument_list|,
-name|targetOfTests
+name|fsTarget
+operator|.
+name|makeQualified
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|testDirFirstComponent
+argument_list|)
+argument_list|)
 operator|.
 name|toUri
 argument_list|()

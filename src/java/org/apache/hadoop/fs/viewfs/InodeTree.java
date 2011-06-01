@@ -276,6 +276,12 @@ argument_list|>
 name|root
 decl_stmt|;
 comment|// the root of the mount table
+DECL|field|homedirPrefix
+specifier|final
+name|String
+name|homedirPrefix
+decl_stmt|;
+comment|// the homedir config value for this mount table
 DECL|field|mountPoints
 name|List
 argument_list|<
@@ -1388,6 +1394,17 @@ operator|.
 name|CONFIG_VIEWFS_DEFAULT_MOUNT_TABLE
 expr_stmt|;
 block|}
+name|homedirPrefix
+operator|=
+name|ConfigUtil
+operator|.
+name|getHomeDirValue
+argument_list|(
+name|config
+argument_list|,
+name|vName
+argument_list|)
+expr_stmt|;
 name|root
 operator|=
 operator|new
@@ -1572,6 +1589,22 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|src
+operator|.
+name|startsWith
+argument_list|(
+name|Constants
+operator|.
+name|CONFIG_VIEWFS_HOMEDIR
+argument_list|)
+condition|)
+block|{
+comment|// ignore - we set home dir from config
+continue|continue;
 block|}
 else|else
 block|{
@@ -2191,6 +2224,16 @@ parameter_list|()
 block|{
 return|return
 name|mountPoints
+return|;
+block|}
+comment|/**    *     * @return home dir value from mount table; null if no config value    * was found.    */
+DECL|method|getHomeDirPrefixValue ()
+name|String
+name|getHomeDirPrefixValue
+parameter_list|()
+block|{
+return|return
+name|homedirPrefix
 return|;
 block|}
 block|}

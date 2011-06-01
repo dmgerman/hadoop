@@ -183,6 +183,11 @@ name|ViewFileSystemTestSetup
 operator|.
 name|setupForViewFs
 argument_list|(
+name|ViewFileSystemTestSetup
+operator|.
+name|configWithViewfsScheme
+argument_list|()
+argument_list|,
 name|fcTarget
 argument_list|)
 expr_stmt|;
