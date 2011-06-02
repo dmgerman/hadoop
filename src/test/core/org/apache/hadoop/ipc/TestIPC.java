@@ -2337,6 +2337,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that, if the socket factory throws an IOE, it properly propagates    * to the client.    */
+annotation|@
+name|Test
 DECL|method|testSocketFactoryException ()
 specifier|public
 name|void
@@ -2451,6 +2453,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testIpcTimeout ()
 specifier|public
 name|void
@@ -2582,6 +2586,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check that file descriptors aren't leaked by starting    * and stopping IPC servers.    */
+annotation|@
+name|Test
 DECL|method|testSocketLeak ()
 specifier|public
 name|void
