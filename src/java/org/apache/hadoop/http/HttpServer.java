@@ -2537,7 +2537,7 @@ return|;
 block|}
 comment|/**    * Get the pathname to the webapps files.    * @param appName eg "secondary" or "datanode"    * @return the pathname as a URL    * @throws FileNotFoundException if 'webapps' directory cannot be found on CLASSPATH.    */
 DECL|method|getWebAppsPath (String appName)
-specifier|private
+specifier|protected
 name|String
 name|getWebAppsPath
 parameter_list|(
