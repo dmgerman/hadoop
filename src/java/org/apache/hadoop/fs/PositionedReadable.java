@@ -54,20 +54,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/** Stream that permits positional reading. */
 end_comment

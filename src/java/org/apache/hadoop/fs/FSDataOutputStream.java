@@ -328,6 +328,7 @@ operator|=
 name|out
 expr_stmt|;
 block|}
+comment|/**    * Get the current position in the output stream.    *    * @return the current position in the output stream    */
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -348,6 +349,7 @@ name|getPos
 argument_list|()
 return|;
 block|}
+comment|/**    * Close the underlying output stream.    */
 DECL|method|close ()
 specifier|public
 name|void
@@ -363,7 +365,16 @@ argument_list|()
 expr_stmt|;
 comment|// This invokes PositionCache.close()
 block|}
-comment|// Returns the underlying output stream. This is used by unit tests.
+comment|/**    * Get a reference to the wrapped output stream. Used by unit tests.    *    * @return the underlying output stream    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|}
+argument_list|)
 DECL|method|getWrappedStream ()
 specifier|public
 name|OutputStream

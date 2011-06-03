@@ -324,7 +324,7 @@ literal|"not supposed to get here"
 argument_list|)
 throw|;
 block|}
-comment|/** @deprecated use {@link #run(String...argv)} */
+comment|/** @deprecated use {@link Command#run(String...argv)} */
 annotation|@
 name|Deprecated
 annotation|@

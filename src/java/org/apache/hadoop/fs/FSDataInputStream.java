@@ -121,6 +121,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Seek to the given offset.    *    * @param desired offset to seek to    */
 DECL|method|seek (long desired)
 specifier|public
 specifier|synchronized
@@ -146,6 +147,7 @@ name|desired
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get the current position in the input stream.    *    * @return current position in the input stream    */
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -166,6 +168,7 @@ name|getPos
 argument_list|()
 return|;
 block|}
+comment|/**    * Read bytes from the given position in the stream to the given buffer.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    maximum number of bytes to read    * @return total number of bytes read into the buffer, or<code>-1</code>    *         if there is no more data because the end of the stream has been    *         reached    */
 DECL|method|read (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|int
@@ -207,6 +210,7 @@ name|length
 argument_list|)
 return|;
 block|}
+comment|/**    * Read bytes from the given position in the stream to the given buffer.    * Continues to read until<code>length</code> bytes have been read.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    the number of bytes to read    * @throws EOFException If the end of stream is reached while reading.    *                      If an exception is thrown an undetermined number    *                      of bytes in the buffer may have been written.     */
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void
@@ -247,6 +251,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * See {@link #readFully(long, byte[], int, int)}.    */
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void
@@ -283,6 +288,7 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Seek to the given position on an alternate copy of the data.    *    * @param  targetPos  position to seek to    * @return true if a new source is found, false otherwise    */
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -308,7 +314,16 @@ name|targetPos
 argument_list|)
 return|;
 block|}
-comment|// Returns the underlying input stream. This is used by unit tests.
+comment|/**    * Get a reference to the wrapped input stream. Used by unit tests.    *    * @return the underlying input stream    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|}
+argument_list|)
 DECL|method|getWrappedStream ()
 specifier|public
 name|InputStream

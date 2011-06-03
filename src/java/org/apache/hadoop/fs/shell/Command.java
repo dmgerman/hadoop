@@ -777,7 +777,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Processes a {@link PathData} item, calling    * {@link #processPathArgument(PathData)} or    * {@link #processNonexistentPath(PathData)} on each item.    * @param arg {@link PathData} item to process    * @throws IOException if anything goes wrong...    */
+comment|/**    * Processes a {@link PathData} item, calling    * {@link #processPathArgument(PathData)} or    * {@link #processNonexistentPath(PathData)} on each item.    * @param item {@link PathData} item to process    * @throws IOException if anything goes wrong...    */
 DECL|method|processArgument (PathData item)
 specifier|protected
 name|void
