@@ -40,6 +40,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|Writable
 import|;
 end_import
@@ -102,6 +116,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|ByteArrayOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|DataInput
 import|;
 end_import
@@ -140,9 +164,39 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|Socket
 import|;
 end_import
 
@@ -221,6 +275,34 @@ operator|.
 name|junit
 operator|.
 name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Bytes
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Ints
 import|;
 end_import
 
@@ -2690,6 +2772,595 @@ argument_list|()
 operator|.
 name|length
 return|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIpcFromHadoop_0_18_13 ()
+specifier|public
+name|void
+name|testIpcFromHadoop_0_18_13
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doIpcVersionTest
+argument_list|(
+name|NetworkTraces
+operator|.
+name|HADOOP_0_18_3_RPC_DUMP
+argument_list|,
+name|NetworkTraces
+operator|.
+name|RESPONSE_TO_HADOOP_0_18_3_RPC
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIpcFromHadoop0_20_3 ()
+specifier|public
+name|void
+name|testIpcFromHadoop0_20_3
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doIpcVersionTest
+argument_list|(
+name|NetworkTraces
+operator|.
+name|HADOOP_0_20_3_RPC_DUMP
+argument_list|,
+name|NetworkTraces
+operator|.
+name|RESPONSE_TO_HADOOP_0_20_3_RPC
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testIpcFromHadoop0_21_0 ()
+specifier|public
+name|void
+name|testIpcFromHadoop0_21_0
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doIpcVersionTest
+argument_list|(
+name|NetworkTraces
+operator|.
+name|HADOOP_0_21_0_RPC_DUMP
+argument_list|,
+name|NetworkTraces
+operator|.
+name|RESPONSE_TO_HADOOP_0_21_0_RPC
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|doIpcVersionTest ( byte[] requestData, byte[] expectedResponse)
+specifier|private
+name|void
+name|doIpcVersionTest
+parameter_list|(
+name|byte
+index|[]
+name|requestData
+parameter_list|,
+name|byte
+index|[]
+name|expectedResponse
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|Server
+name|server
+init|=
+operator|new
+name|TestServer
+argument_list|(
+literal|1
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|InetSocketAddress
+name|addr
+init|=
+name|NetUtils
+operator|.
+name|getConnectAddress
+argument_list|(
+name|server
+argument_list|)
+decl_stmt|;
+name|server
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|Socket
+name|socket
+init|=
+operator|new
+name|Socket
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|NetUtils
+operator|.
+name|connect
+argument_list|(
+name|socket
+argument_list|,
+name|addr
+argument_list|,
+literal|5000
+argument_list|)
+expr_stmt|;
+name|OutputStream
+name|out
+init|=
+name|socket
+operator|.
+name|getOutputStream
+argument_list|()
+decl_stmt|;
+name|InputStream
+name|in
+init|=
+name|socket
+operator|.
+name|getInputStream
+argument_list|()
+decl_stmt|;
+name|out
+operator|.
+name|write
+argument_list|(
+name|requestData
+argument_list|,
+literal|0
+argument_list|,
+name|requestData
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|IOUtils
+operator|.
+name|copyBytes
+argument_list|(
+name|in
+argument_list|,
+name|baos
+argument_list|,
+literal|256
+argument_list|)
+expr_stmt|;
+name|byte
+index|[]
+name|responseData
+init|=
+name|baos
+operator|.
+name|toByteArray
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|expectedResponse
+argument_list|)
+argument_list|,
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|responseData
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeSocket
+argument_list|(
+name|socket
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Convert a string of lines that look like:    *   "68 72 70 63 02 00 00 00  82 00 1d 6f 72 67 2e 61 hrpc.... ...org.a"    * .. into an array of bytes.    */
+DECL|method|hexDumpToBytes (String hexdump)
+specifier|private
+specifier|static
+name|byte
+index|[]
+name|hexDumpToBytes
+parameter_list|(
+name|String
+name|hexdump
+parameter_list|)
+block|{
+specifier|final
+name|int
+name|LAST_HEX_COL
+init|=
+literal|3
+operator|*
+literal|16
+decl_stmt|;
+name|StringBuilder
+name|hexString
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|String
+name|line
+range|:
+name|hexdump
+operator|.
+name|toUpperCase
+argument_list|()
+operator|.
+name|split
+argument_list|(
+literal|"\n"
+argument_list|)
+control|)
+block|{
+name|hexString
+operator|.
+name|append
+argument_list|(
+name|line
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|LAST_HEX_COL
+argument_list|)
+operator|.
+name|replace
+argument_list|(
+literal|" "
+argument_list|,
+literal|""
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|StringUtils
+operator|.
+name|hexStringToByte
+argument_list|(
+name|hexString
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Wireshark traces collected from various client versions. These enable    * us to test that old versions of the IPC stack will receive the correct    * responses so that they will throw a meaningful error message back    * to the user.    */
+DECL|class|NetworkTraces
+specifier|private
+specifier|static
+specifier|abstract
+class|class
+name|NetworkTraces
+block|{
+comment|/**      * Wireshark dump of an RPC request from Hadoop 0.18.3      */
+DECL|field|HADOOP_0_18_3_RPC_DUMP
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|HADOOP_0_18_3_RPC_DUMP
+init|=
+name|hexDumpToBytes
+argument_list|(
+literal|"68 72 70 63 02 00 00 00  82 00 1d 6f 72 67 2e 61 hrpc.... ...org.a\n"
+operator|+
+literal|"70 61 63 68 65 2e 68 61  64 6f 6f 70 2e 69 6f 2e pache.ha doop.io.\n"
+operator|+
+literal|"57 72 69 74 61 62 6c 65  00 30 6f 72 67 2e 61 70 Writable .0org.ap\n"
+operator|+
+literal|"61 63 68 65 2e 68 61 64  6f 6f 70 2e 69 6f 2e 4f ache.had oop.io.O\n"
+operator|+
+literal|"62 6a 65 63 74 57 72 69  74 61 62 6c 65 24 4e 75 bjectWri table$Nu\n"
+operator|+
+literal|"6c 6c 49 6e 73 74 61 6e  63 65 00 2f 6f 72 67 2e llInstan ce./org.\n"
+operator|+
+literal|"61 70 61 63 68 65 2e 68  61 64 6f 6f 70 2e 73 65 apache.h adoop.se\n"
+operator|+
+literal|"63 75 72 69 74 79 2e 55  73 65 72 47 72 6f 75 70 curity.U serGroup\n"
+operator|+
+literal|"49 6e 66 6f 72 6d 61 74  69 6f 6e 00 00 00 6c 00 Informat ion...l.\n"
+operator|+
+literal|"00 00 00 00 12 67 65 74  50 72 6f 74 6f 63 6f 6c .....get Protocol\n"
+operator|+
+literal|"56 65 72 73 69 6f 6e 00  00 00 02 00 10 6a 61 76 Version. .....jav\n"
+operator|+
+literal|"61 2e 6c 61 6e 67 2e 53  74 72 69 6e 67 00 2e 6f a.lang.S tring..o\n"
+operator|+
+literal|"72 67 2e 61 70 61 63 68  65 2e 68 61 64 6f 6f 70 rg.apach e.hadoop\n"
+operator|+
+literal|"2e 6d 61 70 72 65 64 2e  4a 6f 62 53 75 62 6d 69 .mapred. JobSubmi\n"
+operator|+
+literal|"73 73 69 6f 6e 50 72 6f  74 6f 63 6f 6c 00 04 6c ssionPro tocol..l\n"
+operator|+
+literal|"6f 6e 67 00 00 00 00 00  00 00 0a                ong..... ...     \n"
+argument_list|)
+decl_stmt|;
+DECL|field|HADOOP0_18_ERROR_MSG
+specifier|final
+specifier|static
+name|String
+name|HADOOP0_18_ERROR_MSG
+init|=
+literal|"Server IPC version "
+operator|+
+name|Server
+operator|.
+name|CURRENT_VERSION
+operator|+
+literal|" cannot communicate with client version 2"
+decl_stmt|;
+comment|/**      * Wireshark dump of the correct response that triggers an error message      * on an 0.18.3 client.      */
+DECL|field|RESPONSE_TO_HADOOP_0_18_3_RPC
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|RESPONSE_TO_HADOOP_0_18_3_RPC
+init|=
+name|Bytes
+operator|.
+name|concat
+argument_list|(
+name|hexDumpToBytes
+argument_list|(
+literal|"00 00 00 00 01 00 00 00  29 6f 72 67 2e 61 70 61 ........ )org.apa\n"
+operator|+
+literal|"63 68 65 2e 68 61 64 6f  6f 70 2e 69 70 63 2e 52 che.hado op.ipc.R\n"
+operator|+
+literal|"50 43 24 56 65 72 73 69  6f 6e 4d 69 73 6d 61 74 PC$Versi onMismat\n"
+operator|+
+literal|"63 68                                            ch               \n"
+argument_list|)
+argument_list|,
+name|Ints
+operator|.
+name|toByteArray
+argument_list|(
+name|HADOOP0_18_ERROR_MSG
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|,
+name|HADOOP0_18_ERROR_MSG
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|/**      * Wireshark dump of an RPC request from Hadoop 0.20.3      */
+DECL|field|HADOOP_0_20_3_RPC_DUMP
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|HADOOP_0_20_3_RPC_DUMP
+init|=
+name|hexDumpToBytes
+argument_list|(
+literal|"68 72 70 63 03 00 00 00  79 27 6f 72 67 2e 61 70 hrpc.... y'org.ap\n"
+operator|+
+literal|"61 63 68 65 2e 68 61 64  6f 6f 70 2e 69 70 63 2e ache.had oop.ipc.\n"
+operator|+
+literal|"56 65 72 73 69 6f 6e 65  64 50 72 6f 74 6f 63 6f Versione dProtoco\n"
+operator|+
+literal|"6c 01 0a 53 54 52 49 4e  47 5f 55 47 49 04 74 6f l..STRIN G_UGI.to\n"
+operator|+
+literal|"64 64 09 04 74 6f 64 64  03 61 64 6d 07 64 69 61 dd..todd .adm.dia\n"
+operator|+
+literal|"6c 6f 75 74 05 63 64 72  6f 6d 07 70 6c 75 67 64 lout.cdr om.plugd\n"
+operator|+
+literal|"65 76 07 6c 70 61 64 6d  69 6e 05 61 64 6d 69 6e ev.lpadm in.admin\n"
+operator|+
+literal|"0a 73 61 6d 62 61 73 68  61 72 65 06 6d 72 74 65 .sambash are.mrte\n"
+operator|+
+literal|"73 74 00 00 00 6c 00 00  00 00 00 12 67 65 74 50 st...l.. ....getP\n"
+operator|+
+literal|"72 6f 74 6f 63 6f 6c 56  65 72 73 69 6f 6e 00 00 rotocolV ersion..\n"
+operator|+
+literal|"00 02 00 10 6a 61 76 61  2e 6c 61 6e 67 2e 53 74 ....java .lang.St\n"
+operator|+
+literal|"72 69 6e 67 00 2e 6f 72  67 2e 61 70 61 63 68 65 ring..or g.apache\n"
+operator|+
+literal|"2e 68 61 64 6f 6f 70 2e  6d 61 70 72 65 64 2e 4a .hadoop. mapred.J\n"
+operator|+
+literal|"6f 62 53 75 62 6d 69 73  73 69 6f 6e 50 72 6f 74 obSubmis sionProt\n"
+operator|+
+literal|"6f 63 6f 6c 00 04 6c 6f  6e 67 00 00 00 00 00 00 ocol..lo ng......\n"
+operator|+
+literal|"00 14                                            ..               \n"
+argument_list|)
+decl_stmt|;
+DECL|field|HADOOP0_20_ERROR_MSG
+specifier|final
+specifier|static
+name|String
+name|HADOOP0_20_ERROR_MSG
+init|=
+literal|"Server IPC version "
+operator|+
+name|Server
+operator|.
+name|CURRENT_VERSION
+operator|+
+literal|" cannot communicate with client version 3"
+decl_stmt|;
+DECL|field|RESPONSE_TO_HADOOP_0_20_3_RPC
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|RESPONSE_TO_HADOOP_0_20_3_RPC
+init|=
+name|Bytes
+operator|.
+name|concat
+argument_list|(
+name|hexDumpToBytes
+argument_list|(
+literal|"ff ff ff ff ff ff ff ff  00 00 00 29 6f 72 67 2e ........ ...)org.\n"
+operator|+
+literal|"61 70 61 63 68 65 2e 68  61 64 6f 6f 70 2e 69 70 apache.h adoop.ip\n"
+operator|+
+literal|"63 2e 52 50 43 24 56 65  72 73 69 6f 6e 4d 69 73 c.RPC$Ve rsionMis\n"
+operator|+
+literal|"6d 61 74 63 68                                   match            \n"
+argument_list|)
+argument_list|,
+name|Ints
+operator|.
+name|toByteArray
+argument_list|(
+name|HADOOP0_20_ERROR_MSG
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|,
+name|HADOOP0_20_ERROR_MSG
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+DECL|field|HADOOP0_21_ERROR_MSG
+specifier|final
+specifier|static
+name|String
+name|HADOOP0_21_ERROR_MSG
+init|=
+literal|"Server IPC version "
+operator|+
+name|Server
+operator|.
+name|CURRENT_VERSION
+operator|+
+literal|" cannot communicate with client version 4"
+decl_stmt|;
+DECL|field|HADOOP_0_21_0_RPC_DUMP
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|HADOOP_0_21_0_RPC_DUMP
+init|=
+name|hexDumpToBytes
+argument_list|(
+literal|"68 72 70 63 04 50                                hrpc.P"
+operator|+
+comment|// in 0.21 it comes in two separate TCP packets
+literal|"00 00 00 3c 33 6f 72 67  2e 61 70 61 63 68 65 2e ...<3org .apache.\n"
+operator|+
+literal|"68 61 64 6f 6f 70 2e 6d  61 70 72 65 64 75 63 65 hadoop.m apreduce\n"
+operator|+
+literal|"2e 70 72 6f 74 6f 63 6f  6c 2e 43 6c 69 65 6e 74 .protoco l.Client\n"
+operator|+
+literal|"50 72 6f 74 6f 63 6f 6c  01 00 04 74 6f 64 64 00 Protocol ...todd.\n"
+operator|+
+literal|"00 00 00 71 00 00 00 00  00 12 67 65 74 50 72 6f ...q.... ..getPro\n"
+operator|+
+literal|"74 6f 63 6f 6c 56 65 72  73 69 6f 6e 00 00 00 02 tocolVer sion....\n"
+operator|+
+literal|"00 10 6a 61 76 61 2e 6c  61 6e 67 2e 53 74 72 69 ..java.l ang.Stri\n"
+operator|+
+literal|"6e 67 00 33 6f 72 67 2e  61 70 61 63 68 65 2e 68 ng.3org. apache.h\n"
+operator|+
+literal|"61 64 6f 6f 70 2e 6d 61  70 72 65 64 75 63 65 2e adoop.ma preduce.\n"
+operator|+
+literal|"70 72 6f 74 6f 63 6f 6c  2e 43 6c 69 65 6e 74 50 protocol .ClientP\n"
+operator|+
+literal|"72 6f 74 6f 63 6f 6c 00  04 6c 6f 6e 67 00 00 00 rotocol. .long...\n"
+operator|+
+literal|"00 00 00 00 21                                   ....!            \n"
+argument_list|)
+decl_stmt|;
+DECL|field|RESPONSE_TO_HADOOP_0_21_0_RPC
+specifier|final
+specifier|static
+name|byte
+index|[]
+name|RESPONSE_TO_HADOOP_0_21_0_RPC
+init|=
+name|Bytes
+operator|.
+name|concat
+argument_list|(
+name|hexDumpToBytes
+argument_list|(
+literal|"ff ff ff ff ff ff ff ff  00 00 00 29 6f 72 67 2e ........ ...)org.\n"
+operator|+
+literal|"61 70 61 63 68 65 2e 68  61 64 6f 6f 70 2e 69 70 apache.h adoop.ip\n"
+operator|+
+literal|"63 2e 52 50 43 24 56 65  72 73 69 6f 6e 4d 69 73 c.RPC$Ve rsionMis\n"
+operator|+
+literal|"6d 61 74 63 68                                   match            \n"
+argument_list|)
+argument_list|,
+name|Ints
+operator|.
+name|toByteArray
+argument_list|(
+name|HADOOP0_21_ERROR_MSG
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|,
+name|HADOOP0_21_ERROR_MSG
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
