@@ -3248,6 +3248,53 @@ return|return
 name|files
 return|;
 block|}
+comment|/**    * A wrapper for {@link File#list()}. This java.io API returns null     * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#list() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer     * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of file names or empty string list    * @exception IOException for invalid directory or for a bad disk.    */
+DECL|method|list (File dir)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|list
+parameter_list|(
+name|File
+name|dir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+index|[]
+name|fileNames
+init|=
+name|dir
+operator|.
+name|list
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|fileNames
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid directory or I/O error occurred for dir: "
+operator|+
+name|dir
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
+return|return
+name|fileNames
+return|;
+block|}
 block|}
 end_class
 
