@@ -279,8 +279,6 @@ init|=
 operator|new
 name|CommandFormat
 argument_list|(
-name|NAME
-argument_list|,
 literal|1
 argument_list|,
 name|Integer
