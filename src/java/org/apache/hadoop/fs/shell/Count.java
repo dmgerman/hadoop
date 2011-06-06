@@ -206,13 +206,7 @@ DECL|method|Count ()
 specifier|public
 name|Count
 parameter_list|()
-block|{
-name|setCommandName
-argument_list|(
-name|NAME
-argument_list|)
-expr_stmt|;
-block|}
+block|{}
 comment|/** Constructor    * @deprecated invoke via {@link FsShell}    * @param cmd the count command    * @param pos the starting index of the arguments     * @param conf configuration    */
 annotation|@
 name|Deprecated
@@ -234,11 +228,6 @@ block|{
 name|super
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|setCommandName
-argument_list|(
-name|NAME
 argument_list|)
 expr_stmt|;
 name|this

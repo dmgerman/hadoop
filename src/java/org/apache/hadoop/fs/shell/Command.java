@@ -239,6 +239,27 @@ name|Command
 extends|extends
 name|Configured
 block|{
+comment|/** default name of the command */
+DECL|field|NAME
+specifier|public
+specifier|static
+name|String
+name|NAME
+decl_stmt|;
+comment|/** the command's usage switches and arguments format */
+DECL|field|USAGE
+specifier|public
+specifier|static
+name|String
+name|USAGE
+decl_stmt|;
+comment|/** the command's long description */
+DECL|field|DESCRIPTION
+specifier|public
+specifier|static
+name|String
+name|DESCRIPTION
+decl_stmt|;
 DECL|field|args
 specifier|protected
 name|String
@@ -364,21 +385,6 @@ name|String
 name|getCommandName
 parameter_list|()
 function_decl|;
-comment|/**    * Name the command    * @param cmdName as invoked    */
-DECL|method|setCommandName (String cmdName)
-specifier|public
-name|void
-name|setCommandName
-parameter_list|(
-name|String
-name|cmdName
-parameter_list|)
-block|{
-name|name
-operator|=
-name|cmdName
-expr_stmt|;
-block|}
 DECL|method|setRecursive (boolean flag)
 specifier|protected
 name|void
@@ -491,7 +497,7 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Invokes the command handler.  The default behavior is to process options,    * expand arguments, and then process each argument.    *<pre>    * run    * \-> {@link #processOptions(LinkedList)}    * \-> {@link #expandArguments(LinkedList)} -> {@link #expandArgument(String)}*    * \-> {@link #processArguments(LinkedList)}    *     \-> {@link #processArgument(PathData)}*    *         \-> {@link #processPathArgument(PathData)}    *             \-> {@link #processPaths(PathData, PathData...)}    *                 \-> {@link #processPath(PathData)}*    *         \-> {@link #processNonexistentPath(PathData)}    *</pre>    * Most commands will chose to implement just    * {@link #processOptions(LinkedList)} and {@link #processPath(PathData)}    *     * @param argv the list of command line arguments    * @return the exit code for the command    * @throws IllegalArgumentException if called with invalid arguments    */
+comment|/**    * Invokes the command handler.  The default behavior is to process options,    * expand arguments, and then process each argument.    *<pre>    * run    * |-> {@link #processOptions(LinkedList)}    * \-> {@link #processRawArguments(LinkedList)}    *      |-> {@link #expandArguments(LinkedList)}    *      |   \-> {@link #expandArgument(String)}*    *      \-> {@link #processArguments(LinkedList)}    *          |-> {@link #processArgument(PathData)}*    *          |   |-> {@link #processPathArgument(PathData)}    *          |   \-> {@link #processPaths(PathData, PathData...)}    *          |        \-> {@link #processPath(PathData)}*    *          \-> {@link #processNonexistentPath(PathData)}    *</pre>    * Most commands will chose to implement just    * {@link #processOptions(LinkedList)} and {@link #processPath(PathData)}    *     * @param argv the list of command line arguments    * @return the exit code for the command    * @throws IllegalArgumentException if called with invalid arguments    */
 DECL|method|run (String...argv)
 specifier|public
 name|int
@@ -546,12 +552,9 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
-name|processArguments
-argument_list|(
-name|expandArguments
+name|processRawArguments
 argument_list|(
 name|args
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -606,6 +609,30 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{}
+comment|/**    * Allows commands that don't use paths to handle the raw arguments.    * Default behavior is to expand the arguments via    * {@link #expandArguments(LinkedList)} and pass the resulting list to    * {@link #processArguments(LinkedList)}     * @param args the list of argument strings    * @throws IOException    */
+DECL|method|processRawArguments (LinkedList<String> args)
+specifier|protected
+name|void
+name|processRawArguments
+parameter_list|(
+name|LinkedList
+argument_list|<
+name|String
+argument_list|>
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|processArguments
+argument_list|(
+name|expandArguments
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    *  Expands a list of arguments into {@link PathData} objects.  The default    *  behavior is to call {@link #expandArgument(String)} on each element    *  which by default globs the argument.  The loop catches IOExceptions,    *  increments the error count, and displays the exception.    * @param args strings to expand into {@link PathData} objects    * @return list of all {@link PathData} objects the arguments    * @throws IOException if anything goes wrong...    */
 DECL|method|expandArguments (LinkedList<String> args)
 specifier|protected
@@ -1073,13 +1100,67 @@ name|err
 operator|.
 name|println
 argument_list|(
-name|getCommandName
+name|getName
 argument_list|()
 operator|+
 literal|": "
 operator|+
 name|message
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The name of the command.  Will first try to use the assigned name    * else fallback to the command's preferred name    * @return name of the command    */
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+operator|(
+name|name
+operator|==
+literal|null
+operator|)
+condition|?
+name|getCommandField
+argument_list|(
+literal|"NAME"
+argument_list|)
+else|:
+name|name
+operator|.
+name|startsWith
+argument_list|(
+literal|"-"
+argument_list|)
+condition|?
+name|name
+operator|.
+name|substring
+argument_list|(
+literal|1
+argument_list|)
+else|:
+name|name
+return|;
+comment|// this is a historical method
+block|}
+comment|/**    * Define the name of the command.    * @param name as invoked    */
+DECL|method|setName (String name)
+specifier|public
+name|void
+name|setName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
 expr_stmt|;
 block|}
 comment|/**    * The short usage suitable for the synopsis    * @return "name options"    */
@@ -1094,7 +1175,7 @@ name|cmd
 init|=
 literal|"-"
 operator|+
-name|getCommandName
+name|getName
 argument_list|()
 decl_stmt|;
 name|String
@@ -1194,9 +1275,6 @@ try|try
 block|{
 name|value
 operator|=
-operator|(
-name|String
-operator|)
 name|this
 operator|.
 name|getClass
@@ -1209,8 +1287,11 @@ argument_list|)
 operator|.
 name|get
 argument_list|(
-literal|null
+name|this
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -1223,12 +1304,21 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-name|StringUtils
+literal|"failed to get "
+operator|+
+name|this
 operator|.
-name|stringifyException
-argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"."
+operator|+
+name|field
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 throw|;
 block|}

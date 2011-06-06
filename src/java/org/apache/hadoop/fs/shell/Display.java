@@ -570,12 +570,12 @@ name|NAME
 init|=
 literal|"text"
 decl_stmt|;
-DECL|field|SHORT_USAGE
+DECL|field|USAGE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|SHORT_USAGE
+name|USAGE
 init|=
 name|Cat
 operator|.

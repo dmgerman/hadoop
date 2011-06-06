@@ -279,6 +279,9 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|// historical abstract method in Command
+annotation|@
+name|Override
 DECL|method|getCommandName ()
 specifier|public
 name|String
@@ -286,21 +289,8 @@ name|getCommandName
 parameter_list|()
 block|{
 return|return
-name|name
-operator|.
-name|startsWith
-argument_list|(
-literal|"-"
-argument_list|)
-condition|?
-name|name
-operator|.
-name|substring
-argument_list|(
-literal|1
-argument_list|)
-else|:
-name|name
+name|getName
+argument_list|()
 return|;
 block|}
 comment|// abstract method that normally is invoked by runall() which is
