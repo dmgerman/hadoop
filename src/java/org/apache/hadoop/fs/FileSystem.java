@@ -598,7 +598,7 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a filesystem instance based on the uri, the passed    * configuration and the user    * @param uri    * @param conf    * @param user    * @return the filesystem instance    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Get a filesystem instance based on the uri, the passed    * configuration and the user    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return the filesystem instance    * @throws IOException    * @throws InterruptedException    */
 DECL|method|get (final URI uri, final Configuration conf, final String user)
 specifier|public
 specifier|static
@@ -684,7 +684,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/** Returns the configured filesystem implementation.*/
+comment|/**    * Returns the configured filesystem implementation.    * @param conf the configuration to use    */
 DECL|method|get (Configuration conf)
 specifier|public
 specifier|static
@@ -709,7 +709,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Get the default filesystem URI from a configuration.    * @param conf the configuration to access    * @return the uri of the default filesystem    */
+comment|/** Get the default filesystem URI from a configuration.    * @param conf the configuration to use    * @return the uri of the default filesystem    */
 DECL|method|getDefaultUri (Configuration conf)
 specifier|public
 specifier|static
@@ -1163,7 +1163,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the FileSystem for this URI's scheme and authority and the     * passed user. Internally invokes {@link #newInstance(URI, Configuration)}    * @param uri    * @param conf    * @param user    * @return filesystem instance    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Returns the FileSystem for this URI's scheme and authority and the     * passed user. Internally invokes {@link #newInstance(URI, Configuration)}    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return filesystem instance    * @throws IOException    * @throws InterruptedException    */
 DECL|method|newInstance (final URI uri, final Configuration conf, final String user)
 specifier|public
 specifier|static
@@ -1356,7 +1356,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Returns a unique configured filesystem implementation.    * This always returns a new FileSystem object. */
+comment|/** Returns a unique configured filesystem implementation.    * This always returns a new FileSystem object.    * @param conf the configuration to use    */
 DECL|method|newInstance (Configuration conf)
 specifier|public
 specifier|static
@@ -1424,7 +1424,7 @@ name|closeAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Close all cached filesystems for a given UGI. Be sure those filesystems     * are not used anymore.    * @param ugi    * @throws IOException    */
+comment|/**    * Close all cached filesystems for a given UGI. Be sure those filesystems     * are not used anymore.    * @param ugi user group info to close    * @throws IOException    */
 DECL|method|closeAllForUGI (UserGroupInformation ugi)
 specifier|public
 specifier|static
@@ -1445,7 +1445,7 @@ name|ugi
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Make sure that a path specifies a FileSystem. */
+comment|/**     * Make sure that a path specifies a FileSystem.    * @param path to use    */
 DECL|method|makeQualified (Path path)
 specifier|public
 name|Path
@@ -1654,7 +1654,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Check that a Path belongs to this FileSystem. */
+comment|/**     * Check that a Path belongs to this FileSystem.    * @param path to check    */
 DECL|method|checkPath (Path path)
 specifier|protected
 name|void
@@ -1871,7 +1871,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    */
+comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param file FilesStatus to get data from    * @param start offset into the given file    * @param len length for which to get locations for    */
 DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
 specifier|public
 name|BlockLocation
@@ -1903,17 +1903,13 @@ return|;
 block|}
 if|if
 condition|(
-operator|(
 name|start
 operator|<
 literal|0
-operator|)
 operator|||
-operator|(
 name|len
 operator|<
 literal|0
-operator|)
 condition|)
 block|{
 throw|throw
@@ -1980,7 +1976,7 @@ argument_list|)
 block|}
 return|;
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    */
+comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param p path of file to get locations for    * @param start offset into the given file    * @param len length for which to get locations for    */
 DECL|method|getFileBlockLocations (Path p, long start, long len)
 specifier|public
 name|BlockLocation
@@ -2153,7 +2149,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    */
 DECL|method|create (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -2174,7 +2170,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file to create    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an exception will be thrown.    */
 DECL|method|create (Path f, boolean overwrite)
 specifier|public
 name|FSDataOutputStream
@@ -2214,7 +2210,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param progress to report progress    */
 DECL|method|create (Path f, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -2256,7 +2252,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    */
 DECL|method|create (Path f, short replication)
 specifier|public
 name|FSDataOutputStream
@@ -2295,7 +2291,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    * @param progress to report progress    */
 DECL|method|create (Path f, short replication, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -2339,7 +2335,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file name to create    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
 DECL|method|create (Path f, boolean overwrite, int bufferSize )
 specifier|public
 name|FSDataOutputStream
@@ -2374,7 +2370,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the path of the file to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
 DECL|method|create (Path f, boolean overwrite, int bufferSize, Progressable progress )
 specifier|public
 name|FSDataOutputStream
@@ -2414,7 +2410,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize )
 specifier|public
 name|FSDataOutputStream
@@ -2455,7 +2451,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress )
 specifier|public
 name|FSDataOutputStream
@@ -2517,7 +2513,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 specifier|abstract
@@ -2799,7 +2795,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Creates the given Path as a brand-new zero-length file.  If    * create fails, or if it already existed, return false.    */
+comment|/**    * Creates the given Path as a brand-new zero-length file.  If    * create fails, or if it already existed, return false.    *    * @param f path to use for create    */
 DECL|method|createNewFile (Path f)
 specifier|public
 name|boolean
@@ -2969,7 +2965,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    * @throws IOException on failure    * @return true if rename is successful    */
+comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
 DECL|method|rename (Path src, Path dst)
 specifier|public
 specifier|abstract
@@ -3480,7 +3476,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    */
+comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    * @param f path to check    */
 DECL|method|isDirectory (Path f)
 specifier|public
 name|boolean
@@ -3516,7 +3512,7 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    */
+comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    * @param f path to check    */
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean
@@ -3577,7 +3573,7 @@ name|getLen
 argument_list|()
 return|;
 block|}
-comment|/** Return the {@link ContentSummary} of a given {@link Path}. */
+comment|/** Return the {@link ContentSummary} of a given {@link Path}.   * @param f path to use   */
 DECL|method|getContentSummary (Path f)
 specifier|public
 name|ContentSummary
@@ -5212,7 +5208,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Make the given file and all non-existent parents into    * directories. Has the semantics of Unix 'mkdir -p'.    * Existence of the directory hierarchy is not an error.    */
+comment|/**    * Make the given file and all non-existent parents into    * directories. Has the semantics of Unix 'mkdir -p'.    * Existence of the directory hierarchy is not an error.    * @param f path to create    * @param permission to apply to f    */
 DECL|method|mkdirs (Path f, FsPermission permission )
 specifier|public
 specifier|abstract
@@ -5228,7 +5224,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name and the source is kept intact afterwards    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name and the source is kept intact afterwards    * @param src path    * @param dst path    */
 DECL|method|copyFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -5253,7 +5249,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src files is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    */
+comment|/**    * The src files is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    * @param srcs path    * @param dst path    */
 DECL|method|moveFromLocalFile (Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -5281,7 +5277,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    * @param src path    * @param dst path    */
 DECL|method|moveFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -5306,7 +5302,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param src path    * @param dst path    */
 DECL|method|copyFromLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -5336,7 +5332,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src files are on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+comment|/**    * The src files are on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param srcs array of paths which are source    * @param dst path    */
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -5387,7 +5383,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    */
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
 specifier|public
 name|void
@@ -5437,7 +5433,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    */
+comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * @param src path    * @param dst path    */
 DECL|method|copyToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -5462,7 +5458,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * Remove the source afterwards    */
+comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * Remove the source afterwards    * @param src path    * @param dst path    */
 DECL|method|moveToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -5487,7 +5483,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * delSrc indicates if the src will be removed or not.    */
+comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * delSrc indicates if the src will be removed or not.    * @param delSrc whether to delete the src    * @param src path    * @param dst path    */
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -5528,7 +5524,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a local File that the user can write output to.  The caller    * provides both the eventual FS target name and the local working    * file.  If the FS is local, we write directly into the target.  If    * the FS is remote, we write into the tmp local area.    */
+comment|/**    * Returns a local File that the user can write output to.  The caller    * provides both the eventual FS target name and the local working    * file.  If the FS is local, we write directly into the target.  If    * the FS is remote, we write into the tmp local area.    * @param fsOutputFile path of output file    * @param tmpLocalFile path of local tmp file    */
 DECL|method|startLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|Path
@@ -5547,7 +5543,7 @@ return|return
 name|tmpLocalFile
 return|;
 block|}
-comment|/**    * Called when we're all done writing to the target.  A local FS will    * do nothing, because we've written to exactly the right place.  A remote    * FS will copy the contents of tmpLocalFile to the correct target at    * fsOutputFile.    */
+comment|/**    * Called when we're all done writing to the target.  A local FS will    * do nothing, because we've written to exactly the right place.  A remote    * FS will copy the contents of tmpLocalFile to the correct target at    * fsOutputFile.    * @param fsOutputFile path of output file    * @param tmpLocalFile path to local tmp file    */
 DECL|method|completeLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|void
@@ -7539,6 +7535,7 @@ return|return
 name|result
 return|;
 block|}
+comment|/**    * Reset all statistics for all file systems    */
 DECL|method|clearStatistics ()
 specifier|public
 specifier|static
@@ -7565,6 +7562,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Print all statistics for all file systems    */
 specifier|public
 specifier|static
 specifier|synchronized
