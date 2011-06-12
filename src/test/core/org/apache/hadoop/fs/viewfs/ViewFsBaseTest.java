@@ -2882,9 +2882,6 @@ argument_list|)
 argument_list|,
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -2906,9 +2903,6 @@ literal|"/internalDir"
 argument_list|)
 argument_list|,
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(
@@ -2945,9 +2939,6 @@ argument_list|)
 argument_list|,
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -2971,9 +2962,6 @@ literal|"data"
 argument_list|)
 argument_list|,
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(
@@ -2999,9 +2987,6 @@ argument_list|)
 argument_list|,
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -3025,9 +3010,6 @@ literal|"dir3"
 argument_list|)
 argument_list|,
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(
@@ -3073,9 +3055,6 @@ argument_list|)
 argument_list|,
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -3119,9 +3098,6 @@ literal|"user/dirX"
 argument_list|)
 argument_list|,
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(
@@ -3167,9 +3143,6 @@ argument_list|)
 argument_list|,
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -3200,9 +3173,6 @@ name|IOException
 block|{
 name|fcView
 operator|.
-name|getDefaultFileSystem
-argument_list|()
-operator|.
 name|resolvePath
 argument_list|(
 operator|new
@@ -3231,9 +3201,6 @@ throws|throws
 name|IOException
 block|{
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(
@@ -3283,9 +3250,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 name|fcView
-operator|.
-name|getDefaultFileSystem
-argument_list|()
 operator|.
 name|resolvePath
 argument_list|(

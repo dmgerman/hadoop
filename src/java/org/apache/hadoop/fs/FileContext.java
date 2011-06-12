@@ -1439,6 +1439,32 @@ operator|=
 name|newUmask
 expr_stmt|;
 block|}
+comment|/**    * Resolve the path following any symlinks or mount points    * @param f to be resolved    * @return fully qualified resolved path    *     * @throws FileNotFoundException  If<code>f</code> does not exist    * @throws AccessControlException if access denied    * @throws IOException If an IO Error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
+DECL|method|resolvePath (final Path f)
+specifier|public
+name|Path
+name|resolvePath
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+return|return
+name|resolve
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 comment|/**    * Make the path fully qualified if it is isn't.     * A Fully-qualified path has scheme and authority specified and an absolute    * path.    * Use the default file system and working dir in this FileContext to qualify.    * @param path    * @return qualified path    */
 DECL|method|makeQualified (final Path path)
 specifier|public
@@ -6097,18 +6123,24 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 return|return
 operator|new
 name|FSLinkResolver
 argument_list|<
-name|FileStatus
+name|Path
 argument_list|>
 argument_list|()
 block|{
 specifier|public
-name|FileStatus
+name|Path
 name|next
 parameter_list|(
 specifier|final
@@ -6127,7 +6159,7 @@ block|{
 return|return
 name|fs
 operator|.
-name|getFileStatus
+name|resolvePath
 argument_list|(
 name|p
 argument_list|)
@@ -6141,9 +6173,6 @@ name|this
 argument_list|,
 name|f
 argument_list|)
-operator|.
-name|getPath
-argument_list|()
 return|;
 block|}
 comment|/**    * Resolves all symbolic links in the specified path leading up     * to, but not including the final path component.    * @param f path to resolve    * @return the new path object.    */
