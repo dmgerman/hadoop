@@ -194,7 +194,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DataTransferProtocol
+name|datatransfer
 operator|.
 name|PacketHeader
 import|;

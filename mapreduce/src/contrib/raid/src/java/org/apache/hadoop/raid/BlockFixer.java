@@ -282,7 +282,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DataTransferProtocol
+name|datatransfer
+operator|.
+name|*
 import|;
 end_import
 
@@ -3926,8 +3928,6 @@ block|{
 name|datanode
 block|}
 decl_stmt|;
-name|DataTransferProtocol
-operator|.
 name|Sender
 operator|.
 name|opWriteBlock
@@ -3941,8 +3941,6 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|,
-name|DataTransferProtocol
-operator|.
 name|BlockConstructionStage
 operator|.
 name|PIPELINE_SETUP_CREATE
