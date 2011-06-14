@@ -3967,10 +3967,18 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|TestingGroups ()
+DECL|field|underlyingImplementation
+specifier|private
+name|Groups
+name|underlyingImplementation
+decl_stmt|;
+DECL|method|TestingGroups (Groups underlyingImplementation)
 specifier|private
 name|TestingGroups
-parameter_list|()
+parameter_list|(
+name|Groups
+name|underlyingImplementation
+parameter_list|)
 block|{
 name|super
 argument_list|(
@@ -3987,6 +3995,12 @@ name|Configuration
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|underlyingImplementation
+operator|=
+name|underlyingImplementation
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -4001,6 +4015,8 @@ parameter_list|(
 name|String
 name|user
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|List
 argument_list|<
@@ -4024,12 +4040,12 @@ condition|)
 block|{
 name|result
 operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
+name|underlyingImplementation
+operator|.
+name|getGroups
+argument_list|(
+name|user
+argument_list|)
 expr_stmt|;
 block|}
 return|return
@@ -4117,7 +4133,9 @@ name|groups
 operator|=
 operator|new
 name|TestingGroups
-argument_list|()
+argument_list|(
+name|groups
+argument_list|)
 expr_stmt|;
 block|}
 comment|// add the user groups
@@ -4199,7 +4217,9 @@ name|groups
 operator|=
 operator|new
 name|TestingGroups
-argument_list|()
+argument_list|(
+name|groups
+argument_list|)
 expr_stmt|;
 block|}
 comment|// add the user groups
