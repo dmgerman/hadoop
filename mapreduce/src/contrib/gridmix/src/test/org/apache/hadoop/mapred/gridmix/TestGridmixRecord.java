@@ -1432,6 +1432,13 @@ name|getVIntSize
 argument_list|(
 name|out_bytes
 argument_list|)
+operator|+
+name|WritableUtils
+operator|.
+name|getVIntSize
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -1672,7 +1679,7 @@ specifier|final
 name|int
 name|min
 init|=
-literal|5
+literal|6
 decl_stmt|;
 specifier|final
 name|int
