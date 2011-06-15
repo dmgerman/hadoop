@@ -730,7 +730,7 @@ name|basename
 parameter_list|)
 block|{
 return|return
-literal|"build/classes/"
+literal|"build/test/"
 operator|+
 name|basename
 operator|+
