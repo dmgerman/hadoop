@@ -7600,6 +7600,20 @@ name|getAllNamenodeThreads
 argument_list|()
 return|;
 block|}
+DECL|method|getBpOsCount ()
+name|int
+name|getBpOsCount
+parameter_list|()
+block|{
+return|return
+name|blockPoolManager
+operator|.
+name|getAllNamenodeThreads
+argument_list|()
+operator|.
+name|length
+return|;
+block|}
 comment|/**    * Initializes the {@link #data}. The initialization is done only once, when    * handshake with the the first namenode is completed.    */
 DECL|method|initFsDataSet (Configuration conf, AbstractList<File> dataDirs)
 specifier|private
@@ -10332,6 +10346,30 @@ operator|.
 name|joinAll
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|blockPoolManager
+operator|.
+name|getAllNamenodeThreads
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|blockPoolManager
+operator|.
+name|getAllNamenodeThreads
+argument_list|()
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+name|shouldRun
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|Thread
 operator|.
 name|sleep
