@@ -52,6 +52,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|lang
+operator|.
+name|reflect
+operator|.
+name|Field
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1144,7 +1156,6 @@ argument_list|)
 else|:
 name|name
 return|;
-comment|// this is a historical method
 block|}
 comment|/**    * Define the name of the command.    * @param name as invoked    */
 DECL|method|setName (String name)
@@ -1273,17 +1284,29 @@ name|value
 decl_stmt|;
 try|try
 block|{
-name|value
-operator|=
+name|Field
+name|f
+init|=
 name|this
 operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getField
+name|getDeclaredField
 argument_list|(
 name|field
 argument_list|)
+decl_stmt|;
+name|f
+operator|.
+name|setAccessible
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|value
+operator|=
+name|f
 operator|.
 name|get
 argument_list|(
