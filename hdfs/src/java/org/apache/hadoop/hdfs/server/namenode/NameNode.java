@@ -1585,6 +1585,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// VersionedProtocol
 DECL|method|getProtocolSignature (String protocol, long clientVersion, int clientMethodsHash)
 specifier|public
 name|ProtocolSignature
@@ -3875,7 +3876,9 @@ name|size
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// NamenodeProtocol
 DECL|method|getBlockKeys ()
 specifier|public
 name|ExportedBlockKeys
@@ -4100,7 +4103,6 @@ name|getEditLogSize
 argument_list|()
 return|;
 block|}
-comment|/*    * Active name-node cannot journal.    */
 annotation|@
 name|Override
 comment|// NamenodeProtocol
@@ -4125,6 +4127,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Active name-node cannot journal.
 throw|throw
 operator|new
 name|UnsupportedActionException
@@ -4133,9 +4136,9 @@ literal|"journal"
 argument_list|)
 throw|;
 block|}
-comment|/////////////////////////////////////////////////////
+annotation|@
+name|Override
 comment|// ClientProtocol
-comment|/////////////////////////////////////////////////////
 DECL|method|getDelegationToken (Text renewer)
 specifier|public
 name|Token
@@ -4161,6 +4164,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
 specifier|public
 name|long
@@ -4188,6 +4192,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
 specifier|public
 name|void
@@ -4210,7 +4215,9 @@ name|token
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getBlockLocations (String src, long offset, long length)
 specifier|public
 name|LocatedBlocks
@@ -4249,38 +4256,9 @@ name|length
 argument_list|)
 return|;
 block|}
-DECL|method|getClientMachine ()
-specifier|private
-specifier|static
-name|String
-name|getClientMachine
-parameter_list|()
-block|{
-name|String
-name|clientMachine
-init|=
-name|Server
-operator|.
-name|getRemoteAddress
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|clientMachine
-operator|==
-literal|null
-condition|)
-block|{
-name|clientMachine
-operator|=
-literal|""
-expr_stmt|;
-block|}
-return|return
-name|clientMachine
-return|;
-block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getServerDefaults ()
 specifier|public
 name|FsServerDefaults
@@ -4296,7 +4274,9 @@ name|getServerDefaults
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|public
 name|void
@@ -4435,7 +4415,9 @@ name|incrCreateFileOps
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|append (String src, String clientName)
 specifier|public
 name|LocatedBlock
@@ -4505,7 +4487,9 @@ return|return
 name|info
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|recoverLease (String src, String clientName)
 specifier|public
 name|boolean
@@ -4539,7 +4523,9 @@ name|clientMachine
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setReplication (String src, short replication)
 specifier|public
 name|boolean
@@ -4565,7 +4551,9 @@ name|replication
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setPermission (String src, FsPermission permissions)
 specifier|public
 name|void
@@ -4590,7 +4578,9 @@ name|permissions
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setOwner (String src, String username, String groupname)
 specifier|public
 name|void
@@ -4622,6 +4612,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes)
 specifier|public
 name|LocatedBlock
@@ -4749,6 +4740,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
@@ -4972,7 +4964,9 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|complete (String src, String clientName, ExtendedBlock last)
 specifier|public
 name|boolean
@@ -5026,6 +5020,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The client has detected an error on the specified located blocks     * and is reporting them to the server.  For now, the namenode will     * mark the block as corrupt.  In the future we might     * check the blocks are actually corrupt.     */
+annotation|@
+name|Override
 DECL|method|reportBadBlocks (LocatedBlock[] blocks)
 specifier|public
 name|void
@@ -5122,9 +5118,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|updateBlockForPipeline (ExtendedBlock block, String clientName)
 specifier|public
 name|LocatedBlock
@@ -5152,6 +5148,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
 specifier|public
 name|void
@@ -5187,7 +5184,9 @@ name|newNodes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets)
 specifier|public
 name|void
@@ -5233,6 +5232,9 @@ name|newtargets
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getPreferredBlockSize (String filename)
 specifier|public
 name|long
@@ -5253,11 +5255,11 @@ name|filename
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Deprecated
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|rename (String src, String dst)
 specifier|public
 name|boolean
@@ -5346,7 +5348,9 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**     * {@inheritDoc}    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|concat (String trg, String[] src)
 specifier|public
 name|void
@@ -5372,9 +5376,9 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|rename (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
@@ -5459,9 +5463,11 @@ name|incrFilesRenamed
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    */
 annotation|@
 name|Deprecated
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|delete (String src)
 specifier|public
 name|boolean
@@ -5482,7 +5488,9 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|delete (String src, boolean recursive)
 specifier|public
 name|boolean
@@ -5544,7 +5552,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Check path length does not exceed maximum.  Returns true if    * length and depth are okay.  Returns false if length is too long     * or depth is too great.    *     */
+comment|/**    * Check path length does not exceed maximum.  Returns true if    * length and depth are okay.  Returns false if length is too long     * or depth is too great.    */
 DECL|method|checkPathLength (String src)
 specifier|private
 name|boolean
@@ -5581,7 +5589,9 @@ name|MAX_PATH_DEPTH
 operator|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|mkdirs (String src, FsPermission masked, boolean createParent)
 specifier|public
 name|boolean
@@ -5669,7 +5679,9 @@ name|createParent
 argument_list|)
 return|;
 block|}
-comment|/**    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|renewLease (String clientName)
 specifier|public
 name|void
@@ -5689,9 +5701,9 @@ name|clientName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    */
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getListing (String src, byte[] startAfter, boolean needLocation)
 specifier|public
 name|DirectoryListing
@@ -5753,7 +5765,9 @@ return|return
 name|files
 return|;
 block|}
-comment|/**    * Get the file info for a specific file.    * @param src The string representation of the path to the file    * @return object containing information regarding the file    *         or null if file not found    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getFileInfo (String src)
 specifier|public
 name|HdfsFileStatus
@@ -5781,7 +5795,9 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the file info for a specific file. If the path refers to a     * symlink then the FileStatus of the symlink is returned.    * @param src The string representation of the path to the file    * @return object containing information regarding the file    *         or null if file not found    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getFileLinkInfo (String src)
 specifier|public
 name|HdfsFileStatus
@@ -5825,7 +5841,9 @@ name|getStats
 argument_list|()
 return|;
 block|}
-comment|/**    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getDatanodeReport (DatanodeReportType type)
 specifier|public
 name|DatanodeInfo
@@ -5870,6 +5888,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|setSafeMode (SafeModeAction action)
 specifier|public
 name|boolean
@@ -5906,6 +5925,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|restoreFailedStorage (String arg)
 specifier|public
 name|boolean
@@ -5928,6 +5948,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|saveNamespace ()
 specifier|public
 name|void
@@ -5942,7 +5963,9 @@ name|saveNamespace
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Refresh the list of datanodes that the namenode should allow to      * connect.  Re-reads conf by creating new HdfsConfiguration object and     * uses the files list in the configuration to update the list.     */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|refreshNodes ()
 specifier|public
 name|void
@@ -5961,9 +5984,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the size of the current edit log.    */
 annotation|@
 name|Deprecated
+comment|// NamenodeProtocol
 DECL|method|getEditLogSize ()
 specifier|public
 name|long
@@ -5979,9 +6002,11 @@ name|getEditLogSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Roll the edit log.    */
 annotation|@
 name|Deprecated
+annotation|@
+name|Override
+comment|// NamenodeProtocol
 DECL|method|rollEditLog ()
 specifier|public
 name|CheckpointSignature
@@ -5997,11 +6022,11 @@ name|rollEditLog
 argument_list|()
 return|;
 block|}
-comment|/**    * Roll the image     */
 annotation|@
 name|Deprecated
 annotation|@
 name|Override
+comment|// NamenodeProtocol
 DECL|method|rollFsImage (CheckpointSignature sig)
 specifier|public
 name|void
@@ -6021,6 +6046,9 @@ name|sig
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|finalizeUpgrade ()
 specifier|public
 name|void
@@ -6035,6 +6063,9 @@ name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
 specifier|public
 name|UpgradeStatusReport
@@ -6055,7 +6086,9 @@ name|action
 argument_list|)
 return|;
 block|}
-comment|/**    * Dumps namenode state into specified file    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|metaSave (String filename)
 specifier|public
 name|void
@@ -6075,12 +6108,12 @@ name|filename
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
+comment|// ClientProtocol
+DECL|method|listCorruptFileBlocks (String path, String cookie)
 specifier|public
 name|CorruptFileBlocks
-DECL|method|listCorruptFileBlocks (String path, String cookie)
 name|listCorruptFileBlocks
 parameter_list|(
 name|String
@@ -6172,7 +6205,9 @@ name|lastCookie
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getContentSummary (String path)
 specifier|public
 name|ContentSummary
@@ -6193,7 +6228,9 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota)
 specifier|public
 name|void
@@ -6223,7 +6260,9 @@ name|diskspaceQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|fsync (String src, String clientName)
 specifier|public
 name|void
@@ -6250,6 +6289,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|setTimes (String src, long mtime, long atime)
 specifier|public
 name|void
@@ -6281,6 +6321,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|createSymlink (String target, String link, FsPermission dirPerms, boolean createParent)
 specifier|public
 name|void
@@ -6382,6 +6423,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getLinkTarget (String path)
 specifier|public
 name|String
@@ -6464,10 +6506,9 @@ return|return
 literal|null
 return|;
 block|}
-comment|////////////////////////////////////////////////////////////////
+annotation|@
+name|Override
 comment|// DatanodeProtocol
-comment|////////////////////////////////////////////////////////////////
-comment|/**     */
 DECL|method|registerDatanode (DatanodeRegistration nodeReg)
 specifier|public
 name|DatanodeRegistration
@@ -6498,7 +6539,9 @@ return|return
 name|nodeReg
 return|;
 block|}
-comment|/**    * Data node notify the name node that it is alive     * Return an array of block-oriented commands for the datanode to execute.    * This will be either a transfer or a delete operation.    */
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeCommand
@@ -6560,7 +6603,9 @@ name|failedVolumes
 argument_list|)
 return|;
 block|}
-comment|/**    * sends block report to the corresponding namenode (for the poolId)    * @return DataNodeCommand from the namenode    * @throws IOException    */
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|blockReport (DatanodeRegistration nodeReg, String poolId, long[] blocks)
 specifier|public
 name|DatanodeCommand
@@ -6657,6 +6702,9 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|blockReceived (DatanodeRegistration nodeReg, String poolId, Block blocks[], String delHints[])
 specifier|public
 name|void
@@ -6753,7 +6801,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Handle an error report from a datanode.    */
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|errorReport (DatanodeRegistration nodeReg, int errorCode, String msg)
 specifier|public
 name|void
@@ -6887,6 +6937,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+comment|// DatanodeProtocol, NamenodeProtocol
 DECL|method|versionRequest ()
 specifier|public
 name|NamespaceInfo
@@ -6902,6 +6955,9 @@ name|getNamespaceInfo
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// DatanodeProtocol
 DECL|method|processUpgradeCommand (UpgradeCommand comm)
 specifier|public
 name|UpgradeCommand
@@ -7503,6 +7559,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// RefreshAuthorizationPolicyProtocol
 DECL|method|refreshServiceAcl ()
 specifier|public
 name|void
@@ -7568,6 +7625,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// RefreshAuthorizationPolicyProtocol
 DECL|method|refreshUserToGroupsMappings ()
 specifier|public
 name|void
@@ -7602,6 +7660,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// RefreshAuthorizationPolicyProtocol
 DECL|method|refreshSuperUserGroupsConfiguration ()
 specifier|public
 name|void
@@ -7623,6 +7682,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// GetUserMappingsProtocol
 DECL|method|getGroupsForUser (String user)
 specifier|public
 name|String
@@ -8686,6 +8746,37 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getClientMachine ()
+specifier|private
+specifier|static
+name|String
+name|getClientMachine
+parameter_list|()
+block|{
+name|String
+name|clientMachine
+init|=
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|clientMachine
+operator|==
+literal|null
+condition|)
+block|{
+name|clientMachine
+operator|=
+literal|""
+expr_stmt|;
+block|}
+return|return
+name|clientMachine
+return|;
 block|}
 block|}
 end_class
