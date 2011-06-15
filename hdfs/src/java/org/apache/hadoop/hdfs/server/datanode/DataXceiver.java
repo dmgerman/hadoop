@@ -1224,9 +1224,10 @@ expr_stmt|;
 block|}
 do|while
 condition|(
+operator|!
 name|s
 operator|.
-name|isConnected
+name|isClosed
 argument_list|()
 operator|&&
 name|socketKeepaliveTimeout
