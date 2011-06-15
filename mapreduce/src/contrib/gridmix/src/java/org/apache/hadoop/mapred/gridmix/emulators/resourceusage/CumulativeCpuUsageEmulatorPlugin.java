@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>A {@link ResourceUsageEmulatorPlugin} that emulates the cumulative CPU   * usage by performing certain CPU intensive operations. Performing such CPU   * intensive operations essentially uses up some CPU. Every   * {@link ResourceUsageEmulatorPlugin} is configured with a feedback module i.e   * a {@link ResourceCalculatorPlugin}, to monitor the resource usage.</p>  *   *<p>{@link CumulativeCpuUsageEmulatorPlugin} emulates the CPU usage in steps.   * The frequency of emulation can be configured via   * {@link #CPU_EMULATION_FREQUENCY}.  * CPU usage values are matched via emulation only on the interval boundaries.  *</p>  *    * {@link CumulativeCpuUsageEmulatorPlugin} is a wrapper program for managing   * the CPU usage emulation feature. It internally uses an emulation algorithm   * (called as core and described using {@link CpuUsageEmulatorCore}) for   * performing the actual emulation. Multiple calls to this core engine should   * use up some amount of CPU.<br>  *   *<p>{@link CumulativeCpuUsageEmulatorPlugin} provides a calibration feature   * via {@link #initialize(Configuration, ResourceUsageMetrics,   *                        ResourceCalculatorPlugin, Progressive)} to calibrate   *  the plugin and its core for the underlying hardware. As a result of   *  calibration, every call to the emulation engine's core should roughly use up  *  1% of the total usage value to be emulated. This makes sure that the   *  underlying hardware is profiled before use and that the plugin doesn't   *  accidently overuse the CPU. With 1% as the unit emulation target value for   *  the core engine, there will be roughly 100 calls to the engine resulting in   *  roughly 100 calls to the feedback (resource usage monitor) module.   *  Excessive usage of the feedback module is discouraged as   *  it might result into excess CPU usage resulting into no real CPU emulation.  *</p>  */
+comment|/**  *<p>A {@link ResourceUsageEmulatorPlugin} that emulates the cumulative CPU   * usage by performing certain CPU intensive operations. Performing such CPU   * intensive operations essentially uses up some CPU. Every   * {@link ResourceUsageEmulatorPlugin} is configured with a feedback module i.e   * a {@link ResourceCalculatorPlugin}, to monitor the resource usage.</p>  *   *<p>{@link CumulativeCpuUsageEmulatorPlugin} emulates the CPU usage in steps.   * The frequency of emulation can be configured via   * {@link #CPU_EMULATION_PROGRESS_INTERVAL}.  * CPU usage values are matched via emulation only on the interval boundaries.  *</p>  *    * {@link CumulativeCpuUsageEmulatorPlugin} is a wrapper program for managing   * the CPU usage emulation feature. It internally uses an emulation algorithm   * (called as core and described using {@link CpuUsageEmulatorCore}) for   * performing the actual emulation. Multiple calls to this core engine should   * use up some amount of CPU.<br>  *   *<p>{@link CumulativeCpuUsageEmulatorPlugin} provides a calibration feature   * via {@link #initialize(Configuration, ResourceUsageMetrics,   *                        ResourceCalculatorPlugin, Progressive)} to calibrate   *  the plugin and its core for the underlying hardware. As a result of   *  calibration, every call to the emulation engine's core should roughly use up  *  1% of the total usage value to be emulated. This makes sure that the   *  underlying hardware is profiled before use and that the plugin doesn't   *  accidently overuse the CPU. With 1% as the unit emulation target value for   *  the core engine, there will be roughly 100 calls to the engine resulting in   *  roughly 100 calls to the feedback (resource usage monitor) module.   *  Excessive usage of the feedback module is discouraged as   *  it might result into excess CPU usage resulting into no real CPU emulation.  *</p>  */
 end_comment
 
 begin_class
@@ -166,14 +166,14 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Configuration parameters
-DECL|field|CPU_EMULATION_FREQUENCY
+DECL|field|CPU_EMULATION_PROGRESS_INTERVAL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|CPU_EMULATION_FREQUENCY
+name|CPU_EMULATION_PROGRESS_INTERVAL
 init|=
-literal|"gridmix.emulators.resource-usage.cpu.frequency"
+literal|"gridmix.emulators.resource-usage.cpu.emulation-interval"
 decl_stmt|;
 DECL|field|DEFAULT_EMULATION_FREQUENCY
 specifier|private
@@ -830,7 +830,7 @@ name|conf
 operator|.
 name|getFloat
 argument_list|(
-name|CPU_EMULATION_FREQUENCY
+name|CPU_EMULATION_PROGRESS_INTERVAL
 argument_list|,
 name|DEFAULT_EMULATION_FREQUENCY
 argument_list|)

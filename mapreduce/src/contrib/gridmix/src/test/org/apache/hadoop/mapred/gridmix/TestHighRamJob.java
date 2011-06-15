@@ -212,7 +212,7 @@ name|TestHighRamJob
 block|{
 comment|/**    * A dummy {@link GridmixJob} that opens up the simulated job for testing.    */
 DECL|class|DummyGridmixJob
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|DummyGridmixJob

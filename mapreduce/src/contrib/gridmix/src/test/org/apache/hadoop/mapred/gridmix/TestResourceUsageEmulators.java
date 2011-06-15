@@ -1778,7 +1778,6 @@ block|}
 block|}
 comment|// Creates a ResourceUsageMetrics object from the target usage
 DECL|method|createMetrics (long target)
-specifier|private
 specifier|static
 name|ResourceUsageMetrics
 name|createMetrics
@@ -2014,7 +2013,7 @@ name|setFloat
 argument_list|(
 name|CumulativeCpuUsageEmulatorPlugin
 operator|.
-name|CPU_EMULATION_FREQUENCY
+name|CPU_EMULATION_PROGRESS_INTERVAL
 argument_list|,
 literal|0.2F
 argument_list|)
@@ -2065,7 +2064,7 @@ name|setFloat
 argument_list|(
 name|CumulativeCpuUsageEmulatorPlugin
 operator|.
-name|CPU_EMULATION_FREQUENCY
+name|CPU_EMULATION_PROGRESS_INTERVAL
 argument_list|,
 literal|0.25F
 argument_list|)
@@ -2225,7 +2224,7 @@ name|setFloat
 argument_list|(
 name|CumulativeCpuUsageEmulatorPlugin
 operator|.
-name|CPU_EMULATION_FREQUENCY
+name|CPU_EMULATION_PROGRESS_INTERVAL
 argument_list|,
 literal|0.40F
 argument_list|)
