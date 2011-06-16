@@ -11074,6 +11074,27 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+comment|// We need to add System.exit here because either shutdown was called or
+comment|// some disk related conditions like volumes tolerated or volumes required
+comment|// condition was not met. Also, In secure mode, control will go to Jsvc
+comment|// and Datanode process hangs without System.exit.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exiting Datanode"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|main (String args[])
 specifier|public

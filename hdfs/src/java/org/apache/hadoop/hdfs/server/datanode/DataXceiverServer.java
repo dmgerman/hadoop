@@ -252,7 +252,7 @@ DECL|field|datanode
 name|DataNode
 name|datanode
 decl_stmt|;
-comment|// Record all sockets opend for data transfer
+comment|// Record all sockets opened for data transfer
 DECL|field|childSockets
 name|Map
 argument_list|<
@@ -529,13 +529,8 @@ name|getMachineName
 argument_list|()
 operator|+
 literal|":DataXceiveServer: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -554,14 +549,9 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer: Exiting due to:"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|":DataXceiveServer: Exiting due to: "
+argument_list|,
 name|te
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|datanode
@@ -595,14 +585,9 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|":DataXceiveServer: Close exception due to: "
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
