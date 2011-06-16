@@ -1270,12 +1270,6 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-comment|//Renew TGT if needed
-name|ugi
-operator|.
-name|reloginFromKeytab
-argument_list|()
-expr_stmt|;
 comment|//since we don't already have a token, go get one over https
 if|if
 condition|(
@@ -1311,6 +1305,7 @@ annotation|@
 name|Override
 DECL|method|getDelegationToken (final String renewer)
 specifier|public
+specifier|synchronized
 name|Token
 argument_list|<
 name|?
@@ -1326,6 +1321,12 @@ name|IOException
 block|{
 try|try
 block|{
+comment|//Renew TGT if needed
+name|ugi
+operator|.
+name|reloginFromKeytab
+argument_list|()
+expr_stmt|;
 return|return
 name|ugi
 operator|.
