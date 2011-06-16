@@ -33,7 +33,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is used to augment {@link LaunchTaskAction} with run time statistics   * and the final task state (successfull xor failed).  */
+comment|/**  * This class is used to augment {@link LaunchTaskAction} with run time statistics   * and the final task state (successful or failed).  */
 end_comment
 
 begin_class
