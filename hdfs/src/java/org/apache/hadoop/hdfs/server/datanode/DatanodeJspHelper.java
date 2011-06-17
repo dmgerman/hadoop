@@ -1698,6 +1698,38 @@ argument_list|(
 name|datanodePortStr
 argument_list|)
 expr_stmt|;
+specifier|final
+name|Long
+name|genStamp
+init|=
+name|JspHelper
+operator|.
+name|validateLong
+argument_list|(
+name|req
+operator|.
+name|getParameter
+argument_list|(
+literal|"genstamp"
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|genStamp
+operator|==
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"Invalid input (genstamp absent)"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|String
 name|namenodeInfoPortStr
 init|=
@@ -2254,6 +2286,17 @@ argument_list|(
 literal|"<input type=\"hidden\" name=\"filename\" value=\""
 operator|+
 name|filename
+operator|+
+literal|"\">"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"<input type=\"hidden\" name=\"genstamp\" value=\""
+operator|+
+name|genStamp
 operator|+
 literal|"\">"
 argument_list|)
