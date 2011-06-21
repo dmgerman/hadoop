@@ -1020,6 +1020,11 @@ name|opsProcessed
 init|=
 literal|0
 decl_stmt|;
+name|Op
+name|op
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|in
@@ -1054,9 +1059,6 @@ comment|// This optimistic behaviour allows the other end to reuse connections.
 comment|// Setting keepalive timeout to 0 disable this behavior.
 do|do
 block|{
-name|Op
-name|op
-decl_stmt|;
 try|try
 block|{
 if|if
@@ -1251,12 +1253,32 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiver, at "
+literal|":DataXceiver error processing "
 operator|+
-name|s
+operator|(
+operator|(
+name|op
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"unknown"
+else|:
+name|op
 operator|.
-name|toString
+name|name
 argument_list|()
+operator|)
+operator|+
+literal|" operation "
+operator|+
+literal|" src: "
+operator|+
+name|remoteAddress
+operator|+
+literal|" dest: "
+operator|+
+name|localAddress
 argument_list|,
 name|t
 argument_list|)
@@ -1473,10 +1495,7 @@ name|block
 operator|+
 literal|" to "
 operator|+
-name|s
-operator|.
-name|getInetAddress
-argument_list|()
+name|remoteAddress
 decl_stmt|;
 name|updateCurrentThreadName
 argument_list|(
@@ -1518,6 +1537,19 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"opReadBlock "
+operator|+
+name|block
+operator|+
+literal|" received exception "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
 name|sendResponse
 argument_list|(
 name|s
@@ -1681,6 +1713,32 @@ name|SocketException
 name|ignored
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|dnR
+operator|+
+literal|":Ignoring exception while serving "
+operator|+
+name|block
+operator|+
+literal|" to "
+operator|+
+name|remoteAddress
+argument_list|,
+name|ignored
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Its ok for remote side to close the connection anytime.
 name|datanode
 operator|.
@@ -1716,10 +1774,7 @@ name|block
 operator|+
 literal|" to "
 operator|+
-name|s
-operator|.
-name|getInetAddress
-argument_list|()
+name|remoteAddress
 operator|+
 literal|":\n"
 operator|+
@@ -2522,6 +2577,25 @@ condition|(
 name|isClient
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|datanode
+operator|+
+literal|":Exception transfering block "
+operator|+
+name|block
+operator|+
+literal|" to mirror "
+operator|+
+name|mirrorNode
+operator|+
+literal|": "
+operator|+
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 name|e
 throw|;
@@ -2778,7 +2852,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"writeBlock "
+literal|"opWriteBlock "
 operator|+
 name|block
 operator|+
@@ -3548,6 +3622,19 @@ name|isOpSuccess
 operator|=
 literal|false
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"opCopyBlock "
+operator|+
+name|block
+operator|+
+literal|" received exception "
+operator|+
+name|ioe
+argument_list|)
+expr_stmt|;
 throw|throw
 name|ioe
 throw|;
@@ -4076,6 +4163,19 @@ block|{
 name|opStatus
 operator|=
 name|ERROR
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"opReplaceBlock "
+operator|+
+name|block
+operator|+
+literal|" received exception "
+operator|+
+name|ioe
+argument_list|)
 expr_stmt|;
 throw|throw
 name|ioe
