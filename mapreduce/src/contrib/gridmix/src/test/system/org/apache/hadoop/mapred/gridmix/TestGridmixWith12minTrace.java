@@ -174,6 +174,14 @@ literal|"=false"
 block|,
 literal|"-D"
 block|,
+name|GridmixJob
+operator|.
+name|GRIDMIX_HIGHRAM_EMULATION_ENABLE
+operator|+
+literal|"=false"
+block|,
+literal|"-D"
+block|,
 name|GridMixConfig
 operator|.
 name|GRIDMIX_SLEEP_MAP_MAX_TIME
