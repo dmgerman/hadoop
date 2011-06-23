@@ -758,13 +758,8 @@ operator|+
 name|file
 operator|+
 literal|".  Ignoring exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|set

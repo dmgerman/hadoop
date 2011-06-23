@@ -3019,13 +3019,8 @@ operator|+
 name|filename
 operator|+
 literal|" Exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

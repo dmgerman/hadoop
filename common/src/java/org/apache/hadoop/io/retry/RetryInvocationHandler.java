@@ -332,13 +332,8 @@ name|getClass
 argument_list|()
 operator|+
 literal|". Not retrying."
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -393,13 +388,8 @@ name|getClass
 argument_list|()
 operator|+
 literal|". Retrying."
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

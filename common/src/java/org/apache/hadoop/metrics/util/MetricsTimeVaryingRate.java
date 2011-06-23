@@ -557,13 +557,8 @@ name|getName
 argument_list|()
 operator|+
 literal|"\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

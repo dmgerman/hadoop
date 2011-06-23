@@ -1642,14 +1642,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"RuntimeException during Trash.Emptier.run() "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"RuntimeException during Trash.Emptier.run(): "
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1672,14 +1667,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Trash cannot close FileSystem. "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Trash cannot close FileSystem: "
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

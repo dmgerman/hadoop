@@ -1792,14 +1792,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Master key updating failed. "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Master key updating failed: "
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

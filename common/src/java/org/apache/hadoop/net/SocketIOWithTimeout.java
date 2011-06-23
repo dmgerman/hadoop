@@ -931,13 +931,8 @@ operator|.
 name|warn
 argument_list|(
 literal|"Unexpected exception while closing selector : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1176,13 +1171,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Unexpected Exception while clearing selector : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// don't put the selector back.

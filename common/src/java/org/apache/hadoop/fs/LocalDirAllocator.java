@@ -779,13 +779,8 @@ name|i
 index|]
 operator|+
 literal|"is not writable\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|de
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -831,13 +826,8 @@ name|getMessage
 argument_list|()
 operator|+
 literal|"\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -961,12 +951,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Disk Error Exception: "
+argument_list|,
 name|d
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

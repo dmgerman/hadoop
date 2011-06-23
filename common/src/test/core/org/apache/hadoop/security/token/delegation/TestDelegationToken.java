@@ -956,13 +956,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Caught an exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|th
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
