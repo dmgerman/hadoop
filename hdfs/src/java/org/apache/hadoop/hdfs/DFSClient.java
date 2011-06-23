@@ -5396,12 +5396,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// get block MD5
+operator|new
 name|Sender
-operator|.
-name|opBlockChecksum
 argument_list|(
 name|out
-argument_list|,
+argument_list|)
+operator|.
+name|blockChecksum
+argument_list|(
 name|block
 argument_list|,
 name|lb
