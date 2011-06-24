@@ -1291,6 +1291,8 @@ name|setAttribute
 argument_list|(
 literal|"secondary.name.node"
 argument_list|,
+name|SecondaryNameNode
+operator|.
 name|this
 argument_list|)
 expr_stmt|;
