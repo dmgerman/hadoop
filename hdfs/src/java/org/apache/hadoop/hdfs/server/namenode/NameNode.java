@@ -2652,6 +2652,34 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|validateConfigurationSettings
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 name|activate
 argument_list|(
 name|conf
@@ -2688,6 +2716,83 @@ operator|+
 name|serviceRPCAddress
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Verifies that the final Configuration Settings look ok for the NameNode to    * properly start up    * Things to check for include:    * - HTTP Server Port does not equal the RPC Server Port    * @param conf    * @throws IOException    */
+DECL|method|validateConfigurationSettings (final Configuration conf)
+specifier|protected
+name|void
+name|validateConfigurationSettings
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// check to make sure the web port and rpc port do not match
+if|if
+condition|(
+name|getHttpServerAddress
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|getPort
+argument_list|()
+operator|==
+name|getRpcServerAddress
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|getPort
+argument_list|()
+condition|)
+block|{
+name|String
+name|errMsg
+init|=
+literal|"dfs.namenode.rpc-address "
+operator|+
+literal|"("
+operator|+
+name|getRpcServerAddress
+argument_list|(
+name|conf
+argument_list|)
+operator|+
+literal|") and "
+operator|+
+literal|"dfs.namenode.http-address ("
+operator|+
+name|getHttpServerAddress
+argument_list|(
+name|conf
+argument_list|)
+operator|+
+literal|") "
+operator|+
+literal|"configuration keys are bound to the same port, unable to start "
+operator|+
+literal|"NameNode. Port: "
+operator|+
+name|getRpcServerAddress
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|getPort
+argument_list|()
+decl_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|errMsg
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Activate name-node servers and threads.    */
