@@ -248,6 +248,28 @@ name|NET_TOPOLOGY_CONFIGURED_NODE_MAPPING_KEY
 init|=
 literal|"net.topology.configured.node.mapping"
 decl_stmt|;
+comment|/** Internal buffer size for Snappy compressor/decompressors */
+DECL|field|IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_KEY
+init|=
+literal|"io.compression.codec.snappy.buffersize"
+decl_stmt|;
+comment|/** Default value for IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_KEY */
+DECL|field|IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_DEFAULT
+init|=
+literal|256
+operator|*
+literal|1024
+decl_stmt|;
 block|}
 end_class
 
