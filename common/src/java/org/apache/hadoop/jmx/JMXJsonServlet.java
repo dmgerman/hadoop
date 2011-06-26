@@ -333,7 +333,7 @@ comment|/*  * This servlet is based off of the JMXProxyServlet from Tomcat 7.0.1
 end_comment
 
 begin_comment
-comment|/**  * Provides Read only web access to JMX.  *<p>  * This servlet generally will be placed under the /jmx URL for each  * HttpServer.  It provides read only  * access to JMX metrics.  The optional<code>qry</code> parameter  * may be used to query only a subset of the JMX Beans.  This query  * functionality is provided through the  * {@link MBeanServer#queryNames(ObjectName, javax.management.QueryExp)}  * method.  *<p>  * For example<code>http://.../jmx?qry=Hadoop:*</code> will return  * all hadoop metrics exposed through JMX.  *<p>  * If the<code>qry</code> parameter is not formatted correctly then a  * 400 BAD REQUEST http response code will be returned.   *<p>  * The return format is JSON and in the form  *<p>  *<code><pre>  *  {  *    "beans" : [  *      {  *        "name":"bean-name"  *        ...  *      }  *    ]  *  }  *</pre></code>  *<p>  *  The servlet attempts to convert the the JMXBeans into JSON. Each  *  bean's attributes will be converted to a JSON object member.  *    *  If the attribute is a boolean, a number, a string, or an array  *  it will be converted to the JSON equivalent.   *    *  If the value is a {@link CompositeData} then it will be converted  *  to a JSON object with the keys as the name of the JSON member and  *  the value is converted following these same rules.  *    *  If the value is a {@link TabularData} then it will be converted  *  to an array of the {@link CompositeData} elements that it contains.  *    *  All other objects will be converted to a string and output as such.  *    *  The bean's name and modelerType will be returned for all beans.  */
+comment|/**  * Provides Read only web access to JMX.  *<p>  * This servlet generally will be placed under the /jmx URL for each  * HttpServer.  It provides read only  * access to JMX metrics.  The optional<code>qry</code> parameter  * may be used to query only a subset of the JMX Beans.  This query  * functionality is provided through the  * {@link MBeanServer#queryNames(ObjectName, javax.management.QueryExp)}  * method.  *<p>  * For example<code>http://.../jmx?qry=Hadoop:*</code> will return  * all hadoop metrics exposed through JMX.  *<p>  * The optional<code>get</code> parameter is used to query an specific   * attribute of a JMX bean.  The format of the URL is  *<code>http://.../jmx?get=MXBeanName::AttributeName<code>  *<p>  * For example   *<code>  * http://../jmx?get=Hadoop:service=NameNode,name=NameNodeInfo::ClusterId  *</code> will return the cluster id of the namenode mxbean.  *<p>  * If the<code>qry</code> or the<code>get</code> parameter is not formatted   * correctly then a 400 BAD REQUEST http response code will be returned.   *<p>  * If a resouce such as a mbean or attribute can not be found,   * a 404 SC_NOT_FOUND http response code will be returned.   *<p>  * The return format is JSON and in the form  *<p>  *<code><pre>  *  {  *    "beans" : [  *      {  *        "name":"bean-name"  *        ...  *      }  *    ]  *  }  *</pre></code>  *<p>  *  The servlet attempts to convert the the JMXBeans into JSON. Each  *  bean's attributes will be converted to a JSON object member.  *    *  If the attribute is a boolean, a number, a string, or an array  *  it will be converted to the JSON equivalent.   *    *  If the value is a {@link CompositeData} then it will be converted  *  to a JSON object with the keys as the name of the JSON member and  *  the value is converted following these same rules.  *    *  If the value is a {@link TabularData} then it will be converted  *  to an array of the {@link CompositeData} elements that it contains.  *    *  All other objects will be converted to a string and output as such.  *    *  The bean's name and modelerType will be returned for all beans.  */
 end_comment
 
 begin_class
@@ -508,8 +508,125 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"No MBeanServer could be found."
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setStatus
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_NOT_FOUND
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
+comment|// query per mbean attribute
+name|String
+name|getmethod
+init|=
+name|request
+operator|.
+name|getParameter
+argument_list|(
+literal|"get"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|getmethod
+operator|!=
+literal|null
+condition|)
+block|{
+name|String
+index|[]
+name|splitStrings
+init|=
+name|getmethod
+operator|.
+name|split
+argument_list|(
+literal|"\\:\\:"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|splitStrings
+operator|.
+name|length
+operator|!=
+literal|2
+condition|)
+block|{
+name|jg
+operator|.
+name|writeStringField
+argument_list|(
+literal|"result"
+argument_list|,
+literal|"ERROR"
+argument_list|)
+expr_stmt|;
+name|jg
+operator|.
+name|writeStringField
+argument_list|(
+literal|"message"
+argument_list|,
+literal|"query format is not as expected."
+argument_list|)
+expr_stmt|;
+name|jg
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|response
+operator|.
+name|setStatus
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_BAD_REQUEST
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|listBeans
+argument_list|(
+name|jg
+argument_list|,
+operator|new
+name|ObjectName
+argument_list|(
+name|splitStrings
+index|[
+literal|0
+index|]
+argument_list|)
+argument_list|,
+name|splitStrings
+index|[
+literal|1
+index|]
+argument_list|,
+name|response
+argument_list|)
+expr_stmt|;
+name|jg
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+return|return;
+block|}
+comment|// query per mbean
 name|String
 name|qry
 init|=
@@ -541,6 +658,10 @@ name|ObjectName
 argument_list|(
 name|qry
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+name|response
 argument_list|)
 expr_stmt|;
 name|jg
@@ -601,7 +722,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// --------------------------------------------------------- Private Methods
-DECL|method|listBeans (JsonGenerator jg, ObjectName qry)
+DECL|method|listBeans (JsonGenerator jg, ObjectName qry, String attribute, HttpServletResponse response)
 specifier|private
 name|void
 name|listBeans
@@ -611,6 +732,12 @@ name|jg
 parameter_list|,
 name|ObjectName
 name|qry
+parameter_list|,
+name|String
+name|attribute
+parameter_list|,
+name|HttpServletResponse
+name|response
 parameter_list|)
 throws|throws
 name|IOException
@@ -682,6 +809,13 @@ name|minfo
 decl_stmt|;
 name|String
 name|code
+init|=
+literal|""
+decl_stmt|;
+name|Object
+name|attributeinfo
+init|=
+literal|null
 decl_stmt|;
 try|try
 block|{
@@ -701,6 +835,11 @@ operator|.
 name|getClassName
 argument_list|()
 expr_stmt|;
+name|String
+name|prs
+init|=
+literal|""
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -713,6 +852,10 @@ name|code
 argument_list|)
 condition|)
 block|{
+name|prs
+operator|=
+literal|"modelerType"
+expr_stmt|;
 name|code
 operator|=
 operator|(
@@ -724,7 +867,30 @@ name|getAttribute
 argument_list|(
 name|oname
 argument_list|,
-literal|"modelerType"
+name|prs
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|attribute
+operator|!=
+literal|null
+condition|)
+block|{
+name|prs
+operator|=
+name|attribute
+expr_stmt|;
+name|attributeinfo
+operator|=
+name|mBeanServer
+operator|.
+name|getAttribute
+argument_list|(
+name|oname
+argument_list|,
+name|prs
 argument_list|)
 expr_stmt|;
 block|}
@@ -735,7 +901,25 @@ name|AttributeNotFoundException
 name|e
 parameter_list|)
 block|{
-comment|//Ignored the modelerType attribute was not found, so use the class name instead.
+comment|// If the modelerType attribute was not found, the class name is used
+comment|// instead.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"getting attribute "
+operator|+
+name|prs
+operator|+
+literal|" of "
+operator|+
+name|oname
+operator|+
+literal|" threw an exception"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -743,13 +927,17 @@ name|MBeanException
 name|e
 parameter_list|)
 block|{
-comment|//The code inside the attribute getter threw an exception so log it, and
-comment|// fall back on the class name
+comment|// The code inside the attribute getter threw an exception so log it,
+comment|// and fall back on the class name
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"getting attribute modelerType of "
+literal|"getting attribute "
+operator|+
+name|prs
+operator|+
+literal|" of "
 operator|+
 name|oname
 operator|+
@@ -765,13 +953,18 @@ name|RuntimeException
 name|e
 parameter_list|)
 block|{
-comment|//For some reason even with an MBeanException available to them Runtime exceptions
-comment|//can still find their way through, so treat them the same as MBeanException
+comment|// For some reason even with an MBeanException available to them
+comment|// Runtime exceptionscan still find their way through, so treat them
+comment|// the same as MBeanException
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"getting attribute modelerType of "
+literal|"getting attribute "
+operator|+
+name|prs
+operator|+
+literal|" of "
 operator|+
 name|oname
 operator|+
@@ -787,13 +980,18 @@ name|ReflectionException
 name|e
 parameter_list|)
 block|{
-comment|//This happens when the code inside the JMX bean (setter?? from the java docs)
-comment|//threw an exception, so log it and fall back on the class name
+comment|// This happens when the code inside the JMX bean (setter?? from the
+comment|// java docs) threw an exception, so log it and fall back on the
+comment|// class name
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"getting attribute modelerType of "
+literal|"getting attribute "
+operator|+
+name|prs
+operator|+
+literal|" of "
 operator|+
 name|oname
 operator|+
@@ -819,8 +1017,8 @@ name|IntrospectionException
 name|e
 parameter_list|)
 block|{
-comment|//This is an internal error, something odd happened with reflection so log it and
-comment|//don't output the bean.
+comment|// This is an internal error, something odd happened with reflection so
+comment|// log it and don't output the bean.
 name|LOG
 operator|.
 name|error
@@ -844,8 +1042,8 @@ name|ReflectionException
 name|e
 parameter_list|)
 block|{
-comment|//This happens when the code inside the JMX bean threw an exception, so log it and
-comment|//don't output the bean.
+comment|// This happens when the code inside the JMX bean threw an exception, so
+comment|// log it and don't output the bean.
 name|LOG
 operator|.
 name|error
@@ -880,7 +1078,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// can't be null - I think
 name|jg
 operator|.
 name|writeStringField
@@ -890,6 +1087,88 @@ argument_list|,
 name|code
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|(
+name|attribute
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|attributeinfo
+operator|==
+literal|null
+operator|)
+condition|)
+block|{
+name|jg
+operator|.
+name|writeStringField
+argument_list|(
+literal|"result"
+argument_list|,
+literal|"ERROR"
+argument_list|)
+expr_stmt|;
+name|jg
+operator|.
+name|writeStringField
+argument_list|(
+literal|"message"
+argument_list|,
+literal|"No attribute with name "
+operator|+
+name|attribute
+operator|+
+literal|" was found."
+argument_list|)
+expr_stmt|;
+name|jg
+operator|.
+name|writeEndObject
+argument_list|()
+expr_stmt|;
+name|jg
+operator|.
+name|writeEndArray
+argument_list|()
+expr_stmt|;
+name|jg
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|response
+operator|.
+name|setStatus
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_NOT_FOUND
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|attribute
+operator|!=
+literal|null
+condition|)
+block|{
+name|writeAttribute
+argument_list|(
+name|jg
+argument_list|,
+name|attribute
+argument_list|,
+name|attributeinfo
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|MBeanAttributeInfo
 name|attrs
 index|[]
@@ -929,9 +1208,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-comment|//  LOG.error("Caught Error writing value ",t);
-comment|//  ExceptionUtils.handleThrowable(t);
-comment|//}
+block|}
 name|jg
 operator|.
 name|writeEndObject
