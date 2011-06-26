@@ -1164,7 +1164,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Initialize dfs.namenode.name.dir and dfs.datanode.data.dir with the specified number of    * directory entries. Also initialize dfs.blockreport.intervalMsec.    */
+comment|/**    * Initialize {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} and     * {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} with the specified     * number of directory entries. Also initialize dfs.blockreport.intervalMsec.    */
 DECL|method|initializeStorageStateConf (int numDirs, Configuration conf)
 specifier|public
 specifier|static
@@ -1646,7 +1646,7 @@ name|getValue
 argument_list|()
 return|;
 block|}
-comment|/**    * Simulate the<code>dfs.namenode.name.dir</code> of a populated DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of namenode storage directory that comes from a singleton    * namenode master (that contains edits, fsimage, version and time files).     * If the destination directory does not exist, it will be created.      * If the directory already exists, it will first be deleted.    *    * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @return the array of created directories    */
+comment|/**    * Simulate the {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} of a populated     * DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of namenode storage directory that comes from a singleton    * namenode master (that contains edits, fsimage, version and time files).     * If the destination directory does not exist, it will be created.      * If the directory already exists, it will first be deleted.    *    * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @return the array of created directories    */
 DECL|method|createNameNodeStorageDirs (String[] parents, String dirName)
 specifier|public
 specifier|static
@@ -1771,7 +1771,7 @@ return|return
 name|retVal
 return|;
 block|}
-comment|/**    * Simulate the<code>dfs.datanode.data.dir</code> of a populated DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of datanode storage directory that comes from a singleton    * datanode master (that contains version and block files). If the destination    * directory does not exist, it will be created.  If the directory already     * exists, it will first be deleted.    *     * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @return the array of created directories    */
+comment|/**    * Simulate the {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} of a     * populated DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of datanode storage directory that comes from a singleton    * datanode master (that contains version and block files). If the destination    * directory does not exist, it will be created.  If the directory already     * exists, it will first be deleted.    *     * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @return the array of created directories    */
 DECL|method|createDataNodeStorageDirs (String[] parents, String dirName)
 specifier|public
 specifier|static
@@ -1896,7 +1896,7 @@ return|return
 name|retVal
 return|;
 block|}
-comment|/**    * Simulate the<code>dfs.datanode.data.dir</code> of a populated DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of block pool storage directory that comes from a singleton    * datanode master (that contains version and block files). If the destination    * directory does not exist, it will be created.  If the directory already     * exists, it will first be deleted.    *     * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @param bpid block pool id for which the storage directory is created.    * @return the array of created directories    */
+comment|/**    * Simulate the {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} of a     * populated DFS filesystem.    * This method populates for each parent directory,<code>parent/dirName</code>    * with the content of block pool storage directory that comes from a singleton    * datanode master (that contains version and block files). If the destination    * directory does not exist, it will be created.  If the directory already     * exists, it will first be deleted.    *     * @param parents parent directory where {@code dirName} is created    * @param dirName directory under which storage directory is created    * @param bpid block pool id for which the storage directory is created.    * @return the array of created directories    */
 DECL|method|createBlockPoolStorageDirs (String[] parents, String dirName, String bpid)
 specifier|public
 specifier|static

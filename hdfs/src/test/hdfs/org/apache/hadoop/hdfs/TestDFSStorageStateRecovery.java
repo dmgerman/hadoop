@@ -889,7 +889,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets up the storage directories for namenode as defined by    * dfs.namenode.name.dir. For each element in dfs.namenode.name.dir, the subdirectories     * represented by the first four elements of the<code>state</code> array    * will be created and populated.    *     * See {@link UpgradeUtilities#createNameNodeStorageDirs()}    *     * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing namenode storage directories    */
+comment|/**    * Sets up the storage directories for namenode as defined by    * {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY}. For each element     * in {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY}, the subdirectories     * represented by the first four elements of the<code>state</code> array    * will be created and populated.    *     * See {@link UpgradeUtilities#createNameNodeStorageDirs()}    *     * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing namenode storage directories    */
 DECL|method|createNameNodeStorageState (boolean[] state)
 name|String
 index|[]
@@ -1011,7 +1011,7 @@ return|return
 name|baseDirs
 return|;
 block|}
-comment|/**    * Sets up the storage directories for a datanode under    * dfs.datanode.data.dir. For each element in dfs.datanode.data.dir, the subdirectories     * represented by the first four elements of the<code>state</code> array     * will be created and populated.     * See {@link UpgradeUtilities#createDataNodeStorageDirs()}    *     * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing datanode storage directories    */
+comment|/**    * Sets up the storage directories for a datanode under    * {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY}. For each element in     * {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY}, the subdirectories     * represented by the first four elements of the<code>state</code> array     * will be created and populated.     * See {@link UpgradeUtilities#createDataNodeStorageDirs()}    *     * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing datanode storage directories    */
 DECL|method|createDataNodeStorageState (boolean[] state)
 name|String
 index|[]
@@ -1133,7 +1133,7 @@ return|return
 name|baseDirs
 return|;
 block|}
-comment|/**    * Sets up the storage directories for a block pool under    * dfs.datanode.data.dir. For each element in dfs.datanode.data.dir, the subdirectories     * represented by the first four elements of the<code>state</code> array     * will be created and populated.     * See {@link UpgradeUtilities#createBlockPoolStorageDirs()}    *     * @param bpid block pool Id    * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing block pool storage directories    */
+comment|/**    * Sets up the storage directories for a block pool under    * {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY}. For each element     * in {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY}, the subdirectories     * represented by the first four elements of the<code>state</code> array     * will be created and populated.     * See {@link UpgradeUtilities#createBlockPoolStorageDirs()}    *     * @param bpid block pool Id    * @param state    *   a row from the testCases table which indicates which directories    *   to setup for the node    * @return file paths representing block pool storage directories    */
 DECL|method|createBlockPoolStorageState (String bpid, boolean[] state)
 name|String
 index|[]
