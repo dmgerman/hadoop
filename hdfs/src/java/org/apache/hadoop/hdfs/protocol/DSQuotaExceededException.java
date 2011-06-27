@@ -163,7 +163,12 @@ operator|)
 operator|+
 literal|" is exceeded: quota="
 operator|+
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
 name|quota
+argument_list|)
 operator|+
 literal|" diskspace consumed="
 operator|+

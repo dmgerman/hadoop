@@ -327,6 +327,54 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Tests to make sure we're getting human readable Quota exception messages    * Test for @link{ NSQuotaExceededException, DSQuotaExceededException}    * @throws Exception    */
+annotation|@
+name|Test
+DECL|method|testDSQuotaExceededExceptionIsHumanReadable ()
+specifier|public
+name|void
+name|testDSQuotaExceededExceptionIsHumanReadable
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Integer
+name|bytes
+init|=
+literal|1024
+decl_stmt|;
+try|try
+block|{
+throw|throw
+operator|new
+name|DSQuotaExceededException
+argument_list|(
+name|bytes
+argument_list|,
+name|bytes
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|DSQuotaExceededException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"The DiskSpace quota is exceeded: quota=1.0k "
+operator|+
+literal|"diskspace consumed=1.0k"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** Test quota related commands:     *    setQuota, clrQuota, setSpaceQuota, clrSpaceQuota, and count     */
 annotation|@
 name|Test
