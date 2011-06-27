@@ -18,11 +18,35 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -35,9 +59,9 @@ DECL|class|TestBytesWritable
 specifier|public
 class|class
 name|TestBytesWritable
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testSizeChange ()
 specifier|public
 name|void
@@ -253,6 +277,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testHash ()
 specifier|public
 name|void
@@ -324,6 +350,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCompare ()
 specifier|public
 name|void
@@ -611,6 +639,8 @@ name|actual
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testToString ()
 specifier|public
 name|void
@@ -659,6 +689,197 @@ literal|0
 block|}
 argument_list|,
 literal|"80 81 ff fe 01 00"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This test was written as result of adding the new zero    * copy constructor and set method to BytesWritable. These    * methods allow users to specify the backing buffer of the    * BytesWritable instance and a length.     */
+annotation|@
+name|Test
+DECL|method|testZeroCopy ()
+specifier|public
+name|void
+name|testZeroCopy
+parameter_list|()
+block|{
+name|byte
+index|[]
+name|bytes
+init|=
+literal|"brock"
+operator|.
+name|getBytes
+argument_list|()
+decl_stmt|;
+name|BytesWritable
+name|zeroBuf
+init|=
+operator|new
+name|BytesWritable
+argument_list|(
+name|bytes
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|)
+decl_stmt|;
+comment|// new
+name|BytesWritable
+name|copyBuf
+init|=
+operator|new
+name|BytesWritable
+argument_list|(
+name|bytes
+argument_list|)
+decl_stmt|;
+comment|// old
+comment|// using zero copy constructor shouldn't result in a copy
+name|assertTrue
+argument_list|(
+literal|"copy took place, backing array != array passed to constructor"
+argument_list|,
+name|bytes
+operator|==
+name|zeroBuf
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"length of BW should backing byte array"
+argument_list|,
+name|zeroBuf
+operator|.
+name|getLength
+argument_list|()
+operator|==
+name|bytes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"objects with same backing array should be equal"
+argument_list|,
+name|zeroBuf
+argument_list|,
+name|copyBuf
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"string repr of objects with same backing array should be equal"
+argument_list|,
+name|zeroBuf
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|copyBuf
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"compare order objects with same backing array should be equal"
+argument_list|,
+name|zeroBuf
+operator|.
+name|compareTo
+argument_list|(
+name|copyBuf
+argument_list|)
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"hash of objects with same backing array should be equal"
+argument_list|,
+name|zeroBuf
+operator|.
+name|hashCode
+argument_list|()
+operator|==
+name|copyBuf
+operator|.
+name|hashCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// ensure expanding buffer is handled correctly
+comment|// for buffers created with zero copy api
+name|byte
+index|[]
+name|buffer
+init|=
+operator|new
+name|byte
+index|[
+name|bytes
+operator|.
+name|length
+operator|*
+literal|5
+index|]
+decl_stmt|;
+name|zeroBuf
+operator|.
+name|set
+argument_list|(
+name|buffer
+argument_list|,
+literal|0
+argument_list|,
+name|buffer
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+comment|// expand internal buffer
+name|zeroBuf
+operator|.
+name|set
+argument_list|(
+name|bytes
+argument_list|,
+literal|0
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+comment|// set back to normal contents
+name|assertEquals
+argument_list|(
+literal|"buffer created with (array, len) has bad contents"
+argument_list|,
+name|zeroBuf
+argument_list|,
+name|copyBuf
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"buffer created with (array, len) has bad length"
+argument_list|,
+name|zeroBuf
+operator|.
+name|getLength
+argument_list|()
+operator|==
+name|copyBuf
+operator|.
+name|getLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

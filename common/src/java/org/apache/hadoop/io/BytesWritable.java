@@ -152,6 +152,29 @@ name|bytes
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|bytes
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a BytesWritable using the byte array as the initial value    * and length as the length. Use this constructor if the array is larger    * than the value it represents.    * @param bytes This array becomes the backing storage for the object.    * @param length The number of bytes to use from array.    */
+DECL|method|BytesWritable (byte[] bytes, int length)
+specifier|public
+name|BytesWritable
+parameter_list|(
+name|byte
+index|[]
+name|bytes
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+block|{
+name|this
 operator|.
 name|bytes
 operator|=
@@ -161,8 +184,6 @@ name|this
 operator|.
 name|size
 operator|=
-name|bytes
-operator|.
 name|length
 expr_stmt|;
 block|}
