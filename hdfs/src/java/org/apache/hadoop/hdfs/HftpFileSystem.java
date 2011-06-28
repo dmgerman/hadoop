@@ -1543,16 +1543,16 @@ block|}
 end_function
 
 begin_comment
-comment|/*      Construct URL pointing to file on namenode   */
+comment|/**    * Return a URL pointing to given path on the namenode.    *    * @param p path to obtain the URL for    * @return namenode URL referring to the given path    * @throws IOException on error constructing the URL    */
 end_comment
 
 begin_function
-DECL|method|getNamenodeFileURL (Path f)
+DECL|method|getNamenodeFileURL (Path p)
 name|URL
 name|getNamenodeFileURL
 parameter_list|(
 name|Path
-name|f
+name|p
 parameter_list|)
 throws|throws
 name|IOException
@@ -1562,7 +1562,7 @@ name|getNamenodeURL
 argument_list|(
 literal|"/data"
 operator|+
-name|f
+name|p
 operator|.
 name|toUri
 argument_list|()
@@ -1580,7 +1580,7 @@ block|}
 end_function
 
 begin_comment
-comment|/*      Construct URL pointing to namenode.    */
+comment|/**    * Return a URL pointing to given path on the namenode.    *    * @param path to obtain the URL for    * @param query string to append to the path    * @return namenode URL referring to the given path    * @throws IOException on error constructing the URL    */
 end_comment
 
 begin_function

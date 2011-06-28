@@ -846,7 +846,7 @@ control|)
 block|{
 name|StreamFile
 operator|.
-name|writeTo
+name|copyFromOffset
 argument_list|(
 name|fsin
 argument_list|,

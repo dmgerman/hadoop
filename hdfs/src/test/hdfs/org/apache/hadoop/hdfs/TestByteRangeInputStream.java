@@ -78,44 +78,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -141,6 +103,28 @@ operator|.
 name|ByteRangeInputStream
 operator|.
 name|URLOpener
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -435,25 +419,9 @@ DECL|class|TestByteRangeInputStream
 specifier|public
 class|class
 name|TestByteRangeInputStream
-extends|extends
-name|TestCase
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|TestByteRangeInputStream
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testByteRange ()
 specifier|public
 name|void
@@ -720,7 +688,7 @@ name|assertEquals
 argument_list|(
 literal|"Should fail because incorrect response code was sent"
 argument_list|,
-literal|"206 expected, but received 200"
+literal|"HTTP_PARTIAL expected, received 200"
 argument_list|,
 name|e
 operator|.
@@ -767,7 +735,7 @@ name|assertEquals
 argument_list|(
 literal|"Should fail because incorrect response code was sent"
 argument_list|,
-literal|"200 expected, but received 206"
+literal|"HTTP_OK expected, received 206"
 argument_list|,
 name|e
 operator|.

@@ -166,6 +166,16 @@ argument_list|()
 return|;
 block|}
 block|}
+DECL|enum|StreamStatus
+enum|enum
+name|StreamStatus
+block|{
+DECL|enumConstant|NORMAL
+DECL|enumConstant|SEEK
+name|NORMAL
+block|,
+name|SEEK
+block|}
 DECL|field|in
 specifier|protected
 name|InputStream
@@ -201,29 +211,12 @@ name|long
 name|filelength
 decl_stmt|;
 DECL|field|status
-specifier|protected
-name|int
+name|StreamStatus
 name|status
 init|=
-name|STATUS_SEEK
-decl_stmt|;
-DECL|field|STATUS_NORMAL
-specifier|protected
-specifier|static
-specifier|final
-name|int
-name|STATUS_NORMAL
-init|=
-literal|0
-decl_stmt|;
-DECL|field|STATUS_SEEK
-specifier|protected
-specifier|static
-specifier|final
-name|int
-name|STATUS_SEEK
-init|=
-literal|1
+name|StreamStatus
+operator|.
+name|SEEK
 decl_stmt|;
 DECL|method|ByteRangeInputStream (final URL url)
 name|ByteRangeInputStream
@@ -284,7 +277,9 @@ if|if
 condition|(
 name|status
 operator|!=
-name|STATUS_NORMAL
+name|StreamStatus
+operator|.
+name|NORMAL
 condition|)
 block|{
 if|if
@@ -304,18 +299,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|// use the original url  if no resolved url exists (e.g., if it's
-comment|// the first time a request is made)
+comment|// Use the original url if no resolved url exists, eg. if
+comment|// it's the first time a request is made.
 specifier|final
 name|URLOpener
-name|o
+name|opener
 init|=
+operator|(
 name|resolvedURL
 operator|.
 name|getURL
 argument_list|()
 operator|==
 literal|null
+operator|)
 condition|?
 name|originalURL
 else|:
@@ -325,7 +322,7 @@ specifier|final
 name|HttpURLConnection
 name|connection
 init|=
-name|o
+name|opener
 operator|.
 name|openConnection
 argument_list|()
@@ -380,9 +377,11 @@ argument_list|)
 decl_stmt|;
 name|filelength
 operator|=
+operator|(
 name|cl
 operator|==
 literal|null
+operator|)
 condition|?
 operator|-
 literal|1
@@ -440,32 +439,36 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+name|int
+name|respCode
+init|=
+name|connection
+operator|.
+name|getResponseCode
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|startPos
 operator|!=
 literal|0
 operator|&&
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
+name|respCode
 operator|!=
-literal|206
+name|HttpURLConnection
+operator|.
+name|HTTP_PARTIAL
 condition|)
 block|{
-comment|// we asked for a byte range but did not receive a partial content
+comment|// We asked for a byte range but did not receive a partial content
 comment|// response...
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"206 expected, but received "
+literal|"HTTP_PARTIAL expected, received "
 operator|+
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
+name|respCode
 argument_list|)
 throw|;
 block|}
@@ -476,26 +479,22 @@ name|startPos
 operator|==
 literal|0
 operator|&&
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
+name|respCode
 operator|!=
-literal|200
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
 condition|)
 block|{
-comment|// we asked for all bytes from the beginning but didn't receive a 200
+comment|// We asked for all bytes from the beginning but didn't receive a 200
 comment|// response (none of the other 2xx codes are valid here)
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"200 expected, but received "
+literal|"HTTP_OK expected, received "
 operator|+
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
+name|respCode
 argument_list|)
 throw|;
 block|}
@@ -511,14 +510,16 @@ argument_list|)
 expr_stmt|;
 name|status
 operator|=
-name|STATUS_NORMAL
+name|StreamStatus
+operator|.
+name|NORMAL
 expr_stmt|;
 block|}
 return|return
 name|in
 return|;
 block|}
-DECL|method|update (final boolean isEOF, final int n )
+DECL|method|update (final boolean isEOF, final int n)
 specifier|private
 name|void
 name|update
@@ -629,7 +630,9 @@ name|pos
 expr_stmt|;
 name|status
 operator|=
-name|STATUS_SEEK
+name|StreamStatus
+operator|.
+name|SEEK
 expr_stmt|;
 block|}
 block|}
@@ -645,7 +648,6 @@ block|{
 return|return
 name|currentPos
 return|;
-comment|// keep total count?
 block|}
 comment|/**    * Seeks a different copy of the data.  Returns true if    * found a new source, false otherwise.    */
 DECL|method|seekToNewSource (long targetPos)
