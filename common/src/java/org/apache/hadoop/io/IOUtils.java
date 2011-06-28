@@ -110,7 +110,7 @@ specifier|public
 class|class
 name|IOUtils
 block|{
-comment|/**    * Copies from one stream to another.    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param buffSize the size of the buffer     * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.      */
+comment|/**    * Copies from one stream to another.    *    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param buffSize the size of the buffer     * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.      */
 DECL|method|copyBytes (InputStream in, OutputStream out, int buffSize, boolean close)
 specifier|public
 specifier|static
@@ -292,7 +292,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Copies from one stream to another.<strong>closes the input and output streams     * at the end</strong>.    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param conf the Configuration object     */
+comment|/**    * Copies from one stream to another.<strong>closes the input and output streams     * at the end</strong>.    *    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param conf the Configuration object     */
 DECL|method|copyBytes (InputStream in, OutputStream out, Configuration conf)
 specifier|public
 specifier|static
@@ -330,7 +330,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copies from one stream to another.    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param conf the Configuration object    * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.    */
+comment|/**    * Copies from one stream to another.    *    * @param in InputStream to read from    * @param out OutputStream to write to    * @param conf the Configuration object    * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.    */
 DECL|method|copyBytes (InputStream in, OutputStream out, Configuration conf, boolean close)
 specifier|public
 specifier|static
@@ -371,8 +371,110 @@ name|close
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Reads len bytes in a loop.    * @param in The InputStream to read from    * @param buf The buffer to fill    * @param off offset from the buffer    * @param len the length of bytes to read    * @throws IOException if it could not read requested number of bytes     * for any reason (including EOF)    */
-DECL|method|readFully ( InputStream in, byte buf[], int off, int len )
+comment|/**    * Copies count bytes from one stream to another.    *    * @param in InputStream to read from    * @param out OutputStream to write to    * @param count number of bytes to copy    * @throws IOException if bytes can not be read or written    */
+DECL|method|copyBytes (InputStream in, OutputStream out, long count)
+specifier|public
+specifier|static
+name|void
+name|copyBytes
+parameter_list|(
+name|InputStream
+name|in
+parameter_list|,
+name|OutputStream
+name|out
+parameter_list|,
+name|long
+name|count
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|byte
+name|buf
+index|[]
+init|=
+operator|new
+name|byte
+index|[
+literal|4096
+index|]
+decl_stmt|;
+name|long
+name|bytesRemaining
+init|=
+name|count
+decl_stmt|;
+name|int
+name|bytesRead
+decl_stmt|;
+while|while
+condition|(
+name|bytesRemaining
+operator|>
+literal|0
+condition|)
+block|{
+name|int
+name|bytesToRead
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|bytesRemaining
+operator|<
+name|buf
+operator|.
+name|length
+condition|?
+name|bytesRemaining
+else|:
+name|buf
+operator|.
+name|length
+argument_list|)
+decl_stmt|;
+name|bytesRead
+operator|=
+name|in
+operator|.
+name|read
+argument_list|(
+name|buf
+argument_list|,
+literal|0
+argument_list|,
+name|bytesToRead
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|bytesRead
+operator|==
+operator|-
+literal|1
+condition|)
+break|break;
+name|out
+operator|.
+name|write
+argument_list|(
+name|buf
+argument_list|,
+literal|0
+argument_list|,
+name|bytesRead
+argument_list|)
+expr_stmt|;
+name|bytesRemaining
+operator|-=
+name|bytesRead
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Reads len bytes in a loop.    *    * @param in InputStream to read from    * @param buf The buffer to fill    * @param off offset from the buffer    * @param len the length of bytes to read    * @throws IOException if it could not read requested number of bytes     * for any reason (including EOF)    */
+DECL|method|readFully (InputStream in, byte buf[], int off, int len)
 specifier|public
 specifier|static
 name|void
@@ -445,8 +547,8 @@ name|ret
 expr_stmt|;
 block|}
 block|}
-comment|/** Similar to readFully(). Skips bytes in a loop.    * @param in The InputStream to skip bytes from    * @param len number of bytes to skip.    * @throws IOException if it could not skip requested number of bytes     * for any reason (including EOF)    */
-DECL|method|skipFully ( InputStream in, long len )
+comment|/**    * Similar to readFully(). Skips bytes in a loop.    * @param in The InputStream to skip bytes from    * @param len number of bytes to skip.    * @throws IOException if it could not skip requested number of bytes     * for any reason (including EOF)    */
+DECL|method|skipFully (InputStream in, long len)
 specifier|public
 specifier|static
 name|void
@@ -499,7 +601,7 @@ name|ret
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link IOException} or     * null pointers. Must only be used for cleanup in exception handlers.    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
+comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link IOException} or     * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
 DECL|method|cleanup (Log log, java.io.Closeable... closeables)
 specifier|public
 specifier|static
@@ -579,8 +681,8 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Closes the stream ignoring {@link IOException}.    * Must only be called in cleaning up from exception handlers.    * @param stream the Stream to close    */
-DECL|method|closeStream ( java.io.Closeable stream )
+comment|/**    * Closes the stream ignoring {@link IOException}.    * Must only be called in cleaning up from exception handlers.    *    * @param stream the Stream to close    */
+DECL|method|closeStream (java.io.Closeable stream)
 specifier|public
 specifier|static
 name|void
@@ -602,8 +704,8 @@ name|stream
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Closes the socket ignoring {@link IOException}     * @param sock the Socket to close    */
-DECL|method|closeSocket ( Socket sock )
+comment|/**    * Closes the socket ignoring {@link IOException}    *    * @param sock the Socket to close    */
+DECL|method|closeSocket (Socket sock)
 specifier|public
 specifier|static
 name|void
@@ -613,7 +715,6 @@ name|Socket
 name|sock
 parameter_list|)
 block|{
-comment|// avoids try { close() } dance
 if|if
 condition|(
 name|sock
@@ -637,7 +738,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/** /dev/null of OutputStreams.    */
+comment|/**    * The /dev/null of OutputStreams.    */
 DECL|class|NullOutputStream
 specifier|public
 specifier|static
