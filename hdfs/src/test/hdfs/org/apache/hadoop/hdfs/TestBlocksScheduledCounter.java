@@ -100,7 +100,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 operator|.
 name|DatanodeDescriptor
 import|;

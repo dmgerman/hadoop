@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -79,6 +89,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -134,7 +158,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|TestDatanodeBlockScanner
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
 import|;
 end_import
 
@@ -148,9 +174,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
-operator|.
-name|DataNodeProperties
+name|TestDatanodeBlockScanner
 import|;
 end_import
 
@@ -198,9 +222,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|datanode
+name|blockmanagement
 operator|.
-name|DataNodeTestUtils
+name|DatanodeDescriptor
 import|;
 end_import
 
@@ -214,17 +238,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
+name|server
 operator|.
-name|framework
+name|datanode
 operator|.
-name|TestCase
+name|DataNodeTestUtils
 import|;
 end_import
 
