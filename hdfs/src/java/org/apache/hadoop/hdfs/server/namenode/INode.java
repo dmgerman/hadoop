@@ -50,20 +50,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|ContentSummary
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -78,9 +64,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
-operator|.
-name|FsPermission
+name|ContentSummary
 import|;
 end_import
 
@@ -96,7 +80,7 @@ name|fs
 operator|.
 name|permission
 operator|.
-name|PermissionStatus
+name|*
 import|;
 end_import
 
@@ -138,24 +122,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -168,7 +134,6 @@ end_comment
 
 begin_class
 DECL|class|INode
-specifier|public
 specifier|abstract
 class|class
 name|INode
@@ -1216,7 +1181,6 @@ expr_stmt|;
 block|}
 comment|/**    * Is this inode being constructed?    */
 DECL|method|isUnderConstruction ()
-specifier|public
 name|boolean
 name|isUnderConstruction
 parameter_list|()

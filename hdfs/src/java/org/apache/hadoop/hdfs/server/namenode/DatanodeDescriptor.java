@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|namenode
 package|;
 end_package
 
@@ -134,24 +134,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|Text
@@ -205,7 +187,6 @@ block|{
 comment|// Stores status of decommissioning.
 comment|// If node is not decommissioning, do not use this object for anything.
 DECL|field|decommissioningStatus
-specifier|public
 name|DecommissioningStatus
 name|decommissioningStatus
 init|=
@@ -436,14 +417,14 @@ decl_stmt|;
 comment|// isAlive == heartbeats.contains(this)
 comment|// This is an optimization, because contains takes O(n) time on Arraylist
 DECL|field|isAlive
-specifier|public
+specifier|protected
 name|boolean
 name|isAlive
 init|=
 literal|false
 decl_stmt|;
 DECL|field|needKeyUpdate
-specifier|public
+specifier|protected
 name|boolean
 name|needKeyUpdate
 init|=
@@ -746,7 +727,6 @@ expr_stmt|;
 block|}
 comment|/**    * Add datanode to the block.    * Add block to the head of the list of blocks belonging to the data-node.    */
 DECL|method|addBlock (BlockInfo b)
-specifier|public
 name|boolean
 name|addBlock
 parameter_list|(
@@ -788,7 +768,6 @@ return|;
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node.    * Remove datanode from the block.    */
 DECL|method|removeBlock (BlockInfo b)
-specifier|public
 name|boolean
 name|removeBlock
 parameter_list|(
@@ -865,7 +844,6 @@ expr_stmt|;
 block|}
 comment|/**    * Replace specified old block with a new one in the DataNodeDescriptor.    *     * @param oldBlock - block to be replaced    * @param newBlock - a replacement block    * @return the new block    */
 DECL|method|replaceBlock (BlockInfo oldBlock, BlockInfo newBlock)
-specifier|public
 name|BlockInfo
 name|replaceBlock
 parameter_list|(
@@ -906,7 +884,6 @@ name|newBlock
 return|;
 block|}
 DECL|method|resetBlocks ()
-specifier|public
 name|void
 name|resetBlocks
 parameter_list|()
@@ -973,7 +950,6 @@ return|;
 block|}
 comment|/**    * Updates stats from datanode heartbeat.    */
 DECL|method|updateHeartbeat (long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int volFailures)
-specifier|public
 name|void
 name|updateHeartbeat
 parameter_list|(
@@ -1049,7 +1025,6 @@ expr_stmt|;
 block|}
 comment|/**    * Iterates over the list of blocks belonging to the datanode.    */
 DECL|class|BlockIterator
-specifier|public
 specifier|static
 class|class
 name|BlockIterator
@@ -1149,7 +1124,6 @@ throw|;
 block|}
 block|}
 DECL|method|getBlockIterator ()
-specifier|public
 name|Iterator
 argument_list|<
 name|BlockInfo
@@ -1338,7 +1312,6 @@ return|;
 block|}
 block|}
 DECL|method|getReplicationCommand (int maxTransfers)
-specifier|public
 name|List
 argument_list|<
 name|BlockTargetPair
@@ -1359,7 +1332,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getLeaseRecoveryCommand (int maxTransfers)
-specifier|public
 name|BlockInfoUnderConstruction
 index|[]
 name|getLeaseRecoveryCommand
@@ -1408,7 +1380,6 @@ return|;
 block|}
 comment|/**    * Remove the specified number of blocks to be invalidated    */
 DECL|method|getInvalidateBlocks (int maxblocks)
-specifier|public
 name|Block
 index|[]
 name|getInvalidateBlocks
@@ -1588,7 +1559,6 @@ return|;
 block|}
 comment|/** Serialization for FSEditLog */
 DECL|method|readFieldsFromFSEditLog (DataInput in)
-specifier|public
 name|void
 name|readFieldsFromFSEditLog
 parameter_list|(
@@ -1737,7 +1707,6 @@ return|;
 block|}
 comment|/**    * Increments counter for number of blocks scheduled.     */
 DECL|method|incBlocksScheduled ()
-specifier|public
 name|void
 name|incBlocksScheduled
 parameter_list|()
@@ -1856,29 +1825,23 @@ name|obj
 argument_list|)
 return|;
 block|}
-comment|/** Decommissioning status */
 DECL|class|DecommissioningStatus
-specifier|public
 class|class
 name|DecommissioningStatus
 block|{
 DECL|field|underReplicatedBlocks
-specifier|private
 name|int
 name|underReplicatedBlocks
 decl_stmt|;
 DECL|field|decommissionOnlyReplicas
-specifier|private
 name|int
 name|decommissionOnlyReplicas
 decl_stmt|;
 DECL|field|underReplicatedInOpenFiles
-specifier|private
 name|int
 name|underReplicatedInOpenFiles
 decl_stmt|;
 DECL|field|startTime
-specifier|private
 name|long
 name|startTime
 decl_stmt|;
@@ -1920,9 +1883,7 @@ operator|=
 name|underConstruction
 expr_stmt|;
 block|}
-comment|/** @return the number of under-replicated blocks */
 DECL|method|getUnderReplicatedBlocks ()
-specifier|public
 specifier|synchronized
 name|int
 name|getUnderReplicatedBlocks
@@ -1944,9 +1905,7 @@ return|return
 name|underReplicatedBlocks
 return|;
 block|}
-comment|/** @return the number of decommission-only replicas */
 DECL|method|getDecommissionOnlyReplicas ()
-specifier|public
 specifier|synchronized
 name|int
 name|getDecommissionOnlyReplicas
@@ -1968,9 +1927,7 @@ return|return
 name|decommissionOnlyReplicas
 return|;
 block|}
-comment|/** @return the number of under-replicated blocks in open files */
 DECL|method|getUnderReplicatedInOpenFiles ()
-specifier|public
 specifier|synchronized
 name|int
 name|getUnderReplicatedInOpenFiles
@@ -1992,9 +1949,7 @@ return|return
 name|underReplicatedInOpenFiles
 return|;
 block|}
-comment|/** Set start time */
 DECL|method|setStartTime (long time)
-specifier|public
 specifier|synchronized
 name|void
 name|setStartTime
@@ -2008,9 +1963,7 @@ operator|=
 name|time
 expr_stmt|;
 block|}
-comment|/** @return start time */
 DECL|method|getStartTime ()
-specifier|public
 specifier|synchronized
 name|long
 name|getStartTime
@@ -2036,7 +1989,6 @@ block|}
 comment|// End of class DecommissioningStatus
 comment|/**    * Set the flag to indicate if this datanode is disallowed from communicating    * with the namenode.    */
 DECL|method|setDisallowed (boolean flag)
-specifier|public
 name|void
 name|setDisallowed
 parameter_list|(
@@ -2049,9 +2001,7 @@ operator|=
 name|flag
 expr_stmt|;
 block|}
-comment|/** Is the datanode disallowed from communicating with the namenode? */
 DECL|method|isDisallowed ()
-specifier|public
 name|boolean
 name|isDisallowed
 parameter_list|()

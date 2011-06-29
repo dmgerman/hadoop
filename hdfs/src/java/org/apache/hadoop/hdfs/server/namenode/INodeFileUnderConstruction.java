@@ -74,60 +74,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|HdfsConstants
@@ -136,13 +82,8 @@ name|BlockUCState
 import|;
 end_import
 
-begin_comment
-comment|/**  * I-node for file being written.  */
-end_comment
-
 begin_class
 DECL|class|INodeFileUnderConstruction
-specifier|public
 class|class
 name|INodeFileUnderConstruction
 extends|extends
@@ -232,6 +173,7 @@ name|clientNode
 expr_stmt|;
 block|}
 DECL|method|INodeFileUnderConstruction (byte[] name, short blockReplication, long modificationTime, long preferredBlockSize, BlockInfo[] blocks, PermissionStatus perm, String clientName, String clientMachine, DatanodeDescriptor clientNode)
+specifier|public
 name|INodeFileUnderConstruction
 parameter_list|(
 name|byte
@@ -349,7 +291,6 @@ comment|/**    * Is this inode being constructed?    */
 annotation|@
 name|Override
 DECL|method|isUnderConstruction ()
-specifier|public
 name|boolean
 name|isUnderConstruction
 parameter_list|()
@@ -490,7 +431,6 @@ expr_stmt|;
 block|}
 comment|/**    * Convert the last block of the file to an under-construction block.    * Set its locations.    */
 DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] targets)
-specifier|public
 name|BlockInfoUnderConstruction
 name|setLastBlock
 parameter_list|(

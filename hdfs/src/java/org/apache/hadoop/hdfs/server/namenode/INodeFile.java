@@ -104,49 +104,8 @@ name|Block
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_comment
-comment|/** I-node for closed file. */
-end_comment
-
 begin_class
 DECL|class|INodeFile
-specifier|public
 class|class
 name|INodeFile
 extends|extends
@@ -469,7 +428,6 @@ expr_stmt|;
 block|}
 comment|/**    * Get file blocks     * @return file blocks    */
 DECL|method|getBlocks ()
-specifier|public
 name|BlockInfo
 index|[]
 name|getBlocks
@@ -690,7 +648,6 @@ block|}
 block|}
 comment|/**    * Set file block    */
 DECL|method|setBlock (int idx, BlockInfo blk)
-specifier|public
 name|void
 name|setBlock
 parameter_list|(
@@ -1069,7 +1026,6 @@ return|;
 block|}
 comment|/**    * Get the last block of the file.    * Make sure it has the right type.    */
 DECL|method|getLastBlock ()
-specifier|public
 parameter_list|<
 name|T
 extends|extends
@@ -1162,9 +1118,7 @@ return|return
 name|returnBlock
 return|;
 block|}
-comment|/** @return the number of blocks */
 DECL|method|numBlocks ()
-specifier|public
 name|int
 name|numBlocks
 parameter_list|()

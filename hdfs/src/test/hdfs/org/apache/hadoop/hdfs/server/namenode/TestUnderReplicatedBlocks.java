@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -16,19 +16,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|namenode
 package|;
 end_package
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
 
 begin_import
 import|import
@@ -146,19 +136,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|junit
 operator|.
-name|apache
+name|framework
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
+name|TestCase
 import|;
 end_import
 

@@ -216,7 +216,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|DFSUtil
 import|;
 end_import
 
@@ -230,7 +230,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -316,24 +316,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|JspHelper
@@ -372,9 +354,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|Storage
-operator|.
-name|StorageDirectory
+name|UpgradeStatusReport
 import|;
 end_import
 
@@ -392,7 +372,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|UpgradeStatusReport
+name|Storage
+operator|.
+name|StorageDirectory
 import|;
 end_import
 
@@ -490,7 +472,7 @@ name|znerd
 operator|.
 name|xmlenc
 operator|.
-name|XMLOutputter
+name|*
 import|;
 end_import
 

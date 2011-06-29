@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|namenode
 package|;
 end_package
 
@@ -66,24 +66,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|LightWeightGSet
@@ -96,7 +78,6 @@ end_comment
 
 begin_class
 DECL|class|BlockInfo
-specifier|public
 class|class
 name|BlockInfo
 extends|extends
@@ -128,7 +109,7 @@ name|triplets
 decl_stmt|;
 comment|/**    * Construct an entry for blocksmap    * @param replication the block's replication factor    */
 DECL|method|BlockInfo (int replication)
-specifier|public
+specifier|protected
 name|BlockInfo
 parameter_list|(
 name|int
@@ -155,7 +136,7 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|BlockInfo (Block blk, int replication)
-specifier|public
+specifier|protected
 name|BlockInfo
 parameter_list|(
 name|Block
@@ -220,7 +201,6 @@ name|inode
 expr_stmt|;
 block|}
 DECL|method|getINode ()
-specifier|public
 name|INodeFile
 name|getINode
 parameter_list|()
@@ -230,7 +210,6 @@ name|inode
 return|;
 block|}
 DECL|method|setINode (INodeFile inode)
-specifier|public
 name|void
 name|setINode
 parameter_list|(
@@ -823,7 +802,6 @@ return|;
 block|}
 comment|/**    * Add data-node this block belongs to.    */
 DECL|method|addNode (DatanodeDescriptor node)
-specifier|public
 name|boolean
 name|addNode
 parameter_list|(
@@ -880,7 +858,6 @@ return|;
 block|}
 comment|/**    * Remove data-node from the block.    */
 DECL|method|removeNode (DatanodeDescriptor node)
-specifier|public
 name|boolean
 name|removeNode
 parameter_list|(
@@ -1051,7 +1028,6 @@ return|;
 block|}
 comment|/**    * Insert this block into the head of the list of blocks     * related to the specified DatanodeDescriptor.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
 DECL|method|listInsert (BlockInfo head, DatanodeDescriptor dn)
-specifier|public
 name|BlockInfo
 name|listInsert
 parameter_list|(
@@ -1140,7 +1116,6 @@ return|;
 block|}
 comment|/**    * Remove this block from the list of blocks     * related to the specified DatanodeDescriptor.    * If this block is the head of the list then return the next block as     * the new head.    * @return the new head of the list or null if the list becomes    * empty after deletion.    */
 DECL|method|listRemove (BlockInfo head, DatanodeDescriptor dn)
-specifier|public
 name|BlockInfo
 name|listRemove
 parameter_list|(
@@ -1374,7 +1349,6 @@ return|;
 block|}
 comment|/**    * BlockInfo represents a block that is not being constructed.    * In order to start modifying the block, the BlockInfo should be converted    * to {@link BlockInfoUnderConstruction}.    * @return {@link BlockUCState#COMPLETE}    */
 DECL|method|getBlockUCState ()
-specifier|public
 name|BlockUCState
 name|getBlockUCState
 parameter_list|()
@@ -1387,7 +1361,6 @@ return|;
 block|}
 comment|/**    * Is this block complete?    *     * @return true if the state of the block is {@link BlockUCState#COMPLETE}    */
 DECL|method|isComplete ()
-specifier|public
 name|boolean
 name|isComplete
 parameter_list|()
@@ -1406,7 +1379,6 @@ return|;
 block|}
 comment|/**    * Convert a complete block to an under construction block.    *     * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeDescriptor[] targets)
-specifier|public
 name|BlockInfoUnderConstruction
 name|convertToBlockUnderConstruction
 parameter_list|(
