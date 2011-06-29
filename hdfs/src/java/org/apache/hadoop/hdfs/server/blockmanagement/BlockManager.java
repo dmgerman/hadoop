@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -286,6 +286,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|UnderReplicatedBlocks
+operator|.
+name|BlockIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsConstants
@@ -329,8 +349,6 @@ operator|.
 name|namenode
 operator|.
 name|FSNamesystem
-operator|.
-name|NumberReplicas
 import|;
 end_import
 
@@ -348,7 +366,61 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|UnderReplicatedBlocks
+name|INode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFileUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
 import|;
 end_import
 
@@ -392,6 +464,7 @@ name|FSNamesystem
 name|namesystem
 decl_stmt|;
 DECL|field|pendingReplicationBlocksCount
+specifier|private
 specifier|volatile
 name|long
 name|pendingReplicationBlocksCount
@@ -399,6 +472,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|corruptReplicaBlocksCount
+specifier|private
 specifier|volatile
 name|long
 name|corruptReplicaBlocksCount
@@ -406,6 +480,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|underReplicatedBlocksCount
+specifier|private
 specifier|volatile
 name|long
 name|underReplicatedBlocksCount
@@ -413,6 +488,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|scheduledReplicationBlocksCount
+specifier|public
 specifier|volatile
 name|long
 name|scheduledReplicationBlocksCount
@@ -420,6 +496,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|excessBlocksCount
+specifier|private
 specifier|volatile
 name|long
 name|excessBlocksCount
@@ -427,17 +504,82 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|pendingDeletionBlocksCount
+specifier|private
 specifier|volatile
 name|long
 name|pendingDeletionBlocksCount
 init|=
 literal|0L
 decl_stmt|;
-comment|//
-comment|// Mapping: Block -> { INode, datanodes, self ref }
-comment|// Updated only in response to client-sent information.
-comment|//
+comment|/** Used by metrics */
+DECL|method|getPendingReplicationBlocksCount ()
+specifier|public
+name|long
+name|getPendingReplicationBlocksCount
+parameter_list|()
+block|{
+return|return
+name|pendingReplicationBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getUnderReplicatedBlocksCount ()
+specifier|public
+name|long
+name|getUnderReplicatedBlocksCount
+parameter_list|()
+block|{
+return|return
+name|underReplicatedBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getCorruptReplicaBlocksCount ()
+specifier|public
+name|long
+name|getCorruptReplicaBlocksCount
+parameter_list|()
+block|{
+return|return
+name|corruptReplicaBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getScheduledReplicationBlocksCount ()
+specifier|public
+name|long
+name|getScheduledReplicationBlocksCount
+parameter_list|()
+block|{
+return|return
+name|scheduledReplicationBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getPendingDeletionBlocksCount ()
+specifier|public
+name|long
+name|getPendingDeletionBlocksCount
+parameter_list|()
+block|{
+return|return
+name|pendingDeletionBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getExcessBlocksCount ()
+specifier|public
+name|long
+name|getExcessBlocksCount
+parameter_list|()
+block|{
+return|return
+name|excessBlocksCount
+return|;
+block|}
+comment|/**    * Mapping: Block -> { INode, datanodes, self ref }    * Updated only in response to client-sent information.    */
 DECL|field|blocksMap
+specifier|public
 specifier|final
 name|BlocksMap
 name|blocksMap
@@ -490,6 +632,8 @@ comment|// eventually remove these extras.
 comment|// Mapping: StorageID -> TreeSet<Block>
 comment|//
 DECL|field|excessReplicateMap
+specifier|public
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -518,6 +662,7 @@ comment|// Store set of Blocks that need to be replicated 1 or more times.
 comment|// We also store pending replication-orders.
 comment|//
 DECL|field|neededReplications
+specifier|public
 name|UnderReplicatedBlocks
 name|neededReplications
 init|=
@@ -532,21 +677,25 @@ name|pendingReplications
 decl_stmt|;
 comment|//  The maximum number of replicas allowed for a block
 DECL|field|maxReplication
+specifier|public
 name|int
 name|maxReplication
 decl_stmt|;
 comment|//  How many outgoing replication streams a given node should have at one time
 DECL|field|maxReplicationStreams
+specifier|public
 name|int
 name|maxReplicationStreams
 decl_stmt|;
 comment|// Minimum copies needed or else write is disallowed
 DECL|field|minReplication
+specifier|public
 name|int
 name|minReplication
 decl_stmt|;
 comment|// Default number of replicas
 DECL|field|defaultReplication
+specifier|public
 name|int
 name|defaultReplication
 decl_stmt|;
@@ -580,10 +729,12 @@ argument_list|()
 decl_stmt|;
 comment|// for block replicas placement
 DECL|field|replicator
+specifier|public
 name|BlockPlacementPolicy
 name|replicator
 decl_stmt|;
 DECL|method|BlockManager (FSNamesystem fsn, Configuration conf)
+specifier|public
 name|BlockManager
 parameter_list|(
 name|FSNamesystem
@@ -913,6 +1064,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|activate ()
+specifier|public
 name|void
 name|activate
 parameter_list|()
@@ -924,6 +1076,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|close ()
+specifier|public
 name|void
 name|close
 parameter_list|()
@@ -946,6 +1099,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|metaSave (PrintWriter out)
+specifier|public
 name|void
 name|metaSave
 parameter_list|(
@@ -1239,6 +1393,7 @@ expr_stmt|;
 block|}
 comment|/**    * @param block    * @return true if the block has minimum replicas    */
 DECL|method|checkMinReplication (Block block)
+specifier|public
 name|boolean
 name|checkMinReplication
 parameter_list|(
@@ -1403,6 +1558,7 @@ block|}
 block|}
 comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param fileINode file inode    * @param commitBlock - contains client reported block length and generation    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|commitOrCompleteLastBlock (INodeFileUnderConstruction fileINode, Block commitBlock)
+specifier|public
 name|void
 name|commitOrCompleteLastBlock
 parameter_list|(
@@ -1646,6 +1802,7 @@ return|;
 block|}
 comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param fileINode file    * @return the last block locations if the block is partial or null otherwise    */
 DECL|method|convertLastBlockToUnderConstruction ( INodeFileUnderConstruction fileINode)
+specifier|public
 name|LocatedBlock
 name|convertLastBlockToUnderConstruction
 parameter_list|(
@@ -1782,6 +1939,7 @@ return|;
 block|}
 comment|/**    * Get all valid locations of the block    */
 DECL|method|getValidLocations (Block block)
+specifier|public
 name|ArrayList
 argument_list|<
 name|String
@@ -1871,6 +2029,7 @@ name|machineSet
 return|;
 block|}
 DECL|method|getBlockLocations (BlockInfo[] blocks, long offset, long length, int nrBlocksToReturn)
+specifier|public
 name|List
 argument_list|<
 name|LocatedBlock
@@ -2074,8 +2233,9 @@ return|return
 name|results
 return|;
 block|}
-comment|/** @param needBlockToken     * @return a LocatedBlock for the given block */
+comment|/** @return a LocatedBlock for the given block */
 DECL|method|getBlockLocation (final BlockInfo blk, final long pos )
+specifier|public
 name|LocatedBlock
 name|getBlockLocation
 parameter_list|(
@@ -2092,13 +2252,31 @@ name|IOException
 block|{
 if|if
 condition|(
-operator|!
+name|blk
+operator|instanceof
+name|BlockInfoUnderConstruction
+condition|)
+block|{
+if|if
+condition|(
 name|blk
 operator|.
 name|isComplete
 argument_list|()
 condition|)
 block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"blk instanceof BlockInfoUnderConstruction&& blk.isComplete()"
+operator|+
+literal|", blk="
+operator|+
+name|blk
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|BlockInfoUnderConstruction
 name|uc
@@ -2321,6 +2499,7 @@ return|;
 block|}
 comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration.    */
 DECL|method|verifyReplication (String src, short replication, String clientName)
+specifier|public
 name|void
 name|verifyReplication
 parameter_list|(
@@ -2609,6 +2788,7 @@ block|}
 block|}
 comment|/**    * Adds block to list of blocks which will be invalidated on specified    * datanode and log the operation    *    * @param b block    * @param dn datanode    */
 DECL|method|addToInvalidates (Block b, DatanodeInfo dn)
+specifier|public
 name|void
 name|addToInvalidates
 parameter_list|(
@@ -2848,6 +3028,7 @@ block|}
 block|}
 block|}
 DECL|method|findAndMarkBlockAsCorrupt (Block blk, DatanodeInfo dn)
+specifier|public
 name|void
 name|findAndMarkBlockAsCorrupt
 parameter_list|(
@@ -3232,6 +3413,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|updateState ()
+specifier|public
 name|void
 name|updateState
 parameter_list|()
@@ -3260,6 +3442,7 @@ expr_stmt|;
 block|}
 comment|/** Return number of under-replicated but not missing blocks */
 DECL|method|getUnderReplicatedNotMissingBlocks ()
+specifier|public
 name|int
 name|getUnderReplicatedNotMissingBlocks
 parameter_list|()
@@ -3273,6 +3456,7 @@ return|;
 block|}
 comment|/**    * Schedule blocks for deletion at datanodes    * @param nodesToProcess number of datanodes to schedule deletion work    * @return total number of block for deletion    */
 DECL|method|computeInvalidateWork (int nodesToProcess)
+specifier|public
 name|int
 name|computeInvalidateWork
 parameter_list|(
@@ -3464,6 +3648,7 @@ return|;
 block|}
 comment|/**    * Scan blocks in {@link #neededReplications} and assign replication    * work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
 DECL|method|computeReplicationWork (int blocksToProcess)
+specifier|public
 name|int
 name|computeReplicationWork
 parameter_list|(
@@ -4819,6 +5004,7 @@ return|;
 block|}
 comment|/**    * If there were any replication requests that timed out, reap them    * and put them back into the neededReplication queue    */
 DECL|method|processPendingReplications ()
+specifier|public
 name|void
 name|processPendingReplications
 parameter_list|()
@@ -6610,6 +6796,7 @@ argument_list|,
 name|num
 operator|.
 name|decommissionedReplicas
+argument_list|()
 argument_list|,
 name|fileReplication
 argument_list|)
@@ -6833,6 +7020,7 @@ expr_stmt|;
 block|}
 comment|/**    * For each block in the name-node verify whether it belongs to any file,    * over or under replicated. Place it into the respective queue.    */
 DECL|method|processMisReplicatedBlocks ()
+specifier|public
 name|void
 name|processMisReplicatedBlocks
 parameter_list|()
@@ -7044,6 +7232,7 @@ expr_stmt|;
 block|}
 comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
 DECL|method|processOverReplicatedBlock (Block block, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+specifier|public
 name|void
 name|processOverReplicatedBlock
 parameter_list|(
@@ -7226,6 +7415,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addToExcessReplicate (DatanodeInfo dn, Block block)
+specifier|public
 name|void
 name|addToExcessReplicate
 parameter_list|(
@@ -7337,6 +7527,7 @@ block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
 DECL|method|removeStoredBlock (Block block, DatanodeDescriptor node)
+specifier|public
 name|void
 name|removeStoredBlock
 parameter_list|(
@@ -7568,6 +7759,7 @@ block|}
 block|}
 comment|/**    * The given node is reporting that it received a certain block.    */
 DECL|method|addBlock (DatanodeDescriptor node, Block block, String delHint)
+specifier|public
 name|void
 name|addBlock
 parameter_list|(
@@ -7855,6 +8047,7 @@ block|}
 block|}
 comment|/**    * Return the number of nodes that are live and decommissioned.    */
 DECL|method|countNodes (Block b)
+specifier|public
 name|NumberReplicas
 name|countNodes
 parameter_list|(
@@ -8285,6 +8478,7 @@ expr_stmt|;
 block|}
 comment|/**    * Return true if there are any blocks on this node that have not    * yet reached their replication factor. Otherwise returns false.    */
 DECL|method|isReplicationInProgress (DatanodeDescriptor srcNode)
+specifier|public
 name|boolean
 name|isReplicationInProgress
 parameter_list|(
@@ -8525,6 +8719,7 @@ name|status
 return|;
 block|}
 DECL|method|getActiveBlockCount ()
+specifier|public
 name|int
 name|getActiveBlockCount
 parameter_list|()
@@ -8542,6 +8737,7 @@ name|pendingDeletionBlocksCount
 return|;
 block|}
 DECL|method|getNodes (BlockInfo block)
+specifier|public
 name|DatanodeDescriptor
 index|[]
 name|getNodes
@@ -8612,6 +8808,7 @@ name|nodes
 return|;
 block|}
 DECL|method|getTotalBlocks ()
+specifier|public
 name|int
 name|getTotalBlocks
 parameter_list|()
@@ -8624,6 +8821,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|removeBlock (Block block)
+specifier|public
 name|void
 name|removeBlock
 parameter_list|(
@@ -8652,6 +8850,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getStoredBlock (Block block)
+specifier|public
 name|BlockInfo
 name|getStoredBlock
 parameter_list|(
@@ -8670,6 +8869,7 @@ return|;
 block|}
 comment|/* updates a block in under replication queue */
 DECL|method|updateNeededReplications (Block block, int curReplicasDelta, int expectedReplicasDelta)
+specifier|public
 name|void
 name|updateNeededReplications
 parameter_list|(
@@ -8792,6 +8992,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|checkReplication (Block block, int numExpectedReplicas)
+specifier|public
 name|void
 name|checkReplication
 parameter_list|(
@@ -8840,6 +9041,7 @@ argument_list|,
 name|number
 operator|.
 name|decommissionedReplicas
+argument_list|()
 argument_list|,
 name|numExpectedReplicas
 argument_list|)
@@ -8894,8 +9096,9 @@ name|getReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Remove a datanode from the invalidatesSet    * @param n datanode    */
+comment|/** Remove a datanode from the invalidatesSet */
 DECL|method|removeFromInvalidates (String storageID)
+specifier|public
 name|void
 name|removeFromInvalidates
 parameter_list|(
@@ -9190,6 +9393,7 @@ comment|//Returns the number of racks over which a given block is replicated
 comment|//decommissioning/decommissioned nodes are not counted. corrupt replicas
 comment|//are also ignored
 DECL|method|getNumberOfRacks (Block b)
+specifier|public
 name|int
 name|getNumberOfRacks
 parameter_list|(
@@ -9538,6 +9742,7 @@ return|;
 block|}
 block|}
 DECL|method|getMissingBlocksCount ()
+specifier|public
 name|long
 name|getMissingBlocksCount
 parameter_list|()
@@ -9553,6 +9758,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|addINode (BlockInfo block, INodeFile iNode)
+specifier|public
 name|BlockInfo
 name|addINode
 parameter_list|(
@@ -9575,6 +9781,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getINode (Block b)
+specifier|public
 name|INodeFile
 name|getINode
 parameter_list|(
@@ -9592,6 +9799,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|removeFromCorruptReplicasMap (Block block)
+specifier|public
 name|void
 name|removeFromCorruptReplicasMap
 parameter_list|(
@@ -9608,6 +9816,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|numCorruptReplicas (Block block)
+specifier|public
 name|int
 name|numCorruptReplicas
 parameter_list|(
@@ -9625,6 +9834,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|removeBlockFromMap (Block block)
+specifier|public
 name|void
 name|removeBlockFromMap
 parameter_list|(
@@ -9641,6 +9851,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getCapacity ()
+specifier|public
 name|int
 name|getCapacity
 parameter_list|()
@@ -9670,6 +9881,7 @@ block|}
 block|}
 comment|/**    * Return a range of corrupt replica block ids. Up to numExpectedBlocks     * blocks starting at the next block after startingBlockId are returned    * (fewer if numExpectedBlocks blocks are unavailable). If startingBlockId     * is null, up to numExpectedBlocks blocks are returned from the beginning.    * If startingBlockId cannot be found, null is returned.    *    * @param numExpectedBlocks Number of block ids to return.    *  0<= numExpectedBlocks<= 100    * @param startingBlockId Block id from which to start. If null, start at    *  beginning.    * @return Up to numExpectedBlocks blocks from startingBlockId if it exists    *    */
 DECL|method|getCorruptReplicaBlockIds (int numExpectedBlocks, Long startingBlockId)
+specifier|public
 name|long
 index|[]
 name|getCorruptReplicaBlockIds
@@ -9694,8 +9906,7 @@ return|;
 block|}
 comment|/**    * Return an iterator over the set of blocks for which there are no replicas.    */
 DECL|method|getCorruptReplicaBlockIterator ()
-name|UnderReplicatedBlocks
-operator|.
+specifier|public
 name|BlockIterator
 name|getCorruptReplicaBlockIterator
 parameter_list|()

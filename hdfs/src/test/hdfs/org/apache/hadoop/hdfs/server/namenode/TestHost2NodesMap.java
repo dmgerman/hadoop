@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|TestCase
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -38,11 +48,19 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|apache
 operator|.
-name|TestCase
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
 import|;
 end_import
 

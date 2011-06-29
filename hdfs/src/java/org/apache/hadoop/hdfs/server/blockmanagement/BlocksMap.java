@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -43,6 +43,24 @@ operator|.
 name|protocol
 operator|.
 name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFile
 import|;
 end_import
 
@@ -84,6 +102,7 @@ end_comment
 
 begin_class
 DECL|class|BlocksMap
+specifier|public
 class|class
 name|BlocksMap
 block|{
@@ -438,6 +457,7 @@ return|;
 block|}
 comment|/**    * Add block b belonging to the specified file inode to the map.    */
 DECL|method|addINode (BlockInfo b, INodeFile iNode)
+specifier|public
 name|BlockInfo
 name|addINode
 parameter_list|(
@@ -581,6 +601,7 @@ return|;
 block|}
 comment|/**    * Searches for the block in the BlocksMap and     * returns Iterator that iterates through the nodes the block belongs to.    */
 DECL|method|nodeIterator (Block b)
+specifier|public
 name|Iterator
 argument_list|<
 name|DatanodeDescriptor
@@ -757,6 +778,7 @@ return|;
 block|}
 comment|/**    * Check if the block exists in map    */
 DECL|method|contains (Block block)
+specifier|public
 name|boolean
 name|contains
 parameter_list|(

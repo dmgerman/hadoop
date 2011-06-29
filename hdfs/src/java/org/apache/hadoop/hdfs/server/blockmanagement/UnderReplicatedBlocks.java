@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -46,12 +46,31 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
+import|;
+end_import
+
 begin_comment
 comment|/* Class for keeping track of under replication blocks  * Blocks have replication priority, with priority 0 indicating the highest  * Blocks have only one replicas has the highest  */
 end_comment
 
 begin_class
 DECL|class|UnderReplicatedBlocks
+specifier|public
 class|class
 name|UnderReplicatedBlocks
 implements|implements
@@ -167,6 +186,7 @@ block|}
 block|}
 comment|/* Return the total number of under replication blocks */
 DECL|method|size ()
+specifier|public
 specifier|synchronized
 name|int
 name|size
@@ -274,6 +294,7 @@ return|;
 block|}
 comment|/* Check if a block is in the neededReplication queue */
 DECL|method|contains (Block block)
+specifier|public
 specifier|synchronized
 name|boolean
 name|contains
@@ -916,6 +937,7 @@ argument_list|()
 return|;
 block|}
 DECL|class|BlockIterator
+specifier|public
 class|class
 name|BlockIterator
 implements|implements

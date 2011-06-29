@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -106,12 +106,31 @@ name|ReplicaState
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents a block that is currently being constructed.<br>  * This is usually the last block of a file opened for write or append.  */
 end_comment
 
 begin_class
 DECL|class|BlockInfoUnderConstruction
+specifier|public
 class|class
 name|BlockInfoUnderConstruction
 extends|extends
@@ -348,6 +367,7 @@ block|}
 block|}
 comment|/**    * Create block and set its state to    * {@link BlockUCState#UNDER_CONSTRUCTION}.    */
 DECL|method|BlockInfoUnderConstruction (Block blk, int replication)
+specifier|public
 name|BlockInfoUnderConstruction
 parameter_list|(
 name|Block
@@ -371,7 +391,9 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create a block that is currently being constructed.    */
 DECL|method|BlockInfoUnderConstruction (Block blk, int replication, BlockUCState state, DatanodeDescriptor[] targets)
+specifier|public
 name|BlockInfoUnderConstruction
 parameter_list|(
 name|Block
@@ -459,7 +481,9 @@ name|this
 argument_list|)
 return|;
 block|}
+comment|/** Set expected locations */
 DECL|method|setExpectedLocations (DatanodeDescriptor[] targets)
+specifier|public
 name|void
 name|setExpectedLocations
 parameter_list|(
@@ -531,6 +555,7 @@ expr_stmt|;
 block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
 DECL|method|getExpectedLocations ()
+specifier|public
 name|DatanodeDescriptor
 index|[]
 name|getExpectedLocations
@@ -593,7 +618,9 @@ return|return
 name|locations
 return|;
 block|}
+comment|/** Get the number of expected locations */
 DECL|method|getNumExpectedLocations ()
+specifier|public
 name|int
 name|getNumExpectedLocations
 parameter_list|()
@@ -616,6 +643,7 @@ annotation|@
 name|Override
 comment|// BlockInfo
 DECL|method|getBlockUCState ()
+specifier|public
 name|BlockUCState
 name|getBlockUCState
 parameter_list|()
@@ -637,7 +665,9 @@ operator|=
 name|s
 expr_stmt|;
 block|}
+comment|/** Get block recovery ID */
 DECL|method|getBlockRecoveryId ()
+specifier|public
 name|long
 name|getBlockRecoveryId
 parameter_list|()
@@ -711,6 +741,7 @@ expr_stmt|;
 block|}
 comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
 DECL|method|initializeBlockRecovery (long recoveryId)
+specifier|public
 name|void
 name|initializeBlockRecovery
 parameter_list|(

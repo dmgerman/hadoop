@@ -1060,6 +1060,134 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockPlacementPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
+operator|.
+name|BlockTargetPair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|UnderReplicatedBlocks
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|GenerationStamp
@@ -1174,49 +1302,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|DatanodeDescriptor
-operator|.
-name|BlockTargetPair
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|LeaseManager
 operator|.
 name|Lease
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|UnderReplicatedBlocks
-operator|.
-name|BlockIterator
 import|;
 end_import
 
@@ -2306,6 +2394,7 @@ name|FSDirectory
 name|dir
 decl_stmt|;
 DECL|field|blockManager
+specifier|public
 name|BlockManager
 name|blockManager
 decl_stmt|;
@@ -2341,8 +2430,9 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
-comment|/**    * Stores a set of DatanodeDescriptor objects.    * This is a subset of {@link #datanodeMap}, containing nodes that are     * considered alive.    * The {@link HeartbeatMonitor} periodically checks for outdated entries,    * and removes them from the list.    */
+comment|/**    * Stores a set of DatanodeDescriptor objects.    * This is a subset of {@link #datanodeMap}, containing nodes that are     * considered alive.    * The HeartbeatMonitor periodically checks for out-dated entries,    * and removes them from the list.    */
 DECL|field|heartbeats
+specifier|public
 name|ArrayList
 argument_list|<
 name|DatanodeDescriptor
@@ -2498,8 +2588,9 @@ operator|new
 name|Host2NodesMap
 argument_list|()
 decl_stmt|;
-comment|// datanode networktoplogy
+comment|/** datanode network toplogy */
 DECL|field|clusterMap
+specifier|public
 name|NetworkTopology
 name|clusterMap
 init|=
@@ -2545,6 +2636,7 @@ argument_list|()
 decl_stmt|;
 comment|// Ask Datanode only up to this many blocks to delete.
 DECL|field|blockInvalidateLimit
+specifier|public
 name|int
 name|blockInvalidateLimit
 init|=
@@ -3295,6 +3387,7 @@ return|;
 block|}
 comment|// utility methods to acquire and release read lock and write lock
 DECL|method|readLock ()
+specifier|public
 name|void
 name|readLock
 parameter_list|()
@@ -3311,6 +3404,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|readUnlock ()
+specifier|public
 name|void
 name|readUnlock
 parameter_list|()
@@ -3327,6 +3421,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|writeLock ()
+specifier|public
 name|void
 name|writeLock
 parameter_list|()
@@ -3343,6 +3438,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|writeUnlock ()
+specifier|public
 name|void
 name|writeUnlock
 parameter_list|()
@@ -3359,6 +3455,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|hasWriteLock ()
+specifier|public
 name|boolean
 name|hasWriteLock
 parameter_list|()
@@ -5885,6 +5982,7 @@ block|}
 block|}
 comment|/** Create a LocatedBlock. */
 DECL|method|createLocatedBlock (final Block b, final DatanodeInfo[] locations, final long offset, final boolean corrupt)
+specifier|public
 name|LocatedBlock
 name|createLocatedBlock
 parameter_list|(
@@ -14648,6 +14746,7 @@ expr_stmt|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
 DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int xmitsInProgress, int failedVolumes)
+specifier|public
 name|DatanodeCommand
 index|[]
 name|handleHeartbeat
@@ -16631,6 +16730,7 @@ expr_stmt|;
 block|}
 comment|/**    * We want "replication" replicates for the block, but we now have too many.      * In this method, copy enough nodes from 'srcNodes' into 'dstNodes' such that:    *    * srcNodes.size() - dstNodes.size() == replication    *    * We pick node that make sure that replicas are spread across racks and    * also try hard to pick one with least free space.    * The algorithm is first to pick a node with least free space from nodes    * that are on a rack holding more than one replicas of the block.    * So removing such a replica won't remove a rack.     * If no such a node is available,    * then pick a node with least free space    */
 DECL|method|chooseExcessReplicates (Collection<DatanodeDescriptor> nonExcess, Block b, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, BlockPlacementPolicy replicator)
+specifier|public
 name|void
 name|chooseExcessReplicates
 parameter_list|(
@@ -18707,146 +18807,6 @@ block|}
 return|return
 name|replication
 return|;
-block|}
-comment|/**    * A immutable object that stores the number of live replicas and    * the number of decommissined Replicas.    */
-DECL|class|NumberReplicas
-specifier|static
-class|class
-name|NumberReplicas
-block|{
-DECL|field|liveReplicas
-specifier|private
-name|int
-name|liveReplicas
-decl_stmt|;
-DECL|field|decommissionedReplicas
-name|int
-name|decommissionedReplicas
-decl_stmt|;
-DECL|field|corruptReplicas
-specifier|private
-name|int
-name|corruptReplicas
-decl_stmt|;
-DECL|field|excessReplicas
-specifier|private
-name|int
-name|excessReplicas
-decl_stmt|;
-DECL|method|NumberReplicas ()
-name|NumberReplicas
-parameter_list|()
-block|{
-name|initialize
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|NumberReplicas (int live, int decommissioned, int corrupt, int excess)
-name|NumberReplicas
-parameter_list|(
-name|int
-name|live
-parameter_list|,
-name|int
-name|decommissioned
-parameter_list|,
-name|int
-name|corrupt
-parameter_list|,
-name|int
-name|excess
-parameter_list|)
-block|{
-name|initialize
-argument_list|(
-name|live
-argument_list|,
-name|decommissioned
-argument_list|,
-name|corrupt
-argument_list|,
-name|excess
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|initialize (int live, int decommissioned, int corrupt, int excess)
-name|void
-name|initialize
-parameter_list|(
-name|int
-name|live
-parameter_list|,
-name|int
-name|decommissioned
-parameter_list|,
-name|int
-name|corrupt
-parameter_list|,
-name|int
-name|excess
-parameter_list|)
-block|{
-name|liveReplicas
-operator|=
-name|live
-expr_stmt|;
-name|decommissionedReplicas
-operator|=
-name|decommissioned
-expr_stmt|;
-name|corruptReplicas
-operator|=
-name|corrupt
-expr_stmt|;
-name|excessReplicas
-operator|=
-name|excess
-expr_stmt|;
-block|}
-DECL|method|liveReplicas ()
-name|int
-name|liveReplicas
-parameter_list|()
-block|{
-return|return
-name|liveReplicas
-return|;
-block|}
-DECL|method|decommissionedReplicas ()
-name|int
-name|decommissionedReplicas
-parameter_list|()
-block|{
-return|return
-name|decommissionedReplicas
-return|;
-block|}
-DECL|method|corruptReplicas ()
-name|int
-name|corruptReplicas
-parameter_list|()
-block|{
-return|return
-name|corruptReplicas
-return|;
-block|}
-DECL|method|excessReplicas ()
-name|int
-name|excessReplicas
-parameter_list|()
-block|{
-return|return
-name|excessReplicas
-return|;
-block|}
 block|}
 comment|/**    * Change, if appropriate, the admin state of a datanode to     * decommission completed. Return true if decommission is complete.    */
 DECL|method|checkDecommissionStateInternal (DatanodeDescriptor node)
@@ -21146,6 +21106,7 @@ block|}
 block|}
 comment|/**    * Check whether the name node is in safe mode.    * @return true if safe mode is ON, false otherwise    */
 DECL|method|isInSafeMode ()
+specifier|public
 name|boolean
 name|isInSafeMode
 parameter_list|()
@@ -21176,6 +21137,7 @@ return|;
 block|}
 comment|/**    * Check whether the name node is in startup mode.    */
 DECL|method|isInStartupSafeMode ()
+specifier|public
 name|boolean
 name|isInStartupSafeMode
 parameter_list|()
@@ -21212,6 +21174,7 @@ return|;
 block|}
 comment|/**    * Check whether replication queues are populated.    */
 DECL|method|isPopulatingReplQueues ()
+specifier|public
 name|boolean
 name|isPopulatingReplQueues
 parameter_list|()
@@ -21242,6 +21205,7 @@ return|;
 block|}
 comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication     */
 DECL|method|incrementSafeBlockCount (int replication)
+specifier|public
 name|void
 name|incrementSafeBlockCount
 parameter_list|(
@@ -21277,6 +21241,7 @@ expr_stmt|;
 block|}
 comment|/**    * Decrement number of blocks that reached minimal replication.    */
 DECL|method|decrementSafeBlockCount (Block b)
+specifier|public
 name|void
 name|decrementSafeBlockCount
 parameter_list|(
@@ -22515,7 +22480,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|pendingReplicationBlocksCount
+name|getPendingReplicationBlocksCount
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -22532,7 +22498,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|underReplicatedBlocksCount
+name|getUnderReplicatedBlocksCount
+argument_list|()
 return|;
 block|}
 comment|/** Return number of under-replicated but not missing blocks */
@@ -22568,7 +22535,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|corruptReplicaBlocksCount
+name|getCorruptReplicaBlocksCount
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -22585,7 +22553,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|scheduledReplicationBlocksCount
+name|getScheduledReplicationBlocksCount
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -22599,7 +22568,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|pendingDeletionBlocksCount
+name|getPendingDeletionBlocksCount
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -22613,7 +22583,8 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|excessBlocksCount
+name|getExcessBlocksCount
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -24037,6 +24008,7 @@ return|;
 block|}
 comment|/** Get a datanode descriptor given corresponding storageID */
 DECL|method|getDatanode (String nodeID)
+specifier|public
 name|DatanodeDescriptor
 name|getDatanode
 parameter_list|(
@@ -24215,6 +24187,8 @@ name|startBlockAfter
 argument_list|)
 expr_stmt|;
 block|}
+name|UnderReplicatedBlocks
+operator|.
 name|BlockIterator
 name|blkIterator
 init|=

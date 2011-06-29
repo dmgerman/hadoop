@@ -56,11 +56,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
-operator|.
-name|DatanodeDescriptor
+name|DatanodeID
 import|;
 end_import
 
@@ -74,9 +72,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|server
 operator|.
-name|DatanodeID
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
 import|;
 end_import
 

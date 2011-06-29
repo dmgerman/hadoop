@@ -1784,6 +1784,7 @@ name|metrics
 decl_stmt|;
 comment|/** Return the {@link FSNamesystem} object.    * @return {@link FSNamesystem} object.    */
 DECL|method|getNamesystem ()
+specifier|public
 name|FSNamesystem
 name|getNamesystem
 parameter_list|()

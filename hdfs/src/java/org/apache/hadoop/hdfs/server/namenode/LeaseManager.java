@@ -719,6 +719,7 @@ return|;
 block|}
 comment|/**    * Finds the pathname for the specified pendingFile    */
 DECL|method|findPath (INodeFileUnderConstruction pendingFile)
+specifier|public
 specifier|synchronized
 name|String
 name|findPath
