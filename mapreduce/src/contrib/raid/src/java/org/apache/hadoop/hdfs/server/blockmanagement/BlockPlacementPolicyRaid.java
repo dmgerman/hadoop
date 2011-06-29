@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -237,6 +237,24 @@ operator|.
 name|protocol
 operator|.
 name|LocatedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|*
 import|;
 end_import
 
@@ -669,6 +687,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
+specifier|public
 name|DatanodeDescriptor
 index|[]
 name|chooseTarget
@@ -2713,10 +2732,12 @@ block|{
 name|long
 name|len
 init|=
-name|namesystem
+name|NameNodeRaidUtil
 operator|.
 name|getFileInfo
 argument_list|(
+name|namesystem
+argument_list|,
 name|file
 argument_list|,
 literal|true
@@ -2731,10 +2752,12 @@ name|LocatedBlock
 argument_list|>
 name|result
 init|=
-name|namesystem
+name|NameNodeRaidUtil
 operator|.
 name|getBlockLocations
 argument_list|(
+name|namesystem
+argument_list|,
 name|file
 argument_list|,
 literal|0L
@@ -3051,12 +3074,14 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|namesystem
-operator|.
-name|dir
+name|NameNodeRaidUtil
 operator|.
 name|getFileInfo
 argument_list|(
+name|namesystem
+operator|.
+name|dir
+argument_list|,
 name|src
 argument_list|,
 literal|true
@@ -3154,12 +3179,14 @@ name|src
 decl_stmt|;
 if|if
 condition|(
-name|namesystem
-operator|.
-name|dir
+name|NameNodeRaidUtil
 operator|.
 name|getFileInfo
 argument_list|(
+name|namesystem
+operator|.
+name|dir
+argument_list|,
 name|parity
 argument_list|,
 literal|true
