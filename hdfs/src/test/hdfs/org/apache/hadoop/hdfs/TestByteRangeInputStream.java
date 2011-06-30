@@ -616,7 +616,10 @@ name|assertNull
 argument_list|(
 literal|"Seek to 101 should not result in another request"
 argument_list|,
-literal|null
+name|r
+operator|.
+name|getMsg
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|r

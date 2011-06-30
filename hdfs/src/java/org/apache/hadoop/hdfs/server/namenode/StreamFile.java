@@ -319,7 +319,7 @@ name|CONTENT_LENGTH
 init|=
 literal|"Content-Length"
 decl_stmt|;
-comment|/** getting a client for connecting to dfs */
+comment|/* Return a DFS client to use to make the given HTTP request */
 DECL|method|getDFSClient (HttpServletRequest request)
 specifier|protected
 name|DFSClient
@@ -396,6 +396,11 @@ name|ugi
 argument_list|)
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|doGet (HttpServletRequest request, HttpServletResponse response)
 specifier|public
 name|void
@@ -474,7 +479,7 @@ return|return;
 block|}
 name|Enumeration
 argument_list|<
-name|?
+name|String
 argument_list|>
 name|reqRanges
 init|=
@@ -497,10 +502,12 @@ operator|.
 name|hasMoreElements
 argument_list|()
 condition|)
+block|{
 name|reqRanges
 operator|=
 literal|null
 expr_stmt|;
+block|}
 name|DFSClient
 name|dfs
 decl_stmt|;
@@ -573,7 +580,7 @@ condition|)
 block|{
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|ranges
 init|=
@@ -599,6 +606,8 @@ argument_list|,
 name|fileLen
 argument_list|,
 name|ranges
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -647,6 +656,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|fileLen
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -686,21 +697,6 @@ throw|;
 block|}
 finally|finally
 block|{
-try|try
-block|{
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|os
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
 name|dfs
 operator|.
 name|close
@@ -708,9 +704,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Send a partial content response with the given range. If there are    * no satisfiable ranges, or if multiple ranges are requested, which    * is unsupported, respond with range not satisfiable.    *    * @param in stream to read from    * @param out stream to write to    * @param response http response to use    * @param contentLength for the response header    * @param ranges to write to respond with    * @throws IOException on error sending the response    */
-DECL|method|sendPartialData (FSInputStream in, OutputStream out, HttpServletResponse response, long contentLength, List<?> ranges)
+comment|/**    * Send a partial content response with the given range. If there are    * no satisfiable ranges, or if multiple ranges are requested, which    * is unsupported, respond with range not satisfiable.    *    * @param in stream to read from    * @param out stream to write to    * @param response http response to use    * @param contentLength for the response header    * @param ranges to write to respond with    * @param close whether to close the streams    * @throws IOException on error sending the response    */
+DECL|method|sendPartialData (FSInputStream in, OutputStream out, HttpServletResponse response, long contentLength, List<InclusiveByteRange> ranges, boolean close)
 specifier|static
 name|void
 name|sendPartialData
@@ -729,9 +724,12 @@ name|contentLength
 parameter_list|,
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|ranges
+parameter_list|,
+name|boolean
+name|close
 parameter_list|)
 throws|throws
 name|IOException
@@ -786,9 +784,6 @@ block|{
 name|InclusiveByteRange
 name|singleSatisfiableRange
 init|=
-operator|(
-name|InclusiveByteRange
-operator|)
 name|ranges
 operator|.
 name|get
@@ -843,12 +838,14 @@ name|contentLength
 argument_list|)
 argument_list|,
 name|singleLength
+argument_list|,
+name|close
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/* Copy count bytes at the given offset from one stream to another */
-DECL|method|copyFromOffset (FSInputStream in, OutputStream out, long offset, long count)
+DECL|method|copyFromOffset (FSInputStream in, OutputStream out, long offset, long count, boolean close)
 specifier|static
 name|void
 name|copyFromOffset
@@ -864,6 +861,9 @@ name|offset
 parameter_list|,
 name|long
 name|count
+parameter_list|,
+name|boolean
+name|close
 parameter_list|)
 throws|throws
 name|IOException
@@ -884,6 +884,8 @@ argument_list|,
 name|out
 argument_list|,
 name|count
+argument_list|,
+name|close
 argument_list|)
 expr_stmt|;
 block|}

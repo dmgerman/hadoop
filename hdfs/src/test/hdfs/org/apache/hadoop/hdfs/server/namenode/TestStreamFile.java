@@ -106,11 +106,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -688,8 +700,6 @@ DECL|class|TestStreamFile
 specifier|public
 class|class
 name|TestStreamFile
-extends|extends
-name|TestCase
 block|{
 comment|// return an array matching the output of mockfsinputstream
 DECL|method|getOutputArray (int start, int count)
@@ -750,6 +760,8 @@ return|return
 name|a
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteTo ()
 specifier|public
 name|void
@@ -863,6 +875,8 @@ name|i
 operator|+
 literal|1
 index|]
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertArrayEquals
@@ -911,11 +925,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|strToRanges (String s, int contentLength)
 specifier|private
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|strToRanges
 parameter_list|(
@@ -977,6 +996,8 @@ name|contentLength
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSendPartialData ()
 specifier|public
 name|void
@@ -1005,7 +1026,7 @@ comment|// test if multiple ranges, then 416
 block|{
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|ranges
 init|=
@@ -1036,6 +1057,8 @@ argument_list|,
 literal|500
 argument_list|,
 name|ranges
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1078,6 +1101,8 @@ argument_list|,
 literal|500
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1097,7 +1122,7 @@ comment|// test if invalid single range (out of bounds), then 416
 block|{
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|ranges
 init|=
@@ -1128,6 +1153,8 @@ argument_list|,
 literal|500
 argument_list|,
 name|ranges
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1147,7 +1174,7 @@ comment|// test if one (valid) range, then 206
 block|{
 name|List
 argument_list|<
-name|?
+name|InclusiveByteRange
 argument_list|>
 name|ranges
 init|=
@@ -1178,6 +1205,8 @@ argument_list|,
 literal|500
 argument_list|,
 name|ranges
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals

@@ -667,7 +667,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** An implementation of a protocol for accessing filesystems over HTTP.  * The following implementation provides a limited, read-only interface  * to a filesystem over HTTP.  * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
+comment|/**  * An implementation of a protocol for accessing filesystems over HTTP.  * The following implementation provides a limited, read-only interface  * to a filesystem over HTTP.  * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
 end_comment
 
 begin_class
