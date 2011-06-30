@@ -371,8 +371,8 @@ name|close
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copies count bytes from one stream to another.    *    * @param in InputStream to read from    * @param out OutputStream to write to    * @param count number of bytes to copy    * @throws IOException if bytes can not be read or written    */
-DECL|method|copyBytes (InputStream in, OutputStream out, long count)
+comment|/**    * Copies count bytes from one stream to another.    *    * @param in InputStream to read from    * @param out OutputStream to write to    * @param count number of bytes to copy    * @param close whether to close the streams    * @throws IOException if bytes can not be read or written    */
+DECL|method|copyBytes (InputStream in, OutputStream out, long count, boolean close)
 specifier|public
 specifier|static
 name|void
@@ -386,6 +386,9 @@ name|out
 parameter_list|,
 name|long
 name|count
+parameter_list|,
+name|boolean
+name|close
 parameter_list|)
 throws|throws
 name|IOException
@@ -408,6 +411,8 @@ decl_stmt|;
 name|int
 name|bytesRead
 decl_stmt|;
+try|try
+block|{
 while|while
 condition|(
 name|bytesRemaining
@@ -471,6 +476,26 @@ name|bytesRemaining
 operator|-=
 name|bytesRead
 expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|close
+condition|)
+block|{
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+name|closeStream
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Reads len bytes in a loop.    *    * @param in InputStream to read from    * @param buf The buffer to fill    * @param off offset from the buffer    * @param len the length of bytes to read    * @throws IOException if it could not read requested number of bytes     * for any reason (including EOF)    */
