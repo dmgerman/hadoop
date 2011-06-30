@@ -5688,6 +5688,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|editStreams
+operator|==
+literal|null
+condition|)
+block|{
+comment|//errors can occur on storage directories
+comment|//before edit streams have been set up
+return|return;
+block|}
 name|ArrayList
 argument_list|<
 name|EditLogOutputStream

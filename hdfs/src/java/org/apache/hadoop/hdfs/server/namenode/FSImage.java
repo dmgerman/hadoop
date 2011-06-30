@@ -2188,6 +2188,15 @@ name|isUpgradeFinalized
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|errorSDs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|storage
 operator|.
 name|reportErrorsOnDirectories
@@ -2195,6 +2204,22 @@ argument_list|(
 name|errorSDs
 argument_list|)
 expr_stmt|;
+comment|//during upgrade, it's a fatal error to fail any storage directory
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Upgrade failed in "
+operator|+
+name|errorSDs
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" storage directory(ies), previously logged."
+argument_list|)
+throw|;
+block|}
 name|storage
 operator|.
 name|initializeDistributedUpgrade

@@ -3560,7 +3560,7 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Error reported on storage directory "
 operator|+
@@ -3600,7 +3600,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"About to remove corresponding storage: "
 operator|+
@@ -3629,7 +3629,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Unable to unlock bad storage directory: "
 operator|+
