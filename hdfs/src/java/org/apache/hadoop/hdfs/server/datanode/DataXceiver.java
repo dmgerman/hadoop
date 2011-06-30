@@ -1022,7 +1022,7 @@ return|return
 name|datanode
 return|;
 block|}
-comment|/**    * Read/write data from/to the DataXceiveServer.    */
+comment|/**    * Read/write data from/to the DataXceiverServer.    */
 DECL|method|run ()
 specifier|public
 name|void

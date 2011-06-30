@@ -571,7 +571,7 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer: "
+literal|":DataXceiverServer: "
 argument_list|,
 name|ie
 argument_list|)
@@ -592,7 +592,7 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer: Exiting due to: "
+literal|":DataXceiverServer: Exiting due to: "
 argument_list|,
 name|te
 argument_list|)
@@ -628,7 +628,7 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer: Close exception due to: "
+literal|":DataXceiverServer: Close exception due to: "
 argument_list|,
 name|ie
 argument_list|)
@@ -674,7 +674,7 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiveServer.kill(): "
+literal|":DataXceiverServer.kill(): "
 operator|+
 name|StringUtils
 operator|.

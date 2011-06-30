@@ -810,17 +810,17 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Restart the cluster with a new volume tolerated value.    * @param volTolerated    * @param manageCluster    * @throws IOException    */
-DECL|method|restartCluster (int volTolerated, boolean manageCluster)
+comment|/**     * Restart the datanodes with a new volume tolerated value.    * @param volTolerated number of dfs data dir failures to tolerate    * @param manageDfsDirs whether the mini cluster should manage data dirs    * @throws IOException    */
+DECL|method|restartDatanodes (int volTolerated, boolean manageDfsDirs)
 specifier|private
 name|void
-name|restartCluster
+name|restartDatanodes
 parameter_list|(
 name|int
 name|volTolerated
 parameter_list|,
 name|boolean
-name|manageCluster
+name|manageDfsDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -850,7 +850,7 @@ name|conf
 argument_list|,
 literal|1
 argument_list|,
-name|manageCluster
+name|manageDfsDirs
 argument_list|,
 literal|null
 argument_list|,
@@ -948,8 +948,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests for a given volumes to be tolerated and volumes failed.    *     * @param volumesTolerated    * @param volumesFailed    * @param expectedBPServiceState    * @param clusterManaged    * @throws IOException    * @throws InterruptedException    */
-DECL|method|testVolumeConfig (int volumesTolerated, int volumesFailed, boolean expectedBPServiceState, boolean clusterManaged)
+comment|/**    * Tests for a given volumes to be tolerated and volumes failed.    */
+DECL|method|testVolumeConfig (int volumesTolerated, int volumesFailed, boolean expectedBPServiceState, boolean manageDfsDirs)
 specifier|private
 name|void
 name|testVolumeConfig
@@ -964,7 +964,7 @@ name|boolean
 name|expectedBPServiceState
 parameter_list|,
 name|boolean
-name|clusterManaged
+name|manageDfsDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -993,6 +993,8 @@ name|dnIndex
 init|=
 literal|0
 decl_stmt|;
+comment|// Fail the current directory since invalid storage directory perms
+comment|// get fixed up automatically on datanode startup.
 name|File
 index|[]
 name|dirs
@@ -1055,11 +1057,11 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|restartCluster
+name|restartDatanodes
 argument_list|(
 name|volumesTolerated
 argument_list|,
-name|clusterManaged
+name|manageDfsDirs
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1091,7 +1093,6 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-comment|// restore its old permission
 for|for
 control|(
 name|File
@@ -1134,9 +1135,11 @@ operator|.
 name|mkdirs
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Couldn't chmod local vol"
+argument_list|,
+literal|0
 argument_list|,
 name|FileUtil
 operator|.
@@ -1149,8 +1152,6 @@ argument_list|()
 argument_list|,
 literal|"000"
 argument_list|)
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

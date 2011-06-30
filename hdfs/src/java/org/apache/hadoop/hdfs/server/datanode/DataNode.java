@@ -10587,7 +10587,7 @@ continue|continue;
 block|}
 comment|// drop any (illegal) authority in the URI for backwards compatibility
 name|File
-name|data
+name|dir
 init|=
 operator|new
 name|File
@@ -10609,7 +10609,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|data
+name|dir
 operator|.
 name|toURI
 argument_list|()
@@ -10622,27 +10622,31 @@ name|dirs
 operator|.
 name|add
 argument_list|(
-name|data
+name|dir
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|e
+name|ioe
 parameter_list|)
 block|{
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Invalid directory in: "
+literal|"Invalid "
 operator|+
 name|DFS_DATANODE_DATA_DIR_KEY
 operator|+
-literal|": "
+literal|" "
+operator|+
+name|dir
+operator|+
+literal|" : "
 argument_list|,
-name|e
+name|ioe
 argument_list|)
 expr_stmt|;
 name|invalidDirs
@@ -10654,7 +10658,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|data
+name|dir
 operator|.
 name|getCanonicalPath
 argument_list|()
@@ -10676,6 +10680,7 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -10689,6 +10694,7 @@ operator|+
 name|invalidDirs
 argument_list|)
 throw|;
+block|}
 return|return
 name|dirs
 return|;

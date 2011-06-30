@@ -5949,7 +5949,7 @@ name|dataDirs
 init|=
 name|conf
 operator|.
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|DFSConfigKeys
 operator|.
