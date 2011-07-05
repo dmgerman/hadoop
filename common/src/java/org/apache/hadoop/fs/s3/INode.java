@@ -106,6 +106,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Holds file metadata including type (regular file, or directory),  * and the list of blocks that are pointers to the data.  */
 end_comment
@@ -322,6 +336,8 @@ argument_list|(
 name|bytes
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|out
 operator|.
 name|writeByte
@@ -397,6 +413,21 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|out
+operator|=
+literal|null
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|ByteArrayInputStream
