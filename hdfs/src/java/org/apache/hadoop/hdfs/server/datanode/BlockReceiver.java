@@ -1361,6 +1361,16 @@ operator|=
 name|e
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|checksumOut
+argument_list|)
+expr_stmt|;
+block|}
 comment|// close block file
 try|try
 block|{
@@ -1425,6 +1435,16 @@ block|{
 name|ioe
 operator|=
 name|e
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
 expr_stmt|;
 block|}
 comment|// disk check
