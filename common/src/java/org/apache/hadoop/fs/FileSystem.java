@@ -3795,6 +3795,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|listing
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Error accessing "
+operator|+
+name|f
+argument_list|)
+throw|;
+block|}
 for|for
 control|(
 name|int

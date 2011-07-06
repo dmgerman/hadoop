@@ -66,6 +66,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -1158,6 +1174,8 @@ block|{
 comment|// expected
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusThrowsExceptionForNonExistentFile ()
 specifier|public
 name|void
@@ -1195,6 +1213,121 @@ name|fnfe
 parameter_list|)
 block|{
 comment|// expected
+block|}
+block|}
+comment|// TODO: update after fixing HADOOP-7352
+annotation|@
+name|Test
+DECL|method|testListStatusThrowsExceptionForUnreadableDir ()
+specifier|public
+name|void
+name|testListStatusThrowsExceptionForUnreadableDir
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Path
+name|testRootDir
+init|=
+name|getTestRootPath
+argument_list|(
+name|fSys
+argument_list|,
+literal|"test/hadoop/dir"
+argument_list|)
+decl_stmt|;
+name|Path
+name|obscuredDir
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testRootDir
+argument_list|,
+literal|"foo"
+argument_list|)
+decl_stmt|;
+name|Path
+name|subDir
+init|=
+operator|new
+name|Path
+argument_list|(
+name|obscuredDir
+argument_list|,
+literal|"bar"
+argument_list|)
+decl_stmt|;
+comment|//so foo is non-empty
+name|fSys
+operator|.
+name|mkdirs
+argument_list|(
+name|subDir
+argument_list|)
+expr_stmt|;
+name|fSys
+operator|.
+name|setPermission
+argument_list|(
+name|obscuredDir
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|//no access
+try|try
+block|{
+name|fSys
+operator|.
+name|listStatus
+argument_list|(
+name|obscuredDir
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Should throw IOException"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// expected
+block|}
+finally|finally
+block|{
+comment|// make sure the test directory can be deleted
+name|fSys
+operator|.
+name|setPermission
+argument_list|(
+name|obscuredDir
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0755
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|//default
 block|}
 block|}
 annotation|@
@@ -1522,6 +1655,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusFilterWithSomeMatches ()
 specifier|public
 name|void
@@ -5049,7 +5184,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|testRenameDirectoryAsNonExistentDirectory
+name|doTestRenameDirectoryAsNonExistentDirectory
 argument_list|(
 name|Rename
 operator|.
@@ -5059,7 +5194,7 @@ expr_stmt|;
 name|tearDown
 argument_list|()
 expr_stmt|;
-name|testRenameDirectoryAsNonExistentDirectory
+name|doTestRenameDirectoryAsNonExistentDirectory
 argument_list|(
 name|Rename
 operator|.
@@ -5067,10 +5202,10 @@ name|OVERWRITE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testRenameDirectoryAsNonExistentDirectory (Rename... options)
+DECL|method|doTestRenameDirectoryAsNonExistentDirectory (Rename... options)
 specifier|private
 name|void
-name|testRenameDirectoryAsNonExistentDirectory
+name|doTestRenameDirectoryAsNonExistentDirectory
 parameter_list|(
 name|Rename
 modifier|...
