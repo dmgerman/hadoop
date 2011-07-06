@@ -50,6 +50,20 @@ name|TaskType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics
+operator|.
+name|MetricsContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * A schedulable pool of jobs.  */
 end_comment
@@ -322,6 +336,23 @@ name|mapSchedulable
 else|:
 name|reduceSchedulable
 return|;
+block|}
+DECL|method|updateMetrics ()
+specifier|public
+name|void
+name|updateMetrics
+parameter_list|()
+block|{
+name|mapSchedulable
+operator|.
+name|updateMetrics
+argument_list|()
+expr_stmt|;
+name|reduceSchedulable
+operator|.
+name|updateMetrics
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

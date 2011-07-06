@@ -36,6 +36,20 @@ name|Collection
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TaskType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Dummy implementation of Schedulable for unit testing.  */
 end_comment
@@ -395,6 +409,39 @@ name|void
 name|updateDemand
 parameter_list|()
 block|{}
+annotation|@
+name|Override
+DECL|method|getTaskType ()
+specifier|public
+name|TaskType
+name|getTaskType
+parameter_list|()
+block|{
+return|return
+name|TaskType
+operator|.
+name|MAP
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMetricsContextName ()
+specifier|protected
+name|String
+name|getMetricsContextName
+parameter_list|()
+block|{
+return|return
+literal|"fake"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|updateMetrics ()
+name|void
+name|updateMetrics
+parameter_list|()
+block|{   }
 block|}
 end_class
 
