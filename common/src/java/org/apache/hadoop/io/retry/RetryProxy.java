@@ -50,7 +50,7 @@ specifier|public
 class|class
 name|RetryProxy
 block|{
-comment|/**    *<p>    * Create a proxy for an interface of an implementation class    * using the same retry policy for each method in the interface.     *</p>    * @param iface the interface that the retry will implement    * @param implementation the instance whose methods should be retried    * @param retryPolicy the policy for retirying method call failures    * @return the retry proxy    */
+comment|/**    *<p>    * Create a proxy for an interface of an implementation class    * using the same retry policy for each method in the interface.     *</p>    * @param iface the interface that the retry will implement    * @param implementation the instance whose methods should be retried    * @param retryPolicy the policy for retrying method call failures    * @return the retry proxy    */
 DECL|method|create (Class<?> iface, Object implementation, RetryPolicy retryPolicy)
 specifier|public
 specifier|static
@@ -71,13 +71,52 @@ name|retryPolicy
 parameter_list|)
 block|{
 return|return
+name|RetryProxy
+operator|.
+name|create
+argument_list|(
+name|iface
+argument_list|,
+operator|new
+name|DefaultFailoverProxyProvider
+argument_list|(
+name|iface
+argument_list|,
+name|implementation
+argument_list|)
+argument_list|,
+name|retryPolicy
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a proxy for an interface of implementations of that interface using    * the given {@link FailoverProxyProvider} and the same retry policy for each    * method in the interface.    *     * @param iface the interface that the retry will implement    * @param proxyProvider provides implementation instances whose methods should be retried    * @param retryPolicy the policy for retrying or failing over method call failures    * @return the retry proxy    */
+DECL|method|create (Class<?> iface, FailoverProxyProvider proxyProvider, RetryPolicy retryPolicy)
+specifier|public
+specifier|static
+name|Object
+name|create
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|iface
+parameter_list|,
+name|FailoverProxyProvider
+name|proxyProvider
+parameter_list|,
+name|RetryPolicy
+name|retryPolicy
+parameter_list|)
+block|{
+return|return
 name|Proxy
 operator|.
 name|newProxyInstance
 argument_list|(
-name|implementation
+name|proxyProvider
 operator|.
-name|getClass
+name|getInterface
 argument_list|()
 operator|.
 name|getClassLoader
@@ -96,7 +135,7 @@ operator|,
 operator|new
 name|RetryInvocationHandler
 argument_list|(
-name|implementation
+name|proxyProvider
 argument_list|,
 name|retryPolicy
 argument_list|)
@@ -106,7 +145,7 @@ block|}
 end_class
 
 begin_comment
-comment|/**    *<p>    * Create a proxy for an interface of an implementation class    * using the a set of retry policies specified by method name.    * If no retry policy is defined for a method then a default of    * {@link RetryPolicies#TRY_ONCE_THEN_FAIL} is used.    *</p>    * @param iface the interface that the retry will implement    * @param implementation the instance whose methods should be retried    * @param methodNameToPolicyMap a map of method names to retry policies    * @return the retry proxy    */
+comment|/**    * Create a proxy for an interface of an implementation class    * using the a set of retry policies specified by method name.    * If no retry policy is defined for a method then a default of    * {@link RetryPolicies#TRY_ONCE_THEN_FAIL} is used.    *     * @param iface the interface that the retry will implement    * @param implementation the instance whose methods should be retried    * @param methodNameToPolicyMap a map of method names to retry policies    * @return the retry proxy    */
 end_comment
 
 begin_function
@@ -135,13 +174,63 @@ name|methodNameToPolicyMap
 parameter_list|)
 block|{
 return|return
+name|RetryProxy
+operator|.
+name|create
+argument_list|(
+name|iface
+argument_list|,
+operator|new
+name|DefaultFailoverProxyProvider
+argument_list|(
+name|iface
+argument_list|,
+name|implementation
+argument_list|)
+argument_list|,
+name|methodNameToPolicyMap
+argument_list|)
+return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Create a proxy for an interface of implementations of that interface using    * the given {@link FailoverProxyProvider} and the a set of retry policies    * specified by method name. If no retry policy is defined for a method then a    * default of {@link RetryPolicies#TRY_ONCE_THEN_FAIL} is used.    *     * @param iface the interface that the retry will implement    * @param proxyProvider provides implementation instances whose methods should be retried    * @param methodNameToPolicyMapa map of method names to retry policies    * @return the retry proxy    */
+end_comment
+
+begin_function
+DECL|method|create (Class<?> iface, FailoverProxyProvider proxyProvider, Map<String,RetryPolicy> methodNameToPolicyMap)
+specifier|public
+specifier|static
+name|Object
+name|create
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|iface
+parameter_list|,
+name|FailoverProxyProvider
+name|proxyProvider
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|RetryPolicy
+argument_list|>
+name|methodNameToPolicyMap
+parameter_list|)
+block|{
+return|return
 name|Proxy
 operator|.
 name|newProxyInstance
 argument_list|(
-name|implementation
+name|proxyProvider
 operator|.
-name|getClass
+name|getInterface
 argument_list|()
 operator|.
 name|getClassLoader
@@ -160,7 +249,7 @@ operator|,
 operator|new
 name|RetryInvocationHandler
 argument_list|(
-name|implementation
+name|proxyProvider
 argument_list|,
 name|methodNameToPolicyMap
 argument_list|)

@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -29,6 +39,20 @@ operator|.
 name|ipc
 operator|.
 name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|StandbyException
 import|;
 end_import
 
@@ -46,7 +70,45 @@ name|UnreliableException
 extends|extends
 name|Exception
 block|{
+DECL|field|identifier
+specifier|private
+name|String
+name|identifier
+decl_stmt|;
+DECL|method|UnreliableException ()
+specifier|public
+name|UnreliableException
+parameter_list|()
+block|{
 comment|// no body
+block|}
+DECL|method|UnreliableException (String identifier)
+specifier|public
+name|UnreliableException
+parameter_list|(
+name|String
+name|identifier
+parameter_list|)
+block|{
+name|this
+operator|.
+name|identifier
+operator|=
+name|identifier
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMessage ()
+specifier|public
+name|String
+name|getMessage
+parameter_list|()
+block|{
+return|return
+name|identifier
+return|;
+block|}
 block|}
 DECL|class|FatalException
 specifier|public
@@ -99,6 +161,44 @@ name|failsTenTimesThenSucceeds
 parameter_list|()
 throws|throws
 name|UnreliableException
+function_decl|;
+DECL|method|succeedsOnceThenFailsReturningString ()
+specifier|public
+name|String
+name|succeedsOnceThenFailsReturningString
+parameter_list|()
+throws|throws
+name|UnreliableException
+throws|,
+name|StandbyException
+throws|,
+name|IOException
+function_decl|;
+annotation|@
+name|Idempotent
+DECL|method|succeedsOnceThenFailsReturningStringIdempotent ()
+specifier|public
+name|String
+name|succeedsOnceThenFailsReturningStringIdempotent
+parameter_list|()
+throws|throws
+name|UnreliableException
+throws|,
+name|StandbyException
+throws|,
+name|IOException
+function_decl|;
+DECL|method|succeedsTenTimesThenFailsReturningString ()
+specifier|public
+name|String
+name|succeedsTenTimesThenFailsReturningString
+parameter_list|()
+throws|throws
+name|UnreliableException
+throws|,
+name|StandbyException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_interface
