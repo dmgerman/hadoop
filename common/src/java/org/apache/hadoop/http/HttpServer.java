@@ -2357,11 +2357,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Added global filter"
+literal|"Added global filter '"
 operator|+
 name|name
 operator|+
-literal|" (class="
+literal|"' (class="
 operator|+
 name|classname
 operator|+
@@ -3763,6 +3763,13 @@ name|ServletException
 throws|,
 name|IOException
 block|{
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/plain; charset=UTF-8"
+argument_list|)
+expr_stmt|;
 comment|// Do the authorization
 if|if
 condition|(
