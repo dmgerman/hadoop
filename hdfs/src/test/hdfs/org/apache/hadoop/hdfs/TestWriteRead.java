@@ -261,6 +261,17 @@ name|ROOT_DIR
 init|=
 literal|"/tmp/"
 decl_stmt|;
+DECL|field|blockSize
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|blockSize
+init|=
+literal|1024
+operator|*
+literal|100
+decl_stmt|;
 comment|// command-line options. Different defaults for unit test vs real cluster
 DECL|field|filenameOption
 name|String
@@ -388,9 +399,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-literal|1024
-operator|*
-literal|100
+name|blockSize
 argument_list|)
 expr_stmt|;
 comment|// 100K
@@ -537,6 +546,11 @@ name|fname
 init|=
 name|filenameOption
 decl_stmt|;
+name|long
+name|rdBeginPos
+init|=
+literal|0
+decl_stmt|;
 comment|// need to run long enough to fail: takes 25 to 35 seec on Mac
 name|int
 name|stat
@@ -548,6 +562,8 @@ argument_list|,
 name|WR_NTIMES
 argument_list|,
 name|WR_CHUNK_SIZE
+argument_list|,
+name|rdBeginPos
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -590,6 +606,11 @@ operator|=
 literal|true
 expr_stmt|;
 comment|// position read
+name|long
+name|rdBeginPos
+init|=
+literal|0
+decl_stmt|;
 name|int
 name|stat
 init|=
@@ -600,6 +621,84 @@ argument_list|,
 name|WR_NTIMES
 argument_list|,
 name|WR_CHUNK_SIZE
+argument_list|,
+name|rdBeginPos
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|stat
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Junit Test position read of the current block being written. */
+annotation|@
+name|Test
+DECL|method|testReadPosCurrentBlock ()
+specifier|public
+name|void
+name|testReadPosCurrentBlock
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|String
+name|fname
+init|=
+name|filenameOption
+decl_stmt|;
+name|positionReadOption
+operator|=
+literal|true
+expr_stmt|;
+comment|// position read
+name|int
+name|wrChunkSize
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|blockSize
+argument_list|)
+operator|+
+call|(
+name|int
+call|)
+argument_list|(
+name|blockSize
+operator|/
+literal|2
+argument_list|)
+decl_stmt|;
+name|long
+name|rdBeginPos
+init|=
+name|blockSize
+operator|+
+literal|1
+decl_stmt|;
+name|int
+name|numTimes
+init|=
+literal|5
+decl_stmt|;
+name|int
+name|stat
+init|=
+name|testWriteAndRead
+argument_list|(
+name|fname
+argument_list|,
+name|numTimes
+argument_list|,
+name|wrChunkSize
+argument_list|,
+name|rdBeginPos
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -621,6 +720,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|long
+name|rdBeginPos
+init|=
+literal|0
+decl_stmt|;
 name|int
 name|stat
 init|=
@@ -631,6 +735,8 @@ argument_list|,
 name|loopOption
 argument_list|,
 name|chunkSizeOption
+argument_list|,
+name|rdBeginPos
 argument_list|)
 decl_stmt|;
 return|return
@@ -638,7 +744,7 @@ name|stat
 return|;
 block|}
 comment|/**    * Open the file to read from begin to end. Then close the file.     * Return number of bytes read.     * Support both sequential read and position read.    */
-DECL|method|readData (String fname, byte[] buffer, long byteExpected)
+DECL|method|readData (String fname, byte[] buffer, long byteExpected, long beginPosition)
 specifier|private
 name|long
 name|readData
@@ -652,17 +758,15 @@ name|buffer
 parameter_list|,
 name|long
 name|byteExpected
+parameter_list|,
+name|long
+name|beginPosition
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|long
 name|totalByteRead
-init|=
-literal|0
-decl_stmt|;
-name|long
-name|beginPosition
 init|=
 literal|0
 decl_stmt|;
@@ -1224,7 +1328,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Common routine to do position read while open the file for write.     * After each iteration of write, do a read of the file from begin to end.     * Return 0 on success, else number of failure.    */
-DECL|method|testWriteAndRead (String fname, int loopN, int chunkSize)
+DECL|method|testWriteAndRead (String fname, int loopN, int chunkSize, long readBeginPosition)
 specifier|private
 name|int
 name|testWriteAndRead
@@ -1237,6 +1341,9 @@ name|loopN
 parameter_list|,
 name|int
 name|chunkSize
+parameter_list|,
+name|long
+name|readBeginPosition
 parameter_list|)
 throws|throws
 name|IOException
@@ -1574,6 +1681,8 @@ argument_list|,
 name|inBuffer
 argument_list|,
 name|totalByteVisible
+argument_list|,
+name|readBeginPosition
 argument_list|)
 expr_stmt|;
 name|String
@@ -1688,6 +1797,8 @@ argument_list|,
 name|inBuffer
 argument_list|,
 name|totalByteVisible
+argument_list|,
+name|readBeginPosition
 argument_list|)
 expr_stmt|;
 name|String
