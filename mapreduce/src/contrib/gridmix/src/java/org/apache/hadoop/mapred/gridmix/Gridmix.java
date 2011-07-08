@@ -210,6 +210,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|gridmix
+operator|.
+name|GenerateData
+operator|.
+name|DataStatistics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|Job
@@ -472,6 +490,11 @@ specifier|private
 name|Statistics
 name|statistics
 decl_stmt|;
+DECL|field|summarizer
+specifier|private
+name|Summarizer
+name|summarizer
+decl_stmt|;
 comment|// Shutdown hook
 DECL|field|sdh
 specifier|private
@@ -483,6 +506,34 @@ operator|new
 name|Shutdown
 argument_list|()
 decl_stmt|;
+DECL|method|Gridmix (String[] args)
+name|Gridmix
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+block|{
+name|summarizer
+operator|=
+operator|new
+name|Summarizer
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|Gridmix ()
+name|Gridmix
+parameter_list|()
+block|{
+name|summarizer
+operator|=
+operator|new
+name|Summarizer
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Get the input data directory for Gridmix. Input directory is
 comment|//<io-path>/input
 DECL|method|getGridmixInputDataPath (Path ioPath)
@@ -861,6 +912,30 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|// get the gridmix job submission policy
+DECL|method|getJobSubmissionPolicy ( Configuration conf)
+specifier|protected
+specifier|static
+name|GridmixJobSubmissionPolicy
+name|getJobSubmissionPolicy
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|GridmixJobSubmissionPolicy
+operator|.
+name|getPolicy
+argument_list|(
+name|conf
+argument_list|,
+name|GridmixJobSubmissionPolicy
+operator|.
+name|STRESS
+argument_list|)
+return|;
+block|}
 comment|/**    * Create each component in the pipeline and start it.    * @param conf Configuration data, no keys specific to this context    * @param traceIn Either a Path to the trace data or&quot;-&quot; for    *                stdin    * @param ioPath&lt;ioPath&gt;/input/ is the dir from which input data is    *               read and&lt;ioPath&gt;/distributedCache/ is the gridmix    *               distributed cache directory.    * @param scratchDir Path into which job output is written    * @param startFlag Semaphore for starting job trace pipeline    */
 DECL|method|startThreads (Configuration conf, String traceIn, Path ioPath, Path scratchDir, CountDownLatch startFlag, UserResolver userResolver)
 specifier|private
@@ -901,15 +976,9 @@ decl_stmt|;
 name|GridmixJobSubmissionPolicy
 name|policy
 init|=
-name|GridmixJobSubmissionPolicy
-operator|.
-name|getPolicy
+name|getJobSubmissionPolicy
 argument_list|(
 name|conf
-argument_list|,
-name|GridmixJobSubmissionPolicy
-operator|.
-name|STRESS
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1079,6 +1148,27 @@ name|factory
 argument_list|)
 expr_stmt|;
 block|}
+comment|// add the gridmix run summarizer to the statistics
+name|statistics
+operator|.
+name|addJobStatsListeners
+argument_list|(
+name|summarizer
+operator|.
+name|getExecutionSummarizer
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|statistics
+operator|.
+name|addClusterStatsObservers
+argument_list|(
+name|summarizer
+operator|.
+name|getClusterSummarizer
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|monitor
 operator|.
 name|start
@@ -1323,6 +1413,28 @@ argument_list|)
 return|;
 block|}
 block|}
+argument_list|)
+expr_stmt|;
+comment|// print the run summary
+name|System
+operator|.
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"\n\n"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|summarizer
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1699,6 +1811,11 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|DataStatistics
+name|stats
+init|=
+literal|null
+decl_stmt|;
 name|InputStream
 name|trace
 init|=
@@ -1801,6 +1918,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// publish the data statistics
+name|stats
+operator|=
 name|GenerateData
 operator|.
 name|publishDataStatistics
@@ -1846,6 +1965,14 @@ return|return
 name|exitCode
 return|;
 block|}
+comment|// start the summarizer
+name|summarizer
+operator|.
+name|start
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|factory
 operator|.
 name|start
@@ -1994,6 +2121,31 @@ block|}
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|factory
+operator|!=
+literal|null
+condition|)
+block|{
+name|summarizer
+operator|.
+name|finalize
+argument_list|(
+name|factory
+argument_list|,
+name|traceIn
+argument_list|,
+name|genbytes
+argument_list|,
+name|userResolver
+argument_list|,
+name|stats
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|cleanup
@@ -2504,7 +2656,9 @@ argument_list|()
 argument_list|,
 operator|new
 name|Gridmix
-argument_list|()
+argument_list|(
+name|argv
+argument_list|)
 argument_list|,
 name|argv
 argument_list|)

@@ -666,6 +666,9 @@ name|job
 operator|.
 name|getJob
 argument_list|()
+operator|.
+name|getJobID
+argument_list|()
 operator|+
 literal|" submission failed "
 argument_list|,

@@ -340,7 +340,7 @@ name|job
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a submission failed job , such tht it can be communicated    * back to serial.    * TODO: Cleaner solution for this problem    * @param job    */
+comment|/**    * Add a submission failed job , such that it can be communicated    * back to serial.    * TODO: Cleaner solution for this problem    * @param job    */
 DECL|method|submissionFailed (Job job)
 specifier|public
 name|void
@@ -354,9 +354,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|" Job submission failed notify if anyone is waiting "
+literal|"Job submission failed notification for job "
 operator|+
 name|job
+operator|.
+name|getJobID
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

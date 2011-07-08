@@ -370,6 +370,24 @@ name|gridmix
 operator|.
 name|GenerateData
 operator|.
+name|DataStatistics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|gridmix
+operator|.
+name|GenerateData
+operator|.
 name|GenDataFormat
 import|;
 end_import
@@ -1652,7 +1670,7 @@ block|}
 comment|/** Publishes compression related data statistics. Following statistics are    * published    *<ul>    *<li>Total compressed input data size</li>    *<li>Number of compressed input data files</li>    *<li>Compression Ratio</li>    *<li>Text data dictionary size</li>    *<li>Random text word size</li>    *</ul>    */
 DECL|method|publishCompressedDataStatistics (Path inputDir, Configuration conf, long uncompressedDataSize)
 specifier|static
-name|void
+name|DataStatistics
 name|publishCompressedDataStatistics
 parameter_list|(
 name|Path
@@ -1865,6 +1883,17 @@ name|ratio
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+operator|new
+name|DataStatistics
+argument_list|(
+name|compressedDataSize
+argument_list|,
+name|numCompressedFiles
+argument_list|,
+literal|true
+argument_list|)
+return|;
 block|}
 comment|/**    * Enables/Disables compression emulation.    * @param conf Target configuration where the parameter     * {@value #COMPRESSION_EMULATION_ENABLE} will be set.     * @param val The value to be set.    */
 DECL|method|setCompressionEmulationEnabled (Configuration conf, boolean val)
