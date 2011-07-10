@@ -158,7 +158,7 @@ name|overwrite
 init|=
 literal|false
 decl_stmt|;
-comment|// TODO: commands should implement a -f to enable this
+comment|/**    *     * This method is used to enable the force(-f)  option while copying the files.    *     * @param flag true/false    */
 DECL|method|setOverwrite (boolean flag)
 specifier|protected
 name|void
