@@ -584,6 +584,12 @@ specifier|final
 name|BlocksMap
 name|blocksMap
 decl_stmt|;
+DECL|field|datanodeManager
+specifier|private
+specifier|final
+name|DatanodeManager
+name|datanodeManager
+decl_stmt|;
 comment|//
 comment|// Store blocks-->datanodedescriptor(s) map of corrupt replicas
 comment|//
@@ -809,6 +815,14 @@ argument_list|(
 name|capacity
 argument_list|,
 name|DEFAULT_MAP_LOAD_FACTOR
+argument_list|)
+expr_stmt|;
+name|datanodeManager
+operator|=
+operator|new
+name|DatanodeManager
+argument_list|(
+name|fsn
 argument_list|)
 expr_stmt|;
 block|}
@@ -1063,16 +1077,26 @@ name|shouldCheckForEnoughRacks
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|activate ()
+DECL|method|activate (Configuration conf)
 specifier|public
 name|void
 name|activate
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 name|pendingReplications
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|datanodeManager
+operator|.
+name|activate
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -1093,6 +1117,11 @@ name|stop
 argument_list|()
 expr_stmt|;
 name|blocksMap
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|datanodeManager
 operator|.
 name|close
 argument_list|()

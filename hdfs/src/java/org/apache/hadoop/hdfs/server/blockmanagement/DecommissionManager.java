@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -66,13 +66,41 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|namenode
 operator|.
-name|DatanodeDescriptor
+name|FSNamesystem
 import|;
 end_import
 
@@ -95,6 +123,14 @@ comment|/**  * Manage node decommissioning.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DecommissionManager
 class|class
 name|DecommissionManager
@@ -189,6 +225,8 @@ name|numNodesPerCheck
 expr_stmt|;
 block|}
 comment|/**      * Check decommission status of numNodesPerCheck nodes      * for every recheckInterval milliseconds.      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

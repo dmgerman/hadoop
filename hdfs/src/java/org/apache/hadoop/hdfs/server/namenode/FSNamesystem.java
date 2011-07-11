@@ -2405,6 +2405,8 @@ name|blockPoolId
 decl_stmt|;
 comment|/**    * Stores the datanode -> block map.      *<p>    * Done by storing a set of {@link DatanodeDescriptor} objects, sorted by     * storage id. In order to keep the storage map consistent it tracks     * all storages ever registered with the namenode.    * A descriptor corresponding to a specific storage id can be    *<ul>     *<li>added to the map if it is a new storage id;</li>    *<li>updated with a new datanode started as a replacement for the old one     * with the same storage id; and</li>    *<li>removed if and only if an existing datanode is restarted to serve a    * different storage id.</li>    *</ul><br>    * The list of the {@link DatanodeDescriptor}s in the map is checkpointed    * in the namespace image file. Only the {@link DatanodeInfo} part is     * persistent, the list of blocks is restored from the datanode block    * reports.     *<p>    * Mapping: StorageID -> DatanodeDescriptor    */
 DECL|field|datanodeMap
+specifier|public
+specifier|final
 name|NavigableMap
 argument_list|<
 name|String
@@ -2607,13 +2609,6 @@ DECL|field|hostsReader
 specifier|private
 name|HostsFileReader
 name|hostsReader
-decl_stmt|;
-DECL|field|dnthread
-specifier|private
-name|Daemon
-name|dnthread
-init|=
-literal|null
 decl_stmt|;
 DECL|field|maxFsObjects
 specifier|private
@@ -2991,7 +2986,9 @@ expr_stmt|;
 name|blockManager
 operator|.
 name|activate
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -3059,55 +3056,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|nnrmthread
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|dnthread
-operator|=
-operator|new
-name|Daemon
-argument_list|(
-operator|new
-name|DecommissionManager
-argument_list|(
-name|this
-argument_list|)
-operator|.
-operator|new
-name|Monitor
-argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_DECOMMISSION_INTERVAL_DEFAULT
-argument_list|)
-argument_list|,
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_DECOMMISSION_NODES_PER_INTERVAL_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_DECOMMISSION_NODES_PER_INTERVAL_DEFAULT
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|dnthread
 operator|.
 name|start
 argument_list|()
@@ -4192,17 +4140,6 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|dnthread
-operator|!=
-literal|null
-condition|)
-name|dnthread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
 name|smmthread
 operator|!=
 literal|null
@@ -4325,6 +4262,7 @@ block|}
 block|}
 comment|/** Is this name system running? */
 DECL|method|isRunning ()
+specifier|public
 name|boolean
 name|isRunning
 parameter_list|()
@@ -18810,6 +18748,7 @@ return|;
 block|}
 comment|/**    * Change, if appropriate, the admin state of a datanode to     * decommission completed. Return true if decommission is complete.    */
 DECL|method|checkDecommissionStateInternal (DatanodeDescriptor node)
+specifier|public
 name|boolean
 name|checkDecommissionStateInternal
 parameter_list|(
