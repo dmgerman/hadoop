@@ -216,6 +216,15 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|FRAMEWORK_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FRAMEWORK_NAME
+init|=
+literal|"mapreduce.framework.name"
+decl_stmt|;
 block|}
 end_interface
 
