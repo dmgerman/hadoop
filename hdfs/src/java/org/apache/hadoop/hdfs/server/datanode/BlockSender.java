@@ -2002,21 +2002,44 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|/* exception while writing to the client (well, with transferTo(),        * it could also be while reading from the local file).        */
+comment|/* Exception while writing to the client. Connection closure from        * the other end is mostly the case and we do not care much about        * it. But other things can go wrong, especially in transferTo(),        * which we do not want to ignore.        *        * The message parsing below should not be considered as a good        * coding example. NEVER do it to drive a program logic. NEVER.        * It was done here because the NIO throws an IOException for EPIPE.        */
+name|String
+name|ioem
+init|=
+name|e
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|ioem
+operator|.
+name|startsWith
+argument_list|(
+literal|"Broken pipe"
+argument_list|)
+operator|&&
+operator|!
+name|ioem
+operator|.
+name|startsWith
+argument_list|(
+literal|"Connection reset"
+argument_list|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
 literal|"BlockSender.sendChunks() exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
 argument_list|)
-argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ioeToSocketException
 argument_list|(
