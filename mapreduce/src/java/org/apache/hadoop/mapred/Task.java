@@ -4914,7 +4914,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|supportIsolationRunner
+name|keepTaskFiles
 argument_list|(
 name|conf
 argument_list|)
@@ -4967,10 +4967,10 @@ name|reporter
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|supportIsolationRunner (JobConf conf)
+DECL|method|keepTaskFiles (JobConf conf)
 specifier|protected
 name|boolean
-name|supportIsolationRunner
+name|keepTaskFiles
 parameter_list|(
 name|JobConf
 name|conf
