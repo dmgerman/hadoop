@@ -969,7 +969,9 @@ name|getBlacklistedTrackers
 argument_list|()
 return|;
 block|}
-comment|/**    * Get all the jobs in cluster.    *     * @return array of {@link Job}    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Get all the jobs in cluster.    *     * @return array of {@link Job}    * @throws IOException    * @throws InterruptedException    * @deprecated Use {@link #getAllJobStatuses()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getAllJobs ()
 specifier|public
 name|Job
@@ -989,6 +991,25 @@ operator|.
 name|getAllJobs
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/**    * Get job status for all jobs in the cluster.    * @return job status for all jobs in cluster    * @throws IOException    * @throws InterruptedException    */
+DECL|method|getAllJobStatuses ()
+specifier|public
+name|JobStatus
+index|[]
+name|getAllJobStatuses
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+return|return
+name|client
+operator|.
+name|getAllJobs
+argument_list|()
 return|;
 block|}
 comment|/**    * Grab the jobtracker system directory path where     * job-specific files will  be placed.    *     * @return the system directory where job-specific files are to be placed.    */
