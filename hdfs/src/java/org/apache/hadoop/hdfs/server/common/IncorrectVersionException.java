@@ -168,6 +168,48 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|IncorrectVersionException (String versionReported, String ofWhat, String versionExpected)
+specifier|public
+name|IncorrectVersionException
+parameter_list|(
+name|String
+name|versionReported
+parameter_list|,
+name|String
+name|ofWhat
+parameter_list|,
+name|String
+name|versionExpected
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|"Unexpected version "
+operator|+
+operator|(
+name|ofWhat
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+literal|"of "
+operator|+
+name|ofWhat
+operator|)
+operator|+
+literal|". Reported: "
+operator|+
+name|versionReported
+operator|+
+literal|". Expecting = "
+operator|+
+name|versionExpected
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
