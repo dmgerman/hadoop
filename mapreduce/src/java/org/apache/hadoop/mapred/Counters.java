@@ -248,7 +248,7 @@ name|lib
 operator|.
 name|input
 operator|.
-name|FileInputFormat
+name|FileInputFormatCounter
 import|;
 end_import
 
@@ -1949,18 +1949,6 @@ literal|"MAP_INPUT_BYTES"
 argument_list|)
 condition|)
 block|{
-name|group
-operator|=
-name|FileInputFormat
-operator|.
-name|COUNTER_GROUP
-expr_stmt|;
-name|name
-operator|=
-name|FileInputFormat
-operator|.
-name|BYTES_READ
-expr_stmt|;
 name|LOG
 operator|.
 name|warn
@@ -1972,6 +1960,14 @@ operator|+
 literal|" BYTES_READ as counter name instead"
 argument_list|)
 expr_stmt|;
+return|return
+name|findCounter
+argument_list|(
+name|FileInputFormatCounter
+operator|.
+name|BYTES_READ
+argument_list|)
+return|;
 block|}
 return|return
 name|getGroup

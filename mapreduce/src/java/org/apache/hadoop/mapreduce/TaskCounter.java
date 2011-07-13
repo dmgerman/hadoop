@@ -74,6 +74,9 @@ block|,
 DECL|enumConstant|MAP_OUTPUT_BYTES
 name|MAP_OUTPUT_BYTES
 block|,
+DECL|enumConstant|MAP_OUTPUT_MATERIALIZED_BYTES
+name|MAP_OUTPUT_MATERIALIZED_BYTES
+block|,
 DECL|enumConstant|SPLIT_RAW_BYTES
 name|SPLIT_RAW_BYTES
 block|,
