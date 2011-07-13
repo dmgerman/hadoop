@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -76,17 +76,39 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|classification
 operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
+name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_comment
+comment|/** A map from host names to datanode descriptors. */
+end_comment
+
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Host2NodesMap
 class|class
 name|Host2NodesMap

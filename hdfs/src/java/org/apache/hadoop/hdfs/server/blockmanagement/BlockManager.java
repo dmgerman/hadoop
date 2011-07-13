@@ -1127,6 +1127,17 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** @return the datanodeManager */
+DECL|method|getDatanodeManager ()
+specifier|public
+name|DatanodeManager
+name|getDatanodeManager
+parameter_list|()
+block|{
+return|return
+name|datanodeManager
+return|;
+block|}
 DECL|method|metaSave (PrintWriter out)
 specifier|public
 name|void

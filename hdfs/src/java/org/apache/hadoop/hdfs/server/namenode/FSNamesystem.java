@@ -2581,15 +2581,6 @@ name|SafeModeInfo
 name|safeMode
 decl_stmt|;
 comment|// safe mode information
-DECL|field|host2DataNodeMap
-specifier|private
-name|Host2NodesMap
-name|host2DataNodeMap
-init|=
-operator|new
-name|Host2NodesMap
-argument_list|()
-decl_stmt|;
 comment|/** datanode network toplogy */
 DECL|field|clusterMap
 specifier|public
@@ -5289,10 +5280,14 @@ literal|null
 condition|)
 block|{
 comment|//sort the blocks
+specifier|final
 name|DatanodeDescriptor
 name|client
 init|=
-name|host2DataNodeMap
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|getDatanodeByHost
 argument_list|(
@@ -8215,10 +8210,14 @@ argument_list|)
 throw|;
 block|}
 block|}
+specifier|final
 name|DatanodeDescriptor
 name|clientNode
 init|=
-name|host2DataNodeMap
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|getDatanodeByHost
 argument_list|(
@@ -14050,9 +14049,12 @@ decl_stmt|;
 name|DatanodeDescriptor
 name|nodeN
 init|=
-name|host2DataNodeMap
+name|blockManager
 operator|.
-name|getDatanodeByName
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getDatanodeByHost
 argument_list|(
 name|nodeReg
 operator|.
@@ -14095,6 +14097,11 @@ name|nodeN
 argument_list|)
 expr_stmt|;
 comment|// physically remove node from datanodeMap
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
 name|wipeDatanode
 argument_list|(
 name|nodeN
@@ -14356,7 +14363,12 @@ argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
-name|unprotectedAddDatanode
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|addDatanode
 argument_list|(
 name|nodeDescr
 argument_list|)
@@ -16112,154 +16124,6 @@ name|getName
 argument_list|()
 operator|+
 literal|" is out of service now."
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|unprotectedAddDatanode (DatanodeDescriptor nodeDescr)
-name|void
-name|unprotectedAddDatanode
-parameter_list|(
-name|DatanodeDescriptor
-name|nodeDescr
-parameter_list|)
-block|{
-assert|assert
-name|hasWriteLock
-argument_list|()
-assert|;
-comment|// To keep host2DataNodeMap consistent with datanodeMap,
-comment|// remove  from host2DataNodeMap the datanodeDescriptor removed
-comment|// from datanodeMap before adding nodeDescr to host2DataNodeMap.
-synchronized|synchronized
-init|(
-name|datanodeMap
-init|)
-block|{
-name|host2DataNodeMap
-operator|.
-name|remove
-argument_list|(
-name|datanodeMap
-operator|.
-name|put
-argument_list|(
-name|nodeDescr
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|,
-name|nodeDescr
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-name|host2DataNodeMap
-operator|.
-name|add
-argument_list|(
-name|nodeDescr
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* NameSystem.unprotectedAddDatanode: "
-operator|+
-literal|"node "
-operator|+
-name|nodeDescr
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" is added to datanodeMap."
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Physically remove node from datanodeMap.    *    * @param nodeID node    * @throws IOException    */
-DECL|method|wipeDatanode (DatanodeID nodeID)
-name|void
-name|wipeDatanode
-parameter_list|(
-name|DatanodeID
-name|nodeID
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|hasWriteLock
-argument_list|()
-assert|;
-name|String
-name|key
-init|=
-name|nodeID
-operator|.
-name|getStorageID
-argument_list|()
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|datanodeMap
-init|)
-block|{
-name|host2DataNodeMap
-operator|.
-name|remove
-argument_list|(
-name|datanodeMap
-operator|.
-name|remove
-argument_list|(
-name|key
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* NameSystem.wipeDatanode: "
-operator|+
-name|nodeID
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" storage "
-operator|+
-name|key
-operator|+
-literal|" is removed from datanodeMap."
 argument_list|)
 expr_stmt|;
 block|}
