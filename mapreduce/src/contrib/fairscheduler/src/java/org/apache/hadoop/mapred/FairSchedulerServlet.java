@@ -717,7 +717,7 @@ name|out
 operator|.
 name|printf
 argument_list|(
-literal|"<title>%s Fair Scheduler Admininstration</title>\n"
+literal|"<title>%s Fair Scheduler Administration</title>\n"
 argument_list|,
 name|hostname
 argument_list|)
