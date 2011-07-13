@@ -5378,14 +5378,9 @@ name|block
 operator|+
 literal|" to namenode : "
 operator|+
-literal|" Exception : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" Exception"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6383,14 +6378,9 @@ literal|"blockpool "
 operator|+
 name|blockPoolId
 operator|+
-literal|" is shutting down: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" is shutting down"
+argument_list|,
 name|re
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|shouldServiceRun
@@ -6403,12 +6393,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"RemoteException in offerService"
+argument_list|,
 name|re
-argument_list|)
 argument_list|)
 expr_stmt|;
 try|try
@@ -6459,12 +6446,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"IOException in offerService"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6917,14 +6901,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception in BPOfferService"
+argument_list|,
 name|ex
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -6954,7 +6933,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Received exception: "
+literal|"Received exception"
 argument_list|,
 name|ie
 argument_list|)
@@ -6974,7 +6953,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpected exception "
+literal|"Unexpected exception"
 argument_list|,
 name|ex
 argument_list|)
@@ -8825,14 +8804,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error reporting disk failure to NameNode: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Error reporting disk failure to NameNode"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -9823,13 +9797,8 @@ name|getName
 argument_list|()
 operator|+
 literal|" got "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// check if there are any disk problem
@@ -11065,12 +11034,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception in secureMain"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System

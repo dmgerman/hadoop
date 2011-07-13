@@ -1530,12 +1530,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception while closing CheckpointStorage"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1579,12 +1576,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception while getting login user"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|e
@@ -1774,19 +1768,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception in doCheckpoint: "
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception in doCheckpoint"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|e
@@ -1814,19 +1798,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Throwable Exception in doCheckpoint: "
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Throwable Exception in doCheckpoint"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|e

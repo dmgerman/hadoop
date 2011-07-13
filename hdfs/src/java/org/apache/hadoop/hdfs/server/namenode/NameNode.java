@@ -3844,12 +3844,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception while stopping httpserver"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -8835,12 +8832,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception in namenode join"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System

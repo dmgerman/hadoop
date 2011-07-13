@@ -690,20 +690,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1772,15 +1758,8 @@ operator|+
 literal|" to "
 operator|+
 name|remoteAddress
-operator|+
-literal|":\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ioe
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2610,14 +2589,9 @@ literal|" to mirror "
 operator|+
 name|mirrorNode
 operator|+
-literal|". continuing without the mirror.\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|". continuing without the mirror."
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

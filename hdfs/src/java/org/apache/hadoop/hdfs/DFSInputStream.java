@@ -402,20 +402,6 @@ name|Token
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/****************************************************************  * DFSInputStream provides bytes from a named file.  It handles   * negotiation of the namenode and various datanodes as necessary.  ****************************************************************/
 end_comment
@@ -2335,15 +2321,8 @@ operator|+
 literal|" from "
 operator|+
 name|currentNode
-operator|+
-literal|": "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2624,14 +2603,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DFS Read: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"DFS Read"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4327,15 +4301,8 @@ operator|+
 literal|" from "
 operator|+
 name|currentNode
-operator|+
-literal|": "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

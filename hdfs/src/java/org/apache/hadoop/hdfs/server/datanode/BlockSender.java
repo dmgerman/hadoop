@@ -268,20 +268,6 @@ name|DataChecksum
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Reads a block from the disk and sends it to a recipient.  */
 end_comment
@@ -1669,15 +1655,8 @@ operator|+
 literal|" for block "
 operator|+
 name|block
-operator|+
-literal|" got : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|IOUtils

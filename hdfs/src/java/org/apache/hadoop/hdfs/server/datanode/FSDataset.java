@@ -568,20 +568,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|DiskChecker
 operator|.
 name|DiskErrorException
@@ -11852,15 +11838,8 @@ argument_list|(
 literal|"Failed to repot bad block "
 operator|+
 name|corruptBlock
-operator|+
-literal|"Exception:"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

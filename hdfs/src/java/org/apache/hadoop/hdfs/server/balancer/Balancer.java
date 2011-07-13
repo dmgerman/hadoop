@@ -3169,12 +3169,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exception while getting block list"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
@@ -6958,12 +6955,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Exiting balancer due an exception"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System

@@ -506,20 +506,6 @@ name|Daemon
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * The class provides utilities for {@link Balancer} to access a NameNode  */
 end_comment
@@ -1298,12 +1284,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Failed to set keys"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

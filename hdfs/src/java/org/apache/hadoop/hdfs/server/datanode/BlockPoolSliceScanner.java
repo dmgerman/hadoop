@@ -380,20 +380,6 @@ name|IOUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Performs two types of scanning:  *<li> Gets block files from the data directories and reconciles the  * difference between the blocks on the disk and in memory in  * {@link FSDataset}</li>  *<li> Scans the data directories for block files under a block pool  * and verifies that the files are not corrupt</li>  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
 end_comment
@@ -2208,15 +2194,8 @@ operator|+
 literal|"Verification failed for "
 operator|+
 name|block
-operator|+
-literal|". Exception : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -2546,14 +2525,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not read previous verification times : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Could not read previous verification times"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3180,14 +3154,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"RuntimeException during BlockPoolScanner.scan() : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"RuntimeException during BlockPoolScanner.scan()"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -4301,14 +4270,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Could not reade next line in LogHandler : "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Could not read next line in LogHandler"
+argument_list|,
 name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

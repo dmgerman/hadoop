@@ -1025,14 +1025,9 @@ literal|"Ignoring storage directory "
 operator|+
 name|dataDir
 operator|+
-literal|" due to an exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|" due to an exception"
+argument_list|,
 name|ioe
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//continue with other good dirs

@@ -1190,20 +1190,6 @@ name|Progressable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/********************************************************  * DFSClient can connect to a Hadoop Filesystem and   * perform basic file tasks.  It uses the ClientProtocol  * to communicate with a NameNode daemon, and connects   * directly to DataNodes to read/write block data.  *  * Hadoop DFS users should obtain an instance of   * DistributedFileSystem, which uses DFSClient to handle  * filesystem tasks.  *  ********************************************************/
 end_comment
@@ -2922,14 +2908,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Problem getting block size: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|"Problem getting block size"
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -6908,14 +6889,9 @@ literal|"Found corruption while reading "
 operator|+
 name|file
 operator|+
-literal|".  Error repairing corrupt blocks.  Bad blocks remain. "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+literal|".  Error repairing corrupt blocks.  Bad blocks remain."
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

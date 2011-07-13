@@ -220,20 +220,6 @@ name|Daemon
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Server used for receiving/sending a block of data.  * This is created to listen for requests from clients or   * other DataNodes.  This small server does not use the   * Hadoop IPC mechanism.  */
 end_comment
@@ -628,7 +614,7 @@ operator|.
 name|getMachineName
 argument_list|()
 operator|+
-literal|":DataXceiverServer: Close exception due to: "
+literal|" :DataXceiverServer: close exception"
 argument_list|,
 name|ie
 argument_list|)
@@ -675,13 +661,8 @@ name|getMachineName
 argument_list|()
 operator|+
 literal|":DataXceiverServer.kill(): "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ie
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

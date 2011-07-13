@@ -436,20 +436,6 @@ name|PureJavaCrc32
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/** A class that receives a block and writes to its own disk, meanwhile  * may copies it to another site. If a throttler is provided,  * streaming throttling is also supported.  **/
 end_comment
@@ -1540,15 +1526,8 @@ operator|+
 literal|" to mirror "
 operator|+
 name|mirrorAddr
-operator|+
-literal|"\n"
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
+argument_list|,
 name|ioe
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
