@@ -103,6 +103,7 @@ name|Progressable
 name|progress
 decl_stmt|;
 DECL|method|JobContextImpl (JobConf conf, org.apache.hadoop.mapreduce.JobID jobId, Progressable progress)
+specifier|public
 name|JobContextImpl
 parameter_list|(
 name|JobConf
@@ -144,6 +145,7 @@ name|progress
 expr_stmt|;
 block|}
 DECL|method|JobContextImpl (JobConf conf, org.apache.hadoop.mapreduce.JobID jobId)
+specifier|public
 name|JobContextImpl
 parameter_list|(
 name|JobConf

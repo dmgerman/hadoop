@@ -112,6 +112,7 @@ name|Reporter
 name|reporter
 decl_stmt|;
 DECL|method|TaskAttemptContextImpl (JobConf conf, TaskAttemptID taskid)
+specifier|public
 name|TaskAttemptContextImpl
 parameter_list|(
 name|JobConf

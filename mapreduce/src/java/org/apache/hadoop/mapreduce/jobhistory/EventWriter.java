@@ -369,6 +369,11 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|out
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|close ()
 name|void

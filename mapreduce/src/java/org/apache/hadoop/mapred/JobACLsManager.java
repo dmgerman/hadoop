@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -132,14 +146,14 @@ class|class
 name|JobACLsManager
 block|{
 DECL|field|conf
-name|JobConf
+name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|JobACLsManager (JobConf conf)
+DECL|method|JobACLsManager (Configuration conf)
 specifier|public
 name|JobACLsManager
 parameter_list|(
-name|JobConf
+name|Configuration
 name|conf
 parameter_list|)
 block|{
@@ -169,7 +183,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Construct the jobACLs from the configuration so that they can be kept in    * the memory. If authorization is disabled on the JT, nothing is constructed    * and an empty map is returned.    *     * @return JobACL to AccessControlList map.    */
-DECL|method|constructJobACLs (JobConf conf)
+DECL|method|constructJobACLs (Configuration conf)
 name|Map
 argument_list|<
 name|JobACL
@@ -178,7 +192,7 @@ name|AccessControlList
 argument_list|>
 name|constructJobACLs
 parameter_list|(
-name|JobConf
+name|Configuration
 name|conf
 parameter_list|)
 block|{

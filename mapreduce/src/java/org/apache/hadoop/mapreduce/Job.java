@@ -3739,6 +3739,48 @@ name|reduceRanges
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|success
+init|=
+name|isSuccessful
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Job "
+operator|+
+name|jobId
+operator|+
+literal|" completed successfully"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Job "
+operator|+
+name|jobId
+operator|+
+literal|" failed with state "
+operator|+
+name|status
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|Counters
 name|counters
 init|=
@@ -3763,26 +3805,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Job "
-operator|+
-name|jobId
-operator|+
-literal|" completed with status: "
-operator|+
-name|getStatus
-argument_list|()
-operator|.
-name|getState
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
-name|isSuccessful
-argument_list|()
+name|success
 return|;
 block|}
 comment|/**    * @return true if the profile parameters indicate that this is using    * hprof, which generates profile files in a particular location    * that we can retrieve to the client.    */
