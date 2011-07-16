@@ -64,21 +64,39 @@ specifier|public
 class|class
 name|DFSClientAdapter
 block|{
-DECL|method|stopLeaseRenewer (DFSClient dfsClient)
+DECL|method|getDFSClient (DistributedFileSystem dfs)
+specifier|public
+specifier|static
+name|DFSClient
+name|getDFSClient
+parameter_list|(
+name|DistributedFileSystem
+name|dfs
+parameter_list|)
+block|{
+return|return
+name|dfs
+operator|.
+name|dfs
+return|;
+block|}
+DECL|method|stopLeaseRenewer (DistributedFileSystem dfs)
 specifier|public
 specifier|static
 name|void
 name|stopLeaseRenewer
 parameter_list|(
-name|DFSClient
-name|dfsClient
+name|DistributedFileSystem
+name|dfs
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 try|try
 block|{
-name|dfsClient
+name|dfs
+operator|.
+name|dfs
 operator|.
 name|leaserenewer
 operator|.

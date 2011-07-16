@@ -3073,6 +3073,13 @@ operator|+
 literal|"]"
 return|;
 block|}
+comment|/** @deprecated DFSClient should not be accessed directly. */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|Deprecated
 DECL|method|getClient ()
 specifier|public
 name|DFSClient
@@ -3330,7 +3337,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/** Return statistics for each datanode. */
+comment|/** @return datanode statistics. */
 DECL|method|getDataNodeStats ()
 specifier|public
 name|DatanodeInfo
@@ -3341,13 +3348,34 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|dfs
-operator|.
-name|datanodeReport
+name|getDataNodeStats
 argument_list|(
 name|DatanodeReportType
 operator|.
 name|ALL
+argument_list|)
+return|;
+block|}
+comment|/** @return datanode statistics for the given type. */
+DECL|method|getDataNodeStats (final DatanodeReportType type )
+specifier|public
+name|DatanodeInfo
+index|[]
+name|getDataNodeStats
+parameter_list|(
+specifier|final
+name|DatanodeReportType
+name|type
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|datanodeReport
+argument_list|(
+name|type
 argument_list|)
 return|;
 block|}

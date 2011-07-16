@@ -1203,9 +1203,6 @@ operator|.
 name|stopLeaseRenewer
 argument_list|(
 name|dfs
-operator|.
-name|getClient
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|FSDataOutputStream

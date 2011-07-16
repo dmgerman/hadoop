@@ -465,11 +465,9 @@ name|assertTrue
 argument_list|(
 name|dfs
 operator|.
-name|dfs
-operator|.
 name|exists
 argument_list|(
-name|filestr
+name|filepath
 argument_list|)
 argument_list|)
 expr_stmt|;
