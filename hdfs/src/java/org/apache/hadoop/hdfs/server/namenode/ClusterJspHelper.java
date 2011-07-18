@@ -3251,62 +3251,54 @@ name|missingBlocksCount
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|toXmlItemBlock
+name|toXmlItemBlockWithLink
 argument_list|(
 name|doc
 argument_list|,
-literal|"Live Datanode (Decommissioned)"
-argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|nn
 operator|.
 name|liveDatanodeCount
-argument_list|)
 operator|+
 literal|" ("
 operator|+
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|nn
 operator|.
 name|liveDecomCount
-argument_list|)
 operator|+
 literal|")"
+argument_list|,
+name|nn
+operator|.
+name|httpAddress
+operator|+
+literal|"/dfsnodelist.jsp?whatNodes=LIVE"
+argument_list|,
+literal|"Live Datanode (Decommissioned)"
 argument_list|)
 expr_stmt|;
-name|toXmlItemBlock
+name|toXmlItemBlockWithLink
 argument_list|(
 name|doc
 argument_list|,
-literal|"Dead Datanode (Decommissioned)"
-argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|nn
 operator|.
 name|deadDatanodeCount
-argument_list|)
 operator|+
 literal|" ("
 operator|+
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|nn
 operator|.
 name|deadDecomCount
-argument_list|)
 operator|+
 literal|")"
+argument_list|,
+name|nn
+operator|.
+name|httpAddress
+operator|+
+literal|"/dfsnodelist.jsp?whatNodes=DEAD"
+argument_list|,
+literal|"Dead Datanode (Decommissioned)"
 argument_list|)
 expr_stmt|;
 name|doc
@@ -4282,7 +4274,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Generate a XML block as such,<item label="Node" value="hostname"    * link="http://hostname:50070" />    */
-DECL|method|toXmlItemBlockWithLink (XMLOutputter doc, String host, String url, String nodetag)
+DECL|method|toXmlItemBlockWithLink (XMLOutputter doc, String value, String url, String label)
 specifier|private
 specifier|static
 name|void
@@ -4292,13 +4284,13 @@ name|XMLOutputter
 name|doc
 parameter_list|,
 name|String
-name|host
+name|value
 parameter_list|,
 name|String
 name|url
 parameter_list|,
 name|String
-name|nodetag
+name|label
 parameter_list|)
 throws|throws
 name|IOException
@@ -4316,7 +4308,7 @@ name|attribute
 argument_list|(
 literal|"label"
 argument_list|,
-name|nodetag
+name|label
 argument_list|)
 expr_stmt|;
 name|doc
@@ -4325,7 +4317,7 @@ name|attribute
 argument_list|(
 literal|"value"
 argument_list|,
-name|host
+name|value
 argument_list|)
 expr_stmt|;
 name|doc
