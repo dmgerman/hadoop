@@ -1192,13 +1192,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The ping interval is"
+literal|"The ping interval is "
 operator|+
 name|this
 operator|.
 name|pingInterval
 operator|+
-literal|"ms."
+literal|" ms."
 argument_list|)
 expr_stmt|;
 block|}

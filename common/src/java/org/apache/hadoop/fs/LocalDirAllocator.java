@@ -778,7 +778,7 @@ index|[
 name|i
 index|]
 operator|+
-literal|"is not writable\n"
+literal|" is not writable\n"
 argument_list|,
 name|de
 argument_list|)
