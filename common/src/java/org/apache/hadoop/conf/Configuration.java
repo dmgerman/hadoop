@@ -2488,7 +2488,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**     * Get the value of the<code>name</code> property as an<code>int</code>.    *       * If no such property exists, or if the specified value is not a valid    *<code>int</code>, then<code>defaultValue</code> is returned.    *     * @param name property name.    * @param defaultValue default value.    * @return property value as an<code>int</code>,     *         or<code>defaultValue</code>.     */
+comment|/**     * Get the value of the<code>name</code> property as an<code>int</code>.    *       * If no such property exists, the provided default value is returned,    * or if the specified value is not a valid<code>int</code>,    * then an error is thrown.    *     * @param name property name.    * @param defaultValue default value.    * @throws NumberFormatException when the value is invalid    * @return property value as an<code>int</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getInt (String name, int defaultValue)
 specifier|public
 name|int
@@ -2518,8 +2518,6 @@ condition|)
 return|return
 name|defaultValue
 return|;
-try|try
-block|{
 name|String
 name|hexString
 init|=
@@ -2555,17 +2553,6 @@ name|valueString
 argument_list|)
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|NumberFormatException
-name|e
-parameter_list|)
-block|{
-return|return
-name|defaultValue
-return|;
-block|}
-block|}
 comment|/**     * Set the value of the<code>name</code> property to an<code>int</code>.    *     * @param name property name.    * @param value<code>int</code> value of the property.    */
 DECL|method|setInt (String name, int value)
 specifier|public
@@ -2592,7 +2579,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Get the value of the<code>name</code> property as a<code>long</code>.      * If no such property is specified, or if the specified value is not a valid    *<code>long</code>, then<code>defaultValue</code> is returned.    *     * @param name property name.    * @param defaultValue default value.    * @return property value as a<code>long</code>,     *         or<code>defaultValue</code>.     */
+comment|/**     * Get the value of the<code>name</code> property as a<code>long</code>.      * If no such property exists, the provided default value is returned,    * or if the specified value is not a valid<code>long</code>,    * then an error is thrown.    *     * @param name property name.    * @param defaultValue default value.    * @throws NumberFormatException when the value is invalid    * @return property value as a<code>long</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getLong (String name, long defaultValue)
 specifier|public
 name|long
@@ -2622,8 +2609,6 @@ condition|)
 return|return
 name|defaultValue
 return|;
-try|try
-block|{
 name|String
 name|hexString
 init|=
@@ -2658,17 +2643,6 @@ argument_list|(
 name|valueString
 argument_list|)
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|NumberFormatException
-name|e
-parameter_list|)
-block|{
-return|return
-name|defaultValue
-return|;
-block|}
 block|}
 DECL|method|getHexDigits (String value)
 specifier|private
@@ -2790,7 +2764,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Get the value of the<code>name</code> property as a<code>float</code>.      * If no such property is specified, or if the specified value is not a valid    *<code>float</code>, then<code>defaultValue</code> is returned.    *     * @param name property name.    * @param defaultValue default value.    * @return property value as a<code>float</code>,     *         or<code>defaultValue</code>.     */
+comment|/**     * Get the value of the<code>name</code> property as a<code>float</code>.      * If no such property exists, the provided default value is returned,    * or if the specified value is not a valid<code>float</code>,    * then an error is thrown.    *    * @param name property name.    * @param defaultValue default value.    * @throws NumberFormatException when the value is invalid    * @return property value as a<code>float</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getFloat (String name, float defaultValue)
 specifier|public
 name|float
@@ -2820,8 +2794,6 @@ condition|)
 return|return
 name|defaultValue
 return|;
-try|try
-block|{
 return|return
 name|Float
 operator|.
@@ -2830,17 +2802,6 @@ argument_list|(
 name|valueString
 argument_list|)
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|NumberFormatException
-name|e
-parameter_list|)
-block|{
-return|return
-name|defaultValue
-return|;
-block|}
 block|}
 comment|/**    * Set the value of the<code>name</code> property to a<code>float</code>.    *     * @param name property name.    * @param value property value.    */
 DECL|method|setFloat (String name, float value)

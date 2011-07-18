@@ -2462,6 +2462,14 @@ argument_list|,
 literal|"-0x10"
 argument_list|)
 expr_stmt|;
+comment|// Invalid?
+name|appendProperty
+argument_list|(
+literal|"test.hex4"
+argument_list|,
+literal|"-0x10xyz"
+argument_list|)
+expr_stmt|;
 name|endConfig
 argument_list|()
 expr_stmt|;
@@ -2567,6 +2575,56 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|conf
+operator|.
+name|getLong
+argument_list|(
+literal|"test.hex4"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Property had invalid long value, but was read successfully."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+comment|// pass
+block|}
+try|try
+block|{
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"test.hex4"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Property had invalid int value, but was read successfully."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+comment|// pass
+block|}
 block|}
 DECL|method|testIntegerValues ()
 specifier|public
@@ -2619,6 +2677,13 @@ argument_list|,
 literal|" -20 "
 argument_list|)
 expr_stmt|;
+name|appendProperty
+argument_list|(
+literal|"test.int5"
+argument_list|,
+literal|" -20xyz "
+argument_list|)
+expr_stmt|;
 name|endConfig
 argument_list|()
 expr_stmt|;
@@ -2754,6 +2819,31 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"test.int5"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Property had invalid int value, but was read successfully."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+comment|// pass
+block|}
 block|}
 DECL|method|testBooleanValues ()
 specifier|public
@@ -2954,6 +3044,13 @@ argument_list|,
 literal|" -3.1415 "
 argument_list|)
 expr_stmt|;
+name|appendProperty
+argument_list|(
+literal|"test.float5"
+argument_list|,
+literal|"xyz-3.1415xyz"
+argument_list|)
+expr_stmt|;
 name|endConfig
 argument_list|()
 expr_stmt|;
@@ -3031,6 +3128,31 @@ literal|0.0f
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|conf
+operator|.
+name|getFloat
+argument_list|(
+literal|"test.float5"
+argument_list|,
+literal|0.0f
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Property had invalid float value, but was read successfully."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+comment|// pass
+block|}
 block|}
 DECL|method|testGetClass ()
 specifier|public
