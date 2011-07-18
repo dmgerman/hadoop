@@ -789,6 +789,47 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|level
+operator|.
+name|equals
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
+operator|.
+name|toLevel
+argument_list|(
+name|level
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+name|MARKER
+operator|+
+literal|"Bad level :<b>"
+operator|+
+name|level
+operator|+
+literal|"</b><br />"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|log
 operator|.
 name|setLevel
@@ -820,6 +861,7 @@ operator|+
 literal|" ...<br />"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|out
 operator|.
