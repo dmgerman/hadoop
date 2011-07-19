@@ -2349,11 +2349,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|printTokens (JobID jobId, Credentials credentials)
 specifier|private
 name|void
@@ -2421,13 +2416,6 @@ name|debug
 argument_list|(
 literal|"Submitting with "
 operator|+
-name|DFSClient
-operator|.
-name|stringifyToken
-argument_list|(
-operator|(
-name|Token
-argument_list|<
 name|org
 operator|.
 name|apache
@@ -2443,8 +2431,9 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
-argument_list|>
-operator|)
+operator|.
+name|stringifyToken
+argument_list|(
 name|token
 argument_list|)
 argument_list|)
