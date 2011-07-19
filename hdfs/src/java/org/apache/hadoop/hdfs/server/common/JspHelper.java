@@ -156,16 +156,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|TreeSet
 import|;
 end_import
@@ -632,16 +622,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|rand
-specifier|static
-specifier|final
-name|Random
-name|rand
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 comment|/** Private constructor for preventing creating JspHelper object. */
 DECL|method|JspHelper ()
 specifier|private
@@ -1066,7 +1046,10 @@ condition|)
 block|{
 name|index
 operator|=
-name|rand
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(

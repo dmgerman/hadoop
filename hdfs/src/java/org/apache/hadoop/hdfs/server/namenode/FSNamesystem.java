@@ -310,16 +310,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
 import|;
 end_import
@@ -2407,14 +2397,6 @@ name|String
 argument_list|,
 name|DatanodeDescriptor
 argument_list|>
-argument_list|()
-decl_stmt|;
-DECL|field|r
-name|Random
-name|r
-init|=
-operator|new
-name|Random
 argument_list|()
 decl_stmt|;
 comment|/**    * Stores a set of DatanodeDescriptor objects.    * This is a subset of {@link #datanodeMap}, containing nodes that are     * considered alive.    * The HeartbeatMonitor periodically checks for out-dated entries,    * and removes them from the list.    */
@@ -4583,7 +4565,10 @@ decl_stmt|;
 name|int
 name|startBlock
 init|=
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(
@@ -10435,15 +10420,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|field|randBlockId
-specifier|static
-name|Random
-name|randBlockId
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 comment|/**    * Allocate a block at the given pending filename    *     * @param src path to the file    * @param inodes INode representing each of the components of src.     *<code>inodes[inodes.length-1]</code> is the INode for the file.    *            * @throws QuotaExceededException If addition of block exceeds space quota    */
 DECL|method|allocateBlock (String src, INode[] inodes, DatanodeDescriptor targets[])
 specifier|private
@@ -10474,9 +10450,10 @@ init|=
 operator|new
 name|Block
 argument_list|(
-name|FSNamesystem
+name|DFSUtil
 operator|.
-name|randBlockId
+name|getRandom
+argument_list|()
 operator|.
 name|nextLong
 argument_list|()
@@ -10498,9 +10475,10 @@ name|b
 operator|.
 name|setBlockId
 argument_list|(
-name|FSNamesystem
+name|DFSUtil
 operator|.
-name|randBlockId
+name|getRandom
+argument_list|()
 operator|.
 name|nextLong
 argument_list|()
@@ -14513,7 +14491,10 @@ name|Integer
 operator|.
 name|toString
 argument_list|(
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|()

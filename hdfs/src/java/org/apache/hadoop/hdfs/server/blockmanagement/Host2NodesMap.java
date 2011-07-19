@@ -36,16 +36,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|locks
@@ -96,6 +86,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
 begin_comment
 comment|/** A map from host names to datanode descriptors. */
 end_comment
@@ -132,15 +136,6 @@ argument_list|,
 name|DatanodeDescriptor
 index|[]
 argument_list|>
-argument_list|()
-decl_stmt|;
-DECL|field|r
-specifier|private
-name|Random
-name|r
-init|=
-operator|new
-name|Random
 argument_list|()
 decl_stmt|;
 DECL|field|hostmapLock
@@ -691,7 +686,10 @@ comment|// more than one node
 return|return
 name|nodes
 index|[
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(

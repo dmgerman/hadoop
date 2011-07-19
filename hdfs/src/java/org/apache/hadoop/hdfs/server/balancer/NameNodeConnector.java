@@ -192,7 +192,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|DFSUtil
 import|;
 end_import
 
@@ -633,7 +633,7 @@ name|this
 operator|.
 name|client
 operator|=
-name|DFSClient
+name|DFSUtil
 operator|.
 name|createNamenode
 argument_list|(

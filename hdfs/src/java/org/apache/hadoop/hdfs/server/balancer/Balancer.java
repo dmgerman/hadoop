@@ -848,17 +848,6 @@ specifier|final
 name|double
 name|threshold
 decl_stmt|;
-DECL|field|rnd
-specifier|private
-specifier|final
-specifier|static
-name|Random
-name|rnd
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 comment|// all data node lists
 DECL|field|overUtilizedDatanodes
 specifier|private
@@ -3339,7 +3328,10 @@ block|{
 name|int
 name|randomIndex
 init|=
-name|rnd
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(

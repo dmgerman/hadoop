@@ -646,9 +646,10 @@ specifier|final
 name|String
 name|clienNamePostfix
 init|=
-name|DFSClient
+name|DFSUtil
 operator|.
-name|r
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|()

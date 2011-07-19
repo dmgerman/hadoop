@@ -23,6 +23,154 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTHENTICATION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyInt
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyLong
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doAnswer
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -202,20 +350,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSConfigKeys
 import|;
 end_import
@@ -230,7 +364,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSTestUtil
+name|DFSUtil
 import|;
 end_import
 
@@ -274,7 +408,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ClientDatanodeProtocol
+name|Block
 import|;
 end_import
 
@@ -290,7 +424,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|Block
+name|ClientDatanodeProtocol
 import|;
 end_import
 
@@ -585,130 +719,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|HADOOP_SECURITY_AUTHENTICATION
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyInt
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyLong
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doAnswer
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doReturn
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
 import|;
 end_import
 
@@ -2180,7 +2190,7 @@ condition|)
 block|{
 name|proxy
 operator|=
-name|DFSTestUtil
+name|DFSUtil
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(

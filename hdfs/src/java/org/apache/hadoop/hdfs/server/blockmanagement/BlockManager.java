@@ -136,16 +136,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|TreeMap
 import|;
 end_import
@@ -227,6 +217,20 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
@@ -791,14 +795,6 @@ name|int
 name|replIndex
 init|=
 literal|0
-decl_stmt|;
-DECL|field|r
-name|Random
-name|r
-init|=
-operator|new
-name|Random
-argument_list|()
 decl_stmt|;
 comment|// for block replicas placement
 DECL|field|replicator
@@ -3690,7 +3686,10 @@ block|{
 name|int
 name|keyIndex
 init|=
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(
@@ -3735,7 +3734,10 @@ block|{
 name|int
 name|keyIndex
 init|=
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(
@@ -5231,7 +5233,10 @@ comment|// this to prevent from deterministically selecting the same node even
 comment|// if the node failed to replicate the block on previous iterations
 if|if
 condition|(
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextBoolean
 argument_list|()

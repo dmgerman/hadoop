@@ -23,12 +23,20 @@ package|;
 end_package
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Random
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|impl
+operator|.
+name|MsInfo
+operator|.
+name|SessionId
 import|;
 end_import
 
@@ -71,6 +79,20 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
@@ -197,24 +219,6 @@ operator|.
 name|source
 operator|.
 name|JvmMetrics
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|impl
-operator|.
-name|MsInfo
-operator|.
-name|*
 import|;
 end_import
 
@@ -379,16 +383,6 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|field|rng
-specifier|static
-specifier|final
-name|Random
-name|rng
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 DECL|method|DataNodeMetrics (String name, String sessionId)
 specifier|public
 name|DataNodeMetrics
@@ -473,7 +467,10 @@ argument_list|()
 condition|?
 literal|"UndefinedDataNodeName"
 operator|+
-name|rng
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|()

@@ -535,7 +535,7 @@ decl_stmt|;
 name|ClientProtocol
 name|namenode
 init|=
-name|DFSClient
+name|DFSUtil
 operator|.
 name|createNamenode
 argument_list|(
@@ -1651,11 +1651,6 @@ operator|+
 name|filename
 argument_list|)
 expr_stmt|;
-name|int
-name|iters
-init|=
-literal|0
-decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1730,15 +1725,6 @@ operator|<
 name|expected
 condition|)
 block|{
-if|if
-condition|(
-literal|true
-operator|||
-name|iters
-operator|>
-literal|0
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -1761,7 +1747,6 @@ operator|+
 literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|replOk
 operator|=
 literal|false
@@ -1776,9 +1761,6 @@ condition|)
 block|{
 return|return;
 block|}
-name|iters
-operator|++
-expr_stmt|;
 if|if
 condition|(
 name|maxWaitSec

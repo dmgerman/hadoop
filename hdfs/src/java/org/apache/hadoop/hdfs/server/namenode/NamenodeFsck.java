@@ -268,6 +268,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -3258,14 +3272,6 @@ argument_list|)
 throw|;
 block|}
 comment|/*    * XXX (ab) See comment above for copyBlock().    *    * Pick the best node from which to stream the data.    * That's the local one, if available.    */
-DECL|field|r
-name|Random
-name|r
-init|=
-operator|new
-name|Random
-argument_list|()
-decl_stmt|;
 DECL|method|bestNode (DFSClient dfs, DatanodeInfo[] nodes, TreeSet<DatanodeInfo> deadNodes)
 specifier|private
 name|DatanodeInfo
@@ -3326,7 +3332,10 @@ name|chosenNode
 operator|=
 name|nodes
 index|[
-name|r
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
 operator|.
 name|nextInt
 argument_list|(

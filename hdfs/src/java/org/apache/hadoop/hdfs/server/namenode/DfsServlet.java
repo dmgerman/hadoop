@@ -158,7 +158,21 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -225,20 +239,6 @@ operator|.
 name|common
 operator|.
 name|JspHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
 import|;
 end_import
 
@@ -545,7 +545,7 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
-name|DFSClient
+name|DFSUtil
 operator|.
 name|createNamenode
 argument_list|(

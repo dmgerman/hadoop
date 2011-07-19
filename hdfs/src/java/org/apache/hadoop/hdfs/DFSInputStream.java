@@ -218,22 +218,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|ClientDatanodeProtocol
 import|;
 end_import
@@ -251,6 +235,22 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ExtendedBlock
 import|;
 end_import
 
@@ -302,7 +302,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|InvalidBlockTokenException
+name|BlockTokenIdentifier
 import|;
 end_import
 
@@ -322,7 +322,7 @@ name|token
 operator|.
 name|block
 operator|.
-name|BlockTokenIdentifier
+name|InvalidBlockTokenException
 import|;
 end_import
 
@@ -940,7 +940,7 @@ try|try
 block|{
 name|cdp
 operator|=
-name|DFSClient
+name|DFSUtil
 operator|.
 name|createClientDatanodeProtocolProxy
 argument_list|(
@@ -2936,9 +2936,10 @@ operator|+
 literal|1
 operator|)
 operator|*
-name|dfsClient
+name|DFSUtil
 operator|.
-name|r
+name|getRandom
+argument_list|()
 operator|.
 name|nextDouble
 argument_list|()
