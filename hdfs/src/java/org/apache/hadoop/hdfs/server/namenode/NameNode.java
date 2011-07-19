@@ -1104,20 +1104,6 @@ name|hadoop
 operator|.
 name|net
 operator|.
-name|NetworkTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
 name|Node
 import|;
 end_import
@@ -7266,19 +7252,6 @@ parameter_list|()
 block|{
 return|return
 name|httpAddress
-return|;
-block|}
-DECL|method|getNetworkTopology ()
-name|NetworkTopology
-name|getNetworkTopology
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|namesystem
-operator|.
-name|clusterMap
 return|;
 block|}
 comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf    * @param isConfirmationNeeded    * @return true if formatting was aborted, false otherwise    * @throws IOException    */

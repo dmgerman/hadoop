@@ -548,13 +548,12 @@ literal|"name.node"
 argument_list|)
 decl_stmt|;
 return|return
-name|nn
-operator|.
-name|getNamesystem
-argument_list|()
+name|NamenodeJspHelper
 operator|.
 name|getRandomDatanode
-argument_list|()
+argument_list|(
+name|nn
+argument_list|)
 return|;
 block|}
 return|return

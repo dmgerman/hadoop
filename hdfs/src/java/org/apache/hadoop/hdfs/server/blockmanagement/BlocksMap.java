@@ -219,12 +219,10 @@ name|BlockInfo
 argument_list|>
 name|blocks
 decl_stmt|;
-DECL|method|BlocksMap (int initialCapacity, float loadFactor)
+DECL|method|BlocksMap (final float loadFactor)
 name|BlocksMap
 parameter_list|(
-name|int
-name|initialCapacity
-parameter_list|,
+specifier|final
 name|float
 name|loadFactor
 parameter_list|)

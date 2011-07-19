@@ -374,10 +374,12 @@ name|conf
 argument_list|,
 name|nn
 argument_list|,
-name|nn
+name|NamenodeJspHelper
 operator|.
 name|getNetworkTopology
-argument_list|()
+argument_list|(
+name|nn
+argument_list|)
 argument_list|,
 name|pmap
 argument_list|,

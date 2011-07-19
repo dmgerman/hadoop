@@ -144,24 +144,6 @@ name|ExtendedBlock
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
-import|;
-end_import
-
 begin_class
 DECL|class|TestUnderReplicatedBlocks
 specifier|public
@@ -269,12 +251,15 @@ expr_stmt|;
 comment|// remove one replica from the blocksMap so block becomes under-replicated
 comment|// but the block does not get put into the under-replicated blocks queue
 specifier|final
-name|FSNamesystem
-name|namesystem
+name|BlockManager
+name|bm
 init|=
 name|cluster
 operator|.
 name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
 argument_list|()
 decl_stmt|;
 name|ExtendedBlock
@@ -292,9 +277,7 @@ decl_stmt|;
 name|DatanodeDescriptor
 name|dn
 init|=
-name|namesystem
-operator|.
-name|blockManager
+name|bm
 operator|.
 name|blocksMap
 operator|.
@@ -309,9 +292,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|namesystem
-operator|.
-name|blockManager
+name|bm
 operator|.
 name|addToInvalidates
 argument_list|(
@@ -323,9 +304,7 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
-name|namesystem
-operator|.
-name|blockManager
+name|bm
 operator|.
 name|blocksMap
 operator|.

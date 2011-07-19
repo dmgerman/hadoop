@@ -32,6 +32,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -124,9 +144,39 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|LocatedBlock
 import|;
 end_import
 
@@ -145,6 +195,20 @@ operator|.
 name|namenode
 operator|.
 name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetworkTopology
 import|;
 end_import
 
@@ -200,6 +264,18 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
+comment|/** Cluster network topology */
+DECL|field|networktopology
+specifier|private
+specifier|final
+name|NetworkTopology
+name|networktopology
+init|=
+operator|new
+name|NetworkTopology
+argument_list|()
+decl_stmt|;
+comment|/** Host names to datanode descriptors mapping. */
 DECL|field|host2DatanodeMap
 specifier|private
 specifier|final
@@ -308,6 +384,82 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** @return the network topology. */
+DECL|method|getNetworkTopology ()
+specifier|public
+name|NetworkTopology
+name|getNetworkTopology
+parameter_list|()
+block|{
+return|return
+name|networktopology
+return|;
+block|}
+comment|/** Sort the located blocks by the distance to the target host. */
+DECL|method|sortLocatedBlocks (final String targethost, final List<LocatedBlock> locatedblocks)
+specifier|public
+name|void
+name|sortLocatedBlocks
+parameter_list|(
+specifier|final
+name|String
+name|targethost
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|locatedblocks
+parameter_list|)
+block|{
+comment|//sort the blocks
+specifier|final
+name|DatanodeDescriptor
+name|client
+init|=
+name|getDatanodeByHost
+argument_list|(
+name|targethost
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|LocatedBlock
+name|b
+range|:
+name|locatedblocks
+control|)
+block|{
+name|networktopology
+operator|.
+name|pseudoSortByDistance
+argument_list|(
+name|client
+argument_list|,
+name|b
+operator|.
+name|getLocations
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Move decommissioned datanodes to the bottom
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|b
+operator|.
+name|getLocations
+argument_list|()
+argument_list|,
+name|DFSUtil
+operator|.
+name|DECOM_COMPARATOR
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** @return the datanode descriptor for the host. */
 DECL|method|getDatanodeByHost (final String host)
 specifier|public
@@ -376,6 +528,13 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
+name|networktopology
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -394,7 +553,7 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
-literal|".unprotectedAddDatanode: "
+literal|".addDatanode: "
 operator|+
 literal|"node "
 operator|+
