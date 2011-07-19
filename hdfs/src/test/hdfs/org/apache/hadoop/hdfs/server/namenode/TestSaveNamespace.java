@@ -614,7 +614,7 @@ name|conf
 argument_list|,
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -930,7 +930,7 @@ name|conf
 argument_list|,
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1360,7 +1360,7 @@ name|conf
 argument_list|,
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1634,7 +1634,7 @@ name|conf
 argument_list|,
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil

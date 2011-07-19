@@ -5680,7 +5680,7 @@ name|isRole
 argument_list|(
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 condition|)
 name|msg

@@ -229,7 +229,7 @@ default|default:
 return|return
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 return|;
 block|}
 block|}
@@ -319,8 +319,8 @@ specifier|public
 enum|enum
 name|NamenodeRole
 block|{
-DECL|enumConstant|ACTIVE
-name|ACTIVE
+DECL|enumConstant|NAMENODE
+name|NAMENODE
 argument_list|(
 literal|"NameNode"
 argument_list|)
@@ -335,12 +335,6 @@ DECL|enumConstant|CHECKPOINT
 name|CHECKPOINT
 argument_list|(
 literal|"Checkpoint Node"
-argument_list|)
-block|,
-DECL|enumConstant|STANDBY
-name|STANDBY
-argument_list|(
-literal|"Standby Node"
 argument_list|)
 block|;
 DECL|field|description

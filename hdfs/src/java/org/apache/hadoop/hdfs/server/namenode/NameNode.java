@@ -2800,7 +2800,7 @@ name|isRole
 argument_list|(
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 operator|)
 operator|&&
@@ -3663,7 +3663,7 @@ name|conf
 argument_list|,
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 expr_stmt|;
 block|}
@@ -4095,7 +4095,7 @@ name|isRole
 argument_list|(
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 condition|)
 throw|throw
@@ -4146,7 +4146,7 @@ name|isRole
 argument_list|(
 name|NamenodeRole
 operator|.
-name|ACTIVE
+name|NAMENODE
 argument_list|)
 condition|)
 throw|throw
