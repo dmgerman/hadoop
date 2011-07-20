@@ -82,16 +82,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -244,6 +234,50 @@ name|Scanner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|NativeCodeLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * Byte arrays test case class using GZ compression codec, base class of none  * and LZO compression classes.  *   */
 end_comment
@@ -253,8 +287,6 @@ DECL|class|TestTFileByteArrays
 specifier|public
 class|class
 name|TestTFileByteArrays
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -376,14 +408,19 @@ name|outputFile
 init|=
 literal|"TFileTestByteArrays"
 decl_stmt|;
-comment|/*    * pre-sampled numbers of records in one block, based on the given the    * generated key and value strings    */
-comment|// private int records1stBlock = 4314;
-comment|// private int records2ndBlock = 4108;
+comment|/*    * pre-sampled numbers of records in one block, based on the given the    * generated key and value strings. This is slightly different based on    * whether or not the native libs are present.    */
 DECL|field|records1stBlock
 specifier|private
 name|int
 name|records1stBlock
 init|=
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|?
+literal|5674
+else|:
 literal|4480
 decl_stmt|;
 DECL|field|records2ndBlock
@@ -391,6 +428,13 @@ specifier|private
 name|int
 name|records2ndBlock
 init|=
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|?
+literal|5574
+else|:
 literal|4263
 decl_stmt|;
 DECL|method|init (String compression, String comparator, String outputFile, int numRecords1stBlock, int numRecords2ndBlock)
@@ -414,23 +458,14 @@ name|int
 name|numRecords2ndBlock
 parameter_list|)
 block|{
-name|this
-operator|.
+name|init
+argument_list|(
 name|compression
-operator|=
-name|compression
-expr_stmt|;
-name|this
-operator|.
+argument_list|,
 name|comparator
-operator|=
-name|comparator
-expr_stmt|;
-name|this
-operator|.
+argument_list|,
 name|outputFile
-operator|=
-name|outputFile
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -445,8 +480,42 @@ operator|=
 name|numRecords2ndBlock
 expr_stmt|;
 block|}
+DECL|method|init (String compression, String comparator, String outputFile)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|String
+name|compression
+parameter_list|,
+name|String
+name|comparator
+parameter_list|,
+name|String
+name|outputFile
+parameter_list|)
+block|{
+name|this
+operator|.
+name|compression
+operator|=
+name|compression
+expr_stmt|;
+name|this
+operator|.
+name|comparator
+operator|=
+name|comparator
+expr_stmt|;
+name|this
+operator|.
+name|outputFile
+operator|=
+name|outputFile
+expr_stmt|;
+block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -507,7 +576,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -531,6 +600,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNoDataEntry ()
 specifier|public
 name|void
@@ -612,6 +683,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOneDataEntry ()
 specifier|public
 name|void
@@ -637,8 +710,6 @@ argument_list|)
 expr_stmt|;
 name|checkBlockIndex
 argument_list|(
-literal|1
-argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -646,33 +717,27 @@ argument_list|)
 expr_stmt|;
 name|readValueBeforeKey
 argument_list|(
-literal|1
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|1
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readValueWithoutKey
 argument_list|(
-literal|1
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|1
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTwoDataEntries ()
 specifier|public
 name|void
@@ -698,6 +763,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Fill up exactly one block.    *     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testOneBlock ()
 specifier|public
 name|void
@@ -726,8 +793,6 @@ comment|// last key should be in the first block (block 0)
 name|checkBlockIndex
 argument_list|(
 name|records1stBlock
-argument_list|,
-name|records1stBlock
 operator|-
 literal|1
 argument_list|,
@@ -736,6 +801,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * One block plus one record.    *     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testOneBlockPlusOneEntry ()
 specifier|public
 name|void
@@ -766,10 +833,6 @@ expr_stmt|;
 name|checkBlockIndex
 argument_list|(
 name|records1stBlock
-operator|+
-literal|1
-argument_list|,
-name|records1stBlock
 operator|-
 literal|1
 argument_list|,
@@ -779,15 +842,13 @@ expr_stmt|;
 name|checkBlockIndex
 argument_list|(
 name|records1stBlock
-operator|+
-literal|1
-argument_list|,
-name|records1stBlock
 argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTwoBlocks ()
 specifier|public
 name|void
@@ -819,16 +880,14 @@ name|checkBlockIndex
 argument_list|(
 name|records1stBlock
 operator|+
-literal|5
-argument_list|,
-name|records1stBlock
-operator|+
 literal|4
 argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testThreeBlocks ()
 specifier|public
 name|void
@@ -866,12 +925,6 @@ literal|2
 operator|*
 name|records1stBlock
 operator|+
-literal|5
-argument_list|,
-literal|2
-operator|*
-name|records1stBlock
-operator|+
 literal|4
 argument_list|,
 literal|2
@@ -880,45 +933,21 @@ expr_stmt|;
 comment|// 1st key in file
 name|readValueBeforeKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readValueWithoutKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
@@ -929,23 +958,11 @@ literal|2
 operator|*
 name|records1stBlock
 operator|+
-literal|5
-argument_list|,
-literal|2
-operator|*
-name|records1stBlock
-operator|+
 literal|4
 argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|2
 operator|*
 name|records1stBlock
@@ -959,23 +976,11 @@ literal|2
 operator|*
 name|records1stBlock
 operator|+
-literal|5
-argument_list|,
-literal|2
-operator|*
-name|records1stBlock
-operator|+
 literal|4
 argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 literal|2
 operator|*
 name|records1stBlock
@@ -986,12 +991,6 @@ expr_stmt|;
 comment|// 1st key in mid block, verify block indexes then read
 name|checkBlockIndex
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|-
 literal|1
@@ -1001,12 +1000,6 @@ argument_list|)
 expr_stmt|;
 name|checkBlockIndex
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 argument_list|,
 literal|1
@@ -1014,57 +1007,27 @@ argument_list|)
 expr_stmt|;
 name|readValueBeforeKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 argument_list|)
 expr_stmt|;
 name|readValueWithoutKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 argument_list|)
 expr_stmt|;
 comment|// last key in mid block, verify block indexes then read
 name|checkBlockIndex
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1076,12 +1039,6 @@ argument_list|)
 expr_stmt|;
 name|checkBlockIndex
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1091,12 +1048,6 @@ argument_list|)
 expr_stmt|;
 name|readValueBeforeKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1106,12 +1057,6 @@ argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1121,12 +1066,6 @@ argument_list|)
 expr_stmt|;
 name|readValueWithoutKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1136,12 +1075,6 @@ argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 name|records2ndBlock
@@ -1152,12 +1085,6 @@ expr_stmt|;
 comment|// mid in mid block
 name|readValueBeforeKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 literal|10
@@ -1165,12 +1092,6 @@ argument_list|)
 expr_stmt|;
 name|readKeyWithoutValue
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 literal|10
@@ -1178,12 +1099,6 @@ argument_list|)
 expr_stmt|;
 name|readValueWithoutKey
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 literal|10
@@ -1191,12 +1106,6 @@ argument_list|)
 expr_stmt|;
 name|readKeyManyTimes
 argument_list|(
-literal|2
-operator|*
-name|records1stBlock
-operator|+
-literal|5
-argument_list|,
 name|records1stBlock
 operator|+
 literal|10
@@ -1241,6 +1150,8 @@ operator|.
 name|endLocation
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLocate ()
 specifier|public
 name|void
@@ -1295,9 +1206,6 @@ operator|.
 name|createScanner
 argument_list|()
 decl_stmt|;
-name|Location
-name|loc2
-init|=
 name|locate
 argument_list|(
 name|scanner
@@ -1305,10 +1213,6 @@ argument_list|,
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-literal|3
-operator|*
-name|records1stBlock
 argument_list|,
 literal|2
 argument_list|)
@@ -1316,10 +1220,7 @@ operator|.
 name|getBytes
 argument_list|()
 argument_list|)
-decl_stmt|;
-name|Location
-name|locLastIn1stBlock
-init|=
+expr_stmt|;
 name|locate
 argument_list|(
 name|scanner
@@ -1327,10 +1228,6 @@ argument_list|,
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-literal|3
-operator|*
-name|records1stBlock
 argument_list|,
 name|records1stBlock
 operator|-
@@ -1340,10 +1237,7 @@ operator|.
 name|getBytes
 argument_list|()
 argument_list|)
-decl_stmt|;
-name|Location
-name|locFirstIn2ndBlock
-init|=
+expr_stmt|;
 name|locate
 argument_list|(
 name|scanner
@@ -1352,17 +1246,13 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-literal|3
-operator|*
-name|records1stBlock
-argument_list|,
 name|records1stBlock
 argument_list|)
 operator|.
 name|getBytes
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Location
 name|locX
 init|=
@@ -1398,6 +1288,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureWriterNotClosed ()
 specifier|public
 name|void
@@ -1476,6 +1368,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureWriteMetaBlocksWithSameName ()
 specifier|public
 name|void
@@ -1549,9 +1443,6 @@ expr_stmt|;
 comment|// add the same metablock
 try|try
 block|{
-name|DataOutputStream
-name|outMeta2
-init|=
 name|writer
 operator|.
 name|prepareMetaBlock
@@ -1567,7 +1458,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Assert
 operator|.
 name|fail
@@ -1588,6 +1479,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureGetNonExistentMetaBlock ()
 specifier|public
 name|void
@@ -1723,13 +1616,6 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertNull
-argument_list|(
-name|mbBad
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Error on handling non-existent metablocks."
@@ -1750,6 +1636,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureWriteRecordAfterMetaBlock ()
 specifier|public
 name|void
@@ -1859,6 +1747,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureReadValueManyTimes ()
 specifier|public
 name|void
@@ -2000,6 +1890,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureBadCompressionCodec ()
 specifier|public
 name|void
@@ -2061,6 +1953,8 @@ comment|// noop, expecting exceptions
 comment|// e.printStackTrace();
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureOpenEmptyFile ()
 specifier|public
 name|void
@@ -2107,9 +2001,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|Reader
-name|reader
-init|=
 operator|new
 name|Reader
 argument_list|(
@@ -2132,7 +2023,7 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Assert
 operator|.
 name|fail
@@ -2150,6 +2041,8 @@ block|{
 comment|// noop, expecting exceptions
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureOpenRandomFile ()
 specifier|public
 name|void
@@ -2246,9 +2139,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|Reader
-name|reader
-init|=
 operator|new
 name|Reader
 argument_list|(
@@ -2271,7 +2161,7 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Assert
 operator|.
 name|fail
@@ -2289,6 +2179,8 @@ block|{
 comment|// noop, expecting exceptions
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureKeyLongerThan64K ()
 specifier|public
 name|void
@@ -2357,6 +2249,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureOutOfOrderKeys ()
 specifier|public
 name|void
@@ -2423,6 +2317,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeOffset ()
 specifier|public
 name|void
@@ -2482,6 +2378,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeOffset_2 ()
 specifier|public
 name|void
@@ -2582,6 +2480,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeLength ()
 specifier|public
 name|void
@@ -2641,6 +2541,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeLength_2 ()
 specifier|public
 name|void
@@ -2741,6 +2643,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeLength_3 ()
 specifier|public
 name|void
@@ -2878,6 +2782,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureCompressionNotWorking ()
 specifier|public
 name|void
@@ -2938,6 +2844,8 @@ name|closeOutput
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureFileWriteNotAt0Position ()
 specifier|public
 name|void
@@ -3109,8 +3017,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|nx
 argument_list|)
 operator|.
@@ -3172,17 +3078,14 @@ return|return
 name|rawDataSize
 return|;
 block|}
-comment|/**    * Insert some leading 0's in front of the value, to make the keys sorted.    *     * @param prefix    * @param total    * @param value    * @return    */
-DECL|method|composeSortedKey (String prefix, int total, int value)
+comment|/**    * Insert some leading 0's in front of the value, to make the keys sorted.    *     * @param prefix    * @param value    * @return    */
+DECL|method|composeSortedKey (String prefix, int value)
 specifier|static
 name|String
 name|composeSortedKey
 parameter_list|(
 name|String
 name|prefix
-parameter_list|,
-name|int
-name|total
 parameter_list|,
 name|int
 name|value
@@ -3199,43 +3102,6 @@ name|prefix
 argument_list|,
 name|value
 argument_list|)
-return|;
-block|}
-comment|/**    * Calculate how many digits are in the 10-based integer.    *     * @param value    * @return    */
-DECL|method|numberDigits (int value)
-specifier|private
-specifier|static
-name|int
-name|numberDigits
-parameter_list|(
-name|int
-name|value
-parameter_list|)
-block|{
-name|int
-name|digits
-init|=
-literal|0
-decl_stmt|;
-while|while
-condition|(
-operator|(
-name|value
-operator|=
-name|value
-operator|/
-literal|10
-operator|)
-operator|>
-literal|0
-condition|)
-block|{
-name|digits
-operator|++
-expr_stmt|;
-block|}
-return|return
-name|digits
 return|;
 block|}
 DECL|method|readRecords (int count)
@@ -3397,8 +3263,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|nx
 argument_list|)
 argument_list|)
@@ -3489,14 +3353,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkBlockIndex (int count, int recordIndex, int blockIndexExpected)
+DECL|method|checkBlockIndex (int recordIndex, int blockIndexExpected)
 specifier|private
 name|void
 name|checkBlockIndex
 parameter_list|(
-name|int
-name|count
-parameter_list|,
 name|int
 name|recordIndex
 parameter_list|,
@@ -3548,8 +3409,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|recordIndex
 argument_list|)
 operator|.
@@ -3582,14 +3441,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|readValueBeforeKey (int count, int recordIndex)
+DECL|method|readValueBeforeKey (int recordIndex)
 specifier|private
 name|void
 name|readValueBeforeKey
 parameter_list|(
-name|int
-name|count
-parameter_list|,
 name|int
 name|recordIndex
 parameter_list|)
@@ -3632,8 +3488,6 @@ argument_list|(
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)
@@ -3745,8 +3599,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|recordIndex
 argument_list|)
 argument_list|)
@@ -3766,14 +3618,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|readKeyWithoutValue (int count, int recordIndex)
+DECL|method|readKeyWithoutValue (int recordIndex)
 specifier|private
 name|void
 name|readKeyWithoutValue
 parameter_list|(
-name|int
-name|count
-parameter_list|,
 name|int
 name|recordIndex
 parameter_list|)
@@ -3816,8 +3665,6 @@ argument_list|(
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)
@@ -3879,8 +3726,6 @@ argument_list|,
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)
@@ -3950,8 +3795,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|recordIndex
 operator|+
 literal|1
@@ -3974,14 +3817,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|readValueWithoutKey (int count, int recordIndex)
+DECL|method|readValueWithoutKey (int recordIndex)
 specifier|private
 name|void
 name|readValueWithoutKey
 parameter_list|(
-name|int
-name|count
-parameter_list|,
 name|int
 name|recordIndex
 parameter_list|)
@@ -4024,8 +3864,6 @@ argument_list|(
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)
@@ -4166,14 +4004,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|readKeyManyTimes (int count, int recordIndex)
+DECL|method|readKeyManyTimes (int recordIndex)
 specifier|private
 name|void
 name|readKeyManyTimes
 parameter_list|(
-name|int
-name|count
-parameter_list|,
 name|int
 name|recordIndex
 parameter_list|)
@@ -4216,8 +4051,6 @@ argument_list|(
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)
@@ -4278,8 +4111,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|recordIndex
 argument_list|)
 argument_list|)
@@ -4322,8 +4153,6 @@ name|composeSortedKey
 argument_list|(
 name|KEY
 argument_list|,
-name|count
-argument_list|,
 name|recordIndex
 argument_list|)
 argument_list|)
@@ -4365,8 +4194,6 @@ argument_list|,
 name|composeSortedKey
 argument_list|(
 name|KEY
-argument_list|,
-name|count
 argument_list|,
 name|recordIndex
 argument_list|)

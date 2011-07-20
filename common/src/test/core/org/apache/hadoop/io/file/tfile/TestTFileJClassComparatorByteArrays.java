@@ -105,10 +105,6 @@ argument_list|,
 literal|"jclass: org.apache.hadoop.io.file.tfile.MyComparator"
 argument_list|,
 literal|"TFileTestJClassComparator"
-argument_list|,
-literal|4480
-argument_list|,
-literal|4263
 argument_list|)
 expr_stmt|;
 name|super

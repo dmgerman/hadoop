@@ -1733,8 +1733,6 @@ name|composeSortedKey
 argument_list|(
 literal|"key"
 argument_list|,
-name|count
-argument_list|,
 name|nx
 argument_list|)
 decl_stmt|;
