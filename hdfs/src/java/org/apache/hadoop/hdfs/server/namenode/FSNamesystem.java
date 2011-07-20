@@ -18276,6 +18276,13 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+name|blockManager
+operator|.
+name|processOverReplicatedBlocksOnReCommission
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|getStartTime ()
