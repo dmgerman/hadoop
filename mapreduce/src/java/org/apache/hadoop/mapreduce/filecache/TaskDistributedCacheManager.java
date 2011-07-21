@@ -1230,6 +1230,16 @@ argument_list|,
 name|c
 operator|.
 name|owner
+argument_list|,
+name|CacheFile
+operator|.
+name|FileType
+operator|.
+name|ARCHIVE
+operator|==
+name|c
+operator|.
+name|type
 argument_list|)
 expr_stmt|;
 block|}

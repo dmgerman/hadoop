@@ -741,15 +741,12 @@ name|getLocalizedCacheOwner
 argument_list|(
 name|isPublic
 argument_list|)
+argument_list|,
+name|isArchive
 argument_list|)
 expr_stmt|;
 name|CacheStatus
 name|lcacheStatus
-decl_stmt|;
-name|Path
-name|localizedPath
-init|=
-literal|null
 decl_stmt|;
 synchronized|synchronized
 init|(
@@ -928,8 +925,6 @@ argument_list|,
 name|fileStatus
 argument_list|)
 expr_stmt|;
-name|localizedPath
-operator|=
 name|localizeCache
 argument_list|(
 name|conf
@@ -953,8 +948,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|localizedPath
-operator|=
 name|checkCacheStatusValidity
 argument_list|(
 name|conf
@@ -992,7 +985,9 @@ operator|=
 literal|true
 expr_stmt|;
 return|return
-name|localizedPath
+name|lcacheStatus
+operator|.
+name|localizedLoadPath
 return|;
 block|}
 finally|finally
@@ -1012,7 +1007,7 @@ block|}
 block|}
 block|}
 comment|/**    * This is the opposite of getlocalcache. When you are done with    * using the cache, you need to release the cache    * @param cache The cache URI to be released    * @param conf configuration which contains the filesystem the cache    * @param timeStamp the timestamp on the file represented by the cache URI    * @param owner the owner of the localized file    * is contained in.    * @throws IOException    */
-DECL|method|releaseCache (URI cache, Configuration conf, long timeStamp, String owner)
+DECL|method|releaseCache (URI cache, Configuration conf, long timeStamp, String owner, boolean isArchive)
 name|void
 name|releaseCache
 parameter_list|(
@@ -1027,6 +1022,9 @@ name|timeStamp
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|boolean
+name|isArchive
 parameter_list|)
 throws|throws
 name|IOException
@@ -1043,6 +1041,8 @@ argument_list|,
 name|timeStamp
 argument_list|,
 name|owner
+argument_list|,
+name|isArchive
 argument_list|)
 decl_stmt|;
 synchronized|synchronized
@@ -1093,7 +1093,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * This method is called from unit tests.     */
-DECL|method|getReferenceCount (URI cache, Configuration conf, long timeStamp, String owner)
+DECL|method|getReferenceCount (URI cache, Configuration conf, long timeStamp, String owner, boolean isArchive)
 name|int
 name|getReferenceCount
 parameter_list|(
@@ -1108,6 +1108,9 @@ name|timeStamp
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|boolean
+name|isArchive
 parameter_list|)
 throws|throws
 name|IOException
@@ -1124,6 +1127,8 @@ argument_list|,
 name|timeStamp
 argument_list|,
 name|owner
+argument_list|,
+name|isArchive
 argument_list|)
 decl_stmt|;
 synchronized|synchronized
@@ -1418,7 +1423,7 @@ return|return
 name|path
 return|;
 block|}
-DECL|method|getKey (URI cache, Configuration conf, long timeStamp, String user)
+DECL|method|getKey (URI cache, Configuration conf, long timeStamp, String user, boolean isArchive)
 name|String
 name|getKey
 parameter_list|(
@@ -1433,11 +1438,24 @@ name|timeStamp
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|boolean
+name|isArchive
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
+operator|(
+name|isArchive
+condition|?
+literal|"a"
+else|:
+literal|"f"
+operator|)
+operator|+
+literal|"^"
+operator|+
 name|makeRelative
 argument_list|(
 name|cache
@@ -1483,7 +1501,6 @@ return|;
 block|}
 comment|/**    * Returns mtime of a given cache file on hdfs.    *    * @param conf configuration    * @param cache cache file    * @return mtime of a given cache file on hdfs    * @throws IOException    */
 DECL|method|getTimestamp (Configuration conf, URI cache)
-specifier|static
 name|long
 name|getTimestamp
 parameter_list|(
@@ -1509,8 +1526,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|checkCacheStatusValidity (Configuration conf, URI cache, long confFileStamp, CacheStatus cacheStatus, FileStatus fileStatus, boolean isArchive )
-specifier|private
-name|Path
+name|void
 name|checkCacheStatusValidity
 parameter_list|(
 name|Configuration
@@ -1603,11 +1619,6 @@ name|localizedLoadPath
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return
-name|cacheStatus
-operator|.
-name|localizedLoadPath
-return|;
 block|}
 DECL|method|createSymlink (Configuration conf, URI cache, CacheStatus cacheStatus, boolean isArchive, Path currentWorkDir, boolean honorSymLinkConf)
 specifier|private
@@ -2258,7 +2269,6 @@ return|;
 block|}
 comment|// ensure that the file on hdfs hasn't been modified since the job started
 DECL|method|checkStampSinceJobStarted (Configuration conf, FileSystem fs, URI cache, long confFileStamp, CacheStatus lcacheStatus, FileStatus fileStatus)
-specifier|private
 name|long
 name|checkStampSinceJobStarted
 parameter_list|(
