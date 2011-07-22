@@ -21,6 +21,26 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
+operator|.
+name|now
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -175,6 +195,18 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|HadoopIllegalArgumentException
 import|;
 end_import
 
@@ -652,11 +684,8 @@ specifier|final
 name|DatanodeManager
 name|datanodeManager
 decl_stmt|;
-comment|//
-comment|// Store blocks-->datanodedescriptor(s) map of corrupt replicas
-comment|//
+comment|/** Store blocks -> datanodedescriptor(s) map of corrupt replicas */
 DECL|field|corruptReplicas
-specifier|private
 specifier|final
 name|CorruptReplicasMap
 name|corruptReplicas
@@ -749,46 +778,46 @@ specifier|final
 name|PendingReplicationBlocks
 name|pendingReplications
 decl_stmt|;
-comment|//  The maximum number of replicas allowed for a block
+comment|/** The maximum number of replicas allowed for a block */
 DECL|field|maxReplication
 specifier|public
 specifier|final
 name|int
 name|maxReplication
 decl_stmt|;
-comment|//  How many outgoing replication streams a given node should have at one time
+comment|/** The maximum number of outgoing replication streams    *  a given node should have at one time     */
 DECL|field|maxReplicationStreams
 specifier|public
 name|int
 name|maxReplicationStreams
 decl_stmt|;
-comment|// Minimum copies needed or else write is disallowed
+comment|/** Minimum copies needed or else write is disallowed */
 DECL|field|minReplication
 specifier|public
 specifier|final
 name|int
 name|minReplication
 decl_stmt|;
-comment|// Default number of replicas
+comment|/** Default number of replicas */
 DECL|field|defaultReplication
 specifier|public
 specifier|final
 name|int
 name|defaultReplication
 decl_stmt|;
-comment|// How many entries are returned by getCorruptInodes()
+comment|/** The maximum number of entries returned by getCorruptInodes() */
 DECL|field|maxCorruptFilesReturned
 specifier|final
 name|int
 name|maxCorruptFilesReturned
 decl_stmt|;
-comment|// variable to enable check for enough racks
+comment|/** variable to enable check for enough racks */
 DECL|field|shouldCheckForEnoughRacks
 specifier|final
 name|boolean
 name|shouldCheckForEnoughRacks
 decl_stmt|;
-comment|/**    * Last block index used for replication work.    */
+comment|/** Last block index used for replication work. */
 DECL|field|replIndex
 specifier|private
 name|int
@@ -796,12 +825,11 @@ name|replIndex
 init|=
 literal|0
 decl_stmt|;
-comment|// for block replicas placement
-DECL|field|replicator
-specifier|public
-specifier|final
+comment|/** for block replicas placement */
+DECL|field|blockplacement
+specifier|private
 name|BlockPlacementPolicy
-name|replicator
+name|blockplacement
 decl_stmt|;
 DECL|method|BlockManager (FSNamesystem fsn, Configuration conf)
 specifier|public
@@ -826,6 +854,8 @@ operator|new
 name|DatanodeManager
 argument_list|(
 name|fsn
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|blocksMap
@@ -836,7 +866,7 @@ argument_list|(
 name|DEFAULT_MAP_LOAD_FACTOR
 argument_list|)
 expr_stmt|;
-name|replicator
+name|blockplacement
 operator|=
 name|BlockPlacementPolicy
 operator|.
@@ -1157,6 +1187,49 @@ block|{
 return|return
 name|datanodeManager
 return|;
+block|}
+comment|/** @return the BlockPlacementPolicy */
+DECL|method|getBlockPlacementPolicy ()
+specifier|public
+name|BlockPlacementPolicy
+name|getBlockPlacementPolicy
+parameter_list|()
+block|{
+return|return
+name|blockplacement
+return|;
+block|}
+comment|/** Set BlockPlacementPolicy */
+DECL|method|setBlockPlacementPolicy (BlockPlacementPolicy newpolicy)
+specifier|public
+name|void
+name|setBlockPlacementPolicy
+parameter_list|(
+name|BlockPlacementPolicy
+name|newpolicy
+parameter_list|)
+block|{
+if|if
+condition|(
+name|newpolicy
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"newpolicy == null"
+argument_list|)
+throw|;
+block|}
+name|this
+operator|.
+name|blockplacement
+operator|=
+name|newpolicy
+expr_stmt|;
 block|}
 DECL|method|metaSave (PrintWriter out)
 specifier|public
@@ -2741,6 +2814,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|removeFromInvalidates (String storageID, Block block)
+specifier|private
 name|void
 name|removeFromInvalidates
 parameter_list|(
@@ -4432,7 +4506,7 @@ name|DatanodeDescriptor
 name|targets
 index|[]
 init|=
-name|replicator
+name|blockplacement
 operator|.
 name|chooseTarget
 argument_list|(
@@ -4905,7 +4979,7 @@ name|DatanodeDescriptor
 name|targets
 index|[]
 init|=
-name|replicator
+name|blockplacement
 operator|.
 name|chooseTarget
 argument_list|(
@@ -5857,6 +5931,7 @@ block|}
 block|}
 block|}
 DECL|method|reportDiff (DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<BlockInfo> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockInfo> toCorrupt, Collection<StatefulBlockInfo> toUC)
+specifier|private
 name|void
 name|reportDiff
 parameter_list|(
@@ -7677,7 +7752,7 @@ name|addedNode
 argument_list|,
 name|delNodeHint
 argument_list|,
-name|replicator
+name|blockplacement
 argument_list|)
 expr_stmt|;
 block|}
@@ -7794,7 +7869,7 @@ block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
 DECL|method|removeStoredBlock (Block block, DatanodeDescriptor node)
-specifier|public
+specifier|private
 name|void
 name|removeStoredBlock
 parameter_list|(
@@ -8744,11 +8819,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock()    */
-DECL|method|processOverReplicatedBlocksOnReCommission (DatanodeDescriptor srcNode)
-specifier|public
+DECL|method|processOverReplicatedBlocksOnReCommission ( final DatanodeDescriptor srcNode)
+specifier|private
 name|void
 name|processOverReplicatedBlocksOnReCommission
 parameter_list|(
+specifier|final
 name|DatanodeDescriptor
 name|srcNode
 parameter_list|)
@@ -8842,7 +8918,6 @@ block|}
 block|}
 comment|/**    * Return true if there are any blocks on this node that have not    * yet reached their replication factor. Otherwise returns false.    */
 DECL|method|isReplicationInProgress (DatanodeDescriptor srcNode)
-specifier|public
 name|boolean
 name|isReplicationInProgress
 parameter_list|(
@@ -9462,7 +9537,7 @@ return|;
 block|}
 comment|/** Remove a datanode from the invalidatesSet */
 DECL|method|removeFromInvalidates (String storageID)
-specifier|public
+specifier|private
 name|void
 name|removeFromInvalidates
 parameter_list|(
@@ -9752,145 +9827,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|//Returns the number of racks over which a given block is replicated
-comment|//decommissioning/decommissioned nodes are not counted. corrupt replicas
-comment|//are also ignored
-DECL|method|getNumberOfRacks (Block b)
-specifier|public
-name|int
-name|getNumberOfRacks
-parameter_list|(
-name|Block
-name|b
-parameter_list|)
-block|{
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-name|rackSet
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|Collection
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|corruptNodes
-init|=
-name|corruptReplicas
-operator|.
-name|getNodes
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|b
-argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
-control|)
-block|{
-name|DatanodeDescriptor
-name|cur
-init|=
-name|it
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|cur
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|&&
-operator|!
-name|cur
-operator|.
-name|isDecommissioned
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-operator|(
-name|corruptNodes
-operator|==
-literal|null
-operator|)
-operator|||
-operator|!
-name|corruptNodes
-operator|.
-name|contains
-argument_list|(
-name|cur
-argument_list|)
-condition|)
-block|{
-name|String
-name|rackName
-init|=
-name|cur
-operator|.
-name|getNetworkLocation
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|rackSet
-operator|.
-name|contains
-argument_list|(
-name|rackName
-argument_list|)
-condition|)
-block|{
-name|rackSet
-operator|.
-name|add
-argument_list|(
-name|rackName
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-block|}
-return|return
-name|rackSet
-operator|.
-name|size
-argument_list|()
-return|;
 block|}
 DECL|method|blockHasEnoughRacks (Block b)
 name|boolean
@@ -10285,6 +10221,230 @@ operator|.
 name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 return|;
+block|}
+comment|/**    * Change, if appropriate, the admin state of a datanode to     * decommission completed. Return true if decommission is complete.    */
+DECL|method|checkDecommissionStateInternal (DatanodeDescriptor node)
+name|boolean
+name|checkDecommissionStateInternal
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+comment|// Check to see if all blocks in this decommissioned
+comment|// node has reached their target replication factor.
+if|if
+condition|(
+name|node
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|isReplicationInProgress
+argument_list|(
+name|node
+argument_list|)
+condition|)
+block|{
+name|node
+operator|.
+name|setDecommissioned
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Decommission complete for node "
+operator|+
+name|node
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|node
+operator|.
+name|isDecommissioned
+argument_list|()
+return|;
+block|}
+comment|/** Start decommissioning the specified datanode. */
+DECL|method|startDecommission (DatanodeDescriptor node)
+name|void
+name|startDecommission
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|node
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|node
+operator|.
+name|isDecommissioned
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Start Decommissioning node "
+operator|+
+name|node
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" with "
+operator|+
+name|node
+operator|.
+name|numBlocks
+argument_list|()
+operator|+
+literal|" blocks."
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|namesystem
+operator|.
+name|heartbeats
+init|)
+block|{
+name|namesystem
+operator|.
+name|updateStats
+argument_list|(
+name|node
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|startDecommission
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|updateStats
+argument_list|(
+name|node
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+name|node
+operator|.
+name|decommissioningStatus
+operator|.
+name|setStartTime
+argument_list|(
+name|now
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// all the blocks that reside on this node have to be replicated.
+name|checkDecommissionStateInternal
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/** Stop decommissioning the specified datanodes. */
+DECL|method|stopDecommission (DatanodeDescriptor node)
+name|void
+name|stopDecommission
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|node
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+operator|||
+name|node
+operator|.
+name|isDecommissioned
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stop Decommissioning node "
+operator|+
+name|node
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|namesystem
+operator|.
+name|heartbeats
+init|)
+block|{
+name|namesystem
+operator|.
+name|updateStats
+argument_list|(
+name|node
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|stopDecommission
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|updateStats
+argument_list|(
+name|node
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+name|processOverReplicatedBlocksOnReCommission
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

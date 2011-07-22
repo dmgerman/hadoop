@@ -156,6 +156,12 @@ specifier|final
 name|FSNamesystem
 name|fsnamesystem
 decl_stmt|;
+DECL|field|blockmanager
+specifier|private
+specifier|final
+name|BlockManager
+name|blockmanager
+decl_stmt|;
 DECL|method|DecommissionManager (FSNamesystem namesystem)
 name|DecommissionManager
 parameter_list|(
@@ -168,6 +174,15 @@ operator|.
 name|fsnamesystem
 operator|=
 name|namesystem
+expr_stmt|;
+name|this
+operator|.
+name|blockmanager
+operator|=
+name|fsnamesystem
+operator|.
+name|getBlockManager
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Periodically check decommission status. */
@@ -363,7 +378,7 @@ condition|)
 block|{
 try|try
 block|{
-name|fsnamesystem
+name|blockmanager
 operator|.
 name|checkDecommissionStateInternal
 argument_list|(

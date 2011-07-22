@@ -480,7 +480,8 @@ name|replicator
 operator|=
 name|bm
 operator|.
-name|replicator
+name|getBlockPlacementPolicy
+argument_list|()
 expr_stmt|;
 name|cluster
 operator|=
