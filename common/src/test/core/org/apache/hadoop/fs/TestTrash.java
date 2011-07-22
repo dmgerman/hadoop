@@ -2551,6 +2551,65 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|testPluggableTrash ()
+specifier|public
+name|void
+name|testPluggableTrash
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+comment|// Test plugged TrashPolicy
+name|conf
+operator|.
+name|setClass
+argument_list|(
+literal|"fs.trash.classname"
+argument_list|,
+name|TestTrashPolicy
+operator|.
+name|class
+argument_list|,
+name|TrashPolicy
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|Trash
+name|trash
+init|=
+operator|new
+name|Trash
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|trash
+operator|.
+name|getTrashPolicy
+argument_list|()
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|TestTrashPolicy
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|testTrashEmptier ()
 specifier|public
 name|void
@@ -3389,6 +3448,113 @@ comment|// run performance piece as a separate test
 name|performanceTestDeleteSameFile
 argument_list|()
 expr_stmt|;
+block|}
+comment|// Test TrashPolicy. Don't care about implementation.
+DECL|class|TestTrashPolicy
+specifier|public
+specifier|static
+class|class
+name|TestTrashPolicy
+extends|extends
+name|TrashPolicy
+block|{
+DECL|method|TestTrashPolicy ()
+specifier|public
+name|TestTrashPolicy
+parameter_list|()
+block|{ }
+annotation|@
+name|Override
+DECL|method|initialize (Configuration conf, FileSystem fs, Path home)
+specifier|public
+name|void
+name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|home
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|isEnabled ()
+specifier|public
+name|boolean
+name|isEnabled
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|moveToTrash (Path path)
+specifier|public
+name|boolean
+name|moveToTrash
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createCheckpoint ()
+specifier|public
+name|void
+name|createCheckpoint
+parameter_list|()
+throws|throws
+name|IOException
+block|{     }
+annotation|@
+name|Override
+DECL|method|deleteCheckpoint ()
+specifier|public
+name|void
+name|deleteCheckpoint
+parameter_list|()
+throws|throws
+name|IOException
+block|{     }
+annotation|@
+name|Override
+DECL|method|getCurrentTrashDir ()
+specifier|public
+name|Path
+name|getCurrentTrashDir
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getEmptier ()
+specifier|public
+name|Runnable
+name|getEmptier
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 block|}
 end_class
