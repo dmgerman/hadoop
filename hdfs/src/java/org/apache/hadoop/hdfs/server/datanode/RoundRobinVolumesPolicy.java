@@ -151,6 +151,11 @@ name|startVolume
 init|=
 name|curVolume
 decl_stmt|;
+name|long
+name|maxAvailable
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -179,12 +184,17 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
+name|long
+name|availableVolumeSize
+init|=
 name|volume
 operator|.
 name|getAvailable
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|availableVolumeSize
 operator|>
 name|blockSize
 condition|)
@@ -192,6 +202,18 @@ block|{
 return|return
 name|volume
 return|;
+block|}
+if|if
+condition|(
+name|availableVolumeSize
+operator|>
+name|maxAvailable
+condition|)
+block|{
+name|maxAvailable
+operator|=
+name|availableVolumeSize
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -204,7 +226,13 @@ throw|throw
 operator|new
 name|DiskOutOfSpaceException
 argument_list|(
-literal|"Insufficient space for an additional block"
+literal|"Insufficient space for an additional block. Volume with the most available space has "
+operator|+
+name|maxAvailable
+operator|+
+literal|" bytes free, configured block size is "
+operator|+
+name|blockSize
 argument_list|)
 throw|;
 block|}
