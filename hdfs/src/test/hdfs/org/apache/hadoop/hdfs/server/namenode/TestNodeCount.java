@@ -552,7 +552,8 @@ name|iter
 init|=
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|blocksMap
 operator|.
@@ -593,7 +594,8 @@ name|blocks
 init|=
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|excessReplicateMap
 operator|.
@@ -944,7 +946,8 @@ name|lastNum
 operator|=
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|countNodes
 argument_list|(

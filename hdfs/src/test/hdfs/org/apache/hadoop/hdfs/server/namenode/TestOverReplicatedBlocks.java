@@ -639,7 +639,8 @@ literal|1
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|countNodes
 argument_list|(

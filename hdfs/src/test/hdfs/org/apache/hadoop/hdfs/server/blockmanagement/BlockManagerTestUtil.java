@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collection
@@ -102,13 +112,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
+name|Daemon
 import|;
 end_import
 
@@ -198,7 +204,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * @return the number of racks over which a given block is replicated    * decommissioning/decommissioned nodes are not counted. corrupt replicas     * are also ignored    */
-DECL|method|getNumberOfRacks (final BlockManager blockmanager, final Block b)
+DECL|method|getNumberOfRacks (final BlockManager blockManager, final Block b)
 specifier|private
 specifier|static
 name|int
@@ -206,7 +212,7 @@ name|getNumberOfRacks
 parameter_list|(
 specifier|final
 name|BlockManager
-name|blockmanager
+name|blockManager
 parameter_list|,
 specifier|final
 name|Block
@@ -236,9 +242,10 @@ name|DatanodeDescriptor
 argument_list|>
 name|corruptNodes
 init|=
-name|blockmanager
-operator|.
-name|corruptReplicas
+name|getCorruptReplicas
+argument_list|(
+name|blockManager
+argument_list|)
 operator|.
 name|getNodes
 argument_list|(
@@ -253,7 +260,7 @@ name|DatanodeDescriptor
 argument_list|>
 name|it
 init|=
-name|blockmanager
+name|blockManager
 operator|.
 name|blocksMap
 operator|.
@@ -343,6 +350,63 @@ return|return
 name|rackSet
 operator|.
 name|size
+argument_list|()
+return|;
+block|}
+comment|/**    * @param blockManager    * @return replication monitor thread instance from block manager.    */
+DECL|method|getReplicationThread (final BlockManager blockManager)
+specifier|public
+specifier|static
+name|Daemon
+name|getReplicationThread
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+block|{
+return|return
+name|blockManager
+operator|.
+name|replicationThread
+return|;
+block|}
+comment|/**    * @param blockManager    * @return corruptReplicas from block manager    */
+DECL|method|getCorruptReplicas (final BlockManager blockManager)
+specifier|public
+specifier|static
+name|CorruptReplicasMap
+name|getCorruptReplicas
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+block|{
+return|return
+name|blockManager
+operator|.
+name|corruptReplicas
+return|;
+block|}
+comment|/**    * @param blockManager    * @return computed block replication and block invalidation work that can be    *         scheduled on data-nodes.    * @throws IOException    */
+DECL|method|getComputedDatanodeWork (final BlockManager blockManager)
+specifier|public
+specifier|static
+name|int
+name|getComputedDatanodeWork
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|blockManager
+operator|.
+name|computeDatanodeWork
 argument_list|()
 return|;
 block|}

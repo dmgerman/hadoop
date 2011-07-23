@@ -3012,7 +3012,8 @@ argument_list|)
 expr_stmt|;
 name|fsn
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|blocksMap
 operator|.

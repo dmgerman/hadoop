@@ -1040,7 +1040,8 @@ return|return
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 return|;
 block|}
 DECL|method|loadFSImage (Collection<URI> dataDirs, Collection<URI> editsDirs, StartupOption startOpt)

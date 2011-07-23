@@ -4544,7 +4544,8 @@ name|inode
 operator|=
 name|fsn
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|getINode
 argument_list|(
@@ -4959,7 +4960,8 @@ if|if
 condition|(
 name|fsn
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|blocksMap
 operator|.
@@ -4977,7 +4979,8 @@ name|it
 init|=
 name|fsn
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|blocksMap
 operator|.

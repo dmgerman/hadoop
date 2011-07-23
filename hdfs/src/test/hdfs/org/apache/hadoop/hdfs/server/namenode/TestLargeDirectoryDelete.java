@@ -474,7 +474,8 @@ literal|"Null Namesystem.blockmanager"
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

@@ -196,7 +196,8 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|updateState
 argument_list|()

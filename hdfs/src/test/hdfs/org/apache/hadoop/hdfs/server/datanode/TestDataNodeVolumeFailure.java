@@ -258,6 +258,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockManagerTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsConstants
@@ -1073,10 +1091,15 @@ name|getNamesystem
 argument_list|()
 decl_stmt|;
 comment|// force update of all the metric counts by calling computeDatanodeWork
+name|BlockManagerTestUtil
+operator|.
+name|getComputedDatanodeWork
+argument_list|(
 name|fsn
 operator|.
-name|computeDatanodeWork
+name|getBlockManager
 argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// get all the counts
 name|long

@@ -293,7 +293,8 @@ argument_list|)
 decl_stmt|;
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|addToInvalidates
 argument_list|(
@@ -317,7 +318,8 @@ name|NUM_OF_DATANODES
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(
@@ -337,7 +339,8 @@ name|NUM_OF_DATANODES
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(
@@ -359,7 +362,8 @@ operator|)
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(
@@ -374,7 +378,8 @@ name|workCount
 init|=
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(
@@ -398,7 +403,8 @@ literal|1
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(
@@ -424,7 +430,8 @@ literal|2
 argument_list|,
 name|namesystem
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|computeInvalidateWork
 argument_list|(

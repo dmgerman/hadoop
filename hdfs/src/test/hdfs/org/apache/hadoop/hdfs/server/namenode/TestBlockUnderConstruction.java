@@ -699,7 +699,8 @@ name|curBlock
 argument_list|,
 name|ns
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -786,7 +787,8 @@ name|curBlock
 argument_list|,
 name|ns
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -838,7 +840,8 @@ name|curBlock
 argument_list|,
 name|ns
 operator|.
-name|blockManager
+name|getBlockManager
+argument_list|()
 operator|.
 name|getStoredBlock
 argument_list|(
