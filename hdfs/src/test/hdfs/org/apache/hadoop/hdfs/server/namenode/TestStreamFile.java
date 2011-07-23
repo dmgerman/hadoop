@@ -33,6 +33,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -143,28 +179,6 @@ operator|.
 name|http
 operator|.
 name|HttpServletResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -288,6 +302,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -390,460 +414,6 @@ name|IOException
 block|{
 return|return
 literal|false
-return|;
-block|}
-block|}
-end_class
-
-begin_class
-DECL|class|MockHttpServletResponse
-class|class
-name|MockHttpServletResponse
-implements|implements
-name|HttpServletResponse
-block|{
-DECL|field|status
-specifier|private
-name|int
-name|status
-init|=
-operator|-
-literal|1
-decl_stmt|;
-DECL|method|MockHttpServletResponse ()
-specifier|public
-name|MockHttpServletResponse
-parameter_list|()
-block|{   }
-DECL|method|getStatus ()
-specifier|public
-name|int
-name|getStatus
-parameter_list|()
-block|{
-return|return
-name|status
-return|;
-block|}
-DECL|method|setStatus (int sc)
-specifier|public
-name|void
-name|setStatus
-parameter_list|(
-name|int
-name|sc
-parameter_list|)
-block|{
-name|status
-operator|=
-name|sc
-expr_stmt|;
-block|}
-annotation|@
-name|Deprecated
-DECL|method|setStatus (int sc, java.lang.String sm)
-specifier|public
-name|void
-name|setStatus
-parameter_list|(
-name|int
-name|sc
-parameter_list|,
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|sm
-parameter_list|)
-block|{   }
-DECL|method|addIntHeader (String name, int value)
-specifier|public
-name|void
-name|addIntHeader
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|int
-name|value
-parameter_list|)
-block|{   }
-DECL|method|setIntHeader (String name, int value)
-specifier|public
-name|void
-name|setIntHeader
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|int
-name|value
-parameter_list|)
-block|{    }
-DECL|method|addHeader (String name, String value)
-specifier|public
-name|void
-name|addHeader
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|String
-name|value
-parameter_list|)
-block|{   }
-DECL|method|setHeader (String name, String value)
-specifier|public
-name|void
-name|setHeader
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|String
-name|value
-parameter_list|)
-block|{   }
-DECL|method|addDateHeader (java.lang.String name, long date)
-specifier|public
-name|void
-name|addDateHeader
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|name
-parameter_list|,
-name|long
-name|date
-parameter_list|)
-block|{   }
-DECL|method|setDateHeader (java.lang.String name, long date)
-specifier|public
-name|void
-name|setDateHeader
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|name
-parameter_list|,
-name|long
-name|date
-parameter_list|)
-block|{   }
-DECL|method|sendRedirect (java.lang.String location)
-specifier|public
-name|void
-name|sendRedirect
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|location
-parameter_list|)
-block|{    }
-DECL|method|sendError (int e)
-specifier|public
-name|void
-name|sendError
-parameter_list|(
-name|int
-name|e
-parameter_list|)
-block|{   }
-DECL|method|sendError (int a, java.lang.String b)
-specifier|public
-name|void
-name|sendError
-parameter_list|(
-name|int
-name|a
-parameter_list|,
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|b
-parameter_list|)
-block|{   }
-annotation|@
-name|Deprecated
-DECL|method|encodeRedirectUrl (java.lang.String a)
-specifier|public
-name|String
-name|encodeRedirectUrl
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|a
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Deprecated
-DECL|method|encodeUrl (java.lang.String url)
-specifier|public
-name|String
-name|encodeUrl
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|url
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|encodeRedirectURL (java.lang.String url)
-specifier|public
-name|String
-name|encodeRedirectURL
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|url
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Deprecated
-DECL|method|encodeURL (java.lang.String url)
-specifier|public
-name|String
-name|encodeURL
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|url
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|containsHeader (java.lang.String name)
-specifier|public
-name|boolean
-name|containsHeader
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|name
-parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-DECL|method|addCookie (javax.servlet.http.Cookie cookie)
-specifier|public
-name|void
-name|addCookie
-parameter_list|(
-name|javax
-operator|.
-name|servlet
-operator|.
-name|http
-operator|.
-name|Cookie
-name|cookie
-parameter_list|)
-block|{   }
-DECL|method|getLocale ()
-specifier|public
-name|java
-operator|.
-name|util
-operator|.
-name|Locale
-name|getLocale
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|setLocale (java.util.Locale loc)
-specifier|public
-name|void
-name|setLocale
-parameter_list|(
-name|java
-operator|.
-name|util
-operator|.
-name|Locale
-name|loc
-parameter_list|)
-block|{   }
-DECL|method|reset ()
-specifier|public
-name|void
-name|reset
-parameter_list|()
-block|{   }
-DECL|method|isCommitted ()
-specifier|public
-name|boolean
-name|isCommitted
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
-DECL|method|resetBuffer ()
-specifier|public
-name|void
-name|resetBuffer
-parameter_list|()
-block|{   }
-DECL|method|flushBuffer ()
-specifier|public
-name|void
-name|flushBuffer
-parameter_list|()
-block|{   }
-DECL|method|getBufferSize ()
-specifier|public
-name|int
-name|getBufferSize
-parameter_list|()
-block|{
-return|return
-literal|0
-return|;
-block|}
-DECL|method|setBufferSize (int size)
-specifier|public
-name|void
-name|setBufferSize
-parameter_list|(
-name|int
-name|size
-parameter_list|)
-block|{   }
-DECL|method|setContentType (java.lang.String type)
-specifier|public
-name|void
-name|setContentType
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|type
-parameter_list|)
-block|{   }
-DECL|method|setContentLength (int len)
-specifier|public
-name|void
-name|setContentLength
-parameter_list|(
-name|int
-name|len
-parameter_list|)
-block|{   }
-DECL|method|setCharacterEncoding (java.lang.String charset)
-specifier|public
-name|void
-name|setCharacterEncoding
-parameter_list|(
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|charset
-parameter_list|)
-block|{   }
-DECL|method|getWriter ()
-specifier|public
-name|java
-operator|.
-name|io
-operator|.
-name|PrintWriter
-name|getWriter
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getOutputStream ()
-specifier|public
-name|javax
-operator|.
-name|servlet
-operator|.
-name|ServletOutputStream
-name|getOutputStream
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getContentType ()
-specifier|public
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|getContentType
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-DECL|method|getCharacterEncoding ()
-specifier|public
-name|java
-operator|.
-name|lang
-operator|.
-name|String
-name|getCharacterEncoding
-parameter_list|()
-block|{
-return|return
-literal|null
 return|;
 block|}
 block|}
@@ -1035,8 +605,6 @@ name|testWriteTo
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|FSInputStream
 name|fsin
@@ -1269,8 +837,6 @@ name|testSendPartialData
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|FSInputStream
 name|in
@@ -1301,12 +867,17 @@ argument_list|,
 literal|500
 argument_list|)
 decl_stmt|;
-name|MockHttpServletResponse
+name|HttpServletResponse
 name|response
 init|=
-operator|new
-name|MockHttpServletResponse
-argument_list|()
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|StreamFile
 operator|.
@@ -1323,16 +894,17 @@ argument_list|,
 name|ranges
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Multiple ranges should result in a 416 error"
-argument_list|,
-literal|416
-argument_list|,
-name|response
+comment|// Multiple ranges should result in a 416 error
+name|Mockito
 operator|.
-name|getStatus
-argument_list|()
+name|verify
+argument_list|(
+name|response
+argument_list|)
+operator|.
+name|setStatus
+argument_list|(
+literal|416
 argument_list|)
 expr_stmt|;
 block|}
@@ -1343,12 +915,17 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-name|MockHttpServletResponse
+name|HttpServletResponse
 name|response
 init|=
-operator|new
-name|MockHttpServletResponse
-argument_list|()
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|StreamFile
 operator|.
@@ -1365,16 +942,17 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"No ranges should result in a 416 error"
-argument_list|,
-literal|416
-argument_list|,
-name|response
+comment|// No ranges should result in a 416 error
+name|Mockito
 operator|.
-name|getStatus
-argument_list|()
+name|verify
+argument_list|(
+name|response
+argument_list|)
+operator|.
+name|setStatus
+argument_list|(
+literal|416
 argument_list|)
 expr_stmt|;
 block|}
@@ -1393,12 +971,17 @@ argument_list|,
 literal|500
 argument_list|)
 decl_stmt|;
-name|MockHttpServletResponse
+name|HttpServletResponse
 name|response
 init|=
-operator|new
-name|MockHttpServletResponse
-argument_list|()
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|StreamFile
 operator|.
@@ -1415,16 +998,17 @@ argument_list|,
 name|ranges
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Single (but invalid) range should result in a 416"
-argument_list|,
-literal|416
-argument_list|,
-name|response
+comment|// Single (but invalid) range should result in a 416
+name|Mockito
 operator|.
-name|getStatus
-argument_list|()
+name|verify
+argument_list|(
+name|response
+argument_list|)
+operator|.
+name|setStatus
+argument_list|(
+literal|416
 argument_list|)
 expr_stmt|;
 block|}
@@ -1443,12 +1027,17 @@ argument_list|,
 literal|500
 argument_list|)
 decl_stmt|;
-name|MockHttpServletResponse
+name|HttpServletResponse
 name|response
 init|=
-operator|new
-name|MockHttpServletResponse
-argument_list|()
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|StreamFile
 operator|.
@@ -1465,16 +1054,17 @@ argument_list|,
 name|ranges
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Single (valid) range should result in a 206"
-argument_list|,
-literal|206
-argument_list|,
-name|response
+comment|// Single (valid) range should result in a 206
+name|Mockito
 operator|.
-name|getStatus
-argument_list|()
+name|verify
+argument_list|(
+name|response
+argument_list|)
+operator|.
+name|setStatus
+argument_list|(
+literal|206
 argument_list|)
 expr_stmt|;
 name|assertArrayEquals
@@ -1794,8 +1384,6 @@ parameter_list|,
 name|Path
 name|testFile
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Mockito
 operator|.
