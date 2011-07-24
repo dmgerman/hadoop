@@ -575,9 +575,7 @@ control|(
 name|BlockInfo
 name|bi
 range|:
-name|this
-operator|.
-name|blocks
+name|newlist
 control|)
 block|{
 name|bi
