@@ -24,6 +24,52 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -32,19 +78,27 @@ name|TokenInfo
 import|;
 end_import
 
-begin_comment
-comment|/**  * Interface used by RPC to get the Security information for a given   * protocol.  */
-end_comment
-
 begin_class
+annotation|@
+name|Evolving
+annotation|@
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|,
+literal|"HDFS"
+block|}
+argument_list|)
+comment|/**  * Interface used by RPC to get the Security information for a given   * protocol.  */
 DECL|class|SecurityInfo
 specifier|public
 specifier|abstract
 class|class
 name|SecurityInfo
 block|{
-comment|/**    * Get the KerberosInfo for a given protocol.    * @param protocol interface class    * @return KerberosInfo    */
-DECL|method|getKerberosInfo (Class<?> protocol)
+comment|/**    * Get the KerberosInfo for a given protocol.    * @param protocol interface class    * @param conf configuration    * @return KerberosInfo    */
+DECL|method|getKerberosInfo (Class<?> protocol, Configuration conf)
 specifier|public
 specifier|abstract
 name|KerberosInfo
@@ -55,10 +109,13 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 function_decl|;
-comment|/**    * Get the TokenInfo for a given protocol.    * @param protocol interface class    * @return TokenInfo instance    */
-DECL|method|getTokenInfo (Class<?> protocol)
+comment|/**    * Get the TokenInfo for a given protocol.    * @param protocol interface class    * @param conf configuration object.    * @return TokenInfo instance    */
+DECL|method|getTokenInfo (Class<?> protocol, Configuration conf)
 specifier|public
 specifier|abstract
 name|TokenInfo
@@ -69,6 +126,9 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 function_decl|;
 block|}

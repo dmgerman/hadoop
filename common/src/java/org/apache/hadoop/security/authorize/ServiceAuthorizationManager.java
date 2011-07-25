@@ -366,6 +366,8 @@ operator|.
 name|getKerberosInfo
 argument_list|(
 name|protocol
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|String

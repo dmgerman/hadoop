@@ -1250,7 +1250,7 @@ name|SecurityInfo
 block|{
 annotation|@
 name|Override
-DECL|method|getKerberosInfo (Class<?> protocol)
+DECL|method|getKerberosInfo (Class<?> protocol, Configuration conf)
 specifier|public
 name|KerberosInfo
 name|getKerberosInfo
@@ -1260,6 +1260,9 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 return|return
@@ -1310,7 +1313,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getTokenInfo (Class<?> protocol)
+DECL|method|getTokenInfo (Class<?> protocol, Configuration conf)
 specifier|public
 name|TokenInfo
 name|getTokenInfo
@@ -1320,6 +1323,9 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 return|return

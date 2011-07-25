@@ -1199,8 +1199,8 @@ operator|=
 name|providers
 expr_stmt|;
 block|}
-comment|/**    * Look up the KerberosInfo for a given protocol. It searches all known    * SecurityInfo providers.    * @param protocol the protocol class to get the information for    * @return the KerberosInfo or null if it has no KerberosInfo defined    */
-DECL|method|getKerberosInfo (Class<?> protocol)
+comment|/**    * Look up the KerberosInfo for a given protocol. It searches all known    * SecurityInfo providers.    * @param protocol the protocol class to get the information for    * @param conf configuration object    * @return the KerberosInfo or null if it has no KerberosInfo defined    */
+DECL|method|getKerberosInfo (Class<?> protocol, Configuration conf)
 specifier|public
 specifier|static
 name|KerberosInfo
@@ -1211,6 +1211,9 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 for|for
@@ -1229,6 +1232,8 @@ operator|.
 name|getKerberosInfo
 argument_list|(
 name|protocol
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
@@ -1259,6 +1264,8 @@ operator|.
 name|getKerberosInfo
 argument_list|(
 name|protocol
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
@@ -1277,8 +1284,8 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Look up the TokenInfo for a given protocol. It searches all known    * SecurityInfo providers.    * @param protocol The protocol class to get the information for.    * @return the TokenInfo or null if it has no KerberosInfo defined    */
-DECL|method|getTokenInfo (Class<?> protocol)
+comment|/**    * Look up the TokenInfo for a given protocol. It searches all known    * SecurityInfo providers.    * @param protocol The protocol class to get the information for.    * @conf conf Configuration object    * @return the TokenInfo or null if it has no KerberosInfo defined    */
+DECL|method|getTokenInfo (Class<?> protocol, Configuration conf)
 specifier|public
 specifier|static
 name|TokenInfo
@@ -1289,6 +1296,9 @@ argument_list|<
 name|?
 argument_list|>
 name|protocol
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 for|for
@@ -1307,6 +1317,8 @@ operator|.
 name|getTokenInfo
 argument_list|(
 name|protocol
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
@@ -1337,6 +1349,8 @@ operator|.
 name|getTokenInfo
 argument_list|(
 name|protocol
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
