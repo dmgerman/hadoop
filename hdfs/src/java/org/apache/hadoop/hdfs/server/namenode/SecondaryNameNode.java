@@ -857,6 +857,15 @@ block|{
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Failed to start secondary namenode. "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 name|e
 throw|;
