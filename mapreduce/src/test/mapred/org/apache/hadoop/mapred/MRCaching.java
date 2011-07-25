@@ -1157,7 +1157,14 @@ init|=
 operator|new
 name|Path
 argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.cache.data"
+argument_list|,
 literal|"build/test/cache"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|Path
