@@ -186,6 +186,24 @@ name|NameNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeHttpServer
+import|;
+end_import
+
 begin_comment
 comment|/**  * A HTTPS/SSL proxy to HDFS, implementing certificate based access control.  */
 end_comment
@@ -397,7 +415,7 @@ name|server
 operator|.
 name|setAttribute
 argument_list|(
-name|NameNode
+name|NameNodeHttpServer
 operator|.
 name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
 argument_list|,

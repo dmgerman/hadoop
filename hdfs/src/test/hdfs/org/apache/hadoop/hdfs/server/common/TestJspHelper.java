@@ -162,7 +162,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
+name|NameNodeHttpServer
 import|;
 end_import
 
@@ -566,7 +566,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|NameNode
+name|NameNodeHttpServer
 operator|.
 name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
 argument_list|)
@@ -620,7 +620,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|NameNode
+name|NameNodeHttpServer
 operator|.
 name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
 argument_list|)

@@ -357,14 +357,11 @@ specifier|final
 name|FSImage
 name|nnImage
 init|=
-operator|(
-name|FSImage
-operator|)
-name|context
+name|NameNodeHttpServer
 operator|.
-name|getAttribute
+name|getFsImageFromContext
 argument_list|(
-literal|"name.system.image"
+name|context
 argument_list|)
 decl_stmt|;
 specifier|final

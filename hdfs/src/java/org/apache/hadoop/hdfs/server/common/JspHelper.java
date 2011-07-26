@@ -428,7 +428,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
+name|NameNodeHttpServer
 import|;
 end_import
 
@@ -3087,16 +3087,11 @@ condition|)
 block|{
 name|namenodeAddress
 operator|=
-operator|(
-name|InetSocketAddress
-operator|)
-name|context
+name|NameNodeHttpServer
 operator|.
-name|getAttribute
+name|getNameNodeAddressFromContext
 argument_list|(
-name|NameNode
-operator|.
-name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
+name|context
 argument_list|)
 expr_stmt|;
 block|}

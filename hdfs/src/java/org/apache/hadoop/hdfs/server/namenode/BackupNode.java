@@ -649,7 +649,8 @@ name|BN_HTTP_ADDRESS_NAME_KEY
 argument_list|,
 name|getHostPortString
 argument_list|(
-name|httpAddress
+name|getHttpAddress
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
