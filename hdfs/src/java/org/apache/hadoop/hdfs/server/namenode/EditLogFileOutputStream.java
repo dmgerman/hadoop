@@ -220,6 +220,13 @@ name|DataOutputBuffer
 name|bufReady
 decl_stmt|;
 comment|// buffer ready for flushing
+DECL|field|writer
+specifier|private
+name|FSEditLogOp
+operator|.
+name|Writer
+name|writer
+decl_stmt|;
 DECL|field|initBufferSize
 specifier|final
 specifier|private
@@ -323,6 +330,16 @@ argument_list|(
 name|size
 argument_list|)
 expr_stmt|;
+name|writer
+operator|=
+operator|new
+name|FSEditLogOp
+operator|.
+name|Writer
+argument_list|(
+name|bufCurrent
+argument_list|)
+expr_stmt|;
 name|RandomAccessFile
 name|rp
 init|=
@@ -398,38 +415,12 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|write (int b)
-specifier|public
+DECL|method|write (FSEditLogOp op)
 name|void
 name|write
 parameter_list|(
-name|int
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|bufCurrent
-operator|.
-name|write
-argument_list|(
-name|b
-argument_list|)
-expr_stmt|;
-block|}
-comment|/** {@inheritDoc} */
-annotation|@
-name|Override
-DECL|method|write (byte op, Writable... writables)
-name|void
-name|write
-parameter_list|(
-name|byte
+name|FSEditLogOp
 name|op
-parameter_list|,
-name|Writable
-modifier|...
-name|writables
 parameter_list|)
 throws|throws
 name|IOException
@@ -442,27 +433,13 @@ operator|.
 name|getLength
 argument_list|()
 decl_stmt|;
-name|write
+name|writer
+operator|.
+name|writeOp
 argument_list|(
 name|op
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|Writable
-name|w
-range|:
-name|writables
-control|)
-block|{
-name|w
-operator|.
-name|write
-argument_list|(
-name|bufCurrent
-argument_list|)
-expr_stmt|;
-block|}
 comment|// write transaction checksum
 name|int
 name|end
@@ -517,6 +494,38 @@ operator|.
 name|writeInt
 argument_list|(
 name|sum
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** {@inheritDoc} */
+annotation|@
+name|Override
+DECL|method|writeRaw (byte[] bytes, int offset, int length)
+name|void
+name|writeRaw
+parameter_list|(
+name|byte
+index|[]
+name|bytes
+parameter_list|,
+name|int
+name|offset
+parameter_list|,
+name|int
+name|length
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|bufCurrent
+operator|.
+name|write
+argument_list|(
+name|bytes
+argument_list|,
+name|offset
+argument_list|,
+name|length
 argument_list|)
 expr_stmt|;
 block|}
@@ -620,6 +629,10 @@ name|bufCurrent
 operator|=
 literal|null
 expr_stmt|;
+name|writer
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -714,6 +727,10 @@ name|bufReady
 operator|=
 literal|null
 expr_stmt|;
+name|writer
+operator|=
+literal|null
+expr_stmt|;
 name|fc
 operator|=
 literal|null
@@ -744,6 +761,8 @@ literal|0
 operator|:
 literal|"previous data is not flushed yet"
 assert|;
+name|bufCurrent
+operator|.
 name|write
 argument_list|(
 name|FSEditLogOpCodes
@@ -767,6 +786,16 @@ expr_stmt|;
 name|bufCurrent
 operator|=
 name|tmp
+expr_stmt|;
+name|writer
+operator|=
+operator|new
+name|FSEditLogOp
+operator|.
+name|Writer
+argument_list|(
+name|bufCurrent
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Flush ready buffer to persistent store. currentBuffer is not flushed as it    * accumulates new log records while readyBuffer will be flushed and synced.    */

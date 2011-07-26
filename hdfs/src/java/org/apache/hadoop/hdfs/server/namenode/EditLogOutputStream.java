@@ -31,16 +31,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|OutputStream
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -60,20 +50,6 @@ name|now
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
 begin_comment
 comment|/**  * A generic abstract class to support journaling of edits logs into   * a persistent storage.  */
 end_comment
@@ -83,8 +59,6 @@ DECL|class|EditLogOutputStream
 specifier|abstract
 class|class
 name|EditLogOutputStream
-extends|extends
-name|OutputStream
 implements|implements
 name|JournalStream
 block|{
@@ -114,31 +88,33 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
-DECL|method|write (int b)
+comment|/**    * Write edits log operation to the stream.    *     * @param op operation    * @throws IOException    */
+DECL|method|write (FSEditLogOp op)
 specifier|abstract
-specifier|public
 name|void
 name|write
 parameter_list|(
-name|int
-name|b
+name|FSEditLogOp
+name|op
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Write edits log record into the stream.    * The record is represented by operation name and    * an array of Writable arguments.    *     * @param op operation    * @param writables array of Writable arguments    * @throws IOException    */
-DECL|method|write (byte op, Writable ... writables)
+comment|/**    * Write raw data to an edit log. This data should already have    * the transaction ID, checksum, etc included. It is for use    * within the BackupNode when replicating edits from the    * NameNode.    *    * @param bytes the bytes to write.    * @param offset offset in the bytes to write from    * @param length number of bytes to write    * @throws IOException    */
+DECL|method|writeRaw (byte[] bytes, int offset, int length)
 specifier|abstract
 name|void
-name|write
+name|writeRaw
 parameter_list|(
 name|byte
-name|op
+index|[]
+name|bytes
 parameter_list|,
-name|Writable
-modifier|...
-name|writables
+name|int
+name|offset
+parameter_list|,
+name|int
+name|length
 parameter_list|)
 throws|throws
 name|IOException
