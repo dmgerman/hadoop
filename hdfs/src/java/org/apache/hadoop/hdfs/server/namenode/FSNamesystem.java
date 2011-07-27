@@ -1914,7 +1914,6 @@ implements|,
 name|NameNodeMXBean
 block|{
 DECL|field|LOG
-specifier|public
 specifier|static
 specifier|final
 name|Log

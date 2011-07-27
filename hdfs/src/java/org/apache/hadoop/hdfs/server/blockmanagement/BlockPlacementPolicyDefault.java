@@ -1117,8 +1117,6 @@ name|NotEnoughReplicasException
 name|e
 parameter_list|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -1626,8 +1624,6 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -1747,8 +1743,6 @@ name|enableDebugLogging
 decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -1855,8 +1849,6 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -1986,8 +1978,6 @@ name|enableDebugLogging
 decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -2117,8 +2107,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -2199,8 +2187,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -2309,8 +2295,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -2430,8 +2414,6 @@ condition|)
 block|{
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled

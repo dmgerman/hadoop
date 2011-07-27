@@ -1195,8 +1195,6 @@ argument_list|)
 operator|*
 literal|1000L
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
@@ -1206,52 +1204,42 @@ operator|+
 name|defaultReplication
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxReplication = "
+literal|"maxReplication     = "
 operator|+
 name|maxReplication
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"minReplication = "
+literal|"minReplication     = "
 operator|+
 name|minReplication
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxReplicationStreams = "
+literal|"maxReplicationStreams      = "
 operator|+
 name|maxReplicationStreams
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"shouldCheckForEnoughRacks = "
+literal|"shouldCheckForEnoughRacks  = "
 operator|+
 name|shouldCheckForEnoughRacks
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
@@ -1830,18 +1818,13 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpected exception while updating disk space : "
-operator|+
+literal|"Unexpected exception while updating disk space."
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2633,8 +2616,6 @@ operator|!=
 name|numCorruptReplicas
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -4648,8 +4629,6 @@ name|size
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -6627,16 +6606,12 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -6711,16 +6686,12 @@ decl_stmt|;
 comment|// Block is on the NN
 if|if
 condition|(
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -6947,8 +6918,6 @@ name|TEMPORARY
 case|:
 comment|// should not be reported
 default|default:
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -7642,8 +7611,6 @@ operator|!=
 name|corruptReplicasCount
 condition|)
 block|{
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -7964,13 +7931,11 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Total number of blocks = "
+literal|"Total number of blocks            = "
 operator|+
 name|blocksMap
 operator|.
@@ -7978,19 +7943,15 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of invalid blocks = "
+literal|"Number of invalid blocks          = "
 operator|+
 name|nrInvalid
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
@@ -8000,8 +7961,6 @@ operator|+
 name|nrUnderReplicated
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info
@@ -9270,8 +9229,6 @@ literal|" "
 argument_list|)
 expr_stmt|;
 block|}
-name|FSNamesystem
-operator|.
 name|LOG
 operator|.
 name|info

@@ -68,7 +68,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|LeaseManager
 import|;
 end_import
 
@@ -143,7 +143,7 @@ operator|instanceof
 name|ConcurrentModificationException
 condition|)
 block|{
-name|FSNamesystem
+name|LeaseManager
 operator|.
 name|LOG
 operator|.

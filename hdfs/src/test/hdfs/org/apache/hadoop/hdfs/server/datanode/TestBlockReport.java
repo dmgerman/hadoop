@@ -3889,9 +3889,14 @@ operator|(
 operator|(
 name|Log4JLogger
 operator|)
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
 name|FSNamesystem
 operator|.
-name|LOG
+name|class
+argument_list|)
 operator|)
 operator|.
 name|getLogger
