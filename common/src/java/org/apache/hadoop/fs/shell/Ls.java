@@ -196,7 +196,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-R] [-h] [<path> ...]"
+literal|"[-d] [-h] [-R] [<path> ...]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -221,11 +221,13 @@ literal|"where n is the number of replicas specified for the file \n"
 operator|+
 literal|"and size is the size of the file, in bytes.\n"
 operator|+
-literal|"  -R  Recursively list the contents of directories.\n"
+literal|"  -d  Directories are listed as plain files.\n"
 operator|+
 literal|"  -h  Formats the sizes of files in a human-readable fashion\n"
 operator|+
-literal|"      rather than of bytes.\n\n"
+literal|"      rather than a number of bytes.\n"
+operator|+
+literal|"  -R  Recursively list the contents of directories."
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected
@@ -266,6 +268,11 @@ DECL|field|lineFormat
 specifier|protected
 name|String
 name|lineFormat
+decl_stmt|;
+DECL|field|dirRecurse
+specifier|protected
+name|boolean
+name|dirRecurse
 decl_stmt|;
 DECL|field|humanReadable
 specifier|protected
@@ -329,9 +336,11 @@ name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,
-literal|"R"
+literal|"d"
 argument_list|,
 literal|"h"
+argument_list|,
+literal|"R"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -339,6 +348,16 @@ operator|.
 name|parse
 argument_list|(
 name|args
+argument_list|)
+expr_stmt|;
+name|dirRecurse
+operator|=
+operator|!
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"d"
 argument_list|)
 expr_stmt|;
 name|setRecursive
@@ -349,6 +368,8 @@ name|getOpt
 argument_list|(
 literal|"R"
 argument_list|)
+operator|&&
+name|dirRecurse
 argument_list|)
 expr_stmt|;
 name|humanReadable
@@ -379,6 +400,49 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|processPathArgument (PathData item)
+specifier|protected
+name|void
+name|processPathArgument
+parameter_list|(
+name|PathData
+name|item
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// implicitly recurse once for cmdline directories
+if|if
+condition|(
+name|dirRecurse
+operator|&&
+name|item
+operator|.
+name|stat
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|recursePath
+argument_list|(
+name|item
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|super
+operator|.
+name|processPathArgument
+argument_list|(
+name|item
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|processPaths (PathData parent, PathData ... items)
 specifier|protected
 name|void
@@ -394,34 +458,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// implicitly recurse once for cmdline directories
-if|if
-condition|(
-name|parent
-operator|==
-literal|null
-operator|&&
-name|items
-index|[
-literal|0
-index|]
-operator|.
-name|stat
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-block|{
-name|recursePath
-argument_list|(
-name|items
-index|[
-literal|0
-index|]
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 if|if
 condition|(
 operator|!
