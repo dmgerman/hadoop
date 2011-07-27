@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -182,7 +196,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-R] [<path> ...]"
+literal|"[-R] [-h] [<path> ...]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -207,7 +221,11 @@ literal|"where n is the number of replicas specified for the file \n"
 operator|+
 literal|"and size is the size of the file, in bytes.\n"
 operator|+
-literal|"  -R  Recursively list the contents of directories"
+literal|"  -R  Recursively list the contents of directories.\n"
+operator|+
+literal|"  -h  Formats the sizes of files in a human-readable fashion\n"
+operator|+
+literal|"      rather than of bytes.\n\n"
 decl_stmt|;
 DECL|field|dateFormat
 specifier|protected
@@ -249,6 +267,40 @@ specifier|protected
 name|String
 name|lineFormat
 decl_stmt|;
+DECL|field|humanReadable
+specifier|protected
+name|boolean
+name|humanReadable
+init|=
+literal|false
+decl_stmt|;
+DECL|method|formatSize (long size)
+specifier|protected
+name|String
+name|formatSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+return|return
+name|humanReadable
+condition|?
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|size
+argument_list|)
+else|:
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|size
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|processOptions (LinkedList<String> args)
@@ -278,6 +330,8 @@ operator|.
 name|MAX_VALUE
 argument_list|,
 literal|"R"
+argument_list|,
+literal|"h"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -295,6 +349,15 @@ name|getOpt
 argument_list|(
 literal|"R"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|humanReadable
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"h"
 argument_list|)
 expr_stmt|;
 if|if
@@ -470,10 +533,13 @@ operator|.
 name|getGroup
 argument_list|()
 argument_list|,
+name|formatSize
+argument_list|(
 name|stat
 operator|.
 name|getLen
 argument_list|()
+argument_list|)
 argument_list|,
 name|dateFormat
 operator|.
@@ -639,7 +705,7 @@ literal|"%"
 operator|+
 name|maxLen
 operator|+
-literal|"d "
+literal|"s "
 argument_list|)
 expr_stmt|;
 name|fmt
