@@ -339,7 +339,7 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
@@ -349,6 +349,8 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+operator|.
+name|*
 import|;
 end_import
 
@@ -1296,60 +1298,32 @@ index|[]
 name|NAMESERVICE_SPECIFIC_KEYS
 init|=
 block|{
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_DIR_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_EDITS_DIR_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_BACKUP_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
 block|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_BACKUP_SERVICE_RPC_ADDRESS_KEY
 block|}
 decl_stmt|;
@@ -1787,8 +1761,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 argument_list|,
 name|address
@@ -1816,8 +1788,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -2185,11 +2155,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
-literal|"0.0.0.0:50070"
+name|DFS_NAMENODE_HTTP_ADDRESS_DEFAULT
 argument_list|)
 argument_list|)
 return|;
@@ -2207,8 +2175,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|getHostPortString
@@ -2319,12 +2285,8 @@ name|login
 argument_list|(
 name|conf
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_USER_NAME_KEY
 argument_list|,
 name|socAddr
@@ -2373,12 +2335,8 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_HANDLER_COUNT_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
@@ -2422,12 +2380,8 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SERVICE_HANDLER_COUNT_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SERVICE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
@@ -2812,7 +2766,7 @@ name|conf
 operator|.
 name|getInstances
 argument_list|(
-literal|"dfs.namenode.plugins"
+name|DFS_NAMENODE_PLUGINS_KEY
 argument_list|,
 name|ServicePlugin
 operator|.
@@ -6601,12 +6555,8 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_DEFAULT
 argument_list|)
 condition|)
@@ -6617,16 +6567,12 @@ name|IOException
 argument_list|(
 literal|"The option "
 operator|+
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY
 operator|+
 literal|" is set to false for this filesystem, so it "
 operator|+
 literal|"cannot be formatted. You will need to set "
 operator|+
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SUPPORT_ALLOW_FORMAT_KEY
 operator|+
 literal|" parameter "
@@ -7586,7 +7532,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.namenode.startup"
+name|DFS_NAMENODE_STARTUP_KEY
 argument_list|,
 name|opt
 operator|.
@@ -7613,7 +7559,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.namenode.startup"
+name|DFS_NAMENODE_STARTUP_KEY
 argument_list|,
 name|StartupOption
 operator|.
@@ -8021,8 +7967,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|)
 operator|!=
@@ -8046,8 +7990,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|)
 argument_list|)
@@ -8056,8 +7998,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
 name|defaultUri

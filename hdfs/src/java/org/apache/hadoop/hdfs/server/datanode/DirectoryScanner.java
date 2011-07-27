@@ -394,15 +394,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_SCAN_INTERVAL
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_SCAN_INTERVAL
-init|=
-literal|21600
-decl_stmt|;
 DECL|field|datanode
 specifier|private
 specifier|final
@@ -1147,7 +1138,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DIRECTORYSCAN_INTERVAL_KEY
 argument_list|,
-name|DEFAULT_SCAN_INTERVAL
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DIRECTORYSCAN_INTERVAL_DEFAULT
 argument_list|)
 decl_stmt|;
 name|scanPeriodMsecs

@@ -191,7 +191,7 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
@@ -201,6 +201,8 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+operator|.
+name|*
 import|;
 end_import
 
@@ -890,12 +892,8 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_DEFAULT
 argument_list|)
 argument_list|)
@@ -951,12 +949,8 @@ name|login
 argument_list|(
 name|conf
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_SECONDARY_NAMENODE_USER_NAME_KEY
 argument_list|,
 name|infoBindAddress
@@ -974,8 +968,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_METRICS_SESSION_ID_KEY
 argument_list|)
 argument_list|,
@@ -1083,12 +1075,8 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_PERIOD_DEFAULT
 argument_list|)
 expr_stmt|;
@@ -1098,12 +1086,8 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_SIZE_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
@@ -1124,8 +1108,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_SECONDARY_NAMENODE_KRB_HTTPS_USER_NAME_KEY
 argument_list|)
 argument_list|,
@@ -1136,8 +1118,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
 argument_list|)
 argument_list|)
@@ -1215,8 +1195,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_ADMIN
 argument_list|,
 literal|" "
@@ -1398,8 +1376,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|,
 name|infoBindAddress
