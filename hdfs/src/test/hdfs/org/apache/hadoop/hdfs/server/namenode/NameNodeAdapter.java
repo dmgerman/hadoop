@@ -180,29 +180,6 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Refresh block queue counts on the name-node.    * @param namenode to proxy the invocation to    */
-DECL|method|refreshBlockCounts (NameNode namenode)
-specifier|public
-specifier|static
-name|void
-name|refreshBlockCounts
-parameter_list|(
-name|NameNode
-name|namenode
-parameter_list|)
-block|{
-name|namenode
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|updateState
-argument_list|()
-expr_stmt|;
-block|}
 comment|/**    * Get the internal RPC server instance.    * @return rpc server    */
 DECL|method|getRpcServer (NameNode namenode)
 specifier|public
@@ -251,14 +228,15 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Return the datanode descriptor for the given datanode.    */
-DECL|method|getDatanode (NameNode namenode, DatanodeID id)
+DECL|method|getDatanode (final FSNamesystem ns, DatanodeID id)
 specifier|public
 specifier|static
 name|DatanodeDescriptor
 name|getDatanode
 parameter_list|(
-name|NameNode
-name|namenode
+specifier|final
+name|FSNamesystem
+name|ns
 parameter_list|,
 name|DatanodeID
 name|id
@@ -266,14 +244,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSNamesystem
-name|ns
-init|=
-name|namenode
-operator|.
-name|getNamesystem
-argument_list|()
-decl_stmt|;
 name|ns
 operator|.
 name|readLock
@@ -283,6 +253,12 @@ try|try
 block|{
 return|return
 name|ns
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|getDatanode
 argument_list|(

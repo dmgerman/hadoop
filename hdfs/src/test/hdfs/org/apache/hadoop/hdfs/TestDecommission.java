@@ -1416,7 +1416,7 @@ name|getDatanode
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNamesystem
 argument_list|(
 name|nnIndex
 argument_list|)
@@ -2689,7 +2689,7 @@ name|NameNodeAdapter
 operator|.
 name|getDatanode
 argument_list|(
-name|namenode
+name|fsn
 argument_list|,
 name|downnode
 argument_list|)
