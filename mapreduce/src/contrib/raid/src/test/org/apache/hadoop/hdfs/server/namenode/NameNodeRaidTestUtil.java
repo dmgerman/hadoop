@@ -190,28 +190,10 @@ name|resolveLink
 argument_list|)
 return|;
 block|}
-DECL|method|getDatanodeMap ( final FSNamesystem namesystem)
-specifier|public
-specifier|static
-name|NavigableMap
-argument_list|<
-name|String
-argument_list|,
-name|DatanodeDescriptor
-argument_list|>
-name|getDatanodeMap
-parameter_list|(
-specifier|final
-name|FSNamesystem
-name|namesystem
-parameter_list|)
-block|{
-return|return
-name|namesystem
-operator|.
-name|datanodeMap
-return|;
-block|}
+comment|//  public static NavigableMap<String, DatanodeDescriptor> getDatanodeMap(
+comment|//      final FSNamesystem namesystem) {
+comment|//    return namesystem.datanodeMap;
+comment|//  }
 block|}
 end_class
 
