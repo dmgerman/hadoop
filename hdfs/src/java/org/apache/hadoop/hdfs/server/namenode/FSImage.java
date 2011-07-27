@@ -3886,6 +3886,22 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|numEdits
+operator|==
+literal|0
+operator|&&
+name|editsNew
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|numEdits
+operator|++
+expr_stmt|;
+block|}
 comment|// update the counts.
 name|getFSNamesystem
 argument_list|()
