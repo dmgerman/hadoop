@@ -5101,7 +5101,23 @@ name|connection
 return|;
 block|}
 comment|/**    * This class holds the address and the user ticket. The client connections    * to servers are uniquely identified by<remoteAddress, protocol, ticket>    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|ConnectionId
+specifier|public
 specifier|static
 class|class
 name|ConnectionId
@@ -5363,7 +5379,9 @@ return|return
 name|pingInterval
 return|;
 block|}
+comment|/**      * Returns a ConnectionId object.       * @param addr Remote address for the connection.      * @param protocol Protocol for RPC.      * @param ticket UGI      * @param rpcTimeout timeout      * @param conf Configuration object      * @return A ConnectionId instance      * @throws IOException      */
 DECL|method|getConnectionId (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
+specifier|public
 specifier|static
 name|ConnectionId
 name|getConnectionId
