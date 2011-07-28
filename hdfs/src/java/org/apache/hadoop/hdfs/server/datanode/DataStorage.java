@@ -530,20 +530,6 @@ name|DiskChecker
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**   * Data storage information file.  *<p>  * @see Storage  */
 end_comment
@@ -932,6 +918,8 @@ operator|.
 name|analyzeStorage
 argument_list|(
 name|startOpt
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 comment|// sd is locked but not opened
@@ -1470,19 +1458,19 @@ operator|=
 literal|0
 expr_stmt|;
 comment|// store storageID as it currently is
+name|writeProperties
+argument_list|(
 name|sd
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Set ClusterID, StorageID, StorageType, CTime into    * DataStorage VERSION file   */
 annotation|@
 name|Override
-DECL|method|setFields (Properties props, StorageDirectory sd )
+DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd )
 specifier|protected
 name|void
-name|setFields
+name|setPropertiesFromFields
 parameter_list|(
 name|Properties
 name|props
@@ -1587,10 +1575,10 @@ block|}
 comment|/*    * Read ClusterID, StorageID, StorageType, CTime from     * DataStorage VERSION file and verify them.    */
 annotation|@
 name|Override
-DECL|method|getFields (Properties props, StorageDirectory sd)
+DECL|method|setFieldsFromProperties (Properties props, StorageDirectory sd)
 specifier|protected
 name|void
-name|getFields
+name|setFieldsFromProperties
 parameter_list|(
 name|Properties
 name|props
@@ -1899,10 +1887,10 @@ argument_list|)
 expr_stmt|;
 comment|// rollback if applicable
 block|}
+name|readProperties
+argument_list|(
 name|sd
-operator|.
-name|read
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|checkVersionUpgradable
 argument_list|(
@@ -2177,10 +2165,10 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 expr_stmt|;
+name|writeProperties
+argument_list|(
 name|sd
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 return|return;
 block|}
@@ -2378,10 +2366,10 @@ operator|.
 name|getClusterID
 argument_list|()
 expr_stmt|;
+name|writeProperties
+argument_list|(
 name|sd
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// 5. Rename<SD>/previous.tmp to<SD>/previous
 name|rename
@@ -2544,28 +2532,11 @@ operator|new
 name|DataStorage
 argument_list|()
 decl_stmt|;
-name|StorageDirectory
-name|prevSD
-init|=
 name|prevInfo
 operator|.
-expr|new
-name|StorageDirectory
+name|readPreviousVersionProperties
 argument_list|(
 name|sd
-operator|.
-name|getRoot
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|prevSD
-operator|.
-name|read
-argument_list|(
-name|prevSD
-operator|.
-name|getPreviousVersionFile
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// We allow rollback to a state, which is either consistent with
@@ -2599,7 +2570,7 @@ throw|throw
 operator|new
 name|InconsistentFSStateException
 argument_list|(
-name|prevSD
+name|sd
 operator|.
 name|getRoot
 argument_list|()

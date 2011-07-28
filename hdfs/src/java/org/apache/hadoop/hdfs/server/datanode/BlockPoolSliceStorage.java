@@ -559,6 +559,8 @@ operator|.
 name|analyzeStorage
 argument_list|(
 name|startOpt
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 comment|// sd is locked but not opened
@@ -867,19 +869,19 @@ name|NodeType
 operator|.
 name|DATA_NODE
 expr_stmt|;
+name|writeProperties
+argument_list|(
 name|bpSdir
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set layoutVersion, namespaceID and blockpoolID into block pool storage    * VERSION file    */
 annotation|@
 name|Override
-DECL|method|setFields (Properties props, StorageDirectory sd)
+DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd)
 specifier|protected
 name|void
-name|setFields
+name|setPropertiesFromFields
 parameter_list|(
 name|Properties
 name|props
@@ -1027,10 +1029,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFields (Properties props, StorageDirectory sd)
+DECL|method|setFieldsFromProperties (Properties props, StorageDirectory sd)
 specifier|protected
 name|void
-name|getFields
+name|setFieldsFromProperties
 parameter_list|(
 name|Properties
 name|props
@@ -1120,10 +1122,10 @@ name|nsInfo
 argument_list|)
 expr_stmt|;
 comment|// rollback if applicable
+name|readProperties
+argument_list|(
 name|sd
-operator|.
-name|read
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|checkVersionUpgradable
 argument_list|(
@@ -1568,10 +1570,10 @@ operator|.
 name|getCTime
 argument_list|()
 expr_stmt|;
+name|writeProperties
+argument_list|(
 name|bpSd
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// 4.rename<SD>/curernt/<bpid>/previous.tmp to<SD>/curernt/<bpid>/previous
 name|rename
@@ -1729,28 +1731,11 @@ operator|new
 name|DataStorage
 argument_list|()
 decl_stmt|;
-name|StorageDirectory
-name|prevSD
-init|=
 name|prevInfo
 operator|.
-expr|new
-name|StorageDirectory
+name|readPreviousVersionProperties
 argument_list|(
 name|bpSd
-operator|.
-name|getRoot
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|prevSD
-operator|.
-name|read
-argument_list|(
-name|prevSD
-operator|.
-name|getPreviousVersionFile
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// We allow rollback to a state, which is either consistent with
@@ -1787,7 +1772,7 @@ throw|throw
 operator|new
 name|InconsistentFSStateException
 argument_list|(
-name|prevSD
+name|bpSd
 operator|.
 name|getRoot
 argument_list|()

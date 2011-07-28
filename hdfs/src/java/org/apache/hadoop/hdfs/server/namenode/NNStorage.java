@@ -2435,10 +2435,10 @@ name|sd
 argument_list|)
 expr_stmt|;
 block|}
+name|writeProperties
+argument_list|(
 name|sd
-operator|.
-name|write
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -2732,10 +2732,10 @@ block|}
 annotation|@
 name|Override
 comment|// Storage
-DECL|method|getFields (Properties props, StorageDirectory sd )
+DECL|method|setFieldsFromProperties ( Properties props, StorageDirectory sd)
 specifier|protected
 name|void
-name|getFields
+name|setFieldsFromProperties
 parameter_list|(
 name|Properties
 name|props
@@ -2748,7 +2748,7 @@ name|IOException
 block|{
 name|super
 operator|.
-name|getFields
+name|setFieldsFromProperties
 argument_list|(
 name|props
 argument_list|,
@@ -2967,10 +2967,10 @@ comment|/**    * Write last checkpoint time and version file into the storage di
 annotation|@
 name|Override
 comment|// Storage
-DECL|method|setFields (Properties props, StorageDirectory sd )
+DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd )
 specifier|protected
 name|void
-name|setFields
+name|setPropertiesFromFields
 parameter_list|(
 name|Properties
 name|props
@@ -2983,7 +2983,7 @@ name|IOException
 block|{
 name|super
 operator|.
-name|setFields
+name|setPropertiesFromFields
 argument_list|(
 name|props
 argument_list|,
@@ -3922,9 +3922,7 @@ block|{
 name|Properties
 name|props
 init|=
-name|sd
-operator|.
-name|readFrom
+name|readPropertiesFile
 argument_list|(
 name|sd
 operator|.

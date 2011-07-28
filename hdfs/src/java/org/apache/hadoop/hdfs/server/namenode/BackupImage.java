@@ -554,6 +554,8 @@ operator|.
 name|StartupOption
 operator|.
 name|REGULAR
+argument_list|,
+name|storage
 argument_list|)
 expr_stmt|;
 comment|// sd is locked but not opened
@@ -633,12 +635,14 @@ operator|.
 name|NOT_FORMATTED
 condition|)
 block|{
-name|sd
-operator|.
-name|read
-argument_list|()
-expr_stmt|;
 comment|// read and verify consistency with other directories
+name|storage
+operator|.
+name|readProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 catch|catch

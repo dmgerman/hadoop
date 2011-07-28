@@ -192,6 +192,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -1388,8 +1402,9 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|assertTrue
-argument_list|(
+if|if
+condition|(
+operator|!
 name|ioe
 operator|.
 name|toString
@@ -1399,8 +1414,12 @@ name|contains
 argument_list|(
 literal|"Old layout version is 'too old'"
 argument_list|)
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+name|ioe
+throw|;
+block|}
 block|}
 block|}
 comment|/**    * Test upgrade from 0.22 image    */

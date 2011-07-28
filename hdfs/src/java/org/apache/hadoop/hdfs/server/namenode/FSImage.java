@@ -1296,6 +1296,8 @@ operator|.
 name|analyzeStorage
 argument_list|(
 name|startOpt
+argument_list|,
+name|storage
 argument_list|)
 expr_stmt|;
 comment|// sd is locked but not opened
@@ -1353,12 +1355,14 @@ operator|.
 name|ROLLBACK
 condition|)
 block|{
-name|sd
-operator|.
-name|read
-argument_list|()
-expr_stmt|;
 comment|// read and verify consistency with other directories
+name|storage
+operator|.
+name|readProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
 name|isFormatted
 operator|=
 literal|true
@@ -2328,40 +2332,25 @@ operator|+
 literal|" does not contain previous fs state."
 argument_list|)
 expr_stmt|;
-name|sd
-operator|.
-name|read
-argument_list|()
-expr_stmt|;
 comment|// read and verify consistency with other directories
+name|storage
+operator|.
+name|readProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
-name|StorageDirectory
-name|sdPrev
-init|=
+comment|// read and verify consistency of the prev dir
 name|prevState
 operator|.
 name|getStorage
 argument_list|()
 operator|.
-operator|new
-name|StorageDirectory
+name|readPreviousVersionProperties
 argument_list|(
 name|sd
-operator|.
-name|getRoot
-argument_list|()
-argument_list|)
-decl_stmt|;
-comment|// read and verify consistency of the prev dir
-name|sdPrev
-operator|.
-name|read
-argument_list|(
-name|sdPrev
-operator|.
-name|getPreviousVersionFile
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -3584,10 +3573,12 @@ expr_stmt|;
 comment|//
 comment|// Load in bits
 comment|//
-name|latestNameSD
+name|storage
 operator|.
-name|read
-argument_list|()
+name|readProperties
+argument_list|(
+name|latestNameSD
+argument_list|)
 expr_stmt|;
 name|needToSave
 operator||=
@@ -4841,10 +4832,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// write version and time files
-name|sd
+name|storage
 operator|.
-name|write
-argument_list|()
+name|writeProperties
+argument_list|(
+name|sd
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Moves fsimage.ckpt to fsImage and edits.new to edits    * Reopens the new edits file.    */
@@ -5420,10 +5413,12 @@ throw|;
 block|}
 try|try
 block|{
-name|sd
+name|storage
 operator|.
-name|write
-argument_list|()
+name|writeProperties
+argument_list|(
+name|sd
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch

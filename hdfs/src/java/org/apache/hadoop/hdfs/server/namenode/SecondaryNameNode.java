@@ -3335,6 +3335,8 @@ operator|.
 name|StartupOption
 operator|.
 name|REGULAR
+argument_list|,
+name|storage
 argument_list|)
 expr_stmt|;
 comment|// sd is locked but not opened
