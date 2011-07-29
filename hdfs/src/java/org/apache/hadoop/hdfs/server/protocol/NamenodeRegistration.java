@@ -227,14 +227,6 @@ name|NamenodeRole
 name|role
 decl_stmt|;
 comment|// node role
-DECL|field|checkpointTime
-name|long
-name|checkpointTime
-init|=
-operator|-
-literal|1L
-decl_stmt|;
-comment|// the age of the image
 DECL|method|NamenodeRegistration ()
 specifier|public
 name|NamenodeRegistration
@@ -244,7 +236,7 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|NamenodeRegistration (String address, String httpAddress, StorageInfo storageInfo, NamenodeRole role, long checkpointTime)
+DECL|method|NamenodeRegistration (String address, String httpAddress, StorageInfo storageInfo, NamenodeRole role)
 specifier|public
 name|NamenodeRegistration
 parameter_list|(
@@ -259,9 +251,6 @@ name|storageInfo
 parameter_list|,
 name|NamenodeRole
 name|role
-parameter_list|,
-name|long
-name|checkpointTime
 parameter_list|)
 block|{
 name|super
@@ -291,12 +280,6 @@ operator|.
 name|role
 operator|=
 name|role
-expr_stmt|;
-name|this
-operator|.
-name|checkpointTime
-operator|=
-name|checkpointTime
 expr_stmt|;
 block|}
 annotation|@
@@ -403,17 +386,6 @@ name|that
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the age of the image.    */
-DECL|method|getCheckpointTime ()
-specifier|public
-name|long
-name|getCheckpointTime
-parameter_list|()
-block|{
-return|return
-name|checkpointTime
-return|;
-block|}
 comment|/////////////////////////////////////////////////
 comment|// Writable
 comment|/////////////////////////////////////////////////
@@ -497,13 +469,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-name|out
-operator|.
-name|writeLong
-argument_list|(
-name|checkpointTime
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -557,13 +522,6 @@ name|readFields
 argument_list|(
 name|in
 argument_list|)
-expr_stmt|;
-name|checkpointTime
-operator|=
-name|in
-operator|.
-name|readLong
-argument_list|()
 expr_stmt|;
 block|}
 block|}

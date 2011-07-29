@@ -92,6 +92,20 @@ name|WritableUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
 begin_comment
 comment|/**  * Common class for storage information.  *   * TODO namespaceID should be long and computed as hash(address + port)  */
 end_comment
@@ -425,6 +439,32 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|toColonSeparatedString ()
+specifier|public
+name|String
+name|toColonSeparatedString
+parameter_list|()
+block|{
+return|return
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|":"
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|layoutVersion
+argument_list|,
+name|namespaceID
+argument_list|,
+name|cTime
+argument_list|,
+name|clusterID
+argument_list|)
 return|;
 block|}
 block|}

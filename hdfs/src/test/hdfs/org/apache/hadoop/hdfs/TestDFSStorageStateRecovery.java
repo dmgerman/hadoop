@@ -127,6 +127,24 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSImageTestUtil
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -217,7 +235,71 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * The test case table.  Each row represents a test case.  This table is    * taken from the table in Apendix A of the HDFS Upgrade Test Plan    * (TestPlan-HdfsUpgrade.html) attached to    * http://issues.apache.org/jira/browse/HADOOP-702    * The column meanings are:    *  0) current directory exists    *  1) previous directory exists    *  2) previous.tmp directory exists    *  3) removed.tmp directory exists    *  4) lastcheckpoint.tmp directory exists    *  5) node should recover and startup    *  6) current directory should exist after recovery but before startup    *  7) previous directory should exist after recovery but before startup    */
+comment|// Constants for indexes into test case table below.
+DECL|field|CURRENT_EXISTS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|CURRENT_EXISTS
+init|=
+literal|0
+decl_stmt|;
+DECL|field|PREVIOUS_EXISTS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|PREVIOUS_EXISTS
+init|=
+literal|1
+decl_stmt|;
+DECL|field|PREVIOUS_TMP_EXISTS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|PREVIOUS_TMP_EXISTS
+init|=
+literal|2
+decl_stmt|;
+DECL|field|REMOVED_TMP_EXISTS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|REMOVED_TMP_EXISTS
+init|=
+literal|3
+decl_stmt|;
+DECL|field|SHOULD_RECOVER
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SHOULD_RECOVER
+init|=
+literal|4
+decl_stmt|;
+DECL|field|CURRENT_SHOULD_EXIST_AFTER_RECOVER
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|CURRENT_SHOULD_EXIST_AFTER_RECOVER
+init|=
+literal|5
+decl_stmt|;
+DECL|field|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
+init|=
+literal|6
+decl_stmt|;
+comment|/**    * The test case table.  Each row represents a test case.  This table is    * taken from the table in Apendix A of the HDFS Upgrade Test Plan    * (TestPlan-HdfsUpgrade.html) attached to    * http://issues.apache.org/jira/browse/HADOOP-702    *     * It has been slightly modified since previouscheckpoint.tmp no longer    * exists.    *     * The column meanings are:    *  0) current directory exists    *  1) previous directory exists    *  2) previous.tmp directory exists    *  3) removed.tmp directory exists    *  4) node should recover and startup    *  5) current directory should exist after recovery but before startup    *  6) previous directory should exist after recovery but before startup    */
 DECL|field|testCases
 specifier|static
 name|boolean
@@ -235,8 +317,6 @@ name|boolean
 index|[]
 block|{
 literal|true
-block|,
-literal|false
 block|,
 literal|false
 block|,
@@ -264,8 +344,6 @@ literal|false
 block|,
 literal|false
 block|,
-literal|false
-block|,
 literal|true
 block|,
 literal|true
@@ -283,8 +361,6 @@ block|,
 literal|false
 block|,
 literal|true
-block|,
-literal|false
 block|,
 literal|false
 block|,
@@ -313,8 +389,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 4
@@ -322,30 +396,6 @@ operator|new
 name|boolean
 index|[]
 block|{
-literal|true
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|}
-block|,
-comment|// 4
-operator|new
-name|boolean
-index|[]
-block|{
-literal|false
-block|,
 literal|true
 block|,
 literal|true
@@ -372,9 +422,7 @@ literal|true
 block|,
 literal|true
 block|,
-literal|false
-block|,
-literal|false
+literal|true
 block|,
 literal|false
 block|,
@@ -390,6 +438,24 @@ index|[]
 block|{
 literal|false
 block|,
+literal|true
+block|,
+literal|true
+block|,
+literal|false
+block|,
+literal|false
+block|,
+literal|false
+block|,
+literal|false
+block|}
+block|,
+comment|// 4
+operator|new
+name|boolean
+index|[]
+block|{
 literal|false
 block|,
 literal|false
@@ -423,8 +489,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 6
@@ -437,8 +501,6 @@ block|,
 literal|false
 block|,
 literal|true
-block|,
-literal|false
 block|,
 literal|false
 block|,
@@ -461,8 +523,6 @@ block|,
 literal|false
 block|,
 literal|true
-block|,
-literal|false
 block|,
 literal|true
 block|,
@@ -489,8 +549,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 9
@@ -511,8 +569,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 10
@@ -533,8 +589,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 10
@@ -555,8 +609,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 10
@@ -577,8 +629,6 @@ block|,
 literal|false
 block|,
 literal|false
-block|,
-literal|false
 block|}
 block|,
 comment|// 10
@@ -593,8 +643,6 @@ block|,
 literal|false
 block|,
 literal|true
-block|,
-literal|false
 block|,
 literal|false
 block|,
@@ -616,8 +664,6 @@ literal|false
 block|,
 literal|true
 block|,
-literal|false
-block|,
 literal|true
 block|,
 literal|true
@@ -633,13 +679,11 @@ index|[]
 block|{
 literal|true
 block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|,
 literal|true
+block|,
+literal|false
+block|,
+literal|false
 block|,
 literal|true
 block|,
@@ -649,115 +693,6 @@ literal|false
 block|}
 block|,
 comment|// 13
-operator|new
-name|boolean
-index|[]
-block|{
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|}
-block|,
-comment|// 13
-operator|new
-name|boolean
-index|[]
-block|{
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|}
-block|,
-comment|// 14
-operator|new
-name|boolean
-index|[]
-block|{
-literal|false
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|}
-block|,
-comment|// 14
-operator|new
-name|boolean
-index|[]
-block|{
-literal|true
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|}
-block|,
-comment|// 15
-operator|new
-name|boolean
-index|[]
-block|{
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|true
-block|,
-literal|true
-block|,
-literal|false
-block|,
-literal|false
-block|,
-literal|false
-block|}
-comment|// 16
 block|}
 decl_stmt|;
 DECL|field|NUM_NN_TEST_CASES
@@ -835,56 +770,49 @@ literal|" current="
 operator|+
 name|state
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 operator|+
 literal|" previous="
 operator|+
 name|state
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 operator|+
 literal|" previous.tmp="
 operator|+
 name|state
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 operator|+
 literal|" removed.tmp="
 operator|+
 name|state
 index|[
-literal|3
-index|]
-operator|+
-literal|" lastcheckpoint.tmp="
-operator|+
-name|state
-index|[
-literal|4
+name|REMOVED_TMP_EXISTS
 index|]
 operator|+
 literal|" should recover="
 operator|+
 name|state
 index|[
-literal|5
+name|SHOULD_RECOVER
 index|]
 operator|+
 literal|" current exists after="
 operator|+
 name|state
 index|[
-literal|6
+name|CURRENT_SHOULD_EXIST_AFTER_RECOVER
 index|]
 operator|+
 literal|" previous exists after="
 operator|+
 name|state
 index|[
-literal|7
+name|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
 index|]
 argument_list|)
 expr_stmt|;
@@ -926,7 +854,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 condition|)
 comment|// current
@@ -943,7 +871,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 condition|)
 comment|// previous
@@ -960,7 +888,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 condition|)
 comment|// previous.tmp
@@ -977,7 +905,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|3
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 comment|// removed.tmp
@@ -988,23 +916,6 @@ argument_list|(
 name|baseDirs
 argument_list|,
 literal|"removed.tmp"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|state
-index|[
-literal|4
-index|]
-condition|)
-comment|// lastcheckpoint.tmp
-name|UpgradeUtilities
-operator|.
-name|createNameNodeStorageDirs
-argument_list|(
-name|baseDirs
-argument_list|,
-literal|"lastcheckpoint.tmp"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1048,7 +959,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 condition|)
 comment|// current
@@ -1065,7 +976,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 condition|)
 comment|// previous
@@ -1082,7 +993,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 condition|)
 comment|// previous.tmp
@@ -1099,7 +1010,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|3
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 comment|// removed.tmp
@@ -1110,23 +1021,6 @@ argument_list|(
 name|baseDirs
 argument_list|,
 literal|"removed.tmp"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|state
-index|[
-literal|4
-index|]
-condition|)
-comment|// lastcheckpoint.tmp
-name|UpgradeUtilities
-operator|.
-name|createDataNodeStorageDirs
-argument_list|(
-name|baseDirs
-argument_list|,
-literal|"lastcheckpoint.tmp"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1197,7 +1091,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 condition|)
 comment|// current
@@ -1216,7 +1110,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 condition|)
 comment|// previous
@@ -1235,7 +1129,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 condition|)
 comment|// previous.tmp
@@ -1254,7 +1148,7 @@ if|if
 condition|(
 name|state
 index|[
-literal|3
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 comment|// removed.tmp
@@ -1265,25 +1159,6 @@ argument_list|(
 name|baseDirs
 argument_list|,
 literal|"removed.tmp"
-argument_list|,
-name|bpid
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|state
-index|[
-literal|4
-index|]
-condition|)
-comment|// lastcheckpoint.tmp
-name|UpgradeUtilities
-operator|.
-name|createBlockPoolStorageDirs
-argument_list|(
-name|baseDirs
-argument_list|,
-literal|"lastcheckpoint.tmp"
 argument_list|,
 name|bpid
 argument_list|)
@@ -1366,21 +1241,19 @@ name|isFile
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertNotNull
 argument_list|(
-operator|new
-name|File
+name|FSImageTestUtil
+operator|.
+name|findNewestImageFile
 argument_list|(
 name|baseDirs
 index|[
 name|i
 index|]
-argument_list|,
-literal|"current/edits"
+operator|+
+literal|"/current"
 argument_list|)
-operator|.
-name|isFile
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1393,24 +1266,7 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|"current/fsimage"
-argument_list|)
-operator|.
-name|isFile
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-operator|new
-name|File
-argument_list|(
-name|baseDirs
-index|[
-name|i
-index|]
-argument_list|,
-literal|"current/fstime"
+literal|"current/seen_txid"
 argument_list|)
 operator|.
 name|isFile
@@ -1901,7 +1757,7 @@ name|shouldRecover
 init|=
 name|testCase
 index|[
-literal|5
+name|SHOULD_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -1909,7 +1765,7 @@ name|curAfterRecover
 init|=
 name|testCase
 index|[
-literal|6
+name|CURRENT_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -1917,7 +1773,7 @@ name|prevAfterRecover
 init|=
 name|testCase
 index|[
-literal|7
+name|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|log
@@ -2001,7 +1857,7 @@ index|[
 name|i
 index|]
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 operator|&&
 operator|!
@@ -2010,7 +1866,7 @@ index|[
 name|i
 index|]
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 operator|&&
 operator|!
@@ -2019,7 +1875,7 @@ index|[
 name|i
 index|]
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 operator|&&
 operator|!
@@ -2028,16 +1884,7 @@ index|[
 name|i
 index|]
 index|[
-literal|3
-index|]
-operator|&&
-operator|!
-name|testCases
-index|[
-name|i
-index|]
-index|[
-literal|4
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 block|{
@@ -2154,7 +2001,7 @@ name|shouldRecover
 init|=
 name|testCase
 index|[
-literal|5
+name|SHOULD_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -2162,7 +2009,7 @@ name|curAfterRecover
 init|=
 name|testCase
 index|[
-literal|6
+name|CURRENT_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -2170,7 +2017,7 @@ name|prevAfterRecover
 init|=
 name|testCase
 index|[
-literal|7
+name|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|log
@@ -2221,25 +2068,25 @@ condition|(
 operator|!
 name|testCase
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|3
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 block|{
@@ -2438,7 +2285,7 @@ name|shouldRecover
 init|=
 name|testCase
 index|[
-literal|5
+name|SHOULD_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -2446,7 +2293,7 @@ name|curAfterRecover
 init|=
 name|testCase
 index|[
-literal|6
+name|CURRENT_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|boolean
@@ -2454,7 +2301,7 @@ name|prevAfterRecover
 init|=
 name|testCase
 index|[
-literal|7
+name|PREVIOUS_SHOULD_EXIST_AFTER_RECOVER
 index|]
 decl_stmt|;
 name|log
@@ -2507,25 +2354,25 @@ condition|(
 operator|!
 name|testCase
 index|[
-literal|0
+name|CURRENT_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|1
+name|PREVIOUS_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|2
+name|PREVIOUS_TMP_EXISTS
 index|]
 operator|&&
 operator|!
 name|testCase
 index|[
-literal|3
+name|REMOVED_TMP_EXISTS
 index|]
 condition|)
 block|{

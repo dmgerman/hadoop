@@ -477,20 +477,28 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|CheckpointSignature
+name|signature
+init|=
 name|runOperations
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 return|return
 name|getEditsFilename
-argument_list|()
+argument_list|(
+name|signature
+argument_list|)
 return|;
 block|}
 comment|/**    * Get edits filename    *    * @return edits file name for cluster    */
-DECL|method|getEditsFilename ()
+DECL|method|getEditsFilename (CheckpointSignature sig)
 specifier|private
 name|String
 name|getEditsFilename
-parameter_list|()
+parameter_list|(
+name|CheckpointSignature
+name|sig
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -532,16 +540,38 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-return|return
-name|image
+name|File
+name|ret
+init|=
+name|NNStorage
 operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|getEditFile
+name|getFinalizedEditsFile
 argument_list|(
 name|sd
+argument_list|,
+literal|1
+argument_list|,
+name|sig
+operator|.
+name|curSegmentTxId
+operator|-
+literal|1
 argument_list|)
+decl_stmt|;
+assert|assert
+name|ret
+operator|.
+name|exists
+argument_list|()
+operator|:
+literal|"expected "
+operator|+
+name|ret
+operator|+
+literal|" exists"
+assert|;
+return|return
+name|ret
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -695,7 +725,7 @@ block|}
 comment|/**    * Run file operations to create edits for all op codes    * to be tested.    *    * the following op codes are deprecated and therefore not tested:    *    * OP_DATANODE_ADD    ( 5)    * OP_DATANODE_REMOVE ( 6)    * OP_SET_NS_QUOTA    (11)    * OP_CLEAR_NS_QUOTA  (12)    */
 DECL|method|runOperations ()
 specifier|private
-name|void
+name|CheckpointSignature
 name|runOperations
 parameter_list|()
 throws|throws
@@ -1304,6 +1334,16 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 do|;
+comment|// Force a roll so we get an OP_END_LOG_SEGMENT txn
+return|return
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+return|;
 block|}
 block|}
 end_class

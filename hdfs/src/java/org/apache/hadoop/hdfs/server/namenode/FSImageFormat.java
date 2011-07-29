@@ -354,6 +354,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|InconsistentFSStateException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|MD5Hash
@@ -435,17 +453,11 @@ name|loaded
 init|=
 literal|false
 decl_stmt|;
-comment|/** The image version of the loaded file */
-DECL|field|imgVersion
+comment|/** The transaction ID of the last edit represented by the loaded file */
+DECL|field|imgTxId
 specifier|private
-name|int
-name|imgVersion
-decl_stmt|;
-comment|/** The namespace ID of the loaded file */
-DECL|field|imgNamespaceID
-specifier|private
-name|int
-name|imgNamespaceID
+name|long
+name|imgTxId
 decl_stmt|;
 comment|/** The MD5 sum of the loaded file */
 DECL|field|imgDigest
@@ -476,19 +488,6 @@ operator|=
 name|namesystem
 expr_stmt|;
 block|}
-comment|/**      * Return the version number of the image that has been loaded.      * @throws IllegalStateException if load() has not yet been called.      */
-DECL|method|getLoadedImageVersion ()
-name|int
-name|getLoadedImageVersion
-parameter_list|()
-block|{
-name|checkLoaded
-argument_list|()
-expr_stmt|;
-return|return
-name|imgVersion
-return|;
-block|}
 comment|/**      * Return the MD5 checksum of the image that has been loaded.      * @throws IllegalStateException if load() has not yet been called.      */
 DECL|method|getLoadedImageMd5 ()
 name|MD5Hash
@@ -502,17 +501,16 @@ return|return
 name|imgDigest
 return|;
 block|}
-comment|/**      * Return the namespace ID of the image that has been loaded.      * @throws IllegalStateException if load() has not yet been called.      */
-DECL|method|getLoadedNamespaceID ()
-name|int
-name|getLoadedNamespaceID
+DECL|method|getLoadedImageTxId ()
+name|long
+name|getLoadedImageTxId
 parameter_list|()
 block|{
 name|checkLoaded
 argument_list|()
 expr_stmt|;
 return|return
-name|imgNamespaceID
+name|imgTxId
 return|;
 block|}
 comment|/**      * Throw IllegalStateException if load() has not yet been called.      */
@@ -624,16 +622,38 @@ block|{
 comment|/*          * Note: Remove any checks for version earlier than           * Storage.LAST_UPGRADABLE_LAYOUT_VERSION since we should never get           * to here with older images.          */
 comment|/*          * TODO we need to change format of the image file          * it should not contain version and namespace fields          */
 comment|// read image version: first appeared in version -1
+name|int
 name|imgVersion
-operator|=
+init|=
 name|in
 operator|.
 name|readInt
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|getLayoutVersion
+argument_list|()
+operator|!=
+name|imgVersion
+condition|)
+throw|throw
+operator|new
+name|InconsistentFSStateException
+argument_list|(
+name|curFile
+argument_list|,
+literal|"imgVersion "
+operator|+
+name|imgVersion
+operator|+
+literal|" expected to be "
+operator|+
+name|getLayoutVersion
+argument_list|()
+argument_list|)
+throw|;
 comment|// read namespaceID: first appeared in version -2
-name|imgNamespaceID
-operator|=
 name|in
 operator|.
 name|readInt
@@ -671,6 +691,37 @@ name|setGenerationStamp
 argument_list|(
 name|genstamp
 argument_list|)
+expr_stmt|;
+block|}
+comment|// read the transaction ID of the last edit represented by
+comment|// this image
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|STORED_TXIDS
+argument_list|,
+name|imgVersion
+argument_list|)
+condition|)
+block|{
+name|imgTxId
+operator|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|imgTxId
+operator|=
+literal|0
 expr_stmt|;
 block|}
 comment|// read compression related info
@@ -976,7 +1027,8 @@ name|Feature
 operator|.
 name|FSIMAGE_NAME_OPTIMIZATION
 argument_list|,
-name|imgVersion
+name|getLayoutVersion
+argument_list|()
 argument_list|)
 assert|;
 assert|assert
@@ -1373,6 +1425,12 @@ name|long
 name|blockSize
 init|=
 literal|0
+decl_stmt|;
+name|int
+name|imgVersion
+init|=
+name|getLayoutVersion
+argument_list|()
 decl_stmt|;
 name|short
 name|replication
@@ -1791,6 +1849,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|imgVersion
+init|=
+name|getLayoutVersion
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|imgVersion
@@ -1863,6 +1927,12 @@ init|=
 name|namesystem
 operator|.
 name|dir
+decl_stmt|;
+name|int
+name|imgVersion
+init|=
+name|getLayoutVersion
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2015,6 +2085,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|imgVersion
+init|=
+name|getLayoutVersion
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2042,6 +2118,25 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getLayoutVersion ()
+specifier|private
+name|int
+name|getLayoutVersion
+parameter_list|()
+block|{
+return|return
+name|namesystem
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getLayoutVersion
+argument_list|()
+return|;
+block|}
 DECL|method|readNumFiles (DataInputStream in)
 specifier|private
 name|long
@@ -2053,6 +2148,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|int
+name|imgVersion
+init|=
+name|getLayoutVersion
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|LayoutVersion
@@ -2419,12 +2520,15 @@ return|return
 name|savedDigest
 return|;
 block|}
-DECL|method|save (File newFile, FSNamesystem sourceNamesystem, FSImageCompression compression)
+DECL|method|save (File newFile, long txid, FSNamesystem sourceNamesystem, FSImageCompression compression)
 name|void
 name|save
 parameter_list|(
 name|File
 name|newFile
+parameter_list|,
+name|long
+name|txid
 parameter_list|,
 name|FSNamesystem
 name|sourceNamesystem
@@ -2539,6 +2643,13 @@ name|sourceNamesystem
 operator|.
 name|getGenerationStamp
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|txid
 argument_list|)
 expr_stmt|;
 comment|// write compression info and set up compressed stream

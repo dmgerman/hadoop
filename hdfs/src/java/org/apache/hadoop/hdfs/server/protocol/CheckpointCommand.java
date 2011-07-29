@@ -163,11 +163,6 @@ specifier|private
 name|CheckpointSignature
 name|cSig
 decl_stmt|;
-DECL|field|isImageObsolete
-specifier|private
-name|boolean
-name|isImageObsolete
-decl_stmt|;
 DECL|field|needToReturnImage
 specifier|private
 name|boolean
@@ -183,20 +178,15 @@ argument_list|(
 literal|null
 argument_list|,
 literal|false
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|CheckpointCommand (CheckpointSignature sig, boolean isImgObsolete, boolean needToReturnImg)
+DECL|method|CheckpointCommand (CheckpointSignature sig, boolean needToReturnImg)
 specifier|public
 name|CheckpointCommand
 parameter_list|(
 name|CheckpointSignature
 name|sig
-parameter_list|,
-name|boolean
-name|isImgObsolete
 parameter_list|,
 name|boolean
 name|needToReturnImg
@@ -217,12 +207,6 @@ name|sig
 expr_stmt|;
 name|this
 operator|.
-name|isImageObsolete
-operator|=
-name|isImgObsolete
-expr_stmt|;
-name|this
-operator|.
 name|needToReturnImage
 operator|=
 name|needToReturnImg
@@ -237,17 +221,6 @@ parameter_list|()
 block|{
 return|return
 name|cSig
-return|;
-block|}
-comment|/**    * Indicates whether current backup image is obsolete, and therefore    * need to be discarded?    *     * @return true if current image should be discarded.    */
-DECL|method|isImageObsolete ()
-specifier|public
-name|boolean
-name|isImageObsolete
-parameter_list|()
-block|{
-return|return
-name|isImageObsolete
 return|;
 block|}
 comment|/**    * Indicates whether the new checkpoint image needs to be transfered     * back to the name-node after the checkpoint is done.    *     * @return true if the checkpoint should be returned back.    */
@@ -322,13 +295,6 @@ name|out
 operator|.
 name|writeBoolean
 argument_list|(
-name|isImageObsolete
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|writeBoolean
-argument_list|(
 name|needToReturnImage
 argument_list|)
 expr_stmt|;
@@ -363,13 +329,6 @@ name|readFields
 argument_list|(
 name|in
 argument_list|)
-expr_stmt|;
-name|isImageObsolete
-operator|=
-name|in
-operator|.
-name|readBoolean
-argument_list|()
 expr_stmt|;
 name|needToReturnImage
 operator|=

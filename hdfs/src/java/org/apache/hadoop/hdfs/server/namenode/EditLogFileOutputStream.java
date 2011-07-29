@@ -88,6 +88,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|hdfs
@@ -137,6 +165,22 @@ name|EditLogFileOutputStream
 extends|extends
 name|EditLogOutputStream
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|EditLogFileOutputStream
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+empty_stmt|;
 DECL|field|EDITS_FILE_HEADER_SIZE_BYTES
 specifier|private
 specifier|static
@@ -350,7 +394,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+comment|/**    * Write a transaction to the stream. The serialization format is:    *<ul>    *<li>the opcode (byte)</li>    *<li>the transaction id (long)</li>    *<li>the actual Writables for the transaction</li>    *</ul>    * */
 annotation|@
 name|Override
 DECL|method|writeRaw (byte[] bytes, int offset, int length)
@@ -435,6 +479,21 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|fp
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Trying to use aborted output stream"
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 comment|// close should have been called after all pending transactions
@@ -536,6 +595,43 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+name|fp
+operator|=
+literal|null
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|abort ()
+specifier|public
+name|void
+name|abort
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|fp
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|fp
+argument_list|)
+expr_stmt|;
+name|fp
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|/**    * All data that has been written to the stream so far will be flushed. New    * data can be still written to the stream while flushing is performed.    */
 annotation|@
@@ -580,6 +676,21 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|fp
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Trying to use aborted output stream"
+argument_list|)
+throw|;
+block|}
 name|preallocate
 argument_list|()
 expr_stmt|;
@@ -764,30 +875,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Operations like OP_JSPOOL_START and OP_CHECKPOINT_TIME should not be    * written into edits file.    */
-annotation|@
-name|Override
-DECL|method|isOperationSupported (byte op)
-name|boolean
-name|isOperationSupported
-parameter_list|(
-name|byte
-name|op
-parameter_list|)
-block|{
-return|return
-name|op
-operator|<
-name|FSEditLogOpCodes
-operator|.
-name|OP_JSPOOL_START
-operator|.
-name|getOpCode
-argument_list|()
-operator|-
-literal|1
-return|;
-block|}
 comment|/**    * Returns the file associated with this stream.    */
 DECL|method|getFile ()
 name|File
@@ -796,6 +883,19 @@ parameter_list|()
 block|{
 return|return
 name|file
+return|;
+block|}
+comment|/**    * @return true if this stream is currently open.    */
+DECL|method|isOpen ()
+specifier|public
+name|boolean
+name|isOpen
+parameter_list|()
+block|{
+return|return
+name|fp
+operator|!=
+literal|null
 return|;
 block|}
 annotation|@

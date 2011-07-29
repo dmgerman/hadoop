@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -250,6 +260,12 @@ literal|35
 block|,
 operator|-
 literal|36
+block|,
+operator|-
+literal|37
+block|,
+operator|-
+literal|38
 block|}
 decl_stmt|;
 DECL|field|v
@@ -312,6 +328,40 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * Visit a transaction ID, if the log version supports it.    */
+DECL|method|visitTxId ()
+specifier|private
+name|void
+name|visitTxId
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|STORED_TXIDS
+argument_list|,
+name|editsVersion
+argument_list|)
+condition|)
+block|{
+name|v
+operator|.
+name|visitLong
+argument_list|(
+name|EditsElement
+operator|.
+name|TRANSACTION_ID
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Visit OP_INVALID    */
 DECL|method|visit_OP_INVALID ()
 specifier|private
@@ -320,10 +370,7 @@ name|visit_OP_INVALID
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-empty_stmt|;
-comment|// nothing to do, this op code has no data
-block|}
+block|{   }
 comment|/**    * Visit OP_ADD    */
 DECL|method|visit_OP_ADD ()
 specifier|private
@@ -370,6 +417,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|IntToken
 name|opAddLength
 init|=
@@ -603,6 +653,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -649,6 +702,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -686,6 +742,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -774,6 +833,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitStringUTF8
@@ -802,6 +864,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitStringUTF8
@@ -830,6 +895,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitStringUTF8
@@ -867,6 +935,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitLong
@@ -886,6 +957,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -932,6 +1006,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitStringUTF8
@@ -969,6 +1046,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -1024,6 +1104,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|IntToken
 name|lengthToken
 init|=
@@ -1099,6 +1182,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitInt
@@ -1196,6 +1282,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitByte
@@ -1287,6 +1376,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitByte
@@ -1378,6 +1470,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitByte
@@ -1460,6 +1555,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitVInt
@@ -1512,6 +1610,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
 name|v
 operator|.
 name|visitStringUTF8
@@ -1538,6 +1639,32 @@ name|EditsElement
 operator|.
 name|CLIENT_NAME
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Visit OP_BEGIN_LOG_SEGMENT    */
+DECL|method|visit_OP_BEGIN_LOG_SEGMENT ()
+specifier|private
+name|void
+name|visit_OP_BEGIN_LOG_SEGMENT
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|visitTxId
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Visit OP_END_LOG_SEGMENT    */
+DECL|method|visit_OP_END_LOG_SEGMENT ()
+specifier|private
+name|void
+name|visit_OP_END_LOG_SEGMENT
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|visitTxId
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|visitOpCode (FSEditLogOpCodes editsOpCode)
@@ -1716,6 +1843,22 @@ name|visit_OP_REASSIGN_LEASE
 argument_list|()
 expr_stmt|;
 break|break;
+case|case
+name|OP_END_LOG_SEGMENT
+case|:
+comment|// 23
+name|visit_OP_END_LOG_SEGMENT
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|OP_START_LOG_SEGMENT
+case|:
+comment|// 24
+name|visit_OP_BEGIN_LOG_SEGMENT
+argument_list|()
+expr_stmt|;
+break|break;
 default|default:
 block|{
 throw|throw
@@ -1812,7 +1955,11 @@ argument_list|)
 expr_stmt|;
 name|ByteToken
 name|opCodeToken
-init|=
+decl_stmt|;
+try|try
+block|{
+name|opCodeToken
+operator|=
 name|v
 operator|.
 name|visitByte
@@ -1821,7 +1968,47 @@ name|EditsElement
 operator|.
 name|OPCODE
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|eof
+parameter_list|)
+block|{
+comment|// Getting EOF when reading the opcode is fine --
+comment|// it's just a finalized edits file
+comment|// Just fake the OP_INVALID here.
+name|opCodeToken
+operator|=
+operator|new
+name|ByteToken
+argument_list|(
+name|EditsElement
+operator|.
+name|OPCODE
+argument_list|)
+expr_stmt|;
+name|opCodeToken
+operator|.
+name|fromByte
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_INVALID
+operator|.
+name|getOpCode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|v
+operator|.
+name|visit
+argument_list|(
+name|opCodeToken
+argument_list|)
+expr_stmt|;
+block|}
 name|editsOpCode
 operator|=
 name|FSEditLogOpCodes

@@ -31,6 +31,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|zip
+operator|.
+name|Checksum
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -47,6 +59,34 @@ operator|.
 name|Util
 operator|.
 name|now
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|DataOutputBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Writable
 import|;
 end_import
 
@@ -128,12 +168,22 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/** {@inheritDoc} */
+comment|/**    * Close the journal.    * @throws IOException if the journal can't be closed,    *         or if there are unflushed edits    */
 DECL|method|close ()
 specifier|abstract
 specifier|public
 name|void
 name|close
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Close the stream without necessarily flushing any pending data.    * This may be called after a previous write or close threw an exception.    */
+DECL|method|abort ()
+specifier|abstract
+specifier|public
+name|void
+name|abort
 parameter_list|()
 throws|throws
 name|IOException
@@ -211,18 +261,6 @@ parameter_list|()
 block|{
 return|return
 literal|false
-return|;
-block|}
-DECL|method|isOperationSupported (byte op)
-name|boolean
-name|isOperationSupported
-parameter_list|(
-name|byte
-name|op
-parameter_list|)
-block|{
-return|return
-literal|true
 return|;
 block|}
 comment|/**    * Return total time spent in {@link #flushAndSync()}    */

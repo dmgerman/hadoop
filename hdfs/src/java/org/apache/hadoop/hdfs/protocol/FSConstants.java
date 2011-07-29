@@ -319,6 +319,17 @@ name|LIVE
 block|,
 name|DEAD
 block|}
+comment|// An invalid transaction ID that will never be seen in a real namesystem.
+DECL|field|INVALID_TXID
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|INVALID_TXID
+init|=
+operator|-
+literal|12345
+decl_stmt|;
 comment|/**    * Distributed upgrade actions:    *     * 1. Get upgrade status.    * 2. Get detailed upgrade status.    * 3. Proceed with the upgrade if it is stuck, no matter what the status is.    */
 DECL|enum|UpgradeAction
 specifier|public

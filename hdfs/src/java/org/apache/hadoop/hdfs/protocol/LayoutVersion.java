@@ -280,6 +280,24 @@ literal|36
 argument_list|,
 literal|"Support for persisting lease holder reassignment"
 argument_list|)
+block|,
+DECL|enumConstant|STORED_TXIDS
+name|STORED_TXIDS
+argument_list|(
+operator|-
+literal|37
+argument_list|,
+literal|"Transaction IDs are stored in edits log and image files"
+argument_list|)
+block|,
+DECL|enumConstant|TXID_BASED_LAYOUT
+name|TXID_BASED_LAYOUT
+argument_list|(
+operator|-
+literal|38
+argument_list|,
+literal|"File names in NN Storage are based on transaction IDs"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

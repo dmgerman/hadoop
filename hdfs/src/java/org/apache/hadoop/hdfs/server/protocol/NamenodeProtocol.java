@@ -171,7 +171,7 @@ name|NamenodeProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    *     * 5: Added one parameter to rollFSImage() and    *    changed the definition of CheckpointSignature    */
+comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    *     * 6: Switch to txid-based file naming for image and edits    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -179,7 +179,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|5L
+literal|6L
 decl_stmt|;
 comment|// Error codes passed by errorReport().
 DECL|field|NOTIFY
@@ -198,43 +198,6 @@ name|FATAL
 init|=
 literal|1
 decl_stmt|;
-comment|// Journal action codes. See journal().
-DECL|field|JA_IS_ALIVE
-specifier|public
-specifier|static
-name|byte
-name|JA_IS_ALIVE
-init|=
-literal|100
-decl_stmt|;
-comment|// check whether the journal is alive
-DECL|field|JA_JOURNAL
-specifier|public
-specifier|static
-name|byte
-name|JA_JOURNAL
-init|=
-literal|101
-decl_stmt|;
-comment|// just journal
-DECL|field|JA_JSPOOL_START
-specifier|public
-specifier|static
-name|byte
-name|JA_JSPOOL_START
-init|=
-literal|102
-decl_stmt|;
-comment|// = FSEditLogOpCodes.OP_JSPOOL_START
-DECL|field|JA_CHECKPOINT_TIME
-specifier|public
-specifier|static
-name|byte
-name|JA_CHECKPOINT_TIME
-init|=
-literal|103
-decl_stmt|;
-comment|// = FSEditLogOpCodes.OP_CHECKPOINT_TIME
 DECL|field|ACT_UNKNOWN
 specifier|public
 specifier|final
@@ -289,13 +252,11 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the size of the current edit log (in bytes).    * @return The number of bytes in the current edit log.    * @throws IOException    * @deprecated     *    See {@link org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode}    */
-annotation|@
-name|Deprecated
-DECL|method|getEditLogSize ()
+comment|/**    * @return The most recent transaction ID that has been synced to    * persistent storage.    * @throws IOException    */
+DECL|method|getTransactionID ()
 specifier|public
 name|long
-name|getEditLogSize
+name|getTransactionID
 parameter_list|()
 throws|throws
 name|IOException
@@ -308,20 +269,6 @@ specifier|public
 name|CheckpointSignature
 name|rollEditLog
 parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Rolls the fsImage log. It removes the old fsImage, copies the    * new image to fsImage, removes the old edits and renames edits.new     * to edits. The call fails if any of the four files are missing.    *     * @param sig the signature of this checkpoint (old fsimage)    * @throws IOException    * @deprecated     *    See {@link org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode}    */
-annotation|@
-name|Deprecated
-DECL|method|rollFsImage (CheckpointSignature sig)
-specifier|public
-name|void
-name|rollFsImage
-parameter_list|(
-name|CheckpointSignature
-name|sig
-parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -391,36 +338,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the size of the active name-node journal (edit log) in bytes.    *     * @param registration the requesting node    * @return The number of bytes in the journal.    * @throws IOException    */
-DECL|method|journalSize (NamenodeRegistration registration)
+comment|/**    * Return a structure containing details about all edit logs    * available to be fetched from the NameNode.    * @param sinceTxId return only logs that contain transactions>= sinceTxId    */
+DECL|method|getEditLogManifest (long sinceTxId)
 specifier|public
+name|RemoteEditLogManifest
+name|getEditLogManifest
+parameter_list|(
 name|long
-name|journalSize
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Journal edit records.    * This message is sent by the active name-node to the backup node    * via {@code EditLogBackupOutputStream} in order to synchronize meta-data    * changes with the backup namespace image.    *     * @param registration active node registration    * @param jAction journal action    * @param length length of the byte array    * @param records byte array containing serialized journal records    * @throws IOException    */
-DECL|method|journal (NamenodeRegistration registration, int jAction, int length, byte[] records)
-specifier|public
-name|void
-name|journal
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|,
-name|int
-name|jAction
-parameter_list|,
-name|int
-name|length
-parameter_list|,
-name|byte
-index|[]
-name|records
+name|sinceTxId
 parameter_list|)
 throws|throws
 name|IOException

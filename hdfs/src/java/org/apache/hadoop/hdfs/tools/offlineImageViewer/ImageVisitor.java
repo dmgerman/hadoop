@@ -171,6 +171,9 @@ name|DELEGATION_TOKEN_IDENTIFIER
 block|,
 DECL|enumConstant|DELEGATION_TOKEN_EXPIRY_TIME
 name|DELEGATION_TOKEN_EXPIRY_TIME
+block|,
+DECL|enumConstant|TRANSACTION_ID
+name|TRANSACTION_ID
 block|}
 comment|/**    * Begin visiting the fsimage structure.  Opportunity to perform    * any initialization necessary for the implementing visitor.    */
 DECL|method|start ()

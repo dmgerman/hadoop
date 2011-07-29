@@ -99,18 +99,6 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getData ()
-name|byte
-index|[]
-name|getData
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|buf
-return|;
-block|}
 DECL|method|setData (byte[] newBytes)
 name|void
 name|setData

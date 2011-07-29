@@ -78,6 +78,9 @@ block|,
 DECL|enumConstant|OPCODE
 name|OPCODE
 block|,
+DECL|enumConstant|TRANSACTION_ID
+name|TRANSACTION_ID
+block|,
 DECL|enumConstant|DATA
 name|DATA
 block|,

@@ -316,24 +316,22 @@ operator|)
 literal|22
 argument_list|)
 block|,
-comment|// must be same as NamenodeProtocol.JA_JSPOOL_START
-DECL|enumConstant|OP_JSPOOL_START
-name|OP_JSPOOL_START
+DECL|enumConstant|OP_END_LOG_SEGMENT
+name|OP_END_LOG_SEGMENT
 argument_list|(
 operator|(
 name|byte
 operator|)
-literal|102
+literal|23
 argument_list|)
 block|,
-comment|// must be same as NamenodeProtocol.JA_CHECKPOINT_TIME
-DECL|enumConstant|OP_CHECKPOINT_TIME
-name|OP_CHECKPOINT_TIME
+DECL|enumConstant|OP_START_LOG_SEGMENT
+name|OP_START_LOG_SEGMENT
 argument_list|(
 operator|(
 name|byte
 operator|)
-literal|103
+literal|24
 argument_list|)
 block|;
 DECL|field|opCode

@@ -357,6 +357,20 @@ name|readByte
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|fromByte (byte b)
+specifier|public
+name|void
+name|fromByte
+parameter_list|(
+name|byte
+name|b
+parameter_list|)
+block|{
+name|value
+operator|=
+name|b
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()

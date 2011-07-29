@@ -912,6 +912,13 @@ name|nameNodePort
 init|=
 literal|0
 decl_stmt|;
+DECL|field|nameNodeHttpPort
+specifier|private
+name|int
+name|nameNodeHttpPort
+init|=
+literal|0
+decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|final
@@ -1060,6 +1067,26 @@ block|{
 name|this
 operator|.
 name|nameNodePort
+operator|=
+name|val
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Default: 0      */
+DECL|method|nameNodeHttpPort (int val)
+specifier|public
+name|Builder
+name|nameNodeHttpPort
+parameter_list|(
+name|int
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nameNodeHttpPort
 operator|=
 name|val
 expr_stmt|;
@@ -1382,6 +1409,10 @@ argument_list|(
 name|builder
 operator|.
 name|nameNodePort
+argument_list|,
+name|builder
+operator|.
+name|nameNodeHttpPort
 argument_list|,
 name|builder
 operator|.
@@ -1921,6 +1952,8 @@ name|initMiniDFSCluster
 argument_list|(
 name|nameNodePort
 argument_list|,
+literal|0
+argument_list|,
 name|conf
 argument_list|,
 name|numDataNodes
@@ -1949,13 +1982,16 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster (int nameNodePort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, boolean federation)
+DECL|method|initMiniDFSCluster (int nameNodePort, int nameNodeHttpPort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, boolean federation)
 specifier|private
 name|void
 name|initMiniDFSCluster
 parameter_list|(
 name|int
 name|nameNodePort
+parameter_list|,
+name|int
+name|nameNodeHttpPort
 parameter_list|,
 name|Configuration
 name|conf
@@ -2321,7 +2357,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
-literal|"127.0.0.1:0"
+literal|"127.0.0.1:"
+operator|+
+name|nameNodeHttpPort
 argument_list|)
 expr_stmt|;
 name|NameNode

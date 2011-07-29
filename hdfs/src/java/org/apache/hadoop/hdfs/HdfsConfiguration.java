@@ -325,15 +325,6 @@ argument_list|)
 expr_stmt|;
 name|deprecate
 argument_list|(
-literal|"fs.checkpoint.size"
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECKPOINT_SIZE_KEY
-argument_list|)
-expr_stmt|;
-name|deprecate
-argument_list|(
 literal|"dfs.upgrade.permission"
 argument_list|,
 name|DFSConfigKeys
