@@ -501,6 +501,17 @@ name|needKeyUpdate
 init|=
 literal|false
 decl_stmt|;
+comment|// A system administrator can tune the balancer bandwidth parameter
+comment|// (dfs.balance.bandwidthPerSec) dynamically by calling
+comment|// "dfsadmin -setBalanacerBandwidth<newbandwidth>", at which point the
+comment|// following 'bandwidth' variable gets updated with the new value for each
+comment|// node. Once the heartbeat command is issued to update the value on the
+comment|// specified datanode, this value will be set back to 0.
+DECL|field|bandwidth
+specifier|private
+name|long
+name|bandwidth
+decl_stmt|;
 comment|/** A queue of blocks to be replicated by this datanode */
 DECL|field|replicateBlocks
 specifier|private
@@ -2139,6 +2150,36 @@ name|updateRegInfo
 argument_list|(
 name|nodeReg
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @return Blanacer bandwidth in bytes per second for this datanode.    */
+DECL|method|getBalancerBandwidth ()
+specifier|public
+name|long
+name|getBalancerBandwidth
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|bandwidth
+return|;
+block|}
+comment|/**    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    */
+DECL|method|setBalancerBandwidth (long bandwidth)
+specifier|public
+name|void
+name|setBalancerBandwidth
+parameter_list|(
+name|long
+name|bandwidth
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bandwidth
+operator|=
+name|bandwidth
 expr_stmt|;
 block|}
 block|}

@@ -488,7 +488,7 @@ name|ClientProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    * 67: Add block pool ID to Block    */
+comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    * 68: Add Balancer Bandwidth Command protocol    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -496,7 +496,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|67L
+literal|68L
 decl_stmt|;
 comment|///////////////////////////////////////
 comment|// File contents
@@ -1206,6 +1206,18 @@ name|metaSave
 parameter_list|(
 name|String
 name|filename
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.balance.bandwidthPerSec.    *    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    * @throws IOException    */
+DECL|method|setBalancerBandwidth (long bandwidth)
+specifier|public
+name|void
+name|setBalancerBandwidth
+parameter_list|(
+name|long
+name|bandwidth
 parameter_list|)
 throws|throws
 name|IOException

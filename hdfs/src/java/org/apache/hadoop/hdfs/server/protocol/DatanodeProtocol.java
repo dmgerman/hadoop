@@ -195,7 +195,7 @@ name|DatanodeProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * 27: Add block pool ID to Block    */
+comment|/**    * 28: Add Balancer Bandwidth Command protocol.    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -203,7 +203,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|27L
+literal|28L
 decl_stmt|;
 comment|// error code
 DECL|field|NOTIFY
@@ -313,6 +313,15 @@ init|=
 literal|7
 decl_stmt|;
 comment|// update access key
+DECL|field|DNA_BALANCERBANDWIDTHUPDATE
+specifier|final
+specifier|static
+name|int
+name|DNA_BALANCERBANDWIDTHUPDATE
+init|=
+literal|8
+decl_stmt|;
+comment|// update balancer bandwidth
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    *     * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public

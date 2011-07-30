@@ -22174,6 +22174,30 @@ name|nodeList
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
+DECL|method|setBalancerBandwidth (long bandwidth)
+specifier|public
+name|void
+name|setBalancerBandwidth
+parameter_list|(
+name|long
+name|bandwidth
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|setBalancerBandwidth
+argument_list|(
+name|bandwidth
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
