@@ -3263,6 +3263,9 @@ block|{
 return|return
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockKeys
 argument_list|()
 return|;
