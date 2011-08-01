@@ -2031,6 +2031,10 @@ operator|new
 name|CombineOutputCollector
 argument_list|(
 name|reduceCombineOutputCounter
+argument_list|,
+name|reporter
+argument_list|,
+name|conf
 argument_list|)
 else|:
 literal|null

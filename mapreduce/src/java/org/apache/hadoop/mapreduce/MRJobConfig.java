@@ -1115,6 +1115,15 @@ name|REDUCE_MEMTOMEM_ENABLED
 init|=
 literal|"mapreduce.reduce.merge.memtomem.enabled"
 decl_stmt|;
+DECL|field|COMBINE_RECORDS_BEFORE_PROGRESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COMBINE_RECORDS_BEFORE_PROGRESS
+init|=
+literal|"mapreduce.task.combine.progress.records"
+decl_stmt|;
 DECL|field|JOB_NAMENODES
 specifier|public
 specifier|static

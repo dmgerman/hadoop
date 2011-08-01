@@ -5734,6 +5734,10 @@ name|V
 argument_list|>
 argument_list|(
 name|combineOutputCounter
+argument_list|,
+name|reporter
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
