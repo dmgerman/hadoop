@@ -6431,7 +6431,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|launchTaskForJob (TaskInProgress tip, JobConf jobConf, UserGroupInformation ugi)
-specifier|private
+specifier|protected
 name|void
 name|launchTaskForJob
 parameter_list|(
@@ -10964,13 +10964,31 @@ name|tip
 return|;
 block|}
 comment|/**    * Start a new task.    * All exceptions are handled locally, so that we don't mess up the    * task tracker.    */
-DECL|method|startNewTask (TaskInProgress tip)
+DECL|method|startNewTask (final TaskInProgress tip)
 name|void
 name|startNewTask
 parameter_list|(
+specifier|final
 name|TaskInProgress
 name|tip
 parameter_list|)
+block|{
+name|Thread
+name|launchThread
+init|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
 block|{
 try|try
 block|{
@@ -10992,7 +11010,8 @@ name|JobConf
 argument_list|(
 name|rjob
 operator|.
-name|jobConf
+name|getJobConf
+argument_list|()
 argument_list|)
 argument_list|,
 name|rjob
@@ -11093,8 +11112,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Careful!
-comment|// This might not be an 'Exception' - don't handle 'Error' here!
 if|if
 condition|(
 name|e
@@ -11102,16 +11119,31 @@ operator|instanceof
 name|Error
 condition|)
 block|{
-throw|throw
-operator|(
-operator|(
-name|Error
-operator|)
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"TaskLauncher error "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
 name|e
-operator|)
-throw|;
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+argument_list|)
+decl_stmt|;
+name|launchThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|addToMemoryManager (TaskAttemptID attemptId, boolean isMap, JobConf conf)
 name|void

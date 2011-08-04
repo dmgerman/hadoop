@@ -272,6 +272,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|SecureIOUtils
 import|;
 end_import
@@ -651,11 +665,17 @@ decl_stmt|;
 name|String
 name|str
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|str
+operator|=
 name|fis
 operator|.
 name|readLine
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|str
@@ -663,7 +683,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//the file doesn't have anything
+comment|// the file doesn't have anything
 throw|throw
 operator|new
 name|IOException
@@ -701,9 +721,10 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//special cases are the debugout and profile.out files. They are guaranteed
-comment|//to be associated with each task attempt since jvm reuse is disabled
-comment|//when profiling/debugging is enabled
+comment|// special cases are the debugout and profile.out files. They are
+comment|// guaranteed
+comment|// to be associated with each task attempt since jvm reuse is disabled
+comment|// when profiling/debugging is enabled
 if|if
 condition|(
 name|filter
@@ -774,7 +795,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|//look for the exact line containing the logname
+comment|// look for the exact line containing the logname
 if|if
 condition|(
 name|str
@@ -859,6 +880,23 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|fis
+operator|=
+literal|null
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|fis
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|l
 return|;
@@ -1114,6 +1152,8 @@ comment|//LOG_DIR:<the dir where the task logs are really stored>
 comment|//STDOUT:<start-offset in the stdout file><length>
 comment|//STDERR:<start-offset in the stderr file><length>
 comment|//SYSLOG:<start-offset in the syslog file><length>
+try|try
+block|{
 name|dos
 operator|.
 name|writeBytes
@@ -1288,6 +1328,23 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|dos
+operator|=
+literal|null
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|dos
+argument_list|)
+expr_stmt|;
+block|}
 name|File
 name|indexFile
 init|=

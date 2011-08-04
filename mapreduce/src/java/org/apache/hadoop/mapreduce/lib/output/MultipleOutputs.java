@@ -238,6 +238,12 @@ name|TaskAttemptContext
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Cached TaskAttemptContext which uses the job's configured settings    */
+DECL|field|jobOutputFormatContext
+specifier|private
+name|TaskAttemptContext
+name|jobOutputFormatContext
+decl_stmt|;
 comment|/**    * Checks if a named output name is valid token.    *    * @param namedOutput named output Name    * @throws IllegalArgumentException if the output name is not valid.    */
 DECL|method|checkTokenName (String namedOutput)
 specifier|private
@@ -1269,9 +1275,15 @@ argument_list|(
 name|baseOutputPath
 argument_list|)
 expr_stmt|;
-name|TaskAttemptContext
-name|taskContext
-init|=
+if|if
+condition|(
+name|jobOutputFormatContext
+operator|==
+literal|null
+condition|)
+block|{
+name|jobOutputFormatContext
+operator|=
 operator|new
 name|TaskAttemptContextImpl
 argument_list|(
@@ -1291,10 +1303,11 @@ argument_list|(
 name|context
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|getRecordWriter
 argument_list|(
-name|taskContext
+name|jobOutputFormatContext
 argument_list|,
 name|baseOutputPath
 argument_list|)

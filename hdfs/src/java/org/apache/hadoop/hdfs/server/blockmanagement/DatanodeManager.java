@@ -2407,6 +2407,9 @@ name|exportedKeys
 operator|=
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlockKeys
 argument_list|()
 expr_stmt|;

@@ -508,6 +508,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|lib
 operator|.
 name|reduce
@@ -705,6 +719,15 @@ name|String
 name|MERGED_OUTPUT_PREFIX
 init|=
 literal|".merged"
+decl_stmt|;
+DECL|field|DEFAULT_COMBINE_RECORDS_BEFORE_PROGRESS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_COMBINE_RECORDS_BEFORE_PROGRESS
+init|=
+literal|10000
 decl_stmt|;
 comment|/**    * Counters to measure the usage of the different file systems.    * Always return the String array with two elements. First one is the name of      * BYTES_READ counter and second one is of the BYTES_WRITTEN counter.    */
 DECL|method|getFileSystemCounterNames (String uriScheme)
@@ -5312,7 +5335,17 @@ operator|.
 name|Counter
 name|outCounter
 decl_stmt|;
-DECL|method|CombineOutputCollector (Counters.Counter outCounter)
+DECL|field|progressable
+specifier|private
+name|Progressable
+name|progressable
+decl_stmt|;
+DECL|field|progressBar
+specifier|private
+name|long
+name|progressBar
+decl_stmt|;
+DECL|method|CombineOutputCollector (Counters.Counter outCounter, Progressable progressable, Configuration conf)
 specifier|public
 name|CombineOutputCollector
 parameter_list|(
@@ -5320,6 +5353,12 @@ name|Counters
 operator|.
 name|Counter
 name|outCounter
+parameter_list|,
+name|Progressable
+name|progressable
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -5327,6 +5366,25 @@ operator|.
 name|outCounter
 operator|=
 name|outCounter
+expr_stmt|;
+name|this
+operator|.
+name|progressable
+operator|=
+name|progressable
+expr_stmt|;
+name|progressBar
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|MRJobConfig
+operator|.
+name|COMBINE_RECORDS_BEFORE_PROGRESS
+argument_list|,
+name|DEFAULT_COMBINE_RECORDS_BEFORE_PROGRESS
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setWriter (Writer<K, V> writer)
@@ -5382,6 +5440,26 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|(
+name|outCounter
+operator|.
+name|getValue
+argument_list|()
+operator|%
+name|progressBar
+operator|)
+operator|==
+literal|0
+condition|)
+block|{
+name|progressable
+operator|.
+name|progress
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/** Iterates values while keys match in sorted input. */
