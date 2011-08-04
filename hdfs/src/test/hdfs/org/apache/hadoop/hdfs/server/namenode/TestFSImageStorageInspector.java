@@ -260,9 +260,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FileJournalManager
 operator|.
-name|FoundEditLog
+name|EditLogFile
 import|;
 end_import
 
@@ -280,9 +280,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FSImageStorageInspector
 operator|.
-name|FoundFSImage
+name|FSImageFile
 import|;
 end_import
 
@@ -508,7 +508,7 @@ name|isInProgress
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FoundFSImage
+name|FSImageFile
 name|latestImage
 init|=
 name|inspector
@@ -1168,7 +1168,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FoundEditLog
+name|EditLogFile
 name|inProgressLog
 init|=
 name|lg
@@ -1600,7 +1600,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Calling recover should move it aside
-name|FoundEditLog
+name|EditLogFile
 name|badLog
 init|=
 name|lg
@@ -1748,7 +1748,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|FoundEditLog
+name|EditLogFile
 argument_list|>
 name|logs
 init|=
@@ -1774,7 +1774,7 @@ name|i
 operator|++
 control|)
 block|{
-name|FoundEditLog
+name|EditLogFile
 name|log
 init|=
 name|logs
@@ -1788,7 +1788,8 @@ if|if
 condition|(
 name|log
 operator|.
-name|file
+name|getFile
+argument_list|()
 operator|.
 name|getPath
 argument_list|()
@@ -1800,7 +1801,7 @@ argument_list|)
 condition|)
 block|{
 comment|// mock out its validation
-name|FoundEditLog
+name|EditLogFile
 name|spyLog
 init|=
 name|spy
@@ -2029,7 +2030,7 @@ operator|.
 name|createLoadPlan
 argument_list|()
 decl_stmt|;
-name|FoundFSImage
+name|FSImageFile
 name|pickedImage
 init|=
 name|plan

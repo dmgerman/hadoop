@@ -94,15 +94,12 @@ name|size
 parameter_list|)
 function_decl|;
 comment|/**    * The JournalManager may archive/purge any logs for transactions less than    * or equal to minImageTxId.    *    * @param minTxIdToKeep the earliest txid that must be retained after purging    *                      old logs    * @param purger the purging implementation to use    * @throws IOException if purging fails    */
-DECL|method|purgeLogsOlderThan (long minTxIdToKeep, StoragePurger purger)
+DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
 name|void
 name|purgeLogsOlderThan
 parameter_list|(
 name|long
 name|minTxIdToKeep
-parameter_list|,
-name|StoragePurger
-name|purger
 parameter_list|)
 throws|throws
 name|IOException

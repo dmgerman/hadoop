@@ -3325,7 +3325,7 @@ name|BETWEEN_LOG_SEGMENTS
 expr_stmt|;
 block|}
 comment|/**    * Archive any log files that are older than the given txid.    */
-DECL|method|purgeLogsOlderThan ( final long minTxIdToKeep, final StoragePurger purger)
+DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
 specifier|public
 name|void
 name|purgeLogsOlderThan
@@ -3333,10 +3333,6 @@ parameter_list|(
 specifier|final
 name|long
 name|minTxIdToKeep
-parameter_list|,
-specifier|final
-name|StoragePurger
-name|purger
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -3393,8 +3389,6 @@ operator|.
 name|purgeLogsOlderThan
 argument_list|(
 name|minTxIdToKeep
-argument_list|,
-name|purger
 argument_list|)
 expr_stmt|;
 block|}

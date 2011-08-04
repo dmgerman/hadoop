@@ -140,9 +140,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FSImageStorageInspector
 operator|.
-name|FoundEditLog
+name|FSImageFile
 import|;
 end_import
 
@@ -160,9 +160,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FileJournalManager
 operator|.
-name|FoundFSImage
+name|EditLogFile
 import|;
 end_import
 
@@ -388,8 +388,6 @@ argument_list|(
 name|minImageTxId
 operator|+
 literal|1
-argument_list|,
-name|purger
 argument_list|)
 expr_stmt|;
 block|}
@@ -407,7 +405,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|FoundFSImage
+name|FSImageFile
 name|image
 range|:
 name|inspector
@@ -420,7 +418,7 @@ if|if
 condition|(
 name|image
 operator|.
-name|getTxId
+name|getCheckpointTxId
 argument_list|()
 operator|<
 name|minTxId
@@ -457,7 +455,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|FoundFSImage
+name|FSImageFile
 argument_list|>
 name|images
 init|=
@@ -479,7 +477,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FoundFSImage
+name|FSImageFile
 name|image
 range|:
 name|images
@@ -491,7 +489,7 @@ name|add
 argument_list|(
 name|image
 operator|.
-name|getTxId
+name|getCheckpointTxId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -578,19 +576,19 @@ specifier|static
 interface|interface
 name|StoragePurger
 block|{
-DECL|method|purgeLog (FoundEditLog log)
+DECL|method|purgeLog (EditLogFile log)
 name|void
 name|purgeLog
 parameter_list|(
-name|FoundEditLog
+name|EditLogFile
 name|log
 parameter_list|)
 function_decl|;
-DECL|method|purgeImage (FoundFSImage image)
+DECL|method|purgeImage (FSImageFile image)
 name|void
 name|purgeImage
 parameter_list|(
-name|FoundFSImage
+name|FSImageFile
 name|image
 parameter_list|)
 function_decl|;
@@ -604,12 +602,12 @@ name|StoragePurger
 block|{
 annotation|@
 name|Override
-DECL|method|purgeLog (FoundEditLog log)
+DECL|method|purgeLog (EditLogFile log)
 specifier|public
 name|void
 name|purgeLog
 parameter_list|(
-name|FoundEditLog
+name|EditLogFile
 name|log
 parameter_list|)
 block|{
@@ -624,12 +622,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|purgeImage (FoundFSImage image)
+DECL|method|purgeImage (FSImageFile image)
 specifier|public
 name|void
 name|purgeImage
 parameter_list|(
-name|FoundFSImage
+name|FSImageFile
 name|image
 parameter_list|)
 block|{
