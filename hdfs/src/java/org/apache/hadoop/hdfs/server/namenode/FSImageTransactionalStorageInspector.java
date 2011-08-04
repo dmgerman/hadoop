@@ -2785,7 +2785,7 @@ condition|)
 block|{
 name|cachedValidation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(

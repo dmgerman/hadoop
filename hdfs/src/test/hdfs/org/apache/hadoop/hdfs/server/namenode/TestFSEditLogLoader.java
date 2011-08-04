@@ -1110,7 +1110,7 @@ comment|// of transactions.
 name|EditLogValidation
 name|validation
 init|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -1217,7 +1217,7 @@ argument_list|)
 expr_stmt|;
 name|validation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -1270,7 +1270,7 @@ argument_list|)
 expr_stmt|;
 name|validation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -1324,7 +1324,7 @@ argument_list|)
 expr_stmt|;
 name|validation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -1376,7 +1376,7 @@ argument_list|)
 expr_stmt|;
 name|validation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -1454,7 +1454,7 @@ expr_stmt|;
 name|EditLogValidation
 name|val
 init|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(

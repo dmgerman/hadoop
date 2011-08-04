@@ -26,17 +26,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|BufferedInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInputStream
+name|Closeable
 import|;
 end_import
 
@@ -47,16 +37,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|InputStream
 import|;
 end_import
 
@@ -69,52 +49,12 @@ DECL|class|EditLogInputStream
 specifier|abstract
 class|class
 name|EditLogInputStream
-extends|extends
-name|InputStream
 implements|implements
 name|JournalStream
+implements|,
+name|Closeable
 block|{
-comment|/** {@inheritDoc} */
-DECL|method|available ()
-specifier|public
-specifier|abstract
-name|int
-name|available
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/** {@inheritDoc} */
-DECL|method|read ()
-specifier|public
-specifier|abstract
-name|int
-name|read
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/** {@inheritDoc} */
-DECL|method|read (byte[] b, int off, int len)
-specifier|public
-specifier|abstract
-name|int
-name|read
-parameter_list|(
-name|byte
-index|[]
-name|b
-parameter_list|,
-name|int
-name|off
-parameter_list|,
-name|int
-name|len
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/** {@inheritDoc} */
+comment|/**    * Close the stream.    * @throws IOException if an error occurred while closing    */
 DECL|method|close ()
 specifier|public
 specifier|abstract
@@ -123,6 +63,34 @@ name|close
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**     * Read an operation from the stream    * @return an operation from the stream or null if at end of stream    * @throws IOException if there is an error reading from the stream    */
+DECL|method|readOp ()
+specifier|public
+specifier|abstract
+name|FSEditLogOp
+name|readOp
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**     * Get the layout version of the data in the stream.    * @return the layout version of the ops in the stream.    * @throws IOException if there is an error reading the version    */
+DECL|method|getVersion ()
+specifier|public
+specifier|abstract
+name|int
+name|getVersion
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the "position" of in the stream. This is useful for     * debugging and operational purposes.    *    * Different stream types can have a different meaning for     * what the position is. For file streams it means the byte offset    * from the start of the file.    *    * @return the position in the stream    */
+DECL|method|getPosition ()
+specifier|public
+specifier|abstract
+name|long
+name|getPosition
+parameter_list|()
 function_decl|;
 comment|/**    * Return the size of the current edits log.    */
 DECL|method|length ()
@@ -133,24 +101,6 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return DataInputStream based on this edit stream.    */
-DECL|method|getDataInputStream ()
-name|DataInputStream
-name|getDataInputStream
-parameter_list|()
-block|{
-return|return
-operator|new
-name|DataInputStream
-argument_list|(
-operator|new
-name|BufferedInputStream
-argument_list|(
-name|this
-argument_list|)
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 
