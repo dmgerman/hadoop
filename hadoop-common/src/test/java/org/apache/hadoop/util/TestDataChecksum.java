@@ -590,6 +590,19 @@ name|getPos
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|ce
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"fake file"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|corruptBufferOffset (ByteBuffer buf, int offset)
