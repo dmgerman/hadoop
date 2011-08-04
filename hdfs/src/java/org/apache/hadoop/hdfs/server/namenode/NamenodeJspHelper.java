@@ -2357,6 +2357,9 @@ argument_list|()
 operator|+
 name|fsn
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getUnderReplicatedNotMissingBlocks
 argument_list|()
 operator|+

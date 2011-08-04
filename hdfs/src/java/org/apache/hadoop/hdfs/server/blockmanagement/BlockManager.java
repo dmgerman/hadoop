@@ -21,26 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
-operator|.
-name|now
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -355,6 +335,22 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ExtendedBlock
 import|;
 end_import
 
@@ -806,17 +802,6 @@ return|return
 name|isBlockTokenEnabled
 return|;
 block|}
-comment|/** get the block key update interval */
-DECL|method|getBlockKeyUpdateInterval ()
-specifier|public
-name|long
-name|getBlockKeyUpdateInterval
-parameter_list|()
-block|{
-return|return
-name|blockKeyUpdateInterval
-return|;
-block|}
 comment|/** get the BlockTokenSecretManager */
 DECL|method|getBlockTokenSecretManager ()
 specifier|public
@@ -913,6 +898,12 @@ specifier|private
 specifier|final
 name|DatanodeManager
 name|datanodeManager
+decl_stmt|;
+DECL|field|heartbeatManager
+specifier|private
+specifier|final
+name|HeartbeatManager
+name|heartbeatManager
 decl_stmt|;
 comment|/** Replication thread. */
 DECL|field|replicationThread
@@ -1031,7 +1022,6 @@ name|maxReplication
 decl_stmt|;
 comment|/** The maximum number of outgoing replication streams    *  a given node should have at one time     */
 DECL|field|maxReplicationStreams
-specifier|public
 name|int
 name|maxReplicationStreams
 decl_stmt|;
@@ -1172,48 +1162,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Update access keys.    */
-DECL|method|updateBlockKey ()
-specifier|public
-name|void
-name|updateBlockKey
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|this
-operator|.
-name|blockTokenSecretManager
-operator|.
-name|updateKeys
-argument_list|()
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-for|for
-control|(
-name|DatanodeDescriptor
-name|nodeInfo
-range|:
-name|namesystem
-operator|.
-name|heartbeats
-control|)
-block|{
-name|nodeInfo
-operator|.
-name|needKeyUpdate
-operator|=
-literal|true
-expr_stmt|;
-block|}
-block|}
-block|}
 DECL|method|BlockManager (FSNamesystem fsn, Configuration conf)
 specifier|public
 name|BlockManager
@@ -1236,10 +1184,19 @@ operator|=
 operator|new
 name|DatanodeManager
 argument_list|(
+name|this
+argument_list|,
 name|fsn
 argument_list|,
 name|conf
 argument_list|)
+expr_stmt|;
+name|heartbeatManager
+operator|=
+name|datanodeManager
+operator|.
+name|getHeartbeatManager
+argument_list|()
 expr_stmt|;
 name|blocksMap
 operator|=
@@ -2063,6 +2020,17 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** @return maxReplicationStreams */
+DECL|method|getMaxReplicationStreams ()
+specifier|public
+name|int
+name|getMaxReplicationStreams
+parameter_list|()
+block|{
+return|return
+name|maxReplicationStreams
+return|;
 block|}
 comment|/**    * @param block    * @return true if the block has minimum replicas    */
 DECL|method|checkMinReplication (Block block)
@@ -2964,12 +2932,26 @@ operator|.
 name|getExpectedLocations
 argument_list|()
 decl_stmt|;
-return|return
+specifier|final
+name|ExtendedBlock
+name|eb
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
 name|namesystem
 operator|.
-name|createLocatedBlock
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|blk
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|LocatedBlock
 argument_list|(
-name|uc
+name|eb
 argument_list|,
 name|locations
 argument_list|,
@@ -3148,12 +3130,26 @@ name|d
 expr_stmt|;
 block|}
 block|}
-return|return
+specifier|final
+name|ExtendedBlock
+name|eb
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
 name|namesystem
 operator|.
-name|createLocatedBlock
-argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|,
 name|blk
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|LocatedBlock
+argument_list|(
+name|eb
 argument_list|,
 name|machines
 argument_list|,
@@ -3538,11 +3534,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** Remove a datanode. */
-DECL|method|removeDatanode (final DatanodeDescriptor node)
-specifier|public
+comment|/** Remove the blocks associated to the given datanode. */
+DECL|method|removeBlocksAssociatedTo (final DatanodeDescriptor node)
 name|void
-name|removeDatanode
+name|removeBlocksAssociatedTo
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -3595,37 +3590,6 @@ name|getStorageID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|datanodeManager
-operator|.
-name|getNetworkTopology
-argument_list|()
-operator|.
-name|remove
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"remove datanode "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeFromInvalidates (String storageID, Block block)
 specifier|private
@@ -4494,7 +4458,6 @@ return|;
 block|}
 comment|/**    * Schedule blocks for deletion at datanodes    * @param nodesToProcess number of datanodes to schedule deletion work    * @return total number of block for deletion    */
 DECL|method|computeInvalidateWork (int nodesToProcess)
-specifier|public
 name|int
 name|computeInvalidateWork
 parameter_list|(
@@ -4692,7 +4655,7 @@ return|;
 block|}
 comment|/**    * Scan blocks in {@link #neededReplications} and assign replication    * work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
 DECL|method|computeReplicationWork (int blocksToProcess)
-specifier|public
+specifier|private
 name|int
 name|computeReplicationWork
 parameter_list|(
@@ -9688,7 +9651,6 @@ expr_stmt|;
 block|}
 comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock()    */
 DECL|method|processOverReplicatedBlocksOnReCommission ( final DatanodeDescriptor srcNode)
-specifier|private
 name|void
 name|processOverReplicatedBlocksOnReCommission
 parameter_list|(
@@ -10172,6 +10134,43 @@ name|getStoredBlock
 argument_list|(
 name|block
 argument_list|)
+return|;
+block|}
+comment|/** Should the access keys be updated? */
+DECL|method|shouldUpdateBlockKey (final long updateTime)
+name|boolean
+name|shouldUpdateBlockKey
+parameter_list|(
+specifier|final
+name|long
+name|updateTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|boolean
+name|b
+init|=
+name|isBlockTokenEnabled
+operator|&&
+name|blockKeyUpdateInterval
+operator|<
+name|updateTime
+decl_stmt|;
+if|if
+condition|(
+name|b
+condition|)
+block|{
+name|blockTokenSecretManager
+operator|.
+name|updateKeys
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|b
 return|;
 block|}
 comment|/* updates a block in under replication queue */
@@ -11093,230 +11092,6 @@ name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 return|;
 block|}
-comment|/**    * Change, if appropriate, the admin state of a datanode to     * decommission completed. Return true if decommission is complete.    */
-DECL|method|checkDecommissionStateInternal (DatanodeDescriptor node)
-name|boolean
-name|checkDecommissionStateInternal
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
-block|{
-comment|// Check to see if all blocks in this decommissioned
-comment|// node has reached their target replication factor.
-if|if
-condition|(
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|isReplicationInProgress
-argument_list|(
-name|node
-argument_list|)
-condition|)
-block|{
-name|node
-operator|.
-name|setDecommissioned
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Decommission complete for node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-return|return
-name|node
-operator|.
-name|isDecommissioned
-argument_list|()
-return|;
-block|}
-comment|/** Start decommissioning the specified datanode. */
-DECL|method|startDecommission (DatanodeDescriptor node)
-name|void
-name|startDecommission
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|&&
-operator|!
-name|node
-operator|.
-name|isDecommissioned
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Start Decommissioning node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" with "
-operator|+
-name|node
-operator|.
-name|numBlocks
-argument_list|()
-operator|+
-literal|" blocks."
-argument_list|)
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|startDecommission
-argument_list|()
-expr_stmt|;
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-name|node
-operator|.
-name|decommissioningStatus
-operator|.
-name|setStartTime
-argument_list|(
-name|now
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// all the blocks that reside on this node have to be replicated.
-name|checkDecommissionStateInternal
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/** Stop decommissioning the specified datanodes. */
-DECL|method|stopDecommission (DatanodeDescriptor node)
-name|void
-name|stopDecommission
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
-name|node
-operator|.
-name|isDecommissioned
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stop Decommissioning node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|stopDecommission
-argument_list|()
-expr_stmt|;
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-name|processOverReplicatedBlocksOnReCommission
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Periodically calls computeReplicationWork().    */
 DECL|class|ReplicationMonitor
 specifier|private
@@ -11326,6 +11101,7 @@ implements|implements
 name|Runnable
 block|{
 DECL|field|INVALIDATE_WORK_PCT_PER_ITERATION
+specifier|private
 specifier|static
 specifier|final
 name|int
@@ -11334,9 +11110,10 @@ init|=
 literal|32
 decl_stmt|;
 DECL|field|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
+specifier|private
 specifier|static
 specifier|final
-name|float
+name|int
 name|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
 init|=
 literal|2
@@ -11449,16 +11226,6 @@ name|workFound
 init|=
 literal|0
 decl_stmt|;
-name|int
-name|blocksToProcess
-init|=
-literal|0
-decl_stmt|;
-name|int
-name|nodesToProcess
-init|=
-literal|0
-decl_stmt|;
 comment|// Blocks should not be replicated or removed if in safe mode.
 comment|// It's OK to check safe mode here w/o holding lock, in the worst
 comment|// case extra replications will be scheduled, and these will get
@@ -11473,33 +11240,29 @@ condition|)
 return|return
 name|workFound
 return|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|blocksToProcess
-operator|=
-call|(
+specifier|final
 name|int
-call|)
-argument_list|(
-name|namesystem
+name|numlive
+init|=
+name|heartbeatManager
 operator|.
-name|heartbeats
-operator|.
-name|size
+name|getLiveDatanodeCount
 argument_list|()
+decl_stmt|;
+specifier|final
+name|int
+name|blocksToProcess
+init|=
+name|numlive
 operator|*
 name|ReplicationMonitor
 operator|.
 name|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
-argument_list|)
-expr_stmt|;
+decl_stmt|;
+specifier|final
+name|int
 name|nodesToProcess
-operator|=
+init|=
 operator|(
 name|int
 operator|)
@@ -11507,24 +11270,15 @@ name|Math
 operator|.
 name|ceil
 argument_list|(
-operator|(
-name|double
-operator|)
-name|namesystem
-operator|.
-name|heartbeats
-operator|.
-name|size
-argument_list|()
+name|numlive
 operator|*
 name|ReplicationMonitor
 operator|.
 name|INVALIDATE_WORK_PCT_PER_ITERATION
 operator|/
-literal|100
+literal|100.0
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|workFound
 operator|=
 name|this

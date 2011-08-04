@@ -327,6 +327,21 @@ name|getNamesystem
 argument_list|()
 decl_stmt|;
 specifier|final
+name|HeartbeatManager
+name|hm
+init|=
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|(           )
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getHeartbeatManager
+argument_list|()
+decl_stmt|;
+specifier|final
 name|String
 name|poolId
 init|=
@@ -438,9 +453,7 @@ argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
-name|namesystem
-operator|.
-name|heartbeats
+name|hm
 init|)
 block|{
 for|for

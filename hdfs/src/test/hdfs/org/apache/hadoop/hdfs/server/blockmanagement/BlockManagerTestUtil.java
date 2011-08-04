@@ -112,24 +112,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Daemon
@@ -142,6 +124,28 @@ specifier|public
 class|class
 name|BlockManagerTestUtil
 block|{
+DECL|method|setNodeReplicationLimit (final BlockManager blockManager, final int limit)
+specifier|public
+specifier|static
+name|void
+name|setNodeReplicationLimit
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|,
+specifier|final
+name|int
+name|limit
+parameter_list|)
+block|{
+name|blockManager
+operator|.
+name|maxReplicationStreams
+operator|=
+name|limit
+expr_stmt|;
+block|}
 comment|/** @return the datanode descriptor for the given the given storageID. */
 DECL|method|getDatanode (final FSNamesystem ns, final String storageID)
 specifier|public

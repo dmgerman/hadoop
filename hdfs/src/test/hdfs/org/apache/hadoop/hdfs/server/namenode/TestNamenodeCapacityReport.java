@@ -554,7 +554,7 @@ name|nonDFSUsed
 operator|=
 name|namesystem
 operator|.
-name|getCapacityUsedNonDFS
+name|getNonDfsUsedSpace
 argument_list|()
 expr_stmt|;
 name|remaining
@@ -568,14 +568,14 @@ name|percentUsed
 operator|=
 name|namesystem
 operator|.
-name|getCapacityUsedPercent
+name|getPercentUsed
 argument_list|()
 expr_stmt|;
 name|percentRemaining
 operator|=
 name|namesystem
 operator|.
-name|getCapacityRemainingPercent
+name|getPercentRemaining
 argument_list|()
 expr_stmt|;
 name|bpUsed

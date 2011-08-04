@@ -1075,7 +1075,7 @@ name|GET_STATS_MISSING_BLOCKS_IDX
 init|=
 literal|5
 decl_stmt|;
-comment|/**    * Get a set of statistics about the filesystem.    * Right now, only three values are returned.    *<ul>    *<li> [0] contains the total storage capacity of the system, in bytes.</li>    *<li> [1] contains the total used space of the system, in bytes.</li>    *<li> [2] contains the available storage of the system, in bytes.</li>    *<li> [3] contains number of under replicated blocks in the system.</li>    *<li> [4] contains number of blocks with a corrupt replica.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [6] contains the total used space of the block pool.</li>    *</ul>    * Use public constants like {@link #GET_STATS_CAPACITY_IDX} in place of     * actual numbers to index into the array.    */
+comment|/**    * Get a set of statistics about the filesystem.    * Right now, only three values are returned.    *<ul>    *<li> [0] contains the total storage capacity of the system, in bytes.</li>    *<li> [1] contains the total used space of the system, in bytes.</li>    *<li> [2] contains the available storage of the system, in bytes.</li>    *<li> [3] contains number of under replicated blocks in the system.</li>    *<li> [4] contains number of blocks with a corrupt replica.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [6] contains the total used space of the block pool.</li>    *</ul>    * Use public constants like {@link #GET_STATS_CAPACITY_IDX} in place of     * actual numbers to index into the array.    */
 DECL|method|getStats ()
 specifier|public
 name|long

@@ -146,6 +146,24 @@ name|ExtendedBlock
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * The test makes sure that NameNode detects presense blocks that do not have  * any valid replicas. In addition, it verifies that HDFS front page displays  * a warning in such a case.  */
 end_comment
@@ -249,6 +267,18 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+specifier|final
+name|BlockManager
+name|bm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
 name|DistributedFileSystem
 name|dfs
 init|=
@@ -422,10 +452,7 @@ name|assertEquals
 argument_list|(
 literal|3
 argument_list|,
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
+name|bm
 operator|.
 name|getUnderReplicatedNotMissingBlocks
 argument_list|()
@@ -531,10 +558,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
+name|bm
 operator|.
 name|getUnderReplicatedNotMissingBlocks
 argument_list|()

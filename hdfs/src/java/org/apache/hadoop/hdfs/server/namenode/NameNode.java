@@ -6252,6 +6252,12 @@ argument_list|)
 expr_stmt|;
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
 name|removeDatanode
 argument_list|(
 name|nodeReg
