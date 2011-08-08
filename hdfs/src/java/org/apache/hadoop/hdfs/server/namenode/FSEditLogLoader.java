@@ -46,16 +46,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|File
 import|;
 end_import
@@ -1118,10 +1108,14 @@ name|op
 decl_stmt|;
 comment|// versions> 0 support per file replication
 comment|// get name and replication
+specifier|final
 name|short
 name|replication
 init|=
 name|fsNamesys
+operator|.
+name|getBlockManager
+argument_list|(                 )
 operator|.
 name|adjustReplication
 argument_list|(
@@ -1536,6 +1530,9 @@ name|short
 name|replication
 init|=
 name|fsNamesys
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|adjustReplication
 argument_list|(

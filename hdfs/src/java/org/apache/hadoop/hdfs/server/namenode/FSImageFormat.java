@@ -1444,6 +1444,9 @@ name|replication
 operator|=
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|adjustReplication
 argument_list|(
 name|replication

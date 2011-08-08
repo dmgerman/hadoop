@@ -106,16 +106,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Arrays
 import|;
 end_import
@@ -147,6 +137,16 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -1671,13 +1671,14 @@ literal|"</tbody></table>"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|sortNodeList (ArrayList<DatanodeDescriptor> nodes, String field, String order)
+DECL|method|sortNodeList (final List<DatanodeDescriptor> nodes, String field, String order)
 specifier|public
 specifier|static
 name|void
 name|sortNodeList
 parameter_list|(
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>

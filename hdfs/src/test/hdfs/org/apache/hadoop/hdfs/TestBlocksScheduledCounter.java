@@ -106,6 +106,24 @@ name|DatanodeDescriptor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests DatanodeDescriptor.getBlocksScheduled() at the  * NameNode. This counter is supposed to keep track of blocks currently  * scheduled to a datanode.  */
 end_comment
@@ -222,16 +240,30 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 decl_stmt|;
+specifier|final
+name|DatanodeManager
+name|dm
+init|=
 name|cluster
 operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|DFSNodesStatus
+name|getBlockManager
+argument_list|(         )
+operator|.
+name|getDatanodeManager
+argument_list|()
+decl_stmt|;
+name|dm
+operator|.
+name|fetchDatanodes
 argument_list|(
 name|dnList
 argument_list|,
 name|dnList
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|DatanodeDescriptor

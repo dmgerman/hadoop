@@ -4432,7 +4432,10 @@ index|]
 decl_stmt|;
 name|namesystem
 operator|.
-name|markBlockAsCorrupt
+name|getBlockManager
+argument_list|()
+operator|.
+name|findAndMarkBlockAsCorrupt
 argument_list|(
 name|blk
 argument_list|,
@@ -5358,6 +5361,9 @@ block|{
 return|return
 name|namesystem
 operator|.
+name|getEditLog
+argument_list|()
+operator|.
 name|getEditLogManifest
 argument_list|(
 name|sinceTxId
@@ -5524,6 +5530,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void
@@ -5536,6 +5545,12 @@ throws|throws
 name|IOException
 block|{
 name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|setBalancerBandwidth
 argument_list|(
@@ -6010,6 +6025,9 @@ expr_stmt|;
 block|}
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|processReport
 argument_list|(
 name|nodeReg
@@ -6119,6 +6137,9 @@ operator|++
 control|)
 block|{
 name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|blockReceived
 argument_list|(

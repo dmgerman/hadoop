@@ -2176,15 +2176,6 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-comment|// If block is removed from blocksMap remove it from corruptReplicasMap
-name|getBlockManager
-argument_list|()
-operator|.
-name|removeFromCorruptReplicasMap
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
 comment|// write modified block locations to log
 name|fsImage
 operator|.
@@ -4061,7 +4052,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Set file replication    *     * @param src file name    * @param replication new replication    * @param oldReplication old replication - output parameter    * @return array of file blocks    * @throws QuotaExceededException    */
-DECL|method|setReplication (String src, short replication, int[] oldReplication)
+DECL|method|setReplication (String src, short replication, short[] oldReplication)
 name|Block
 index|[]
 name|setReplication
@@ -4072,7 +4063,7 @@ parameter_list|,
 name|short
 name|replication
 parameter_list|,
-name|int
+name|short
 index|[]
 name|oldReplication
 parameter_list|)
@@ -4136,7 +4127,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedSetReplication (String src, short replication, int[] oldReplication )
+DECL|method|unprotectedSetReplication (String src, short replication, short[] oldReplication )
 name|Block
 index|[]
 name|unprotectedSetReplication
@@ -4147,7 +4138,7 @@ parameter_list|,
 name|short
 name|replication
 parameter_list|,
-name|int
+name|short
 index|[]
 name|oldReplication
 parameter_list|)
@@ -4160,30 +4151,6 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-if|if
-condition|(
-name|oldReplication
-operator|==
-literal|null
-condition|)
-block|{
-name|oldReplication
-operator|=
-operator|new
-name|int
-index|[
-literal|1
-index|]
-expr_stmt|;
-block|}
-name|oldReplication
-index|[
-literal|0
-index|]
-operator|=
-operator|-
-literal|1
-expr_stmt|;
 name|INode
 index|[]
 name|inodes
@@ -4247,16 +4214,15 @@ name|INodeFile
 operator|)
 name|inode
 decl_stmt|;
-name|oldReplication
-index|[
-literal|0
-index|]
-operator|=
+specifier|final
+name|short
+name|oldRepl
+init|=
 name|fileNode
 operator|.
 name|getReplication
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 comment|// check disk quota
 name|long
 name|dsDelta
@@ -4264,10 +4230,7 @@ init|=
 operator|(
 name|replication
 operator|-
-name|oldReplication
-index|[
-literal|0
-index|]
+name|oldRepl
 operator|)
 operator|*
 operator|(
@@ -4276,10 +4239,7 @@ operator|.
 name|diskspaceConsumed
 argument_list|()
 operator|/
-name|oldReplication
-index|[
-literal|0
-index|]
+name|oldRepl
 operator|)
 decl_stmt|;
 name|updateCount
@@ -4306,6 +4266,21 @@ argument_list|(
 name|replication
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|oldReplication
+operator|!=
+literal|null
+condition|)
+block|{
+name|oldReplication
+index|[
+literal|0
+index|]
+operator|=
+name|oldRepl
+expr_stmt|;
+block|}
 return|return
 name|fileNode
 operator|.
@@ -9730,9 +9705,27 @@ operator|=
 name|getFSNamesystem
 argument_list|()
 operator|.
-name|getBlockLocationsInternal
+name|getBlockManager
+argument_list|()
+operator|.
+name|createLocatedBlocks
 argument_list|(
 name|fileNode
+operator|.
+name|getBlocks
+argument_list|()
+argument_list|,
+name|fileNode
+operator|.
+name|computeFileSize
+argument_list|(
+literal|false
+argument_list|)
+argument_list|,
+name|fileNode
+operator|.
+name|isUnderConstruction
+argument_list|()
 argument_list|,
 literal|0L
 argument_list|,
