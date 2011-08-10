@@ -1248,24 +1248,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksWithLocations
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -1357,6 +1339,22 @@ operator|.
 name|protocol
 operator|.
 name|UpgradeCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|RwLock
 import|;
 end_import
 
@@ -1683,11 +1681,13 @@ specifier|public
 class|class
 name|FSNamesystem
 implements|implements
+name|RwLock
+implements|,
 name|FSConstants
 implements|,
-name|FSNamesystemMBean
-implements|,
 name|FSClusterStats
+implements|,
+name|FSNamesystemMBean
 implements|,
 name|NameNodeMXBean
 block|{
@@ -2031,7 +2031,6 @@ comment|//
 comment|// Stores the correct file name hierarchy
 comment|//
 DECL|field|dir
-specifier|public
 name|FSDirectory
 name|dir
 decl_stmt|;
@@ -2047,11 +2046,11 @@ name|datanodeStatistics
 decl_stmt|;
 comment|// Block pool ID used by this namenode
 DECL|field|blockPoolId
+specifier|private
 name|String
 name|blockPoolId
 decl_stmt|;
 DECL|field|leaseManager
-specifier|public
 name|LeaseManager
 name|leaseManager
 init|=
@@ -2061,12 +2060,7 @@ argument_list|(
 name|this
 argument_list|)
 decl_stmt|;
-comment|//
-comment|// Threaded object that checks to see if we have been
-comment|// getting heartbeats from all clients.
-comment|//
 DECL|field|lmthread
-specifier|public
 name|Daemon
 name|lmthread
 init|=
@@ -2548,7 +2542,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getStorageDirs (Configuration conf, String propertyName)
-specifier|public
+specifier|private
 specifier|static
 name|Collection
 argument_list|<
@@ -2732,7 +2726,8 @@ name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|)
 return|;
 block|}
-comment|// utility methods to acquire and release read lock and write lock
+annotation|@
+name|Override
 DECL|method|readLock ()
 specifier|public
 name|void
@@ -2750,6 +2745,8 @@ name|lock
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readUnlock ()
 specifier|public
 name|void
@@ -2767,6 +2764,8 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeLock ()
 specifier|public
 name|void
@@ -2784,6 +2783,8 @@ name|lock
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeUnlock ()
 specifier|public
 name|void
@@ -2801,6 +2802,8 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasWriteLock ()
 specifier|public
 name|boolean
@@ -2816,7 +2819,10 @@ name|isWriteLockedByCurrentThread
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasReadLock ()
+specifier|public
 name|boolean
 name|hasReadLock
 parameter_list|()
@@ -2832,6 +2838,8 @@ operator|>
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasReadOrWriteLock ()
 specifier|public
 name|boolean
@@ -3257,7 +3265,9 @@ operator|.
 name|getCTime
 argument_list|()
 argument_list|,
-name|getDistributedUpgradeVersion
+name|upgradeManager
+operator|.
+name|getUpgradeVersion
 argument_list|()
 argument_list|)
 return|;
@@ -3271,7 +3281,6 @@ block|}
 block|}
 comment|/**    * Close down this file system manager.    * Causes heartbeat and lease daemons to stop; waits briefly for    * them to finish, but a short timeout returns control back to caller.    */
 DECL|method|close ()
-specifier|public
 name|void
 name|close
 parameter_list|()
@@ -3651,51 +3660,6 @@ name|accessTimePrecision
 operator|>
 literal|0
 return|;
-block|}
-comment|/////////////////////////////////////////////////////////
-comment|//
-comment|// These methods are called by secondary namenodes
-comment|//
-comment|/////////////////////////////////////////////////////////
-comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *     * @param datanode on which blocks are located    * @param size total size of blocks    */
-DECL|method|getBlocks (DatanodeID datanode, long size)
-name|BlocksWithLocations
-name|getBlocks
-parameter_list|(
-name|DatanodeID
-name|datanode
-parameter_list|,
-name|long
-name|size
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
-return|return
-name|blockManager
-operator|.
-name|getBlocksWithLocations
-argument_list|(
-name|datanode
-argument_list|,
-name|size
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/////////////////////////////////////////////////////////
 comment|//
@@ -4463,7 +4427,6 @@ comment|// can never reach here
 block|}
 comment|/**    * Moves all the blocks from srcs and appends them to trg    * To avoid rollbacks we will verify validitity of ALL of the args    * before we start actual move.    * @param target    * @param srcs    * @throws IOException    */
 DECL|method|concat (String target, String [] srcs)
-specifier|public
 name|void
 name|concat
 parameter_list|(
@@ -4727,7 +4690,7 @@ block|}
 block|}
 comment|/** See {@link #concat(String, String[])} */
 DECL|method|concatInternal (String target, String [] srcs)
-specifier|public
+specifier|private
 name|void
 name|concatInternal
 parameter_list|(
@@ -7506,7 +7469,6 @@ expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
 DECL|method|getAdditionalBlock (String src, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes )
-specifier|public
 name|LocatedBlock
 name|getAdditionalBlock
 parameter_list|(
@@ -8464,7 +8426,6 @@ block|}
 block|}
 comment|/**    * Complete in-progress write to the given file.    * @return true if successful, false if the client should continue to retry    *         (e.g if not all blocks have reached minimum replication yet)    * @throws IOException on error (eg lease mismatch, file not open, file deleted)    */
 DECL|method|completeFile (String src, String holder, ExtendedBlock last)
-specifier|public
 name|boolean
 name|completeFile
 parameter_list|(
@@ -11167,6 +11128,7 @@ literal|false
 return|;
 block|}
 DECL|method|reassignLease (Lease lease, String src, String newHolder, INodeFileUnderConstruction pendingFile)
+specifier|private
 name|Lease
 name|reassignLease
 parameter_list|(
@@ -11265,6 +11227,97 @@ argument_list|,
 name|newHolder
 argument_list|)
 return|;
+block|}
+comment|/** Update disk space consumed. */
+DECL|method|updateDiskSpaceConsumed (final INodeFileUnderConstruction fileINode, final Block commitBlock)
+specifier|public
+name|void
+name|updateDiskSpaceConsumed
+parameter_list|(
+specifier|final
+name|INodeFileUnderConstruction
+name|fileINode
+parameter_list|,
+specifier|final
+name|Block
+name|commitBlock
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
+comment|// Adjust disk space consumption if required
+specifier|final
+name|long
+name|diff
+init|=
+name|fileINode
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+operator|-
+name|commitBlock
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|diff
+operator|>
+literal|0
+condition|)
+block|{
+try|try
+block|{
+name|String
+name|path
+init|=
+name|leaseManager
+operator|.
+name|findPath
+argument_list|(
+name|fileINode
+argument_list|)
+decl_stmt|;
+name|dir
+operator|.
+name|updateSpaceConsumed
+argument_list|(
+name|path
+argument_list|,
+literal|0
+argument_list|,
+operator|-
+name|diff
+operator|*
+name|fileINode
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpected exception while updating disk space."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|finalizeINodeFileUnderConstruction (String src, INodeFileUnderConstruction pendingFile)
 specifier|private
@@ -11996,7 +12049,6 @@ comment|//
 comment|/////////////////////////////////////////////////////////
 comment|/**    * Register Datanode.    *<p>    * The purpose of registration is to identify whether the new datanode    * serves a new data storage, and will report new data block copies,    * which the namenode was not aware of; or the datanode is a replacement    * node for the data storage that was previously served by a different    * or the same (in terms of host:port) datanode.    * The data storages are distinguished by their storageIDs. When a new    * data storage is reported the namenode issues a new unique storageID.    *<p>    * Finally, the namenode returns its namespaceID as the registrationID    * for the datanodes.     * namespaceID is a persistent attribute of the name space.    * The registrationID is checked every time the datanode is communicating    * with the namenode.     * Datanodes with inappropriate registrationID are rejected.    * If the namenode stops, and then restarts it can restore its     * namespaceID and will continue serving the datanodes that has previously    * registered with the namenode without restarting the whole cluster.    *     * @see org.apache.hadoop.hdfs.server.datanode.DataNode    */
 DECL|method|registerDatanode (DatanodeRegistration nodeReg)
-specifier|public
 name|void
 name|registerDatanode
 parameter_list|(
@@ -12055,7 +12107,6 @@ return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
 DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int xmitsInProgress, int failedVolumes)
-specifier|public
 name|DatanodeCommand
 index|[]
 name|handleHeartbeat
@@ -12148,7 +12199,9 @@ comment|//check distributed upgrade
 name|DatanodeCommand
 name|cmd
 init|=
-name|getDistributedUpgradeCommand
+name|upgradeManager
+operator|.
+name|getBroadcastCommand
 argument_list|()
 decl_stmt|;
 if|if
@@ -12871,7 +12924,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getStartTime ()
-specifier|public
 name|Date
 name|getStartTime
 parameter_list|()
@@ -12883,54 +12935,6 @@ argument_list|(
 name|systemStart
 argument_list|)
 return|;
-block|}
-comment|/**    * Rereads the config to get hosts and exclude list file names.    * Rereads the files to update the hosts and exclude lists.  It    * checks if any of the hosts have changed states:    * 1. Added to hosts  --> no further work needed here.    * 2. Removed from hosts --> mark AdminState as decommissioned.     * 3. Added to exclude --> start decommission.    * 4. Removed from exclude --> stop decommission.    */
-DECL|method|refreshNodes (Configuration conf)
-specifier|public
-name|void
-name|refreshNodes
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
-name|getBlockManager
-argument_list|()
-operator|.
-name|getDatanodeManager
-argument_list|()
-operator|.
-name|refreshHostsReader
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|getBlockManager
-argument_list|()
-operator|.
-name|getDatanodeManager
-argument_list|()
-operator|.
-name|refreshDatanodes
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|finalizeUpgrade ()
 name|void
@@ -13334,7 +13338,9 @@ try|try
 block|{
 name|needUpgrade
 operator|=
-name|startDistributedUpgradeIfNeeded
+name|upgradeManager
+operator|.
+name|startUpgrade
 argument_list|()
 expr_stmt|;
 block|}
@@ -13987,7 +13993,9 @@ condition|)
 block|{
 if|if
 condition|(
-name|getDistributedUpgradeState
+name|upgradeManager
+operator|.
+name|getUpgradeState
 argument_list|()
 condition|)
 return|return
@@ -13997,7 +14005,9 @@ literal|" upon completion of "
 operator|+
 literal|"the distributed upgrade: upgrade progress = "
 operator|+
-name|getDistributedUpgradeStatus
+name|upgradeManager
+operator|.
+name|getUpgradeStatus
 argument_list|()
 operator|+
 literal|"%"
@@ -14745,6 +14755,7 @@ expr_stmt|;
 block|}
 comment|/**    * Set the total number of blocks in the system.     */
 DECL|method|setBlockTotal ()
+specifier|private
 name|void
 name|setBlockTotal
 parameter_list|()
@@ -14797,6 +14808,7 @@ return|;
 block|}
 comment|/**    * Get the total number of COMPLETE blocks in the system.    * For safe mode only complete blocks are counted.    */
 DECL|method|getCompleteBlocksTotal ()
+specifier|private
 name|long
 name|getCompleteBlocksTotal
 parameter_list|()
@@ -15069,7 +15081,9 @@ return|return;
 block|}
 if|if
 condition|(
-name|getDistributedUpgradeState
+name|upgradeManager
+operator|.
+name|getUpgradeState
 argument_list|()
 condition|)
 throw|throw
@@ -15418,70 +15432,6 @@ name|comm
 argument_list|)
 return|;
 block|}
-DECL|method|getDistributedUpgradeVersion ()
-name|int
-name|getDistributedUpgradeVersion
-parameter_list|()
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|getUpgradeVersion
-argument_list|()
-return|;
-block|}
-DECL|method|getDistributedUpgradeCommand ()
-name|UpgradeCommand
-name|getDistributedUpgradeCommand
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|getBroadcastCommand
-argument_list|()
-return|;
-block|}
-DECL|method|getDistributedUpgradeState ()
-name|boolean
-name|getDistributedUpgradeState
-parameter_list|()
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|getUpgradeState
-argument_list|()
-return|;
-block|}
-DECL|method|getDistributedUpgradeStatus ()
-name|short
-name|getDistributedUpgradeStatus
-parameter_list|()
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|getUpgradeStatus
-argument_list|()
-return|;
-block|}
-DECL|method|startDistributedUpgradeIfNeeded ()
-name|boolean
-name|startDistributedUpgradeIfNeeded
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|startUpgrade
-argument_list|()
-return|;
-block|}
 DECL|method|createFsOwnerPermissions (FsPermission permission)
 name|PermissionStatus
 name|createFsOwnerPermissions
@@ -15664,8 +15614,9 @@ literal|null
 argument_list|)
 return|;
 block|}
+comment|/** Check if the user has superuser privilege. */
 DECL|method|checkSuperuserPrivilege ()
-specifier|private
+specifier|public
 name|void
 name|checkSuperuserPrivilege
 parameter_list|()
@@ -16009,6 +15960,7 @@ name|mbeanName
 decl_stmt|;
 comment|/**    * Register the FSNamesystem MBean using the name    *        "hadoop:service=NameNode,name=FSNamesystemState"    */
 DECL|method|registerMBean ()
+specifier|private
 name|void
 name|registerMBean
 parameter_list|()
@@ -16595,6 +16547,7 @@ expr_stmt|;
 block|}
 comment|/** @see updatePipeline(String, ExtendedBlock, ExtendedBlock, DatanodeID[]) */
 DECL|method|updatePipelineInternal (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+specifier|private
 name|void
 name|updatePipelineInternal
 parameter_list|(
@@ -17619,7 +17572,6 @@ return|;
 block|}
 comment|/**    * Returns the DelegationTokenSecretManager instance in the namesystem.    * @return delegation token secret manager object    */
 DECL|method|getDelegationTokenSecretManager ()
-specifier|public
 name|DelegationTokenSecretManager
 name|getDelegationTokenSecretManager
 parameter_list|()
@@ -17828,7 +17780,6 @@ return|;
 block|}
 comment|/**    *     * @param token    * @return New expiryTime of the token    * @throws InvalidToken    * @throws IOException    */
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
-specifier|public
 name|long
 name|renewDelegationToken
 parameter_list|(
@@ -17968,7 +17919,6 @@ return|;
 block|}
 comment|/**    *     * @param token    * @throws IOException    */
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
-specifier|public
 name|void
 name|cancelDelegationToken
 parameter_list|(

@@ -22,7 +22,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -128,27 +138,6 @@ name|framework
 operator|.
 name|TestCase
 block|{
-DECL|method|countLease (MiniDFSCluster cluster)
-specifier|static
-name|int
-name|countLease
-parameter_list|(
-name|MiniDFSCluster
-name|cluster
-parameter_list|)
-block|{
-return|return
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|leaseManager
-operator|.
-name|countLease
-argument_list|()
-return|;
-block|}
 DECL|field|dir
 specifier|final
 name|Path

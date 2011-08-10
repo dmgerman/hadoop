@@ -2349,6 +2349,12 @@ argument_list|)
 expr_stmt|;
 name|ns
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
 name|refreshNodes
 argument_list|(
 name|conf
@@ -2697,6 +2703,12 @@ name|name
 argument_list|)
 expr_stmt|;
 name|ns
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|refreshNodes
 argument_list|(

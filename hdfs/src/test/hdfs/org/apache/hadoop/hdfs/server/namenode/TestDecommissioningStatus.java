@@ -967,16 +967,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Decommissions the node at the given index    */
-DECL|method|decommissionNode (FSNamesystem namesystem, Configuration conf, DFSClient client, FileSystem localFileSys, int nodeIndex)
+DECL|method|decommissionNode (FSNamesystem namesystem, DFSClient client, FileSystem localFileSys, int nodeIndex)
 specifier|private
 name|String
 name|decommissionNode
 parameter_list|(
 name|FSNamesystem
 name|namesystem
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|,
 name|DFSClient
 name|client
@@ -1055,13 +1052,6 @@ argument_list|,
 name|excludeFile
 argument_list|,
 name|nodes
-argument_list|)
-expr_stmt|;
-name|namesystem
-operator|.
-name|refreshNodes
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 return|return
@@ -1289,8 +1279,6 @@ name|decommissionNode
 argument_list|(
 name|fsn
 argument_list|,
-name|conf
-argument_list|,
 name|client
 argument_list|,
 name|localFileSys
@@ -1298,6 +1286,13 @@ argument_list|,
 name|iteration
 argument_list|)
 decl_stmt|;
+name|dm
+operator|.
+name|refreshNodes
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|decommissionedNodes
 operator|.
 name|add
@@ -1431,7 +1426,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|fsn
+name|dm
 operator|.
 name|refreshNodes
 argument_list|(

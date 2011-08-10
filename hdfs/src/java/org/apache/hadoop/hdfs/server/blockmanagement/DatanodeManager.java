@@ -3135,9 +3135,52 @@ name|nodeDescr
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Rereads conf to get hosts and exclude list file names.    * Rereads the files to update the hosts and exclude lists.  It    * checks if any of the hosts have changed states:    */
+DECL|method|refreshNodes (final Configuration conf)
+specifier|public
+name|void
+name|refreshNodes
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|refreshHostsReader
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|refreshDatanodes
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/** Reread include/exclude files. */
 DECL|method|refreshHostsReader (Configuration conf)
-specifier|public
+specifier|private
 name|void
 name|refreshHostsReader
 parameter_list|(
@@ -3196,9 +3239,9 @@ name|refresh
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Rereads the config to get hosts and exclude list file names.    * Rereads the files to update the hosts and exclude lists.  It    * checks if any of the hosts have changed states:    * 1. Added to hosts  --> no further work needed here.    * 2. Removed from hosts --> mark AdminState as decommissioned.     * 3. Added to exclude --> start decommission.    * 4. Removed from exclude --> stop decommission.    */
+comment|/**    * 1. Added to hosts  --> no further work needed here.    * 2. Removed from hosts --> mark AdminState as decommissioned.     * 3. Added to exclude --> start decommission.    * 4. Removed from exclude --> stop decommission.    */
 DECL|method|refreshDatanodes ()
-specifier|public
+specifier|private
 name|void
 name|refreshDatanodes
 parameter_list|()

@@ -6248,7 +6248,6 @@ block|}
 block|}
 comment|/** Updates namespace and diskspace consumed for all    * directories until the parent directory of file represented by path.    *     * @param path path for the file.    * @param nsDelta the delta change of namespace    * @param dsDelta the delta change of diskspace    * @throws QuotaExceededException if the new count violates any quota limit    * @throws FileNotFound if path does not exist.    */
 DECL|method|updateSpaceConsumed (String path, long nsDelta, long dsDelta)
-specifier|public
 name|void
 name|updateSpaceConsumed
 parameter_list|(

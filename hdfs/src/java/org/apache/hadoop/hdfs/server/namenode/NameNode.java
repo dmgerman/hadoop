@@ -3241,6 +3241,9 @@ block|}
 return|return
 name|namesystem
 operator|.
+name|getBlockManager
+argument_list|()
+operator|.
 name|getBlocks
 argument_list|(
 name|datanode
@@ -5302,6 +5305,12 @@ throws|throws
 name|IOException
 block|{
 name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
 operator|.
 name|refreshNodes
 argument_list|(
