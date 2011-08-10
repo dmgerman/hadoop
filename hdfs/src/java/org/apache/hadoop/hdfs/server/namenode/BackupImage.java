@@ -325,11 +325,6 @@ name|BNState
 operator|.
 name|DROP_UNTIL_NEXT_ROLL
 expr_stmt|;
-name|editLog
-operator|.
-name|initJournals
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * Analyze backup storage directories for consistency.<br>    * Recover from incomplete checkpoints if required.<br>    * Read VERSION and fstime files if exist.<br>    * Do not load image or edits.    *    * @throws IOException if the node should shutdown.    */
 DECL|method|recoverCreateRead ()

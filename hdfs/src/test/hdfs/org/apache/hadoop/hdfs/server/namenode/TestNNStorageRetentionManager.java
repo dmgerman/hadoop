@@ -1591,9 +1591,9 @@ name|mockStorageDir
 parameter_list|()
 block|{
 return|return
-name|TestFSImageStorageInspector
+name|FSImageTestUtil
 operator|.
-name|mockDirectory
+name|mockStorageDirectory
 argument_list|(
 name|type
 argument_list|,

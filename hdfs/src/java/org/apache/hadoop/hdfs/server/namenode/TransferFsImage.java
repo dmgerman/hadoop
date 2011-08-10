@@ -438,6 +438,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+assert|assert
+name|log
+operator|.
+name|getStartTxId
+argument_list|()
+operator|>
+literal|0
+operator|&&
+name|log
+operator|.
+name|getEndTxId
+argument_list|()
+operator|>
+literal|0
+operator|:
+literal|"bad log: "
+operator|+
+name|log
+assert|;
 name|String
 name|fileid
 init|=
