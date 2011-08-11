@@ -258,8 +258,6 @@ begin_class
 DECL|class|TransferFsImage
 class|class
 name|TransferFsImage
-implements|implements
-name|FSConstants
 block|{
 DECL|field|CONTENT_LENGTH
 specifier|public
@@ -698,7 +696,9 @@ init|=
 operator|new
 name|byte
 index|[
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;
 name|FileInputStream
@@ -792,7 +792,9 @@ name|len
 operator|/
 literal|2
 argument_list|,
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 index|]
 expr_stmt|;
@@ -940,7 +942,9 @@ init|=
 operator|new
 name|byte
 index|[
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;
 name|String

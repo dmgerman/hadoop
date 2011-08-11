@@ -1401,7 +1401,7 @@ argument_list|()
 argument_list|,
 name|FSConstants
 operator|.
-name|BUFFER_SIZE
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1425,7 +1425,7 @@ argument_list|()
 argument_list|,
 name|FSConstants
 operator|.
-name|BUFFER_SIZE
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;

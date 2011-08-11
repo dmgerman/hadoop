@@ -230,8 +230,6 @@ class|class
 name|DataXceiverServer
 implements|implements
 name|Runnable
-implements|,
-name|FSConstants
 block|{
 DECL|field|LOG
 specifier|public
@@ -426,7 +424,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|DEFAULT_BLOCK_SIZE
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|//set up parameter for cluster balancing

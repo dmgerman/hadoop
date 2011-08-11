@@ -446,8 +446,6 @@ class|class
 name|BlockReceiver
 implements|implements
 name|Closeable
-implements|,
-name|FSConstants
 block|{
 DECL|field|LOG
 specifier|public
@@ -1151,6 +1149,8 @@ name|streams
 operator|.
 name|checksumOut
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -2048,7 +2048,9 @@ operator|.
 name|remaining
 argument_list|()
 operator|<
-name|SIZE_OF_INTEGER
+name|FSConstants
+operator|.
+name|BYTES_IN_INTEGER
 condition|)
 block|{
 if|if
@@ -2119,7 +2121,7 @@ name|payloadLen
 argument_list|)
 throw|;
 block|}
-comment|// Subtract SIZE_OF_INTEGER since that accounts for the payloadLen that
+comment|// Subtract BYTES_IN_INTEGER since that accounts for the payloadLen that
 comment|// we read above.
 name|int
 name|pktSize
@@ -2130,7 +2132,9 @@ name|PacketHeader
 operator|.
 name|PKT_HEADER_LEN
 operator|-
-name|SIZE_OF_INTEGER
+name|FSConstants
+operator|.
+name|BYTES_IN_INTEGER
 decl_stmt|;
 if|if
 condition|(
@@ -3837,8 +3841,6 @@ implements|implements
 name|Runnable
 implements|,
 name|Closeable
-implements|,
-name|FSConstants
 block|{
 comment|/** queue for packets waiting for ack */
 DECL|field|ackQueue

@@ -674,8 +674,6 @@ specifier|public
 class|class
 name|FSDataset
 implements|implements
-name|FSConstants
-implements|,
 name|FSDatasetInterface
 block|{
 comment|/**    * A node type that can be built into a tree reflecting the    * hierarchy of blocks on the local disk.    */
@@ -2549,7 +2547,9 @@ argument_list|(
 name|metaFile
 argument_list|)
 argument_list|,
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -1752,8 +1752,6 @@ name|InterDatanodeProtocol
 implements|,
 name|ClientDatanodeProtocol
 implements|,
-name|FSConstants
-implements|,
 name|DataNodeMXBean
 block|{
 DECL|field|LOG
@@ -2585,7 +2583,7 @@ DECL|field|initialBlockReportDelay
 name|long
 name|initialBlockReportDelay
 init|=
-name|BLOCKREPORT_INITIAL_DELAY
+name|DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT
 operator|*
 literal|1000L
 decl_stmt|;
@@ -2979,9 +2977,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"dfs.datanode.transferTo.allowed"
+name|DFS_DATANODE_TRANSFERTO_ALLOWED_KEY
 argument_list|,
-literal|true
+name|DFS_DATANODE_TRANSFERTO_ALLOWED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -3007,7 +3005,7 @@ name|getLong
 argument_list|(
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_KEY
 argument_list|,
-name|BLOCKREPORT_INTERVAL
+name|DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -3020,7 +3018,7 @@ name|getLong
 argument_list|(
 name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
 argument_list|,
-name|BLOCKREPORT_INITIAL_DELAY
+name|DFS_BLOCKREPORT_INITIAL_DELAY_DEFAULT
 argument_list|)
 operator|*
 literal|1000L
@@ -3062,7 +3060,7 @@ name|getLong
 argument_list|(
 name|DFS_HEARTBEAT_INTERVAL_KEY
 argument_list|,
-name|HEARTBEAT_INTERVAL
+name|DFS_HEARTBEAT_INTERVAL_DEFAULT
 argument_list|)
 operator|*
 literal|1000L
@@ -3918,6 +3916,8 @@ name|ss
 operator|.
 name|setReceiveBufferSize
 argument_list|(
+name|FSConstants
+operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
 expr_stmt|;
@@ -9270,6 +9270,8 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)

@@ -712,8 +712,6 @@ extends|extends
 name|Receiver
 implements|implements
 name|Runnable
-implements|,
-name|FSConstants
 block|{
 DECL|field|LOG
 specifier|public
@@ -1382,6 +1380,8 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -2079,6 +2079,8 @@ operator|.
 name|socketWriteTimeout
 argument_list|)
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -2318,6 +2320,8 @@ name|mirrorSock
 operator|.
 name|setSendBufferSize
 argument_list|(
+name|FSConstants
+operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
 expr_stmt|;
@@ -2338,6 +2342,8 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -3101,7 +3107,9 @@ name|BufferedInputStream
 argument_list|(
 name|metadataIn
 argument_list|,
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3507,6 +3515,8 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -3917,6 +3927,8 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
+name|FSConstants
+operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
@@ -3951,7 +3963,9 @@ argument_list|(
 name|proxySock
 argument_list|)
 argument_list|,
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;

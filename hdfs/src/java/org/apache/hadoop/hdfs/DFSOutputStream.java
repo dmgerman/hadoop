@@ -392,6 +392,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|FSConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -1149,11 +1165,10 @@ name|PacketHeader
 operator|.
 name|PKT_HEADER_LEN
 operator|+
-name|DFSClient
+name|FSConstants
 operator|.
-name|SIZE_OF_INTEGER
+name|BYTES_IN_INTEGER
 decl_stmt|;
-comment|// TODO(todd) strange
 name|buf
 operator|=
 operator|new
@@ -1428,9 +1443,9 @@ block|}
 name|int
 name|pktLen
 init|=
-name|DFSClient
+name|FSConstants
 operator|.
-name|SIZE_OF_INTEGER
+name|BYTES_IN_INTEGER
 operator|+
 name|dataLen
 operator|+
@@ -1455,9 +1470,9 @@ name|PKT_HEADER_LEN
 operator|+
 name|pktLen
 operator|-
-name|DFSClient
+name|FSConstants
 operator|.
-name|SIZE_OF_INTEGER
+name|BYTES_IN_INTEGER
 argument_list|)
 expr_stmt|;
 name|buf
@@ -3921,7 +3936,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|DataNode
+name|FSConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -4809,7 +4824,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|DataNode
+name|FSConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -5485,7 +5500,7 @@ name|sock
 operator|.
 name|setSendBufferSize
 argument_list|(
-name|DFSClient
+name|FSConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)

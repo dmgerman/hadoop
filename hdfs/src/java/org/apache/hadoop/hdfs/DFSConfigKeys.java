@@ -1801,7 +1801,11 @@ specifier|final
 name|long
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT
 init|=
-literal|21600000
+literal|60
+operator|*
+literal|60
+operator|*
+literal|1000
 decl_stmt|;
 DECL|field|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
 specifier|public
