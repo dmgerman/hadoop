@@ -6132,11 +6132,11 @@ name|targets
 operator|.
 name|length
 operator|+
-literal|" nodes, instead of "
+literal|" nodes instead of minReplication (="
 operator|+
 name|minReplication
 operator|+
-literal|". There are "
+literal|").  There are "
 operator|+
 name|getDatanodeManager
 argument_list|()
@@ -6147,12 +6147,20 @@ operator|.
 name|getNumOfLeaves
 argument_list|()
 operator|+
-literal|" datanode(s) running but "
+literal|" datanode(s) running and "
 operator|+
+operator|(
+name|excludedNodes
+operator|==
+literal|null
+condition|?
+literal|"no"
+else|:
 name|excludedNodes
 operator|.
 name|size
 argument_list|()
+operator|)
 operator|+
 literal|" node(s) are excluded in this operation."
 argument_list|)
