@@ -2499,6 +2499,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|setBlockTotal
 argument_list|()
 expr_stmt|;
@@ -2545,6 +2550,13 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 name|registerMXBean
 argument_list|()
 expr_stmt|;
