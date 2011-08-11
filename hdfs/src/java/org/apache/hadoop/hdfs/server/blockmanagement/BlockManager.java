@@ -476,26 +476,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|UnderReplicatedBlocks
-operator|.
-name|BlockIterator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|HdfsConstants
@@ -12387,7 +12367,10 @@ block|}
 comment|/**    * Return an iterator over the set of blocks for which there are no replicas.    */
 DECL|method|getCorruptReplicaBlockIterator ()
 specifier|public
-name|BlockIterator
+name|Iterator
+argument_list|<
+name|Block
+argument_list|>
 name|getCorruptReplicaBlockIterator
 parameter_list|()
 block|{
@@ -12400,6 +12383,20 @@ name|UnderReplicatedBlocks
 operator|.
 name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
+return|;
+block|}
+comment|/** @return the size of UnderReplicatedBlocks */
+DECL|method|numOfUnderReplicatedBlocks ()
+specifier|public
+name|int
+name|numOfUnderReplicatedBlocks
+parameter_list|()
+block|{
+return|return
+name|neededReplications
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 comment|/**    * Periodically calls computeReplicationWork().    */

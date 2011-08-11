@@ -248,6 +248,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -1097,24 +1107,6 @@ operator|.
 name|blockmanagement
 operator|.
 name|DatanodeStatistics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|UnderReplicatedBlocks
 import|;
 end_import
 
@@ -13498,9 +13490,7 @@ literal|"STATE* UnderReplicatedBlocks has "
 operator|+
 name|blockManager
 operator|.
-name|neededReplications
-operator|.
-name|size
+name|numOfUnderReplicatedBlocks
 argument_list|()
 operator|+
 literal|" blocks"
@@ -17371,9 +17361,11 @@ name|startBlockAfter
 argument_list|)
 expr_stmt|;
 block|}
-name|UnderReplicatedBlocks
-operator|.
-name|BlockIterator
+specifier|final
+name|Iterator
+argument_list|<
+name|Block
+argument_list|>
 name|blkIterator
 init|=
 name|blockManager
