@@ -3319,6 +3319,8 @@ name|String
 index|[]
 name|args
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|int
 name|count
@@ -3362,8 +3364,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
 for|for
 control|(
 name|int
@@ -3458,6 +3458,7 @@ name|seed
 init|=
 literal|0
 decl_stmt|;
+comment|// Note that exceptions will propagate out.
 name|codecTest
 argument_list|(
 name|conf
@@ -3469,30 +3470,6 @@ argument_list|,
 name|codecClass
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Caught: "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
