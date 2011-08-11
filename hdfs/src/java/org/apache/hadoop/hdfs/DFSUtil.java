@@ -3135,6 +3135,22 @@ name|socketTimeout
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns true if HA for namenode is configured.    * @param conf Configuration    * @return true if HA is configured in the configuration; else false.    */
+DECL|method|isHAEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isHAEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// TODO:HA configuration changes pending
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

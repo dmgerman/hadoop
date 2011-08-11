@@ -42,6 +42,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -119,6 +133,8 @@ extends|,
 name|RefreshUserMappingsProtocol
 extends|,
 name|GetUserMappingsProtocol
+extends|,
+name|HAServiceProtocol
 block|{ }
 end_interface
 

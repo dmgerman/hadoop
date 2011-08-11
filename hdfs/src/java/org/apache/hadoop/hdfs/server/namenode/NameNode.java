@@ -174,6 +174,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HealthCheckFailedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|ServiceFailedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -750,6 +778,66 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ha
+operator|.
+name|ActiveState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|HAState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|StandbyState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|metrics
 operator|.
 name|NameNodeMetrics
@@ -825,6 +913,24 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|JournalProtocol
 import|;
 end_import
 
@@ -1306,6 +1412,29 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Categories of operations supported by the namenode.    */
+DECL|enum|OperationCategory
+specifier|public
+specifier|static
+enum|enum
+name|OperationCategory
+block|{
+comment|/** Read operation that does not change the namespace state */
+DECL|enumConstant|READ
+name|READ
+block|,
+comment|/** Write operation that changes the namespace state */
+DECL|enumConstant|WRITE
+name|WRITE
+block|,
+comment|/** Operations related to checkpointing */
+DECL|enumConstant|CHECKPOINT
+name|CHECKPOINT
+block|,
+comment|/** Operations related to {@link JournalProtocol} */
+DECL|enumConstant|JOURNAL
+name|JOURNAL
+block|}
 comment|/**    * HDFS federation configuration can have two types of parameters:    *<ol>    *<li>Parameter that is common for all the name services in the cluster.</li>    *<li>Parameters that are specific to a name service. This keys are suffixed    * with nameserviceId in the configuration. For example,    * "dfs.namenode.rpc-address.nameservice1".</li>    *</ol>    *     * Following are nameservice specific keys.    */
 DECL|field|NAMESERVICE_SPECIFIC_KEYS
 specifier|public
@@ -1580,6 +1709,28 @@ argument_list|(
 literal|"org.apache.hadoop.hdfs.StateChange"
 argument_list|)
 decl_stmt|;
+DECL|field|ACTIVE_STATE
+specifier|public
+specifier|static
+specifier|final
+name|HAState
+name|ACTIVE_STATE
+init|=
+operator|new
+name|ActiveState
+argument_list|()
+decl_stmt|;
+DECL|field|STANDBY_STATE
+specifier|public
+specifier|static
+specifier|final
+name|HAState
+name|STANDBY_STATE
+init|=
+operator|new
+name|StandbyState
+argument_list|()
+decl_stmt|;
 DECL|field|namesystem
 specifier|protected
 name|FSNamesystem
@@ -1589,6 +1740,17 @@ DECL|field|role
 specifier|protected
 name|NamenodeRole
 name|role
+decl_stmt|;
+DECL|field|state
+specifier|private
+name|HAState
+name|state
+decl_stmt|;
+DECL|field|haEnabled
+specifier|private
+specifier|final
+name|boolean
+name|haEnabled
 decl_stmt|;
 comment|/** RPC server. Package-protected for use in tests. */
 DECL|field|server
@@ -2317,6 +2479,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|initializeGenericKeys
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|InetSocketAddress
 name|socAddr
 init|=
@@ -2587,38 +2754,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|getRole
-argument_list|()
-operator|+
-literal|" up at: "
-operator|+
-name|rpcAddress
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|serviceRPCAddress
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|getRole
-argument_list|()
-operator|+
-literal|" service server is up at: "
-operator|+
-name|serviceRPCAddress
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Verifies that the final Configuration Settings look ok for the NameNode to    * properly start up    * Things to check for include:    * - HTTP Server Port does not equal the RPC Server Port    * @param conf    * @throws IOException    */
 DECL|method|validateConfigurationSettings (final Configuration conf)
@@ -2821,6 +2956,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|getRole
+argument_list|()
+operator|+
+literal|" up at: "
+operator|+
+name|rpcAddress
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|serviceRPCAddress
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|getRole
+argument_list|()
+operator|+
+literal|" service server is up at: "
+operator|+
+name|serviceRPCAddress
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|startTrashEmptier (Configuration conf)
 specifier|private
@@ -2970,13 +3137,30 @@ name|role
 operator|=
 name|role
 expr_stmt|;
-try|try
-block|{
-name|initializeGenericKeys
+name|this
+operator|.
+name|haEnabled
+operator|=
+name|DFSUtil
+operator|.
+name|isHAEnabled
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|state
+operator|=
+operator|!
+name|haEnabled
+condition|?
+name|ACTIVE_STATE
+else|:
+name|STANDBY_STATE
+expr_stmt|;
+try|try
+block|{
 name|initialize
 argument_list|(
 name|conf
@@ -3290,6 +3474,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|registration
@@ -3428,28 +3619,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|verifyRequest
+name|checkOperation
 argument_list|(
-name|registration
+name|OperationCategory
+operator|.
+name|CHECKPOINT
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|isRole
-argument_list|(
-name|NamenodeRole
-operator|.
-name|NAMENODE
-argument_list|)
-condition|)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Only an ACTIVE node can invoke endCheckpoint."
-argument_list|)
-throw|;
 name|namesystem
 operator|.
 name|endCheckpoint
@@ -3477,6 +3653,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -3505,6 +3688,13 @@ name|InvalidToken
 throws|,
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -3531,6 +3721,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|cancelDelegationToken
@@ -3559,6 +3756,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|incrGetBlockLocations
@@ -3633,6 +3837,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -3756,6 +3967,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -3828,6 +4046,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|String
 name|clientMachine
 init|=
@@ -3864,6 +4089,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -3892,6 +4124,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|setPermission
@@ -3922,6 +4161,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|setOwner
@@ -3958,6 +4204,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4099,6 +4352,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -4223,6 +4483,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The client needs to give up on the block.    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
 specifier|public
 name|void
@@ -4240,6 +4503,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4308,6 +4578,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4346,6 +4623,7 @@ block|}
 comment|/**    * The client has detected an error on the specified located blocks     * and is reporting them to the server.  For now, the namenode will     * mark the block as corrupt.  In the future we might     * check the blocks are actually corrupt.     */
 annotation|@
 name|Override
+comment|// ClientProtocol, DatanodeProtocol
 DECL|method|reportBadBlocks (LocatedBlock[] blocks)
 specifier|public
 name|void
@@ -4358,6 +4636,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|stateChangeLog
 operator|.
 name|info
@@ -4459,6 +4744,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4494,6 +4786,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|updatePipeline
@@ -4538,6 +4837,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|commitBlockSynchronization
@@ -4570,6 +4876,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4598,6 +4911,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4690,6 +5010,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|concat
@@ -4723,6 +5050,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4803,6 +5137,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 return|return
 name|delete
 argument_list|(
@@ -4829,6 +5170,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -4933,6 +5281,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|stateChangeLog
@@ -5017,6 +5372,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|renewLease
@@ -5046,6 +5408,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|DirectoryListing
 name|files
 init|=
@@ -5103,6 +5472,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|incrFileInfoOps
@@ -5133,6 +5509,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|incrFileInfoOps
@@ -5180,6 +5563,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|DatanodeInfo
 name|results
 index|[]
@@ -5224,6 +5614,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5261,6 +5652,7 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5281,6 +5673,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|saveNamespace
@@ -5298,6 +5691,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|refreshNodes
@@ -5317,6 +5711,7 @@ name|long
 name|getTransactionID
 parameter_list|()
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5335,6 +5730,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5344,6 +5740,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// NamenodeProtocol
 DECL|method|getEditLogManifest (long sinceTxId)
 specifier|public
 name|RemoteEditLogManifest
@@ -5355,6 +5752,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5375,6 +5773,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|finalizeUpgrade
@@ -5395,6 +5794,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -5418,6 +5818,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|metaSave
@@ -5443,6 +5844,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|Collection
 argument_list|<
 name|FSNamesystem
@@ -5524,6 +5932,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void
@@ -5535,6 +5946,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|setBalancerBandwidth
@@ -5557,6 +5969,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -5586,6 +6005,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|setQuota
@@ -5615,6 +6041,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|fsync
@@ -5645,6 +6078,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|setTimes
@@ -5680,6 +6120,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|incrCreateSymlinkOps
@@ -5773,6 +6220,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|incrGetLinkTargetOps
@@ -8020,6 +8474,153 @@ block|}
 return|return
 name|clientMachine
 return|;
+block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|monitorHealth ()
+specifier|public
+specifier|synchronized
+name|void
+name|monitorHealth
+parameter_list|()
+throws|throws
+name|HealthCheckFailedException
+block|{
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+return|return;
+comment|// no-op, if HA is not eanbled
+block|}
+comment|// TODO:HA implement health check
+return|return;
+block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|transitionToActive ()
+specifier|public
+specifier|synchronized
+name|void
+name|transitionToActive
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+block|{
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"HA for namenode is not enabled"
+argument_list|)
+throw|;
+block|}
+name|state
+operator|.
+name|setState
+argument_list|(
+name|this
+argument_list|,
+name|ACTIVE_STATE
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|transitionToStandby ()
+specifier|public
+specifier|synchronized
+name|void
+name|transitionToStandby
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+block|{
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"HA for namenode is not enabled"
+argument_list|)
+throw|;
+block|}
+name|state
+operator|.
+name|setState
+argument_list|(
+name|this
+argument_list|,
+name|STANDBY_STATE
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Check if an operation of given category is allowed */
+DECL|method|checkOperation (final OperationCategory op)
+specifier|protected
+specifier|synchronized
+name|void
+name|checkOperation
+parameter_list|(
+specifier|final
+name|OperationCategory
+name|op
+parameter_list|)
+throws|throws
+name|UnsupportedActionException
+block|{
+name|state
+operator|.
+name|checkOperation
+argument_list|(
+name|this
+argument_list|,
+name|op
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getState ()
+specifier|public
+specifier|synchronized
+name|HAState
+name|getState
+parameter_list|()
+block|{
+return|return
+name|state
+return|;
+block|}
+DECL|method|setState (final HAState s)
+specifier|public
+specifier|synchronized
+name|void
+name|setState
+parameter_list|(
+specifier|final
+name|HAState
+name|s
+parameter_list|)
+block|{
+name|state
+operator|=
+name|s
+expr_stmt|;
 block|}
 block|}
 end_class

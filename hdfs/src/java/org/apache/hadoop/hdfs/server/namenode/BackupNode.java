@@ -931,104 +931,6 @@ return|;
 block|}
 block|}
 comment|/////////////////////////////////////////////////////
-comment|// NamenodeProtocol implementation for backup node.
-comment|/////////////////////////////////////////////////////
-annotation|@
-name|Override
-comment|// NamenodeProtocol
-DECL|method|getBlocks (DatanodeInfo datanode, long size)
-specifier|public
-name|BlocksWithLocations
-name|getBlocks
-parameter_list|(
-name|DatanodeInfo
-name|datanode
-parameter_list|,
-name|long
-name|size
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"getBlocks"
-argument_list|)
-throw|;
-block|}
-comment|// Only active name-node can register other nodes.
-annotation|@
-name|Override
-comment|// NamenodeProtocol
-DECL|method|register (NamenodeRegistration registration )
-specifier|public
-name|NamenodeRegistration
-name|register
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"register"
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-comment|// NamenodeProtocol
-DECL|method|startCheckpoint (NamenodeRegistration registration)
-specifier|public
-name|NamenodeCommand
-name|startCheckpoint
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"startCheckpoint"
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-comment|// NamenodeProtocol
-DECL|method|endCheckpoint (NamenodeRegistration registration, CheckpointSignature sig)
-specifier|public
-name|void
-name|endCheckpoint
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|,
-name|CheckpointSignature
-name|sig
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"endCheckpoint"
-argument_list|)
-throw|;
-block|}
-comment|/////////////////////////////////////////////////////
 comment|// BackupNodeProtocol implementation for backup node.
 comment|/////////////////////////////////////////////////////
 annotation|@
@@ -1054,6 +956,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+argument_list|)
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|nnReg
@@ -1117,6 +1026,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+argument_list|)
+expr_stmt|;
 name|verifyRequest
 argument_list|(
 name|registration
@@ -1718,6 +1634,47 @@ block|{
 return|return
 name|clusterId
 return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNode
+DECL|method|checkOperation (OperationCategory op)
+specifier|protected
+name|void
+name|checkOperation
+parameter_list|(
+name|OperationCategory
+name|op
+parameter_list|)
+throws|throws
+name|UnsupportedActionException
+block|{
+if|if
+condition|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+operator|!=
+name|op
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Operation category "
+operator|+
+name|op
+operator|+
+literal|" is not supported at the BackupNode"
+decl_stmt|;
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class
