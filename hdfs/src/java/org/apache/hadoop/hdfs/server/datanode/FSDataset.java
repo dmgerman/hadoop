@@ -4176,15 +4176,16 @@ decl_stmt|;
 DECL|field|numFailedVolumes
 name|int
 name|numFailedVolumes
-init|=
-literal|0
 decl_stmt|;
-DECL|method|FSVolumeSet (FSVolume[] volumes, BlockVolumeChoosingPolicy blockChooser)
+DECL|method|FSVolumeSet (FSVolume[] volumes, int failedVols, BlockVolumeChoosingPolicy blockChooser)
 name|FSVolumeSet
 parameter_list|(
 name|FSVolume
 index|[]
 name|volumes
+parameter_list|,
+name|int
+name|failedVols
 parameter_list|,
 name|BlockVolumeChoosingPolicy
 name|blockChooser
@@ -4219,6 +4220,12 @@ operator|.
 name|blockChooser
 operator|=
 name|blockChooser
+expr_stmt|;
+name|this
+operator|.
+name|numFailedVolumes
+operator|=
+name|failedVols
 expr_stmt|;
 block|}
 DECL|method|numberOfVolumes ()
@@ -5935,6 +5942,16 @@ name|dataDirs
 operator|.
 name|length
 decl_stmt|;
+name|int
+name|volsFailed
+init|=
+name|volsConfigured
+operator|-
+name|storage
+operator|.
+name|getNumStorageDirs
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|validVolsRequired
@@ -5945,16 +5962,32 @@ name|volFailuresTolerated
 expr_stmt|;
 if|if
 condition|(
-name|validVolsRequired
-argument_list|<
-literal|1
+name|volFailuresTolerated
+operator|<
+literal|0
 operator|||
-name|validVolsRequired
-argument_list|>
-name|storage
-operator|.
-name|getNumStorageDirs
-argument_list|()
+name|volFailuresTolerated
+operator|>=
+name|volsConfigured
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid volume failure "
+operator|+
+literal|" config value: "
+operator|+
+name|volFailuresTolerated
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|volsFailed
+operator|>
+name|volFailuresTolerated
 condition|)
 block|{
 throw|throw
@@ -5973,6 +6006,10 @@ operator|+
 literal|", volumes configured: "
 operator|+
 name|volsConfigured
+operator|+
+literal|", volumes failed: "
+operator|+
+name|volsFailed
 operator|+
 literal|", volume failures tolerated: "
 operator|+
@@ -6096,6 +6133,8 @@ operator|new
 name|FSVolumeSet
 argument_list|(
 name|volArray
+argument_list|,
+name|volsFailed
 argument_list|,
 name|blockChooserImpl
 argument_list|)
