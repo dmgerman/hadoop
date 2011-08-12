@@ -8023,7 +8023,7 @@ name|IOException
 block|{
 comment|// Send Counters in the status once every COUNTER_UPDATE_INTERVAL
 name|boolean
-name|sendCounters
+name|sendAllCounters
 decl_stmt|;
 if|if
 condition|(
@@ -8036,7 +8036,7 @@ name|COUNTER_UPDATE_INTERVAL
 operator|)
 condition|)
 block|{
-name|sendCounters
+name|sendAllCounters
 operator|=
 literal|true
 expr_stmt|;
@@ -8047,7 +8047,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|sendCounters
+name|sendAllCounters
 operator|=
 literal|false
 expr_stmt|;
@@ -8082,7 +8082,7 @@ name|httpPort
 argument_list|,
 name|cloneAndResetRunningTaskStatuses
 argument_list|(
-name|sendCounters
+name|sendAllCounters
 argument_list|)
 argument_list|,
 name|failures
@@ -16290,7 +16290,7 @@ argument_list|()
 decl_stmt|;
 name|status
 operator|.
-name|setIncludeCounters
+name|setIncludeAllCounters
 argument_list|(
 name|sendCounters
 argument_list|)
@@ -16312,7 +16312,7 @@ condition|)
 block|{
 name|status
 operator|.
-name|setIncludeCounters
+name|setIncludeAllCounters
 argument_list|(
 literal|true
 argument_list|)

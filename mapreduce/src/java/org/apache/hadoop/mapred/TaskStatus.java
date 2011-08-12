@@ -352,10 +352,10 @@ specifier|private
 name|Counters
 name|counters
 decl_stmt|;
-DECL|field|includeCounters
+DECL|field|includeAllCounters
 specifier|private
 name|boolean
-name|includeCounters
+name|includeAllCounters
 decl_stmt|;
 DECL|field|nextRecordRange
 specifier|private
@@ -492,7 +492,7 @@ name|counters
 expr_stmt|;
 name|this
 operator|.
-name|includeCounters
+name|includeAllCounters
 operator|=
 literal|true
 expr_stmt|;
@@ -1164,28 +1164,35 @@ operator|)
 operator|)
 return|;
 block|}
-DECL|method|getIncludeCounters ()
+DECL|method|getIncludeAllCounters ()
 specifier|public
 name|boolean
-name|getIncludeCounters
+name|getIncludeAllCounters
 parameter_list|()
 block|{
 return|return
-name|includeCounters
+name|includeAllCounters
 return|;
 block|}
-DECL|method|setIncludeCounters (boolean send)
+DECL|method|setIncludeAllCounters (boolean send)
 specifier|public
 name|void
-name|setIncludeCounters
+name|setIncludeAllCounters
 parameter_list|(
 name|boolean
 name|send
 parameter_list|)
 block|{
-name|includeCounters
+name|includeAllCounters
 operator|=
 name|send
+expr_stmt|;
+name|counters
+operator|.
+name|setWriteAllCounters
+argument_list|(
+name|send
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get task's counters.    */
@@ -1613,7 +1620,7 @@ name|out
 operator|.
 name|writeBoolean
 argument_list|(
-name|includeCounters
+name|includeAllCounters
 argument_list|)
 expr_stmt|;
 name|out
@@ -1623,11 +1630,6 @@ argument_list|(
 name|outputSize
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|includeCounters
-condition|)
-block|{
 name|counters
 operator|.
 name|write
@@ -1635,7 +1637,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-block|}
 name|nextRecordRange
 operator|.
 name|write
@@ -1757,7 +1758,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|includeCounters
+name|includeAllCounters
 operator|=
 name|in
 operator|.
@@ -1773,11 +1774,6 @@ operator|.
 name|readLong
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|includeCounters
-condition|)
-block|{
 name|counters
 operator|.
 name|readFields
@@ -1785,7 +1781,6 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-block|}
 name|nextRecordRange
 operator|.
 name|readFields
