@@ -1766,58 +1766,6 @@ name|String
 name|groupName
 parameter_list|)
 block|{
-comment|// To provide support for deprecated group names
-if|if
-condition|(
-name|groupName
-operator|.
-name|equals
-argument_list|(
-literal|"org.apache.hadoop.mapred.Task$Counter"
-argument_list|)
-condition|)
-block|{
-name|groupName
-operator|=
-literal|"org.apache.hadoop.mapreduce.TaskCounter"
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Group org.apache.hadoop.mapred.Task$Counter is deprecated."
-operator|+
-literal|" Use org.apache.hadoop.mapreduce.TaskCounter instead"
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|groupName
-operator|.
-name|equals
-argument_list|(
-literal|"org.apache.hadoop.mapred.JobInProgress$Counter"
-argument_list|)
-condition|)
-block|{
-name|groupName
-operator|=
-literal|"org.apache.hadoop.mapreduce.JobCounter"
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Group org.apache.hadoop.mapred.JobInProgress$Counter "
-operator|+
-literal|"is deprecated. Use "
-operator|+
-literal|"org.apache.hadoop.mapreduce.JobCounter instead"
-argument_list|)
-expr_stmt|;
-block|}
 name|Group
 name|result
 init|=
@@ -1835,6 +1783,61 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// To provide support for deprecated group names
+if|if
+condition|(
+name|groupName
+operator|.
+name|equals
+argument_list|(
+literal|"org.apache.hadoop.mapred.Task$Counter"
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Group org.apache.hadoop.mapred.Task$Counter is deprecated."
+operator|+
+literal|" Use org.apache.hadoop.mapreduce.TaskCounter instead"
+argument_list|)
+expr_stmt|;
+return|return
+name|getGroup
+argument_list|(
+literal|"org.apache.hadoop.mapreduce.TaskCounter"
+argument_list|)
+return|;
+block|}
+if|if
+condition|(
+name|groupName
+operator|.
+name|equals
+argument_list|(
+literal|"org.apache.hadoop.mapred.JobInProgress$Counter"
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Group org.apache.hadoop.mapred.JobInProgress$Counter "
+operator|+
+literal|"is deprecated. Use "
+operator|+
+literal|"org.apache.hadoop.mapreduce.JobCounter instead"
+argument_list|)
+expr_stmt|;
+return|return
+name|getGroup
+argument_list|(
+literal|"org.apache.hadoop.mapreduce.JobCounter"
+argument_list|)
+return|;
+block|}
 name|result
 operator|=
 operator|new

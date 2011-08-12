@@ -338,6 +338,16 @@ name|JT_JOBHISTORY_LOCATION
 init|=
 literal|"mapreduce.jobtracker.jobhistory.location"
 decl_stmt|;
+comment|// number of partial task progress reports we retain in job history
+DECL|field|JT_JOBHISTORY_TASKPROGRESS_NUMBER_SPLITS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JT_JOBHISTORY_TASKPROGRESS_NUMBER_SPLITS
+init|=
+literal|"mapreduce.jobtracker.jobhistory.task.numberprogresssplits"
+decl_stmt|;
 DECL|field|JT_AVG_BLACKLIST_THRESHOLD
 specifier|public
 specifier|static
