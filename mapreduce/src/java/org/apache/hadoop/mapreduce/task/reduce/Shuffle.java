@@ -168,6 +168,20 @@ name|hadoop
 operator|.
 name|mapred
 operator|.
+name|MapOutputFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
 name|RawKeyValueIterator
 import|;
 end_import
@@ -431,7 +445,7 @@ name|Task
 name|reduceTask
 decl_stmt|;
 comment|//Used for status updates
-DECL|method|Shuffle (TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, TaskUmbilicalProtocol umbilical, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter shuffledMapsCounter, Counters.Counter reduceShuffleBytes, Counters.Counter failedShuffleCounter, Counters.Counter mergedMapOutputsCounter, TaskStatus status, Progress copyPhase, Progress mergePhase, Task reduceTask)
+DECL|method|Shuffle (TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, TaskUmbilicalProtocol umbilical, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter shuffledMapsCounter, Counters.Counter reduceShuffleBytes, Counters.Counter failedShuffleCounter, Counters.Counter mergedMapOutputsCounter, TaskStatus status, Progress copyPhase, Progress mergePhase, Task reduceTask, MapOutputFile mapOutputFile)
 specifier|public
 name|Shuffle
 parameter_list|(
@@ -513,6 +527,9 @@ name|mergePhase
 parameter_list|,
 name|Task
 name|reduceTask
+parameter_list|,
+name|MapOutputFile
+name|mapOutputFile
 parameter_list|)
 block|{
 name|this
@@ -629,6 +646,8 @@ argument_list|,
 name|this
 argument_list|,
 name|mergePhase
+argument_list|,
+name|mapOutputFile
 argument_list|)
 expr_stmt|;
 block|}

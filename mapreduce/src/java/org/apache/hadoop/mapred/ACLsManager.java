@@ -166,6 +166,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|ACLsManager
+specifier|public
 class|class
 name|ACLsManager
 block|{
@@ -216,6 +217,7 @@ name|boolean
 name|aclsEnabled
 decl_stmt|;
 DECL|method|ACLsManager (Configuration conf, JobACLsManager jobACLsManager, QueueManager queueManager)
+specifier|public
 name|ACLsManager
 parameter_list|(
 name|Configuration
@@ -335,6 +337,7 @@ name|queueManager
 expr_stmt|;
 block|}
 DECL|method|getMROwner ()
+specifier|public
 name|UserGroupInformation
 name|getMROwner
 parameter_list|()
@@ -353,6 +356,7 @@ name|adminAcl
 return|;
 block|}
 DECL|method|getJobACLsManager ()
+specifier|public
 name|JobACLsManager
 name|getJobACLsManager
 parameter_list|()
@@ -363,6 +367,7 @@ return|;
 block|}
 comment|/**    * Is the calling user an admin for the mapreduce cluster ?    * i.e. either cluster owner or cluster administrator    * @return true, if user is an admin    */
 DECL|method|isMRAdmin (UserGroupInformation callerUGI)
+specifier|public
 name|boolean
 name|isMRAdmin
 parameter_list|(
@@ -390,6 +395,7 @@ return|;
 block|}
 comment|/**    * Check the ACLs for a user doing the passed operation.    *<ul>    *<li>If ACLs are disabled, allow all users.</li>    *<li>Otherwise, if the operation is not a job operation(for eg.    *  submit-job-to-queue), then allow only (a) clusterOwner(who started the    *  cluster), (b) cluster administrators and (c) members of    *  queue-submit-job-acl for the queue.</li>    *<li>If the operation is a job operation, then allow only (a) jobOwner,    * (b) clusterOwner(who started the cluster), (c) cluster administrators,    * (d) members of queue admins acl for the queue and (e) members of job    * acl for the job operation</li>    *</ul>    *     * @param job   the job on which operation is requested    * @param callerUGI  the user who is requesting the operation    * @param operation  the operation for which authorization is needed    * @throws AccessControlException    */
 DECL|method|checkAccess (JobInProgress job, UserGroupInformation callerUGI, Operation operation)
+specifier|public
 name|void
 name|checkAccess
 parameter_list|(

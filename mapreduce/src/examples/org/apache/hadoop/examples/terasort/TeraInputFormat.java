@@ -411,6 +411,19 @@ name|TeraFileSplit
 extends|extends
 name|FileSplit
 block|{
+DECL|field|ZERO_LOCATIONS
+specifier|static
+specifier|private
+name|String
+index|[]
+name|ZERO_LOCATIONS
+init|=
+operator|new
+name|String
+index|[
+literal|0
+index|]
+decl_stmt|;
 DECL|field|locations
 specifier|private
 name|String
@@ -421,7 +434,12 @@ DECL|method|TeraFileSplit ()
 specifier|public
 name|TeraFileSplit
 parameter_list|()
-block|{}
+block|{
+name|locations
+operator|=
+name|ZERO_LOCATIONS
+expr_stmt|;
+block|}
 DECL|method|TeraFileSplit (Path file, long start, long length, String[] hosts)
 specifier|public
 name|TeraFileSplit
@@ -451,11 +469,29 @@ argument_list|,
 name|hosts
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|locations
 operator|=
-name|hosts
+name|super
+operator|.
+name|getLocations
+argument_list|()
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|locations
+operator|=
+name|ZERO_LOCATIONS
+expr_stmt|;
+block|}
+block|}
+comment|// XXXXXX should this also be null-protected?
 DECL|method|setLocations (String[] hosts)
 specifier|protected
 name|void

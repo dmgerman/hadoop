@@ -1314,6 +1314,27 @@ operator|.
 name|getFailedAttemptID
 argument_list|()
 expr_stmt|;
+name|info
+operator|.
+name|errorInfo
+operator|=
+literal|"Task "
+operator|+
+name|taskInfo
+operator|.
+name|taskId
+operator|+
+literal|" failed "
+operator|+
+name|taskInfo
+operator|.
+name|attemptsMap
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" times "
+expr_stmt|;
 block|}
 DECL|method|handleTaskStartedEvent (TaskStartedEvent event)
 specifier|private
@@ -1687,6 +1708,12 @@ specifier|static
 class|class
 name|JobInfo
 block|{
+DECL|field|errorInfo
+name|String
+name|errorInfo
+init|=
+literal|"None"
+decl_stmt|;
 DECL|field|submitTime
 name|long
 name|submitTime
@@ -2174,6 +2201,16 @@ parameter_list|()
 block|{
 return|return
 name|jobStatus
+return|;
+block|}
+DECL|method|getErrorInfo ()
+specifier|public
+name|String
+name|getErrorInfo
+parameter_list|()
+block|{
+return|return
+name|errorInfo
 return|;
 block|}
 comment|/** Get the counters for the job */

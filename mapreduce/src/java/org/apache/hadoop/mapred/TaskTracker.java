@@ -19395,6 +19395,24 @@ return|return
 name|aclsManager
 return|;
 block|}
+DECL|method|getRunningTask (TaskAttemptID tid)
+specifier|synchronized
+name|TaskInProgress
+name|getRunningTask
+parameter_list|(
+name|TaskAttemptID
+name|tid
+parameter_list|)
+block|{
+return|return
+name|runningTasks
+operator|.
+name|get
+argument_list|(
+name|tid
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

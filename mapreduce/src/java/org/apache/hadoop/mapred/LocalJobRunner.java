@@ -1507,7 +1507,7 @@ name|MapOutputFile
 name|mapOutput
 init|=
 operator|new
-name|MapOutputFile
+name|MROutputFiles
 argument_list|()
 decl_stmt|;
 name|mapOutput
@@ -2289,7 +2289,7 @@ name|MapOutputFile
 name|localOutputFile
 init|=
 operator|new
-name|MapOutputFile
+name|MROutputFiles
 argument_list|()
 decl_stmt|;
 name|localOutputFile

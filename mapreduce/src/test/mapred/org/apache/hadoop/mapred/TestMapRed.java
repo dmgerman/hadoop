@@ -1218,7 +1218,7 @@ name|MapOutputFile
 name|mapOutputFile
 init|=
 operator|new
-name|MapOutputFile
+name|MROutputFiles
 argument_list|()
 decl_stmt|;
 name|mapOutputFile

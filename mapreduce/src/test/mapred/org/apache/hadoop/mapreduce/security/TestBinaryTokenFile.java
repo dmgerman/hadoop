@@ -1060,7 +1060,9 @@ init|=
 name|dfsCluster
 operator|.
 name|getURI
-argument_list|()
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|toString
 argument_list|()

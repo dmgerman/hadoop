@@ -868,7 +868,7 @@ specifier|final
 name|Progress
 name|mergePhase
 decl_stmt|;
-DECL|method|MergeManager (TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter mergedMapOutputsCounter, ExceptionReporter exceptionReporter, Progress mergePhase)
+DECL|method|MergeManager (TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter mergedMapOutputsCounter, ExceptionReporter exceptionReporter, Progress mergePhase, MapOutputFile mapOutputFile)
 specifier|public
 name|MergeManager
 parameter_list|(
@@ -926,6 +926,9 @@ name|exceptionReporter
 parameter_list|,
 name|Progress
 name|mergePhase
+parameter_list|,
+name|MapOutputFile
+name|mapOutputFile
 parameter_list|)
 block|{
 name|this
@@ -998,9 +1001,7 @@ name|this
 operator|.
 name|mapOutputFile
 operator|=
-operator|new
-name|MapOutputFile
-argument_list|()
+name|mapOutputFile
 expr_stmt|;
 name|this
 operator|.

@@ -285,6 +285,7 @@ return|;
 block|}
 comment|/** Get task counters */
 DECL|method|getCounters ()
+specifier|public
 name|Counters
 name|getCounters
 parameter_list|()

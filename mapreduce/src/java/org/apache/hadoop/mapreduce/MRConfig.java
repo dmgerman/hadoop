@@ -225,6 +225,15 @@ name|FRAMEWORK_NAME
 init|=
 literal|"mapreduce.framework.name"
 decl_stmt|;
+DECL|field|TASK_LOCAL_OUTPUT_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_LOCAL_OUTPUT_CLASS
+init|=
+literal|"mapreduce.task.local.output.class"
+decl_stmt|;
 block|}
 end_interface
 
