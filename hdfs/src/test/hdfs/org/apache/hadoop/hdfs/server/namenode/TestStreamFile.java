@@ -331,7 +331,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*   Mock input stream class that always outputs the current position of the stream */
+comment|/*  * Mock input stream class that always outputs the current position of the stream.   */
 end_comment
 
 begin_class
@@ -1447,6 +1447,26 @@ name|mockHttpServletRequest
 argument_list|)
 operator|.
 name|getPathInfo
+argument_list|()
+expr_stmt|;
+name|Mockito
+operator|.
+name|doReturn
+argument_list|(
+literal|"/streamFile"
+operator|+
+name|testFile
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockHttpServletRequest
+argument_list|)
+operator|.
+name|getRequestURI
 argument_list|()
 expr_stmt|;
 block|}

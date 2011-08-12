@@ -406,7 +406,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|StringUtils
+name|ServletUtil
 import|;
 end_import
 
@@ -414,11 +414,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|apache
+operator|.
+name|hadoop
 operator|.
 name|util
 operator|.
-name|URIUtil
+name|StringUtils
 import|;
 end_import
 
@@ -2034,7 +2036,7 @@ argument_list|()
 operator|+
 literal|"/streamFile"
 operator|+
-name|URIUtil
+name|ServletUtil
 operator|.
 name|encodePath
 argument_list|(
