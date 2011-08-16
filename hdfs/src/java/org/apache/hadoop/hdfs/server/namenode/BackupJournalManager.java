@@ -178,16 +178,13 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|purgeLogsOlderThan (long minTxIdToKeep, StoragePurger purger)
+DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
 specifier|public
 name|void
 name|purgeLogsOlderThan
 parameter_list|(
 name|long
 name|minTxIdToKeep
-parameter_list|,
-name|StoragePurger
-name|purger
 parameter_list|)
 throws|throws
 name|IOException

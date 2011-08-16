@@ -180,9 +180,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FileJournalManager
 operator|.
-name|FoundEditLog
+name|EditLogFile
 import|;
 end_import
 
@@ -530,7 +530,7 @@ literal|null
 argument_list|)
 control|)
 block|{
-name|FoundEditLog
+name|EditLogFile
 name|log
 init|=
 name|FSImageTestUtil
@@ -624,7 +624,7 @@ literal|null
 argument_list|)
 control|)
 block|{
-name|FoundEditLog
+name|EditLogFile
 name|log
 init|=
 name|FSImageTestUtil

@@ -616,7 +616,7 @@ return|return
 name|newInd
 return|;
 block|}
-comment|/**    * This method removes the map from the cache. It should be called when    * a map output on this tracker is discarded.    * @param mapId The taskID of this map.    */
+comment|/**    * This method removes the map from the cache if index information for this    * map is loaded(size>0), index information entry in cache will not be     * removed if it is in the loading phrase(size=0), this prevents corruption      * of totalMemoryUsed. It should be called when a map output on this tracker     * is discarded.    * @param mapId The taskID of this map.    */
 DECL|method|removeMap (String mapId)
 specifier|public
 name|void
@@ -631,11 +631,40 @@ name|info
 init|=
 name|cache
 operator|.
-name|remove
+name|get
 argument_list|(
 name|mapId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|(
+name|info
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|info
+operator|.
+name|getSize
+argument_list|()
+operator|==
+literal|0
+operator|)
+condition|)
+block|{
+return|return;
+block|}
+name|info
+operator|=
+name|cache
+operator|.
+name|remove
+argument_list|(
+name|mapId
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|info
@@ -692,6 +721,45 @@ literal|" not found in cache"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * This method checks if cache and totolMemoryUsed is consistent.    * It is only used for unit test.    * @return True if cache and totolMemoryUsed is consistent    */
+DECL|method|checkTotalMemoryUsed ()
+name|boolean
+name|checkTotalMemoryUsed
+parameter_list|()
+block|{
+name|int
+name|totalSize
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|IndexInformation
+name|info
+range|:
+name|cache
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|totalSize
+operator|+=
+name|info
+operator|.
+name|getSize
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|totalSize
+operator|==
+name|totalMemoryUsed
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 comment|/**    * Bring memory usage below totalMemoryAllowed.    */
 DECL|method|freeIndexInformation ()

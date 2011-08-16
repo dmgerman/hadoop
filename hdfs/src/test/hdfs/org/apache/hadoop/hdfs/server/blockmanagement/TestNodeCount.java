@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -226,7 +226,43 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|HeartbeatManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|NumberReplicas
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSNamesystem
 import|;
 end_import
 
@@ -332,6 +368,27 @@ name|getNamesystem
 argument_list|()
 decl_stmt|;
 specifier|final
+name|BlockManager
+name|bm
+init|=
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
+specifier|final
+name|HeartbeatManager
+name|hm
+init|=
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getHeartbeatManager
+argument_list|()
+decl_stmt|;
+specifier|final
 name|FileSystem
 name|fs
 init|=
@@ -390,22 +447,15 @@ name|FILE_PATH
 argument_list|)
 decl_stmt|;
 comment|// keep a copy of all datanode descriptor
+specifier|final
 name|DatanodeDescriptor
 index|[]
 name|datanodes
 init|=
-name|namesystem
+name|hm
 operator|.
-name|heartbeats
-operator|.
-name|toArray
-argument_list|(
-operator|new
-name|DatanodeDescriptor
-index|[
-name|REPLICATION_FACTOR
-index|]
-argument_list|)
+name|getDatanodes
+argument_list|()
 decl_stmt|;
 comment|// start two new nodes
 name|cluster
@@ -460,9 +510,7 @@ argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
-name|namesystem
-operator|.
-name|heartbeats
+name|hm
 init|)
 block|{
 name|datanode
@@ -473,7 +521,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// mark it dead
-name|namesystem
+name|hm
 operator|.
 name|heartbeatCheck
 argument_list|()
@@ -544,16 +592,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// find out a non-excess node
+specifier|final
 name|Iterator
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|iter
 init|=
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|bm
 operator|.
 name|blocksMap
 operator|.
@@ -592,10 +638,7 @@ name|Block
 argument_list|>
 name|blocks
 init|=
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|bm
 operator|.
 name|excessReplicateMap
 operator|.
@@ -659,9 +702,7 @@ argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
-name|namesystem
-operator|.
-name|heartbeats
+name|hm
 init|)
 block|{
 name|nonExcessDN
@@ -672,7 +713,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// mark it dead
-name|namesystem
+name|hm
 operator|.
 name|heartbeatCheck
 argument_list|()

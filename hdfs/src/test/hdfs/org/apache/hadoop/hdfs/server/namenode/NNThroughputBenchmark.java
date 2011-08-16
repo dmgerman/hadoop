@@ -6008,10 +6008,15 @@ name|decommissionNodes
 argument_list|()
 expr_stmt|;
 comment|// set node replication limit
-name|namesystem
+name|BlockManagerTestUtil
 operator|.
 name|setNodeReplicationLimit
 argument_list|(
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+argument_list|,
 name|nodeReplicationLimit
 argument_list|)
 expr_stmt|;
@@ -6260,11 +6265,6 @@ name|delim
 init|=
 literal|"("
 decl_stmt|;
-name|int
-name|totalReplicas
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 name|int
@@ -6283,17 +6283,6 @@ name|idx
 operator|++
 control|)
 block|{
-name|totalReplicas
-operator|+=
-name|blockReportObject
-operator|.
-name|datanodes
-index|[
-name|idx
-index|]
-operator|.
-name|nrBlocks
-expr_stmt|;
 name|blockDistribution
 operator|+=
 name|delim

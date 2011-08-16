@@ -242,9 +242,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FileJournalManager
 operator|.
-name|FoundEditLog
+name|EditLogFile
 import|;
 end_import
 
@@ -987,7 +987,7 @@ literal|null
 expr_stmt|;
 comment|// When shutting down the BN, it shouldn't finalize logs that are
 comment|// still open on the NN
-name|FoundEditLog
+name|EditLogFile
 name|editsLog
 init|=
 name|FSImageTestUtil
@@ -1001,7 +1001,7 @@ name|assertEquals
 argument_list|(
 name|editsLog
 operator|.
-name|getStartTxId
+name|getFirstTxId
 argument_list|()
 argument_list|,
 name|nn

@@ -26,7 +26,47 @@ name|java
 operator|.
 name|util
 operator|.
-name|*
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|NavigableSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeSet
 import|;
 end_import
 
@@ -65,12 +105,11 @@ import|;
 end_import
 
 begin_comment
-comment|/* Class for keeping track of under replication blocks  * Blocks have replication priority, with priority 0 indicating the highest  * Blocks have only one replicas has the highest  */
+comment|/** Keep track of under replication blocks.  * Blocks have replication priority, with priority 0 indicating the highest  * Blocks have only one replicas has the highest  */
 end_comment
 
 begin_class
 DECL|class|UnderReplicatedBlocks
-specifier|public
 class|class
 name|UnderReplicatedBlocks
 implements|implements
@@ -89,7 +128,6 @@ literal|5
 decl_stmt|;
 DECL|field|QUEUE_WITH_CORRUPT_BLOCKS
 specifier|static
-specifier|public
 specifier|final
 name|int
 name|QUEUE_WITH_CORRUPT_BLOCKS
@@ -98,9 +136,10 @@ literal|4
 decl_stmt|;
 DECL|field|priorityQueues
 specifier|private
+specifier|final
 name|List
 argument_list|<
-name|TreeSet
+name|NavigableSet
 argument_list|<
 name|Block
 argument_list|>
@@ -110,14 +149,14 @@ init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|TreeSet
+name|NavigableSet
 argument_list|<
 name|Block
 argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/* constructor */
+comment|/** Create an object. */
 DECL|method|UnderReplicatedBlocks ()
 name|UnderReplicatedBlocks
 parameter_list|()
@@ -184,9 +223,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/* Return the total number of under replication blocks */
+comment|/** Return the total number of under replication blocks */
 DECL|method|size ()
-specifier|public
 specifier|synchronized
 name|int
 name|size
@@ -229,7 +267,7 @@ return|return
 name|size
 return|;
 block|}
-comment|/* Return the number of under replication blocks excluding corrupt blocks */
+comment|/** Return the number of under replication blocks excluding corrupt blocks */
 DECL|method|getUnderReplicatedBlockCount ()
 specifier|synchronized
 name|int
@@ -292,9 +330,8 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/* Check if a block is in the neededReplication queue */
+comment|/** Check if a block is in the neededReplication queue */
 DECL|method|contains (Block block)
-specifier|public
 specifier|synchronized
 name|boolean
 name|contains
@@ -305,7 +342,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|TreeSet
+name|NavigableSet
 argument_list|<
 name|Block
 argument_list|>
@@ -333,7 +370,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/* Return the priority of a block    * @param block a under replication block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    */
+comment|/** Return the priority of a block    * @param block a under replication block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    */
 DECL|method|getPriority (Block block, int curReplicas, int decommissionedReplicas, int expectedReplicas)
 specifier|private
 name|int
@@ -431,7 +468,7 @@ literal|2
 return|;
 block|}
 block|}
-comment|/* add a block to a under replication queue according to its priority    * @param block a under replication block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    */
+comment|/** add a block to a under replication queue according to its priority    * @param block a under replication block    * @param curReplicas current number of replicas of the block    * @param expectedReplicas expected number of replicas of the block    */
 DECL|method|add ( Block block, int curReplicas, int decomissionedReplicas, int expectedReplicas)
 specifier|synchronized
 name|boolean
@@ -534,7 +571,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/* remove a block from a under replication queue */
+comment|/** remove a block from a under replication queue */
 DECL|method|remove (Block block, int oldReplicas, int decommissionedReplicas, int oldExpectedReplicas)
 specifier|synchronized
 name|boolean
@@ -576,7 +613,7 @@ name|priLevel
 argument_list|)
 return|;
 block|}
-comment|/* remove a block from a under replication queue given a priority*/
+comment|/** remove a block from a under replication queue given a priority*/
 DECL|method|remove (Block block, int priLevel)
 name|boolean
 name|remove
@@ -715,7 +752,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/* update the priority level of a block */
+comment|/** update the priority level of a block */
 DECL|method|update (Block block, int curReplicas, int decommissionedReplicas, int curExpectedReplicas, int curReplicasDelta, int expectedReplicasDelta)
 specifier|synchronized
 name|void
@@ -904,7 +941,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/* returns an iterator of all blocks in a given priority queue */
+comment|/** returns an iterator of all blocks in a given priority queue */
 DECL|method|iterator (int level)
 specifier|synchronized
 name|BlockIterator
@@ -922,7 +959,7 @@ name|level
 argument_list|)
 return|;
 block|}
-comment|/* return an iterator of all the under replication blocks */
+comment|/** return an iterator of all the under replication blocks */
 DECL|method|iterator ()
 specifier|public
 specifier|synchronized
@@ -937,7 +974,6 @@ argument_list|()
 return|;
 block|}
 DECL|class|BlockIterator
-specifier|public
 class|class
 name|BlockIterator
 implements|implements
@@ -980,6 +1016,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|BlockIterator ()
+specifier|private
 name|BlockIterator
 parameter_list|()
 block|{
@@ -1020,6 +1057,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|BlockIterator (int l)
+specifier|private
 name|BlockIterator
 parameter_list|(
 name|int
@@ -1086,6 +1124,8 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|Block
@@ -1122,6 +1162,8 @@ name|next
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -1158,6 +1200,8 @@ name|hasNext
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void
@@ -1191,7 +1235,6 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getPriority ()
-specifier|public
 name|int
 name|getPriority
 parameter_list|()
@@ -1200,7 +1243,6 @@ return|return
 name|level
 return|;
 block|}
-empty_stmt|;
 block|}
 block|}
 end_class

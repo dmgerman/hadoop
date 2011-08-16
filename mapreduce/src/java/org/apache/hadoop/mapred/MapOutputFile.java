@@ -76,9 +76,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|conf
 operator|.
-name|LocalDirAllocator
+name|Configurable
 import|;
 end_import
 
@@ -93,20 +93,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|MRConfig
 import|;
 end_import
 
@@ -125,13 +111,32 @@ operator|.
 name|Unstable
 DECL|class|MapOutputFile
 specifier|public
+specifier|abstract
 class|class
 name|MapOutputFile
+implements|implements
+name|Configurable
 block|{
 DECL|field|conf
 specifier|private
-name|JobConf
+name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|MAP_OUTPUT_FILENAME_STRING
+specifier|static
+specifier|final
+name|String
+name|MAP_OUTPUT_FILENAME_STRING
+init|=
+literal|"file.out"
+decl_stmt|;
+DECL|field|MAP_OUTPUT_INDEX_SUFFIX_STRING
+specifier|static
+specifier|final
+name|String
+name|MAP_OUTPUT_INDEX_SUFFIX_STRING
+init|=
+literal|".index"
 decl_stmt|;
 DECL|field|REDUCE_INPUT_FILE_FORMAT_STRING
 specifier|static
@@ -146,50 +151,20 @@ specifier|public
 name|MapOutputFile
 parameter_list|()
 block|{   }
-DECL|field|lDirAlloc
-specifier|private
-name|LocalDirAllocator
-name|lDirAlloc
-init|=
-operator|new
-name|LocalDirAllocator
-argument_list|(
-name|MRConfig
-operator|.
-name|LOCAL_DIR
-argument_list|)
-decl_stmt|;
-comment|/**    * Return the path to local map output file created earlier    *     * @return path    * @throws IOException    */
+comment|/**    * Return the path to local map output file created earlier    *    * @return path    * @throws IOException    */
 DECL|method|getOutputFile ()
 specifier|public
+specifier|abstract
 name|Path
 name|getOutputFile
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathToRead
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"file.out"
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a local map output file name.    *     * @param size the size of the file    * @return path    * @throws IOException    */
+function_decl|;
+comment|/**    * Create a local map output file name.    *    * @param size the size of the file    * @return path    * @throws IOException    */
 DECL|method|getOutputFileForWrite (long size)
 specifier|public
+specifier|abstract
 name|Path
 name|getOutputFileForWrite
 parameter_list|(
@@ -198,59 +173,32 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathForWrite
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
+function_decl|;
+comment|/**    * Create a local map output file name on the same volume.    */
+DECL|method|getOutputFileForWriteInVolume (Path existing)
+specifier|public
+specifier|abstract
 name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"file.out"
-argument_list|,
-name|size
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Return the path to a local map output index file created earlier    *     * @return path    * @throws IOException    */
+name|getOutputFileForWriteInVolume
+parameter_list|(
+name|Path
+name|existing
+parameter_list|)
+function_decl|;
+comment|/**    * Return the path to a local map output index file created earlier    *    * @return path    * @throws IOException    */
 DECL|method|getOutputIndexFile ()
 specifier|public
+specifier|abstract
 name|Path
 name|getOutputIndexFile
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathToRead
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"file.out.index"
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a local map output index file name.    *     * @param size the size of the file    * @return path    * @throws IOException    */
+function_decl|;
+comment|/**    * Create a local map output index file name.    *    * @param size the size of the file    * @return path    * @throws IOException    */
 DECL|method|getOutputIndexFileForWrite (long size)
 specifier|public
+specifier|abstract
 name|Path
 name|getOutputIndexFileForWrite
 parameter_list|(
@@ -259,31 +207,22 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathForWrite
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
+function_decl|;
+comment|/**    * Create a local map output index file name on the same volume.    */
+DECL|method|getOutputIndexFileForWriteInVolume (Path existing)
+specifier|public
+specifier|abstract
 name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"file.out.index"
-argument_list|,
-name|size
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Return a local map spill file created earlier.    *     * @param spillNumber the number    * @return path    * @throws IOException    */
+name|getOutputIndexFileForWriteInVolume
+parameter_list|(
+name|Path
+name|existing
+parameter_list|)
+function_decl|;
+comment|/**    * Return a local map spill file created earlier.    *    * @param spillNumber the number    * @return path    * @throws IOException    */
 DECL|method|getSpillFile (int spillNumber)
 specifier|public
+specifier|abstract
 name|Path
 name|getSpillFile
 parameter_list|(
@@ -292,29 +231,11 @@ name|spillNumber
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathToRead
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-literal|"/spill"
-operator|+
-name|spillNumber
-operator|+
-literal|".out"
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a local map spill file name.    *     * @param spillNumber the number    * @param size the size of the file    * @return path    * @throws IOException    */
+function_decl|;
+comment|/**    * Create a local map spill file name.    *    * @param spillNumber the number    * @param size the size of the file    * @return path    * @throws IOException    */
 DECL|method|getSpillFileForWrite (int spillNumber, long size)
 specifier|public
+specifier|abstract
 name|Path
 name|getSpillFileForWrite
 parameter_list|(
@@ -326,31 +247,11 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathForWrite
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-literal|"/spill"
-operator|+
-name|spillNumber
-operator|+
-literal|".out"
-argument_list|,
-name|size
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Return a local map spill index file created earlier    *     * @param spillNumber the number    * @return path    * @throws IOException    */
+function_decl|;
+comment|/**    * Return a local map spill index file created earlier    *    * @param spillNumber the number    * @return path    * @throws IOException    */
 DECL|method|getSpillIndexFile (int spillNumber)
 specifier|public
+specifier|abstract
 name|Path
 name|getSpillIndexFile
 parameter_list|(
@@ -359,29 +260,11 @@ name|spillNumber
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathToRead
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-literal|"/spill"
-operator|+
-name|spillNumber
-operator|+
-literal|".out.index"
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a local map spill index file name.    *     * @param spillNumber the number    * @param size the size of the file    * @return path    * @throws IOException    */
+function_decl|;
+comment|/**    * Create a local map spill index file name.    *    * @param spillNumber the number    * @param size the size of the file    * @return path    * @throws IOException    */
 DECL|method|getSpillIndexFileForWrite (int spillNumber, long size)
 specifier|public
+specifier|abstract
 name|Path
 name|getSpillIndexFileForWrite
 parameter_list|(
@@ -393,31 +276,11 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathForWrite
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-operator|+
-literal|"/spill"
-operator|+
-name|spillNumber
-operator|+
-literal|".out.index"
-argument_list|,
-name|size
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Return a local reduce input file created earlier    *     * @param mapId a map task id    * @return path    * @throws IOException     */
+function_decl|;
+comment|/**    * Return a local reduce input file created earlier    *    * @param mapId a map task id    * @return path    * @throws IOException    */
 DECL|method|getInputFile (int mapId)
 specifier|public
+specifier|abstract
 name|Path
 name|getInputFile
 parameter_list|(
@@ -426,37 +289,11 @@ name|mapId
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathToRead
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-name|REDUCE_INPUT_FILE_FORMAT_STRING
-argument_list|,
-name|TaskTracker
-operator|.
-name|OUTPUT
-argument_list|,
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
-name|mapId
-argument_list|)
-argument_list|)
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a local reduce input file name.    *     * @param mapId a map task id    * @param size the size of the file    * @return path    * @throws IOException    */
-DECL|method|getInputFileForWrite (org.apache.hadoop.mapreduce.TaskID mapId, long size)
+function_decl|;
+comment|/**    * Create a local reduce input file name.    *    * @param mapId a map task id    * @param size the size of the file    * @return path    * @throws IOException    */
+DECL|method|getInputFileForWrite ( org.apache.hadoop.mapreduce.TaskID mapId, long size)
 specifier|public
+specifier|abstract
 name|Path
 name|getInputFileForWrite
 parameter_list|(
@@ -476,53 +313,19 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-return|return
-name|lDirAlloc
-operator|.
-name|getLocalPathForWrite
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-name|REDUCE_INPUT_FILE_FORMAT_STRING
-argument_list|,
-name|TaskTracker
-operator|.
-name|OUTPUT
-argument_list|,
-name|mapId
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-argument_list|,
-name|size
-argument_list|,
-name|conf
-argument_list|)
-return|;
-block|}
+function_decl|;
 comment|/** Removes all of the files related to a task. */
 DECL|method|removeAll ()
 specifier|public
+specifier|abstract
 name|void
 name|removeAll
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-name|conf
-operator|.
-name|deleteLocalFiles
-argument_list|(
-name|TaskTracker
-operator|.
-name|OUTPUT
-argument_list|)
-expr_stmt|;
-block|}
+function_decl|;
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -532,36 +335,24 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-if|if
-condition|(
-name|conf
-operator|instanceof
-name|JobConf
-condition|)
-block|{
 name|this
 operator|.
 name|conf
 operator|=
-operator|(
-name|JobConf
-operator|)
 name|conf
 expr_stmt|;
 block|}
-else|else
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
 block|{
-name|this
-operator|.
+return|return
 name|conf
-operator|=
-operator|new
-name|JobConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
+return|;
 block|}
 block|}
 end_class

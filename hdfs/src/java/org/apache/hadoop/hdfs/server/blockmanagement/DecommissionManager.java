@@ -104,20 +104,6 @@ name|FSNamesystem
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|CyclicIteration
-import|;
-end_import
-
 begin_comment
 comment|/**  * Manage node decommissioning.  */
 end_comment
@@ -156,15 +142,10 @@ specifier|final
 name|FSNamesystem
 name|fsnamesystem
 decl_stmt|;
-DECL|field|blockManager
-specifier|private
-specifier|final
-name|BlockManager
-name|blockManager
-decl_stmt|;
-DECL|method|DecommissionManager (FSNamesystem namesystem)
+DECL|method|DecommissionManager (final FSNamesystem namesystem)
 name|DecommissionManager
 parameter_list|(
+specifier|final
 name|FSNamesystem
 name|namesystem
 parameter_list|)
@@ -174,15 +155,6 @@ operator|.
 name|fsnamesystem
 operator|=
 name|namesystem
-expr_stmt|;
-name|this
-operator|.
-name|blockManager
-operator|=
-name|fsnamesystem
-operator|.
-name|getBlockManager
-argument_list|()
 expr_stmt|;
 block|}
 comment|/** Periodically check decommission status. */
@@ -319,6 +291,18 @@ name|void
 name|check
 parameter_list|()
 block|{
+specifier|final
+name|DatanodeManager
+name|dm
+init|=
+name|fsnamesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+decl_stmt|;
 name|int
 name|count
 init|=
@@ -336,10 +320,7 @@ name|DatanodeDescriptor
 argument_list|>
 name|entry
 range|:
-name|blockManager
-operator|.
-name|getDatanodeManager
-argument_list|()
+name|dm
 operator|.
 name|getDatanodeCyclicIteration
 argument_list|(
@@ -373,9 +354,9 @@ condition|)
 block|{
 try|try
 block|{
-name|blockManager
+name|dm
 operator|.
-name|checkDecommissionStateInternal
+name|checkDecommissionState
 argument_list|(
 name|d
 argument_list|)

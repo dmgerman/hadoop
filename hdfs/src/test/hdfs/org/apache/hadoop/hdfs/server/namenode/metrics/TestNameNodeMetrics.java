@@ -546,6 +546,11 @@ specifier|private
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
+DECL|field|bm
+specifier|private
+name|BlockManager
+name|bm
+decl_stmt|;
 DECL|method|getTestPath (String fileName)
 specifier|private
 specifier|static
@@ -604,6 +609,13 @@ operator|=
 name|cluster
 operator|.
 name|getNamesystem
+argument_list|()
+expr_stmt|;
+name|bm
+operator|=
+name|namesystem
+operator|.
+name|getBlockManager
 argument_list|()
 expr_stmt|;
 name|fs
@@ -1063,9 +1075,9 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|namesystem
+name|bm
 operator|.
-name|markBlockAsCorrupt
+name|findAndMarkBlockAsCorrupt
 argument_list|(
 name|block
 operator|.
@@ -1200,10 +1212,12 @@ name|totalBlocks
 init|=
 literal|1
 decl_stmt|;
-name|namesystem
+name|NameNodeAdapter
 operator|.
 name|setReplication
 argument_list|(
+name|namesystem
+argument_list|,
 name|file
 operator|.
 name|toString
@@ -1303,9 +1317,9 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|namesystem
+name|bm
 operator|.
-name|markBlockAsCorrupt
+name|findAndMarkBlockAsCorrupt
 argument_list|(
 name|block
 operator|.

@@ -2600,6 +2600,11 @@ argument_list|,
 name|taskInfo
 argument_list|,
 name|taskTime
+argument_list|,
+name|loggedAttempt
+operator|.
+name|allSplitVectors
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -2872,6 +2877,20 @@ argument_list|(
 name|loggedTask
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+argument_list|>
+name|allSplitVectors
+init|=
+name|loggedAttempt
+operator|.
+name|allSplitVectors
+argument_list|()
+decl_stmt|;
 name|State
 name|state
 init|=
@@ -2964,6 +2983,8 @@ argument_list|,
 name|taskInfo
 argument_list|,
 name|taskTime
+argument_list|,
+name|allSplitVectors
 argument_list|)
 return|;
 block|}
@@ -3047,6 +3068,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|reduceTime
+argument_list|,
+name|allSplitVectors
 argument_list|)
 return|;
 block|}
@@ -3122,6 +3145,8 @@ argument_list|,
 name|mergeTime
 argument_list|,
 name|reduceTime
+argument_list|,
+name|allSplitVectors
 argument_list|)
 return|;
 block|}
@@ -3593,6 +3618,8 @@ argument_list|,
 name|taskInfo
 argument_list|,
 name|runtime
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return
@@ -3655,6 +3682,8 @@ argument_list|,
 name|sortTime
 argument_list|,
 name|reduceTime
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

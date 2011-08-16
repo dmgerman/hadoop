@@ -1028,20 +1028,6 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-literal|", Pass: "
-argument_list|)
-expr_stmt|;
-name|addBinaryBuffer
-argument_list|(
-name|buffer
-argument_list|,
-name|password
-argument_list|)
-expr_stmt|;
-name|buffer
-operator|.
-name|append
-argument_list|(
 literal|", Kind: "
 argument_list|)
 expr_stmt|;

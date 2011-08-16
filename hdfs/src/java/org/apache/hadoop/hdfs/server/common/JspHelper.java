@@ -106,16 +106,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Arrays
 import|;
 end_import
@@ -147,6 +137,16 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -1299,6 +1299,22 @@ name|offsetIntoBlock
 argument_list|)
 decl_stmt|;
 comment|// Use the block name for file name.
+name|int
+name|bufferSize
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+argument_list|)
+decl_stmt|;
 name|String
 name|file
 init|=
@@ -1342,14 +1358,7 @@ name|offsetIntoBlock
 argument_list|,
 name|amtToRead
 argument_list|,
-name|conf
-operator|.
-name|getInt
-argument_list|(
-literal|"io.file.buffer.size"
-argument_list|,
-literal|4096
-argument_list|)
+name|bufferSize
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1671,13 +1680,14 @@ literal|"</tbody></table>"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|sortNodeList (ArrayList<DatanodeDescriptor> nodes, String field, String order)
+DECL|method|sortNodeList (final List<DatanodeDescriptor> nodes, String field, String order)
 specifier|public
 specifier|static
 name|void
 name|sortNodeList
 parameter_list|(
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>

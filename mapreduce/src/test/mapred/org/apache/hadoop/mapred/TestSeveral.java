@@ -1547,7 +1547,7 @@ operator|.
 name|toString
 argument_list|()
 block|,
-literal|"org.apache.hadoop.mapred.Task$Counter"
+literal|"org.apache.hadoop.mapreduce.TaskCounter"
 block|,
 literal|"MAP_INPUT_RECORDS"
 block|}

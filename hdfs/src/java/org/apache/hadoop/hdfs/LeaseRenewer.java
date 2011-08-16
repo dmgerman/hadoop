@@ -268,7 +268,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+specifier|final
+name|LeaseRenewer
+name|r
+init|=
 name|Factory
 operator|.
 name|INSTANCE
@@ -278,9 +281,17 @@ argument_list|(
 name|authority
 argument_list|,
 name|ugi
-argument_list|,
+argument_list|)
+decl_stmt|;
+name|r
+operator|.
+name|addClient
+argument_list|(
 name|dfsc
 argument_list|)
+expr_stmt|;
+return|return
+name|r
 return|;
 block|}
 comment|/**     * A factory for sharing {@link LeaseRenewer} objects    * among {@link DFSClient} instances    * so that there is only one renewer per authority per user.    */
@@ -508,7 +519,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/** Get a renewer. */
-DECL|method|get (final String authority, final UserGroupInformation ugi, final DFSClient dfsc)
+DECL|method|get (final String authority, final UserGroupInformation ugi)
 specifier|private
 specifier|synchronized
 name|LeaseRenewer
@@ -521,10 +532,6 @@ parameter_list|,
 specifier|final
 name|UserGroupInformation
 name|ugi
-parameter_list|,
-specifier|final
-name|DFSClient
-name|dfsc
 parameter_list|)
 block|{
 specifier|final
@@ -574,13 +581,6 @@ name|r
 argument_list|)
 expr_stmt|;
 block|}
-name|r
-operator|.
-name|addClient
-argument_list|(
-name|dfsc
-argument_list|)
-expr_stmt|;
 return|return
 name|r
 return|;
@@ -762,7 +762,7 @@ name|factorykey
 operator|=
 name|factorykey
 expr_stmt|;
-name|setGraceSleepPeriod
+name|unsyncSetGraceSleepPeriod
 argument_list|(
 name|LEASE_RENEWER_GRACE_DEFAULT
 argument_list|)
@@ -976,6 +976,22 @@ DECL|method|setGraceSleepPeriod (final long gracePeriod)
 specifier|synchronized
 name|void
 name|setGraceSleepPeriod
+parameter_list|(
+specifier|final
+name|long
+name|gracePeriod
+parameter_list|)
+block|{
+name|unsyncSetGraceSleepPeriod
+argument_list|(
+name|gracePeriod
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|unsyncSetGraceSleepPeriod (final long gracePeriod)
+specifier|private
+name|void
+name|unsyncSetGraceSleepPeriod
 parameter_list|(
 specifier|final
 name|long

@@ -258,8 +258,6 @@ begin_class
 DECL|class|TransferFsImage
 class|class
 name|TransferFsImage
-implements|implements
-name|FSConstants
 block|{
 DECL|field|CONTENT_LENGTH
 specifier|public
@@ -438,6 +436,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+assert|assert
+name|log
+operator|.
+name|getStartTxId
+argument_list|()
+operator|>
+literal|0
+operator|&&
+name|log
+operator|.
+name|getEndTxId
+argument_list|()
+operator|>
+literal|0
+operator|:
+literal|"bad log: "
+operator|+
+name|log
+assert|;
 name|String
 name|fileid
 init|=
@@ -679,7 +696,9 @@ init|=
 operator|new
 name|byte
 index|[
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;
 name|FileInputStream
@@ -773,7 +792,9 @@ name|len
 operator|/
 literal|2
 argument_list|,
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|)
 index|]
 expr_stmt|;
@@ -921,7 +942,9 @@ init|=
 operator|new
 name|byte
 index|[
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 index|]
 decl_stmt|;
 name|String

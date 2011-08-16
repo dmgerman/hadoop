@@ -1083,7 +1083,10 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|markBlockAsCorrupt
+name|getBlockManager
+argument_list|()
+operator|.
+name|findAndMarkBlockAsCorrupt
 argument_list|(
 name|blk
 argument_list|,

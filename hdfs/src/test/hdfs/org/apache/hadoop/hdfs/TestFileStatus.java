@@ -667,7 +667,7 @@ literal|true
 argument_list|,
 name|FSConstants
 operator|.
-name|BUFFER_SIZE
+name|IO_FILE_BUFFER_SIZE
 argument_list|,
 operator|(
 name|short

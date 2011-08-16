@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -180,6 +190,24 @@ name|DatanodeDescriptor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * This tests InterDataNodeProtocol for block handling.   */
 end_comment
@@ -275,8 +303,24 @@ operator|.
 name|getNamesystem
 argument_list|()
 decl_stmt|;
+specifier|final
+name|DatanodeManager
+name|dm
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|(           )
+operator|.
+name|getDatanodeManager
+argument_list|()
+decl_stmt|;
 comment|// Ensure the data reported for each data node is right
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
@@ -289,7 +333,8 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
@@ -302,13 +347,15 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|namesystem
+name|dm
 operator|.
-name|DFSNodesStatus
+name|fetchDatanodes
 argument_list|(
 name|live
 argument_list|,
 name|dead
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -554,7 +601,7 @@ name|nonDFSUsed
 operator|=
 name|namesystem
 operator|.
-name|getCapacityUsedNonDFS
+name|getNonDfsUsedSpace
 argument_list|()
 expr_stmt|;
 name|remaining
@@ -568,14 +615,14 @@ name|percentUsed
 operator|=
 name|namesystem
 operator|.
-name|getCapacityUsedPercent
+name|getPercentUsed
 argument_list|()
 expr_stmt|;
 name|percentRemaining
 operator|=
 name|namesystem
 operator|.
-name|getCapacityRemainingPercent
+name|getPercentRemaining
 argument_list|()
 expr_stmt|;
 name|bpUsed

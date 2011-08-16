@@ -21,26 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
-operator|.
-name|now
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -370,6 +350,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ExtendedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -386,7 +382,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|UnregisteredNodeException
+name|LocatedBlocks
 import|;
 end_import
 
@@ -400,13 +396,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
+name|protocol
 operator|.
-name|token
-operator|.
-name|block
-operator|.
-name|BlockTokenIdentifier
+name|UnregisteredNodeException
 import|;
 end_import
 
@@ -446,7 +438,9 @@ name|token
 operator|.
 name|block
 operator|.
-name|ExportedBlockKeys
+name|BlockTokenSecretManager
+operator|.
+name|AccessMode
 import|;
 end_import
 
@@ -460,13 +454,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|security
 operator|.
-name|blockmanagement
+name|token
 operator|.
-name|UnderReplicatedBlocks
+name|block
 operator|.
-name|BlockIterator
+name|ExportedBlockKeys
 import|;
 end_import
 
@@ -507,6 +501,24 @@ operator|.
 name|HdfsConstants
 operator|.
 name|ReplicaState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
 import|;
 end_import
 
@@ -646,9 +658,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
+name|hdfs
 operator|.
-name|Node
+name|server
+operator|.
+name|protocol
+operator|.
+name|DatanodeCommand
 import|;
 end_import
 
@@ -660,11 +676,27 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|hdfs
 operator|.
-name|token
+name|server
 operator|.
-name|Token
+name|protocol
+operator|.
+name|KeyUpdateCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|Node
 import|;
 end_import
 
@@ -752,7 +784,7 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|scheduledReplicationBlocksCount
-specifier|public
+specifier|private
 specifier|volatile
 name|long
 name|scheduledReplicationBlocksCount
@@ -795,28 +827,6 @@ specifier|private
 name|BlockTokenSecretManager
 name|blockTokenSecretManager
 decl_stmt|;
-comment|/** returns the isBlockTokenEnabled - true if block token enabled ,else false */
-DECL|method|isBlockTokenEnabled ()
-specifier|public
-name|boolean
-name|isBlockTokenEnabled
-parameter_list|()
-block|{
-return|return
-name|isBlockTokenEnabled
-return|;
-block|}
-comment|/** get the block key update interval */
-DECL|method|getBlockKeyUpdateInterval ()
-specifier|public
-name|long
-name|getBlockKeyUpdateInterval
-parameter_list|()
-block|{
-return|return
-name|blockKeyUpdateInterval
-return|;
-block|}
 comment|/** get the BlockTokenSecretManager */
 DECL|method|getBlockTokenSecretManager ()
 specifier|public
@@ -903,7 +913,6 @@ name|replicationRecheckInterval
 decl_stmt|;
 comment|/**    * Mapping: Block -> { INode, datanodes, self ref }    * Updated only in response to client-sent information.    */
 DECL|field|blocksMap
-specifier|public
 specifier|final
 name|BlocksMap
 name|blocksMap
@@ -913,6 +922,12 @@ specifier|private
 specifier|final
 name|DatanodeManager
 name|datanodeManager
+decl_stmt|;
+DECL|field|heartbeatManager
+specifier|private
+specifier|final
+name|HeartbeatManager
+name|heartbeatManager
 decl_stmt|;
 comment|/** Replication thread. */
 DECL|field|replicationThread
@@ -1026,12 +1041,11 @@ comment|/** The maximum number of replicas allowed for a block */
 DECL|field|maxReplication
 specifier|public
 specifier|final
-name|int
+name|short
 name|maxReplication
 decl_stmt|;
 comment|/** The maximum number of outgoing replication streams    *  a given node should have at one time     */
 DECL|field|maxReplicationStreams
-specifier|public
 name|int
 name|maxReplicationStreams
 decl_stmt|;
@@ -1039,7 +1053,7 @@ comment|/** Minimum copies needed or else write is disallowed */
 DECL|field|minReplication
 specifier|public
 specifier|final
-name|int
+name|short
 name|minReplication
 decl_stmt|;
 comment|/** Default number of replicas */
@@ -1075,145 +1089,6 @@ specifier|private
 name|BlockPlacementPolicy
 name|blockplacement
 decl_stmt|;
-comment|/**    * Get access keys    *     * @return current access keys    */
-DECL|method|getBlockKeys ()
-specifier|public
-name|ExportedBlockKeys
-name|getBlockKeys
-parameter_list|()
-block|{
-return|return
-name|isBlockTokenEnabled
-condition|?
-name|blockTokenSecretManager
-operator|.
-name|exportKeys
-argument_list|()
-else|:
-name|ExportedBlockKeys
-operator|.
-name|DUMMY_KEYS
-return|;
-block|}
-comment|/** Generate block token for a LocatedBlock. */
-DECL|method|setBlockToken (LocatedBlock l)
-specifier|public
-name|void
-name|setBlockToken
-parameter_list|(
-name|LocatedBlock
-name|l
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
-name|token
-init|=
-name|blockTokenSecretManager
-operator|.
-name|generateToken
-argument_list|(
-name|l
-operator|.
-name|getBlock
-argument_list|()
-argument_list|,
-name|EnumSet
-operator|.
-name|of
-argument_list|(
-name|BlockTokenSecretManager
-operator|.
-name|AccessMode
-operator|.
-name|READ
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|l
-operator|.
-name|setBlockToken
-argument_list|(
-name|token
-argument_list|)
-expr_stmt|;
-block|}
-comment|/** Generate block tokens for the blocks to be returned. */
-DECL|method|setBlockTokens (List<LocatedBlock> locatedBlocks)
-specifier|public
-name|void
-name|setBlockTokens
-parameter_list|(
-name|List
-argument_list|<
-name|LocatedBlock
-argument_list|>
-name|locatedBlocks
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-for|for
-control|(
-name|LocatedBlock
-name|l
-range|:
-name|locatedBlocks
-control|)
-block|{
-name|setBlockToken
-argument_list|(
-name|l
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Update access keys.    */
-DECL|method|updateBlockKey ()
-specifier|public
-name|void
-name|updateBlockKey
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|this
-operator|.
-name|blockTokenSecretManager
-operator|.
-name|updateKeys
-argument_list|()
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-for|for
-control|(
-name|DatanodeDescriptor
-name|nodeInfo
-range|:
-name|namesystem
-operator|.
-name|heartbeats
-control|)
-block|{
-name|nodeInfo
-operator|.
-name|needKeyUpdate
-operator|=
-literal|true
-expr_stmt|;
-block|}
-block|}
-block|}
 DECL|method|BlockManager (FSNamesystem fsn, Configuration conf)
 specifier|public
 name|BlockManager
@@ -1236,10 +1111,19 @@ operator|=
 operator|new
 name|DatanodeManager
 argument_list|(
+name|this
+argument_list|,
 name|fsn
 argument_list|,
 name|conf
 argument_list|)
+expr_stmt|;
+name|heartbeatManager
+operator|=
+name|datanodeManager
+operator|.
+name|getHeartbeatManager
+argument_list|()
 expr_stmt|;
 name|blocksMap
 operator|=
@@ -1436,10 +1320,10 @@ operator|.
 name|DFS_REPLICATION_DEFAULT
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|maxReplication
-operator|=
+specifier|final
+name|int
+name|maxR
+init|=
 name|conf
 operator|.
 name|getInt
@@ -1452,11 +1336,11 @@ name|DFSConfigKeys
 operator|.
 name|DFS_REPLICATION_MAX_DEFAULT
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|minReplication
-operator|=
+decl_stmt|;
+specifier|final
+name|int
+name|minR
+init|=
 name|conf
 operator|.
 name|getInt
@@ -1469,10 +1353,10 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
-name|minReplication
+name|minR
 operator|<=
 literal|0
 condition|)
@@ -1480,20 +1364,23 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected configuration parameters: dfs.namenode.replication.min = "
+literal|"Unexpected configuration parameters: "
 operator|+
-name|minReplication
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
 operator|+
-literal|" must be greater than 0"
+literal|" = "
+operator|+
+name|minR
+operator|+
+literal|"<= 0"
 argument_list|)
 throw|;
 if|if
 condition|(
-name|maxReplication
-operator|>=
-operator|(
-name|int
-operator|)
+name|maxR
+operator|>
 name|Short
 operator|.
 name|MAX_VALUE
@@ -1502,38 +1389,72 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected configuration parameters: dfs.replication.max = "
+literal|"Unexpected configuration parameters: "
 operator|+
-name|maxReplication
+name|DFSConfigKeys
+operator|.
+name|DFS_REPLICATION_MAX_KEY
 operator|+
-literal|" must be less than "
+literal|" = "
 operator|+
-operator|(
+name|maxR
+operator|+
+literal|"> "
+operator|+
 name|Short
 operator|.
 name|MAX_VALUE
-operator|)
 argument_list|)
 throw|;
 if|if
 condition|(
-name|maxReplication
-operator|<
-name|minReplication
+name|minR
+operator|>
+name|maxR
 condition|)
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected configuration parameters: dfs.namenode.replication.min = "
+literal|"Unexpected configuration parameters: "
 operator|+
-name|minReplication
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MIN_KEY
 operator|+
-literal|" must be less than dfs.replication.max = "
+literal|" = "
 operator|+
-name|maxReplication
+name|minR
+operator|+
+literal|"> "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_REPLICATION_MAX_KEY
+operator|+
+literal|" = "
+operator|+
+name|maxR
 argument_list|)
 throw|;
+name|this
+operator|.
+name|minReplication
+operator|=
+operator|(
+name|short
+operator|)
+name|minR
+expr_stmt|;
+name|this
+operator|.
+name|maxReplication
+operator|=
+operator|(
+name|short
+operator|)
+name|maxR
+expr_stmt|;
 name|this
 operator|.
 name|maxReplicationStreams
@@ -2064,6 +1985,17 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** @return maxReplicationStreams */
+DECL|method|getMaxReplicationStreams ()
+specifier|public
+name|int
+name|getMaxReplicationStreams
+parameter_list|()
+block|{
+return|return
+name|maxReplicationStreams
+return|;
+block|}
 comment|/**    * @param block    * @return true if the block has minimum replicas    */
 DECL|method|checkMinReplication (Block block)
 specifier|public
@@ -2150,79 +2082,15 @@ argument_list|(
 name|commitBlock
 argument_list|)
 expr_stmt|;
-comment|// Adjust disk space consumption if required
-name|long
-name|diff
-init|=
-name|fileINode
+name|namesystem
 operator|.
-name|getPreferredBlockSize
-argument_list|()
-operator|-
+name|updateDiskSpaceConsumed
+argument_list|(
+name|fileINode
+argument_list|,
 name|commitBlock
-operator|.
-name|getNumBytes
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|diff
-operator|>
-literal|0
-condition|)
-block|{
-try|try
-block|{
-name|String
-name|path
-init|=
-comment|/* For finding parents */
-name|namesystem
-operator|.
-name|leaseManager
-operator|.
-name|findPath
-argument_list|(
-name|fileINode
-argument_list|)
-decl_stmt|;
-name|namesystem
-operator|.
-name|dir
-operator|.
-name|updateSpaceConsumed
-argument_list|(
-name|path
-argument_list|,
-literal|0
-argument_list|,
-operator|-
-name|diff
-operator|*
-name|fileINode
-operator|.
-name|getReplication
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unexpected exception while updating disk space."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param fileINode file inode    * @param commitBlock - contains client reported block length and generation    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|commitOrCompleteLastBlock (INodeFileUnderConstruction fileINode, Block commitBlock)
@@ -2592,7 +2460,7 @@ name|getLength
 argument_list|()
 decl_stmt|;
 return|return
-name|getBlockLocation
+name|createLocatedBlock
 argument_list|(
 name|ucBlock
 argument_list|,
@@ -2696,24 +2564,28 @@ return|return
 name|machineSet
 return|;
 block|}
-DECL|method|getBlockLocations (BlockInfo[] blocks, long offset, long length, int nrBlocksToReturn)
-specifier|public
+DECL|method|createLocatedBlockList (final BlockInfo[] blocks, final long offset, final long length, final int nrBlocksToReturn )
+specifier|private
 name|List
 argument_list|<
 name|LocatedBlock
 argument_list|>
-name|getBlockLocations
+name|createLocatedBlockList
 parameter_list|(
+specifier|final
 name|BlockInfo
 index|[]
 name|blocks
 parameter_list|,
+specifier|final
 name|long
 name|offset
 parameter_list|,
+specifier|final
 name|long
 name|length
 parameter_list|,
+specifier|final
 name|int
 name|nrBlocksToReturn
 parameter_list|)
@@ -2852,7 +2724,7 @@ name|results
 operator|.
 name|add
 argument_list|(
-name|getBlockLocation
+name|createLocatedBlock
 argument_list|(
 name|blocks
 index|[
@@ -2902,10 +2774,10 @@ name|results
 return|;
 block|}
 comment|/** @return a LocatedBlock for the given block */
-DECL|method|getBlockLocation (final BlockInfo blk, final long pos )
-specifier|public
+DECL|method|createLocatedBlock (final BlockInfo blk, final long pos )
+specifier|private
 name|LocatedBlock
-name|getBlockLocation
+name|createLocatedBlock
 parameter_list|(
 specifier|final
 name|BlockInfo
@@ -2964,12 +2836,26 @@ operator|.
 name|getExpectedLocations
 argument_list|()
 decl_stmt|;
-return|return
+specifier|final
+name|ExtendedBlock
+name|eb
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
 name|namesystem
 operator|.
-name|createLocatedBlock
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|blk
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|LocatedBlock
 argument_list|(
-name|uc
+name|eb
 argument_list|,
 name|locations
 argument_list|,
@@ -3148,12 +3034,26 @@ name|d
 expr_stmt|;
 block|}
 block|}
-return|return
+specifier|final
+name|ExtendedBlock
+name|eb
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
 name|namesystem
 operator|.
-name|createLocatedBlock
-argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|,
 name|blk
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|LocatedBlock
+argument_list|(
+name|eb
 argument_list|,
 name|machines
 argument_list|,
@@ -3161,6 +3061,377 @@ name|pos
 argument_list|,
 name|isCorrupt
 argument_list|)
+return|;
+block|}
+comment|/** Create a LocatedBlocks. */
+DECL|method|createLocatedBlocks (final BlockInfo[] blocks, final long fileSizeExcludeBlocksUnderConstruction, final boolean isFileUnderConstruction, final long offset, final long length, final boolean needBlockToken )
+specifier|public
+name|LocatedBlocks
+name|createLocatedBlocks
+parameter_list|(
+specifier|final
+name|BlockInfo
+index|[]
+name|blocks
+parameter_list|,
+specifier|final
+name|long
+name|fileSizeExcludeBlocksUnderConstruction
+parameter_list|,
+specifier|final
+name|boolean
+name|isFileUnderConstruction
+parameter_list|,
+specifier|final
+name|long
+name|offset
+parameter_list|,
+specifier|final
+name|long
+name|length
+parameter_list|,
+specifier|final
+name|boolean
+name|needBlockToken
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasReadOrWriteLock
+argument_list|()
+assert|;
+if|if
+condition|(
+name|blocks
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|blocks
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|new
+name|LocatedBlocks
+argument_list|(
+literal|0
+argument_list|,
+name|isFileUnderConstruction
+argument_list|,
+name|Collections
+operator|.
+expr|<
+name|LocatedBlock
+operator|>
+name|emptyList
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"blocks = "
+operator|+
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|blocks
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+specifier|final
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|locatedblocks
+init|=
+name|createLocatedBlockList
+argument_list|(
+name|blocks
+argument_list|,
+name|offset
+argument_list|,
+name|length
+argument_list|,
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+decl_stmt|;
+specifier|final
+name|BlockInfo
+name|last
+init|=
+name|blocks
+index|[
+name|blocks
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+decl_stmt|;
+specifier|final
+name|long
+name|lastPos
+init|=
+name|last
+operator|.
+name|isComplete
+argument_list|()
+condition|?
+name|fileSizeExcludeBlocksUnderConstruction
+operator|-
+name|last
+operator|.
+name|getNumBytes
+argument_list|()
+else|:
+name|fileSizeExcludeBlocksUnderConstruction
+decl_stmt|;
+specifier|final
+name|LocatedBlock
+name|lastlb
+init|=
+name|createLocatedBlock
+argument_list|(
+name|last
+argument_list|,
+name|lastPos
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|isBlockTokenEnabled
+operator|&&
+name|needBlockToken
+condition|)
+block|{
+for|for
+control|(
+name|LocatedBlock
+name|lb
+range|:
+name|locatedblocks
+control|)
+block|{
+name|setBlockToken
+argument_list|(
+name|lb
+argument_list|,
+name|AccessMode
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+block|}
+name|setBlockToken
+argument_list|(
+name|lastlb
+argument_list|,
+name|AccessMode
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|LocatedBlocks
+argument_list|(
+name|fileSizeExcludeBlocksUnderConstruction
+argument_list|,
+name|isFileUnderConstruction
+argument_list|,
+name|locatedblocks
+argument_list|,
+name|lastlb
+argument_list|,
+name|last
+operator|.
+name|isComplete
+argument_list|()
+argument_list|)
+return|;
+block|}
+block|}
+comment|/** @return current access keys. */
+DECL|method|getBlockKeys ()
+specifier|public
+name|ExportedBlockKeys
+name|getBlockKeys
+parameter_list|()
+block|{
+return|return
+name|isBlockTokenEnabled
+condition|?
+name|blockTokenSecretManager
+operator|.
+name|exportKeys
+argument_list|()
+else|:
+name|ExportedBlockKeys
+operator|.
+name|DUMMY_KEYS
+return|;
+block|}
+comment|/** Generate a block token for the located block. */
+DECL|method|setBlockToken (final LocatedBlock b, final BlockTokenSecretManager.AccessMode mode)
+specifier|public
+name|void
+name|setBlockToken
+parameter_list|(
+specifier|final
+name|LocatedBlock
+name|b
+parameter_list|,
+specifier|final
+name|BlockTokenSecretManager
+operator|.
+name|AccessMode
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|isBlockTokenEnabled
+condition|)
+block|{
+name|b
+operator|.
+name|setBlockToken
+argument_list|(
+name|blockTokenSecretManager
+operator|.
+name|generateToken
+argument_list|(
+name|b
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|mode
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|addKeyUpdateCommand (final List<DatanodeCommand> cmds, final DatanodeDescriptor nodeinfo)
+name|void
+name|addKeyUpdateCommand
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|DatanodeCommand
+argument_list|>
+name|cmds
+parameter_list|,
+specifier|final
+name|DatanodeDescriptor
+name|nodeinfo
+parameter_list|)
+block|{
+comment|// check access key update
+if|if
+condition|(
+name|isBlockTokenEnabled
+operator|&&
+name|nodeinfo
+operator|.
+name|needKeyUpdate
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+operator|new
+name|KeyUpdateCommand
+argument_list|(
+name|blockTokenSecretManager
+operator|.
+name|exportKeys
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|nodeinfo
+operator|.
+name|needKeyUpdate
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Clamp the specified replication between the minimum and the maximum    * replication levels.    */
+DECL|method|adjustReplication (short replication)
+specifier|public
+name|short
+name|adjustReplication
+parameter_list|(
+name|short
+name|replication
+parameter_list|)
+block|{
+return|return
+name|replication
+operator|<
+name|minReplication
+condition|?
+name|minReplication
+else|:
+name|replication
+operator|>
+name|maxReplication
+condition|?
+name|maxReplication
+else|:
+name|replication
 return|;
 block|}
 comment|/**    * Check whether the replication parameter is within the range    * determined by system configuration.    */
@@ -3257,9 +3528,54 @@ name|minReplication
 argument_list|)
 throw|;
 block|}
+comment|/**    * return a list of blocks& their locations on<code>datanode</code> whose    * total size is<code>size</code>    *     * @param datanode on which blocks are located    * @param size total size of blocks    */
+DECL|method|getBlocks (DatanodeID datanode, long size )
+specifier|public
+name|BlocksWithLocations
+name|getBlocks
+parameter_list|(
+name|DatanodeID
+name|datanode
+parameter_list|,
+name|long
+name|size
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+return|return
+name|getBlocksWithLocations
+argument_list|(
+name|datanode
+argument_list|,
+name|size
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/** Get all blocks with location information from a datanode. */
 DECL|method|getBlocksWithLocations (final DatanodeID datanode, final long size)
-specifier|public
+specifier|private
 name|BlocksWithLocations
 name|getBlocksWithLocations
 parameter_list|(
@@ -3299,7 +3615,7 @@ name|stateChangeLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* NameSystem.getBlocks: "
+literal|"BLOCK* getBlocks: "
 operator|+
 literal|"Asking for blocks from an unrecorded node "
 operator|+
@@ -3538,11 +3854,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** Remove a datanode. */
-DECL|method|removeDatanode (final DatanodeDescriptor node)
-specifier|public
+comment|/** Remove the blocks associated to the given datanode. */
+DECL|method|removeBlocksAssociatedTo (final DatanodeDescriptor node)
 name|void
-name|removeDatanode
+name|removeBlocksAssociatedTo
 parameter_list|(
 specifier|final
 name|DatanodeDescriptor
@@ -3595,37 +3910,6 @@ name|getStorageID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|datanodeManager
-operator|.
-name|getNetworkTopology
-argument_list|()
-operator|.
-name|remove
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"remove datanode "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|removeFromInvalidates (String storageID, Block block)
 specifier|private
@@ -3726,6 +4010,7 @@ return|;
 block|}
 comment|/**    * Adds block to list of blocks which will be invalidated on specified    * datanode    *    * @param b block    * @param dn datanode    * @param log true to create an entry in the log     */
 DECL|method|addToInvalidates (Block b, DatanodeInfo dn, boolean log)
+specifier|private
 name|void
 name|addToInvalidates
 parameter_list|(
@@ -3808,7 +4093,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.addToInvalidates: "
+literal|"BLOCK* addToInvalidates: "
 operator|+
 name|b
 operator|+
@@ -3825,7 +4110,6 @@ block|}
 block|}
 comment|/**    * Adds block to list of blocks which will be invalidated on specified    * datanode and log the operation    *    * @param b block    * @param dn datanode    */
 DECL|method|addToInvalidates (Block b, DatanodeInfo dn)
-specifier|public
 name|void
 name|addToInvalidates
 parameter_list|(
@@ -3934,7 +4218,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.addToInvalidates: "
+literal|"BLOCK* addToInvalidates: "
 operator|+
 name|b
 operator|+
@@ -4064,26 +4348,40 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|findAndMarkBlockAsCorrupt (Block blk, DatanodeInfo dn)
+comment|/**    * Mark the block belonging to datanode as corrupt    * @param blk Block to be marked as corrupt    * @param dn Datanode which holds the corrupt replica    */
+DECL|method|findAndMarkBlockAsCorrupt (final ExtendedBlock blk, final DatanodeInfo dn)
 specifier|public
 name|void
 name|findAndMarkBlockAsCorrupt
 parameter_list|(
-name|Block
+specifier|final
+name|ExtendedBlock
 name|blk
 parameter_list|,
+specifier|final
 name|DatanodeInfo
 name|dn
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+specifier|final
 name|BlockInfo
 name|storedBlock
 init|=
 name|getStoredBlock
 argument_list|(
 name|blk
+operator|.
+name|getLocalBlock
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -4103,15 +4401,11 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.markBlockAsCorrupt: "
-operator|+
-literal|"block "
+literal|"BLOCK* findAndMarkBlockAsCorrupt: "
 operator|+
 name|blk
 operator|+
-literal|" could not be marked as "
-operator|+
-literal|"corrupt as it does not exist in blocksMap"
+literal|" not found."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -4123,6 +4417,15 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|markBlockAsCorrupt (BlockInfo storedBlock, DatanodeInfo dn)
 specifier|private
@@ -4206,7 +4509,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK NameSystem.markBlockAsCorrupt: "
+literal|"BLOCK markBlockAsCorrupt: "
 operator|+
 literal|"block "
 operator|+
@@ -4312,7 +4615,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"DIR* NameSystem.invalidateBlock: "
+literal|"BLOCK* invalidateBlock: "
 operator|+
 name|blk
 operator|+
@@ -4411,7 +4714,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.invalidateBlocks: "
+literal|"BLOCK* invalidateBlocks: "
 operator|+
 name|blk
 operator|+
@@ -4435,7 +4738,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.invalidateBlocks: "
+literal|"BLOCK* invalidateBlocks: "
 operator|+
 name|blk
 operator|+
@@ -4494,7 +4797,6 @@ return|;
 block|}
 comment|/**    * Schedule blocks for deletion at datanodes    * @param nodesToProcess number of datanodes to schedule deletion work    * @return total number of block for deletion    */
 DECL|method|computeInvalidateWork (int nodesToProcess)
-specifier|public
 name|int
 name|computeInvalidateWork
 parameter_list|(
@@ -4692,7 +4994,7 @@ return|;
 block|}
 comment|/**    * Scan blocks in {@link #neededReplications} and assign replication    * work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
 DECL|method|computeReplicationWork (int blocksToProcess)
-specifier|public
+specifier|private
 name|int
 name|computeReplicationWork
 parameter_list|(
@@ -5830,11 +6132,11 @@ name|targets
 operator|.
 name|length
 operator|+
-literal|" nodes, instead of "
+literal|" nodes instead of minReplication (="
 operator|+
 name|minReplication
 operator|+
-literal|". There are "
+literal|").  There are "
 operator|+
 name|getDatanodeManager
 argument_list|()
@@ -5845,12 +6147,20 @@ operator|.
 name|getNumOfLeaves
 argument_list|()
 operator|+
-literal|" datanode(s) running but "
+literal|" datanode(s) running and "
 operator|+
+operator|(
+name|excludedNodes
+operator|==
+literal|null
+condition|?
+literal|"no"
+else|:
 name|excludedNodes
 operator|.
 name|size
 argument_list|()
+operator|)
 operator|+
 literal|" node(s) are excluded in this operation."
 argument_list|)
@@ -6321,49 +6631,233 @@ name|reportedState
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The given node is reporting all its blocks.  Use this info to    * update the (datanode-->blocklist) and (block-->nodelist) tables.    */
-DECL|method|processReport (DatanodeDescriptor node, BlockListAsLongs report)
+comment|/**    * The given datanode is reporting all its blocks.    * Update the (machine-->blocklist) and (block-->machinelist) maps.    */
+DECL|method|processReport (final DatanodeID nodeID, final String poolId, final BlockListAsLongs newReport)
 specifier|public
 name|void
 name|processReport
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+specifier|final
+name|DatanodeID
+name|nodeID
 parameter_list|,
+specifier|final
+name|String
+name|poolId
+parameter_list|,
+specifier|final
 name|BlockListAsLongs
-name|report
+name|newReport
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|boolean
-name|isFirstBlockReport
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+specifier|final
+name|long
+name|startTime
 init|=
-operator|(
+name|Util
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+comment|//after acquiring write lock
+specifier|final
+name|long
+name|endTime
+decl_stmt|;
+try|try
+block|{
+specifier|final
+name|DatanodeDescriptor
+name|node
+init|=
+name|datanodeManager
+operator|.
+name|getDatanode
+argument_list|(
+name|nodeID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|node
+operator|==
+literal|null
+operator|||
+operator|!
+name|node
+operator|.
+name|isAlive
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"ProcessReport from dead or unregistered node: "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+throw|;
+block|}
+comment|// To minimize startup time, we discard any second (or later) block reports
+comment|// that we receive while still in startup phase.
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInStartupSafeMode
+argument_list|()
+operator|&&
+name|node
+operator|.
+name|numBlocks
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processReport: "
+operator|+
+literal|"discarded non-initial block report from "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" because namenode still in startup phase"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
 name|node
 operator|.
 name|numBlocks
 argument_list|()
 operator|==
 literal|0
-operator|)
-decl_stmt|;
-if|if
-condition|(
-name|isFirstBlockReport
 condition|)
 block|{
-comment|// Initial block reports can be processed a lot more efficiently than
-comment|// ordinary block reports.  This shortens NN restart times.
+comment|// The first block report can be processed a lot more efficiently than
+comment|// ordinary block reports.  This shortens restart times.
 name|processFirstBlockReport
 argument_list|(
 name|node
 argument_list|,
-name|report
+name|newReport
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
+else|else
+block|{
+name|processReport
+argument_list|(
+name|node
+argument_list|,
+name|newReport
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|endTime
+operator|=
+name|Util
+operator|.
+name|now
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Log the block report processing stats from Namenode perspective
+name|NameNode
+operator|.
+name|getNameNodeMetrics
+argument_list|()
+operator|.
+name|addBlockReport
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|endTime
+operator|-
+name|startTime
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processReport: from "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", blocks: "
+operator|+
+name|newReport
+operator|.
+name|getNumberOfBlocks
+argument_list|()
+operator|+
+literal|", processing time: "
+operator|+
+operator|(
+name|endTime
+operator|-
+name|startTime
+operator|)
+operator|+
+literal|" msecs"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|processReport (final DatanodeDescriptor node, final BlockListAsLongs report)
+specifier|private
+name|void
+name|processReport
+parameter_list|(
+specifier|final
+name|DatanodeDescriptor
+name|node
+parameter_list|,
+specifier|final
+name|BlockListAsLongs
+name|report
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 comment|// Normal case:
 comment|// Modify the (block-->datanode) map, according to the difference
 comment|// between the old and new block report.
@@ -6523,7 +7017,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.processReport: block "
+literal|"BLOCK* processReport: block "
 operator|+
 name|b
 operator|+
@@ -6570,13 +7064,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * processFirstBlockReport is intended only for processing "initial" block    * reports, the first block report received from a DN after it registers.    * It just adds all the valid replicas to the datanode, without calculating     * a toRemove list (since there won't be any).  It also silently discards     * any invalid blocks, thereby deferring their processing until     * the next block report.    * @param node - DatanodeDescriptor of the node that sent the report    * @param report - the initial block report, to be processed    * @throws IOException     */
-DECL|method|processFirstBlockReport (DatanodeDescriptor node, BlockListAsLongs report)
+DECL|method|processFirstBlockReport (final DatanodeDescriptor node, final BlockListAsLongs report)
+specifier|private
 name|void
 name|processFirstBlockReport
 parameter_list|(
+specifier|final
 name|DatanodeDescriptor
 name|node
 parameter_list|,
+specifier|final
 name|BlockListAsLongs
 name|report
 parameter_list|)
@@ -6960,37 +7457,45 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param dn descriptor for the datanode that made the report    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return    */
-DECL|method|processReportedBlock (DatanodeDescriptor dn, Block block, ReplicaState reportedState, Collection<BlockInfo> toAdd, Collection<Block> toInvalidate, Collection<BlockInfo> toCorrupt, Collection<StatefulBlockInfo> toUC)
+DECL|method|processReportedBlock (final DatanodeDescriptor dn, final Block block, final ReplicaState reportedState, final Collection<BlockInfo> toAdd, final Collection<Block> toInvalidate, final Collection<BlockInfo> toCorrupt, final Collection<StatefulBlockInfo> toUC)
+specifier|private
 name|BlockInfo
 name|processReportedBlock
 parameter_list|(
+specifier|final
 name|DatanodeDescriptor
 name|dn
 parameter_list|,
+specifier|final
 name|Block
 name|block
 parameter_list|,
+specifier|final
 name|ReplicaState
 name|reportedState
 parameter_list|,
+specifier|final
 name|Collection
 argument_list|<
 name|BlockInfo
 argument_list|>
 name|toAdd
 parameter_list|,
+specifier|final
 name|Collection
 argument_list|<
 name|Block
 argument_list|>
 name|toInvalidate
 parameter_list|,
+specifier|final
 name|Collection
 argument_list|<
 name|BlockInfo
 argument_list|>
 name|toCorrupt
 parameter_list|,
+specifier|final
 name|Collection
 argument_list|<
 name|StatefulBlockInfo
@@ -7669,9 +8174,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.addStoredBlock: "
-operator|+
-literal|"addStoredBlock request received for "
+literal|"BLOCK* addStoredBlock: "
 operator|+
 name|block
 operator|+
@@ -7689,7 +8192,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" But it does not belong to any file."
+literal|" but it does not belong to any file."
 argument_list|)
 expr_stmt|;
 comment|// we could add this block to invalidate set of this datanode.
@@ -7754,7 +8257,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.addStoredBlock: "
+literal|"BLOCK* addStoredBlock: "
 operator|+
 literal|"blockMap updated: "
 operator|+
@@ -7789,7 +8292,7 @@ name|stateChangeLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* NameSystem.addStoredBlock: "
+literal|"BLOCK* addStoredBlock: "
 operator|+
 literal|"Redundant addStoredBlock request received for "
 operator|+
@@ -8168,6 +8671,12 @@ name|void
 name|processMisReplicatedBlocks
 parameter_list|()
 block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
 name|long
 name|nrInvalid
 init|=
@@ -8181,13 +8690,6 @@ name|nrUnderReplicated
 init|=
 literal|0
 decl_stmt|;
-name|namesystem
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|neededReplications
 operator|.
 name|clear
@@ -8316,15 +8818,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -8365,18 +8858,145 @@ name|nrOverReplicated
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
-DECL|method|processOverReplicatedBlock (Block block, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+comment|/** Set replication for the blocks. */
+DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final Block... blocks)
 specifier|public
+name|void
+name|setReplication
+parameter_list|(
+specifier|final
+name|short
+name|oldRepl
+parameter_list|,
+specifier|final
+name|short
+name|newRepl
+parameter_list|,
+specifier|final
+name|String
+name|src
+parameter_list|,
+specifier|final
+name|Block
+modifier|...
+name|blocks
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|newRepl
+operator|==
+name|oldRepl
+condition|)
+block|{
+return|return;
+block|}
+comment|// update needReplication priority queues
+for|for
+control|(
+name|Block
+name|b
+range|:
+name|blocks
+control|)
+block|{
+name|updateNeededReplications
+argument_list|(
+name|b
+argument_list|,
+literal|0
+argument_list|,
+name|newRepl
+operator|-
+name|oldRepl
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|oldRepl
+operator|>
+name|newRepl
+condition|)
+block|{
+comment|// old replication> the new one; need to remove copies
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Decreasing replication from "
+operator|+
+name|oldRepl
+operator|+
+literal|" to "
+operator|+
+name|newRepl
+operator|+
+literal|" for "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Block
+name|b
+range|:
+name|blocks
+control|)
+block|{
+name|processOverReplicatedBlock
+argument_list|(
+name|b
+argument_list|,
+name|newRepl
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// replication factor is increased
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Increasing replication from "
+operator|+
+name|oldRepl
+operator|+
+literal|" to "
+operator|+
+name|newRepl
+operator|+
+literal|" for "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Find how many of the containing nodes are "extra", if any.    * If there are any extras, call chooseExcessReplicates() to    * mark them in the excessReplicateMap.    */
+DECL|method|processOverReplicatedBlock (final Block block, final short replication, final DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint)
+specifier|private
 name|void
 name|processOverReplicatedBlock
 parameter_list|(
+specifier|final
 name|Block
 name|block
 parameter_list|,
+specifier|final
 name|short
 name|replication
 parameter_list|,
+specifier|final
 name|DatanodeDescriptor
 name|addedNode
 parameter_list|,
@@ -8531,8 +9151,6 @@ block|}
 block|}
 block|}
 block|}
-name|namesystem
-operator|.
 name|chooseExcessReplicates
 argument_list|(
 name|nonExcess
@@ -8549,8 +9167,490 @@ name|blockplacement
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * We want "replication" replicates for the block, but we now have too many.      * In this method, copy enough nodes from 'srcNodes' into 'dstNodes' such that:    *    * srcNodes.size() - dstNodes.size() == replication    *    * We pick node that make sure that replicas are spread across racks and    * also try hard to pick one with least free space.    * The algorithm is first to pick a node with least free space from nodes    * that are on a rack holding more than one replicas of the block.    * So removing such a replica won't remove a rack.     * If no such a node is available,    * then pick a node with least free space    */
+DECL|method|chooseExcessReplicates (Collection<DatanodeDescriptor> nonExcess, Block b, short replication, DatanodeDescriptor addedNode, DatanodeDescriptor delNodeHint, BlockPlacementPolicy replicator)
+specifier|private
+name|void
+name|chooseExcessReplicates
+parameter_list|(
+name|Collection
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|nonExcess
+parameter_list|,
+name|Block
+name|b
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|DatanodeDescriptor
+name|addedNode
+parameter_list|,
+name|DatanodeDescriptor
+name|delNodeHint
+parameter_list|,
+name|BlockPlacementPolicy
+name|replicator
+parameter_list|)
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
+comment|// first form a rack to datanodes map and
+name|INodeFile
+name|inode
+init|=
+name|getINode
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|>
+name|rackMap
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+specifier|final
+name|Iterator
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|iter
+init|=
+name|nonExcess
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+specifier|final
+name|DatanodeDescriptor
+name|node
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+specifier|final
+name|String
+name|rackName
+init|=
+name|node
+operator|.
+name|getNetworkLocation
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|datanodeList
+init|=
+name|rackMap
+operator|.
+name|get
+argument_list|(
+name|rackName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|datanodeList
+operator|==
+literal|null
+condition|)
+block|{
+name|datanodeList
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+expr_stmt|;
+name|rackMap
+operator|.
+name|put
+argument_list|(
+name|rackName
+argument_list|,
+name|datanodeList
+argument_list|)
+expr_stmt|;
+block|}
+name|datanodeList
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+comment|// split nodes into two sets
+comment|// priSet contains nodes on rack with more than one replica
+comment|// remains contains the remaining nodes
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|priSet
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|remains
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|datanodeList
+range|:
+name|rackMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|datanodeList
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+name|remains
+operator|.
+name|add
+argument_list|(
+name|datanodeList
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|priSet
+operator|.
+name|addAll
+argument_list|(
+name|datanodeList
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// pick one node to delete that favors the delete hint
+comment|// otherwise pick one with least space from priSet if it is not empty
+comment|// otherwise one node with least space from remains
+name|boolean
+name|firstOne
+init|=
+literal|true
+decl_stmt|;
+while|while
+condition|(
+name|nonExcess
+operator|.
+name|size
+argument_list|()
+operator|-
+name|replication
+operator|>
+literal|0
+condition|)
+block|{
+comment|// check if we can delete delNodeHint
+specifier|final
+name|DatanodeInfo
+name|cur
+decl_stmt|;
+if|if
+condition|(
+name|firstOne
+operator|&&
+name|delNodeHint
+operator|!=
+literal|null
+operator|&&
+name|nonExcess
+operator|.
+name|contains
+argument_list|(
+name|delNodeHint
+argument_list|)
+operator|&&
+operator|(
+name|priSet
+operator|.
+name|contains
+argument_list|(
+name|delNodeHint
+argument_list|)
+operator|||
+operator|(
+name|addedNode
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|priSet
+operator|.
+name|contains
+argument_list|(
+name|addedNode
+argument_list|)
+operator|)
+operator|)
+condition|)
+block|{
+name|cur
+operator|=
+name|delNodeHint
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// regular excessive replica removal
+name|cur
+operator|=
+name|replicator
+operator|.
+name|chooseReplicaToDelete
+argument_list|(
+name|inode
+argument_list|,
+name|b
+argument_list|,
+name|replication
+argument_list|,
+name|priSet
+argument_list|,
+name|remains
+argument_list|)
+expr_stmt|;
+block|}
+name|firstOne
+operator|=
+literal|false
+expr_stmt|;
+comment|// adjust rackmap, priSet, and remains
+name|String
+name|rack
+init|=
+name|cur
+operator|.
+name|getNetworkLocation
+argument_list|()
+decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|datanodes
+init|=
+name|rackMap
+operator|.
+name|get
+argument_list|(
+name|rack
+argument_list|)
+decl_stmt|;
+name|datanodes
+operator|.
+name|remove
+argument_list|(
+name|cur
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|datanodes
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|rackMap
+operator|.
+name|remove
+argument_list|(
+name|rack
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|priSet
+operator|.
+name|remove
+argument_list|(
+name|cur
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|datanodes
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+name|priSet
+operator|.
+name|remove
+argument_list|(
+name|datanodes
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|remains
+operator|.
+name|add
+argument_list|(
+name|datanodes
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|remains
+operator|.
+name|remove
+argument_list|(
+name|cur
+argument_list|)
+expr_stmt|;
+block|}
+name|nonExcess
+operator|.
+name|remove
+argument_list|(
+name|cur
+argument_list|)
+expr_stmt|;
+name|addToExcessReplicate
+argument_list|(
+name|cur
+argument_list|,
+name|b
+argument_list|)
+expr_stmt|;
+comment|//
+comment|// The 'excessblocks' tracks blocks until we get confirmation
+comment|// that the datanode has deleted them; the only way we remove them
+comment|// is when we get a "removeBlock" message.
+comment|//
+comment|// The 'invalidate' list is used to inform the datanode the block
+comment|// should be deleted.  Items are removed from the invalidate list
+comment|// upon giving instructions to the namenode.
+comment|//
+name|addToInvalidates
+argument_list|(
+name|b
+argument_list|,
+name|cur
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* chooseExcessReplicates: "
+operator|+
+literal|"("
+operator|+
+name|cur
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", "
+operator|+
+name|b
+operator|+
+literal|") is added to recentInvalidateSets"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|addToExcessReplicate (DatanodeInfo dn, Block block)
-specifier|public
+specifier|private
 name|void
 name|addToExcessReplicate
 parameter_list|(
@@ -8641,7 +9741,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.chooseExcessReplicates:"
+literal|"BLOCK* addToExcessReplicate:"
 operator|+
 literal|" ("
 operator|+
@@ -8689,7 +9789,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.removeStoredBlock: "
+literal|"BLOCK* removeStoredBlock: "
 operator|+
 name|block
 operator|+
@@ -8740,7 +9840,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.removeStoredBlock: "
+literal|"BLOCK* removeStoredBlock: "
 operator|+
 name|block
 operator|+
@@ -8849,7 +9949,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.removeStoredBlock: "
+literal|"BLOCK* removeStoredBlock: "
 operator|+
 name|block
 operator|+
@@ -8971,7 +10071,7 @@ block|}
 block|}
 comment|/**    * The given node is reporting that it received a certain block.    */
 DECL|method|addBlock (DatanodeDescriptor node, Block block, String delHint)
-specifier|public
+specifier|private
 name|void
 name|addBlock
 parameter_list|(
@@ -9035,7 +10135,7 @@ name|stateChangeLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* NameSystem.blockReceived: "
+literal|"BLOCK* blockReceived: "
 operator|+
 name|block
 operator|+
@@ -9211,7 +10311,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.addBlock: block "
+literal|"BLOCK* addBlock: block "
 operator|+
 name|b
 operator|+
@@ -9254,6 +10354,141 @@ name|b
 argument_list|,
 name|node
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/** The given node is reporting that it received a certain block. */
+DECL|method|blockReceived (final DatanodeID nodeID, final String poolId, final Block block, final String delHint)
+specifier|public
+name|void
+name|blockReceived
+parameter_list|(
+specifier|final
+name|DatanodeID
+name|nodeID
+parameter_list|,
+specifier|final
+name|String
+name|poolId
+parameter_list|,
+specifier|final
+name|Block
+name|block
+parameter_list|,
+specifier|final
+name|String
+name|delHint
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+specifier|final
+name|DatanodeDescriptor
+name|node
+init|=
+name|datanodeManager
+operator|.
+name|getDatanode
+argument_list|(
+name|nodeID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|node
+operator|==
+literal|null
+operator|||
+operator|!
+name|node
+operator|.
+name|isAlive
+condition|)
+block|{
+specifier|final
+name|String
+name|s
+init|=
+name|block
+operator|+
+literal|" is received from dead or unregistered node "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"BLOCK* blockReceived: "
+operator|+
+name|s
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|s
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* blockReceived: "
+operator|+
+name|block
+operator|+
+literal|" is received from "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|addBlock
+argument_list|(
+name|node
+argument_list|,
+name|block
+argument_list|,
+name|delHint
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -9688,7 +10923,6 @@ expr_stmt|;
 block|}
 comment|/**    * On stopping decommission, check if the node has excess replicas.    * If there are any excess replicas, call processOverReplicatedBlock()    */
 DECL|method|processOverReplicatedBlocksOnReCommission ( final DatanodeDescriptor srcNode)
-specifier|private
 name|void
 name|processOverReplicatedBlocksOnReCommission
 parameter_list|(
@@ -10174,15 +11408,54 @@ name|block
 argument_list|)
 return|;
 block|}
-comment|/* updates a block in under replication queue */
-DECL|method|updateNeededReplications (Block block, int curReplicasDelta, int expectedReplicasDelta)
-specifier|public
+comment|/** Should the access keys be updated? */
+DECL|method|shouldUpdateBlockKey (final long updateTime)
+name|boolean
+name|shouldUpdateBlockKey
+parameter_list|(
+specifier|final
+name|long
+name|updateTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|boolean
+name|b
+init|=
+name|isBlockTokenEnabled
+operator|&&
+name|blockKeyUpdateInterval
+operator|<
+name|updateTime
+decl_stmt|;
+if|if
+condition|(
+name|b
+condition|)
+block|{
+name|blockTokenSecretManager
+operator|.
+name|updateKeys
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|b
+return|;
+block|}
+comment|/** updates a block in under replication queue */
+DECL|method|updateNeededReplications (final Block block, final int curReplicasDelta, int expectedReplicasDelta)
+specifier|private
 name|void
 name|updateNeededReplications
 parameter_list|(
+specifier|final
 name|Block
 name|block
 parameter_list|,
+specifier|final
 name|int
 name|curReplicasDelta
 parameter_list|,
@@ -10969,22 +12242,28 @@ name|b
 argument_list|)
 return|;
 block|}
-DECL|method|removeFromCorruptReplicasMap (Block block)
+comment|/** @return an iterator of the datanodes. */
+DECL|method|datanodeIterator (final Block block)
 specifier|public
-name|void
-name|removeFromCorruptReplicasMap
+name|Iterator
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|datanodeIterator
 parameter_list|(
+specifier|final
 name|Block
 name|block
 parameter_list|)
 block|{
-name|corruptReplicas
+return|return
+name|blocksMap
 operator|.
-name|removeFromCorruptReplicasMap
+name|nodeIterator
 argument_list|(
 name|block
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|numCorruptReplicas (Block block)
 specifier|public
@@ -11016,6 +12295,14 @@ block|{
 name|blocksMap
 operator|.
 name|removeBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+comment|// If block is removed from blocksMap remove it from corruptReplicasMap
+name|corruptReplicas
+operator|.
+name|removeFromCorruptReplicasMap
 argument_list|(
 name|block
 argument_list|)
@@ -11078,7 +12365,10 @@ block|}
 comment|/**    * Return an iterator over the set of blocks for which there are no replicas.    */
 DECL|method|getCorruptReplicaBlockIterator ()
 specifier|public
-name|BlockIterator
+name|Iterator
+argument_list|<
+name|Block
+argument_list|>
 name|getCorruptReplicaBlockIterator
 parameter_list|()
 block|{
@@ -11093,229 +12383,19 @@ name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 return|;
 block|}
-comment|/**    * Change, if appropriate, the admin state of a datanode to     * decommission completed. Return true if decommission is complete.    */
-DECL|method|checkDecommissionStateInternal (DatanodeDescriptor node)
-name|boolean
-name|checkDecommissionStateInternal
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
+comment|/** @return the size of UnderReplicatedBlocks */
+DECL|method|numOfUnderReplicatedBlocks ()
+specifier|public
+name|int
+name|numOfUnderReplicatedBlocks
+parameter_list|()
 block|{
-comment|// Check to see if all blocks in this decommissioned
-comment|// node has reached their target replication factor.
-if|if
-condition|(
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|isReplicationInProgress
-argument_list|(
-name|node
-argument_list|)
-condition|)
-block|{
-name|node
-operator|.
-name|setDecommissioned
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Decommission complete for node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 return|return
-name|node
+name|neededReplications
 operator|.
-name|isDecommissioned
+name|size
 argument_list|()
 return|;
-block|}
-comment|/** Start decommissioning the specified datanode. */
-DECL|method|startDecommission (DatanodeDescriptor node)
-name|void
-name|startDecommission
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|&&
-operator|!
-name|node
-operator|.
-name|isDecommissioned
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Start Decommissioning node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" with "
-operator|+
-name|node
-operator|.
-name|numBlocks
-argument_list|()
-operator|+
-literal|" blocks."
-argument_list|)
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|startDecommission
-argument_list|()
-expr_stmt|;
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-name|node
-operator|.
-name|decommissioningStatus
-operator|.
-name|setStartTime
-argument_list|(
-name|now
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// all the blocks that reside on this node have to be replicated.
-name|checkDecommissionStateInternal
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/** Stop decommissioning the specified datanodes. */
-DECL|method|stopDecommission (DatanodeDescriptor node)
-name|void
-name|stopDecommission
-parameter_list|(
-name|DatanodeDescriptor
-name|node
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|node
-operator|.
-name|isDecommissionInProgress
-argument_list|()
-operator|||
-name|node
-operator|.
-name|isDecommissioned
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stop Decommissioning node "
-operator|+
-name|node
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|stopDecommission
-argument_list|()
-expr_stmt|;
-name|namesystem
-operator|.
-name|updateStats
-argument_list|(
-name|node
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-name|processOverReplicatedBlocksOnReCommission
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Periodically calls computeReplicationWork().    */
 DECL|class|ReplicationMonitor
@@ -11326,6 +12406,7 @@ implements|implements
 name|Runnable
 block|{
 DECL|field|INVALIDATE_WORK_PCT_PER_ITERATION
+specifier|private
 specifier|static
 specifier|final
 name|int
@@ -11334,9 +12415,10 @@ init|=
 literal|32
 decl_stmt|;
 DECL|field|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
+specifier|private
 specifier|static
 specifier|final
-name|float
+name|int
 name|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
 init|=
 literal|2
@@ -11449,16 +12531,6 @@ name|workFound
 init|=
 literal|0
 decl_stmt|;
-name|int
-name|blocksToProcess
-init|=
-literal|0
-decl_stmt|;
-name|int
-name|nodesToProcess
-init|=
-literal|0
-decl_stmt|;
 comment|// Blocks should not be replicated or removed if in safe mode.
 comment|// It's OK to check safe mode here w/o holding lock, in the worst
 comment|// case extra replications will be scheduled, and these will get
@@ -11473,33 +12545,29 @@ condition|)
 return|return
 name|workFound
 return|;
-synchronized|synchronized
-init|(
-name|namesystem
-operator|.
-name|heartbeats
-init|)
-block|{
-name|blocksToProcess
-operator|=
-call|(
+specifier|final
 name|int
-call|)
-argument_list|(
-name|namesystem
+name|numlive
+init|=
+name|heartbeatManager
 operator|.
-name|heartbeats
-operator|.
-name|size
+name|getLiveDatanodeCount
 argument_list|()
+decl_stmt|;
+specifier|final
+name|int
+name|blocksToProcess
+init|=
+name|numlive
 operator|*
 name|ReplicationMonitor
 operator|.
 name|REPLICATION_WORK_MULTIPLIER_PER_ITERATION
-argument_list|)
-expr_stmt|;
+decl_stmt|;
+specifier|final
+name|int
 name|nodesToProcess
-operator|=
+init|=
 operator|(
 name|int
 operator|)
@@ -11507,24 +12575,15 @@ name|Math
 operator|.
 name|ceil
 argument_list|(
-operator|(
-name|double
-operator|)
-name|namesystem
-operator|.
-name|heartbeats
-operator|.
-name|size
-argument_list|()
+name|numlive
 operator|*
 name|ReplicationMonitor
 operator|.
 name|INVALIDATE_WORK_PCT_PER_ITERATION
 operator|/
-literal|100
+literal|100.0
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|workFound
 operator|=
 name|this

@@ -68,16 +68,23 @@ begin_comment
 comment|/************************************  * Some handy internal HDFS constants  *  ************************************/
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|HdfsConstants
+DECL|class|HdfsConstants
 specifier|public
-interface|interface
+specifier|final
+class|class
 name|HdfsConstants
 block|{
+comment|/* Hidden constructor */
+DECL|method|HdfsConstants ()
+specifier|private
+name|HdfsConstants
+parameter_list|()
+block|{ }
 comment|/**    * Type of the node    */
 DECL|enum|NodeType
 specifier|static
@@ -548,7 +555,7 @@ init|=
 literal|2000
 decl_stmt|;
 block|}
-end_interface
+end_class
 
 end_unit
 

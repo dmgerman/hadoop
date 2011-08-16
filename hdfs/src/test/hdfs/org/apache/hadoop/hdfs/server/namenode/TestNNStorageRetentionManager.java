@@ -108,9 +108,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FileJournalManager
 operator|.
-name|FoundEditLog
+name|EditLogFile
 import|;
 end_import
 
@@ -128,9 +128,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageTransactionalStorageInspector
+name|FSImageStorageInspector
 operator|.
-name|FoundFSImage
+name|FSImageFile
 import|;
 end_import
 
@@ -1272,7 +1272,7 @@ argument_list|)
 decl_stmt|;
 name|ArgumentCaptor
 argument_list|<
-name|FoundFSImage
+name|FSImageFile
 argument_list|>
 name|imagesPurgedCaptor
 init|=
@@ -1280,14 +1280,14 @@ name|ArgumentCaptor
 operator|.
 name|forClass
 argument_list|(
-name|FoundFSImage
+name|FSImageFile
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 name|ArgumentCaptor
 argument_list|<
-name|FoundEditLog
+name|EditLogFile
 argument_list|>
 name|logsPurgedCaptor
 init|=
@@ -1295,7 +1295,7 @@ name|ArgumentCaptor
 operator|.
 name|forClass
 argument_list|(
-name|FoundEditLog
+name|EditLogFile
 operator|.
 name|class
 argument_list|)
@@ -1314,7 +1314,9 @@ argument_list|,
 name|tc
 operator|.
 name|mockEditLog
-argument_list|()
+argument_list|(
+name|mockPurger
+argument_list|)
 argument_list|,
 name|mockPurger
 argument_list|)
@@ -1381,7 +1383,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FoundFSImage
+name|FSImageFile
 name|purged
 range|:
 name|imagesPurgedCaptor
@@ -1443,7 +1445,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|FoundEditLog
+name|EditLogFile
 name|purged
 range|:
 name|logsPurgedCaptor
@@ -1589,9 +1591,9 @@ name|mockStorageDir
 parameter_list|()
 block|{
 return|return
-name|TestFSImageStorageInspector
+name|FSImageTestUtil
 operator|.
-name|mockDirectory
+name|mockStorageDirectory
 argument_list|(
 name|type
 argument_list|,
@@ -1807,11 +1809,14 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|mockEditLog ()
+DECL|method|mockEditLog (StoragePurger purger)
 specifier|public
 name|FSEditLog
 name|mockEditLog
-parameter_list|()
+parameter_list|(
+name|StoragePurger
+name|purger
+parameter_list|)
 block|{
 specifier|final
 name|List
@@ -1863,6 +1868,12 @@ name|mockStorageDir
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|fjm
+operator|.
+name|purger
+operator|=
+name|purger
+expr_stmt|;
 name|jms
 operator|.
 name|add
@@ -1920,7 +1931,7 @@ name|args
 operator|.
 name|length
 operator|==
-literal|2
+literal|1
 assert|;
 name|long
 name|txId
@@ -1931,17 +1942,6 @@ operator|)
 name|args
 index|[
 literal|0
-index|]
-decl_stmt|;
-name|StoragePurger
-name|purger
-init|=
-operator|(
-name|StoragePurger
-operator|)
-name|args
-index|[
-literal|1
 index|]
 decl_stmt|;
 for|for
@@ -1957,8 +1957,6 @@ operator|.
 name|purgeLogsOlderThan
 argument_list|(
 name|txId
-argument_list|,
-name|purger
 argument_list|)
 expr_stmt|;
 block|}
@@ -1979,14 +1977,6 @@ argument_list|(
 name|Mockito
 operator|.
 name|anyLong
-argument_list|()
-argument_list|,
-operator|(
-name|StoragePurger
-operator|)
-name|Mockito
-operator|.
-name|anyObject
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -3763,7 +3763,10 @@ operator|.
 name|append
 argument_list|(
 literal|"Status: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 name|isHealthy
 argument_list|()
@@ -3773,15 +3776,19 @@ else|:
 literal|"CORRUPT"
 operator|)
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Total size:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalSize
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" B"
 argument_list|)
 expr_stmt|;
@@ -3791,32 +3798,44 @@ name|totalOpenFilesSize
 operator|!=
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" (Total open files size: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalOpenFilesSize
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" B)"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Total dirs:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalDirs
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Total files:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalFiles
 argument_list|)
 expr_stmt|;
@@ -3826,23 +3845,34 @@ name|totalOpenFiles
 operator|!=
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" (Files currently being written: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalOpenFiles
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Total blocks (validated):\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalBlocks
 argument_list|)
 expr_stmt|;
@@ -3852,38 +3882,54 @@ name|totalBlocks
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" (avg. block size "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 name|totalSize
 operator|/
 name|totalBlocks
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" B)"
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|totalOpenFilesBlocks
 operator|!=
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" (Total open file blocks (not validated): "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|totalOpenFilesBlocks
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|corruptFiles
@@ -3897,13 +3943,14 @@ name|append
 argument_list|(
 literal|"\n  ********************************"
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n  CORRUPT FILES:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|corruptFiles
 argument_list|)
 expr_stmt|;
@@ -3919,21 +3966,28 @@ operator|.
 name|append
 argument_list|(
 literal|"\n  MISSING BLOCKS:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|missingIds
 operator|.
 name|size
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n  MISSING SIZE:\t\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|missingSize
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" B"
 argument_list|)
 expr_stmt|;
@@ -3950,7 +4004,10 @@ operator|.
 name|append
 argument_list|(
 literal|"\n  CORRUPT BLOCKS: \t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|corruptBlocks
 argument_list|)
 expr_stmt|;
@@ -3968,7 +4025,10 @@ operator|.
 name|append
 argument_list|(
 literal|"\n Minimally replicated blocks:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|numMinReplicatedBlocks
 argument_list|)
 expr_stmt|;
@@ -3978,12 +4038,16 @@ name|totalBlocks
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" ("
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 call|(
 name|float
@@ -3999,16 +4063,23 @@ name|float
 operator|)
 name|totalBlocks
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" %)"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Over-replicated blocks:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|numOverReplicatedBlocks
 argument_list|)
 expr_stmt|;
@@ -4018,12 +4089,16 @@ name|totalBlocks
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" ("
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 call|(
 name|float
@@ -4039,16 +4114,23 @@ name|float
 operator|)
 name|totalBlocks
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" %)"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Under-replicated blocks:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|numUnderReplicatedBlocks
 argument_list|)
 expr_stmt|;
@@ -4058,12 +4140,16 @@ name|totalBlocks
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" ("
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 call|(
 name|float
@@ -4079,16 +4165,23 @@ name|float
 operator|)
 name|totalBlocks
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" %)"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Mis-replicated blocks:\t\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|numMisReplicatedBlocks
 argument_list|)
 expr_stmt|;
@@ -4098,12 +4191,16 @@ name|totalBlocks
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" ("
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 call|(
 name|float
@@ -4119,44 +4216,54 @@ name|float
 operator|)
 name|totalBlocks
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" %)"
 argument_list|)
 expr_stmt|;
+block|}
 name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Default replication factor:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|replication
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Average block replication:\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|getReplicationFactor
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Corrupt blocks:\t\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|corruptBlocks
 argument_list|)
-expr_stmt|;
-name|res
 operator|.
 name|append
 argument_list|(
 literal|"\n Missing replicas:\t\t"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|missingReplicas
 argument_list|)
 expr_stmt|;
@@ -4166,12 +4273,16 @@ name|totalReplicas
 operator|>
 literal|0
 condition|)
+block|{
 name|res
 operator|.
 name|append
 argument_list|(
 literal|" ("
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 operator|(
 call|(
 name|float
@@ -4187,10 +4298,14 @@ name|float
 operator|)
 name|totalReplicas
 operator|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" %)"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|res
 operator|.

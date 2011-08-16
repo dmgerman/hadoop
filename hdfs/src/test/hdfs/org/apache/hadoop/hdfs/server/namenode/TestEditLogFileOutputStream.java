@@ -379,7 +379,7 @@ decl_stmt|;
 name|EditLogValidation
 name|validation
 init|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(
@@ -452,7 +452,7 @@ name|validLength
 decl_stmt|;
 name|validation
 operator|=
-name|FSEditLogLoader
+name|EditLogFileInputStream
 operator|.
 name|validateEditLog
 argument_list|(

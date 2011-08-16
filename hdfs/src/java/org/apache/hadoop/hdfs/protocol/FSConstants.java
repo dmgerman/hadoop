@@ -42,24 +42,45 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|HdfsConfiguration
 import|;
 end_import
 
 begin_comment
-comment|/************************************  * Some handy constants  *  ************************************/
+comment|/************************************  * Some handy constants  *   ************************************/
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|FSConstants
+DECL|class|FSConstants
 specifier|public
-interface|interface
+specifier|final
+class|class
 name|FSConstants
 block|{
+comment|/* Hidden constructor */
+DECL|method|FSConstants ()
+specifier|private
+name|FSConstants
+parameter_list|()
+block|{   }
 DECL|field|MIN_BLOCKS_FOR_WRITE
 specifier|public
 specifier|static
@@ -93,34 +114,6 @@ decl_stmt|;
 comment|//
 comment|// Timeouts, constants
 comment|//
-DECL|field|HEARTBEAT_INTERVAL
-specifier|public
-specifier|static
-name|long
-name|HEARTBEAT_INTERVAL
-init|=
-literal|3
-decl_stmt|;
-DECL|field|BLOCKREPORT_INTERVAL
-specifier|public
-specifier|static
-name|long
-name|BLOCKREPORT_INTERVAL
-init|=
-literal|60
-operator|*
-literal|60
-operator|*
-literal|1000
-decl_stmt|;
-DECL|field|BLOCKREPORT_INITIAL_DELAY
-specifier|public
-specifier|static
-name|long
-name|BLOCKREPORT_INITIAL_DELAY
-init|=
-literal|0
-decl_stmt|;
 DECL|field|LEASE_SOFTLIMIT_PERIOD
 specifier|public
 specifier|static
@@ -154,9 +147,11 @@ literal|10
 operator|*
 literal|1000
 decl_stmt|;
-comment|//in ms
-comment|// We need to limit the length and depth of a path in the filesystem.  HADOOP-438
-comment|// Currently we set the maximum length to 8k characters and the maximum depth to 1k.
+comment|// in ms
+comment|// We need to limit the length and depth of a path in the filesystem.
+comment|// HADOOP-438
+comment|// Currently we set the maximum length to 8k characters and the maximum depth
+comment|// to 1k.
 DECL|field|MAX_PATH_LENGTH
 specifier|public
 specifier|static
@@ -173,95 +168,7 @@ name|MAX_PATH_DEPTH
 init|=
 literal|1000
 decl_stmt|;
-DECL|field|BUFFER_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|BUFFER_SIZE
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-literal|"io.file.buffer.size"
-argument_list|,
-literal|4096
-argument_list|)
-decl_stmt|;
-comment|//Used for writing header etc.
-DECL|field|SMALL_BUFFER_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|SMALL_BUFFER_SIZE
-init|=
-name|Math
-operator|.
-name|min
-argument_list|(
-name|BUFFER_SIZE
-operator|/
-literal|2
-argument_list|,
-literal|512
-argument_list|)
-decl_stmt|;
-comment|//TODO mb@media-style.com: should be conf injected?
-DECL|field|DEFAULT_BLOCK_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_BLOCK_SIZE
-init|=
-literal|64
-operator|*
-literal|1024
-operator|*
-literal|1024
-decl_stmt|;
-DECL|field|DEFAULT_BYTES_PER_CHECKSUM
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_BYTES_PER_CHECKSUM
-init|=
-literal|512
-decl_stmt|;
-DECL|field|DEFAULT_WRITE_PACKET_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_WRITE_PACKET_SIZE
-init|=
-literal|64
-operator|*
-literal|1024
-decl_stmt|;
-DECL|field|DEFAULT_REPLICATION_FACTOR
-specifier|public
-specifier|static
-specifier|final
-name|short
-name|DEFAULT_REPLICATION_FACTOR
-init|=
-literal|3
-decl_stmt|;
-DECL|field|DEFAULT_FILE_BUFFER_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_FILE_BUFFER_SIZE
-init|=
-literal|4096
-decl_stmt|;
+comment|// TODO mb@media-style.com: should be conf injected?
 DECL|field|DEFAULT_DATA_SOCKET_SIZE
 specifier|public
 specifier|static
@@ -273,12 +180,53 @@ literal|128
 operator|*
 literal|1024
 decl_stmt|;
-DECL|field|SIZE_OF_INTEGER
+DECL|field|IO_FILE_BUFFER_SIZE
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|SIZE_OF_INTEGER
+name|IO_FILE_BUFFER_SIZE
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// Used for writing header etc.
+DECL|field|SMALL_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SMALL_BUFFER_SIZE
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|IO_FILE_BUFFER_SIZE
+operator|/
+literal|2
+argument_list|,
+literal|512
+argument_list|)
+decl_stmt|;
+DECL|field|BYTES_IN_INTEGER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|BYTES_IN_INTEGER
 init|=
 name|Integer
 operator|.
@@ -290,29 +238,29 @@ name|SIZE
 decl_stmt|;
 comment|// SafeMode actions
 DECL|enum|SafeModeAction
-DECL|enumConstant|SAFEMODE_LEAVE
-DECL|enumConstant|SAFEMODE_ENTER
-DECL|enumConstant|SAFEMODE_GET
 specifier|public
 enum|enum
 name|SafeModeAction
 block|{
+DECL|enumConstant|SAFEMODE_LEAVE
+DECL|enumConstant|SAFEMODE_ENTER
+DECL|enumConstant|SAFEMODE_GET
 name|SAFEMODE_LEAVE
 block|,
 name|SAFEMODE_ENTER
 block|,
 name|SAFEMODE_GET
-block|; }
+block|;   }
 comment|// type of the datanode report
 DECL|enum|DatanodeReportType
-DECL|enumConstant|ALL
-DECL|enumConstant|LIVE
-DECL|enumConstant|DEAD
 specifier|public
 specifier|static
 enum|enum
 name|DatanodeReportType
 block|{
+DECL|enumConstant|ALL
+DECL|enumConstant|LIVE
+DECL|enumConstant|DEAD
 name|ALL
 block|,
 name|LIVE
@@ -330,7 +278,7 @@ init|=
 operator|-
 literal|12345
 decl_stmt|;
-comment|/**    * Distributed upgrade actions:    *     * 1. Get upgrade status.    * 2. Get detailed upgrade status.    * 3. Proceed with the upgrade if it is stuck, no matter what the status is.    */
+comment|/**    * Distributed upgrade actions:    *     * 1. Get upgrade status. 2. Get detailed upgrade status. 3. Proceed with the    * upgrade if it is stuck, no matter what the status is.    */
 DECL|enum|UpgradeAction
 specifier|public
 specifier|static
@@ -338,12 +286,12 @@ enum|enum
 name|UpgradeAction
 block|{
 DECL|enumConstant|GET_STATUS
+DECL|enumConstant|DETAILED_STATUS
+DECL|enumConstant|FORCE_PROCEED
 name|GET_STATUS
 block|,
-DECL|enumConstant|DETAILED_STATUS
 name|DETAILED_STATUS
 block|,
-DECL|enumConstant|FORCE_PROCEED
 name|FORCE_PROCEED
 block|;   }
 comment|/**    * URI Scheme for hdfs://namenode/ URIs.    */
@@ -370,7 +318,7 @@ name|getCurrentLayoutVersion
 argument_list|()
 decl_stmt|;
 block|}
-end_interface
+end_class
 
 end_unit
 

@@ -410,8 +410,6 @@ specifier|public
 class|class
 name|SimulatedFSDataset
 implements|implements
-name|FSConstants
-implements|,
 name|FSDatasetInterface
 implements|,
 name|Configurable

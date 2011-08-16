@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 package|;
 end_package
 
@@ -222,9 +222,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
+name|datanode
 operator|.
-name|DatanodeDescriptor
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -240,9 +240,27 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|datanode
+name|namenode
 operator|.
-name|DataNodeTestUtils
+name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeAdapter
 import|;
 end_import
 
@@ -548,6 +566,27 @@ operator|.
 name|getNamesystem
 argument_list|()
 decl_stmt|;
+specifier|final
+name|BlockManager
+name|bm
+init|=
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+decl_stmt|;
+specifier|final
+name|HeartbeatManager
+name|hm
+init|=
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getHeartbeatManager
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|namesystem
@@ -557,9 +596,7 @@ argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
-name|namesystem
-operator|.
-name|heartbeats
+name|hm
 init|)
 block|{
 comment|// set live datanode's remaining space to be 0
@@ -577,9 +614,10 @@ control|(
 name|DatanodeDescriptor
 name|datanode
 range|:
-name|namesystem
+name|hm
 operator|.
-name|heartbeats
+name|getDatanodes
+argument_list|()
 control|)
 block|{
 if|if
@@ -616,10 +654,12 @@ expr_stmt|;
 block|}
 block|}
 comment|// decrease the replication factor to 1;
-name|namesystem
+name|NameNodeAdapter
 operator|.
 name|setReplication
 argument_list|(
+name|namesystem
+argument_list|,
 name|fileName
 operator|.
 name|toString
@@ -637,10 +677,7 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|bm
 operator|.
 name|countNodes
 argument_list|(

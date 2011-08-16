@@ -837,6 +837,24 @@ name|Path
 name|dst
 parameter_list|)
 block|{ }
+DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst, boolean useRawLocalFileSystem)
+specifier|public
+name|void
+name|copyToLocalFile
+parameter_list|(
+name|boolean
+name|delSrc
+parameter_list|,
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|,
+name|boolean
+name|useRawLocalFileSystem
+parameter_list|)
+block|{ }
 DECL|method|moveToLocalFile (Path src, Path dst)
 specifier|public
 name|void

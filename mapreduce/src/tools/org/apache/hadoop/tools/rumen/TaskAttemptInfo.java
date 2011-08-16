@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -57,7 +67,19 @@ specifier|final
 name|TaskInfo
 name|taskInfo
 decl_stmt|;
-DECL|method|TaskAttemptInfo (State state, TaskInfo taskInfo)
+DECL|field|allSplits
+specifier|protected
+specifier|final
+name|List
+argument_list|<
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+argument_list|>
+name|allSplits
+decl_stmt|;
+DECL|method|TaskAttemptInfo (State state, TaskInfo taskInfo, List<List<Integer>> allSplits)
 specifier|protected
 name|TaskAttemptInfo
 parameter_list|(
@@ -66,6 +88,15 @@ name|state
 parameter_list|,
 name|TaskInfo
 name|taskInfo
+parameter_list|,
+name|List
+argument_list|<
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+argument_list|>
+name|allSplits
 parameter_list|)
 block|{
 if|if
@@ -108,6 +139,38 @@ name|taskInfo
 operator|=
 name|taskInfo
 expr_stmt|;
+name|this
+operator|.
+name|allSplits
+operator|=
+name|allSplits
+expr_stmt|;
+block|}
+DECL|method|TaskAttemptInfo (State state, TaskInfo taskInfo)
+specifier|protected
+name|TaskAttemptInfo
+parameter_list|(
+name|State
+name|state
+parameter_list|,
+name|TaskInfo
+name|taskInfo
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|state
+argument_list|,
+name|taskInfo
+argument_list|,
+name|LoggedTaskAttempt
+operator|.
+name|SplitVectorKind
+operator|.
+name|getNullSplitsVector
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get the final {@link State} of the task-attempt.    *     * @return the final<code>State</code> of the task-attempt    */
 DECL|method|getRunState ()
@@ -137,6 +200,29 @@ parameter_list|()
 block|{
 return|return
 name|taskInfo
+return|;
+block|}
+DECL|method|getSplitVector (LoggedTaskAttempt.SplitVectorKind kind)
+specifier|public
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+name|getSplitVector
+parameter_list|(
+name|LoggedTaskAttempt
+operator|.
+name|SplitVectorKind
+name|kind
+parameter_list|)
+block|{
+return|return
+name|kind
+operator|.
+name|get
+argument_list|(
+name|allSplits
+argument_list|)
 return|;
 block|}
 block|}

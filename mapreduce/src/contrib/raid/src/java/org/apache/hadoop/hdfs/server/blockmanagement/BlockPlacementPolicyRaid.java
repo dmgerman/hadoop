@@ -3079,8 +3079,6 @@ operator|.
 name|getFileInfo
 argument_list|(
 name|namesystem
-operator|.
-name|dir
 argument_list|,
 name|src
 argument_list|,
@@ -3184,8 +3182,6 @@ operator|.
 name|getFileInfo
 argument_list|(
 name|namesystem
-operator|.
-name|dir
 argument_list|,
 name|parity
 argument_list|,

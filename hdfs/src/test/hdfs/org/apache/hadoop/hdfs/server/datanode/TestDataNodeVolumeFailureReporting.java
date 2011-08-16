@@ -280,9 +280,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|blockmanagement
 operator|.
-name|FSNamesystem
+name|DatanodeManager
 import|;
 end_import
 
@@ -654,14 +654,22 @@ argument_list|(
 name|WAIT_FOR_HEARTBEATS
 argument_list|)
 expr_stmt|;
-name|FSNamesystem
-name|ns
+specifier|final
+name|DatanodeManager
+name|dm
 init|=
 name|cluster
 operator|.
 name|getNamesystem
 argument_list|()
+operator|.
+name|getBlockManager
+argument_list|(         )
+operator|.
+name|getDatanodeManager
+argument_list|()
 decl_stmt|;
+specifier|final
 name|long
 name|origCapacity
 init|=
@@ -669,7 +677,7 @@ name|DFSTestUtil
 operator|.
 name|getLiveDatanodeCapacity
 argument_list|(
-name|ns
+name|dm
 argument_list|)
 decl_stmt|;
 name|long
@@ -679,7 +687,7 @@ name|DFSTestUtil
 operator|.
 name|getDatanodeCapacity
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|0
 argument_list|)
@@ -968,7 +976,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|3
 argument_list|,
@@ -1105,13 +1113,15 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|ns
+name|dm
 operator|.
-name|DFSNodesStatus
+name|fetchDatanodes
 argument_list|(
 name|live
 argument_list|,
 name|dead
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|live
@@ -1124,13 +1134,15 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|ns
+name|dm
 operator|.
-name|DFSNodesStatus
+name|fetchDatanodes
 argument_list|(
 name|live
 argument_list|,
 name|dead
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1157,7 +1169,7 @@ name|DFSTestUtil
 operator|.
 name|getDatanodeCapacity
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|0
 argument_list|)
@@ -1166,7 +1178,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|3
 argument_list|,
@@ -1281,7 +1293,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|2
 argument_list|,
@@ -1405,7 +1417,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|3
 argument_list|,
@@ -1467,12 +1479,19 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|FSNamesystem
-name|ns
+specifier|final
+name|DatanodeManager
+name|dm
 init|=
 name|cluster
 operator|.
 name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|(         )
+operator|.
+name|getDatanodeManager
 argument_list|()
 decl_stmt|;
 name|long
@@ -1482,7 +1501,7 @@ name|DFSTestUtil
 operator|.
 name|getLiveDatanodeCapacity
 argument_list|(
-name|ns
+name|dm
 argument_list|)
 decl_stmt|;
 name|long
@@ -1492,7 +1511,7 @@ name|DFSTestUtil
 operator|.
 name|getDatanodeCapacity
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|0
 argument_list|)
@@ -1607,7 +1626,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|3
 argument_list|,
@@ -1643,7 +1662,7 @@ name|DFSTestUtil
 operator|.
 name|waitForDatanodeStatus
 argument_list|(
-name|ns
+name|dm
 argument_list|,
 literal|3
 argument_list|,

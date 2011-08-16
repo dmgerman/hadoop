@@ -12932,6 +12932,8 @@ parameter_list|,
 name|boolean
 name|initialContact
 parameter_list|)
+throws|throws
+name|UnknownHostException
 block|{
 name|getInstrumentation
 argument_list|()

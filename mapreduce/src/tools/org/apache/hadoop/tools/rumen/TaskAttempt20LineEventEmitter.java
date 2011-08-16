@@ -711,6 +711,8 @@ argument_list|,
 name|hostName
 argument_list|,
 name|error
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

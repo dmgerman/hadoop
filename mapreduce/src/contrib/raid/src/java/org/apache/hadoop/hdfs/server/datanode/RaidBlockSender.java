@@ -271,8 +271,6 @@ operator|.
 name|io
 operator|.
 name|Closeable
-implements|,
-name|FSConstants
 block|{
 DECL|field|LOG
 specifier|public
@@ -1797,7 +1795,9 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 argument_list|,
 name|MIN_BUFFER_WITH_TRANSFERTO
 argument_list|)
@@ -1828,7 +1828,9 @@ argument_list|(
 literal|1
 argument_list|,
 operator|(
-name|BUFFER_SIZE
+name|FSConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
 operator|+
 name|bytesPerChecksum
 operator|-

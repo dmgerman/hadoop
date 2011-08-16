@@ -2090,6 +2090,8 @@ argument_list|,
 name|sortPhase
 argument_list|,
 name|this
+argument_list|,
+name|mapOutputFile
 argument_list|)
 decl_stmt|;
 name|rIter

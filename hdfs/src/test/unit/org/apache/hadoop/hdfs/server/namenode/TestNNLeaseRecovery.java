@@ -3015,8 +3015,6 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|blocksMap
-operator|.
 name|addINode
 argument_list|(
 name|b1

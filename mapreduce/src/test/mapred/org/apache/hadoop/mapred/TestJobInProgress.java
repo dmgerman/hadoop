@@ -1974,6 +1974,9 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|jspy
+argument_list|,
+name|atLeastOnce
+argument_list|()
 argument_list|)
 operator|.
 name|getJobCounters
