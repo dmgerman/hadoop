@@ -288,7 +288,7 @@ specifier|final
 name|boolean
 name|isMaster
 decl_stmt|;
-comment|/*    * keyUpdateInterval is the interval that NN updates its block keys. It should    * be set long enough so that all live DN's and Balancer should have sync'ed    * their block keys with NN at least once during each interval.    */
+comment|/**    * keyUpdateInterval is the interval that NN updates its block keys. It should    * be set long enough so that all live DN's and Balancer should have sync'ed    * their block keys with NN at least once during each interval.    */
 DECL|field|keyUpdateInterval
 specifier|private
 specifier|final
@@ -732,11 +732,39 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Update block keys if update time> update interval.    * @return true if the keys are updated.    */
+DECL|method|updateKeys (final long updateTime)
+specifier|public
+name|boolean
+name|updateKeys
+parameter_list|(
+specifier|final
+name|long
+name|updateTime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|updateTime
+operator|>
+name|keyUpdateInterval
+condition|)
+block|{
+return|return
+name|updateKeys
+argument_list|()
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Update block keys, only to be used in master mode    */
 DECL|method|updateKeys ()
-specifier|public
 specifier|synchronized
-name|void
+name|boolean
 name|updateKeys
 parameter_list|()
 throws|throws
@@ -747,7 +775,9 @@ condition|(
 operator|!
 name|isMaster
 condition|)
-return|return;
+return|return
+literal|false
+return|;
 name|LOG
 operator|.
 name|info
@@ -870,6 +900,9 @@ argument_list|,
 name|nextKey
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 comment|/** Generate an block token for current user */
 DECL|method|generateToken (ExtendedBlock block, EnumSet<AccessMode> modes)
