@@ -688,7 +688,7 @@ name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
 return|return
-name|BlockReader
+name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(

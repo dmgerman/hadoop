@@ -3566,7 +3566,7 @@ comment|// The OP_READ_BLOCK request is sent as we make the BlockReader
 name|BlockReader
 name|reader
 init|=
-name|BlockReader
+name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
