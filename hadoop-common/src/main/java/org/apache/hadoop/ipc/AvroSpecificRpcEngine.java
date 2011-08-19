@@ -62,6 +62,8 @@ name|apache
 operator|.
 name|avro
 operator|.
+name|ipc
+operator|.
 name|specific
 operator|.
 name|SpecificRequestor
@@ -75,6 +77,8 @@ operator|.
 name|apache
 operator|.
 name|avro
+operator|.
+name|ipc
 operator|.
 name|specific
 operator|.
