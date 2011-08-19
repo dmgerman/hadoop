@@ -92,8 +92,6 @@ name|apache
 operator|.
 name|avro
 operator|.
-name|ipc
-operator|.
 name|AvroRemoteException
 import|;
 end_import
@@ -1063,18 +1061,14 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|Utf8
+name|CharSequence
 name|echo
 init|=
 name|proxy
 operator|.
 name|echo
 argument_list|(
-operator|new
-name|Utf8
-argument_list|(
 literal|"hello world"
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1151,12 +1145,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|echo (Utf8 msg)
+DECL|method|echo (CharSequence msg)
 specifier|public
-name|Utf8
+name|CharSequence
 name|echo
 parameter_list|(
-name|Utf8
+name|CharSequence
 name|msg
 parameter_list|)
 throws|throws

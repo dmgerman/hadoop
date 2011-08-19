@@ -178,6 +178,8 @@ name|apache
 operator|.
 name|avro
 operator|.
+name|ipc
+operator|.
 name|reflect
 operator|.
 name|ReflectRequestor
@@ -192,6 +194,8 @@ name|apache
 operator|.
 name|avro
 operator|.
+name|ipc
+operator|.
 name|reflect
 operator|.
 name|ReflectResponder
@@ -205,6 +209,8 @@ operator|.
 name|apache
 operator|.
 name|avro
+operator|.
+name|ipc
 operator|.
 name|specific
 operator|.
