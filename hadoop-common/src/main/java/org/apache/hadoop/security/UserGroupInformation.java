@@ -1038,7 +1038,7 @@ expr_stmt|;
 comment|// give the configuration on how to translate Kerberos names
 try|try
 block|{
-name|KerberosName
+name|HadoopKerberosName
 operator|.
 name|setConfiguration
 argument_list|(

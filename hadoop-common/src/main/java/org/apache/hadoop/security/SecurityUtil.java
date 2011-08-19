@@ -1138,7 +1138,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|KerberosName
+name|HadoopKerberosName
 argument_list|(
 name|principalName
 argument_list|)

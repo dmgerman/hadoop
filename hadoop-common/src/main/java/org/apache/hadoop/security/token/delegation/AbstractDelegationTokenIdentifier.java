@@ -116,7 +116,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|KerberosName
+name|HadoopKerberosName
 import|;
 end_import
 
@@ -298,11 +298,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|KerberosName
+name|HadoopKerberosName
 name|renewerKrbName
 init|=
 operator|new
-name|KerberosName
+name|HadoopKerberosName
 argument_list|(
 name|renewer
 operator|.

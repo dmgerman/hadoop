@@ -193,7 +193,7 @@ block|{
 name|shortName
 operator|=
 operator|new
-name|KerberosName
+name|HadoopKerberosName
 argument_list|(
 name|name
 argument_list|)

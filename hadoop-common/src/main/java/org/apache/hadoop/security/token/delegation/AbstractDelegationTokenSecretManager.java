@@ -194,7 +194,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|KerberosName
+name|HadoopKerberosName
 import|;
 end_import
 
@@ -241,20 +241,6 @@ operator|.
 name|util
 operator|.
 name|Daemon
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
 import|;
 end_import
 
@@ -1404,11 +1390,11 @@ operator|.
 name|getRenewer
 argument_list|()
 decl_stmt|;
-name|KerberosName
+name|HadoopKerberosName
 name|cancelerKrbName
 init|=
 operator|new
-name|KerberosName
+name|HadoopKerberosName
 argument_list|(
 name|canceller
 argument_list|)
