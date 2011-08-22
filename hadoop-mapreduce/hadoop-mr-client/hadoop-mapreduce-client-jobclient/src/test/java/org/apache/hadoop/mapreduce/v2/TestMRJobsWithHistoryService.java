@@ -56,8 +56,6 @@ name|apache
 operator|.
 name|avro
 operator|.
-name|ipc
-operator|.
 name|AvroRemoteException
 import|;
 end_import
