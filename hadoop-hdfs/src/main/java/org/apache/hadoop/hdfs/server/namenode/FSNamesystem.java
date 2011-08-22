@@ -1398,22 +1398,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|util
-operator|.
-name|RwLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
@@ -1729,7 +1713,7 @@ specifier|public
 class|class
 name|FSNamesystem
 implements|implements
-name|RwLock
+name|Namesystem
 implements|,
 name|FSClusterStats
 implements|,
@@ -3444,7 +3428,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** Is this name system running? */
+annotation|@
+name|Override
 DECL|method|isRunning ()
 specifier|public
 name|boolean
@@ -6576,37 +6561,13 @@ name|src
 argument_list|)
 expr_stmt|;
 comment|// convert last block to under-construction
-name|LocatedBlock
-name|lb
-init|=
+return|return
 name|blockManager
 operator|.
 name|convertLastBlockToUnderConstruction
 argument_list|(
 name|cons
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|lb
-operator|!=
-literal|null
-condition|)
-block|{
-name|blockManager
-operator|.
-name|setBlockToken
-argument_list|(
-name|lb
-argument_list|,
-name|AccessMode
-operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|lb
 return|;
 block|}
 else|else
@@ -7609,8 +7570,6 @@ name|clientName
 argument_list|)
 decl_stmt|;
 comment|// commit the last block and complete it if it has minimum replicas
-name|blockManager
-operator|.
 name|commitOrCompleteLastBlock
 argument_list|(
 name|pendingFile
@@ -8593,8 +8552,6 @@ name|holder
 argument_list|)
 decl_stmt|;
 comment|// commit the last block and complete it if it has minimum replicas
-name|blockManager
-operator|.
 name|commitOrCompleteLastBlock
 argument_list|(
 name|pendingFile
@@ -11248,11 +11205,10 @@ name|newHolder
 argument_list|)
 return|;
 block|}
-comment|/** Update disk space consumed. */
-DECL|method|updateDiskSpaceConsumed (final INodeFileUnderConstruction fileINode, final Block commitBlock)
-specifier|public
+DECL|method|commitOrCompleteLastBlock (final INodeFileUnderConstruction fileINode, final Block commitBlock)
+specifier|private
 name|void
-name|updateDiskSpaceConsumed
+name|commitOrCompleteLastBlock
 parameter_list|(
 specifier|final
 name|INodeFileUnderConstruction
@@ -11269,6 +11225,21 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+if|if
+condition|(
+operator|!
+name|blockManager
+operator|.
+name|commitOrCompleteLastBlock
+argument_list|(
+name|fileINode
+argument_list|,
+name|commitBlock
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 comment|// Adjust disk space consumption if required
 specifier|final
 name|long
@@ -11790,8 +11761,6 @@ name|closeFile
 condition|)
 block|{
 comment|// commit the last block and complete it if it has minimum replicas
-name|blockManager
-operator|.
 name|commitOrCompleteLastBlock
 argument_list|(
 name|pendingFile
@@ -13068,6 +13037,7 @@ literal|false
 decl_stmt|;
 comment|/**      * Creates SafeModeInfo when the name node enters      * automatic safe mode at startup.      *        * @param conf configuration      */
 DECL|method|SafeModeInfo (Configuration conf)
+specifier|private
 name|SafeModeInfo
 parameter_list|(
 name|Configuration
@@ -13246,6 +13216,7 @@ expr_stmt|;
 block|}
 comment|/**      * Check if safe mode is on.      * @return true if in safe mode      */
 DECL|method|isOn ()
+specifier|private
 specifier|synchronized
 name|boolean
 name|isOn
@@ -13295,6 +13266,7 @@ return|;
 block|}
 comment|/**      * Check if we are populating replication queues.      */
 DECL|method|isPopulatingReplQueues ()
+specifier|private
 specifier|synchronized
 name|boolean
 name|isPopulatingReplQueues
@@ -13306,6 +13278,7 @@ return|;
 block|}
 comment|/**      * Enter safe mode.      */
 DECL|method|enter ()
+specifier|private
 name|void
 name|enter
 parameter_list|()
@@ -13319,6 +13292,7 @@ expr_stmt|;
 block|}
 comment|/**      * Leave safe mode.      *<p>      * Switch to manual safe mode if distributed upgrade is required.<br>      * Check for invalid, under-& over-replicated blocks in the end of startup.      */
 DECL|method|leave (boolean checkForUpgrades)
+specifier|private
 specifier|synchronized
 name|void
 name|leave
@@ -13511,6 +13485,7 @@ expr_stmt|;
 block|}
 comment|/**      * Initialize replication queues.      */
 DECL|method|initializeReplQueues ()
+specifier|private
 specifier|synchronized
 name|void
 name|initializeReplQueues
@@ -13577,6 +13552,7 @@ expr_stmt|;
 block|}
 comment|/**      * Check whether we have reached the threshold for       * initializing replication queues.      */
 DECL|method|canInitializeReplQueues ()
+specifier|private
 specifier|synchronized
 name|boolean
 name|canInitializeReplQueues
@@ -13590,6 +13566,7 @@ return|;
 block|}
 comment|/**       * Safe mode can be turned off iff       * the threshold is reached and       * the extension time have passed.      * @return true if can leave or false otherwise.      */
 DECL|method|canLeave ()
+specifier|private
 specifier|synchronized
 name|boolean
 name|canLeave
@@ -13633,6 +13610,7 @@ return|;
 block|}
 comment|/**       * There is no need to enter safe mode       * if DFS is empty or {@link #threshold} == 0      */
 DECL|method|needEnter ()
+specifier|private
 name|boolean
 name|needEnter
 parameter_list|()
@@ -13793,6 +13771,7 @@ block|}
 block|}
 comment|/**      * Set total number of blocks.      */
 DECL|method|setBlockTotal (int total)
+specifier|private
 specifier|synchronized
 name|void
 name|setBlockTotal
@@ -13844,6 +13823,7 @@ expr_stmt|;
 block|}
 comment|/**      * Increment number of safe blocks if current block has       * reached minimal replication.      * @param replication current replication       */
 DECL|method|incrementSafeBlockCount (short replication)
+specifier|private
 specifier|synchronized
 name|void
 name|incrementSafeBlockCount
@@ -13872,6 +13852,7 @@ expr_stmt|;
 block|}
 comment|/**      * Decrement number of safe blocks if current block has       * fallen below minimal replication.      * @param replication current replication       */
 DECL|method|decrementSafeBlockCount (short replication)
+specifier|private
 specifier|synchronized
 name|void
 name|decrementSafeBlockCount
@@ -13899,6 +13880,7 @@ expr_stmt|;
 block|}
 comment|/**      * Check if safe mode was entered manually or automatically (at startup, or      * when disk space is low).      */
 DECL|method|isManual ()
+specifier|private
 name|boolean
 name|isManual
 parameter_list|()
@@ -13916,6 +13898,7 @@ return|;
 block|}
 comment|/**      * Set manual safe mode.      */
 DECL|method|setManual ()
+specifier|private
 specifier|synchronized
 name|void
 name|setManual
@@ -13930,6 +13913,7 @@ expr_stmt|;
 block|}
 comment|/**      * Check if safe mode was entered due to resources being low.      */
 DECL|method|areResourcesLow ()
+specifier|private
 name|boolean
 name|areResourcesLow
 parameter_list|()
@@ -13940,6 +13924,7 @@ return|;
 block|}
 comment|/**      * Set that resources are low for this instance of safe mode.      */
 DECL|method|setResourcesLow ()
+specifier|private
 name|void
 name|setResourcesLow
 parameter_list|()
@@ -14272,7 +14257,8 @@ operator|=
 name|curTime
 expr_stmt|;
 block|}
-comment|/**      * Returns printable state of the class.      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -14324,6 +14310,7 @@ return|;
 block|}
 comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      */
 DECL|method|isConsistent ()
+specifier|private
 name|boolean
 name|isConsistent
 parameter_list|()
@@ -14546,7 +14533,8 @@ name|isInSafeMode
 argument_list|()
 return|;
 block|}
-comment|/** Check and trigger safe mode. */
+annotation|@
+name|Override
 DECL|method|checkSafeMode ()
 specifier|public
 name|void
@@ -14575,7 +14563,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check whether the name node is in safe mode.    * @return true if safe mode is ON, false otherwise    */
+annotation|@
+name|Override
 DECL|method|isInSafeMode ()
 specifier|public
 name|boolean
@@ -14606,7 +14595,8 @@ name|isOn
 argument_list|()
 return|;
 block|}
-comment|/**    * Check whether the name node is in startup mode.    */
+annotation|@
+name|Override
 DECL|method|isInStartupSafeMode ()
 specifier|public
 name|boolean
@@ -14643,7 +14633,8 @@ name|isOn
 argument_list|()
 return|;
 block|}
-comment|/**    * Check whether replication queues are populated.    */
+annotation|@
+name|Override
 DECL|method|isPopulatingReplQueues ()
 specifier|public
 name|boolean
@@ -14674,7 +14665,8 @@ name|isPopulatingReplQueues
 argument_list|()
 return|;
 block|}
-comment|/**    * Increment number of blocks that reached minimal replication.    * @param replication current replication     */
+annotation|@
+name|Override
 DECL|method|incrementSafeBlockCount (int replication)
 specifier|public
 name|void
@@ -14710,7 +14702,8 @@ name|replication
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Decrement number of blocks that reached minimal replication.    */
+annotation|@
+name|Override
 DECL|method|decrementSafeBlockCount (Block b)
 specifier|public
 name|void
@@ -15146,20 +15139,6 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-DECL|method|getTransactionID ()
-specifier|public
-name|long
-name|getTransactionID
-parameter_list|()
-block|{
-return|return
-name|getEditLog
-argument_list|()
-operator|.
-name|getSyncTxId
-argument_list|()
-return|;
 block|}
 DECL|method|rollEditLog ()
 name|CheckpointSignature
@@ -15616,7 +15595,8 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Check if the user has superuser privilege. */
+annotation|@
+name|Override
 DECL|method|checkSuperuserPrivilege ()
 specifier|public
 name|void
@@ -17220,24 +17200,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-DECL|method|numCorruptReplicas (Block blk)
-specifier|public
-name|int
-name|numCorruptReplicas
-parameter_list|(
-name|Block
-name|blk
-parameter_list|)
-block|{
-return|return
-name|blockManager
-operator|.
-name|numCorruptReplicas
-argument_list|(
-name|blk
-argument_list|)
-return|;
 block|}
 DECL|class|CorruptFileBlockInfo
 specifier|static

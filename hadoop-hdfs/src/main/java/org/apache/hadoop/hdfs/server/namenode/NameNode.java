@@ -5420,7 +5420,10 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|getTransactionID
+name|getEditLog
+argument_list|()
+operator|.
+name|getSyncTxId
 argument_list|()
 return|;
 block|}

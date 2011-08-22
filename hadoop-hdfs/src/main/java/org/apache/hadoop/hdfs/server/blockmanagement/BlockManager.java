@@ -614,6 +614,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|Namesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlocksWithLocations
@@ -746,7 +764,7 @@ decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
 decl_stmt|;
 DECL|field|datanodeManager
@@ -1084,7 +1102,7 @@ name|getInstance
 argument_list|(
 name|conf
 argument_list|,
-name|namesystem
+name|fsn
 argument_list|,
 name|datanodeManager
 operator|.
@@ -2043,18 +2061,17 @@ name|minReplication
 operator|)
 return|;
 block|}
-comment|/**    * Commit a block of a file    *     * @param fileINode file inode    * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitBlock (INodeFileUnderConstruction fileINode, BlockInfoUnderConstruction block, Block commitBlock)
+comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|commitBlock (final BlockInfoUnderConstruction block, final Block commitBlock)
 specifier|private
-name|void
+name|boolean
 name|commitBlock
 parameter_list|(
-name|INodeFileUnderConstruction
-name|fileINode
-parameter_list|,
+specifier|final
 name|BlockInfoUnderConstruction
 name|block
 parameter_list|,
+specifier|final
 name|Block
 name|commitBlock
 parameter_list|)
@@ -2072,7 +2089,9 @@ name|BlockUCState
 operator|.
 name|COMMITTED
 condition|)
-return|return;
+return|return
+literal|false
+return|;
 assert|assert
 name|block
 operator|.
@@ -2105,20 +2124,14 @@ argument_list|(
 name|commitBlock
 argument_list|)
 expr_stmt|;
-name|namesystem
-operator|.
-name|updateDiskSpaceConsumed
-argument_list|(
-name|fileINode
-argument_list|,
-name|commitBlock
-argument_list|)
-expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
-comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param fileINode file inode    * @param commitBlock - contains client reported block length and generation    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param fileINode file inode    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|commitOrCompleteLastBlock (INodeFileUnderConstruction fileINode, Block commitBlock)
 specifier|public
-name|void
+name|boolean
 name|commitOrCompleteLastBlock
 parameter_list|(
 name|INodeFileUnderConstruction
@@ -2136,7 +2149,9 @@ name|commitBlock
 operator|==
 literal|null
 condition|)
-return|return;
+return|return
+literal|false
+return|;
 comment|// not committing, this is a block allocation retry
 name|BlockInfo
 name|lastBlock
@@ -2152,7 +2167,9 @@ name|lastBlock
 operator|==
 literal|null
 condition|)
-return|return;
+return|return
+literal|false
+return|;
 comment|// no blocks in file yet
 if|if
 condition|(
@@ -2161,12 +2178,16 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
-return|return;
+return|return
+literal|false
+return|;
 comment|// already completed (e.g. by syncBlock)
+specifier|final
+name|boolean
+name|b
+init|=
 name|commitBlock
 argument_list|(
-name|fileINode
-argument_list|,
 operator|(
 name|BlockInfoUnderConstruction
 operator|)
@@ -2174,7 +2195,7 @@ name|lastBlock
 argument_list|,
 name|commitBlock
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|countNodes
@@ -2199,15 +2220,21 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+return|return
+name|b
+return|;
 block|}
 comment|/**    * Convert a specified block of the file to a complete block.    * @param fileINode file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|completeBlock (INodeFile fileINode, int blkIndex)
+DECL|method|completeBlock (final INodeFile fileINode, final int blkIndex)
+specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
+specifier|final
 name|INodeFile
 name|fileINode
 parameter_list|,
+specifier|final
 name|int
 name|blkIndex
 parameter_list|)
@@ -2298,13 +2325,16 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-DECL|method|completeBlock (INodeFile fileINode, BlockInfo block)
+DECL|method|completeBlock (final INodeFile fileINode, final BlockInfo block)
+specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
+specifier|final
 name|INodeFile
 name|fileINode
 parameter_list|,
+specifier|final
 name|BlockInfo
 name|block
 parameter_list|)
@@ -2473,6 +2503,7 @@ name|oldBlock
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
 name|long
 name|fileLength
 init|=
@@ -2484,17 +2515,27 @@ operator|.
 name|getLength
 argument_list|()
 decl_stmt|;
-return|return
-name|createLocatedBlock
-argument_list|(
-name|ucBlock
-argument_list|,
+specifier|final
+name|long
+name|pos
+init|=
 name|fileLength
 operator|-
 name|ucBlock
 operator|.
 name|getNumBytes
 argument_list|()
+decl_stmt|;
+return|return
+name|createLocatedBlock
+argument_list|(
+name|ucBlock
+argument_list|,
+name|pos
+argument_list|,
+name|AccessMode
+operator|.
+name|WRITE
 argument_list|)
 return|;
 block|}
@@ -2591,7 +2632,7 @@ return|return
 name|machineSet
 return|;
 block|}
-DECL|method|createLocatedBlockList (final BlockInfo[] blocks, final long offset, final long length, final int nrBlocksToReturn )
+DECL|method|createLocatedBlockList (final BlockInfo[] blocks, final long offset, final long length, final int nrBlocksToReturn, final AccessMode mode)
 specifier|private
 name|List
 argument_list|<
@@ -2615,6 +2656,10 @@ parameter_list|,
 specifier|final
 name|int
 name|nrBlocksToReturn
+parameter_list|,
+specifier|final
+name|AccessMode
+name|mode
 parameter_list|)
 throws|throws
 name|IOException
@@ -2759,6 +2804,8 @@ name|curBlk
 index|]
 argument_list|,
 name|curPos
+argument_list|,
+name|mode
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2798,6 +2845,58 @@ condition|)
 do|;
 return|return
 name|results
+return|;
+block|}
+DECL|method|createLocatedBlock (final BlockInfo blk, final long pos, final BlockTokenSecretManager.AccessMode mode)
+specifier|private
+name|LocatedBlock
+name|createLocatedBlock
+parameter_list|(
+specifier|final
+name|BlockInfo
+name|blk
+parameter_list|,
+specifier|final
+name|long
+name|pos
+parameter_list|,
+specifier|final
+name|BlockTokenSecretManager
+operator|.
+name|AccessMode
+name|mode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|LocatedBlock
+name|lb
+init|=
+name|createLocatedBlock
+argument_list|(
+name|blk
+argument_list|,
+name|pos
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|mode
+operator|!=
+literal|null
+condition|)
+block|{
+name|setBlockToken
+argument_list|(
+name|lb
+argument_list|,
+name|mode
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|lb
 return|;
 block|}
 comment|/** @return a LocatedBlock for the given block */
@@ -3203,6 +3302,18 @@ argument_list|)
 expr_stmt|;
 block|}
 specifier|final
+name|AccessMode
+name|mode
+init|=
+name|needBlockToken
+condition|?
+name|AccessMode
+operator|.
+name|READ
+else|:
+literal|null
+decl_stmt|;
+specifier|final
 name|List
 argument_list|<
 name|LocatedBlock
@@ -3220,6 +3331,8 @@ argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
+argument_list|,
+name|mode
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -3262,44 +3375,10 @@ argument_list|(
 name|last
 argument_list|,
 name|lastPos
+argument_list|,
+name|mode
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|isBlockTokenEnabled
-argument_list|()
-operator|&&
-name|needBlockToken
-condition|)
-block|{
-for|for
-control|(
-name|LocatedBlock
-name|lb
-range|:
-name|locatedblocks
-control|)
-block|{
-name|setBlockToken
-argument_list|(
-name|lb
-argument_list|,
-name|AccessMode
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-block|}
-name|setBlockToken
-argument_list|(
-name|lastlb
-argument_list|,
-name|AccessMode
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 operator|new
 name|LocatedBlocks

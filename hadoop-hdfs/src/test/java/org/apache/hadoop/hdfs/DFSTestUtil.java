@@ -2033,7 +2033,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/*    * Keep accessing the given file until the namenode reports that the    * given block in the file contains the given number of corrupt replicas.    */
+comment|/**    * Keep accessing the given file until the namenode reports that the    * given block in the file contains the given number of corrupt replicas.    */
 DECL|method|waitCorruptReplicas (FileSystem fs, FSNamesystem ns, Path file, ExtendedBlock b, int corruptRepls)
 specifier|public
 specifier|static
@@ -2075,6 +2075,9 @@ name|int
 name|repls
 init|=
 name|ns
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|numCorruptReplicas
 argument_list|(
@@ -2144,6 +2147,9 @@ expr_stmt|;
 name|repls
 operator|=
 name|ns
+operator|.
+name|getBlockManager
+argument_list|()
 operator|.
 name|numCorruptReplicas
 argument_list|(
