@@ -309,6 +309,11 @@ name|boolean
 name|isUber
 parameter_list|()
 function_decl|;
+DECL|method|getUserName ()
+name|String
+name|getUserName
+parameter_list|()
+function_decl|;
 name|TaskAttemptCompletionEvent
 index|[]
 DECL|method|getTaskAttemptCompletionEvents (int fromEventId, int maxEvents)

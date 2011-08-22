@@ -3524,6 +3524,14 @@ name|getHistoryFile
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|metaInfo
+operator|.
+name|getJobIndexInfo
+argument_list|()
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|addToLoadedJobCache

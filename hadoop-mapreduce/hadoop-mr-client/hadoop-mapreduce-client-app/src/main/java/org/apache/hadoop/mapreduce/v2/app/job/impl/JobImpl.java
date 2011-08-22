@@ -1733,6 +1733,12 @@ specifier|final
 name|MRAppMetrics
 name|metrics
 decl_stmt|;
+DECL|field|userName
+specifier|private
+specifier|final
+name|String
+name|userName
+decl_stmt|;
 DECL|field|lazyTasksCopyNeeded
 specifier|private
 name|boolean
@@ -2872,7 +2878,7 @@ specifier|private
 name|JobTokenSecretManager
 name|jobTokenSecretManager
 decl_stmt|;
-DECL|method|JobImpl (ApplicationId appID, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, int startCount, Set<TaskId> completedTasksFromPreviousRun, MRAppMetrics metrics)
+DECL|method|JobImpl (ApplicationId appID, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, int startCount, Set<TaskId> completedTasksFromPreviousRun, MRAppMetrics metrics, String userName)
 specifier|public
 name|JobImpl
 parameter_list|(
@@ -2908,6 +2914,9 @@ name|completedTasksFromPreviousRun
 parameter_list|,
 name|MRAppMetrics
 name|metrics
+parameter_list|,
+name|String
+name|userName
 parameter_list|)
 block|{
 name|this
@@ -2967,6 +2976,12 @@ operator|.
 name|startCount
 operator|=
 name|startCount
+expr_stmt|;
+name|this
+operator|.
+name|userName
+operator|=
+name|userName
 expr_stmt|;
 name|jobId
 operator|.
@@ -4793,6 +4808,18 @@ expr_stmt|;
 block|}
 return|return
 name|finalState
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUserName ()
+specifier|public
+name|String
+name|getUserName
+parameter_list|()
+block|{
+return|return
+name|userName
 return|;
 block|}
 annotation|@

@@ -673,6 +673,12 @@ name|Task
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|user
+specifier|private
+specifier|final
+name|String
+name|user
+decl_stmt|;
 DECL|field|completionEvents
 specifier|private
 name|List
@@ -688,7 +694,7 @@ specifier|private
 name|JobInfo
 name|jobInfo
 decl_stmt|;
-DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks)
+DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName)
 specifier|public
 name|CompletedJob
 parameter_list|(
@@ -703,6 +709,9 @@ name|historyFile
 parameter_list|,
 name|boolean
 name|loadTasks
+parameter_list|,
+name|String
+name|userName
 parameter_list|)
 throws|throws
 name|IOException
@@ -738,6 +747,10 @@ name|loadTasks
 argument_list|,
 name|historyFile
 argument_list|)
+expr_stmt|;
+name|user
+operator|=
+name|userName
 expr_stmt|;
 name|counters
 operator|=
@@ -1925,6 +1938,18 @@ argument_list|()
 argument_list|,
 name|jobACL
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUserName ()
+specifier|public
+name|String
+name|getUserName
+parameter_list|()
+block|{
+return|return
+name|user
 return|;
 block|}
 block|}

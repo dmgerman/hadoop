@@ -2642,6 +2642,22 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getUserName ()
+specifier|public
+name|String
+name|getUserName
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/*    * We follow the pattern of the real XxxImpl .  We create a job and initialize    * it with a full suite of tasks which in turn have one attempt each in the    * NEW state.  Attempts transition only from NEW to RUNNING to SUCCEEDED .    */
 DECL|class|MyTaskAttemptImpl

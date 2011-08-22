@@ -1711,6 +1711,20 @@ operator|new
 name|Credentials
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+name|currentUser
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|currentUser
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -1720,8 +1734,6 @@ argument_list|()
 condition|)
 block|{
 comment|// Read the file-system tokens from the localized tokens-file.
-try|try
-block|{
 name|Path
 name|jobSubmitDir
 init|=
@@ -1788,14 +1800,6 @@ operator|+
 name|jobTokenFile
 argument_list|)
 expr_stmt|;
-name|UserGroupInformation
-name|currentUser
-init|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|Token
@@ -1841,6 +1845,7 @@ expr_stmt|;
 comment|// For use by AppMaster itself.
 block|}
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|IOException
@@ -1854,7 +1859,6 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
-block|}
 block|}
 name|super
 operator|.
@@ -1877,6 +1881,11 @@ argument_list|(
 name|config
 argument_list|,
 name|fsTokens
+argument_list|,
+name|currentUser
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|/** create a job event for job intialization */
@@ -2081,7 +2090,7 @@ block|}
 block|}
 comment|// end of init()
 comment|/** Create and initialize (but don't start) a single job.     * @param fsTokens */
-DECL|method|createJob (Configuration conf, Credentials fsTokens)
+DECL|method|createJob (Configuration conf, Credentials fsTokens, String user)
 specifier|protected
 name|Job
 name|createJob
@@ -2091,6 +2100,9 @@ name|conf
 parameter_list|,
 name|Credentials
 name|fsTokens
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 comment|// create single job
@@ -2122,6 +2134,8 @@ argument_list|,
 name|completedTasksFromPreviousRun
 argument_list|,
 name|metrics
+argument_list|,
+name|user
 argument_list|)
 decl_stmt|;
 operator|(

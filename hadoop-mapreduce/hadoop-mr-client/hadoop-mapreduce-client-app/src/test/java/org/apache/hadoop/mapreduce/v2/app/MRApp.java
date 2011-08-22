@@ -806,6 +806,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|Clock
@@ -2043,7 +2057,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createJob (Configuration conf, Credentials fsTokens)
+DECL|method|createJob (Configuration conf, Credentials fsTokens, String user)
 specifier|protected
 name|Job
 name|createJob
@@ -2053,6 +2067,9 @@ name|conf
 parameter_list|,
 name|Credentials
 name|fsTokens
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|Job
@@ -2078,6 +2095,8 @@ argument_list|()
 operator|.
 name|getClock
 argument_list|()
+argument_list|,
+name|user
 argument_list|)
 decl_stmt|;
 operator|(
@@ -2730,7 +2749,7 @@ return|return
 name|localStateMachine
 return|;
 block|}
-DECL|method|TestJob (ApplicationId appID, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock)
+DECL|method|TestJob (ApplicationId appID, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, String user)
 specifier|public
 name|TestJob
 parameter_list|(
@@ -2745,6 +2764,9 @@ name|taskAttemptListener
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|super
@@ -2776,6 +2798,8 @@ name|getCompletedTaskFromPreviousRun
 argument_list|()
 argument_list|,
 name|metrics
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 comment|// This "this leak" is okay because the retained pointer is in an
