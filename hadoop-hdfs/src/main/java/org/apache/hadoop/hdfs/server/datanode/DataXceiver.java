@@ -1013,11 +1013,6 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|updateCurrentThreadName
-argument_list|(
-literal|"Waiting for operation"
-argument_list|)
-expr_stmt|;
 name|int
 name|opsProcessed
 init|=
@@ -1043,6 +1038,17 @@ comment|// This optimistic behaviour allows the other end to reuse connections.
 comment|// Setting keepalive timeout to 0 disable this behavior.
 do|do
 block|{
+name|updateCurrentThreadName
+argument_list|(
+literal|"Waiting for operation #"
+operator|+
+operator|(
+name|opsProcessed
+operator|+
+literal|1
+operator|)
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 if|if
