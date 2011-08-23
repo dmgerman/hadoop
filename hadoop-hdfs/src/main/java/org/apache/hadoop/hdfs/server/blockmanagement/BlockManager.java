@@ -722,6 +722,20 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  * This class is a helper class for {@link FSNamesystem} and requires several  * methods to be called with lock held on {@link FSNamesystem}.  */
 end_comment
@@ -984,8 +998,9 @@ operator|new
 name|UnderReplicatedBlocks
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|pendingReplications
-specifier|private
 specifier|final
 name|PendingReplicationBlocks
 name|pendingReplications
@@ -1776,6 +1791,19 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|containingLiveReplicasNodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|NumberReplicas
 name|numReplicas
 init|=
@@ -1790,9 +1818,22 @@ name|block
 argument_list|,
 name|containingNodes
 argument_list|,
+name|containingLiveReplicasNodes
+argument_list|,
 name|numReplicas
 argument_list|)
 expr_stmt|;
+assert|assert
+name|containingLiveReplicasNodes
+operator|.
+name|size
+argument_list|()
+operator|==
+name|numReplicas
+operator|.
+name|liveReplicas
+argument_list|()
+assert|;
 name|int
 name|usableReplicas
 init|=
@@ -5059,8 +5100,9 @@ name|blocksToReplicate
 return|;
 block|}
 comment|/** Replicate a block    *    * @param block block to be replicated    * @param priority a hint of its priority in the neededReplication queue    * @return if the block gets replicated or not    */
+annotation|@
+name|VisibleForTesting
 DECL|method|computeReplicationWorkForBlock (Block block, int priority)
-specifier|private
 name|boolean
 name|computeReplicationWorkForBlock
 parameter_list|(
@@ -5081,6 +5123,8 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
+decl_stmt|,
+name|liveReplicaNodes
 decl_stmt|;
 name|DatanodeDescriptor
 name|srcNode
@@ -5162,6 +5206,15 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|liveReplicaNodes
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+expr_stmt|;
 name|NumberReplicas
 name|numReplicas
 init|=
@@ -5177,6 +5230,8 @@ name|block
 argument_list|,
 name|containingNodes
 argument_list|,
+name|liveReplicaNodes
+argument_list|,
 name|numReplicas
 argument_list|)
 expr_stmt|;
@@ -5190,6 +5245,17 @@ comment|// block can not be replicated from any node
 return|return
 literal|false
 return|;
+assert|assert
+name|liveReplicaNodes
+operator|.
+name|size
+argument_list|()
+operator|==
+name|numReplicas
+operator|.
+name|liveReplicas
+argument_list|()
+assert|;
 comment|// do not schedule more if enough replicas is already pending
 name|numEffectiveReplicas
 operator|=
@@ -5301,6 +5367,43 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Exclude all of the containing nodes from being targets.
+comment|// This list includes decommissioning or corrupt nodes.
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|excludedNodes
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|DatanodeDescriptor
+name|dn
+range|:
+name|containingNodes
+control|)
+block|{
+name|excludedNodes
+operator|.
+name|put
+argument_list|(
+name|dn
+argument_list|,
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
 comment|// choose replication targets: NOT HOLDING THE GLOBAL LOCK
 comment|// It is costly to extract the filename for which chooseTargets is called,
 comment|// so for now we pass in the Inode itself.
@@ -5318,7 +5421,9 @@ name|additionalReplRequired
 argument_list|,
 name|srcNode
 argument_list|,
-name|containingNodes
+name|liveReplicaNodes
+argument_list|,
+name|excludedNodes
 argument_list|,
 name|block
 operator|.
@@ -5858,7 +5963,7 @@ name|targets
 return|;
 block|}
 comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    */
-DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, NumberReplicas numReplicas)
+DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> nodesContainingLiveReplicas, NumberReplicas numReplicas)
 specifier|private
 name|DatanodeDescriptor
 name|chooseSourceDatanode
@@ -5872,11 +5977,22 @@ name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
 parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|nodesContainingLiveReplicas
+parameter_list|,
 name|NumberReplicas
 name|numReplicas
 parameter_list|)
 block|{
 name|containingNodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|nodesContainingLiveReplicas
 operator|.
 name|clear
 argument_list|()
@@ -6021,6 +6137,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|nodesContainingLiveReplicas
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 name|live
 operator|++
 expr_stmt|;
@@ -9759,8 +9882,9 @@ return|;
 block|}
 block|}
 comment|/**    * The given node is reporting that it received a certain block.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|addBlock (DatanodeDescriptor node, Block block, String delHint)
-specifier|private
 name|void
 name|addBlock
 parameter_list|(

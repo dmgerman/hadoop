@@ -409,7 +409,7 @@ name|blocksize
 parameter_list|)
 function_decl|;
 comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>    * If not, return as many as we can.    * The base implemenatation extracts the pathname of the file from the    * specified srcInode, but this could be a costly operation depending on the    * file system implementation. Concrete implementations of this class should    * override this method to avoid this overhead.    *     * @param srcInode The inode of the file for which chooseTarget is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target     * and sorted as a pipeline.    */
-DECL|method|chooseTarget (FSInodeInfo srcInode, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, long blocksize)
+DECL|method|chooseTarget (FSInodeInfo srcInode, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
 name|DatanodeDescriptor
 index|[]
 name|chooseTarget
@@ -429,6 +429,14 @@ name|DatanodeDescriptor
 argument_list|>
 name|chosenNodes
 parameter_list|,
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
 name|long
 name|blocksize
 parameter_list|)
@@ -446,6 +454,8 @@ argument_list|,
 name|writer
 argument_list|,
 name|chosenNodes
+argument_list|,
+name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|)

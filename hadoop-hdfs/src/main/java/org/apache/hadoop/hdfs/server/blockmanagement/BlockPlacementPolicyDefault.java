@@ -517,51 +517,6 @@ name|blocksize
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
-annotation|@
-name|Override
-DECL|method|chooseTarget (FSInodeInfo srcInode, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, long blocksize)
-specifier|public
-name|DatanodeDescriptor
-index|[]
-name|chooseTarget
-parameter_list|(
-name|FSInodeInfo
-name|srcInode
-parameter_list|,
-name|int
-name|numOfReplicas
-parameter_list|,
-name|DatanodeDescriptor
-name|writer
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|chosenNodes
-parameter_list|,
-name|long
-name|blocksize
-parameter_list|)
-block|{
-return|return
-name|chooseTarget
-argument_list|(
-name|numOfReplicas
-argument_list|,
-name|writer
-argument_list|,
-name|chosenNodes
-argument_list|,
-literal|false
-argument_list|,
-literal|null
-argument_list|,
-name|blocksize
-argument_list|)
-return|;
-block|}
 comment|/** This is the implementation. */
 DECL|method|chooseTarget (int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
 name|DatanodeDescriptor
