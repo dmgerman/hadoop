@@ -1708,6 +1708,64 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testAppNewReject ()
+specifier|public
+name|void
+name|testAppNewReject
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"--- START: testAppNewReject ---"
+argument_list|)
+expr_stmt|;
+name|RMApp
+name|application
+init|=
+name|createNewTestApp
+argument_list|()
+decl_stmt|;
+comment|// NEW => FAILED event RMAppEventType.APP_REJECTED
+name|String
+name|rejectedText
+init|=
+literal|"Test Application Rejected"
+decl_stmt|;
+name|RMAppEvent
+name|event
+init|=
+operator|new
+name|RMAppRejectedEvent
+argument_list|(
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|rejectedText
+argument_list|)
+decl_stmt|;
+name|application
+operator|.
+name|handle
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
+name|assertFailed
+argument_list|(
+name|application
+argument_list|,
+name|rejectedText
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testAppSubmittedRejected ()
 specifier|public
 name|void

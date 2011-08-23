@@ -1615,6 +1615,10 @@ decl_stmt|;
 if|if
 condition|(
 name|appMaster
+operator|==
+literal|null
+operator|||
+name|appMaster
 operator|.
 name|getState
 argument_list|()

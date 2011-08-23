@@ -425,6 +425,28 @@ name|DEFAULT_RM_NODES_EXCLUDE_FILE
 init|=
 literal|""
 decl_stmt|;
+comment|// the maximum number of completed applications RM keeps
+DECL|field|EXPIRE_APPLICATIONS_COMPLETED_MAX
+specifier|public
+specifier|static
+name|String
+name|EXPIRE_APPLICATIONS_COMPLETED_MAX
+init|=
+name|YarnConfiguration
+operator|.
+name|RM_PREFIX
+operator|+
+literal|"expire.applications.completed.max"
+decl_stmt|;
+DECL|field|DEFAULT_EXPIRE_APPLICATIONS_COMPLETED_MAX
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_EXPIRE_APPLICATIONS_COMPLETED_MAX
+init|=
+literal|10000
+decl_stmt|;
 block|}
 end_class
 
