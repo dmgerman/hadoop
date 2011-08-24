@@ -1095,9 +1095,10 @@ specifier|static
 name|long
 name|prevLogLength
 decl_stmt|;
-DECL|method|writeToIndexFile (String logLocation, boolean isCleanup)
 specifier|private
 specifier|static
+specifier|synchronized
+DECL|method|writeToIndexFile (String logLocation, boolean isCleanup)
 name|void
 name|writeToIndexFile
 parameter_list|(
