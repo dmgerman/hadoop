@@ -858,7 +858,7 @@ return|return
 name|applicationId
 return|;
 block|}
-DECL|method|newContainerId (RecordFactory recordFactory, ApplicationId appId, int containerId)
+DECL|method|newContainerId (RecordFactory recordFactory, ApplicationId appId, ApplicationAttemptId appAttemptId, int containerId)
 specifier|public
 specifier|static
 name|ContainerId
@@ -869,6 +869,9 @@ name|recordFactory
 parameter_list|,
 name|ApplicationId
 name|appId
+parameter_list|,
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|int
 name|containerId
@@ -898,6 +901,13 @@ operator|.
 name|setId
 argument_list|(
 name|containerId
+argument_list|)
+expr_stmt|;
+name|id
+operator|.
+name|setAppAttemptId
+argument_list|(
+name|appAttemptId
 argument_list|)
 expr_stmt|;
 return|return

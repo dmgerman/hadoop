@@ -2785,9 +2785,6 @@ return|;
 case|case
 name|RUNNING
 case|:
-case|case
-name|RESTARTING
-case|:
 return|return
 name|State
 operator|.

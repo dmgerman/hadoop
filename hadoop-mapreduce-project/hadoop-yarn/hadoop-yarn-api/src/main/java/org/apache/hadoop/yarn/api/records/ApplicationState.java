@@ -29,7 +29,6 @@ block|{
 DECL|enumConstant|NEW
 DECL|enumConstant|SUBMITTED
 DECL|enumConstant|RUNNING
-DECL|enumConstant|RESTARTING
 DECL|enumConstant|SUCCEEDED
 DECL|enumConstant|FAILED
 DECL|enumConstant|KILLED
@@ -38,8 +37,6 @@ block|,
 name|SUBMITTED
 block|,
 name|RUNNING
-block|,
-name|RESTARTING
 block|,
 name|SUCCEEDED
 block|,
