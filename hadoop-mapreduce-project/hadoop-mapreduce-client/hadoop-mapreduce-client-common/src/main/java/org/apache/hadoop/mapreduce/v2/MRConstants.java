@@ -109,7 +109,7 @@ specifier|final
 name|String
 name|HADOOP_MAPREDUCE_CLIENT_APP_JAR_NAME
 init|=
-literal|"hadoop-mapreduce-client-app-1.0-SNAPSHOT.jar"
+literal|"hadoop-mapreduce-client-app-0.23.0-SNAPSHOT.jar"
 decl_stmt|;
 DECL|field|YARN_MAPREDUCE_APP_JAR_PATH
 specifier|public
