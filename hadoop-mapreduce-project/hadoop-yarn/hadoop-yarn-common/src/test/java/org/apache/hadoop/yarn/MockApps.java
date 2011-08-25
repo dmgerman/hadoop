@@ -688,6 +688,30 @@ parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
 block|}
+annotation|@
+name|Override
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+comment|// TODO Auto-generated method stub
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
+block|}
 block|}
 return|;
 block|}

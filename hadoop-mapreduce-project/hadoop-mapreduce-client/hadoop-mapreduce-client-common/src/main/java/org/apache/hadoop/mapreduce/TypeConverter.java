@@ -3029,6 +3029,16 @@ name|trackingUrl
 argument_list|)
 expr_stmt|;
 comment|// Set AM tracking url
+name|jobStatus
+operator|.
+name|setStartTime
+argument_list|(
+name|application
+operator|.
+name|getStartTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|jobStatus
 return|;

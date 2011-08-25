@@ -156,6 +156,19 @@ name|String
 name|url
 parameter_list|)
 function_decl|;
+DECL|method|getStartTime ()
+name|long
+name|getStartTime
+parameter_list|()
+function_decl|;
+DECL|method|setStartTime (long startTime)
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

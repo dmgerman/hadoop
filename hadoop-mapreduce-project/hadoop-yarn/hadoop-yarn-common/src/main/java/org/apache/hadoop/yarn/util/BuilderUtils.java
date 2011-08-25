@@ -1342,7 +1342,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, ApplicationState state, String diagnostics, String url)
+DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, ApplicationState state, String diagnostics, String url, long startTime)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -1377,6 +1377,9 @@ name|diagnostics
 parameter_list|,
 name|String
 name|url
+parameter_list|,
+name|long
+name|startTime
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -1459,6 +1462,13 @@ operator|.
 name|setTrackingUrl
 argument_list|(
 name|url
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
 argument_list|)
 expr_stmt|;
 return|return
