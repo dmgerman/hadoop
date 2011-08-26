@@ -6198,6 +6198,8 @@ operator|=
 operator|new
 name|FSDatasetAsyncDiskService
 argument_list|(
+name|this
+argument_list|,
 name|roots
 argument_list|)
 expr_stmt|;
@@ -10618,21 +10620,22 @@ name|deleteAsync
 argument_list|(
 name|v
 argument_list|,
-name|bpid
-argument_list|,
 name|f
 argument_list|,
 name|metaFile
 argument_list|,
 name|dfsBytes
 argument_list|,
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|bpid
+argument_list|,
 name|invalidBlks
 index|[
 name|i
 index|]
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -10649,6 +10652,23 @@ literal|"Error in deleting blocks."
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block)
+specifier|public
+name|void
+name|notifyNamenodeDeletedBlock
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+name|datanode
+operator|.
+name|notifyNamenodeDeletedBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Turn the block identifier into a filename; ignore generation stamp!!!    */
 DECL|method|getFile (String bpid, Block b)

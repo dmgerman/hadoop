@@ -389,11 +389,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * blockReceived() allows the DataNode to tell the NameNode about    * recently-received block data, with a hint for pereferred replica    * to be deleted when there is any excessive blocks.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
-DECL|method|blockReceived (DatanodeRegistration registration, String poolId, Block blocks[], String[] delHints)
+comment|/**    * blockReceivedAndDeleted() allows the DataNode to tell the NameNode about    * recently-received and -deleted block data.     *     * For the case of received blocks, a hint for preferred replica to be     * deleted when there is any excessive blocks is provided.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
+DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, ReceivedDeletedBlockInfo[] receivedAndDeletedBlocks)
 specifier|public
 name|void
-name|blockReceived
+name|blockReceivedAndDeleted
 parameter_list|(
 name|DatanodeRegistration
 name|registration
@@ -401,13 +401,9 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|Block
-name|blocks
+name|ReceivedDeletedBlockInfo
 index|[]
-parameter_list|,
-name|String
-index|[]
-name|delHints
+name|receivedAndDeletedBlocks
 parameter_list|)
 throws|throws
 name|IOException
