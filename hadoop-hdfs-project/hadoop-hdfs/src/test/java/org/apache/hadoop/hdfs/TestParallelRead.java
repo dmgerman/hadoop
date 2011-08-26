@@ -543,8 +543,8 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|ex
+name|Throwable
+name|t
 parameter_list|)
 block|{
 name|LOG
@@ -569,7 +569,7 @@ literal|true
 expr_stmt|;
 name|fail
 argument_list|(
-name|ex
+name|t
 operator|.
 name|getMessage
 argument_list|()
@@ -624,14 +624,14 @@ literal|" + "
 operator|+
 name|len
 operator|+
-literal|" should be< "
+literal|" should be<= "
 operator|+
 name|fileSize
 argument_list|,
 name|start
 operator|+
 name|len
-operator|<
+operator|<=
 name|fileSize
 argument_list|)
 expr_stmt|;
