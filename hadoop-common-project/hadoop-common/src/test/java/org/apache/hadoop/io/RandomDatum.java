@@ -20,9 +20,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|io
 operator|.
-name|*
+name|DataInput
 import|;
 end_import
 
@@ -32,7 +32,27 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Random
 import|;
 end_import
 
@@ -43,6 +63,9 @@ class|class
 name|RandomDatum
 implements|implements
 name|WritableComparable
+argument_list|<
+name|RandomDatum
+argument_list|>
 block|{
 DECL|field|length
 specifier|private
@@ -191,23 +214,17 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (RandomDatum o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|RandomDatum
 name|o
 parameter_list|)
 block|{
-name|RandomDatum
-name|that
-init|=
-operator|(
-name|RandomDatum
-operator|)
-name|o
-decl_stmt|;
 return|return
 name|WritableComparator
 operator|.
@@ -223,18 +240,20 @@ name|this
 operator|.
 name|length
 argument_list|,
-name|that
+name|o
 operator|.
 name|data
 argument_list|,
 literal|0
 argument_list|,
-name|that
+name|o
 operator|.
 name|length
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -247,6 +266,9 @@ block|{
 return|return
 name|compareTo
 argument_list|(
+operator|(
+name|RandomDatum
+operator|)
 name|o
 argument_list|)
 operator|==
@@ -296,6 +318,8 @@ literal|'f'
 block|}
 decl_stmt|;
 comment|/** Returns a string representation of this object. */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

@@ -22,7 +22,27 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -73,6 +93,9 @@ class|class
 name|LongWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|LongWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -218,12 +241,12 @@ name|value
 return|;
 block|}
 comment|/** Compares two LongWritables. */
-DECL|method|compareTo (Object o)
+DECL|method|compareTo (LongWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|LongWritable
 name|o
 parameter_list|)
 block|{
@@ -237,12 +260,7 @@ decl_stmt|;
 name|long
 name|thatValue
 init|=
-operator|(
-operator|(
-name|LongWritable
-operator|)
 name|o
-operator|)
 operator|.
 name|value
 decl_stmt|;
@@ -381,6 +399,8 @@ name|DecreasingComparator
 extends|extends
 name|Comparator
 block|{
+annotation|@
+name|Override
 DECL|method|compare (WritableComparable a, WritableComparable b)
 specifier|public
 name|int

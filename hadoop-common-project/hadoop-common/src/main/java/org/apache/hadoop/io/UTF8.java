@@ -116,6 +116,9 @@ class|class
 name|UTF8
 implements|implements
 name|WritableComparable
+argument_list|<
+name|UTF8
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -597,23 +600,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Compare two UTF8s. */
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (UTF8 o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|UTF8
 name|o
 parameter_list|)
 block|{
-name|UTF8
-name|that
-init|=
-operator|(
-name|UTF8
-operator|)
-name|o
-decl_stmt|;
 return|return
 name|WritableComparator
 operator|.
@@ -625,19 +622,21 @@ literal|0
 argument_list|,
 name|length
 argument_list|,
-name|that
+name|o
 operator|.
 name|bytes
 argument_list|,
 literal|0
 argument_list|,
-name|that
+name|o
 operator|.
 name|length
 argument_list|)
 return|;
 block|}
 comment|/** Convert to a String. */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -702,6 +701,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Returns true iff<code>o</code> is a UTF8 with the same contents.  */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -770,6 +771,8 @@ operator|==
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -809,6 +812,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

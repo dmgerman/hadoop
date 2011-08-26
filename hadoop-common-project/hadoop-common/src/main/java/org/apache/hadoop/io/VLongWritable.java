@@ -73,6 +73,9 @@ class|class
 name|VLongWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|VLongWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -169,6 +172,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Returns true iff<code>o</code> is a VLongWritable with the same value. */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -208,6 +213,8 @@ operator|.
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -222,12 +229,14 @@ name|value
 return|;
 block|}
 comment|/** Compares two VLongWritables. */
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (VLongWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|VLongWritable
 name|o
 parameter_list|)
 block|{
@@ -241,12 +250,7 @@ decl_stmt|;
 name|long
 name|thatValue
 init|=
-operator|(
-operator|(
-name|VLongWritable
-operator|)
 name|o
-operator|)
 operator|.
 name|value
 decl_stmt|;
@@ -271,6 +275,8 @@ operator|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

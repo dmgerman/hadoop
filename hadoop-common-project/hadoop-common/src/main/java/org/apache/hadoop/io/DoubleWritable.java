@@ -93,6 +93,9 @@ class|class
 name|DoubleWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|DoubleWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -185,6 +188,8 @@ name|value
 return|;
 block|}
 comment|/**    * Returns true iff<code>o</code> is a DoubleWritable with the same value.    */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -226,6 +231,8 @@ operator|.
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -244,28 +251,22 @@ name|value
 argument_list|)
 return|;
 block|}
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (DoubleWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|DoubleWritable
 name|o
 parameter_list|)
 block|{
-name|DoubleWritable
-name|other
-init|=
-operator|(
-name|DoubleWritable
-operator|)
-name|o
-decl_stmt|;
 return|return
 operator|(
 name|value
 operator|<
-name|other
+name|o
 operator|.
 name|value
 condition|?
@@ -275,7 +276,7 @@ else|:
 operator|(
 name|value
 operator|==
-name|other
+name|o
 operator|.
 name|value
 condition|?
@@ -286,6 +287,8 @@ operator|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -323,6 +326,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

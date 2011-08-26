@@ -73,6 +73,9 @@ class|class
 name|NullWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|NullWritable
+argument_list|>
 block|{
 DECL|field|THIS
 specifier|private
@@ -113,6 +116,8 @@ return|return
 literal|"(null)"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -123,43 +128,17 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|compareTo (Object other)
+annotation|@
+name|Override
+DECL|method|compareTo (NullWritable other)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|NullWritable
 name|other
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-operator|(
-name|other
-operator|instanceof
-name|NullWritable
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|ClassCastException
-argument_list|(
-literal|"can't compare "
-operator|+
-name|other
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" to NullWritable"
-argument_list|)
-throw|;
-block|}
 return|return
 literal|0
 return|;
@@ -224,6 +203,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Compare the buffers in serialized form.      */
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

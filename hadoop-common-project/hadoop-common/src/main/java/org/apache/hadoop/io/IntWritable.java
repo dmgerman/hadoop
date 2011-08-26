@@ -22,7 +22,27 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -73,6 +93,9 @@ class|class
 name|IntWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|IntWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -165,6 +188,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Returns true iff<code>o</code> is a IntWritable with the same value. */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -204,6 +229,8 @@ operator|.
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -215,12 +242,14 @@ name|value
 return|;
 block|}
 comment|/** Compares two IntWritables. */
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (IntWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|IntWritable
 name|o
 parameter_list|)
 block|{
@@ -234,12 +263,7 @@ decl_stmt|;
 name|int
 name|thatValue
 init|=
-operator|(
-operator|(
-name|IntWritable
-operator|)
 name|o
-operator|)
 operator|.
 name|value
 decl_stmt|;
@@ -264,6 +288,8 @@ operator|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -301,6 +327,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

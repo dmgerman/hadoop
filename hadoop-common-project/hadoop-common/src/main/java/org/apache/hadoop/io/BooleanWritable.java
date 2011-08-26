@@ -73,6 +73,9 @@ class|class
 name|BooleanWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|BooleanWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -170,6 +173,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -211,6 +216,8 @@ operator|.
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -226,12 +233,14 @@ literal|1
 return|;
 block|}
 comment|/**    */
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (BooleanWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|BooleanWritable
 name|o
 parameter_list|)
 block|{
@@ -245,12 +254,7 @@ decl_stmt|;
 name|boolean
 name|b
 init|=
-operator|(
-operator|(
-name|BooleanWritable
-operator|)
 name|o
-operator|)
 operator|.
 name|value
 decl_stmt|;
@@ -277,6 +281,8 @@ literal|1
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -315,6 +321,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

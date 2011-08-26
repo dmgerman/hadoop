@@ -73,6 +73,9 @@ class|class
 name|VIntWritable
 implements|implements
 name|WritableComparable
+argument_list|<
+name|VIntWritable
+argument_list|>
 block|{
 DECL|field|value
 specifier|private
@@ -169,6 +172,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Returns true iff<code>o</code> is a VIntWritable with the same value. */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -208,6 +213,8 @@ operator|.
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -219,12 +226,14 @@ name|value
 return|;
 block|}
 comment|/** Compares two VIntWritables. */
-DECL|method|compareTo (Object o)
+annotation|@
+name|Override
+DECL|method|compareTo (VIntWritable o)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|Object
+name|VIntWritable
 name|o
 parameter_list|)
 block|{
@@ -238,12 +247,7 @@ decl_stmt|;
 name|int
 name|thatValue
 init|=
-operator|(
-operator|(
-name|VIntWritable
-operator|)
 name|o
-operator|)
 operator|.
 name|value
 decl_stmt|;
@@ -268,6 +272,8 @@ operator|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

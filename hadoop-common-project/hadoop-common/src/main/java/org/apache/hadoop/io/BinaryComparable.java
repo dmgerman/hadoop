@@ -86,6 +86,8 @@ name|getBytes
 parameter_list|()
 function_decl|;
 comment|/**    * Compare bytes from {#getBytes()}.    * @see org.apache.hadoop.io.WritableComparator#compareBytes(byte[],int,int,byte[],int,int)    */
+annotation|@
+name|Override
 DECL|method|compareTo (BinaryComparable other)
 specifier|public
 name|int
@@ -170,6 +172,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Return true if bytes from {#getBytes()} match.    */
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -226,6 +230,8 @@ literal|0
 return|;
 block|}
 comment|/**    * Return a hash of the bytes returned from {#getBytes()}.    * @see org.apache.hadoop.io.WritableComparator#hashBytes(byte[],int)    */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

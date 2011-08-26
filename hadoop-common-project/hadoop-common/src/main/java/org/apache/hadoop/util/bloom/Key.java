@@ -456,6 +456,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Comparable
+annotation|@
+name|Override
 DECL|method|compareTo (Key other)
 specifier|public
 name|int

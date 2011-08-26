@@ -529,6 +529,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -543,6 +545,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Are the two byte sequences equal?    */
+annotation|@
+name|Override
 DECL|method|equals (Object right_obj)
 specifier|public
 name|boolean
@@ -571,6 +575,8 @@ literal|false
 return|;
 block|}
 comment|/**    * Generate the stream of bytes as hex pairs separated by ' '.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -691,6 +697,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Compare the buffers in serialized form.      */
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

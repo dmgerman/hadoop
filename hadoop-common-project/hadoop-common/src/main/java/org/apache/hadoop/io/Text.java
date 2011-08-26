@@ -1036,6 +1036,8 @@ block|}
 block|}
 block|}
 comment|/**     * Convert text back to string    * @see java.lang.Object#toString()    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1211,6 +1213,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
