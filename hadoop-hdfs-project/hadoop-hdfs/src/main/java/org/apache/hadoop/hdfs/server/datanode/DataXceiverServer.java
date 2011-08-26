@@ -64,6 +64,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|AsynchronousCloseException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collections
@@ -541,6 +553,37 @@ name|ignored
 parameter_list|)
 block|{
 comment|// wake up to see if should continue to run
+block|}
+catch|catch
+parameter_list|(
+name|AsynchronousCloseException
+name|ace
+parameter_list|)
+block|{
+comment|// another thread closed our listener socket - that's expected during shutdown,
+comment|// but not in other circumstances
+if|if
+condition|(
+name|datanode
+operator|.
+name|shouldRun
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|datanode
+operator|.
+name|getMachineName
+argument_list|()
+operator|+
+literal|":DataXceiverServer: "
+argument_list|,
+name|ace
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
