@@ -634,24 +634,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|BlocksWithLocations
 import|;
 end_import
@@ -709,24 +691,6 @@ operator|.
 name|protocol
 operator|.
 name|KeyUpdateCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|ReceivedDeletedBlockInfo
 import|;
 end_import
 
@@ -9610,7 +9574,7 @@ block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Possibly generate replication tasks, if the    * removed block is still valid.    */
 DECL|method|removeStoredBlock (Block block, DatanodeDescriptor node)
-specifier|public
+specifier|private
 name|void
 name|removeStoredBlock
 parameter_list|(
@@ -10206,11 +10170,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** The given node is reporting that it received/deleted certain blocks. */
-DECL|method|blockReceivedAndDeleted (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo receivedAndDeletedBlocks[] )
+comment|/** The given node is reporting that it received a certain block. */
+DECL|method|blockReceived (final DatanodeID nodeID, final String poolId, final Block block, final String delHint)
 specifier|public
 name|void
-name|blockReceivedAndDeleted
+name|blockReceived
 parameter_list|(
 specifier|final
 name|DatanodeID
@@ -10221,9 +10185,12 @@ name|String
 name|poolId
 parameter_list|,
 specifier|final
-name|ReceivedDeletedBlockInfo
-name|receivedAndDeletedBlocks
-index|[]
+name|Block
+name|block
+parameter_list|,
+specifier|final
+name|String
+name|delHint
 parameter_list|)
 throws|throws
 name|IOException
@@ -10233,16 +10200,6 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
-name|int
-name|received
-init|=
-literal|0
-decl_stmt|;
-name|int
-name|deleted
-init|=
-literal|0
-decl_stmt|;
 try|try
 block|{
 specifier|final
@@ -10268,13 +10225,11 @@ operator|.
 name|isAlive
 condition|)
 block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-literal|"BLOCK* blockReceivedDeleted"
+specifier|final
+name|String
+name|s
+init|=
+name|block
 operator|+
 literal|" is received from dead or unregistered node "
 operator|+
@@ -10282,87 +10237,25 @@ name|nodeID
 operator|.
 name|getName
 argument_list|()
+decl_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"BLOCK* blockReceived: "
+operator|+
+name|s
 argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Got blockReceivedDeleted message from unregistered or dead node"
+name|s
 argument_list|)
 throw|;
-block|}
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|receivedAndDeletedBlocks
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-if|if
-condition|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|isDeletedBlock
-argument_list|()
-condition|)
-block|{
-name|removeStoredBlock
-argument_list|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|getBlock
-argument_list|()
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-name|deleted
-operator|++
-expr_stmt|;
-block|}
-else|else
-block|{
-name|addBlock
-argument_list|(
-name|node
-argument_list|,
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|getBlock
-argument_list|()
-argument_list|,
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|getDelHints
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|received
-operator|++
-expr_stmt|;
 block|}
 if|if
 condition|(
@@ -10380,31 +10273,9 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* block"
+literal|"BLOCK* blockReceived: "
 operator|+
-operator|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|isDeletedBlock
-argument_list|()
-condition|?
-literal|"Deleted"
-else|:
-literal|"Received"
-operator|)
-operator|+
-literal|": "
-operator|+
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
-operator|.
-name|getBlock
-argument_list|()
+name|block
 operator|+
 literal|" is received from "
 operator|+
@@ -10415,7 +10286,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
+name|addBlock
+argument_list|(
+name|node
+argument_list|,
+name|block
+argument_list|,
+name|delHint
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -10423,32 +10302,6 @@ name|namesystem
 operator|.
 name|writeUnlock
 argument_list|()
-expr_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"*BLOCK* NameNode.blockReceivedAndDeleted: "
-operator|+
-literal|"from "
-operator|+
-name|nodeID
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" received: "
-operator|+
-name|received
-operator|+
-literal|", "
-operator|+
-literal|" deleted: "
-operator|+
-name|deleted
-argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -11333,15 +11186,6 @@ name|Block
 name|block
 parameter_list|)
 block|{
-name|block
-operator|.
-name|setNumBytes
-argument_list|(
-name|BlockCommand
-operator|.
-name|NO_ACK
-argument_list|)
-expr_stmt|;
 name|addToInvalidates
 argument_list|(
 name|block

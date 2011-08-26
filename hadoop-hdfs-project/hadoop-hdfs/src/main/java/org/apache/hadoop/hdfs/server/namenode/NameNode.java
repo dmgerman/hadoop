@@ -1040,24 +1040,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|ReceivedDeletedBlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|RemoteEditLogManifest
 import|;
 end_import
@@ -6179,10 +6161,10 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|blockReceivedAndDeleted (DatanodeRegistration nodeReg, String poolId, ReceivedDeletedBlockInfo[] receivedAndDeletedBlocks)
+DECL|method|blockReceived (DatanodeRegistration nodeReg, String poolId, Block blocks[], String delHints[])
 specifier|public
 name|void
-name|blockReceivedAndDeleted
+name|blockReceived
 parameter_list|(
 name|DatanodeRegistration
 name|nodeReg
@@ -6190,9 +6172,13 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|ReceivedDeletedBlockInfo
+name|Block
+name|blocks
 index|[]
-name|receivedAndDeletedBlocks
+parameter_list|,
+name|String
+name|delHints
+index|[]
 parameter_list|)
 throws|throws
 name|IOException
@@ -6214,7 +6200,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"*BLOCK* NameNode.blockReceivedAndDeleted: "
+literal|"*BLOCK* NameNode.blockReceived: "
 operator|+
 literal|"from "
 operator|+
@@ -6225,7 +6211,7 @@ argument_list|()
 operator|+
 literal|" "
 operator|+
-name|receivedAndDeletedBlocks
+name|blocks
 operator|.
 name|length
 operator|+
@@ -6233,20 +6219,46 @@ literal|" blocks."
 argument_list|)
 expr_stmt|;
 block|}
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|blocks
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|namesystem
 operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|blockReceivedAndDeleted
+name|blockReceived
 argument_list|(
 name|nodeReg
 argument_list|,
 name|poolId
 argument_list|,
-name|receivedAndDeletedBlocks
+name|blocks
+index|[
+name|i
+index|]
+argument_list|,
+name|delHints
+index|[
+name|i
+index|]
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

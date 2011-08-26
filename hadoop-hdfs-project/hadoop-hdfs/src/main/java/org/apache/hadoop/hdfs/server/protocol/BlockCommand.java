@@ -216,18 +216,6 @@ name|BlockCommand
 extends|extends
 name|DatanodeCommand
 block|{
-comment|/**    * This constant is used to indicate that the block deletion does not need    * explicit ACK from the datanode. When a block is put into the list of blocks    * to be deleted, it's size is set to this constant. We assume that no block    * would actually have this size. Otherwise, we would miss ACKs for blocks    * with such size. Positive number is used for compatibility reasons.    */
-DECL|field|NO_ACK
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|NO_ACK
-init|=
-name|Long
-operator|.
-name|MAX_VALUE
-decl_stmt|;
 DECL|field|poolId
 name|String
 name|poolId
