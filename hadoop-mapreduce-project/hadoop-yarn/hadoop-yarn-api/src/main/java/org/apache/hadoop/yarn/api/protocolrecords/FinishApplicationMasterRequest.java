@@ -28,6 +28,86 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|AMRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -38,17 +118,30 @@ name|ApplicationAttemptId
 import|;
 end_import
 
+begin_comment
+comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to   * inform the<code>ResourceManager</code> about its completion via the  * {@link AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)}  * api.</p>  *   *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  */
+end_comment
+
 begin_interface
 DECL|interface|FinishApplicationMasterRequest
 specifier|public
 interface|interface
 name|FinishApplicationMasterRequest
 block|{
+comment|/**    * Get the {@link ApplicationAttemptId} being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getApplicationAttemptId ()
 name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setAppAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setAppAttemptId
@@ -57,11 +150,20 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
+comment|/**    * Get final state of the<code>ApplicationMaster</code>.    * @return final state of the<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getFinalState ()
 name|String
 name|getFinalState
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setFinalState (String string)
 name|void
 name|setFinalState
@@ -70,11 +172,20 @@ name|String
 name|string
 parameter_list|)
 function_decl|;
+comment|/**    * Get diagnostic information if the application failed.    * @return diagnostic information if the application failed    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getDiagnostics ()
 name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setDiagnostics (String string)
 name|void
 name|setDiagnostics
@@ -83,11 +194,20 @@ name|String
 name|string
 parameter_list|)
 function_decl|;
+comment|/**    * Get the tracking URL for the<code>ApplicationMaster</code>.    * @return the tracking URL for the<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getTrackingUrl ()
 name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setTrackingUrl (String historyUrl)
 name|void
 name|setTrackingUrl

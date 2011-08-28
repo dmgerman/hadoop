@@ -375,17 +375,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getApplicationReport (GetApplicationReportRequest request)
-specifier|public
-name|GetApplicationReportResponse
-name|getApplicationReport
-parameter_list|(
-name|GetApplicationReportRequest
-name|request
-parameter_list|)
-throws|throws
-name|YarnRemoteException
-function_decl|;
 DECL|method|submitApplication (SubmitApplicationRequest request)
 specifier|public
 name|SubmitApplicationResponse
@@ -403,6 +392,17 @@ name|FinishApplicationResponse
 name|finishApplication
 parameter_list|(
 name|FinishApplicationRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnRemoteException
+function_decl|;
+DECL|method|getApplicationReport (GetApplicationReportRequest request)
+specifier|public
+name|GetApplicationReportResponse
+name|getApplicationReport
+parameter_list|(
+name|GetApplicationReportRequest
 name|request
 parameter_list|)
 throws|throws

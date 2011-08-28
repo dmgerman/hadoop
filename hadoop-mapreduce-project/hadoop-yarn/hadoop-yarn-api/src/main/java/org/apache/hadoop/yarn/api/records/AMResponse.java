@@ -30,48 +30,133 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|AMRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation via  * {@link AMRMProtocol#allocate(AllocateRequest)}.</p>  *  *<p>The response includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *</ul>  *</p>  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|interface|AMResponse
 specifier|public
 interface|interface
 name|AMResponse
 block|{
+comment|/**    * Should the<code>ApplicationMaster</code> reboot for being horribly     * out-of-sync with the<code>ResourceManager</code> as deigned by     * {@link #getResponseId()}?    *     * @return<code>true</code> if the<code>ApplicationMaster</code> should    *         reboot,<code>false</code> otherwise    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getReboot ()
 specifier|public
 name|boolean
 name|getReboot
 parameter_list|()
 function_decl|;
-DECL|method|getResponseId ()
-specifier|public
-name|int
-name|getResponseId
-parameter_list|()
-function_decl|;
-DECL|method|getNewContainerList ()
-specifier|public
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|getNewContainerList
-parameter_list|()
-function_decl|;
-DECL|method|getNewContainer (int index)
-specifier|public
-name|Container
-name|getNewContainer
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-DECL|method|getNewContainerCount ()
-specifier|public
-name|int
-name|getNewContainerCount
-parameter_list|()
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setReboot (boolean reboot)
 specifier|public
 name|void
@@ -81,6 +166,21 @@ name|boolean
 name|reboot
 parameter_list|)
 function_decl|;
+comment|/**    * Get the last response id.    * @return the last response id    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getResponseId ()
+specifier|public
+name|int
+name|getResponseId
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setResponseId (int responseId)
 specifier|public
 name|void
@@ -90,6 +190,47 @@ name|int
 name|responseId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the list of newly allocated {@link Container} by the     *<code>ResourceManager</code>.    * @return list of newly allocated<code>Container</code>     */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNewContainerList ()
+specifier|public
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getNewContainerList
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getNewContainer (int index)
+specifier|public
+name|Container
+name|getNewContainer
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getNewContainerCount ()
+specifier|public
+name|int
+name|getNewContainerCount
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllNewContainers (List<Container> containers)
 specifier|public
 name|void
@@ -102,6 +243,10 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addNewContainer (Container container)
 specifier|public
 name|void
@@ -111,6 +256,10 @@ name|Container
 name|container
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeNewContainer (int index)
 specifier|public
 name|void
@@ -120,12 +269,31 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearNewContainers ()
 specifier|public
 name|void
 name|clearNewContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Get available headroom for resources in the cluster for the application.    * @param limit available headroom for resources in the cluster for the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAvailableResources ()
+specifier|public
+name|Resource
+name|getAvailableResources
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setAvailableResources (Resource limit)
 specifier|public
 name|void
@@ -135,12 +303,11 @@ name|Resource
 name|limit
 parameter_list|)
 function_decl|;
-DECL|method|getAvailableResources ()
-specifier|public
-name|Resource
-name|getAvailableResources
-parameter_list|()
-function_decl|;
+comment|/**    * Get the list of completed containers.    * @return the list of completed containers    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getFinishedContainerList ()
 specifier|public
 name|List
@@ -150,6 +317,10 @@ argument_list|>
 name|getFinishedContainerList
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|getFinishedContainer (int index)
 specifier|public
 name|Container
@@ -159,12 +330,20 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|getFinishedContainerCount ()
 specifier|public
 name|int
 name|getFinishedContainerCount
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllFinishedContainers (List<Container> containers)
 specifier|public
 name|void
@@ -177,6 +356,10 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addFinishedContainer (Container container)
 specifier|public
 name|void
@@ -186,6 +369,10 @@ name|Container
 name|container
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeFinishedContainer (int index)
 specifier|public
 name|void
@@ -195,6 +382,10 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearFinishedContainers ()
 specifier|public
 name|void
