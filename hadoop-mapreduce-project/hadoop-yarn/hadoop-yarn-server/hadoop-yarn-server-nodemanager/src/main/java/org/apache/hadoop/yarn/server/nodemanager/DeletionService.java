@@ -341,7 +341,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**    * Delete the path(s) as this user.    * @param user The user to delete as, or the JVM user if null    * @param p Paths to delete    */
+comment|/**    *    /**    * Delete the path(s) as this user.    * @param user The user to delete as, or the JVM user if null    * @param subDir the sub directory name    * @param baseDirs the base directories which contains the subDir's    */
 DECL|method|delete (String user, Path subDir, Path... baseDirs)
 specifier|public
 name|void

@@ -401,7 +401,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>JobClient</code> is the primary interface for the user-job to interact  * with the {@link JobTracker}.  *   *<code>JobClient</code> provides facilities to submit jobs, track their   * progress, access component-tasks' reports/logs, get the Map-Reduce cluster  * status information etc.  *   *<p>The job submission process involves:  *<ol>  *<li>  *   Checking the input and output specifications of the job.  *</li>  *<li>  *   Computing the {@link InputSplit}s for the job.  *</li>  *<li>  *   Setup the requisite accounting information for the {@link DistributedCache}   *   of the job, if necessary.  *</li>  *<li>  *   Copying the job's jar and configuration to the map-reduce system directory   *   on the distributed file-system.   *</li>  *<li>  *   Submitting the job to the<code>JobTracker</code> and optionally monitoring  *   it's status.  *</li>  *</ol></p>  *    * Normally the user creates the application, describes various facets of the  * job via {@link JobConf} and then uses the<code>JobClient</code> to submit   * the job and monitor its progress.  *   *<p>Here is an example on how to use<code>JobClient</code>:</p>  *<p><blockquote><pre>  *     // Create a new JobConf  *     JobConf job = new JobConf(new Configuration(), MyJob.class);  *       *     // Specify various job-specific parameters       *     job.setJobName("myjob");  *       *     job.setInputPath(new Path("in"));  *     job.setOutputPath(new Path("out"));  *       *     job.setMapperClass(MyJob.MyMapper.class);  *     job.setReducerClass(MyJob.MyReducer.class);  *  *     // Submit the job, then poll for progress until the job is complete  *     JobClient.runJob(job);  *</pre></blockquote></p>  *   *<h4 id="JobControl">Job Control</h4>  *   *<p>At times clients would chain map-reduce jobs to accomplish complex tasks   * which cannot be done via a single map-reduce job. This is fairly easy since   * the output of the job, typically, goes to distributed file-system and that   * can be used as the input for the next job.</p>  *   *<p>However, this also means that the onus on ensuring jobs are complete   * (success/failure) lies squarely on the clients. In such situations the   * various job-control options are:  *<ol>  *<li>  *   {@link #runJob(JobConf)} : submits the job and returns only after   *   the job has completed.  *</li>  *<li>  *   {@link #submitJob(JobConf)} : only submits the job, then poll the   *   returned handle to the {@link RunningJob} to query status and make   *   scheduling decisions.  *</li>  *<li>  *   {@link JobConf#setJobEndNotificationURI(String)} : setup a notification  *   on job-completion, thus avoiding polling.  *</li>  *</ol></p>  *   * @see JobConf  * @see ClusterStatus  * @see Tool  * @see DistributedCache  * @deprecated Use {@link Job} and {@link Cluster} instead  */
+comment|/**  *<code>JobClient</code> is the primary interface for the user-job to interact  * with the cluster.  *   *<code>JobClient</code> provides facilities to submit jobs, track their   * progress, access component-tasks' reports/logs, get the Map-Reduce cluster  * status information etc.  *   *<p>The job submission process involves:  *<ol>  *<li>  *   Checking the input and output specifications of the job.  *</li>  *<li>  *   Computing the {@link InputSplit}s for the job.  *</li>  *<li>  *   Setup the requisite accounting information for the {@link DistributedCache}   *   of the job, if necessary.  *</li>  *<li>  *   Copying the job's jar and configuration to the map-reduce system directory   *   on the distributed file-system.   *</li>  *<li>  *   Submitting the job to the cluster and optionally monitoring  *   it's status.  *</li>  *</ol></p>  *    * Normally the user creates the application, describes various facets of the  * job via {@link JobConf} and then uses the<code>JobClient</code> to submit   * the job and monitor its progress.  *   *<p>Here is an example on how to use<code>JobClient</code>:</p>  *<p><blockquote><pre>  *     // Create a new JobConf  *     JobConf job = new JobConf(new Configuration(), MyJob.class);  *       *     // Specify various job-specific parameters       *     job.setJobName("myjob");  *       *     job.setInputPath(new Path("in"));  *     job.setOutputPath(new Path("out"));  *       *     job.setMapperClass(MyJob.MyMapper.class);  *     job.setReducerClass(MyJob.MyReducer.class);  *  *     // Submit the job, then poll for progress until the job is complete  *     JobClient.runJob(job);  *</pre></blockquote></p>  *   *<h4 id="JobControl">Job Control</h4>  *   *<p>At times clients would chain map-reduce jobs to accomplish complex tasks   * which cannot be done via a single map-reduce job. This is fairly easy since   * the output of the job, typically, goes to distributed file-system and that   * can be used as the input for the next job.</p>  *   *<p>However, this also means that the onus on ensuring jobs are complete   * (success/failure) lies squarely on the clients. In such situations the   * various job-control options are:  *<ol>  *<li>  *   {@link #runJob(JobConf)} : submits the job and returns only after   *   the job has completed.  *</li>  *<li>  *   {@link #submitJob(JobConf)} : only submits the job, then poll the   *   returned handle to the {@link RunningJob} to query status and make   *   scheduling decisions.  *</li>  *<li>  *   {@link JobConf#setJobEndNotificationURI(String)} : setup a notification  *   on job-completion, thus avoiding polling.  *</li>  *</ol></p>  *   * @see JobConf  * @see ClusterStatus  * @see Tool  * @see DistributedCache  * @deprecated Use {@link Job} and {@link Cluster} instead  */
 end_comment
 
 begin_class
@@ -472,7 +472,7 @@ DECL|field|job
 name|Job
 name|job
 decl_stmt|;
-comment|/**      * We store a JobProfile and a timestamp for when we last      * acquired the job profile.  If the job is null, then we cannot      * perform any of the tasks.  The job might be null if the JobTracker      * has completely forgotten about the job.  (eg, 24 hours after the      * job completes.)      */
+comment|/**      * We store a JobProfile and a timestamp for when we last      * acquired the job profile.  If the job is null, then we cannot      * perform any of the tasks.  The job might be null if the cluster      * has completely forgotten about the job.  (eg, 24 hours after the      * job completes.)      */
 DECL|method|NetworkedJob (JobStatus status, Cluster cluster)
 specifier|public
 name|NetworkedJob
@@ -1072,7 +1072,7 @@ name|shouldFail
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Fetch task completion events from jobtracker for this job.       */
+comment|/**      * Fetch task completion events from cluster for this job.       */
 DECL|method|getTaskCompletionEvents ( int startFrom)
 specifier|public
 specifier|synchronized
@@ -1388,7 +1388,7 @@ specifier|public
 name|JobClient
 parameter_list|()
 block|{   }
-comment|/**    * Build a job client with the given {@link JobConf}, and connect to the     * default {@link JobTracker}.    *     * @param conf the job configuration.    * @throws IOException    */
+comment|/**    * Build a job client with the given {@link JobConf}, and connect to the     * default cluster    *     * @param conf the job configuration.    * @throws IOException    */
 DECL|method|JobClient (JobConf conf)
 specifier|public
 name|JobClient
@@ -1405,7 +1405,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build a job client with the given {@link Configuration},     * and connect to the default {@link JobTracker}.    *     * @param conf the configuration.    * @throws IOException    */
+comment|/**    * Build a job client with the given {@link Configuration},     * and connect to the default cluster    *     * @param conf the configuration.    * @throws IOException    */
 DECL|method|JobClient (Configuration conf)
 specifier|public
 name|JobClient
@@ -1426,7 +1426,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Connect to the default {@link JobTracker}.    * @param conf the job configuration.    * @throws IOException    */
+comment|/**    * Connect to the default cluster    * @param conf the job configuration.    * @throws IOException    */
 DECL|method|init (JobConf conf)
 specifier|public
 name|void

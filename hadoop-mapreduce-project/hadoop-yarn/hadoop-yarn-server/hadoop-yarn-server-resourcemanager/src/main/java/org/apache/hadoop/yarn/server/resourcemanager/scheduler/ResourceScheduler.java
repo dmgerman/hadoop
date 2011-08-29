@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This interface is the one implemented by the schedulers. It mainly extends   * {@link ResourceListener} and {@link YarnScheduler}.   *  */
+comment|/**  * This interface is the one implemented by the schedulers. It mainly extends   * {@link YarnScheduler}.   *  */
 end_comment
 
 begin_interface

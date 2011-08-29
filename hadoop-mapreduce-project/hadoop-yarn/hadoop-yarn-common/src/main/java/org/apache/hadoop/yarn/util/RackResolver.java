@@ -286,7 +286,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method initializes the class with the     * right resolver implementation.    * @param conf    * @param hostName    * @return    */
+comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method initializes the class with the     * right resolver implementation.    * @param conf    * @param hostName    * @return node {@link Node} after resolving the hostname    */
 DECL|method|resolve (Configuration conf, String hostName)
 specifier|public
 specifier|static
@@ -312,7 +312,7 @@ name|hostName
 argument_list|)
 return|;
 block|}
-comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method doesn't initialize the class.    * Call {@link #init(Configuration)} explicitly.    * @param hostName    * @return    */
+comment|/**    * Utility method for getting a hostname resolved to a node in the    * network topology. This method doesn't initialize the class.    * Call {@link #init(Configuration)} explicitly.    * @param hostName    * @return node {@link Node} after resolving the hostname    */
 DECL|method|resolve (String hostName)
 specifier|public
 specifier|static

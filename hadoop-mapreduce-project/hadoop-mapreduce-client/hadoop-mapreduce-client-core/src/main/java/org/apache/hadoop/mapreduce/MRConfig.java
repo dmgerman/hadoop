@@ -31,7 +31,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Place holder for cluster level configuration keys.  *   * These keys are used by both {@link JobTracker} and {@link TaskTracker}. The   * keys should have "mapreduce.cluster." as the prefix.   *  */
+comment|/**  * Place holder for cluster level configuration keys.  *   * The keys should have "mapreduce.cluster." as the prefix.   *  */
 end_comment
 
 begin_interface

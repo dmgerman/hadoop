@@ -169,7 +169,7 @@ name|AppContext
 name|context
 parameter_list|)
 function_decl|;
-comment|/**    *    * Find a maximum reasonable execution wallclock time.  Includes the time    * already elapsed.    *    * Find a maximum reasonable execution time.  Includes the time    * already elapsed.  If the projected total execution time for this task    * ever exceeds its reasonable execution time, we may speculate it.    *    * @param id the {@link TaskID} of the task we are asking about    * @return the task's maximum reasonable runtime, or MAX_VALUE if    *         we don't have enough information to rule out any runtime,    *         however long.    *    */
+comment|/**    *    * Find a maximum reasonable execution wallclock time.  Includes the time    * already elapsed.    *    * Find a maximum reasonable execution time.  Includes the time    * already elapsed.  If the projected total execution time for this task    * ever exceeds its reasonable execution time, we may speculate it.    *    * @param id the {@link TaskId} of the task we are asking about    * @return the task's maximum reasonable runtime, or MAX_VALUE if    *         we don't have enough information to rule out any runtime,    *         however long.    *    */
 DECL|method|thresholdRuntime (TaskId id)
 specifier|public
 name|long
@@ -179,7 +179,7 @@ name|TaskId
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    *    * Estimate a task attempt's total runtime.  Includes the time already    * elapsed.    *    * @param id the {@link TaskAttemptID} of the attempt we are asking about    * @return our best estimate of the attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
+comment|/**    *    * Estimate a task attempt's total runtime.  Includes the time already    * elapsed.    *    * @param id the {@link TaskAttemptId} of the attempt we are asking about    * @return our best estimate of the attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
 DECL|method|estimatedRuntime (TaskAttemptId id)
 specifier|public
 name|long
@@ -189,7 +189,7 @@ name|TaskAttemptId
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    *    * Estimates how long a new attempt on this task will take if we start    *  one now    *    * @param id the {@link TaskID} of the task we are asking about    * @return our best estimate of a new attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
+comment|/**    *    * Estimates how long a new attempt on this task will take if we start    *  one now    *    * @param id the {@link TaskId} of the task we are asking about    * @return our best estimate of a new attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
 DECL|method|estimatedNewAttemptRuntime (TaskId id)
 specifier|public
 name|long
@@ -199,7 +199,7 @@ name|TaskId
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    *    * Computes the width of the error band of our estimate of the task    *  runtime as returned by {@link estimatedRuntime}    *    * @param id the {@link TaskAttemptID} of the attempt we are asking about    * @return our best estimate of the attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
+comment|/**    *    * Computes the width of the error band of our estimate of the task    *  runtime as returned by {@link #estimatedRuntime(TaskAttemptId)}    *    * @param id the {@link TaskAttemptId} of the attempt we are asking about    * @return our best estimate of the attempt's runtime, or {@code -1} if    *         we don't have enough information yet to produce an estimate.    *    */
 DECL|method|runtimeEstimateVariance (TaskAttemptId id)
 specifier|public
 name|long

@@ -2129,7 +2129,7 @@ name|currentReservation
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param priority priority of reserved container    * @return    */
+comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param priority priority of reserved container    * @return true is reserved, false if not    */
 DECL|method|isReserved (SchedulerNode node, Priority priority)
 specifier|public
 specifier|synchronized

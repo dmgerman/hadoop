@@ -1079,7 +1079,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/** Verify that the given process id is same as its process group id.    * @param pidStr Process id of the to-be-verified-process    * @param procfsDir  Procfs root dir    */
+comment|/** Verify that the given process id is same as its process group id.    * @return true if the process id matches else return false.    */
 DECL|method|checkPidPgrpidForMatch ()
 specifier|public
 name|boolean

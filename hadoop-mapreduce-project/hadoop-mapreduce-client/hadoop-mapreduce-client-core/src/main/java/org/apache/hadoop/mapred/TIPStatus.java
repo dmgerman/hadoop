@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** The states of a {@link TaskInProgress} as seen by the JobTracker.  */
+comment|/** The states of a Tasks.  */
 end_comment
 
 begin_enum

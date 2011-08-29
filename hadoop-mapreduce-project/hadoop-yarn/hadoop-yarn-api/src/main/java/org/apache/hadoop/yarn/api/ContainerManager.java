@@ -172,6 +172,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -272,7 +290,7 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The api used by the<code>ApplicationMaster</code> to request for     * current status of a<code>Container</code> from the     *<code>NodeManager</code>.</p>    *     *<p>The<code>ApplicationMaster</code></p> sends a     * {@link GetContainerStatusRequest} which includes the {@link ContainerId} of     * the container whose status is needed.</p>    *    *<p>The<code>NodeManager</code> responds with     *{@link GetContainerStatusResponse} which includes the     *{@link ContainerStatus} of the container.</p>    *    * @param request request to get<code>ContainerStatus</code> of a container    *                with the specified<code>ContainerId</code>    * @return    * @throws YarnRemoteException    */
+comment|/**    *<p>The api used by the<code>ApplicationMaster</code> to request for     * current status of a<code>Container</code> from the     *<code>NodeManager</code>.</p>    *     *<p>The<code>ApplicationMaster</code></p> sends a     * {@link GetContainerStatusRequest} which includes the {@link ContainerId} of     * the container whose status is needed.</p>    *    *<p>The<code>NodeManager</code> responds with     *{@link GetContainerStatusResponse} which includes the     *{@link ContainerStatus} of the container.</p>    *    * @param request request to get<code>ContainerStatus</code> of a container    *                with the specified<code>ContainerId</code>    * @return the<code>ContainerStatus</code> of the container    * @throws YarnRemoteException    */
 annotation|@
 name|Public
 annotation|@

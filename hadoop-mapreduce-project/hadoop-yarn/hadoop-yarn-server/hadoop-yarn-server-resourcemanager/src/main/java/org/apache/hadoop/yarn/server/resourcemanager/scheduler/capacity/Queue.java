@@ -437,7 +437,7 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return    */
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return the resource that is being assigned.    */
 DECL|method|assignContainers (Resource clusterResource, SchedulerNode node)
 specifier|public
 name|Resource

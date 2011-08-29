@@ -229,7 +229,7 @@ name|APPLICATION_PREFIX
 init|=
 literal|"application"
 decl_stmt|;
-comment|/**    * return a hadoop path from a given url    *     * @param url    *          url to convert    * @return    * @throws URISyntaxException    */
+comment|/**    * return a hadoop path from a given url    *     * @param url    *          url to convert    * @return path from {@link URL}    * @throws URISyntaxException    */
 DECL|method|getPathFromYarnURL (URL url)
 specifier|public
 specifier|static
@@ -311,7 +311,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * change from CharSequence to string for map key and value    * @param env    * @return    */
+comment|/**    * change from CharSequence to string for map key and value    * @param env map for converting    * @return string,string map    */
 DECL|method|convertToString ( Map<CharSequence, CharSequence> env)
 specifier|public
 specifier|static

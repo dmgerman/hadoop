@@ -523,7 +523,7 @@ name|getRackName
 argument_list|()
 return|;
 block|}
-comment|/**    * The Scheduler has allocated containers on this node to the     * given application.    *     * @param applicationId application    * @param containers allocated containers    */
+comment|/**    * The Scheduler has allocated containers on this node to the     * given application.    *     * @param applicationId application    * @param rmContainer allocated container    */
 DECL|method|allocateContainer (ApplicationId applicationId, RMContainer rmContainer)
 specifier|public
 specifier|synchronized

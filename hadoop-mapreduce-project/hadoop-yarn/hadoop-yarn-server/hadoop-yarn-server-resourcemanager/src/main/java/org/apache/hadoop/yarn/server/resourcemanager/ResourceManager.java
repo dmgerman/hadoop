@@ -2543,7 +2543,7 @@ operator|.
 name|clientRM
 return|;
 block|}
-comment|/**    * return the scheduler.    * @return    */
+comment|/**    * return the scheduler.    * @return the scheduler for the Resource Manager.    */
 annotation|@
 name|Private
 DECL|method|getResourceScheduler ()
@@ -2558,7 +2558,7 @@ operator|.
 name|scheduler
 return|;
 block|}
-comment|/**    * return the resource tracking component.    * @return    */
+comment|/**    * return the resource tracking component.    * @return the resource tracking component.    */
 annotation|@
 name|Private
 DECL|method|getResourceTrackerService ()
