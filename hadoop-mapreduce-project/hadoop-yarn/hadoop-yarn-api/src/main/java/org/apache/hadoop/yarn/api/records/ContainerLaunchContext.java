@@ -50,27 +50,177 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>ContainerLaunchContext</code> represents the all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to be executed to launch the container.</li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *</ul>  *</p>  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|ContainerLaunchContext
 specifier|public
 interface|interface
 name|ContainerLaunchContext
 block|{
+comment|/**    * Get<code>ContainerId</code> of container to be launched.    * @return<code>ContainerId</code> of container to be launched    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getContainerId ()
 name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainerId (ContainerId containerId)
+name|void
+name|setContainerId
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>user</em> to whom the container has been allocated.    * @return the<em>user</em> to whom the container has been allocated    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getUser ()
 name|String
 name|getUser
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setUser (String user)
+name|void
+name|setUser
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>.    * @return<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getResource ()
 name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setResource (Resource resource)
+name|void
+name|setResource
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+function_decl|;
+comment|/**    * Get security tokens (if security is enabled).    * @return security tokens (if security is enabled)    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getContainerTokens ()
+name|ByteBuffer
+name|getContainerTokens
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainerTokens (ByteBuffer containerToken)
+name|void
+name|setContainerTokens
+parameter_list|(
+name|ByteBuffer
+name|containerToken
+parameter_list|)
+function_decl|;
+comment|/**    * Get all<code>LocalResource</code> required by the container.    * @return all<code>LocalResource</code> required by the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getAllLocalResources ()
 name|Map
 argument_list|<
@@ -81,6 +231,10 @@ argument_list|>
 name|getAllLocalResources
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|getLocalResource (String key)
 name|LocalResource
 name|getLocalResource
@@ -89,92 +243,10 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
-DECL|method|getContainerTokens ()
-name|ByteBuffer
-name|getContainerTokens
-parameter_list|()
-function_decl|;
-DECL|method|getAllServiceData ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ByteBuffer
-argument_list|>
-name|getAllServiceData
-parameter_list|()
-function_decl|;
-DECL|method|getServiceData (String key)
-name|ByteBuffer
-name|getServiceData
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-DECL|method|getAllEnv ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|getAllEnv
-parameter_list|()
-function_decl|;
-DECL|method|getEnv (String key)
-name|String
-name|getEnv
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-DECL|method|getCommandList ()
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getCommandList
-parameter_list|()
-function_decl|;
-DECL|method|getCommand (int index)
-name|String
-name|getCommand
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-DECL|method|getCommandCount ()
-name|int
-name|getCommandCount
-parameter_list|()
-function_decl|;
-DECL|method|setContainerId (ContainerId containerId)
-name|void
-name|setContainerId
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|)
-function_decl|;
-DECL|method|setUser (String user)
-name|void
-name|setUser
-parameter_list|(
-name|String
-name|user
-parameter_list|)
-function_decl|;
-DECL|method|setResource (Resource resource)
-name|void
-name|setResource
-parameter_list|(
-name|Resource
-name|resource
-parameter_list|)
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllLocalResources (Map<String, LocalResource> localResources)
 name|void
 name|addAllLocalResources
@@ -188,6 +260,10 @@ argument_list|>
 name|localResources
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setLocalResource (String key, LocalResource value)
 name|void
 name|setLocalResource
@@ -199,6 +275,10 @@ name|LocalResource
 name|value
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeLocalResource (String key)
 name|void
 name|removeLocalResource
@@ -207,19 +287,46 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearLocalResources ()
 name|void
 name|clearLocalResources
 parameter_list|()
 function_decl|;
-DECL|method|setContainerTokens (ByteBuffer containerToken)
-name|void
-name|setContainerTokens
-parameter_list|(
+comment|/**    * Get application-specific binary service data.    * @return application-specific binary service data    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAllServiceData ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
 name|ByteBuffer
-name|containerToken
+argument_list|>
+name|getAllServiceData
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getServiceData (String key)
+name|ByteBuffer
+name|getServiceData
+parameter_list|(
+name|String
+name|key
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllServiceData (Map<String, ByteBuffer> serviceData)
 name|void
 name|addAllServiceData
@@ -233,6 +340,10 @@ argument_list|>
 name|serviceData
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setServiceData (String key, ByteBuffer value)
 name|void
 name|setServiceData
@@ -244,6 +355,10 @@ name|ByteBuffer
 name|value
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeServiceData (String key)
 name|void
 name|removeServiceData
@@ -252,11 +367,46 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearServiceData ()
 name|void
 name|clearServiceData
 parameter_list|()
 function_decl|;
+comment|/**    * Get<em>environment variables</em> for the launched container.    * @return<em>environment variables</em> for the launched container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAllEnv ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getAllEnv
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getEnv (String key)
+name|String
+name|getEnv
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllEnv (Map<String, String> env)
 name|void
 name|addAllEnv
@@ -270,6 +420,10 @@ argument_list|>
 name|env
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setEnv (String key, String value)
 name|void
 name|setEnv
@@ -281,6 +435,10 @@ name|String
 name|value
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeEnv (String key)
 name|void
 name|removeEnv
@@ -289,11 +447,53 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearEnv ()
 name|void
 name|clearEnv
 parameter_list|()
 function_decl|;
+comment|/**    * Get the list of<em>commands</em> for launching the container.    * @return the list of<em>commands</em> for launching the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getCommandList ()
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getCommandList
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getCommand (int index)
+name|String
+name|getCommand
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getCommandCount ()
+name|int
+name|getCommandCount
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addAllCommands (List<String> commands)
 name|void
 name|addAllCommands
@@ -305,6 +505,10 @@ argument_list|>
 name|commands
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|addCommand (String command)
 name|void
 name|addCommand
@@ -313,6 +517,10 @@ name|String
 name|command
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|removeCommand (int index)
 name|void
 name|removeCommand
@@ -321,6 +529,10 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|clearCommands ()
 name|void
 name|clearCommands
