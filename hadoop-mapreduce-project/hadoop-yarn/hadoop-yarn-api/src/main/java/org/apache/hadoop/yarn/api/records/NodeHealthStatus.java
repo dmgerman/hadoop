@@ -20,27 +20,114 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ClientRMProtocol
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>NodeHealthStatus</code> is a summary of the health status of the  * node.</p>  *  *<p>It includes information such as:  *<ul>  *<li>  *       An indicator of whether the node is healthy, as determined by the   *       health-check script.  *</li>  *<li>The previous time at which the health status was reported.</li>  *<li>A diagnostic report on the health status.</li>  *<li></li>  *<li></li>  *</ul>  *</p>  *   * @see NodeReport  * @see ClientRMProtocol#getClusterNodes(org.apache.hadoop.yarn.api.protocolrecords.GetClusterNodesRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|NodeHealthStatus
 specifier|public
 interface|interface
 name|NodeHealthStatus
 block|{
+comment|/**    * Is the node healthy?    * @return<code>true</code> if the node is healthy, else<code>false</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getIsNodeHealthy ()
 name|boolean
 name|getIsNodeHealthy
 parameter_list|()
 function_decl|;
-DECL|method|getHealthReport ()
-name|String
-name|getHealthReport
-parameter_list|()
-function_decl|;
-DECL|method|getLastHealthReportTime ()
-name|long
-name|getLastHealthReportTime
-parameter_list|()
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setIsNodeHealthy (boolean isNodeHealthy)
 name|void
 name|setIsNodeHealthy
@@ -49,6 +136,20 @@ name|boolean
 name|isNodeHealthy
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>diagnostic health report</em> of the node.    * @return<em>diagnostic health report</em> of the node    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getHealthReport ()
+name|String
+name|getHealthReport
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setHealthReport (String healthReport)
 name|void
 name|setHealthReport
@@ -57,6 +158,20 @@ name|String
 name|healthReport
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>last timestamp</em> at which the health report was received.    * @return<em>last timestamp</em> at which the health report was received    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getLastHealthReportTime ()
+name|long
+name|getLastHealthReportTime
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setLastHealthReportTime (long lastHealthReport)
 name|void
 name|setLastHealthReportTime

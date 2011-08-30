@@ -137,7 +137,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation via  * {@link AMRMProtocol#allocate(AllocateRequest)}.</p>  *  *<p>The response, via {@link AMResponse}, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *</ul>  *</p>  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, via {@link AMResponse}, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_interface

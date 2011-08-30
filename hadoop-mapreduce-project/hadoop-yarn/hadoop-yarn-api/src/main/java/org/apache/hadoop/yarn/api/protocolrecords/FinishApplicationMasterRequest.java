@@ -32,22 +32,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -65,22 +49,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -119,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to   * inform the<code>ResourceManager</code> about its completion via the  * {@link AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)}  * api.</p>  *   *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  */
+comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to   * inform the<code>ResourceManager</code> about its completion.</p>  *   *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_interface
@@ -128,7 +96,7 @@ specifier|public
 interface|interface
 name|FinishApplicationMasterRequest
 block|{
-comment|/**    * Get the {@link ApplicationAttemptId} being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -138,10 +106,11 @@ name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed     *                             by the<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setAppAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setAppAttemptId
@@ -150,7 +119,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Get final state of the<code>ApplicationMaster</code>.    * @return final state of the<code>ApplicationMaster</code>    */
+comment|/**    * Get<em>final state</em> of the<code>ApplicationMaster</code>.    * @return<em>final state</em> of the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -160,19 +129,20 @@ name|String
 name|getFinalState
 parameter_list|()
 function_decl|;
+comment|/**    * Set<em>final state</em> of the<code>ApplicationMaster</code>    * @param finalState<em>final state</em> of the<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
-DECL|method|setFinalState (String string)
+name|Stable
+DECL|method|setFinalState (String finalState)
 name|void
 name|setFinalState
 parameter_list|(
 name|String
-name|string
+name|finalState
 parameter_list|)
 function_decl|;
-comment|/**    * Get diagnostic information if the application failed.    * @return diagnostic information if the application failed    */
+comment|/**    * Get<em>diagnostic information</em> on application failure.    * @return<em>diagnostic information</em> on application failure    */
 annotation|@
 name|Public
 annotation|@
@@ -182,19 +152,20 @@ name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;
+comment|/**    * Set<em>diagnostic information</em> on application failure.    * @param diagnostics<em>diagnostic information</em> on application failure    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
-DECL|method|setDiagnostics (String string)
+name|Stable
+DECL|method|setDiagnostics (String diagnostics)
 name|void
 name|setDiagnostics
 parameter_list|(
 name|String
-name|string
+name|diagnostics
 parameter_list|)
 function_decl|;
-comment|/**    * Get the tracking URL for the<code>ApplicationMaster</code>.    * @return the tracking URL for the<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @return<em>tracking URL</em>for the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -204,16 +175,17 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>tracking URL</em>for the<code>ApplicationMaster</code>    * @param url<em>tracking URL</em>for the     *<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
-DECL|method|setTrackingUrl (String historyUrl)
+name|Stable
+DECL|method|setTrackingUrl (String url)
 name|void
 name|setTrackingUrl
 parameter_list|(
 name|String
-name|historyUrl
+name|url
 parameter_list|)
 function_decl|;
 block|}

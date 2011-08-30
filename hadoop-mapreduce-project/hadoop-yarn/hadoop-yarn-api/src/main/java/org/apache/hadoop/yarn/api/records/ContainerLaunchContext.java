@@ -114,8 +114,24 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManager
+import|;
+end_import
+
 begin_comment
-comment|/**  *<p><code>ContainerLaunchContext</code> represents the all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to be executed to launch the container.</li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *<li></li>  *</ul>  *</p>  */
+comment|/**  *<p><code>ContainerLaunchContext</code> represents the all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
 end_comment
 
 begin_interface
@@ -138,10 +154,11 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+comment|/**    * Set<code>ContainerId</code> of container to be launched.    * @param containerId et<code>ContainerId</code> of container to be launched    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setContainerId (ContainerId containerId)
 name|void
 name|setContainerId
@@ -160,10 +177,11 @@ name|String
 name|getUser
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>user</em> to whom the container has been allocated    * @param user<em>user</em> to whom the container has been allocated    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setUser (String user)
 name|void
 name|setUser
@@ -182,10 +200,11 @@ name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>.    * @param resource allocated resource    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setResource (Resource resource)
 name|void
 name|setResource
@@ -204,10 +223,11 @@ name|ByteBuffer
 name|getContainerTokens
 parameter_list|()
 function_decl|;
+comment|/**    * Set security tokens (if security is enabled).    * @param containerToken security tokens     */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setContainerTokens (ByteBuffer containerToken)
 name|void
 name|setContainerTokens
@@ -243,10 +263,11 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Add all<code>LocalResource</code> required by the container.    * @param localResources<code>LocalResource</code> required by the container    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|addAllLocalResources (Map<String, LocalResource> localResources)
 name|void
 name|addAllLocalResources
@@ -323,10 +344,11 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Add add application-specific binary service data.    * @param serviceData application-specific binary service data    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|addAllServiceData (Map<String, ByteBuffer> serviceData)
 name|void
 name|addAllServiceData
@@ -403,10 +425,11 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Add<em>environment variables</em> for the launched container.    * @param env<em>environment variables</em> for the launched container    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|addAllEnv (Map<String, String> env)
 name|void
 name|addAllEnv
@@ -490,10 +513,11 @@ name|int
 name|getCommandCount
 parameter_list|()
 function_decl|;
+comment|/**    * Add the list of<em>commands</em> for launching the container.    * @param commands the list of<em>commands</em> for launching the container    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|addAllCommands (List<String> commands)
 name|void
 name|addAllCommands

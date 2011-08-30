@@ -26,6 +26,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -352,19 +384,136 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerLaunchContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnClusterMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnRemoteException
 import|;
 end_import
 
+begin_comment
+comment|/**  *<p>The protocol between clients and the<code>ResourceManager</code>  * to submit/abort jobs and to get information on applications, cluster metrics,  * nodes, queues and ACLs.</p>   */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|ClientRMProtocol
 specifier|public
 interface|interface
 name|ClientRMProtocol
 block|{
-DECL|method|getNewApplicationId (GetNewApplicationIdRequest request)
+comment|/**    *<p>The interface used by clients to obtain a new {@link ApplicationId} for     * submitting new applications.</p>    *     *<p>The<code>ResourceManager</code> responds with a new, monotonically    * increasing, {@link ApplicationId} which is used by the client to submit    * a new application.</p>    *     * @param request request to get a new<code>ApplicationId</code>    * @return new<code>ApplicationId</code> to be used to submit an application    * @throws YarnRemoteException    * @see #submitApplication(SubmitApplicationRequest)    */
+DECL|method|getNewApplicationId ( GetNewApplicationIdRequest request)
 specifier|public
 name|GetNewApplicationIdResponse
 name|getNewApplicationId
@@ -375,7 +524,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|submitApplication (SubmitApplicationRequest request)
+comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnRemoteException    * @see #getNewApplicationId(GetNewApplicationIdRequest)    */
+DECL|method|submitApplication ( SubmitApplicationRequest request)
 specifier|public
 name|SubmitApplicationResponse
 name|submitApplication
@@ -386,7 +536,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|finishApplication (FinishApplicationRequest request)
+comment|/**    *<p>The interface used by clients to request the     *<code>ResourceManager</code> to abort submitted application.</p>    *     *<p>The client, via {@link FinishApplicationRequest} provides the    * {@link ApplicationId} of the application to be aborted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before terminating the application.</p>     *     *<p>Currently, the<code>ResourceManager</code> returns an empty response    * on success and throws an exception on rejecting the request.</p>    *     * @param request request to abort a submited application    * @return<code>ResourceManager</code> returns an empty response    *         on success and throws an exception on rejecting the request    * @throws YarnRemoteException    * @see #getQueueUserAcls(GetQueueUserAclsInfoRequest)     */
+DECL|method|finishApplication ( FinishApplicationRequest request)
 specifier|public
 name|FinishApplicationResponse
 name|finishApplication
@@ -397,7 +548,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getApplicationReport (GetApplicationReportRequest request)
+comment|/**    *<p>The interface used by clients to get a report of an Application from    * the<code>ResourceManager</code>.</p>    *     *<p>The client, via {@link GetApplicationReportRequest} provides the    * {@link ApplicationId} of the application.</p>    *    *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before accepting the request.</p>     *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetApplicationReportResponse} which includes the     * {@link ApplicationReport} for the application.</p>    *     * @param request request for an application report    * @return application report     * @throws YarnRemoteException    */
+DECL|method|getApplicationReport ( GetApplicationReportRequest request)
 specifier|public
 name|GetApplicationReportResponse
 name|getApplicationReport
@@ -408,7 +560,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getClusterMetrics (GetClusterMetricsRequest request)
+comment|/**    *<p>The interface used by clients to get metrics about the cluster from    * the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a    * {@link GetClusterMetricsResponse} which includes the     * {@link YarnClusterMetrics} with details such as number of current    * nodes in the cluster.</p>    *     * @param request request for cluster metrics    * @return cluster metrics    * @throws YarnRemoteException    */
+DECL|method|getClusterMetrics ( GetClusterMetricsRequest request)
 specifier|public
 name|GetClusterMetricsResponse
 name|getClusterMetrics
@@ -419,7 +572,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getAllApplications (GetAllApplicationsRequest request)
+comment|/**    *<p>The interface used by clients to get a report of all Applications    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetAllApplicationsResponse} which includes the     * {@link ApplicationReport} for all the applications.</p>    *     * @param request request for report on all running applications    * @return report on all running applications    * @throws YarnRemoteException    */
+DECL|method|getAllApplications ( GetAllApplicationsRequest request)
 specifier|public
 name|GetAllApplicationsResponse
 name|getAllApplications
@@ -430,7 +584,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getClusterNodes (GetClusterNodesRequest request)
+comment|/**    *<p>The interface used by clients to get a report of all nodes    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetClusterNodesResponse} which includes the     * {@link NodeReport} for all the nodes in the cluster.</p>    *     * @param request request for report on all nodes    * @return report on all nodes    * @throws YarnRemoteException    */
+DECL|method|getClusterNodes ( GetClusterNodesRequest request)
 specifier|public
 name|GetClusterNodesResponse
 name|getClusterNodes
@@ -441,7 +596,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getQueueInfo (GetQueueInfoRequest request)
+comment|/**    *<p>The interface used by clients to get information about<em>queues</em>    * from the<code>ResourceManager</code>.</p>    *     *<p>The client, via {@link GetQueueInfoRequest}, can ask for details such    * as used/total resources, child queues, running applications etc.</p>    *    *<p> In secure mode,the<code>ResourceManager</code> verifies access before    * providing the information.</p>     *     * @param request request to get queue information    * @return queue information    * @throws YarnRemoteException    */
+DECL|method|getQueueInfo ( GetQueueInfoRequest request)
 specifier|public
 name|GetQueueInfoResponse
 name|getQueueInfo
@@ -452,7 +608,8 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-DECL|method|getQueueUserAcls (GetQueueUserAclsInfoRequest request)
+comment|/**    *<p>The interface used by clients to get information about<em>queue     * acls</em> for<em>current users</em> from the<code>ResourceManager</code>.    *</p>    *     *<p>The<code>ResourceManager</code> responds with queue acls for all    * existing queues.</p>    *     * @param request request to get queue acls for<em>current user</em>    * @return queue acls for<em>current user</em>    * @throws YarnRemoteException    */
+DECL|method|getQueueUserAcls ( GetQueueUserAclsInfoRequest request)
 specifier|public
 name|GetQueueUserAclsInfoResponse
 name|getQueueUserAcls

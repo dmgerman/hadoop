@@ -183,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster via  * {@link AMRMProtocol#allocate(AllocateRequest)}.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *<li></li>  *</ul>  *</p>  *   */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *<li></li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_interface
@@ -196,7 +196,7 @@ specifier|public
 interface|interface
 name|AllocateRequest
 block|{
-comment|/**    * Get the {@link ApplicationAttemptId} being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -206,10 +206,11 @@ name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed     *                             by the<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setApplicationAttemptId
@@ -218,7 +219,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Get the response id.    * @return the response id    */
+comment|/**    * Get the<em>response id</em>.    * @return<em>response id</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -228,10 +229,11 @@ name|int
 name|getResponseId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>response id</em>    * @param id<em>response id</em>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setResponseId (int id)
 name|void
 name|setResponseId
@@ -240,7 +242,7 @@ name|int
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    * Get the current progress of application.     * @return the current progress of application    */
+comment|/**    * Get the<em>current progress</em> of application.     * @return<em>current progress</em> of application    */
 annotation|@
 name|Public
 annotation|@
@@ -250,10 +252,11 @@ name|float
 name|getProgress
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>current progress</em> of application    * @param progress<em>current progress</em> of application    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setProgress (float progress)
 name|void
 name|setProgress
@@ -296,44 +299,11 @@ name|int
 name|getAskCount
 parameter_list|()
 function_decl|;
-comment|/**    * Get the list of<code>ContainerId</code> of unused containers being     * released by the<code>ApplicationMaster</code>.    * @return list of<code>ContainerId</code> of unused containers being     *         released by the<code>ApplicationMaster</code>     */
+comment|/**    * Add list of<code>ResourceRequest</code> to upate the     *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequest list of<code>ResourceRequest</code> to upate the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getReleaseList ()
-name|List
-argument_list|<
-name|ContainerId
-argument_list|>
-name|getReleaseList
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getRelease (int index)
-name|ContainerId
-name|getRelease
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getReleaseCount ()
-name|int
-name|getReleaseCount
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
 DECL|method|addAllAsks (List<ResourceRequest> resourceRequest)
 name|void
 name|addAllAsks
@@ -378,10 +348,45 @@ name|void
 name|clearAsks
 parameter_list|()
 function_decl|;
+comment|/**    * Get the list of<code>ContainerId</code> of unused containers being     * released by the<code>ApplicationMaster</code>.    * @return list of<code>ContainerId</code> of unused containers being     *         released by the<code>ApplicationMaster</code>     */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getReleaseList ()
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getReleaseList
+parameter_list|()
+function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
+DECL|method|getRelease (int index)
+name|ContainerId
+name|getRelease
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getReleaseCount ()
+name|int
+name|getReleaseCount
+parameter_list|()
+function_decl|;
+comment|/**    * Add the list of<code>ContainerId</code> of unused containers being     * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of unused     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|addAllReleases (List<ContainerId> releaseContainers)
 name|void
 name|addAllReleases

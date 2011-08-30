@@ -20,19 +20,73 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ClientRMProtocol
+import|;
+end_import
+
 begin_comment
-comment|/**  * State of a Queue  */
+comment|/**  *<p>State of a Queue.</p>  *   *<p>A queue is one of:  *<ul>  *<li>{@link #RUNNING} - normal state.</li>   *<li>{@link #STOPPED} - not accepting new application submissions.  *</ul>  *</p>  *   * @see QueueInfo  * @see ClientRMProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
 end_comment
 
 begin_enum
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|enum|QueueState
 specifier|public
 enum|enum
 name|QueueState
 block|{
+comment|/**    * Stopped - Not accepting submissions of new applications.    */
 DECL|enumConstant|STOPPED
 name|STOPPED
 block|,
+comment|/**    * Running - normal operation.    */
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|}

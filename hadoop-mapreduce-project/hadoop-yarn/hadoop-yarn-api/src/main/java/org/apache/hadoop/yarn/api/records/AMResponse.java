@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation via  * {@link AMRMProtocol#allocate(AllocateRequest)}.</p>  *  *<p>The response includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *</ul>  *</p>  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_interface
@@ -166,7 +166,7 @@ name|boolean
 name|reboot
 parameter_list|)
 function_decl|;
-comment|/**    * Get the last response id.    * @return the last response id    */
+comment|/**    * Get the<em>last response id</em>.    * @return<em>last response id</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -190,7 +190,7 @@ name|int
 name|responseId
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of newly allocated {@link Container} by the     *<code>ResourceManager</code>.    * @return list of newly allocated<code>Container</code>     */
+comment|/**    * Get the list of<em>newly allocated</em><code>Container</code> by the     *<code>ResourceManager</code>.    * @return list of<em>newly allocated</em><code>Container</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -279,7 +279,7 @@ name|void
 name|clearNewContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Get available headroom for resources in the cluster for the application.    */
+comment|/**    * Get the<em>available headroom</em> for resources in the cluster for the     * application.    * @return limit available headroom for resources in the cluster for the     * application    */
 annotation|@
 name|Public
 annotation|@
@@ -303,7 +303,7 @@ name|Resource
 name|limit
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of completed containers.    * @return the list of completed containers    */
+comment|/**    * Get the list of<em>completed containers</em>.    * @return the list of<em>completed containers</em>    */
 annotation|@
 name|Public
 annotation|@

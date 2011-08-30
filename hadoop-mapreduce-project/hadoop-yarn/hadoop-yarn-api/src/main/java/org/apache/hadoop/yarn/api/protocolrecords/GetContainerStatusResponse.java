@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to obtainer<em>status</em>   * of a container via  * {@link ContainerManager#getContainerStatus(GetContainerStatusRequest)}.</p>  */
+comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to obtainer<em>status</em>   * of a container.</p>  *   * @see ContainerManager#getContainerStatus(GetContainerStatusRequest)  */
 end_comment
 
 begin_interface

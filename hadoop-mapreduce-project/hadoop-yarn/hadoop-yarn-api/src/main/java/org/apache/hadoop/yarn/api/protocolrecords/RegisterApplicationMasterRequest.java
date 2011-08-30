@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration via the   * {@link AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}   * api.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  */
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_interface
@@ -132,7 +132,7 @@ specifier|public
 interface|interface
 name|RegisterApplicationMasterRequest
 block|{
-comment|/**    * Get the {@link ApplicationAttemptId} being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -142,10 +142,11 @@ name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed      *                             by the<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setApplicationAttemptId
@@ -154,7 +155,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Get the host on which the<code>ApplicationMaster</code> is running.    * @return host on which the<code>ApplicationMaster</code> is running    */
+comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @return<em>host</em> on which the<code>ApplicationMaster</code> is running    */
 annotation|@
 name|Public
 annotation|@
@@ -164,6 +165,7 @@ name|String
 name|getHost
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @param host<em>host</em> on which the<code>ApplicationMaster</code>     *             is running    */
 annotation|@
 name|Private
 annotation|@
@@ -176,7 +178,7 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
-comment|/**    * Get the RPC port on which the<code>ApplicationMaster</code> is responding.     * @return the RPC port on which the<code>ApplicationMaster</code> is     *         responding    */
+comment|/**    * Get the<em>RPC port</em> on which the<code>ApplicationMaster</code>     * is responding.     * @return the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *         responding    */
 annotation|@
 name|Public
 annotation|@
@@ -186,10 +188,11 @@ name|int
 name|getRpcPort
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     * responding.    * @param port<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *             responding    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setRpcPort (int port)
 name|void
 name|setRpcPort
@@ -198,7 +201,7 @@ name|int
 name|port
 parameter_list|)
 function_decl|;
-comment|/**    * Get the tracking URL for the<code>ApplicationMaster</code>.    * @return the tracking URL for the<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @return<em>tracking URL</em> for the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -208,16 +211,17 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @param trackingUrl<em>tracking URL</em> for the     *<code>ApplicationMaster</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
-DECL|method|setTrackingUrl (String string)
+name|Stable
+DECL|method|setTrackingUrl (String trackingUrl)
 name|void
 name|setTrackingUrl
 parameter_list|(
 name|String
-name|string
+name|trackingUrl
 parameter_list|)
 function_decl|;
 block|}

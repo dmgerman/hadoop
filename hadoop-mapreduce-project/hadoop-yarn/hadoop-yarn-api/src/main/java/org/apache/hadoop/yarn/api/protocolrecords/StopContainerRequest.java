@@ -32,22 +32,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -65,22 +49,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -119,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>stop</em> a container via  * {@link ContainerManager#stopContainer(StopContainerRequest)}.</p>  */
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>stop</em> a container.</p>  *   * @see ContainerManager#stopContainer(StopContainerRequest)  */
 end_comment
 
 begin_interface
@@ -142,10 +110,11 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ContainerId</code> of the container to be stopped.    * @param containerId<code>ContainerId</code> of the container to be stopped    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setContainerId (ContainerId containerId)
 name|void
 name|setContainerId

@@ -20,17 +20,114 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ClientRMProtocol
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code>is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link ApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *   * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|ApplicationReport
 specifier|public
 interface|interface
 name|ApplicationReport
 block|{
+comment|/**    * Get the<code>ApplicationId</code> of the application.    * @return<code>ApplicationId</code> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getApplicationId ()
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setApplicationId (ApplicationId applicationId)
 name|void
 name|setApplicationId
@@ -39,11 +136,20 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>user</em> who submitted the application.    * @return<em>user</em> who submitted the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getUser ()
 name|String
 name|getUser
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setUser (String user)
 name|void
 name|setUser
@@ -52,11 +158,20 @@ name|String
 name|user
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>queue</em> to which the application was submitted.    * @return<em>queue</em> to which the application was submitted    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getQueue ()
 name|String
 name|getQueue
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setQueue (String queue)
 name|void
 name|setQueue
@@ -65,11 +180,20 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
+comment|/**    * Get the user-defined<em>name</em> of the application.    * @return<em>name</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getName ()
 name|String
 name|getName
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setName (String name)
 name|void
 name|setName
@@ -78,11 +202,20 @@ name|String
 name|name
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code>     * is running.    * @return<em>host</em> on which the<code>ApplicationMaster</code>     *         is running    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getHost ()
 name|String
 name|getHost
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setHost (String host)
 name|void
 name|setHost
@@ -91,11 +224,20 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>RPC port</em> of the<code>ApplicationMaster</code>.    * @return<em>RPC port</em> of the<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getRpcPort ()
 name|int
 name|getRpcPort
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setRpcPort (int rpcPort)
 name|void
 name|setRpcPort
@@ -104,11 +246,20 @@ name|int
 name|rpcPort
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>client token</em> for communicating with the     *<code>ApplicationMaster</code>.    * @return<em>client token</em> for communicating with the     *<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getClientToken ()
 name|String
 name|getClientToken
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setClientToken (String clientToken)
 name|void
 name|setClientToken
@@ -117,11 +268,20 @@ name|String
 name|clientToken
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>ApplicationState</code> of the application.    * @return<code>ApplicationState</code> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getState ()
 name|ApplicationState
 name|getState
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setState (ApplicationState state)
 name|void
 name|setState
@@ -130,11 +290,20 @@ name|ApplicationState
 name|state
 parameter_list|)
 function_decl|;
+comment|/**    * Get  the<em>diagnositic information</em> of the application in case of     * errors.    * @return<em>diagnositic information</em> of the application in case     *         of errors    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getDiagnostics ()
 name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setDiagnostics (String diagnostics)
 name|void
 name|setDiagnostics
@@ -143,11 +312,20 @@ name|String
 name|diagnostics
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>tracking url</em> for the application.    * @return<em>tracking url</em> for the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getTrackingUrl ()
 name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setTrackingUrl (String url)
 name|void
 name|setTrackingUrl
@@ -156,11 +334,20 @@ name|String
 name|url
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>start time</em> of the application.    * @return<em>start time</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getStartTime ()
 name|long
 name|getStartTime
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setStartTime (long startTime)
 name|void
 name|setStartTime
