@@ -126,16 +126,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -2174,6 +2164,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/** get the fsImage*/
+DECL|method|getFSImage (NameNode node)
+specifier|public
+specifier|static
+name|FSImage
+name|getFSImage
+parameter_list|(
+name|NameNode
+name|node
+parameter_list|)
+block|{
+return|return
+name|node
+operator|.
+name|getFSImage
+argument_list|()
+return|;
 block|}
 block|}
 end_class

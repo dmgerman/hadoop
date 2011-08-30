@@ -1974,7 +1974,6 @@ return|;
 block|}
 comment|/**    * TODO:FEDERATION    * @param filesystemURI    * @return address of file system    */
 DECL|method|getAddress (URI filesystemURI)
-specifier|public
 specifier|static
 name|InetSocketAddress
 name|getAddress
@@ -6433,7 +6432,6 @@ return|;
 block|}
 comment|/**     * Verify request.    *     * Verifies correctness of the datanode version, registration ID, and     * if the datanode does not need to be shutdown.    *     * @param nodeReg data node registration    * @throws IOException    */
 DECL|method|verifyRequest (NodeRegistration nodeReg)
-specifier|public
 name|void
 name|verifyRequest
 parameter_list|(
@@ -6498,7 +6496,6 @@ block|}
 block|}
 comment|/**    * Verify version.    *     * @param version    * @throws IOException    */
 DECL|method|verifyVersion (int version)
-specifier|public
 name|void
 name|verifyVersion
 parameter_list|(
@@ -6526,8 +6523,8 @@ literal|"data node"
 argument_list|)
 throw|;
 block|}
+comment|/** get FSImage */
 DECL|method|getFSImage ()
-specifier|public
 name|FSImage
 name|getFSImage
 parameter_list|()
