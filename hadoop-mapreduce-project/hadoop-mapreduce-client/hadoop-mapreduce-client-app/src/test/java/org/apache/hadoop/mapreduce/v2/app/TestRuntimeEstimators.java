@@ -2869,6 +2869,22 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 DECL|method|getCodeRuntime ()
 specifier|private
 name|float

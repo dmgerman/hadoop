@@ -32,22 +32,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|event
-operator|.
-name|AbstractEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -60,58 +44,56 @@ name|TaskAttemptId
 import|;
 end_import
 
-begin_comment
-comment|/**  * This class encapsulates task attempt related events.  *  */
-end_comment
-
 begin_class
-DECL|class|TaskAttemptEvent
+DECL|class|TaskAttemptContainerLaunchedEvent
 specifier|public
 class|class
-name|TaskAttemptEvent
+name|TaskAttemptContainerLaunchedEvent
 extends|extends
-name|AbstractEvent
-argument_list|<
-name|TaskAttemptEventType
-argument_list|>
-block|{
-DECL|field|attemptID
-specifier|private
-name|TaskAttemptId
-name|attemptID
-decl_stmt|;
-comment|/**    * Create a new TaskAttemptEvent.    * @param id the id of the task attempt    * @param type the type of event that happened.    */
-DECL|method|TaskAttemptEvent (TaskAttemptId id, TaskAttemptEventType type)
-specifier|public
 name|TaskAttemptEvent
+block|{
+DECL|field|shufflePort
+specifier|private
+name|int
+name|shufflePort
+decl_stmt|;
+comment|/**    * Create a new TaskAttemptEvent.    * @param id the id of the task attempt    * @param shufflePort the port that shuffle is listening on.    */
+DECL|method|TaskAttemptContainerLaunchedEvent (TaskAttemptId id, int shufflePort)
+specifier|public
+name|TaskAttemptContainerLaunchedEvent
 parameter_list|(
 name|TaskAttemptId
 name|id
 parameter_list|,
-name|TaskAttemptEventType
-name|type
+name|int
+name|shufflePort
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|type
+name|id
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCHED
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|attemptID
+name|shufflePort
 operator|=
-name|id
+name|shufflePort
 expr_stmt|;
 block|}
-DECL|method|getTaskAttemptID ()
+comment|/**    * Get the port that the shuffle handler is listening on. This is only    * valid if the type of the event is TA_CONTAINER_LAUNCHED    * @return the port the shuffle handler is listening on.    */
+DECL|method|getShufflePort ()
 specifier|public
-name|TaskAttemptId
-name|getTaskAttemptID
+name|int
+name|getShufflePort
 parameter_list|()
 block|{
 return|return
-name|attemptID
+name|shufflePort
 return|;
 block|}
 block|}

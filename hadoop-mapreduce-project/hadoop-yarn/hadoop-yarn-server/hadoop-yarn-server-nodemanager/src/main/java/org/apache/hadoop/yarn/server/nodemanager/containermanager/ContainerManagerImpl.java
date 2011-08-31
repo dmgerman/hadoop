@@ -2235,6 +2235,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|addAllServiceResponse
+argument_list|(
+name|auxiluaryServices
+operator|.
+name|getMeta
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|launchedContainer

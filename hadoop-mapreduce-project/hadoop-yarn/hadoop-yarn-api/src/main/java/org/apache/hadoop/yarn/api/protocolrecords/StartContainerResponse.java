@@ -22,6 +22,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -81,7 +101,63 @@ DECL|interface|StartContainerResponse
 specifier|public
 interface|interface
 name|StartContainerResponse
-block|{  }
+block|{
+DECL|method|getAllServiceResponse ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|getAllServiceResponse
+parameter_list|()
+function_decl|;
+DECL|method|getServiceResponse (String key)
+name|ByteBuffer
+name|getServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+DECL|method|addAllServiceResponse (Map<String, ByteBuffer> serviceResponse)
+name|void
+name|addAllServiceResponse
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|serviceResponse
+parameter_list|)
+function_decl|;
+DECL|method|setServiceResponse (String key, ByteBuffer value)
+name|void
+name|setServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|ByteBuffer
+name|value
+parameter_list|)
+function_decl|;
+DECL|method|removeServiceResponse (String key)
+name|void
+name|removeServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+DECL|method|clearServiceResponse ()
+name|void
+name|clearServiceResponse
+parameter_list|()
+function_decl|;
+block|}
 end_interface
 
 end_unit

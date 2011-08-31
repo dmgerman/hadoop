@@ -288,6 +288,17 @@ name|AuxiliaryService
 argument_list|>
 name|serviceMap
 decl_stmt|;
+DECL|field|serviceMeta
+specifier|public
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|serviceMeta
+decl_stmt|;
 DECL|method|AuxServices ()
 specifier|public
 name|AuxServices
@@ -315,6 +326,22 @@ argument_list|<
 name|String
 argument_list|,
 name|AuxiliaryService
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|serviceMeta
+operator|=
+name|Collections
+operator|.
+name|synchronizedMap
+argument_list|(
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
 argument_list|>
 argument_list|()
 argument_list|)
@@ -380,6 +407,27 @@ name|serviceMap
 operator|.
 name|values
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * @return the meta data for all registered services, that have been started.    * If a service has not been started no metadata will be available. The key    * the the name of the service as defined in the configuration.    */
+DECL|method|getMeta ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|getMeta
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
+name|serviceMeta
 argument_list|)
 return|;
 block|}
@@ -475,7 +523,54 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// TODO better use use s.getName()?
+comment|// TODO better use s.getName()?
+if|if
+condition|(
+operator|!
+name|sName
+operator|.
+name|equals
+argument_list|(
+name|s
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The Auxilurary Service named '"
+operator|+
+name|sName
+operator|+
+literal|"' in the "
+operator|+
+literal|"configuration is for class "
+operator|+
+name|sClass
+operator|+
+literal|" which has "
+operator|+
+literal|"a name of '"
+operator|+
+name|s
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"'. Because these are "
+operator|+
+literal|"not the same tools trying to send ServiceData and read "
+operator|+
+literal|"Service Meta Data may have issues unless the refer to "
+operator|+
+literal|"the name in the config."
+argument_list|)
+expr_stmt|;
+block|}
 name|addService
 argument_list|(
 name|sName
@@ -533,15 +628,38 @@ comment|// TODO fork(?) services running as configured user
 comment|//      monitor for health, shutdown/restart(?) if any should die
 for|for
 control|(
-name|Service
-name|service
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|AuxiliaryService
+argument_list|>
+name|entry
 range|:
 name|serviceMap
 operator|.
-name|values
+name|entrySet
 argument_list|()
 control|)
 block|{
+name|AuxiliaryService
+name|service
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+name|String
+name|name
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
 name|service
 operator|.
 name|start
@@ -554,6 +672,31 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+name|ByteBuffer
+name|meta
+init|=
+name|service
+operator|.
+name|getMeta
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|meta
+operator|!=
+literal|null
+condition|)
+block|{
+name|serviceMeta
+operator|.
+name|put
+argument_list|(
+name|name
+argument_list|,
+name|meta
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|super
 operator|.
@@ -616,6 +759,11 @@ expr_stmt|;
 block|}
 block|}
 name|serviceMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|serviceMeta
 operator|.
 name|clear
 argument_list|()
@@ -807,6 +955,12 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|)
+function_decl|;
+comment|/**      * Retreive metadata for this service.  This is likely going to be contact      * information so that applications can access the service remotely.  Ideally      * each service should provide a method to parse out the information to a usable      * class.  This will only be called after the services start method has finished.      * the result may be cached.      * @return metadata for this service that should be made avaiable to applications.      */
+DECL|method|getMeta ()
+name|ByteBuffer
+name|getMeta
+parameter_list|()
 function_decl|;
 block|}
 block|}
