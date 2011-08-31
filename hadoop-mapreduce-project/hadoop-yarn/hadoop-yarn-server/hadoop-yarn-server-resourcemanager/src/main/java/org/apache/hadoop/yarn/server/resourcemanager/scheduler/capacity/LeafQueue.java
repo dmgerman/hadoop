@@ -809,10 +809,22 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|minimumAllocation
-specifier|public
+specifier|private
 specifier|final
 name|Resource
 name|minimumAllocation
+decl_stmt|;
+DECL|field|maximumAllocation
+specifier|private
+specifier|final
+name|Resource
+name|maximumAllocation
+decl_stmt|;
+DECL|field|minimumAllocationFactor
+specifier|private
+specifier|final
+name|float
+name|minimumAllocationFactor
 decl_stmt|;
 DECL|field|containerTokenSecretManager
 specifier|private
@@ -971,6 +983,39 @@ operator|=
 name|cs
 operator|.
 name|getMinimumResourceCapability
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|maximumAllocation
+operator|=
+name|cs
+operator|.
+name|getMaximumResourceCapability
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|minimumAllocationFactor
+operator|=
+call|(
+name|float
+call|)
+argument_list|(
+name|maximumAllocation
+operator|.
+name|getMemory
+argument_list|()
+operator|-
+name|minimumAllocation
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+operator|/
+name|maximumAllocation
+operator|.
+name|getMemory
 argument_list|()
 expr_stmt|;
 name|this
@@ -1566,6 +1611,45 @@ literal|"."
 operator|+
 name|getQueueName
 argument_list|()
+return|;
+block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|Private
+DECL|method|getMinimumAllocation ()
+specifier|public
+name|Resource
+name|getMinimumAllocation
+parameter_list|()
+block|{
+return|return
+name|minimumAllocation
+return|;
+block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|Private
+DECL|method|getMaximumAllocation ()
+specifier|public
+name|Resource
+name|getMaximumAllocation
+parameter_list|()
+block|{
+return|return
+name|maximumAllocation
+return|;
+block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|Private
+DECL|method|getMinimumAllocationFactor ()
+specifier|public
+name|float
+name|getMinimumAllocationFactor
+parameter_list|()
+block|{
+return|return
+name|minimumAllocationFactor
 return|;
 block|}
 annotation|@
@@ -2877,22 +2961,8 @@ name|getPriorities
 argument_list|()
 control|)
 block|{
-comment|// Do we need containers at this 'priority'?
-if|if
-condition|(
-operator|!
-name|needContainers
-argument_list|(
-name|application
-argument_list|,
-name|priority
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
-comment|// Are we going over limits by allocating to this application?
-name|ResourceRequest
+comment|// Required resource
+name|Resource
 name|required
 init|=
 name|application
@@ -2905,7 +2975,27 @@ name|RMNode
 operator|.
 name|ANY
 argument_list|)
+operator|.
+name|getCapability
+argument_list|()
 decl_stmt|;
+comment|// Do we need containers at this 'priority'?
+if|if
+condition|(
+operator|!
+name|needContainers
+argument_list|(
+name|application
+argument_list|,
+name|priority
+argument_list|,
+name|required
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+comment|// Are we going over limits by allocating to this application?
 comment|// Maximum Capacity of the queue
 if|if
 condition|(
@@ -2915,9 +3005,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|required
-operator|.
-name|getCapability
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -2938,9 +3025,6 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|required
-operator|.
-name|getCapability
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -3711,7 +3795,7 @@ operator|/
 name|b
 return|;
 block|}
-DECL|method|needContainers (SchedulerApp application, Priority priority)
+DECL|method|needContainers (SchedulerApp application, Priority priority, Resource required)
 name|boolean
 name|needContainers
 parameter_list|(
@@ -3720,6 +3804,9 @@ name|application
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|Resource
+name|required
 parameter_list|)
 block|{
 name|int
@@ -3742,10 +3829,124 @@ argument_list|(
 name|priority
 argument_list|)
 decl_stmt|;
+name|int
+name|starvation
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|reservedContainers
+operator|>
+literal|0
+condition|)
+block|{
+name|float
+name|nodeFactor
+init|=
+operator|(
+operator|(
+name|float
+operator|)
+name|required
+operator|.
+name|getMemory
+argument_list|()
+operator|/
+name|getMaximumAllocation
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+operator|)
+decl_stmt|;
+comment|// Use percentage of node required to bias against large containers...
+comment|// Protect against corner case where you need the whole node with
+comment|// Math.min(nodeFactor, minimumAllocationFactor)
+name|starvation
+operator|=
+call|(
+name|int
+call|)
+argument_list|(
+operator|(
+name|application
+operator|.
+name|getReReservations
+argument_list|(
+name|priority
+argument_list|)
+operator|/
+name|reservedContainers
+operator|)
+operator|*
+operator|(
+literal|1.0f
+operator|-
+operator|(
+name|Math
+operator|.
+name|min
+argument_list|(
+name|nodeFactor
+argument_list|,
+name|getMinimumAllocationFactor
+argument_list|()
+argument_list|)
+operator|)
+operator|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"needsContainers:"
+operator|+
+literal|" app.#re-reserve="
+operator|+
+name|application
+operator|.
+name|getReReservations
+argument_list|(
+name|priority
+argument_list|)
+operator|+
+literal|" reserved="
+operator|+
+name|reservedContainers
+operator|+
+literal|" nodeFactor="
+operator|+
+name|nodeFactor
+operator|+
+literal|" minAllocFactor="
+operator|+
+name|minimumAllocationFactor
+operator|+
+literal|" starvation="
+operator|+
+name|starvation
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 operator|(
 operator|(
+operator|(
+name|starvation
+operator|+
 name|requiredContainers
+operator|)
 operator|-
 name|reservedContainers
 operator|)
