@@ -1203,7 +1203,7 @@ literal|1
 argument_list|)
 decl_stmt|;
 comment|// If HTTP_MAX_THREADS is not configured, QueueThreadPool() will use the
-comment|// default value (currently 254).
+comment|// default value (currently 250).
 name|QueuedThreadPool
 name|threadPool
 init|=
