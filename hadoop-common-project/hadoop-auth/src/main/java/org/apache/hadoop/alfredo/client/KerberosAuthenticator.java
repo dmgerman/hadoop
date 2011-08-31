@@ -272,6 +272,7 @@ comment|/**    * HTTP header used by the SPNEGO server endpoint during an authen
 DECL|field|WWW_AUTHENTICATE
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|WWW_AUTHENTICATE
 init|=
@@ -281,6 +282,7 @@ comment|/**    * HTTP header used by the SPNEGO client endpoint during an authen
 DECL|field|AUTHORIZATION
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|AUTHORIZATION
 init|=
@@ -290,6 +292,7 @@ comment|/**    * HTTP header prefix used by the SPNEGO client/server endpoints d
 DECL|field|NEGOTIATE
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|NEGOTIATE
 init|=

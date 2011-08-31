@@ -347,6 +347,11 @@ name|authenticatorConfig
 return|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"serial"
+argument_list|)
 DECL|class|TestServlet
 specifier|public
 specifier|static
