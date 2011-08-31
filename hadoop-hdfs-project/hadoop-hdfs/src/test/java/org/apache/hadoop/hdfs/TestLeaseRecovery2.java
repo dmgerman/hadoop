@@ -250,6 +250,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|FSConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlocks
 import|;
 end_import
@@ -1845,6 +1861,20 @@ argument_list|(
 name|conf
 argument_list|,
 name|u2g_map
+argument_list|)
+expr_stmt|;
+comment|// Reset default lease periods
+name|cluster
+operator|.
+name|setLeasePeriod
+argument_list|(
+name|FSConstants
+operator|.
+name|LEASE_SOFTLIMIT_PERIOD
+argument_list|,
+name|FSConstants
+operator|.
+name|LEASE_HARDLIMIT_PERIOD
 argument_list|)
 expr_stmt|;
 comment|//create a file
