@@ -223,6 +223,24 @@ DECL|field|id
 name|ApplicationId
 name|id
 decl_stmt|;
+DECL|field|url
+name|String
+name|url
+init|=
+literal|null
+decl_stmt|;
+DECL|field|diagnostics
+name|StringBuilder
+name|diagnostics
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+DECL|field|attempt
+name|RMAppAttempt
+name|attempt
+decl_stmt|;
 DECL|method|MockRMApp (int newid, long time, RMAppState newState)
 specifier|public
 name|MockRMApp
@@ -310,6 +328,22 @@ return|return
 name|state
 return|;
 block|}
+DECL|method|setState (RMAppState state)
+specifier|public
+name|void
+name|setState
+parameter_list|(
+name|RMAppState
+name|state
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|state
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUser ()
@@ -321,6 +355,22 @@ block|{
 return|return
 name|user
 return|;
+block|}
+DECL|method|setUser (String user)
+specifier|public
+name|void
+name|setUser
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+block|{
+name|this
+operator|.
+name|user
+operator|=
+name|user
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -368,6 +418,22 @@ return|return
 name|queue
 return|;
 block|}
+DECL|method|setQueue (String queue)
+specifier|public
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queue
+operator|=
+name|queue
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getName ()
@@ -380,6 +446,22 @@ return|return
 name|name
 return|;
 block|}
+DECL|method|setName (String name)
+specifier|public
+name|void
+name|setName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getCurrentAppAttempt ()
@@ -388,13 +470,25 @@ name|RMAppAttempt
 name|getCurrentAppAttempt
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
+return|return
+name|attempt
+return|;
+block|}
+DECL|method|setCurrentAppAttempt (RMAppAttempt attempt)
+specifier|public
+name|void
+name|setCurrentAppAttempt
+parameter_list|(
+name|RMAppAttempt
+name|attempt
+parameter_list|)
+block|{
+name|this
+operator|.
+name|attempt
+operator|=
+name|attempt
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -440,6 +534,22 @@ return|return
 name|finish
 return|;
 block|}
+DECL|method|setFinishTime (long time)
+specifier|public
+name|void
+name|setFinishTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|finish
+operator|=
+name|time
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getStartTime ()
@@ -452,6 +562,22 @@ return|return
 name|start
 return|;
 block|}
+DECL|method|setStartTime (long time)
+specifier|public
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|start
+operator|=
+name|time
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getTrackingUrl ()
@@ -460,13 +586,25 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
+return|return
+name|url
+return|;
+block|}
+DECL|method|setTrackingUrl (String url)
+specifier|public
+name|void
+name|setTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+block|{
+name|this
+operator|.
+name|url
+operator|=
+name|url
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -476,13 +614,29 @@ name|StringBuilder
 name|getDiagnostics
 parameter_list|()
 block|{
-throw|throw
+return|return
+name|diagnostics
+return|;
+block|}
+DECL|method|setDiagnostics (String diag)
+specifier|public
+name|void
+name|setDiagnostics
+parameter_list|(
+name|String
+name|diag
+parameter_list|)
+block|{
+name|this
+operator|.
+name|diagnostics
+operator|=
 operator|new
-name|UnsupportedOperationException
+name|StringBuilder
 argument_list|(
-literal|"Not supported yet."
+name|diag
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 DECL|method|handle (RMAppEvent event)
 specifier|public
