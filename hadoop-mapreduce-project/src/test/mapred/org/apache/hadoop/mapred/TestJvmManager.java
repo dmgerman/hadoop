@@ -401,8 +401,6 @@ specifier|public
 name|void
 name|tearDown
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|FileUtil
 operator|.

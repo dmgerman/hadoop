@@ -1199,7 +1199,7 @@ literal|"File "
 operator|+
 name|f
 operator|+
-literal|" not found."
+literal|" not found"
 argument_list|)
 throw|;
 block|}
@@ -1222,7 +1222,7 @@ literal|"Cannot append to a diretory (="
 operator|+
 name|f
 operator|+
-literal|" )."
+literal|" )"
 argument_list|)
 throw|;
 block|}
@@ -1290,7 +1290,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"File already exists:"
+literal|"File already exists: "
 operator|+
 name|f
 argument_list|)
@@ -1467,6 +1467,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Delete the given path to a file or directory.    * @param p the path to delete    * @param recursive to delete sub-directories    * @return true if the file or directory and all its contents were deleted    * @throws IOException if p is non-empty and recursive is false     */
 DECL|method|delete (Path p, boolean recursive)
 specifier|public
 name|boolean
@@ -1507,10 +1508,8 @@ block|}
 elseif|else
 if|if
 condition|(
-operator|(
 operator|!
 name|recursive
-operator|)
 operator|&&
 name|f
 operator|.
@@ -1596,7 +1595,7 @@ literal|"File "
 operator|+
 name|f
 operator|+
-literal|" does not exist."
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}
@@ -2209,7 +2208,7 @@ literal|"File "
 operator|+
 name|f
 operator|+
-literal|" does not exist."
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}

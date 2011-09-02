@@ -410,8 +410,6 @@ specifier|static
 name|void
 name|setupClean
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 comment|//delete source and target directories if they exist
 name|FileUtil

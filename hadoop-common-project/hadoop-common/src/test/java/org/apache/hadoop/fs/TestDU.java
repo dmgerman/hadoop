@@ -105,8 +105,6 @@ specifier|public
 name|void
 name|setUp
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|FileUtil
 operator|.

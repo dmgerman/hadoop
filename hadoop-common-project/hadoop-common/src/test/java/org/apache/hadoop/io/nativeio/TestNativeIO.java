@@ -314,8 +314,6 @@ specifier|public
 name|void
 name|setupTestDir
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|FileUtil
 operator|.

@@ -33,12 +33,18 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|ByteArrayOutputStream
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystemTestHelper
+operator|.
+name|*
 import|;
 end_import
 
@@ -48,7 +54,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
+name|ByteArrayOutputStream
 import|;
 end_import
 
@@ -187,59 +193,6 @@ argument_list|,
 literal|"testTrash"
 argument_list|)
 decl_stmt|;
-DECL|method|writeFile (FileSystem fs, Path f)
-specifier|protected
-specifier|static
-name|Path
-name|writeFile
-parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
-name|Path
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|DataOutputStream
-name|out
-init|=
-name|fs
-operator|.
-name|create
-argument_list|(
-name|f
-argument_list|)
-decl_stmt|;
-name|out
-operator|.
-name|writeBytes
-argument_list|(
-literal|"dhruba: "
-operator|+
-name|f
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|f
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return
-name|f
-return|;
-block|}
 DECL|method|mkdir (FileSystem fs, Path p)
 specifier|protected
 specifier|static
@@ -705,6 +658,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Verify that expunge without Trash directory
@@ -871,6 +826,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Verify that we succeed in removing the file we re-created
@@ -961,6 +918,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Verify that we succeed in removing the whole directory
@@ -1160,6 +1119,8 @@ argument_list|(
 name|trashRootFs
 argument_list|,
 name|toErase
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 try|try
@@ -1337,6 +1298,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// remove file first, then remove directory
@@ -1611,6 +1574,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Verify that skip trash option really skips the trash for files (rm)
@@ -1761,6 +1726,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Verify that skip trash option really skips the trash for rmr
@@ -2004,6 +1971,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// delete file
@@ -2373,13 +2342,13 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|f
-operator|=
 name|writeFile
 argument_list|(
 name|lfs
 argument_list|,
 name|f
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 name|FileSystem
@@ -2799,6 +2768,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Delete the file to trash
@@ -3258,6 +3229,8 @@ argument_list|(
 name|fs
 argument_list|,
 name|myFile
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 name|start
