@@ -6982,10 +6982,11 @@ name|RPC
 operator|.
 name|getServer
 argument_list|(
-name|ClientProtocol
+name|JobTracker
 operator|.
 name|class
 argument_list|,
+comment|// All protocols in JobTracker
 name|this
 argument_list|,
 name|addr

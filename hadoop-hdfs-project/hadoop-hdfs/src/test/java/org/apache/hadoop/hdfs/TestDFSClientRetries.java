@@ -816,15 +816,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|call (Class<?> protocol, Writable param, long receiveTime)
+DECL|method|call (String protocol, Writable param, long receiveTime)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
-name|Class
-argument_list|<
-name|?
-argument_list|>
+name|String
 name|protocol
 parameter_list|,
 name|Writable

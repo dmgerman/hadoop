@@ -1718,15 +1718,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|call (Class<?> protocol, Writable writableRequest, long receiveTime)
+DECL|method|call (String protocol, Writable writableRequest, long receiveTime)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
-name|Class
-argument_list|<
-name|?
-argument_list|>
+name|String
 name|protocol
 parameter_list|,
 name|Writable
@@ -1770,9 +1767,6 @@ argument_list|(
 literal|"Call: protocol="
 operator|+
 name|protocol
-operator|.
-name|getCanonicalName
-argument_list|()
 operator|+
 literal|", method="
 operator|+
@@ -1788,9 +1782,6 @@ argument_list|(
 literal|"Call: protocol="
 operator|+
 name|protocol
-operator|.
-name|getCanonicalName
-argument_list|()
 operator|+
 literal|", method="
 operator|+
