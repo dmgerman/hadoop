@@ -744,13 +744,28 @@ specifier|final
 name|JobState
 name|jobState
 decl_stmt|;
-DECL|method|NotRunningJob (JobState jobState)
+DECL|field|user
+specifier|private
+specifier|final
+name|String
+name|user
+decl_stmt|;
+DECL|method|NotRunningJob (String username, JobState jobState)
 name|NotRunningJob
 parameter_list|(
+name|String
+name|username
+parameter_list|,
 name|JobState
 name|jobState
 parameter_list|)
 block|{
+name|this
+operator|.
+name|user
+operator|=
+name|username
+expr_stmt|;
 name|this
 operator|.
 name|jobState
@@ -936,9 +951,21 @@ name|jobReport
 operator|.
 name|setJobState
 argument_list|(
+name|this
+operator|.
 name|jobState
 argument_list|)
 expr_stmt|;
+name|jobReport
+operator|.
+name|setUser
+argument_list|(
+name|this
+operator|.
+name|user
+argument_list|)
+expr_stmt|;
+comment|// TODO: Add jobName& other job information that is available
 name|resp
 operator|.
 name|setJobReport

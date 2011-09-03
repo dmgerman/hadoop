@@ -832,7 +832,27 @@ name|getFinishTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//TOODO Possibly populate job progress. Never used.
+name|report
+operator|.
+name|setJobName
+argument_list|(
+name|jobInfo
+operator|.
+name|getJobname
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setUser
+argument_list|(
+name|jobInfo
+operator|.
+name|getUsername
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//TODO Possibly populate job progress. Never used.
 comment|//report.setMapProgress(progress)
 comment|//report.setReduceProgress(progress)
 block|}

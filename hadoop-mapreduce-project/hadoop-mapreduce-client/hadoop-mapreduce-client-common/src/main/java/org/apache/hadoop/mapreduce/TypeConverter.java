@@ -54,6 +54,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapred
 operator|.
 name|JobPriority
@@ -367,6 +381,24 @@ operator|.
 name|records
 operator|.
 name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|util
+operator|.
+name|MRApps
 import|;
 end_import
 
@@ -2119,15 +2151,6 @@ name|String
 name|trackingUrl
 parameter_list|)
 block|{
-name|String
-name|user
-init|=
-literal|null
-decl_stmt|,
-name|jobName
-init|=
-literal|null
-decl_stmt|;
 name|JobPriority
 name|jobPriority
 init|=
@@ -2185,9 +2208,15 @@ argument_list|)
 argument_list|,
 name|jobPriority
 argument_list|,
-name|user
+name|jobreport
+operator|.
+name|getUser
+argument_list|()
 argument_list|,
-name|jobName
+name|jobreport
+operator|.
+name|getJobName
+argument_list|()
 argument_list|,
 name|jobFile
 argument_list|,
@@ -2927,7 +2956,7 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|fromYarn (ApplicationReport application)
+DECL|method|fromYarn (ApplicationReport application, String jobFile)
 specifier|public
 specifier|static
 name|JobStatus
@@ -2935,6 +2964,9 @@ name|fromYarn
 parameter_list|(
 name|ApplicationReport
 name|application
+parameter_list|,
+name|String
+name|jobFile
 parameter_list|)
 block|{
 name|String
@@ -3016,7 +3048,7 @@ operator|.
 name|getQueue
 argument_list|()
 argument_list|,
-literal|""
+name|jobFile
 argument_list|,
 name|trackingUrl
 argument_list|)
@@ -3043,7 +3075,7 @@ return|return
 name|jobStatus
 return|;
 block|}
-DECL|method|fromYarnApps (List<ApplicationReport> applications)
+DECL|method|fromYarnApps (List<ApplicationReport> applications, Configuration conf)
 specifier|public
 specifier|static
 name|JobStatus
@@ -3055,6 +3087,9 @@ argument_list|<
 name|ApplicationReport
 argument_list|>
 name|applications
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|List
@@ -3078,6 +3113,28 @@ range|:
 name|applications
 control|)
 block|{
+comment|// each applicationReport has its own jobFile
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobID
+name|jobId
+init|=
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|jobStatuses
 operator|.
 name|add
@@ -3087,6 +3144,20 @@ operator|.
 name|fromYarn
 argument_list|(
 name|application
+argument_list|,
+name|MRApps
+operator|.
+name|getJobFile
+argument_list|(
+name|conf
+argument_list|,
+name|application
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+name|jobId
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3107,7 +3178,7 @@ index|]
 argument_list|)
 return|;
 block|}
-DECL|method|fromYarn (org.apache.hadoop.yarn.api.records.QueueInfo queueInfo)
+DECL|method|fromYarn (org.apache.hadoop.yarn.api.records.QueueInfo queueInfo, Configuration conf)
 specifier|public
 specifier|static
 name|QueueInfo
@@ -3127,6 +3198,9 @@ name|records
 operator|.
 name|QueueInfo
 name|queueInfo
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 return|return
@@ -3155,11 +3229,13 @@ name|queueInfo
 operator|.
 name|getApplications
 argument_list|()
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|fromYarnQueueInfo ( List<org.apache.hadoop.yarn.api.records.QueueInfo> queues)
+DECL|method|fromYarnQueueInfo ( List<org.apache.hadoop.yarn.api.records.QueueInfo> queues, Configuration conf)
 specifier|public
 specifier|static
 name|QueueInfo
@@ -3183,6 +3259,9 @@ operator|.
 name|QueueInfo
 argument_list|>
 name|queues
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|List
@@ -3232,6 +3311,8 @@ operator|.
 name|fromYarn
 argument_list|(
 name|queue
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
