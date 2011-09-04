@@ -73,16 +73,16 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|HdfsConstants
+DECL|class|HdfsServerConstants
 specifier|public
 specifier|final
 class|class
-name|HdfsConstants
+name|HdfsServerConstants
 block|{
 comment|/* Hidden constructor */
-DECL|method|HdfsConstants ()
+DECL|method|HdfsServerConstants ()
 specifier|private
-name|HdfsConstants
+name|HdfsServerConstants
 parameter_list|()
 block|{ }
 comment|/**    * Type of the node    */

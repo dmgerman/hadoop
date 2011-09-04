@@ -69,16 +69,16 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|FSConstants
+DECL|class|HdfsConstants
 specifier|public
 specifier|final
 class|class
-name|FSConstants
+name|HdfsConstants
 block|{
 comment|/* Hidden constructor */
-DECL|method|FSConstants ()
+DECL|method|HdfsConstants ()
 specifier|private
-name|FSConstants
+name|HdfsConstants
 parameter_list|()
 block|{   }
 DECL|field|MIN_BLOCKS_FOR_WRITE
