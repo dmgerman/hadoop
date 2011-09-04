@@ -250,7 +250,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -284,7 +284,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1868,11 +1868,11 @@ name|cluster
 operator|.
 name|setLeasePeriod
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 argument_list|)
@@ -2430,7 +2430,7 @@ name|originalLeaseHolder
 operator|.
 name|equals
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|)
@@ -2543,7 +2543,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_RECHECK_INTERVAL
 operator|*
@@ -2554,7 +2554,7 @@ name|assertEquals
 argument_list|(
 literal|"lease holder should now be the NN"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|,
@@ -2582,7 +2582,7 @@ name|assertEquals
 argument_list|(
 literal|"lease holder should still be the NN after restart"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|,

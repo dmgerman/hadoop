@@ -212,7 +212,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1261,7 +1261,7 @@ if|if
 condition|(
 name|expectedTxId
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 operator|&&
@@ -1321,7 +1321,7 @@ comment|// the log group was in-progress so we don't know what ID
 comment|// the next group should start from.
 name|expectedTxId
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;

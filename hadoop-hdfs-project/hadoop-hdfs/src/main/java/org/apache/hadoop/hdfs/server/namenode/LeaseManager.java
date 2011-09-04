@@ -192,7 +192,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -210,7 +210,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -275,7 +275,7 @@ specifier|private
 name|long
 name|softLimit
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 decl_stmt|;
@@ -284,7 +284,7 @@ specifier|private
 name|long
 name|hardLimit
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 decl_stmt|;
@@ -1752,7 +1752,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_RECHECK_INTERVAL
 argument_list|)
@@ -1909,7 +1909,7 @@ name|oldest
 argument_list|,
 name|p
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|)

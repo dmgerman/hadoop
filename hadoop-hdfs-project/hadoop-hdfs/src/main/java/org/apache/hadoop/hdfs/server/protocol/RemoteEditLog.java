@@ -72,7 +72,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -136,7 +136,7 @@ specifier|private
 name|long
 name|startTxId
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -145,7 +145,7 @@ specifier|private
 name|long
 name|endTxId
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;

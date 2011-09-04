@@ -150,7 +150,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -637,7 +637,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -647,7 +647,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*

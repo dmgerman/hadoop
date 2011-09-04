@@ -188,7 +188,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;

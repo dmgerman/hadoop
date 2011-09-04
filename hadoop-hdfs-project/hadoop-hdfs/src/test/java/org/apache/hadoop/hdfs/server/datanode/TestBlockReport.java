@@ -244,7 +244,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -2972,7 +2972,7 @@ name|tooLongWait
 argument_list|)
 expr_stmt|;
 block|}
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 name|state
@@ -3014,7 +3014,7 @@ while|while
 condition|(
 name|state
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 operator|.

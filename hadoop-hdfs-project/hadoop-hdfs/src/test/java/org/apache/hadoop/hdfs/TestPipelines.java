@@ -132,7 +132,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -710,7 +710,7 @@ name|dn
 operator|+
 literal|" after sequence of calls append()/write()/hflush()"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 operator|.

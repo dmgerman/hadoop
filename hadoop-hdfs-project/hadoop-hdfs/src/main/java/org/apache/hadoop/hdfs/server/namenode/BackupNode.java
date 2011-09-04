@@ -134,7 +134,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -152,7 +152,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -730,7 +730,7 @@ name|leaseManager
 operator|.
 name|setLeasePeriod
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 argument_list|,
@@ -1675,7 +1675,7 @@ argument_list|)
 throw|;
 block|}
 assert|assert
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|==
@@ -1686,7 +1686,7 @@ argument_list|()
 operator|:
 literal|"Active and backup node layout versions must be the same. Expected: "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+

@@ -278,7 +278,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -739,7 +739,7 @@ name|setLeasePeriod
 argument_list|(
 literal|1000
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_HARDLIMIT_PERIOD
 argument_list|)

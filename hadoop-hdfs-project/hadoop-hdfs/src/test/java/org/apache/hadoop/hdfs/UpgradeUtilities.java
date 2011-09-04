@@ -200,7 +200,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -232,7 +232,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -270,7 +270,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -290,7 +290,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -310,7 +310,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -332,7 +332,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -2558,7 +2558,7 @@ name|getCurrentLayoutVersion
 parameter_list|()
 block|{
 return|return
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 return|;

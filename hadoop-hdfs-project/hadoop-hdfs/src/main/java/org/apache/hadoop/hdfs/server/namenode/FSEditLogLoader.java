@@ -128,7 +128,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1832,7 +1832,7 @@ name|setNSQuotaOp
 operator|.
 name|nsQuota
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -1859,11 +1859,11 @@ name|clearNSQuotaOp
 operator|.
 name|src
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -2572,7 +2572,7 @@ argument_list|)
 operator|&&
 name|logVersion
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)

@@ -250,7 +250,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -1086,13 +1086,13 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get a report on the system's current datanodes.    * One DatanodeInfo object is returned for each DataNode.    * Return live datanodes if type is LIVE; dead datanodes if type is DEAD;    * otherwise all datanodes if type is ALL.    */
-DECL|method|getDatanodeReport (FSConstants.DatanodeReportType type)
+DECL|method|getDatanodeReport (HdfsConstants.DatanodeReportType type)
 specifier|public
 name|DatanodeInfo
 index|[]
 name|getDatanodeReport
 parameter_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 name|type
@@ -1114,13 +1114,13 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 function_decl|;
-comment|/**    * Enter, leave or get safe mode.    *<p>    * Safe mode is a name node state when it    *<ol><li>does not accept changes to name space (read-only), and</li>    *<li>does not replicate or delete blocks.</li></ol>    *     *<p>    * Safe mode is entered automatically at name node startup.    * Safe mode can also be entered manually using    * {@link #setSafeMode(FSConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_GET)}.    *<p>    * At startup the name node accepts data node reports collecting    * information about block locations.    * In order to leave safe mode it needs to collect a configurable    * percentage called threshold of blocks, which satisfy the minimal     * replication condition.    * The minimal replication condition is that each block must have at least    *<tt>dfs.namenode.replication.min</tt> replicas.    * When the threshold is reached the name node extends safe mode    * for a configurable amount of time    * to let the remaining data nodes to check in before it    * will start replicating missing blocks.    * Then the name node leaves safe mode.    *<p>    * If safe mode is turned on manually using    * {@link #setSafeMode(FSConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_ENTER)}    * then the name node stays in safe mode until it is manually turned off    * using {@link #setSafeMode(FSConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_LEAVE)}.    * Current state of the name node can be verified using    * {@link #setSafeMode(FSConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_GET)}    *<h4>Configuration parameters:</h4>    *<tt>dfs.safemode.threshold.pct</tt> is the threshold parameter.<br>    *<tt>dfs.safemode.extension</tt> is the safe mode extension parameter.<br>    *<tt>dfs.namenode.replication.min</tt> is the minimal replication parameter.    *     *<h4>Special cases:</h4>    * The name node does not enter safe mode at startup if the threshold is     * set to 0 or if the name space is empty.<br>    * If the threshold is set to 1 then all blocks need to have at least     * minimal replication.<br>    * If the threshold value is greater than 1 then the name node will not be     * able to turn off safe mode automatically.<br>    * Safe mode can always be turned off manually.    *     * @param action<ul><li>0 leave safe mode;</li>    *<li>1 enter safe mode;</li>    *<li>2 get safe mode state.</li></ul>    * @return<ul><li>0 if the safe mode is OFF or</li>     *<li>1 if the safe mode is ON.</li></ul>    *                       * @throws IOException    */
-DECL|method|setSafeMode (FSConstants.SafeModeAction action)
+comment|/**    * Enter, leave or get safe mode.    *<p>    * Safe mode is a name node state when it    *<ol><li>does not accept changes to name space (read-only), and</li>    *<li>does not replicate or delete blocks.</li></ol>    *     *<p>    * Safe mode is entered automatically at name node startup.    * Safe mode can also be entered manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_GET)}.    *<p>    * At startup the name node accepts data node reports collecting    * information about block locations.    * In order to leave safe mode it needs to collect a configurable    * percentage called threshold of blocks, which satisfy the minimal     * replication condition.    * The minimal replication condition is that each block must have at least    *<tt>dfs.namenode.replication.min</tt> replicas.    * When the threshold is reached the name node extends safe mode    * for a configurable amount of time    * to let the remaining data nodes to check in before it    * will start replicating missing blocks.    * Then the name node leaves safe mode.    *<p>    * If safe mode is turned on manually using    * {@link #setSafeMode(HdfsConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_ENTER)}    * then the name node stays in safe mode until it is manually turned off    * using {@link #setSafeMode(HdfsConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_LEAVE)}.    * Current state of the name node can be verified using    * {@link #setSafeMode(HdfsConstants.SafeModeAction) setSafeMode(SafeModeAction.SAFEMODE_GET)}    *<h4>Configuration parameters:</h4>    *<tt>dfs.safemode.threshold.pct</tt> is the threshold parameter.<br>    *<tt>dfs.safemode.extension</tt> is the safe mode extension parameter.<br>    *<tt>dfs.namenode.replication.min</tt> is the minimal replication parameter.    *     *<h4>Special cases:</h4>    * The name node does not enter safe mode at startup if the threshold is     * set to 0 or if the name space is empty.<br>    * If the threshold is set to 1 then all blocks need to have at least     * minimal replication.<br>    * If the threshold value is greater than 1 then the name node will not be     * able to turn off safe mode automatically.<br>    * Safe mode can always be turned off manually.    *     * @param action<ul><li>0 leave safe mode;</li>    *<li>1 enter safe mode;</li>    *<li>2 get safe mode state.</li></ul>    * @return<ul><li>0 if the safe mode is OFF or</li>     *<li>1 if the safe mode is ON.</li></ul>    *                       * @throws IOException    */
+DECL|method|setSafeMode (HdfsConstants.SafeModeAction action)
 specifier|public
 name|boolean
 name|setSafeMode
 parameter_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 name|action
@@ -1169,7 +1169,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link FSConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
+comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
 annotation|@
 name|Nullable
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
@@ -1276,7 +1276,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.     *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link FSConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link FSConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.     *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
 DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota)
 specifier|public
 name|void

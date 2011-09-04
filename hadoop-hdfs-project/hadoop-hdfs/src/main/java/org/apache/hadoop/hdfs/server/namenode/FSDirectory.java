@@ -364,7 +364,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -570,7 +570,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|BlockUCState
 import|;
@@ -590,7 +590,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -8756,13 +8756,13 @@ literal|0
 operator|&&
 name|nsQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|nsQuota
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 operator|)
@@ -8774,13 +8774,13 @@ literal|0
 operator|&&
 name|dsQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|dsQuota
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 operator|)
@@ -8882,7 +8882,7 @@ argument_list|()
 operator|&&
 name|nsQuota
 operator|==
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 condition|)
@@ -8926,7 +8926,7 @@ if|if
 condition|(
 name|nsQuota
 operator|==
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 condition|)
@@ -8940,7 +8940,7 @@ if|if
 condition|(
 name|dsQuota
 operator|==
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 condition|)

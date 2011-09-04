@@ -162,7 +162,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1351,7 +1351,7 @@ specifier|final
 name|int
 name|maxPathLen
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MAX_PATH_LENGTH
 decl_stmt|;

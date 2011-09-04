@@ -1156,7 +1156,7 @@ name|connect
 argument_list|(
 name|targetAddr
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1165,7 +1165,7 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1284,7 +1284,7 @@ name|connect
 argument_list|(
 name|addr
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1293,7 +1293,7 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)

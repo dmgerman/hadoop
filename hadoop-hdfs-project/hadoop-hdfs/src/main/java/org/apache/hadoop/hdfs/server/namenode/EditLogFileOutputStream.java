@@ -122,7 +122,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -457,7 +457,7 @@ argument_list|()
 operator|.
 name|writeInt
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 argument_list|)

@@ -118,7 +118,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -2285,7 +2285,7 @@ name|quotaDir1
 argument_list|,
 literal|6
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -2339,7 +2339,7 @@ name|quotaDir2
 argument_list|,
 literal|7
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -2402,7 +2402,7 @@ name|quotaDir3
 argument_list|,
 literal|2
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -3435,7 +3435,7 @@ name|setQuota
 argument_list|(
 name|quotaDir1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -3483,7 +3483,7 @@ name|setQuota
 argument_list|(
 name|quotaDir20
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -3540,7 +3540,7 @@ name|setQuota
 argument_list|(
 name|quotaDir21
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -4126,7 +4126,7 @@ name|setQuota
 argument_list|(
 name|quotaDir1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -4338,7 +4338,7 @@ name|setQuota
 argument_list|(
 name|quotaDir1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -4353,7 +4353,7 @@ name|setQuota
 argument_list|(
 name|quotaDir20
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -4517,7 +4517,7 @@ name|setQuota
 argument_list|(
 name|quotaDir2053_C
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,

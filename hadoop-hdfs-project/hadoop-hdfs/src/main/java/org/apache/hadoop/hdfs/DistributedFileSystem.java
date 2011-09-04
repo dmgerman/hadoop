@@ -430,7 +430,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -446,7 +446,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -464,7 +464,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -834,7 +834,7 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 operator|+
@@ -3379,13 +3379,13 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *      * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    FSConstants.SafeModeAction)    */
-DECL|method|setSafeMode (FSConstants.SafeModeAction action)
+comment|/**    * Enter, leave or get safe mode.    *      * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    HdfsConstants.SafeModeAction)    */
+DECL|method|setSafeMode (HdfsConstants.SafeModeAction action)
 specifier|public
 name|boolean
 name|setSafeMode
 parameter_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 name|action

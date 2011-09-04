@@ -764,7 +764,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -780,7 +780,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -798,7 +798,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -816,7 +816,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -1142,7 +1142,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|BlockUCState
 import|;
@@ -1162,7 +1162,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -1182,7 +1182,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -12942,7 +12942,7 @@ name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * SafeModeInfo contains information related to the safe mode.    *<p>    * An instance of {@link SafeModeInfo} is created when the name node    * enters safe mode.    *<p>    * During name node startup {@link SafeModeInfo} counts the number of    *<em>safe blocks</em>, those that have at least the minimal number of    * replicas, and calculates the ratio of safe blocks to the total number    * of blocks in the system, which is the size of blocks in    * {@link FSNamesystem#blockManager}. When the ratio reaches the    * {@link #threshold} it starts the {@link SafeModeMonitor} daemon in order    * to monitor whether the safe mode {@link #extension} is passed.    * Then it leaves safe mode and destroys itself.    *<p>    * If safe mode is turned on manually then the number of safe blocks is    * not tracked because the name node is not intended to leave safe mode    * automatically in the case.    *    * @see ClientProtocol#setSafeMode(FSConstants.SafeModeAction)    * @see SafeModeMonitor    */
+comment|/**    * SafeModeInfo contains information related to the safe mode.    *<p>    * An instance of {@link SafeModeInfo} is created when the name node    * enters safe mode.    *<p>    * During name node startup {@link SafeModeInfo} counts the number of    *<em>safe blocks</em>, those that have at least the minimal number of    * replicas, and calculates the ratio of safe blocks to the total number    * of blocks in the system, which is the size of blocks in    * {@link FSNamesystem#blockManager}. When the ratio reaches the    * {@link #threshold} it starts the {@link SafeModeMonitor} daemon in order    * to monitor whether the safe mode {@link #extension} is passed.    * Then it leaves safe mode and destroys itself.    *<p>    * If safe mode is turned on manually then the number of safe blocks is    * not tracked because the name node is not intended to leave safe mode    * automatically in the case.    *    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction)    * @see SafeModeMonitor    */
 DECL|class|SafeModeInfo
 class|class
 name|SafeModeInfo

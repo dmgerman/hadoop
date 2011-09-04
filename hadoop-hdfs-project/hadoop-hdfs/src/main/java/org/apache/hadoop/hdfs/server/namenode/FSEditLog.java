@@ -168,7 +168,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -206,7 +206,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -588,7 +588,7 @@ specifier|private
 name|long
 name|curSegmentTxId
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -3552,7 +3552,7 @@ comment|// off.
 assert|assert
 name|curSegmentTxId
 operator|==
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 operator|||
@@ -4153,7 +4153,7 @@ specifier|private
 name|long
 name|segmentStartsAtTxId
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
@@ -4306,7 +4306,7 @@ literal|null
 expr_stmt|;
 name|segmentStartsAtTxId
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|INVALID_TXID
 expr_stmt|;

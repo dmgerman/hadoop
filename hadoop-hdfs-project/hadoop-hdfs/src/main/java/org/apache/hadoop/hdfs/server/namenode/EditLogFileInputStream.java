@@ -92,7 +92,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -549,7 +549,7 @@ if|if
 condition|(
 name|logVersion
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
@@ -565,7 +565,7 @@ name|logVersion
 operator|+
 literal|". Current version = "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+

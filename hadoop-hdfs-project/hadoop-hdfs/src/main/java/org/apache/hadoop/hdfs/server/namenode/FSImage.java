@@ -212,7 +212,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -378,7 +378,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -398,7 +398,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -1250,7 +1250,7 @@ name|LAST_PRE_UPGRADE_LAYOUT_VERSION
 operator|&&
 name|layoutVersion
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
@@ -1268,7 +1268,7 @@ argument_list|()
 operator|+
 literal|".\nAn upgrade to version "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -1743,7 +1743,7 @@ name|storage
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -2163,7 +2163,7 @@ argument_list|()
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -2255,7 +2255,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
@@ -2273,7 +2273,7 @@ argument_list|()
 operator|+
 literal|" using this version of the NameNode, which uses storage version "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+

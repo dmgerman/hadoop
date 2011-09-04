@@ -318,7 +318,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -334,7 +334,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -352,7 +352,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -774,11 +774,11 @@ name|setQuota
 argument_list|(
 name|path
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -986,7 +986,7 @@ name|path
 argument_list|,
 name|quota
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -1167,11 +1167,11 @@ name|setQuota
 argument_list|(
 name|path
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 argument_list|)
@@ -1394,7 +1394,7 @@ name|setQuota
 argument_list|(
 name|path
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
@@ -1537,7 +1537,7 @@ name|dfs
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -1956,7 +1956,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 name|action
@@ -1981,7 +1981,7 @@ condition|)
 block|{
 name|action
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -2004,7 +2004,7 @@ condition|)
 block|{
 name|action
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -2027,7 +2027,7 @@ condition|)
 block|{
 name|action
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -2050,7 +2050,7 @@ condition|)
 block|{
 name|action
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.

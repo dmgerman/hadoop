@@ -30,7 +30,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -52,7 +52,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -134,7 +134,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -188,7 +188,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -208,7 +208,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -929,7 +929,7 @@ comment|// check #3
 name|int
 name|softwareLV
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 decl_stmt|;

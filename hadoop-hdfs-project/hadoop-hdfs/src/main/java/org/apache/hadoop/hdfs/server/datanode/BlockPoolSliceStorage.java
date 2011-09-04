@@ -158,7 +158,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -264,7 +264,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -284,7 +284,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -459,7 +459,7 @@ throws|throws
 name|IOException
 block|{
 assert|assert
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|==
@@ -830,7 +830,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -1139,7 +1139,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|>=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|:
@@ -1231,7 +1231,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|==
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|&&
@@ -1273,7 +1273,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|>
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|||
@@ -1545,7 +1545,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -1751,7 +1751,7 @@ operator|.
 name|getLayoutVersion
 argument_list|()
 operator|>=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|&&

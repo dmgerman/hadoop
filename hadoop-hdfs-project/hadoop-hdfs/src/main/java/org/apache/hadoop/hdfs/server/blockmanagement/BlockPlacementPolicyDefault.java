@@ -176,7 +176,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -2115,7 +2115,7 @@ if|if
 condition|(
 name|blockSize
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|>

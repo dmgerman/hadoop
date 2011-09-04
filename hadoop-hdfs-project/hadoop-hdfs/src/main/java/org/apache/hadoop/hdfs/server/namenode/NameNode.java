@@ -536,7 +536,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -552,7 +552,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -570,7 +570,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -588,7 +588,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -606,7 +606,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MAX_PATH_LENGTH
 import|;
@@ -624,7 +624,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MAX_PATH_DEPTH
 import|;
@@ -764,7 +764,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -784,7 +784,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -2022,7 +2022,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 operator|.
@@ -2054,7 +2054,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 argument_list|)
@@ -2106,7 +2106,7 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 operator|+
@@ -6509,7 +6509,7 @@ if|if
 condition|(
 name|version
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
@@ -8000,7 +8000,7 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 operator|+

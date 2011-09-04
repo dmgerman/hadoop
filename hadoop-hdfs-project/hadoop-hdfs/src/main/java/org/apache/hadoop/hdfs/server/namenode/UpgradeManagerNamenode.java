@@ -42,7 +42,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -58,7 +58,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -78,7 +78,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -167,14 +167,14 @@ name|UpgradeManager
 block|{
 DECL|method|getType ()
 specifier|public
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|getType
 parameter_list|()
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -273,7 +273,7 @@ argument_list|()
 operator|+
 literal|" to current LV "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -318,7 +318,7 @@ argument_list|()
 operator|+
 literal|" to current LV "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -457,7 +457,7 @@ argument_list|()
 operator|+
 literal|" to current LV "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -526,7 +526,7 @@ name|setUpgradeState
 argument_list|(
 literal|false
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 argument_list|)

@@ -272,7 +272,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -2604,7 +2604,7 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 argument_list|)
@@ -2687,7 +2687,7 @@ name|byte
 index|[
 literal|4
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MAX_PATH_LENGTH
 index|]

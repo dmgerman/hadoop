@@ -234,7 +234,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1149,7 +1149,7 @@ name|streams
 operator|.
 name|checksumOut
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -2048,7 +2048,7 @@ operator|.
 name|remaining
 argument_list|()
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|BYTES_IN_INTEGER
 condition|)
@@ -2132,7 +2132,7 @@ name|PacketHeader
 operator|.
 name|PKT_HEADER_LEN
 operator|-
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|BYTES_IN_INTEGER
 decl_stmt|;

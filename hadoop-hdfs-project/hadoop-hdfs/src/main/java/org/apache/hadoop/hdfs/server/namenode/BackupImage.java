@@ -114,7 +114,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -373,7 +373,7 @@ name|sd
 operator|.
 name|analyzeStorage
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 operator|.

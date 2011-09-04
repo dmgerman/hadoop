@@ -138,7 +138,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -340,7 +340,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)

@@ -626,7 +626,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -902,7 +902,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -920,7 +920,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 import|;
@@ -940,7 +940,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -2976,7 +2976,7 @@ name|getInt
 argument_list|(
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -2991,7 +2991,7 @@ name|getInt
 argument_list|(
 name|DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)
@@ -3952,7 +3952,7 @@ name|ss
 operator|.
 name|setReceiveBufferSize
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
@@ -4617,7 +4617,7 @@ parameter_list|)
 block|{}
 block|}
 assert|assert
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|==
@@ -4630,7 +4630,7 @@ literal|"Data-node and name-node layout versions must be the same."
 operator|+
 literal|"Expected: "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -4830,7 +4830,7 @@ name|storageInfo
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -6253,7 +6253,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|!=
@@ -6271,7 +6271,7 @@ literal|"Data-node and name-node layout versions must be "
 operator|+
 literal|"the same. Expected: "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+
@@ -9342,7 +9342,7 @@ name|writeTimeout
 init|=
 name|socketWriteTimeout
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT_EXTENSION
 operator|*
@@ -9376,7 +9376,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)

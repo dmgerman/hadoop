@@ -292,7 +292,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1414,7 +1414,7 @@ name|connect
 argument_list|(
 name|targetAddr
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1423,7 +1423,7 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)

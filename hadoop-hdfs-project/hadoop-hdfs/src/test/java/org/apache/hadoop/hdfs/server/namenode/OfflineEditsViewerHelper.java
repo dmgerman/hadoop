@@ -286,7 +286,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -937,7 +937,7 @@ name|pathDirectoryMkdir
 argument_list|,
 literal|1000L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)

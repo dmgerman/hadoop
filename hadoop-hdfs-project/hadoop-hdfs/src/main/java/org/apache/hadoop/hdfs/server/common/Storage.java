@@ -188,7 +188,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -240,7 +240,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -260,7 +260,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -1471,7 +1471,7 @@ if|if
 condition|(
 name|startOpt
 operator|==
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 operator|.
@@ -1486,7 +1486,7 @@ if|if
 condition|(
 name|startOpt
 operator|!=
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 operator|.
@@ -3110,7 +3110,7 @@ name|this
 operator|.
 name|layoutVersion
 operator|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 expr_stmt|;
@@ -3530,7 +3530,7 @@ if|if
 condition|(
 name|lv
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
