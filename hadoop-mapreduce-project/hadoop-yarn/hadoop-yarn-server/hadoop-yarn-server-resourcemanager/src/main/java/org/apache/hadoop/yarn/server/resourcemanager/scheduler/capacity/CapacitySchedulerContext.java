@@ -118,6 +118,11 @@ name|RMContext
 name|getRMContext
 parameter_list|()
 function_decl|;
+DECL|method|getClusterResources ()
+name|Resource
+name|getClusterResources
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

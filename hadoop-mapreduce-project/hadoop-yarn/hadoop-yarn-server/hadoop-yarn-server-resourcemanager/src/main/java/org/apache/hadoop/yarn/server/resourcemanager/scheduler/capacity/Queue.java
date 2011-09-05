@@ -475,10 +475,10 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update the cluster resource for queues as we add/remove nodes    * @param clusterResource the current cluster resource    */
-DECL|method|updateResource (Resource clusterResource)
+DECL|method|updateClusterResource (Resource clusterResource)
 specifier|public
 name|void
-name|updateResource
+name|updateClusterResource
 parameter_list|(
 name|Resource
 name|clusterResource

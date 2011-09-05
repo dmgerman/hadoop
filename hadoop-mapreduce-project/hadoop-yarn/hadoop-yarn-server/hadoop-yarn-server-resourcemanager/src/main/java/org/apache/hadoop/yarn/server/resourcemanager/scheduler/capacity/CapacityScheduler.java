@@ -1358,6 +1358,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getClusterResources ()
+specifier|public
+name|Resource
+name|getClusterResources
+parameter_list|()
+block|{
+return|return
+name|clusterResource
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|reinitialize (Configuration conf, ContainerTokenSecretManager containerTokenSecretManager, RMContext rmContext)
 specifier|public
 specifier|synchronized
@@ -3553,6 +3565,13 @@ name|getTotalCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
 operator|++
 name|numNodeManagers
 expr_stmt|;
@@ -3608,6 +3627,13 @@ name|nodeInfo
 operator|.
 name|getTotalCapability
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
 argument_list|)
 expr_stmt|;
 operator|--
