@@ -1336,9 +1336,9 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|File
+name|EditLogInputStream
 argument_list|>
-name|editsFiles
+name|editsStreams
 init|=
 name|Lists
 operator|.
@@ -1387,11 +1387,25 @@ name|getLastAppliedTxId
 argument_list|()
 condition|)
 block|{
-name|editsFiles
+name|editsStreams
 operator|.
 name|add
 argument_list|(
+operator|new
+name|EditLogFileInputStream
+argument_list|(
 name|f
+argument_list|,
+name|log
+operator|.
+name|getStartTxId
+argument_list|()
+argument_list|,
+name|log
+operator|.
+name|getEndTxId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1402,19 +1416,19 @@ name|info
 argument_list|(
 literal|"Checkpointer about to load edits from "
 operator|+
-name|editsFiles
+name|editsStreams
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" file(s)."
+literal|" stream(s)."
 argument_list|)
 expr_stmt|;
 name|dstImage
 operator|.
 name|loadEdits
 argument_list|(
-name|editsFiles
+name|editsStreams
 argument_list|)
 expr_stmt|;
 block|}

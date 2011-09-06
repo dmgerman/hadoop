@@ -1463,7 +1463,7 @@ name|StartupOption
 operator|.
 name|ROLLBACK
 argument_list|,
-literal|"but there are no logs to load"
+literal|"No non-corrupt logs for txid "
 argument_list|)
 expr_stmt|;
 name|UpgradeUtilities

@@ -394,7 +394,8 @@ name|HEADER_LEN
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -403,7 +404,8 @@ literal|1
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -448,7 +450,8 @@ name|oldLength
 init|=
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 decl_stmt|;
 name|validation
 operator|=
@@ -471,13 +474,15 @@ literal|" now: "
 operator|+
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 operator|+
 literal|")"
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 operator|>
 name|oldLength
 argument_list|)
@@ -488,7 +493,8 @@ literal|2
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

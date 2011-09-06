@@ -54,6 +54,26 @@ name|JournalStream
 implements|,
 name|Closeable
 block|{
+comment|/**     * @return the first transaction which will be found in this stream    */
+DECL|method|getFirstTxId ()
+specifier|public
+specifier|abstract
+name|long
+name|getFirstTxId
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**     * @return the last transaction which will be found in this stream    */
+DECL|method|getLastTxId ()
+specifier|public
+specifier|abstract
+name|long
+name|getLastTxId
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Close the stream.    * @throws IOException if an error occurred while closing    */
 DECL|method|close ()
 specifier|public
