@@ -8141,6 +8141,19 @@ operator|.
 name|jvmID
 argument_list|)
 expr_stmt|;
+name|taskAttempt
+operator|.
+name|reportedStatus
+operator|.
+name|progress
+operator|=
+literal|1.0f
+expr_stmt|;
+name|taskAttempt
+operator|.
+name|updateProgressSplits
+argument_list|()
+expr_stmt|;
 comment|//send the cleanup event to containerLauncher
 name|taskAttempt
 operator|.

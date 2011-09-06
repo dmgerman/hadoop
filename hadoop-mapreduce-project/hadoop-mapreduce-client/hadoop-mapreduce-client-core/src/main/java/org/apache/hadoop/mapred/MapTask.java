@@ -9616,6 +9616,11 @@ name|job
 argument_list|)
 expr_stmt|;
 block|}
+name|sortPhase
+operator|.
+name|complete
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 comment|// read in paged indices
@@ -9845,6 +9850,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|sortPhase
+operator|.
+name|complete
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 block|{
