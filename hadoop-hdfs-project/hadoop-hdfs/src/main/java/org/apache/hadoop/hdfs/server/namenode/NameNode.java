@@ -1698,6 +1698,8 @@ name|role
 decl_stmt|;
 comment|/** RPC server. Package-protected for use in tests. */
 DECL|field|server
+name|RPC
+operator|.
 name|Server
 name|server
 decl_stmt|;

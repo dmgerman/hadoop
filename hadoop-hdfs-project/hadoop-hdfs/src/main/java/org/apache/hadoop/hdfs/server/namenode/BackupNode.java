@@ -434,6 +434,19 @@ argument_list|,
 name|role
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|JournalProtocol
+operator|.
+name|class
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 comment|/////////////////////////////////////////////////////
 comment|// Common NameNode methods implementation for backup node.
