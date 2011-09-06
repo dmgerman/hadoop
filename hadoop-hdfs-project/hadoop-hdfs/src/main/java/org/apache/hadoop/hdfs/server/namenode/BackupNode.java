@@ -327,8 +327,6 @@ class|class
 name|BackupNode
 extends|extends
 name|NameNode
-implements|implements
-name|JournalProtocol
 block|{
 DECL|field|BN_ADDRESS_NAME_KEY
 specifier|private
@@ -434,19 +432,6 @@ argument_list|,
 name|role
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|server
-operator|.
-name|addProtocol
-argument_list|(
-name|JournalProtocol
-operator|.
-name|class
-argument_list|,
-name|this
-argument_list|)
-expr_stmt|;
 block|}
 comment|/////////////////////////////////////////////////////
 comment|// Common NameNode methods implementation for backup node.
@@ -537,13 +522,16 @@ block|}
 annotation|@
 name|Override
 comment|// NameNode
-DECL|method|setRpcServerAddress (Configuration conf)
+DECL|method|setRpcServerAddress (Configuration conf, InetSocketAddress addr)
 specifier|protected
 name|void
 name|setRpcServerAddress
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|InetSocketAddress
+name|addr
 parameter_list|)
 block|{
 name|conf
@@ -554,7 +542,7 @@ name|BN_ADDRESS_NAME_KEY
 argument_list|,
 name|getHostPortString
 argument_list|(
-name|rpcAddress
+name|addr
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -562,13 +550,16 @@ block|}
 annotation|@
 name|Override
 comment|// Namenode
-DECL|method|setRpcServiceServerAddress (Configuration conf)
+DECL|method|setRpcServiceServerAddress (Configuration conf, InetSocketAddress addr)
 specifier|protected
 name|void
 name|setRpcServiceServerAddress
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|InetSocketAddress
+name|addr
 parameter_list|)
 block|{
 name|conf
@@ -579,7 +570,7 @@ name|BN_SERVICE_RPC_ADDRESS_KEY
 argument_list|,
 name|getHostPortString
 argument_list|(
-name|serviceRPCAddress
+name|addr
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -597,7 +588,8 @@ name|conf
 parameter_list|)
 block|{
 assert|assert
-name|rpcAddress
+name|getNameNodeAddress
+argument_list|()
 operator|!=
 literal|null
 operator|:
@@ -781,6 +773,29 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|createRpcServer (Configuration conf)
+specifier|protected
+name|NameNodeRpcServer
+name|createRpcServer
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|BackupNodeRpcServer
+argument_list|(
+name|conf
+argument_list|,
+name|this
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 comment|// NameNode
 DECL|method|stop ()
 specifier|public
@@ -890,6 +905,61 @@ name|super
 operator|.
 name|stop
 argument_list|()
+expr_stmt|;
+block|}
+DECL|class|BackupNodeRpcServer
+specifier|static
+class|class
+name|BackupNodeRpcServer
+extends|extends
+name|NameNodeRpcServer
+implements|implements
+name|JournalProtocol
+block|{
+DECL|field|nnRpcAddress
+specifier|private
+specifier|final
+name|String
+name|nnRpcAddress
+decl_stmt|;
+DECL|method|BackupNodeRpcServer (Configuration conf, BackupNode nn)
+specifier|private
+name|BackupNodeRpcServer
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|BackupNode
+name|nn
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|,
+name|nn
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|JournalProtocol
+operator|.
+name|class
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+name|nnRpcAddress
+operator|=
+name|nn
+operator|.
+name|nnRpcAddress
 expr_stmt|;
 block|}
 annotation|@
@@ -1098,7 +1168,7 @@ argument_list|()
 operator|+
 literal|" expecting "
 operator|+
-name|nnRpcAddress
+name|rpcAddress
 argument_list|)
 throw|;
 name|getBNImage
@@ -1144,8 +1214,8 @@ name|txid
 argument_list|)
 expr_stmt|;
 block|}
-comment|//////////////////////////////////////////////////////
 DECL|method|getBNImage ()
+specifier|private
 name|BackupImage
 name|getBNImage
 parameter_list|()
@@ -1154,10 +1224,14 @@ return|return
 operator|(
 name|BackupImage
 operator|)
+name|nn
+operator|.
 name|getFSImage
 argument_list|()
 return|;
 block|}
+block|}
+comment|//////////////////////////////////////////////////////
 DECL|method|shouldCheckpointAtStartup ()
 name|boolean
 name|shouldCheckpointAtStartup

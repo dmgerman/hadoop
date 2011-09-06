@@ -662,7 +662,7 @@ block|}
 comment|// Write results to the fsimage file
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode
@@ -674,7 +674,7 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|saveNamespace

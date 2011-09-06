@@ -495,6 +495,9 @@ name|token
 init|=
 name|nn
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|getDelegationToken
 argument_list|(
 operator|new

@@ -851,7 +851,7 @@ name|datatnodeinfos
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|(               )
 operator|.
 name|getDatanodeReport

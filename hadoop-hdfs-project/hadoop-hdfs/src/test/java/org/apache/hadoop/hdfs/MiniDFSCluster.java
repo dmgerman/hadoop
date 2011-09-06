@@ -4449,6 +4449,26 @@ literal|0
 argument_list|)
 return|;
 block|}
+comment|/**    * Get an instance of the NameNode's RPC handler.    */
+DECL|method|getNameNodeRpc ()
+specifier|public
+name|NamenodeProtocols
+name|getNameNodeRpc
+parameter_list|()
+block|{
+name|checkSingleNameNode
+argument_list|()
+expr_stmt|;
+return|return
+name|getNameNode
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getRpcServer
+argument_list|()
+return|;
+block|}
 comment|/**    * Gets the NameNode for the index.  May be null.    */
 DECL|method|getNameNode (int nnIndex)
 specifier|public
@@ -5792,12 +5812,43 @@ block|}
 name|long
 index|[]
 name|sizes
-init|=
+decl_stmt|;
+try|try
+block|{
+name|sizes
+operator|=
 name|nameNode
+operator|.
+name|getRpcServer
+argument_list|()
 operator|.
 name|getStats
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// This method above should never throw.
+comment|// It only throws IOE since it is exposed via RPC
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Unexpected IOE thrown: "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|ioe
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|boolean
 name|isUp
 init|=

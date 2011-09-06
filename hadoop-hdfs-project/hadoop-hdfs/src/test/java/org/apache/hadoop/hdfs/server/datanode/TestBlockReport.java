@@ -296,24 +296,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
-operator|.
-name|NameNodeAdapter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|DatanodeCommand
@@ -970,7 +952,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -1200,7 +1182,7 @@ name|lBlocks
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations
@@ -1450,7 +1432,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -1638,7 +1620,7 @@ name|dnCmd
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -1829,7 +1811,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -2090,7 +2072,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -2192,7 +2174,7 @@ expr_stmt|;
 block|}
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -2419,7 +2401,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -2665,7 +2647,7 @@ argument_list|)
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -3361,7 +3343,7 @@ name|locatedToBlocks
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations
@@ -4164,7 +4146,7 @@ name|lbs
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations

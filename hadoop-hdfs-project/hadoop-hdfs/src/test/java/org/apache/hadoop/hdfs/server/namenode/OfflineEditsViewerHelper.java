@@ -1313,7 +1313,7 @@ name|callGetBlockLocations
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 argument_list|,
 name|filePath
@@ -1338,7 +1338,7 @@ comment|// Force a roll so we get an OP_END_LOG_SEGMENT txn
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|rollEditLog

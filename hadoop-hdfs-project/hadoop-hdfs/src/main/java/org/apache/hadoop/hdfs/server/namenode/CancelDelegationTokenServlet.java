@@ -397,6 +397,9 @@ name|Exception
 block|{
 name|nn
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|cancelDelegationToken
 argument_list|(
 name|token

@@ -1082,6 +1082,9 @@ name|file
 init|=
 name|namenode
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|getFileInfo
 argument_list|(
 name|path
@@ -1512,6 +1515,9 @@ assert|;
 name|thisListing
 operator|=
 name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
 operator|.
 name|getListing
 argument_list|(
@@ -2390,6 +2396,9 @@ name|isOpen
 condition|)
 name|namenode
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|delete
 argument_list|(
 name|path
@@ -2555,6 +2564,9 @@ if|if
 condition|(
 operator|!
 name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
 operator|.
 name|mkdirs
 argument_list|(

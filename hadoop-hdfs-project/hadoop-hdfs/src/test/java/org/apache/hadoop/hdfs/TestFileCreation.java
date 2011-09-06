@@ -2469,7 +2469,7 @@ try|try
 block|{
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|addBlock

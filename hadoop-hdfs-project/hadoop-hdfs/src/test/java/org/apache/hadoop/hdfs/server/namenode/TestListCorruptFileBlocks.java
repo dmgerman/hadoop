@@ -928,7 +928,7 @@ argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode
@@ -1500,7 +1500,7 @@ expr_stmt|;
 comment|// now leave safe mode so that we can clean up
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode

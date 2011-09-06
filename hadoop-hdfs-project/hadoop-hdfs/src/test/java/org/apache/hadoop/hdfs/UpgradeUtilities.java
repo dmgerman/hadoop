@@ -462,9 +462,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|protocol
 operator|.
-name|NameNode
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -728,12 +728,12 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|namenode
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 name|namenodeStorageNamespaceID
@@ -2586,7 +2586,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2623,7 +2623,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2660,7 +2660,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2697,7 +2697,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest

@@ -695,6 +695,9 @@ name|getNameNode
 argument_list|(
 name|i
 argument_list|)
+operator|.
+name|getRpcServer
+argument_list|()
 expr_stmt|;
 block|}
 name|replication

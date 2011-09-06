@@ -622,7 +622,7 @@ name|lb
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations

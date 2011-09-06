@@ -510,6 +510,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamenodeProtocols
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -1254,12 +1272,12 @@ argument_list|,
 name|maxRetries
 argument_list|)
 expr_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|mockNN
 init|=
 name|mock
 argument_list|(
-name|NameNode
+name|NamenodeProtocols
 operator|.
 name|class
 argument_list|)
@@ -1517,15 +1535,15 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|preSpyNN
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|spyNN
 init|=
 name|spy
@@ -1897,15 +1915,15 @@ name|failuresLeft
 decl_stmt|;
 DECL|field|realNN
 specifier|private
-name|NameNode
+name|NamenodeProtocols
 name|realNN
 decl_stmt|;
-DECL|method|FailNTimesAnswer (NameNode realNN, int timesToFail)
+DECL|method|FailNTimesAnswer (NamenodeProtocols preSpyNN, int timesToFail)
 specifier|public
 name|FailNTimesAnswer
 parameter_list|(
-name|NameNode
-name|realNN
+name|NamenodeProtocols
+name|preSpyNN
 parameter_list|,
 name|int
 name|timesToFail
@@ -1919,7 +1937,7 @@ name|this
 operator|.
 name|realNN
 operator|=
-name|realNN
+name|preSpyNN
 expr_stmt|;
 block|}
 DECL|method|answer (InvocationOnMock invocation)
@@ -3439,7 +3457,7 @@ name|callGetBlockLocations
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 argument_list|,
 name|f

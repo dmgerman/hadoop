@@ -1821,6 +1821,8 @@ name|decommissioning
 parameter_list|)
 throws|throws
 name|InterruptedException
+throws|,
+name|IOException
 block|{
 comment|// Do the stats check over 10 iterations
 for|for
@@ -1843,6 +1845,9 @@ index|[]
 name|newStats
 init|=
 name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
 operator|.
 name|getStats
 argument_list|()

@@ -2591,7 +2591,7 @@ name|locatedBlocks
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations
@@ -2624,7 +2624,7 @@ name|locatedBlocks
 operator|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations
