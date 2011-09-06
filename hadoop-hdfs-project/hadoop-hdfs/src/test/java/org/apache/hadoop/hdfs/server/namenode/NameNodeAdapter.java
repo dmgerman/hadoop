@@ -220,6 +220,31 @@ literal|true
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the internal RPC server instance.    * @return rpc server    */
+DECL|method|getRpcServer (NameNode namenode)
+specifier|public
+specifier|static
+name|Server
+name|getRpcServer
+parameter_list|(
+name|NameNode
+name|namenode
+parameter_list|)
+block|{
+return|return
+operator|(
+operator|(
+name|NameNodeRpcServer
+operator|)
+name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|)
+operator|.
+name|server
+return|;
+block|}
 DECL|method|getDtSecretManager ( final FSNamesystem ns)
 specifier|public
 specifier|static
