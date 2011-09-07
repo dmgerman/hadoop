@@ -143,6 +143,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|mortbay
+operator|.
+name|log
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -208,14 +220,6 @@ name|int
 name|numBlocks
 init|=
 literal|2
-decl_stmt|;
-DECL|field|LOCAL_FS_ROOT_URI
-specifier|static
-specifier|final
-name|String
-name|LOCAL_FS_ROOT_URI
-init|=
-literal|"file:///tmp/test"
 decl_stmt|;
 DECL|field|fSys
 specifier|protected
@@ -302,8 +306,9 @@ block|}
 block|}
 decl_stmt|;
 DECL|field|data
-specifier|private
+specifier|protected
 specifier|static
+specifier|final
 name|byte
 index|[]
 name|data
@@ -798,9 +803,12 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|LOCAL_FS_ROOT_URI
+name|fSys
+operator|.
+name|getUri
+argument_list|()
 operator|+
-literal|"/existingDir"
+literal|"/test/existingDir"
 argument_list|)
 decl_stmt|;
 name|fSys
@@ -3331,7 +3339,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeReadAndDelete (int len)
-specifier|private
+specifier|protected
 name|void
 name|writeReadAndDelete
 parameter_list|(
@@ -4216,6 +4224,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|Log
+operator|.
+name|info
+argument_list|(
+literal|"XXX"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertTrue

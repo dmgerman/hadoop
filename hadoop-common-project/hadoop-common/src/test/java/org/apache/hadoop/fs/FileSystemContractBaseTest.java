@@ -135,7 +135,7 @@ name|FileSystem
 name|fs
 decl_stmt|;
 DECL|field|data
-specifier|private
+specifier|protected
 name|byte
 index|[]
 name|data
@@ -1055,7 +1055,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeReadAndDelete (int len)
-specifier|private
+specifier|protected
 name|void
 name|writeReadAndDelete
 parameter_list|(
@@ -1337,6 +1337,9 @@ name|path
 argument_list|,
 literal|false
 argument_list|)
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 name|fail
 argument_list|(
