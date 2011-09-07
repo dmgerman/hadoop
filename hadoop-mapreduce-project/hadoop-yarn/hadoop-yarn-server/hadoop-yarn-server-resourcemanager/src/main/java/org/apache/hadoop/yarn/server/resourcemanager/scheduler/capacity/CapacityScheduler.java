@@ -2334,6 +2334,25 @@ name|AccessControlException
 name|ace
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to submit application "
+operator|+
+name|applicationAttemptId
+operator|+
+literal|" to queue "
+operator|+
+name|queueName
+operator|+
+literal|" from user "
+operator|+
+name|user
+argument_list|,
+name|ace
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|rmContext
