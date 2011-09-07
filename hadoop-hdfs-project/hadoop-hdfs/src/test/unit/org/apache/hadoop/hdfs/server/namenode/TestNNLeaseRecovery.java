@@ -668,8 +668,9 @@ name|fsn
 operator|=
 name|spy
 argument_list|(
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -2792,16 +2793,6 @@ operator|.
 name|thenReturn
 argument_list|(
 name|editLog
-argument_list|)
-expr_stmt|;
-name|fsn
-operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|setFSNamesystem
-argument_list|(
-name|fsn
 argument_list|)
 expr_stmt|;
 switch|switch

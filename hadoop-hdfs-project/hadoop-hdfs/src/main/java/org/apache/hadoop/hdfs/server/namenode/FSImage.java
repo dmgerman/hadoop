@@ -641,13 +641,6 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|field|namesystem
-specifier|protected
-name|FSNamesystem
-name|namesystem
-init|=
-literal|null
-decl_stmt|;
 DECL|field|editLog
 specifier|protected
 name|FSEditLog
@@ -675,23 +668,6 @@ name|lastAppliedTxId
 init|=
 literal|0
 decl_stmt|;
-comment|/**    * URIs for importing an image from a checkpoint. In the default case,    * URIs will represent directories.     */
-DECL|field|checkpointDirs
-specifier|private
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|checkpointDirs
-decl_stmt|;
-DECL|field|checkpointEditsDirs
-specifier|private
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|checkpointEditsDirs
-decl_stmt|;
 DECL|field|conf
 specifier|final
 specifier|private
@@ -704,9 +680,9 @@ specifier|final
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
-comment|/**    * Construct an FSImage.    * @param conf Configuration    * @see #FSImage(Configuration conf, FSNamesystem ns,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
+comment|/**    * Construct an FSImage    * @param conf Configuration    * @see #FSImage(Configuration conf,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
-specifier|public
+specifier|protected
 name|FSImage
 parameter_list|(
 name|Configuration
@@ -718,33 +694,6 @@ block|{
 name|this
 argument_list|(
 name|conf
-argument_list|,
-operator|(
-name|FSNamesystem
-operator|)
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Construct an FSImage    * @param conf Configuration    * @param ns The FSNamesystem using this image.    * @see #FSImage(Configuration conf, FSNamesystem ns,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
-DECL|method|FSImage (Configuration conf, FSNamesystem ns)
-specifier|private
-name|FSImage
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|FSNamesystem
-name|ns
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|this
-argument_list|(
-name|conf
-argument_list|,
-name|ns
 argument_list|,
 name|FSNamesystem
 operator|.
@@ -762,16 +711,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Construct the FSImage. Set the default checkpoint directories.    *    * Setup storage and initialize the edit log.    *    * @param conf Configuration    * @param ns The FSNamesystem using this image.    * @param imageDirs Directories the image can be stored in.    * @param editsDirs Directories the editlog can be stored in.    * @throws IOException if directories are invalid.    */
-DECL|method|FSImage (Configuration conf, FSNamesystem ns, Collection<URI> imageDirs, Collection<URI> editsDirs)
+comment|/**    * Construct the FSImage. Set the default checkpoint directories.    *    * Setup storage and initialize the edit log.    *    * @param conf Configuration    * @param imageDirs Directories the image can be stored in.    * @param editsDirs Directories the editlog can be stored in.    * @throws IOException if directories are invalid.    */
+DECL|method|FSImage (Configuration conf, Collection<URI> imageDirs, Collection<URI> editsDirs)
 specifier|protected
 name|FSImage
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|FSNamesystem
-name|ns
 parameter_list|,
 name|Collection
 argument_list|<
@@ -793,27 +739,6 @@ operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|setCheckpointDirectories
-argument_list|(
-name|FSImage
-operator|.
-name|getCheckpointDirs
-argument_list|(
-name|conf
-argument_list|,
-literal|null
-argument_list|)
-argument_list|,
-name|FSImage
-operator|.
-name|getCheckpointEditsDirs
-argument_list|(
-name|conf
-argument_list|,
-literal|null
-argument_list|)
-argument_list|)
 expr_stmt|;
 name|storage
 operator|=
@@ -861,11 +786,6 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
-name|setFSNamesystem
-argument_list|(
-name|ns
-argument_list|)
-expr_stmt|;
 name|archivalManager
 operator|=
 operator|new
@@ -879,82 +799,43 @@ name|editLog
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getFSNamesystem ()
-specifier|protected
-name|FSNamesystem
-name|getFSNamesystem
-parameter_list|()
-block|{
-return|return
-name|namesystem
-return|;
-block|}
-DECL|method|setFSNamesystem (FSNamesystem ns)
-name|void
-name|setFSNamesystem
-parameter_list|(
-name|FSNamesystem
-name|ns
-parameter_list|)
-block|{
-name|namesystem
-operator|=
-name|ns
-expr_stmt|;
-if|if
-condition|(
-name|ns
-operator|!=
-literal|null
-condition|)
-block|{
-name|storage
-operator|.
-name|setUpgradeManager
-argument_list|(
-name|ns
-operator|.
-name|upgradeManager
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|setCheckpointDirectories (Collection<URI> dirs, Collection<URI> editsDirs)
-name|void
-name|setCheckpointDirectories
-parameter_list|(
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|dirs
-parameter_list|,
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|editsDirs
-parameter_list|)
-block|{
-name|checkpointDirs
-operator|=
-name|dirs
-expr_stmt|;
-name|checkpointEditsDirs
-operator|=
-name|editsDirs
-expr_stmt|;
-block|}
-DECL|method|format (String clusterId)
+DECL|method|format (FSNamesystem fsn, String clusterId)
 name|void
 name|format
 parameter_list|(
+name|FSNamesystem
+name|fsn
+parameter_list|,
 name|String
 name|clusterId
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|fileCount
+init|=
+name|fsn
+operator|.
+name|getTotalFiles
+argument_list|()
+decl_stmt|;
+comment|// Expect 1 file, which is the root inode
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|fileCount
+operator|==
+literal|1
+argument_list|,
+literal|"FSImage.format should be called with an uninitialized namesystem, has "
+operator|+
+name|fileCount
+operator|+
+literal|" files"
+argument_list|)
+expr_stmt|;
 name|storage
 operator|.
 name|format
@@ -964,17 +845,22 @@ argument_list|)
 expr_stmt|;
 name|saveFSImageInAllDirs
 argument_list|(
+name|fsn
+argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.     *     * @throws IOException    * @return true if the image needs to be saved or false otherwise    */
-DECL|method|recoverTransitionRead (StartupOption startOpt)
+DECL|method|recoverTransitionRead (StartupOption startOpt, FSNamesystem target)
 name|boolean
 name|recoverTransitionRead
 parameter_list|(
 name|StartupOption
 name|startOpt
+parameter_list|,
+name|FSNamesystem
+name|target
 parameter_list|)
 throws|throws
 name|IOException
@@ -1042,62 +928,15 @@ argument_list|(
 literal|"All specified directories are not accessible or do not exist."
 argument_list|)
 throw|;
-if|if
-condition|(
-name|startOpt
-operator|==
-name|StartupOption
+name|storage
 operator|.
-name|IMPORT
-operator|&&
-operator|(
-name|checkpointDirs
-operator|==
-literal|null
-operator|||
-name|checkpointDirs
-operator|.
-name|isEmpty
-argument_list|()
-operator|)
-condition|)
-throw|throw
-operator|new
-name|IOException
+name|setUpgradeManager
 argument_list|(
-literal|"Cannot import image from a checkpoint. "
-operator|+
-literal|"\"dfs.namenode.checkpoint.dir\" is not set."
-argument_list|)
-throw|;
-if|if
-condition|(
-name|startOpt
-operator|==
-name|StartupOption
+name|target
 operator|.
-name|IMPORT
-operator|&&
-operator|(
-name|checkpointEditsDirs
-operator|==
-literal|null
-operator|||
-name|checkpointEditsDirs
-operator|.
-name|isEmpty
-argument_list|()
-operator|)
-condition|)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot import image from a checkpoint. "
-operator|+
-literal|"\"dfs.namenode.checkpoint.dir\" is not set."
+name|upgradeManager
 argument_list|)
-throw|;
+expr_stmt|;
 comment|// 1. For each data directory calculate its state and
 comment|// check whether all is consistent before transitioning.
 name|Map
@@ -1378,7 +1217,9 @@ case|case
 name|UPGRADE
 case|:
 name|doUpgrade
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 expr_stmt|;
 return|return
 literal|false
@@ -1388,7 +1229,9 @@ case|case
 name|IMPORT
 case|:
 name|doImportCheckpoint
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 expr_stmt|;
 return|return
 literal|false
@@ -1408,7 +1251,9 @@ comment|// just load the image
 block|}
 return|return
 name|loadFSImage
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 return|;
 block|}
 comment|/**    * For each storage directory, performs recovery of incomplete transitions    * (eg. upgrade, rollback, checkpoint) and inserts the directory's storage    * state into the dataDirStates map.    * @param dataDirStates output of storage directory states    * @return true if there is at least one valid formatted storage directory    */
@@ -1603,11 +1448,14 @@ return|return
 name|isFormatted
 return|;
 block|}
-DECL|method|doUpgrade ()
+DECL|method|doUpgrade (FSNamesystem target)
 specifier|private
 name|void
 name|doUpgrade
-parameter_list|()
+parameter_list|(
+name|FSNamesystem
+name|target
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1624,7 +1472,9 @@ comment|// don't do version upgrade
 name|this
 operator|.
 name|loadFSImage
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 expr_stmt|;
 name|storage
 operator|.
@@ -1692,7 +1542,9 @@ comment|// load the latest image
 name|this
 operator|.
 name|loadFSImage
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 expr_stmt|;
 comment|// Do upgrade for each directory
 name|long
@@ -1944,6 +1796,8 @@ argument_list|()
 expr_stmt|;
 name|saveFSImageInAllDirs
 argument_list|(
+name|target
+argument_list|,
 name|editLog
 operator|.
 name|getLastWrittenTxId
@@ -2131,9 +1985,6 @@ operator|new
 name|FSImage
 argument_list|(
 name|conf
-argument_list|,
-name|getFSNamesystem
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|prevState
@@ -2603,18 +2454,97 @@ literal|" is complete."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load image from a checkpoint directory and save it into the current one.    * @throws IOException    */
-DECL|method|doImportCheckpoint ()
+comment|/**    * Load image from a checkpoint directory and save it into the current one.    * @param target the NameSystem to import into    * @throws IOException    */
+DECL|method|doImportCheckpoint (FSNamesystem target)
 name|void
 name|doImportCheckpoint
-parameter_list|()
+parameter_list|(
+name|FSNamesystem
+name|target
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSNamesystem
-name|fsNamesys
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|checkpointDirs
 init|=
-name|getFSNamesystem
+name|FSImage
+operator|.
+name|getCheckpointDirs
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|checkpointEditsDirs
+init|=
+name|FSImage
+operator|.
+name|getCheckpointEditsDirs
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|checkpointDirs
+operator|==
+literal|null
+operator|||
+name|checkpointDirs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot import image from a checkpoint. "
+operator|+
+literal|"\"dfs.namenode.checkpoint.dir\" is not set."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|checkpointEditsDirs
+operator|==
+literal|null
+operator|||
+name|checkpointEditsDirs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot import image from a checkpoint. "
+operator|+
+literal|"\"dfs.namenode.checkpoint.dir\" is not set."
+argument_list|)
+throw|;
+block|}
+name|FSImage
+name|realImage
+init|=
+name|target
+operator|.
+name|getFSImage
 argument_list|()
 decl_stmt|;
 name|FSImage
@@ -2625,28 +2555,12 @@ name|FSImage
 argument_list|(
 name|conf
 argument_list|,
-name|fsNamesys
-argument_list|,
 name|checkpointDirs
 argument_list|,
 name|checkpointEditsDirs
 argument_list|)
 decl_stmt|;
-comment|// replace real image with the checkpoint image
-name|FSImage
-name|realImage
-init|=
-name|fsNamesys
-operator|.
-name|getFSImage
-argument_list|()
-decl_stmt|;
-assert|assert
-name|realImage
-operator|==
-name|this
-assert|;
-name|fsNamesys
+name|target
 operator|.
 name|dir
 operator|.
@@ -2664,6 +2578,8 @@ argument_list|(
 name|StartupOption
 operator|.
 name|REGULAR
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
@@ -2707,7 +2623,7 @@ operator|+
 literal|1
 argument_list|)
 expr_stmt|;
-name|fsNamesys
+name|target
 operator|.
 name|dir
 operator|.
@@ -2730,7 +2646,9 @@ argument_list|)
 expr_stmt|;
 comment|// and save it but keep the same checkpointTime
 name|saveNamespace
-argument_list|()
+argument_list|(
+name|target
+argument_list|)
 expr_stmt|;
 name|getStorage
 argument_list|()
@@ -2845,17 +2763,20 @@ expr_stmt|;
 block|}
 empty_stmt|;
 comment|/**    * Toss the current image and namesystem, reloading from the specified    * file.    */
-DECL|method|reloadFromImageFile (File file)
+DECL|method|reloadFromImageFile (File file, FSNamesystem target)
 name|void
 name|reloadFromImageFile
 parameter_list|(
 name|File
 name|file
+parameter_list|,
+name|FSNamesystem
+name|target
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
+name|target
 operator|.
 name|dir
 operator|.
@@ -2874,14 +2795,19 @@ expr_stmt|;
 name|loadFSImage
 argument_list|(
 name|file
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits from that directory.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
-DECL|method|loadFSImage ()
+DECL|method|loadFSImage (FSNamesystem target)
 name|boolean
 name|loadFSImage
-parameter_list|()
+parameter_list|(
+name|FSNamesystem
+name|target
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3044,6 +2970,8 @@ name|imageFile
 operator|.
 name|getFile
 argument_list|()
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
@@ -3119,6 +3047,8 @@ name|MD5Hash
 argument_list|(
 name|md5
 argument_list|)
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
@@ -3133,6 +3063,8 @@ name|getFile
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
@@ -3168,6 +3100,8 @@ init|=
 name|loadEdits
 argument_list|(
 name|editStreams
+argument_list|,
+name|target
 argument_list|)
 decl_stmt|;
 name|needToSave
@@ -3278,7 +3212,7 @@ operator|)
 return|;
 block|}
 comment|/**    * Load the specified list of edit files into the image.    * @return the number of transactions loaded    */
-DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams)
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
 specifier|protected
 name|long
 name|loadEdits
@@ -3288,6 +3222,9 @@ argument_list|<
 name|EditLogInputStream
 argument_list|>
 name|editStreams
+parameter_list|,
+name|FSNamesystem
+name|target
 parameter_list|)
 throws|throws
 name|IOException
@@ -3332,7 +3269,7 @@ init|=
 operator|new
 name|FSEditLogLoader
 argument_list|(
-name|namesystem
+name|target
 argument_list|)
 decl_stmt|;
 comment|// Load latest edits
@@ -3394,8 +3331,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// update the counts
-name|getFSNamesystem
-argument_list|()
+name|target
 operator|.
 name|dir
 operator|.
@@ -3407,13 +3343,16 @@ name|numLoaded
 return|;
 block|}
 comment|/**    * Load the image namespace from the given image file, verifying    * it against the MD5 sum stored in its associated .md5 file.    */
-DECL|method|loadFSImage (File imageFile)
+DECL|method|loadFSImage (File imageFile, FSNamesystem target)
 specifier|private
 name|void
 name|loadFSImage
 parameter_list|(
 name|File
 name|imageFile
+parameter_list|,
+name|FSNamesystem
+name|target
 parameter_list|)
 throws|throws
 name|IOException
@@ -3450,11 +3389,13 @@ argument_list|(
 name|imageFile
 argument_list|,
 name|expectedMD5
+argument_list|,
+name|target
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.  Return whether we should    * "re-save" and consolidate the edit-logs    */
-DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5)
+DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target)
 specifier|private
 name|void
 name|loadFSImage
@@ -3464,6 +3405,9 @@ name|curFile
 parameter_list|,
 name|MD5Hash
 name|expectedMd5
+parameter_list|,
+name|FSNamesystem
+name|target
 parameter_list|)
 throws|throws
 name|IOException
@@ -3480,8 +3424,7 @@ name|Loader
 argument_list|(
 name|conf
 argument_list|,
-name|getFSNamesystem
-argument_list|()
+name|target
 argument_list|)
 decl_stmt|;
 name|loader
@@ -3491,7 +3434,7 @@ argument_list|(
 name|curFile
 argument_list|)
 expr_stmt|;
-name|namesystem
+name|target
 operator|.
 name|setBlockPoolId
 argument_list|(
@@ -3578,10 +3521,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save the contents of the FS image to the file.    */
-DECL|method|saveFSImage (StorageDirectory sd, long txid)
+DECL|method|saveFSImage (FSNamesystem source, StorageDirectory sd, long txid)
 name|void
 name|saveFSImage
 parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -3652,8 +3598,7 @@ name|newFile
 argument_list|,
 name|txid
 argument_list|,
-name|getFSNamesystem
-argument_list|()
+name|source
 argument_list|,
 name|compression
 argument_list|)
@@ -3705,9 +3650,18 @@ specifier|final
 name|long
 name|txid
 decl_stmt|;
-DECL|method|FSImageSaver (StorageDirectory sd, List<StorageDirectory> errorSDs, long txid)
+DECL|field|source
+specifier|private
+specifier|final
+name|FSNamesystem
+name|source
+decl_stmt|;
+DECL|method|FSImageSaver (FSNamesystem source, StorageDirectory sd, List<StorageDirectory> errorSDs, long txid)
 name|FSImageSaver
 parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -3721,6 +3675,12 @@ name|long
 name|txid
 parameter_list|)
 block|{
+name|this
+operator|.
+name|source
+operator|=
+name|source
+expr_stmt|;
 name|this
 operator|.
 name|sd
@@ -3750,6 +3710,8 @@ try|try
 block|{
 name|saveFSImage
 argument_list|(
+name|source
+argument_list|,
 name|sd
 argument_list|,
 name|txid
@@ -3869,10 +3831,13 @@ block|}
 block|}
 block|}
 comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    */
-DECL|method|saveNamespace ()
+DECL|method|saveNamespace (FSNamesystem source)
 name|void
 name|saveNamespace
-parameter_list|()
+parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3921,6 +3886,8 @@ try|try
 block|{
 name|saveFSImageInAllDirs
 argument_list|(
+name|source
+argument_list|,
 name|imageTxId
 argument_list|)
 expr_stmt|;
@@ -3961,11 +3928,14 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|saveFSImageInAllDirs (long txid)
+DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid)
 specifier|protected
 name|void
 name|saveFSImageInAllDirs
 parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|,
 name|long
 name|txid
 parameter_list|)
@@ -4064,6 +4034,8 @@ init|=
 operator|new
 name|FSImageSaver
 argument_list|(
+name|source
+argument_list|,
 name|sd
 argument_list|,
 name|errorSDs

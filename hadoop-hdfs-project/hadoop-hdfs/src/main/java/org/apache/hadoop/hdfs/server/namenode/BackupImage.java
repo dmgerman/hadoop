@@ -297,6 +297,11 @@ name|stopApplyingEditsOnNextRoll
 init|=
 literal|false
 decl_stmt|;
+DECL|field|namesystem
+specifier|private
+name|FSNamesystem
+name|namesystem
+decl_stmt|;
 comment|/**    * Construct a backup image.    * @param conf Configuration    * @throws IOException if storage cannot be initialised.    */
 DECL|method|BackupImage (Configuration conf)
 name|BackupImage
@@ -324,6 +329,21 @@ operator|=
 name|BNState
 operator|.
 name|DROP_UNTIL_NEXT_ROLL
+expr_stmt|;
+block|}
+DECL|method|setNamesystem (FSNamesystem fsn)
+name|void
+name|setNamesystem
+parameter_list|(
+name|FSNamesystem
+name|fsn
+parameter_list|)
+block|{
+name|this
+operator|.
+name|namesystem
+operator|=
+name|fsn
 expr_stmt|;
 block|}
 comment|/**    * Analyze backup storage directories for consistency.<br>    * Recover from incomplete checkpoints if required.<br>    * Read VERSION and fstime files if exist.<br>    * Do not load image or edits.    *    * @throws IOException if the node should shutdown.    */
@@ -495,7 +515,9 @@ throws|throws
 name|IOException
 block|{
 name|saveNamespace
-argument_list|()
+argument_list|(
+name|namesystem
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Receive a batch of edits from the NameNode.    *     * Depending on bnState, different actions are taken. See    * {@link BackupImage.BNState}    *     * @param firstTxId first txid in batch    * @param numTxns number of transactions    * @param data serialized journal records.    * @throws IOException    * @see #convergeJournalSpool()    */
@@ -811,8 +833,7 @@ name|lastAppliedTxId
 operator|+=
 name|numTxns
 expr_stmt|;
-name|getFSNamesystem
-argument_list|()
+name|namesystem
 operator|.
 name|dir
 operator|.
@@ -1011,6 +1032,8 @@ block|}
 name|loadEdits
 argument_list|(
 name|editStreams
+argument_list|,
+name|namesystem
 argument_list|)
 expr_stmt|;
 block|}

@@ -2609,23 +2609,24 @@ operator|.
 name|LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
+comment|// We use the non-locked version of getNamespaceInfo here since
+comment|// the coordinating thread of saveNamespace already has read-locked
+comment|// the namespace for us. If we attempt to take another readlock
+comment|// from the actual saver thread, there's a potential of a
+comment|// fairness-related deadlock. See the comments on HDFS-2223.
 name|out
 operator|.
 name|writeInt
 argument_list|(
 name|sourceNamesystem
 operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|getStorage
+name|unprotectedGetNamespaceInfo
 argument_list|()
 operator|.
 name|getNamespaceID
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// TODO bad dependency
 name|out
 operator|.
 name|writeLong

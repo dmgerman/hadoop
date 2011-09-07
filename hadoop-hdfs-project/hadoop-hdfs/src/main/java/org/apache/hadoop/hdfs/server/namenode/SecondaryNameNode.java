@@ -894,6 +894,11 @@ specifier|private
 name|long
 name|checkpointTxnCount
 decl_stmt|;
+DECL|field|namesystem
+specifier|private
+name|FSNamesystem
+name|namesystem
+decl_stmt|;
 comment|/** {@inheritDoc} */
 DECL|method|toString ()
 specifier|public
@@ -1318,6 +1323,16 @@ name|commandLineOpts
 operator|.
 name|shouldFormat
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|namesystem
+operator|=
+operator|new
+name|FSNamesystem
+argument_list|(
+name|conf
+argument_list|,
+name|checkpointImage
 argument_list|)
 expr_stmt|;
 comment|// Initialize other scheduling parameters from the configuration
@@ -2656,6 +2671,8 @@ argument_list|,
 name|loadImage
 argument_list|,
 name|checkpointImage
+argument_list|,
+name|namesystem
 argument_list|)
 expr_stmt|;
 comment|//
@@ -3607,25 +3624,9 @@ name|super
 argument_list|(
 name|conf
 argument_list|,
-operator|(
-name|FSNamesystem
-operator|)
-literal|null
-argument_list|,
 name|imageDirs
 argument_list|,
 name|editsDirs
-argument_list|)
-expr_stmt|;
-name|setFSNamesystem
-argument_list|(
-operator|new
-name|FSNamesystem
-argument_list|(
-name|this
-argument_list|,
-name|conf
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// the 2NN never writes edits -- it only downloads them. So
@@ -3919,7 +3920,7 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|doMerge ( CheckpointSignature sig, RemoteEditLogManifest manifest, boolean loadImage, FSImage dstImage)
+DECL|method|doMerge ( CheckpointSignature sig, RemoteEditLogManifest manifest, boolean loadImage, FSImage dstImage, FSNamesystem dstNamesystem)
 specifier|static
 name|void
 name|doMerge
@@ -3935,6 +3936,9 @@ name|loadImage
 parameter_list|,
 name|FSImage
 name|dstImage
+parameter_list|,
+name|FSNamesystem
+name|dstNamesystem
 parameter_list|)
 throws|throws
 name|IOException
@@ -3999,6 +4003,8 @@ operator|.
 name|reloadFromImageFile
 argument_list|(
 name|file
+argument_list|,
+name|dstNamesystem
 argument_list|)
 expr_stmt|;
 block|}
@@ -4009,12 +4015,16 @@ argument_list|(
 name|manifest
 argument_list|,
 name|dstImage
+argument_list|,
+name|dstNamesystem
 argument_list|)
 expr_stmt|;
 name|dstImage
 operator|.
 name|saveFSImageInAllDirs
 argument_list|(
+name|dstNamesystem
+argument_list|,
 name|dstImage
 operator|.
 name|getLastAppliedTxId

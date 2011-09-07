@@ -6064,6 +6064,14 @@ name|saveFSImageInAllDirs
 argument_list|(
 name|Mockito
 operator|.
+expr|<
+name|FSNamesystem
+operator|>
+name|any
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
 name|anyLong
 argument_list|()
 argument_list|)

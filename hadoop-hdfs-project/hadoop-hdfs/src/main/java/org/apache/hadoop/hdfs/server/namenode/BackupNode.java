@@ -679,6 +679,13 @@ argument_list|)
 expr_stmt|;
 name|bnImage
 operator|.
+name|setNamesystem
+argument_list|(
+name|namesystem
+argument_list|)
+expr_stmt|;
+name|bnImage
+operator|.
 name|recoverCreateRead
 argument_list|()
 expr_stmt|;

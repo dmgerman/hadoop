@@ -1093,6 +1093,11 @@ operator|.
 name|reloadFromImageFile
 argument_list|(
 name|file
+argument_list|,
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1156,6 +1161,11 @@ argument_list|(
 name|manifest
 argument_list|,
 name|bnImage
+argument_list|,
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1171,6 +1181,11 @@ name|bnImage
 operator|.
 name|saveFSImageInAllDirs
 argument_list|(
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
+argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -1312,7 +1327,7 @@ name|httpPort
 argument_list|)
 return|;
 block|}
-DECL|method|rollForwardByApplyingLogs ( RemoteEditLogManifest manifest, FSImage dstImage)
+DECL|method|rollForwardByApplyingLogs ( RemoteEditLogManifest manifest, FSImage dstImage, FSNamesystem dstNamesystem)
 specifier|static
 name|void
 name|rollForwardByApplyingLogs
@@ -1322,6 +1337,9 @@ name|manifest
 parameter_list|,
 name|FSImage
 name|dstImage
+parameter_list|,
+name|FSNamesystem
+name|dstNamesystem
 parameter_list|)
 throws|throws
 name|IOException
@@ -1429,6 +1447,8 @@ operator|.
 name|loadEdits
 argument_list|(
 name|editsStreams
+argument_list|,
+name|dstNamesystem
 argument_list|)
 expr_stmt|;
 block|}

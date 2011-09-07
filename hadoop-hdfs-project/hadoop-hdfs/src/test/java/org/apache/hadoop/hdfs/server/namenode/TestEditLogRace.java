@@ -1728,8 +1728,9 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -2237,8 +2238,9 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
