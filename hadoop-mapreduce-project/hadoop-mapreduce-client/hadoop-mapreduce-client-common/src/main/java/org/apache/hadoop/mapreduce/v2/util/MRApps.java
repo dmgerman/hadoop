@@ -1211,6 +1211,11 @@ name|classpathFileStream
 init|=
 literal|null
 decl_stmt|;
+name|BufferedReader
+name|reader
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 comment|// Get yarn mapreduce-app classpath from generated classpath
@@ -1240,9 +1245,8 @@ argument_list|(
 name|mrAppGeneratedClasspathFile
 argument_list|)
 expr_stmt|;
-name|BufferedReader
 name|reader
-init|=
+operator|=
 operator|new
 name|BufferedReader
 argument_list|(
@@ -1252,7 +1256,7 @@ argument_list|(
 name|classpathFileStream
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|String
 name|cp
 init|=
@@ -1428,6 +1432,19 @@ literal|null
 condition|)
 block|{
 name|classpathFileStream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|reader
+operator|!=
+literal|null
+condition|)
+block|{
+name|reader
 operator|.
 name|close
 argument_list|()

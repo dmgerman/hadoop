@@ -258,11 +258,6 @@ name|devMode
 init|=
 literal|false
 decl_stmt|;
-DECL|field|modules
-name|Module
-index|[]
-name|modules
-decl_stmt|;
 DECL|method|Builder (String name, Class<T> api, T application)
 name|Builder
 parameter_list|(
@@ -451,30 +446,6 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|with (Module... modules)
-specifier|public
-name|Builder
-argument_list|<
-name|T
-argument_list|>
-name|with
-parameter_list|(
-name|Module
-modifier|...
-name|modules
-parameter_list|)
-block|{
-name|this
-operator|.
-name|modules
-operator|=
-name|modules
-expr_stmt|;
-comment|// OK
 return|return
 name|this
 return|;

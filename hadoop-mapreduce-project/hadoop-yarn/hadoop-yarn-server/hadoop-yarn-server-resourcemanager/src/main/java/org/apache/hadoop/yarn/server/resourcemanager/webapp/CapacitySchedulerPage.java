@@ -128,7 +128,7 @@ name|scheduler
 operator|.
 name|capacity
 operator|.
-name|Queue
+name|CSQueue
 import|;
 end_import
 
@@ -305,7 +305,7 @@ class|class
 name|Parent
 block|{
 DECL|field|queue
-name|Queue
+name|CSQueue
 name|queue
 decl_stmt|;
 block|}
@@ -360,7 +360,7 @@ operator|.
 name|ul
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|parentQueue
 init|=
 name|parent
@@ -369,7 +369,7 @@ name|queue
 decl_stmt|;
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|queue
 range|:
 name|parentQueue
@@ -750,7 +750,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Queue
+name|CSQueue
 name|root
 init|=
 name|cs

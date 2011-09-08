@@ -692,7 +692,7 @@ specifier|public
 class|class
 name|LeafQueue
 implements|implements
-name|Queue
+name|CSQueue
 block|{
 DECL|field|LOG
 specifier|private
@@ -718,7 +718,7 @@ name|queueName
 decl_stmt|;
 DECL|field|parent
 specifier|private
-name|Queue
+name|CSQueue
 name|parent
 decl_stmt|;
 DECL|field|capacity
@@ -945,7 +945,7 @@ literal|2
 operator|*
 literal|1024
 decl_stmt|;
-DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, Queue parent, Comparator<SchedulerApp> applicationComparator, Queue old)
+DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, Comparator<SchedulerApp> applicationComparator, CSQueue old)
 specifier|public
 name|LeafQueue
 parameter_list|(
@@ -955,7 +955,7 @@ parameter_list|,
 name|String
 name|queueName
 parameter_list|,
-name|Queue
+name|CSQueue
 name|parent
 parameter_list|,
 name|Comparator
@@ -964,7 +964,7 @@ name|SchedulerApp
 argument_list|>
 name|applicationComparator
 parameter_list|,
-name|Queue
+name|CSQueue
 name|old
 parameter_list|)
 block|{
@@ -1415,6 +1415,9 @@ operator|.
 name|getMemory
 argument_list|()
 operator|/
+operator|(
+name|float
+operator|)
 name|DEFAULT_AM_RESOURCE
 operator|)
 operator|*
@@ -1763,7 +1766,7 @@ annotation|@
 name|Override
 DECL|method|getParent ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getParent
 parameter_list|()
 block|{
@@ -1854,6 +1857,7 @@ return|;
 block|}
 DECL|method|getMaxApplicationsPerUser ()
 specifier|public
+specifier|synchronized
 name|int
 name|getMaxApplicationsPerUser
 parameter_list|()
@@ -1864,6 +1868,7 @@ return|;
 block|}
 DECL|method|getMaximumActiveApplications ()
 specifier|public
+specifier|synchronized
 name|int
 name|getMaximumActiveApplications
 parameter_list|()
@@ -1874,6 +1879,7 @@ return|;
 block|}
 DECL|method|getMaximumActiveApplicationsPerUser ()
 specifier|public
+specifier|synchronized
 name|int
 name|getMaximumActiveApplicationsPerUser
 parameter_list|()
@@ -1927,7 +1933,7 @@ DECL|method|getChildQueues ()
 specifier|public
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|getChildQueues
 parameter_list|()
@@ -2044,12 +2050,12 @@ operator|=
 name|userLimitFactor
 expr_stmt|;
 block|}
-DECL|method|setParentQueue (Queue parent)
+DECL|method|setParentQueue (CSQueue parent)
 specifier|synchronized
 name|void
 name|setParentQueue
 parameter_list|(
-name|Queue
+name|CSQueue
 name|parent
 parameter_list|)
 block|{
@@ -2199,6 +2205,7 @@ annotation|@
 name|Private
 DECL|method|getUserLimit ()
 specifier|public
+specifier|synchronized
 name|int
 name|getUserLimit
 parameter_list|()
@@ -2211,6 +2218,7 @@ annotation|@
 name|Private
 DECL|method|getUserLimitFactor ()
 specifier|public
+specifier|synchronized
 name|float
 name|getUserLimitFactor
 parameter_list|()
@@ -2476,13 +2484,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (Queue queue, Resource clusterResource)
+DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
 specifier|public
 specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 name|Resource
@@ -2572,15 +2580,18 @@ name|maxApplications
 argument_list|,
 name|leafQueue
 operator|.
-name|maxApplicationsPerUser
+name|getMaxApplicationsPerUser
+argument_list|()
 argument_list|,
 name|leafQueue
 operator|.
-name|maxActiveApplications
+name|getMaximumActiveApplications
+argument_list|()
 argument_list|,
 name|leafQueue
 operator|.
-name|maxActiveApplicationsPerUser
+name|getMaximumActiveApplicationsPerUser
+argument_list|()
 argument_list|,
 name|leafQueue
 operator|.
@@ -4388,6 +4399,9 @@ argument_list|(
 name|priority
 argument_list|)
 operator|/
+operator|(
+name|float
+operator|)
 name|reservedContainers
 operator|)
 operator|*

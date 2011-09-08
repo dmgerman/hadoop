@@ -2052,20 +2052,6 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|createShuffle ()
-name|Shuffle
-name|createShuffle
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Shuffle
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-return|;
-block|}
 DECL|class|HttpPipelineFactory
 class|class
 name|HttpPipelineFactory
@@ -2169,6 +2155,12 @@ operator|.
 name|NM_LOCAL_DIR
 argument_list|)
 decl_stmt|;
+DECL|field|port
+specifier|private
+specifier|final
+name|int
+name|port
+decl_stmt|;
 DECL|method|Shuffle (Configuration conf)
 specifier|public
 name|Shuffle
@@ -2193,6 +2185,19 @@ name|JobConf
 argument_list|(
 name|conf
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|port
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|SHUFFLE_PORT_CONFIG_KEY
+argument_list|,
+name|DEFAULT_SHUFFLE_PORT
 argument_list|)
 expr_stmt|;
 block|}
@@ -2587,6 +2592,8 @@ literal|"http"
 argument_list|,
 literal|""
 argument_list|,
+name|this
+operator|.
 name|port
 argument_list|,
 name|reqUri

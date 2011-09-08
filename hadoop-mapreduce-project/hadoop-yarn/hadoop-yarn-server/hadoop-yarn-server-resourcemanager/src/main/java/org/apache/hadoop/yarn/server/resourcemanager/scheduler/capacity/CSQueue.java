@@ -257,7 +257,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Queue represents a node in the tree of   * hierarchical queues in the {@link CapacityScheduler}.  */
+comment|/**  *<code>CSQueue</code> represents a node in the tree of   * hierarchical queues in the {@link CapacityScheduler}.  */
 end_comment
 
 begin_interface
@@ -265,10 +265,10 @@ annotation|@
 name|Stable
 annotation|@
 name|Private
-DECL|interface|Queue
+DECL|interface|CSQueue
 specifier|public
 interface|interface
-name|Queue
+name|CSQueue
 extends|extends
 name|org
 operator|.
@@ -289,7 +289,7 @@ block|{
 comment|/**    * Get the parent<code>Queue</code>.    * @return the parent queue    */
 DECL|method|getParent ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getParent
 parameter_list|()
 function_decl|;
@@ -368,7 +368,7 @@ DECL|method|getChildQueues ()
 specifier|public
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|getChildQueues
 parameter_list|()
@@ -460,12 +460,12 @@ name|getNumApplications
 parameter_list|()
 function_decl|;
 comment|/**    * Reinitialize the queue.    * @param queue new queue to re-initalize from    * @param clusterResource resources in the cluster    */
-DECL|method|reinitialize (Queue queue, Resource clusterResource)
+DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 name|Resource

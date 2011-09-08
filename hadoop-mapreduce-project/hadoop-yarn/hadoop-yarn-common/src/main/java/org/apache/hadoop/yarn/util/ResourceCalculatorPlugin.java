@@ -191,6 +191,7 @@ parameter_list|()
 function_decl|;
 DECL|class|ProcResourceValues
 specifier|public
+specifier|static
 class|class
 name|ProcResourceValues
 block|{

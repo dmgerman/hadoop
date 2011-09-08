@@ -371,7 +371,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -380,11 +380,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|root
 init|=
 name|CapacityScheduler
@@ -821,7 +821,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -830,11 +830,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|root
 init|=
 name|CapacityScheduler

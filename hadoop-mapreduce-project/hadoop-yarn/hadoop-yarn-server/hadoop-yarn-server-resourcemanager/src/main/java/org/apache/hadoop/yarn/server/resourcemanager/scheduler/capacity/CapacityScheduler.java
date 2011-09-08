@@ -1001,7 +1001,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|root
 specifier|private
-name|Queue
+name|CSQueue
 name|root
 decl_stmt|;
 DECL|field|EMPTY_CONTAINER_LIST
@@ -1026,14 +1026,14 @@ specifier|static
 specifier|final
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queueComparator
 init|=
 operator|new
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 block|{
@@ -1043,10 +1043,10 @@ specifier|public
 name|int
 name|compare
 parameter_list|(
-name|Queue
+name|CSQueue
 name|q1
 parameter_list|,
-name|Queue
+name|CSQueue
 name|q2
 parameter_list|)
 block|{
@@ -1173,7 +1173,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -1182,7 +1182,7 @@ name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1269,7 +1269,7 @@ literal|false
 decl_stmt|;
 DECL|method|getRootQueue ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getRootQueue
 parameter_list|()
 block|{
@@ -1579,12 +1579,12 @@ specifier|static
 class|class
 name|QueueHook
 block|{
-DECL|method|hook (Queue queue)
+DECL|method|hook (CSQueue queue)
 specifier|public
-name|Queue
+name|CSQueue
 name|hook
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|)
 block|{
@@ -1676,7 +1676,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 init|=
@@ -1685,11 +1685,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|newRoot
 init|=
 name|parseQueue
@@ -1748,7 +1748,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|validateExistingQueues ( Map<String, Queue> queues, Map<String, Queue> newQueues)
+DECL|method|validateExistingQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
 name|validateExistingQueues
@@ -1757,7 +1757,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1765,7 +1765,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 parameter_list|)
@@ -1814,7 +1814,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|addNewQueues ( Map<String, Queue> queues, Map<String, Queue> newQueues)
+DECL|method|addNewQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
 name|addNewQueues
@@ -1823,7 +1823,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1831,7 +1831,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 parameter_list|)
@@ -1844,7 +1844,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|e
 range|:
@@ -1862,7 +1862,7 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|e
@@ -1900,9 +1900,9 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, Queue parent, String queueName, Map<String, Queue> queues, Map<String, Queue> oldQueues, Comparator<Queue> queueComparator, Comparator<SchedulerApp> applicationComparator, QueueHook hook)
+DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, CSQueue parent, String queueName, Map<String, CSQueue> queues, Map<String, CSQueue> oldQueues, Comparator<CSQueue> queueComparator, Comparator<SchedulerApp> applicationComparator, QueueHook hook)
 specifier|static
-name|Queue
+name|CSQueue
 name|parseQueue
 parameter_list|(
 name|CapacitySchedulerContext
@@ -1911,7 +1911,7 @@ parameter_list|,
 name|CapacitySchedulerConfiguration
 name|conf
 parameter_list|,
-name|Queue
+name|CSQueue
 name|parent
 parameter_list|,
 name|String
@@ -1921,7 +1921,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1929,13 +1929,13 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|oldQueues
 parameter_list|,
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queueComparator
 parameter_list|,
@@ -1949,7 +1949,7 @@ name|QueueHook
 name|hook
 parameter_list|)
 block|{
-name|Queue
+name|CSQueue
 name|queue
 decl_stmt|;
 name|String
@@ -2078,14 +2078,14 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|childQueues
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2097,7 +2097,7 @@ range|:
 name|childQueueNames
 control|)
 block|{
-name|Queue
+name|CSQueue
 name|childQueue
 init|=
 name|parseQueue
@@ -2161,7 +2161,7 @@ return|;
 block|}
 DECL|method|getQueue (String queueName)
 specifier|synchronized
-name|Queue
+name|CSQueue
 name|getQueue
 parameter_list|(
 name|String
@@ -2194,7 +2194,7 @@ name|user
 parameter_list|)
 block|{
 comment|// Sanity checks
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|getQueue
@@ -2556,7 +2556,7 @@ operator|.
 name|getQueueName
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|queues
@@ -2880,7 +2880,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Queue
+name|CSQueue
 name|queue
 init|=
 literal|null

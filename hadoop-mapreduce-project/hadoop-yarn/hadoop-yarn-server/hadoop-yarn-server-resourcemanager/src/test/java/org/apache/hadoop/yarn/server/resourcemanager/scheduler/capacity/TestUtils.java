@@ -562,12 +562,12 @@ name|QueueHook
 block|{
 annotation|@
 name|Override
-DECL|method|hook (Queue queue)
+DECL|method|hook (CSQueue queue)
 specifier|public
-name|Queue
+name|CSQueue
 name|hook
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|)
 block|{

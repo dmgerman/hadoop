@@ -429,6 +429,7 @@ comment|// the maximum number of completed applications RM keeps
 DECL|field|EXPIRE_APPLICATIONS_COMPLETED_MAX
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|EXPIRE_APPLICATIONS_COMPLETED_MAX
 init|=

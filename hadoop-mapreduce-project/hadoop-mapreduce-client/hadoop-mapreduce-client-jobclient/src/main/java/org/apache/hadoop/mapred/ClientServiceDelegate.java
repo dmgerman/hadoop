@@ -1352,11 +1352,10 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
-comment|//possibly
 comment|//possibly the AM has crashed
 comment|//there may be some time before AM is restarted
 comment|//keep retrying by getting the address from RM
@@ -1386,7 +1385,24 @@ parameter_list|(
 name|InterruptedException
 name|e1
 parameter_list|)
-block|{         }
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"getProxy() call interruped"
+argument_list|,
+name|e1
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|e1
+argument_list|)
+throw|;
+block|}
 name|application
 operator|=
 name|rm
@@ -1396,6 +1412,29 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"getProxy() call interruped"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|e
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/** we just want to return if its allocating, so that we don't      * block on it. This is to be able to return job status       * on an allocating Application.      */
@@ -2319,30 +2358,6 @@ name|YarnRemoteException
 throws|,
 name|YarnRemoteException
 block|{
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|JobId
-name|nJobID
-init|=
-name|TypeConverter
-operator|.
-name|toYarn
-argument_list|(
-name|jobID
-argument_list|)
-decl_stmt|;
 name|GetTaskReportsRequest
 name|request
 init|=

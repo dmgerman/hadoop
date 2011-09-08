@@ -988,28 +988,9 @@ operator|!
 name|doneWithRecovery
 condition|)
 return|return;
-name|NodeReportPBImpl
-name|nodeManagerInfo
-init|=
-name|createNodeManagerInfo
-argument_list|(
-name|node
-argument_list|)
-decl_stmt|;
-comment|// TODO FinBugs - will be fixed after the subsequent fixme
-name|byte
-index|[]
-name|bytes
-init|=
-name|nodeManagerInfo
-operator|.
-name|getProto
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-decl_stmt|;
 comment|// TODO: FIXMEVinodkv
+comment|//    NodeReportPBImpl nodeManagerInfo = createNodeManagerInfo(node);
+comment|//    byte[] bytes = nodeManagerInfo.getProto().toByteArray();
 comment|//    try {
 comment|//      zkClient.create(NODES + Integer.toString(node.getNodeID().getId()), bytes, null,
 comment|//          CreateMode.PERSISTENT);
@@ -2837,52 +2818,12 @@ literal|1
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// TODO: FindBugs Valid. Fix
-name|RMNode
-name|nm
-init|=
-operator|new
-name|RMNodeImpl
-argument_list|(
-name|node
-operator|.
-name|getNodeId
-argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-name|hostName
-argument_list|,
-name|cmPort
-argument_list|,
-name|httpPort
-argument_list|,
-name|ResourceTrackerService
-operator|.
-name|resolve
-argument_list|(
-name|node
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
-argument_list|)
-argument_list|,
-name|node
-operator|.
-name|getCapability
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|nodeManagers
-operator|.
-name|add
-argument_list|(
-name|nm
-argument_list|)
-expr_stmt|;
+comment|// TODO: FindBugs warns passing null below. Commenting this for later.
+comment|//        RMNode nm = new RMNodeImpl(node.getNodeId(), null,
+comment|//            hostName, cmPort, httpPort,
+comment|//            ResourceTrackerService.resolve(node.getNodeId().getHost()),
+comment|//            node.getCapability());
+comment|//        nodeManagers.add(nm);
 block|}
 name|readLastNodeId
 argument_list|()

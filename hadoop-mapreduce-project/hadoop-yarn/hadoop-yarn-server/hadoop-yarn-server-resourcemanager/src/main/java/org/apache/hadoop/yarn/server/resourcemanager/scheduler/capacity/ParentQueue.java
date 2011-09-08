@@ -500,7 +500,7 @@ specifier|public
 class|class
 name|ParentQueue
 implements|implements
-name|Queue
+name|CSQueue
 block|{
 DECL|field|LOG
 specifier|private
@@ -521,7 +521,7 @@ decl_stmt|;
 DECL|field|parent
 specifier|private
 specifier|final
-name|Queue
+name|CSQueue
 name|parent
 decl_stmt|;
 DECL|field|queueName
@@ -569,7 +569,7 @@ specifier|private
 specifier|final
 name|Set
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|childQueues
 decl_stmt|;
@@ -578,7 +578,7 @@ specifier|private
 specifier|final
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queueComparator
 decl_stmt|;
@@ -666,7 +666,7 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|ParentQueue (CapacitySchedulerContext cs, String queueName, Comparator<Queue> comparator, Queue parent, Queue old)
+DECL|method|ParentQueue (CapacitySchedulerContext cs, String queueName, Comparator<CSQueue> comparator, CSQueue parent, CSQueue old)
 specifier|public
 name|ParentQueue
 parameter_list|(
@@ -678,14 +678,14 @@ name|queueName
 parameter_list|,
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|comparator
 parameter_list|,
-name|Queue
+name|CSQueue
 name|parent
 parameter_list|,
-name|Queue
+name|CSQueue
 name|old
 parameter_list|)
 block|{
@@ -964,7 +964,7 @@ operator|=
 operator|new
 name|TreeSet
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|(
 name|comparator
@@ -1169,13 +1169,13 @@ init|=
 literal|0.005f
 decl_stmt|;
 comment|// 0.05% precision
-DECL|method|setChildQueues (Collection<Queue> childQueues)
+DECL|method|setChildQueues (Collection<CSQueue> childQueues)
 name|void
 name|setChildQueues
 parameter_list|(
 name|Collection
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|childQueues
 parameter_list|)
@@ -1188,7 +1188,7 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|queue
 range|:
 name|childQueues
@@ -1269,7 +1269,7 @@ annotation|@
 name|Override
 DECL|method|getParent ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getParent
 parameter_list|()
 block|{
@@ -1422,7 +1422,7 @@ specifier|public
 specifier|synchronized
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|getChildQueues
 parameter_list|()
@@ -1431,7 +1431,7 @@ return|return
 operator|new
 name|ArrayList
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|(
 name|childQueues
@@ -1542,7 +1542,7 @@ condition|)
 block|{
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|child
 range|:
 name|childQueues
@@ -1725,7 +1725,7 @@ expr_stmt|;
 comment|// Add children queue acls
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|child
 range|:
 name|childQueues
@@ -1797,13 +1797,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (Queue queue, Resource clusterResource)
+DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
 specifier|public
 specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 name|Resource
@@ -1867,7 +1867,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|currentChildQueues
 init|=
@@ -1880,7 +1880,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newChildQueues
 init|=
@@ -1899,7 +1899,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|e
 range|:
@@ -1917,7 +1917,7 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|newChildQueue
 init|=
 name|e
@@ -1925,7 +1925,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|childQueue
 init|=
 name|currentChildQueues
@@ -2040,18 +2040,18 @@ name|clusterResource
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getQueues (Set<Queue> queues)
+DECL|method|getQueues (Set<CSQueue> queues)
 name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|getQueues
 parameter_list|(
 name|Set
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|)
@@ -2060,7 +2060,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queuesMap
 init|=
@@ -2069,13 +2069,13 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|queue
 range|:
 name|queues
@@ -2818,7 +2818,7 @@ for|for
 control|(
 name|Iterator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|iter
 init|=
@@ -2834,7 +2834,7 @@ argument_list|()
 condition|;
 control|)
 block|{
-name|Queue
+name|CSQueue
 name|childQueue
 init|=
 name|iter
@@ -2965,7 +2965,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|q
 range|:
 name|childQueues
@@ -3196,7 +3196,7 @@ block|{
 comment|// Update all children
 for|for
 control|(
-name|Queue
+name|CSQueue
 name|childQueue
 range|:
 name|childQueues
