@@ -363,16 +363,16 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
-literal|".nodeid"
+literal|".nodeaddress"
 argument_list|,
-literal|"Node ID"
+literal|"Node Address"
 argument_list|)
 operator|.
 name|th
 argument_list|(
-literal|".host"
+literal|".nodehttpaddress"
 argument_list|,
-literal|"Host"
+literal|"Node HTTP Address"
 argument_list|)
 operator|.
 name|th
