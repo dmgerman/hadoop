@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.webapp
+DECL|package|org.apache.hadoop.mapreduce.v2.hs.webapp
 package|package
 name|org
 operator|.
@@ -16,11 +16,129 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|hs
 operator|.
 name|webapp
 package|;
 end_package
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|percent
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|ACCORDION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|initID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|tableInit
+import|;
+end_import
 
 begin_import
 import|import
@@ -29,32 +147,6 @@ operator|.
 name|util
 operator|.
 name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Joiner
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Inject
 import|;
 end_import
 
@@ -75,6 +167,26 @@ operator|.
 name|job
 operator|.
 name|TaskAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|App
 import|;
 end_import
 
@@ -210,7 +322,67 @@ name|hamlet
 operator|.
 name|Hamlet
 operator|.
-name|*
+name|TABLE
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|hamlet
+operator|.
+name|Hamlet
+operator|.
+name|TBODY
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|hamlet
+operator|.
+name|Hamlet
+operator|.
+name|TD
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|hamlet
+operator|.
+name|Hamlet
+operator|.
+name|TR
 import|;
 end_import
 
@@ -233,51 +405,44 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|yarn
+name|base
 operator|.
-name|util
-operator|.
-name|StringHelper
-operator|.
-name|*
+name|Joiner
 import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|inject
 operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|*
+name|Inject
 import|;
 end_import
 
+begin_comment
+comment|/**  * A Page the shows the status of a given task  */
+end_comment
+
 begin_class
-DECL|class|TaskPage
+DECL|class|HsTaskPage
 specifier|public
 class|class
-name|TaskPage
+name|HsTaskPage
 extends|extends
-name|AppView
+name|HsView
 block|{
+comment|/**    * A Block of HTML that will render a given task attempt.     */
 DECL|class|AttemptsBlock
 specifier|static
 class|class
@@ -681,6 +846,7 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**      * @return true if this is a valid request else false.      */
 DECL|method|isValidRequest ()
 specifier|protected
 name|boolean
@@ -696,6 +862,7 @@ operator|!=
 literal|null
 return|;
 block|}
+comment|/**      * @return all of the attempts to render.      */
 DECL|method|getTaskAttempts ()
 specifier|protected
 name|Collection
@@ -719,6 +886,7 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.hs.webapp.HsView#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
 DECL|method|preHead (Page.HTML<_> html)
 annotation|@
 name|Override
@@ -740,6 +908,7 @@ argument_list|(
 name|html
 argument_list|)
 expr_stmt|;
+comment|//override the nav config from commonPReHead
 name|set
 argument_list|(
 name|initID
@@ -749,9 +918,10 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:2}"
+literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
+comment|//Set up the java script and CSS for the attempts table
 name|set
 argument_list|(
 name|DATATABLES_ID
@@ -780,6 +950,7 @@ literal|"attempts"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The content of this page is the attempts block    * @return AttemptsBlock.class    */
 DECL|method|content ()
 annotation|@
 name|Override
@@ -799,6 +970,7 @@ operator|.
 name|class
 return|;
 block|}
+comment|/**    * @return The end of the JS map that is the jquery datatable config for the    * attempts table.     */
 DECL|method|attemptsTableInit ()
 specifier|private
 name|String

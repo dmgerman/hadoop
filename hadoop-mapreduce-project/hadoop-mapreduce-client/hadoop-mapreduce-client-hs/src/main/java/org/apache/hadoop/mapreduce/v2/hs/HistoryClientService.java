@@ -778,7 +778,7 @@ name|hs
 operator|.
 name|webapp
 operator|.
-name|HSWebApp
+name|HsWebApp
 import|;
 end_import
 
@@ -1296,7 +1296,7 @@ block|{
 name|webApp
 operator|=
 operator|new
-name|HSWebApp
+name|HsWebApp
 argument_list|(
 name|history
 argument_list|)

@@ -302,7 +302,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -419,7 +420,8 @@ name|task
 range|:
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|.
 name|getTasks
 argument_list|()

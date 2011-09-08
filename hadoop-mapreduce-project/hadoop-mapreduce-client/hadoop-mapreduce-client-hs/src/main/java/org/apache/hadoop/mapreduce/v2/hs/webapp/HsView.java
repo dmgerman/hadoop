@@ -96,6 +96,10 @@ name|*
 import|;
 end_import
 
+begin_comment
+comment|/**  * A view that should be used as the base class for all history server pages.  */
+end_comment
+
 begin_class
 DECL|class|HsView
 specifier|public
@@ -104,6 +108,7 @@ name|HsView
 extends|extends
 name|TwoColumnLayout
 block|{
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
 DECL|method|preHead (Page.HTML<_> html)
 annotation|@
 name|Override
@@ -153,6 +158,7 @@ literal|"jobs"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The prehead that should be common to all subclasses.    * @param html used to render.    */
 DECL|method|commonPreHead (Page.HTML<_> html)
 specifier|protected
 name|void
@@ -167,7 +173,6 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
-comment|//html.meta_http("refresh", "10");
 name|set
 argument_list|(
 name|ACCORDION_ID
@@ -184,7 +189,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:1}"
+literal|"{autoHeight:false, active:0}"
 argument_list|)
 expr_stmt|;
 name|set
@@ -210,25 +215,12 @@ name|nav
 parameter_list|()
 block|{
 return|return
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|webapp
-operator|.
-name|NavBlock
+name|HsNavBlock
 operator|.
 name|class
 return|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#content()    */
 annotation|@
 name|Override
 DECL|method|content ()
@@ -248,6 +240,9 @@ operator|.
 name|class
 return|;
 block|}
+comment|//TODO We need a way to move all of the javascript/CSS that is for a subview
+comment|// into that subview.
+comment|/**    * @return The end of a javascript map that is the jquery datatable     * configuration for the jobs table.  the Jobs table is assumed to be    * rendered by the class returned from {@link #content()}     */
 DECL|method|jobsTableInit ()
 specifier|private
 name|String

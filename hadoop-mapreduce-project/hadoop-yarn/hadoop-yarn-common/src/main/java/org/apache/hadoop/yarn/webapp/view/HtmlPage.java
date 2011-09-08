@@ -106,6 +106,10 @@ name|Hamlet
 import|;
 end_import
 
+begin_comment
+comment|/**  * The parent class of all HTML pages.  Override   * {@link #render(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)}  * to actually render the page.  */
+end_comment
+
 begin_class
 DECL|class|HtmlPage
 specifier|public
@@ -357,6 +361,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Render the the HTML page.    * @param html the page to render data to.    */
 DECL|method|render (Page.HTML<_> html)
 specifier|protected
 specifier|abstract

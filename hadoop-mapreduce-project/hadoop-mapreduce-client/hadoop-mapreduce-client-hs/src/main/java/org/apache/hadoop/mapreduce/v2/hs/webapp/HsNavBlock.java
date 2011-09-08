@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.webapp
+DECL|package|org.apache.hadoop.mapreduce.v2.hs.webapp
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|hs
 operator|.
 name|webapp
 package|;
@@ -24,18 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Inject
-import|;
-end_import
-
-begin_import
-import|import static
 name|org
 operator|.
 name|apache
@@ -50,9 +38,7 @@ name|app
 operator|.
 name|webapp
 operator|.
-name|AMWebApp
-operator|.
-name|*
+name|App
 import|;
 end_import
 
@@ -108,7 +94,7 @@ name|hamlet
 operator|.
 name|Hamlet
 operator|.
-name|*
+name|DIV
 import|;
 end_import
 
@@ -130,11 +116,27 @@ name|HtmlBlock
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|inject
+operator|.
+name|Inject
+import|;
+end_import
+
+begin_comment
+comment|/**  * The navigation block for the history server  */
+end_comment
+
 begin_class
-DECL|class|NavBlock
+DECL|class|HsNavBlock
 specifier|public
 class|class
-name|NavBlock
+name|HsNavBlock
 extends|extends
 name|HtmlBlock
 block|{
@@ -143,10 +145,10 @@ specifier|final
 name|App
 name|app
 decl_stmt|;
-DECL|method|NavBlock (App app)
+DECL|method|HsNavBlock (App app)
 annotation|@
 name|Inject
-name|NavBlock
+name|HsNavBlock
 parameter_list|(
 name|App
 name|app
@@ -159,6 +161,7 @@ operator|=
 name|app
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.HtmlBlock#render(org.apache.hadoop.yarn.webapp.view.HtmlBlock.Block)    */
 DECL|method|render (Block html)
 annotation|@
 name|Override
@@ -170,14 +173,6 @@ name|Block
 name|html
 parameter_list|)
 block|{
-name|String
-name|rmweb
-init|=
-name|$
-argument_list|(
-name|RM_WEB
-argument_list|)
-decl_stmt|;
 name|DIV
 argument_list|<
 name|Hamlet
@@ -193,80 +188,6 @@ argument_list|)
 operator|.
 name|h3
 argument_list|(
-literal|"Cluster"
-argument_list|)
-operator|.
-name|ul
-argument_list|()
-operator|.
-name|li
-argument_list|()
-operator|.
-name|a
-argument_list|(
-name|url
-argument_list|(
-name|rmweb
-argument_list|,
-name|prefix
-argument_list|()
-argument_list|,
-literal|"cluster"
-argument_list|)
-argument_list|,
-literal|"About"
-argument_list|)
-operator|.
-name|_
-argument_list|()
-operator|.
-name|li
-argument_list|()
-operator|.
-name|a
-argument_list|(
-name|url
-argument_list|(
-name|rmweb
-argument_list|,
-name|prefix
-argument_list|()
-argument_list|,
-literal|"apps"
-argument_list|)
-argument_list|,
-literal|"Applications"
-argument_list|)
-operator|.
-name|_
-argument_list|()
-operator|.
-name|li
-argument_list|()
-operator|.
-name|a
-argument_list|(
-name|url
-argument_list|(
-name|rmweb
-argument_list|,
-name|prefix
-argument_list|()
-argument_list|,
-literal|"scheduler"
-argument_list|)
-argument_list|,
-literal|"Scheduler"
-argument_list|)
-operator|.
-name|_
-argument_list|()
-operator|.
-name|_
-argument_list|()
-operator|.
-name|h3
-argument_list|(
 literal|"Application"
 argument_list|)
 operator|.
@@ -278,10 +199,7 @@ argument_list|()
 operator|.
 name|a
 argument_list|(
-name|url
-argument_list|(
-literal|"app/info"
-argument_list|)
+literal|"about"
 argument_list|,
 literal|"About"
 argument_list|)
@@ -442,19 +360,6 @@ argument_list|(
 literal|"/conf"
 argument_list|,
 literal|"Configuration"
-argument_list|)
-operator|.
-name|_
-argument_list|()
-operator|.
-name|li
-argument_list|()
-operator|.
-name|a
-argument_list|(
-literal|"/logs"
-argument_list|,
-literal|"Local logs"
 argument_list|)
 operator|.
 name|_
