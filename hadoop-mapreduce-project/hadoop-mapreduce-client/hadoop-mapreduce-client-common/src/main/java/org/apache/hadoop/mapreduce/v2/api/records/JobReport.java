@@ -84,6 +84,20 @@ name|long
 name|getFinishTime
 parameter_list|()
 function_decl|;
+DECL|method|getUser ()
+specifier|public
+specifier|abstract
+name|String
+name|getUser
+parameter_list|()
+function_decl|;
+DECL|method|getJobName ()
+specifier|public
+specifier|abstract
+name|String
+name|getJobName
+parameter_list|()
+function_decl|;
 DECL|method|setJobId (JobId jobId)
 specifier|public
 specifier|abstract
@@ -162,6 +176,26 @@ name|setFinishTime
 parameter_list|(
 name|long
 name|finishTime
+parameter_list|)
+function_decl|;
+DECL|method|setUser (String user)
+specifier|public
+specifier|abstract
+name|void
+name|setUser
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+function_decl|;
+DECL|method|setJobName (String jobName)
+specifier|public
+specifier|abstract
+name|void
+name|setJobName
+parameter_list|(
+name|String
+name|jobName
 parameter_list|)
 function_decl|;
 block|}

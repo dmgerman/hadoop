@@ -89,7 +89,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the type of the software component, which this object is upgrading.    * @return type    */
 DECL|method|getType ()
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|getType

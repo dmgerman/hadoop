@@ -66,7 +66,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -276,7 +276,7 @@ name|setUpgradeState
 argument_list|(
 literal|false
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 argument_list|)
@@ -333,7 +333,7 @@ block|}
 DECL|method|getType ()
 specifier|public
 specifier|abstract
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|getType

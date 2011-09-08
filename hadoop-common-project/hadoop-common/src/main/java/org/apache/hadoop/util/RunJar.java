@@ -821,8 +821,6 @@ name|void
 name|run
 parameter_list|()
 block|{
-try|try
-block|{
 name|FileUtil
 operator|.
 name|fullyDelete
@@ -830,13 +828,6 @@ argument_list|(
 name|workDir
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{           }
 block|}
 block|}
 argument_list|)

@@ -226,7 +226,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -286,7 +286,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 import|;
@@ -851,7 +851,7 @@ name|datatnodeinfos
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|(               )
 operator|.
 name|getDatanodeReport

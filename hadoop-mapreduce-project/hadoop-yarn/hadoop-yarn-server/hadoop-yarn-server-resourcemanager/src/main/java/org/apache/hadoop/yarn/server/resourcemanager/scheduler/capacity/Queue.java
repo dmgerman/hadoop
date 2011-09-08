@@ -190,26 +190,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -437,7 +417,7 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return    */
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return the resource that is being assigned.    */
 DECL|method|assignContainers (Resource clusterResource, SchedulerNode node)
 specifier|public
 name|Resource
@@ -495,10 +475,10 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update the cluster resource for queues as we add/remove nodes    * @param clusterResource the current cluster resource    */
-DECL|method|updateResource (Resource clusterResource)
+DECL|method|updateClusterResource (Resource clusterResource)
 specifier|public
 name|void
-name|updateResource
+name|updateClusterResource
 parameter_list|(
 name|Resource
 name|clusterResource

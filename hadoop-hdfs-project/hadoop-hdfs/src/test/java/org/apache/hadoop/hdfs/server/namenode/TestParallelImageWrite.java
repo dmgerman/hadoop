@@ -174,7 +174,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -696,7 +696,7 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|saveNamespace

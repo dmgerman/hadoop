@@ -198,6 +198,8 @@ decl_stmt|;
 DECL|field|server
 specifier|private
 specifier|static
+name|RPC
+operator|.
 name|Server
 name|server
 decl_stmt|;
@@ -264,6 +266,8 @@ specifier|public
 interface|interface
 name|TestProtocol1
 extends|extends
+name|VersionedProtocol
+extends|,
 name|TestProtocol0
 block|{
 DECL|method|echo (String value)
@@ -277,6 +281,13 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
+annotation|@
+name|ProtocolInfo
+argument_list|(
+name|protocolName
+operator|=
+literal|"org.apache.hadoop.ipc.TestRPCCompatibility$TestProtocol1"
+argument_list|)
 DECL|interface|TestProtocol2
 specifier|public
 interface|interface
@@ -445,6 +456,28 @@ return|return
 name|value
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getProtocolVersion (String protocol, long clientVersion)
+specifier|public
+name|long
+name|getProtocolVersion
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|TestProtocol1
+operator|.
+name|versionID
+return|;
+block|}
 block|}
 DECL|class|TestImpl2
 specifier|public
@@ -469,6 +502,28 @@ parameter_list|)
 block|{
 return|return
 name|value
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProtocolVersion (String protocol, long clientVersion)
+specifier|public
+name|long
+name|getProtocolVersion
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|TestProtocol2
+operator|.
+name|versionID
 return|;
 block|}
 block|}
@@ -526,6 +581,13 @@ throws|throws
 name|Exception
 block|{
 comment|// create a server with two handlers
+name|TestImpl1
+name|impl
+init|=
+operator|new
+name|TestImpl1
+argument_list|()
+decl_stmt|;
 name|server
 operator|=
 name|RPC
@@ -536,9 +598,7 @@ name|TestProtocol1
 operator|.
 name|class
 argument_list|,
-operator|new
-name|TestImpl1
-argument_list|()
+name|impl
 argument_list|,
 name|ADDRESS
 argument_list|,
@@ -551,6 +611,17 @@ argument_list|,
 name|conf
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|TestProtocol0
+operator|.
+name|class
+argument_list|,
+name|impl
 argument_list|)
 expr_stmt|;
 name|server
@@ -868,6 +939,13 @@ throws|throws
 name|Exception
 block|{
 comment|// create a server with two handlers
+name|TestImpl1
+name|impl
+init|=
+operator|new
+name|TestImpl1
+argument_list|()
+decl_stmt|;
 name|server
 operator|=
 name|RPC
@@ -878,9 +956,7 @@ name|TestProtocol1
 operator|.
 name|class
 argument_list|,
-operator|new
-name|TestImpl1
-argument_list|()
+name|impl
 argument_list|,
 name|ADDRESS
 argument_list|,
@@ -893,6 +969,17 @@ argument_list|,
 name|conf
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|TestProtocol0
+operator|.
+name|class
+argument_list|,
+name|impl
 argument_list|)
 expr_stmt|;
 name|server
@@ -960,6 +1047,13 @@ throws|throws
 name|Exception
 block|{
 comment|// create a server with two handlers
+name|TestImpl2
+name|impl
+init|=
+operator|new
+name|TestImpl2
+argument_list|()
+decl_stmt|;
 name|server
 operator|=
 name|RPC
@@ -970,9 +1064,7 @@ name|TestProtocol2
 operator|.
 name|class
 argument_list|,
-operator|new
-name|TestImpl2
-argument_list|()
+name|impl
 argument_list|,
 name|ADDRESS
 argument_list|,
@@ -985,6 +1077,17 @@ argument_list|,
 name|conf
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|TestProtocol0
+operator|.
+name|class
+argument_list|,
+name|impl
 argument_list|)
 expr_stmt|;
 name|server
@@ -1318,6 +1421,13 @@ name|hash2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|ProtocolInfo
+argument_list|(
+name|protocolName
+operator|=
+literal|"org.apache.hadoop.ipc.TestRPCCompatibility$TestProtocol1"
+argument_list|)
 DECL|interface|TestProtocol4
 specifier|public
 interface|interface
@@ -1332,7 +1442,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|1L
+literal|4L
 decl_stmt|;
 DECL|method|echo (int value)
 name|int
@@ -1366,7 +1476,7 @@ operator|.
 name|class
 argument_list|,
 operator|new
-name|TestImpl0
+name|TestImpl2
 argument_list|()
 argument_list|,
 name|ADDRESS
@@ -1441,6 +1551,13 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+literal|"Expected version mismatch but got "
+operator|+
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
 name|ex
 operator|.
 name|getMessage

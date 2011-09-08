@@ -292,7 +292,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -326,9 +326,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|protocol
 operator|.
-name|NameNode
+name|DatanodeRegistration
 import|;
 end_import
 
@@ -346,7 +346,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|DatanodeRegistration
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -902,7 +902,7 @@ argument_list|()
 decl_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|blockReport
@@ -1209,12 +1209,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|NameNode
+name|NamenodeProtocols
 name|nn
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 name|List
@@ -1414,7 +1414,7 @@ name|connect
 argument_list|(
 name|targetAddr
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1423,7 +1423,7 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1501,12 +1501,12 @@ name|total
 init|=
 literal|0
 decl_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|nn
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 name|List

@@ -3272,7 +3272,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-comment|//TODO: XXXXXX  hardcoded port
 name|tce
 operator|.
 name|setMapOutputServerAddress
@@ -3292,7 +3291,12 @@ index|[
 literal|0
 index|]
 operator|+
-literal|":8080"
+literal|":"
+operator|+
+name|attempt
+operator|.
+name|getShufflePort
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tce

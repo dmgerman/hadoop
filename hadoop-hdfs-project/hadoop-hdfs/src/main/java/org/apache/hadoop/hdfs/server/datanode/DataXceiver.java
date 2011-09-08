@@ -330,7 +330,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -556,7 +556,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -815,7 +815,7 @@ argument_list|(
 name|s
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -1386,7 +1386,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -2085,7 +2085,7 @@ operator|.
 name|socketWriteTimeout
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -2278,7 +2278,7 @@ operator|.
 name|socketTimeout
 operator|+
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT_EXTENSION
 operator|*
@@ -2295,7 +2295,7 @@ operator|.
 name|socketWriteTimeout
 operator|+
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT_EXTENSION
 operator|*
@@ -2326,7 +2326,7 @@ name|mirrorSock
 operator|.
 name|setSendBufferSize
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
@@ -2348,7 +2348,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -3113,7 +3113,7 @@ name|BufferedInputStream
 argument_list|(
 name|metadataIn
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)
@@ -3521,7 +3521,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -3933,7 +3933,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -3969,7 +3969,7 @@ argument_list|(
 name|proxySock
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|)

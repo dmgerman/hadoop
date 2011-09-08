@@ -270,7 +270,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -849,7 +849,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)

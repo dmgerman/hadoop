@@ -84,6 +84,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the input stream starting with fromTxnId from this journal manager    * @param fromTxnId the first transaction id we want to read    * @return the stream starting with transaction fromTxnId    * @throws IOException if a stream cannot be found.    */
+DECL|method|getInputStream (long fromTxnId)
+name|EditLogInputStream
+name|getInputStream
+parameter_list|(
+name|long
+name|fromTxnId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the number of transaction contiguously available from fromTxnId.    *    * @param fromTxnId Transaction id to count from    * @return The number of transactions available from fromTxnId    * @throws IOException if the journal cannot be read.    * @throws CorruptionException if there is a gap in the journal at fromTxnId.    */
+DECL|method|getNumberOfTransactions (long fromTxnId)
+name|long
+name|getNumberOfTransactions
+parameter_list|(
+name|long
+name|fromTxnId
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|CorruptionException
+function_decl|;
 comment|/**    * Set the amount of memory that this stream should use to buffer edits    */
 DECL|method|setOutputBufferCapacity (int size)
 name|void
@@ -104,17 +128,47 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @return an EditLogInputStream that reads from the same log that    * the edit log is currently writing. May return null if this journal    * manager does not support this operation.    */
-DECL|method|getInProgressInputStream (long segmentStartsAtTxId)
-name|EditLogInputStream
-name|getInProgressInputStream
-parameter_list|(
-name|long
-name|segmentStartsAtTxId
-parameter_list|)
+comment|/**    * Recover segments which have not been finalized.    */
+DECL|method|recoverUnfinalizedSegments ()
+name|void
+name|recoverUnfinalizedSegments
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**     * Indicate that a journal is cannot be used to load a certain range of     * edits.    * This exception occurs in the case of a gap in the transactions, or a    * corrupt edit file.    */
+DECL|class|CorruptionException
+specifier|public
+specifier|static
+class|class
+name|CorruptionException
+extends|extends
+name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+operator|-
+literal|4687802717006172702L
+decl_stmt|;
+DECL|method|CorruptionException (String reason)
+specifier|public
+name|CorruptionException
+parameter_list|(
+name|String
+name|reason
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_interface
 

@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -51,6 +41,22 @@ operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystemTestHelper
+operator|.
+name|*
 import|;
 end_import
 
@@ -320,8 +326,6 @@ argument_list|()
 expr_stmt|;
 comment|// Exercise some boundary cases - a divisor of the chunk size
 comment|// the chunk size, 2x chunk size, and +/-1 around these.
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -331,8 +335,6 @@ argument_list|,
 literal|128
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -342,8 +344,6 @@ argument_list|,
 literal|511
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -353,8 +353,6 @@ argument_list|,
 literal|512
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -364,8 +362,6 @@ argument_list|,
 literal|513
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -375,8 +371,6 @@ argument_list|,
 literal|1023
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -386,8 +380,6 @@ argument_list|,
 literal|1024
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -483,8 +475,6 @@ literal|false
 decl_stmt|;
 try|try
 block|{
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -526,8 +516,6 @@ expr_stmt|;
 name|String
 name|str
 init|=
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -536,6 +524,9 @@ name|testPath
 argument_list|,
 literal|1024
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
@@ -645,8 +636,6 @@ argument_list|()
 expr_stmt|;
 comment|// Exercise some boundary cases - a divisor of the chunk size
 comment|// the chunk size, 2x chunk size, and +/-1 around these.
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -656,8 +645,6 @@ argument_list|,
 literal|128
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -667,8 +654,6 @@ argument_list|,
 literal|511
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -678,8 +663,6 @@ argument_list|,
 literal|512
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -689,8 +672,6 @@ argument_list|,
 literal|513
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -700,8 +681,6 @@ argument_list|,
 literal|1023
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -711,8 +690,6 @@ argument_list|,
 literal|1024
 argument_list|)
 expr_stmt|;
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -877,8 +854,6 @@ expr_stmt|;
 comment|// Now reading the file should fail with a ChecksumException
 try|try
 block|{
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -915,8 +890,6 @@ expr_stmt|;
 name|String
 name|str
 init|=
-name|TestLocalFileSystem
-operator|.
 name|readFile
 argument_list|(
 name|localFs
@@ -925,6 +898,9 @@ name|testPath
 argument_list|,
 literal|1024
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(

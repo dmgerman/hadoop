@@ -160,7 +160,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -178,7 +178,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -1522,7 +1522,7 @@ name|dfsClient
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.

@@ -444,7 +444,7 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getListing
@@ -472,7 +472,7 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getListing

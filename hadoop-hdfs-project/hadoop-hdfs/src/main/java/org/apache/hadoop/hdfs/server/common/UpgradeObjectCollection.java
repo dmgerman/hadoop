@@ -76,7 +76,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -131,7 +131,7 @@ name|int
 name|version
 decl_stmt|;
 DECL|field|type
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|type
@@ -188,7 +188,7 @@ name|version
 return|;
 block|}
 DECL|method|getType ()
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|getType
@@ -491,7 +491,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDistributedUpgrades (int versionFrom, HdfsConstants.NodeType type )
+DECL|method|getDistributedUpgrades (int versionFrom, HdfsServerConstants.NodeType type )
 specifier|public
 specifier|static
 name|SortedSet
@@ -503,7 +503,7 @@ parameter_list|(
 name|int
 name|versionFrom
 parameter_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|type
@@ -512,7 +512,7 @@ throws|throws
 name|IOException
 block|{
 assert|assert
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|<=
@@ -524,7 +524,7 @@ name|versionFrom
 operator|+
 literal|". Expected to be<= "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 assert|;
@@ -556,7 +556,7 @@ operator|.
 name|getVersion
 argument_list|()
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)

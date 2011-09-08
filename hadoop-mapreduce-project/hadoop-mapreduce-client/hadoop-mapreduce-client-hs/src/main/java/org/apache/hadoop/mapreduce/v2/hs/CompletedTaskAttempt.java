@@ -779,6 +779,22 @@ name|getFinishTime
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 

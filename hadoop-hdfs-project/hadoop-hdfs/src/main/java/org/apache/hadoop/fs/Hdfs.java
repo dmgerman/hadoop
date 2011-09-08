@@ -248,7 +248,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -472,7 +472,7 @@ name|super
 argument_list|(
 name|theUri
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 argument_list|,
@@ -493,7 +493,7 @@ argument_list|()
 operator|.
 name|equalsIgnoreCase
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|HDFS_URI_SCHEME
 argument_list|)

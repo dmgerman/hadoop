@@ -396,7 +396,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -2830,7 +2830,7 @@ name|retryUpToMaximumCountWithFixedSleep
 argument_list|(
 literal|5
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 argument_list|,

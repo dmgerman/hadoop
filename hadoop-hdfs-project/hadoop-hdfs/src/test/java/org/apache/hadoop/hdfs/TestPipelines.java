@@ -132,7 +132,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -622,7 +622,7 @@ name|lb
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|getBlockLocations
@@ -710,7 +710,7 @@ name|dn
 operator|+
 literal|" after sequence of calls append()/write()/hflush()"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|ReplicaState
 operator|.

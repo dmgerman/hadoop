@@ -1090,6 +1090,10 @@ name|response
 operator|.
 name|getApplicationList
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|conf
 argument_list|)
 return|;
 block|}
@@ -1425,6 +1429,10 @@ argument_list|)
 operator|.
 name|getQueueInfo
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|conf
 argument_list|)
 return|;
 block|}
@@ -1669,6 +1677,10 @@ operator|.
 name|fromYarnQueueInfo
 argument_list|(
 name|queues
+argument_list|,
+name|this
+operator|.
+name|conf
 argument_list|)
 return|;
 block|}
@@ -1767,6 +1779,10 @@ operator|.
 name|fromYarnQueueInfo
 argument_list|(
 name|queues
+argument_list|,
+name|this
+operator|.
+name|conf
 argument_list|)
 return|;
 block|}
@@ -1868,6 +1884,10 @@ operator|.
 name|fromYarnQueueInfo
 argument_list|(
 name|queues
+argument_list|,
+name|this
+operator|.
+name|conf
 argument_list|)
 return|;
 block|}

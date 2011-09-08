@@ -30,7 +30,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -52,7 +52,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -198,7 +198,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -218,7 +218,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -1463,7 +1463,7 @@ name|StartupOption
 operator|.
 name|ROLLBACK
 argument_list|,
-literal|"but there are no logs to load"
+literal|"No non-corrupt logs for txid "
 argument_list|)
 expr_stmt|;
 name|UpgradeUtilities

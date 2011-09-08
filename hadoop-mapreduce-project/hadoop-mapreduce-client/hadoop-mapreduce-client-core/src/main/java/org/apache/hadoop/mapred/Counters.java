@@ -1360,7 +1360,7 @@ operator|new
 name|GroupFactory
 argument_list|()
 decl_stmt|;
-comment|/**    * Find a counter by using strings    * @param group the name of the group    * @param id the id of the counter within the group (0 to N-1)    * @param name the internal name of the counter    * @return the counter for that name    * @deprecated use {@link findCounter(String, String)} instead    */
+comment|/**    * Find a counter by using strings    * @param group the name of the group    * @param id the id of the counter within the group (0 to N-1)    * @param name the internal name of the counter    * @return the counter for that name    * @deprecated use {@link #findCounter(String, String)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|findCounter (String group, int id, String name)

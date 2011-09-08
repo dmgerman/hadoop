@@ -294,7 +294,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -928,12 +928,12 @@ argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -1500,12 +1500,12 @@ expr_stmt|;
 comment|// now leave safe mode so that we can clean up
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.

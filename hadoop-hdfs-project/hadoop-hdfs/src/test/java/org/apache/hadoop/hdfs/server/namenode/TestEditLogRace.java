@@ -232,7 +232,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -270,7 +270,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -1728,8 +1728,9 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -2237,8 +2238,9 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)

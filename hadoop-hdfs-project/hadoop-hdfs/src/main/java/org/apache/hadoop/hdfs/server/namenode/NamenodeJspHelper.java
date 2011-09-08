@@ -278,7 +278,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -429,6 +429,24 @@ operator|.
 name|common
 operator|.
 name|UpgradeStatusReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -2411,13 +2429,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getDelegationToken (final NameNode nn, HttpServletRequest request, Configuration conf, final UserGroupInformation ugi)
+DECL|method|getDelegationToken (final NamenodeProtocols nn, HttpServletRequest request, Configuration conf, final UserGroupInformation ugi)
 specifier|static
 name|String
 name|getDelegationToken
 parameter_list|(
 specifier|final
-name|NameNode
+name|NamenodeProtocols
 name|nn
 parameter_list|,
 name|HttpServletRequest
@@ -2609,6 +2627,9 @@ init|=
 name|getDelegationToken
 argument_list|(
 name|nn
+operator|.
+name|getRpcServer
+argument_list|()
 argument_list|,
 name|request
 argument_list|,

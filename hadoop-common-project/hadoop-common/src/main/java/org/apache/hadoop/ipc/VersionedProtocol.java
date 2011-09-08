@@ -37,8 +37,6 @@ interface|interface
 name|VersionedProtocol
 block|{
 comment|/**    * Return protocol version corresponding to protocol interface.    * @param protocol The classname of the protocol interface    * @param clientVersion The version of the protocol that the client speaks    * @return the version that the server will speak    * @throws IOException if any IO error occurs    */
-annotation|@
-name|Deprecated
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
 specifier|public
 name|long

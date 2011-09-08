@@ -250,7 +250,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -665,7 +665,7 @@ name|name
 argument_list|,
 literal|true
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|IO_FILE_BUFFER_SIZE
 argument_list|,

@@ -20,50 +20,78 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>LocalResource</code> represents a local resource required to  * run a container.</p>  *   *<p>The<code>NodeManager</code> is responsible for localizing the resource   * prior to launching the container.</p>  *   *<p>Applications can specify {@link LocalResourceType} and   * {@link LocalResourceVisibility}.</p>  *   * @see LocalResourceType  * @see LocalResourceVisibility  * @see ContainerLaunchContext  * @see ApplicationSubmissionContext  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|LocalResource
 specifier|public
 interface|interface
 name|LocalResource
 block|{
+comment|/**    * Get the<em>location</em> of the resource to be localized.    * @return<em>location</em> of the resource to be localized    */
 DECL|method|getResource ()
 specifier|public
-specifier|abstract
 name|URL
 name|getResource
 parameter_list|()
 function_decl|;
-DECL|method|getSize ()
-specifier|public
-specifier|abstract
-name|long
-name|getSize
-parameter_list|()
-function_decl|;
-DECL|method|getTimestamp ()
-specifier|public
-specifier|abstract
-name|long
-name|getTimestamp
-parameter_list|()
-function_decl|;
-DECL|method|getType ()
-specifier|public
-specifier|abstract
-name|LocalResourceType
-name|getType
-parameter_list|()
-function_decl|;
-DECL|method|getVisibility ()
-specifier|public
-specifier|abstract
-name|LocalResourceVisibility
-name|getVisibility
-parameter_list|()
-function_decl|;
+comment|/**    * Set<em>location</em> of the resource to be localized.    * @param resource<em>location</em> of the resource to be localized    */
 DECL|method|setResource (URL resource)
 specifier|public
-specifier|abstract
 name|void
 name|setResource
 parameter_list|(
@@ -71,9 +99,16 @@ name|URL
 name|resource
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>size</em> of the resource to be localized.    * @return<em>size</em> of the resource to be localized    */
+DECL|method|getSize ()
+specifier|public
+name|long
+name|getSize
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>size</em> of the resource to be localized.    * @param size<em>size</em> of the resource to be localized    */
 DECL|method|setSize (long size)
 specifier|public
-specifier|abstract
 name|void
 name|setSize
 parameter_list|(
@@ -81,9 +116,16 @@ name|long
 name|size
 parameter_list|)
 function_decl|;
+comment|/**    * Get the original<em>timestamp</em> of the resource to be localized, used    * for verification.    * @return<em>timestamp</em> of the resource to be localized    */
+DECL|method|getTimestamp ()
+specifier|public
+name|long
+name|getTimestamp
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>timestamp</em> of the resource to be localized, used    * for verification.    * @param timestamp<em>timestamp</em> of the resource to be localized    */
 DECL|method|setTimestamp (long timestamp)
 specifier|public
-specifier|abstract
 name|void
 name|setTimestamp
 parameter_list|(
@@ -91,9 +133,16 @@ name|long
 name|timestamp
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>LocalResourceType</code> of the resource to be localized.    * @return<code>LocalResourceType</code> of the resource to be localized    */
+DECL|method|getType ()
+specifier|public
+name|LocalResourceType
+name|getType
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>LocalResourceType</code> of the resource to be localized.    * @param type<code>LocalResourceType</code> of the resource to be localized    */
 DECL|method|setType (LocalResourceType type)
 specifier|public
-specifier|abstract
 name|void
 name|setType
 parameter_list|(
@@ -101,9 +150,16 @@ name|LocalResourceType
 name|type
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>LocalResourceVisibility</code> of the resource to be     * localized.    * @return<code>LocalResourceVisibility</code> of the resource to be     *         localized    */
+DECL|method|getVisibility ()
+specifier|public
+name|LocalResourceVisibility
+name|getVisibility
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>LocalResourceVisibility</code> of the resource to be     * localized.    * @param visibility<code>LocalResourceVisibility</code> of the resource to be     *                   localized    */
 DECL|method|setVisibility (LocalResourceVisibility visibility)
 specifier|public
-specifier|abstract
 name|void
 name|setVisibility
 parameter_list|(

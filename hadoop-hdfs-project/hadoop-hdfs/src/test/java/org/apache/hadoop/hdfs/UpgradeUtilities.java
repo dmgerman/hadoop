@@ -200,7 +200,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -232,7 +232,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -270,7 +270,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 import|;
@@ -290,7 +290,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -310,7 +310,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -332,7 +332,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.
@@ -462,9 +462,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|protocol
 operator|.
-name|NameNode
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -728,12 +728,12 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|NameNode
+name|NamenodeProtocols
 name|namenode
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 name|namenodeStorageNamespaceID
@@ -2558,7 +2558,7 @@ name|getCurrentLayoutVersion
 parameter_list|()
 block|{
 return|return
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 return|;
@@ -2586,7 +2586,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2623,7 +2623,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2660,7 +2660,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest
@@ -2697,7 +2697,7 @@ block|{
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|versionRequest

@@ -268,7 +268,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -411,6 +411,24 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -626,6 +644,11 @@ specifier|static
 name|NameNode
 name|nameNode
 decl_stmt|;
+DECL|field|nameNodeProto
+specifier|static
+name|NamenodeProtocols
+name|nameNodeProto
+decl_stmt|;
 DECL|method|NNThroughputBenchmark (Configuration conf)
 name|NNThroughputBenchmark
 parameter_list|(
@@ -743,6 +766,13 @@ name|argv
 argument_list|,
 name|config
 argument_list|)
+expr_stmt|;
+name|nameNodeProto
+operator|=
+name|nameNode
+operator|.
+name|getRpcServer
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -1396,11 +1426,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|nameNode
+name|nameNodeProto
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -1412,7 +1442,7 @@ condition|(
 operator|!
 name|keepResults
 condition|)
-name|nameNode
+name|nameNodeProto
 operator|.
 name|delete
 argument_list|(
@@ -2040,7 +2070,7 @@ name|ugcRefreshCount
 operator|==
 literal|0
 condition|)
-name|nameNode
+name|nameNodeProto
 operator|.
 name|refreshUserToGroupsMappings
 argument_list|()
@@ -2233,11 +2263,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|nameNode
+name|nameNodeProto
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -2252,7 +2282,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|delete
 argument_list|(
@@ -2622,11 +2652,11 @@ name|numThreads
 operator|:
 literal|"Error opsPerThread.length"
 assert|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -2805,7 +2835,7 @@ name|currentTimeMillis
 argument_list|()
 decl_stmt|;
 comment|// dummyActionNoSynch(fileIdx);
-name|nameNode
+name|nameNodeProto
 operator|.
 name|create
 argument_list|(
@@ -2872,7 +2902,7 @@ name|written
 condition|;
 name|written
 operator|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|complete
 argument_list|(
@@ -3191,7 +3221,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|nameNode
+name|nameNodeProto
 operator|.
 name|getFileInfo
 argument_list|(
@@ -3203,7 +3233,7 @@ argument_list|)
 operator|!=
 literal|null
 operator|&&
-name|nameNode
+name|nameNodeProto
 operator|.
 name|getFileInfo
 argument_list|(
@@ -3214,7 +3244,7 @@ operator|==
 literal|null
 condition|)
 block|{
-name|nameNode
+name|nameNodeProto
 operator|.
 name|rename
 argument_list|(
@@ -3230,7 +3260,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|nameNode
+name|nameNodeProto
 operator|.
 name|getFileInfo
 argument_list|(
@@ -3278,7 +3308,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|getBlockLocations
 argument_list|(
@@ -3387,7 +3417,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|delete
 argument_list|(
@@ -3494,7 +3524,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|getFileInfo
 argument_list|(
@@ -3710,7 +3740,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|rename
 argument_list|(
@@ -3931,7 +3961,7 @@ block|{
 comment|// get versions from the namenode
 name|nsInfo
 operator|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|versionRequest
 argument_list|()
@@ -3959,7 +3989,7 @@ expr_stmt|;
 comment|// register datanode
 name|dnRegistration
 operator|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|registerDatanode
 argument_list|(
@@ -3981,7 +4011,7 @@ name|DatanodeCommand
 index|[]
 name|cmds
 init|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|sendHeartbeat
 argument_list|(
@@ -4212,7 +4242,7 @@ name|DatanodeCommand
 index|[]
 name|cmds
 init|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|sendHeartbeat
 argument_list|(
@@ -4401,7 +4431,7 @@ name|getInfoPort
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|blockReceivedAndDeleted
 argument_list|(
@@ -4983,11 +5013,11 @@ argument_list|(
 literal|007
 argument_list|)
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|setSafeMode
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 operator|.
@@ -5019,7 +5049,7 @@ argument_list|(
 literal|"ThroughputBench"
 argument_list|)
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|create
 argument_list|(
@@ -5069,7 +5099,7 @@ argument_list|,
 name|clientName
 argument_list|)
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|complete
 argument_list|(
@@ -5144,7 +5174,7 @@ block|{
 name|LocatedBlock
 name|loc
 init|=
-name|nameNode
+name|nameNodeProto
 operator|.
 name|addBlock
 argument_list|(
@@ -5206,7 +5236,7 @@ name|getLocalBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|blockReceivedAndDeleted
 argument_list|(
@@ -5303,7 +5333,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|blockReport
 argument_list|(
@@ -6165,7 +6195,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|nameNode
+name|nameNodeProto
 operator|.
 name|refreshNodes
 argument_list|()

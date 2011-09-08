@@ -80,6 +80,7 @@ specifier|private
 name|TaskAttemptId
 name|attemptID
 decl_stmt|;
+comment|/**    * Create a new TaskAttemptEvent.    * @param id the id of the task attempt    * @param type the type of event that happened.    */
 DECL|method|TaskAttemptEvent (TaskAttemptId id, TaskAttemptEventType type)
 specifier|public
 name|TaskAttemptEvent

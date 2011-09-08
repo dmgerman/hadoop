@@ -28,6 +28,54 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -38,12 +86,25 @@ name|ContainerLaunchContext
 import|;
 end_import
 
+begin_comment
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>start</em> a container.</p>  *   *<p>The<code>ApplicationMaster</code> has to provide details such as  * allocated resource capability, security tokens (if enabled), command  * to be executed to start the container, environment for the process,   * necessary binaries/jar/shared-objects etc. via the   * {@link ContainerLaunchContext}.</p>  *  * @see ContainerManager#startContainer(StartContainerRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|StartContainerRequest
 specifier|public
 interface|interface
 name|StartContainerRequest
 block|{
+comment|/**    * Get the<code>ContainerLaunchContext</code> for the container to be started    * by the<code>NodeManager</code>.    *     * @return<code>ContainerLaunchContext</code> for the container to be started    *         by the<code>NodeManager</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getContainerLaunchContext ()
 specifier|public
 specifier|abstract
@@ -51,6 +112,11 @@ name|ContainerLaunchContext
 name|getContainerLaunchContext
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ContainerLaunchContext</code> for the container to be started    * by the<code>NodeManager</code>    * @param context<code>ContainerLaunchContext</code> for the container to be     *                started by the<code>NodeManager</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setContainerLaunchContext (ContainerLaunchContext context)
 specifier|public
 specifier|abstract

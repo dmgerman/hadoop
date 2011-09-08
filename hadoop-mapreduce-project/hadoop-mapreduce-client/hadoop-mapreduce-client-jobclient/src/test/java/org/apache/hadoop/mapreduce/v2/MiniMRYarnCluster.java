@@ -470,6 +470,18 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// Non-standard shuffle port
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|ShuffleHandler
+operator|.
+name|SHUFFLE_PORT_CONFIG_KEY
+argument_list|,
+literal|8083
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setClass

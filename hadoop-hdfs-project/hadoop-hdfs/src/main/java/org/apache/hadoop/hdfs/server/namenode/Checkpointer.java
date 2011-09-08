@@ -182,7 +182,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -1093,6 +1093,11 @@ operator|.
 name|reloadFromImageFile
 argument_list|(
 name|file
+argument_list|,
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1156,6 +1161,11 @@ argument_list|(
 name|manifest
 argument_list|,
 name|bnImage
+argument_list|,
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1171,6 +1181,11 @@ name|bnImage
 operator|.
 name|saveFSImageInAllDirs
 argument_list|(
+name|backupNode
+operator|.
+name|getNamesystem
+argument_list|()
+argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -1312,7 +1327,7 @@ name|httpPort
 argument_list|)
 return|;
 block|}
-DECL|method|rollForwardByApplyingLogs ( RemoteEditLogManifest manifest, FSImage dstImage)
+DECL|method|rollForwardByApplyingLogs ( RemoteEditLogManifest manifest, FSImage dstImage, FSNamesystem dstNamesystem)
 specifier|static
 name|void
 name|rollForwardByApplyingLogs
@@ -1322,6 +1337,9 @@ name|manifest
 parameter_list|,
 name|FSImage
 name|dstImage
+parameter_list|,
+name|FSNamesystem
+name|dstNamesystem
 parameter_list|)
 throws|throws
 name|IOException
@@ -1336,9 +1354,9 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|File
+name|EditLogInputStream
 argument_list|>
-name|editsFiles
+name|editsStreams
 init|=
 name|Lists
 operator|.
@@ -1387,11 +1405,25 @@ name|getLastAppliedTxId
 argument_list|()
 condition|)
 block|{
-name|editsFiles
+name|editsStreams
 operator|.
 name|add
 argument_list|(
+operator|new
+name|EditLogFileInputStream
+argument_list|(
 name|f
+argument_list|,
+name|log
+operator|.
+name|getStartTxId
+argument_list|()
+argument_list|,
+name|log
+operator|.
+name|getEndTxId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1402,19 +1434,21 @@ name|info
 argument_list|(
 literal|"Checkpointer about to load edits from "
 operator|+
-name|editsFiles
+name|editsStreams
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" file(s)."
+literal|" stream(s)."
 argument_list|)
 expr_stmt|;
 name|dstImage
 operator|.
 name|loadEdits
 argument_list|(
-name|editsFiles
+name|editsStreams
+argument_list|,
+name|dstNamesystem
 argument_list|)
 expr_stmt|;
 block|}

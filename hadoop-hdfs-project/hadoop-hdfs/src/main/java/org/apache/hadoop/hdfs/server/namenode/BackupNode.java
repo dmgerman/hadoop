@@ -134,7 +134,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -152,7 +152,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -327,8 +327,6 @@ class|class
 name|BackupNode
 extends|extends
 name|NameNode
-implements|implements
-name|JournalProtocol
 block|{
 DECL|field|BN_ADDRESS_NAME_KEY
 specifier|private
@@ -524,13 +522,16 @@ block|}
 annotation|@
 name|Override
 comment|// NameNode
-DECL|method|setRpcServerAddress (Configuration conf)
+DECL|method|setRpcServerAddress (Configuration conf, InetSocketAddress addr)
 specifier|protected
 name|void
 name|setRpcServerAddress
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|InetSocketAddress
+name|addr
 parameter_list|)
 block|{
 name|conf
@@ -541,7 +542,7 @@ name|BN_ADDRESS_NAME_KEY
 argument_list|,
 name|getHostPortString
 argument_list|(
-name|rpcAddress
+name|addr
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -549,13 +550,16 @@ block|}
 annotation|@
 name|Override
 comment|// Namenode
-DECL|method|setRpcServiceServerAddress (Configuration conf)
+DECL|method|setRpcServiceServerAddress (Configuration conf, InetSocketAddress addr)
 specifier|protected
 name|void
 name|setRpcServiceServerAddress
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|InetSocketAddress
+name|addr
 parameter_list|)
 block|{
 name|conf
@@ -566,7 +570,7 @@ name|BN_SERVICE_RPC_ADDRESS_KEY
 argument_list|,
 name|getHostPortString
 argument_list|(
-name|serviceRPCAddress
+name|addr
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -584,7 +588,8 @@ name|conf
 parameter_list|)
 block|{
 assert|assert
-name|rpcAddress
+name|getNameNodeAddress
+argument_list|()
 operator|!=
 literal|null
 operator|:
@@ -674,6 +679,13 @@ argument_list|)
 expr_stmt|;
 name|bnImage
 operator|.
+name|setNamesystem
+argument_list|(
+name|namesystem
+argument_list|)
+expr_stmt|;
+name|bnImage
+operator|.
 name|recoverCreateRead
 argument_list|()
 expr_stmt|;
@@ -730,7 +742,7 @@ name|leaseManager
 operator|.
 name|setLeasePeriod
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 argument_list|,
@@ -765,6 +777,29 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|createRpcServer (Configuration conf)
+specifier|protected
+name|NameNodeRpcServer
+name|createRpcServer
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|BackupNodeRpcServer
+argument_list|(
+name|conf
+argument_list|,
+name|this
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
@@ -879,6 +914,61 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|class|BackupNodeRpcServer
+specifier|static
+class|class
+name|BackupNodeRpcServer
+extends|extends
+name|NameNodeRpcServer
+implements|implements
+name|JournalProtocol
+block|{
+DECL|field|nnRpcAddress
+specifier|private
+specifier|final
+name|String
+name|nnRpcAddress
+decl_stmt|;
+DECL|method|BackupNodeRpcServer (Configuration conf, BackupNode nn)
+specifier|private
+name|BackupNodeRpcServer
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|BackupNode
+name|nn
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|,
+name|nn
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|server
+operator|.
+name|addProtocol
+argument_list|(
+name|JournalProtocol
+operator|.
+name|class
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+name|nnRpcAddress
+operator|=
+name|nn
+operator|.
+name|nnRpcAddress
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
@@ -935,6 +1025,50 @@ comment|// BackupNodeProtocol implementation for backup node.
 comment|/////////////////////////////////////////////////////
 annotation|@
 name|Override
+DECL|method|startLogSegment (NamenodeRegistration registration, long txid)
+specifier|public
+name|void
+name|startLogSegment
+parameter_list|(
+name|NamenodeRegistration
+name|registration
+parameter_list|,
+name|long
+name|txid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|nn
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+argument_list|)
+expr_stmt|;
+name|verifyRequest
+argument_list|(
+name|registration
+argument_list|)
+expr_stmt|;
+name|verifyRequest
+argument_list|(
+name|registration
+argument_list|)
+expr_stmt|;
+name|getBNImage
+argument_list|()
+operator|.
+name|namenodeStartedLogSegment
+argument_list|(
+name|txid
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|journal (NamenodeRegistration nnReg, long firstTxId, int numTxns, byte[] records)
 specifier|public
 name|void
@@ -956,6 +1090,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|nn
+operator|.
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -1010,45 +1146,8 @@ name|records
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|startLogSegment (NamenodeRegistration registration, long txid)
-specifier|public
-name|void
-name|startLogSegment
-parameter_list|(
-name|NamenodeRegistration
-name|registration
-parameter_list|,
-name|long
-name|txid
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|JOURNAL
-argument_list|)
-expr_stmt|;
-name|verifyRequest
-argument_list|(
-name|registration
-argument_list|)
-expr_stmt|;
-name|getBNImage
-argument_list|()
-operator|.
-name|namenodeStartedLogSegment
-argument_list|(
-name|txid
-argument_list|)
-expr_stmt|;
-block|}
-comment|//////////////////////////////////////////////////////
 DECL|method|getBNImage ()
+specifier|private
 name|BackupImage
 name|getBNImage
 parameter_list|()
@@ -1057,10 +1156,14 @@ return|return
 operator|(
 name|BackupImage
 operator|)
+name|nn
+operator|.
 name|getFSImage
 argument_list|()
 return|;
 block|}
+block|}
+comment|//////////////////////////////////////////////////////
 DECL|method|shouldCheckpointAtStartup ()
 name|boolean
 name|shouldCheckpointAtStartup
@@ -1591,7 +1694,7 @@ argument_list|)
 throw|;
 block|}
 assert|assert
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|==
@@ -1602,7 +1705,7 @@ argument_list|()
 operator|:
 literal|"Active and backup node layout versions must be the same. Expected: "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+

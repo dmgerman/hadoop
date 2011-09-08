@@ -332,7 +332,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -348,7 +348,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -400,7 +400,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -3735,7 +3735,7 @@ name|getInt
 argument_list|(
 name|BLOCKFIX_READ_TIMEOUT
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -3768,7 +3768,7 @@ name|getInt
 argument_list|(
 name|BLOCKFIX_WRITE_TIMEOUT
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)
@@ -3796,7 +3796,7 @@ name|BufferedOutputStream
 argument_list|(
 name|baseStream
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)

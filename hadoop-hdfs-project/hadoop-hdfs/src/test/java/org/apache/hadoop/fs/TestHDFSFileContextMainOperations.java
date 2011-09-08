@@ -134,7 +134,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -631,11 +631,11 @@ operator|.
 name|getParent
 argument_list|()
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -667,7 +667,7 @@ argument_list|()
 argument_list|,
 literal|2
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -710,7 +710,7 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -807,11 +807,11 @@ operator|.
 name|getParent
 argument_list|()
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -843,7 +843,7 @@ argument_list|()
 argument_list|,
 literal|2
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -922,7 +922,7 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -957,7 +957,7 @@ argument_list|()
 argument_list|,
 literal|100
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -978,7 +978,7 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -1144,7 +1144,7 @@ argument_list|()
 argument_list|,
 literal|2
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -1304,7 +1304,7 @@ argument_list|()
 argument_list|,
 literal|2
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)

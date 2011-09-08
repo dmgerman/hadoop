@@ -158,7 +158,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -680,7 +680,7 @@ specifier|private
 name|long
 name|renewal
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 operator|/
@@ -1425,7 +1425,7 @@ block|{
 name|long
 name|min
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LEASE_SOFTLIMIT_PERIOD
 decl_stmt|;

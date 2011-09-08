@@ -189,6 +189,60 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+annotation|@
+name|Override
+DECL|method|getNumberOfTransactions (long fromTxnId)
+specifier|public
+name|long
+name|getNumberOfTransactions
+parameter_list|(
+name|long
+name|fromTxnId
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|CorruptionException
+block|{
+comment|// This JournalManager is never used for input. Therefore it cannot
+comment|// return any transactions
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getInputStream (long fromTxnId)
+specifier|public
+name|EditLogInputStream
+name|getInputStream
+parameter_list|(
+name|long
+name|fromTxnId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// This JournalManager is never used for input. Therefore it cannot
+comment|// return any transactions
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unsupported operation"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|recoverUnfinalizedSegments ()
+specifier|public
+name|void
+name|recoverUnfinalizedSegments
+parameter_list|()
+throws|throws
+name|IOException
+block|{   }
 DECL|method|matchesRegistration (NamenodeRegistration bnReg)
 specifier|public
 name|boolean
@@ -217,17 +271,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getInProgressInputStream (long segmentStartsAtTxId)
+DECL|method|toString ()
 specifier|public
-name|EditLogInputStream
-name|getInProgressInputStream
-parameter_list|(
-name|long
-name|segmentStartsAtTxId
-parameter_list|)
+name|String
+name|toString
+parameter_list|()
 block|{
 return|return
-literal|null
+literal|"BackupJournalManager"
 return|;
 block|}
 block|}

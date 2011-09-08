@@ -92,7 +92,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -150,6 +150,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -185,6 +201,18 @@ specifier|final
 name|FileInputStream
 name|fStream
 decl_stmt|;
+DECL|field|firstTxId
+specifier|final
+specifier|private
+name|long
+name|firstTxId
+decl_stmt|;
+DECL|field|lastTxId
+specifier|final
+specifier|private
+name|long
+name|lastTxId
+decl_stmt|;
 DECL|field|logVersion
 specifier|private
 specifier|final
@@ -207,12 +235,44 @@ operator|.
 name|PositionTrackingInputStream
 name|tracker
 decl_stmt|;
-comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
+comment|/**    * Open an EditLogInputStream for the given file.    * The file is pretransactional, so has no txids    * @param name filename to open    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
 DECL|method|EditLogFileInputStream (File name)
 name|EditLogFileInputStream
 parameter_list|(
 name|File
 name|name
+parameter_list|)
+throws|throws
+name|LogHeaderCorruptException
+throws|,
+name|IOException
+block|{
+name|this
+argument_list|(
+name|name
+argument_list|,
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+argument_list|,
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @param firstTxId first transaction found in file    * @param lastTxId last transaction id found in file    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
+DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId)
+name|EditLogFileInputStream
+parameter_list|(
+name|File
+name|name
+parameter_list|,
+name|long
+name|firstTxId
+parameter_list|,
+name|long
+name|lastTxId
 parameter_list|)
 throws|throws
 name|LogHeaderCorruptException
@@ -295,6 +355,46 @@ argument_list|,
 name|logVersion
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|firstTxId
+operator|=
+name|firstTxId
+expr_stmt|;
+name|this
+operator|.
+name|lastTxId
+operator|=
+name|lastTxId
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFirstTxId ()
+specifier|public
+name|long
+name|getFirstTxId
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|firstTxId
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLastTxId ()
+specifier|public
+name|long
+name|getLastTxId
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|lastTxId
+return|;
 block|}
 annotation|@
 name|Override
@@ -476,7 +576,13 @@ name|EditLogValidation
 argument_list|(
 literal|0
 argument_list|,
-literal|0
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+argument_list|,
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
 argument_list|)
 return|;
 block|}
@@ -549,7 +655,7 @@ if|if
 condition|(
 name|logVersion
 operator|<
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 condition|)
@@ -565,7 +671,7 @@ name|logVersion
 operator|+
 literal|". Current version = "
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 operator|+

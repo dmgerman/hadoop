@@ -250,6 +250,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlocks
 import|;
 end_import
@@ -268,7 +284,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1847,6 +1863,20 @@ argument_list|,
 name|u2g_map
 argument_list|)
 expr_stmt|;
+comment|// Reset default lease periods
+name|cluster
+operator|.
+name|setLeasePeriod
+argument_list|(
+name|HdfsConstants
+operator|.
+name|LEASE_SOFTLIMIT_PERIOD
+argument_list|,
+name|HdfsConstants
+operator|.
+name|LEASE_HARDLIMIT_PERIOD
+argument_list|)
+expr_stmt|;
 comment|//create a file
 comment|// create a random file name
 name|String
@@ -2400,7 +2430,7 @@ name|originalLeaseHolder
 operator|.
 name|equals
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|)
@@ -2513,7 +2543,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_RECHECK_INTERVAL
 operator|*
@@ -2524,7 +2554,7 @@ name|assertEquals
 argument_list|(
 literal|"lease holder should now be the NN"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|,
@@ -2552,7 +2582,7 @@ name|assertEquals
 argument_list|(
 literal|"lease holder should still be the NN after restart"
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|,

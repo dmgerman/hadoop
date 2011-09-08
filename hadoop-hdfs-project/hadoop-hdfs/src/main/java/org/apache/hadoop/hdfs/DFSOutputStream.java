@@ -378,7 +378,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1133,7 +1133,7 @@ name|PacketHeader
 operator|.
 name|PKT_HEADER_LEN
 operator|+
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|BYTES_IN_INTEGER
 decl_stmt|;
@@ -1411,7 +1411,7 @@ block|}
 name|int
 name|pktLen
 init|=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|BYTES_IN_INTEGER
 operator|+
@@ -1438,7 +1438,7 @@ name|PKT_HEADER_LEN
 operator|+
 name|pktLen
 operator|-
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|BYTES_IN_INTEGER
 argument_list|)
@@ -3951,7 +3951,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -4850,7 +4850,7 @@ argument_list|,
 name|writeTimeout
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -5558,7 +5558,7 @@ name|sock
 operator|.
 name|setSendBufferSize
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)

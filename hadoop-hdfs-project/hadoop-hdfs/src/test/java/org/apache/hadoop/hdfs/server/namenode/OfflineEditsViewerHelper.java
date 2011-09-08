@@ -286,7 +286,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -937,7 +937,7 @@ name|pathDirectoryMkdir
 argument_list|,
 literal|1000L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 argument_list|)
@@ -1313,7 +1313,7 @@ name|callGetBlockLocations
 argument_list|(
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 argument_list|,
 name|filePath
@@ -1338,7 +1338,7 @@ comment|// Force a roll so we get an OP_END_LOG_SEGMENT txn
 return|return
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|rollEditLog

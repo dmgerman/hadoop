@@ -1125,7 +1125,8 @@ literal|2
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1134,7 +1135,8 @@ name|validLength
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Back up the uncorrupted log
@@ -1236,7 +1238,8 @@ literal|1
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1245,7 +1248,8 @@ name|txOffset
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Restore backup, truncate the file with one byte in the txn,
@@ -1293,7 +1297,8 @@ literal|1
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1302,7 +1307,8 @@ name|txOffset
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Restore backup, corrupt the txn opcode
@@ -1343,7 +1349,8 @@ literal|1
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1352,7 +1359,8 @@ name|txOffset
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Restore backup, corrupt a byte a few bytes into the txn
@@ -1399,7 +1407,8 @@ literal|1
 argument_list|,
 name|validation
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1408,7 +1417,8 @@ name|txOffset
 argument_list|,
 name|validation
 operator|.
-name|validLength
+name|getValidLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1465,7 +1475,8 @@ name|assertTrue
 argument_list|(
 name|val
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 operator|>=
 name|prevNumValid
 argument_list|)
@@ -1474,7 +1485,8 @@ name|prevNumValid
 operator|=
 name|val
 operator|.
-name|numTransactions
+name|getNumTransactions
+argument_list|()
 expr_stmt|;
 block|}
 block|}

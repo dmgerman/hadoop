@@ -178,6 +178,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|YarnException
@@ -2543,7 +2557,7 @@ operator|.
 name|clientRM
 return|;
 block|}
-comment|/**    * return the scheduler.    * @return    */
+comment|/**    * return the scheduler.    * @return the scheduler for the Resource Manager.    */
 annotation|@
 name|Private
 DECL|method|getResourceScheduler ()
@@ -2558,7 +2572,7 @@ operator|.
 name|scheduler
 return|;
 block|}
-comment|/**    * return the resource tracking component.    * @return    */
+comment|/**    * return the resource tracking component.    * @return the resource tracking component.    */
 annotation|@
 name|Private
 DECL|method|getResourceTrackerService ()
@@ -2626,6 +2640,19 @@ name|argv
 index|[]
 parameter_list|)
 block|{
+name|StringUtils
+operator|.
+name|startupShutdownMessage
+argument_list|(
+name|ResourceManager
+operator|.
+name|class
+argument_list|,
+name|argv
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
 name|ResourceManager
 name|resourceManager
 init|=

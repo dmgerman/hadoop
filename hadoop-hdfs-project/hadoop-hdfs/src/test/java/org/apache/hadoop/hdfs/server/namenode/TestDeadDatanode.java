@@ -624,7 +624,7 @@ name|dnp
 init|=
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 decl_stmt|;
 name|ReceivedDeletedBlockInfo

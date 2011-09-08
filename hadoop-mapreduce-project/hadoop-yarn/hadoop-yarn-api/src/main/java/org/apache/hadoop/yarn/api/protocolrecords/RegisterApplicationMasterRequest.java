@@ -28,6 +28,86 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|AMRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -38,17 +118,35 @@ name|ApplicationAttemptId
 import|;
 end_import
 
+begin_comment
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|RegisterApplicationMasterRequest
 specifier|public
 interface|interface
 name|RegisterApplicationMasterRequest
 block|{
+comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getApplicationAttemptId ()
 name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed      *                             by the<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setApplicationAttemptId
@@ -57,11 +155,21 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @return<em>host</em> on which the<code>ApplicationMaster</code> is running    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getHost ()
 name|String
 name|getHost
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @param host<em>host</em> on which the<code>ApplicationMaster</code>     *             is running    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setHost (String host)
 name|void
 name|setHost
@@ -70,11 +178,21 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>RPC port</em> on which the<code>ApplicationMaster</code>     * is responding.     * @return the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *         responding    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getRpcPort ()
 name|int
 name|getRpcPort
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<em>RPC port<em> on which the<code>ApplicationMaster</code> is     * responding.    * @param port<em>RPC port<em> on which the<code>ApplicationMaster</code> is     *             responding    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setRpcPort (int port)
 name|void
 name|setRpcPort
@@ -83,17 +201,27 @@ name|int
 name|port
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @return<em>tracking URL</em> for the<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getTrackingUrl ()
 name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-DECL|method|setTrackingUrl (String string)
+comment|/**    * Set the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @param trackingUrl<em>tracking URL</em> for the     *<code>ApplicationMaster</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setTrackingUrl (String trackingUrl)
 name|void
 name|setTrackingUrl
 parameter_list|(
 name|String
-name|string
+name|trackingUrl
 parameter_list|)
 function_decl|;
 block|}

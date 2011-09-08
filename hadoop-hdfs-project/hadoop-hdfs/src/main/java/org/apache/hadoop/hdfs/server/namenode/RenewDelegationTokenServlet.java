@@ -429,6 +429,9 @@ block|{
 return|return
 name|nn
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|renewDelegationToken
 argument_list|(
 name|token

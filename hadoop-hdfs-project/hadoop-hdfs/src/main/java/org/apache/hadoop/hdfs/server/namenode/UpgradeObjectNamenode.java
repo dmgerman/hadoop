@@ -58,7 +58,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -130,14 +130,14 @@ name|IOException
 function_decl|;
 DECL|method|getType ()
 specifier|public
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 name|getType
 parameter_list|()
 block|{
 return|return
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NodeType
 operator|.

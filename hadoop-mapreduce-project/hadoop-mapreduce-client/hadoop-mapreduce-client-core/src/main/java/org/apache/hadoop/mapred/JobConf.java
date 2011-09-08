@@ -1007,7 +1007,7 @@ name|LOCAL_DIR
 argument_list|)
 return|;
 block|}
-comment|/**    * Use MRAsyncDiskService.moveAndDeleteAllVolumes instead.    * @see org.apache.hadoop.mapreduce.util.MRAsyncDiskService#cleanupAllVolumes()    */
+comment|/**    * Use MRAsyncDiskService.moveAndDeleteAllVolumes instead.    */
 annotation|@
 name|Deprecated
 DECL|method|deleteLocalFiles ()

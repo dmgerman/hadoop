@@ -209,6 +209,13 @@ name|long
 name|getFinishTime
 parameter_list|()
 function_decl|;
+comment|/**    * @return the port shuffle is on.    */
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

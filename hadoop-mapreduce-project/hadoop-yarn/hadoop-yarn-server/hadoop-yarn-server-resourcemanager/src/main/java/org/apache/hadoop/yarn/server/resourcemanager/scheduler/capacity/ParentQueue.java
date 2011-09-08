@@ -3183,8 +3183,36 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateResource (Resource clusterResource)
+DECL|method|updateClusterResource (Resource clusterResource)
 specifier|public
+specifier|synchronized
+name|void
+name|updateClusterResource
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|)
+block|{
+comment|// Update all children
+for|for
+control|(
+name|Queue
+name|childQueue
+range|:
+name|childQueues
+control|)
+block|{
+name|childQueue
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateResource (Resource clusterResource)
+specifier|private
 specifier|synchronized
 name|void
 name|updateResource

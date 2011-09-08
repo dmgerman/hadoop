@@ -2101,7 +2101,7 @@ comment|// Simulate a 2NN beginning a checkpoint, but not finishing. This will
 comment|// cause name1 to be restored.
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|rollEditLog

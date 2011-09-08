@@ -552,7 +552,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -568,7 +568,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 import|;
@@ -586,7 +586,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -604,7 +604,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|UpgradeAction
 import|;
@@ -854,7 +854,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1386,7 +1386,7 @@ name|getInt
 argument_list|(
 name|DFS_DATANODE_SOCKET_WRITE_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)
@@ -1425,7 +1425,7 @@ name|getInt
 argument_list|(
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1939,7 +1939,7 @@ name|dfsClientConf
 operator|.
 name|confTime
 operator|+
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT_EXTENSION
 operator|*
@@ -1965,7 +1965,7 @@ operator|>
 literal|0
 condition|?
 operator|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT_EXTENSION
 operator|*
@@ -4687,7 +4687,7 @@ argument_list|(
 name|sock
 argument_list|)
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SMALL_BUFFER_SIZE
 argument_list|)
@@ -5418,7 +5418,7 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @see ClientProtocol#setSafeMode(FSConstants.SafeModeAction)    */
+comment|/**    * Enter, leave or get safe mode.    *     * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction)    */
 DECL|method|setSafeMode (SafeModeAction action)
 specifier|public
 name|boolean
@@ -5565,7 +5565,7 @@ name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @see ClientProtocol#distributedUpgradeProgress(FSConstants.UpgradeAction)    */
+comment|/**    * @see ClientProtocol#distributedUpgradeProgress(HdfsConstants.UpgradeAction)    */
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
 specifier|public
 name|UpgradeStatusReport
@@ -5920,13 +5920,13 @@ literal|0
 operator|&&
 name|namespaceQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|namespaceQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 operator|)
@@ -5938,13 +5938,13 @@ literal|0
 operator|&&
 name|diskspaceQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|diskspaceQuota
 operator|!=
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|QUOTA_RESET
 operator|)

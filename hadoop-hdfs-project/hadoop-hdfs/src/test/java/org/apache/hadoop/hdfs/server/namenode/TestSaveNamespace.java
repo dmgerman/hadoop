@@ -304,7 +304,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -324,7 +324,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|NamenodeRole
 import|;
@@ -521,7 +521,7 @@ name|StorageDirectory
 operator|)
 name|args
 index|[
-literal|0
+literal|1
 index|]
 decl_stmt|;
 if|if
@@ -644,8 +644,9 @@ expr_stmt|;
 name|FSNamesystem
 name|fsn
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -730,6 +731,13 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+name|fsn
+argument_list|)
+argument_list|,
 operator|(
 name|StorageDirectory
 operator|)
@@ -765,6 +773,13 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+name|fsn
+argument_list|)
+argument_list|,
 operator|(
 name|StorageDirectory
 operator|)
@@ -800,6 +815,13 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+name|fsn
+argument_list|)
+argument_list|,
 operator|(
 name|StorageDirectory
 operator|)
@@ -979,8 +1001,9 @@ comment|// Start a new namesystem, which should be able to recover
 comment|// the namespace from the previous incarnation.
 name|fsn
 operator|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1069,8 +1092,9 @@ expr_stmt|;
 name|FSNamesystem
 name|fsn
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1314,8 +1338,9 @@ argument_list|)
 expr_stmt|;
 name|fsn
 operator|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1572,8 +1597,9 @@ expr_stmt|;
 name|FSNamesystem
 name|fsn
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1670,6 +1696,13 @@ argument_list|)
 operator|.
 name|saveFSImage
 argument_list|(
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+name|fsn
+argument_list|)
+argument_list|,
 operator|(
 name|StorageDirectory
 operator|)
@@ -1782,8 +1815,9 @@ comment|// Start a new namesystem, which should be able to recover
 comment|// the namespace from the previous incarnation.
 name|fsn
 operator|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1851,8 +1885,9 @@ expr_stmt|;
 name|FSNamesystem
 name|fsn
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1920,8 +1955,9 @@ comment|// Start a new namesystem, which should be able to recover
 comment|// the namespace from the previous incarnation.
 name|fsn
 operator|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -1996,8 +2032,9 @@ expr_stmt|;
 name|FSNamesystem
 name|fsn
 init|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)
@@ -2100,8 +2137,9 @@ literal|null
 expr_stmt|;
 name|fsn
 operator|=
-operator|new
 name|FSNamesystem
+operator|.
+name|loadFromDisk
 argument_list|(
 name|conf
 argument_list|)

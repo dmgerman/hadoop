@@ -32,7 +32,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
 import|;
@@ -170,7 +170,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|StartupOption
 import|;
@@ -261,6 +261,20 @@ operator|.
 name|tools
 operator|.
 name|DFSAdmin
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -361,12 +375,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Attempts to start a NameNode with the given operation.  Starting    * the NameNode should throw an exception.    */
-DECL|method|startNameNodeShouldFail (StartupOption operation)
+DECL|method|startNameNodeShouldFail (StartupOption operation, String exceptionSubstring)
 name|void
 name|startNameNodeShouldFail
 parameter_list|(
 name|StartupOption
 name|operation
+parameter_list|,
+name|String
+name|exceptionSubstring
 parameter_list|)
 block|{
 try|try
@@ -422,11 +439,15 @@ name|Exception
 name|expected
 parameter_list|)
 block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+name|exceptionSubstring
+argument_list|,
 name|expected
-operator|=
-literal|null
+argument_list|)
 expr_stmt|;
-comment|// expected
 block|}
 block|}
 comment|/**    * Attempts to start a DataNode with the given operation.  Starting    * the DataNode should throw an exception.    */
@@ -628,6 +649,8 @@ argument_list|(
 name|StartupOption
 operator|.
 name|REGULAR
+argument_list|,
+literal|"contains an old layout version"
 argument_list|)
 expr_stmt|;
 name|log
@@ -691,6 +714,8 @@ argument_list|(
 name|StartupOption
 operator|.
 name|REGULAR
+argument_list|,
+literal|"Previous distributed upgrade was not completed"
 argument_list|)
 expr_stmt|;
 name|log
@@ -705,6 +730,8 @@ argument_list|(
 name|StartupOption
 operator|.
 name|ROLLBACK
+argument_list|,
+literal|"Cannot rollback to storage version -7 using this version"
 argument_list|)
 expr_stmt|;
 name|log

@@ -320,7 +320,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -1845,7 +1845,7 @@ name|client
 operator|.
 name|datanodeReport
 argument_list|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|DatanodeReportType
 operator|.
@@ -2469,7 +2469,7 @@ try|try
 block|{
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|addBlock

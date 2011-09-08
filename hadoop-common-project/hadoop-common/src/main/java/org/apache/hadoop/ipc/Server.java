@@ -4519,12 +4519,9 @@ operator|new
 name|ConnectionHeader
 argument_list|()
 decl_stmt|;
-DECL|field|protocol
-name|Class
-argument_list|<
-name|?
-argument_list|>
-name|protocol
+DECL|field|protocolName
+name|String
+name|protocolName
 decl_stmt|;
 DECL|field|useSasl
 name|boolean
@@ -6489,63 +6486,13 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|String
-name|protocolClassName
-init|=
-name|header
-operator|.
-name|getProtocol
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|protocolClassName
-operator|!=
-literal|null
-condition|)
-block|{
-name|protocol
+name|protocolName
 operator|=
-name|getProtocolClass
-argument_list|(
 name|header
 operator|.
 name|getProtocol
 argument_list|()
-argument_list|,
-name|conf
-argument_list|)
 expr_stmt|;
-name|rpcDetailedMetrics
-operator|.
-name|init
-argument_list|(
-name|protocol
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|ClassNotFoundException
-name|cnfe
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unknown protocol: "
-operator|+
-name|header
-operator|.
-name|getProtocol
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|UserGroupInformation
 name|protocolUser
 init|=
@@ -7515,7 +7462,7 @@ name|call
 operator|.
 name|connection
 operator|.
-name|protocol
+name|protocolName
 argument_list|,
 name|call
 operator|.
@@ -7563,7 +7510,7 @@ name|call
 operator|.
 name|connection
 operator|.
-name|protocol
+name|protocolName
 argument_list|,
 name|call
 operator|.
@@ -8819,7 +8766,7 @@ name|getAddress
 argument_list|()
 return|;
 block|}
-comment|/**     * Called for each call.     * @deprecated Use {@link #call(Class, Writable, long)} instead    */
+comment|/**     * Called for each call.     * @deprecated Use {@link #call(String, Writable, long)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, long receiveTime)
@@ -8848,16 +8795,13 @@ argument_list|)
 return|;
 block|}
 comment|/** Called for each call. */
-DECL|method|call (Class<?> protocol, Writable param, long receiveTime)
+DECL|method|call (String protocol, Writable param, long receiveTime)
 specifier|public
 specifier|abstract
 name|Writable
 name|call
 parameter_list|(
-name|Class
-argument_list|<
-name|?
-argument_list|>
+name|String
 name|protocol
 parameter_list|,
 name|Writable

@@ -178,7 +178,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 import|;
 end_import
 
@@ -544,7 +544,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -554,7 +554,7 @@ literal|0L
 argument_list|,
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -587,7 +587,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -595,7 +595,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -914,7 +914,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -922,7 +922,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1637,7 +1637,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -1646,7 +1646,7 @@ argument_list|,
 literal|0L
 argument_list|,
 operator|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|-
@@ -2002,7 +2002,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2010,7 +2010,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2058,7 +2058,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2067,7 +2067,7 @@ argument_list|,
 literal|0L
 argument_list|,
 operator|(
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|-
@@ -2359,7 +2359,7 @@ name|updateHeartbeat
 argument_list|(
 literal|2
 operator|*
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
@@ -2367,7 +2367,7 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*

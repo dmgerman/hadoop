@@ -256,7 +256,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -662,7 +662,7 @@ block|}
 comment|// Write results to the fsimage file
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|setSafeMode
@@ -674,7 +674,7 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|getNameNodeRpc
 argument_list|()
 operator|.
 name|saveNamespace
@@ -687,13 +687,15 @@ name|FSImageTestUtil
 operator|.
 name|findLatestImageFile
 argument_list|(
+name|FSImageTestUtil
+operator|.
+name|getFSImage
+argument_list|(
 name|cluster
 operator|.
 name|getNameNode
 argument_list|()
-operator|.
-name|getFSImage
-argument_list|()
+argument_list|)
 operator|.
 name|getStorage
 argument_list|()

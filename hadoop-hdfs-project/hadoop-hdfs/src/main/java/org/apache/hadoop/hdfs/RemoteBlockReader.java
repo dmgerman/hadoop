@@ -332,7 +332,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -1682,7 +1682,7 @@ name|getOutputStream
 argument_list|(
 name|sock
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)
@@ -2124,7 +2124,7 @@ name|getOutputStream
 argument_list|(
 name|sock
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|WRITE_TIMEOUT
 argument_list|)

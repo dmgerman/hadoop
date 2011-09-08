@@ -676,7 +676,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Checks whether the provided path string is a valid job history file.    * @param pathString the path to be checked.    * @return    */
+comment|/**    * Checks whether the provided path string is a valid job history file.    * @param pathString the path to be checked.    * @return true is the path is a valid job history filename else return false    */
 DECL|method|isValidJobHistoryFileName (String pathString)
 specifier|public
 specifier|static
@@ -756,7 +756,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets a PathFilter which would match configuration files.    * @return    */
+comment|/**    * Gets a PathFilter which would match configuration files.    * @return the patch filter {@link PathFilter} for matching conf files.    */
 DECL|method|getConfFileFilter ()
 specifier|public
 specifier|static
@@ -768,7 +768,7 @@ return|return
 name|CONF_FILTER
 return|;
 block|}
-comment|/**    * Gets a PathFilter which would match job history file names.    * @return    */
+comment|/**    * Gets a PathFilter which would match job history file names.    * @return the path filter {@link PathFilter} matching job history files.    */
 DECL|method|getHistoryFileFilter ()
 specifier|public
 specifier|static
@@ -876,7 +876,7 @@ return|return
 name|doneDirPrefix
 return|;
 block|}
-comment|/**    * Gets the configured directory prefix for Done history files.    * @param conf    * @return    */
+comment|/**    * Gets the configured directory prefix for Done history files.    * @param conf the configuration object    * @return the done history directory    */
 DECL|method|getConfiguredHistoryServerDoneDirPrefix ( Configuration conf)
 specifier|public
 specifier|static
@@ -924,7 +924,7 @@ return|return
 name|doneDirPrefix
 return|;
 block|}
-comment|/**    * Gets the user directory for intermediate done history files.    * @param conf    * @return    */
+comment|/**    * Gets the user directory for intermediate done history files.    * @param conf the configuration object    * @return the intermediate done directory for jobhistory files.    */
 DECL|method|getHistoryIntermediateDoneDirForUser (Configuration conf)
 specifier|public
 specifier|static
@@ -1100,7 +1100,7 @@ operator|+
 name|SUMMARY_FILE_NAME_SUFFIX
 return|;
 block|}
-comment|/**    * Gets the conf file path for jobs in progress.    *     * @param logDir the log directory prefix.    * @param jobId the jobId.    * @param attempt attempt number for this job.    * @return    */
+comment|/**    * Gets the conf file path for jobs in progress.    *     * @param logDir the log directory prefix.    * @param jobId the jobId.    * @param attempt attempt number for this job.    * @return the conf file path for jobs in progress.    */
 DECL|method|getStagingConfFile (Path logDir, JobId jobId, int attempt)
 specifier|public
 specifier|static
@@ -1158,7 +1158,7 @@ return|return
 name|jobFilePath
 return|;
 block|}
-comment|/**    * Gets the serial number part of the path based on the jobId and serialNumber format.    * @param id    * @param serialNumberFormat    * @return    */
+comment|/**    * Gets the serial number part of the path based on the jobId and serialNumber format.    * @param id    * @param serialNumberFormat    * @return the serial number part of the patch based on the jobId and serial number format.    */
 DECL|method|serialNumberDirectoryComponent (JobId id, String serialNumberFormat)
 specifier|public
 specifier|static
@@ -1198,7 +1198,7 @@ name|SERIAL_NUMBER_DIRECTORY_DIGITS
 argument_list|)
 return|;
 block|}
-comment|/**Extracts the timstamp component from the path.    * @param path    * @return    */
+comment|/**Extracts the timstamp component from the path.    * @param path    * @return the timestamp component from the path    */
 DECL|method|getTimestampPartFromPath (String path)
 specifier|public
 specifier|static
@@ -1254,7 +1254,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Gets the history subdirectory based on the jobId, timestamp and serial number format.    * @param id    * @param timestampComponent    * @param serialNumberFormat    * @return    */
+comment|/**    * Gets the history subdirectory based on the jobId, timestamp and serial number format.    * @param id    * @param timestampComponent    * @param serialNumberFormat    * @return the history sub directory based on the jobid, timestamp and serial number format    */
 DECL|method|historyLogSubdirectory (JobId id, String timestampComponent, String serialNumberFormat)
 specifier|public
 specifier|static
@@ -1307,7 +1307,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Gets the timestamp component based on millisecond time.    * @param millisecondTime    * @param debugMode    * @return    */
+comment|/**    * Gets the timestamp component based on millisecond time.    * @param millisecondTime    * @param debugMode    * @return the timestamp component based on millisecond time    */
 DECL|method|timestampDirectoryComponent (long millisecondTime, boolean debugMode)
 specifier|public
 specifier|static
@@ -1422,7 +1422,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Computes a serial number used as part of directory naming for the given jobId.    * @param id the jobId.    * @return    */
+comment|/**    * Computes a serial number used as part of directory naming for the given jobId.    * @param id the jobId.    * @return the serial number used as part of directory naming for the given jobid    */
 DECL|method|jobSerialNumber (JobId id)
 specifier|public
 specifier|static

@@ -380,6 +380,28 @@ name|job
 operator|.
 name|event
 operator|.
+name|TaskAttemptContainerLaunchedEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|job
+operator|.
+name|event
+operator|.
 name|TaskAttemptEvent
 import|;
 end_import
@@ -1088,6 +1110,9 @@ decl_stmt|;
 comment|// after "launching," send launched event to task attempt to move
 comment|// state from ASSIGNED to RUNNING (also nukes "remoteTask", so must
 comment|// do getRemoteTask() call first)
+comment|//There is no port number because we are not really talking to a task
+comment|// tracker.  The shuffle is just done through local files.  So the
+comment|// port number is set to -1 in this case.
 name|context
 operator|.
 name|getEventHandler
@@ -1096,13 +1121,12 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|TaskAttemptEvent
+name|TaskAttemptContainerLaunchedEvent
 argument_list|(
 name|attemptID
 argument_list|,
-name|TaskAttemptEventType
-operator|.
-name|TA_CONTAINER_LAUNCHED
+operator|-
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

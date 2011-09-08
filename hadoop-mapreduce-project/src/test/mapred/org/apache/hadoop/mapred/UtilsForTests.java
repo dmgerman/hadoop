@@ -1191,6 +1191,7 @@ name|contents
 return|;
 block|}
 DECL|method|slurpHadoop (Path p, FileSystem fs)
+specifier|public
 specifier|static
 name|String
 name|slurpHadoop

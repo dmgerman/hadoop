@@ -136,7 +136,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|FSConstants
+name|HdfsConstants
 operator|.
 name|SafeModeAction
 import|;
@@ -831,6 +831,9 @@ argument_list|)
 expr_stmt|;
 name|nn
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|setSafeMode
 argument_list|(
 name|SafeModeAction
@@ -840,10 +843,16 @@ argument_list|)
 expr_stmt|;
 name|nn
 operator|.
+name|getRpcServer
+argument_list|()
+operator|.
 name|saveNamespace
 argument_list|()
 expr_stmt|;
 name|nn
+operator|.
+name|getRpcServer
+argument_list|()
 operator|.
 name|setSafeMode
 argument_list|(

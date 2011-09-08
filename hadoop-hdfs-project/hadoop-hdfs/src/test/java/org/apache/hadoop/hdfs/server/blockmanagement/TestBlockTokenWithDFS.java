@@ -458,7 +458,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsConstants
+name|HdfsServerConstants
 import|;
 end_import
 
@@ -477,6 +477,24 @@ operator|.
 name|namenode
 operator|.
 name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamenodeProtocols
 import|;
 end_import
 
@@ -1034,7 +1052,7 @@ name|connect
 argument_list|(
 name|targetAddr
 argument_list|,
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1043,7 +1061,7 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
-name|HdfsConstants
+name|HdfsServerConstants
 operator|.
 name|READ_TIMEOUT
 argument_list|)
@@ -1939,6 +1957,15 @@ name|getNameNode
 argument_list|()
 decl_stmt|;
 specifier|final
+name|NamenodeProtocols
+name|nnProto
+init|=
+name|nn
+operator|.
+name|getRpcServer
+argument_list|()
+decl_stmt|;
+specifier|final
 name|BlockManager
 name|bm
 init|=
@@ -2075,7 +2102,7 @@ name|LocatedBlock
 argument_list|>
 name|locatedBlocks
 init|=
-name|nn
+name|nnProto
 operator|.
 name|getBlockLocations
 argument_list|(

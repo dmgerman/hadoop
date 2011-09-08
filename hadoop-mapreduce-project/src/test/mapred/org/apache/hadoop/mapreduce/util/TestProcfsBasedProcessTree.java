@@ -3123,8 +3123,6 @@ parameter_list|(
 name|File
 name|procfsRootDir
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// cleanup any existing process root dir.
 if|if

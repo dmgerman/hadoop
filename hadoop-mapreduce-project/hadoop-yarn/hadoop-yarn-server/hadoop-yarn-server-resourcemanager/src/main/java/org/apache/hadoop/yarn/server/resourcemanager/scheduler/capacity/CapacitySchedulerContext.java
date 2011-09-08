@@ -52,22 +52,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
-operator|.
-name|EventHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -132,6 +116,11 @@ function_decl|;
 DECL|method|getRMContext ()
 name|RMContext
 name|getRMContext
+parameter_list|()
+function_decl|;
+DECL|method|getClusterResources ()
+name|Resource
+name|getClusterResources
 parameter_list|()
 function_decl|;
 block|}

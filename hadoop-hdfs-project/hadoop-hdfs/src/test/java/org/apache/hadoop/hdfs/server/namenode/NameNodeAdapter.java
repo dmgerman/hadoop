@@ -232,7 +232,15 @@ name|namenode
 parameter_list|)
 block|{
 return|return
+operator|(
+operator|(
+name|NameNodeRpcServer
+operator|)
 name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|)
 operator|.
 name|server
 return|;
