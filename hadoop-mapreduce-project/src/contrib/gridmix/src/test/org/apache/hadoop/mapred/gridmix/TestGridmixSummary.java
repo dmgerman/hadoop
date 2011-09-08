@@ -977,7 +977,9 @@ name|createReaderThread
 parameter_list|()
 block|{
 return|return
-literal|null
+operator|new
+name|Thread
+argument_list|()
 return|;
 block|}
 block|}
@@ -1437,7 +1439,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Mismatch in trace signature"
+literal|"Mismatch in trace filename"
 argument_list|,
 name|qPath
 operator|.
@@ -1613,7 +1615,7 @@ expr_stmt|;
 comment|// test missing expected data size
 name|assertEquals
 argument_list|(
-literal|"Mismatch in trace signature"
+literal|"Mismatch in trace data size"
 argument_list|,
 name|Summarizer
 operator|.
@@ -1742,6 +1744,52 @@ argument_list|,
 name|es
 operator|.
 name|getInputTraceSignature
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// finalize trace identifier '-' input
+name|es
+operator|.
+name|finalize
+argument_list|(
+name|factory
+argument_list|,
+literal|"-"
+argument_list|,
+literal|0L
+argument_list|,
+name|resolver
+argument_list|,
+name|dataStats
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Mismatch in trace signature"
+argument_list|,
+name|Summarizer
+operator|.
+name|NA
+argument_list|,
+name|es
+operator|.
+name|getInputTraceSignature
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Mismatch in trace file location"
+argument_list|,
+name|Summarizer
+operator|.
+name|NA
+argument_list|,
+name|es
+operator|.
+name|getInputTraceLocation
 argument_list|()
 argument_list|)
 expr_stmt|;
