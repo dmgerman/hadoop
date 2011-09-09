@@ -184,15 +184,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/** Stop this proxy. */
-DECL|method|stopProxy (Object proxy)
-name|void
-name|stopProxy
-parameter_list|(
-name|Object
-name|proxy
-parameter_list|)
-function_decl|;
 comment|/** Expert: Make multiple, parallel calls to a set of servers. */
 DECL|method|call (Method method, Object[][] params, InetSocketAddress[] addrs, UserGroupInformation ticket, Configuration conf)
 name|Object
