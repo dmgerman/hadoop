@@ -106,11 +106,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|conf
 operator|.
-name|nodemanager
-operator|.
-name|Context
+name|YarnConfiguration
 import|;
 end_import
 
@@ -128,7 +126,7 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|NMConfig
+name|Context
 import|;
 end_import
 
@@ -310,13 +308,13 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|NM_HTTP_BIND_ADDRESS
+name|NM_WEBAPP_ADDRESS
 argument_list|,
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_HTTP_BIND_ADDRESS
+name|DEFAULT_NM_WEBAPP_ADDRESS
 argument_list|)
 decl_stmt|;
 name|LOG

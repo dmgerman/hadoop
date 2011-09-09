@@ -248,7 +248,7 @@ specifier|final
 name|String
 name|PREFIX
 init|=
-literal|"yarn.capacity-scheduler."
+literal|"yarn.scheduler.capacity."
 decl_stmt|;
 annotation|@
 name|Private

@@ -262,7 +262,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|TypeConverter
+name|MRJobConfig
 import|;
 end_import
 
@@ -276,9 +276,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|MRConstants
+name|TypeConverter
 import|;
 end_import
 
@@ -846,9 +844,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_INTERMEDIATE_DONE_DIR_KEY
+name|MR_HISTORY_INTERMEDIATE_DONE_DIR
 argument_list|)
 decl_stmt|;
 if|if
@@ -864,9 +862,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
-name|APPS_STAGING_DIR_KEY
+name|MR_AM_STAGING_DIR
 argument_list|)
 operator|+
 literal|"/history/done_intermediate"
@@ -894,9 +892,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_DONE_DIR_KEY
+name|MR_HISTORY_DONE_DIR
 argument_list|)
 decl_stmt|;
 if|if
@@ -912,9 +910,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
-name|APPS_STAGING_DIR_KEY
+name|MR_AM_STAGING_DIR
 argument_list|)
 operator|+
 literal|"/history/done"
@@ -973,9 +971,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|JHConfig
+name|MRJobConfig
 operator|.
-name|CREATE_HISTORY_INTERMEDIATE_BASE_DIR_KEY
+name|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 argument_list|,
 literal|true
 argument_list|)
@@ -2191,13 +2189,13 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HS_WEBAPP_BIND_ADDRESS
+name|MR_HISTORY_WEBAPP_ADDRESS
 argument_list|,
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|DEFAULT_HS_WEBAPP_BIND_ADDRESS
+name|DEFAULT_MR_HISTORY_WEBAPP_ADDRESS
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress

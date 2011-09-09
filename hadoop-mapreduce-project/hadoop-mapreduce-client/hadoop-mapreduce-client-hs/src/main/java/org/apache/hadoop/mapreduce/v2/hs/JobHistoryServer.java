@@ -100,7 +100,7 @@ name|v2
 operator|.
 name|jobhistory
 operator|.
-name|JHConfig
+name|JHAdminConfig
 import|;
 end_import
 
@@ -355,13 +355,13 @@ name|login
 argument_list|(
 name|conf
 argument_list|,
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HS_KEYTAB_KEY
+name|MR_HISTORY_KEYTAB
 argument_list|,
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HS_SERVER_PRINCIPAL_KEY
+name|MR_HISTORY_PRINCIPAL
 argument_list|)
 expr_stmt|;
 block|}

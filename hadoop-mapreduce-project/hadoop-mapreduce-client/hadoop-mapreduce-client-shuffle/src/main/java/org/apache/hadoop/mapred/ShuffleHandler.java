@@ -712,11 +712,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|conf
 operator|.
-name|nodemanager
-operator|.
-name|NMConfig
+name|YarnConfiguration
 import|;
 end_import
 
@@ -2150,9 +2148,9 @@ init|=
 operator|new
 name|LocalDirAllocator
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|NM_LOCAL_DIR
+name|NM_LOCAL_DIRS
 argument_list|)
 decl_stmt|;
 DECL|field|port

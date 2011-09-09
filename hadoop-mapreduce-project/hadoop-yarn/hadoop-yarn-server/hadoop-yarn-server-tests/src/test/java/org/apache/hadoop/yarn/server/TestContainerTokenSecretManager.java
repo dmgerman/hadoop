@@ -1145,7 +1145,7 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AM_EXPIRY_INTERVAL
+name|RM_AM_EXPIRY_INTERVAL_MS
 argument_list|,
 literal|100000L
 argument_list|)
@@ -1617,11 +1617,11 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|SCHEDULER_ADDRESS
+name|RM_SCHEDULER_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_SCHEDULER_BIND_ADDRESS
+name|DEFAULT_RM_SCHEDULER_ADDRESS
 argument_list|)
 decl_stmt|;
 specifier|final

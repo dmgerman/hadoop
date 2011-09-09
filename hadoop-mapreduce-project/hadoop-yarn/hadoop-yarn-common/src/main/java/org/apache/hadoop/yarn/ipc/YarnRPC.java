@@ -130,6 +130,22 @@ name|YarnException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstraction to get the RPC implementation for Yarn.  */
 end_comment
@@ -156,25 +172,6 @@ name|YarnRPC
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|RPC_CLASSNAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RPC_CLASSNAME
-init|=
-literal|"org.apache.hadoop.yarn.ipc.YarnRPC.classname"
-decl_stmt|;
-comment|//use the default as Hadoop RPC
-DECL|field|DEFAULT_RPC
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_RPC
-init|=
-literal|"org.apache.hadoop.yarn.ipc.HadoopYarnProtoRPC"
 decl_stmt|;
 DECL|method|getProxy (Class protocol, InetSocketAddress addr, Configuration conf)
 specifier|public
@@ -242,7 +239,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|RPC_CLASSNAME
+name|YarnConfiguration
+operator|.
+name|IPC_RPC_IMPL
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -253,7 +252,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|RPC_CLASSNAME
+name|YarnConfiguration
+operator|.
+name|IPC_RPC_IMPL
 argument_list|)
 decl_stmt|;
 if|if
@@ -265,7 +266,9 @@ condition|)
 block|{
 name|clazzName
 operator|=
-name|DEFAULT_RPC
+name|YarnConfiguration
+operator|.
+name|DEFAULT_IPC_RPC_IMPL
 expr_stmt|;
 block|}
 try|try

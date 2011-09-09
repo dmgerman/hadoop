@@ -106,11 +106,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|conf
 operator|.
-name|resourcemanager
-operator|.
-name|RMConfig
+name|YarnConfiguration
 import|;
 end_import
 
@@ -163,7 +161,7 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-name|RMConfig
+name|YarnConfiguration
 operator|.
 name|RM_STORE
 argument_list|,

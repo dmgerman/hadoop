@@ -647,9 +647,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|NM_LOCAL_DIR
+name|NM_LOCAL_DIRS
 argument_list|,
 name|localDir
 operator|.
@@ -661,9 +661,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|NM_LOG_DIR
+name|NM_LOG_DIRS
 argument_list|,
 name|localLogDir
 operator|.
@@ -675,9 +675,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|REMOTE_USER_LOG_DIR
+name|NM_REMOTE_APP_LOG_DIR
 argument_list|,
 name|remoteLogDir
 operator|.

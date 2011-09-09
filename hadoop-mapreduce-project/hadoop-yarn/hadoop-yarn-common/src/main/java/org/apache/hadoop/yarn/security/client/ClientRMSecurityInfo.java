@@ -199,7 +199,7 @@ block|{
 return|return
 name|YarnConfiguration
 operator|.
-name|RM_SERVER_PRINCIPAL_KEY
+name|RM_PRINCIPAL
 return|;
 block|}
 annotation|@

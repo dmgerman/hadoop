@@ -520,7 +520,7 @@ name|v2
 operator|.
 name|jobhistory
 operator|.
-name|JHConfig
+name|JHAdminConfig
 import|;
 end_import
 
@@ -1229,9 +1229,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_DEBUG_MODE_KEY
+name|MR_HISTORY_DEBUG_MODE
 argument_list|,
 literal|false
 argument_list|)
@@ -1446,9 +1446,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_SERVER_JOBLIST_CACHE_SIZE_KEY
+name|MR_HISTORY_JOBLIST_CACHE_SIZE
 argument_list|,
 name|DEFAULT_JOBLIST_CACHE_SIZE
 argument_list|)
@@ -1459,9 +1459,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_SERVER_LOADED_JOB_CACHE_SIZE_KEY
+name|MR_HISTORY_LOADED_JOB_CACHE_SIZE
 argument_list|,
 name|DEFAULT_LOADEDJOB_CACHE_SIZE
 argument_list|)
@@ -1472,9 +1472,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_SERVER_DATESTRING_CACHE_SIZE_KEY
+name|MR_HISTORY_DATESTRING_CACHE_SIZE
 argument_list|,
 name|DEFAULT_DATESTRING_CACHE_SIZE
 argument_list|)
@@ -1485,9 +1485,9 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_SERVER_MOVE_THREAD_INTERVAL
+name|MR_HISTORY_MOVE_INTERVAL_MS
 argument_list|,
 name|DEFAULT_MOVE_THREAD_INTERVAL
 argument_list|)
@@ -1498,9 +1498,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_SERVER_NUM_MOVE_THREADS
+name|MR_HISTORY_MOVE_THREAD_COUNT
 argument_list|,
 name|DEFAULT_MOVE_THREAD_COUNT
 argument_list|)
@@ -1721,9 +1721,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|RUN_HISTORY_CLEANER_KEY
+name|MR_HISTORY_CLEANER_ENABLE
 argument_list|,
 literal|true
 argument_list|)
@@ -1740,9 +1740,9 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_MAXAGE
+name|MR_HISTORY_MAX_AGE_MS
 argument_list|,
 name|DEFAULT_HISTORY_MAX_AGE
 argument_list|)
@@ -1762,9 +1762,9 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HISTORY_CLEANER_RUN_INTERVAL
+name|MR_HISTORY_CLEANER_INTERVAL_MS
 argument_list|,
 name|DEFAULT_RUN_INTERVAL
 argument_list|)

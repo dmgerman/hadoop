@@ -258,6 +258,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -341,24 +355,6 @@ operator|.
 name|jobhistory
 operator|.
 name|FileNameIndexUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|jobhistory
-operator|.
-name|JHConfig
 import|;
 end_import
 
@@ -870,9 +866,9 @@ name|doneDirPath
 operator|+
 literal|"] + based on conf. Should ideally be created by the JobHistoryServer: "
 operator|+
-name|JHConfig
+name|MRJobConfig
 operator|.
-name|CREATE_HISTORY_INTERMEDIATE_BASE_DIR_KEY
+name|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 argument_list|)
 expr_stmt|;
 name|mkdir
@@ -908,9 +904,9 @@ name|doneDirPath
 operator|+
 literal|"] based on conf: "
 operator|+
-name|JHConfig
+name|MRJobConfig
 operator|.
-name|CREATE_HISTORY_INTERMEDIATE_BASE_DIR_KEY
+name|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 operator|+
 literal|". Either set to true or pre-create this directory with appropriate permissions"
 decl_stmt|;

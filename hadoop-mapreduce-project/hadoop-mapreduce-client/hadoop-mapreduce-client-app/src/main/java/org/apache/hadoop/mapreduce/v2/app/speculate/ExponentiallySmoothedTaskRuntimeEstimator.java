@@ -84,13 +84,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskAttemptId
+name|MRJobConfig
 import|;
 end_import
 
@@ -106,9 +100,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|api
 operator|.
-name|AMConstants
+name|records
+operator|.
+name|TaskAttemptId
 import|;
 end_import
 
@@ -591,17 +587,6 @@ name|get
 argument_list|()
 return|;
 block|}
-DECL|field|DEFAULT_EXPONENTIAL_SMOOTHING_LAMBDA_MILLISECONDS
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_EXPONENTIAL_SMOOTHING_LAMBDA_MILLISECONDS
-init|=
-literal|1000L
-operator|*
-literal|60
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|contextualize (Configuration conf, AppContext context)
@@ -631,11 +616,13 @@ name|conf
 operator|.
 name|getLong
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|EXPONENTIAL_SMOOTHING_LAMBDA_MILLISECONDS
+name|MR_AM_TASK_ESTIMATOR_SMOOTH_LAMBDA_MS
 argument_list|,
-name|DEFAULT_EXPONENTIAL_SMOOTHING_LAMBDA_MILLISECONDS
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_TASK_ESTIMATOR_SMNOOTH_LAMBDA_MS
 argument_list|)
 expr_stmt|;
 name|smoothedValue
@@ -644,9 +631,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|EXPONENTIAL_SMOOTHING_SMOOTH_RATE
+name|MR_AM_TASK_EXTIMATOR_EXPONENTIAL_RATE_ENABLE
 argument_list|,
 literal|true
 argument_list|)

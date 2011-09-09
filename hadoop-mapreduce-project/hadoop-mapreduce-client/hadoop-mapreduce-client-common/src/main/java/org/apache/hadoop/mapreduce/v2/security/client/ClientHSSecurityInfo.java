@@ -62,7 +62,7 @@ name|v2
 operator|.
 name|jobhistory
 operator|.
-name|JHConfig
+name|JHAdminConfig
 import|;
 end_import
 
@@ -201,9 +201,9 @@ name|serverPrincipal
 parameter_list|()
 block|{
 return|return
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HS_SERVER_PRINCIPAL_KEY
+name|MR_HISTORY_PRINCIPAL
 return|;
 block|}
 annotation|@

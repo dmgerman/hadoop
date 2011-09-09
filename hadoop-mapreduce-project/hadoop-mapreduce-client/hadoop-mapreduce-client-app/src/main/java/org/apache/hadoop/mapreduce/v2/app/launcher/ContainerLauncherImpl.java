@@ -200,13 +200,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskAttemptId
+name|MRJobConfig
 import|;
 end_import
 
@@ -222,9 +216,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|api
 operator|.
-name|AMConstants
+name|records
+operator|.
+name|TaskAttemptId
 import|;
 end_import
 
@@ -884,9 +880,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|CONTAINERLAUNCHER_THREADPOOL_SIZE
+name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT
 argument_list|,
 literal|10
 argument_list|)

@@ -28,15 +28,6 @@ name|WrappedProgressSplitsBlock
 extends|extends
 name|ProgressSplitsBlock
 block|{
-DECL|field|DEFAULT_NUMBER_PROGRESS_SPLITS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_NUMBER_PROGRESS_SPLITS
-init|=
-literal|12
-decl_stmt|;
 DECL|field|wrappedProgressWallclockTime
 specifier|private
 name|WrappedPeriodicStatsAccumulator
