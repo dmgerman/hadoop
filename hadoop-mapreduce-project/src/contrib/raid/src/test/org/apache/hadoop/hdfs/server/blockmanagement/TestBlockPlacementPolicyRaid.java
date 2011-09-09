@@ -92,16 +92,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -346,7 +336,93 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|*
+name|FSInodeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeRaidTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeRaidUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetworkTopology
 import|;
 end_import
 
@@ -370,6 +446,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -380,477 +466,3364 @@ specifier|public
 class|class
 name|TestBlockPlacementPolicyRaid
 block|{
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+init|=
+literal|null
+decl_stmt|;
+DECL|field|cluster
+specifier|private
+name|MiniDFSCluster
+name|cluster
+init|=
+literal|null
+decl_stmt|;
+DECL|field|namesystem
+specifier|private
+name|FSNamesystem
+name|namesystem
+init|=
+literal|null
+decl_stmt|;
+DECL|field|blockManager
+specifier|private
+name|BlockManager
+name|blockManager
+decl_stmt|;
+DECL|field|networktopology
+specifier|private
+name|NetworkTopology
+name|networktopology
+decl_stmt|;
+DECL|field|policy
+specifier|private
+name|BlockPlacementPolicyRaid
+name|policy
+init|=
+literal|null
+decl_stmt|;
+DECL|field|fs
+specifier|private
+name|FileSystem
+name|fs
+init|=
+literal|null
+decl_stmt|;
+DECL|field|rack1
+name|String
+index|[]
+name|rack1
+init|=
+block|{
+literal|"/rack1"
+block|}
+decl_stmt|;
+DECL|field|rack2
+name|String
+index|[]
+name|rack2
+init|=
+block|{
+literal|"/rack2"
+block|}
+decl_stmt|;
+DECL|field|host1
+name|String
+index|[]
+name|host1
+init|=
+block|{
+literal|"host1.rack1.com"
+block|}
+decl_stmt|;
+DECL|field|host2
+name|String
+index|[]
+name|host2
+init|=
+block|{
+literal|"host2.rack2.com"
+block|}
+decl_stmt|;
+DECL|field|xorPrefix
+name|String
+name|xorPrefix
+init|=
+literal|null
+decl_stmt|;
+DECL|field|raidTempPrefix
+name|String
+name|raidTempPrefix
+init|=
+literal|null
+decl_stmt|;
+DECL|field|raidrsTempPrefix
+name|String
+name|raidrsTempPrefix
+init|=
+literal|null
+decl_stmt|;
+DECL|field|raidrsHarTempPrefix
+name|String
+name|raidrsHarTempPrefix
+init|=
+literal|null
+decl_stmt|;
+DECL|field|LOG
+specifier|final
+specifier|static
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|TestBlockPlacementPolicyRaid
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|method|setupCluster ()
+specifier|protected
+name|void
+name|setupCluster
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|conf
+operator|=
+operator|new
+name|Configuration
+argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCKREPORT_INTERVAL_MSEC_KEY
+argument_list|,
+literal|1000L
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"dfs.replication.pending.timeout.sec"
+argument_list|,
+literal|"2"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_KEY
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"dfs.block.replicator.classname"
+argument_list|,
+name|BlockPlacementPolicyRaid
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|RaidNode
+operator|.
+name|STRIPE_LENGTH_KEY
+argument_list|,
+literal|"2"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|RaidNode
+operator|.
+name|RS_PARITY_LENGTH_KEY
+argument_list|,
+literal|"3"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BYTES_PER_CHECKSUM_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// start the cluster with one datanode first
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|format
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|racks
+argument_list|(
+name|rack1
+argument_list|)
+operator|.
+name|hosts
+argument_list|(
+name|host1
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|=
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+operator|.
+name|getNamesystem
+argument_list|()
+expr_stmt|;
+name|blockManager
+operator|=
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+expr_stmt|;
+name|networktopology
+operator|=
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNetworkTopology
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"BlockPlacementPolicy type is not correct."
+argument_list|,
+name|blockManager
+operator|.
+name|getBlockPlacementPolicy
+argument_list|()
+operator|instanceof
+name|BlockPlacementPolicyRaid
+argument_list|)
+expr_stmt|;
+name|policy
+operator|=
+operator|(
+name|BlockPlacementPolicyRaid
+operator|)
+name|blockManager
+operator|.
+name|getBlockPlacementPolicy
+argument_list|()
+expr_stmt|;
+name|fs
+operator|=
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+expr_stmt|;
+name|xorPrefix
+operator|=
+name|RaidNode
+operator|.
+name|xorDestinationPath
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+expr_stmt|;
+name|raidTempPrefix
+operator|=
+name|RaidNode
+operator|.
+name|xorTempPrefix
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|raidrsTempPrefix
+operator|=
+name|RaidNode
+operator|.
+name|rsTempPrefix
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|raidrsHarTempPrefix
+operator|=
+name|RaidNode
+operator|.
+name|rsHarTempPrefix
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that the parity files will be placed at the good locations when we    * create them.    */
 annotation|@
 name|Test
-DECL|method|testFoo ()
+DECL|method|testChooseTargetForRaidFile ()
 specifier|public
 name|void
-name|testFoo
+name|testChooseTargetForRaidFile
 parameter_list|()
-block|{   }
-comment|//  private Configuration conf = null;
-comment|//  private MiniDFSCluster cluster = null;
-comment|//  private FSNamesystem namesystem = null;
-comment|//  private BlockPlacementPolicyRaid policy = null;
-comment|//  private FileSystem fs = null;
-comment|//  String[] rack1 = {"/rack1"};
-comment|//  String[] rack2 = {"/rack2"};
-comment|//  String[] host1 = {"host1.rack1.com"};
-comment|//  String[] host2 = {"host2.rack2.com"};
-comment|//  String xorPrefix = null;
-comment|//  String raidTempPrefix = null;
-comment|//  String raidrsTempPrefix = null;
-comment|//  String raidrsHarTempPrefix = null;
-comment|//
-comment|//  final static Log LOG =
-comment|//      LogFactory.getLog(TestBlockPlacementPolicyRaid.class);
-comment|//
-comment|//  protected void setupCluster() throws IOException {
-comment|//    conf = new Configuration();
-comment|//    conf.setLong(DFSConfigKeys.DFS_BLOCKREPORT_INTERVAL_MSEC_KEY, 1000L);
-comment|//    conf.set("dfs.replication.pending.timeout.sec", "2");
-comment|//    conf.setLong(DFSConfigKeys.DFS_BLOCK_SIZE_KEY, 1L);
-comment|//    conf.set("dfs.block.replicator.classname",
-comment|//             "org.apache.hadoop.hdfs.server.namenode.BlockPlacementPolicyRaid");
-comment|//    conf.set(RaidNode.STRIPE_LENGTH_KEY, "2");
-comment|//    conf.set(RaidNode.RS_PARITY_LENGTH_KEY, "3");
-comment|//    conf.setInt(DFSConfigKeys.DFS_BYTES_PER_CHECKSUM_KEY, 1);
-comment|//    // start the cluster with one datanode first
-comment|//    cluster = new MiniDFSCluster.Builder(conf).numDataNodes(1).
-comment|//        format(true).racks(rack1).hosts(host1).build();
-comment|//    cluster.waitActive();
-comment|//    namesystem = cluster.getNameNode().getNamesystem();
-comment|//    Assert.assertTrue("BlockPlacementPolicy type is not correct.",
-comment|//      namesystem.blockManager.replicator instanceof BlockPlacementPolicyRaid);
-comment|//    policy = (BlockPlacementPolicyRaid) namesystem.blockManager.replicator;
-comment|//    fs = cluster.getFileSystem();
-comment|//    xorPrefix = RaidNode.xorDestinationPath(conf).toUri().getPath();
-comment|//    raidTempPrefix = RaidNode.xorTempPrefix(conf);
-comment|//    raidrsTempPrefix = RaidNode.rsTempPrefix(conf);
-comment|//    raidrsHarTempPrefix = RaidNode.rsHarTempPrefix(conf);
-comment|//  }
-comment|//
-comment|//  /**
-comment|//   * Test that the parity files will be placed at the good locations when we
-comment|//   * create them.
-comment|//   */
-comment|//  @Test
-comment|//  public void testChooseTargetForRaidFile() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      String src = "/dir/file";
-comment|//      String parity = raidrsTempPrefix + src;
-comment|//      DFSTestUtil.createFile(fs, new Path(src), 4, (short)1, 0L);
-comment|//      DFSTestUtil.waitReplication(fs, new Path(src), (short)1);
-comment|//      refreshPolicy();
-comment|//      setBlockPlacementPolicy(namesystem, policy);
-comment|//      // start 3 more datanodes
-comment|//      String[] racks = {"/rack2", "/rack2", "/rack2",
-comment|//                        "/rack2", "/rack2", "/rack2"};
-comment|//      String[] hosts =
-comment|//        {"host2.rack2.com", "host3.rack2.com", "host4.rack2.com",
-comment|//         "host5.rack2.com", "host6.rack2.com", "host7.rack2.com"};
-comment|//      cluster.startDataNodes(conf, 6, true, null, racks, hosts, null);
-comment|//      int numBlocks = 6;
-comment|//      DFSTestUtil.createFile(fs, new Path(parity), numBlocks, (short)2, 0L);
-comment|//      DFSTestUtil.waitReplication(fs, new Path(parity), (short)2);
-comment|//      FileStatus srcStat = fs.getFileStatus(new Path(src));
-comment|//      BlockLocation[] srcLoc =
-comment|//        fs.getFileBlockLocations(srcStat, 0, srcStat.getLen());
-comment|//      FileStatus parityStat = fs.getFileStatus(new Path(parity));
-comment|//      BlockLocation[] parityLoc =
-comment|//          fs.getFileBlockLocations(parityStat, 0, parityStat.getLen());
-comment|//      int parityLen = RaidNode.rsParityLength(conf);
-comment|//      for (int i = 0; i< numBlocks / parityLen; i++) {
-comment|//        Set<String> locations = new HashSet<String>();
-comment|//        for (int j = 0; j< srcLoc.length; j++) {
-comment|//          String [] names = srcLoc[j].getNames();
-comment|//          for (int k = 0; k< names.length; k++) {
-comment|//            LOG.info("Source block location: " + names[k]);
-comment|//            locations.add(names[k]);
-comment|//          }
-comment|//        }
-comment|//        for (int j = 0 ; j< parityLen; j++) {
-comment|//          String[] names = parityLoc[j + i * parityLen].getNames();
-comment|//          for (int k = 0; k< names.length; k++) {
-comment|//            LOG.info("Parity block location: " + names[k]);
-comment|//            Assert.assertTrue(locations.add(names[k]));
-comment|//          }
-comment|//        }
-comment|//      }
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  /**
-comment|//   * Test that the har parity files will be placed at the good locations when we
-comment|//   * create them.
-comment|//   */
-comment|//  @Test
-comment|//  public void testChooseTargetForHarRaidFile() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      String[] racks = {"/rack2", "/rack2", "/rack2",
-comment|//                        "/rack2", "/rack2", "/rack2"};
-comment|//      String[] hosts =
-comment|//        {"host2.rack2.com", "host3.rack2.com", "host4.rack2.com",
-comment|//         "host5.rack2.com", "host6.rack2.com", "host7.rack2.com"};
-comment|//      cluster.startDataNodes(conf, 6, true, null, racks, hosts, null);
-comment|//      String harParity = raidrsHarTempPrefix + "/dir/file";
-comment|//      int numBlocks = 11;
-comment|//      DFSTestUtil.createFile(fs, new Path(harParity), numBlocks, (short)1, 0L);
-comment|//      DFSTestUtil.waitReplication(fs, new Path(harParity), (short)1);
-comment|//      FileStatus stat = fs.getFileStatus(new Path(harParity));
-comment|//      BlockLocation[] loc = fs.getFileBlockLocations(stat, 0, stat.getLen());
-comment|//      int rsParityLength = RaidNode.rsParityLength(conf);
-comment|//      for (int i = 0; i< numBlocks - rsParityLength; i++) {
-comment|//        Set<String> locations = new HashSet<String>();
-comment|//        for (int j = 0; j< rsParityLength; j++) {
-comment|//          for (int k = 0; k< loc[i + j].getNames().length; k++) {
-comment|//            // verify that every adjacent 4 blocks are on differnt nodes
-comment|//            String name = loc[i + j].getNames()[k];
-comment|//            LOG.info("Har Raid block location: " + name);
-comment|//            Assert.assertTrue(locations.add(name));
-comment|//          }
-comment|//        }
-comment|//      }
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  /**
-comment|//   * Test BlockPlacementPolicyRaid.CachedLocatedBlocks
-comment|//   * Verify that the results obtained from cache is the same as
-comment|//   * the results obtained directly
-comment|//   */
-comment|//  @Test
-comment|//  public void testCachedBlocks() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      String file1 = "/dir/file1";
-comment|//      String file2 = "/dir/file2";
-comment|//      DFSTestUtil.createFile(fs, new Path(file1), 3, (short)1, 0L);
-comment|//      DFSTestUtil.createFile(fs, new Path(file2), 4, (short)1, 0L);
-comment|//      // test blocks cache
-comment|//      CachedLocatedBlocks cachedBlocks = new CachedLocatedBlocks(namesystem);
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file1);
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file1);
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file2);
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file2);
-comment|//      try {
-comment|//        Thread.sleep(1200L);
-comment|//      } catch (InterruptedException e) {
-comment|//      }
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file2);
-comment|//      verifyCachedBlocksResult(cachedBlocks, namesystem, file1);
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  /**
-comment|//   * Test BlockPlacementPolicyRaid.CachedFullPathNames
-comment|//   * Verify that the results obtained from cache is the same as
-comment|//   * the results obtained directly
-comment|//   */
-comment|//  @Test
-comment|//  public void testCachedPathNames() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      String file1 = "/dir/file1";
-comment|//      String file2 = "/dir/file2";
-comment|//      DFSTestUtil.createFile(fs, new Path(file1), 3, (short)1, 0L);
-comment|//      DFSTestUtil.createFile(fs, new Path(file2), 4, (short)1, 0L);
-comment|//      // test full path cache
-comment|//      CachedFullPathNames cachedFullPathNames =
-comment|//          new CachedFullPathNames(namesystem);
-comment|//      FSInodeInfo inode1 = null;
-comment|//      FSInodeInfo inode2 = null;
-comment|//      NameNodeRaidTestUtil.readLock(namesystem.dir);
-comment|//      try {
-comment|//        inode1 = NameNodeRaidTestUtil.getNode(namesystem.dir, file1, true);
-comment|//        inode2 = NameNodeRaidTestUtil.getNode(namesystem.dir, file2, true);
-comment|//      } finally {
-comment|//        NameNodeRaidTestUtil.readUnLock(namesystem.dir);
-comment|//      }
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode1);
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode1);
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode2);
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode2);
-comment|//      try {
-comment|//        Thread.sleep(1200L);
-comment|//      } catch (InterruptedException e) {
-comment|//      }
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode2);
-comment|//      verifyCachedFullPathNameResult(cachedFullPathNames, inode1);
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//  /**
-comment|//   * Test the result of getCompanionBlocks() on the unraided files
-comment|//   */
-comment|//  @Test
-comment|//  public void testGetCompanionBLocks() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      String file1 = "/dir/file1";
-comment|//      String file2 = "/raid/dir/file2";
-comment|//      String file3 = "/raidrs/dir/file3";
-comment|//      // Set the policy to default policy to place the block in the default way
-comment|//      setBlockPlacementPolicy(namesystem, new BlockPlacementPolicyDefault(
-comment|//          conf, namesystem, namesystem.clusterMap));
-comment|//      DFSTestUtil.createFile(fs, new Path(file1), 3, (short)1, 0L);
-comment|//      DFSTestUtil.createFile(fs, new Path(file2), 4, (short)1, 0L);
-comment|//      DFSTestUtil.createFile(fs, new Path(file3), 8, (short)1, 0L);
-comment|//      Collection<LocatedBlock> companionBlocks;
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file1).get(0).getBlock());
-comment|//      Assert.assertTrue(companionBlocks == null || companionBlocks.size() == 0);
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file1).get(2).getBlock());
-comment|//      Assert.assertTrue(companionBlocks == null || companionBlocks.size() == 0);
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file2).get(0).getBlock());
-comment|//      Assert.assertEquals(1, companionBlocks.size());
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file2).get(3).getBlock());
-comment|//      Assert.assertEquals(1, companionBlocks.size());
-comment|//
-comment|//      int rsParityLength = RaidNode.rsParityLength(conf);
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file3).get(0).getBlock());
-comment|//      Assert.assertEquals(rsParityLength, companionBlocks.size());
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file3).get(4).getBlock());
-comment|//      Assert.assertEquals(rsParityLength, companionBlocks.size());
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, getBlocks(namesystem, file3).get(6).getBlock());
-comment|//      Assert.assertEquals(2, companionBlocks.size());
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  static void setBlockPlacementPolicy(
-comment|//      FSNamesystem namesystem, BlockPlacementPolicy policy) {
-comment|//    namesystem.writeLock();
-comment|//    try {
-comment|//      namesystem.blockManager.replicator = policy;
-comment|//    } finally {
-comment|//      namesystem.writeUnlock();
-comment|//    }
-comment|//  }
-comment|//
-comment|//  /**
-comment|//   * Test BlockPlacementPolicyRaid actually deletes the correct replica.
-comment|//   * Start 2 datanodes and create 1 source file and its parity file.
-comment|//   * 1) Start host1, create the parity file with replication 1
-comment|//   * 2) Start host2, create the source file with replication 2
-comment|//   * 3) Set repliation of source file to 1
-comment|//   * Verify that the policy should delete the block with more companion blocks.
-comment|//   */
-comment|//  @Test
-comment|//  public void testDeleteReplica() throws IOException {
-comment|//    setupCluster();
-comment|//    try {
-comment|//      // Set the policy to default policy to place the block in the default way
-comment|//      setBlockPlacementPolicy(namesystem, new BlockPlacementPolicyDefault(
-comment|//          conf, namesystem, namesystem.clusterMap));
-comment|//      DatanodeDescriptor datanode1 =
-comment|//        NameNodeRaidTestUtil.getDatanodeMap(namesystem).values().iterator().next();
-comment|//      String source = "/dir/file";
-comment|//      String parity = xorPrefix + source;
-comment|//
-comment|//      final Path parityPath = new Path(parity);
-comment|//      DFSTestUtil.createFile(fs, parityPath, 3, (short)1, 0L);
-comment|//      DFSTestUtil.waitReplication(fs, parityPath, (short)1);
-comment|//
-comment|//      // start one more datanode
-comment|//      cluster.startDataNodes(conf, 1, true, null, rack2, host2, null);
-comment|//      DatanodeDescriptor datanode2 = null;
-comment|//      for (DatanodeDescriptor d : NameNodeRaidTestUtil.getDatanodeMap(namesystem).values()) {
-comment|//        if (!d.getName().equals(datanode1.getName())) {
-comment|//          datanode2 = d;
-comment|//        }
-comment|//      }
-comment|//      Assert.assertTrue(datanode2 != null);
-comment|//      cluster.waitActive();
-comment|//      final Path sourcePath = new Path(source);
-comment|//      DFSTestUtil.createFile(fs, sourcePath, 5, (short)2, 0L);
-comment|//      DFSTestUtil.waitReplication(fs, sourcePath, (short)2);
-comment|//
-comment|//      refreshPolicy();
-comment|//      Assert.assertEquals(parity,
-comment|//                          policy.getParityFile(source));
-comment|//      Assert.assertEquals(source,
-comment|//                          policy.getSourceFile(parity, xorPrefix));
-comment|//
-comment|//      List<LocatedBlock> sourceBlocks = getBlocks(namesystem, source);
-comment|//      List<LocatedBlock> parityBlocks = getBlocks(namesystem, parity);
-comment|//      Assert.assertEquals(5, sourceBlocks.size());
-comment|//      Assert.assertEquals(3, parityBlocks.size());
-comment|//
-comment|//      // verify the result of getCompanionBlocks()
-comment|//      Collection<LocatedBlock> companionBlocks;
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, sourceBlocks.get(0).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{0, 1}, new int[]{0});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, sourceBlocks.get(1).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{0, 1}, new int[]{0});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, sourceBlocks.get(2).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{2, 3}, new int[]{1});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, sourceBlocks.get(3).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{2, 3}, new int[]{1});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, sourceBlocks.get(4).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{4}, new int[]{2});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, parityBlocks.get(0).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{0, 1}, new int[]{0});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, parityBlocks.get(1).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{2, 3}, new int[]{1});
-comment|//
-comment|//      companionBlocks = getCompanionBlocks(
-comment|//          namesystem, policy, parityBlocks.get(2).getBlock());
-comment|//      verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks,
-comment|//                            new int[]{4}, new int[]{2});
-comment|//
-comment|//      // Set the policy back to raid policy. We have to create a new object
-comment|//      // here to clear the block location cache
-comment|//      refreshPolicy();
-comment|//      setBlockPlacementPolicy(namesystem, policy);
-comment|//      // verify policy deletes the correct blocks. companion blocks should be
-comment|//      // evenly distributed.
-comment|//      fs.setReplication(sourcePath, (short)1);
-comment|//      DFSTestUtil.waitReplication(fs, sourcePath, (short)1);
-comment|//      Map<String, Integer> counters = new HashMap<String, Integer>();
-comment|//      refreshPolicy();
-comment|//      for (int i = 0; i< parityBlocks.size(); i++) {
-comment|//        companionBlocks = getCompanionBlocks(
-comment|//            namesystem, policy, parityBlocks.get(i).getBlock());
-comment|//
-comment|//        counters = BlockPlacementPolicyRaid.countCompanionBlocks(
-comment|//            companionBlocks, false);
-comment|//        Assert.assertTrue(counters.get(datanode1.getName())>= 1&&
-comment|//                          counters.get(datanode1.getName())<= 2);
-comment|//        Assert.assertTrue(counters.get(datanode1.getName()) +
-comment|//                          counters.get(datanode2.getName()) ==
-comment|//                          companionBlocks.size());
-comment|//
-comment|//        counters = BlockPlacementPolicyRaid.countCompanionBlocks(
-comment|//            companionBlocks, true);
-comment|//        Assert.assertTrue(counters.get(datanode1.getParent().getName())>= 1&&
-comment|//                          counters.get(datanode1.getParent().getName())<= 2);
-comment|//        Assert.assertTrue(counters.get(datanode1.getParent().getName()) +
-comment|//                          counters.get(datanode2.getParent().getName()) ==
-comment|//                          companionBlocks.size());
-comment|//      }
-comment|//    } finally {
-comment|//      if (cluster != null) {
-comment|//        cluster.shutdown();
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  // create a new BlockPlacementPolicyRaid to clear the cache
-comment|//  private void refreshPolicy() {
-comment|//      policy = new BlockPlacementPolicyRaid();
-comment|//      policy.initialize(conf, namesystem, namesystem.clusterMap);
-comment|//  }
-comment|//
-comment|//  private void verifyCompanionBlocks(Collection<LocatedBlock> companionBlocks,
-comment|//      List<LocatedBlock> sourceBlocks, List<LocatedBlock> parityBlocks,
-comment|//      int[] sourceBlockIndexes, int[] parityBlockIndexes) {
-comment|//    Set<ExtendedBlock> blockSet = new HashSet<ExtendedBlock>();
-comment|//    for (LocatedBlock b : companionBlocks) {
-comment|//      blockSet.add(b.getBlock());
-comment|//    }
-comment|//    Assert.assertEquals(sourceBlockIndexes.length + parityBlockIndexes.length,
-comment|//                        blockSet.size());
-comment|//    for (int index : sourceBlockIndexes) {
-comment|//      Assert.assertTrue(blockSet.contains(sourceBlocks.get(index).getBlock()));
-comment|//    }
-comment|//    for (int index : parityBlockIndexes) {
-comment|//      Assert.assertTrue(blockSet.contains(parityBlocks.get(index).getBlock()));
-comment|//    }
-comment|//  }
-comment|//
-comment|//  private void verifyCachedFullPathNameResult(
-comment|//      CachedFullPathNames cachedFullPathNames, FSInodeInfo inode)
-comment|//  throws IOException {
-comment|//    String res1 = inode.getFullPathName();
-comment|//    String res2 = cachedFullPathNames.get(inode);
-comment|//    LOG.info("Actual path name: " + res1);
-comment|//    LOG.info("Cached path name: " + res2);
-comment|//    Assert.assertEquals(cachedFullPathNames.get(inode),
-comment|//                        inode.getFullPathName());
-comment|//  }
-comment|//
-comment|//  private void verifyCachedBlocksResult(CachedLocatedBlocks cachedBlocks,
-comment|//      FSNamesystem namesystem, String file) throws IOException{
-comment|//    long len = NameNodeRaidUtil.getFileInfo(namesystem, file, true).getLen();
-comment|//    List<LocatedBlock> res1 = NameNodeRaidUtil.getBlockLocations(namesystem,
-comment|//        file, 0L, len, false, false).getLocatedBlocks();
-comment|//    List<LocatedBlock> res2 = cachedBlocks.get(file);
-comment|//    for (int i = 0; i< res1.size(); i++) {
-comment|//      LOG.info("Actual block: " + res1.get(i).getBlock());
-comment|//      LOG.info("Cached block: " + res2.get(i).getBlock());
-comment|//      Assert.assertEquals(res1.get(i).getBlock(), res2.get(i).getBlock());
-comment|//    }
-comment|//  }
-comment|//
-comment|//  private Collection<LocatedBlock> getCompanionBlocks(
-comment|//      FSNamesystem namesystem, BlockPlacementPolicyRaid policy,
-comment|//      ExtendedBlock block) throws IOException {
-comment|//    INodeFile inode = namesystem.blockManager.blocksMap.getINode(block
-comment|//        .getLocalBlock());
-comment|//    FileType type = policy.getFileType(inode.getFullPathName());
-comment|//    return policy.getCompanionBlocks(inode.getFullPathName(), type,
-comment|//        block.getLocalBlock());
-comment|//  }
-comment|//
-comment|//  private List<LocatedBlock> getBlocks(FSNamesystem namesystem, String file)
-comment|//      throws IOException {
-comment|//    long len = NameNodeRaidUtil.getFileInfo(namesystem, file, true).getLen();
-comment|//    return NameNodeRaidUtil.getBlockLocations(namesystem,
-comment|//               file, 0, len, false, false).getLocatedBlocks();
-comment|//  }
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+name|src
+init|=
+literal|"/dir/file"
+decl_stmt|;
+name|String
+name|parity
+init|=
+name|raidrsTempPrefix
+operator|+
+name|src
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|src
+argument_list|)
+argument_list|,
+literal|4
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|src
+argument_list|)
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+expr_stmt|;
+name|refreshPolicy
+argument_list|()
+expr_stmt|;
+name|setBlockPlacementPolicy
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|)
+expr_stmt|;
+comment|// start 3 more datanodes
+name|String
+index|[]
+name|racks
+init|=
+block|{
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|}
+decl_stmt|;
+name|String
+index|[]
+name|hosts
+init|=
+block|{
+literal|"host2.rack2.com"
+block|,
+literal|"host3.rack2.com"
+block|,
+literal|"host4.rack2.com"
+block|,
+literal|"host5.rack2.com"
+block|,
+literal|"host6.rack2.com"
+block|,
+literal|"host7.rack2.com"
+block|}
+decl_stmt|;
+name|cluster
+operator|.
+name|startDataNodes
+argument_list|(
+name|conf
+argument_list|,
+literal|6
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+name|racks
+argument_list|,
+name|hosts
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|int
+name|numBlocks
+init|=
+literal|6
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|parity
+argument_list|)
+argument_list|,
+name|numBlocks
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|parity
+argument_list|)
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|)
+expr_stmt|;
+name|FileStatus
+name|srcStat
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|src
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|BlockLocation
+index|[]
+name|srcLoc
+init|=
+name|fs
+operator|.
+name|getFileBlockLocations
+argument_list|(
+name|srcStat
+argument_list|,
+literal|0
+argument_list|,
+name|srcStat
+operator|.
+name|getLen
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|FileStatus
+name|parityStat
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|parity
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|BlockLocation
+index|[]
+name|parityLoc
+init|=
+name|fs
+operator|.
+name|getFileBlockLocations
+argument_list|(
+name|parityStat
+argument_list|,
+literal|0
+argument_list|,
+name|parityStat
+operator|.
+name|getLen
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|int
+name|parityLen
+init|=
+name|RaidNode
+operator|.
+name|rsParityLength
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|numBlocks
+operator|/
+name|parityLen
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|locations
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|j
+init|=
+literal|0
+init|;
+name|j
+operator|<
+name|srcLoc
+operator|.
+name|length
+condition|;
+name|j
+operator|++
+control|)
+block|{
+name|String
+index|[]
+name|names
+init|=
+name|srcLoc
+index|[
+name|j
+index|]
+operator|.
+name|getNames
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|k
+init|=
+literal|0
+init|;
+name|k
+operator|<
+name|names
+operator|.
+name|length
+condition|;
+name|k
+operator|++
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Source block location: "
+operator|+
+name|names
+index|[
+name|k
+index|]
+argument_list|)
+expr_stmt|;
+name|locations
+operator|.
+name|add
+argument_list|(
+name|names
+index|[
+name|k
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+for|for
+control|(
+name|int
+name|j
+init|=
+literal|0
+init|;
+name|j
+operator|<
+name|parityLen
+condition|;
+name|j
+operator|++
+control|)
+block|{
+name|String
+index|[]
+name|names
+init|=
+name|parityLoc
+index|[
+name|j
+operator|+
+name|i
+operator|*
+name|parityLen
+index|]
+operator|.
+name|getNames
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|k
+init|=
+literal|0
+init|;
+name|k
+operator|<
+name|names
+operator|.
+name|length
+condition|;
+name|k
+operator|++
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Parity block location: "
+operator|+
+name|names
+index|[
+name|k
+index|]
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|locations
+operator|.
+name|add
+argument_list|(
+name|names
+index|[
+name|k
+index|]
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Test that the har parity files will be placed at the good locations when we    * create them.    */
+annotation|@
+name|Test
+DECL|method|testChooseTargetForHarRaidFile ()
+specifier|public
+name|void
+name|testChooseTargetForHarRaidFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+index|[]
+name|racks
+init|=
+block|{
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|,
+literal|"/rack2"
+block|}
+decl_stmt|;
+name|String
+index|[]
+name|hosts
+init|=
+block|{
+literal|"host2.rack2.com"
+block|,
+literal|"host3.rack2.com"
+block|,
+literal|"host4.rack2.com"
+block|,
+literal|"host5.rack2.com"
+block|,
+literal|"host6.rack2.com"
+block|,
+literal|"host7.rack2.com"
+block|}
+decl_stmt|;
+name|cluster
+operator|.
+name|startDataNodes
+argument_list|(
+name|conf
+argument_list|,
+literal|6
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+name|racks
+argument_list|,
+name|hosts
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|String
+name|harParity
+init|=
+name|raidrsHarTempPrefix
+operator|+
+literal|"/dir/file"
+decl_stmt|;
+name|int
+name|numBlocks
+init|=
+literal|11
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|harParity
+argument_list|)
+argument_list|,
+name|numBlocks
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|harParity
+argument_list|)
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+expr_stmt|;
+name|FileStatus
+name|stat
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|harParity
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|BlockLocation
+index|[]
+name|loc
+init|=
+name|fs
+operator|.
+name|getFileBlockLocations
+argument_list|(
+name|stat
+argument_list|,
+literal|0
+argument_list|,
+name|stat
+operator|.
+name|getLen
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|int
+name|rsParityLength
+init|=
+name|RaidNode
+operator|.
+name|rsParityLength
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|numBlocks
+operator|-
+name|rsParityLength
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|locations
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|j
+init|=
+literal|0
+init|;
+name|j
+operator|<
+name|rsParityLength
+condition|;
+name|j
+operator|++
+control|)
+block|{
+for|for
+control|(
+name|int
+name|k
+init|=
+literal|0
+init|;
+name|k
+operator|<
+name|loc
+index|[
+name|i
+operator|+
+name|j
+index|]
+operator|.
+name|getNames
+argument_list|()
+operator|.
+name|length
+condition|;
+name|k
+operator|++
+control|)
+block|{
+comment|// verify that every adjacent 4 blocks are on differnt nodes
+name|String
+name|name
+init|=
+name|loc
+index|[
+name|i
+operator|+
+name|j
+index|]
+operator|.
+name|getNames
+argument_list|()
+index|[
+name|k
+index|]
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Har Raid block location: "
+operator|+
+name|name
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|locations
+operator|.
+name|add
+argument_list|(
+name|name
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Test BlockPlacementPolicyRaid.CachedLocatedBlocks    * Verify that the results obtained from cache is the same as    * the results obtained directly    */
+annotation|@
+name|Test
+DECL|method|testCachedBlocks ()
+specifier|public
+name|void
+name|testCachedBlocks
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+name|file1
+init|=
+literal|"/dir/file1"
+decl_stmt|;
+name|String
+name|file2
+init|=
+literal|"/dir/file2"
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+literal|3
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file2
+argument_list|)
+argument_list|,
+literal|4
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+comment|// test blocks cache
+name|CachedLocatedBlocks
+name|cachedBlocks
+init|=
+operator|new
+name|CachedLocatedBlocks
+argument_list|(
+name|namesystem
+argument_list|)
+decl_stmt|;
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file1
+argument_list|)
+expr_stmt|;
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file1
+argument_list|)
+expr_stmt|;
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file2
+argument_list|)
+expr_stmt|;
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file2
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1200L
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{       }
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file2
+argument_list|)
+expr_stmt|;
+name|verifyCachedBlocksResult
+argument_list|(
+name|cachedBlocks
+argument_list|,
+name|namesystem
+argument_list|,
+name|file1
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Test BlockPlacementPolicyRaid.CachedFullPathNames    * Verify that the results obtained from cache is the same as    * the results obtained directly    */
+annotation|@
+name|Test
+DECL|method|testCachedPathNames ()
+specifier|public
+name|void
+name|testCachedPathNames
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+name|file1
+init|=
+literal|"/dir/file1"
+decl_stmt|;
+name|String
+name|file2
+init|=
+literal|"/dir/file2"
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+literal|3
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file2
+argument_list|)
+argument_list|,
+literal|4
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+comment|// test full path cache
+name|CachedFullPathNames
+name|cachedFullPathNames
+init|=
+operator|new
+name|CachedFullPathNames
+argument_list|(
+name|namesystem
+argument_list|)
+decl_stmt|;
+specifier|final
+name|FSInodeInfo
+index|[]
+name|inodes
+init|=
+name|NameNodeRaidTestUtil
+operator|.
+name|getFSInodeInfo
+argument_list|(
+name|namesystem
+argument_list|,
+name|file1
+argument_list|,
+name|file2
+argument_list|)
+decl_stmt|;
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1200L
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{       }
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|verifyCachedFullPathNameResult
+argument_list|(
+name|cachedFullPathNames
+argument_list|,
+name|inodes
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Test the result of getCompanionBlocks() on the unraided files    */
+annotation|@
+name|Test
+DECL|method|testGetCompanionBLocks ()
+specifier|public
+name|void
+name|testGetCompanionBLocks
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+name|file1
+init|=
+literal|"/dir/file1"
+decl_stmt|;
+name|String
+name|file2
+init|=
+literal|"/raid/dir/file2"
+decl_stmt|;
+name|String
+name|file3
+init|=
+literal|"/raidrs/dir/file3"
+decl_stmt|;
+comment|// Set the policy to default policy to place the block in the default way
+name|setBlockPlacementPolicy
+argument_list|(
+name|namesystem
+argument_list|,
+operator|new
+name|BlockPlacementPolicyDefault
+argument_list|(
+name|conf
+argument_list|,
+name|namesystem
+argument_list|,
+name|networktopology
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file1
+argument_list|)
+argument_list|,
+literal|3
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file2
+argument_list|)
+argument_list|,
+literal|4
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|file3
+argument_list|)
+argument_list|,
+literal|8
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|Collection
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|companionBlocks
+decl_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file1
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|companionBlocks
+operator|==
+literal|null
+operator|||
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file1
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|companionBlocks
+operator|==
+literal|null
+operator|||
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file2
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file2
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|3
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|int
+name|rsParityLength
+init|=
+name|RaidNode
+operator|.
+name|rsParityLength
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file3
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|rsParityLength
+argument_list|,
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file3
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|4
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|rsParityLength
+argument_list|,
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|file3
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|6
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|setBlockPlacementPolicy ( FSNamesystem namesystem, BlockPlacementPolicy policy)
+specifier|static
+name|void
+name|setBlockPlacementPolicy
+parameter_list|(
+name|FSNamesystem
+name|namesystem
+parameter_list|,
+name|BlockPlacementPolicy
+name|policy
+parameter_list|)
+block|{
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|setBlockPlacementPolicy
+argument_list|(
+name|policy
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Test BlockPlacementPolicyRaid actually deletes the correct replica.    * Start 2 datanodes and create 1 source file and its parity file.    * 1) Start host1, create the parity file with replication 1    * 2) Start host2, create the source file with replication 2    * 3) Set repliation of source file to 1    * Verify that the policy should delete the block with more companion blocks.    */
+annotation|@
+name|Test
+DECL|method|testDeleteReplica ()
+specifier|public
+name|void
+name|testDeleteReplica
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupCluster
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+comment|// Set the policy to default policy to place the block in the default way
+name|setBlockPlacementPolicy
+argument_list|(
+name|namesystem
+argument_list|,
+operator|new
+name|BlockPlacementPolicyDefault
+argument_list|(
+name|conf
+argument_list|,
+name|namesystem
+argument_list|,
+name|networktopology
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|DatanodeDescriptor
+name|datanode1
+init|=
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|(           )
+operator|.
+name|getDatanodeCyclicIteration
+argument_list|(
+literal|""
+argument_list|)
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+name|String
+name|source
+init|=
+literal|"/dir/file"
+decl_stmt|;
+name|String
+name|parity
+init|=
+name|xorPrefix
+operator|+
+name|source
+decl_stmt|;
+specifier|final
+name|Path
+name|parityPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|parity
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+name|parityPath
+argument_list|,
+literal|3
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+name|parityPath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// start one more datanode
+name|cluster
+operator|.
+name|startDataNodes
+argument_list|(
+name|conf
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+name|rack2
+argument_list|,
+name|host2
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|DatanodeDescriptor
+name|datanode2
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|DatanodeDescriptor
+argument_list|>
+name|e
+range|:
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|(           )
+operator|.
+name|getDatanodeCyclicIteration
+argument_list|(
+literal|""
+argument_list|)
+control|)
+block|{
+specifier|final
+name|DatanodeDescriptor
+name|d
+init|=
+name|e
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|d
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|datanode1
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|datanode2
+operator|=
+name|d
+expr_stmt|;
+block|}
+block|}
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|datanode2
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+specifier|final
+name|Path
+name|sourcePath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|source
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+name|sourcePath
+argument_list|,
+literal|5
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+name|sourcePath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|)
+expr_stmt|;
+name|refreshPolicy
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|parity
+argument_list|,
+name|policy
+operator|.
+name|getParityFile
+argument_list|(
+name|source
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|source
+argument_list|,
+name|policy
+operator|.
+name|getSourceFile
+argument_list|(
+name|parity
+argument_list|,
+name|xorPrefix
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|sourceBlocks
+init|=
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|source
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|parityBlocks
+init|=
+name|getBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|parity
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|5
+argument_list|,
+name|sourceBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|3
+argument_list|,
+name|parityBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// verify the result of getCompanionBlocks()
+name|Collection
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|companionBlocks
+decl_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|,
+literal|1
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|,
+literal|1
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|,
+literal|3
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|1
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+literal|3
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|,
+literal|3
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|1
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+literal|4
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|4
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|parityBlocks
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|,
+literal|1
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|0
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|parityBlocks
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|,
+literal|3
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|1
+block|}
+argument_list|)
+expr_stmt|;
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|parityBlocks
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verifyCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+name|sourceBlocks
+argument_list|,
+name|parityBlocks
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|4
+block|}
+argument_list|,
+operator|new
+name|int
+index|[]
+block|{
+literal|2
+block|}
+argument_list|)
+expr_stmt|;
+comment|// Set the policy back to raid policy. We have to create a new object
+comment|// here to clear the block location cache
+name|refreshPolicy
+argument_list|()
+expr_stmt|;
+name|setBlockPlacementPolicy
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|)
+expr_stmt|;
+comment|// verify policy deletes the correct blocks. companion blocks should be
+comment|// evenly distributed.
+name|fs
+operator|.
+name|setReplication
+argument_list|(
+name|sourcePath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitReplication
+argument_list|(
+name|fs
+argument_list|,
+name|sourcePath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+expr_stmt|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
+name|counters
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|refreshPolicy
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|parityBlocks
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|companionBlocks
+operator|=
+name|getCompanionBlocks
+argument_list|(
+name|namesystem
+argument_list|,
+name|policy
+argument_list|,
+name|parityBlocks
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|counters
+operator|=
+name|BlockPlacementPolicyRaid
+operator|.
+name|countCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|>=
+literal|1
+operator|&&
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|<=
+literal|2
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|+
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode2
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|==
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|counters
+operator|=
+name|BlockPlacementPolicyRaid
+operator|.
+name|countCompanionBlocks
+argument_list|(
+name|companionBlocks
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|>=
+literal|1
+operator|&&
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|<=
+literal|2
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode1
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|+
+name|counters
+operator|.
+name|get
+argument_list|(
+name|datanode2
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|==
+name|companionBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|// create a new BlockPlacementPolicyRaid to clear the cache
+DECL|method|refreshPolicy ()
+specifier|private
+name|void
+name|refreshPolicy
+parameter_list|()
+block|{
+name|policy
+operator|=
+operator|new
+name|BlockPlacementPolicyRaid
+argument_list|()
+expr_stmt|;
+name|policy
+operator|.
+name|initialize
+argument_list|(
+name|conf
+argument_list|,
+name|namesystem
+argument_list|,
+name|networktopology
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|verifyCompanionBlocks (Collection<LocatedBlock> companionBlocks, List<LocatedBlock> sourceBlocks, List<LocatedBlock> parityBlocks, int[] sourceBlockIndexes, int[] parityBlockIndexes)
+specifier|private
+name|void
+name|verifyCompanionBlocks
+parameter_list|(
+name|Collection
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|companionBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|sourceBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|parityBlocks
+parameter_list|,
+name|int
+index|[]
+name|sourceBlockIndexes
+parameter_list|,
+name|int
+index|[]
+name|parityBlockIndexes
+parameter_list|)
+block|{
+name|Set
+argument_list|<
+name|ExtendedBlock
+argument_list|>
+name|blockSet
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|ExtendedBlock
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|LocatedBlock
+name|b
+range|:
+name|companionBlocks
+control|)
+block|{
+name|blockSet
+operator|.
+name|add
+argument_list|(
+name|b
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|sourceBlockIndexes
+operator|.
+name|length
+operator|+
+name|parityBlockIndexes
+operator|.
+name|length
+argument_list|,
+name|blockSet
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|int
+name|index
+range|:
+name|sourceBlockIndexes
+control|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|blockSet
+operator|.
+name|contains
+argument_list|(
+name|sourceBlocks
+operator|.
+name|get
+argument_list|(
+name|index
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+for|for
+control|(
+name|int
+name|index
+range|:
+name|parityBlockIndexes
+control|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|blockSet
+operator|.
+name|contains
+argument_list|(
+name|parityBlocks
+operator|.
+name|get
+argument_list|(
+name|index
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|verifyCachedFullPathNameResult ( CachedFullPathNames cachedFullPathNames, FSInodeInfo inode)
+specifier|private
+name|void
+name|verifyCachedFullPathNameResult
+parameter_list|(
+name|CachedFullPathNames
+name|cachedFullPathNames
+parameter_list|,
+name|FSInodeInfo
+name|inode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|res1
+init|=
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+decl_stmt|;
+name|String
+name|res2
+init|=
+name|cachedFullPathNames
+operator|.
+name|get
+argument_list|(
+name|inode
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Actual path name: "
+operator|+
+name|res1
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cached path name: "
+operator|+
+name|res2
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|cachedFullPathNames
+operator|.
+name|get
+argument_list|(
+name|inode
+argument_list|)
+argument_list|,
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|verifyCachedBlocksResult (CachedLocatedBlocks cachedBlocks, FSNamesystem namesystem, String file)
+specifier|private
+name|void
+name|verifyCachedBlocksResult
+parameter_list|(
+name|CachedLocatedBlocks
+name|cachedBlocks
+parameter_list|,
+name|FSNamesystem
+name|namesystem
+parameter_list|,
+name|String
+name|file
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|len
+init|=
+name|NameNodeRaidUtil
+operator|.
+name|getFileInfo
+argument_list|(
+name|namesystem
+argument_list|,
+name|file
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|getLen
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|res1
+init|=
+name|NameNodeRaidUtil
+operator|.
+name|getBlockLocations
+argument_list|(
+name|namesystem
+argument_list|,
+name|file
+argument_list|,
+literal|0L
+argument_list|,
+name|len
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|)
+operator|.
+name|getLocatedBlocks
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|res2
+init|=
+name|cachedBlocks
+operator|.
+name|get
+argument_list|(
+name|file
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|res1
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Actual block: "
+operator|+
+name|res1
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cached block: "
+operator|+
+name|res2
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|res1
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|res2
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|getCompanionBlocks ( FSNamesystem namesystem, BlockPlacementPolicyRaid policy, ExtendedBlock block)
+specifier|private
+name|Collection
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|getCompanionBlocks
+parameter_list|(
+name|FSNamesystem
+name|namesystem
+parameter_list|,
+name|BlockPlacementPolicyRaid
+name|policy
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|INodeFile
+name|inode
+init|=
+name|blockManager
+operator|.
+name|blocksMap
+operator|.
+name|getINode
+argument_list|(
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|FileType
+name|type
+init|=
+name|policy
+operator|.
+name|getFileType
+argument_list|(
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|policy
+operator|.
+name|getCompanionBlocks
+argument_list|(
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+argument_list|,
+name|type
+argument_list|,
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getBlocks (FSNamesystem namesystem, String file)
+specifier|private
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|getBlocks
+parameter_list|(
+name|FSNamesystem
+name|namesystem
+parameter_list|,
+name|String
+name|file
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|len
+init|=
+name|NameNodeRaidUtil
+operator|.
+name|getFileInfo
+argument_list|(
+name|namesystem
+argument_list|,
+name|file
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|getLen
+argument_list|()
+decl_stmt|;
+return|return
+name|NameNodeRaidUtil
+operator|.
+name|getBlockLocations
+argument_list|(
+name|namesystem
+argument_list|,
+name|file
+argument_list|,
+literal|0
+argument_list|,
+name|len
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|)
+operator|.
+name|getLocatedBlocks
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
