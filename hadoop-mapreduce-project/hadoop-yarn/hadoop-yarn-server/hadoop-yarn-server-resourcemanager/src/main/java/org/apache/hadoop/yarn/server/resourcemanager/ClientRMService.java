@@ -1017,6 +1017,12 @@ specifier|final
 name|AMLivelinessMonitor
 name|amLivelinessMonitor
 decl_stmt|;
+DECL|field|rmAppManager
+specifier|private
+specifier|final
+name|RMAppManager
+name|rmAppManager
+decl_stmt|;
 DECL|field|clientServiceBindAddress
 specifier|private
 name|String
@@ -1059,7 +1065,7 @@ name|AccessControlList
 argument_list|>
 name|applicationACLs
 decl_stmt|;
-DECL|method|ClientRMService (RMContext rmContext, YarnScheduler scheduler)
+DECL|method|ClientRMService (RMContext rmContext, YarnScheduler scheduler, RMAppManager rmAppManager)
 specifier|public
 name|ClientRMService
 parameter_list|(
@@ -1068,6 +1074,9 @@ name|rmContext
 parameter_list|,
 name|YarnScheduler
 name|scheduler
+parameter_list|,
+name|RMAppManager
+name|rmAppManager
 parameter_list|)
 block|{
 name|super
@@ -1100,6 +1109,12 @@ name|rmContext
 operator|.
 name|getAMLivelinessMonitor
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rmAppManager
+operator|=
+name|rmAppManager
 expr_stmt|;
 block|}
 annotation|@
@@ -1553,15 +1568,10 @@ literal|" is already present! Cannot add a duplicate!"
 argument_list|)
 throw|;
 block|}
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
+comment|// This needs to be synchronous as the client can query
+comment|// immediately following the submission to get the application status.
+comment|// So call handle directly and do not send an event.
+name|rmAppManager
 operator|.
 name|handle
 argument_list|(

@@ -1256,6 +1256,7 @@ block|}
 block|}
 DECL|method|submitApplication (ApplicationSubmissionContext submissionContext)
 specifier|protected
+specifier|synchronized
 name|void
 name|submitApplication
 parameter_list|(
