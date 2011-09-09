@@ -34,6 +34,18 @@ name|lang
 operator|.
 name|reflect
 operator|.
+name|InvocationTargetException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|reflect
+operator|.
 name|Method
 import|;
 end_import
@@ -1571,9 +1583,7 @@ name|info
 argument_list|(
 literal|"Application state is completed. "
 operator|+
-literal|"Redirecting to job history server "
-operator|+
-name|serviceAddr
+literal|"Redirecting to job history server"
 argument_list|)
 expr_stmt|;
 name|realProxy
@@ -1825,6 +1835,34 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
+name|InvocationTargetException
+name|e
+parameter_list|)
+block|{
+comment|//TODO Finite # of errors before giving up?
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to contact AM/History for job "
+operator|+
+name|jobId
+operator|+
+literal|"  Will retry.."
+argument_list|,
+name|e
+operator|.
+name|getTargetException
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|forceRefresh
+operator|=
+literal|true
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)
@@ -1833,11 +1871,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Failed to contact AM for job "
+literal|"Failed to contact AM/History for job "
 operator|+
 name|jobId
 operator|+
 literal|"  Will retry.."
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2334,7 +2374,7 @@ literal|""
 argument_list|)
 return|;
 block|}
-DECL|method|getTaskReports (JobID jobID, TaskType taskType)
+DECL|method|getTaskReports (JobID oldJobID, TaskType taskType)
 name|org
 operator|.
 name|apache
@@ -2348,7 +2388,7 @@ index|[]
 name|getTaskReports
 parameter_list|(
 name|JobID
-name|jobID
+name|oldJobID
 parameter_list|,
 name|TaskType
 name|taskType
@@ -2358,6 +2398,30 @@ name|YarnRemoteException
 throws|,
 name|YarnRemoteException
 block|{
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|JobId
+name|jobId
+init|=
+name|TypeConverter
+operator|.
+name|toYarn
+argument_list|(
+name|oldJobID
+argument_list|)
+decl_stmt|;
 name|GetTaskReportsRequest
 name|request
 init|=
@@ -2370,6 +2434,25 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|request
+operator|.
+name|setJobId
+argument_list|(
+name|jobId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setTaskType
+argument_list|(
+name|TypeConverter
+operator|.
+name|toYarn
+argument_list|(
+name|taskType
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|org
