@@ -272,9 +272,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
+name|mapreduce
 operator|.
-name|VersionedProtocol
+name|Cluster
+operator|.
+name|JobTrackerStatus
 import|;
 end_import
 
@@ -485,22 +487,6 @@ operator|.
 name|mapreduce
 operator|.
 name|TypeConverter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|Cluster
-operator|.
-name|JobTrackerStatus
 import|;
 end_import
 
@@ -936,22 +922,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|ipc
-operator|.
-name|RPCUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -1030,6 +1000,30 @@ name|conf
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|conf
+argument_list|,
+operator|new
+name|ResourceMgrDelegate
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Similar to {@link #YARNRunner(Configuration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
+DECL|method|YARNRunner (Configuration conf, ResourceMgrDelegate resMgrDelegate)
+specifier|public
+name|YARNRunner
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ResourceMgrDelegate
+name|resMgrDelegate
+parameter_list|)
+block|{
+name|this
 operator|.
 name|conf
 operator|=
@@ -1045,13 +1039,7 @@ name|this
 operator|.
 name|resMgrDelegate
 operator|=
-operator|new
-name|ResourceMgrDelegate
-argument_list|(
-name|this
-operator|.
-name|conf
-argument_list|)
+name|resMgrDelegate
 expr_stmt|;
 name|this
 operator|.
@@ -1622,11 +1610,15 @@ name|KILLED
 condition|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
-literal|"failed to run job"
+literal|"Failed to run job : "
+operator|+
+name|appMaster
+operator|.
+name|getDiagnostics
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1746,7 +1738,7 @@ name|rsrc
 return|;
 block|}
 DECL|method|createApplicationSubmissionContext ( Configuration jobConf, String jobSubmitDir, Credentials ts)
-specifier|private
+specifier|public
 name|ApplicationSubmissionContext
 name|createApplicationSubmissionContext
 parameter_list|(
