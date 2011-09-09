@@ -3334,7 +3334,7 @@ block|}
 block|}
 block|}
 DECL|method|displayJobList (JobStatus[] jobs)
-specifier|protected
+specifier|public
 name|void
 name|displayJobList
 parameter_list|(

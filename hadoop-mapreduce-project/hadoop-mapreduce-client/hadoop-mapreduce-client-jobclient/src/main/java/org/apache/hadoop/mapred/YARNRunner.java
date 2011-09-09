@@ -1580,6 +1580,22 @@ argument_list|(
 name|applicationId
 argument_list|)
 decl_stmt|;
+name|String
+name|diagnostics
+init|=
+operator|(
+name|appMaster
+operator|==
+literal|null
+condition|?
+literal|"application report is null"
+else|:
+name|appMaster
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|appMaster
@@ -1611,10 +1627,7 @@ name|IOException
 argument_list|(
 literal|"Failed to run job : "
 operator|+
-name|appMaster
-operator|.
-name|getDiagnostics
-argument_list|()
+name|diagnostics
 argument_list|)
 throw|;
 block|}
