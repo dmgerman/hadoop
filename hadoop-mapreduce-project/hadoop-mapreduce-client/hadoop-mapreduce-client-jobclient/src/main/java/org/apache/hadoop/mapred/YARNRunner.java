@@ -991,11 +991,11 @@ name|FileContext
 name|defaultFileContext
 decl_stmt|;
 comment|/**    * Yarn runner incapsulates the client interface of    * yarn    * @param conf the configuration object for the client    */
-DECL|method|YARNRunner (Configuration conf)
+DECL|method|YARNRunner (YarnConfiguration conf)
 specifier|public
 name|YARNRunner
 parameter_list|(
-name|Configuration
+name|YarnConfiguration
 name|conf
 parameter_list|)
 block|{
@@ -1011,12 +1011,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Similar to {@link #YARNRunner(Configuration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
-DECL|method|YARNRunner (Configuration conf, ResourceMgrDelegate resMgrDelegate)
+comment|/**    * Similar to {@link #YARNRunner(YarnConfiguration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
+DECL|method|YARNRunner (YarnConfiguration conf, ResourceMgrDelegate resMgrDelegate)
 specifier|public
 name|YARNRunner
 parameter_list|(
-name|Configuration
+name|YarnConfiguration
 name|conf
 parameter_list|,
 name|ResourceMgrDelegate
@@ -1027,11 +1027,7 @@ name|this
 operator|.
 name|conf
 operator|=
-operator|new
-name|YarnConfiguration
-argument_list|(
 name|conf
-argument_list|)
 expr_stmt|;
 try|try
 block|{
