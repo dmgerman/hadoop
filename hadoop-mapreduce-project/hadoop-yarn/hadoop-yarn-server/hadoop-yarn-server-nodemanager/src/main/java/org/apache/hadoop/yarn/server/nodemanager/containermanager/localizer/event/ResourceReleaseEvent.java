@@ -28,16 +28,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -100,8 +90,6 @@ parameter_list|,
 name|ContainerId
 name|container
 parameter_list|)
-throws|throws
-name|URISyntaxException
 block|{
 name|super
 argument_list|(

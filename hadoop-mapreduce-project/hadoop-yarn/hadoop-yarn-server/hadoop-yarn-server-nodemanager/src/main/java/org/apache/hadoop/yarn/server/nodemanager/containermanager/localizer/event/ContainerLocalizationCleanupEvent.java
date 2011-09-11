@@ -109,10 +109,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|ContainerLocalizationRequestEvent
+DECL|class|ContainerLocalizationCleanupEvent
 specifier|public
 class|class
-name|ContainerLocalizationRequestEvent
+name|ContainerLocalizationCleanupEvent
 extends|extends
 name|ContainerLocalizationEvent
 block|{
@@ -130,10 +130,10 @@ argument_list|>
 DECL|field|rsrc
 name|rsrc
 decl_stmt|;
-comment|/**    * Event requesting the localization of the rsrc.    * @param c    * @param rsrc    */
-DECL|method|ContainerLocalizationRequestEvent (Container c, Map<LocalResourceVisibility, Collection<LocalResourceRequest>> rsrc)
+comment|/**    * Event requesting the cleanup of the rsrc.    * @param c    * @param rsrc    */
+DECL|method|ContainerLocalizationCleanupEvent (Container c, Map<LocalResourceVisibility, Collection<LocalResourceRequest>> rsrc)
 specifier|public
-name|ContainerLocalizationRequestEvent
+name|ContainerLocalizationCleanupEvent
 parameter_list|(
 name|Container
 name|c
@@ -154,7 +154,7 @@ name|super
 argument_list|(
 name|LocalizationEventType
 operator|.
-name|INIT_CONTAINER_RESOURCES
+name|CLEANUP_CONTAINER_RESOURCES
 argument_list|,
 name|c
 argument_list|)
@@ -176,8 +176,8 @@ argument_list|<
 name|LocalResourceRequest
 argument_list|>
 argument_list|>
-DECL|method|getRequestedResources ()
-name|getRequestedResources
+DECL|method|getResources ()
+name|getResources
 parameter_list|()
 block|{
 return|return

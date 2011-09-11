@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -760,13 +770,27 @@ decl_stmt|;
 comment|// simulate localization of all requested resources
 for|for
 control|(
+name|Collection
+argument_list|<
 name|LocalResourceRequest
-name|req
+argument_list|>
+name|rc
 range|:
 name|rsrcReqs
 operator|.
 name|getRequestedResources
 argument_list|()
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|LocalResourceRequest
+name|req
+range|:
+name|rc
 control|)
 block|{
 name|LOG
@@ -827,6 +851,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 break|break;
 case|case

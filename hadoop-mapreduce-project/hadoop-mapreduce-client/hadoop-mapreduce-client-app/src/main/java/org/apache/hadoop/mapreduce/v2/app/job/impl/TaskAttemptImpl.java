@@ -4799,8 +4799,6 @@ name|BuilderUtils
 operator|.
 name|newLocalResource
 argument_list|(
-name|recordFactory
-argument_list|,
 name|p
 operator|.
 name|toUri
