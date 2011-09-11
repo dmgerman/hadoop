@@ -1985,7 +1985,7 @@ operator|.
 name|getAMResponse
 argument_list|()
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 decl_stmt|;
 name|waitCounter
@@ -2051,7 +2051,7 @@ operator|.
 name|getAMResponse
 argument_list|()
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 expr_stmt|;
 block|}

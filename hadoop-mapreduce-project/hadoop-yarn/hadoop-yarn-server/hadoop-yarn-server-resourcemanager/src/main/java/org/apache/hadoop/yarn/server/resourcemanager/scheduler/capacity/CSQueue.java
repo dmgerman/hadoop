@@ -136,6 +136,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -430,8 +448,8 @@ name|SchedulerNode
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param event event to be sent to the container    */
-DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer container, RMContainerEventType event)
+comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param event event to be sent to the container    */
+DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|void
 name|completedContainer
@@ -447,6 +465,9 @@ name|node
 parameter_list|,
 name|RMContainer
 name|container
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event

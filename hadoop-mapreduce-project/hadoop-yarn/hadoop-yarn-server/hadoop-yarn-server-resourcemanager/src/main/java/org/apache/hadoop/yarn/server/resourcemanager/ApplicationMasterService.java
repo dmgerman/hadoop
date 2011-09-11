@@ -1642,7 +1642,7 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|addAllNewContainers
+name|setAllocatedContainers
 argument_list|(
 name|allocation
 operator|.
@@ -1652,7 +1652,7 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|addAllFinishedContainers
+name|setCompletedContainersStatuses
 argument_list|(
 name|appAttempt
 operator|.

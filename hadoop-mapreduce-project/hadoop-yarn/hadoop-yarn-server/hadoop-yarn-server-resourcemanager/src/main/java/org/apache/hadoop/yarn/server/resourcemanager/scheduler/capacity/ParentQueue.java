@@ -260,6 +260,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -3021,7 +3039,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer rmContainer, RMContainerEventType event)
+DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|void
 name|completedContainer
@@ -3037,6 +3055,9 @@ name|node
 parameter_list|,
 name|RMContainer
 name|rmContainer
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
@@ -3114,6 +3135,8 @@ argument_list|,
 name|node
 argument_list|,
 name|rmContainer
+argument_list|,
+literal|null
 argument_list|,
 name|event
 argument_list|)

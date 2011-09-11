@@ -34,16 +34,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -56,25 +46,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Container
+name|ContainerStatus
 import|;
 end_import
 
@@ -134,32 +106,27 @@ name|int
 name|getResponseId
 parameter_list|()
 function_decl|;
-DECL|method|getAllContainers ()
+DECL|method|getContainersStatuses ()
 specifier|public
 specifier|abstract
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
-argument_list|>
-name|getAllContainers
+name|getContainersStatuses
 parameter_list|()
 function_decl|;
-DECL|method|getContainers (ApplicationId key)
+DECL|method|setContainersStatuses ( List<ContainerStatus> containersStatuses)
 specifier|public
 specifier|abstract
+name|void
+name|setContainersStatuses
+parameter_list|(
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
-name|getContainers
-parameter_list|(
-name|ApplicationId
-name|key
+name|containersStatuses
 parameter_list|)
 function_decl|;
 DECL|method|getNodeHealthStatus ()
@@ -194,57 +161,6 @@ parameter_list|(
 name|int
 name|responseId
 parameter_list|)
-function_decl|;
-DECL|method|addAllContainers (Map<ApplicationId, List<Container>> containers)
-specifier|public
-specifier|abstract
-name|void
-name|addAllContainers
-parameter_list|(
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-argument_list|>
-name|containers
-parameter_list|)
-function_decl|;
-DECL|method|setContainers (ApplicationId key, List<Container> containers)
-specifier|public
-specifier|abstract
-name|void
-name|setContainers
-parameter_list|(
-name|ApplicationId
-name|key
-parameter_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|containers
-parameter_list|)
-function_decl|;
-DECL|method|removeContainers (ApplicationId key)
-specifier|public
-specifier|abstract
-name|void
-name|removeContainers
-parameter_list|(
-name|ApplicationId
-name|key
-parameter_list|)
-function_decl|;
-DECL|method|clearContainers ()
-specifier|public
-specifier|abstract
-name|void
-name|clearContainers
-parameter_list|()
 function_decl|;
 block|}
 end_interface

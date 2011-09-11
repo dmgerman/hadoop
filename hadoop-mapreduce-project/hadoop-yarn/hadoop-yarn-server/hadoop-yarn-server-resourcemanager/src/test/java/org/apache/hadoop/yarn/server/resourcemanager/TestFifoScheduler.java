@@ -647,7 +647,10 @@ while|while
 condition|(
 name|am1Response
 operator|.
-name|getNewContainerCount
+name|getAllocatedContainers
+argument_list|()
+operator|.
+name|size
 argument_list|()
 operator|<
 literal|1
@@ -679,7 +682,10 @@ while|while
 condition|(
 name|am2Response
 operator|.
-name|getNewContainerCount
+name|getAllocatedContainers
+argument_list|()
+operator|.
+name|size
 argument_list|()
 operator|<
 literal|1
@@ -723,7 +729,7 @@ name|allocated1
 init|=
 name|am1Response
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -788,7 +794,7 @@ name|allocated2
 init|=
 name|am2Response
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -1052,7 +1058,7 @@ operator|.
 name|schedule
 argument_list|()
 operator|.
-name|getFinishedContainerList
+name|getCompletedContainersStatuses
 argument_list|()
 operator|.
 name|size

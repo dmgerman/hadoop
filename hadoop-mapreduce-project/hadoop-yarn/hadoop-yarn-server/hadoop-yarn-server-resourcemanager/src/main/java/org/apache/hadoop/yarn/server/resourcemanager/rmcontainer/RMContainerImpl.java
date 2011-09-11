@@ -738,7 +738,7 @@ operator|.
 name|FINISHED
 argument_list|,
 operator|new
-name|ContainerCompletedTransition
+name|FinishedTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -1534,6 +1534,28 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
+name|RMContainerFinishedEvent
+name|finishedEvent
+init|=
+operator|(
+name|RMContainerFinishedEvent
+operator|)
+name|event
+decl_stmt|;
+comment|// Update container-status for diagnostics. Today we completely
+comment|// replace it on finish. We may just need to update diagnostics.
+name|container
+operator|.
+name|container
+operator|.
+name|setContainerStatus
+argument_list|(
+name|finishedEvent
+operator|.
+name|getRemoteContainerStatus
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Inform AppAttempt
 name|container
 operator|.
@@ -1551,6 +1573,9 @@ argument_list|,
 name|container
 operator|.
 name|container
+operator|.
+name|getContainerStatus
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1658,64 +1683,6 @@ name|container
 operator|.
 name|containerId
 argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Inform appAttempt
-name|super
-operator|.
-name|transition
-argument_list|(
-name|container
-argument_list|,
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|class|ContainerCompletedTransition
-specifier|private
-specifier|static
-specifier|final
-class|class
-name|ContainerCompletedTransition
-extends|extends
-name|FinishedTransition
-block|{
-annotation|@
-name|Override
-DECL|method|transition (RMContainerImpl container, RMContainerEvent event)
-specifier|public
-name|void
-name|transition
-parameter_list|(
-name|RMContainerImpl
-name|container
-parameter_list|,
-name|RMContainerEvent
-name|event
-parameter_list|)
-block|{
-name|RMContainerFinishedEvent
-name|finishedEvent
-init|=
-operator|(
-name|RMContainerFinishedEvent
-operator|)
-name|event
-decl_stmt|;
-comment|// Update container-status for diagnostics. Today we completely
-comment|// replace it on finish. We may just need to update diagnostics.
-comment|// ^TODO
-name|container
-operator|.
-name|container
-operator|.
-name|setContainerStatus
-argument_list|(
-name|finishedEvent
-operator|.
-name|getRemoteContainerStatus
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Inform appAttempt

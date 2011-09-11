@@ -72,7 +72,7 @@ specifier|final
 name|ContainerStatus
 name|remoteContainerStatus
 decl_stmt|;
-DECL|method|RMContainerFinishedEvent (ContainerId containerId, ContainerStatus containerStatus)
+DECL|method|RMContainerFinishedEvent (ContainerId containerId, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|RMContainerFinishedEvent
 parameter_list|(
@@ -81,15 +81,16 @@ name|containerId
 parameter_list|,
 name|ContainerStatus
 name|containerStatus
+parameter_list|,
+name|RMContainerEventType
+name|event
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|containerId
 argument_list|,
-name|RMContainerEventType
-operator|.
-name|FINISHED
+name|event
 argument_list|)
 expr_stmt|;
 name|this

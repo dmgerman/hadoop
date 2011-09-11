@@ -274,24 +274,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerId
 import|;
 end_import
@@ -886,14 +868,20 @@ literal|" newContainers="
 operator|+
 name|response
 operator|.
-name|getNewContainerCount
+name|getAllocatedContainers
+argument_list|()
+operator|.
+name|size
 argument_list|()
 operator|+
 literal|" finishedContainers="
 operator|+
 name|response
 operator|.
-name|getFinishedContainerCount
+name|getCompletedContainersStatuses
+argument_list|()
+operator|.
+name|size
 argument_list|()
 operator|+
 literal|" resourcelimit="

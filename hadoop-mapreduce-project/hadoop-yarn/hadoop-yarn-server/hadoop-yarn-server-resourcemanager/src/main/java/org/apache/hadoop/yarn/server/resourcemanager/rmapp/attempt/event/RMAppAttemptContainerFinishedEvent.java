@@ -58,7 +58,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ContainerStatus
 import|;
 end_import
 
@@ -114,21 +114,21 @@ name|RMAppAttemptContainerFinishedEvent
 extends|extends
 name|RMAppAttemptEvent
 block|{
-DECL|field|container
+DECL|field|containerStatus
 specifier|private
 specifier|final
-name|Container
-name|container
+name|ContainerStatus
+name|containerStatus
 decl_stmt|;
-DECL|method|RMAppAttemptContainerFinishedEvent (ApplicationAttemptId appAttemptId, Container container)
+DECL|method|RMAppAttemptContainerFinishedEvent (ApplicationAttemptId appAttemptId, ContainerStatus containerStatus)
 specifier|public
 name|RMAppAttemptContainerFinishedEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|Container
-name|container
+name|ContainerStatus
+name|containerStatus
 parameter_list|)
 block|{
 name|super
@@ -142,21 +142,21 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|container
+name|containerStatus
 operator|=
-name|container
+name|containerStatus
 expr_stmt|;
 block|}
-DECL|method|getContainer ()
+DECL|method|getContainerStatus ()
 specifier|public
-name|Container
-name|getContainer
+name|ContainerStatus
+name|getContainerStatus
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|container
+name|containerStatus
 return|;
 block|}
 block|}
