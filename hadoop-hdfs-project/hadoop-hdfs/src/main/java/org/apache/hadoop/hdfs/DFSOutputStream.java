@@ -816,6 +816,7 @@ end_comment
 
 begin_class
 DECL|class|DFSOutputStream
+specifier|public
 class|class
 name|DFSOutputStream
 extends|extends
@@ -7689,6 +7690,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of a file as it was when this stream was opened    */
 DECL|method|getInitialLen ()
+specifier|public
 name|long
 name|getInitialLen
 parameter_list|()

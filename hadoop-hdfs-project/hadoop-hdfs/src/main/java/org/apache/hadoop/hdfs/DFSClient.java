@@ -3756,6 +3756,7 @@ return|;
 block|}
 comment|/**    * Append to an existing HDFS file.      *     * @param src file name    * @param buffersize buffer size    * @param progress for reporting write-progress    * @return an output stream for writing into the file    *     * @see ClientProtocol#append(String, String)     */
 DECL|method|append (String src, int buffersize, Progressable progress)
+specifier|public
 name|DFSOutputStream
 name|append
 parameter_list|(

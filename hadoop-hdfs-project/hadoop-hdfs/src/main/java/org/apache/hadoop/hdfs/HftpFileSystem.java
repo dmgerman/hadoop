@@ -1528,6 +1528,7 @@ end_comment
 
 begin_function
 DECL|method|getNamenodeURL (String path, String query)
+specifier|protected
 name|URL
 name|getNamenodeURL
 parameter_list|(
@@ -1883,6 +1884,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|f
+operator|=
+name|f
+operator|.
+name|makeQualified
+argument_list|(
+name|getUri
+argument_list|()
+argument_list|,
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|String
 name|path
 init|=
