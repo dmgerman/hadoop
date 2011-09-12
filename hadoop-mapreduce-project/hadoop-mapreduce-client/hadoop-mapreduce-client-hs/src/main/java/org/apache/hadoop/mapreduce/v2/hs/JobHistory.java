@@ -1995,6 +1995,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing Existing Jobs..."
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|FileStatus
@@ -2171,6 +2178,26 @@ name|Path
 name|serialDirPath
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding "
+operator|+
+name|serialDirPath
+operator|+
+literal|" to serial index"
+argument_list|)
+expr_stmt|;
+block|}
 name|String
 name|serialPart
 init|=
@@ -2336,6 +2363,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding "
+operator|+
+name|path
+operator|+
+literal|" to job list cache."
+argument_list|)
+expr_stmt|;
+block|}
 name|List
 argument_list|<
 name|FileStatus
@@ -2357,6 +2404,27 @@ range|:
 name|historyFileList
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding in history for "
+operator|+
+name|fs
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|JobIndexInfo
 name|jobIndexInfo
 init|=
@@ -2639,6 +2707,31 @@ name|MetaInfo
 name|metaInfo
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding "
+operator|+
+name|jobId
+operator|+
+literal|" to job list cache with "
+operator|+
+name|metaInfo
+operator|.
+name|getJobIndexInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|jobListCache
 operator|.
 name|put
@@ -2680,6 +2773,29 @@ name|Job
 name|job
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding "
+operator|+
+name|job
+operator|.
+name|getID
+argument_list|()
+operator|+
+literal|" to loaded job cache"
+argument_list|)
+expr_stmt|;
+block|}
 name|loadedJobCache
 operator|.
 name|put
@@ -5499,6 +5615,24 @@ name|JobId
 name|jobId
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Looking for Job "
+operator|+
+name|jobId
+argument_list|)
+expr_stmt|;
+block|}
 name|Job
 name|job
 init|=
@@ -5549,15 +5683,24 @@ name|ApplicationId
 name|appID
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Called getAllJobs(AppId): "
 operator|+
 name|appID
 argument_list|)
 expr_stmt|;
+block|}
 comment|//    currently there is 1 to 1 mapping between app and job id
 name|org
 operator|.
@@ -5633,6 +5776,13 @@ argument_list|>
 name|getAllJobs
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Called getAllJobs()"
+argument_list|)
+expr_stmt|;
 return|return
 name|getAllJobsInternal
 argument_list|()

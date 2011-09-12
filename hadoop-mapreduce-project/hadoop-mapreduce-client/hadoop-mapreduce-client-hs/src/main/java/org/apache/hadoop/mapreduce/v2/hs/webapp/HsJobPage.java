@@ -110,26 +110,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|webapp
-operator|.
-name|JobBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|webapp
@@ -216,7 +196,7 @@ literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The content of this page is the JobBlock    * @return JobBlock.class    */
+comment|/**    * The content of this page is the JobBlock    * @return HsJobBlock.class    */
 DECL|method|content ()
 annotation|@
 name|Override
@@ -231,7 +211,7 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|JobBlock
+name|HsJobBlock
 operator|.
 name|class
 return|;

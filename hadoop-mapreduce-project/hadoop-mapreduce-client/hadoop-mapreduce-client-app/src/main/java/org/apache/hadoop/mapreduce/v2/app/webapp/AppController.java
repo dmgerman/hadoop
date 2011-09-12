@@ -52,6 +52,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -880,8 +892,7 @@ parameter_list|)
 block|{
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_BAD_REQUEST
 argument_list|)
@@ -908,8 +919,7 @@ parameter_list|)
 block|{
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_NOT_FOUND
 argument_list|)

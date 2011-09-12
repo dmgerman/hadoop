@@ -23,22 +23,162 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
+name|yarn
 operator|.
 name|webapp
 operator|.
-name|JobsBlock
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|ACCORDION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|ACCORDION_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|THEMESWITCHER_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|initID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|postInitID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|tableInit
 import|;
 end_import
 
@@ -73,26 +213,6 @@ operator|.
 name|view
 operator|.
 name|TwoColumnLayout
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|*
 import|;
 end_import
 
@@ -147,6 +267,19 @@ literal|"jobs"
 argument_list|)
 argument_list|,
 name|jobsTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|set
+argument_list|(
+name|postInitID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"jobs"
+argument_list|)
+argument_list|,
+name|jobsPostTableInit
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -235,7 +368,7 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|JobsBlock
+name|HsJobsBlock
 operator|.
 name|class
 return|;
@@ -255,21 +388,87 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumns:[{sType:'title-numeric'},"
+literal|",aoColumnDefs:["
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,null,{sType:'title-numeric', bSearchable:false},null,"
+literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 6 ] }"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,{sType:'title-numeric',bSearchable:false}, null, null]}"
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 8 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 9 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]}"
 argument_list|)
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**    * @return javascript to add into the jquery block after the table has    *  been initialized. This code adds in per field filtering.    */
+DECL|method|jobsPostTableInit ()
+specifier|private
+name|String
+name|jobsPostTableInit
+parameter_list|()
+block|{
+return|return
+literal|"var asInitVals = new Array();\n"
+operator|+
+literal|"$('tfoot input').keyup( function () \n{"
+operator|+
+literal|"  jobsDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').each( function (i) {\n"
+operator|+
+literal|"  asInitVals[i] = this.value;\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').focus( function () {\n"
+operator|+
+literal|"  if ( this.className == 'search_init' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = '';\n"
+operator|+
+literal|"    this.value = '';\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').blur( function (i) {\n"
+operator|+
+literal|"  if ( this.value == '' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = 'search_init';\n"
+operator|+
+literal|"    this.value = asInitVals[$('tfoot input').index(this)];\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
 return|;
 block|}
 block|}
