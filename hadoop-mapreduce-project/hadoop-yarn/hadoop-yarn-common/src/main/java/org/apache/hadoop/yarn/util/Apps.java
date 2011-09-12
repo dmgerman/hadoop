@@ -124,33 +124,6 @@ name|ID
 init|=
 literal|"ID"
 decl_stmt|;
-DECL|method|toString (ApplicationId id)
-specifier|public
-specifier|static
-name|String
-name|toString
-parameter_list|(
-name|ApplicationId
-name|id
-parameter_list|)
-block|{
-return|return
-name|_join
-argument_list|(
-literal|"app"
-argument_list|,
-name|id
-operator|.
-name|getClusterTimestamp
-argument_list|()
-argument_list|,
-name|id
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-return|;
-block|}
 DECL|method|toAppID (String aid)
 specifier|public
 specifier|static

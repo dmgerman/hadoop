@@ -556,14 +556,12 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|Apps
-operator|.
-name|toString
-argument_list|(
 name|ctx
 operator|.
 name|appID
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|controller
 operator|.
