@@ -962,6 +962,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -1034,6 +1044,12 @@ operator|.
 name|getAbsoluteFile
 argument_list|()
 decl_stmt|;
+DECL|field|yarnCluster
+specifier|private
+specifier|static
+name|MiniYARNCluster
+name|yarnCluster
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|setup ()
@@ -1077,6 +1093,21 @@ expr_stmt|;
 name|localDir
 operator|.
 name|mkdir
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|AfterClass
+DECL|method|teardown ()
+specifier|public
+specifier|static
+name|void
+name|teardown
+parameter_list|()
+block|{
+name|yarnCluster
+operator|.
+name|stop
 argument_list|()
 expr_stmt|;
 block|}
@@ -1157,9 +1188,8 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|MiniYARNCluster
 name|yarnCluster
-init|=
+operator|=
 operator|new
 name|MiniYARNCluster
 argument_list|(
@@ -1170,7 +1200,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|yarnCluster
 operator|.
 name|init

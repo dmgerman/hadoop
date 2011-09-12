@@ -1368,7 +1368,7 @@ specifier|final
 name|DeletionService
 name|deletionService
 decl_stmt|;
-DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics)
+DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|public
 name|ContainerManagerImpl
 parameter_list|(
@@ -1386,6 +1386,9 @@ name|nodeStatusUpdater
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
+parameter_list|,
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|super
@@ -1456,33 +1459,12 @@ name|nodeStatusUpdater
 operator|=
 name|nodeStatusUpdater
 expr_stmt|;
-comment|// Create the secretManager if need be.
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Security is enabled on NodeManager. "
-operator|+
-literal|"Creating ContainerTokenSecretManager"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|containerTokenSecretManager
 operator|=
-operator|new
-name|ContainerTokenSecretManager
-argument_list|()
+name|containerTokenSecretManager
 expr_stmt|;
-block|}
 comment|// Start configurable services
 name|auxiluaryServices
 operator|=
@@ -1767,39 +1749,6 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-comment|// This is fine as status updater is started before ContainerManager and
-comment|// RM gives the shared secret in registration during StatusUpdter#start()
-comment|// itself.
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|.
-name|setSecretKey
-argument_list|(
-name|this
-operator|.
-name|nodeStatusUpdater
-operator|.
-name|getContainerManagerBindAddress
-argument_list|()
-argument_list|,
-name|this
-operator|.
-name|nodeStatusUpdater
-operator|.
-name|getRMNMSharedSecret
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|Configuration
 name|cmConf
 init|=

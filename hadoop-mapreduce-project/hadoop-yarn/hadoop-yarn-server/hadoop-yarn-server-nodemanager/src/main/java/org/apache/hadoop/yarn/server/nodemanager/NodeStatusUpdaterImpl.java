@@ -600,6 +600,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -669,6 +687,11 @@ specifier|private
 specifier|final
 name|Dispatcher
 name|dispatcher
+decl_stmt|;
+DECL|field|containerTokenSecretManager
+specifier|private
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 decl_stmt|;
 DECL|field|heartBeatInterval
 specifier|private
@@ -756,7 +779,7 @@ specifier|final
 name|NodeManagerMetrics
 name|metrics
 decl_stmt|;
-DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
+DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|public
 name|NodeStatusUpdaterImpl
 parameter_list|(
@@ -771,6 +794,9 @@ name|healthChecker
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
+parameter_list|,
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|super
@@ -806,6 +832,12 @@ operator|.
 name|metrics
 operator|=
 name|metrics
+expr_stmt|;
+name|this
+operator|.
+name|containerTokenSecretManager
+operator|=
+name|containerTokenSecretManager
 expr_stmt|;
 block|}
 annotation|@
@@ -1287,6 +1319,42 @@ argument_list|()
 operator|.
 name|array
 argument_list|()
+expr_stmt|;
+block|}
+comment|// do this now so that its set before we start heartbeating to RM
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Security enabled - updating secret keys now"
+argument_list|)
+expr_stmt|;
+comment|// It is expected that status updater is started by this point and
+comment|// RM gives the shared secret in registration during StatusUpdater#start().
+name|this
+operator|.
+name|containerTokenSecretManager
+operator|.
+name|setSecretKey
+argument_list|(
+name|this
+operator|.
+name|getContainerManagerBindAddress
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getRMNMSharedSecret
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 name|LOG
