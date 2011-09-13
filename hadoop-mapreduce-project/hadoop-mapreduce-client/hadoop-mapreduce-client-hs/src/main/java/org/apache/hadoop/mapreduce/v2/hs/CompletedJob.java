@@ -679,6 +679,12 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
+DECL|field|confFile
+specifier|private
+specifier|final
+name|Path
+name|confFile
+decl_stmt|;
 DECL|field|completionEvents
 specifier|private
 name|List
@@ -694,7 +700,7 @@ specifier|private
 name|JobInfo
 name|jobInfo
 decl_stmt|;
-DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName)
+DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName, Path confFile)
 specifier|public
 name|CompletedJob
 parameter_list|(
@@ -712,6 +718,9 @@ name|loadTasks
 parameter_list|,
 name|String
 name|userName
+parameter_list|,
+name|Path
+name|confFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -740,6 +749,12 @@ operator|.
 name|jobId
 operator|=
 name|jobId
+expr_stmt|;
+name|this
+operator|.
+name|confFile
+operator|=
+name|confFile
 expr_stmt|;
 name|loadFullHistoryData
 argument_list|(
@@ -1963,6 +1978,27 @@ name|jobACL
 argument_list|)
 return|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.job.Job#getJobACLs()    */
+annotation|@
+name|Override
+DECL|method|getJobACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
+parameter_list|()
+block|{
+return|return
+name|jobInfo
+operator|.
+name|getJobACLs
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUserName ()
@@ -1973,6 +2009,19 @@ parameter_list|()
 block|{
 return|return
 name|user
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.job.Job#getConfFile()    */
+annotation|@
+name|Override
+DECL|method|getConfFile ()
+specifier|public
+name|Path
+name|getConfFile
+parameter_list|()
+block|{
+return|return
+name|confFile
 return|;
 block|}
 block|}

@@ -50,6 +50,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -210,6 +224,22 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
+import|;
+end_import
+
 begin_comment
 comment|/**  * Main interface to interact with the job. Provides only getters.   */
 end_comment
@@ -312,6 +342,23 @@ function_decl|;
 DECL|method|getUserName ()
 name|String
 name|getUserName
+parameter_list|()
+function_decl|;
+comment|/**    * @return a path to where the config file for this job is located.    */
+DECL|method|getConfFile ()
+name|Path
+name|getConfFile
+parameter_list|()
+function_decl|;
+comment|/**    * @return the ACLs for this job for each type of JobACL given.     */
+DECL|method|getJobACLs ()
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
 parameter_list|()
 function_decl|;
 name|TaskAttemptCompletionEvent

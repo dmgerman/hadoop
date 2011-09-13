@@ -170,6 +170,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -693,6 +707,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
 import|;
 end_import
 
@@ -2648,6 +2678,43 @@ DECL|method|getUserName ()
 specifier|public
 name|String
 name|getUserName
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConfFile ()
+specifier|public
+name|Path
+name|getConfFile
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getJobACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
 parameter_list|()
 block|{
 throw|throw

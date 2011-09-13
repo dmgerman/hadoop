@@ -30,6 +30,46 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|AMParams
+operator|.
+name|JOB_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|join
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -99,6 +139,26 @@ operator|.
 name|JQueryUI
 operator|.
 name|initID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|postInitID
 import|;
 end_import
 
@@ -130,6 +190,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|ConfBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -139,14 +219,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A page showing the tasks for a given application.  */
+comment|/**  * Render a page with the configuration for a give job in it.  */
 end_comment
 
 begin_class
-DECL|class|HsTasksPage
+DECL|class|HsConfPage
 specifier|public
 class|class
-name|HsTasksPage
+name|HsConfPage
 extends|extends
 name|HsView
 block|{
@@ -167,6 +247,36 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
+name|String
+name|jobID
+init|=
+name|$
+argument_list|(
+name|JOB_ID
+argument_list|)
+decl_stmt|;
+name|set
+argument_list|(
+name|TITLE
+argument_list|,
+name|jobID
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|"Bad request: missing job ID"
+else|:
+name|join
+argument_list|(
+literal|"Configuration for MapReduce Job "
+argument_list|,
+name|$
+argument_list|(
+name|JOB_ID
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|commonPreHead
 argument_list|(
 name|html
@@ -176,9 +286,43 @@ name|set
 argument_list|(
 name|DATATABLES_ID
 argument_list|,
-literal|"tasks"
+literal|"conf"
 argument_list|)
 expr_stmt|;
+name|set
+argument_list|(
+name|initID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"conf"
+argument_list|)
+argument_list|,
+name|confTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|set
+argument_list|(
+name|postInitID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"conf"
+argument_list|)
+argument_list|,
+name|confPostTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|setTableStyles
+argument_list|(
+name|html
+argument_list|,
+literal|"conf"
+argument_list|)
+expr_stmt|;
+comment|//Override the default nav config
 name|set
 argument_list|(
 name|initID
@@ -191,28 +335,8 @@ argument_list|,
 literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
-name|set
-argument_list|(
-name|initID
-argument_list|(
-name|DATATABLES
-argument_list|,
-literal|"tasks"
-argument_list|)
-argument_list|,
-name|tasksTableInit
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|setTableStyles
-argument_list|(
-name|html
-argument_list|,
-literal|"tasks"
-argument_list|)
-expr_stmt|;
 block|}
-comment|/**    * The content of this page is the TasksBlock    * @return HsTasksBlock.class    */
+comment|/**    * The body of this block is the configuration block.    * @return HsConfBlock.class    */
 DECL|method|content ()
 annotation|@
 name|Override
@@ -227,16 +351,16 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|HsTasksBlock
+name|ConfBlock
 operator|.
 name|class
 return|;
 block|}
-comment|/**    * @return the end of the JS map that is the jquery datatable configuration    * for the tasks table.    */
-DECL|method|tasksTableInit ()
+comment|/**    * @return the end of the JS map that is the jquery datatable config for the    * conf table.    */
+DECL|method|confTableInit ()
 specifier|private
 name|String
-name|tasksTableInit
+name|confTableInit
 parameter_list|()
 block|{
 return|return
@@ -245,21 +369,62 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumns:[{sType:'title-numeric'},{sType:'title-numeric',"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bSearchable:false},null,{sType:'title-numeric'},"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"{sType:'title-numeric'},{sType:'title-numeric'}]}"
+literal|"}"
 argument_list|)
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**    * @return the java script code to allow the jquery conf datatable to filter    * by column.    */
+DECL|method|confPostTableInit ()
+specifier|private
+name|String
+name|confPostTableInit
+parameter_list|()
+block|{
+return|return
+literal|"var confInitVals = new Array();\n"
+operator|+
+literal|"$('tfoot input').keyup( function () \n{"
+operator|+
+literal|"  confDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').each( function (i) {\n"
+operator|+
+literal|"  confInitVals[i] = this.value;\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').focus( function () {\n"
+operator|+
+literal|"  if ( this.className == 'search_init' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = '';\n"
+operator|+
+literal|"    this.value = '';\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').blur( function (i) {\n"
+operator|+
+literal|"  if ( this.value == '' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = 'search_init';\n"
+operator|+
+literal|"    this.value = confInitVals[$('tfoot input').index(this)];\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
 return|;
 block|}
 block|}

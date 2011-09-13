@@ -238,6 +238,26 @@ operator|.
 name|class
 return|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#attemptsPage()    */
+annotation|@
+name|Override
+DECL|method|attemptsPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|attemptsPage
+parameter_list|()
+block|{
+return|return
+name|HsAttemptsPage
+operator|.
+name|class
+return|;
+block|}
 comment|// Need all of these methods here also as Guice doesn't look into parent
 comment|// classes.
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#job()    */
@@ -313,6 +333,41 @@ name|super
 operator|.
 name|attempts
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * @return the page that will be used to render the /conf page    */
+DECL|method|confPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|confPage
+parameter_list|()
+block|{
+return|return
+name|HsConfPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /conf page    */
+DECL|method|conf ()
+specifier|public
+name|void
+name|conf
+parameter_list|()
+block|{
+name|requireJob
+argument_list|()
+expr_stmt|;
+name|render
+argument_list|(
+name|confPage
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return the page about the current server.    */

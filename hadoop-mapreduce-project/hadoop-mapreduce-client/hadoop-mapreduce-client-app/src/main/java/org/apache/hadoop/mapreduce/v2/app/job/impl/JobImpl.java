@@ -4836,6 +4836,19 @@ return|return
 name|userName
 return|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.job.Job#getConfFile()    */
+annotation|@
+name|Override
+DECL|method|getConfFile ()
+specifier|public
+name|Path
+name|getConfFile
+parameter_list|()
+block|{
+return|return
+name|remoteJobConfFile
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getName ()
@@ -4880,6 +4893,29 @@ name|size
 argument_list|()
 return|;
 comment|//FIXME: why indirection? return numReduceTasks
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.job.Job#getJobACLs()    */
+annotation|@
+name|Override
+DECL|method|getJobACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
+name|jobACLs
+argument_list|)
+return|;
 block|}
 DECL|class|InitTransition
 specifier|public

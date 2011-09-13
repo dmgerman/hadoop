@@ -855,6 +855,12 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|render
+argument_list|(
+name|attemptsPage
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -872,12 +878,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|render
-argument_list|(
-name|attemptsPage
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Render a BAD_REQUEST error.    * @param s the error message to include.    */
 DECL|method|badRequest (String s)
@@ -935,6 +935,7 @@ expr_stmt|;
 block|}
 comment|/**    * Ensure that a JOB_ID was passed into the page.    */
 DECL|method|requireJob ()
+specifier|public
 name|void
 name|requireJob
 parameter_list|()
@@ -1040,6 +1041,7 @@ block|}
 block|}
 comment|/**    * Ensure that a TASK_ID was passed into the page.    */
 DECL|method|requireTask ()
+specifier|public
 name|void
 name|requireTask
 parameter_list|()
