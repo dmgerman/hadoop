@@ -20,19 +20,26 @@ name|records
 package|;
 end_package
 
+begin_comment
+comment|/**  *<p>State of a<code>Container</code>.</p>  */
+end_comment
+
 begin_enum
 DECL|enum|ContainerState
 specifier|public
 enum|enum
 name|ContainerState
 block|{
+comment|/** New container */
 DECL|enumConstant|NEW
-DECL|enumConstant|RUNNING
-DECL|enumConstant|COMPLETE
 name|NEW
 block|,
+comment|/** Running container */
+DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
+comment|/** Completed container */
+DECL|enumConstant|COMPLETE
 name|COMPLETE
 block|}
 end_enum

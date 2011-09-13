@@ -195,46 +195,24 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getNewContainerList ()
+DECL|method|getAllocatedContainers ()
 specifier|public
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|getNewContainerList
+name|getAllocatedContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Set the list of<em>newly allocated</em><code>Container</code> by the     *<code>ResourceManager</code>.    * @param containers list of<em>newly allocated</em><code>Container</code>    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
-DECL|method|getNewContainer (int index)
-specifier|public
-name|Container
-name|getNewContainer
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getNewContainerCount ()
-specifier|public
-name|int
-name|getNewContainerCount
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addAllNewContainers (List<Container> containers)
+name|Stable
+DECL|method|setAllocatedContainers (List<Container> containers)
 specifier|public
 name|void
-name|addAllNewContainers
+name|setAllocatedContainers
 parameter_list|(
 name|List
 argument_list|<
@@ -242,42 +220,6 @@ name|Container
 argument_list|>
 name|containers
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addNewContainer (Container container)
-specifier|public
-name|void
-name|addNewContainer
-parameter_list|(
-name|Container
-name|container
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeNewContainer (int index)
-specifier|public
-name|void
-name|removeNewContainer
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearNewContainers ()
-specifier|public
-name|void
-name|clearNewContainers
-parameter_list|()
 function_decl|;
 comment|/**    * Get the<em>available headroom</em> for resources in the cluster for the     * application.    * @return limit available headroom for resources in the cluster for the     * application    */
 annotation|@
@@ -303,94 +245,35 @@ name|Resource
 name|limit
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of<em>completed containers</em>.    * @return the list of<em>completed containers</em>    */
+comment|/**    * Get the list of<em>completed containers' statuses</em>.    * @return the list of<em>completed containers' statuses</em>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getFinishedContainerList ()
+DECL|method|getCompletedContainersStatuses ()
 specifier|public
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
-name|getFinishedContainerList
+name|getCompletedContainersStatuses
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|getFinishedContainer (int index)
-specifier|public
-name|Container
-name|getFinishedContainer
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getFinishedContainerCount ()
-specifier|public
-name|int
-name|getFinishedContainerCount
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addAllFinishedContainers (List<Container> containers)
+DECL|method|setCompletedContainersStatuses (List<ContainerStatus> containers)
 specifier|public
 name|void
-name|addAllFinishedContainers
+name|setCompletedContainersStatuses
 parameter_list|(
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 name|containers
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addFinishedContainer (Container container)
-specifier|public
-name|void
-name|addFinishedContainer
-parameter_list|(
-name|Container
-name|container
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeFinishedContainer (int index)
-specifier|public
-name|void
-name|removeFinishedContainer
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearFinishedContainers ()
-specifier|public
-name|void
-name|clearFinishedContainers
-parameter_list|()
 function_decl|;
 block|}
 end_interface

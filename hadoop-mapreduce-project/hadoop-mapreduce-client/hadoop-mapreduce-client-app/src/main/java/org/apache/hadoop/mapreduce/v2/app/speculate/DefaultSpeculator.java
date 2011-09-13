@@ -216,6 +216,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|MRConstants
@@ -319,24 +333,6 @@ operator|.
 name|records
 operator|.
 name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|AMConstants
 import|;
 end_import
 
@@ -947,9 +943,9 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|TASK_RUNTIME_ESTIMATOR_CLASS
+name|MR_AM_TASK_ESTIMATOR
 argument_list|,
 name|LegacyTaskRuntimeEstimator
 operator|.
@@ -1001,7 +997,7 @@ operator|.
 name|error
 argument_list|(
 literal|"Can't make a speculation runtime extimator"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -1024,7 +1020,7 @@ operator|.
 name|error
 argument_list|(
 literal|"Can't make a speculation runtime extimator"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -1047,7 +1043,7 @@ operator|.
 name|error
 argument_list|(
 literal|"Can't make a speculation runtime extimator"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -1070,7 +1066,7 @@ operator|.
 name|error
 argument_list|(
 literal|"Can't make a speculation runtime extimator"
-operator|+
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;

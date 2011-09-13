@@ -21,46 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|NMConfig
-operator|.
-name|NM_CONTAINER_EXECUTOR_CLASS
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|NMConfig
-operator|.
-name|NM_KEYTAB
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -187,6 +147,20 @@ operator|.
 name|security
 operator|.
 name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
 import|;
 end_import
 
@@ -364,22 +338,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|YarnServerConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|nodemanager
 operator|.
 name|containermanager
@@ -482,6 +440,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|service
 operator|.
 name|CompositeService
@@ -539,6 +515,11 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
+DECL|field|containerTokenSecretManager
+specifier|protected
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
+decl_stmt|;
 DECL|method|NodeManager ()
 specifier|public
 name|NodeManager
@@ -555,7 +536,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker)
+DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|protected
 name|NodeStatusUpdater
 name|createNodeStatusUpdater
@@ -568,6 +549,9 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
+parameter_list|,
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -581,6 +565,8 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
+argument_list|,
+name|containerTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -596,7 +582,7 @@ name|NodeResourceMonitorImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -612,6 +598,9 @@ name|del
 parameter_list|,
 name|NodeStatusUpdater
 name|nodeStatusUpdater
+parameter_list|,
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -627,6 +616,8 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
+argument_list|,
+name|containerTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -667,11 +658,13 @@ argument_list|(
 name|getConfig
 argument_list|()
 argument_list|,
+name|YarnConfiguration
+operator|.
 name|NM_KEYTAB
 argument_list|,
-name|YarnServerConfig
+name|YarnConfiguration
 operator|.
-name|NM_SERVER_PRINCIPAL_KEY
+name|NM_PRINCIPAL
 argument_list|)
 expr_stmt|;
 block|}
@@ -693,6 +686,33 @@ operator|new
 name|NMContext
 argument_list|()
 decl_stmt|;
+comment|// Create the secretManager if need be.
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Security is enabled on NodeManager. "
+operator|+
+literal|"Creating ContainerTokenSecretManager"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|containerTokenSecretManager
+operator|=
+operator|new
+name|ContainerTokenSecretManager
+argument_list|()
+expr_stmt|;
+block|}
 name|ContainerExecutor
 name|exec
 init|=
@@ -704,7 +724,9 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-name|NM_CONTAINER_EXECUTOR_CLASS
+name|YarnConfiguration
+operator|.
+name|NM_CONTAINER_EXECUTOR
 argument_list|,
 name|DefaultContainerExecutor
 operator|.
@@ -767,9 +789,6 @@ name|healthChecker
 argument_list|)
 expr_stmt|;
 block|}
-comment|// StatusUpdater should be added first so that it can start first. Once it
-comment|// contacts RM, does registration and gets tokens, then only
-comment|// ContainerManager can start.
 name|NodeStatusUpdater
 name|nodeStatusUpdater
 init|=
@@ -780,13 +799,12 @@ argument_list|,
 name|dispatcher
 argument_list|,
 name|healthChecker
+argument_list|,
+name|this
+operator|.
+name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
-name|addService
-argument_list|(
-name|nodeStatusUpdater
-argument_list|)
-expr_stmt|;
 name|NodeResourceMonitor
 name|nodeResourceMonitor
 init|=
@@ -810,6 +828,10 @@ argument_list|,
 name|del
 argument_list|,
 name|nodeStatusUpdater
+argument_list|,
+name|this
+operator|.
+name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
 name|addService
@@ -885,6 +907,13 @@ operator|.
 name|initialize
 argument_list|(
 literal|"NodeManager"
+argument_list|)
+expr_stmt|;
+comment|// StatusUpdater should be added last so that it get started last
+comment|// so that we make sure everything is up before registering with RM.
+name|addService
+argument_list|(
+name|nodeStatusUpdater
 argument_list|)
 expr_stmt|;
 name|super

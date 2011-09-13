@@ -239,12 +239,6 @@ specifier|final
 name|ThreadPoolExecutor
 name|launcherPool
 decl_stmt|;
-DECL|field|handler
-specifier|private
-specifier|final
-name|EventHandler
-name|handler
-decl_stmt|;
 DECL|field|launcherHandlingThread
 specifier|private
 name|LauncherThread
@@ -311,18 +305,6 @@ operator|.
 name|context
 operator|=
 name|context
-expr_stmt|;
-name|this
-operator|.
-name|handler
-operator|=
-name|context
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
 expr_stmt|;
 comment|/* register to dispatcher */
 name|this

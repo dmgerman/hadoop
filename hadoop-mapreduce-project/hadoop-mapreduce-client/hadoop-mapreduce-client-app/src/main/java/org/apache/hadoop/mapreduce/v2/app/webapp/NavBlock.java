@@ -312,7 +312,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -326,7 +327,8 @@ name|toString
 argument_list|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|.
 name|getID
 argument_list|()

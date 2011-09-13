@@ -94,6 +94,7 @@ end_comment
 
 begin_class
 DECL|class|ByteRangeInputStream
+specifier|public
 class|class
 name|ByteRangeInputStream
 extends|extends
@@ -218,7 +219,9 @@ name|StreamStatus
 operator|.
 name|SEEK
 decl_stmt|;
+comment|/** Create an input stream with the URL. */
 DECL|method|ByteRangeInputStream (final URL url)
+specifier|public
 name|ByteRangeInputStream
 parameter_list|(
 specifier|final

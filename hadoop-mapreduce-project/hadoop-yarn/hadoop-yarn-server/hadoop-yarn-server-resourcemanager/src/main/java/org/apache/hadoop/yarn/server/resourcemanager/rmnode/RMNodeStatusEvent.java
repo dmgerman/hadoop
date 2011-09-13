@@ -34,16 +34,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -56,25 +46,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Container
+name|ContainerStatus
 import|;
 end_import
 
@@ -150,14 +122,9 @@ name|nodeHealthStatus
 decl_stmt|;
 DECL|field|containersCollection
 specifier|private
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
 name|List
 argument_list|<
-name|Container
-argument_list|>
+name|ContainerStatus
 argument_list|>
 name|containersCollection
 decl_stmt|;
@@ -167,7 +134,7 @@ specifier|final
 name|HeartbeatResponse
 name|latestResponse
 decl_stmt|;
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, Map<ApplicationId, List<Container>> collection, HeartbeatResponse latestResponse)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, HeartbeatResponse latestResponse)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -177,14 +144,9 @@ parameter_list|,
 name|NodeHealthStatus
 name|nodeHealthStatus
 parameter_list|,
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
 name|List
 argument_list|<
-name|Container
-argument_list|>
+name|ContainerStatus
 argument_list|>
 name|collection
 parameter_list|,
@@ -232,18 +194,13 @@ operator|.
 name|nodeHealthStatus
 return|;
 block|}
-DECL|method|getContainersCollection ()
+DECL|method|getContainers ()
 specifier|public
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
-argument_list|>
-name|getContainersCollection
+name|getContainers
 parameter_list|()
 block|{
 return|return

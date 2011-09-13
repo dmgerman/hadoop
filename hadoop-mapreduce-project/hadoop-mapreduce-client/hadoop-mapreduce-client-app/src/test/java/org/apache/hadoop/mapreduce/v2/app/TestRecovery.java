@@ -904,9 +904,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|RECOVERY_ENABLE
+name|MR_AM_JOB_RECOVERY_ENABLE
 argument_list|,
 literal|true
 argument_list|)

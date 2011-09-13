@@ -1447,11 +1447,6 @@ argument_list|)
 return|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
@@ -1492,8 +1487,6 @@ argument_list|,
 name|bufferSize
 argument_list|,
 name|verifyChecksum
-argument_list|,
-name|statistics
 argument_list|)
 argument_list|)
 return|;

@@ -38,6 +38,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -106,37 +116,38 @@ name|ContainerLocalizationRequestEvent
 extends|extends
 name|ContainerLocalizationEvent
 block|{
-DECL|field|vis
 specifier|private
 specifier|final
+name|Map
+argument_list|<
 name|LocalResourceVisibility
-name|vis
-decl_stmt|;
-DECL|field|reqs
-specifier|private
-specifier|final
+argument_list|,
 name|Collection
 argument_list|<
 name|LocalResourceRequest
 argument_list|>
-name|reqs
+argument_list|>
+DECL|field|rsrc
+name|rsrc
 decl_stmt|;
-comment|/**    * Event requesting the localization of the reqs all with visibility vis    * @param c    * @param reqs    * @param vis    */
-DECL|method|ContainerLocalizationRequestEvent (Container c, Collection<LocalResourceRequest> reqs, LocalResourceVisibility vis)
+comment|/**    * Event requesting the localization of the rsrc.    * @param c    * @param rsrc    */
+DECL|method|ContainerLocalizationRequestEvent (Container c, Map<LocalResourceVisibility, Collection<LocalResourceRequest>> rsrc)
 specifier|public
 name|ContainerLocalizationRequestEvent
 parameter_list|(
 name|Container
 name|c
 parameter_list|,
+name|Map
+argument_list|<
+name|LocalResourceVisibility
+argument_list|,
 name|Collection
 argument_list|<
 name|LocalResourceRequest
 argument_list|>
-name|reqs
-parameter_list|,
-name|LocalResourceVisibility
-name|vis
+argument_list|>
+name|rsrc
 parameter_list|)
 block|{
 name|super
@@ -150,38 +161,27 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|vis
+name|rsrc
 operator|=
-name|vis
-expr_stmt|;
-name|this
-operator|.
-name|reqs
-operator|=
-name|reqs
+name|rsrc
 expr_stmt|;
 block|}
-DECL|method|getVisibility ()
 specifier|public
+name|Map
+argument_list|<
 name|LocalResourceVisibility
-name|getVisibility
-parameter_list|()
-block|{
-return|return
-name|vis
-return|;
-block|}
-DECL|method|getRequestedResources ()
-specifier|public
+argument_list|,
 name|Collection
 argument_list|<
 name|LocalResourceRequest
 argument_list|>
+argument_list|>
+DECL|method|getRequestedResources ()
 name|getRequestedResources
 parameter_list|()
 block|{
 return|return
-name|reqs
+name|rsrc
 return|;
 block|}
 block|}

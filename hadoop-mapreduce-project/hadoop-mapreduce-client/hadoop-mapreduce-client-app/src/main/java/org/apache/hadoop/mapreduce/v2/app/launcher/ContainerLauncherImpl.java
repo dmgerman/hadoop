@@ -58,17 +58,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|concurrent
 operator|.
-name|util
-operator|.
-name|Map
+name|BlockingQueue
 import|;
 end_import
 
@@ -80,7 +72,19 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|BlockingQueue
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
@@ -200,13 +204,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskAttemptId
+name|MRJobConfig
 import|;
 end_import
 
@@ -222,9 +220,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|api
 operator|.
-name|AMConstants
+name|records
+operator|.
+name|TaskAttemptId
 import|;
 end_import
 
@@ -767,7 +767,7 @@ comment|//have a cache/map of UGIs so as to avoid creating too many RPC
 comment|//client connection objects to the same NodeManager
 DECL|field|ugiMap
 specifier|private
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|String
 argument_list|,
@@ -776,7 +776,7 @@ argument_list|>
 name|ugiMap
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -884,9 +884,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|CONTAINERLAUNCHER_THREADPOOL_SIZE
+name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT
 argument_list|,
 literal|10
 argument_list|)
@@ -1054,24 +1054,12 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
-comment|// TODO: Synchronization problems!!
 if|if
 condition|(
 name|UserGroupInformation
 operator|.
 name|isSecurityEnabled
 argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|ugiMap
-operator|.
-name|containsKey
-argument_list|(
-name|containerManagerBindAddr
-argument_list|)
 condition|)
 block|{
 name|Token
@@ -1121,17 +1109,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|//the user in createRemoteUser in this context is not important
-name|user
-operator|=
+comment|// the user in createRemoteUser in this context is not important
+name|UserGroupInformation
+name|ugi
+init|=
 name|UserGroupInformation
 operator|.
 name|createRemoteUser
 argument_list|(
 name|containerManagerBindAddr
 argument_list|)
-expr_stmt|;
-name|user
+decl_stmt|;
+name|ugi
 operator|.
 name|addToken
 argument_list|(
@@ -1140,16 +1129,13 @@ argument_list|)
 expr_stmt|;
 name|ugiMap
 operator|.
-name|put
+name|putIfAbsent
 argument_list|(
 name|containerManagerBindAddr
 argument_list|,
-name|user
+name|ugi
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
 name|user
 operator|=
 name|ugiMap
@@ -1159,7 +1145,6 @@ argument_list|(
 name|containerManagerBindAddr
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|ContainerManager
 name|proxy

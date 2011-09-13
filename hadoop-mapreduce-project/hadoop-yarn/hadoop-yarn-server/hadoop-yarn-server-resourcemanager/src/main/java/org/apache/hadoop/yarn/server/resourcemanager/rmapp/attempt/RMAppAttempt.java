@@ -112,6 +112,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -194,7 +212,7 @@ function_decl|;
 DECL|method|pullJustFinishedContainers ()
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 name|pullJustFinishedContainers
 parameter_list|()
@@ -202,7 +220,7 @@ function_decl|;
 DECL|method|getJustFinishedContainers ()
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 name|getJustFinishedContainers
 parameter_list|()

@@ -52,6 +52,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -202,6 +214,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|View
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -211,6 +239,10 @@ operator|.
 name|Inject
 import|;
 end_import
+
+begin_comment
+comment|/**  * This class renders the various pages that the web app supports.  */
+end_comment
 
 begin_class
 DECL|class|AppController
@@ -259,17 +291,15 @@ name|set
 argument_list|(
 name|APP_ID
 argument_list|,
-name|Apps
-operator|.
-name|toString
-argument_list|(
 name|app
 operator|.
 name|context
 operator|.
 name|getApplicationID
 argument_list|()
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|set
@@ -313,6 +343,7 @@ literal|"am"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Render the default(index.html) page for the Application Controller    */
 DECL|method|index ()
 annotation|@
 name|Override
@@ -335,6 +366,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Render the /info page with an overview of current application.    */
 DECL|method|info ()
 specifier|public
 name|void
@@ -437,6 +469,25 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return The class that will render the /job page    */
+DECL|method|jobPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|jobPage
+parameter_list|()
+block|{
+return|return
+name|JobPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /job page    */
 DECL|method|job ()
 specifier|public
 name|void
@@ -448,12 +499,30 @@ argument_list|()
 expr_stmt|;
 name|render
 argument_list|(
-name|JobPage
-operator|.
-name|class
+name|jobPage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the class that will render the /jobcounters page    */
+DECL|method|countersPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|countersPage
+parameter_list|()
+block|{
+return|return
+name|CountersPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /jobcounters page    */
 DECL|method|jobCounters ()
 specifier|public
 name|void
@@ -467,7 +536,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -488,12 +558,30 @@ expr_stmt|;
 block|}
 name|render
 argument_list|(
-name|CountersPage
-operator|.
-name|class
+name|countersPage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the class that will render the /tasks page    */
+DECL|method|tasksPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|tasksPage
+parameter_list|()
+block|{
+return|return
+name|TasksPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /tasks page    */
 DECL|method|tasks ()
 specifier|public
 name|void
@@ -507,7 +595,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -587,12 +676,30 @@ block|}
 block|}
 name|render
 argument_list|(
-name|TasksPage
-operator|.
-name|class
+name|tasksPage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the class that will render the /task page    */
+DECL|method|taskPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|taskPage
+parameter_list|()
+block|{
+return|return
+name|TaskPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /task page    */
 DECL|method|task ()
 specifier|public
 name|void
@@ -606,7 +713,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|task
+name|getTask
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -627,12 +735,30 @@ expr_stmt|;
 block|}
 name|render
 argument_list|(
-name|TaskPage
-operator|.
-name|class
+name|taskPage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the class that will render the /attempts page    */
+DECL|method|attemptsPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|attemptsPage
+parameter_list|()
+block|{
+return|return
+name|AttemptsPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the attempts page    */
 DECL|method|attempts ()
 specifier|public
 name|void
@@ -646,7 +772,8 @@ if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -747,12 +874,12 @@ block|}
 block|}
 name|render
 argument_list|(
-name|AttemptsPage
-operator|.
-name|class
+name|attemptsPage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Render a BAD_REQUEST error.    * @param s the error message to include.    */
 DECL|method|badRequest (String s)
 name|void
 name|badRequest
@@ -763,8 +890,7 @@ parameter_list|)
 block|{
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_BAD_REQUEST
 argument_list|)
@@ -780,6 +906,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Render a NOT_FOUND error.    * @param s the error message to include.    */
 DECL|method|notFound (String s)
 name|void
 name|notFound
@@ -790,8 +917,7 @@ parameter_list|)
 block|{
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_NOT_FOUND
 argument_list|)
@@ -807,6 +933,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Ensure that a JOB_ID was passed into the page.    */
 DECL|method|requireJob ()
 name|void
 name|requireJob
@@ -848,8 +975,8 @@ argument_list|)
 decl_stmt|;
 name|app
 operator|.
-name|job
-operator|=
+name|setJob
+argument_list|(
 name|app
 operator|.
 name|context
@@ -858,12 +985,14 @@ name|getJob
 argument_list|(
 name|jobID
 argument_list|)
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -909,6 +1038,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Ensure that a TASK_ID was passed into the page.    */
 DECL|method|requireTask ()
 name|void
 name|requireTask
@@ -950,8 +1080,8 @@ argument_list|)
 decl_stmt|;
 name|app
 operator|.
-name|job
-operator|=
+name|setJob
+argument_list|(
 name|app
 operator|.
 name|context
@@ -963,12 +1093,14 @@ operator|.
 name|getJobId
 argument_list|()
 argument_list|)
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -991,22 +1123,25 @@ else|else
 block|{
 name|app
 operator|.
-name|task
-operator|=
+name|setTask
+argument_list|(
 name|app
 operator|.
-name|job
+name|getJob
+argument_list|()
 operator|.
 name|getTask
 argument_list|(
 name|taskID
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
 name|app
 operator|.
-name|task
+name|getTask
+argument_list|()
 operator|==
 literal|null
 condition|)

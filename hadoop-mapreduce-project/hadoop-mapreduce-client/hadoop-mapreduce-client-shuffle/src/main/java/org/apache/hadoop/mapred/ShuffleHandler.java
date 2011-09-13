@@ -712,11 +712,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|conf
 operator|.
-name|nodemanager
-operator|.
-name|NMConfig
+name|YarnConfiguration
 import|;
 end_import
 
@@ -2052,20 +2050,6 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|createShuffle ()
-name|Shuffle
-name|createShuffle
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Shuffle
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-return|;
-block|}
 DECL|class|HttpPipelineFactory
 class|class
 name|HttpPipelineFactory
@@ -2164,10 +2148,16 @@ init|=
 operator|new
 name|LocalDirAllocator
 argument_list|(
-name|NMConfig
+name|YarnConfiguration
 operator|.
-name|NM_LOCAL_DIR
+name|NM_LOCAL_DIRS
 argument_list|)
+decl_stmt|;
+DECL|field|port
+specifier|private
+specifier|final
+name|int
+name|port
 decl_stmt|;
 DECL|method|Shuffle (Configuration conf)
 specifier|public
@@ -2193,6 +2183,19 @@ name|JobConf
 argument_list|(
 name|conf
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|port
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|SHUFFLE_PORT_CONFIG_KEY
+argument_list|,
+name|DEFAULT_SHUFFLE_PORT
 argument_list|)
 expr_stmt|;
 block|}
@@ -2587,6 +2590,8 @@ literal|"http"
 argument_list|,
 literal|""
 argument_list|,
+name|this
+operator|.
 name|port
 argument_list|,
 name|reqUri

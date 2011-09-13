@@ -20,7 +20,63 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|AMRMProtocol
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>Resource</code> models a set of computer resources in the   * cluster.</p>  *   *<p>Currrently it only models<em>memory</em>.</p>  *   *<p>Typically, applications request<code>Resource</code> of suitable  * capability to run their component tasks.</p>  *   * @see ResourceRequest  * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|Resource
 specifier|public
 interface|interface
@@ -31,6 +87,11 @@ argument_list|<
 name|Resource
 argument_list|>
 block|{
+comment|/**    * Get<em>memory</em> of the resource.    * @return<em>memory</em> of the resource    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getMemory ()
 specifier|public
 specifier|abstract
@@ -38,6 +99,11 @@ name|int
 name|getMemory
 parameter_list|()
 function_decl|;
+comment|/**    * Set<em>memory</em> of the resource.    * @param memory<em>memory</em> of the resource    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setMemory (int memory)
 specifier|public
 specifier|abstract

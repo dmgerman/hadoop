@@ -1440,9 +1440,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|RECOVERY_ENABLE
+name|MR_AM_JOB_RECOVERY_ENABLE
 argument_list|,
 literal|false
 argument_list|)
@@ -2351,9 +2351,9 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|SPECULATOR_CLASS
+name|MR_AM_JOB_SPECULATOR
 argument_list|,
 name|DefaultSpeculator
 operator|.
@@ -2413,12 +2413,10 @@ name|error
 argument_list|(
 literal|"Can't make a speculator -- check "
 operator|+
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|SPECULATOR_CLASS
-operator|+
-literal|" "
-operator|+
+name|MR_AM_JOB_SPECULATOR
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -2442,12 +2440,10 @@ name|error
 argument_list|(
 literal|"Can't make a speculator -- check "
 operator|+
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|SPECULATOR_CLASS
-operator|+
-literal|" "
-operator|+
+name|MR_AM_JOB_SPECULATOR
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -2471,12 +2467,10 @@ name|error
 argument_list|(
 literal|"Can't make a speculator -- check "
 operator|+
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|SPECULATOR_CLASS
-operator|+
-literal|" "
-operator|+
+name|MR_AM_JOB_SPECULATOR
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
@@ -2500,12 +2494,10 @@ name|error
 argument_list|(
 literal|"Can't make a speculator -- check "
 operator|+
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|SPECULATOR_CLASS
-operator|+
-literal|" "
-operator|+
+name|MR_AM_JOB_SPECULATOR
+argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;

@@ -394,6 +394,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -522,65 +538,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|ResourceTrackerService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmnode
 operator|.
 name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNodeImpl
 import|;
 end_import
 
@@ -851,9 +811,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|RMConfig
+name|YarnConfiguration
 operator|.
-name|ZK_ADDRESS
+name|RM_ZK_STORE_ADDRESS
 argument_list|)
 expr_stmt|;
 name|this
@@ -864,13 +824,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|RMConfig
+name|YarnConfiguration
 operator|.
-name|ZK_SESSION_TIMEOUT
+name|RM_ZK_STORE_TIMEOUT_MS
 argument_list|,
-name|RMConfig
+name|YarnConfiguration
 operator|.
-name|DEFAULT_ZK_TIMEOUT
+name|DEFAULT_RM_ZK_STORE_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|zkClient
@@ -988,28 +948,9 @@ operator|!
 name|doneWithRecovery
 condition|)
 return|return;
-name|NodeReportPBImpl
-name|nodeManagerInfo
-init|=
-name|createNodeManagerInfo
-argument_list|(
-name|node
-argument_list|)
-decl_stmt|;
-comment|// TODO FinBugs - will be fixed after the subsequent fixme
-name|byte
-index|[]
-name|bytes
-init|=
-name|nodeManagerInfo
-operator|.
-name|getProto
-argument_list|()
-operator|.
-name|toByteArray
-argument_list|()
-decl_stmt|;
 comment|// TODO: FIXMEVinodkv
+comment|//    NodeReportPBImpl nodeManagerInfo = createNodeManagerInfo(node);
+comment|//    byte[] bytes = nodeManagerInfo.getProto().toByteArray();
 comment|//    try {
 comment|//      zkClient.create(NODES + Integer.toString(node.getNodeID().getId()), bytes, null,
 comment|//          CreateMode.PERSISTENT);
@@ -1129,7 +1070,10 @@ name|toString
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1216,7 +1160,10 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 operator|+
@@ -2837,52 +2784,12 @@ literal|1
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// TODO: FindBugs Valid. Fix
-name|RMNode
-name|nm
-init|=
-operator|new
-name|RMNodeImpl
-argument_list|(
-name|node
-operator|.
-name|getNodeId
-argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-name|hostName
-argument_list|,
-name|cmPort
-argument_list|,
-name|httpPort
-argument_list|,
-name|ResourceTrackerService
-operator|.
-name|resolve
-argument_list|(
-name|node
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
-argument_list|)
-argument_list|,
-name|node
-operator|.
-name|getCapability
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|nodeManagers
-operator|.
-name|add
-argument_list|(
-name|nm
-argument_list|)
-expr_stmt|;
+comment|// TODO: FindBugs warns passing null below. Commenting this for later.
+comment|//        RMNode nm = new RMNodeImpl(node.getNodeId(), null,
+comment|//            hostName, cmPort, httpPort,
+comment|//            ResourceTrackerService.resolve(node.getNodeId().getHost()),
+comment|//            node.getCapability());
+comment|//        nodeManagers.add(nm);
 block|}
 name|readLastNodeId
 argument_list|()

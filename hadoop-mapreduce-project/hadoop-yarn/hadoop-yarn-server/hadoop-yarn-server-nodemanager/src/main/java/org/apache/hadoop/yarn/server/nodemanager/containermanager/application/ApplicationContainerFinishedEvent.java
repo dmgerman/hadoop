@@ -67,7 +67,10 @@ name|super
 argument_list|(
 name|containerID
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|ApplicationEventType

@@ -690,7 +690,8 @@ block|{
 return|return
 name|app
 operator|.
-name|task
+name|getTask
+argument_list|()
 operator|!=
 literal|null
 return|;
@@ -707,7 +708,8 @@ block|{
 return|return
 name|app
 operator|.
-name|task
+name|getTask
+argument_list|()
 operator|.
 name|getAttempts
 argument_list|()

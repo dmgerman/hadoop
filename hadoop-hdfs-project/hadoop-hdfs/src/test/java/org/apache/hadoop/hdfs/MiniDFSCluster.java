@@ -3500,6 +3500,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HOST_NAME_KEY
+argument_list|,
+literal|"127.0.0.1"
+argument_list|)
+expr_stmt|;
 name|int
 name|curDatanodesNum
 init|=

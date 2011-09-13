@@ -102,9 +102,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapreduce
 operator|.
-name|CommonConfigurationKeys
+name|JobID
 import|;
 end_import
 
@@ -118,7 +118,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|JobID
+name|MRJobConfig
 import|;
 end_import
 
@@ -173,24 +173,6 @@ operator|.
 name|records
 operator|.
 name|JobState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|AMConstants
 import|;
 end_import
 
@@ -892,13 +874,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|AM_RM_SCHEDULE_INTERVAL
+name|MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS
 argument_list|,
-name|AMConstants
+name|MRJobConfig
 operator|.
-name|DEFAULT_AM_RM_SCHEDULE_INTERVAL
+name|DEFAULT_MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 block|}
@@ -1550,11 +1532,11 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|SCHEDULER_ADDRESS
+name|RM_SCHEDULER_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_SCHEDULER_BIND_ADDRESS
+name|DEFAULT_RM_SCHEDULER_ADDRESS
 argument_list|)
 decl_stmt|;
 name|UserGroupInformation

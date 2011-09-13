@@ -142,6 +142,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -1201,6 +1211,8 @@ class|class
 name|Invoker
 implements|implements
 name|InvocationHandler
+implements|,
+name|Closeable
 block|{
 DECL|field|remoteId
 specifier|private
@@ -1389,7 +1401,7 @@ block|}
 comment|/* close the IPC client that's responsible for this invoker's RPCs */
 DECL|method|close ()
 specifier|synchronized
-specifier|private
+specifier|public
 name|void
 name|close
 parameter_list|()
@@ -1540,32 +1552,6 @@ argument_list|,
 literal|true
 argument_list|)
 return|;
-block|}
-comment|/**    * Stop this proxy and release its invoker's resource    * @param proxy the proxy to be stopped    */
-DECL|method|stopProxy (Object proxy)
-specifier|public
-name|void
-name|stopProxy
-parameter_list|(
-name|Object
-name|proxy
-parameter_list|)
-block|{
-operator|(
-operator|(
-name|Invoker
-operator|)
-name|Proxy
-operator|.
-name|getInvocationHandler
-argument_list|(
-name|proxy
-argument_list|)
-operator|)
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 comment|/** Expert: Make multiple, parallel calls to a set of servers. */
 DECL|method|call (Method method, Object[][] params, InetSocketAddress[] addrs, UserGroupInformation ticket, Configuration conf)

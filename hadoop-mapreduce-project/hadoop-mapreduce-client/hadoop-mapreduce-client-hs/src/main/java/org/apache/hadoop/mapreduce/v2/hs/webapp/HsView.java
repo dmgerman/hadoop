@@ -23,22 +23,162 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
+name|yarn
 operator|.
 name|webapp
 operator|.
-name|JobsBlock
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|ACCORDION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|ACCORDION_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|DATATABLES_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|THEMESWITCHER_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|initID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|postInitID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|tableInit
 import|;
 end_import
 
@@ -76,25 +216,9 @@ name|TwoColumnLayout
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|*
-import|;
-end_import
+begin_comment
+comment|/**  * A view that should be used as the base class for all history server pages.  */
+end_comment
 
 begin_class
 DECL|class|HsView
@@ -104,6 +228,7 @@ name|HsView
 extends|extends
 name|TwoColumnLayout
 block|{
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
 DECL|method|preHead (Page.HTML<_> html)
 annotation|@
 name|Override
@@ -145,6 +270,19 @@ name|jobsTableInit
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|set
+argument_list|(
+name|postInitID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"jobs"
+argument_list|)
+argument_list|,
+name|jobsPostTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|setTableStyles
 argument_list|(
 name|html
@@ -153,6 +291,7 @@ literal|"jobs"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The prehead that should be common to all subclasses.    * @param html used to render.    */
 DECL|method|commonPreHead (Page.HTML<_> html)
 specifier|protected
 name|void
@@ -167,7 +306,6 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
-comment|//html.meta_http("refresh", "10");
 name|set
 argument_list|(
 name|ACCORDION_ID
@@ -184,7 +322,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:1}"
+literal|"{autoHeight:false, active:0}"
 argument_list|)
 expr_stmt|;
 name|set
@@ -210,25 +348,12 @@ name|nav
 parameter_list|()
 block|{
 return|return
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|webapp
-operator|.
-name|NavBlock
+name|HsNavBlock
 operator|.
 name|class
 return|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#content()    */
 annotation|@
 name|Override
 DECL|method|content ()
@@ -243,11 +368,14 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|JobsBlock
+name|HsJobsBlock
 operator|.
 name|class
 return|;
 block|}
+comment|//TODO We need a way to move all of the javascript/CSS that is for a subview
+comment|// into that subview.
+comment|/**    * @return The end of a javascript map that is the jquery datatable     * configuration for the jobs table.  the Jobs table is assumed to be    * rendered by the class returned from {@link #content()}     */
 DECL|method|jobsTableInit ()
 specifier|private
 name|String
@@ -260,21 +388,87 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumns:[{sType:'title-numeric'},"
+literal|",aoColumnDefs:["
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,null,{sType:'title-numeric', bSearchable:false},null,"
+literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 6 ] }"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,{sType:'title-numeric',bSearchable:false}, null, null]}"
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 8 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 9 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]}"
 argument_list|)
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**    * @return javascript to add into the jquery block after the table has    *  been initialized. This code adds in per field filtering.    */
+DECL|method|jobsPostTableInit ()
+specifier|private
+name|String
+name|jobsPostTableInit
+parameter_list|()
+block|{
+return|return
+literal|"var asInitVals = new Array();\n"
+operator|+
+literal|"$('tfoot input').keyup( function () \n{"
+operator|+
+literal|"  jobsDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').each( function (i) {\n"
+operator|+
+literal|"  asInitVals[i] = this.value;\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').focus( function () {\n"
+operator|+
+literal|"  if ( this.className == 'search_init' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = '';\n"
+operator|+
+literal|"    this.value = '';\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').blur( function (i) {\n"
+operator|+
+literal|"  if ( this.value == '' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = 'search_init';\n"
+operator|+
+literal|"    this.value = asInitVals[$('tfoot input').index(this)];\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
 return|;
 block|}
 block|}

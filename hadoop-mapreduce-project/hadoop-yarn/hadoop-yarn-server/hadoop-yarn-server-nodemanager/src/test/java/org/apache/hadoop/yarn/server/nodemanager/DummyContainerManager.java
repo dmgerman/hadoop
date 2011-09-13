@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -123,6 +133,24 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ContainerTokenSecretManager
 import|;
 end_import
 
@@ -632,7 +660,7 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics)
+DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|public
 name|DummyContainerManager
 parameter_list|(
@@ -650,6 +678,9 @@ name|nodeStatusUpdater
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
+parameter_list|,
+name|ContainerTokenSecretManager
+name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|super
@@ -663,6 +694,8 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
+argument_list|,
+name|containerTokenSecretManager
 argument_list|)
 expr_stmt|;
 block|}
@@ -760,13 +793,27 @@ decl_stmt|;
 comment|// simulate localization of all requested resources
 for|for
 control|(
+name|Collection
+argument_list|<
 name|LocalResourceRequest
-name|req
+argument_list|>
+name|rc
 range|:
 name|rsrcReqs
 operator|.
 name|getRequestedResources
 argument_list|()
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|LocalResourceRequest
+name|req
+range|:
+name|rc
 control|)
 block|{
 name|LOG
@@ -827,6 +874,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 break|break;
 case|case

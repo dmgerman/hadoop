@@ -172,23 +172,6 @@ argument_list|>
 name|getLocalizedResources
 parameter_list|()
 function_decl|;
-DECL|method|cloneAndGetContainer ()
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Container
-name|cloneAndGetContainer
-parameter_list|()
-function_decl|;
 DECL|method|cloneAndGetContainerStatus ()
 name|ContainerStatus
 name|cloneAndGetContainerStatus

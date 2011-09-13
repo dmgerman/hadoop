@@ -24,6 +24,18 @@ name|lang
 operator|.
 name|reflect
 operator|.
+name|InvocationHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|reflect
+operator|.
 name|Proxy
 import|;
 end_import
@@ -87,6 +99,16 @@ operator|.
 name|io
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
 import|;
 end_import
 
@@ -347,6 +369,9 @@ specifier|final
 name|Map
 argument_list|<
 name|Class
+argument_list|<
+name|?
+argument_list|>
 argument_list|,
 name|RpcEngine
 argument_list|>
@@ -356,28 +381,9 @@ operator|new
 name|HashMap
 argument_list|<
 name|Class
-argument_list|,
-name|RpcEngine
-argument_list|>
-argument_list|()
-decl_stmt|;
-comment|// track what RpcEngine is used by a proxy class, for stopProxy()
-DECL|field|PROXY_ENGINES
-specifier|private
-specifier|static
-specifier|final
-name|Map
 argument_list|<
-name|Class
-argument_list|,
-name|RpcEngine
+name|?
 argument_list|>
-name|PROXY_ENGINES
-init|=
-operator|new
-name|HashMap
-argument_list|<
-name|Class
 argument_list|,
 name|RpcEngine
 argument_list|>
@@ -393,7 +399,7 @@ init|=
 literal|"rpc.engine"
 decl_stmt|;
 comment|/**    * Set a protocol to use a non-default RpcEngine.    * @param conf configuration to use    * @param protocol the protocol interface    * @param engine the RpcEngine impl    */
-DECL|method|setProtocolEngine (Configuration conf, Class protocol, Class engine)
+DECL|method|setProtocolEngine (Configuration conf, Class<?> protocol, Class<?> engine)
 specifier|public
 specifier|static
 name|void
@@ -403,9 +409,15 @@ name|Configuration
 name|conf
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|engine
 parameter_list|)
 block|{
@@ -431,7 +443,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// return the RpcEngine configured to handle a protocol
-DECL|method|getProtocolEngine (Class protocol, Configuration conf)
+DECL|method|getProtocolEngine (Class<?> protocol, Configuration conf)
 specifier|private
 specifier|static
 specifier|synchronized
@@ -439,6 +451,9 @@ name|RpcEngine
 name|getProtocolEngine
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Configuration
@@ -500,32 +515,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|protocol
-operator|.
-name|isInterface
-argument_list|()
-condition|)
-name|PROXY_ENGINES
-operator|.
-name|put
-argument_list|(
-name|Proxy
-operator|.
-name|getProxyClass
-argument_list|(
-name|protocol
-operator|.
-name|getClassLoader
-argument_list|()
-argument_list|,
-name|protocol
-argument_list|)
-argument_list|,
-name|engine
-argument_list|)
-expr_stmt|;
 name|PROTOCOL_ENGINES
 operator|.
 name|put
@@ -538,30 +527,6 @@ expr_stmt|;
 block|}
 return|return
 name|engine
-return|;
-block|}
-comment|// return the RpcEngine that handles a proxy object
-DECL|method|getProxyEngine (Object proxy)
-specifier|private
-specifier|static
-specifier|synchronized
-name|RpcEngine
-name|getProxyEngine
-parameter_list|(
-name|Object
-name|proxy
-parameter_list|)
-block|{
-return|return
-name|PROXY_ENGINES
-operator|.
-name|get
-argument_list|(
-name|proxy
-operator|.
-name|getClass
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/**    * A version mismatch for the RPC protocol.    */
@@ -1567,7 +1532,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Stop this proxy and release its invoker's resource    * @param proxy the proxy to be stopped    */
+comment|/**    * Stop this proxy and release its invoker's resource by getting the    * invocation handler for the given proxy object and calling    * {@link Closeable#close} if that invocation handler implements    * {@link Closeable}.    *     * @param proxy the RPC proxy object to be stopped    */
 DECL|method|stopProxy (Object proxy)
 specifier|public
 specifier|static
@@ -1578,32 +1543,99 @@ name|Object
 name|proxy
 parameter_list|)
 block|{
-name|RpcEngine
-name|rpcEngine
+name|InvocationHandler
+name|invocationHandler
+init|=
+literal|null
 decl_stmt|;
+try|try
+block|{
+name|invocationHandler
+operator|=
+name|Proxy
+operator|.
+name|getInvocationHandler
+argument_list|(
+name|proxy
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Tried to call RPC.stopProxy on an object that is not a proxy."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|proxy
 operator|!=
 literal|null
 operator|&&
-operator|(
-name|rpcEngine
-operator|=
-name|getProxyEngine
-argument_list|(
-name|proxy
-argument_list|)
-operator|)
+name|invocationHandler
 operator|!=
 literal|null
+operator|&&
+name|invocationHandler
+operator|instanceof
+name|Closeable
 condition|)
 block|{
-name|rpcEngine
+try|try
+block|{
+operator|(
+operator|(
+name|Closeable
+operator|)
+name|invocationHandler
+operator|)
 operator|.
-name|stopProxy
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
 argument_list|(
+literal|"Stopping RPC invocation handler caused exception"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not get invocation handler "
+operator|+
+name|invocationHandler
+operator|+
+literal|" for proxy "
+operator|+
 name|proxy
+operator|+
+literal|", or invocation handler is not closeable."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1814,13 +1846,16 @@ argument_list|)
 return|;
 block|}
 comment|/** Construct a server for a protocol implementation instance. */
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, Configuration conf)
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, Configuration conf)
 specifier|public
 specifier|static
 name|Server
 name|getServer
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Object
@@ -1862,13 +1897,16 @@ block|}
 comment|/** Construct a server for a protocol implementation instance.    * @deprecated secretManager should be passed.    */
 annotation|@
 name|Deprecated
-DECL|method|getServer (Class protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
 specifier|public
 specifier|static
 name|Server
 name|getServer
 parameter_list|(
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|protocol
 parameter_list|,
 name|Object

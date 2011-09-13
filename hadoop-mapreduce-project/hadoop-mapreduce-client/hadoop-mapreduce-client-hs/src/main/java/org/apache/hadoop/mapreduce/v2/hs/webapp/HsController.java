@@ -78,6 +78,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|View
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -87,6 +103,10 @@ operator|.
 name|Inject
 import|;
 end_import
+
+begin_comment
+comment|/**  * This class renders the various pages that the History Server WebApp supports  */
+end_comment
 
 begin_class
 DECL|class|HsController
@@ -123,6 +143,7 @@ literal|"History"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#index()    */
 annotation|@
 name|Override
 DECL|method|index ()
@@ -131,15 +152,97 @@ name|void
 name|index
 parameter_list|()
 block|{
-comment|// TODO Auto-generated method stub
 name|setTitle
 argument_list|(
 literal|"JobHistory"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#jobPage()    */
+annotation|@
+name|Override
+DECL|method|jobPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|jobPage
+parameter_list|()
+block|{
+return|return
+name|HsJobPage
+operator|.
+name|class
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#countersPage()    */
+annotation|@
+name|Override
+DECL|method|countersPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|countersPage
+parameter_list|()
+block|{
+return|return
+name|HsCountersPage
+operator|.
+name|class
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#tasksPage()    */
+annotation|@
+name|Override
+DECL|method|tasksPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|tasksPage
+parameter_list|()
+block|{
+return|return
+name|HsTasksPage
+operator|.
+name|class
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#taskPage()    */
+annotation|@
+name|Override
+DECL|method|taskPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|taskPage
+parameter_list|()
+block|{
+return|return
+name|HsTaskPage
+operator|.
+name|class
+return|;
+block|}
 comment|// Need all of these methods here also as Guice doesn't look into parent
 comment|// classes.
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#job()    */
+annotation|@
+name|Override
 DECL|method|job ()
 specifier|public
 name|void
@@ -152,6 +255,9 @@ name|job
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#jobCounters()    */
+annotation|@
+name|Override
 DECL|method|jobCounters ()
 specifier|public
 name|void
@@ -164,6 +270,9 @@ name|jobCounters
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#tasks()    */
+annotation|@
+name|Override
 DECL|method|tasks ()
 specifier|public
 name|void
@@ -176,6 +285,9 @@ name|tasks
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#task()    */
+annotation|@
+name|Override
 DECL|method|task ()
 specifier|public
 name|void
@@ -188,6 +300,7 @@ name|task
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#attempts()    */
 annotation|@
 name|Override
 DECL|method|attempts ()
@@ -200,6 +313,38 @@ name|super
 operator|.
 name|attempts
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * @return the page about the current server.    */
+DECL|method|aboutPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|aboutPage
+parameter_list|()
+block|{
+return|return
+name|HsAboutPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render a page about the current server.    */
+DECL|method|about ()
+specifier|public
+name|void
+name|about
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|aboutPage
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

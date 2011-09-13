@@ -438,7 +438,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 decl_stmt|;
 name|int
@@ -477,7 +477,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 operator|.
-name|getNewContainerList
+name|getAllocatedContainers
 argument_list|()
 expr_stmt|;
 name|contReceived

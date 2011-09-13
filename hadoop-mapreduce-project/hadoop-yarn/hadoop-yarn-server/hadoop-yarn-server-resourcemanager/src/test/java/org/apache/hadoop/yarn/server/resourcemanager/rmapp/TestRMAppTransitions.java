@@ -800,7 +800,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"yarn.server.resourcemanager.application.max.retries"
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_RETRIES
 argument_list|,
 name|maxRetries
 argument_list|)

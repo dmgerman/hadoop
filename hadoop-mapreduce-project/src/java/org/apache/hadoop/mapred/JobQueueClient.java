@@ -829,7 +829,7 @@ return|return
 name|allQueues
 return|;
 block|}
-comment|/**    * Method used to display information pertaining to a Single JobQueue    * registered with the {@link QueueManager}. Display of the Jobs is determine    * by the boolean    *     * @throws IOException    */
+comment|/**    * Method used to display information pertaining to a Single JobQueue    * registered with the {@link QueueManager}. Display of the Jobs is determine    * by the boolean    *     * @throws IOException, InterruptedException    */
 DECL|method|displayQueueInfo (String queue, boolean showJobs)
 specifier|private
 name|void
@@ -843,6 +843,8 @@ name|showJobs
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|JobQueueInfo
 name|jobQueueInfo

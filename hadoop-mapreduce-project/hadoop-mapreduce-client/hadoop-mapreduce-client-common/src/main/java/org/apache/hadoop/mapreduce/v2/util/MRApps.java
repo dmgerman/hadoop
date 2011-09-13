@@ -174,6 +174,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|MRConstants
@@ -1211,6 +1225,11 @@ name|classpathFileStream
 init|=
 literal|null
 decl_stmt|;
+name|BufferedReader
+name|reader
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 comment|// Get yarn mapreduce-app classpath from generated classpath
@@ -1240,9 +1259,8 @@ argument_list|(
 name|mrAppGeneratedClasspathFile
 argument_list|)
 expr_stmt|;
-name|BufferedReader
 name|reader
-init|=
+operator|=
 operator|new
 name|BufferedReader
 argument_list|(
@@ -1252,7 +1270,7 @@ argument_list|(
 name|classpathFileStream
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|String
 name|cp
 init|=
@@ -1433,6 +1451,19 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|reader
+operator|!=
+literal|null
+condition|)
+block|{
+name|reader
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|// TODO: Remove duplicates.
 block|}
@@ -1536,9 +1567,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
-name|APPS_STAGING_DIR_KEY
+name|MR_AM_STAGING_DIR
 argument_list|)
 operator|+
 name|Path

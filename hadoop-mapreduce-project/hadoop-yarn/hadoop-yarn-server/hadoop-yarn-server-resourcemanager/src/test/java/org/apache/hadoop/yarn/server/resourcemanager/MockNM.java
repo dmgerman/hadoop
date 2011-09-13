@@ -110,6 +110,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeHealthStatus
 import|;
 end_import
@@ -339,7 +357,7 @@ name|ApplicationId
 argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 argument_list|>
 name|conts
@@ -351,7 +369,7 @@ name|ApplicationId
 argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 argument_list|>
 argument_list|()
@@ -365,7 +383,10 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|Arrays
@@ -373,10 +394,13 @@ operator|.
 name|asList
 argument_list|(
 operator|new
-name|Container
+name|ContainerStatus
 index|[]
 block|{
 name|container
+operator|.
+name|getContainerStatus
+argument_list|()
 block|}
 argument_list|)
 argument_list|)
@@ -528,7 +552,7 @@ name|ApplicationId
 argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 argument_list|>
 argument_list|()
@@ -537,7 +561,7 @@ name|b
 argument_list|)
 return|;
 block|}
-DECL|method|nodeHeartbeat (Map<ApplicationId, List<Container>> conts, boolean isHealthy)
+DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy)
 specifier|public
 name|HeartbeatResponse
 name|nodeHeartbeat
@@ -548,7 +572,7 @@ name|ApplicationId
 argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 argument_list|>
 name|conts
@@ -600,7 +624,7 @@ name|ApplicationId
 argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
 argument_list|>
 name|entry
@@ -613,13 +637,8 @@ control|)
 block|{
 name|status
 operator|.
-name|setContainers
+name|setContainersStatuses
 argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
-argument_list|,
 name|entry
 operator|.
 name|getValue

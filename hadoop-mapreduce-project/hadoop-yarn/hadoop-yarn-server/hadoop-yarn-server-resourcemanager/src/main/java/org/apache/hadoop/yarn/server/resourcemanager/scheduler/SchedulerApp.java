@@ -218,6 +218,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -1118,17 +1136,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|killContainers ( SchedulerApp application)
-specifier|public
-specifier|synchronized
-name|void
-name|killContainers
-parameter_list|(
-name|SchedulerApp
-name|application
-parameter_list|)
-block|{   }
-DECL|method|containerCompleted (RMContainer rmContainer, RMContainerEventType event)
+DECL|method|containerCompleted (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|synchronized
 specifier|public
 name|void
@@ -1136,6 +1144,9 @@ name|containerCompleted
 parameter_list|(
 name|RMContainer
 name|rmContainer
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
@@ -1158,19 +1169,6 @@ name|getId
 argument_list|()
 decl_stmt|;
 comment|// Inform the container
-if|if
-condition|(
-name|event
-operator|.
-name|equals
-argument_list|(
-name|RMContainerEventType
-operator|.
-name|FINISHED
-argument_list|)
-condition|)
-block|{
-comment|// Have to send diagnostics for finished containers.
 name|rmContainer
 operator|.
 name|handle
@@ -1180,30 +1178,12 @@ name|RMContainerFinishedEvent
 argument_list|(
 name|containerId
 argument_list|,
-name|container
-operator|.
-name|getContainerStatus
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|rmContainer
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMContainerEvent
-argument_list|(
-name|containerId
+name|containerStatus
 argument_list|,
 name|event
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -1221,6 +1201,10 @@ name|rmContainer
 operator|.
 name|getState
 argument_list|()
+operator|+
+literal|" event:"
+operator|+
+name|event
 argument_list|)
 expr_stmt|;
 comment|// Remove from the list of containers
@@ -1409,14 +1393,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate: applicationId="
+literal|"allocate: applicationAttemptId="
 operator|+
 name|container
 operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
 argument_list|()
 operator|+
 literal|" container="
@@ -1735,22 +1719,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|Integer
-name|schedulingOpportunities
-init|=
-name|this
-operator|.
-name|schedulingOpportunities
-operator|.
-name|get
-argument_list|(
-name|priority
-argument_list|)
-decl_stmt|;
-name|schedulingOpportunities
-operator|=
-literal|0
-expr_stmt|;
 name|this
 operator|.
 name|schedulingOpportunities
@@ -1759,7 +1727,12 @@ name|put
 argument_list|(
 name|priority
 argument_list|,
-name|schedulingOpportunities
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1870,22 +1843,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|Integer
-name|reReservations
-init|=
-name|this
-operator|.
-name|reReservations
-operator|.
-name|get
-argument_list|(
-name|priority
-argument_list|)
-decl_stmt|;
-name|reReservations
-operator|=
-literal|0
-expr_stmt|;
 name|this
 operator|.
 name|reReservations
@@ -1894,7 +1851,12 @@ name|put
 argument_list|(
 name|priority
 argument_list|,
-name|reReservations
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

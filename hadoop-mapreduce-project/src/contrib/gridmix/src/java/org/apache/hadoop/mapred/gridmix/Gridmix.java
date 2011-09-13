@@ -1415,6 +1415,14 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+comment|// print the gridmix summary if the run was successful
+if|if
+condition|(
+name|val
+operator|==
+literal|0
+condition|)
+block|{
 comment|// print the run summary
 name|System
 operator|.
@@ -1437,6 +1445,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|val
 return|;

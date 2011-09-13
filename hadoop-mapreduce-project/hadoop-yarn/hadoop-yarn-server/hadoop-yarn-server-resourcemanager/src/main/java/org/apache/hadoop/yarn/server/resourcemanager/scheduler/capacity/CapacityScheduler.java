@@ -260,24 +260,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
 import|;
 end_import
@@ -314,7 +296,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerState
+name|ContainerStatus
 import|;
 end_import
 
@@ -710,26 +692,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|AppSchedulingInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|ResourceScheduler
 import|;
 end_import
@@ -791,6 +753,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerUtils
 import|;
 end_import
 
@@ -1001,7 +983,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|root
 specifier|private
-name|Queue
+name|CSQueue
 name|root
 decl_stmt|;
 DECL|field|EMPTY_CONTAINER_LIST
@@ -1026,14 +1008,14 @@ specifier|static
 specifier|final
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queueComparator
 init|=
 operator|new
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 block|{
@@ -1043,10 +1025,10 @@ specifier|public
 name|int
 name|compare
 parameter_list|(
-name|Queue
+name|CSQueue
 name|q1
 parameter_list|,
-name|Queue
+name|CSQueue
 name|q2
 parameter_list|)
 block|{
@@ -1173,7 +1155,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -1182,7 +1164,7 @@ name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1267,9 +1249,14 @@ name|initialized
 init|=
 literal|false
 decl_stmt|;
+DECL|method|CapacityScheduler ()
+specifier|public
+name|CapacityScheduler
+parameter_list|()
+block|{}
 DECL|method|getRootQueue ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getRootQueue
 parameter_list|()
 block|{
@@ -1579,12 +1566,12 @@ specifier|static
 class|class
 name|QueueHook
 block|{
-DECL|method|hook (Queue queue)
+DECL|method|hook (CSQueue queue)
 specifier|public
-name|Queue
+name|CSQueue
 name|hook
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|)
 block|{
@@ -1676,7 +1663,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 init|=
@@ -1685,11 +1672,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|newRoot
 init|=
 name|parseQueue
@@ -1748,7 +1735,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|validateExistingQueues ( Map<String, Queue> queues, Map<String, Queue> newQueues)
+DECL|method|validateExistingQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
 name|validateExistingQueues
@@ -1757,7 +1744,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1765,7 +1752,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 parameter_list|)
@@ -1814,7 +1801,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|addNewQueues ( Map<String, Queue> queues, Map<String, Queue> newQueues)
+DECL|method|addNewQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
 name|addNewQueues
@@ -1823,7 +1810,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1831,7 +1818,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|newQueues
 parameter_list|)
@@ -1844,7 +1831,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|e
 range|:
@@ -1862,7 +1849,7 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|e
@@ -1900,9 +1887,9 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, Queue parent, String queueName, Map<String, Queue> queues, Map<String, Queue> oldQueues, Comparator<Queue> queueComparator, Comparator<SchedulerApp> applicationComparator, QueueHook hook)
+DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, CSQueue parent, String queueName, Map<String, CSQueue> queues, Map<String, CSQueue> oldQueues, Comparator<CSQueue> queueComparator, Comparator<SchedulerApp> applicationComparator, QueueHook hook)
 specifier|static
-name|Queue
+name|CSQueue
 name|parseQueue
 parameter_list|(
 name|CapacitySchedulerContext
@@ -1911,7 +1898,7 @@ parameter_list|,
 name|CapacitySchedulerConfiguration
 name|conf
 parameter_list|,
-name|Queue
+name|CSQueue
 name|parent
 parameter_list|,
 name|String
@@ -1921,7 +1908,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 parameter_list|,
@@ -1929,13 +1916,13 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|oldQueues
 parameter_list|,
 name|Comparator
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|queueComparator
 parameter_list|,
@@ -1949,7 +1936,7 @@ name|QueueHook
 name|hook
 parameter_list|)
 block|{
-name|Queue
+name|CSQueue
 name|queue
 decl_stmt|;
 name|String
@@ -2078,14 +2065,14 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|childQueues
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2097,7 +2084,7 @@ range|:
 name|childQueueNames
 control|)
 block|{
-name|Queue
+name|CSQueue
 name|childQueue
 init|=
 name|parseQueue
@@ -2161,7 +2148,7 @@ return|;
 block|}
 DECL|method|getQueue (String queueName)
 specifier|synchronized
-name|Queue
+name|CSQueue
 name|getQueue
 parameter_list|(
 name|String
@@ -2194,7 +2181,7 @@ name|user
 parameter_list|)
 block|{
 comment|// Sanity checks
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|getQueue
@@ -2508,6 +2495,20 @@ name|completedContainer
 argument_list|(
 name|rmContainer
 argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|COMPLETED_APPLICATION
+argument_list|)
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -2529,6 +2530,18 @@ block|{
 name|completedContainer
 argument_list|(
 name|rmContainer
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+literal|"Application Complete"
+argument_list|)
 argument_list|,
 name|RMContainerEventType
 operator|.
@@ -2556,7 +2569,7 @@ operator|.
 name|getQueueName
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|queue
 init|=
 name|queues
@@ -2756,6 +2769,17 @@ name|completedContainer
 argument_list|(
 name|rmContainer
 argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|releasedContainerId
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|RELEASED_CONTAINER
+argument_list|)
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|RELEASED
@@ -2880,7 +2904,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Queue
+name|CSQueue
 name|queue
 init|=
 literal|null
@@ -3101,7 +3125,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|nodeUpdate (RMNode nm, Map<ApplicationId, List<Container>> containers )
+DECL|method|nodeUpdate (RMNode nm, List<ContainerStatus> newlyLaunchedContainers, List<ContainerStatus> completedContainers)
 specifier|private
 specifier|synchronized
 name|void
@@ -3110,16 +3134,17 @@ parameter_list|(
 name|RMNode
 name|nm
 parameter_list|,
-name|Map
-argument_list|<
-name|ApplicationId
-argument_list|,
 name|List
 argument_list|<
-name|Container
+name|ContainerStatus
 argument_list|>
+name|newlyLaunchedContainers
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerStatus
 argument_list|>
-name|containers
+name|completedContainers
 parameter_list|)
 block|{
 name|LOG
@@ -3146,81 +3171,66 @@ name|getNodeID
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Processing the current containers running/finished on node
+comment|// Processing the newly launched containers
 for|for
 control|(
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|appContainers
+name|ContainerStatus
+name|launchedContainer
 range|:
-name|containers
-operator|.
-name|values
-argument_list|()
+name|newlyLaunchedContainers
 control|)
-block|{
-for|for
-control|(
-name|Container
-name|container
-range|:
-name|appContainers
-control|)
-block|{
-if|if
-condition|(
-name|container
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|ContainerState
-operator|.
-name|RUNNING
-condition|)
 block|{
 name|containerLaunchedOnNode
 argument_list|(
-name|container
+name|launchedContainer
+operator|.
+name|getContainerId
+argument_list|()
 argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+comment|// Process completed containers
+for|for
+control|(
+name|ContainerStatus
+name|completedContainer
+range|:
+name|completedContainers
+control|)
 block|{
-comment|// has to be 'COMPLETE'
+name|ContainerId
+name|containerId
+init|=
+name|completedContainer
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"DEBUG --- Container FINISHED: "
 operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
+name|containerId
 argument_list|)
 expr_stmt|;
 name|completedContainer
 argument_list|(
 name|getRMContainer
 argument_list|(
-name|container
-operator|.
-name|getId
-argument_list|()
+name|containerId
 argument_list|)
+argument_list|,
+name|completedContainer
 argument_list|,
 name|RMContainerEventType
 operator|.
 name|FINISHED
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 comment|// Now node data structures are upto date and ready for scheduling.
 name|LOG
@@ -3349,19 +3359,19 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|containerLaunchedOnNode (Container container, SchedulerNode node)
+DECL|method|containerLaunchedOnNode (ContainerId containerId, SchedulerNode node)
 specifier|private
 name|void
 name|containerLaunchedOnNode
 parameter_list|(
-name|Container
-name|container
+name|ContainerId
+name|containerId
 parameter_list|,
 name|SchedulerNode
 name|node
@@ -3371,12 +3381,9 @@ comment|// Get the application for the finished container
 name|ApplicationAttemptId
 name|applicationAttemptId
 init|=
-name|container
+name|containerId
 operator|.
-name|getId
-argument_list|()
-operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 name|SchedulerApp
@@ -3404,10 +3411,7 @@ name|applicationAttemptId
 operator|+
 literal|" launched container "
 operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
+name|containerId
 operator|+
 literal|" on node: "
 operator|+
@@ -3420,10 +3424,7 @@ name|application
 operator|.
 name|containerLaunchedOnNode
 argument_list|(
-name|container
-operator|.
-name|getId
-argument_list|()
+name|containerId
 argument_list|)
 expr_stmt|;
 block|}
@@ -3511,7 +3512,12 @@ argument_list|()
 argument_list|,
 name|nodeUpdatedEvent
 operator|.
-name|getContainers
+name|getNewlyLaunchedContainers
+argument_list|()
+argument_list|,
+name|nodeUpdatedEvent
+operator|.
+name|getCompletedContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3588,14 +3594,30 @@ name|ContainerExpiredSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|completedContainer
-argument_list|(
-name|getRMContainer
-argument_list|(
+name|ContainerId
+name|containerId
+init|=
 name|containerExpiredEvent
 operator|.
 name|getContainerId
 argument_list|()
+decl_stmt|;
+name|completedContainer
+argument_list|(
+name|getRMContainer
+argument_list|(
+name|containerId
+argument_list|)
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|containerId
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|EXPIRED_CONTAINER
 argument_list|)
 argument_list|,
 name|RMContainerEventType
@@ -3760,6 +3782,20 @@ name|completedContainer
 argument_list|(
 name|container
 argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|LOST_CONTAINER
+argument_list|)
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -3785,6 +3821,20 @@ block|{
 name|completedContainer
 argument_list|(
 name|reservedContainer
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|createAbnormalContainerStatus
+argument_list|(
+name|reservedContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|SchedulerUtils
+operator|.
+name|LOST_CONTAINER
+argument_list|)
 argument_list|,
 name|RMContainerEventType
 operator|.
@@ -3828,7 +3878,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|completedContainer (RMContainer rmContainer, RMContainerEventType event)
+DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|private
 specifier|synchronized
 name|void
@@ -3836,6 +3886,9 @@ name|completedContainer
 parameter_list|(
 name|RMContainer
 name|rmContainer
+parameter_list|,
+name|ContainerStatus
+name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
@@ -3874,7 +3927,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 name|SchedulerApp
@@ -3948,6 +4001,8 @@ argument_list|,
 name|node
 argument_list|,
 name|rmContainer
+argument_list|,
+name|containerStatus
 argument_list|,
 name|event
 argument_list|)
@@ -4045,7 +4100,7 @@ name|getApplication
 argument_list|(
 name|containerId
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;

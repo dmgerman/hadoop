@@ -20,7 +20,111 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|AMRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which identifies the node on which it  *       is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       {@link ContainerToken} of the container, used to securely verify   *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManager#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|Container
 specifier|public
 interface|interface
@@ -31,41 +135,20 @@ argument_list|<
 name|Container
 argument_list|>
 block|{
+comment|/**    * Get the globally unique identifier for the container.    * @return globally unique identifier for the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getId ()
 name|ContainerId
 name|getId
 parameter_list|()
 function_decl|;
-DECL|method|getNodeId ()
-name|NodeId
-name|getNodeId
-parameter_list|()
-function_decl|;
-DECL|method|getNodeHttpAddress ()
-name|String
-name|getNodeHttpAddress
-parameter_list|()
-function_decl|;
-DECL|method|getResource ()
-name|Resource
-name|getResource
-parameter_list|()
-function_decl|;
-DECL|method|getState ()
-name|ContainerState
-name|getState
-parameter_list|()
-function_decl|;
-DECL|method|getContainerToken ()
-name|ContainerToken
-name|getContainerToken
-parameter_list|()
-function_decl|;
-DECL|method|getContainerStatus ()
-name|ContainerStatus
-name|getContainerStatus
-parameter_list|()
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setId (ContainerId id)
 name|void
 name|setId
@@ -74,6 +157,20 @@ name|ContainerId
 name|id
 parameter_list|)
 function_decl|;
+comment|/**    * Get the identifier of the node on which the container is allocated.    * @return identifier of the node on which the container is allocated    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeId ()
+name|NodeId
+name|getNodeId
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setNodeId (NodeId nodeId)
 name|void
 name|setNodeId
@@ -82,6 +179,20 @@ name|NodeId
 name|nodeId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the http uri of the node on which the container is allocated.    * @return http uri of the node on which the container is allocated    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeHttpAddress ()
+name|String
+name|getNodeHttpAddress
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setNodeHttpAddress (String nodeHttpAddress)
 name|void
 name|setNodeHttpAddress
@@ -90,6 +201,20 @@ name|String
 name|nodeHttpAddress
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>Resource</code> allocated to the container.    * @return<code>Resource</code> allocated to the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getResource ()
+name|Resource
+name|getResource
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setResource (Resource resource)
 name|void
 name|setResource
@@ -98,6 +223,20 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
+comment|/**    * Get the current<code>ContainerState</code> of the container.    * @return current<code>ContainerState</code> of the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getState ()
+name|ContainerState
+name|getState
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setState (ContainerState state)
 name|void
 name|setState
@@ -106,6 +245,20 @@ name|ContainerState
 name|state
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>ContainerToken</code> for the container.    * @return<code>ContainerToken</code> for the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getContainerToken ()
+name|ContainerToken
+name|getContainerToken
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setContainerToken (ContainerToken containerToken)
 name|void
 name|setContainerToken
@@ -114,6 +267,20 @@ name|ContainerToken
 name|containerToken
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>ContainerStatus</code> of the container.    * @return<code>ContainerStatus</code> of the container    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getContainerStatus ()
+name|ContainerStatus
+name|getContainerStatus
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setContainerStatus (ContainerStatus containerStatus)
 name|void
 name|setContainerStatus

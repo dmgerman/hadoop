@@ -61,17 +61,17 @@ decl_stmt|;
 DECL|field|exitCode
 specifier|private
 specifier|final
-name|String
+name|int
 name|exitCode
 decl_stmt|;
-DECL|method|LogAggregatorContainerFinishedEvent (ContainerId containerId, String exitCode)
+DECL|method|LogAggregatorContainerFinishedEvent (ContainerId containerId, int exitCode)
 specifier|public
 name|LogAggregatorContainerFinishedEvent
 parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
-name|String
+name|int
 name|exitCode
 parameter_list|)
 block|{
@@ -109,7 +109,7 @@ return|;
 block|}
 DECL|method|getExitCode ()
 specifier|public
-name|String
+name|int
 name|getExitCode
 parameter_list|()
 block|{

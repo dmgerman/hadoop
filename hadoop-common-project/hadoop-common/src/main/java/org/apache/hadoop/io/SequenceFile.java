@@ -7077,17 +7077,6 @@ argument_list|()
 operator|+
 name|length
 expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Setting end to "
-operator|+
-name|end
-argument_list|)
-expr_stmt|;
 comment|// if it wrapped around, use the max
 if|if
 condition|(

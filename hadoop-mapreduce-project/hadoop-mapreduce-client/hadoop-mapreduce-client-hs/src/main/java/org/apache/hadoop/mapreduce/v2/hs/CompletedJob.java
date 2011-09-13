@@ -1835,13 +1835,16 @@ name|boolean
 name|isUber
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|YarnException
+name|LOG
+operator|.
+name|warn
 argument_list|(
-literal|"Not yet implemented!"
+literal|"isUber is not yet implemented"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 annotation|@
 name|Override

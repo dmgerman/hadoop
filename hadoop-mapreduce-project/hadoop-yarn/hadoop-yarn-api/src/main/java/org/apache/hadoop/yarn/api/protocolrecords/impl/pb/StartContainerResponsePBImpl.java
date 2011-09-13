@@ -246,6 +246,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|StartContainerResponseProto
 name|getProto
 parameter_list|()
@@ -274,6 +275,7 @@ return|;
 block|}
 DECL|method|mergeLocalToBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToBuilder
 parameter_list|()
@@ -294,6 +296,7 @@ block|}
 block|}
 DECL|method|mergeLocalToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToProto
 parameter_list|()
@@ -324,6 +327,7 @@ expr_stmt|;
 block|}
 DECL|method|maybeInitBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|maybeInitBuilder
 parameter_list|()
@@ -356,6 +360,7 @@ annotation|@
 name|Override
 DECL|method|getAllServiceResponse ()
 specifier|public
+specifier|synchronized
 name|Map
 argument_list|<
 name|String
@@ -378,6 +383,7 @@ annotation|@
 name|Override
 DECL|method|getServiceResponse (String key)
 specifier|public
+specifier|synchronized
 name|ByteBuffer
 name|getServiceResponse
 parameter_list|(
@@ -401,6 +407,7 @@ return|;
 block|}
 DECL|method|initServiceResponse ()
 specifier|private
+specifier|synchronized
 name|void
 name|initServiceResponse
 parameter_list|()
@@ -483,6 +490,7 @@ annotation|@
 name|Override
 DECL|method|addAllServiceResponse (final Map<String, ByteBuffer> serviceResponse)
 specifier|public
+specifier|synchronized
 name|void
 name|addAllServiceResponse
 parameter_list|(
@@ -518,6 +526,7 @@ expr_stmt|;
 block|}
 DECL|method|addServiceResponseToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|addServiceResponseToProto
 parameter_list|()
@@ -553,6 +562,7 @@ block|{
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|Iterator
 argument_list|<
 name|StringBytesMapProto
@@ -585,6 +595,7 @@ decl_stmt|;
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|void
 name|remove
 parameter_list|()
@@ -598,6 +609,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|StringBytesMapProto
 name|next
 parameter_list|()
@@ -641,6 +653,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|boolean
 name|hasNext
 parameter_list|()
@@ -669,6 +682,7 @@ annotation|@
 name|Override
 DECL|method|setServiceResponse (String key, ByteBuffer val)
 specifier|public
+specifier|synchronized
 name|void
 name|setServiceResponse
 parameter_list|(
@@ -698,6 +712,7 @@ annotation|@
 name|Override
 DECL|method|removeServiceResponse (String key)
 specifier|public
+specifier|synchronized
 name|void
 name|removeServiceResponse
 parameter_list|(
@@ -722,6 +737,7 @@ annotation|@
 name|Override
 DECL|method|clearServiceResponse ()
 specifier|public
+specifier|synchronized
 name|void
 name|clearServiceResponse
 parameter_list|()

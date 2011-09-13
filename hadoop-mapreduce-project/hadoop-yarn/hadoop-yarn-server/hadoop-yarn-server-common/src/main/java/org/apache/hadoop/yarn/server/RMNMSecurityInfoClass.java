@@ -197,7 +197,7 @@ block|{
 return|return
 name|YarnConfiguration
 operator|.
-name|RM_SERVER_PRINCIPAL_KEY
+name|RM_PRINCIPAL
 return|;
 block|}
 annotation|@
@@ -208,9 +208,9 @@ name|clientPrincipal
 parameter_list|()
 block|{
 return|return
-name|YarnServerConfig
+name|YarnConfiguration
 operator|.
-name|NM_SERVER_PRINCIPAL_KEY
+name|NM_PRINCIPAL
 return|;
 block|}
 block|}

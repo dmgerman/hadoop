@@ -1627,6 +1627,24 @@ name|conf
 parameter_list|)
 block|{
 return|return
+name|getHttpAddress
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+comment|/** @return the NameNode HTTP address set in the conf. */
+DECL|method|getHttpAddress (Configuration conf)
+specifier|public
+specifier|static
+name|InetSocketAddress
+name|getHttpAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
 name|NetUtils
 operator|.
 name|createSocketAddr

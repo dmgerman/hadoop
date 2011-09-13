@@ -21,42 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Lists
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Inject
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -70,25 +34,17 @@ name|util
 operator|.
 name|StringHelper
 operator|.
-name|*
+name|join
 import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|Params
-operator|.
-name|*
+name|List
 import|;
 end_import
 
@@ -108,8 +64,22 @@ name|SubView
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
 begin_comment
-comment|/**  * A simpler two column layout implementation. Works with resizable themes.  * @see TwoColumnCssLayout  */
+comment|/**  * A simpler two column layout implementation with a header, a navigation bar  * on the left, content on the right, and a footer. Works with resizable themes.  * @see TwoColumnCssLayout  */
 end_comment
 
 begin_class
@@ -120,6 +90,7 @@ name|TwoColumnLayout
 extends|extends
 name|HtmlPage
 block|{
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.HtmlPage#render(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
 DECL|method|render (Page.HTML<_> html)
 annotation|@
 name|Override
@@ -308,6 +279,7 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Do what needs to be done before the header is rendered.  This usually    * involves setting page variables for Javascript and CSS rendering.    * @param html the html to use to render.     */
 DECL|method|preHead (Page.HTML<_> html)
 specifier|protected
 name|void
@@ -322,6 +294,7 @@ argument_list|>
 name|html
 parameter_list|)
 block|{   }
+comment|/**    * Do what needs to be done after the header is rendered.    * @param html the html to use to render.     */
 DECL|method|postHead (Page.HTML<_> html)
 specifier|protected
 name|void
@@ -336,6 +309,7 @@ argument_list|>
 name|html
 parameter_list|)
 block|{   }
+comment|/**    * @return the class that will render the header of the page.    */
 DECL|method|header ()
 specifier|protected
 name|Class
@@ -353,6 +327,7 @@ operator|.
 name|class
 return|;
 block|}
+comment|/**    * @return the class that will render the content of the page.    */
 DECL|method|content ()
 specifier|protected
 name|Class
@@ -370,6 +345,7 @@ operator|.
 name|class
 return|;
 block|}
+comment|/**    * @return the class that will render the navigation bar.    */
 DECL|method|nav ()
 specifier|protected
 name|Class
@@ -387,6 +363,7 @@ operator|.
 name|class
 return|;
 block|}
+comment|/**    * @return the class that will render the footer.    */
 DECL|method|footer ()
 specifier|protected
 name|Class
@@ -404,6 +381,7 @@ operator|.
 name|class
 return|;
 block|}
+comment|/**    * Sets up a table to be a consistent style.    * @param html the HTML to use to render.    * @param tableId the ID of the table to set styles on.    * @param innerStyles any other styles to add to the table.    */
 DECL|method|setTableStyles (Page.HTML<_> html, String tableId, String... innerStyles)
 specifier|protected
 name|void

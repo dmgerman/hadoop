@@ -60,15 +60,6 @@ specifier|public
 interface|interface
 name|MRConstants
 block|{
-DECL|field|YARN_MR_PREFIX
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|YARN_MR_PREFIX
-init|=
-literal|"yarn.mapreduce.job."
-decl_stmt|;
 comment|// This should be the directory where splits file gets localized on the node
 comment|// running ApplicationMaster.
 DECL|field|JOB_SUBMIT_DIR
@@ -121,15 +112,6 @@ init|=
 literal|"$YARN_HOME/modules/"
 operator|+
 name|HADOOP_MAPREDUCE_CLIENT_APP_JAR_NAME
-decl_stmt|;
-DECL|field|APPS_STAGING_DIR_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APPS_STAGING_DIR_KEY
-init|=
-literal|"yarn.apps.stagingDir"
 decl_stmt|;
 comment|// The token file for the application. Should contain tokens for access to
 comment|// remote file system and may optionally contain application specific tokens.

@@ -416,7 +416,7 @@ name|rsrc
 init|=
 name|localrsrc
 operator|.
-name|remove
+name|get
 argument_list|(
 name|rem
 operator|.
@@ -483,7 +483,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Attempt to remove resource with non-zero refcount"
+literal|"Attempt to remove resource: "
+operator|+
+name|rsrc
+operator|+
+literal|" with non-zero refcount"
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -493,6 +497,16 @@ return|return
 literal|false
 return|;
 block|}
+name|localrsrc
+operator|.
+name|remove
+argument_list|(
+name|rem
+operator|.
+name|getRequest
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ResourceState

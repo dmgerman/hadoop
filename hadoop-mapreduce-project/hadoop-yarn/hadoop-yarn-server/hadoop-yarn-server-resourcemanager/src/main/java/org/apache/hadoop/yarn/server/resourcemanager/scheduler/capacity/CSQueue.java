@@ -136,6 +136,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -257,7 +275,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Queue represents a node in the tree of   * hierarchical queues in the {@link CapacityScheduler}.  */
+comment|/**  *<code>CSQueue</code> represents a node in the tree of   * hierarchical queues in the {@link CapacityScheduler}.  */
 end_comment
 
 begin_interface
@@ -265,10 +283,10 @@ annotation|@
 name|Stable
 annotation|@
 name|Private
-DECL|interface|Queue
+DECL|interface|CSQueue
 specifier|public
 interface|interface
-name|Queue
+name|CSQueue
 extends|extends
 name|org
 operator|.
@@ -289,7 +307,7 @@ block|{
 comment|/**    * Get the parent<code>Queue</code>.    * @return the parent queue    */
 DECL|method|getParent ()
 specifier|public
-name|Queue
+name|CSQueue
 name|getParent
 parameter_list|()
 function_decl|;
@@ -368,7 +386,7 @@ DECL|method|getChildQueues ()
 specifier|public
 name|List
 argument_list|<
-name|Queue
+name|CSQueue
 argument_list|>
 name|getChildQueues
 parameter_list|()
@@ -430,8 +448,8 @@ name|SchedulerNode
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param event event to be sent to the container    */
-DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer container, RMContainerEventType event)
+comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param event event to be sent to the container    */
+DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|void
 name|completedContainer
@@ -448,6 +466,9 @@ parameter_list|,
 name|RMContainer
 name|container
 parameter_list|,
+name|ContainerStatus
+name|containerStatus
+parameter_list|,
 name|RMContainerEventType
 name|event
 parameter_list|)
@@ -460,12 +481,12 @@ name|getNumApplications
 parameter_list|()
 function_decl|;
 comment|/**    * Reinitialize the queue.    * @param queue new queue to re-initalize from    * @param clusterResource resources in the cluster    */
-DECL|method|reinitialize (Queue queue, Resource clusterResource)
+DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 name|Resource

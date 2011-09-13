@@ -194,6 +194,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -532,7 +550,7 @@ name|CapacitySchedulerContext
 name|csContext
 decl_stmt|;
 DECL|field|root
-name|Queue
+name|CSQueue
 name|root
 decl_stmt|;
 DECL|field|queues
@@ -540,7 +558,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -549,7 +567,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -973,7 +991,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// 2. Stub out LeafQueue.parent.completedContainer
-name|Queue
+name|CSQueue
 name|parent
 init|=
 name|queue
@@ -1015,6 +1033,13 @@ argument_list|,
 name|any
 argument_list|(
 name|RMContainer
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|ContainerStatus
 operator|.
 name|class
 argument_list|)
@@ -1648,6 +1673,8 @@ name|node_0
 argument_list|,
 name|rmContainer
 argument_list|,
+literal|null
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -1722,6 +1749,8 @@ argument_list|,
 name|node_0
 argument_list|,
 name|rmContainer
+argument_list|,
+literal|null
 argument_list|,
 name|RMContainerEventType
 operator|.
@@ -2830,6 +2859,8 @@ name|node_0
 argument_list|,
 name|rmContainer
 argument_list|,
+literal|null
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -2935,6 +2966,8 @@ name|node_0
 argument_list|,
 name|rmContainer
 argument_list|,
+literal|null
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -3039,6 +3072,8 @@ argument_list|,
 name|node_0
 argument_list|,
 name|rmContainer
+argument_list|,
+literal|null
 argument_list|,
 name|RMContainerEventType
 operator|.
@@ -3592,6 +3627,8 @@ operator|.
 name|next
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -3702,6 +3739,8 @@ argument_list|()
 operator|.
 name|next
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 name|RMContainerEventType
 operator|.
@@ -4347,6 +4386,8 @@ operator|.
 name|next
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
@@ -4665,6 +4706,8 @@ argument_list|()
 operator|.
 name|next
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 name|RMContainerEventType
 operator|.

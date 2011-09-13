@@ -62,22 +62,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -95,22 +79,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -236,41 +204,29 @@ name|ByteBuffer
 name|containerToken
 parameter_list|)
 function_decl|;
-comment|/**    * Get all<code>LocalResource</code> required by the container.    * @return all<code>LocalResource</code> required by the container    */
+comment|/**    * Get<code>LocalResource</code> required by the container.    * @return all<code>LocalResource</code> required by the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getAllLocalResources ()
+DECL|method|getLocalResources ()
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|LocalResource
 argument_list|>
-name|getAllLocalResources
+name|getLocalResources
 parameter_list|()
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getLocalResource (String key)
-name|LocalResource
-name|getLocalResource
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-comment|/**    * Add all<code>LocalResource</code> required by the container.    * @param localResources<code>LocalResource</code> required by the container    */
+comment|/**    * Set<code>LocalResource</code> required by the container.    * @param localResources<code>LocalResource</code> required by the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllLocalResources (Map<String, LocalResource> localResources)
+DECL|method|setLocalResources (Map<String, LocalResource> localResources)
 name|void
-name|addAllLocalResources
+name|setLocalResources
 parameter_list|(
 name|Map
 argument_list|<
@@ -281,77 +237,29 @@ argument_list|>
 name|localResources
 parameter_list|)
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setLocalResource (String key, LocalResource value)
-name|void
-name|setLocalResource
-parameter_list|(
-name|String
-name|key
-parameter_list|,
-name|LocalResource
-name|value
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeLocalResource (String key)
-name|void
-name|removeLocalResource
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearLocalResources ()
-name|void
-name|clearLocalResources
-parameter_list|()
-function_decl|;
-comment|/**    * Get application-specific binary service data.    * @return application-specific binary service data    */
+comment|/**    * Get application-specific binary<em>service data</em>.    * @return application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getAllServiceData ()
+DECL|method|getServiceData ()
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|getAllServiceData
+name|getServiceData
 parameter_list|()
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getServiceData (String key)
-name|ByteBuffer
-name|getServiceData
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-comment|/**    * Add add application-specific binary service data.    * @param serviceData application-specific binary service data    */
+comment|/**    * Set application-specific binary<em>service data</em>.    * @param serviceData application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllServiceData (Map<String, ByteBuffer> serviceData)
+DECL|method|setServiceData (Map<String, ByteBuffer> serviceData)
 name|void
-name|addAllServiceData
+name|setServiceData
 parameter_list|(
 name|Map
 argument_list|<
@@ -362,155 +270,50 @@ argument_list|>
 name|serviceData
 parameter_list|)
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setServiceData (String key, ByteBuffer value)
-name|void
-name|setServiceData
-parameter_list|(
-name|String
-name|key
-parameter_list|,
-name|ByteBuffer
-name|value
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeServiceData (String key)
-name|void
-name|removeServiceData
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearServiceData ()
-name|void
-name|clearServiceData
-parameter_list|()
-function_decl|;
-comment|/**    * Get<em>environment variables</em> for the launched container.    * @return<em>environment variables</em> for the launched container    */
+comment|/**    * Get<em>environment variables</em> for the container.    * @return<em>environment variables</em> for the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getAllEnv ()
+DECL|method|getEnv ()
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|String
 argument_list|>
-name|getAllEnv
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getEnv (String key)
-name|String
 name|getEnv
-parameter_list|(
-name|String
-name|key
-parameter_list|)
+parameter_list|()
 function_decl|;
-comment|/**    * Add<em>environment variables</em> for the launched container.    * @param env<em>environment variables</em> for the launched container    */
+comment|/**    * Add<em>environment variables</em> for the container.    * @param environment<em>environment variables</em> for the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllEnv (Map<String, String> env)
-name|void
-name|addAllEnv
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|env
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setEnv (String key, String value)
+DECL|method|setEnv (Map<String, String> environment)
 name|void
 name|setEnv
 parameter_list|(
+name|Map
+argument_list|<
 name|String
-name|key
-parameter_list|,
+argument_list|,
 name|String
-name|value
+argument_list|>
+name|environment
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeEnv (String key)
-name|void
-name|removeEnv
-parameter_list|(
-name|String
-name|key
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearEnv ()
-name|void
-name|clearEnv
-parameter_list|()
 function_decl|;
 comment|/**    * Get the list of<em>commands</em> for launching the container.    * @return the list of<em>commands</em> for launching the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getCommandList ()
+DECL|method|getCommands ()
 name|List
 argument_list|<
 name|String
 argument_list|>
-name|getCommandList
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getCommand (int index)
-name|String
-name|getCommand
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getCommandCount ()
-name|int
-name|getCommandCount
+name|getCommands
 parameter_list|()
 function_decl|;
 comment|/**    * Add the list of<em>commands</em> for launching the container.    * @param commands the list of<em>commands</em> for launching the container    */
@@ -518,9 +321,9 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllCommands (List<String> commands)
+DECL|method|setCommands (List<String> commands)
 name|void
-name|addAllCommands
+name|setCommands
 parameter_list|(
 name|List
 argument_list|<
@@ -528,39 +331,6 @@ name|String
 argument_list|>
 name|commands
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addCommand (String command)
-name|void
-name|addCommand
-parameter_list|(
-name|String
-name|command
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeCommand (int index)
-name|void
-name|removeCommand
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearCommands ()
-name|void
-name|clearCommands
-parameter_list|()
 function_decl|;
 block|}
 end_interface

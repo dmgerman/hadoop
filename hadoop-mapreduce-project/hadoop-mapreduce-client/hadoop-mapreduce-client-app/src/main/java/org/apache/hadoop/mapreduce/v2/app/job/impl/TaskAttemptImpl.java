@@ -1276,24 +1276,6 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|jobhistory
-operator|.
-name|JHConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
 name|util
 operator|.
 name|MRApps
@@ -1814,6 +1796,11 @@ specifier|final
 name|int
 name|partition
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|field|eventHandler
 specifier|protected
 specifier|final
@@ -2238,6 +2225,24 @@ argument_list|,
 literal|false
 argument_list|)
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|ASSIGNED
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|FAIL_CONTAINER_CLEANUP
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_COMPLETED
+argument_list|,
+name|CLEANUP_CONTAINER_TRANSITION
+argument_list|)
+comment|// ^ If RM kills the container due to expiry, preemption etc.
 operator|.
 name|addTransition
 argument_list|(
@@ -3216,7 +3221,7 @@ specifier|private
 name|TaskAttemptStatus
 name|reportedStatus
 decl_stmt|;
-DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, Configuration conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|TaskAttemptImpl (TaskId taskId, int i, @SuppressWarnings(R) EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, Configuration conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
 specifier|public
 name|TaskAttemptImpl
 parameter_list|(
@@ -3226,6 +3231,11 @@ parameter_list|,
 name|int
 name|i
 parameter_list|,
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 name|EventHandler
 name|eventHandler
 parameter_list|,
@@ -3714,6 +3724,42 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Application resources
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+name|localResources
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+argument_list|()
+decl_stmt|;
+comment|// Application environment
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|environment
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|FileSystem
@@ -3775,9 +3821,9 @@ name|getWorkingDirectory
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|container
+name|localResources
 operator|.
-name|setLocalResource
+name|put
 argument_list|(
 name|MRConstants
 operator|.
@@ -3878,9 +3924,9 @@ operator|.
 name|JOB_CONF_FILE
 argument_list|)
 decl_stmt|;
-name|container
+name|localResources
 operator|.
-name|setLocalResource
+name|put
 argument_list|(
 name|MRConstants
 operator|.
@@ -3927,7 +3973,24 @@ name|remoteFS
 argument_list|,
 name|conf
 argument_list|,
+name|localResources
+argument_list|,
+name|environment
+argument_list|)
+expr_stmt|;
+comment|// Set local-resources and environment
 name|container
+operator|.
+name|setLocalResources
+argument_list|(
+name|localResources
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setEnv
+argument_list|(
+name|environment
 argument_list|)
 expr_stmt|;
 comment|// Setup up tokens
@@ -4053,9 +4116,26 @@ argument_list|(
 literal|"Putting shuffle token in serviceData"
 argument_list|)
 expr_stmt|;
-name|container
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|serviceData
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|serviceData
 operator|.
-name|setServiceData
+name|put
 argument_list|(
 name|ShuffleHandler
 operator|.
@@ -4069,13 +4149,20 @@ name|jobToken
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|container
+operator|.
+name|setServiceData
+argument_list|(
+name|serviceData
+argument_list|)
+expr_stmt|;
 name|MRApps
 operator|.
 name|addToClassPath
 argument_list|(
 name|container
 operator|.
-name|getAllEnv
+name|getEnv
 argument_list|()
 argument_list|,
 name|getInitialClasspath
@@ -4230,7 +4317,7 @@ comment|// TODO
 comment|// Construct the actual Container
 name|container
 operator|.
-name|addAllCommands
+name|setCommands
 argument_list|(
 name|MapReduceChildJVM
 operator|.
@@ -4264,7 +4351,7 @@ name|setVMEnv
 argument_list|(
 name|container
 operator|.
-name|getAllEnv
+name|getEnv
 argument_list|()
 argument_list|,
 name|classPaths
@@ -4388,7 +4475,7 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|setupDistributedCache (FileSystem remoteFS, Configuration conf, ContainerLaunchContext container)
+DECL|method|setupDistributedCache (FileSystem remoteFS, Configuration conf, Map<String, LocalResource> localResources, Map<String, String> env)
 specifier|private
 name|void
 name|setupDistributedCache
@@ -4399,8 +4486,21 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
-name|ContainerLaunchContext
-name|container
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+name|localResources
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
 parameter_list|)
 throws|throws
 name|IOException
@@ -4410,7 +4510,9 @@ name|parseDistributedCacheArtifacts
 argument_list|(
 name|remoteFS
 argument_list|,
-name|container
+name|localResources
+argument_list|,
+name|env
 argument_list|,
 name|LocalResourceType
 operator|.
@@ -4462,7 +4564,9 @@ name|parseDistributedCacheArtifacts
 argument_list|(
 name|remoteFS
 argument_list|,
-name|container
+name|localResources
+argument_list|,
+name|env
 argument_list|,
 name|LocalResourceType
 operator|.
@@ -4513,7 +4617,7 @@ block|}
 comment|// TODO - Move this to MR!
 comment|// Use TaskDistributedCacheManager.CacheFiles.makeCacheFiles(URI[],
 comment|// long[], boolean[], Path[], FileType)
-DECL|method|parseDistributedCacheArtifacts ( FileSystem remoteFS, ContainerLaunchContext container, LocalResourceType type, URI[] uris, long[] timestamps, long[] sizes, boolean visibilities[], Path[] pathsToPutOnClasspath)
+DECL|method|parseDistributedCacheArtifacts ( FileSystem remoteFS, Map<String, LocalResource> localResources, Map<String, String> env, LocalResourceType type, URI[] uris, long[] timestamps, long[] sizes, boolean visibilities[], Path[] pathsToPutOnClasspath)
 specifier|private
 name|void
 name|parseDistributedCacheArtifacts
@@ -4521,8 +4625,21 @@ parameter_list|(
 name|FileSystem
 name|remoteFS
 parameter_list|,
-name|ContainerLaunchContext
-name|container
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+name|localResources
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
 parameter_list|,
 name|LocalResourceType
 name|type
@@ -4807,9 +4924,9 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
-name|container
+name|localResources
 operator|.
-name|setLocalResource
+name|put
 argument_list|(
 name|linkName
 argument_list|,
@@ -4817,8 +4934,6 @@ name|BuilderUtils
 operator|.
 name|newLocalResource
 argument_list|(
-name|recordFactory
-argument_list|,
 name|p
 operator|.
 name|toUri
@@ -4864,24 +4979,11 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|environment
-init|=
-name|container
-operator|.
-name|getAllEnv
-argument_list|()
-decl_stmt|;
 name|MRApps
 operator|.
 name|addToClassPath
 argument_list|(
-name|environment
+name|env
 argument_list|,
 name|linkName
 argument_list|)
@@ -5505,6 +5607,11 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|handle (TaskAttemptEvent event)
 specifier|public
@@ -5573,7 +5680,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't handle this event at current state"
+literal|"Can't handle this event at current state for "
+operator|+
+name|this
+operator|.
+name|attemptId
 argument_list|,
 name|e
 argument_list|)
@@ -6000,13 +6111,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|JHConfig
+name|MRJobConfig
 operator|.
-name|JOBHISTORY_TASKPROGRESS_NUMBER_SPLITS_KEY
+name|MR_AM_NUM_PROGRESS_SPLITS
 argument_list|,
-name|WrappedProgressSplitsBlock
+name|MRJobConfig
 operator|.
-name|DEFAULT_NUMBER_PROGRESS_SPLITS
+name|DEFAULT_MR_AM_NUM_PROGRESS_SPLITS
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6286,6 +6397,11 @@ name|rescheduled
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -6438,6 +6554,11 @@ argument_list|,
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (final TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
@@ -6714,6 +6835,11 @@ name|withdrawsContainerRequest
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -6923,6 +7049,11 @@ argument_list|,
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent evnt)
@@ -7193,6 +7324,11 @@ name|TaskAttemptEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -7240,6 +7376,11 @@ argument_list|,
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
@@ -7314,6 +7455,11 @@ argument_list|,
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
@@ -7493,6 +7639,11 @@ name|TaskAttemptEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -7608,6 +7759,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|}
+argument_list|)
 DECL|method|logAttemptFinishedEvent (TaskAttemptState state)
 specifier|private
 name|void
@@ -7848,6 +8006,11 @@ name|TaskAttemptEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -7983,6 +8146,11 @@ name|TaskAttemptEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -8111,6 +8279,11 @@ name|TaskAttemptEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
@@ -8236,6 +8409,11 @@ argument_list|,
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)

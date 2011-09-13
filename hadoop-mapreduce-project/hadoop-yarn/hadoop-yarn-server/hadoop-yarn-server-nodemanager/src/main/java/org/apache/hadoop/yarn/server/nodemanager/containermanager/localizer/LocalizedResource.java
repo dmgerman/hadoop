@@ -958,6 +958,17 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+literal|","
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getState
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"}"
 argument_list|)
 expr_stmt|;

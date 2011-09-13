@@ -499,13 +499,13 @@ literal|"Setup top-level queues a and b"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|stubQueueAllocation (final Queue queue, final Resource clusterResource, final SchedulerNode node, final int allocation)
+DECL|method|stubQueueAllocation (final CSQueue queue, final Resource clusterResource, final SchedulerNode node, final int allocation)
 specifier|private
 name|void
 name|stubQueueAllocation
 parameter_list|(
 specifier|final
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 specifier|final
@@ -723,12 +723,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|computeQueueUtilization (Queue queue, int expectedMemory, Resource clusterResource)
+DECL|method|computeQueueUtilization (CSQueue queue, int expectedMemory, Resource clusterResource)
 specifier|private
 name|float
 name|computeQueueUtilization
 parameter_list|(
-name|Queue
+name|CSQueue
 name|queue
 parameter_list|,
 name|int
@@ -776,7 +776,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -785,11 +785,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|root
 init|=
 name|CapacityScheduler
@@ -1844,7 +1844,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 name|queues
 init|=
@@ -1853,11 +1853,11 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Queue
+name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|root
 init|=
 name|CapacityScheduler
@@ -1989,7 +1989,7 @@ name|numNodes
 argument_list|)
 expr_stmt|;
 comment|// Start testing
-name|Queue
+name|CSQueue
 name|a
 init|=
 name|queues
@@ -1999,7 +1999,7 @@ argument_list|(
 name|A
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|b
 init|=
 name|queues
@@ -2009,7 +2009,7 @@ argument_list|(
 name|B
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|c
 init|=
 name|queues
@@ -2019,7 +2019,7 @@ argument_list|(
 name|C
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|d
 init|=
 name|queues
@@ -2029,7 +2029,7 @@ argument_list|(
 name|D
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|a1
 init|=
 name|queues
@@ -2039,7 +2039,7 @@ argument_list|(
 name|A1
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|a2
 init|=
 name|queues
@@ -2049,7 +2049,7 @@ argument_list|(
 name|A2
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|b1
 init|=
 name|queues
@@ -2059,7 +2059,7 @@ argument_list|(
 name|B1
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|b2
 init|=
 name|queues
@@ -2069,7 +2069,7 @@ argument_list|(
 name|B2
 argument_list|)
 decl_stmt|;
-name|Queue
+name|CSQueue
 name|b3
 init|=
 name|queues

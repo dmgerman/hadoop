@@ -134,7 +134,7 @@ name|v2
 operator|.
 name|jobhistory
 operator|.
-name|JHConfig
+name|JHAdminConfig
 import|;
 end_import
 
@@ -422,13 +422,13 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|HS_BIND_ADDRESS
+name|MR_HISTORY_ADDRESS
 argument_list|,
-name|JHConfig
+name|JHAdminConfig
 operator|.
-name|DEFAULT_HS_BIND_ADDRESS
+name|DEFAULT_MR_HISTORY_ADDRESS
 argument_list|)
 decl_stmt|;
 name|LOG

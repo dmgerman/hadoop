@@ -96,6 +96,22 @@ name|ClientProtocolProvider
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
 begin_class
 DECL|class|YarnClientProtocolProvider
 specifier|public
@@ -138,7 +154,11 @@ return|return
 operator|new
 name|YARNRunner
 argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 return|;
 block|}
