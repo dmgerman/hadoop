@@ -21,16 +21,16 @@ package|;
 end_package
 
 begin_comment
-comment|/** The FileSystem path parameter. */
+comment|/** Length parameter. */
 end_comment
 
 begin_class
-DECL|class|UriFsPathParam
+DECL|class|LengthParam
 specifier|public
 class|class
-name|UriFsPathParam
+name|LengthParam
 extends|extends
-name|StringParam
+name|LongParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -40,7 +40,17 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"path"
+literal|"length"
+decl_stmt|;
+comment|/** Default parameter value. */
+DECL|field|DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT
+init|=
+name|NULL
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
@@ -53,24 +63,44 @@ operator|new
 name|Domain
 argument_list|(
 name|NAME
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|UriFsPathParam (String str)
+comment|/**    * Constructor.    * @param value the parameter value.    */
+DECL|method|LengthParam (final Long value)
 specifier|public
-name|UriFsPathParam
+name|LengthParam
 parameter_list|(
-name|String
-name|str
+specifier|final
+name|Long
+name|value
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|DOMAIN
 argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
+DECL|method|LengthParam (final String str)
+specifier|public
+name|LengthParam
+parameter_list|(
+specifier|final
+name|String
 name|str
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|DOMAIN
+operator|.
+name|parse
+argument_list|(
+name|str
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -84,34 +114,6 @@ parameter_list|()
 block|{
 return|return
 name|NAME
-return|;
-block|}
-comment|/** @return the absolute path. */
-DECL|method|getAbsolutePath ()
-specifier|public
-specifier|final
-name|String
-name|getAbsolutePath
-parameter_list|()
-block|{
-specifier|final
-name|String
-name|path
-init|=
-name|getValue
-argument_list|()
-decl_stmt|;
-comment|//The first / has been stripped out.
-return|return
-name|path
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-literal|"/"
-operator|+
-name|path
 return|;
 block|}
 block|}

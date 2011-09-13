@@ -68,8 +68,20 @@ name|HttpOpParam
 operator|.
 name|Op
 block|{
+DECL|enumConstant|OPEN
+name|OPEN
+parameter_list|(
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+parameter_list|)
+operator|,
 DECL|enumConstant|GETFILESTATUS
-name|GETFILESTATUS
+constructor|GETFILESTATUS(HttpURLConnection.HTTP_OK
+block|)
+enum|,
+DECL|enumConstant|LISTSTATUS
+name|LISTSTATUS
 parameter_list|(
 name|HttpURLConnection
 operator|.
@@ -79,28 +91,33 @@ operator|,
 DECL|enumConstant|NULL
 constructor|NULL(HttpURLConnection.HTTP_NOT_IMPLEMENTED
 block|)
-enum|;
+class|;
+end_class
+
+begin_decl_stmt
 DECL|field|expectedHttpResponseCode
 specifier|final
 name|int
 name|expectedHttpResponseCode
 decl_stmt|;
+end_decl_stmt
+
+begin_expr_stmt
 DECL|method|Op (final int expectedHttpResponseCode)
 name|Op
-parameter_list|(
-specifier|final
+argument_list|(
+name|final
 name|int
 name|expectedHttpResponseCode
-parameter_list|)
+argument_list|)
 block|{
 name|this
 operator|.
 name|expectedHttpResponseCode
 operator|=
 name|expectedHttpResponseCode
-expr_stmt|;
-block|}
-annotation|@
+block|;     }
+expr|@
 name|Override
 DECL|method|getType ()
 specifier|public
@@ -108,7 +125,7 @@ name|HttpOpParam
 operator|.
 name|Type
 name|getType
-parameter_list|()
+argument_list|()
 block|{
 return|return
 name|HttpOpParam
@@ -118,6 +135,9 @@ operator|.
 name|GET
 return|;
 block|}
+end_expr_stmt
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getDoOutput ()
@@ -130,6 +150,9 @@ return|return
 literal|false
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getExpectedHttpResponseCode ()
@@ -142,6 +165,9 @@ return|return
 name|expectedHttpResponseCode
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|toQueryString ()
@@ -158,12 +184,11 @@ operator|+
 name|this
 return|;
 block|}
-block|}
-end_class
+end_function
 
 begin_decl_stmt
+unit|}    private
 DECL|field|DOMAIN
-specifier|private
 specifier|static
 specifier|final
 name|Domain
