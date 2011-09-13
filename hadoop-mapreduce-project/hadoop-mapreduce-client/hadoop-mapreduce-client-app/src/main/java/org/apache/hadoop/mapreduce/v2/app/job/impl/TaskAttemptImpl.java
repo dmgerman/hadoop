@@ -2234,6 +2234,24 @@ name|ASSIGNED
 argument_list|,
 name|TaskAttemptState
 operator|.
+name|FAIL_CONTAINER_CLEANUP
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_COMPLETED
+argument_list|,
+name|CLEANUP_CONTAINER_TRANSITION
+argument_list|)
+comment|// ^ If RM kills the container due to expiry, preemption etc.
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|ASSIGNED
+argument_list|,
+name|TaskAttemptState
+operator|.
 name|KILL_CONTAINER_CLEANUP
 argument_list|,
 name|TaskAttemptEventType
@@ -5662,7 +5680,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't handle this event at current state"
+literal|"Can't handle this event at current state for "
+operator|+
+name|this
+operator|.
+name|attemptId
 argument_list|,
 name|e
 argument_list|)

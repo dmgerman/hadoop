@@ -3109,7 +3109,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't handle this event at current state"
+literal|"Can't handle this event at current state for "
+operator|+
+name|this
+operator|.
+name|taskId
 argument_list|,
 name|e
 argument_list|)

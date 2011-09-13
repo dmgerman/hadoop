@@ -220,7 +220,7 @@ specifier|final
 name|String
 name|EXPIRED_CONTAINER
 init|=
-literal|"Container expired since it unused"
+literal|"Container expired since it was unused"
 decl_stmt|;
 DECL|field|UNRESERVED_CONTAINER
 specifier|public
