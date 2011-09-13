@@ -933,6 +933,24 @@ range|:
 name|list
 control|)
 block|{
+if|if
+condition|(
+name|buffer
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" "
+argument_list|)
+expr_stmt|;
+block|}
 name|buffer
 operator|.
 name|append
@@ -941,11 +959,6 @@ name|address
 operator|.
 name|getHostName
 argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" "
 argument_list|)
 expr_stmt|;
 block|}
