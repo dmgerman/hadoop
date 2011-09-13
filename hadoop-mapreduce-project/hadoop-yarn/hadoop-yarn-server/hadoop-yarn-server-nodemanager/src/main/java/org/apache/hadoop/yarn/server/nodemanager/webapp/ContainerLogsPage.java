@@ -666,7 +666,10 @@ name|toString
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 operator|+
@@ -1231,7 +1234,10 @@ name|toString
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;

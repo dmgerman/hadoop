@@ -1325,6 +1325,26 @@ name|NM_PREFIX
 operator|+
 literal|"aux-services.%s.class"
 decl_stmt|;
+DECL|field|INVALID_CONTAINER_EXIT_STATUS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|INVALID_CONTAINER_EXIT_STATUS
+init|=
+operator|-
+literal|1000
+decl_stmt|;
+DECL|field|ABORTED_CONTAINER_EXIT_STATUS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|ABORTED_CONTAINER_EXIT_STATUS
+init|=
+operator|-
+literal|100
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

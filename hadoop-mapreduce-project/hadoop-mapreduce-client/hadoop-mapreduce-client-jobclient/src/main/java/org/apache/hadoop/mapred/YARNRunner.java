@@ -2221,7 +2221,6 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|//    appContext.environment = new HashMap<CharSequence, CharSequence>();
 name|MRApps
 operator|.
 name|setInitialClasspath

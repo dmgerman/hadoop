@@ -259,11 +259,10 @@ argument_list|>
 name|getCompletedContainersStatuses
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of list of<em>completed containers' statuses</em>.    * @param containers list of<em>completed containers' statuses</em>    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setCompletedContainersStatuses (List<ContainerStatus> containers)
 specifier|public
 name|void

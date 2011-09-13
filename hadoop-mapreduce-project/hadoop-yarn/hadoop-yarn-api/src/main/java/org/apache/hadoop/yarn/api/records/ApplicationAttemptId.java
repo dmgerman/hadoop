@@ -30,7 +30,79 @@ name|NumberFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>ApplicationAttemptId</code> denotes the particular<em>attempt</em>  * of an<code>ApplicationMaster</code> for a given {@link ApplicationId}.</p>  *   *<p>Multiple attempts might be needed to run an application to completion due  * to temporal failures of the<code>ApplicationMaster</code> such as hardware  * failures, connectivity issues etc. on the node on which it was scheduled.</p>  */
+end_comment
+
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|ApplicationAttemptId
 specifier|public
 specifier|abstract
@@ -42,6 +114,11 @@ argument_list|<
 name|ApplicationAttemptId
 argument_list|>
 block|{
+comment|/**    * Get the<code>ApplicationId</code> of the<code>ApplicationAttempId</code>.     * @return<code>ApplicationId</code> of the<code>ApplicationAttempId</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getApplicationId ()
 specifier|public
 specifier|abstract
@@ -49,13 +126,10 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 function_decl|;
-DECL|method|getAttemptId ()
-specifier|public
-specifier|abstract
-name|int
-name|getAttemptId
-parameter_list|()
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setApplicationId (ApplicationId appID)
 specifier|public
 specifier|abstract
@@ -66,6 +140,18 @@ name|ApplicationId
 name|appID
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>attempt id</code> of the<code>Application</code>.    * @return<code>attempt id</code> of the<code>Application</code>    */
+DECL|method|getAttemptId ()
+specifier|public
+specifier|abstract
+name|int
+name|getAttemptId
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setAttemptId (int attemptId)
 specifier|public
 specifier|abstract

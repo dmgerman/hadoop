@@ -20,11 +20,47 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
 begin_comment
-comment|//TODO: Split separate object for register, deregister and in-RM use.
+comment|/**  *<em>For internal use only...</em>   */
 end_comment
 
 begin_interface
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|interface|ApplicationMaster
 specifier|public
 interface|interface
@@ -35,51 +71,6 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 function_decl|;
-DECL|method|getHost ()
-name|String
-name|getHost
-parameter_list|()
-function_decl|;
-DECL|method|getRpcPort ()
-name|int
-name|getRpcPort
-parameter_list|()
-function_decl|;
-DECL|method|getTrackingUrl ()
-name|String
-name|getTrackingUrl
-parameter_list|()
-function_decl|;
-DECL|method|getStatus ()
-name|ApplicationStatus
-name|getStatus
-parameter_list|()
-function_decl|;
-DECL|method|getState ()
-name|ApplicationState
-name|getState
-parameter_list|()
-function_decl|;
-DECL|method|getClientToken ()
-name|String
-name|getClientToken
-parameter_list|()
-function_decl|;
-DECL|method|getAMFailCount ()
-name|int
-name|getAMFailCount
-parameter_list|()
-function_decl|;
-DECL|method|getContainerCount ()
-name|int
-name|getContainerCount
-parameter_list|()
-function_decl|;
-DECL|method|getDiagnostics ()
-name|String
-name|getDiagnostics
-parameter_list|()
-function_decl|;
 DECL|method|setApplicationId (ApplicationId appId)
 name|void
 name|setApplicationId
@@ -87,6 +78,11 @@ parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|)
+function_decl|;
+DECL|method|getHost ()
+name|String
+name|getHost
+parameter_list|()
 function_decl|;
 DECL|method|setHost (String host)
 name|void
@@ -96,6 +92,11 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
+DECL|method|getRpcPort ()
+name|int
+name|getRpcPort
+parameter_list|()
+function_decl|;
 DECL|method|setRpcPort (int rpcPort)
 name|void
 name|setRpcPort
@@ -103,6 +104,11 @@ parameter_list|(
 name|int
 name|rpcPort
 parameter_list|)
+function_decl|;
+DECL|method|getTrackingUrl ()
+name|String
+name|getTrackingUrl
+parameter_list|()
 function_decl|;
 DECL|method|setTrackingUrl (String url)
 name|void
@@ -112,6 +118,11 @@ name|String
 name|url
 parameter_list|)
 function_decl|;
+DECL|method|getStatus ()
+name|ApplicationStatus
+name|getStatus
+parameter_list|()
+function_decl|;
 DECL|method|setStatus (ApplicationStatus status)
 name|void
 name|setStatus
@@ -119,6 +130,11 @@ parameter_list|(
 name|ApplicationStatus
 name|status
 parameter_list|)
+function_decl|;
+DECL|method|getState ()
+name|ApplicationState
+name|getState
+parameter_list|()
 function_decl|;
 DECL|method|setState (ApplicationState state)
 name|void
@@ -128,6 +144,11 @@ name|ApplicationState
 name|state
 parameter_list|)
 function_decl|;
+DECL|method|getClientToken ()
+name|String
+name|getClientToken
+parameter_list|()
+function_decl|;
 DECL|method|setClientToken (String clientToken)
 name|void
 name|setClientToken
@@ -135,6 +156,11 @@ parameter_list|(
 name|String
 name|clientToken
 parameter_list|)
+function_decl|;
+DECL|method|getAMFailCount ()
+name|int
+name|getAMFailCount
+parameter_list|()
 function_decl|;
 DECL|method|setAMFailCount (int amFailCount)
 name|void
@@ -144,6 +170,11 @@ name|int
 name|amFailCount
 parameter_list|)
 function_decl|;
+DECL|method|getContainerCount ()
+name|int
+name|getContainerCount
+parameter_list|()
+function_decl|;
 DECL|method|setContainerCount (int containerCount)
 name|void
 name|setContainerCount
@@ -151,6 +182,11 @@ parameter_list|(
 name|int
 name|containerCount
 parameter_list|)
+function_decl|;
+DECL|method|getDiagnostics ()
+name|String
+name|getDiagnostics
+parameter_list|()
 function_decl|;
 DECL|method|setDiagnostics (String diagnostics)
 name|void

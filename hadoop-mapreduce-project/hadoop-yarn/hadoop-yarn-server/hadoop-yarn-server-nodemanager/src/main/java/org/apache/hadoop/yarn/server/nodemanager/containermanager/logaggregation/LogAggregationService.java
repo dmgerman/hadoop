@@ -1028,7 +1028,10 @@ name|containsKey
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 condition|)
@@ -1051,7 +1054,10 @@ name|get
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 operator|.

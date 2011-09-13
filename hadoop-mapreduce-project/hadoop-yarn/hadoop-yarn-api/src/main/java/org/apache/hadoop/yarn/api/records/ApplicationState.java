@@ -20,28 +20,74 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_comment
+comment|/**  * Ennumeration of various states of an<code>Application</code>.  */
+end_comment
+
 begin_enum
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|enum|ApplicationState
 specifier|public
 enum|enum
 name|ApplicationState
 block|{
+comment|/** Application which was just created. */
 DECL|enumConstant|NEW
-DECL|enumConstant|SUBMITTED
-DECL|enumConstant|RUNNING
-DECL|enumConstant|SUCCEEDED
-DECL|enumConstant|FAILED
-DECL|enumConstant|KILLED
 name|NEW
 block|,
+comment|/** Application which has been submitted. */
+DECL|enumConstant|SUBMITTED
 name|SUBMITTED
 block|,
+comment|/** Application which is currently running. */
+DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
+comment|/** Application which completed successfully. */
+DECL|enumConstant|SUCCEEDED
 name|SUCCEEDED
 block|,
+comment|/** Application which failed. */
+DECL|enumConstant|FAILED
 name|FAILED
 block|,
+comment|/** Application which was terminated by a user or admin. */
+DECL|enumConstant|KILLED
 name|KILLED
 block|}
 end_enum

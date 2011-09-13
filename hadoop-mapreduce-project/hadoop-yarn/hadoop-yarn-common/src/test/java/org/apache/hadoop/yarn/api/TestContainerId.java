@@ -405,16 +405,9 @@ argument_list|)
 decl_stmt|;
 name|containerId
 operator|.
-name|setAppAttemptId
+name|setApplicationAttemptId
 argument_list|(
 name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|containerId
-operator|.
-name|setAppId
-argument_list|(
-name|appId
 argument_list|)
 expr_stmt|;
 name|containerId

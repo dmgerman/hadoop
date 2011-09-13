@@ -1393,14 +1393,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate: applicationId="
+literal|"allocate: applicationAttemptId="
 operator|+
 name|container
 operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
 argument_list|()
 operator|+
 literal|" container="

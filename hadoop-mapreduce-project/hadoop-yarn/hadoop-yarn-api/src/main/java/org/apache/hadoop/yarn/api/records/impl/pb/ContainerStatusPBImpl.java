@@ -550,7 +550,7 @@ annotation|@
 name|Override
 DECL|method|getExitStatus ()
 specifier|public
-name|String
+name|int
 name|getExitStatus
 parameter_list|()
 block|{
@@ -564,22 +564,20 @@ else|:
 name|builder
 decl_stmt|;
 return|return
-operator|(
 name|p
 operator|.
 name|getExitStatus
 argument_list|()
-operator|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setExitStatus (String exitStatus)
+DECL|method|setExitStatus (int exitStatus)
 specifier|public
 name|void
 name|setExitStatus
 parameter_list|(
-name|String
+name|int
 name|exitStatus
 parameter_list|)
 block|{

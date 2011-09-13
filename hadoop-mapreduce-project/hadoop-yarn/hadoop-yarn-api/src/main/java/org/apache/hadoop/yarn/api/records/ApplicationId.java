@@ -20,7 +20,79 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>ApplicationId</code> represents the<em>globally unique</em>   * identifier for an application.</p>  *   *<p>The globally unique nature of the identifier is achieved by using the   *<em>cluster timestamp</em> i.e. start-time of the   *<code>ResourceManager</code> along with a monotonically increasing counter  * for the application.</p>  */
+end_comment
+
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|ApplicationId
 specifier|public
 specifier|abstract
@@ -32,6 +104,11 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 block|{
+comment|/**    * Get the short integer identifier of the<code>ApplicationId</code>    * which is unique for all applications started by a particular instance    * of the<code>ResourceManager</code>.    * @return short integer identifier of the<code>ApplicationId</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getId ()
 specifier|public
 specifier|abstract
@@ -39,13 +116,10 @@ name|int
 name|getId
 parameter_list|()
 function_decl|;
-DECL|method|getClusterTimestamp ()
-specifier|public
-specifier|abstract
-name|long
-name|getClusterTimestamp
-parameter_list|()
-function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setId (int id)
 specifier|public
 specifier|abstract
@@ -56,6 +130,18 @@ name|int
 name|id
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>start time</em> of the<code>ResourceManager</code> which is     * used to generate globally unique<code>ApplicationId</code>.    * @return<em>start time</em> of the<code>ResourceManager</code>    */
+DECL|method|getClusterTimestamp ()
+specifier|public
+specifier|abstract
+name|long
+name|getClusterTimestamp
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setClusterTimestamp (long clusterTimestamp)
 specifier|public
 specifier|abstract

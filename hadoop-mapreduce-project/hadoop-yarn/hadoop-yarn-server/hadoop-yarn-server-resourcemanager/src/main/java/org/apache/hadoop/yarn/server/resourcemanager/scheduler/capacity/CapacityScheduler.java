@@ -3359,7 +3359,7 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3383,7 +3383,7 @@ name|applicationAttemptId
 init|=
 name|containerId
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 name|SchedulerApp
@@ -3927,7 +3927,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 name|SchedulerApp
@@ -4100,7 +4100,7 @@ name|getApplication
 argument_list|(
 name|containerId
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;

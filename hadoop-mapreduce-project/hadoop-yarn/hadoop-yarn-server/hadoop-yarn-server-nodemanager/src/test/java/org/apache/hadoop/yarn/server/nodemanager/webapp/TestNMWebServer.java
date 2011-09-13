@@ -836,6 +836,17 @@ name|container
 argument_list|)
 expr_stmt|;
 comment|//TODO: Gross hack. Fix in code.
+name|ApplicationId
+name|applicationId
+init|=
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+decl_stmt|;
 name|nmContext
 operator|.
 name|getApplications
@@ -843,10 +854,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|containerId
-operator|.
-name|getAppId
-argument_list|()
+name|applicationId
 argument_list|)
 operator|.
 name|getContainers

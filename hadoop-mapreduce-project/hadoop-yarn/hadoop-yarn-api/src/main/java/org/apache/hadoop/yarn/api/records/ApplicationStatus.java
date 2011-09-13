@@ -20,7 +20,47 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_comment
+comment|/**  *<em>For internal use only...</em>   */
+end_comment
+
 begin_interface
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|interface|ApplicationStatus
 specifier|public
 interface|interface
@@ -31,16 +71,6 @@ name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
-DECL|method|getResponseId ()
-name|int
-name|getResponseId
-parameter_list|()
-function_decl|;
-DECL|method|getProgress ()
-name|float
-name|getProgress
-parameter_list|()
-function_decl|;
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
 name|void
 name|setApplicationAttemptId
@@ -49,6 +79,11 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
+DECL|method|getResponseId ()
+name|int
+name|getResponseId
+parameter_list|()
+function_decl|;
 DECL|method|setResponseId (int id)
 name|void
 name|setResponseId
@@ -56,6 +91,11 @@ parameter_list|(
 name|int
 name|id
 parameter_list|)
+function_decl|;
+DECL|method|getProgress ()
+name|float
+name|getProgress
+parameter_list|()
 function_decl|;
 DECL|method|setProgress (float progress)
 name|void

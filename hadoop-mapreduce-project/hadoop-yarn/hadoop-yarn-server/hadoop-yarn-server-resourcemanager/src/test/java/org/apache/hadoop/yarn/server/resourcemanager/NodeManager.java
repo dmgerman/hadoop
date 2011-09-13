@@ -1176,7 +1176,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startContainer (StartContainerRequest request)
+DECL|method|startContainer ( StartContainerRequest request)
 specifier|synchronized
 specifier|public
 name|StartContainerResponse
@@ -1204,7 +1204,10 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 decl_stmt|;
 name|List
@@ -1473,7 +1476,10 @@ name|valueOf
 argument_list|(
 name|containerID
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 operator|.
 name|getId
@@ -1737,7 +1743,10 @@ name|get
 argument_list|(
 name|containerId
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;

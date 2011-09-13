@@ -550,9 +550,9 @@ argument_list|)
 decl_stmt|;
 name|cID
 operator|.
-name|setAppId
+name|setApplicationAttemptId
 argument_list|(
-name|appID
+name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 comment|// use negative ids to denote that these are local. Need a better way ??

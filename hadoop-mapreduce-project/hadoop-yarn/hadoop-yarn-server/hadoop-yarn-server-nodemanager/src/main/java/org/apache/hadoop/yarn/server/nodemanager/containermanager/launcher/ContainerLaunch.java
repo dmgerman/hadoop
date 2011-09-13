@@ -798,7 +798,7 @@ name|env
 init|=
 name|launchContext
 operator|.
-name|getAllEnv
+name|getEnv
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -810,7 +810,7 @@ name|command
 init|=
 name|launchContext
 operator|.
-name|getCommandList
+name|getCommands
 argument_list|()
 decl_stmt|;
 name|int
@@ -911,12 +911,7 @@ expr_stmt|;
 block|}
 name|launchContext
 operator|.
-name|clearCommands
-argument_list|()
-expr_stmt|;
-name|launchContext
-operator|.
-name|addAllCommands
+name|setCommands
 argument_list|(
 name|newCmds
 argument_list|)
@@ -931,7 +926,7 @@ name|envs
 init|=
 name|launchContext
 operator|.
-name|getAllEnv
+name|getEnv
 argument_list|()
 decl_stmt|;
 name|Map
@@ -1005,12 +1000,7 @@ expr_stmt|;
 block|}
 name|launchContext
 operator|.
-name|clearEnv
-argument_list|()
-expr_stmt|;
-name|launchContext
-operator|.
-name|addAllEnv
+name|setEnv
 argument_list|(
 name|newEnvs
 argument_list|)
@@ -1316,7 +1306,7 @@ name|localResources
 argument_list|,
 name|launchContext
 operator|.
-name|getCommandList
+name|getCommands
 argument_list|()
 argument_list|,
 name|appDirs

@@ -20,12 +20,57 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_comment
+comment|/**  *<p><code>URL</code> represents a serializable {@link java.net.URL}.</p>  */
+end_comment
+
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|URL
 specifier|public
 interface|interface
 name|URL
 block|{
+comment|/**    * Get the scheme of the URL.    * @return scheme of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|method|getScheme ()
 specifier|public
 specifier|abstract
@@ -33,27 +78,11 @@ name|String
 name|getScheme
 parameter_list|()
 function_decl|;
-DECL|method|getHost ()
-specifier|public
-specifier|abstract
-name|String
-name|getHost
-parameter_list|()
-function_decl|;
-DECL|method|getPort ()
-specifier|public
-specifier|abstract
-name|int
-name|getPort
-parameter_list|()
-function_decl|;
-DECL|method|getFile ()
-specifier|public
-specifier|abstract
-name|String
-name|getFile
-parameter_list|()
-function_decl|;
+comment|/**    * Set the scheme of the URL    * @param scheme scheme of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|method|setScheme (String scheme)
 specifier|public
 specifier|abstract
@@ -64,6 +93,23 @@ name|String
 name|scheme
 parameter_list|)
 function_decl|;
+comment|/**    * Get the host of the URL.    * @return host of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getHost ()
+specifier|public
+specifier|abstract
+name|String
+name|getHost
+parameter_list|()
+function_decl|;
+comment|/**    * Set the host of the URL.    * @param host host of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|method|setHost (String host)
 specifier|public
 specifier|abstract
@@ -74,6 +120,23 @@ name|String
 name|host
 parameter_list|)
 function_decl|;
+comment|/**    * Get the port of the URL.    * @return port of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getPort ()
+specifier|public
+specifier|abstract
+name|int
+name|getPort
+parameter_list|()
+function_decl|;
+comment|/**    * Set the port of the URL    * @param port port of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|method|setPort (int port)
 specifier|public
 specifier|abstract
@@ -84,6 +147,23 @@ name|int
 name|port
 parameter_list|)
 function_decl|;
+comment|/**    * Get the file of the URL.    * @return file of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getFile ()
+specifier|public
+specifier|abstract
+name|String
+name|getFile
+parameter_list|()
+function_decl|;
+comment|/**    * Set the file of the URL.    * @param file file of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|method|setFile (String file)
 specifier|public
 specifier|abstract

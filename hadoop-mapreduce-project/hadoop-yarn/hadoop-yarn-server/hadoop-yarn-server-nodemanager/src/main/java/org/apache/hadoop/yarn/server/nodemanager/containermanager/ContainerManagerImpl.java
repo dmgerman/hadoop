@@ -2048,7 +2048,10 @@ name|applicationID
 init|=
 name|containerID
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 decl_stmt|;
 if|if
@@ -2340,7 +2343,10 @@ literal|"Trying to stop unknown container!"
 argument_list|,
 name|containerID
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|containerID
@@ -2387,7 +2393,10 @@ literal|"ContainerManageImpl"
 argument_list|,
 name|containerID
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|,
 name|containerID

@@ -2552,7 +2552,10 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2719,7 +2722,10 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2779,7 +2785,10 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5166,7 +5175,10 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|.
-name|getAppId
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
 argument_list|()
 argument_list|)
 argument_list|,

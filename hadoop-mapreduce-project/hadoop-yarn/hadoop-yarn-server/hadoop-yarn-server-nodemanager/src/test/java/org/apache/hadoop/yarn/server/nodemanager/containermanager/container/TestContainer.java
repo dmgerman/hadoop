@@ -2937,7 +2937,7 @@ name|when
 argument_list|(
 name|ctxt
 operator|.
-name|getAllLocalResources
+name|getLocalResources
 argument_list|()
 argument_list|)
 operator|.
@@ -3011,7 +3011,7 @@ name|when
 argument_list|(
 name|ctxt
 operator|.
-name|getAllServiceData
+name|getServiceData
 argument_list|()
 argument_list|)
 operator|.

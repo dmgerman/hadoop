@@ -1049,7 +1049,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 operator|.
 name|equals
@@ -1062,7 +1062,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 condition|)
@@ -1177,7 +1177,7 @@ operator|.
 name|getId
 argument_list|()
 operator|.
-name|getAppAttemptId
+name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
 if|if
