@@ -60,6 +60,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a class used to get the current environment  * on the host machines running the map/reduce. This class  * assumes that setting the environment in streaming is   * allowed on windows/ix/linuz/freebsd/sunos/solaris/hp-ux  */
 end_comment
@@ -281,6 +295,8 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 while|while
 condition|(
 literal|true
@@ -357,6 +373,21 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|in
+operator|=
+literal|null
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|pid
