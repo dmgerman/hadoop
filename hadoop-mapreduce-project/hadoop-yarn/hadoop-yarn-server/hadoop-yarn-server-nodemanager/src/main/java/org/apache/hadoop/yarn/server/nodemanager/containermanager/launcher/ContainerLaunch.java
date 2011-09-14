@@ -798,7 +798,7 @@ name|env
 init|=
 name|launchContext
 operator|.
-name|getEnv
+name|getEnvironment
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -926,7 +926,7 @@ name|envs
 init|=
 name|launchContext
 operator|.
-name|getEnv
+name|getEnvironment
 argument_list|()
 decl_stmt|;
 name|Map
@@ -1000,7 +1000,7 @@ expr_stmt|;
 block|}
 name|launchContext
 operator|.
-name|setEnv
+name|setEnvironment
 argument_list|(
 name|newEnvs
 argument_list|)

@@ -275,14 +275,14 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getEnv ()
+DECL|method|getEnvironment ()
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|String
 argument_list|>
-name|getEnv
+name|getEnvironment
 parameter_list|()
 function_decl|;
 comment|/**    * Add<em>environment variables</em> for the container.    * @param environment<em>environment variables</em> for the container    */
@@ -290,9 +290,9 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setEnv (Map<String, String> environment)
+DECL|method|setEnvironment (Map<String, String> environment)
 name|void
-name|setEnv
+name|setEnvironment
 parameter_list|(
 name|Map
 argument_list|<

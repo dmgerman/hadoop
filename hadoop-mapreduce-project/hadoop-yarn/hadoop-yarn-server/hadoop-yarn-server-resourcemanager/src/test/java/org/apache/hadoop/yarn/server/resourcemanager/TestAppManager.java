@@ -21,54 +21,12 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -91,34 +49,6 @@ operator|.
 name|framework
 operator|.
 name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -333,24 +263,6 @@ operator|.
 name|resourcemanager
 operator|.
 name|ApplicationMasterService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|ResourceManager
 import|;
 end_import
 
@@ -690,26 +602,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -752,22 +644,6 @@ specifier|public
 class|class
 name|TestAppManager
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|TestAppManager
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|field|appEventType
 specifier|private
 specifier|static
@@ -1004,27 +880,11 @@ argument_list|<
 name|RMAppManagerEvent
 argument_list|>
 block|{
-DECL|field|rmContext
-specifier|private
-specifier|final
-name|RMContext
-name|rmContext
-decl_stmt|;
-DECL|method|TestAppManagerDispatcher (RMContext rmContext)
+DECL|method|TestAppManagerDispatcher ()
 specifier|public
 name|TestAppManagerDispatcher
-parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rmContext
-operator|=
-name|rmContext
-expr_stmt|;
-block|}
+parameter_list|()
+block|{     }
 annotation|@
 name|Override
 DECL|method|handle (RMAppManagerEvent event)
@@ -1049,27 +909,11 @@ argument_list|<
 name|RMAppEvent
 argument_list|>
 block|{
-DECL|field|rmContext
-specifier|private
-specifier|final
-name|RMContext
-name|rmContext
-decl_stmt|;
-DECL|method|TestDispatcher (RMContext rmContext)
+DECL|method|TestDispatcher ()
 specifier|public
 name|TestDispatcher
-parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rmContext
-operator|=
-name|rmContext
-expr_stmt|;
-block|}
+parameter_list|()
+block|{     }
 annotation|@
 name|Override
 DECL|method|handle (RMAppEvent event)
@@ -1081,14 +925,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-name|ApplicationId
-name|appID
-init|=
-name|event
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
 comment|//RMApp rmApp = this.rmContext.getRMApps().get(appID);
 name|setAppEventType
 argument_list|(
@@ -1255,7 +1091,7 @@ name|max
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|submitApplication (ApplicationSubmissionContext submissionContext)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext)
 specifier|public
 name|void
 name|submitApplication
@@ -2248,18 +2084,14 @@ name|testDispatcher
 init|=
 operator|new
 name|TestDispatcher
-argument_list|(
-name|rmContext
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|TestAppManagerDispatcher
 name|testAppManagerDispatcher
 init|=
 operator|new
 name|TestAppManagerDispatcher
-argument_list|(
-name|rmContext
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|rmContext
 operator|.
@@ -2504,7 +2336,9 @@ name|assertEquals
 argument_list|(
 literal|"app name doesn't match"
 argument_list|,
-literal|"N/A"
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_NAME
 argument_list|,
 name|app
 operator|.
@@ -2518,7 +2352,9 @@ name|assertEquals
 argument_list|(
 literal|"app queue doesn't match"
 argument_list|,
-literal|"default"
+name|YarnConfiguration
+operator|.
+name|DEFAULT_QUEUE_NAME
 argument_list|,
 name|app
 operator|.
