@@ -3280,6 +3280,20 @@ argument_list|,
 name|failCount
 argument_list|)
 decl_stmt|;
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+operator|.
+name|addShutdownHook
+argument_list|(
+operator|new
+name|CompositeServiceShutdownHook
+argument_list|(
+name|appMaster
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|YarnConfiguration
 name|conf
 init|=
@@ -3348,9 +3362,9 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|fatal
 argument_list|(
-literal|"Caught throwable. Exiting:"
+literal|"Error starting MRAppMaster"
 argument_list|,
 name|t
 argument_list|)
