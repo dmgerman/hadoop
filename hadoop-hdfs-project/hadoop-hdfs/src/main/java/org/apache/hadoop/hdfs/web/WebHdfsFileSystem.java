@@ -1502,6 +1502,11 @@ expr_stmt|;
 try|try
 block|{
 return|return
+name|WebHdfsFileSystem
+operator|.
+expr|<
+name|T
+operator|>
 name|jsonParse
 argument_list|(
 name|conn
