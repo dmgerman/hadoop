@@ -1903,8 +1903,8 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|checkAccess (UserGroupInformation callerUGI, JobACL jobOperation)
 specifier|public
+DECL|method|checkAccess (UserGroupInformation callerUGI, JobACL jobOperation)
 name|boolean
 name|checkAccess
 parameter_list|(

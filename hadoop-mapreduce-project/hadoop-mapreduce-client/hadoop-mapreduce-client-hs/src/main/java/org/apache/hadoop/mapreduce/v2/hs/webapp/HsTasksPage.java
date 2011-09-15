@@ -30,6 +30,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|AMParams
+operator|.
+name|TASK_TYPE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -118,7 +140,65 @@ name|view
 operator|.
 name|JQueryUI
 operator|.
+name|postInitID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
 name|tableInit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|util
+operator|.
+name|MRApps
 import|;
 end_import
 
@@ -204,6 +284,19 @@ name|tasksTableInit
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|set
+argument_list|(
+name|postInitID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"tasks"
+argument_list|)
+argument_list|,
+name|jobsPostTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|setTableStyles
 argument_list|(
 name|html
@@ -239,27 +332,153 @@ name|String
 name|tasksTableInit
 parameter_list|()
 block|{
-return|return
+name|TaskType
+name|type
+init|=
+literal|null
+decl_stmt|;
+name|String
+name|symbol
+init|=
+name|$
+argument_list|(
+name|TASK_TYPE
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|symbol
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|type
+operator|=
+name|MRApps
+operator|.
+name|taskType
+argument_list|(
+name|symbol
+argument_list|)
+expr_stmt|;
+block|}
+name|StringBuilder
+name|b
+init|=
 name|tableInit
 argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumns:[{sType:'title-numeric'},{sType:'title-numeric',"
+literal|",aoColumnDefs:["
 argument_list|)
+decl_stmt|;
+name|b
 operator|.
 name|append
 argument_list|(
-literal|"bSearchable:false},null,{sType:'title-numeric'},"
+literal|"{'sType':'title-numeric', 'aTargets': [ 0, 4"
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|type
+operator|==
+name|TaskType
+operator|.
+name|REDUCE
+condition|)
+block|{
+name|b
 operator|.
 name|append
 argument_list|(
-literal|"{sType:'title-numeric'},{sType:'title-numeric'}]}"
+literal|", 9, 10, 11, 12"
 argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|//MAP
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", 7"
+argument_list|)
+expr_stmt|;
+block|}
+name|b
+operator|.
+name|append
+argument_list|(
+literal|" ] }"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|"]}"
+argument_list|)
+expr_stmt|;
+return|return
+name|b
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+DECL|method|jobsPostTableInit ()
+specifier|private
+name|String
+name|jobsPostTableInit
+parameter_list|()
+block|{
+return|return
+literal|"var asInitVals = new Array();\n"
+operator|+
+literal|"$('tfoot input').keyup( function () \n{"
+operator|+
+literal|"  tasksDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').each( function (i) {\n"
+operator|+
+literal|"  asInitVals[i] = this.value;\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').focus( function () {\n"
+operator|+
+literal|"  if ( this.className == 'search_init' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = '';\n"
+operator|+
+literal|"    this.value = '';\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
+operator|+
+literal|"$('tfoot input').blur( function (i) {\n"
+operator|+
+literal|"  if ( this.value == '' )\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    this.className = 'search_init';\n"
+operator|+
+literal|"    this.value = asInitVals[$('tfoot input').index(this)];\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"} );\n"
 return|;
 block|}
 block|}
