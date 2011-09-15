@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -45,6 +55,8 @@ DECL|interface|FailoverProxyProvider
 specifier|public
 interface|interface
 name|FailoverProxyProvider
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Get the proxy object which should be used until the next failover event    * occurs.    *     * @return the proxy object to invoke methods upon    */
 DECL|method|getProxy ()

@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -29,6 +39,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RPC
 import|;
 end_import
 
@@ -127,6 +151,24 @@ name|currentProxy
 parameter_list|)
 block|{
 comment|// Nothing to do.
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+name|proxy
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
