@@ -826,11 +826,6 @@ specifier|private
 name|long
 name|finishTime
 decl_stmt|;
-DECL|field|amLivelinessMonitor
-specifier|private
-name|AMLivelinessMonitor
-name|amLivelinessMonitor
-decl_stmt|;
 DECL|field|currentAttempt
 specifier|private
 name|RMAppAttempt
@@ -1211,7 +1206,7 @@ argument_list|>
 DECL|field|stateMachine
 name|stateMachine
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, ApplicationStore appStore, AMLivelinessMonitor amLivelinessMonitor, YarnScheduler scheduler, ApplicationMasterService masterService)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, ApplicationStore appStore, YarnScheduler scheduler, ApplicationMasterService masterService)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -1241,9 +1236,6 @@ name|clientTokenStr
 parameter_list|,
 name|ApplicationStore
 name|appStore
-parameter_list|,
-name|AMLivelinessMonitor
-name|amLivelinessMonitor
 parameter_list|,
 name|YarnScheduler
 name|scheduler
@@ -1314,12 +1306,6 @@ operator|.
 name|appStore
 operator|=
 name|appStore
-expr_stmt|;
-name|this
-operator|.
-name|amLivelinessMonitor
-operator|=
-name|amLivelinessMonitor
 expr_stmt|;
 name|this
 operator|.
@@ -2125,6 +2111,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|createNewAttempt ()
 specifier|private
 name|void
@@ -2425,6 +2416,11 @@ return|return
 name|nodes
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
 specifier|public
 name|void

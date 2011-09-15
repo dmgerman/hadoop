@@ -173,40 +173,52 @@ name|TaskAttemptState
 name|getState
 parameter_list|()
 function_decl|;
-comment|/** Has attempt reached the final state or not.    */
+comment|/**     * Has attempt reached the final state or not.    * @return true if it has finished, else false    */
 DECL|method|isFinished ()
 name|boolean
 name|isFinished
 parameter_list|()
 function_decl|;
-comment|/**If container Assigned then return container ID, otherwise null.    */
+comment|/**    * @return the container ID if a container is assigned, otherwise null.    */
 DECL|method|getAssignedContainerID ()
 name|ContainerId
 name|getAssignedContainerID
 parameter_list|()
 function_decl|;
-comment|/**If container Assigned then return container mgr address, otherwise null.    */
+comment|/**    * @return container mgr address if a container is assigned, otherwise null.    */
 DECL|method|getAssignedContainerMgrAddress ()
 name|String
 name|getAssignedContainerMgrAddress
 parameter_list|()
 function_decl|;
-comment|/**If container Assigned then return the node's http address, otherwise null.    */
+comment|/**    * @return node's http address if a container is assigned, otherwise null.    */
 DECL|method|getNodeHttpAddress ()
 name|String
 name|getNodeHttpAddress
 parameter_list|()
 function_decl|;
-comment|/** Returns time at which container is launched. If container is not launched    * yet, returns 0.    */
+comment|/**     * @return time at which container is launched. If container is not launched    * yet, returns 0.    */
 DECL|method|getLaunchTime ()
 name|long
 name|getLaunchTime
 parameter_list|()
 function_decl|;
-comment|/** Returns attempt's finish time. If attempt is not finished    *  yet, returns 0.    */
+comment|/**     * @return attempt's finish time. If attempt is not finished    *  yet, returns 0.    */
 DECL|method|getFinishTime ()
 name|long
 name|getFinishTime
+parameter_list|()
+function_decl|;
+comment|/**    * @return The attempt's shuffle finish time if the attempt is a reduce. If    * attempt is not finished yet, returns 0.    */
+DECL|method|getShuffleFinishTime ()
+name|long
+name|getShuffleFinishTime
+parameter_list|()
+function_decl|;
+comment|/**    * @return The attempt's sort or merge finish time if the attempt is a reduce.     * If attempt is not finished yet, returns 0.    */
+DECL|method|getSortFinishTime ()
+name|long
+name|getSortFinishTime
 parameter_list|()
 function_decl|;
 comment|/**    * @return the port shuffle is on.    */

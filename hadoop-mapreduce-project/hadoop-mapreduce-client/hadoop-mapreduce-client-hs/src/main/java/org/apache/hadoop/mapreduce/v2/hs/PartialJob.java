@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -243,6 +257,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
 import|;
 end_import
 
@@ -692,6 +722,43 @@ operator|.
 name|getUser
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConfFile ()
+specifier|public
+name|Path
+name|getConfFile
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Not implemented yet"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getJobACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Not implemented yet"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

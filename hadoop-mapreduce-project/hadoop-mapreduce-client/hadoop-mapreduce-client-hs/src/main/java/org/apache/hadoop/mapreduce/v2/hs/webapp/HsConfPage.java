@@ -40,7 +40,25 @@ name|webapp
 operator|.
 name|AMParams
 operator|.
-name|TASK_TYPE
+name|JOB_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|join
 import|;
 end_import
 
@@ -176,29 +194,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|api
+name|app
 operator|.
-name|records
+name|webapp
 operator|.
-name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|util
-operator|.
-name|MRApps
+name|ConfBlock
 import|;
 end_import
 
@@ -219,14 +219,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A page showing the tasks for a given application.  */
+comment|/**  * Render a page with the configuration for a give job in it.  */
 end_comment
 
 begin_class
-DECL|class|HsTasksPage
+DECL|class|HsConfPage
 specifier|public
 class|class
-name|HsTasksPage
+name|HsConfPage
 extends|extends
 name|HsView
 block|{
@@ -247,6 +247,36 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
+name|String
+name|jobID
+init|=
+name|$
+argument_list|(
+name|JOB_ID
+argument_list|)
+decl_stmt|;
+name|set
+argument_list|(
+name|TITLE
+argument_list|,
+name|jobID
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|"Bad request: missing job ID"
+else|:
+name|join
+argument_list|(
+literal|"Configuration for MapReduce Job "
+argument_list|,
+name|$
+argument_list|(
+name|JOB_ID
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|commonPreHead
 argument_list|(
 name|html
@@ -256,9 +286,43 @@ name|set
 argument_list|(
 name|DATATABLES_ID
 argument_list|,
-literal|"tasks"
+literal|"conf"
 argument_list|)
 expr_stmt|;
+name|set
+argument_list|(
+name|initID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"conf"
+argument_list|)
+argument_list|,
+name|confTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|set
+argument_list|(
+name|postInitID
+argument_list|(
+name|DATATABLES
+argument_list|,
+literal|"conf"
+argument_list|)
+argument_list|,
+name|confPostTableInit
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|setTableStyles
+argument_list|(
+name|html
+argument_list|,
+literal|"conf"
+argument_list|)
+expr_stmt|;
+comment|//Override the default nav config
 name|set
 argument_list|(
 name|initID
@@ -271,41 +335,8 @@ argument_list|,
 literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
-name|set
-argument_list|(
-name|initID
-argument_list|(
-name|DATATABLES
-argument_list|,
-literal|"tasks"
-argument_list|)
-argument_list|,
-name|tasksTableInit
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|set
-argument_list|(
-name|postInitID
-argument_list|(
-name|DATATABLES
-argument_list|,
-literal|"tasks"
-argument_list|)
-argument_list|,
-name|jobsPostTableInit
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|setTableStyles
-argument_list|(
-name|html
-argument_list|,
-literal|"tasks"
-argument_list|)
-expr_stmt|;
 block|}
-comment|/**    * The content of this page is the TasksBlock    * @return HsTasksBlock.class    */
+comment|/**    * The body of this block is the configuration block.    * @return HsConfBlock.class    */
 DECL|method|content ()
 annotation|@
 name|Override
@@ -320,135 +351,50 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|HsTasksBlock
+name|ConfBlock
 operator|.
 name|class
 return|;
 block|}
-comment|/**    * @return the end of the JS map that is the jquery datatable configuration    * for the tasks table.    */
-DECL|method|tasksTableInit ()
+comment|/**    * @return the end of the JS map that is the jquery datatable config for the    * conf table.    */
+DECL|method|confTableInit ()
 specifier|private
 name|String
-name|tasksTableInit
+name|confTableInit
 parameter_list|()
 block|{
-name|TaskType
-name|type
-init|=
-literal|null
-decl_stmt|;
-name|String
-name|symbol
-init|=
-name|$
-argument_list|(
-name|TASK_TYPE
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|symbol
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|type
-operator|=
-name|MRApps
-operator|.
-name|taskType
-argument_list|(
-name|symbol
-argument_list|)
-expr_stmt|;
-block|}
-name|StringBuilder
-name|b
-init|=
+return|return
 name|tableInit
 argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumnDefs:["
+literal|"}"
 argument_list|)
-decl_stmt|;
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"{'sType':'title-numeric', 'aTargets': [ 0, 4"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|type
-operator|==
-name|TaskType
-operator|.
-name|REDUCE
-condition|)
-block|{
-name|b
-operator|.
-name|append
-argument_list|(
-literal|", 9, 10, 11, 12"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|//MAP
-name|b
-operator|.
-name|append
-argument_list|(
-literal|", 7"
-argument_list|)
-expr_stmt|;
-block|}
-name|b
-operator|.
-name|append
-argument_list|(
-literal|" ] }"
-argument_list|)
-expr_stmt|;
-name|b
-operator|.
-name|append
-argument_list|(
-literal|"]}"
-argument_list|)
-expr_stmt|;
-return|return
-name|b
 operator|.
 name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|jobsPostTableInit ()
+comment|/**    * @return the java script code to allow the jquery conf datatable to filter    * by column.    */
+DECL|method|confPostTableInit ()
 specifier|private
 name|String
-name|jobsPostTableInit
+name|confPostTableInit
 parameter_list|()
 block|{
 return|return
-literal|"var asInitVals = new Array();\n"
+literal|"var confInitVals = new Array();\n"
 operator|+
 literal|"$('tfoot input').keyup( function () \n{"
 operator|+
-literal|"  tasksDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+literal|"  confDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
 operator|+
 literal|"} );\n"
 operator|+
 literal|"$('tfoot input').each( function (i) {\n"
 operator|+
-literal|"  asInitVals[i] = this.value;\n"
+literal|"  confInitVals[i] = this.value;\n"
 operator|+
 literal|"} );\n"
 operator|+
@@ -474,7 +420,7 @@ literal|"  {\n"
 operator|+
 literal|"    this.className = 'search_init';\n"
 operator|+
-literal|"    this.value = asInitVals[$('tfoot input').index(this)];\n"
+literal|"    this.value = confInitVals[$('tfoot input').index(this)];\n"
 operator|+
 literal|"  }\n"
 operator|+

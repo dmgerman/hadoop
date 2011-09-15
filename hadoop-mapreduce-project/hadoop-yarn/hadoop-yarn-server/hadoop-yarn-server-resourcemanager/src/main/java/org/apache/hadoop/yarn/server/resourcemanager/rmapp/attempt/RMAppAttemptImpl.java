@@ -919,6 +919,11 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|field|eventHandler
 specifier|private
 specifier|final
@@ -2549,7 +2554,10 @@ name|appAttempt
 operator|.
 name|submissionContext
 operator|.
-name|getMasterCapability
+name|getAMContainerSpec
+argument_list|()
+operator|.
+name|getResource
 argument_list|()
 argument_list|,
 literal|1

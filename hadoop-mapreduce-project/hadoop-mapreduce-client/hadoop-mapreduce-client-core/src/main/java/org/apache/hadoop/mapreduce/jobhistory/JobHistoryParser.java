@@ -2038,7 +2038,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the job submit time */
+comment|/** @return the job submit time */
 DECL|method|getSubmitTime ()
 specifier|public
 name|long
@@ -2049,7 +2049,7 @@ return|return
 name|submitTime
 return|;
 block|}
-comment|/** Get the job finish time */
+comment|/** @return the job finish time */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -2060,7 +2060,7 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the job id */
+comment|/** @return the job id */
 DECL|method|getJobId ()
 specifier|public
 name|JobID
@@ -2071,7 +2071,7 @@ return|return
 name|jobid
 return|;
 block|}
-comment|/** Get the user name */
+comment|/** @return the user name */
 DECL|method|getUsername ()
 specifier|public
 name|String
@@ -2082,7 +2082,7 @@ return|return
 name|username
 return|;
 block|}
-comment|/** Get the job name */
+comment|/** @return the job name */
 DECL|method|getJobname ()
 specifier|public
 name|String
@@ -2093,7 +2093,7 @@ return|return
 name|jobname
 return|;
 block|}
-comment|/** Get the job queue name */
+comment|/** @return the job queue name */
 DECL|method|getJobQueueName ()
 specifier|public
 name|String
@@ -2104,7 +2104,7 @@ return|return
 name|jobQueueName
 return|;
 block|}
-comment|/** Get the path for the job configuration file */
+comment|/** @return the path for the job configuration file */
 DECL|method|getJobConfPath ()
 specifier|public
 name|String
@@ -2115,7 +2115,7 @@ return|return
 name|jobConfPath
 return|;
 block|}
-comment|/** Get the job launch time */
+comment|/** @return the job launch time */
 DECL|method|getLaunchTime ()
 specifier|public
 name|long
@@ -2126,7 +2126,7 @@ return|return
 name|launchTime
 return|;
 block|}
-comment|/** Get the total number of maps */
+comment|/** @return the total number of maps */
 DECL|method|getTotalMaps ()
 specifier|public
 name|long
@@ -2137,7 +2137,7 @@ return|return
 name|totalMaps
 return|;
 block|}
-comment|/** Get the total number of reduces */
+comment|/** @return the total number of reduces */
 DECL|method|getTotalReduces ()
 specifier|public
 name|long
@@ -2148,7 +2148,7 @@ return|return
 name|totalReduces
 return|;
 block|}
-comment|/** Get the total number of failed maps */
+comment|/** @return the total number of failed maps */
 DECL|method|getFailedMaps ()
 specifier|public
 name|long
@@ -2159,7 +2159,7 @@ return|return
 name|failedMaps
 return|;
 block|}
-comment|/** Get the number of failed reduces */
+comment|/** @return the number of failed reduces */
 DECL|method|getFailedReduces ()
 specifier|public
 name|long
@@ -2170,7 +2170,7 @@ return|return
 name|failedReduces
 return|;
 block|}
-comment|/** Get the number of finished maps */
+comment|/** @return the number of finished maps */
 DECL|method|getFinishedMaps ()
 specifier|public
 name|long
@@ -2181,7 +2181,7 @@ return|return
 name|finishedMaps
 return|;
 block|}
-comment|/** Get the number of finished reduces */
+comment|/** @return the number of finished reduces */
 DECL|method|getFinishedReduces ()
 specifier|public
 name|long
@@ -2192,7 +2192,7 @@ return|return
 name|finishedReduces
 return|;
 block|}
-comment|/** Get the job status */
+comment|/** @return the job status */
 DECL|method|getJobStatus ()
 specifier|public
 name|String
@@ -2213,7 +2213,7 @@ return|return
 name|errorInfo
 return|;
 block|}
-comment|/** Get the counters for the job */
+comment|/** @return the counters for the job */
 DECL|method|getTotalCounters ()
 specifier|public
 name|Counters
@@ -2224,7 +2224,7 @@ return|return
 name|totalCounters
 return|;
 block|}
-comment|/** Get the map counters for the job */
+comment|/** @return the map counters for the job */
 DECL|method|getMapCounters ()
 specifier|public
 name|Counters
@@ -2235,7 +2235,7 @@ return|return
 name|mapCounters
 return|;
 block|}
-comment|/** Get the reduce counters for the job */
+comment|/** @return the reduce counters for the job */
 DECL|method|getReduceCounters ()
 specifier|public
 name|Counters
@@ -2246,7 +2246,7 @@ return|return
 name|reduceCounters
 return|;
 block|}
-comment|/** Get the map of all tasks in this job */
+comment|/** @return the map of all tasks in this job */
 DECL|method|getAllTasks ()
 specifier|public
 name|Map
@@ -2262,7 +2262,7 @@ return|return
 name|tasksMap
 return|;
 block|}
-comment|/** Get the priority of this job */
+comment|/** @return the priority of this job */
 DECL|method|getPriority ()
 specifier|public
 name|String
@@ -2467,7 +2467,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the Task ID */
+comment|/** @return the Task ID */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -2478,7 +2478,7 @@ return|return
 name|taskId
 return|;
 block|}
-comment|/** Get the start time of this task */
+comment|/** @return the start time of this task */
 DECL|method|getStartTime ()
 specifier|public
 name|long
@@ -2489,7 +2489,7 @@ return|return
 name|startTime
 return|;
 block|}
-comment|/** Get the finish time of this task */
+comment|/** @return the finish time of this task */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -2500,7 +2500,7 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the task type */
+comment|/** @return the task type */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -2511,7 +2511,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the split locations */
+comment|/** @return the split locations */
 DECL|method|getSplitLocations ()
 specifier|public
 name|String
@@ -2522,7 +2522,7 @@ return|return
 name|splitLocations
 return|;
 block|}
-comment|/** Get the counters for this task */
+comment|/** @return the counters for this task */
 DECL|method|getCounters ()
 specifier|public
 name|Counters
@@ -2533,7 +2533,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the task status */
+comment|/** @return the task status */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -2544,7 +2544,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/** Get the attempt Id that caused this task to fail */
+comment|/** @return the attempt Id that caused this task to fail */
 DECL|method|getFailedDueToAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -2555,7 +2555,7 @@ return|return
 name|failedDueToAttemptId
 return|;
 block|}
-comment|/** Get the error */
+comment|/** @return the error */
 DECL|method|getError ()
 specifier|public
 name|String
@@ -2566,7 +2566,7 @@ return|return
 name|error
 return|;
 block|}
-comment|/** Get the map of all attempts for this task */
+comment|/** @return the map of all attempts for this task */
 DECL|method|getAllTaskAttempts ()
 specifier|public
 name|Map
@@ -2813,7 +2813,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the attempt Id */
+comment|/** @return the attempt Id */
 DECL|method|getAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -2824,7 +2824,7 @@ return|return
 name|attemptId
 return|;
 block|}
-comment|/** Get the start time of the attempt */
+comment|/** @return the start time of the attempt */
 DECL|method|getStartTime ()
 specifier|public
 name|long
@@ -2835,7 +2835,7 @@ return|return
 name|startTime
 return|;
 block|}
-comment|/** Get the finish time of the attempt */
+comment|/** @return the finish time of the attempt */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -2846,7 +2846,7 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the shuffle finish time. Applicable only for reduce attempts */
+comment|/** @return the shuffle finish time. Applicable only for reduce attempts */
 DECL|method|getShuffleFinishTime ()
 specifier|public
 name|long
@@ -2857,7 +2857,7 @@ return|return
 name|shuffleFinishTime
 return|;
 block|}
-comment|/** Get the sort finish time. Applicable only for reduce attempts */
+comment|/** @return the sort finish time. Applicable only for reduce attempts */
 DECL|method|getSortFinishTime ()
 specifier|public
 name|long
@@ -2868,7 +2868,7 @@ return|return
 name|sortFinishTime
 return|;
 block|}
-comment|/** Get the map finish time. Applicable only for map attempts */
+comment|/** @return the map finish time. Applicable only for map attempts */
 DECL|method|getMapFinishTime ()
 specifier|public
 name|long
@@ -2879,7 +2879,7 @@ return|return
 name|mapFinishTime
 return|;
 block|}
-comment|/** Get the error string */
+comment|/** @return the error string */
 DECL|method|getError ()
 specifier|public
 name|String
@@ -2890,7 +2890,7 @@ return|return
 name|error
 return|;
 block|}
-comment|/** Get the state */
+comment|/** @return the state */
 DECL|method|getState ()
 specifier|public
 name|String
@@ -2901,7 +2901,7 @@ return|return
 name|state
 return|;
 block|}
-comment|/** Get the task status */
+comment|/** @return the task status */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -2912,7 +2912,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/** Get the task type */
+comment|/** @return the task type */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -2923,7 +2923,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the tracker name where the attempt executed */
+comment|/** @return the tracker name where the attempt executed */
 DECL|method|getTrackerName ()
 specifier|public
 name|String
@@ -2934,7 +2934,7 @@ return|return
 name|trackerName
 return|;
 block|}
-comment|/** Get the host name */
+comment|/** @return the host name */
 DECL|method|getHostname ()
 specifier|public
 name|String
@@ -2945,7 +2945,7 @@ return|return
 name|hostname
 return|;
 block|}
-comment|/** Get the counters for the attempt */
+comment|/** @return the counters for the attempt */
 DECL|method|getCounters ()
 specifier|public
 name|Counters
@@ -2956,7 +2956,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the HTTP port for the tracker */
+comment|/** @return the HTTP port for the tracker */
 DECL|method|getHttpPort ()
 specifier|public
 name|int

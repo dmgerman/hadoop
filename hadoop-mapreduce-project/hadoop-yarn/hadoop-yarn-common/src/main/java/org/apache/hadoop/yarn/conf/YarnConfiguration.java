@@ -803,6 +803,26 @@ name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 init|=
 literal|10000
 decl_stmt|;
+comment|/** Default application name */
+DECL|field|DEFAULT_APPLICATION_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_APPLICATION_NAME
+init|=
+literal|"N/A"
+decl_stmt|;
+comment|/** Default queue name */
+DECL|field|DEFAULT_QUEUE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_QUEUE_NAME
+init|=
+literal|"default"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Node Manager Configs
 comment|////////////////////////////////

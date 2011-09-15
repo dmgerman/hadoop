@@ -876,28 +876,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmapp
-operator|.
-name|attempt
-operator|.
-name|AMLivelinessMonitor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmnode
 operator|.
 name|RMNode
@@ -1011,12 +989,6 @@ specifier|private
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|field|amLivelinessMonitor
-specifier|private
-specifier|final
-name|AMLivelinessMonitor
-name|amLivelinessMonitor
-decl_stmt|;
 DECL|field|rmAppManager
 specifier|private
 specifier|final
@@ -1100,15 +1072,6 @@ operator|.
 name|rmContext
 operator|=
 name|rmContext
-expr_stmt|;
-name|this
-operator|.
-name|amLivelinessMonitor
-operator|=
-name|rmContext
-operator|.
-name|getAMLivelinessMonitor
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1515,12 +1478,18 @@ decl_stmt|;
 name|ApplicationId
 name|applicationId
 init|=
-literal|null
+name|submissionContext
+operator|.
+name|getApplicationId
+argument_list|()
 decl_stmt|;
 name|String
 name|user
 init|=
-literal|null
+name|submissionContext
+operator|.
+name|getUser
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -1532,13 +1501,6 @@ name|getCurrentUser
 argument_list|()
 operator|.
 name|getShortUserName
-argument_list|()
-expr_stmt|;
-name|applicationId
-operator|=
-name|submissionContext
-operator|.
-name|getApplicationId
 argument_list|()
 expr_stmt|;
 if|if
@@ -1568,6 +1530,14 @@ literal|" is already present! Cannot add a duplicate!"
 argument_list|)
 throw|;
 block|}
+comment|// Safety
+name|submissionContext
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
 comment|// This needs to be synchronous as the client can query
 comment|// immediately following the submission to get the application status.
 comment|// So call handle directly and do not send an event.
@@ -1680,6 +1650,11 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|finishApplication ( FinishApplicationRequest request)

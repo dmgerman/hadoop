@@ -63,6 +63,22 @@ name|long
 name|getFinishTime
 parameter_list|()
 function_decl|;
+comment|/** @return the shuffle finish time. Applicable only for reduce attempts */
+DECL|method|getShuffleFinishTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getShuffleFinishTime
+parameter_list|()
+function_decl|;
+comment|/** @return the sort/merge finish time. Applicable only for reduce attempts */
+DECL|method|getSortFinishTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getSortFinishTime
+parameter_list|()
+function_decl|;
 DECL|method|getCounters ()
 specifier|public
 specifier|abstract
@@ -179,6 +195,28 @@ name|setPhase
 parameter_list|(
 name|Phase
 name|phase
+parameter_list|)
+function_decl|;
+comment|/**     * Set the shuffle finish time. Applicable only for reduce attempts    * @param time the time the shuffle finished.    */
+DECL|method|setShuffleFinishTime (long time)
+specifier|public
+specifier|abstract
+name|void
+name|setShuffleFinishTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+function_decl|;
+comment|/**     * Set the sort/merge finish time. Applicable only for reduce attempts    * @param time the time the shuffle finished.    */
+DECL|method|setSortFinishTime (long time)
+specifier|public
+specifier|abstract
+name|void
+name|setSortFinishTime
+parameter_list|(
+name|long
+name|time
 parameter_list|)
 function_decl|;
 block|}

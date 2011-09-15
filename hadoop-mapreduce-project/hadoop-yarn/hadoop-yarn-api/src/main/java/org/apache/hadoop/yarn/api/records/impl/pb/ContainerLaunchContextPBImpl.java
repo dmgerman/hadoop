@@ -399,7 +399,7 @@ name|serviceData
 init|=
 literal|null
 decl_stmt|;
-DECL|field|env
+DECL|field|environment
 specifier|private
 name|Map
 argument_list|<
@@ -407,7 +407,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|env
+name|environment
 init|=
 literal|null
 decl_stmt|;
@@ -623,7 +623,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|env
+name|environment
 operator|!=
 literal|null
 condition|)
@@ -1813,7 +1813,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEnv ()
+DECL|method|getEnvironment ()
 specifier|public
 name|Map
 argument_list|<
@@ -1821,7 +1821,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|getEnv
+name|getEnvironment
 parameter_list|()
 block|{
 name|initEnv
@@ -1830,7 +1830,7 @@ expr_stmt|;
 return|return
 name|this
 operator|.
-name|env
+name|environment
 return|;
 block|}
 DECL|method|initEnv ()
@@ -1843,7 +1843,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|env
+name|environment
 operator|!=
 literal|null
 condition|)
@@ -1867,12 +1867,12 @@ name|list
 init|=
 name|p
 operator|.
-name|getEnvList
+name|getEnvironmentList
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|env
+name|environment
 operator|=
 operator|new
 name|HashMap
@@ -1893,7 +1893,7 @@ control|)
 block|{
 name|this
 operator|.
-name|env
+name|environment
 operator|.
 name|put
 argument_list|(
@@ -1912,10 +1912,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setEnv (final Map<String, String> env)
+DECL|method|setEnvironment (final Map<String, String> env)
 specifier|public
 name|void
-name|setEnv
+name|setEnvironment
 parameter_list|(
 specifier|final
 name|Map
@@ -1939,14 +1939,14 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|env
+name|environment
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|env
+name|environment
 operator|.
 name|putAll
 argument_list|(
@@ -1965,12 +1965,12 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|clearEnv
+name|clearEnvironment
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|env
+name|environment
 operator|==
 literal|null
 condition|)
@@ -2012,7 +2012,7 @@ name|String
 argument_list|>
 name|keyIter
 init|=
-name|env
+name|environment
 operator|.
 name|keySet
 argument_list|()
@@ -2062,7 +2062,7 @@ operator|.
 name|setValue
 argument_list|(
 operator|(
-name|env
+name|environment
 operator|.
 name|get
 argument_list|(
@@ -2096,7 +2096,7 @@ block|}
 decl_stmt|;
 name|builder
 operator|.
-name|addAllEnv
+name|addAllEnvironment
 argument_list|(
 name|iterable
 argument_list|)

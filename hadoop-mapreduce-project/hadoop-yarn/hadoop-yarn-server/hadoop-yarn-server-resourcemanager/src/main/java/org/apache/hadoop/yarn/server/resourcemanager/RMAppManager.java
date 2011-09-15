@@ -1254,7 +1254,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|submitApplication (ApplicationSubmissionContext submissionContext)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext)
 specifier|protected
 specifier|synchronized
 name|void
@@ -1343,44 +1348,48 @@ name|clientTokenStr
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Sanity checks
+if|if
+condition|(
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
 name|submissionContext
 operator|.
 name|setQueue
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_QUEUE_NAME
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|submissionContext
 operator|.
-name|getQueue
+name|getApplicationName
 argument_list|()
 operator|==
 literal|null
-condition|?
-literal|"default"
-else|:
-name|submissionContext
-operator|.
-name|getQueue
-argument_list|()
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|submissionContext
 operator|.
 name|setApplicationName
 argument_list|(
-name|submissionContext
+name|YarnConfiguration
 operator|.
-name|getApplicationName
-argument_list|()
-operator|==
-literal|null
-condition|?
-literal|"N/A"
-else|:
-name|submissionContext
-operator|.
-name|getApplicationName
-argument_list|()
+name|DEFAULT_APPLICATION_NAME
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Store application for recovery
 name|ApplicationStore
 name|appStore
 init|=
@@ -1399,6 +1408,7 @@ argument_list|,
 name|submissionContext
 argument_list|)
 decl_stmt|;
+comment|// Create RMApp
 name|application
 operator|=
 operator|new
@@ -1429,11 +1439,6 @@ argument_list|,
 name|clientTokenStr
 argument_list|,
 name|appStore
-argument_list|,
-name|rmContext
-operator|.
-name|getAMLivelinessMonitor
-argument_list|()
 argument_list|,
 name|this
 operator|.
@@ -1472,8 +1477,8 @@ operator|+
 literal|" is already present! Cannot add a duplicate!"
 argument_list|)
 expr_stmt|;
-comment|// don't send event through dispatcher as it will be handled by app already
-comment|// present with this id.
+comment|// don't send event through dispatcher as it will be handled by app
+comment|// already present with this id.
 name|application
 operator|.
 name|handle
@@ -1483,7 +1488,9 @@ name|RMAppRejectedEvent
 argument_list|(
 name|applicationId
 argument_list|,
-literal|"Application with this id is already present! Cannot add a duplicate!"
+literal|"Application with this id is already present! "
+operator|+
+literal|"Cannot add a duplicate!"
 argument_list|)
 argument_list|)
 expr_stmt|;

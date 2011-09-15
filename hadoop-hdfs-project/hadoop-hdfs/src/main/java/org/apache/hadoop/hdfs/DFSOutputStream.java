@@ -210,6 +210,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CreateFlag
@@ -815,8 +829,11 @@ comment|/****************************************************************  * DFS
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DFSOutputStream
-specifier|public
 class|class
 name|DFSOutputStream
 extends|extends
@@ -7036,7 +7053,6 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the number of replicas of current block. This can be different    * from the designated replication factor of the file because the NameNode    * does not replicate the block to which a client is currently writing to.    * The client continues to write to a block even if a few datanodes in the    * write pipeline have failed.     * @return the number of valid replicas of the current block    */
 DECL|method|getNumCurrentReplicas ()
-specifier|public
 specifier|synchronized
 name|int
 name|getNumCurrentReplicas
@@ -7690,7 +7706,6 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of a file as it was when this stream was opened    */
 DECL|method|getInitialLen ()
-specifier|public
 name|long
 name|getInitialLen
 parameter_list|()

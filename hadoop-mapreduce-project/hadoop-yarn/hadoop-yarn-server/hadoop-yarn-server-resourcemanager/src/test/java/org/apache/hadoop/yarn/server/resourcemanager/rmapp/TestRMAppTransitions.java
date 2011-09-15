@@ -876,11 +876,6 @@ name|clientTokenStr
 argument_list|,
 name|appStore
 argument_list|,
-name|rmContext
-operator|.
-name|getAMLivelinessMonitor
-argument_list|()
-argument_list|,
 name|scheduler
 argument_list|,
 name|masterService

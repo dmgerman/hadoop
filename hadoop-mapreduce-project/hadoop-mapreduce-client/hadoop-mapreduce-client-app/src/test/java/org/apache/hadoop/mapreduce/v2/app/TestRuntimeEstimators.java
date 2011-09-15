@@ -170,6 +170,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -693,6 +707,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
 import|;
 end_import
 
@@ -2658,6 +2688,43 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getConfFile ()
+specifier|public
+name|Path
+name|getConfFile
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getJobACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|JobACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getJobACLs
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/*    * We follow the pattern of the real XxxImpl .  We create a job and initialize    * it with a full suite of tasks which in turn have one attempt each in the    * NEW state.  Attempts transition only from NEW to RUNNING to SUCCEEDED .    */
 DECL|class|MyTaskAttemptImpl
@@ -3622,6 +3689,38 @@ DECL|method|getFinishTime ()
 specifier|public
 name|long
 name|getFinishTime
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getShuffleFinishTime ()
+specifier|public
+name|long
+name|getShuffleFinishTime
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSortFinishTime ()
+specifier|public
+name|long
+name|getSortFinishTime
 parameter_list|()
 block|{
 throw|throw
