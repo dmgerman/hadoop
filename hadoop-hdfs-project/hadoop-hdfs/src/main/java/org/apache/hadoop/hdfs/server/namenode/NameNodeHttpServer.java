@@ -785,6 +785,8 @@ expr_stmt|;
 name|setupServlets
 argument_list|(
 name|httpServer
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|httpServer
@@ -910,7 +912,7 @@ return|return
 name|httpAddress
 return|;
 block|}
-DECL|method|setupServlets (HttpServer httpServer)
+DECL|method|setupServlets (HttpServer httpServer, Configuration conf)
 specifier|private
 specifier|static
 name|void
@@ -918,6 +920,9 @@ name|setupServlets
 parameter_list|(
 name|HttpServer
 name|httpServer
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|httpServer
@@ -1063,6 +1068,22 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_WEBHDFS_ENABLED_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_WEBHDFS_ENABLED_DEFAULT
+argument_list|)
+condition|)
+block|{
 name|httpServer
 operator|.
 name|addJerseyResourcePackage
@@ -1098,6 +1119,7 @@ operator|+
 literal|"/*"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getFsImageFromContext (ServletContext context)
 specifier|public
