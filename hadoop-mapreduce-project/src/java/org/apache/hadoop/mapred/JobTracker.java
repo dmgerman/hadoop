@@ -14610,6 +14610,39 @@ throw|throw
 name|ace
 throw|;
 block|}
+try|try
+block|{
+name|this
+operator|.
+name|taskScheduler
+operator|.
+name|checkJobSubmission
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Problem in submitting job "
+operator|+
+name|jobId
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
 comment|// Check the job if it cannot run in the cluster because of invalid memory
 comment|// requirements.
 try|try
