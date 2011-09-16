@@ -144,6 +144,20 @@ name|CommonConfigurationKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|NativeCodeLoader
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class creates snappy compressors/decompressors.  */
 end_comment
@@ -202,16 +216,13 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Are the native snappy libraries loaded& initialized?    *    * @param conf configuration    * @return true if loaded& initialized, otherwise false    */
-DECL|method|isNativeSnappyLoaded (Configuration conf)
+comment|/**    * Are the native snappy libraries loaded& initialized?    *    * @return true if loaded& initialized, otherwise false    */
+DECL|method|isNativeCodeLoaded ()
 specifier|public
 specifier|static
 name|boolean
-name|isNativeSnappyLoaded
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+name|isNativeCodeLoaded
+parameter_list|()
 block|{
 return|return
 name|LoadSnappy
@@ -219,18 +230,10 @@ operator|.
 name|isLoaded
 argument_list|()
 operator|&&
-name|conf
+name|NativeCodeLoader
 operator|.
-name|getBoolean
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_KEY
-argument_list|,
-name|CommonConfigurationKeys
-operator|.
-name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 return|;
 block|}
 comment|/**    * Create a {@link CompressionOutputStream} that will write to the given    * {@link OutputStream}.    *    * @param out the location for the final output stream    * @return a stream the user can write uncompressed data to have it compressed    * @throws IOException    */
@@ -277,10 +280,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -349,10 +350,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -381,10 +380,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -463,10 +460,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -517,10 +512,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -549,10 +542,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isNativeSnappyLoaded
-argument_list|(
-name|conf
-argument_list|)
+name|isNativeCodeLoaded
+argument_list|()
 condition|)
 block|{
 throw|throw
