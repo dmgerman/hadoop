@@ -20,6 +20,20 @@ name|resources
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
 begin_comment
 comment|/** User parameter. */
 end_comment
@@ -95,6 +109,25 @@ condition|?
 literal|null
 else|:
 name|str
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Construct an object from a UGI.    */
+DECL|method|UserParam (final UserGroupInformation ugi)
+specifier|public
+name|UserParam
+parameter_list|(
+specifier|final
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
