@@ -28,9 +28,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|hdfs
 operator|.
-name|Configuration
+name|server
+operator|.
+name|common
+operator|.
+name|JspHelper
 import|;
 end_import
 
@@ -42,23 +46,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|security
 operator|.
-name|CommonConfigurationKeysPublic
+name|UserGroupInformation
 import|;
 end_import
 
 begin_comment
-comment|/** Buffer size parameter. */
+comment|/** Delegation token parameter. */
 end_comment
 
 begin_class
-DECL|class|BufferSizeParam
+DECL|class|DelegationParam
 specifier|public
 class|class
-name|BufferSizeParam
+name|DelegationParam
 extends|extends
-name|IntegerParam
+name|StringParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -68,7 +72,9 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"bufferSize"
+name|JspHelper
+operator|.
+name|DELEGATION_PARAMETER_NAME
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -78,7 +84,7 @@ specifier|final
 name|String
 name|DEFAULT
 init|=
-name|NULL
+literal|""
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
@@ -91,44 +97,44 @@ operator|new
 name|Domain
 argument_list|(
 name|NAME
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param value the parameter value.    */
-DECL|method|BufferSizeParam (final Integer value)
-specifier|public
-name|BufferSizeParam
-parameter_list|(
-specifier|final
-name|Integer
-name|value
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|DOMAIN
-argument_list|,
-name|value
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|BufferSizeParam (final String str)
+DECL|method|DelegationParam (final String str)
 specifier|public
-name|BufferSizeParam
+name|DelegationParam
 parameter_list|(
 specifier|final
 name|String
 name|str
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
 name|DOMAIN
+argument_list|,
+name|UserGroupInformation
 operator|.
-name|parse
-argument_list|(
+name|isSecurityEnabled
+argument_list|()
+operator|&&
 name|str
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|str
+operator|.
+name|equals
+argument_list|(
+name|DEFAULT
 argument_list|)
+condition|?
+name|str
+else|:
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -142,40 +148,6 @@ parameter_list|()
 block|{
 return|return
 name|NAME
-return|;
-block|}
-comment|/** @return the value or, if it is null, return the default from conf. */
-DECL|method|getValue (final Configuration conf)
-specifier|public
-name|int
-name|getValue
-parameter_list|(
-specifier|final
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|getValue
-argument_list|()
-operator|!=
-literal|null
-condition|?
-name|getValue
-argument_list|()
-else|:
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-argument_list|,
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-argument_list|)
 return|;
 block|}
 block|}

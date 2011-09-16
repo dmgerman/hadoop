@@ -91,14 +91,14 @@ name|Type
 name|getType
 parameter_list|()
 function_decl|;
-comment|/** @return true if the operation has output. */
+comment|/** @return true if the operation will do output. */
 DECL|method|getDoOutput ()
 specifier|public
 name|boolean
 name|getDoOutput
 parameter_list|()
 function_decl|;
-comment|/** @return true if the operation has output. */
+comment|/** @return true the expected http response code. */
 DECL|method|getExpectedHttpResponseCode ()
 specifier|public
 name|int
@@ -113,7 +113,6 @@ name|toQueryString
 parameter_list|()
 function_decl|;
 block|}
-comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
 DECL|method|HttpOpParam (final Domain<E> domain, final E value)
 name|HttpOpParam
 parameter_list|(

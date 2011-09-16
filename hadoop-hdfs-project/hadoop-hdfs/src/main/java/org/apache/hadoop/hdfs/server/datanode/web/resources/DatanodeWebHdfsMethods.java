@@ -88,6 +88,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|EnumSet
@@ -650,6 +660,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
 begin_comment
 comment|/** Web-hdfs DataNode implementation. */
 end_comment
@@ -718,7 +742,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put ( final InputStream in, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize )
+DECL|method|put ( final InputStream in, @Context final UserGroupInformation ugi, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize )
 specifier|public
 name|Response
 name|put
@@ -726,6 +750,12 @@ parameter_list|(
 specifier|final
 name|InputStream
 name|in
+parameter_list|,
+annotation|@
+name|Context
+specifier|final
+name|UserGroupInformation
+name|ugi
 parameter_list|,
 annotation|@
 name|PathParam
@@ -850,6 +880,8 @@ throws|throws
 name|IOException
 throws|,
 name|URISyntaxException
+throws|,
+name|InterruptedException
 block|{
 if|if
 condition|(
@@ -868,6 +900,10 @@ operator|+
 literal|": "
 operator|+
 name|path
+operator|+
+literal|", ugi="
+operator|+
+name|ugi
 operator|+
 name|Param
 operator|.
@@ -888,6 +924,29 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Response
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Response
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|URISyntaxException
+block|{
 specifier|final
 name|String
 name|fullpath
@@ -960,6 +1019,17 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
+name|int
+name|b
+init|=
+name|bufferSize
+operator|.
+name|getValue
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+specifier|final
 name|FSDataOutputStream
 name|out
 init|=
@@ -1012,14 +1082,13 @@ argument_list|,
 name|blockSize
 operator|.
 name|getValue
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|)
 argument_list|,
 literal|null
@@ -1035,10 +1104,7 @@ name|in
 argument_list|,
 name|out
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|)
 expr_stmt|;
 block|}
@@ -1122,6 +1188,10 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+argument_list|)
+return|;
+block|}
 comment|/** Handle HTTP POST request. */
 annotation|@
 name|POST
@@ -1152,7 +1222,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|post ( final InputStream in, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|post ( final InputStream in, @Context final UserGroupInformation ugi, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
 specifier|public
 name|Response
 name|post
@@ -1160,6 +1230,12 @@ parameter_list|(
 specifier|final
 name|InputStream
 name|in
+parameter_list|,
+annotation|@
+name|Context
+specifier|final
+name|UserGroupInformation
+name|ugi
 parameter_list|,
 annotation|@
 name|PathParam
@@ -1212,6 +1288,8 @@ throws|throws
 name|IOException
 throws|,
 name|URISyntaxException
+throws|,
+name|InterruptedException
 block|{
 if|if
 condition|(
@@ -1231,6 +1309,10 @@ literal|": "
 operator|+
 name|path
 operator|+
+literal|", ugi="
+operator|+
+name|ugi
+operator|+
 name|Param
 operator|.
 name|toSortedString
@@ -1242,6 +1324,27 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Response
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Response
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|String
 name|fullpath
@@ -1314,6 +1417,17 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
+name|int
+name|b
+init|=
+name|bufferSize
+operator|.
+name|getValue
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+specifier|final
 name|FSDataOutputStream
 name|out
 init|=
@@ -1323,10 +1437,7 @@ name|append
 argument_list|(
 name|fullpath
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|,
 literal|null
 argument_list|,
@@ -1343,10 +1454,7 @@ name|in
 argument_list|,
 name|out
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|)
 expr_stmt|;
 block|}
@@ -1387,6 +1495,10 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+argument_list|)
+return|;
+block|}
 comment|/** Handle HTTP GET request. */
 annotation|@
 name|GET
@@ -1414,11 +1526,17 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|get ( @athParamUriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|get ( @ontext final UserGroupInformation ugi, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
 specifier|public
 name|Response
 name|get
 parameter_list|(
+annotation|@
+name|Context
+specifier|final
+name|UserGroupInformation
+name|ugi
+parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
@@ -1506,6 +1624,8 @@ throws|throws
 name|IOException
 throws|,
 name|URISyntaxException
+throws|,
+name|InterruptedException
 block|{
 if|if
 condition|(
@@ -1525,6 +1645,10 @@ literal|": "
 operator|+
 name|path
 operator|+
+literal|", ugi="
+operator|+
+name|ugi
+operator|+
 name|Param
 operator|.
 name|toSortedString
@@ -1540,6 +1664,27 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Response
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Response
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|String
 name|fullpath
@@ -1612,6 +1757,17 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
+name|int
+name|b
+init|=
+name|bufferSize
+operator|.
+name|getValue
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+specifier|final
 name|DFSDataInputStream
 name|in
 init|=
@@ -1626,10 +1782,7 @@ name|open
 argument_list|(
 name|fullpath
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|,
 literal|true
 argument_list|)
@@ -1690,10 +1843,7 @@ name|in
 argument_list|,
 name|out
 argument_list|,
-name|bufferSize
-operator|.
-name|getValue
-argument_list|()
+name|b
 argument_list|)
 expr_stmt|;
 block|}
@@ -1746,6 +1896,10 @@ literal|" is not supported"
 argument_list|)
 throw|;
 block|}
+block|}
+block|}
+argument_list|)
+return|;
 block|}
 block|}
 end_class
