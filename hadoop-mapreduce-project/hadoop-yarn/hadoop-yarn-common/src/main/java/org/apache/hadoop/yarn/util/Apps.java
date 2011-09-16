@@ -113,7 +113,7 @@ specifier|final
 name|String
 name|APP
 init|=
-literal|"app"
+literal|"application"
 decl_stmt|;
 DECL|field|ID
 specifier|public
