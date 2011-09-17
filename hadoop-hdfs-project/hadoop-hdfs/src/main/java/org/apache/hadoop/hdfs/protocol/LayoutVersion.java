@@ -298,6 +298,15 @@ literal|38
 argument_list|,
 literal|"File names in NN Storage are based on transaction IDs"
 argument_list|)
+block|,
+DECL|enumConstant|EDITLOG_OP_OPTIMIZATION
+name|EDITLOG_OP_OPTIMIZATION
+argument_list|(
+operator|-
+literal|39
+argument_list|,
+literal|"Use LongWritable and ShortWritable directly instead of ArrayWritable of UTF8"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

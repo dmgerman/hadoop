@@ -384,6 +384,9 @@ literal|37
 block|,
 operator|-
 literal|38
+block|,
+operator|-
+literal|39
 block|}
 decl_stmt|;
 DECL|field|imageVersion
