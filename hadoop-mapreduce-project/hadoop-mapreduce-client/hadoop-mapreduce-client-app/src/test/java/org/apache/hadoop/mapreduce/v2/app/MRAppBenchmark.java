@@ -653,7 +653,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createContainerAllocator ( ClientService clientService, AppContext context, boolean isLocal)
+DECL|method|createContainerAllocator ( ClientService clientService, AppContext context)
 specifier|protected
 name|ContainerAllocator
 name|createContainerAllocator
@@ -663,9 +663,6 @@ name|clientService
 parameter_list|,
 name|AppContext
 name|context
-parameter_list|,
-name|boolean
-name|isLocal
 parameter_list|)
 block|{
 return|return

@@ -1281,7 +1281,7 @@ name|MRApp
 name|app
 init|=
 operator|new
-name|FailingTaskWithUnusedContainer
+name|MRAppWithFailingTaskAndUnusedContainer
 argument_list|()
 decl_stmt|;
 name|Configuration
@@ -1490,16 +1490,16 @@ name|FAILED
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|FailingTaskWithUnusedContainer
+DECL|class|MRAppWithFailingTaskAndUnusedContainer
 specifier|static
 class|class
-name|FailingTaskWithUnusedContainer
+name|MRAppWithFailingTaskAndUnusedContainer
 extends|extends
 name|MRApp
 block|{
-DECL|method|FailingTaskWithUnusedContainer ()
+DECL|method|MRAppWithFailingTaskAndUnusedContainer ()
 specifier|public
-name|FailingTaskWithUnusedContainer
+name|MRAppWithFailingTaskAndUnusedContainer
 parameter_list|()
 block|{
 name|super
@@ -1516,16 +1516,15 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createContainerLauncher (AppContext context, boolean isLocal)
+annotation|@
+name|Override
+DECL|method|createContainerLauncher (AppContext context)
 specifier|protected
 name|ContainerLauncher
 name|createContainerLauncher
 parameter_list|(
 name|AppContext
 name|context
-parameter_list|,
-name|boolean
-name|isLocal
 parameter_list|)
 block|{
 return|return
@@ -1563,6 +1562,7 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+comment|// Unused event and container.
 break|break;
 case|case
 name|CONTAINER_REMOTE_CLEANUP

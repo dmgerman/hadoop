@@ -532,7 +532,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|eventHandlingThread
-specifier|private
+specifier|protected
 name|Thread
 name|eventHandlingThread
 decl_stmt|;
