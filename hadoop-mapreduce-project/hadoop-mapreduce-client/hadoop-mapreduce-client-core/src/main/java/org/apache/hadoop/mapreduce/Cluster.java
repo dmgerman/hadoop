@@ -654,8 +654,9 @@ name|jobs
 operator|.
 name|add
 argument_list|(
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|this
 argument_list|,
@@ -811,8 +812,9 @@ literal|null
 condition|)
 block|{
 return|return
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|this
 argument_list|,

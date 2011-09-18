@@ -1457,59 +1457,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-comment|// XXX Remove
-name|Path
-name|submitJobDir
-init|=
-operator|new
-name|Path
-argument_list|(
-name|jobSubmitDir
-argument_list|)
-decl_stmt|;
-name|FileContext
-name|defaultFS
-init|=
-name|FileContext
-operator|.
-name|getFileContext
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|Path
-name|submitJobFile
-init|=
-name|defaultFS
-operator|.
-name|makeQualified
-argument_list|(
-name|JobSubmissionFiles
-operator|.
-name|getJobConfPath
-argument_list|(
-name|submitJobDir
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|FSDataInputStream
-name|in
-init|=
-name|defaultFS
-operator|.
-name|open
-argument_list|(
-name|submitJobFile
-argument_list|)
-decl_stmt|;
-name|conf
-operator|.
-name|addResource
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-comment|// ---
 comment|// Construct necessary information to start the MR AM
 name|ApplicationSubmissionContext
 name|appContext
@@ -1523,13 +1470,6 @@ argument_list|,
 name|ts
 argument_list|)
 decl_stmt|;
-comment|// XXX Remove
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-comment|// ---
 comment|// Submit to ResourceManager
 name|ApplicationId
 name|applicationId
