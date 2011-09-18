@@ -114,14 +114,6 @@ argument_list|<
 name|ApplicationAttemptId
 argument_list|>
 block|{
-DECL|field|id
-name|int
-name|id
-decl_stmt|;
-DECL|field|appId
-name|ApplicationId
-name|appId
-decl_stmt|;
 comment|/**    * Get the<code>ApplicationId</code> of the<code>ApplicationAttempId</code>.     * @return<code>ApplicationId</code> of the<code>ApplicationAttempId</code>    */
 annotation|@
 name|Public
