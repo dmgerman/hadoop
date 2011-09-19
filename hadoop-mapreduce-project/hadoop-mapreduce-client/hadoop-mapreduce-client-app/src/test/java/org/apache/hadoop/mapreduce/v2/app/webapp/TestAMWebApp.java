@@ -1052,6 +1052,32 @@ return|return
 name|params
 return|;
 block|}
+DECL|method|testConfView ()
+annotation|@
+name|Test
+specifier|public
+name|void
+name|testConfView
+parameter_list|()
+block|{
+name|WebAppTests
+operator|.
+name|testPage
+argument_list|(
+name|JobConfPage
+operator|.
+name|class
+argument_list|,
+name|AppContext
+operator|.
+name|class
+argument_list|,
+operator|new
+name|TestAppContext
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static

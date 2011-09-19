@@ -879,6 +879,41 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * @return the page that will be used to render the /conf page    */
+DECL|method|confPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|confPage
+parameter_list|()
+block|{
+return|return
+name|JobConfPage
+operator|.
+name|class
+return|;
+block|}
+comment|/**    * Render the /conf page    */
+DECL|method|conf ()
+specifier|public
+name|void
+name|conf
+parameter_list|()
+block|{
+name|requireJob
+argument_list|()
+expr_stmt|;
+name|render
+argument_list|(
+name|confPage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Render a BAD_REQUEST error.    * @param s the error message to include.    */
 DECL|method|badRequest (String s)
 name|void
