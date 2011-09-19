@@ -248,13 +248,9 @@ literal|true
 return|;
 if|if
 condition|(
-operator|!
-name|super
-operator|.
-name|equals
-argument_list|(
 name|obj
-argument_list|)
+operator|==
+literal|null
 condition|)
 return|return
 literal|false
