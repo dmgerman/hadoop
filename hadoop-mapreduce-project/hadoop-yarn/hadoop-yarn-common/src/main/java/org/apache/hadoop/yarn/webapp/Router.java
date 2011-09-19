@@ -104,6 +104,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|lang
+operator|.
+name|NoSuchMethodException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|lang
+operator|.
+name|SecurityException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|EnumSet
@@ -530,50 +550,25 @@ argument_list|>
 name|names
 parameter_list|)
 block|{
-for|for
-control|(
+try|try
+block|{
+comment|// Look for the method in all public methods declared in the class
+comment|// or inherited by the class.
+comment|// Note: this does not distinguish methods with the same signature
+comment|// but different return types.
+comment|// TODO: We may want to deal with methods that take parameters in the future
 name|Method
 name|method
-range|:
+init|=
 name|cls
 operator|.
-name|getDeclaredMethods
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-name|method
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|equals
+name|getMethod
 argument_list|(
 name|action
+argument_list|,
+literal|null
 argument_list|)
-operator|&&
-name|method
-operator|.
-name|getParameterTypes
-argument_list|()
-operator|.
-name|length
-operator|==
-literal|0
-operator|&&
-name|Modifier
-operator|.
-name|isPublic
-argument_list|(
-name|method
-operator|.
-name|getModifiers
-argument_list|()
-argument_list|)
-condition|)
-block|{
-comment|// TODO: deal with parameters using the names
+decl_stmt|;
 name|Dest
 name|dest
 init|=
@@ -641,7 +636,12 @@ return|return
 name|dest
 return|;
 block|}
-block|}
+catch|catch
+parameter_list|(
+name|NoSuchMethodException
+name|nsme
+parameter_list|)
+block|{
 throw|throw
 operator|new
 name|WebAppException
@@ -653,6 +653,27 @@ operator|+
 name|cls
 argument_list|)
 throw|;
+block|}
+catch|catch
+parameter_list|(
+name|SecurityException
+name|se
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|WebAppException
+argument_list|(
+literal|"Security exception thrown for "
+operator|+
+name|action
+operator|+
+literal|"() in "
+operator|+
+name|cls
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|addDefaultView (Dest dest)
 specifier|private
