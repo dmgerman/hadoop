@@ -135,7 +135,9 @@ name|IOException
 block|{
 if|if
 condition|(
-literal|"yarn"
+name|MRConfig
+operator|.
+name|YARN_FRAMEWORK_NAME
 operator|.
 name|equals
 argument_list|(
