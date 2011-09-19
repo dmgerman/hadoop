@@ -144,11 +144,51 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
 import|;
 end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|RMApp
+import|;
+end_import
+
+begin_comment
+comment|/**  * Interface to an Application Attempt in the Resource Manager.  * A {@link RMApp} can have multiple app attempts based on   * {@link YarnConfiguration#RM_AM_MAX_RETRIES}. For specific   * implementation take a look at {@link RMAppAttemptImpl}.  */
+end_comment
 
 begin_interface
 DECL|interface|RMAppAttempt
@@ -161,46 +201,61 @@ argument_list|<
 name|RMAppAttemptEvent
 argument_list|>
 block|{
+comment|/**    * Get the application attempt id for this {@link RMAppAttempt}.    * @return the {@link ApplicationAttemptId} for this RM attempt.    */
 DECL|method|getAppAttemptId ()
 name|ApplicationAttemptId
 name|getAppAttemptId
 parameter_list|()
 function_decl|;
+comment|/**    * The state of the {@link RMAppAttempt}.    * @return the state {@link RMAppAttemptState} of this {@link RMAppAttempt}    */
 DECL|method|getAppAttemptState ()
 name|RMAppAttemptState
 name|getAppAttemptState
 parameter_list|()
 function_decl|;
+comment|/**    * The host on which the {@link RMAppAttempt} is running/ran on.    * @return the host on which the {@link RMAppAttempt} ran/is running on.    */
 DECL|method|getHost ()
 name|String
 name|getHost
 parameter_list|()
 function_decl|;
+comment|/**    * The rpc port of the {@link RMAppAttempt}.    * @return the rpc port of the {@link RMAppAttempt} to which the clients can connect    * to.    */
 DECL|method|getRpcPort ()
 name|int
 name|getRpcPort
 parameter_list|()
 function_decl|;
+comment|/**    * The url at which the status of the application attempt can be accessed.    * @return the url at which the status of the attempt can be accessed.    */
 DECL|method|getTrackingUrl ()
 name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
 DECL|method|getClientToken ()
 name|String
 name|getClientToken
 parameter_list|()
 function_decl|;
+comment|/**    * Diagnostics information for the application attempt.    * @return diagnostics information for the application attempt.    */
 DECL|method|getDiagnostics ()
 name|StringBuilder
 name|getDiagnostics
 parameter_list|()
 function_decl|;
+comment|/**    * Progress for the application attempt.    * @return the progress for this {@link RMAppAttempt}    */
 DECL|method|getProgress ()
 name|float
 name|getProgress
 parameter_list|()
 function_decl|;
+comment|/**    * The final state set by the AM.    * @return the final state that is set by the AM when unregistering itself.    */
+DECL|method|getAMFinalState ()
+name|String
+name|getAMFinalState
+parameter_list|()
+function_decl|;
+comment|/**    * Nodes on which the containers for this {@link RMAppAttempt} ran.    * @return the set of nodes that ran any containers from this {@link RMAppAttempt}    */
 DECL|method|getRanNodes ()
 name|Set
 argument_list|<
@@ -209,6 +264,7 @@ argument_list|>
 name|getRanNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Return a list of the last set of finished containers, resetting the     * finished containers to empty.    * @return the list of just finished containers, re setting the finished containers.    */
 DECL|method|pullJustFinishedContainers ()
 name|List
 argument_list|<
@@ -217,6 +273,7 @@ argument_list|>
 name|pullJustFinishedContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Return the list of last set of finished containers. This does not reset the     * finished containers.    * @return the list of just finished contianers, this does not reset the     * finished containers.    */
 DECL|method|getJustFinishedContainers ()
 name|List
 argument_list|<
@@ -225,11 +282,13 @@ argument_list|>
 name|getJustFinishedContainers
 parameter_list|()
 function_decl|;
+comment|/**    * The container on which the Application Master is running.    * @return the {@link Container} on which the application master is running.    */
 DECL|method|getMasterContainer ()
 name|Container
 name|getMasterContainer
 parameter_list|()
 function_decl|;
+comment|/**    * The application submission context for this {@link RMAppAttempt}.    * @return the application submission context for this Application.    */
 DECL|method|getSubmissionContext ()
 name|ApplicationSubmissionContext
 name|getSubmissionContext
