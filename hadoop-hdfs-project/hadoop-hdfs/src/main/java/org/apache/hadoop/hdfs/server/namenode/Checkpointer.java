@@ -380,12 +380,12 @@ name|long
 name|checkpointPeriod
 decl_stmt|;
 comment|// in seconds
+comment|// Transactions count to trigger the checkpoint
 DECL|field|checkpointTxnCount
 specifier|private
 name|long
 name|checkpointTxnCount
 decl_stmt|;
-comment|// size (in MB) of current Edit Log
 DECL|field|infoBindAddress
 specifier|private
 name|String
@@ -581,11 +581,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Log Size Trigger  : "
+literal|"Transactions count is  : "
 operator|+
 name|checkpointTxnCount
 operator|+
-literal|" txns "
+literal|", to trigger checkpoint"
 argument_list|)
 expr_stmt|;
 block|}
