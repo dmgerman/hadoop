@@ -1455,13 +1455,6 @@ name|Job
 operator|.
 name|getInstance
 argument_list|(
-operator|new
-name|Cluster
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-argument_list|,
 name|getConf
 argument_list|()
 argument_list|)

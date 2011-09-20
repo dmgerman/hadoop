@@ -794,6 +794,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|Clock
@@ -2031,27 +2045,52 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createJob (Configuration conf, Credentials fsTokens, String user)
+DECL|method|createJob (Configuration conf)
 specifier|protected
 name|Job
 name|createJob
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|Credentials
-name|fsTokens
-parameter_list|,
-name|String
-name|user
 parameter_list|)
 block|{
+name|UserGroupInformation
+name|currentUser
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|currentUser
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|Job
 name|newJob
 init|=
 operator|new
 name|TestJob
 argument_list|(
+name|conf
+argument_list|,
 name|getAppID
 argument_list|()
 argument_list|,
@@ -2070,7 +2109,10 @@ operator|.
 name|getClock
 argument_list|()
 argument_list|,
-name|user
+name|currentUser
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 operator|(
@@ -2238,16 +2280,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createContainerLauncher (AppContext context, boolean isLocal)
+DECL|method|createContainerLauncher (AppContext context)
 specifier|protected
 name|ContainerLauncher
 name|createContainerLauncher
 parameter_list|(
 name|AppContext
 name|context
-parameter_list|,
-name|boolean
-name|isLocal
 parameter_list|)
 block|{
 return|return
@@ -2382,7 +2421,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createContainerAllocator ( ClientService clientService, AppContext context, boolean isLocal)
+DECL|method|createContainerAllocator ( ClientService clientService, AppContext context)
 specifier|protected
 name|ContainerAllocator
 name|createContainerAllocator
@@ -2392,9 +2431,6 @@ name|clientService
 parameter_list|,
 name|AppContext
 name|context
-parameter_list|,
-name|boolean
-name|isLocal
 parameter_list|)
 block|{
 return|return
@@ -2640,6 +2676,20 @@ extends|extends
 name|JobImpl
 block|{
 comment|//override the init transition
+DECL|field|initTransition
+specifier|private
+specifier|final
+name|TestInitTransition
+name|initTransition
+init|=
+operator|new
+name|TestInitTransition
+argument_list|(
+name|maps
+argument_list|,
+name|reduces
+argument_list|)
+decl_stmt|;
 DECL|field|localFactory
 name|StateMachineFactory
 argument_list|<
@@ -2679,16 +2729,7 @@ operator|.
 name|JOB_INIT
 argument_list|,
 comment|// This is abusive.
-operator|new
-name|TestInitTransition
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|,
-name|maps
-argument_list|,
-name|reduces
-argument_list|)
+name|initTransition
 argument_list|)
 decl_stmt|;
 specifier|private
@@ -2723,10 +2764,13 @@ return|return
 name|localStateMachine
 return|;
 block|}
-DECL|method|TestJob (ApplicationId appID, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, String user)
+DECL|method|TestJob (Configuration conf, ApplicationId appID, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, String user)
 specifier|public
 name|TestJob
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|ApplicationId
 name|appID
 parameter_list|,
@@ -2747,9 +2791,7 @@ name|super
 argument_list|(
 name|appID
 argument_list|,
-operator|new
-name|Configuration
-argument_list|()
+name|conf
 argument_list|,
 name|eventHandler
 argument_list|,
@@ -2799,11 +2841,6 @@ name|JobImpl
 operator|.
 name|InitTransition
 block|{
-DECL|field|config
-specifier|private
-name|Configuration
-name|config
-decl_stmt|;
 DECL|field|maps
 specifier|private
 name|int
@@ -2814,12 +2851,9 @@ specifier|private
 name|int
 name|reduces
 decl_stmt|;
-DECL|method|TestInitTransition (Configuration config, int maps, int reduces)
+DECL|method|TestInitTransition (int maps, int reduces)
 name|TestInitTransition
 parameter_list|(
-name|Configuration
-name|config
-parameter_list|,
 name|int
 name|maps
 parameter_list|,
@@ -2827,12 +2861,6 @@ name|int
 name|reduces
 parameter_list|)
 block|{
-name|this
-operator|.
-name|config
-operator|=
-name|config
-expr_stmt|;
 name|this
 operator|.
 name|maps
@@ -2859,12 +2887,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|job
-operator|.
-name|conf
-operator|=
-name|config
-expr_stmt|;
 name|job
 operator|.
 name|conf

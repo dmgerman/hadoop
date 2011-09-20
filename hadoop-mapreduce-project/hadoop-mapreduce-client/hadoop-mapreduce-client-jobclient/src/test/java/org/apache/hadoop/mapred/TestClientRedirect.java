@@ -1482,7 +1482,9 @@ name|MRConfig
 operator|.
 name|FRAMEWORK_NAME
 argument_list|,
-literal|"yarn"
+name|MRConfig
+operator|.
+name|YARN_FRAMEWORK_NAME
 argument_list|)
 expr_stmt|;
 name|conf

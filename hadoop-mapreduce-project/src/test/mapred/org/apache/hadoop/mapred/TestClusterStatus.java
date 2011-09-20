@@ -1267,8 +1267,6 @@ name|Job
 operator|.
 name|getInstance
 argument_list|(
-name|cluster
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;

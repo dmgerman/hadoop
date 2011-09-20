@@ -440,6 +440,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|MRJobConfig
 import|;
 end_import
@@ -1018,6 +1032,30 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|Configuration
+name|sleepConf
+init|=
+operator|new
+name|Configuration
+argument_list|(
+name|mrCluster
+operator|.
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// set master address to local to test that local mode applied iff framework == classic and master_address == local
+name|sleepConf
+operator|.
+name|set
+argument_list|(
+name|MRConfig
+operator|.
+name|MASTER_ADDRESS
+argument_list|,
+literal|"local"
+argument_list|)
+expr_stmt|;
 name|SleepJob
 name|sleepJob
 init|=
@@ -1029,19 +1067,13 @@ name|sleepJob
 operator|.
 name|setConf
 argument_list|(
-name|mrCluster
-operator|.
-name|getConfig
-argument_list|()
+name|sleepConf
 argument_list|)
 expr_stmt|;
 name|int
 name|numReduces
 init|=
-name|mrCluster
-operator|.
-name|getConfig
-argument_list|()
+name|sleepConf
 operator|.
 name|getInt
 argument_list|(
@@ -1050,7 +1082,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-comment|// or mrCluster.getConfig().getInt(MRJobConfig.NUM_REDUCES, 2);
+comment|// or sleepConf.getConfig().getInt(MRJobConfig.NUM_REDUCES, 2);
 comment|// job with 3 maps (10s) and numReduces reduces (5s), 1 "record" each:
 name|Job
 name|job

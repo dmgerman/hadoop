@@ -296,6 +296,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link TaskScheduler} that implements fair sharing.  */
 end_comment
@@ -559,6 +573,23 @@ name|long
 name|lastPreemptCheckTime
 decl_stmt|;
 comment|// Time we last ran preemptTasksIfNecessary
+comment|/**    * A configuration property that controls the ability of submitting jobs to    * pools not declared in the scheduler allocation file.    */
+DECL|field|ALLOW_UNDECLARED_POOLS_KEY
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|ALLOW_UNDECLARED_POOLS_KEY
+init|=
+literal|"mapred.fairscheduler.allow.undeclared.pools"
+decl_stmt|;
+DECL|field|allowUndeclaredPools
+specifier|private
+name|boolean
+name|allowUndeclaredPools
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * A class for holding per-job scheduler variables. These always contain the    * values of the variables at the last update(), and are used along with a    * time delta to update the map and reduce deficits before a new update().    */
 DECL|class|JobInfo
 specifier|static
@@ -1053,6 +1084,17 @@ argument_list|(
 literal|"mapred.fairscheduler.locality.delay.rack"
 argument_list|,
 name|defaultDelay
+argument_list|)
+expr_stmt|;
+name|allowUndeclaredPools
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|ALLOW_UNDECLARED_POOLS_KEY
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 if|if
@@ -5482,6 +5524,79 @@ block|{
 return|return
 name|lastPreemptionUpdateTime
 return|;
+block|}
+comment|/**    * Examines the job's pool name to determine if it is a declared pool name (in    * the scheduler allocation file).    */
+annotation|@
+name|Override
+DECL|method|checkJobSubmission (JobInProgress job)
+specifier|public
+name|void
+name|checkJobSubmission
+parameter_list|(
+name|JobInProgress
+name|job
+parameter_list|)
+throws|throws
+name|UndeclaredPoolException
+block|{
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|declaredPools
+init|=
+name|poolMgr
+operator|.
+name|getDeclaredPools
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|allowUndeclaredPools
+operator|&&
+operator|!
+name|declaredPools
+operator|.
+name|contains
+argument_list|(
+name|poolMgr
+operator|.
+name|getPoolName
+argument_list|(
+name|job
+argument_list|)
+argument_list|)
+condition|)
+throw|throw
+operator|new
+name|UndeclaredPoolException
+argument_list|(
+literal|"Pool name: '"
+operator|+
+name|poolMgr
+operator|.
+name|getPoolName
+argument_list|(
+name|job
+argument_list|)
+operator|+
+literal|"' is invalid. Add pool name to the fair scheduler allocation "
+operator|+
+literal|"file. Valid pools are: "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|", "
+argument_list|,
+name|declaredPools
+argument_list|)
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

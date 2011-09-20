@@ -219,6 +219,18 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * Subclasses can override to provide any scheduler-specific checking    * mechanism for job submission.    * @param job    * @throws IOException    */
+DECL|method|checkJobSubmission (JobInProgress job)
+specifier|public
+name|void
+name|checkJobSubmission
+parameter_list|(
+name|JobInProgress
+name|job
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
 block|}
 end_class
 

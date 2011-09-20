@@ -689,6 +689,18 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|getAMFinalState ()
+specifier|public
+name|String
+name|getAMFinalState
+parameter_list|()
+block|{
+return|return
+literal|"UNKNOWN"
+return|;
+block|}
 empty_stmt|;
 block|}
 end_class

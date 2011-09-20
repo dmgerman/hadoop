@@ -973,6 +973,22 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAMFinalState ()
+specifier|public
+name|String
+name|getAMFinalState
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|newApplication (int i)
 specifier|public

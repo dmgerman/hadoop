@@ -1805,6 +1805,40 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getAMFinalState ()
+specifier|public
+name|String
+name|getAMFinalState
+parameter_list|()
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|finalState
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|getAppAttemptState ()
 specifier|public
 name|RMAppAttemptState
@@ -2341,6 +2375,11 @@ name|AttemptStartedTransition
 extends|extends
 name|BaseTransition
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (RMAppAttemptImpl appAttempt, RMAppAttemptEvent event)

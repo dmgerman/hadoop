@@ -96,22 +96,6 @@ name|ClientProtocolProvider
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
 begin_class
 DECL|class|YarnClientProtocolProvider
 specifier|public
@@ -135,7 +119,9 @@ name|IOException
 block|{
 if|if
 condition|(
-literal|"yarn"
+name|MRConfig
+operator|.
+name|YARN_FRAMEWORK_NAME
 operator|.
 name|equals
 argument_list|(
@@ -154,11 +140,7 @@ return|return
 operator|new
 name|YARNRunner
 argument_list|(
-operator|new
-name|YarnConfiguration
-argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 return|;
 block|}

@@ -1783,11 +1783,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Internal method for submitting jobs to the system.    *     *<p>The job submission process involves:    *<ol>    *<li>    *   Checking the input and output specifications of the job.    *</li>    *<li>    *   Computing the {@link InputSplit}s for the job.    *</li>    *<li>    *   Setup the requisite accounting information for the     *   {@link DistributedCache} of the job, if necessary.    *</li>    *<li>    *   Copying the job's jar and configuration to the map-reduce system    *   directory on the distributed file-system.     *</li>    *<li>    *   Submitting the job to the<code>JobTracker</code> and optionally    *   monitoring it's status.    *</li>    *</ol></p>    * @param job the configuration to submit    * @param cluster the handle to the Cluster    * @throws ClassNotFoundException    * @throws InterruptedException    * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|submitJobInternal (Job job, Cluster cluster)
 name|JobStatus
 name|submitJobInternal

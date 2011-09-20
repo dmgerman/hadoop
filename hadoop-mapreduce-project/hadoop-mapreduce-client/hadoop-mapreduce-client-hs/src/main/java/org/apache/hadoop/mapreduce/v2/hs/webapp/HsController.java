@@ -336,6 +336,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * @return the page that will be used to render the /conf page    */
+annotation|@
+name|Override
 DECL|method|confPage ()
 specifier|protected
 name|Class
@@ -352,23 +354,6 @@ name|HsConfPage
 operator|.
 name|class
 return|;
-block|}
-comment|/**    * Render the /conf page    */
-DECL|method|conf ()
-specifier|public
-name|void
-name|conf
-parameter_list|()
-block|{
-name|requireJob
-argument_list|()
-expr_stmt|;
-name|render
-argument_list|(
-name|confPage
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * @return the page about the current server.    */
 DECL|method|aboutPage ()

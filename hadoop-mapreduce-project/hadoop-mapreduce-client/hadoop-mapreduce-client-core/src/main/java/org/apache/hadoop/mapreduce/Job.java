@@ -138,20 +138,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|security
-operator|.
-name|auth
-operator|.
-name|login
-operator|.
-name|LoginException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -189,6 +175,22 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -246,7 +248,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|FileSystem
 import|;
 end_import
 
@@ -260,9 +262,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|permission
-operator|.
-name|FsPermission
+name|Path
 import|;
 end_import
 
@@ -302,11 +302,41 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|JobConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|filecache
 operator|.
 name|DistributedCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|protocol
+operator|.
+name|ClientProtocol
 import|;
 end_import
 
@@ -339,20 +369,6 @@ operator|.
 name|util
 operator|.
 name|ConfigUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
 import|;
 end_import
 
@@ -608,12 +624,10 @@ block|{
 name|this
 argument_list|(
 operator|new
-name|Cluster
+name|JobConf
 argument_list|(
 name|conf
 argument_list|)
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -643,32 +657,10 @@ name|jobName
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Job (Cluster cluster)
+DECL|method|Job (JobConf conf)
 name|Job
 parameter_list|(
-name|Cluster
-name|cluster
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|this
-argument_list|(
-name|cluster
-argument_list|,
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|Job (Cluster cluster, Configuration conf)
-name|Job
-parameter_list|(
-name|Cluster
-name|cluster
-parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|)
 throws|throws
@@ -685,19 +677,16 @@ name|this
 operator|.
 name|cluster
 operator|=
-name|cluster
+literal|null
 expr_stmt|;
 block|}
-DECL|method|Job (Cluster cluster, JobStatus status, Configuration conf)
+DECL|method|Job (JobStatus status, JobConf conf)
 name|Job
 parameter_list|(
-name|Cluster
-name|cluster
-parameter_list|,
 name|JobStatus
 name|status
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|)
 throws|throws
@@ -705,8 +694,6 @@ name|IOException
 block|{
 name|this
 argument_list|(
-name|cluster
-argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -751,7 +738,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} .    * A Cluster will be created from the conf parameter only when it's needed.    *     * @param conf the configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and a     * given {@link Configuration}.    *     * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * A Cluster will be created from the conf parameter only when it's needed.    *     * @param conf the configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
 DECL|method|getInstance (Configuration conf)
 specifier|public
 specifier|static
@@ -765,17 +752,24 @@ throws|throws
 name|IOException
 block|{
 comment|// create with a null Cluster
+name|JobConf
+name|jobConf
+init|=
+operator|new
+name|JobConf
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|Job
 argument_list|(
-literal|null
-argument_list|,
-name|conf
+name|jobConf
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and a given jobName.    * A Cluster will be created from the conf parameter only when it's needed.    *     * @param conf the configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and a given jobName.    * A Cluster will be created from the conf parameter only when it's needed.    *    * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * @param conf the configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
 DECL|method|getInstance (Configuration conf, String jobName)
 specifier|public
 specifier|static
@@ -795,11 +789,8 @@ comment|// create with a null Cluster
 name|Job
 name|result
 init|=
-operator|new
-name|Job
+name|getInstance
 argument_list|(
-literal|null
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
@@ -814,34 +805,15 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|getInstance (Cluster cluster)
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and given    * {@link Configuration} and {@link JobStatus}.    * A Cluster will be created from the conf parameter only when it's needed.    *     * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * @param status job status    * @param conf job configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
+DECL|method|getInstance (JobStatus status, Configuration conf)
 specifier|public
 specifier|static
 name|Job
 name|getInstance
 parameter_list|(
-name|Cluster
-name|cluster
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-operator|new
-name|Job
-argument_list|(
-name|cluster
-argument_list|)
-return|;
-block|}
-DECL|method|getInstance (Cluster cluster, Configuration conf)
-specifier|public
-specifier|static
-name|Job
-name|getInstance
-parameter_list|(
-name|Cluster
-name|cluster
+name|JobStatus
+name|status
 parameter_list|,
 name|Configuration
 name|conf
@@ -853,12 +825,64 @@ return|return
 operator|new
 name|Job
 argument_list|(
-name|cluster
+name|status
 argument_list|,
+operator|new
+name|JobConf
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster}.    * A Cluster will be created from the conf parameter only when it's needed.    *    * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * @param ignored    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    * @deprecated Use {@link #getInstance()}    */
+annotation|@
+name|Deprecated
+DECL|method|getInstance (Cluster ignored)
+specifier|public
+specifier|static
+name|Job
+name|getInstance
+parameter_list|(
+name|Cluster
+name|ignored
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getInstance
+argument_list|()
+return|;
+block|}
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and given    * {@link Configuration}.    * A Cluster will be created from the conf parameter only when it's needed.    *     * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * @param ignored    * @param conf job configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    * @deprecated Use {@link #getInstance(Configuration)}    */
+annotation|@
+name|Deprecated
+DECL|method|getInstance (Cluster ignored, Configuration conf)
+specifier|public
+specifier|static
+name|Job
+name|getInstance
+parameter_list|(
+name|Cluster
+name|ignored
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getInstance
+argument_list|(
 name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Creates a new {@link Job} with no particular {@link Cluster} and given    * {@link Configuration} and {@link JobStatus}.    * A Cluster will be created from the conf parameter only when it's needed.    *     * The<code>Job</code> makes a copy of the<code>Configuration</code> so     * that any necessary internal modifications do not reflect on the incoming     * parameter.    *     * @param cluster cluster    * @param status job status    * @param conf job configuration    * @return the {@link Job} , with no connection to a cluster yet.    * @throws IOException    */
+annotation|@
+name|Private
 DECL|method|getInstance (Cluster cluster, JobStatus status, Configuration conf)
 specifier|public
 specifier|static
@@ -877,16 +901,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
-operator|new
 name|Job
+name|job
+init|=
+name|getInstance
 argument_list|(
-name|cluster
-argument_list|,
 name|status
 argument_list|,
 name|conf
 argument_list|)
+decl_stmt|;
+name|job
+operator|.
+name|setCluster
+argument_list|(
+name|cluster
+argument_list|)
+expr_stmt|;
+return|return
+name|job
 return|;
 block|}
 DECL|method|ensureState (JobState state)
@@ -1059,6 +1092,22 @@ expr_stmt|;
 return|return
 name|status
 return|;
+block|}
+DECL|method|setStatus (JobStatus status)
+specifier|private
+name|void
+name|setStatus
+parameter_list|(
+name|JobStatus
+name|status
+parameter_list|)
+block|{
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
 block|}
 comment|/**    * Returns the current state of the Job.    *     * @return JobStatus#State    * @throws IOException    * @throws InterruptedException    */
 DECL|method|getJobState ()
@@ -1323,6 +1372,25 @@ operator|.
 name|isRetired
 argument_list|()
 return|;
+block|}
+comment|/** Only for mocks in unit tests. */
+annotation|@
+name|Private
+DECL|method|setCluster (Cluster cluster)
+specifier|private
+name|void
+name|setCluster
+parameter_list|(
+name|Cluster
+name|cluster
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cluster
+operator|=
+name|cluster
+expr_stmt|;
 block|}
 comment|/**    * Dump stats to screen.    */
 annotation|@
@@ -3552,6 +3620,33 @@ operator|!=
 literal|null
 return|;
 block|}
+comment|/** Only for mocking via unit tests. */
+annotation|@
+name|Private
+DECL|method|getJobSubmitter (FileSystem fs, ClientProtocol submitClient)
+specifier|public
+name|JobSubmitter
+name|getJobSubmitter
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|ClientProtocol
+name|submitClient
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|JobSubmitter
+argument_list|(
+name|fs
+argument_list|,
+name|submitClient
+argument_list|)
+return|;
+block|}
 comment|/**    * Submit the job to the cluster and return immediately.    * @throws IOException    */
 DECL|method|submit ()
 specifier|public
@@ -3582,8 +3677,7 @@ specifier|final
 name|JobSubmitter
 name|submitter
 init|=
-operator|new
-name|JobSubmitter
+name|getJobSubmitter
 argument_list|(
 name|cluster
 operator|.
@@ -3751,9 +3845,7 @@ decl_stmt|;
 name|Configuration
 name|clientConf
 init|=
-name|cluster
-operator|.
-name|getConf
+name|getConfiguration
 argument_list|()
 decl_stmt|;
 name|filter
