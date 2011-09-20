@@ -818,7 +818,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|conf
 specifier|private
-name|Configuration
+name|YarnConfiguration
 name|conf
 decl_stmt|;
 DECL|field|applicationsManager
@@ -843,11 +843,11 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|ResourceMgrDelegate (Configuration conf)
+DECL|method|ResourceMgrDelegate (YarnConfiguration conf)
 specifier|public
 name|ResourceMgrDelegate
 parameter_list|(
-name|Configuration
+name|YarnConfiguration
 name|conf
 parameter_list|)
 block|{
@@ -864,6 +864,8 @@ name|YarnRPC
 operator|.
 name|create
 argument_list|(
+name|this
+operator|.
 name|conf
 argument_list|)
 decl_stmt|;
@@ -874,6 +876,8 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
+name|this
+operator|.
 name|conf
 operator|.
 name|get

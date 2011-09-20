@@ -42,27 +42,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -125,20 +105,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataInputStream
 import|;
 end_import
 
@@ -323,20 +289,6 @@ operator|.
 name|mapreduce
 operator|.
 name|JobStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|JobSubmissionFiles
 import|;
 end_import
 
@@ -611,22 +563,6 @@ operator|.
 name|token
 operator|.
 name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|TokenIdentifier
 import|;
 end_import
 
@@ -959,7 +895,7 @@ name|clientCache
 decl_stmt|;
 DECL|field|conf
 specifier|private
-name|YarnConfiguration
+name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|defaultFileContext
@@ -969,11 +905,11 @@ name|FileContext
 name|defaultFileContext
 decl_stmt|;
 comment|/**    * Yarn runner incapsulates the client interface of    * yarn    * @param conf the configuration object for the client    */
-DECL|method|YARNRunner (YarnConfiguration conf)
+DECL|method|YARNRunner (Configuration conf)
 specifier|public
 name|YARNRunner
 parameter_list|(
-name|YarnConfiguration
+name|Configuration
 name|conf
 parameter_list|)
 block|{
@@ -984,17 +920,21 @@ argument_list|,
 operator|new
 name|ResourceMgrDelegate
 argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Similar to {@link #YARNRunner(YarnConfiguration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
-DECL|method|YARNRunner (YarnConfiguration conf, ResourceMgrDelegate resMgrDelegate)
+comment|/**    * Similar to {@link #YARNRunner(Configuration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
+DECL|method|YARNRunner (Configuration conf, ResourceMgrDelegate resMgrDelegate)
 specifier|public
 name|YARNRunner
 parameter_list|(
-name|YarnConfiguration
+name|Configuration
 name|conf
 parameter_list|,
 name|ResourceMgrDelegate

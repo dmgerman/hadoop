@@ -478,13 +478,6 @@ name|serviceAddr
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"HistoryServer is not configured."
-argument_list|)
-expr_stmt|;
 return|return
 literal|null
 return|;
