@@ -3498,6 +3498,8 @@ decl_stmt|;
 comment|// For InterDataNodeProtocol
 DECL|field|ipcServer
 specifier|public
+name|RPC
+operator|.
 name|Server
 name|ipcServer
 decl_stmt|;
@@ -4351,13 +4353,14 @@ literal|"dfs.datanode.ipc.address"
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// Add all the RPC protocols that the Datanode implements
 name|ipcServer
 operator|=
 name|RPC
 operator|.
 name|getServer
 argument_list|(
-name|DataNode
+name|ClientDatanodeProtocol
 operator|.
 name|class
 argument_list|,
@@ -4387,6 +4390,17 @@ argument_list|,
 name|conf
 argument_list|,
 name|blockPoolTokenSecretManager
+argument_list|)
+expr_stmt|;
+name|ipcServer
+operator|.
+name|addProtocol
+argument_list|(
+name|InterDatanodeProtocol
+operator|.
+name|class
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 comment|// set service-level authorization security policy
