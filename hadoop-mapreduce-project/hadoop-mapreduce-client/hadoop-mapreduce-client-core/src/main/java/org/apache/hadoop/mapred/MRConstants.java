@@ -16,13 +16,50 @@ name|mapred
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
 begin_comment
 comment|/*******************************  * Some handy constants  *   *******************************/
 end_comment
 
-begin_interface
-DECL|interface|MRConstants
-interface|interface
+begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|class|MRConstants
+specifier|public
+class|class
 name|MRConstants
 block|{
 comment|//
@@ -99,17 +136,8 @@ name|FOR_REDUCE_TASK
 init|=
 literal|"for-reduce-task"
 decl_stmt|;
-DECL|field|WORKDIR
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|WORKDIR
-init|=
-literal|"work"
-decl_stmt|;
 block|}
-end_interface
+end_class
 
 end_unit
 

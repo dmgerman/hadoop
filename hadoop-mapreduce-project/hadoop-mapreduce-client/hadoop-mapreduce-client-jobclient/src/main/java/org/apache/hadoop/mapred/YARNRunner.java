@@ -466,22 +466,6 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|MRConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
 name|jobhistory
 operator|.
 name|JobHistoryUtils
@@ -593,6 +577,24 @@ operator|.
 name|api
 operator|.
 name|ApplicationConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationConstants
+operator|.
+name|Environment
 import|;
 end_import
 
@@ -1366,7 +1368,7 @@ name|Path
 argument_list|(
 name|jobSubmitDir
 argument_list|,
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|APPLICATION_TOKENS_FILE
 argument_list|)
@@ -1688,7 +1690,7 @@ name|Path
 argument_list|(
 name|jobSubmitDir
 argument_list|,
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|JOB_CONF_FILE
 argument_list|)
@@ -1733,7 +1735,7 @@ name|localResources
 operator|.
 name|put
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|JOB_CONF_FILE
 argument_list|,
@@ -1763,7 +1765,7 @@ name|localResources
 operator|.
 name|put
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|JOB_JAR
 argument_list|,
@@ -1776,7 +1778,7 @@ name|Path
 argument_list|(
 name|jobSubmitDir
 argument_list|,
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|JOB_JAR
 argument_list|)
@@ -1808,11 +1810,15 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"job.split"
+name|MRJobConfig
+operator|.
+name|JOB_SPLIT
 block|,
-literal|"job.splitmetainfo"
+name|MRJobConfig
+operator|.
+name|JOB_SPLIT_METAINFO
 block|,
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|APPLICATION_TOKENS_FILE
 block|}
@@ -1822,7 +1828,7 @@ name|localResources
 operator|.
 name|put
 argument_list|(
-name|MRConstants
+name|MRJobConfig
 operator|.
 name|JOB_SUBMIT_DIR
 operator|+
@@ -1894,11 +1900,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Setup the command to run the AM
-name|String
-name|javaHome
-init|=
-literal|"$JAVA_HOME"
-decl_stmt|;
 name|Vector
 argument_list|<
 name|CharSequence
@@ -1918,7 +1919,12 @@ name|vargs
 operator|.
 name|add
 argument_list|(
-name|javaHome
+name|Environment
+operator|.
+name|JAVA_HOME
+operator|.
+name|$
+argument_list|()
 operator|+
 literal|"/bin/java"
 argument_list|)
@@ -1967,7 +1973,9 @@ name|vargs
 operator|.
 name|add
 argument_list|(
-literal|"org.apache.hadoop.mapreduce.v2.app.MRAppMaster"
+name|MRJobConfig
+operator|.
+name|APPLICATION_MASTER_CLASS
 argument_list|)
 expr_stmt|;
 name|vargs
@@ -2019,7 +2027,13 @@ name|ApplicationConstants
 operator|.
 name|LOG_DIR_EXPANSION_VAR
 operator|+
-literal|"/stdout"
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+name|ApplicationConstants
+operator|.
+name|STDOUT
 argument_list|)
 expr_stmt|;
 name|vargs
@@ -2032,7 +2046,13 @@ name|ApplicationConstants
 operator|.
 name|LOG_DIR_EXPANSION_VAR
 operator|+
-literal|"/stderr"
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+name|ApplicationConstants
+operator|.
+name|STDERR
 argument_list|)
 expr_stmt|;
 name|Vector
@@ -2098,7 +2118,8 @@ operator|+
 name|mergedCommand
 argument_list|)
 expr_stmt|;
-comment|// Setup the environment - Add { job jar, MR app jar } to classpath.
+comment|// Setup the CLASSPATH in environment
+comment|// i.e. add { job jar, CWD, Hadoop jars} to classpath.
 name|Map
 argument_list|<
 name|String
@@ -2118,31 +2139,9 @@ argument_list|()
 decl_stmt|;
 name|MRApps
 operator|.
-name|setInitialClasspath
+name|setClasspath
 argument_list|(
 name|environment
-argument_list|)
-expr_stmt|;
-name|MRApps
-operator|.
-name|addToClassPath
-argument_list|(
-name|environment
-argument_list|,
-name|MRConstants
-operator|.
-name|JOB_JAR
-argument_list|)
-expr_stmt|;
-name|MRApps
-operator|.
-name|addToClassPath
-argument_list|(
-name|environment
-argument_list|,
-name|MRConstants
-operator|.
-name|YARN_MAPREDUCE_APP_JAR_PATH
 argument_list|)
 expr_stmt|;
 comment|// Parse distributed cache
@@ -2153,8 +2152,6 @@ argument_list|(
 name|jobConf
 argument_list|,
 name|localResources
-argument_list|,
-name|environment
 argument_list|)
 expr_stmt|;
 comment|// Setup ContainerLaunchContext for AM container
