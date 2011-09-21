@@ -265,9 +265,26 @@ name|conf
 argument_list|)
 return|;
 block|}
-return|return
-literal|null
-return|;
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid \""
+operator|+
+name|JTConfig
+operator|.
+name|JT_IPC_ADDRESS
+operator|+
+literal|"\" configuration value for JobTracker: \""
+operator|+
+name|tracker
+operator|+
+literal|"\""
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
