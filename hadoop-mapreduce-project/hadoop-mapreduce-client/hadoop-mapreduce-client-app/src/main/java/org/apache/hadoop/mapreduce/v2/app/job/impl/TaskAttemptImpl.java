@@ -1927,6 +1927,7 @@ literal|null
 decl_stmt|;
 DECL|field|classpathLock
 specifier|private
+specifier|static
 specifier|final
 name|Object
 name|classpathLock
