@@ -5659,32 +5659,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-name|rmContainer
-operator|=
-name|application
-operator|.
-name|reserve
-argument_list|(
-name|node
-argument_list|,
-name|priority
-argument_list|,
-name|rmContainer
-argument_list|,
-name|container
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|reserveResource
-argument_list|(
-name|application
-argument_list|,
-name|priority
-argument_list|,
-name|rmContainer
-argument_list|)
-expr_stmt|;
 comment|// Update reserved metrics if this is the first reservation
 if|if
 condition|(
@@ -5710,6 +5684,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Inform the application
+name|rmContainer
+operator|=
+name|application
+operator|.
+name|reserve
+argument_list|(
+name|node
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|,
+name|container
+argument_list|)
+expr_stmt|;
+comment|// Update the node
+name|node
+operator|.
+name|reserveResource
+argument_list|(
+name|application
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|unreserve (SchedulerApp application, Priority priority, SchedulerNode node, RMContainer rmContainer)
 specifier|private
