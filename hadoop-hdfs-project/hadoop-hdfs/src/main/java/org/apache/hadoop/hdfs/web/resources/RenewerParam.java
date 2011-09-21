@@ -21,16 +21,16 @@ package|;
 end_package
 
 begin_comment
-comment|/** Overwrite parameter. */
+comment|/** Renewer parameter. */
 end_comment
 
 begin_class
-DECL|class|OverwriteParam
+DECL|class|RenewerParam
 specifier|public
 class|class
-name|OverwriteParam
+name|RenewerParam
 extends|extends
-name|BooleanParam
+name|StringParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -40,7 +40,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"overwrite"
+literal|"renewer"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -50,7 +50,7 @@ specifier|final
 name|String
 name|DEFAULT
 init|=
-name|FALSE
+name|NULL
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
@@ -63,44 +63,38 @@ operator|new
 name|Domain
 argument_list|(
 name|NAME
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param value the parameter value.    */
-DECL|method|OverwriteParam (final Boolean value)
-specifier|public
-name|OverwriteParam
-parameter_list|(
-specifier|final
-name|Boolean
-name|value
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|DOMAIN
-argument_list|,
-name|value
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|OverwriteParam (final String str)
+DECL|method|RenewerParam (final String str)
 specifier|public
-name|OverwriteParam
+name|RenewerParam
 parameter_list|(
 specifier|final
 name|String
 name|str
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
 name|DOMAIN
-operator|.
-name|parse
-argument_list|(
+argument_list|,
 name|str
+operator|==
+literal|null
+operator|||
+name|str
+operator|.
+name|equals
+argument_list|(
+name|DEFAULT
 argument_list|)
+condition|?
+literal|null
+else|:
+name|str
 argument_list|)
 expr_stmt|;
 block|}
