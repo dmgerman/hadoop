@@ -1169,7 +1169,7 @@ name|TaskLog
 operator|.
 name|LogName
 operator|.
-name|STDERR
+name|STDOUT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1185,7 +1185,7 @@ name|TaskLog
 operator|.
 name|LogName
 operator|.
-name|STDOUT
+name|STDERR
 argument_list|)
 argument_list|)
 expr_stmt|;

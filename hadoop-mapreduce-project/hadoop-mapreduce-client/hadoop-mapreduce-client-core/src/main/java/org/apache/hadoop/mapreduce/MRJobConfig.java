@@ -1866,7 +1866,7 @@ name|TASK_LOG_SIZE
 init|=
 name|MR_PREFIX
 operator|+
-literal|"log.filesize"
+literal|"container.log.filesize"
 decl_stmt|;
 DECL|field|MAPREDUCE_V2_CHILD_CLASS
 specifier|public
