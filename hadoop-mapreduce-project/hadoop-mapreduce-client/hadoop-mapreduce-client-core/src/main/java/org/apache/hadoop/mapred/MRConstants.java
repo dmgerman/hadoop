@@ -52,14 +52,14 @@ begin_comment
 comment|/*******************************  * Some handy constants  *   *******************************/
 end_comment
 
-begin_class
+begin_interface
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|MRConstants
+DECL|interface|MRConstants
 specifier|public
-class|class
+interface|interface
 name|MRConstants
 block|{
 comment|//
@@ -136,8 +136,18 @@ name|FOR_REDUCE_TASK
 init|=
 literal|"for-reduce-task"
 decl_stmt|;
+comment|/** Used in MRv1, mostly in TaskTracker code **/
+DECL|field|WORKDIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WORKDIR
+init|=
+literal|"work"
+decl_stmt|;
 block|}
-end_class
+end_interface
 
 end_unit
 
