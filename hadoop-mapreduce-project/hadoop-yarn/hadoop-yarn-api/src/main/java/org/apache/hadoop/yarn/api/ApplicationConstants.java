@@ -62,15 +62,15 @@ name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
 literal|"AppClientTokenEnv"
 decl_stmt|;
-comment|// TODO: Weird. This is part of AM command line. Instead it should be a env.
-DECL|field|AM_FAIL_COUNT_STRING
+comment|/**    * The environmental variable for APPLICATION_ATTEMPT_ID. Set in    * ApplicationMaster's environment only.    */
+DECL|field|APPLICATION_ATTEMPT_ID_ENV
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|AM_FAIL_COUNT_STRING
+name|APPLICATION_ATTEMPT_ID_ENV
 init|=
-literal|"<FAILCOUNT>"
+literal|"APPLICATION_ATTEMPT_ID"
 decl_stmt|;
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
 specifier|public

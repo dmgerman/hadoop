@@ -261,7 +261,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|applicationTokenSecretManager
-specifier|private
+specifier|protected
 name|ApplicationTokenSecretManager
 name|applicationTokenSecretManager
 decl_stmt|;
@@ -271,7 +271,7 @@ name|ClientToAMSecretManager
 name|clientToAMSecretManager
 decl_stmt|;
 DECL|field|context
-specifier|private
+specifier|protected
 specifier|final
 name|RMContext
 name|context
