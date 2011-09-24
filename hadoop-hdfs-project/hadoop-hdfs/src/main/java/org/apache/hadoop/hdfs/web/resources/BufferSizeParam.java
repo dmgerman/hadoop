@@ -68,7 +68,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"bufferSize"
+literal|"buffersize"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

@@ -1438,7 +1438,6 @@ throw|;
 block|}
 block|}
 DECL|method|toUrl (final HttpOpParam.Op op, final Path fspath, final Param<?,?>... parameters)
-specifier|private
 name|URL
 name|toUrl
 parameter_list|(

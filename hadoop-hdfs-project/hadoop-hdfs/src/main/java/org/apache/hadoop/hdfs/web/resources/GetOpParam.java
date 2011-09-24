@@ -47,16 +47,6 @@ operator|.
 name|Op
 argument_list|>
 block|{
-comment|/** Parameter name. */
-DECL|field|NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NAME
-init|=
-literal|"getOp"
-decl_stmt|;
 comment|/** Get operations. */
 DECL|enum|Op
 specifier|public
