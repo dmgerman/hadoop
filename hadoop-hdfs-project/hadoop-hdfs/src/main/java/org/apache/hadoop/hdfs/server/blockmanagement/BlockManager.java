@@ -4438,7 +4438,7 @@ argument_list|)
 operator|.
 name|liveReplicas
 argument_list|()
-operator|>
+operator|>=
 name|inode
 operator|.
 name|getReplication
@@ -4562,7 +4562,7 @@ decl_stmt|;
 if|if
 condition|(
 name|count
-operator|>
+operator|>=
 literal|1
 condition|)
 block|{
