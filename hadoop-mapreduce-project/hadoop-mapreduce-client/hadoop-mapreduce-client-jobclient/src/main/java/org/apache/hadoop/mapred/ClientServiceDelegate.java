@@ -1022,13 +1022,13 @@ expr_stmt|;
 block|}
 comment|// Get the instance of the NotRunningJob corresponding to the specified
 comment|// user and state
-DECL|method|getNotRunningJob (String user, JobState state)
+DECL|method|getNotRunningJob (ApplicationReport applicationReport, JobState state)
 specifier|private
 name|NotRunningJob
 name|getNotRunningJob
 parameter_list|(
-name|String
-name|user
+name|ApplicationReport
+name|applicationReport
 parameter_list|,
 name|JobState
 name|state
@@ -1082,6 +1082,22 @@ name|map
 argument_list|)
 expr_stmt|;
 block|}
+name|String
+name|user
+init|=
+operator|(
+name|applicationReport
+operator|==
+literal|null
+operator|)
+condition|?
+name|UNKNOWN_USER
+else|:
+name|applicationReport
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 name|NotRunningJob
 name|notRunningJob
 init|=
@@ -1104,7 +1120,7 @@ operator|=
 operator|new
 name|NotRunningJob
 argument_list|(
-name|user
+name|applicationReport
 argument_list|,
 name|state
 argument_list|)
@@ -1204,7 +1220,7 @@ expr_stmt|;
 return|return
 name|checkAndGetHSProxy
 argument_list|(
-name|UNKNOWN_USER
+literal|null
 argument_list|,
 name|JobState
 operator|.
@@ -1466,7 +1482,7 @@ expr_stmt|;
 return|return
 name|checkAndGetHSProxy
 argument_list|(
-name|UNKNOWN_USER
+literal|null
 argument_list|,
 name|JobState
 operator|.
@@ -1552,7 +1568,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|user
+name|application
 argument_list|,
 name|JobState
 operator|.
@@ -1579,7 +1595,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|user
+name|application
 argument_list|,
 name|JobState
 operator|.
@@ -1606,7 +1622,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|user
+name|application
 argument_list|,
 name|JobState
 operator|.
@@ -1641,7 +1657,7 @@ name|realProxy
 operator|=
 name|checkAndGetHSProxy
 argument_list|(
-name|user
+name|application
 argument_list|,
 name|JobState
 operator|.
@@ -1653,13 +1669,13 @@ return|return
 name|realProxy
 return|;
 block|}
-DECL|method|checkAndGetHSProxy (String user, JobState state)
+DECL|method|checkAndGetHSProxy ( ApplicationReport applicationReport, JobState state)
 specifier|private
 name|MRClientProtocol
 name|checkAndGetHSProxy
 parameter_list|(
-name|String
-name|user
+name|ApplicationReport
+name|applicationReport
 parameter_list|,
 name|JobState
 name|state
@@ -1682,7 +1698,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|user
+name|applicationReport
 argument_list|,
 name|state
 argument_list|)
@@ -2478,7 +2494,6 @@ argument_list|,
 name|oldJobID
 argument_list|)
 decl_stmt|;
-comment|//TODO: add tracking url in JobReport
 return|return
 name|TypeConverter
 operator|.
@@ -2487,8 +2502,6 @@ argument_list|(
 name|report
 argument_list|,
 name|jobFile
-argument_list|,
-literal|""
 argument_list|)
 return|;
 block|}

@@ -1846,6 +1846,10 @@ argument_list|,
 name|this
 operator|.
 name|startTime
+argument_list|,
+name|this
+operator|.
+name|finishTime
 argument_list|)
 return|;
 block|}
@@ -2582,6 +2586,16 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
+name|RMAppFailedAttemptEvent
+name|failedEvent
+init|=
+operator|(
+operator|(
+name|RMAppFailedAttemptEvent
+operator|)
+name|event
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|app
@@ -2612,7 +2626,14 @@ name|app
 operator|.
 name|maxRetries
 operator|+
-literal|" times. Failing the application."
+literal|" times due to "
+operator|+
+name|failedEvent
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|+
+literal|". Failing the application."
 decl_stmt|;
 name|LOG
 operator|.

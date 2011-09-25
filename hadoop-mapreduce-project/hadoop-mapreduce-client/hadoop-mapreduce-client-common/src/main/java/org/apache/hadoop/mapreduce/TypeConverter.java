@@ -2145,7 +2145,7 @@ return|return
 name|yCntrs
 return|;
 block|}
-DECL|method|fromYarn ( JobReport jobreport, String jobFile, String trackingUrl)
+DECL|method|fromYarn ( JobReport jobreport, String jobFile)
 specifier|public
 specifier|static
 name|org
@@ -2164,9 +2164,6 @@ name|jobreport
 parameter_list|,
 name|String
 name|jobFile
-parameter_list|,
-name|String
-name|trackingUrl
 parameter_list|)
 block|{
 name|JobPriority
@@ -2176,7 +2173,17 @@ name|JobPriority
 operator|.
 name|NORMAL
 decl_stmt|;
-return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|JobStatus
+name|jobStatus
+init|=
 operator|new
 name|org
 operator|.
@@ -2238,8 +2245,24 @@ argument_list|()
 argument_list|,
 name|jobFile
 argument_list|,
-name|trackingUrl
+name|jobreport
+operator|.
+name|getTrackingUrl
+argument_list|()
 argument_list|)
+decl_stmt|;
+name|jobStatus
+operator|.
+name|setFailureInfo
+argument_list|(
+name|jobreport
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|jobStatus
 return|;
 block|}
 DECL|method|fromYarn ( QueueState state)
@@ -3140,6 +3163,16 @@ argument_list|(
 name|application
 operator|.
 name|getStartTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|jobStatus
+operator|.
+name|setFailureInfo
+argument_list|(
+name|application
+operator|.
+name|getDiagnostics
 argument_list|()
 argument_list|)
 expr_stmt|;

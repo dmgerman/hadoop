@@ -1516,7 +1516,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, ApplicationState state, String diagnostics, String url, long startTime)
+DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, ApplicationState state, String diagnostics, String url, long startTime, long finishTime)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -1554,6 +1554,9 @@ name|url
 parameter_list|,
 name|long
 name|startTime
+parameter_list|,
+name|long
+name|finishTime
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -1643,6 +1646,13 @@ operator|.
 name|setStartTime
 argument_list|(
 name|startTime
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setFinishTime
+argument_list|(
+name|finishTime
 argument_list|)
 expr_stmt|;
 return|return

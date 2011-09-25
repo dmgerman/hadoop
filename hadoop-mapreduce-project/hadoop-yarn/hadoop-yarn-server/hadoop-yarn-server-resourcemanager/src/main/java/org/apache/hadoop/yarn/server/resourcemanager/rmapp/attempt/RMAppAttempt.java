@@ -239,7 +239,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Diagnostics information for the application attempt.    * @return diagnostics information for the application attempt.    */
 DECL|method|getDiagnostics ()
-name|StringBuilder
+name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;

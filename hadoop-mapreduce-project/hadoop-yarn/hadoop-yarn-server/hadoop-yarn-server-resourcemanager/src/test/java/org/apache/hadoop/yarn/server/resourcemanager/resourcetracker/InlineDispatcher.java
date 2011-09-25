@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|event
@@ -71,7 +87,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
 DECL|class|InlineDispatcher
+specifier|public
 class|class
 name|InlineDispatcher
 extends|extends

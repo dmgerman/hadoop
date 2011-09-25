@@ -4068,6 +4068,13 @@ name|status
 operator|.
 name|getState
 argument_list|()
+operator|+
+literal|" due to: "
+operator|+
+name|status
+operator|.
+name|getFailureInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

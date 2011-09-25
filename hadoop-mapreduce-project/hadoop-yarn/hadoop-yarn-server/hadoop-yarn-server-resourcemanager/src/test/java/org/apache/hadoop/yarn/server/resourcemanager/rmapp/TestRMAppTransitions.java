@@ -190,22 +190,6 @@ name|yarn
 operator|.
 name|event
 operator|.
-name|Dispatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|event
-operator|.
 name|EventHandler
 import|;
 end_import
@@ -466,6 +450,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -666,14 +660,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|Dispatcher
+name|AsyncDispatcher
 name|rmDispatcher
 init|=
 operator|new
@@ -1811,7 +1798,7 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppEvent
+name|RMAppFailedAttemptEvent
 argument_list|(
 name|application
 operator|.
@@ -1821,6 +1808,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
+argument_list|,
+literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -1871,12 +1860,18 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED after max retries
+comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
+comment|// after max retries
+name|String
+name|message
+init|=
+literal|"Test fail"
+decl_stmt|;
 name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppEvent
+name|RMAppFailedAttemptEvent
 argument_list|(
 name|application
 operator|.
@@ -1886,6 +1881,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
+argument_list|,
+name|message
 argument_list|)
 decl_stmt|;
 name|application
@@ -1899,6 +1896,10 @@ name|assertFailed
 argument_list|(
 name|application
 argument_list|,
+literal|".*"
+operator|+
+name|message
+operator|+
 literal|".*Failing the application.*"
 argument_list|)
 expr_stmt|;
@@ -2080,7 +2081,7 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppEvent
+name|RMAppFailedAttemptEvent
 argument_list|(
 name|application
 operator|.
@@ -2090,6 +2091,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
+argument_list|,
+literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -2194,12 +2197,13 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED after max retries
+comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED
+comment|// after max retries
 name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppEvent
+name|RMAppFailedAttemptEvent
 argument_list|(
 name|application
 operator|.
@@ -2209,6 +2213,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
+argument_list|,
+literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -2442,7 +2448,7 @@ comment|// KILLED => KILLED event RMAppEventType.ATTEMPT_FAILED
 name|event
 operator|=
 operator|new
-name|RMAppEvent
+name|RMAppFailedAttemptEvent
 argument_list|(
 name|application
 operator|.
@@ -2452,6 +2458,8 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 name|application
