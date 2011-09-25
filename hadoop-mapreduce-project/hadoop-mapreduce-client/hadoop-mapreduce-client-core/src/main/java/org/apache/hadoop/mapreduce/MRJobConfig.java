@@ -1450,17 +1450,26 @@ name|DEFAULT_MR_AM_NUM_PROGRESS_SPLITS
 init|=
 literal|12
 decl_stmt|;
-comment|/** Number of threads user to launch containers in the app master.*/
-DECL|field|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT
+comment|/**    * Upper limit on the number of threads user to launch containers in the app    * master. Expect level config, you shouldn't be needing it in most cases.    */
+DECL|field|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT
+name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
 init|=
 name|MR_AM_PREFIX
 operator|+
-literal|"containerlauncher.thread-count"
+literal|"containerlauncher.thread-count-limit"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
+init|=
+literal|500
 decl_stmt|;
 comment|/** Number of threads to handle job client RPC requests.*/
 DECL|field|MR_AM_JOB_CLIENT_THREAD_COUNT
