@@ -1323,7 +1323,9 @@ name|CONTAINER_EXITED_WITH_FAILURE
 argument_list|,
 operator|new
 name|ExitedWithFailureTransition
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -1342,6 +1344,8 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
+comment|// TODO race: Can lead to a CONTAINER_LAUNCHED event at state KILLING,
+comment|// and a container which will never be killed by the NM.
 operator|.
 name|addTransition
 argument_list|(
@@ -1379,7 +1383,9 @@ name|CONTAINER_EXITED_WITH_SUCCESS
 argument_list|,
 operator|new
 name|ExitedWithSuccessTransition
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -1398,7 +1404,9 @@ name|CONTAINER_EXITED_WITH_FAILURE
 argument_list|,
 operator|new
 name|ExitedWithFailureTransition
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -1434,6 +1442,25 @@ name|KILL_CONTAINER
 argument_list|,
 operator|new
 name|KillTransition
+argument_list|()
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|ContainerState
+operator|.
+name|EXITED_WITH_FAILURE
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
+argument_list|,
+operator|new
+name|KilledExternallyTransition
 argument_list|()
 argument_list|)
 comment|// From CONTAINER_EXITED_WITH_SUCCESS State
@@ -1624,7 +1651,9 @@ name|CONTAINER_EXITED_WITH_SUCCESS
 argument_list|,
 operator|new
 name|ExitedWithSuccessTransition
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -1643,7 +1672,9 @@ name|CONTAINER_EXITED_WITH_FAILURE
 argument_list|,
 operator|new
 name|ExitedWithFailureTransition
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -3252,6 +3283,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
 DECL|class|ExitedWithSuccessTransition
 specifier|static
 class|class
@@ -3259,6 +3296,25 @@ name|ExitedWithSuccessTransition
 extends|extends
 name|ContainerTransition
 block|{
+DECL|field|clCleanupRequired
+name|boolean
+name|clCleanupRequired
+decl_stmt|;
+DECL|method|ExitedWithSuccessTransition (boolean clCleanupRequired)
+specifier|public
+name|ExitedWithSuccessTransition
+parameter_list|(
+name|boolean
+name|clCleanupRequired
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clCleanupRequired
+operator|=
+name|clCleanupRequired
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|transition (ContainerImpl container, ContainerEvent event)
@@ -3274,8 +3330,32 @@ name|event
 parameter_list|)
 block|{
 comment|// TODO: Add containerWorkDir to the deletion service.
-comment|// Inform the localizer to decrement reference counts and cleanup
-comment|// resources.
+if|if
+condition|(
+name|clCleanupRequired
+condition|)
+block|{
+name|container
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainersLauncherEvent
+argument_list|(
+name|container
+argument_list|,
+name|ContainersLauncherEventType
+operator|.
+name|CLEANUP_CONTAINER
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|container
 operator|.
 name|cleanup
@@ -3283,6 +3363,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
 DECL|class|ExitedWithFailureTransition
 specifier|static
 class|class
@@ -3290,6 +3376,25 @@ name|ExitedWithFailureTransition
 extends|extends
 name|ContainerTransition
 block|{
+DECL|field|clCleanupRequired
+name|boolean
+name|clCleanupRequired
+decl_stmt|;
+DECL|method|ExitedWithFailureTransition (boolean clCleanupRequired)
+specifier|public
+name|ExitedWithFailureTransition
+parameter_list|(
+name|boolean
+name|clCleanupRequired
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clCleanupRequired
+operator|=
+name|clCleanupRequired
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|transition (ContainerImpl container, ContainerEvent event)
@@ -3323,12 +3428,87 @@ argument_list|()
 expr_stmt|;
 comment|// TODO: Add containerWorkDir to the deletion service.
 comment|// TODO: Add containerOuputDir to the deletion service.
-comment|// Inform the localizer to decrement reference counts and cleanup
-comment|// resources.
+if|if
+condition|(
+name|clCleanupRequired
+condition|)
+block|{
+name|container
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainersLauncherEvent
+argument_list|(
+name|container
+argument_list|,
+name|ContainersLauncherEventType
+operator|.
+name|CLEANUP_CONTAINER
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|container
 operator|.
 name|cleanup
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|class|KilledExternallyTransition
+specifier|static
+class|class
+name|KilledExternallyTransition
+extends|extends
+name|ExitedWithFailureTransition
+block|{
+DECL|method|KilledExternallyTransition ()
+name|KilledExternallyTransition
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|transition (ContainerImpl container, ContainerEvent event)
+specifier|public
+name|void
+name|transition
+parameter_list|(
+name|ContainerImpl
+name|container
+parameter_list|,
+name|ContainerEvent
+name|event
+parameter_list|)
+block|{
+name|super
+operator|.
+name|transition
+argument_list|(
+name|container
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|diagnostics
+operator|.
+name|append
+argument_list|(
+literal|"Killed by external signal\n"
+argument_list|)
 expr_stmt|;
 block|}
 block|}
