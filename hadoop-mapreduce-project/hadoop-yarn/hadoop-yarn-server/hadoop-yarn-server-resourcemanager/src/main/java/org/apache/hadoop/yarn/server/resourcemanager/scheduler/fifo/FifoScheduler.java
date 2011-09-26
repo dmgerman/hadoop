@@ -3244,6 +3244,8 @@ name|getHttpAddress
 argument_list|()
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 decl_stmt|;
 comment|// If security is enabled, send the container-tokens too.

@@ -5113,7 +5113,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|getContainer (RMContainer rmContainer, SchedulerApp application, SchedulerNode node, Resource capability)
+DECL|method|getContainer (RMContainer rmContainer, SchedulerApp application, SchedulerNode node, Resource capability, Priority priority)
 specifier|private
 name|Container
 name|getContainer
@@ -5129,6 +5129,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 return|return
@@ -5150,10 +5153,12 @@ argument_list|,
 name|node
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 return|;
 block|}
-DECL|method|createContainer (SchedulerApp application, SchedulerNode node, Resource capability)
+DECL|method|createContainer (SchedulerApp application, SchedulerNode node, Resource capability, Priority priority)
 specifier|public
 name|Container
 name|createContainer
@@ -5166,6 +5171,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|Container
@@ -5200,6 +5208,8 @@ name|getHttpAddress
 argument_list|()
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 decl_stmt|;
 comment|// If security is enabled, send the container-tokens too.
@@ -5433,6 +5443,8 @@ argument_list|,
 name|node
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 decl_stmt|;
 comment|// Can we allocate a container on this node?

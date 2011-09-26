@@ -416,6 +416,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -1316,6 +1334,9 @@ name|containerLaunchContext
 operator|.
 name|getResource
 argument_list|()
+argument_list|,
+literal|null
+comment|// DKDC - Doesn't matter
 argument_list|)
 decl_stmt|;
 name|applicationContainers

@@ -1080,7 +1080,7 @@ return|return
 name|containerId
 return|;
 block|}
-DECL|method|getMockContainer ( ContainerId containerId, NodeId nodeId, Resource resource)
+DECL|method|getMockContainer ( ContainerId containerId, NodeId nodeId, Resource resource, Priority priority)
 specifier|public
 specifier|static
 name|Container
@@ -1094,6 +1094,9 @@ name|nodeId
 parameter_list|,
 name|Resource
 name|resource
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|Container
@@ -1143,6 +1146,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|resource
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|container
+operator|.
+name|getPriority
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|priority
 argument_list|)
 expr_stmt|;
 return|return
