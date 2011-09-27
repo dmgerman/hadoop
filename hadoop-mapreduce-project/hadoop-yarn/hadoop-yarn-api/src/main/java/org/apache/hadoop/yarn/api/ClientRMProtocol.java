@@ -64,7 +64,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -82,7 +82,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationResponse
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -536,13 +536,13 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to request the     *<code>ResourceManager</code> to abort submitted application.</p>    *     *<p>The client, via {@link FinishApplicationRequest} provides the    * {@link ApplicationId} of the application to be aborted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before terminating the application.</p>     *     *<p>Currently, the<code>ResourceManager</code> returns an empty response    * on success and throws an exception on rejecting the request.</p>    *     * @param request request to abort a submited application    * @return<code>ResourceManager</code> returns an empty response    *         on success and throws an exception on rejecting the request    * @throws YarnRemoteException    * @see #getQueueUserAcls(GetQueueUserAclsInfoRequest)     */
-DECL|method|finishApplication ( FinishApplicationRequest request)
+comment|/**    *<p>The interface used by clients to request the     *<code>ResourceManager</code> to abort submitted application.</p>    *     *<p>The client, via {@link KillApplicationRequest} provides the    * {@link ApplicationId} of the application to be aborted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before terminating the application.</p>     *     *<p>Currently, the<code>ResourceManager</code> returns an empty response    * on success and throws an exception on rejecting the request.</p>    *     * @param request request to abort a submited application    * @return<code>ResourceManager</code> returns an empty response    *         on success and throws an exception on rejecting the request    * @throws YarnRemoteException    * @see #getQueueUserAcls(GetQueueUserAclsInfoRequest)     */
+DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
-name|FinishApplicationResponse
-name|finishApplication
+name|KillApplicationResponse
+name|forceKillApplication
 parameter_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws

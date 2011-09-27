@@ -862,7 +862,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -880,7 +880,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationResponse
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -2430,19 +2430,26 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplication ( FinishApplicationRequest request)
+DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
-name|FinishApplicationResponse
-name|finishApplication
+name|KillApplicationResponse
+name|forceKillApplication
 parameter_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
 return|return
-literal|null
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|KillApplicationResponse
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -3036,7 +3043,14 @@ throws|throws
 name|YarnRemoteException
 block|{
 return|return
-literal|null
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|KillJobResponse
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 annotation|@

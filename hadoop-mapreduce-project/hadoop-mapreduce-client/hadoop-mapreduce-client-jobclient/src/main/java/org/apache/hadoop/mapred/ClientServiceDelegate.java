@@ -834,6 +834,7 @@ end_import
 
 begin_class
 DECL|class|ClientServiceDelegate
+specifier|public
 class|class
 name|ClientServiceDelegate
 block|{
@@ -947,6 +948,7 @@ init|=
 literal|"Unknown User"
 decl_stmt|;
 DECL|method|ClientServiceDelegate (Configuration conf, ResourceMgrDelegate rm, JobID jobId, MRClientProtocol historyServerProxy)
+specifier|public
 name|ClientServiceDelegate
 parameter_list|(
 name|Configuration
@@ -2031,6 +2033,7 @@ block|}
 block|}
 block|}
 DECL|method|getJobCounters (JobID arg0)
+specifier|public
 name|org
 operator|.
 name|apache
@@ -2125,6 +2128,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTaskCompletionEvents (JobID arg0, int arg1, int arg2)
+specifier|public
 name|TaskCompletionEvent
 index|[]
 name|getTaskCompletionEvents
@@ -2272,6 +2276,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTaskDiagnostics (org.apache.hadoop.mapreduce.TaskAttemptID arg0)
+specifier|public
 name|String
 index|[]
 name|getTaskDiagnostics
@@ -2403,6 +2408,7 @@ name|result
 return|;
 block|}
 DECL|method|getJobStatus (JobID oldJobID)
+specifier|public
 name|JobStatus
 name|getJobStatus
 parameter_list|(
@@ -2506,6 +2512,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTaskReports (JobID oldJobID, TaskType taskType)
+specifier|public
 name|org
 operator|.
 name|apache
@@ -2650,6 +2657,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|killTask (TaskAttemptID taskAttemptID, boolean fail)
+specifier|public
 name|boolean
 name|killTask
 parameter_list|(
@@ -2760,6 +2768,7 @@ literal|true
 return|;
 block|}
 DECL|method|killJob (JobID oldJobID)
+specifier|public
 name|boolean
 name|killJob
 parameter_list|(

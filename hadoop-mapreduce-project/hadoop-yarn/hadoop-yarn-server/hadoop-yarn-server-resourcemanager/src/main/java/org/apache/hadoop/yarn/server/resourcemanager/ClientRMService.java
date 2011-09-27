@@ -248,7 +248,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -266,7 +266,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationResponse
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -1657,12 +1657,12 @@ literal|"unchecked"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|finishApplication ( FinishApplicationRequest request)
+DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
-name|FinishApplicationResponse
-name|finishApplication
+name|KillApplicationResponse
+name|forceKillApplication
 parameter_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
@@ -1862,14 +1862,14 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|FinishApplicationResponse
+name|KillApplicationResponse
 name|response
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|FinishApplicationResponse
+name|KillApplicationResponse
 operator|.
 name|class
 argument_list|)

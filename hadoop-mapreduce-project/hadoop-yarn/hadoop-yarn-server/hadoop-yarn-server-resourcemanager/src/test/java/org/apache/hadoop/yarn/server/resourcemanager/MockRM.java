@@ -74,7 +74,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -866,14 +866,14 @@ init|=
 name|getClientRMService
 argument_list|()
 decl_stmt|;
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|req
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -887,7 +887,7 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|finishApplication
+name|forceKillApplication
 argument_list|(
 name|req
 argument_list|)
