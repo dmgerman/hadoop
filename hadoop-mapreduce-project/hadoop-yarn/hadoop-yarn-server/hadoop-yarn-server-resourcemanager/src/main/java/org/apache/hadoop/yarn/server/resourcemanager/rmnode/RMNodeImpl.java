@@ -1081,7 +1081,6 @@ literal|":"
 operator|+
 name|httpPort
 expr_stmt|;
-empty_stmt|;
 name|this
 operator|.
 name|node
