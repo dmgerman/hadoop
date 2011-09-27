@@ -3329,6 +3329,13 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
+comment|// Set exit code to 0 on success
+name|container
+operator|.
+name|exitCode
+operator|=
+literal|0
+expr_stmt|;
 comment|// TODO: Add containerWorkDir to the deletion service.
 if|if
 condition|(
