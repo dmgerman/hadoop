@@ -1736,17 +1736,6 @@ operator|.
 name|isLoopbackAddress
 argument_list|()
 decl_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"address is any or loopback address "
-operator|+
-name|addr
-argument_list|)
-expr_stmt|;
 comment|// Check if the address is defined on any interface
 if|if
 condition|(
@@ -1780,21 +1769,6 @@ literal|false
 expr_stmt|;
 block|}
 block|}
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"address "
-operator|+
-name|addr
-operator|+
-literal|" is local "
-operator|+
-name|local
-argument_list|)
-expr_stmt|;
 return|return
 name|local
 return|;
