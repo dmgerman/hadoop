@@ -540,7 +540,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -1271,14 +1271,14 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 name|request
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -1287,7 +1287,7 @@ name|applicationId
 operator|=
 name|applicationsManager
 operator|.
-name|getNewApplicationId
+name|getNewApplication
 argument_list|(
 name|request
 argument_list|)

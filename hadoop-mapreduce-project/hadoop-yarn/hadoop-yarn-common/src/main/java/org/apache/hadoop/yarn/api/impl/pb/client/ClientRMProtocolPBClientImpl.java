@@ -258,7 +258,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -276,7 +276,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -618,7 +618,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 import|;
 end_import
 
@@ -640,7 +640,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetNewApplicationIdResponsePBImpl
+name|GetNewApplicationResponsePBImpl
 import|;
 end_import
 
@@ -956,7 +956,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 import|;
 end_import
 
@@ -1425,23 +1425,23 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplicationId ( GetNewApplicationIdRequest request)
+DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
-name|GetNewApplicationIdResponse
-name|getNewApplicationId
+name|GetNewApplicationResponse
+name|getNewApplication
 parameter_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -1453,11 +1453,11 @@ try|try
 block|{
 return|return
 operator|new
-name|GetNewApplicationIdResponsePBImpl
+name|GetNewApplicationResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|getNewApplicationId
+name|getNewApplication
 argument_list|(
 literal|null
 argument_list|,

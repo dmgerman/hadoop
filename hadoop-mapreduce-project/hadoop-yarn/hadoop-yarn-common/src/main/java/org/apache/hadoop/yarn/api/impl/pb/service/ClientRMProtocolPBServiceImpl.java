@@ -126,7 +126,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -396,7 +396,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 import|;
 end_import
 
@@ -418,7 +418,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetNewApplicationIdResponsePBImpl
+name|GetNewApplicationResponsePBImpl
 import|;
 end_import
 
@@ -792,7 +792,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 import|;
 end_import
 
@@ -810,7 +810,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetNewApplicationIdResponseProto
+name|GetNewApplicationResponseProto
 import|;
 end_import
 
@@ -1204,37 +1204,37 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplicationId ( RpcController arg0, GetNewApplicationIdRequestProto proto)
+DECL|method|getNewApplication ( RpcController arg0, GetNewApplicationRequestProto proto)
 specifier|public
-name|GetNewApplicationIdResponseProto
-name|getNewApplicationId
+name|GetNewApplicationResponseProto
+name|getNewApplication
 parameter_list|(
 name|RpcController
 name|arg0
 parameter_list|,
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 name|request
 init|=
 operator|new
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 name|response
 init|=
 name|real
 operator|.
-name|getNewApplicationId
+name|getNewApplication
 argument_list|(
 name|request
 argument_list|)
@@ -1242,7 +1242,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|GetNewApplicationIdResponsePBImpl
+name|GetNewApplicationResponsePBImpl
 operator|)
 name|response
 operator|)

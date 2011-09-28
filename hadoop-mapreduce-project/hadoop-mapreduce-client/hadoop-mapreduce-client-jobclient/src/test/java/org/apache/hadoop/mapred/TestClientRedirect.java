@@ -1042,7 +1042,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -1060,7 +1060,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -2195,12 +2195,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplicationId (GetNewApplicationIdRequest request)
+DECL|method|getNewApplication (GetNewApplicationRequest request)
 specifier|public
-name|GetNewApplicationIdResponse
-name|getNewApplicationId
+name|GetNewApplicationResponse
+name|getNewApplication
 parameter_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws

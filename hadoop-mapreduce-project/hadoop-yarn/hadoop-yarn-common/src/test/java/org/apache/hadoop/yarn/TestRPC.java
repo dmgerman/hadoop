@@ -160,7 +160,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -686,13 +686,13 @@ try|try
 block|{
 name|proxy
 operator|.
-name|getNewApplicationId
+name|getNewApplication
 argument_list|(
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -716,7 +716,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Unknown method getNewApplicationId called on "
+literal|"Unknown method getNewApplication called on "
 operator|+
 literal|"org.apache.hadoop.yarn.proto.ClientRMProtocol"
 operator|+

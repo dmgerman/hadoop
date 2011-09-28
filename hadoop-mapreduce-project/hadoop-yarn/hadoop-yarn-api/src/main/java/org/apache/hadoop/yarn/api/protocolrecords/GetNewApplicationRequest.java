@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   * @see ClientRMProtocol#getNewApplicationId(GetNewApplicationIdRequest)  */
+comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
 end_comment
 
 begin_interface
@@ -95,10 +95,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetNewApplicationIdRequest
+DECL|interface|GetNewApplicationRequest
 specifier|public
 interface|interface
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 block|{  }
 end_interface
 
