@@ -515,6 +515,11 @@ specifier|private
 name|FileSystem
 name|fs
 decl_stmt|;
+DECL|field|cluster
+specifier|private
+name|MiniDFSCluster
+name|cluster
+decl_stmt|;
 DECL|field|r
 specifier|private
 specifier|static
@@ -729,18 +734,18 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** This tests if permission setting in create, mkdir, and     * setPermission works correctly    */
-DECL|method|testPermissionSetting ()
+annotation|@
+name|Override
+DECL|method|setUp ()
 specifier|public
 name|void
-name|testPermissionSetting
+name|setUp
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -756,14 +761,46 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|tearDown ()
+specifier|public
+name|void
+name|tearDown
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/** This tests if permission setting in create, mkdir, and     * setPermission works correctly    */
+DECL|method|testPermissionSetting ()
+specifier|public
+name|void
+name|testPermissionSetting
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|testPermissionSetting
 argument_list|(
 name|OpType
@@ -780,15 +817,6 @@ name|MKDIRS
 argument_list|)
 expr_stmt|;
 comment|// test directory creation
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|initFileSystem (short umask)
 specifier|private
@@ -1443,6 +1471,47 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * check that ImmutableFsPermission can be used as the argument    * to setPermission    */
+DECL|method|testImmutableFsPermission ()
+specifier|public
+name|void
+name|testImmutableFsPermission
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|=
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// set the permission of the root to be world-wide rwx
+name|fs
+operator|.
+name|setPermission
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|,
+name|FsPermission
+operator|.
+name|createImmutable
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0777
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/* check if the ownership of a file/directory is set correctly */
 DECL|method|testOwnership ()
 specifier|public
@@ -1452,32 +1521,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-operator|new
-name|MiniDFSCluster
-operator|.
-name|Builder
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|numDataNodes
-argument_list|(
-literal|3
-argument_list|)
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-name|cluster
-operator|.
-name|waitActive
-argument_list|()
-expr_stmt|;
 name|testOwnership
 argument_list|(
 name|OpType
@@ -1494,20 +1537,6 @@ name|MKDIRS
 argument_list|)
 expr_stmt|;
 comment|// test directory creation
-block|}
-finally|finally
-block|{
-name|fs
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/* change a file/directory's owner and group.    * if expectDeny is set, expect an AccessControlException.    */
 DECL|method|setOwner (Path path, String owner, String group, boolean expectDeny)
@@ -1958,32 +1987,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-operator|new
-name|MiniDFSCluster
-operator|.
-name|Builder
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|numDataNodes
-argument_list|(
-literal|3
-argument_list|)
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
 try|try
 block|{
-name|cluster
-operator|.
-name|waitActive
-argument_list|()
-expr_stmt|;
 name|fs
 operator|=
 name|FileSystem
@@ -2398,11 +2403,6 @@ block|{
 name|fs
 operator|.
 name|close
-argument_list|()
-expr_stmt|;
-name|cluster
-operator|.
-name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
