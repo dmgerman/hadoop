@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -37,24 +73,12 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Before
 import|;
 end_import
 
@@ -80,7 +104,6 @@ name|TestReplicasMap
 block|{
 DECL|field|map
 specifier|private
-specifier|static
 specifier|final
 name|ReplicasMap
 name|map
@@ -95,7 +118,6 @@ argument_list|)
 decl_stmt|;
 DECL|field|bpid
 specifier|private
-specifier|static
 specifier|final
 name|String
 name|bpid
@@ -104,7 +126,6 @@ literal|"BP-TEST"
 decl_stmt|;
 DECL|field|block
 specifier|private
-specifier|static
 specifier|final
 name|Block
 name|block
@@ -120,10 +141,9 @@ literal|1234
 argument_list|)
 decl_stmt|;
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|setup ()
 specifier|public
-specifier|static
 name|void
 name|setup
 parameter_list|()
