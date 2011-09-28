@@ -714,18 +714,21 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"Unknown method getNewApplication called on "
-operator|+
-literal|"org.apache.hadoop.yarn.proto.ClientRMProtocol"
-operator|+
-literal|"$ClientRMProtocolService$BlockingInterface protocol."
-argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
+operator|.
+name|matches
+argument_list|(
+literal|"Unknown method getNewApplication called on.*"
+operator|+
+literal|"org.apache.hadoop.yarn.proto.ClientRMProtocol"
+operator|+
+literal|"\\$ClientRMProtocolService\\$BlockingInterface protocol."
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
