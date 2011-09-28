@@ -1524,8 +1524,6 @@ argument_list|,
 literal|":"
 argument_list|,
 name|port
-argument_list|,
-literal|"/"
 argument_list|)
 return|;
 block|}

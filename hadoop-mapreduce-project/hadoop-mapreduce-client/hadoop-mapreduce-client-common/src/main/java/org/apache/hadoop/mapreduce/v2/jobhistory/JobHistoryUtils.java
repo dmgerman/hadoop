@@ -2280,7 +2280,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"/yarn/job/"
+literal|"/jobhistory/job/"
 argument_list|)
 expr_stmt|;
 comment|// TODO This will change when the history server

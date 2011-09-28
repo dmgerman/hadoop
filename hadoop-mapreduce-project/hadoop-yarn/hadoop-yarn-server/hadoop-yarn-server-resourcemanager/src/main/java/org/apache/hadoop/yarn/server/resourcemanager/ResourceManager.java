@@ -2327,7 +2327,7 @@ name|WebApps
 operator|.
 name|$for
 argument_list|(
-literal|"yarn"
+literal|"cluster"
 argument_list|,
 name|masterService
 argument_list|)
