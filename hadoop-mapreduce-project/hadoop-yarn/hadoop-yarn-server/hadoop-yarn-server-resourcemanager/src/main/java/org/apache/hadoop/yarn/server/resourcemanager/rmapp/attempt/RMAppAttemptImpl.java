@@ -3399,6 +3399,12 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
+name|appAttempt
+operator|.
+name|progress
+operator|=
+literal|1.0f
+expr_stmt|;
 comment|// Tell the app and the scheduler
 name|super
 operator|.

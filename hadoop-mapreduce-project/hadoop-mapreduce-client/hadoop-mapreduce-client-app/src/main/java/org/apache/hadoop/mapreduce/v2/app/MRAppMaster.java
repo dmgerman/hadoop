@@ -3140,7 +3140,7 @@ argument_list|(
 literal|"MRAppMaster"
 argument_list|)
 expr_stmt|;
-comment|/** create a job event for job intialization */
+comment|// create a job event for job intialization
 name|JobEvent
 name|initJobEvent
 init|=
@@ -3157,7 +3157,7 @@ operator|.
 name|JOB_INIT
 argument_list|)
 decl_stmt|;
-comment|/** send init to the job (this does NOT trigger job execution) */
+comment|// Send init to the job (this does NOT trigger job execution)
 comment|// This is a synchronous call, not an event through dispatcher. We want
 comment|// job-init to be done completely here.
 name|jobEventDispatcher

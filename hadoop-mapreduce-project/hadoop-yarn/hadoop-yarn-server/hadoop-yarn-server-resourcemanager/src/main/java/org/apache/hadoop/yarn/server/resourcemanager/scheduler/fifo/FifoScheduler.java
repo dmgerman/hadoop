@@ -2112,7 +2112,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|addApplication (ApplicationAttemptId appAttemptId, String queueName, String user)
+DECL|method|addApplication (ApplicationAttemptId appAttemptId, String user)
 specifier|private
 specifier|synchronized
 name|void
@@ -2120,9 +2120,6 @@ name|addApplication
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
-parameter_list|,
-name|String
-name|queueName
 parameter_list|,
 name|String
 name|user
@@ -3695,11 +3692,6 @@ argument_list|(
 name|appAddedEvent
 operator|.
 name|getApplicationAttemptId
-argument_list|()
-argument_list|,
-name|appAddedEvent
-operator|.
-name|getQueue
 argument_list|()
 argument_list|,
 name|appAddedEvent
