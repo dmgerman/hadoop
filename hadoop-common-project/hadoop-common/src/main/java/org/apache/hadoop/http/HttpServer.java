@@ -1663,7 +1663,7 @@ name|AdminAuthorizedServlet
 operator|.
 name|class
 argument_list|,
-literal|"/"
+literal|"/*"
 argument_list|)
 expr_stmt|;
 name|logContext
