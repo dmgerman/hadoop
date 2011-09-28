@@ -158,6 +158,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -1781,6 +1793,11 @@ block|{
 name|initializeGenericKeys
 argument_list|(
 name|conf
+argument_list|,
+name|getNameServiceId
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|initialize
@@ -1792,6 +1809,21 @@ block|}
 catch|catch
 parameter_list|(
 name|IOException
+name|e
+parameter_list|)
+block|{
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|HadoopIllegalArgumentException
 name|e
 parameter_list|)
 block|{
@@ -3259,8 +3291,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * In federation configuration is set for a set of    * namenode and secondary namenode/backup/checkpointer, which are    * grouped under a logical nameservice ID. The configuration keys specific     * to them have suffix set to configured nameserviceId.    *     * This method copies the value from specific key of format key.nameserviceId    * to key, to set up the generic configuration. Once this is done, only    * generic version of the configuration is read in rest of the code, for    * backward compatibility and simpler code changes.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified    * @see DFSUtil#setGenericConf(Configuration, String, String...)    */
-DECL|method|initializeGenericKeys (Configuration conf)
+comment|/**    * In federation configuration is set for a set of    * namenode and secondary namenode/backup/checkpointer, which are    * grouped under a logical nameservice ID. The configuration keys specific     * to them have suffix set to configured nameserviceId.    *     * This method copies the value from specific key of format key.nameserviceId    * to key, to set up the generic configuration. Once this is done, only    * generic version of the configuration is read in rest of the code, for    * backward compatibility and simpler code changes.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified    * @param nameserviceId name service Id    * @see DFSUtil#setGenericConf(Configuration, String, String...)    */
+DECL|method|initializeGenericKeys (Configuration conf, String nameserviceId)
 specifier|public
 specifier|static
 name|void
@@ -3268,19 +3300,11 @@ name|initializeGenericKeys
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|)
-block|{
-specifier|final
+parameter_list|,
 name|String
 name|nameserviceId
-init|=
-name|DFSUtil
-operator|.
-name|getNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
+parameter_list|)
+block|{
 if|if
 condition|(
 operator|(
@@ -3354,6 +3378,25 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**     * Get the name service Id for the node    * @return name service Id or null if federation is not configured    */
+DECL|method|getNameServiceId (Configuration conf)
+specifier|protected
+name|String
+name|getNameServiceId
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+return|;
 block|}
 comment|/**    */
 DECL|method|main (String argv[])
