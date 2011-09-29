@@ -74,7 +74,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -92,7 +92,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -110,7 +110,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -642,6 +642,37 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// get new application id
+DECL|method|getNewAppId ()
+specifier|public
+name|GetNewApplicationResponse
+name|getNewAppId
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|ClientRMProtocol
+name|client
+init|=
+name|getClientRMService
+argument_list|()
+decl_stmt|;
+return|return
+name|client
+operator|.
+name|getNewApplication
+argument_list|(
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetNewApplicationRequest
+operator|.
+name|class
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|//client
 DECL|method|submitApp (int masterMemory)
 specifier|public
@@ -660,18 +691,18 @@ init|=
 name|getClientRMService
 argument_list|()
 decl_stmt|;
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 name|resp
 init|=
 name|client
 operator|.
-name|getNewApplicationId
+name|getNewApplication
 argument_list|(
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -866,14 +897,14 @@ init|=
 name|getClientRMService
 argument_list|()
 decl_stmt|;
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|req
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -887,7 +918,7 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|finishApplication
+name|forceKillApplication
 argument_list|(
 name|req
 argument_list|)
@@ -1198,6 +1229,8 @@ block|}
 block|}
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createAdminService ()
 specifier|protected
 name|AdminService

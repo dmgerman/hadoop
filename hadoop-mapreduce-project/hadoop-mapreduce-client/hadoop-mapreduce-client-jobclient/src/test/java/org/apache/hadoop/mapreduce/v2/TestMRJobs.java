@@ -2804,7 +2804,7 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertNull
+name|assertNotNull
 argument_list|(
 name|cl
 operator|.

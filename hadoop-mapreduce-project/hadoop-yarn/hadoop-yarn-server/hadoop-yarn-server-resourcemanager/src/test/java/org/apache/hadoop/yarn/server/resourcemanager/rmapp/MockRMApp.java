@@ -680,6 +680,8 @@ name|diag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|handle (RMAppEvent event)
 specifier|public
 name|void

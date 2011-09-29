@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which identifies the node on which it  *       is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       {@link ContainerToken} of the container, used to securely verify   *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManager#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
+comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which identifies the node on which it  *       is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link Priority} at which the container was allocated.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       {@link ContainerToken} of the container, used to securely verify   *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManager#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
 end_comment
 
 begin_interface
@@ -221,6 +221,24 @@ name|setResource
 parameter_list|(
 name|Resource
 name|resource
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>Priority</code> at which the<code>Container</code> was    * allocated.    * @return<code>Priority</code> at which the<code>Container</code> was    *         allocated    */
+DECL|method|getPriority ()
+name|Priority
+name|getPriority
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPriority (Priority priority)
+name|void
+name|setPriority
+parameter_list|(
+name|Priority
+name|priority
 parameter_list|)
 function_decl|;
 comment|/**    * Get the current<code>ContainerState</code> of the container.    * @return current<code>ContainerState</code> of the container    */

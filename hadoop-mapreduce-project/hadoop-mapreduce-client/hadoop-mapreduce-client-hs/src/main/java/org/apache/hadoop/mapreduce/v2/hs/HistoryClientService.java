@@ -1321,7 +1321,7 @@ name|WebApps
 operator|.
 name|$for
 argument_list|(
-literal|"yarn"
+literal|"jobhistory"
 argument_list|,
 name|this
 argument_list|)

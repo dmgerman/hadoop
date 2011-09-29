@@ -204,6 +204,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|ipc
+operator|.
+name|RPCUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|ApplicationTokenIdentifier
@@ -1466,34 +1482,30 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"Application with id "
 operator|+
 name|applicationId
 operator|+
 literal|" is already present! Cannot add a duplicate!"
-argument_list|)
-expr_stmt|;
-comment|// don't send event through dispatcher as it will be handled by app
-comment|// already present with this id.
-name|application
+decl_stmt|;
+name|LOG
 operator|.
-name|handle
+name|info
 argument_list|(
-operator|new
-name|RMAppRejectedEvent
-argument_list|(
-name|applicationId
-argument_list|,
-literal|"Application with this id is already present! "
-operator|+
-literal|"Cannot add a duplicate!"
-argument_list|)
+name|message
 argument_list|)
 expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
 block|}
 else|else
 block|{

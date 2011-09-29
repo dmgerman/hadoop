@@ -722,6 +722,7 @@ block|}
 block|}
 comment|/**    * Get a server protocol's signature    *     * @param clientMethodsHashCode client protocol methods hashcode    * @param serverVersion server protocol version    * @param protocol protocol    * @return the server's protocol signature    */
 DECL|method|getProtocolSignature ( int clientMethodsHashCode, long serverVersion, Class<? extends VersionedProtocol> protocol)
+specifier|public
 specifier|static
 name|ProtocolSignature
 name|getProtocolSignature

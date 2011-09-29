@@ -596,7 +596,7 @@ literal|"http://"
 argument_list|,
 name|nodeHttpAddr
 argument_list|,
-literal|"yarn"
+literal|"node"
 argument_list|,
 literal|"containerlogs"
 argument_list|,

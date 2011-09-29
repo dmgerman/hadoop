@@ -208,8 +208,7 @@ name|url
 argument_list|(
 name|rmweb
 argument_list|,
-name|prefix
-argument_list|()
+literal|"cluster"
 argument_list|,
 literal|"cluster"
 argument_list|)
@@ -229,8 +228,7 @@ name|url
 argument_list|(
 name|rmweb
 argument_list|,
-name|prefix
-argument_list|()
+literal|"cluster"
 argument_list|,
 literal|"apps"
 argument_list|)
@@ -250,8 +248,7 @@ name|url
 argument_list|(
 name|rmweb
 argument_list|,
-name|prefix
-argument_list|()
+literal|"cluster"
 argument_list|,
 literal|"scheduler"
 argument_list|)

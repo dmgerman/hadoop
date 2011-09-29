@@ -40,7 +40,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"accessTime"
+literal|"accesstime"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

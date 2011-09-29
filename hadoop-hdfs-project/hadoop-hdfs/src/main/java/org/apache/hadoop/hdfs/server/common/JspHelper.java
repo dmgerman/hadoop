@@ -474,6 +474,24 @@ name|web
 operator|.
 name|resources
 operator|.
+name|DelegationParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
 name|UserParam
 import|;
 end_import
@@ -531,6 +549,24 @@ operator|.
 name|security
 operator|.
 name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|util
+operator|.
+name|KerberosName
 import|;
 end_import
 
@@ -631,7 +667,9 @@ specifier|final
 name|String
 name|DELEGATION_PARAMETER_NAME
 init|=
-literal|"delegation"
+name|DelegationParam
+operator|.
+name|NAME
 decl_stmt|;
 DECL|field|NAMENODE_ADDRESS
 specifier|public
@@ -3430,7 +3468,17 @@ name|checkUsername
 argument_list|(
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
+argument_list|()
+argument_list|,
+name|usernameFromQuery
+argument_list|)
+expr_stmt|;
+name|checkUsername
+argument_list|(
+name|ugi
+operator|.
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|user
@@ -3481,6 +3529,16 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
+name|checkUsername
+argument_list|(
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+name|usernameFromQuery
+argument_list|)
+expr_stmt|;
 comment|// This is not necessarily true, could have been auth'ed by user-facing
 comment|// filter
 name|ugi
@@ -3491,13 +3549,6 @@ name|secureAuthMethod
 argument_list|)
 expr_stmt|;
 block|}
-name|checkUsername
-argument_list|(
-name|user
-argument_list|,
-name|usernameFromQuery
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -3554,6 +3605,7 @@ return|return
 name|ugi
 return|;
 block|}
+comment|/**    * Expected user name should be a short name.    */
 DECL|method|checkUsername (final String expected, final String name )
 specifier|private
 specifier|static
@@ -3574,11 +3626,33 @@ block|{
 if|if
 condition|(
 name|name
-operator|!=
+operator|==
 literal|null
-operator|&&
-operator|!
+condition|)
+block|{
+return|return;
+block|}
+name|KerberosName
+name|u
+init|=
+operator|new
+name|KerberosName
+argument_list|(
 name|name
+argument_list|)
+decl_stmt|;
+name|String
+name|shortName
+init|=
+name|u
+operator|.
+name|getShortName
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|shortName
 operator|.
 name|equals
 argument_list|(
@@ -3592,7 +3666,7 @@ name|IOException
 argument_list|(
 literal|"Usernames not matched: name="
 operator|+
-name|name
+name|shortName
 operator|+
 literal|" != expected="
 operator|+

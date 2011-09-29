@@ -866,7 +866,7 @@ name|RM_RESOURCE_TRACKER_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|RM_RESOURCE_TRACKER_ADDRESS
+name|DEFAULT_RM_RESOURCE_TRACKER_ADDRESS
 argument_list|)
 expr_stmt|;
 name|this

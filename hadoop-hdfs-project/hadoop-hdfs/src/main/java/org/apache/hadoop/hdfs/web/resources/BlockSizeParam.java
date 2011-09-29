@@ -86,7 +86,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"blockSize"
+literal|"blocksize"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

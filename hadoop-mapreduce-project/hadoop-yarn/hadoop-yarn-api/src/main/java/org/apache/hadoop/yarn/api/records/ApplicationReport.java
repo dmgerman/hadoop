@@ -356,6 +356,28 @@ name|long
 name|startTime
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>finish time</em> of the application.    * @return<em>finish time</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getFinishTime ()
+name|long
+name|getFinishTime
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFinishTime (long finishTime)
+name|void
+name|setFinishTime
+parameter_list|(
+name|long
+name|finishTime
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

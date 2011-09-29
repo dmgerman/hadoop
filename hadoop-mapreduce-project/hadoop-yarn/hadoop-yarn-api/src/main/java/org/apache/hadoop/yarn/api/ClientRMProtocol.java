@@ -64,7 +64,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -82,7 +82,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationResponse
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -244,7 +244,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -262,7 +262,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -512,19 +512,19 @@ specifier|public
 interface|interface
 name|ClientRMProtocol
 block|{
-comment|/**    *<p>The interface used by clients to obtain a new {@link ApplicationId} for     * submitting new applications.</p>    *     *<p>The<code>ResourceManager</code> responds with a new, monotonically    * increasing, {@link ApplicationId} which is used by the client to submit    * a new application.</p>    *     * @param request request to get a new<code>ApplicationId</code>    * @return new<code>ApplicationId</code> to be used to submit an application    * @throws YarnRemoteException    * @see #submitApplication(SubmitApplicationRequest)    */
-DECL|method|getNewApplicationId ( GetNewApplicationIdRequest request)
+comment|/**    *<p>The interface used by clients to obtain a new {@link ApplicationId} for     * submitting new applications.</p>    *     *<p>The<code>ResourceManager</code> responds with a new, monotonically    * increasing, {@link ApplicationId} which is used by the client to submit    * a new application.</p>    *    *<p>The<code>ResourceManager</code> also responds with details such     * as minimum and maximum resource capabilities in the cluster as specified in    * {@link GetNewApplicationResponse}.</p>    *    * @param request request to get a new<code>ApplicationId</code>    * @return new<code>ApplicationId</code> to be used to submit an application    * @throws YarnRemoteException    * @see #submitApplication(SubmitApplicationRequest)    */
+DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
-name|GetNewApplicationIdResponse
-name|getNewApplicationId
+name|GetNewApplicationResponse
+name|getNewApplication
 parameter_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnRemoteException    * @see #getNewApplicationId(GetNewApplicationIdRequest)    */
+comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnRemoteException    * @see #getNewApplication(GetNewApplicationRequest)    */
 DECL|method|submitApplication ( SubmitApplicationRequest request)
 specifier|public
 name|SubmitApplicationResponse
@@ -536,13 +536,13 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to request the     *<code>ResourceManager</code> to abort submitted application.</p>    *     *<p>The client, via {@link FinishApplicationRequest} provides the    * {@link ApplicationId} of the application to be aborted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before terminating the application.</p>     *     *<p>Currently, the<code>ResourceManager</code> returns an empty response    * on success and throws an exception on rejecting the request.</p>    *     * @param request request to abort a submited application    * @return<code>ResourceManager</code> returns an empty response    *         on success and throws an exception on rejecting the request    * @throws YarnRemoteException    * @see #getQueueUserAcls(GetQueueUserAclsInfoRequest)     */
-DECL|method|finishApplication ( FinishApplicationRequest request)
+comment|/**    *<p>The interface used by clients to request the     *<code>ResourceManager</code> to abort submitted application.</p>    *     *<p>The client, via {@link KillApplicationRequest} provides the    * {@link ApplicationId} of the application to be aborted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before terminating the application.</p>     *     *<p>Currently, the<code>ResourceManager</code> returns an empty response    * on success and throws an exception on rejecting the request.</p>    *     * @param request request to abort a submited application    * @return<code>ResourceManager</code> returns an empty response    *         on success and throws an exception on rejecting the request    * @throws YarnRemoteException    * @see #getQueueUserAcls(GetQueueUserAclsInfoRequest)     */
+DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
-name|FinishApplicationResponse
-name|finishApplication
+name|KillApplicationResponse
+name|forceKillApplication
 parameter_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
