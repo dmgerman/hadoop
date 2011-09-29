@@ -48,16 +48,6 @@ argument_list|<
 name|E
 argument_list|>
 block|{
-comment|/** Parameter name. */
-DECL|field|NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NAME
-init|=
-literal|"op"
-decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
 specifier|public

@@ -261,7 +261,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|applicationTokenSecretManager
-specifier|protected
+specifier|private
 name|ApplicationTokenSecretManager
 name|applicationTokenSecretManager
 decl_stmt|;
@@ -271,12 +271,12 @@ name|ClientToAMSecretManager
 name|clientToAMSecretManager
 decl_stmt|;
 DECL|field|context
-specifier|protected
+specifier|private
 specifier|final
 name|RMContext
 name|context
 decl_stmt|;
-DECL|method|ApplicationMasterLauncher ( ApplicationTokenSecretManager applicationTokenSecretManager, ClientToAMSecretManager clientToAMSecretManager, RMContext context)
+DECL|method|ApplicationMasterLauncher (ApplicationTokenSecretManager applicationTokenSecretManager, ClientToAMSecretManager clientToAMSecretManager, RMContext context)
 specifier|public
 name|ApplicationMasterLauncher
 parameter_list|(
@@ -305,6 +305,23 @@ operator|.
 name|context
 operator|=
 name|context
+expr_stmt|;
+comment|/* register to dispatcher */
+name|this
+operator|.
+name|context
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|register
+argument_list|(
+name|AMLauncherEventType
+operator|.
+name|class
+argument_list|,
+name|this
+argument_list|)
 expr_stmt|;
 name|this
 operator|.

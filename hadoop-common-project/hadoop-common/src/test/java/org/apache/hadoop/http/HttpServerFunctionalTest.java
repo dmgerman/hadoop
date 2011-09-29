@@ -177,37 +177,6 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create but do not start the test webapp server. The test webapp dir is    * prepared/checked in advance.    * @param conf the server configuration to use    * @return the server instance    *    * @throws IOException if a problem occurs    * @throws AssertionError if a condition was not met    */
-DECL|method|createTestServer (Configuration conf, String[] pathSpecs)
-specifier|public
-specifier|static
-name|HttpServer
-name|createTestServer
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|String
-index|[]
-name|pathSpecs
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|prepareTestWebapp
-argument_list|()
-expr_stmt|;
-return|return
-name|createServer
-argument_list|(
-name|TEST
-argument_list|,
-name|conf
-argument_list|,
-name|pathSpecs
-argument_list|)
-return|;
-block|}
 comment|/**    * Prepare the test webapp by creating the directory from the test properties    * fail if the directory cannot be created.    * @throws AssertionError if a condition was not met    */
 DECL|method|prepareTestWebapp ()
 specifier|protected
@@ -319,44 +288,6 @@ argument_list|,
 literal|true
 argument_list|,
 name|conf
-argument_list|)
-return|;
-block|}
-comment|/**    * Create an HttpServer instance for the given webapp    * @param webapp the webapp to work with    * @param conf the configuration to use for the server    * @param pathSpecs the paths specifications the server will service    * @return the server    * @throws IOException if it could not be created    */
-DECL|method|createServer (String webapp, Configuration conf, String[] pathSpecs)
-specifier|public
-specifier|static
-name|HttpServer
-name|createServer
-parameter_list|(
-name|String
-name|webapp
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|,
-name|String
-index|[]
-name|pathSpecs
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-operator|new
-name|HttpServer
-argument_list|(
-name|webapp
-argument_list|,
-literal|"0.0.0.0"
-argument_list|,
-literal|0
-argument_list|,
-literal|true
-argument_list|,
-name|conf
-argument_list|,
-name|pathSpecs
 argument_list|)
 return|;
 block|}

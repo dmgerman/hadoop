@@ -873,17 +873,8 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|)
-argument_list|,
-name|container
-operator|.
-name|getLaunchContext
-argument_list|()
-operator|.
-name|getEnvironment
-argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// sanitized env
 name|launchCommandObjs
 operator|.
 name|put

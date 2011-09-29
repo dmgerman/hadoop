@@ -59,7 +59,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"renameoptions"
+literal|"renameOptions"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

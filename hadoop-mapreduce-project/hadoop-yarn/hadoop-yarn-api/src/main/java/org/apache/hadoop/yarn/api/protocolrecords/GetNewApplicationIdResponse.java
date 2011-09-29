@@ -118,26 +118,8 @@ name|ApplicationId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for   * a request to a new {@link ApplicationId} for submitting applications.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for   * a request to a new {@link ApplicationId} for submitting applications.</p>  *   * @see ClientRMProtocol#getNewApplicationId(GetNewApplicationIdRequest)  */
 end_comment
 
 begin_interface
@@ -145,10 +127,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetNewApplicationResponse
+DECL|interface|GetNewApplicationIdResponse
 specifier|public
 interface|interface
-name|GetNewApplicationResponse
+name|GetNewApplicationIdResponse
 block|{
 comment|/**    * Get the<em>new</em><code>ApplicationId</code> allocated by the     *<code>ResourceManager</code>.    * @return<em>new</em><code>ApplicationId</code> allocated by the     *<code>ResourceManager</code>    */
 annotation|@
@@ -174,54 +156,6 @@ name|setApplicationId
 parameter_list|(
 name|ApplicationId
 name|applicationId
-parameter_list|)
-function_decl|;
-comment|/**    * Get the minimum capability for any {@link Resource} allocated by the     *<code>ResourceManager</code> in the cluster.    * @return minimum capability of allocated resources in the cluster    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getMinimumResourceCapability ()
-specifier|public
-name|Resource
-name|getMinimumResourceCapability
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setMinimumResourceCapability (Resource capability)
-specifier|public
-name|void
-name|setMinimumResourceCapability
-parameter_list|(
-name|Resource
-name|capability
-parameter_list|)
-function_decl|;
-comment|/**    * Get the maximum capability for any {@link Resource} allocated by the     *<code>ResourceManager</code> in the cluster.    * @return maximum capability of allocated resources in the cluster    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getMaximumResourceCapability ()
-specifier|public
-name|Resource
-name|getMaximumResourceCapability
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setMaximumResourceCapability (Resource capability)
-specifier|public
-name|void
-name|setMaximumResourceCapability
-parameter_list|(
-name|Resource
-name|capability
 parameter_list|)
 function_decl|;
 block|}

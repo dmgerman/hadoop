@@ -284,18 +284,6 @@ argument_list|)
 expr_stmt|;
 name|set
 argument_list|(
-name|initID
-argument_list|(
-name|ACCORDION
-argument_list|,
-literal|"nav"
-argument_list|)
-argument_list|,
-literal|"{autoHeight:false, active:2}"
-argument_list|)
-expr_stmt|;
-name|set
-argument_list|(
 name|DATATABLES_ID
 argument_list|,
 literal|"conf"

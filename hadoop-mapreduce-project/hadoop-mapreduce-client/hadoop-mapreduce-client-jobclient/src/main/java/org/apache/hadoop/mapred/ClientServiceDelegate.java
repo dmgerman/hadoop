@@ -834,7 +834,6 @@ end_import
 
 begin_class
 DECL|class|ClientServiceDelegate
-specifier|public
 class|class
 name|ClientServiceDelegate
 block|{
@@ -948,7 +947,6 @@ init|=
 literal|"Unknown User"
 decl_stmt|;
 DECL|method|ClientServiceDelegate (Configuration conf, ResourceMgrDelegate rm, JobID jobId, MRClientProtocol historyServerProxy)
-specifier|public
 name|ClientServiceDelegate
 parameter_list|(
 name|Configuration
@@ -1024,13 +1022,13 @@ expr_stmt|;
 block|}
 comment|// Get the instance of the NotRunningJob corresponding to the specified
 comment|// user and state
-DECL|method|getNotRunningJob (ApplicationReport applicationReport, JobState state)
+DECL|method|getNotRunningJob (String user, JobState state)
 specifier|private
 name|NotRunningJob
 name|getNotRunningJob
 parameter_list|(
-name|ApplicationReport
-name|applicationReport
+name|String
+name|user
 parameter_list|,
 name|JobState
 name|state
@@ -1084,22 +1082,6 @@ name|map
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|user
-init|=
-operator|(
-name|applicationReport
-operator|==
-literal|null
-operator|)
-condition|?
-name|UNKNOWN_USER
-else|:
-name|applicationReport
-operator|.
-name|getUser
-argument_list|()
-decl_stmt|;
 name|NotRunningJob
 name|notRunningJob
 init|=
@@ -1122,7 +1104,7 @@ operator|=
 operator|new
 name|NotRunningJob
 argument_list|(
-name|applicationReport
+name|user
 argument_list|,
 name|state
 argument_list|)
@@ -1222,7 +1204,7 @@ expr_stmt|;
 return|return
 name|checkAndGetHSProxy
 argument_list|(
-literal|null
+name|UNKNOWN_USER
 argument_list|,
 name|JobState
 operator|.
@@ -1484,7 +1466,7 @@ expr_stmt|;
 return|return
 name|checkAndGetHSProxy
 argument_list|(
-literal|null
+name|UNKNOWN_USER
 argument_list|,
 name|JobState
 operator|.
@@ -1570,7 +1552,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|application
+name|user
 argument_list|,
 name|JobState
 operator|.
@@ -1597,7 +1579,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|application
+name|user
 argument_list|,
 name|JobState
 operator|.
@@ -1624,7 +1606,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|application
+name|user
 argument_list|,
 name|JobState
 operator|.
@@ -1659,7 +1641,7 @@ name|realProxy
 operator|=
 name|checkAndGetHSProxy
 argument_list|(
-name|application
+name|user
 argument_list|,
 name|JobState
 operator|.
@@ -1671,13 +1653,13 @@ return|return
 name|realProxy
 return|;
 block|}
-DECL|method|checkAndGetHSProxy ( ApplicationReport applicationReport, JobState state)
+DECL|method|checkAndGetHSProxy (String user, JobState state)
 specifier|private
 name|MRClientProtocol
 name|checkAndGetHSProxy
 parameter_list|(
-name|ApplicationReport
-name|applicationReport
+name|String
+name|user
 parameter_list|,
 name|JobState
 name|state
@@ -1700,7 +1682,7 @@ expr_stmt|;
 return|return
 name|getNotRunningJob
 argument_list|(
-name|applicationReport
+name|user
 argument_list|,
 name|state
 argument_list|)
@@ -2033,7 +2015,6 @@ block|}
 block|}
 block|}
 DECL|method|getJobCounters (JobID arg0)
-specifier|public
 name|org
 operator|.
 name|apache
@@ -2128,7 +2109,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTaskCompletionEvents (JobID arg0, int arg1, int arg2)
-specifier|public
 name|TaskCompletionEvent
 index|[]
 name|getTaskCompletionEvents
@@ -2276,7 +2256,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTaskDiagnostics (org.apache.hadoop.mapreduce.TaskAttemptID arg0)
-specifier|public
 name|String
 index|[]
 name|getTaskDiagnostics
@@ -2408,7 +2387,6 @@ name|result
 return|;
 block|}
 DECL|method|getJobStatus (JobID oldJobID)
-specifier|public
 name|JobStatus
 name|getJobStatus
 parameter_list|(
@@ -2500,6 +2478,7 @@ argument_list|,
 name|oldJobID
 argument_list|)
 decl_stmt|;
+comment|//TODO: add tracking url in JobReport
 return|return
 name|TypeConverter
 operator|.
@@ -2508,11 +2487,12 @@ argument_list|(
 name|report
 argument_list|,
 name|jobFile
+argument_list|,
+literal|""
 argument_list|)
 return|;
 block|}
 DECL|method|getTaskReports (JobID oldJobID, TaskType taskType)
-specifier|public
 name|org
 operator|.
 name|apache
@@ -2657,7 +2637,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|killTask (TaskAttemptID taskAttemptID, boolean fail)
-specifier|public
 name|boolean
 name|killTask
 parameter_list|(
@@ -2768,7 +2747,6 @@ literal|true
 return|;
 block|}
 DECL|method|killJob (JobID oldJobID)
-specifier|public
 name|boolean
 name|killJob
 parameter_list|(

@@ -368,13 +368,6 @@ name|schedulingInfo
 init|=
 literal|"NA"
 decl_stmt|;
-DECL|field|failureInfo
-specifier|private
-name|String
-name|failureInfo
-init|=
-literal|"NA"
-decl_stmt|;
 DECL|field|jobACLs
 specifier|private
 name|Map
@@ -982,24 +975,6 @@ operator|=
 name|queue
 expr_stmt|;
 block|}
-comment|/**    * Set diagnostic information.    * @param failureInfo diagnostic information    */
-DECL|method|setFailureInfo (String failureInfo)
-specifier|protected
-specifier|synchronized
-name|void
-name|setFailureInfo
-parameter_list|(
-name|String
-name|failureInfo
-parameter_list|)
-block|{
-name|this
-operator|.
-name|failureInfo
-operator|=
-name|failureInfo
-expr_stmt|;
-block|}
 comment|/**    * Get queue name    * @return queue name    */
 DECL|method|getQueue ()
 specifier|public
@@ -1184,20 +1159,6 @@ parameter_list|()
 block|{
 return|return
 name|priority
-return|;
-block|}
-comment|/**     * Gets any available info on the reason of failure of the job.     * @return diagnostic information on why a job might have failed.     */
-DECL|method|getFailureInfo ()
-specifier|public
-specifier|synchronized
-name|String
-name|getFailureInfo
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|failureInfo
 return|;
 block|}
 comment|/**    * Returns true if the status is for a completed job.    */

@@ -657,7 +657,7 @@ name|nsId
 init|=
 name|DFSUtil
 operator|.
-name|getNamenodeNameServiceId
+name|getNameServiceId
 argument_list|(
 name|cluster
 operator|.
@@ -765,7 +765,7 @@ name|append
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNamenodeNameServiceId
+name|getNameServiceId
 argument_list|(
 name|cluster
 operator|.

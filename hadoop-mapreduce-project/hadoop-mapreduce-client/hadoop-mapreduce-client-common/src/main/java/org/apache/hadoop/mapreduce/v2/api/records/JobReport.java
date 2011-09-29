@@ -98,20 +98,6 @@ name|String
 name|getJobName
 parameter_list|()
 function_decl|;
-DECL|method|getTrackingUrl ()
-specifier|public
-specifier|abstract
-name|String
-name|getTrackingUrl
-parameter_list|()
-function_decl|;
-DECL|method|getDiagnostics ()
-specifier|public
-specifier|abstract
-name|String
-name|getDiagnostics
-parameter_list|()
-function_decl|;
 DECL|method|setJobId (JobId jobId)
 specifier|public
 specifier|abstract
@@ -210,26 +196,6 @@ name|setJobName
 parameter_list|(
 name|String
 name|jobName
-parameter_list|)
-function_decl|;
-DECL|method|setTrackingUrl (String trackingUrl)
-specifier|public
-specifier|abstract
-name|void
-name|setTrackingUrl
-parameter_list|(
-name|String
-name|trackingUrl
-parameter_list|)
-function_decl|;
-DECL|method|setDiagnostics (String diagnostics)
-specifier|public
-specifier|abstract
-name|void
-name|setDiagnostics
-parameter_list|(
-name|String
-name|diagnostics
 parameter_list|)
 function_decl|;
 block|}

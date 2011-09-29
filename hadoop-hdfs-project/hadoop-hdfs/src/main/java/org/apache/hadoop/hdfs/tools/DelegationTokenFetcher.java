@@ -1079,17 +1079,11 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Token ("
 operator|+
@@ -1103,7 +1097,6 @@ name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 literal|null
@@ -1155,17 +1148,11 @@ operator|)
 name|token
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Renewed token via "
 operator|+
@@ -1187,7 +1174,6 @@ name|result
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 elseif|else
@@ -1225,17 +1211,11 @@ operator|)
 name|token
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Cancelled token via "
 operator|+
@@ -1249,7 +1229,6 @@ name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 else|else
@@ -1287,17 +1266,11 @@ name|getAllTokens
 argument_list|()
 control|)
 block|{
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Fetched token via "
 operator|+
@@ -1315,7 +1288,6 @@ operator|+
 name|tokenFile
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -1370,17 +1342,11 @@ operator|)
 name|token
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Cancelled token for "
 operator|+
@@ -1390,7 +1356,6 @@ name|getService
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 elseif|else
@@ -1438,17 +1403,11 @@ operator|)
 name|token
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Renewed token for "
 operator|+
@@ -1466,7 +1425,6 @@ name|result
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 else|else
@@ -1512,17 +1470,11 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
+name|System
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|out
 operator|.
-name|debug
+name|println
 argument_list|(
 literal|"Fetched token for "
 operator|+
@@ -1536,7 +1488,6 @@ operator|+
 name|tokenFile
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return
@@ -1634,24 +1585,6 @@ argument_list|(
 name|GetDelegationTokenServlet
 operator|.
 name|PATH_SPEC
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Retrieving token from: "
-operator|+
-name|url
 argument_list|)
 expr_stmt|;
 block|}

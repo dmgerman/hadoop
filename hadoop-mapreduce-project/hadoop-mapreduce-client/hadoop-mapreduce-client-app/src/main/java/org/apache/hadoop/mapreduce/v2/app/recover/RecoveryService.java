@@ -716,7 +716,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -968,11 +968,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|applicationAttemptId
+DECL|field|appID
 specifier|private
 specifier|final
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|appID
 decl_stmt|;
 DECL|field|dispatcher
 specifier|private
@@ -985,6 +985,12 @@ specifier|private
 specifier|final
 name|ControlledClock
 name|clock
+decl_stmt|;
+DECL|field|startCount
+specifier|private
+specifier|final
+name|int
+name|startCount
 decl_stmt|;
 DECL|field|jobInfo
 specifier|private
@@ -1037,15 +1043,18 @@ name|recoveryMode
 init|=
 literal|false
 decl_stmt|;
-DECL|method|RecoveryService (ApplicationAttemptId applicationAttemptId, Clock clock)
+DECL|method|RecoveryService (ApplicationId appID, Clock clock, int startCount)
 specifier|public
 name|RecoveryService
 parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|appID
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|int
+name|startCount
 parameter_list|)
 block|{
 name|super
@@ -1055,9 +1064,15 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|applicationAttemptId
+name|appID
 operator|=
-name|applicationAttemptId
+name|appID
+expr_stmt|;
+name|this
+operator|.
+name|startCount
+operator|=
+name|startCount
 expr_stmt|;
 name|this
 operator|.
@@ -1244,10 +1259,7 @@ name|TypeConverter
 operator|.
 name|fromYarn
 argument_list|(
-name|applicationAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
+name|appID
 argument_list|)
 operator|.
 name|toString
@@ -1310,7 +1322,6 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//read the previous history file
 name|historyFile
 operator|=
 name|fc
@@ -1325,17 +1336,13 @@ name|histDirPath
 argument_list|,
 name|jobName
 argument_list|,
-operator|(
-name|applicationAttemptId
-operator|.
-name|getAttemptId
-argument_list|()
+name|startCount
 operator|-
 literal|1
-operator|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//read the previous history file
 name|in
 operator|=
 name|fc

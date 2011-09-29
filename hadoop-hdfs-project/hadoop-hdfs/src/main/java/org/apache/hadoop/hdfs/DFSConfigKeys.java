@@ -1879,6 +1879,25 @@ name|DFS_DEFAULT_MAX_CORRUPT_FILES_RETURNED
 init|=
 literal|500
 decl_stmt|;
+comment|// HA related configuration
+DECL|field|DFS_HA_NAMENODE_IDS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_NAMENODE_IDS_KEY
+init|=
+literal|"dfs.ha.namenode.ids"
+decl_stmt|;
+DECL|field|DFS_HA_NAMENODE_IDS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_NAMENODE_IDS_DEFAULT
+init|=
+literal|""
+decl_stmt|;
 comment|// property for fsimage compression
 DECL|field|DFS_IMAGE_COMPRESS_KEY
 specifier|public

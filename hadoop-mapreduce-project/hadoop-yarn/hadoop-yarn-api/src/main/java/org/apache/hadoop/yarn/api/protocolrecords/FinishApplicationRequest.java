@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the client to the<code>ResourceManager</code>  * to abort a submitted application.</p>  *   *<p>The request includes the {@link ApplicationId} of the application to be  * aborted.</p>  *   * @see ClientRMProtocol#forceKillApplication(KillApplicationRequest)  */
+comment|/**  *<p>The request sent by the client to the<code>ResourceManager</code>  * to abort a submitted application.</p>  *   *<p>The request includes the {@link ApplicationId} of the application to be  * aborted.</p>  *   * @see ClientRMProtocol#finishApplication(FinishApplicationRequest)  */
 end_comment
 
 begin_interface
@@ -127,10 +127,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|KillApplicationRequest
+DECL|interface|FinishApplicationRequest
 specifier|public
 interface|interface
-name|KillApplicationRequest
+name|FinishApplicationRequest
 block|{
 comment|/**    * Get the<code>ApplicationId</code> of the application to be aborted.    * @return<code>ApplicationId</code> of the application to be aborted    */
 annotation|@

@@ -815,7 +815,7 @@ operator|.
 name|getNodeHttpAddress
 argument_list|()
 argument_list|,
-literal|"/node"
+literal|"/yarn"
 argument_list|,
 literal|"/containerlogs/"
 argument_list|,

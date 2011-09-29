@@ -1220,24 +1220,6 @@ name|acls
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setFailureInfo (String failureInfo)
-specifier|public
-specifier|synchronized
-name|void
-name|setFailureInfo
-parameter_list|(
-name|String
-name|failureInfo
-parameter_list|)
-block|{
-name|super
-operator|.
-name|setFailureInfo
-argument_list|(
-name|failureInfo
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Set the priority of the job, defaulting to NORMAL.    * @param jp new job priority    */
 DECL|method|setJobPriority (JobPriority jp)
 specifier|public

@@ -24,16 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -127,13 +117,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkOperation (HAContext context, OperationCategory op)
+DECL|method|checkOperation (NameNode nn, OperationCategory op)
 specifier|public
 name|void
 name|checkOperation
 parameter_list|(
-name|HAContext
-name|context
+name|NameNode
+name|nn
 parameter_list|,
 name|OperationCategory
 name|op
@@ -146,13 +136,13 @@ comment|// Other than journal all operations are allowed in active state
 block|}
 annotation|@
 name|Override
-DECL|method|setState (HAContext context, HAState s)
+DECL|method|setState (NameNode nn, HAState s)
 specifier|public
 name|void
 name|setState
 parameter_list|(
-name|HAContext
-name|context
+name|NameNode
+name|nn
 parameter_list|,
 name|HAState
 name|s
@@ -171,7 +161,7 @@ condition|)
 block|{
 name|setStateInternal
 argument_list|(
-name|context
+name|nn
 argument_list|,
 name|s
 argument_list|)
@@ -182,7 +172,7 @@ name|super
 operator|.
 name|setState
 argument_list|(
-name|context
+name|nn
 argument_list|,
 name|s
 argument_list|)
@@ -190,79 +180,33 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|enterState (HAContext context)
-specifier|public
+DECL|method|enterState (NameNode nn)
+specifier|protected
 name|void
 name|enterState
 parameter_list|(
-name|HAContext
-name|context
+name|NameNode
+name|nn
 parameter_list|)
 throws|throws
 name|ServiceFailedException
 block|{
-try|try
-block|{
-name|context
-operator|.
-name|startActiveServices
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|ServiceFailedException
-argument_list|(
-literal|"Failed to start active services"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
+comment|// TODO:HA
 block|}
 annotation|@
 name|Override
-DECL|method|exitState (HAContext context)
-specifier|public
+DECL|method|exitState (NameNode nn)
+specifier|protected
 name|void
 name|exitState
 parameter_list|(
-name|HAContext
-name|context
+name|NameNode
+name|nn
 parameter_list|)
 throws|throws
 name|ServiceFailedException
 block|{
-try|try
-block|{
-name|context
-operator|.
-name|stopActiveServices
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|ServiceFailedException
-argument_list|(
-literal|"Failed to stop active services"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
+comment|// TODO:HA
 block|}
 block|}
 end_class

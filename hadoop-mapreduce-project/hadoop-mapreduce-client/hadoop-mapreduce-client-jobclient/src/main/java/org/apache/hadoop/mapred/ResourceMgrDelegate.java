@@ -192,20 +192,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|MRJobConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|QueueAclsInfo
 import|;
 end_import
@@ -269,6 +255,22 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|MRConstants
 import|;
 end_import
 
@@ -378,7 +380,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|KillApplicationRequest
+name|FinishApplicationRequest
 import|;
 end_import
 
@@ -540,7 +542,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationRequest
+name|GetNewApplicationIdRequest
 import|;
 end_import
 
@@ -841,7 +843,6 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Delegate responsible for communicating with the Resource Manager's {@link ClientRMProtocol}.    * @param conf the configuration object.    */
 DECL|method|ResourceMgrDelegate (YarnConfiguration conf)
 specifier|public
 name|ResourceMgrDelegate
@@ -954,31 +955,6 @@ literal|"Connected to ResourceManager at "
 operator|+
 name|rmAddress
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Used for injecting applicationsManager, mostly for testing.    * @param conf the configuration object    * @param applicationsManager the handle to talk the resource managers {@link ClientRMProtocol}.    */
-DECL|method|ResourceMgrDelegate (YarnConfiguration conf, ClientRMProtocol applicationsManager)
-specifier|public
-name|ResourceMgrDelegate
-parameter_list|(
-name|YarnConfiguration
-name|conf
-parameter_list|,
-name|ClientRMProtocol
-name|applicationsManager
-parameter_list|)
-block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-name|this
-operator|.
-name|applicationsManager
-operator|=
-name|applicationsManager
 expr_stmt|;
 block|}
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> arg0)
@@ -1271,14 +1247,14 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|GetNewApplicationRequest
+name|GetNewApplicationIdRequest
 name|request
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|GetNewApplicationRequest
+name|GetNewApplicationIdRequest
 operator|.
 name|class
 argument_list|)
@@ -1287,7 +1263,7 @@ name|applicationId
 operator|=
 name|applicationsManager
 operator|.
-name|getNewApplication
+name|getNewApplicationId
 argument_list|(
 name|request
 argument_list|)
@@ -1953,7 +1929,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|MRJobConfig
+name|MRConstants
 operator|.
 name|JOB_SUBMIT_DIR
 argument_list|)
@@ -2114,14 +2090,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|KillApplicationRequest
+name|FinishApplicationRequest
 name|request
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|KillApplicationRequest
+name|FinishApplicationRequest
 operator|.
 name|class
 argument_list|)
@@ -2135,7 +2111,7 @@ argument_list|)
 expr_stmt|;
 name|applicationsManager
 operator|.
-name|forceKillApplication
+name|finishApplication
 argument_list|(
 name|request
 argument_list|)

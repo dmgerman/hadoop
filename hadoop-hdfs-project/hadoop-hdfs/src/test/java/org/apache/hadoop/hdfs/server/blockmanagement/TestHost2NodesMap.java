@@ -21,26 +21,12 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
+import|import
 name|junit
 operator|.
-name|Assert
+name|framework
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|TestCase
 import|;
 end_import
 
@@ -64,9 +50,17 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Before
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeDescriptor
 import|;
 end_import
 
@@ -74,9 +68,17 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|Host2NodesMap
 import|;
 end_import
 
@@ -85,8 +87,11 @@ DECL|class|TestHost2NodesMap
 specifier|public
 class|class
 name|TestHost2NodesMap
+extends|extends
+name|TestCase
 block|{
 DECL|field|map
+specifier|static
 specifier|private
 name|Host2NodesMap
 name|map
@@ -98,6 +103,7 @@ decl_stmt|;
 DECL|field|dataNodes
 specifier|private
 specifier|final
+specifier|static
 name|DatanodeDescriptor
 name|dataNodes
 index|[]
@@ -158,6 +164,7 @@ decl_stmt|;
 DECL|field|NULL_NODE
 specifier|private
 specifier|final
+specifier|static
 name|DatanodeDescriptor
 name|NULL_NODE
 init|=
@@ -166,6 +173,7 @@ decl_stmt|;
 DECL|field|NODE
 specifier|private
 specifier|final
+specifier|static
 name|DatanodeDescriptor
 name|NODE
 init|=
@@ -181,13 +189,7 @@ argument_list|,
 literal|"/d1/r4"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Before
-DECL|method|setup ()
-specifier|public
-name|void
-name|setup
-parameter_list|()
+static|static
 block|{
 for|for
 control|(
@@ -213,8 +215,6 @@ name|NULL_NODE
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testContains ()
 specifier|public
 name|void
@@ -275,8 +275,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testGetDatanodeByHost ()
 specifier|public
 name|void
@@ -355,8 +353,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testGetDatanodeByName ()
 specifier|public
 name|void
@@ -486,8 +482,6 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testRemove ()
 specifier|public
 name|void

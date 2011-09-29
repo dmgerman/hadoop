@@ -738,20 +738,6 @@ specifier|private
 name|ThreadPoolExecutor
 name|launcherPool
 decl_stmt|;
-DECL|field|INITIAL_POOL_SIZE
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|INITIAL_POOL_SIZE
-init|=
-literal|10
-decl_stmt|;
-DECL|field|limitOnPoolSize
-specifier|private
-name|int
-name|limitOnPoolSize
-decl_stmt|;
 DECL|field|eventHandlingThread
 specifier|private
 name|Thread
@@ -874,23 +860,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|limitOnPoolSize
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|MRJobConfig
-operator|.
-name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
-argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|init
@@ -905,13 +874,22 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|// Start with a default core-pool size of 10 and change it dynamically.
 name|launcherPool
 operator|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
-name|INITIAL_POOL_SIZE
+name|getConfig
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_CONTAINERLAUNCHER_THREAD_COUNT
+argument_list|,
+literal|10
+argument_list|)
 argument_list|,
 name|Integer
 operator|.
@@ -931,6 +909,12 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|launcherPool
+operator|.
+name|prestartAllCoreThreads
+argument_list|()
+expr_stmt|;
+comment|// Wait for work.
 name|eventHandlingThread
 operator|=
 operator|new
@@ -990,66 +974,6 @@ name|e
 argument_list|)
 expr_stmt|;
 return|return;
-block|}
-name|int
-name|poolSize
-init|=
-name|launcherPool
-operator|.
-name|getCorePoolSize
-argument_list|()
-decl_stmt|;
-comment|// See if we need up the pool size only if haven't reached the
-comment|// maximum limit yet.
-if|if
-condition|(
-name|poolSize
-operator|!=
-name|limitOnPoolSize
-condition|)
-block|{
-comment|// nodes where containers will run at *this* point of time. This is
-comment|// *not* the cluster size and doesn't need to be.
-name|int
-name|numNodes
-init|=
-name|ugiMap
-operator|.
-name|size
-argument_list|()
-decl_stmt|;
-name|int
-name|idealPoolSize
-init|=
-name|Math
-operator|.
-name|min
-argument_list|(
-name|limitOnPoolSize
-argument_list|,
-name|numNodes
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|poolSize
-operator|<=
-name|idealPoolSize
-condition|)
-block|{
-comment|// Bump up the pool size to idealPoolSize+INITIAL_POOL_SIZE, the
-comment|// later is just a buffer so we are not always increasing the
-comment|// pool-size
-name|launcherPool
-operator|.
-name|setCorePoolSize
-argument_list|(
-name|idealPoolSize
-operator|+
-name|INITIAL_POOL_SIZE
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|// the events from the queue are handled in parallel
 comment|// using a thread pool

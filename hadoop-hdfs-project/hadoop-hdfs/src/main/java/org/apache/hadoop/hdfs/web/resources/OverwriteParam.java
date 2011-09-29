@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/** Overwrite parameter. */
+comment|/** Recursive parameter. */
 end_comment
 
 begin_class

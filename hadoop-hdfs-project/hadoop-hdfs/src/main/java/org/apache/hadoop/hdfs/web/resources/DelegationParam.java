@@ -28,6 +28,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|JspHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -54,7 +72,9 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"delegation"
+name|JspHelper
+operator|.
+name|DELEGATION_PARAMETER_NAME
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

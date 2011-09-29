@@ -21,42 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|isA
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -103,6 +67,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -204,46 +178,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|JobReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|JobState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|TaskAttemptId
 import|;
 end_import
@@ -285,26 +219,6 @@ operator|.
 name|records
 operator|.
 name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|client
-operator|.
-name|ClientService
 import|;
 end_import
 
@@ -364,28 +278,6 @@ name|v2
 operator|.
 name|app
 operator|.
-name|job
-operator|.
-name|impl
-operator|.
-name|JobImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
 name|rm
 operator|.
 name|ContainerRequestEvent
@@ -420,24 +312,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|util
-operator|.
-name|MRBuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|metrics2
 operator|.
 name|lib
@@ -456,7 +330,7 @@ name|hadoop
 operator|.
 name|net
 operator|.
-name|NetUtils
+name|NetworkTopology
 import|;
 end_import
 
@@ -468,9 +342,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
+name|yarn
 operator|.
-name|NetworkTopology
+name|Clock
 import|;
 end_import
 
@@ -501,6 +375,132 @@ operator|.
 name|api
 operator|.
 name|AMRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|FinishApplicationMasterRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|FinishApplicationMasterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RegisterApplicationMasterRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RegisterApplicationMasterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AMResponse
 import|;
 end_import
 
@@ -554,7 +554,79 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationMaster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -606,38 +678,6 @@ name|yarn
 operator|.
 name|event
 operator|.
-name|Dispatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|event
-operator|.
-name|DrainDispatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|event
-operator|.
 name|Event
 import|;
 end_import
@@ -655,6 +695,22 @@ operator|.
 name|event
 operator|.
 name|EventHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
 import|;
 end_import
 
@@ -702,11 +758,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|ipc
 operator|.
-name|resourcemanager
-operator|.
-name|MockNM
+name|RPCUtil
 import|;
 end_import
 
@@ -724,7 +778,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|MockRM
+name|ResourceTrackerService
 import|;
 end_import
 
@@ -742,7 +796,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|recovery
+operator|.
+name|StoreFactory
 import|;
 end_import
 
@@ -760,9 +816,29 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmapp
+name|rmnode
 operator|.
-name|RMApp
+name|RMNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeImpl
 import|;
 end_import
 
@@ -803,28 +879,6 @@ operator|.
 name|scheduler
 operator|.
 name|ResourceScheduler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|event
-operator|.
-name|SchedulerEvent
 import|;
 end_import
 
@@ -872,25 +926,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
-name|After
+name|BeforeClass
 import|;
 end_import
 
@@ -910,3313 +948,431 @@ specifier|public
 class|class
 name|TestRMContainerAllocator
 block|{
-DECL|field|LOG
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|TestRMContainerAllocator
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-DECL|field|recordFactory
-specifier|static
-specifier|final
-name|RecordFactory
-name|recordFactory
-init|=
-name|RecordFactoryProvider
-operator|.
-name|getRecordFactory
-argument_list|(
-literal|null
-argument_list|)
-decl_stmt|;
-annotation|@
-name|After
-DECL|method|tearDown ()
-specifier|public
-name|void
-name|tearDown
-parameter_list|()
-block|{
-name|DefaultMetricsSystem
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testSimple ()
-specifier|public
-name|void
-name|testSimple
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testSimple"
-argument_list|)
-expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|MyResourceManager
-name|rm
-init|=
-operator|new
-name|MyResourceManager
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-comment|// Submit the application
-name|RMApp
-name|app
-init|=
-name|rm
-operator|.
-name|submitApp
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|MockNM
-name|amNodeManager
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"amNM:1234"
-argument_list|,
-literal|2048
-argument_list|)
-decl_stmt|;
-name|amNodeManager
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
-name|rm
-operator|.
-name|sendAMLaunched
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|JobId
-name|jobId
-init|=
-name|MRBuilderUtils
-operator|.
-name|newJobId
-argument_list|(
-name|appAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|Job
-name|mockJob
-init|=
-name|mock
-argument_list|(
-name|Job
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|when
-argument_list|(
-name|mockJob
-operator|.
-name|getReport
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|MRBuilderUtils
-operator|.
-name|newJobReport
-argument_list|(
-name|jobId
-argument_list|,
-literal|"job"
-argument_list|,
-literal|"user"
-argument_list|,
-name|JobState
-operator|.
-name|RUNNING
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|MyContainerAllocator
-name|allocator
-init|=
-operator|new
-name|MyContainerAllocator
-argument_list|(
-name|rm
-argument_list|,
-name|conf
-argument_list|,
-name|appAttemptId
-argument_list|,
-name|mockJob
-argument_list|)
-decl_stmt|;
-comment|// add resources to scheduler
-name|MockNM
-name|nodeManager1
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h1:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager2
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h2:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager3
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h3:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-comment|// create the container request
-name|ContainerRequestEvent
-name|event1
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|1
-argument_list|,
-literal|1024
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h1"
-block|}
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event1
-argument_list|)
-expr_stmt|;
-comment|// send 1 more request with different resource req
-name|ContainerRequestEvent
-name|event2
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|2
-argument_list|,
-literal|1024
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h2"
-block|}
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event2
-argument_list|)
-expr_stmt|;
-comment|// this tells the scheduler about the requests
-comment|// as nodes are not added, no allocations
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|assigned
-init|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"No of assignments must be 0"
-argument_list|,
-literal|0
-argument_list|,
-name|assigned
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// send another request with different resource and priority
-name|ContainerRequestEvent
-name|event3
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|3
-argument_list|,
-literal|1024
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h3"
-block|}
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event3
-argument_list|)
-expr_stmt|;
-comment|// this tells the scheduler about the requests
-comment|// as nodes are not added, no allocations
-name|assigned
-operator|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"No of assignments must be 0"
-argument_list|,
-literal|0
-argument_list|,
-name|assigned
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// update resources in scheduler
-name|nodeManager1
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager2
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager3
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|assigned
-operator|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|checkAssignments
-argument_list|(
-operator|new
-name|ContainerRequestEvent
-index|[]
-block|{
-name|event1
-block|,
-name|event2
-block|,
-name|event3
-block|}
-argument_list|,
-name|assigned
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testResource ()
-specifier|public
-name|void
-name|testResource
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testResource"
-argument_list|)
-expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|MyResourceManager
-name|rm
-init|=
-operator|new
-name|MyResourceManager
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-comment|// Submit the application
-name|RMApp
-name|app
-init|=
-name|rm
-operator|.
-name|submitApp
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|MockNM
-name|amNodeManager
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"amNM:1234"
-argument_list|,
-literal|2048
-argument_list|)
-decl_stmt|;
-name|amNodeManager
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
-name|rm
-operator|.
-name|sendAMLaunched
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|JobId
-name|jobId
-init|=
-name|MRBuilderUtils
-operator|.
-name|newJobId
-argument_list|(
-name|appAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|Job
-name|mockJob
-init|=
-name|mock
-argument_list|(
-name|Job
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|when
-argument_list|(
-name|mockJob
-operator|.
-name|getReport
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|MRBuilderUtils
-operator|.
-name|newJobReport
-argument_list|(
-name|jobId
-argument_list|,
-literal|"job"
-argument_list|,
-literal|"user"
-argument_list|,
-name|JobState
-operator|.
-name|RUNNING
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|MyContainerAllocator
-name|allocator
-init|=
-operator|new
-name|MyContainerAllocator
-argument_list|(
-name|rm
-argument_list|,
-name|conf
-argument_list|,
-name|appAttemptId
-argument_list|,
-name|mockJob
-argument_list|)
-decl_stmt|;
-comment|// add resources to scheduler
-name|MockNM
-name|nodeManager1
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h1:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager2
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h2:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager3
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h3:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-comment|// create the container request
-name|ContainerRequestEvent
-name|event1
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|1
-argument_list|,
-literal|1024
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h1"
-block|}
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event1
-argument_list|)
-expr_stmt|;
-comment|// send 1 more request with different resource req
-name|ContainerRequestEvent
-name|event2
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|2
-argument_list|,
-literal|2048
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h2"
-block|}
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event2
-argument_list|)
-expr_stmt|;
-comment|// this tells the scheduler about the requests
-comment|// as nodes are not added, no allocations
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|assigned
-init|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"No of assignments must be 0"
-argument_list|,
-literal|0
-argument_list|,
-name|assigned
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// update resources in scheduler
-name|nodeManager1
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager2
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager3
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|assigned
-operator|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|checkAssignments
-argument_list|(
-operator|new
-name|ContainerRequestEvent
-index|[]
-block|{
-name|event1
-block|,
-name|event2
-block|}
-argument_list|,
-name|assigned
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testMapReduceScheduling ()
-specifier|public
-name|void
-name|testMapReduceScheduling
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testMapReduceScheduling"
-argument_list|)
-expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|MyResourceManager
-name|rm
-init|=
-operator|new
-name|MyResourceManager
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-comment|// Submit the application
-name|RMApp
-name|app
-init|=
-name|rm
-operator|.
-name|submitApp
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|MockNM
-name|amNodeManager
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"amNM:1234"
-argument_list|,
-literal|2048
-argument_list|)
-decl_stmt|;
-name|amNodeManager
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
-name|rm
-operator|.
-name|sendAMLaunched
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|JobId
-name|jobId
-init|=
-name|MRBuilderUtils
-operator|.
-name|newJobId
-argument_list|(
-name|appAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|Job
-name|mockJob
-init|=
-name|mock
-argument_list|(
-name|Job
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|when
-argument_list|(
-name|mockJob
-operator|.
-name|getReport
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|MRBuilderUtils
-operator|.
-name|newJobReport
-argument_list|(
-name|jobId
-argument_list|,
-literal|"job"
-argument_list|,
-literal|"user"
-argument_list|,
-name|JobState
-operator|.
-name|RUNNING
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|MyContainerAllocator
-name|allocator
-init|=
-operator|new
-name|MyContainerAllocator
-argument_list|(
-name|rm
-argument_list|,
-name|conf
-argument_list|,
-name|appAttemptId
-argument_list|,
-name|mockJob
-argument_list|)
-decl_stmt|;
-comment|// add resources to scheduler
-name|MockNM
-name|nodeManager1
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h1:1234"
-argument_list|,
-literal|1024
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager2
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h2:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|MockNM
-name|nodeManager3
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"h3:1234"
-argument_list|,
-literal|10240
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-comment|// create the container request
-comment|// send MAP request
-name|ContainerRequestEvent
-name|event1
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|1
-argument_list|,
-literal|2048
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h1"
-block|,
-literal|"h2"
-block|}
-argument_list|,
-literal|true
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event1
-argument_list|)
-expr_stmt|;
-comment|// send REDUCE request
-name|ContainerRequestEvent
-name|event2
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|2
-argument_list|,
-literal|3000
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h1"
-block|}
-argument_list|,
-literal|false
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event2
-argument_list|)
-expr_stmt|;
-comment|// send MAP request
-name|ContainerRequestEvent
-name|event3
-init|=
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-literal|3
-argument_list|,
-literal|2048
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"h3"
-block|}
-argument_list|,
-literal|false
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|sendRequest
-argument_list|(
-name|event3
-argument_list|)
-expr_stmt|;
-comment|// this tells the scheduler about the requests
-comment|// as nodes are not added, no allocations
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|assigned
-init|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"No of assignments must be 0"
-argument_list|,
-literal|0
-argument_list|,
-name|assigned
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// update resources in scheduler
-name|nodeManager1
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager2
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|nodeManager3
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// Node heartbeat
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|assigned
-operator|=
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|checkAssignments
-argument_list|(
-operator|new
-name|ContainerRequestEvent
-index|[]
-block|{
-name|event1
-block|,
-name|event3
-block|}
-argument_list|,
-name|assigned
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-comment|// validate that no container is assigned to h1 as it doesn't have 2048
-for|for
-control|(
-name|TaskAttemptContainerAssignedEvent
-name|assig
-range|:
-name|assigned
-control|)
-block|{
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-literal|"Assigned count not correct"
-argument_list|,
-literal|"h1"
-operator|.
-name|equals
-argument_list|(
-name|assig
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|class|MyResourceManager
-specifier|private
-specifier|static
-class|class
-name|MyResourceManager
-extends|extends
-name|MockRM
-block|{
-DECL|method|MyResourceManager (Configuration conf)
-specifier|public
-name|MyResourceManager
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createDispatcher ()
-specifier|protected
-name|Dispatcher
-name|createDispatcher
-parameter_list|()
-block|{
-return|return
-operator|new
-name|DrainDispatcher
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|createSchedulerEventDispatcher ()
-specifier|protected
-name|EventHandler
-argument_list|<
-name|SchedulerEvent
-argument_list|>
-name|createSchedulerEventDispatcher
-parameter_list|()
-block|{
-comment|// Dispatch inline for test sanity
-return|return
-operator|new
-name|EventHandler
-argument_list|<
-name|SchedulerEvent
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|handle
-parameter_list|(
-name|SchedulerEvent
-name|event
-parameter_list|)
-block|{
-name|scheduler
-operator|.
-name|handle
-argument_list|(
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|createScheduler ()
-specifier|protected
-name|ResourceScheduler
-name|createScheduler
-parameter_list|()
-block|{
-return|return
-operator|new
-name|MyFifoScheduler
-argument_list|(
-name|getRMContext
-argument_list|()
-argument_list|)
-return|;
-block|}
-block|}
-DECL|class|FakeJob
-specifier|private
-specifier|static
-class|class
-name|FakeJob
-extends|extends
-name|JobImpl
-block|{
-DECL|method|FakeJob (ApplicationAttemptId appAttemptID, Configuration conf, int numMaps, int numReduces)
-specifier|public
-name|FakeJob
-parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptID
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|,
-name|int
-name|numMaps
-parameter_list|,
-name|int
-name|numReduces
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|appAttemptID
-argument_list|,
-name|conf
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|jobId
-operator|=
-name|MRBuilderUtils
-operator|.
-name|newJobId
-argument_list|(
-name|appAttemptID
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|numMaps
-operator|=
-name|numMaps
-expr_stmt|;
-name|this
-operator|.
-name|numReduces
-operator|=
-name|numReduces
-expr_stmt|;
-block|}
-DECL|field|setupProgress
-specifier|private
-name|float
-name|setupProgress
-decl_stmt|;
-DECL|field|mapProgress
-specifier|private
-name|float
-name|mapProgress
-decl_stmt|;
-DECL|field|reduceProgress
-specifier|private
-name|float
-name|reduceProgress
-decl_stmt|;
-DECL|field|cleanupProgress
-specifier|private
-name|float
-name|cleanupProgress
-decl_stmt|;
-DECL|field|numMaps
-specifier|private
-specifier|final
-name|int
-name|numMaps
-decl_stmt|;
-DECL|field|numReduces
-specifier|private
-specifier|final
-name|int
-name|numReduces
-decl_stmt|;
-DECL|field|jobId
-specifier|private
-name|JobId
-name|jobId
-decl_stmt|;
-DECL|method|setProgress (float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress)
-name|void
-name|setProgress
-parameter_list|(
-name|float
-name|setupProgress
-parameter_list|,
-name|float
-name|mapProgress
-parameter_list|,
-name|float
-name|reduceProgress
-parameter_list|,
-name|float
-name|cleanupProgress
-parameter_list|)
-block|{
-name|this
-operator|.
-name|setupProgress
-operator|=
-name|setupProgress
-expr_stmt|;
-name|this
-operator|.
-name|mapProgress
-operator|=
-name|mapProgress
-expr_stmt|;
-name|this
-operator|.
-name|reduceProgress
-operator|=
-name|reduceProgress
-expr_stmt|;
-name|this
-operator|.
-name|cleanupProgress
-operator|=
-name|cleanupProgress
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getTotalMaps ()
-specifier|public
-name|int
-name|getTotalMaps
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|numMaps
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getTotalReduces ()
-specifier|public
-name|int
-name|getTotalReduces
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|numReduces
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getReport ()
-specifier|public
-name|JobReport
-name|getReport
-parameter_list|()
-block|{
-return|return
-name|MRBuilderUtils
-operator|.
-name|newJobReport
-argument_list|(
-name|this
-operator|.
-name|jobId
-argument_list|,
-literal|"job"
-argument_list|,
-literal|"user"
-argument_list|,
-name|JobState
-operator|.
-name|RUNNING
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-name|this
-operator|.
-name|setupProgress
-argument_list|,
-name|this
-operator|.
-name|mapProgress
-argument_list|,
-name|this
-operator|.
-name|reduceProgress
-argument_list|,
-name|this
-operator|.
-name|cleanupProgress
-argument_list|)
-return|;
-block|}
-block|}
-annotation|@
-name|Test
-DECL|method|testReportedAppProgress ()
-specifier|public
-name|void
-name|testReportedAppProgress
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testReportedAppProgress"
-argument_list|)
-expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|MyResourceManager
-name|rm
-init|=
-operator|new
-name|MyResourceManager
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-comment|// Submit the application
-name|RMApp
-name|app
-init|=
-name|rm
-operator|.
-name|submitApp
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|MockNM
-name|amNodeManager
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"amNM:1234"
-argument_list|,
-literal|2048
-argument_list|)
-decl_stmt|;
-name|amNodeManager
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
-name|rm
-operator|.
-name|sendAMLaunched
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|FakeJob
-name|job
-init|=
-operator|new
-name|FakeJob
-argument_list|(
-name|appAttemptId
-argument_list|,
-name|conf
-argument_list|,
-literal|2
-argument_list|,
-literal|2
-argument_list|)
-decl_stmt|;
-name|MyContainerAllocator
-name|allocator
-init|=
-operator|new
-name|MyContainerAllocator
-argument_list|(
-name|rm
-argument_list|,
-name|conf
-argument_list|,
-name|appAttemptId
-argument_list|,
-name|job
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-comment|// Send heartbeat
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|0.0
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|10
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|9.5f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|80
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|41.0f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|100
-argument_list|,
-literal|20
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|59.0f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|100
-argument_list|,
-literal|100
-argument_list|,
-literal|100
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|100.0f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testReportedAppProgressWithOnlyMaps ()
-specifier|public
-name|void
-name|testReportedAppProgressWithOnlyMaps
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Running testReportedAppProgressWithOnlyMaps"
-argument_list|)
-expr_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
-name|MyResourceManager
-name|rm
-init|=
-operator|new
-name|MyResourceManager
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|rm
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-comment|// Submit the application
-name|RMApp
-name|app
-init|=
-name|rm
-operator|.
-name|submitApp
-argument_list|(
-literal|1024
-argument_list|)
-decl_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|MockNM
-name|amNodeManager
-init|=
-name|rm
-operator|.
-name|registerNode
-argument_list|(
-literal|"amNM:1234"
-argument_list|,
-literal|2048
-argument_list|)
-decl_stmt|;
-name|amNodeManager
-operator|.
-name|nodeHeartbeat
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|app
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
-name|rm
-operator|.
-name|sendAMLaunched
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|FakeJob
-name|job
-init|=
-operator|new
-name|FakeJob
-argument_list|(
-name|appAttemptId
-argument_list|,
-name|conf
-argument_list|,
-literal|2
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|MyContainerAllocator
-name|allocator
-init|=
-operator|new
-name|MyContainerAllocator
-argument_list|(
-name|rm
-argument_list|,
-name|conf
-argument_list|,
-name|appAttemptId
-argument_list|,
-name|job
-argument_list|)
-decl_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-comment|// Send heartbeat
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|0.0
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|10
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|14f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|60
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|59.0f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|setProgress
-argument_list|(
-literal|100
-argument_list|,
-literal|100
-argument_list|,
-literal|0
-argument_list|,
-literal|100
-argument_list|)
-expr_stmt|;
-name|allocator
-operator|.
-name|schedule
-argument_list|()
-expr_stmt|;
-name|dispatcher
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|100.0f
-argument_list|,
-name|app
-operator|.
-name|getProgress
-argument_list|()
-argument_list|,
-literal|0.0
-argument_list|)
-expr_stmt|;
-block|}
-DECL|class|MyFifoScheduler
-specifier|private
-specifier|static
-class|class
-name|MyFifoScheduler
-extends|extends
-name|FifoScheduler
-block|{
-DECL|method|MyFifoScheduler (RMContext rmContext)
-specifier|public
-name|MyFifoScheduler
-parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|)
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|reinitialize
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|,
-operator|new
-name|ContainerTokenSecretManager
-argument_list|()
-argument_list|,
-name|rmContext
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"add application failed with "
-argument_list|,
-name|ie
-argument_list|)
-expr_stmt|;
-assert|assert
-operator|(
-literal|false
-operator|)
-assert|;
-block|}
-block|}
-comment|// override this to copy the objects otherwise FifoScheduler updates the
-comment|// numContainers in same objects as kept by RMContainerAllocator
-annotation|@
-name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release)
-specifier|public
-specifier|synchronized
-name|Allocation
-name|allocate
-parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|,
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|ask
-parameter_list|,
-name|List
-argument_list|<
-name|ContainerId
-argument_list|>
-name|release
-parameter_list|)
-block|{
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|askCopy
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|ResourceRequest
-argument_list|>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|ResourceRequest
-name|req
-range|:
-name|ask
-control|)
-block|{
-name|ResourceRequest
-name|reqCopy
-init|=
-name|BuilderUtils
-operator|.
-name|newResourceRequest
-argument_list|(
-name|req
-operator|.
-name|getPriority
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getCapability
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getNumContainers
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|askCopy
-operator|.
-name|add
-argument_list|(
-name|reqCopy
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|super
-operator|.
-name|allocate
-argument_list|(
-name|applicationAttemptId
-argument_list|,
-name|askCopy
-argument_list|,
-name|release
-argument_list|)
-return|;
-block|}
-block|}
-DECL|method|createReq (JobId jobId, int taskAttemptId, int memory, String[] hosts)
-specifier|private
-name|ContainerRequestEvent
-name|createReq
-parameter_list|(
-name|JobId
-name|jobId
-parameter_list|,
-name|int
-name|taskAttemptId
-parameter_list|,
-name|int
-name|memory
-parameter_list|,
-name|String
-index|[]
-name|hosts
-parameter_list|)
-block|{
-return|return
-name|createReq
-argument_list|(
-name|jobId
-argument_list|,
-name|taskAttemptId
-argument_list|,
-name|memory
-argument_list|,
-name|hosts
-argument_list|,
-literal|false
-argument_list|,
-literal|false
-argument_list|)
-return|;
-block|}
-specifier|private
-name|ContainerRequestEvent
-DECL|method|createReq (JobId jobId, int taskAttemptId, int memory, String[] hosts, boolean earlierFailedAttempt, boolean reduce)
-name|createReq
-parameter_list|(
-name|JobId
-name|jobId
-parameter_list|,
-name|int
-name|taskAttemptId
-parameter_list|,
-name|int
-name|memory
-parameter_list|,
-name|String
-index|[]
-name|hosts
-parameter_list|,
-name|boolean
-name|earlierFailedAttempt
-parameter_list|,
-name|boolean
-name|reduce
-parameter_list|)
-block|{
-name|TaskId
-name|taskId
-decl_stmt|;
-if|if
-condition|(
-name|reduce
-condition|)
-block|{
-name|taskId
-operator|=
-name|MRBuilderUtils
-operator|.
-name|newTaskId
-argument_list|(
-name|jobId
-argument_list|,
-literal|0
-argument_list|,
-name|TaskType
-operator|.
-name|REDUCE
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|taskId
-operator|=
-name|MRBuilderUtils
-operator|.
-name|newTaskId
-argument_list|(
-name|jobId
-argument_list|,
-literal|0
-argument_list|,
-name|TaskType
-operator|.
-name|MAP
-argument_list|)
-expr_stmt|;
-block|}
-name|TaskAttemptId
-name|attemptId
-init|=
-name|MRBuilderUtils
-operator|.
-name|newTaskAttemptId
-argument_list|(
-name|taskId
-argument_list|,
-name|taskAttemptId
-argument_list|)
-decl_stmt|;
-name|Resource
-name|containerNeed
-init|=
-name|BuilderUtils
-operator|.
-name|newResource
-argument_list|(
-name|memory
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|earlierFailedAttempt
-condition|)
-block|{
-return|return
-name|ContainerRequestEvent
-operator|.
-name|createContainerRequestEventForFailedContainer
-argument_list|(
-name|attemptId
-argument_list|,
-name|containerNeed
-argument_list|)
-return|;
-block|}
-return|return
-operator|new
-name|ContainerRequestEvent
-argument_list|(
-name|attemptId
-argument_list|,
-name|containerNeed
-argument_list|,
-name|hosts
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-name|NetworkTopology
-operator|.
-name|DEFAULT_RACK
-block|}
-argument_list|)
-return|;
-block|}
-DECL|method|checkAssignments (ContainerRequestEvent[] requests, List<TaskAttemptContainerAssignedEvent> assignments, boolean checkHostMatch)
-specifier|private
-name|void
-name|checkAssignments
-parameter_list|(
-name|ContainerRequestEvent
-index|[]
-name|requests
-parameter_list|,
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|assignments
-parameter_list|,
-name|boolean
-name|checkHostMatch
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertNotNull
-argument_list|(
-literal|"Container not assigned"
-argument_list|,
-name|assignments
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Assigned count not correct"
-argument_list|,
-name|requests
-operator|.
-name|length
-argument_list|,
-name|assignments
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// check for uniqueness of containerIDs
-name|Set
-argument_list|<
-name|ContainerId
-argument_list|>
-name|containerIds
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|ContainerId
-argument_list|>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|TaskAttemptContainerAssignedEvent
-name|assigned
-range|:
-name|assignments
-control|)
-block|{
-name|containerIds
-operator|.
-name|add
-argument_list|(
-name|assigned
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Assigned containers must be different"
-argument_list|,
-name|assignments
-operator|.
-name|size
-argument_list|()
-argument_list|,
-name|containerIds
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// check for all assignment
-for|for
-control|(
-name|ContainerRequestEvent
-name|req
-range|:
-name|requests
-control|)
-block|{
-name|TaskAttemptContainerAssignedEvent
-name|assigned
-init|=
-literal|null
-decl_stmt|;
-for|for
-control|(
-name|TaskAttemptContainerAssignedEvent
-name|ass
-range|:
-name|assignments
-control|)
-block|{
-if|if
-condition|(
-name|ass
-operator|.
-name|getTaskAttemptID
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|req
-operator|.
-name|getAttemptID
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|assigned
-operator|=
-name|ass
-expr_stmt|;
-break|break;
-block|}
-block|}
-name|checkAssignment
-argument_list|(
-name|req
-argument_list|,
-name|assigned
-argument_list|,
-name|checkHostMatch
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|checkAssignment (ContainerRequestEvent request, TaskAttemptContainerAssignedEvent assigned, boolean checkHostMatch)
-specifier|private
-name|void
-name|checkAssignment
-parameter_list|(
-name|ContainerRequestEvent
-name|request
-parameter_list|,
-name|TaskAttemptContainerAssignedEvent
-name|assigned
-parameter_list|,
-name|boolean
-name|checkHostMatch
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertNotNull
-argument_list|(
-literal|"Nothing assigned to attempt "
-operator|+
-name|request
-operator|.
-name|getAttemptID
-argument_list|()
-argument_list|,
-name|assigned
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"assigned to wrong attempt"
-argument_list|,
-name|request
-operator|.
-name|getAttemptID
-argument_list|()
-argument_list|,
-name|assigned
-operator|.
-name|getTaskAttemptID
-argument_list|()
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|checkHostMatch
-condition|)
-block|{
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-literal|"Not assigned to requested host"
-argument_list|,
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|request
-operator|.
-name|getHosts
-argument_list|()
-argument_list|)
-operator|.
-name|contains
-argument_list|(
-name|assigned
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// Mock RMContainerAllocator
-comment|// Instead of talking to remote Scheduler,uses the local Scheduler
-DECL|class|MyContainerAllocator
-specifier|private
-specifier|static
-class|class
-name|MyContainerAllocator
-extends|extends
-name|RMContainerAllocator
-block|{
-DECL|field|events
-specifier|static
-specifier|final
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|events
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-argument_list|()
-decl_stmt|;
-DECL|field|rm
-specifier|private
-name|MyResourceManager
-name|rm
-decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-DECL|method|createAppContext ( ApplicationAttemptId appAttemptId, Job job)
-specifier|private
-specifier|static
-name|AppContext
-name|createAppContext
-parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|,
-name|Job
-name|job
-parameter_list|)
-block|{
-name|AppContext
-name|context
-init|=
-name|mock
-argument_list|(
-name|AppContext
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|ApplicationId
-name|appId
-init|=
-name|appAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
-name|when
-argument_list|(
-name|context
-operator|.
-name|getApplicationID
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|appId
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|context
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|context
-operator|.
-name|getJob
-argument_list|(
-name|isA
-argument_list|(
-name|JobId
-operator|.
-name|class
-argument_list|)
-argument_list|)
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|job
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|context
-operator|.
-name|getEventHandler
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-operator|new
-name|EventHandler
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|handle
-parameter_list|(
-name|Event
-name|event
-parameter_list|)
-block|{
-comment|// Only capture interesting events.
-if|if
-condition|(
-name|event
-operator|instanceof
-name|TaskAttemptContainerAssignedEvent
-condition|)
-block|{
-name|events
-operator|.
-name|add
-argument_list|(
-operator|(
-name|TaskAttemptContainerAssignedEvent
-operator|)
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-argument_list|)
-expr_stmt|;
-return|return
-name|context
-return|;
-block|}
-DECL|method|createMockClientService ()
-specifier|private
-specifier|static
-name|ClientService
-name|createMockClientService
-parameter_list|()
-block|{
-name|ClientService
-name|service
-init|=
-name|mock
-argument_list|(
-name|ClientService
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|when
-argument_list|(
-name|service
-operator|.
-name|getBindAddress
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
-literal|"localhost:4567"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|service
-operator|.
-name|getHttpPort
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|890
-argument_list|)
-expr_stmt|;
-return|return
-name|service
-return|;
-block|}
-DECL|method|MyContainerAllocator (MyResourceManager rm, Configuration conf, ApplicationAttemptId appAttemptId, Job job)
-name|MyContainerAllocator
-parameter_list|(
-name|MyResourceManager
-name|rm
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|,
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|,
-name|Job
-name|job
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|createMockClientService
-argument_list|()
-argument_list|,
-name|createAppContext
-argument_list|(
-name|appAttemptId
-argument_list|,
-name|job
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rm
-operator|=
-name|rm
-expr_stmt|;
-name|super
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createSchedulerProxy ()
-specifier|protected
-name|AMRMProtocol
-name|createSchedulerProxy
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|rm
-operator|.
-name|getApplicationMasterService
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|register ()
-specifier|protected
-name|void
-name|register
-parameter_list|()
-block|{
-name|super
-operator|.
-name|register
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|unregister ()
-specifier|protected
-name|void
-name|unregister
-parameter_list|()
-block|{     }
-annotation|@
-name|Override
-DECL|method|getMinContainerCapability ()
-specifier|protected
-name|Resource
-name|getMinContainerCapability
-parameter_list|()
-block|{
-return|return
-name|BuilderUtils
-operator|.
-name|newResource
-argument_list|(
-literal|1024
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getMaxContainerCapability ()
-specifier|protected
-name|Resource
-name|getMaxContainerCapability
-parameter_list|()
-block|{
-return|return
-name|BuilderUtils
-operator|.
-name|newResource
-argument_list|(
-literal|10240
-argument_list|)
-return|;
-block|}
-DECL|method|sendRequest (ContainerRequestEvent req)
-specifier|public
-name|void
-name|sendRequest
-parameter_list|(
-name|ContainerRequestEvent
-name|req
-parameter_list|)
-block|{
-name|sendRequests
-argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-operator|new
-name|ContainerRequestEvent
-index|[]
-block|{
-name|req
-block|}
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|sendRequests (List<ContainerRequestEvent> reqs)
-specifier|public
-name|void
-name|sendRequests
-parameter_list|(
-name|List
-argument_list|<
-name|ContainerRequestEvent
-argument_list|>
-name|reqs
-parameter_list|)
-block|{
-for|for
-control|(
-name|ContainerRequestEvent
-name|req
-range|:
-name|reqs
-control|)
-block|{
-name|super
-operator|.
-name|handle
-argument_list|(
-name|req
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// API to be used by tests
-DECL|method|schedule ()
-specifier|public
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|schedule
-parameter_list|()
-block|{
-comment|// run the scheduler
-try|try
-block|{
-name|super
-operator|.
-name|heartbeat
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"error in heartbeat "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-name|List
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-name|result
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|TaskAttemptContainerAssignedEvent
-argument_list|>
-argument_list|(
-name|events
-argument_list|)
-decl_stmt|;
-name|events
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-return|return
-name|result
-return|;
-block|}
-DECL|method|startAllocatorThread ()
-specifier|protected
-name|void
-name|startAllocatorThread
-parameter_list|()
-block|{
-comment|// override to NOT start thread
-block|}
-block|}
-DECL|method|main (String[] args)
-specifier|public
-specifier|static
-name|void
-name|main
-parameter_list|(
-name|String
-index|[]
-name|args
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|TestRMContainerAllocator
-name|t
-init|=
-operator|new
-name|TestRMContainerAllocator
-argument_list|()
-decl_stmt|;
-name|t
-operator|.
-name|testSimple
-argument_list|()
-expr_stmt|;
-name|t
-operator|.
-name|testResource
-argument_list|()
-expr_stmt|;
-name|t
-operator|.
-name|testMapReduceScheduling
-argument_list|()
-expr_stmt|;
-name|t
-operator|.
-name|testReportedAppProgress
-argument_list|()
-expr_stmt|;
-name|t
-operator|.
-name|testReportedAppProgressWithOnlyMaps
-argument_list|()
-expr_stmt|;
-block|}
+comment|//  private static final Log LOG = LogFactory.getLog(TestRMContainerAllocator.class);
+comment|//  private static final RecordFactory recordFactory = RecordFactoryProvider.getRecordFactory(null);
+comment|//
+comment|//  @BeforeClass
+comment|//  public static void preTests() {
+comment|//    DefaultMetricsSystem.shutdown();
+comment|//  }
+comment|//
+comment|//  @Test
+comment|//  public void testSimple() throws Exception {
+comment|//    FifoScheduler scheduler = createScheduler();
+comment|//    LocalRMContainerAllocator allocator = new LocalRMContainerAllocator(
+comment|//        scheduler, new Configuration());
+comment|//
+comment|//    //add resources to scheduler
+comment|//    RMNode nodeManager1 = addNode(scheduler, "h1", 10240);
+comment|//    RMNode nodeManager2 = addNode(scheduler, "h2", 10240);
+comment|//    RMNode nodeManager3 = addNode(scheduler, "h3", 10240);
+comment|//
+comment|//    //create the container request
+comment|//    ContainerRequestEvent event1 =
+comment|//      createReq(1, 1024, new String[]{"h1"});
+comment|//    allocator.sendRequest(event1);
+comment|//
+comment|//    //send 1 more request with different resource req
+comment|//    ContainerRequestEvent event2 = createReq(2, 1024, new String[]{"h2"});
+comment|//    allocator.sendRequest(event2);
+comment|//
+comment|//    //this tells the scheduler about the requests
+comment|//    //as nodes are not added, no allocations
+comment|//    List<TaskAttemptContainerAssignedEvent> assigned = allocator.schedule();
+comment|//    Assert.assertEquals("No of assignments must be 0", 0, assigned.size());
+comment|//
+comment|//    //send another request with different resource and priority
+comment|//    ContainerRequestEvent event3 = createReq(3, 1024, new String[]{"h3"});
+comment|//    allocator.sendRequest(event3);
+comment|//
+comment|//    //this tells the scheduler about the requests
+comment|//    //as nodes are not added, no allocations
+comment|//    assigned = allocator.schedule();
+comment|//    Assert.assertEquals("No of assignments must be 0", 0, assigned.size());
+comment|//
+comment|//    //update resources in scheduler
+comment|//    scheduler.nodeUpdate(nodeManager1); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager2); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager3); // Node heartbeat
+comment|//
+comment|//
+comment|//    assigned = allocator.schedule();
+comment|//    checkAssignments(
+comment|//        new ContainerRequestEvent[]{event1, event2, event3}, assigned, false);
+comment|//  }
+comment|//
+comment|//  //TODO: Currently Scheduler seems to have bug where it does not work
+comment|//  //for Application asking for containers with different capabilities.
+comment|//  //@Test
+comment|//  public void testResource() throws Exception {
+comment|//    FifoScheduler scheduler = createScheduler();
+comment|//    LocalRMContainerAllocator allocator = new LocalRMContainerAllocator(
+comment|//        scheduler, new Configuration());
+comment|//
+comment|//    //add resources to scheduler
+comment|//    RMNode nodeManager1 = addNode(scheduler, "h1", 10240);
+comment|//    RMNode nodeManager2 = addNode(scheduler, "h2", 10240);
+comment|//    RMNode nodeManager3 = addNode(scheduler, "h3", 10240);
+comment|//
+comment|//    //create the container request
+comment|//    ContainerRequestEvent event1 =
+comment|//      createReq(1, 1024, new String[]{"h1"});
+comment|//    allocator.sendRequest(event1);
+comment|//
+comment|//    //send 1 more request with different resource req
+comment|//    ContainerRequestEvent event2 = createReq(2, 2048, new String[]{"h2"});
+comment|//    allocator.sendRequest(event2);
+comment|//
+comment|//    //this tells the scheduler about the requests
+comment|//    //as nodes are not added, no allocations
+comment|//    List<TaskAttemptContainerAssignedEvent> assigned = allocator.schedule();
+comment|//    Assert.assertEquals("No of assignments must be 0", 0, assigned.size());
+comment|//
+comment|//    //update resources in scheduler
+comment|//    scheduler.nodeUpdate(nodeManager1); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager2); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager3); // Node heartbeat
+comment|//
+comment|//    assigned = allocator.schedule();
+comment|//    checkAssignments(
+comment|//        new ContainerRequestEvent[]{event1, event2}, assigned, false);
+comment|//  }
+comment|//
+comment|//  @Test
+comment|//  public void testMapReduceScheduling() throws Exception {
+comment|//    FifoScheduler scheduler = createScheduler();
+comment|//    Configuration conf = new Configuration();
+comment|//    LocalRMContainerAllocator allocator = new LocalRMContainerAllocator(
+comment|//        scheduler, conf);
+comment|//
+comment|//    //add resources to scheduler
+comment|//    RMNode nodeManager1 = addNode(scheduler, "h1", 1024);
+comment|//    RMNode nodeManager2 = addNode(scheduler, "h2", 10240);
+comment|//    RMNode nodeManager3 = addNode(scheduler, "h3", 10240);
+comment|//
+comment|//    //create the container request
+comment|//    //send MAP request
+comment|//    ContainerRequestEvent event1 =
+comment|//      createReq(1, 2048, new String[]{"h1", "h2"}, true, false);
+comment|//    allocator.sendRequest(event1);
+comment|//
+comment|//    //send REDUCE request
+comment|//    ContainerRequestEvent event2 = createReq(2, 3000, new String[]{"h1"}, false, true);
+comment|//    allocator.sendRequest(event2);
+comment|//
+comment|//    //send MAP request
+comment|//    ContainerRequestEvent event3 = createReq(3, 2048, new String[]{"h3"}, false, false);
+comment|//    allocator.sendRequest(event3);
+comment|//
+comment|//    //this tells the scheduler about the requests
+comment|//    //as nodes are not added, no allocations
+comment|//    List<TaskAttemptContainerAssignedEvent> assigned = allocator.schedule();
+comment|//    Assert.assertEquals("No of assignments must be 0", 0, assigned.size());
+comment|//
+comment|//    //update resources in scheduler
+comment|//    scheduler.nodeUpdate(nodeManager1); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager2); // Node heartbeat
+comment|//    scheduler.nodeUpdate(nodeManager3); // Node heartbeat
+comment|//
+comment|//    assigned = allocator.schedule();
+comment|//    checkAssignments(
+comment|//        new ContainerRequestEvent[]{event1, event3}, assigned, false);
+comment|//
+comment|//    //validate that no container is assigned to h1 as it doesn't have 2048
+comment|//    for (TaskAttemptContainerAssignedEvent assig : assigned) {
+comment|//      Assert.assertFalse("Assigned count not correct",
+comment|//          "h1".equals(assig.getContainer().getNodeId().getHost()));
+comment|//    }
+comment|//  }
+comment|//
+comment|//
+comment|//
+comment|//  private RMNode addNode(FifoScheduler scheduler,
+comment|//      String nodeName, int memory) {
+comment|//    NodeId nodeId = recordFactory.newRecordInstance(NodeId.class);
+comment|//    nodeId.setHost(nodeName);
+comment|//    nodeId.setPort(1234);
+comment|//    Resource resource = recordFactory.newRecordInstance(Resource.class);
+comment|//    resource.setMemory(memory);
+comment|//    RMNode nodeManager = new RMNodeImpl(nodeId, null, nodeName, 0, 0,
+comment|//        ResourceTrackerService.resolve(nodeName), resource);
+comment|//    scheduler.addNode(nodeManager); // Node registration
+comment|//    return nodeManager;
+comment|//  }
+comment|//
+comment|//  private FifoScheduler createScheduler() throws YarnRemoteException {
+comment|//    FifoScheduler fsc = new FifoScheduler() {
+comment|//      //override this to copy the objects
+comment|//      //otherwise FifoScheduler updates the numContainers in same objects as kept by
+comment|//      //RMContainerAllocator
+comment|//
+comment|//      @Override
+comment|//      public synchronized void allocate(ApplicationAttemptId applicationId,
+comment|//          List<ResourceRequest> ask) {
+comment|//        List<ResourceRequest> askCopy = new ArrayList<ResourceRequest>();
+comment|//        for (ResourceRequest req : ask) {
+comment|//          ResourceRequest reqCopy = recordFactory.newRecordInstance(ResourceRequest.class);
+comment|//          reqCopy.setPriority(req.getPriority());
+comment|//          reqCopy.setHostName(req.getHostName());
+comment|//          reqCopy.setCapability(req.getCapability());
+comment|//          reqCopy.setNumContainers(req.getNumContainers());
+comment|//          askCopy.add(reqCopy);
+comment|//        }
+comment|//        super.allocate(applicationId, askCopy);
+comment|//      }
+comment|//    };
+comment|//    try {
+comment|//      fsc.reinitialize(new Configuration(), new ContainerTokenSecretManager(), null);
+comment|//      fsc.addApplication(recordFactory.newRecordInstance(ApplicationId.class),
+comment|//          recordFactory.newRecordInstance(ApplicationMaster.class),
+comment|//          "test", null, null, StoreFactory.createVoidAppStore());
+comment|//    } catch(IOException ie) {
+comment|//      LOG.info("add application failed with ", ie);
+comment|//      assert(false);
+comment|//    }
+comment|//    return fsc;
+comment|//  }
+comment|//
+comment|//  private ContainerRequestEvent createReq(
+comment|//      int attemptid, int memory, String[] hosts) {
+comment|//    return createReq(attemptid, memory, hosts, false, false);
+comment|//  }
+comment|//
+comment|//  private ContainerRequestEvent createReq(
+comment|//      int attemptid, int memory, String[] hosts, boolean earlierFailedAttempt, boolean reduce) {
+comment|//    ApplicationId appId = recordFactory.newRecordInstance(ApplicationId.class);
+comment|//    appId.setClusterTimestamp(0);
+comment|//    appId.setId(0);
+comment|//    JobId jobId = recordFactory.newRecordInstance(JobId.class);
+comment|//    jobId.setAppId(appId);
+comment|//    jobId.setId(0);
+comment|//    TaskId taskId = recordFactory.newRecordInstance(TaskId.class);
+comment|//    taskId.setId(0);
+comment|//    taskId.setJobId(jobId);
+comment|//    if (reduce) {
+comment|//      taskId.setTaskType(TaskType.REDUCE);
+comment|//    } else {
+comment|//      taskId.setTaskType(TaskType.MAP);
+comment|//    }
+comment|//    TaskAttemptId attemptId = recordFactory.newRecordInstance(TaskAttemptId.class);
+comment|//    attemptId.setId(attemptid);
+comment|//    attemptId.setTaskId(taskId);
+comment|//    Resource containerNeed = recordFactory.newRecordInstance(Resource.class);
+comment|//    containerNeed.setMemory(memory);
+comment|//    if (earlierFailedAttempt) {
+comment|//      return ContainerRequestEvent.
+comment|//           createContainerRequestEventForFailedContainer(attemptId, containerNeed);
+comment|//    }
+comment|//    return new ContainerRequestEvent(attemptId,
+comment|//        containerNeed,
+comment|//        hosts, new String[] {NetworkTopology.DEFAULT_RACK});
+comment|//  }
+comment|//
+comment|//  private void checkAssignments(ContainerRequestEvent[] requests,
+comment|//      List<TaskAttemptContainerAssignedEvent> assignments,
+comment|//      boolean checkHostMatch) {
+comment|//    Assert.assertNotNull("Container not assigned", assignments);
+comment|//    Assert.assertEquals("Assigned count not correct",
+comment|//        requests.length, assignments.size());
+comment|//
+comment|//    //check for uniqueness of containerIDs
+comment|//    Set<ContainerId> containerIds = new HashSet<ContainerId>();
+comment|//    for (TaskAttemptContainerAssignedEvent assigned : assignments) {
+comment|//      containerIds.add(assigned.getContainer().getId());
+comment|//    }
+comment|//    Assert.assertEquals("Assigned containers must be different",
+comment|//        assignments.size(), containerIds.size());
+comment|//
+comment|//    //check for all assignment
+comment|//    for (ContainerRequestEvent req : requests) {
+comment|//      TaskAttemptContainerAssignedEvent assigned = null;
+comment|//      for (TaskAttemptContainerAssignedEvent ass : assignments) {
+comment|//        if (ass.getTaskAttemptID().equals(req.getAttemptID())){
+comment|//          assigned = ass;
+comment|//          break;
+comment|//        }
+comment|//      }
+comment|//      checkAssignment(req, assigned, checkHostMatch);
+comment|//    }
+comment|//  }
+comment|//
+comment|//  private void checkAssignment(ContainerRequestEvent request,
+comment|//      TaskAttemptContainerAssignedEvent assigned, boolean checkHostMatch) {
+comment|//    Assert.assertNotNull("Nothing assigned to attempt " + request.getAttemptID(),
+comment|//        assigned);
+comment|//    Assert.assertEquals("assigned to wrong attempt", request.getAttemptID(),
+comment|//        assigned.getTaskAttemptID());
+comment|//    if (checkHostMatch) {
+comment|//      Assert.assertTrue("Not assigned to requested host", Arrays.asList(
+comment|//          request.getHosts()).contains(
+comment|//          assigned.getContainer().getNodeId().toString()));
+comment|//    }
+comment|//
+comment|//  }
+comment|//
+comment|//  //Mock RMContainerAllocator
+comment|//  //Instead of talking to remote Scheduler,uses the local Scheduler
+comment|//  public static class LocalRMContainerAllocator extends RMContainerAllocator {
+comment|//    private static final List<TaskAttemptContainerAssignedEvent> events =
+comment|//      new ArrayList<TaskAttemptContainerAssignedEvent>();
+comment|//
+comment|//    public static class AMRMProtocolImpl implements AMRMProtocol {
+comment|//
+comment|//      private ResourceScheduler resourceScheduler;
+comment|//
+comment|//      public AMRMProtocolImpl(ResourceScheduler resourceScheduler) {
+comment|//        this.resourceScheduler = resourceScheduler;
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public RegisterApplicationMasterResponse registerApplicationMaster(RegisterApplicationMasterRequest request) throws YarnRemoteException {
+comment|//        RegisterApplicationMasterResponse response = recordFactory.newRecordInstance(RegisterApplicationMasterResponse.class);
+comment|//        return response;
+comment|//      }
+comment|//
+comment|//      public AllocateResponse allocate(AllocateRequest request) throws YarnRemoteException {
+comment|//        List<ResourceRequest> ask = request.getAskList();
+comment|//        List<Container> release = request.getReleaseList();
+comment|//        try {
+comment|//          AMResponse response = recordFactory.newRecordInstance(AMResponse.class);
+comment|//          Allocation allocation = resourceScheduler.allocate(request.getApplicationAttemptId(), ask);
+comment|//          response.addAllNewContainers(allocation.getContainers());
+comment|//          response.setAvailableResources(allocation.getResourceLimit());
+comment|//          AllocateResponse allocateResponse = recordFactory.newRecordInstance(AllocateResponse.class);
+comment|//          allocateResponse.setAMResponse(response);
+comment|//          return allocateResponse;
+comment|//        } catch(IOException ie) {
+comment|//          throw RPCUtil.getRemoteException(ie);
+comment|//        }
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public FinishApplicationMasterResponse finishApplicationMaster(FinishApplicationMasterRequest request) throws YarnRemoteException {
+comment|//        FinishApplicationMasterResponse response = recordFactory.newRecordInstance(FinishApplicationMasterResponse.class);
+comment|//        return response;
+comment|//      }
+comment|//
+comment|//    }
+comment|//
+comment|//    private ResourceScheduler scheduler;
+comment|//    LocalRMContainerAllocator(ResourceScheduler scheduler, Configuration conf) {
+comment|//      super(null, new TestContext(events));
+comment|//      this.scheduler = scheduler;
+comment|//      super.init(conf);
+comment|//      super.start();
+comment|//    }
+comment|//
+comment|//    protected AMRMProtocol createSchedulerProxy() {
+comment|//      return new AMRMProtocolImpl(scheduler);
+comment|//    }
+comment|//
+comment|//    @Override
+comment|//    protected void register() {}
+comment|//    @Override
+comment|//    protected void unregister() {}
+comment|//
+comment|//    @Override
+comment|//    protected Resource getMinContainerCapability() {
+comment|//      Resource res = recordFactory.newRecordInstance(Resource.class);
+comment|//      res.setMemory(1024);
+comment|//      return res;
+comment|//    }
+comment|//
+comment|//    @Override
+comment|//    protected Resource getMaxContainerCapability() {
+comment|//      Resource res = recordFactory.newRecordInstance(Resource.class);
+comment|//      res.setMemory(10240);
+comment|//      return res;
+comment|//    }
+comment|//
+comment|//    public void sendRequest(ContainerRequestEvent req) {
+comment|//      sendRequests(Arrays.asList(new ContainerRequestEvent[]{req}));
+comment|//    }
+comment|//
+comment|//    public void sendRequests(List<ContainerRequestEvent> reqs) {
+comment|//      for (ContainerRequestEvent req : reqs) {
+comment|//        handle(req);
+comment|//      }
+comment|//    }
+comment|//
+comment|//    //API to be used by tests
+comment|//    public List<TaskAttemptContainerAssignedEvent> schedule() {
+comment|//      //run the scheduler
+comment|//      try {
+comment|//        heartbeat();
+comment|//      } catch (Exception e) {
+comment|//        LOG.error("error in heartbeat ", e);
+comment|//        throw new YarnException(e);
+comment|//      }
+comment|//
+comment|//      List<TaskAttemptContainerAssignedEvent> result = new ArrayList(events);
+comment|//      events.clear();
+comment|//      return result;
+comment|//    }
+comment|//
+comment|//    protected void startAllocatorThread() {
+comment|//      //override to NOT start thread
+comment|//    }
+comment|//
+comment|//    static class TestContext implements AppContext {
+comment|//      private List<TaskAttemptContainerAssignedEvent> events;
+comment|//      TestContext(List<TaskAttemptContainerAssignedEvent> events) {
+comment|//        this.events = events;
+comment|//      }
+comment|//      @Override
+comment|//      public Map<JobId, Job> getAllJobs() {
+comment|//        return null;
+comment|//      }
+comment|//      @Override
+comment|//      public ApplicationAttemptId getApplicationAttemptId() {
+comment|//        return recordFactory.newRecordInstance(ApplicationAttemptId.class);
+comment|//      }
+comment|//      @Override
+comment|//      public ApplicationId getApplicationID() {
+comment|//        return recordFactory.newRecordInstance(ApplicationId.class);
+comment|//      }
+comment|//      @Override
+comment|//      public EventHandler getEventHandler() {
+comment|//        return new EventHandler() {
+comment|//          @Override
+comment|//          public void handle(Event event) {
+comment|//            events.add((TaskAttemptContainerAssignedEvent) event);
+comment|//          }
+comment|//        };
+comment|//      }
+comment|//      @Override
+comment|//      public Job getJob(JobId jobID) {
+comment|//        return null;
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public String getUser() {
+comment|//        return null;
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public Clock getClock() {
+comment|//        return null;
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public String getApplicationName() {
+comment|//        return null;
+comment|//      }
+comment|//
+comment|//      @Override
+comment|//      public long getStartTime() {
+comment|//        return 0;
+comment|//      }
+comment|//    }
+comment|//  }
+comment|//
+comment|//  public static void main(String[] args) throws Exception {
+comment|//    TestRMContainerAllocator t = new TestRMContainerAllocator();
+comment|//    t.testSimple();
+comment|//    //t.testResource();
+comment|//    t.testMapReduceScheduling();
+comment|//  }
 block|}
 end_class
 

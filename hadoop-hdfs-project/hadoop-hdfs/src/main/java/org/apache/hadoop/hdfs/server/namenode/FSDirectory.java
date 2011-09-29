@@ -844,7 +844,7 @@ literal|0755
 argument_list|)
 argument_list|)
 argument_list|,
-name|Long
+name|Integer
 operator|.
 name|MAX_VALUE
 argument_list|,

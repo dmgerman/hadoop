@@ -1753,44 +1753,6 @@ argument_list|(
 name|methodName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|methodDescriptor
-operator|==
-literal|null
-condition|)
-block|{
-name|String
-name|msg
-init|=
-literal|"Unknown method "
-operator|+
-name|methodName
-operator|+
-literal|" called on "
-operator|+
-name|protocol
-operator|+
-literal|" protocol."
-decl_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-return|return
-name|handleException
-argument_list|(
-operator|new
-name|IOException
-argument_list|(
-name|msg
-argument_list|)
-argument_list|)
-return|;
-block|}
 name|Message
 name|prototype
 init|=

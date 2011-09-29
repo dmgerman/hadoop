@@ -2182,28 +2182,6 @@ name|getFSImage
 argument_list|()
 return|;
 block|}
-comment|/**    * get NameSpace quota.    */
-DECL|method|getNSQuota (FSNamesystem ns)
-specifier|public
-specifier|static
-name|long
-name|getNSQuota
-parameter_list|(
-name|FSNamesystem
-name|ns
-parameter_list|)
-block|{
-return|return
-name|ns
-operator|.
-name|dir
-operator|.
-name|rootDir
-operator|.
-name|getNsQuota
-argument_list|()
-return|;
-block|}
 block|}
 end_class
 

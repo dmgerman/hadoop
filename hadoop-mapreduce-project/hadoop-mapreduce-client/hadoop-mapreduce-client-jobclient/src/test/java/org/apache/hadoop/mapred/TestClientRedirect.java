@@ -862,7 +862,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|KillApplicationRequest
+name|FinishApplicationRequest
 import|;
 end_import
 
@@ -880,7 +880,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|KillApplicationResponse
+name|FinishApplicationResponse
 import|;
 end_import
 
@@ -1042,7 +1042,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationRequest
+name|GetNewApplicationIdRequest
 import|;
 end_import
 
@@ -1060,7 +1060,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationResponse
+name|GetNewApplicationIdResponse
 import|;
 end_import
 
@@ -2195,12 +2195,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplication (GetNewApplicationRequest request)
+DECL|method|getNewApplicationId (GetNewApplicationIdRequest request)
 specifier|public
-name|GetNewApplicationResponse
-name|getNewApplication
+name|GetNewApplicationIdResponse
+name|getNewApplicationId
 parameter_list|(
-name|GetNewApplicationRequest
+name|GetNewApplicationIdRequest
 name|request
 parameter_list|)
 throws|throws
@@ -2336,48 +2336,6 @@ argument_list|(
 literal|"TestClientRedirect-user"
 argument_list|)
 expr_stmt|;
-name|application
-operator|.
-name|setName
-argument_list|(
-literal|"N/A"
-argument_list|)
-expr_stmt|;
-name|application
-operator|.
-name|setQueue
-argument_list|(
-literal|"N/A"
-argument_list|)
-expr_stmt|;
-name|application
-operator|.
-name|setStartTime
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|application
-operator|.
-name|setFinishTime
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|application
-operator|.
-name|setTrackingUrl
-argument_list|(
-literal|"N/A"
-argument_list|)
-expr_stmt|;
-name|application
-operator|.
-name|setDiagnostics
-argument_list|(
-literal|"N/A"
-argument_list|)
-expr_stmt|;
 name|GetApplicationReportResponse
 name|response
 init|=
@@ -2430,26 +2388,19 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|forceKillApplication ( KillApplicationRequest request)
+DECL|method|finishApplication ( FinishApplicationRequest request)
 specifier|public
-name|KillApplicationResponse
-name|forceKillApplication
+name|FinishApplicationResponse
+name|finishApplication
 parameter_list|(
-name|KillApplicationRequest
+name|FinishApplicationRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
 return|return
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
-name|KillApplicationResponse
-operator|.
-name|class
-argument_list|)
+literal|null
 return|;
 block|}
 annotation|@
@@ -3043,14 +2994,7 @@ throws|throws
 name|YarnRemoteException
 block|{
 return|return
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
-name|KillJobResponse
-operator|.
-name|class
-argument_list|)
+literal|null
 return|;
 block|}
 annotation|@

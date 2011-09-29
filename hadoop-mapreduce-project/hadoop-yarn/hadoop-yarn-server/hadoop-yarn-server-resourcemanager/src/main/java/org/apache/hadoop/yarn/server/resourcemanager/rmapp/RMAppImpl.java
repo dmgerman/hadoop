@@ -324,22 +324,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
-operator|.
-name|EventHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -825,16 +809,6 @@ specifier|private
 name|RMAppAttempt
 name|currentAttempt
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-DECL|field|handler
-specifier|private
-name|EventHandler
-name|handler
-decl_stmt|;
 DECL|field|FINAL_TRANSITION
 specifier|private
 specifier|static
@@ -878,6 +852,8 @@ name|RMAppState
 operator|.
 name|NEW
 argument_list|)
+comment|// TODO - ATTEMPT_KILLED not sent right now but should handle if
+comment|// attempt starts sending
 comment|// Transitions from NEW state
 operator|.
 name|addTransition
@@ -987,7 +963,7 @@ operator|.
 name|KILL
 argument_list|,
 operator|new
-name|KillAppAndAttemptTransition
+name|AppKilledTransition
 argument_list|()
 argument_list|)
 comment|// Transitions from ACCEPTED state
@@ -1054,7 +1030,7 @@ operator|.
 name|KILL
 argument_list|,
 operator|new
-name|KillAppAndAttemptTransition
+name|AppKilledTransition
 argument_list|()
 argument_list|)
 comment|// Transitions from RUNNING state
@@ -1123,7 +1099,7 @@ operator|.
 name|KILL
 argument_list|,
 operator|new
-name|KillAppAndAttemptTransition
+name|AppKilledTransition
 argument_list|()
 argument_list|)
 comment|// Transitions from FINISHED state
@@ -1271,15 +1247,6 @@ operator|=
 name|rmContext
 operator|.
 name|getDispatcher
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|handler
-operator|=
-name|dispatcher
-operator|.
-name|getEventHandler
 argument_list|()
 expr_stmt|;
 name|this
@@ -1879,10 +1846,6 @@ argument_list|,
 name|this
 operator|.
 name|startTime
-argument_list|,
-name|this
-operator|.
-name|finishTime
 argument_list|)
 return|;
 block|}
@@ -2246,7 +2209,10 @@ name|currentAttempt
 operator|=
 name|attempt
 expr_stmt|;
-name|handler
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
 operator|.
 name|handle
 argument_list|(
@@ -2321,13 +2287,12 @@ block|}
 DECL|class|AppKilledTransition
 specifier|private
 specifier|static
+specifier|final
 class|class
 name|AppKilledTransition
 extends|extends
 name|FinalTransition
 block|{
-annotation|@
-name|Override
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
 specifier|public
 name|void
@@ -2360,66 +2325,6 @@ argument_list|)
 expr_stmt|;
 block|}
 empty_stmt|;
-block|}
-DECL|class|KillAppAndAttemptTransition
-specifier|private
-specifier|static
-class|class
-name|KillAppAndAttemptTransition
-extends|extends
-name|AppKilledTransition
-block|{
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
-name|Override
-DECL|method|transition (RMAppImpl app, RMAppEvent event)
-specifier|public
-name|void
-name|transition
-parameter_list|(
-name|RMAppImpl
-name|app
-parameter_list|,
-name|RMAppEvent
-name|event
-parameter_list|)
-block|{
-name|app
-operator|.
-name|handler
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppAttemptEvent
-argument_list|(
-name|app
-operator|.
-name|currentAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|,
-name|RMAppAttemptEventType
-operator|.
-name|KILL
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|transition
-argument_list|(
-name|app
-argument_list|,
-name|event
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|class|AppRejectedTransition
 specifier|private
@@ -2573,7 +2478,10 @@ control|)
 block|{
 name|app
 operator|.
-name|handler
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
 operator|.
 name|handle
 argument_list|(
@@ -2600,7 +2508,10 @@ argument_list|()
 expr_stmt|;
 name|app
 operator|.
-name|handler
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
 operator|.
 name|handle
 argument_list|(
@@ -2671,16 +2582,6 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-name|RMAppFailedAttemptEvent
-name|failedEvent
-init|=
-operator|(
-operator|(
-name|RMAppFailedAttemptEvent
-operator|)
-name|event
-operator|)
-decl_stmt|;
 if|if
 condition|(
 name|app
@@ -2711,14 +2612,7 @@ name|app
 operator|.
 name|maxRetries
 operator|+
-literal|" times due to "
-operator|+
-name|failedEvent
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|+
-literal|". Failing the application."
+literal|" times. Failing the application."
 decl_stmt|;
 name|LOG
 operator|.

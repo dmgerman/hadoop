@@ -190,24 +190,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -483,26 +465,6 @@ operator|.
 name|rmapp
 operator|.
 name|RMAppEventType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmapp
-operator|.
-name|RMAppFailedAttemptEvent
 import|;
 end_import
 
@@ -1059,8 +1021,6 @@ DECL|field|host
 specifier|private
 name|String
 name|host
-init|=
-literal|"N/A"
 decl_stmt|;
 DECL|field|rpcPort
 specifier|private
@@ -1071,15 +1031,11 @@ DECL|field|trackingUrl
 specifier|private
 name|String
 name|trackingUrl
-init|=
-literal|"N/A"
 decl_stmt|;
 DECL|field|finalState
 specifier|private
 name|String
 name|finalState
-init|=
-literal|"N/A"
 decl_stmt|;
 DECL|field|diagnostics
 specifier|private
@@ -1157,14 +1113,6 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|KILL
-argument_list|,
-operator|new
-name|BaseFinalTransition
-argument_list|(
-name|RMAppAttemptState
-operator|.
-name|KILLED
-argument_list|)
 argument_list|)
 comment|// Transitions from SUBMITTED state
 operator|.
@@ -2046,7 +1994,7 @@ annotation|@
 name|Override
 DECL|method|getDiagnostics ()
 specifier|public
-name|String
+name|StringBuilder
 name|getDiagnostics
 parameter_list|()
 block|{
@@ -2063,9 +2011,6 @@ return|return
 name|this
 operator|.
 name|diagnostics
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 finally|finally
@@ -2073,45 +2018,6 @@ block|{
 name|this
 operator|.
 name|readLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-DECL|method|setDiagnostics (String message)
-specifier|public
-name|void
-name|setDiagnostics
-parameter_list|(
-name|String
-name|message
-parameter_list|)
-block|{
-name|this
-operator|.
-name|writeLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|this
-operator|.
-name|diagnostics
-operator|.
-name|append
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|this
-operator|.
-name|writeLock
 operator|.
 name|unlock
 argument_list|()
@@ -2563,22 +2469,6 @@ name|RMAppAttemptRejectedEvent
 operator|)
 name|event
 decl_stmt|;
-comment|// Save the diagnostic message
-name|String
-name|message
-init|=
-name|rejectedEvent
-operator|.
-name|getMessage
-argument_list|()
-decl_stmt|;
-name|appAttempt
-operator|.
-name|setDiagnostics
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
 comment|// Send the rejection event to app
 name|appAttempt
 operator|.
@@ -2597,7 +2487,10 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|,
-name|message
+name|rejectedEvent
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2709,6 +2602,21 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"About to request resources for AM of "
+operator|+
+name|appAttempt
+operator|.
+name|applicationAttemptId
+operator|+
+literal|" required "
+operator|+
+name|request
+argument_list|)
+expr_stmt|;
 name|appAttempt
 operator|.
 name|scheduler
@@ -2864,19 +2772,8 @@ name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 comment|// Tell the application and the scheduler
-name|ApplicationId
-name|applicationId
-init|=
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
-name|RMAppEvent
-name|appEvent
+name|RMAppEventType
+name|eventToApp
 init|=
 literal|null
 decl_stmt|;
@@ -2888,74 +2785,41 @@ block|{
 case|case
 name|FINISHED
 case|:
-block|{
-name|appEvent
+name|eventToApp
 operator|=
-operator|new
-name|RMAppEvent
-argument_list|(
-name|applicationId
-argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FINISHED
-argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|KILLED
 case|:
-block|{
-name|appEvent
+name|eventToApp
 operator|=
-operator|new
-name|RMAppFailedAttemptEvent
-argument_list|(
-name|applicationId
-argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_KILLED
-argument_list|,
-literal|"Application killed by user."
-argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|FAILED
 case|:
-block|{
-name|appEvent
+name|eventToApp
 operator|=
-operator|new
-name|RMAppFailedAttemptEvent
-argument_list|(
-name|applicationId
-argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-name|appAttempt
-operator|.
-name|getDiagnostics
-argument_list|()
-argument_list|)
 expr_stmt|;
-block|}
 break|break;
 default|default:
-block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
 literal|"Cannot get this state!! Error!!"
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 name|appAttempt
@@ -2964,7 +2828,18 @@ name|eventHandler
 operator|.
 name|handle
 argument_list|(
-name|appEvent
+operator|new
+name|RMAppEvent
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|eventToApp
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|appAttempt
@@ -3282,16 +3157,6 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
-name|RMAppAttemptContainerFinishedEvent
-name|finishEvent
-init|=
-operator|(
-operator|(
-name|RMAppAttemptContainerFinishedEvent
-operator|)
-name|event
-operator|)
-decl_stmt|;
 comment|// UnRegister from AMLivelinessMonitor
 name|appAttempt
 operator|.
@@ -3308,15 +3173,17 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Setup diagnostic message
-name|ContainerStatus
-name|status
-init|=
-name|finishEvent
+comment|// Tell the app, scheduler
+name|super
 operator|.
-name|getContainerStatus
-argument_list|()
-decl_stmt|;
+name|transition
+argument_list|(
+name|appAttempt
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+comment|// Use diagnostic saying crashed.
 name|appAttempt
 operator|.
 name|diagnostics
@@ -3330,35 +3197,7 @@ operator|.
 name|getAppAttemptId
 argument_list|()
 operator|+
-literal|" exited with "
-operator|+
-literal|" exitCode: "
-operator|+
-name|status
-operator|.
-name|getExitStatus
-argument_list|()
-operator|+
-literal|" due to: "
-operator|+
-name|status
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|+
-literal|"."
-operator|+
-literal|"Failing this attempt."
-argument_list|)
-expr_stmt|;
-comment|// Tell the app, scheduler
-name|super
-operator|.
-name|transition
-argument_list|(
-name|appAttempt
-argument_list|,
-name|finishEvent
+literal|" exited. Failing this attempt."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3399,12 +3238,6 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
-name|appAttempt
-operator|.
-name|progress
-operator|=
-literal|1.0f
-expr_stmt|;
 comment|// Tell the app and the scheduler
 name|super
 operator|.
@@ -3715,41 +3548,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-comment|// Setup diagnostic message
-name|appAttempt
-operator|.
-name|diagnostics
-operator|.
-name|append
-argument_list|(
-literal|"AM Container for "
-operator|+
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-operator|+
-literal|" exited with "
-operator|+
-literal|" exitCode: "
-operator|+
-name|containerStatus
-operator|.
-name|getExitStatus
-argument_list|()
-operator|+
-literal|" due to: "
-operator|+
-name|containerStatus
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|+
-literal|"."
-operator|+
-literal|"Failing this attempt."
-argument_list|)
-expr_stmt|;
 operator|new
 name|FinalTransition
 argument_list|(

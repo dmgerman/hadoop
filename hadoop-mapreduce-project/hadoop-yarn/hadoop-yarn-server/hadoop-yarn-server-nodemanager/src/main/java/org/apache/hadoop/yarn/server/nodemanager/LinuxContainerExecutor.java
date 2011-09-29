@@ -1027,20 +1027,8 @@ operator|new
 name|ShellCommandExecutor
 argument_list|(
 name|commandArray
-argument_list|,
-literal|null
-argument_list|,
-comment|// NM's cwd
-name|container
-operator|.
-name|getLaunchContext
-argument_list|()
-operator|.
-name|getEnvironment
-argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// sanitized env
 name|launchCommandObjs
 operator|.
 name|put

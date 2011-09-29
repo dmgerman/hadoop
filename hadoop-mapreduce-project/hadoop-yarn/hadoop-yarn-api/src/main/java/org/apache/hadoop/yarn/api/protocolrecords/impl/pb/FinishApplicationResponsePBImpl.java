@@ -38,7 +38,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|KillApplicationResponse
+name|FinishApplicationResponse
 import|;
 end_import
 
@@ -74,34 +74,34 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 import|;
 end_import
 
 begin_class
-DECL|class|KillApplicationResponsePBImpl
+DECL|class|FinishApplicationResponsePBImpl
 specifier|public
 class|class
-name|KillApplicationResponsePBImpl
+name|FinishApplicationResponsePBImpl
 extends|extends
 name|ProtoBase
 argument_list|<
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 argument_list|>
 implements|implements
-name|KillApplicationResponse
+name|FinishApplicationResponse
 block|{
 DECL|field|proto
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 name|proto
 init|=
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 operator|.
 name|Builder
 name|builder
@@ -114,24 +114,24 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|KillApplicationResponsePBImpl ()
+DECL|method|FinishApplicationResponsePBImpl ()
 specifier|public
-name|KillApplicationResponsePBImpl
+name|FinishApplicationResponsePBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|KillApplicationResponsePBImpl (KillApplicationResponseProto proto)
+DECL|method|FinishApplicationResponsePBImpl (FinishApplicationResponseProto proto)
 specifier|public
-name|KillApplicationResponsePBImpl
+name|FinishApplicationResponsePBImpl
 parameter_list|(
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 name|proto
 parameter_list|)
 block|{
@@ -148,7 +148,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 name|getProto
 parameter_list|()
 block|{
@@ -188,7 +188,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|KillApplicationResponseProto
+name|FinishApplicationResponseProto
 operator|.
 name|newBuilder
 argument_list|(

@@ -336,7 +336,7 @@ name|WebApps
 operator|.
 name|$for
 argument_list|(
-literal|"node"
+literal|"yarn"
 argument_list|,
 name|Context
 operator|.

@@ -68,8 +68,26 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * aborting a submitted application.</p>  *  *<p>Currently it's empty.</p>  *   * @see ClientRMProtocol#forceKillApplication(KillApplicationRequest)  */
+comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   * @see ClientRMProtocol#getNewApplicationId(GetNewApplicationIdRequest)  */
 end_comment
 
 begin_interface
@@ -77,10 +95,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|KillApplicationResponse
+DECL|interface|GetNewApplicationIdRequest
 specifier|public
 interface|interface
-name|KillApplicationResponse
+name|GetNewApplicationIdRequest
 block|{  }
 end_interface
 

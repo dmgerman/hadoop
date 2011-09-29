@@ -47,6 +47,16 @@ operator|.
 name|Op
 argument_list|>
 block|{
+comment|/** Parameter name. */
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+literal|"deleteOp"
+decl_stmt|;
 comment|/** Delete operations. */
 DECL|enum|Op
 specifier|public

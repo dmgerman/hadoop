@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * "License"); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */
 end_comment
 
 begin_package
@@ -41,16 +41,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -200,6 +190,22 @@ name|yarn
 operator|.
 name|event
 operator|.
+name|Dispatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
 name|EventHandler
 import|;
 end_import
@@ -290,9 +296,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|ApplicationsStore
-operator|.
-name|ApplicationStore
+name|MemStore
 import|;
 end_import
 
@@ -312,27 +316,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|MemStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|ApplicationsStore
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resourcetracker
-operator|.
-name|InlineDispatcher
+name|ApplicationStore
 import|;
 end_import
 
@@ -438,28 +424,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmapp
-operator|.
-name|attempt
-operator|.
-name|RMAppAttemptState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmcontainer
 operator|.
 name|ContainerAllocationExpirer
@@ -502,16 +466,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -523,6 +477,7 @@ class|class
 name|TestRMAppTransitions
 block|{
 DECL|field|LOG
+specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -558,11 +513,6 @@ name|appId
 init|=
 literal|1
 decl_stmt|;
-DECL|field|rmDispatcher
-specifier|private
-name|AsyncDispatcher
-name|rmDispatcher
-decl_stmt|;
 comment|// ignore all the RM application attempt events
 DECL|class|TestApplicationAttemptEventDispatcher
 specifier|private
@@ -576,27 +526,11 @@ argument_list|<
 name|RMAppAttemptEvent
 argument_list|>
 block|{
-DECL|field|rmContext
-specifier|private
-specifier|final
-name|RMContext
-name|rmContext
-decl_stmt|;
-DECL|method|TestApplicationAttemptEventDispatcher (RMContext rmContext)
+DECL|method|TestApplicationAttemptEventDispatcher ()
 specifier|public
 name|TestApplicationAttemptEventDispatcher
-parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rmContext
-operator|=
-name|rmContext
-expr_stmt|;
-block|}
+parameter_list|()
+block|{     }
 annotation|@
 name|Override
 DECL|method|handle (RMAppAttemptEvent event)
@@ -607,85 +541,7 @@ parameter_list|(
 name|RMAppAttemptEvent
 name|event
 parameter_list|)
-block|{
-name|ApplicationId
-name|appId
-init|=
-name|event
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
-name|RMApp
-name|rmApp
-init|=
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|appId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|rmApp
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|rmApp
-operator|.
-name|getRMAppAttempt
-argument_list|(
-name|event
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-argument_list|)
-operator|.
-name|handle
-argument_list|(
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Error in handling event type "
-operator|+
-name|event
-operator|.
-name|getType
-argument_list|()
-operator|+
-literal|" for application "
-operator|+
-name|appId
-argument_list|,
-name|t
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
+block|{     }
 block|}
 comment|// handle all the RM application events - same as in ResourceManager.java
 DECL|class|TestApplicationEventDispatcher
@@ -810,13 +666,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|AsyncDispatcher
-name|rmDispatcher
-init|=
-operator|new
-name|AsyncDispatcher
-argument_list|()
-decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -824,12 +673,13 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+name|Dispatcher
 name|rmDispatcher
-operator|=
+init|=
 operator|new
-name|InlineDispatcher
+name|AsyncDispatcher
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|ContainerAllocationExpirer
 name|containerAllocationExpirer
 init|=
@@ -878,11 +728,7 @@ name|class
 argument_list|,
 operator|new
 name|TestApplicationAttemptEventDispatcher
-argument_list|(
-name|this
-operator|.
-name|rmContext
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rmDispatcher
@@ -899,18 +745,6 @@ argument_list|(
 name|rmContext
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|rmDispatcher
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|rmDispatcher
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createNewTestApp ()
@@ -1410,40 +1244,6 @@ argument_list|,
 name|diag
 operator|.
 name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|assertAppAndAttemptKilled (RMApp application)
-specifier|private
-specifier|static
-name|void
-name|assertAppAndAttemptKilled
-parameter_list|(
-name|RMApp
-name|application
-parameter_list|)
-block|{
-name|assertKilled
-argument_list|(
-name|application
-argument_list|)
-expr_stmt|;
-comment|/* also check if the attempt is killed */
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-name|RMAppAttemptState
-operator|.
-name|KILLED
-argument_list|,
-name|application
-operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getAppAttemptState
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1955,23 +1755,6 @@ operator|.
 name|KILL
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|putIfAbsent
-argument_list|(
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-name|application
-argument_list|)
-expr_stmt|;
 name|application
 operator|.
 name|handle
@@ -1979,7 +1762,7 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
-name|assertAppAndAttemptKilled
+name|assertKilled
 argument_list|(
 name|application
 argument_list|)
@@ -2028,7 +1811,7 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppFailedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
@@ -2038,8 +1821,6 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -2090,18 +1871,12 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
-name|String
-name|message
-init|=
-literal|"Test fail"
-decl_stmt|;
+comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED after max retries
 name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppFailedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
@@ -2111,8 +1886,6 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-name|message
 argument_list|)
 decl_stmt|;
 name|application
@@ -2126,10 +1899,6 @@ name|assertFailed
 argument_list|(
 name|application
 argument_list|,
-literal|".*"
-operator|+
-name|message
-operator|+
 literal|".*Failing the application.*"
 argument_list|)
 expr_stmt|;
@@ -2311,7 +2080,7 @@ name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppFailedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
@@ -2321,8 +2090,6 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -2427,13 +2194,12 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
+comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED after max retries
 name|RMAppEvent
 name|event
 init|=
 operator|new
-name|RMAppFailedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
@@ -2443,8 +2209,6 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 name|application
@@ -2678,7 +2442,7 @@ comment|// KILLED => KILLED event RMAppEventType.ATTEMPT_FAILED
 name|event
 operator|=
 operator|new
-name|RMAppFailedAttemptEvent
+name|RMAppEvent
 argument_list|(
 name|application
 operator|.
@@ -2688,8 +2452,6 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
-argument_list|,
-literal|""
 argument_list|)
 expr_stmt|;
 name|application
