@@ -1897,7 +1897,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:1}"
+literal|"{autoHeight:false, active:2}"
 argument_list|)
 expr_stmt|;
 comment|//Set up the java script and CSS for the attempts table

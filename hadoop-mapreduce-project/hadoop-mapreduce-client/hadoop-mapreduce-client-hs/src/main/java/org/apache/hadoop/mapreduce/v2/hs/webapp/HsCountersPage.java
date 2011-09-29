@@ -23,6 +23,48 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|AMParams
+operator|.
+name|TASK_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|JQueryUI
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -55,26 +97,6 @@ operator|.
 name|webapp
 operator|.
 name|SubView
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|*
 import|;
 end_import
 
@@ -112,6 +134,36 @@ argument_list|(
 name|html
 argument_list|)
 expr_stmt|;
+name|String
+name|tid
+init|=
+name|$
+argument_list|(
+name|TASK_ID
+argument_list|)
+decl_stmt|;
+name|String
+name|activeNav
+init|=
+literal|"2"
+decl_stmt|;
+if|if
+condition|(
+name|tid
+operator|==
+literal|null
+operator|||
+name|tid
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|activeNav
+operator|=
+literal|"1"
+expr_stmt|;
+block|}
 name|set
 argument_list|(
 name|initID
@@ -121,7 +173,11 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:1}"
+literal|"{autoHeight:false, active:"
+operator|+
+name|activeNav
+operator|+
+literal|"}"
 argument_list|)
 expr_stmt|;
 name|set
@@ -165,11 +221,11 @@ name|style
 argument_list|(
 literal|"#counters, .dt-counters { table-layout: fixed }"
 argument_list|,
-literal|"#counters th { overflow: hidden; vertical-align: center }"
+literal|"#counters th { overflow: hidden; vertical-align: middle }"
 argument_list|,
 literal|"#counters .dataTables_wrapper { min-height: 1em }"
 argument_list|,
-literal|"#counters .group { width: 10em }"
+literal|"#counters .group { width: 15em }"
 argument_list|,
 literal|"#counters .name { width: 30em }"
 argument_list|)

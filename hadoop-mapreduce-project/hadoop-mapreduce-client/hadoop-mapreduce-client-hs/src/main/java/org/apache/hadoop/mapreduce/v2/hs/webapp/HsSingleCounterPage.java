@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.webapp
+DECL|package|org.apache.hadoop.mapreduce.v2.hs.webapp
 package|package
 name|org
 operator|.
@@ -16,27 +16,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|hs
 operator|.
 name|webapp
 package|;
 end_package
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|SubView
-import|;
-end_import
 
 begin_import
 import|import static
@@ -80,14 +64,55 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|SingleCounterBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|SubView
+import|;
+end_import
+
+begin_comment
+comment|/**  * Render the counters page  */
+end_comment
+
 begin_class
-DECL|class|CountersPage
+DECL|class|HsSingleCounterPage
 specifier|public
 class|class
-name|CountersPage
+name|HsSingleCounterPage
 extends|extends
-name|AppView
+name|HsView
 block|{
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.hs.webapp.HsView#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
 DECL|method|preHead (Page.HTML<_> html)
 annotation|@
 name|Override
@@ -120,7 +145,7 @@ decl_stmt|;
 name|String
 name|activeNav
 init|=
-literal|"3"
+literal|"2"
 decl_stmt|;
 if|if
 condition|(
@@ -136,7 +161,7 @@ condition|)
 block|{
 name|activeNav
 operator|=
-literal|"2"
+literal|"1"
 expr_stmt|;
 block|}
 name|set
@@ -157,54 +182,63 @@ argument_list|)
 expr_stmt|;
 name|set
 argument_list|(
-name|DATATABLES_SELECTOR
+name|DATATABLES_ID
 argument_list|,
-literal|"#counters .dt-counters"
+literal|"singleCounter"
 argument_list|)
 expr_stmt|;
 name|set
 argument_list|(
-name|initSelector
+name|initID
 argument_list|(
 name|DATATABLES
+argument_list|,
+literal|"singleCounter"
 argument_list|)
 argument_list|,
-literal|"{bJQueryUI:true, sDom:'t', iDisplayLength:-1}"
+name|counterTableInit
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|postHead (Page.HTML<_> html)
-annotation|@
-name|Override
-specifier|protected
-name|void
-name|postHead
-parameter_list|(
-name|Page
-operator|.
-name|HTML
-argument_list|<
-name|_
-argument_list|>
-name|html
-parameter_list|)
-block|{
-name|html
-operator|.
-name|style
+name|setTableStyles
 argument_list|(
-literal|"#counters, .dt-counters { table-layout: fixed }"
+name|html
 argument_list|,
-literal|"#counters th { overflow: hidden; vertical-align: middle }"
-argument_list|,
-literal|"#counters .dataTables_wrapper { min-height: 1em }"
-argument_list|,
-literal|"#counters .group { width: 15em }"
-argument_list|,
-literal|"#counters .name { width: 30em }"
+literal|"singleCounter"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return The end of a javascript map that is the jquery datatable     * configuration for the jobs table.  the Jobs table is assumed to be    * rendered by the class returned from {@link #content()}     */
+DECL|method|counterTableInit ()
+specifier|private
+name|String
+name|counterTableInit
+parameter_list|()
+block|{
+return|return
+name|tableInit
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|", aoColumnDefs:["
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'title-numeric', 'aTargets': [ 1 ] }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"]}"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/**    * The content of this page is the CountersBlock now.    * @return CountersBlock.class    */
 DECL|method|content ()
 annotation|@
 name|Override
@@ -219,7 +253,7 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|CountersBlock
+name|SingleCounterBlock
 operator|.
 name|class
 return|;
