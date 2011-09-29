@@ -38,7 +38,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -74,34 +74,34 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 import|;
 end_import
 
 begin_class
-DECL|class|GetNewApplicationIdRequestPBImpl
+DECL|class|GetNewApplicationRequestPBImpl
 specifier|public
 class|class
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 extends|extends
 name|ProtoBase
 argument_list|<
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 argument_list|>
 implements|implements
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 block|{
 DECL|field|proto
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 name|proto
 init|=
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 operator|.
 name|Builder
 name|builder
@@ -114,24 +114,24 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|GetNewApplicationIdRequestPBImpl ()
+DECL|method|GetNewApplicationRequestPBImpl ()
 specifier|public
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|GetNewApplicationIdRequestPBImpl (GetNewApplicationIdRequestProto proto)
+DECL|method|GetNewApplicationRequestPBImpl (GetNewApplicationRequestProto proto)
 specifier|public
-name|GetNewApplicationIdRequestPBImpl
+name|GetNewApplicationRequestPBImpl
 parameter_list|(
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 name|proto
 parameter_list|)
 block|{
@@ -148,7 +148,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 name|getProto
 parameter_list|()
 block|{
@@ -188,7 +188,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|GetNewApplicationIdRequestProto
+name|GetNewApplicationRequestProto
 operator|.
 name|newBuilder
 argument_list|(

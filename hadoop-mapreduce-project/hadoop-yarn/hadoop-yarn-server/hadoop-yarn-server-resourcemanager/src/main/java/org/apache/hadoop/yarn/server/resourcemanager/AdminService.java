@@ -769,7 +769,7 @@ name|RM_ADMIN_ADDRESS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|RM_ADMIN_ADDRESS
+name|DEFAULT_RM_ADMIN_ADDRESS
 argument_list|)
 decl_stmt|;
 name|masterServiceAddress

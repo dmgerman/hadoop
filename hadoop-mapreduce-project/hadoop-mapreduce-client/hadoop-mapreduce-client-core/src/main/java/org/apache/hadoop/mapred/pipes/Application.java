@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|BufferedInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -95,6 +105,18 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+operator|.
+name|Entry
 import|;
 end_import
 

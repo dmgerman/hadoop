@@ -1581,7 +1581,7 @@ name|WebApps
 operator|.
 name|$for
 argument_list|(
-literal|"yarn"
+literal|"mapreduce"
 argument_list|,
 name|AppContext
 operator|.

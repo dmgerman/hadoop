@@ -16,12 +16,49 @@ name|mapred
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
 begin_comment
 comment|/*******************************  * Some handy constants  *   *******************************/
 end_comment
 
 begin_interface
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|interface|MRConstants
+specifier|public
 interface|interface
 name|MRConstants
 block|{
@@ -99,6 +136,7 @@ name|FOR_REDUCE_TASK
 init|=
 literal|"for-reduce-task"
 decl_stmt|;
+comment|/** Used in MRv1, mostly in TaskTracker code **/
 DECL|field|WORKDIR
 specifier|public
 specifier|static

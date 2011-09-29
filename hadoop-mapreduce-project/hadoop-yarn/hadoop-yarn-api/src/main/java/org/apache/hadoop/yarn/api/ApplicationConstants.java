@@ -62,15 +62,15 @@ name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
 literal|"AppClientTokenEnv"
 decl_stmt|;
-comment|// TODO: Weird. This is part of AM command line. Instead it should be a env.
-DECL|field|AM_FAIL_COUNT_STRING
+comment|/**    * The environmental variable for APPLICATION_ATTEMPT_ID. Set in    * ApplicationMaster's environment only.    */
+DECL|field|APPLICATION_ATTEMPT_ID_ENV
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|AM_FAIL_COUNT_STRING
+name|APPLICATION_ATTEMPT_ID_ENV
 init|=
-literal|"<FAILCOUNT>"
+literal|"APPLICATION_ATTEMPT_ID"
 decl_stmt|;
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
 specifier|public
@@ -101,6 +101,203 @@ name|LOG_DIR_EXPANSION_VAR
 init|=
 literal|"<LOG_DIR>"
 decl_stmt|;
+DECL|field|STDERR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STDERR
+init|=
+literal|"stderr"
+decl_stmt|;
+DECL|field|STDOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STDOUT
+init|=
+literal|"stdout"
+decl_stmt|;
+comment|/**    * Classpath for typical applications.    */
+DECL|field|APPLICATION_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|APPLICATION_CLASSPATH
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"$HADOOP_CONF_DIR"
+block|,
+literal|"$HADOOP_COMMON_HOME/share/hadoop/common/*"
+block|,
+literal|"$HADOOP_COMMON_HOME/share/hadoop/common/lib/*"
+block|,
+literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/*"
+block|,
+literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*"
+block|,
+literal|"$YARN_HOME/modules/*"
+block|,
+literal|"$YARN_HOME/lib/*"
+block|}
+decl_stmt|;
+comment|/**    * Environment for Applications.    *     * Some of the environment variables for applications are<em>final</em>     * i.e. they cannot be modified by the applications.    */
+DECL|enum|Environment
+specifier|public
+enum|enum
+name|Environment
+block|{
+comment|/**      * $USER      * Final, non-modifiable.      */
+DECL|enumConstant|USER
+name|USER
+argument_list|(
+literal|"USER"
+argument_list|)
+block|,
+comment|/**      * $LOGNAME      * Final, non-modifiable.      */
+DECL|enumConstant|LOGNAME
+name|LOGNAME
+argument_list|(
+literal|"LOGNAME"
+argument_list|)
+block|,
+comment|/**      * $HOME      * Final, non-modifiable.      */
+DECL|enumConstant|HOME
+name|HOME
+argument_list|(
+literal|"HOME"
+argument_list|)
+block|,
+comment|/**      * $PWD      * Final, non-modifiable.      */
+DECL|enumConstant|PWD
+name|PWD
+argument_list|(
+literal|"PWD"
+argument_list|)
+block|,
+comment|/**      * $PATH      */
+DECL|enumConstant|PATH
+name|PATH
+argument_list|(
+literal|"PATH"
+argument_list|)
+block|,
+comment|/**      * $SHELL      */
+DECL|enumConstant|SHELL
+name|SHELL
+argument_list|(
+literal|"SHELL"
+argument_list|)
+block|,
+comment|/**      * $JAVA_HOME      */
+DECL|enumConstant|JAVA_HOME
+name|JAVA_HOME
+argument_list|(
+literal|"JAVA_HOME"
+argument_list|)
+block|,
+comment|/**      * $CLASSPATH      */
+DECL|enumConstant|CLASSPATH
+name|CLASSPATH
+argument_list|(
+literal|"CLASSPATH"
+argument_list|)
+block|,
+comment|/**      * $LD_LIBRARY_PATH      */
+DECL|enumConstant|LD_LIBRARY_PATH
+name|LD_LIBRARY_PATH
+argument_list|(
+literal|"LD_LIBRARY_PATH"
+argument_list|)
+block|,
+comment|/**      * $HADOOP_CONF_DIR      * Final, non-modifiable.      */
+DECL|enumConstant|HADOOP_CONF_DIR
+name|HADOOP_CONF_DIR
+argument_list|(
+literal|"HADOOP_CONF_DIR"
+argument_list|)
+block|,
+comment|/**      * $HADOOP_COMMON_HOME      */
+DECL|enumConstant|HADOOP_COMMON_HOME
+name|HADOOP_COMMON_HOME
+argument_list|(
+literal|"HADOOP_COMMON_HOME"
+argument_list|)
+block|,
+comment|/**      * $HADOOP_HDFS_HOME      */
+DECL|enumConstant|HADOOP_HDFS_HOME
+name|HADOOP_HDFS_HOME
+argument_list|(
+literal|"HADOOP_HDFS_HOME"
+argument_list|)
+block|,
+comment|/**      * $YARN_HOME      */
+DECL|enumConstant|YARN_HOME
+name|YARN_HOME
+argument_list|(
+literal|"YARN_HOME"
+argument_list|)
+block|;
+DECL|field|variable
+specifier|private
+specifier|final
+name|String
+name|variable
+decl_stmt|;
+DECL|method|Environment (String variable)
+specifier|private
+name|Environment
+parameter_list|(
+name|String
+name|variable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|variable
+operator|=
+name|variable
+expr_stmt|;
+block|}
+DECL|method|key ()
+specifier|public
+name|String
+name|key
+parameter_list|()
+block|{
+return|return
+name|variable
+return|;
+block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|variable
+return|;
+block|}
+DECL|method|$ ()
+specifier|public
+name|String
+name|$
+parameter_list|()
+block|{
+return|return
+literal|"$"
+operator|+
+name|variable
+return|;
+block|}
+block|}
 block|}
 end_interface
 

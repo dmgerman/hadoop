@@ -124,6 +124,20 @@ name|MRConfig
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|MRJobConfig
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manipulate the working area for the transient store for maps and reduces.  *  * This class is used by map and reduce tasks to identify the directories that  * they need to write to/read from for intermediate files. The callers of  * these methods are from the Child running the Task.  */
 end_comment
@@ -178,7 +192,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathToRead
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -212,7 +226,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathForWrite
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -270,7 +284,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathToRead
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -306,7 +320,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathForWrite
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -371,7 +385,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathToRead
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -408,7 +422,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathForWrite
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -444,7 +458,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathToRead
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -481,7 +495,7 @@ name|lDirAlloc
 operator|.
 name|getLocalPathForWrite
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 operator|+
@@ -523,7 +537,7 @@ name|format
 argument_list|(
 name|REDUCE_INPUT_FILE_FORMAT_STRING
 argument_list|,
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 argument_list|,
@@ -576,7 +590,7 @@ name|format
 argument_list|(
 name|REDUCE_INPUT_FILE_FORMAT_STRING
 argument_list|,
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 argument_list|,
@@ -614,7 +628,7 @@ operator|)
 operator|.
 name|deleteLocalFiles
 argument_list|(
-name|Constants
+name|MRJobConfig
 operator|.
 name|OUTPUT
 argument_list|)

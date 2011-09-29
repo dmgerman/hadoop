@@ -38,7 +38,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -132,7 +132,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 import|;
 end_import
 
@@ -150,34 +150,34 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|FinishApplicationRequestProtoOrBuilder
+name|KillApplicationRequestProtoOrBuilder
 import|;
 end_import
 
 begin_class
-DECL|class|FinishApplicationRequestPBImpl
+DECL|class|KillApplicationRequestPBImpl
 specifier|public
 class|class
-name|FinishApplicationRequestPBImpl
+name|KillApplicationRequestPBImpl
 extends|extends
 name|ProtoBase
 argument_list|<
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 argument_list|>
 implements|implements
-name|FinishApplicationRequest
+name|KillApplicationRequest
 block|{
 DECL|field|proto
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 name|proto
 init|=
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 operator|.
 name|Builder
 name|builder
@@ -197,24 +197,24 @@ name|applicationId
 init|=
 literal|null
 decl_stmt|;
-DECL|method|FinishApplicationRequestPBImpl ()
+DECL|method|KillApplicationRequestPBImpl ()
 specifier|public
-name|FinishApplicationRequestPBImpl
+name|KillApplicationRequestPBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|FinishApplicationRequestPBImpl (FinishApplicationRequestProto proto)
+DECL|method|KillApplicationRequestPBImpl (KillApplicationRequestProto proto)
 specifier|public
-name|FinishApplicationRequestPBImpl
+name|KillApplicationRequestPBImpl
 parameter_list|(
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 name|proto
 parameter_list|)
 block|{
@@ -231,7 +231,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 name|getProto
 parameter_list|()
 block|{
@@ -331,7 +331,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|FinishApplicationRequestProto
+name|KillApplicationRequestProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -352,7 +352,7 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 block|{
-name|FinishApplicationRequestProtoOrBuilder
+name|KillApplicationRequestProtoOrBuilder
 name|p
 init|=
 name|viaProto

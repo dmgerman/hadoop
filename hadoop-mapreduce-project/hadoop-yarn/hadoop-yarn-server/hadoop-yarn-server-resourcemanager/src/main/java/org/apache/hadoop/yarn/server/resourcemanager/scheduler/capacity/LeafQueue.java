@@ -5113,7 +5113,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|getContainer (RMContainer rmContainer, SchedulerApp application, SchedulerNode node, Resource capability)
+DECL|method|getContainer (RMContainer rmContainer, SchedulerApp application, SchedulerNode node, Resource capability, Priority priority)
 specifier|private
 name|Container
 name|getContainer
@@ -5129,6 +5129,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 return|return
@@ -5150,10 +5153,12 @@ argument_list|,
 name|node
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 return|;
 block|}
-DECL|method|createContainer (SchedulerApp application, SchedulerNode node, Resource capability)
+DECL|method|createContainer (SchedulerApp application, SchedulerNode node, Resource capability, Priority priority)
 specifier|public
 name|Container
 name|createContainer
@@ -5166,6 +5171,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|Priority
+name|priority
 parameter_list|)
 block|{
 name|Container
@@ -5200,6 +5208,8 @@ name|getHttpAddress
 argument_list|()
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 decl_stmt|;
 comment|// If security is enabled, send the container-tokens too.
@@ -5433,6 +5443,8 @@ argument_list|,
 name|node
 argument_list|,
 name|capability
+argument_list|,
+name|priority
 argument_list|)
 decl_stmt|;
 comment|// Can we allocate a container on this node?
@@ -5659,32 +5671,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-name|rmContainer
-operator|=
-name|application
-operator|.
-name|reserve
-argument_list|(
-name|node
-argument_list|,
-name|priority
-argument_list|,
-name|rmContainer
-argument_list|,
-name|container
-argument_list|)
-expr_stmt|;
-name|node
-operator|.
-name|reserveResource
-argument_list|(
-name|application
-argument_list|,
-name|priority
-argument_list|,
-name|rmContainer
-argument_list|)
-expr_stmt|;
 comment|// Update reserved metrics if this is the first reservation
 if|if
 condition|(
@@ -5710,6 +5696,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Inform the application
+name|rmContainer
+operator|=
+name|application
+operator|.
+name|reserve
+argument_list|(
+name|node
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|,
+name|container
+argument_list|)
+expr_stmt|;
+comment|// Update the node
+name|node
+operator|.
+name|reserveResource
+argument_list|(
+name|application
+argument_list|,
+name|priority
+argument_list|,
+name|rmContainer
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|unreserve (SchedulerApp application, Priority priority, SchedulerNode node, RMContainer rmContainer)
 specifier|private

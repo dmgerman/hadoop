@@ -3499,34 +3499,35 @@ name|assigned
 init|=
 literal|null
 decl_stmt|;
+name|Priority
+name|priority
+init|=
+name|allocated
+operator|.
+name|getPriority
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|mapResourceReqt
-operator|!=
-name|reduceResourceReqt
+name|PRIORITY_FAST_FAIL_MAP
+operator|.
+name|equals
+argument_list|(
+name|priority
+argument_list|)
 condition|)
 block|{
-comment|//assign based on size
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Assigning based on container size"
+literal|"Assigning container "
+operator|+
+name|allocated
+operator|+
+literal|" to fast fail map"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|allocated
-operator|.
-name|getResource
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-operator|==
-name|mapResourceReqt
-condition|)
-block|{
 name|assigned
 operator|=
 name|assignToFailedMap
@@ -3534,36 +3535,29 @@ argument_list|(
 name|allocated
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|assigned
-operator|==
-literal|null
-condition|)
-block|{
-name|assigned
-operator|=
-name|assignToMap
-argument_list|(
-name|allocated
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
 condition|(
-name|allocated
+name|PRIORITY_REDUCE
 operator|.
-name|getResource
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-operator|==
-name|reduceResourceReqt
+name|equals
+argument_list|(
+name|priority
+argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Assigning container "
+operator|+
+name|allocated
+operator|+
+literal|" to reduce"
+argument_list|)
+expr_stmt|;
 name|assigned
 operator|=
 name|assignToReduce
@@ -3572,49 +3566,47 @@ name|allocated
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-name|assigned
-return|;
-block|}
-comment|//container can be given to either map or reduce
-comment|//assign based on priority
-comment|//try to assign to earlierFailedMaps if present
-name|assigned
-operator|=
-name|assignToFailedMap
-argument_list|(
-name|allocated
-argument_list|)
-expr_stmt|;
-comment|//Assign to reduces before assigning to maps ?
+elseif|else
 if|if
 condition|(
-name|assigned
-operator|==
-literal|null
+name|PRIORITY_MAP
+operator|.
+name|equals
+argument_list|(
+name|priority
+argument_list|)
 condition|)
 block|{
-name|assigned
-operator|=
-name|assignToReduce
+name|LOG
+operator|.
+name|info
 argument_list|(
+literal|"Assigning container "
+operator|+
 name|allocated
+operator|+
+literal|" to map"
 argument_list|)
 expr_stmt|;
-block|}
-comment|//try to assign to maps if present
-if|if
-condition|(
-name|assigned
-operator|==
-literal|null
-condition|)
-block|{
 name|assigned
 operator|=
 name|assignToMap
 argument_list|(
 name|allocated
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Container allocated at unwanted priority: "
+operator|+
+name|priority
+operator|+
+literal|". Returning to RM..."
 argument_list|)
 expr_stmt|;
 block|}

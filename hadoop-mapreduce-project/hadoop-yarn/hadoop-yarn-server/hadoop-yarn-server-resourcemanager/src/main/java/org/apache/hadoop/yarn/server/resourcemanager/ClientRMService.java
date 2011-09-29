@@ -248,7 +248,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationRequest
+name|KillApplicationRequest
 import|;
 end_import
 
@@ -266,7 +266,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationResponse
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -428,7 +428,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 import|;
 end_import
 
@@ -446,7 +446,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 import|;
 end_import
 
@@ -1346,25 +1346,25 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplicationId ( GetNewApplicationIdRequest request)
+DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
-name|GetNewApplicationIdResponse
-name|getNewApplicationId
+name|GetNewApplicationResponse
+name|getNewApplication
 parameter_list|(
-name|GetNewApplicationIdRequest
+name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 name|response
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|GetNewApplicationIdResponse
+name|GetNewApplicationResponse
 operator|.
 name|class
 argument_list|)
@@ -1374,6 +1374,27 @@ operator|.
 name|setApplicationId
 argument_list|(
 name|getNewApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Pick up min/max resource from scheduler...
+name|response
+operator|.
+name|setMinimumResourceCapability
+argument_list|(
+name|scheduler
+operator|.
+name|getMinimumResourceCapability
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setMaximumResourceCapability
+argument_list|(
+name|scheduler
+operator|.
+name|getMaximumResourceCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1657,12 +1678,12 @@ literal|"unchecked"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|finishApplication ( FinishApplicationRequest request)
+DECL|method|forceKillApplication ( KillApplicationRequest request)
 specifier|public
-name|FinishApplicationResponse
-name|finishApplication
+name|KillApplicationResponse
+name|forceKillApplication
 parameter_list|(
-name|FinishApplicationRequest
+name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
@@ -1862,14 +1883,14 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|FinishApplicationResponse
+name|KillApplicationResponse
 name|response
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|FinishApplicationResponse
+name|KillApplicationResponse
 operator|.
 name|class
 argument_list|)

@@ -54,7 +54,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"dstPath"
+literal|"dstpath"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT

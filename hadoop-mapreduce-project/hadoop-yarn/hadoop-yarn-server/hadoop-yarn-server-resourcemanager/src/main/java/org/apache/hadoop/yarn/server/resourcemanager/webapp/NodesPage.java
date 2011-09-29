@@ -531,6 +531,11 @@ comment|//td(String.valueOf(ni.getNumContainers())).
 comment|// TODO: FIXME Vinodkv
 comment|//            td(String.valueOf(ni.getUsedResource().getMemory())).
 comment|//            td(String.valueOf(ni.getAvailableResource().getMemory())).
+name|td
+argument_list|(
+literal|"n/a"
+argument_list|)
+operator|.
 name|_
 argument_list|()
 expr_stmt|;
@@ -641,7 +646,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{bSearchable:false},{bSearchable:false},{bSearchable:false}]}"
+literal|"{sType:'title-numeric', bSearchable:false}]}"
 argument_list|)
 operator|.
 name|toString
