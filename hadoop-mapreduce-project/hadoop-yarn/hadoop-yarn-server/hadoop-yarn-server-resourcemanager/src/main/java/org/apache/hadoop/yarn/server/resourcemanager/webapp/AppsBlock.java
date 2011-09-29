@@ -421,9 +421,9 @@ argument_list|()
 operator|==
 literal|0
 condition|?
-literal|"ApplicationMaster URL"
+literal|"ApplicationMaster"
 else|:
-literal|"JobHistory URL"
+literal|"History"
 operator|)
 decl_stmt|;
 name|String
@@ -612,6 +612,18 @@ argument_list|(
 name|trackingUrl
 operator|==
 literal|null
+operator|||
+name|trackingUrl
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+literal|"N/A"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|trackingUrl
+argument_list|)
 condition|?
 literal|"#"
 else|:
