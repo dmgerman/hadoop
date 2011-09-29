@@ -10243,6 +10243,8 @@ argument_list|,
 name|DataNode
 operator|.
 name|this
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|DatanodeInfo
