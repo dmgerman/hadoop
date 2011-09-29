@@ -2861,8 +2861,6 @@ name|Override
 specifier|public
 parameter_list|<
 name|PROTO
-extends|extends
-name|VersionedProtocol
 parameter_list|,
 name|IMPL
 extends|extends
