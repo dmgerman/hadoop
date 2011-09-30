@@ -180,21 +180,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-empty_stmt|;
-DECL|field|EDITS_FILE_HEADER_SIZE_BYTES
-specifier|private
-specifier|static
-name|int
-name|EDITS_FILE_HEADER_SIZE_BYTES
-init|=
-name|Integer
-operator|.
-name|SIZE
-operator|/
-name|Byte
-operator|.
-name|SIZE
-decl_stmt|;
 DECL|field|file
 specifier|private
 name|File
@@ -341,37 +326,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-comment|// JournalStream
-DECL|method|getName ()
-specifier|public
-name|String
-name|getName
-parameter_list|()
-block|{
-return|return
-name|file
-operator|.
-name|getPath
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// JournalStream
-DECL|method|getType ()
-specifier|public
-name|JournalType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|JournalType
-operator|.
-name|FILE
-return|;
 block|}
 comment|/** {@inheritDoc} */
 annotation|@
@@ -691,6 +645,23 @@ literal|"Trying to use aborted output stream"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|doubleBuf
+operator|.
+name|isFlushed
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Nothing to flush"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|preallocate
 argument_list|()
 expr_stmt|;
@@ -737,31 +708,6 @@ return|return
 name|doubleBuf
 operator|.
 name|shouldForceSync
-argument_list|()
-return|;
-block|}
-comment|/**    * Return the size of the current edit log including buffered data.    */
-annotation|@
-name|Override
-DECL|method|length ()
-name|long
-name|length
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-comment|// file size - header size + size of both buffers
-return|return
-name|fc
-operator|.
-name|size
-argument_list|()
-operator|-
-name|EDITS_FILE_HEADER_SIZE_BYTES
-operator|+
-name|doubleBuf
-operator|.
-name|countBufferedBytes
 argument_list|()
 return|;
 block|}
