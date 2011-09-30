@@ -76,6 +76,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -187,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface to an Application Attempt in the Resource Manager.  * A {@link RMApp} can have multiple app attempts based on   * {@link YarnConfiguration#RM_AM_MAX_RETRIES}. For specific   * implementation take a look at {@link RMAppAttemptImpl}.  */
+comment|/**  * Interface to an Application Attempt in the Resource Manager.  * A {@link RMApp} can have multiple app attempts based on  * {@link YarnConfiguration#RM_AM_MAX_RETRIES}. For specific  * implementation take a look at {@link RMAppAttemptImpl}.  */
 end_comment
 
 begin_interface
@@ -249,10 +267,10 @@ name|float
 name|getProgress
 parameter_list|()
 function_decl|;
-comment|/**    * The final state set by the AM.    * @return the final state that is set by the AM when unregistering itself.    */
-DECL|method|getAMFinalState ()
-name|String
-name|getAMFinalState
+comment|/**    * The final status set by the AM.    * @return the final status that is set by the AM when unregistering itself. Can return a null     * if the AM has not unregistered itself.     */
+DECL|method|getFinalApplicationStatus ()
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
 comment|/**    * Nodes on which the containers for this {@link RMAppAttempt} ran.    * @return the set of nodes that ran any containers from this {@link RMAppAttempt}    */
@@ -264,7 +282,7 @@ argument_list|>
 name|getRanNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Return a list of the last set of finished containers, resetting the     * finished containers to empty.    * @return the list of just finished containers, re setting the finished containers.    */
+comment|/**    * Return a list of the last set of finished containers, resetting the    * finished containers to empty.    * @return the list of just finished containers, re setting the finished containers.    */
 DECL|method|pullJustFinishedContainers ()
 name|List
 argument_list|<
@@ -273,7 +291,7 @@ argument_list|>
 name|pullJustFinishedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Return the list of last set of finished containers. This does not reset the     * finished containers.    * @return the list of just finished contianers, this does not reset the     * finished containers.    */
+comment|/**    * Return the list of last set of finished containers. This does not reset the    * finished containers.    * @return the list of just finished contianers, this does not reset the    * finished containers.    */
 DECL|method|getJustFinishedContainers ()
 name|List
 argument_list|<

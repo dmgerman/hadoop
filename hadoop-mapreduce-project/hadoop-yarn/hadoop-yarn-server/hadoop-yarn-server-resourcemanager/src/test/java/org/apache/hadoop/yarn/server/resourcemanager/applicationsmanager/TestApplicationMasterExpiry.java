@@ -120,7 +120,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -367,7 +367,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A test case that tests the expiry of the application master.  * More tests can be added to this.   */
+comment|/**  * A test case that tests the expiry of the application master.  * More tests can be added to this.  */
 end_comment
 
 begin_class

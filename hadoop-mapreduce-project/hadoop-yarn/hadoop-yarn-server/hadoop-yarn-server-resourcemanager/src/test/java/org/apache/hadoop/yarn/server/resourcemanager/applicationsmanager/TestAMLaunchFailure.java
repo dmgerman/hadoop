@@ -204,7 +204,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 

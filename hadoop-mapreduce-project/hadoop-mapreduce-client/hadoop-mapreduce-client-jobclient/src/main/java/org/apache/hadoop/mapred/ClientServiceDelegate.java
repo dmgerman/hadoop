@@ -712,7 +712,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -1222,7 +1222,7 @@ name|application
 operator|==
 literal|null
 operator|||
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|RUNNING
 operator|.
@@ -1230,7 +1230,7 @@ name|equals
 argument_list|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 condition|)
@@ -1308,7 +1308,7 @@ literal|"Application state is "
 operator|+
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1551,7 +1551,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** we just want to return if its allocating, so that we don't      * block on it. This is to be able to return job status       * on an allocating Application.      */
+comment|/** we just want to return if its allocating, so that we don't      * block on it. This is to be able to return job status      * on an allocating Application.      */
 name|String
 name|user
 init|=
@@ -1580,19 +1580,19 @@ if|if
 condition|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|NEW
 operator|||
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|SUBMITTED
 condition|)
@@ -1616,10 +1616,10 @@ if|if
 condition|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|FAILED
 condition|)
@@ -1643,10 +1643,10 @@ if|if
 condition|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|KILLED
 condition|)
@@ -1672,21 +1672,29 @@ if|if
 condition|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
-name|SUCCEEDED
+name|FINISHED
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application state is completed. "
+literal|"Application state is completed. FinalApplicationStatus="
 operator|+
-literal|"Redirecting to job history server"
+name|application
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|". Redirecting to job history server"
 argument_list|)
 expr_stmt|;
 name|realProxy

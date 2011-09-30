@@ -42,7 +42,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -146,11 +146,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|api
 operator|.
-name|YarnProtos
+name|records
 operator|.
-name|ApplicationStateProto
+name|YarnApplicationState
 import|;
 end_import
 
@@ -169,6 +169,24 @@ operator|.
 name|YarnProtos
 operator|.
 name|ContainerStateProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnProtos
+operator|.
+name|FinalApplicationStatusProto
 import|;
 end_import
 
@@ -241,6 +259,24 @@ operator|.
 name|YarnProtos
 operator|.
 name|QueueStateProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|YarnProtos
+operator|.
+name|YarnApplicationStateProto
 import|;
 end_import
 
@@ -324,19 +360,19 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/*    * ApplicationState    */
-DECL|method|convertToProtoFormat (ApplicationState e)
+comment|/*    * YarnApplicationState    */
+DECL|method|convertToProtoFormat (YarnApplicationState e)
 specifier|public
 specifier|static
-name|ApplicationStateProto
+name|YarnApplicationStateProto
 name|convertToProtoFormat
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|e
 parameter_list|)
 block|{
 return|return
-name|ApplicationStateProto
+name|YarnApplicationStateProto
 operator|.
 name|valueOf
 argument_list|(
@@ -347,18 +383,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|convertFromProtoFormat (ApplicationStateProto e)
+DECL|method|convertFromProtoFormat (YarnApplicationStateProto e)
 specifier|public
 specifier|static
-name|ApplicationState
+name|YarnApplicationState
 name|convertFromProtoFormat
 parameter_list|(
-name|ApplicationStateProto
+name|YarnApplicationStateProto
 name|e
 parameter_list|)
 block|{
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|valueOf
 argument_list|(
@@ -366,6 +402,68 @@ name|e
 operator|.
 name|name
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/*    * FinalApplicationStatus    */
+DECL|field|FINAL_APPLICATION_STATUS_PREFIX
+specifier|private
+specifier|static
+name|String
+name|FINAL_APPLICATION_STATUS_PREFIX
+init|=
+literal|"APP_"
+decl_stmt|;
+DECL|method|convertToProtoFormat (FinalApplicationStatus e)
+specifier|public
+specifier|static
+name|FinalApplicationStatusProto
+name|convertToProtoFormat
+parameter_list|(
+name|FinalApplicationStatus
+name|e
+parameter_list|)
+block|{
+return|return
+name|FinalApplicationStatusProto
+operator|.
+name|valueOf
+argument_list|(
+name|FINAL_APPLICATION_STATUS_PREFIX
+operator|+
+name|e
+operator|.
+name|name
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|convertFromProtoFormat (FinalApplicationStatusProto e)
+specifier|public
+specifier|static
+name|FinalApplicationStatus
+name|convertFromProtoFormat
+parameter_list|(
+name|FinalApplicationStatusProto
+name|e
+parameter_list|)
+block|{
+return|return
+name|FinalApplicationStatus
+operator|.
+name|valueOf
+argument_list|(
+name|e
+operator|.
+name|name
+argument_list|()
+operator|.
+name|replace
+argument_list|(
+name|FINAL_APPLICATION_STATUS_PREFIX
+argument_list|,
+literal|""
+argument_list|)
 argument_list|)
 return|;
 block|}

@@ -674,24 +674,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -729,6 +711,24 @@ operator|.
 name|records
 operator|.
 name|YarnClusterMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationState
 import|;
 end_import
 
@@ -827,7 +827,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test YarnRunner and make sure the client side plugin works   * fine  */
+comment|/**  * Test YarnRunner and make sure the client side plugin works  * fine  */
 end_comment
 
 begin_class
@@ -1432,13 +1432,13 @@ name|when
 argument_list|(
 name|report
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|FAILED
 argument_list|)

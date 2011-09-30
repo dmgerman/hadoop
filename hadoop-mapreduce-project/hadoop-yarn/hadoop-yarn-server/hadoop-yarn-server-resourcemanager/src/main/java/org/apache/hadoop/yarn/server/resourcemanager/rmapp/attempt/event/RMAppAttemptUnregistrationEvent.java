@@ -54,6 +54,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -102,11 +120,11 @@ specifier|final
 name|String
 name|trackingUrl
 decl_stmt|;
-DECL|field|finalState
+DECL|field|finalStatus
 specifier|private
 specifier|final
-name|String
-name|finalState
+name|FinalApplicationStatus
+name|finalStatus
 decl_stmt|;
 DECL|field|diagnostics
 specifier|private
@@ -114,7 +132,7 @@ specifier|final
 name|String
 name|diagnostics
 decl_stmt|;
-DECL|method|RMAppAttemptUnregistrationEvent (ApplicationAttemptId appAttemptId, String trackingUrl, String finalState, String diagnostics)
+DECL|method|RMAppAttemptUnregistrationEvent (ApplicationAttemptId appAttemptId, String trackingUrl, FinalApplicationStatus finalStatus, String diagnostics)
 specifier|public
 name|RMAppAttemptUnregistrationEvent
 parameter_list|(
@@ -124,8 +142,8 @@ parameter_list|,
 name|String
 name|trackingUrl
 parameter_list|,
-name|String
-name|finalState
+name|FinalApplicationStatus
+name|finalStatus
 parameter_list|,
 name|String
 name|diagnostics
@@ -148,9 +166,9 @@ name|trackingUrl
 expr_stmt|;
 name|this
 operator|.
-name|finalState
+name|finalStatus
 operator|=
-name|finalState
+name|finalStatus
 expr_stmt|;
 name|this
 operator|.
@@ -171,16 +189,16 @@ operator|.
 name|trackingUrl
 return|;
 block|}
-DECL|method|getFinalState ()
+DECL|method|getFinalApplicationStatus ()
 specifier|public
-name|String
-name|getFinalState
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|finalState
+name|finalStatus
 return|;
 block|}
 DECL|method|getDiagnostics ()

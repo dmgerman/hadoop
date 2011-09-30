@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Ennumeration of various states of an<code>Application</code>.  */
+comment|/**  * Ennumeration of various states of an<code>ApplicationMaster</code>.  */
 end_comment
 
 begin_enum
@@ -61,10 +61,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|enum|ApplicationState
+DECL|enum|YarnApplicationState
 specifier|public
 enum|enum
-name|ApplicationState
+name|YarnApplicationState
 block|{
 comment|/** Application which was just created. */
 DECL|enumConstant|NEW
@@ -78,9 +78,9 @@ comment|/** Application which is currently running. */
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
-comment|/** Application which completed successfully. */
-DECL|enumConstant|SUCCEEDED
-name|SUCCEEDED
+comment|/** Application which finished successfully. */
+DECL|enumConstant|FINISHED
+name|FINISHED
 block|,
 comment|/** Application which failed. */
 DECL|enumConstant|FAILED

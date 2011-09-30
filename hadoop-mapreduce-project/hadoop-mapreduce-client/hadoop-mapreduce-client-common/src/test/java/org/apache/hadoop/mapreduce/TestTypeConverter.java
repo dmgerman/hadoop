@@ -72,7 +72,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -215,10 +215,10 @@ name|appStartTime
 init|=
 literal|612354
 decl_stmt|;
-name|ApplicationState
+name|YarnApplicationState
 name|state
 init|=
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|RUNNING
 decl_stmt|;
@@ -245,7 +245,7 @@ argument_list|)
 expr_stmt|;
 name|applicationReport
 operator|.
-name|setState
+name|setYarnApplicationState
 argument_list|(
 name|state
 argument_list|)
@@ -391,13 +391,13 @@ name|when
 argument_list|(
 name|mockReport
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|KILLED
 argument_list|)

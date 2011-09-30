@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<em>For internal use only...</em>   */
+comment|/**  *<em>For internal use only...</em>  */
 end_comment
 
 begin_interface
@@ -132,15 +132,15 @@ name|status
 parameter_list|)
 function_decl|;
 DECL|method|getState ()
-name|ApplicationState
+name|YarnApplicationState
 name|getState
 parameter_list|()
 function_decl|;
-DECL|method|setState (ApplicationState state)
+DECL|method|setState (YarnApplicationState state)
 name|void
 name|setState
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 function_decl|;

@@ -1356,7 +1356,7 @@ argument_list|()
 argument_list|,
 name|request
 operator|.
-name|getFinalState
+name|getFinalApplicationStatus
 argument_list|()
 argument_list|,
 name|request

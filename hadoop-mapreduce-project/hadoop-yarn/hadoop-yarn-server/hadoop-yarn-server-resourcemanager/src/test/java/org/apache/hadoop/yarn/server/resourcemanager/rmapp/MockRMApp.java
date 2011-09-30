@@ -54,6 +54,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -693,14 +711,16 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|getAMFinalState ()
+DECL|method|getFinalApplicationStatus ()
 specifier|public
-name|String
-name|getAMFinalState
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 block|{
 return|return
-literal|"UNKNOWN"
+name|FinalApplicationStatus
+operator|.
+name|UNDEFINED
 return|;
 block|}
 empty_stmt|;

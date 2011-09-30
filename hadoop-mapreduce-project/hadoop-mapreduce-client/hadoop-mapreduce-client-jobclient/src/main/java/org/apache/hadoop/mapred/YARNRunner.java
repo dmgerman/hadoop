@@ -648,24 +648,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -775,6 +757,24 @@ operator|.
 name|records
 operator|.
 name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationState
 import|;
 end_import
 
@@ -931,7 +931,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Similar to {@link #YARNRunner(Configuration)} but allowing injecting     * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
+comment|/**    * Similar to {@link #YARNRunner(Configuration)} but allowing injecting    * {@link ResourceMgrDelegate}. Enables mocking and testing.    * @param conf the configuration object for the client    * @param resMgrDelegate the resourcemanager client handle.    */
 DECL|method|YARNRunner (Configuration conf, ResourceMgrDelegate resMgrDelegate)
 specifier|public
 name|YARNRunner
@@ -959,7 +959,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Similar to {@link YARNRunner#YARNRunner(Configuration, ResourceMgrDelegate)}     * but allowing injecting {@link ClientCache}. Enable mocking and testing.    * @param conf the configuration object    * @param resMgrDelegate the resource manager delegate     * @param clientCache the client cache object.    */
+comment|/**    * Similar to {@link YARNRunner#YARNRunner(Configuration, ResourceMgrDelegate)}    * but allowing injecting {@link ClientCache}. Enable mocking and testing.    * @param conf the configuration object    * @param resMgrDelegate the resource manager delegate    * @param clientCache the client cache object.    */
 DECL|method|YARNRunner (Configuration conf, ResourceMgrDelegate resMgrDelegate, ClientCache clientCache)
 specifier|public
 name|YARNRunner
@@ -1480,19 +1480,19 @@ literal|null
 operator|||
 name|appMaster
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|FAILED
 operator|||
 name|appMaster
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 operator|==
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|KILLED
 condition|)

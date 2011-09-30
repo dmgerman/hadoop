@@ -480,7 +480,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -2879,7 +2879,7 @@ return|return
 name|reports
 return|;
 block|}
-DECL|method|fromYarn (ApplicationState state)
+DECL|method|fromYarn (YarnApplicationState state)
 specifier|public
 specifier|static
 name|JobStatus
@@ -2887,7 +2887,7 @@ operator|.
 name|State
 name|fromYarn
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 block|{
@@ -2913,7 +2913,7 @@ operator|.
 name|RUNNING
 return|;
 case|case
-name|SUCCEEDED
+name|FINISHED
 case|:
 return|return
 name|State
@@ -3110,7 +3110,7 @@ name|fromYarn
 argument_list|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 argument_list|,

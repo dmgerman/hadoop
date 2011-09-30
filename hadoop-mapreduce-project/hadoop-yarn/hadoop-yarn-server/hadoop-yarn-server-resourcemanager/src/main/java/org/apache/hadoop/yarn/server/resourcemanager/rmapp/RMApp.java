@@ -72,6 +72,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -173,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The read interface to an Application in the ResourceManager. Take a   * look at {@link RMAppImpl} for its implementation. This interface   * exposes methods to access various updates in application status/report.  */
+comment|/**  * The read interface to an Application in the ResourceManager. Take a  * look at {@link RMAppImpl} for its implementation. This interface  * exposes methods to access various updates in application status/report.  */
 end_comment
 
 begin_interface
@@ -220,19 +238,19 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Each Application is submitted to a queue decided by {@link     * ApplicationSubmissionContext#setQueue(String)}.    * This method returns the queue to which an application was submitted.    * @return the queue to which the application was submitted to.    */
+comment|/**    * Each Application is submitted to a queue decided by {@link    * ApplicationSubmissionContext#setQueue(String)}.    * This method returns the queue to which an application was submitted.    * @return the queue to which the application was submitted to.    */
 DECL|method|getQueue ()
 name|String
 name|getQueue
 parameter_list|()
 function_decl|;
-comment|/**    * The name of the application as set in {@link     * ApplicationSubmissionContext#setApplicationName(String)}.    * @return the name of the application.    */
+comment|/**    * The name of the application as set in {@link    * ApplicationSubmissionContext#setApplicationName(String)}.    * @return the name of the application.    */
 DECL|method|getName ()
 name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * {@link RMApp} can have multiple application attempts {@link RMAppAttempt}.    * This method returns the current {@link RMAppAttempt}.    * @return the current {@link RMAppAttempt}     */
+comment|/**    * {@link RMApp} can have multiple application attempts {@link RMAppAttempt}.    * This method returns the current {@link RMAppAttempt}.    * @return the current {@link RMAppAttempt}    */
 DECL|method|getCurrentAppAttempt ()
 name|RMAppAttempt
 name|getCurrentAppAttempt
@@ -244,7 +262,7 @@ name|ApplicationReport
 name|createAndGetApplicationReport
 parameter_list|()
 function_decl|;
-comment|/**    * Application level metadata is stored in {@link ApplicationStore} whicn     * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */
+comment|/**    * Application level metadata is stored in {@link ApplicationStore} whicn    * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */
 DECL|method|getApplicationStore ()
 name|ApplicationStore
 name|getApplicationStore
@@ -274,10 +292,10 @@ name|StringBuilder
 name|getDiagnostics
 parameter_list|()
 function_decl|;
-comment|/**    * The final state of the AM when unregistering as in     * {@link FinishApplicationMasterRequest#setFinalState(String)}.    * @return the final state of the AM as set in     * {@link FinishApplicationMasterRequest#setFinalState(String)}.    */
-DECL|method|getAMFinalState ()
-name|String
-name|getAMFinalState
+comment|/**    * The final finish state of the AM when unregistering as in    * {@link FinishApplicationMasterRequest#setFinishApplicationStatus(FinalApplicationStatus)}.    * @return the final finish state of the AM as set in    * {@link FinishApplicationMasterRequest#setFinishApplicationStatus(FinalApplicationStatus)}.    */
+DECL|method|getFinalApplicationStatus ()
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
 block|}
