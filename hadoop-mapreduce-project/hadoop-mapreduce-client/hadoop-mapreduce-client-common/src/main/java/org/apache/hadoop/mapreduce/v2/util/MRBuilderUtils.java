@@ -319,7 +319,7 @@ return|return
 name|taskAttemptId
 return|;
 block|}
-DECL|method|newJobReport (JobId jobId, String jobName, String userName, JobState state, long startTime, long finishTime, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress)
+DECL|method|newJobReport (JobId jobId, String jobName, String userName, JobState state, long startTime, long finishTime, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, String jobFile)
 specifier|public
 specifier|static
 name|JobReport
@@ -354,6 +354,9 @@ name|reduceProgress
 parameter_list|,
 name|float
 name|cleanupProgress
+parameter_list|,
+name|String
+name|jobFile
 parameter_list|)
 block|{
 name|JobReport
@@ -436,6 +439,13 @@ operator|.
 name|setReduceProgress
 argument_list|(
 name|reduceProgress
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setJobFile
+argument_list|(
+name|jobFile
 argument_list|)
 expr_stmt|;
 return|return

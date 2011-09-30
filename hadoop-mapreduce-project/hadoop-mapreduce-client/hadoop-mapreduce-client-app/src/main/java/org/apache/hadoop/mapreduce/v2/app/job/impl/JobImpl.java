@@ -3982,6 +3982,11 @@ argument_list|,
 literal|0.0f
 argument_list|,
 name|cleanupProgress
+argument_list|,
+name|remoteJobConfFile
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -4015,6 +4020,11 @@ name|reduceTasks
 argument_list|)
 argument_list|,
 name|cleanupProgress
+argument_list|,
+name|remoteJobConfFile
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}
