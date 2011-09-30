@@ -2385,7 +2385,7 @@ name|setUsed
 argument_list|(
 name|schedulerNodeReport
 operator|.
-name|getUsedResources
+name|getUsedResource
 argument_list|()
 argument_list|)
 expr_stmt|;

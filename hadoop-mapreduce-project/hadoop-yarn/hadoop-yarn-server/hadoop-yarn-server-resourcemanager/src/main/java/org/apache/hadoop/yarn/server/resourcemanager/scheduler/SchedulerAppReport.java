@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -34,7 +44,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
 import|;
 end_import
 
@@ -50,7 +60,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Evolving
 import|;
 end_import
 
@@ -64,113 +74,130 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|resourcemanager
 operator|.
-name|Resource
+name|rmcontainer
+operator|.
+name|RMContainer
 import|;
 end_import
 
 begin_comment
-comment|/**  * Node usage report.  */
+comment|/**  * Represents an application attempt, and the resources that the attempt is   * using.  */
 end_comment
 
 begin_class
 annotation|@
-name|Private
+name|Evolving
 annotation|@
-name|Stable
-DECL|class|SchedulerNodeReport
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+DECL|class|SchedulerAppReport
 specifier|public
 class|class
-name|SchedulerNodeReport
+name|SchedulerAppReport
 block|{
-DECL|field|used
+DECL|field|live
 specifier|private
 specifier|final
-name|Resource
-name|used
+name|Collection
+argument_list|<
+name|RMContainer
+argument_list|>
+name|live
 decl_stmt|;
-DECL|field|avail
+DECL|field|reserved
 specifier|private
 specifier|final
-name|Resource
-name|avail
+name|Collection
+argument_list|<
+name|RMContainer
+argument_list|>
+name|reserved
 decl_stmt|;
-DECL|field|num
+DECL|field|pending
 specifier|private
 specifier|final
-name|int
-name|num
+name|boolean
+name|pending
 decl_stmt|;
-DECL|method|SchedulerNodeReport (SchedulerNode node)
+DECL|method|SchedulerAppReport (SchedulerApp app)
 specifier|public
-name|SchedulerNodeReport
+name|SchedulerAppReport
 parameter_list|(
-name|SchedulerNode
-name|node
+name|SchedulerApp
+name|app
 parameter_list|)
 block|{
 name|this
 operator|.
-name|used
+name|live
 operator|=
-name|node
+name|app
 operator|.
-name|getUsedResource
+name|getLiveContainers
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|avail
+name|reserved
 operator|=
-name|node
+name|app
 operator|.
-name|getAvailableResource
+name|getReservedContainers
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|num
+name|pending
 operator|=
-name|node
+name|app
 operator|.
-name|getNumContainers
+name|isPending
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @return the amount of resources currently used by the node.    */
-DECL|method|getUsedResource ()
+comment|/**    * Get the list of live containers    * @return All of the live containers    */
+DECL|method|getLiveContainers ()
 specifier|public
-name|Resource
-name|getUsedResource
+name|Collection
+argument_list|<
+name|RMContainer
+argument_list|>
+name|getLiveContainers
 parameter_list|()
 block|{
 return|return
-name|used
+name|live
 return|;
 block|}
-comment|/**    * @return the amount of resources currently available on the node    */
-DECL|method|getAvailableResource ()
+comment|/**    * Get the list of reserved containers    * @return All of the reserved containers.    */
+DECL|method|getReservedContainers ()
 specifier|public
-name|Resource
-name|getAvailableResource
+name|Collection
+argument_list|<
+name|RMContainer
+argument_list|>
+name|getReservedContainers
 parameter_list|()
 block|{
 return|return
-name|avail
+name|reserved
 return|;
 block|}
-comment|/**    * @return the number of containers currently running on this node.    */
-DECL|method|getNumContainers ()
+comment|/**    * Is this application pending?    * @return true if it is else false.    */
+DECL|method|isPending ()
 specifier|public
-name|int
-name|getNumContainers
+name|boolean
+name|isPending
 parameter_list|()
 block|{
 return|return
-name|num
+name|pending
 return|;
 block|}
 block|}

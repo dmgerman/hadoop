@@ -54,7 +54,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
 import|;
 end_import
 
@@ -71,6 +71,22 @@ operator|.
 name|InterfaceAudience
 operator|.
 name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
 import|;
 end_import
 
@@ -291,7 +307,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get acls for queues for current user.    * @return acls for queues for current user    * @throws IOException    */
+comment|/**    * Get acls for queues for current user.    * @return acls for queues for current user    */
 annotation|@
 name|Public
 annotation|@
@@ -354,7 +370,10 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get node resource usage report.    * @param nodeId    * @return the {@link SchedulerNodeReport} for the node    */
 annotation|@
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
 annotation|@
 name|Stable
 DECL|method|getNodeReport (NodeId nodeId)
@@ -366,31 +385,34 @@ name|NodeId
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * Get used resources on the node    * @param nodeId node    * @return used resources on the node    */
+comment|/**    * Get the Scheduler app for a given app attempt Id.    * @param appAttemptId the id of the application attempt    * @return SchedulerApp for this given attempt.    */
 annotation|@
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
 annotation|@
 name|Stable
-DECL|method|getUsedResource (NodeId nodeId)
-name|Resource
-name|getUsedResource
+DECL|method|getSchedulerAppInfo (ApplicationAttemptId appAttemptId)
+name|SchedulerAppReport
+name|getSchedulerAppInfo
 parameter_list|(
-name|NodeId
-name|nodeId
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Get available resources on the node    * @param nodeId node    * @return available resources on the node    */
+comment|/**    * Get the root queue for the scheduler.    * @return the root queue for the scheduler.    */
 annotation|@
-name|Private
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
 annotation|@
-name|Stable
-DECL|method|getAvailableResource (NodeId nodeId)
-name|Resource
-name|getAvailableResource
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
+name|Evolving
+DECL|method|getRootQueueMetrics ()
+name|QueueMetrics
+name|getRootQueueMetrics
+parameter_list|()
 function_decl|;
 block|}
 end_interface

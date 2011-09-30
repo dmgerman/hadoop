@@ -985,7 +985,7 @@ argument_list|<
 name|CSQueue
 argument_list|>
 argument_list|(
-name|comparator
+name|queueComparator
 argument_list|)
 expr_stmt|;
 name|LOG
