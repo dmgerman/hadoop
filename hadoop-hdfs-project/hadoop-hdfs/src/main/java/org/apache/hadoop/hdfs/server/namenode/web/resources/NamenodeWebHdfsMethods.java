@@ -2355,7 +2355,7 @@ else|else
 block|{
 name|np
 operator|.
-name|rename
+name|rename2
 argument_list|(
 name|fullpath
 argument_list|,

@@ -3399,10 +3399,10 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|rename (String src, String dst, Options.Rename... options)
+DECL|method|rename2 (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
-name|rename
+name|rename2
 parameter_list|(
 name|String
 name|src
@@ -3482,31 +3482,6 @@ operator|.
 name|incrFilesRenamed
 argument_list|()
 expr_stmt|;
-block|}
-annotation|@
-name|Deprecated
-annotation|@
-name|Override
-comment|// ClientProtocol
-DECL|method|delete (String src)
-specifier|public
-name|boolean
-name|delete
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|delete
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-return|;
 block|}
 annotation|@
 name|Override

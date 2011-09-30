@@ -488,7 +488,7 @@ name|ClientProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    * 68: Add Balancer Bandwidth Command protocol    */
+comment|/**    * Compared to the previous version the following changes have been introduced:    * (Only the latest change is reflected.    * The log of historical changes can be retrieved from the svn).    * 69: Eliminate overloaded method names.    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -496,7 +496,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|68L
+literal|69L
 decl_stmt|;
 comment|///////////////////////////////////////
 comment|// File contents
@@ -869,10 +869,10 @@ throws|,
 name|UnresolvedLinkException
 function_decl|;
 comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file     * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *     * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If rename violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace     *           quota restriction    * @throws ParentNotDirectoryException If parent of<code>dst</code>     *           is not a directory    * @throws SafeModeException rename not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws IOException If an I/O error occurred    */
-DECL|method|rename (String src, String dst, Options.Rename... options)
+DECL|method|rename2 (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
-name|rename
+name|rename2
 parameter_list|(
 name|String
 name|src
@@ -904,22 +904,6 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|IOException
-function_decl|;
-comment|/**    * Delete the given file or directory from the file system.    *<p>    * Any blocks belonging to the deleted files will be garbage-collected.    *     * @param src existing name.    * @return true only if the existing file or directory was actually removed     * from the file system.     * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @deprecated use {@link #delete(String, boolean)} istead.    */
-annotation|@
-name|Deprecated
-DECL|method|delete (String src)
-specifier|public
-name|boolean
-name|delete
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|UnresolvedLinkException
 function_decl|;
 comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally     * deleting non empty directories programmatically.     * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed     * from the file system.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 DECL|method|delete (String src, boolean recursive)
