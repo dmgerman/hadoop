@@ -6836,6 +6836,11 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|job
+operator|.
+name|isUber
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|//Will transition to state running. Currently in INITED

@@ -113,8 +113,8 @@ operator|new
 name|JobInited
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record job initialization    * @param id    * @param launchTime    * @param totalMaps    * @param totalReduces    * @param jobStatus    */
-DECL|method|JobInitedEvent (JobID id, long launchTime, int totalMaps, int totalReduces, String jobStatus)
+comment|/**    * Create an event to record job initialization    * @param id    * @param launchTime    * @param totalMaps    * @param totalReduces    * @param jobStatus    * @param uberized True if the job's map and reduce stages were combined    */
+DECL|method|JobInitedEvent (JobID id, long launchTime, int totalMaps, int totalReduces, String jobStatus, boolean uberized)
 specifier|public
 name|JobInitedEvent
 parameter_list|(
@@ -132,6 +132,9 @@ name|totalReduces
 parameter_list|,
 name|String
 name|jobStatus
+parameter_list|,
+name|boolean
+name|uberized
 parameter_list|)
 block|{
 name|datum
@@ -174,6 +177,12 @@ name|Utf8
 argument_list|(
 name|jobStatus
 argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|uberized
+operator|=
+name|uberized
 expr_stmt|;
 block|}
 DECL|method|JobInitedEvent ()
@@ -296,6 +305,19 @@ return|return
 name|EventType
 operator|.
 name|JOB_INITED
+return|;
+block|}
+comment|/** Get whether the job's map and reduce stages were combined */
+DECL|method|getUberized ()
+specifier|public
+name|boolean
+name|getUberized
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|uberized
 return|;
 block|}
 block|}

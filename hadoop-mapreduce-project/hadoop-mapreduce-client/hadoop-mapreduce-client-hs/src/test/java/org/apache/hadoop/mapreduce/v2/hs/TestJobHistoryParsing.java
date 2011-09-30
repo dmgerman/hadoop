@@ -766,6 +766,23 @@ name|getFinishedReduces
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"incorrect uberized "
+argument_list|,
+name|job
+operator|.
+name|isUber
+argument_list|()
+argument_list|,
+name|jobInfo
+operator|.
+name|getUberized
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|int
 name|totalTasks
 init|=

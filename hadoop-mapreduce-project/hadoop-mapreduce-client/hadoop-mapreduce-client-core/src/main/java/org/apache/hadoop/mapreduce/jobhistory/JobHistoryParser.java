@@ -1599,6 +1599,15 @@ operator|.
 name|getTotalReduces
 argument_list|()
 expr_stmt|;
+name|info
+operator|.
+name|uberized
+operator|=
+name|event
+operator|.
+name|getUberized
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|handleJobInfoChangeEvent (JobInfoChangeEvent event)
 specifier|private
@@ -1807,6 +1816,10 @@ argument_list|,
 name|TaskInfo
 argument_list|>
 name|tasksMap
+decl_stmt|;
+DECL|field|uberized
+name|boolean
+name|uberized
 decl_stmt|;
 comment|/** Create a job info object where job information will be stored      * after a parse      */
 DECL|method|JobInfo ()
@@ -2018,6 +2031,17 @@ name|totalCounters
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"UBERIZED: "
+operator|+
+name|uberized
 argument_list|)
 expr_stmt|;
 for|for
@@ -2289,6 +2313,17 @@ parameter_list|()
 block|{
 return|return
 name|jobACLs
+return|;
+block|}
+comment|/** @return the uberized status of this job */
+DECL|method|getUberized ()
+specifier|public
+name|boolean
+name|getUberized
+parameter_list|()
+block|{
+return|return
+name|uberized
 return|;
 block|}
 block|}

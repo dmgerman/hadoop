@@ -1930,15 +1930,11 @@ name|boolean
 name|isUber
 parameter_list|()
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"isUber is not yet implemented"
-argument_list|)
-expr_stmt|;
 return|return
-literal|false
+name|jobInfo
+operator|.
+name|getUberized
+argument_list|()
 return|;
 block|}
 annotation|@
