@@ -468,7 +468,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
+name|ApplicationId
 import|;
 end_import
 
@@ -486,7 +486,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -1056,7 +1056,7 @@ operator|.
 name|getAddress
 argument_list|()
 operator|.
-name|getHostAddress
+name|getCanonicalHostName
 argument_list|()
 decl_stmt|;
 try|try

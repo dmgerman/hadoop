@@ -1090,11 +1090,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createLogAggregationService ( DeletionService deletionService)
+DECL|method|createLogAggregationService (Context context, DeletionService deletionService)
 specifier|protected
 name|LogAggregationService
 name|createLogAggregationService
 parameter_list|(
+name|Context
+name|context
+parameter_list|,
 name|DeletionService
 name|deletionService
 parameter_list|)
@@ -1103,6 +1106,8 @@ return|return
 operator|new
 name|LogAggregationService
 argument_list|(
+name|context
+argument_list|,
 name|deletionService
 argument_list|)
 block|{

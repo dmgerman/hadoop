@@ -50,11 +50,6 @@ index|[]
 name|getRMNMSharedSecret
 parameter_list|()
 function_decl|;
-DECL|method|getContainerManagerBindAddress ()
-name|String
-name|getContainerManagerBindAddress
-parameter_list|()
-function_decl|;
 DECL|method|sendOutofBandHeartBeat ()
 name|void
 name|sendOutofBandHeartBeat
