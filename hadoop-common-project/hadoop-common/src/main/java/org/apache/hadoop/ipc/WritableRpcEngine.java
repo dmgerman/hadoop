@@ -2150,7 +2150,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ProtocolImpl="
+literal|"Protocol Name = "
+operator|+
+name|protocolName
+operator|+
+literal|" version="
+operator|+
+name|version
+operator|+
+literal|" ProtocolImpl="
 operator|+
 name|protocolImpl
 operator|.
@@ -2166,10 +2174,6 @@ name|protocolClass
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" version="
-operator|+
-name|version
 argument_list|)
 expr_stmt|;
 block|}
