@@ -6245,15 +6245,6 @@ operator|.
 name|newDocument
 argument_list|()
 expr_stmt|;
-comment|// Allow a broader set of control characters to appear in job confs.
-comment|// cf https://issues.apache.org/jira/browse/MAPREDUCE-109
-name|doc
-operator|.
-name|setXmlVersion
-argument_list|(
-literal|"1.1"
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
