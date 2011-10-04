@@ -1075,9 +1075,11 @@ name|verbose_
 operator|=
 literal|false
 expr_stmt|;
+comment|// Unset HADOOP_ROOT_LOGGER in case streaming job
+comment|// invokes additional hadoop commands.
 name|addTaskEnvironment_
 operator|=
-literal|""
+literal|"HADOOP_ROOT_LOGGER="
 expr_stmt|;
 block|}
 DECL|method|postProcessArgs ()
