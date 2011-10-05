@@ -409,7 +409,7 @@ literal|"File "
 operator|+
 name|userRsrc
 operator|+
-literal|" does not exist."
+literal|" does not exist"
 decl_stmt|;
 name|validateBadUsersFile
 argument_list|(
