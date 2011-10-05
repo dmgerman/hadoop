@@ -140,9 +140,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that the server is alive once started    *    * @throws Throwable on failure    */
-DECL|method|testStartedServerIsAlive ()
 annotation|@
 name|Test
+DECL|method|testStartedServerIsAlive ()
 specifier|public
 name|void
 name|testStartedServerIsAlive
@@ -155,8 +155,6 @@ name|server
 init|=
 literal|null
 decl_stmt|;
-try|try
-block|{
 name|server
 operator|=
 name|createTestServer
@@ -177,15 +175,11 @@ argument_list|(
 name|server
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
 name|stop
 argument_list|(
 name|server
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Assert that the result of {@link HttpServer#toString()} contains the specific text    * @param server server to examine    * @param text text to search for    */
 DECL|method|assertToStringContains (HttpServer server, String text)
@@ -302,6 +296,91 @@ expr_stmt|;
 name|assertNotLive
 argument_list|(
 name|server
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that the server is alive once started    *     * @throws Throwable    *           on failure    */
+annotation|@
+name|Test
+DECL|method|testWepAppContextAfterServerStop ()
+specifier|public
+name|void
+name|testWepAppContextAfterServerStop
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|HttpServer
+name|server
+init|=
+literal|null
+decl_stmt|;
+name|String
+name|key
+init|=
+literal|"test.attribute.key"
+decl_stmt|;
+name|String
+name|value
+init|=
+literal|"test.attribute.value"
+decl_stmt|;
+name|server
+operator|=
+name|createTestServer
+argument_list|()
+expr_stmt|;
+name|assertNotLive
+argument_list|(
+name|server
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|server
+operator|.
+name|setAttribute
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+name|assertAlive
+argument_list|(
+name|server
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|value
+argument_list|,
+name|server
+operator|.
+name|getAttribute
+argument_list|(
+name|key
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|stop
+argument_list|(
+name|server
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Server context should have cleared"
+argument_list|,
+name|server
+operator|.
+name|getAttribute
+argument_list|(
+name|key
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
