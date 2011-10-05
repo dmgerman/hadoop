@@ -368,7 +368,7 @@ argument_list|>
 name|release
 parameter_list|)
 function_decl|;
-comment|/**    * Get node resource usage report.    * @param nodeId    * @return the {@link SchedulerNodeReport} for the node    */
+comment|/**    * Get node resource usage report.    * @param nodeId    * @return the {@link SchedulerNodeReport} for the node or null    * if nodeId does not point to a defined node.    */
 annotation|@
 name|LimitedPrivate
 argument_list|(

@@ -222,26 +222,6 @@ name|*
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
-name|*
-import|;
-end_import
-
 begin_class
 DECL|class|CapacitySchedulerPage
 class|class
@@ -653,6 +633,15 @@ name|Block
 name|html
 parameter_list|)
 block|{
+name|html
+operator|.
+name|_
+argument_list|(
+name|MetricsOverviewTable
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 name|UL
 argument_list|<
 name|DIV

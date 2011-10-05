@@ -1623,46 +1623,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|method|getUsedResource (NodeId nodeId)
-specifier|public
-specifier|synchronized
-name|Resource
-name|getUsedResource
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
-block|{
-return|return
-name|getNode
-argument_list|(
-name|nodeId
-argument_list|)
-operator|.
-name|getUsedResource
-argument_list|()
-return|;
-block|}
-DECL|method|getAvailableResource (NodeId nodeId)
-specifier|public
-specifier|synchronized
-name|Resource
-name|getAvailableResource
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
-block|{
-return|return
-name|getNode
-argument_list|(
-name|nodeId
-argument_list|)
-operator|.
-name|getAvailableResource
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|getMinimumResourceCapability ()
@@ -4116,6 +4076,19 @@ operator|.
 name|releaseContainer
 argument_list|(
 name|container
+argument_list|)
+expr_stmt|;
+comment|// Update total usage
+name|Resources
+operator|.
+name|subtractFrom
+argument_list|(
+name|usedResource
+argument_list|,
+name|container
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
