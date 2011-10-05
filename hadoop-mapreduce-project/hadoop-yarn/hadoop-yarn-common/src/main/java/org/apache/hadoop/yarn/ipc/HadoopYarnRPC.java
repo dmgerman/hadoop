@@ -229,15 +229,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|Configuration
-name|myConf
-init|=
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -247,27 +238,11 @@ operator|+
 name|protocol
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Configured SecurityInfo class name is "
-operator|+
-name|myConf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_INFO
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|RPC
 operator|.
 name|setProtocolEngine
 argument_list|(
-name|myConf
+name|conf
 argument_list|,
 name|protocol
 argument_list|,
@@ -289,7 +264,7 @@ literal|1
 argument_list|,
 name|addr
 argument_list|,
-name|myConf
+name|conf
 argument_list|)
 return|;
 block|}
@@ -352,22 +327,6 @@ operator|+
 name|numHandlers
 operator|+
 literal|" handlers"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Configured SecurityInfo class name is "
-operator|+
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_INFO
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|RPC

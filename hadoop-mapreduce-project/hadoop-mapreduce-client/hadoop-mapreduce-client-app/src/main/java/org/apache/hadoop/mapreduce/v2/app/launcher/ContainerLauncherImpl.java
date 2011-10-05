@@ -835,34 +835,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-comment|// Clone configuration for this component so that the SecurityInfo setting
-comment|// doesn't affect the original configuration
-name|Configuration
-name|myLocalConfig
-init|=
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|myLocalConfig
-operator|.
-name|setClass
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_INFO
-argument_list|,
-name|ContainerManagerSecurityInfo
-operator|.
-name|class
-argument_list|,
-name|SecurityInfo
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|recordFactory
@@ -895,7 +867,7 @@ name|super
 operator|.
 name|init
 argument_list|(
-name|myLocalConfig
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
