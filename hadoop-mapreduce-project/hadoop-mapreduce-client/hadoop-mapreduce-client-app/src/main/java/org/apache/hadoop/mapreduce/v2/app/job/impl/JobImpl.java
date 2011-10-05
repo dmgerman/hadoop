@@ -6089,13 +6089,19 @@ argument_list|,
 name|user
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- startJobs:"
-operator|+
-literal|" parent="
+literal|"startJobs: parent="
 operator|+
 name|path
 operator|+
@@ -6104,6 +6110,7 @@ operator|+
 name|oldJobIDString
 argument_list|)
 expr_stmt|;
+block|}
 name|job
 operator|.
 name|remoteJobSubmitDir

@@ -3592,9 +3592,9 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- Container FINISHED: "
+literal|"Container FINISHED: "
 operator|+
 name|containerId
 argument_list|)

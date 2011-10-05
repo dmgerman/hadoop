@@ -1897,9 +1897,9 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- getStagingAreaDir: dir="
+literal|"getStagingAreaDir: dir="
 operator|+
 name|path
 argument_list|)

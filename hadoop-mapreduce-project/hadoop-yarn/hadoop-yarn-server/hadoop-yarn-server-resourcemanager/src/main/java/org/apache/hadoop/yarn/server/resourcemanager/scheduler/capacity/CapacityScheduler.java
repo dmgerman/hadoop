@@ -2811,11 +2811,19 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate: pre-update"
+literal|"allocate: pre-update"
 operator|+
 literal|" applicationAttemptId="
 operator|+
@@ -2826,6 +2834,7 @@ operator|+
 name|application
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -2841,9 +2850,9 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate: post-update"
+literal|"allocate: post-update"
 argument_list|)
 expr_stmt|;
 name|application
@@ -2852,11 +2861,19 @@ name|showRequests
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate:"
+literal|"allocate:"
 operator|+
 literal|" applicationAttemptId="
 operator|+
@@ -2870,6 +2887,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|Allocation
@@ -3221,9 +3239,9 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- Container FINISHED: "
+literal|"Container FINISHED: "
 operator|+
 name|containerId
 argument_list|)
@@ -3244,11 +3262,19 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Now node data structures are upto date and ready for scheduling.
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG -- Node being looked for scheduling "
+literal|"Node being looked for scheduling "
 operator|+
 name|nm
 operator|+
@@ -3260,6 +3286,7 @@ name|getAvailableResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Assign new containers...
 comment|// 1. Check for reserved applications
 comment|// 2. Schedule if there are no reservations

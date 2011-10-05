@@ -1370,11 +1370,19 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- startContainer:"
+literal|"startContainer:"
 operator|+
 literal|" node="
 operator|+
@@ -1397,6 +1405,7 @@ operator|+
 name|used
 argument_list|)
 expr_stmt|;
+block|}
 name|StartContainerResponse
 name|response
 init|=
@@ -1687,11 +1696,19 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- stopContainer:"
+literal|"stopContainer:"
 operator|+
 literal|" node="
 operator|+
@@ -1714,6 +1731,7 @@ operator|+
 name|used
 argument_list|)
 expr_stmt|;
+block|}
 name|StopContainerResponse
 name|response
 init|=

@@ -1272,16 +1272,25 @@ argument_list|(
 name|childQueues
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- setChildQueues: "
+literal|"setChildQueues: "
 operator|+
 name|getChildQueuesToPrint
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -2571,16 +2580,25 @@ name|node
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- Trying to assign containers to child-queue of "
+literal|"Trying to assign containers to child-queue of "
 operator|+
 name|getQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Are we over maximum-capacity for this queue?
 if|if
 condition|(
@@ -2668,13 +2686,19 @@ else|else
 block|{
 break|break;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG ---"
-operator|+
-literal|" parentQ="
+literal|"ParentQ="
 operator|+
 name|getQueueName
 argument_list|()
@@ -2689,6 +2713,7 @@ name|getUtilization
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Do not assign more than one container if this isn't the root queue
 if|if
 condition|(
@@ -2860,13 +2885,19 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- Trying to assign to"
-operator|+
-literal|" queue: "
+literal|"Trying to assign to queue: "
 operator|+
 name|childQueue
 operator|.
@@ -2878,6 +2909,7 @@ operator|+
 name|childQueue
 argument_list|)
 expr_stmt|;
+block|}
 name|assigned
 operator|=
 name|childQueue
@@ -2889,13 +2921,19 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- Assignedto"
-operator|+
-literal|" queue: "
+literal|"Assignedto queue: "
 operator|+
 name|childQueue
 operator|.
@@ -2914,6 +2952,7 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// If we do assign, remove the queue and re-insert in-order to re-sort
 if|if
 condition|(
@@ -3021,11 +3060,19 @@ name|void
 name|printChildQueues
 parameter_list|()
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- printChildQueues - queue: "
+literal|"printChildQueues - queue: "
 operator|+
 name|getQueuePath
 argument_list|()
@@ -3036,6 +3083,7 @@ name|getChildQueuesToPrint
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

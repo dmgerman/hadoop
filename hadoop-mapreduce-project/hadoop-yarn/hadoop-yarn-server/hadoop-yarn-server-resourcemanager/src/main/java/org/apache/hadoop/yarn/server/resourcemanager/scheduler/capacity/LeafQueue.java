@@ -1422,11 +1422,19 @@ argument_list|,
 name|acls
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- LeafQueue:"
+literal|"LeafQueue:"
 operator|+
 literal|" name="
 operator|+
@@ -1438,6 +1446,7 @@ name|getQueuePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|pendingApplications
@@ -3438,13 +3447,19 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- assignContainers:"
-operator|+
-literal|" node="
+literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
@@ -3459,6 +3474,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Check for reserved resources
 name|RMContainer
 name|reservedContainer
@@ -3508,11 +3524,19 @@ range|:
 name|activeApplications
 control|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- pre-assignContainers for application "
+literal|"pre-assignContainers for application "
 operator|+
 name|application
 operator|.
@@ -3520,6 +3544,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -3736,11 +3761,19 @@ break|break;
 block|}
 block|}
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- post-assignContainers for application "
+literal|"post-assignContainers for application "
 operator|+
 name|application
 operator|.
@@ -3748,6 +3781,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -5439,11 +5473,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- assignContainers:"
-operator|+
-literal|" node="
+literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
