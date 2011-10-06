@@ -886,6 +886,19 @@ argument_list|,
 name|principal
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Login using keytab "
+operator|+
+name|keytab
+operator|+
+literal|", for principal "
+operator|+
+name|principal
+argument_list|)
+expr_stmt|;
 name|loginContext
 operator|=
 operator|new
