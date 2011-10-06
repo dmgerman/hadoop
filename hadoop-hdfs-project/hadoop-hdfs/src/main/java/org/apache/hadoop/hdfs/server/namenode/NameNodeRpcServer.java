@@ -2362,6 +2362,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|nn
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
@@ -4120,13 +4129,25 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
 DECL|method|getStats ()
 specifier|public
 name|long
 index|[]
 name|getStats
 parameter_list|()
+throws|throws
+name|IOException
 block|{
+name|nn
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.
