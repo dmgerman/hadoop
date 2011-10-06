@@ -1631,9 +1631,20 @@ literal|"Could not get invocation handler "
 operator|+
 name|invocationHandler
 operator|+
-literal|" for proxy "
+literal|" for proxy class "
 operator|+
+operator|(
 name|proxy
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|proxy
+operator|.
+name|getClass
+argument_list|()
+operator|)
 operator|+
 literal|", or invocation handler is not closeable."
 argument_list|)
