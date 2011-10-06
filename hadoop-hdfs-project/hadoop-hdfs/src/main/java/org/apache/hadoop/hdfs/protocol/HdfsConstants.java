@@ -81,6 +81,25 @@ specifier|private
 name|HdfsConstants
 parameter_list|()
 block|{   }
+comment|/**    * HDFS Protocol Names:      */
+DECL|field|CLIENT_NAMENODE_PROTOCOL_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CLIENT_NAMENODE_PROTOCOL_NAME
+init|=
+literal|"org.apache.hadoop.hdfs.protocol.ClientProtocol"
+decl_stmt|;
+DECL|field|CLIENT_DATANODE_PROTOCOL_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CLIENT_DATANODE_PROTOCOL_NAME
+init|=
+literal|"org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol"
+decl_stmt|;
 DECL|field|MIN_BLOCKS_FOR_WRITE
 specifier|public
 specifier|static

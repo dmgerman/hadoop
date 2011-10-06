@@ -219,6 +219,30 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|LocatedBlock (ExtendedBlock eb)
+specifier|public
+name|LocatedBlock
+parameter_list|(
+name|ExtendedBlock
+name|eb
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|eb
+argument_list|,
+operator|new
+name|DatanodeInfo
+index|[
+literal|0
+index|]
+argument_list|,
+literal|0L
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|LocatedBlock (String bpid, Block b, DatanodeInfo[] locs)
 specifier|public
 name|LocatedBlock

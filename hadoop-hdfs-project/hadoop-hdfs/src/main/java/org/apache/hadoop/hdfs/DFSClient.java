@@ -32,6 +32,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|DataInputStream
 import|;
 end_import
@@ -1834,6 +1844,8 @@ argument_list|(
 name|nameNodeAddr
 argument_list|,
 name|conf
+argument_list|,
+name|ugi
 argument_list|)
 expr_stmt|;
 block|}
@@ -2105,6 +2117,57 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Close connections the Namenode.    * The namenode variable is either a rpcProxy passed by a test or     * created using the protocolTranslator which is closeable.    * If closeable then call close, else close using RPC.stopProxy().    */
+DECL|method|closeConnectionToNamenode ()
+name|void
+name|closeConnectionToNamenode
+parameter_list|()
+block|{
+if|if
+condition|(
+name|namenode
+operator|instanceof
+name|Closeable
+condition|)
+block|{
+try|try
+block|{
+operator|(
+operator|(
+name|Closeable
+operator|)
+name|namenode
+operator|)
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+return|return;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// fall through - lets try the stopProxy
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception closing namenode, stopping the proxy"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+name|namenode
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Abort and release resources held.  Ignore all errors. */
 DECL|method|abort ()
 name|void
@@ -2120,14 +2183,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|RPC
-operator|.
-name|stopProxy
-argument_list|(
-name|namenode
-argument_list|)
+name|closeConnectionToNamenode
+argument_list|()
 expr_stmt|;
-comment|// close connections to the namenode
 block|}
 comment|/** Close/abort all files being written. */
 DECL|method|closeAllFilesBeingWritten (final boolean abort)
@@ -2284,12 +2342,8 @@ name|this
 argument_list|)
 expr_stmt|;
 comment|// close connections to the namenode
-name|RPC
-operator|.
-name|stopProxy
-argument_list|(
-name|namenode
-argument_list|)
+name|closeConnectionToNamenode
+argument_list|()
 expr_stmt|;
 block|}
 block|}

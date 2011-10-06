@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.protocol
+DECL|package|org.apache.hadoop.hdfs.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -108,6 +108,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -115,6 +131,20 @@ operator|.
 name|block
 operator|.
 name|BlockTokenSelector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|ProtocolInfo
 import|;
 end_import
 
@@ -163,7 +193,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** An client-datanode protocol for block recovery  */
+comment|/**   * This class defines the actual protocol used to communicate with the  * DN via RPC using writable types.  * The parameters in the methods which are specified in the  * package are separate from those used internally in the DN and DFSClient  * and hence need to be converted using {@link ClientDatanodeProtocolTranslatorR23}  * and {@link ClientDatanodeProtocolServerSideTranslatorR23}.  */
 end_comment
 
 begin_interface
@@ -174,7 +204,7 @@ name|Private
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 annotation|@
 name|KerberosInfo
 argument_list|(
@@ -191,10 +221,19 @@ name|BlockTokenSelector
 operator|.
 name|class
 argument_list|)
-DECL|interface|ClientDatanodeProtocol
+annotation|@
+name|ProtocolInfo
+argument_list|(
+name|protocolName
+operator|=
+name|HdfsConstants
+operator|.
+name|CLIENT_DATANODE_PROTOCOL_NAME
+argument_list|)
+DECL|interface|ClientDatanodeWireProtocol
 specifier|public
 interface|interface
-name|ClientDatanodeProtocol
+name|ClientDatanodeWireProtocol
 extends|extends
 name|VersionedProtocol
 block|{
@@ -209,12 +248,12 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|ClientDatanodeProtocol
+name|ClientDatanodeWireProtocol
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Until version 9, this class ClientDatanodeProtocol served as both    * the client interface to the DN AND the RPC protocol used to     * communicate with the NN.    *     * Post version 10 (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/ClientDatanodeWireProtocol}    *     * This class is used by both the DFSClient and the     * DN server side to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link org.apache.hadoop.hdfs.protocolR23Compatible.ClientDatanodeWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link org.apache.hadoop.hdfs.protocolR23Compatible.ClientNamenodeWireProtocol}    *     * The log of historical changes can be retrieved from the svn).    * 9: Added deleteBlockPool method    *     * 9 is the last version id when this class was used for protocols    *  serialization. DO not update this version any further.     *  Changes are recorded in R23 classes.    */
+comment|/**    * The  rules for changing this protocol are the same as that for    * {@link ClientNamenodeWireProtocol} - see that java file for details.    * 9: Added deleteBlockPool method    * 10 Moved the R23 protocol    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -222,20 +261,20 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|9L
+literal|10L
 decl_stmt|;
-comment|/** Return the visible length of a replica. */
-DECL|method|getReplicaVisibleLength (ExtendedBlock b)
+comment|/**    * The specification of this method matches that of    *     * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol    * #getReplicaVisibleLength(org.apache.hadoop.hdfs.protocol.ExtendedBlock)}    */
+DECL|method|getReplicaVisibleLength (ExtendedBlockWritable b)
 name|long
 name|getReplicaVisibleLength
 parameter_list|(
-name|ExtendedBlock
+name|ExtendedBlockWritable
 name|b
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Refresh the list of federated namenodes from updated configuration    * Adds new namenodes and stops the deleted namenodes.    *     * @throws IOException on error    **/
+comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol#refreshNamenodes()}    */
 DECL|method|refreshNamenodes ()
 name|void
 name|refreshNamenodes
@@ -243,7 +282,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete the block pool directory. If force is false it is deleted only if    * it is empty, otherwise it is deleted along with its contents.    *     * @param bpid Blockpool id to be deleted.    * @param force If false blockpool directory is deleted only if it is empty     *          i.e. if it doesn't contain any block files, otherwise it is     *          deleted along with its contents.    * @throws IOException    */
+comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientDatanodeProtocol#deleteBlockPool(String, boolean)}    */
 DECL|method|deleteBlockPool (String bpid, boolean force)
 name|void
 name|deleteBlockPool
@@ -253,6 +292,34 @@ name|bpid
 parameter_list|,
 name|boolean
 name|force
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 to the method name    * to avoid conflict.    */
+specifier|public
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|ProtocolSignatureWritable
+DECL|method|getProtocolSignature2 (String protocol, long clientVersion, int clientMethodsHash)
+name|getProtocolSignature2
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
 parameter_list|)
 throws|throws
 name|IOException
