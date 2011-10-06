@@ -1337,6 +1337,7 @@ return|;
 block|}
 comment|/**    * TODO:FEDERATION    * @param filesystemURI    * @return address of file system    */
 DECL|method|getAddress (URI filesystemURI)
+specifier|public
 specifier|static
 name|InetSocketAddress
 name|getAddress

@@ -210,6 +210,15 @@ name|DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT
 init|=
 literal|16
 decl_stmt|;
+DECL|field|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
+init|=
+literal|"dfs.client.failover.proxy.provider"
+decl_stmt|;
 DECL|field|DFS_NAMENODE_BACKUP_ADDRESS_KEY
 specifier|public
 specifier|static

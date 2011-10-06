@@ -346,6 +346,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|VersionedProtocol
@@ -504,6 +520,8 @@ comment|///////////////////////////////////////
 comment|/**    * Get locations of the blocks of the specified file within the specified range.    * DataNode locations for each block are sorted by    * the proximity to the client.    *<p>    * Return {@link LocatedBlocks} which contains    * file length, blocks and their locations.    * DataNode locations for each block are sorted by    * the distance to the client's address.    *<p>    * The client will then have to contact     * one of the indicated DataNodes to obtain the actual data.    *     * @param src file name    * @param offset range start offset    * @param length range length    *    * @return file length and array of blocks with their locations    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> does not exist    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Nullable
+annotation|@
+name|Idempotent
 DECL|method|getBlockLocations (String src, long offset, long length)
 specifier|public
 name|LocatedBlocks
@@ -686,7 +704,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * The client can give up on a blcok by calling abandonBlock().    * The client can then    * either obtain a new block, or complete or abandon the file.    * Any partial writes to the block will be discarded.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then    * either obtain a new block, or complete or abandon the file.    * Any partial writes to the block will be discarded.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
 specifier|public
 name|void
@@ -1209,6 +1227,8 @@ function_decl|;
 comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if the path contains a symlink.     * @throws IOException If an I/O error occurred            */
 annotation|@
 name|Nullable
+annotation|@
+name|Idempotent
 DECL|method|getFileInfo (String src)
 specifier|public
 name|HdfsFileStatus
