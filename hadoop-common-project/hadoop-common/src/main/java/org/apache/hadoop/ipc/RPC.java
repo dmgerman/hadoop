@@ -2204,8 +2204,6 @@ comment|/**      * Add a protocol to the existing server.      * @param protocol
 specifier|public
 parameter_list|<
 name|PROTO
-extends|extends
-name|VersionedProtocol
 parameter_list|,
 name|IMPL
 extends|extends

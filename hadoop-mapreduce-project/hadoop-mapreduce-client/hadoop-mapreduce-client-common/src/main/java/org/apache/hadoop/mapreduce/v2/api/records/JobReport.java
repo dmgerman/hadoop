@@ -112,6 +112,13 @@ name|String
 name|getDiagnostics
 parameter_list|()
 function_decl|;
+DECL|method|getJobFile ()
+specifier|public
+specifier|abstract
+name|String
+name|getJobFile
+parameter_list|()
+function_decl|;
 DECL|method|setJobId (JobId jobId)
 specifier|public
 specifier|abstract
@@ -230,6 +237,16 @@ name|setDiagnostics
 parameter_list|(
 name|String
 name|diagnostics
+parameter_list|)
+function_decl|;
+DECL|method|setJobFile (String jobFile)
+specifier|public
+specifier|abstract
+name|void
+name|setJobFile
+parameter_list|(
+name|String
+name|jobFile
 parameter_list|)
 function_decl|;
 block|}

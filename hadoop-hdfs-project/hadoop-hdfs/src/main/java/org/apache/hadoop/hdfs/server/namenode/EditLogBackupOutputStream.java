@@ -249,17 +249,6 @@ name|getAddress
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Storage
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"EditLogBackupOutputStream connects to: "
-operator|+
-name|bnAddress
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|this
@@ -329,37 +318,6 @@ argument_list|(
 name|DEFAULT_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-comment|// JournalStream
-DECL|method|getName ()
-specifier|public
-name|String
-name|getName
-parameter_list|()
-block|{
-return|return
-name|bnRegistration
-operator|.
-name|getAddress
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// JournalStream
-DECL|method|getType ()
-specifier|public
-name|JournalType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|JournalType
-operator|.
-name|BACKUP
-return|;
 block|}
 annotation|@
 name|Override
@@ -642,21 +600,6 @@ name|data
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/**    * There is no persistent storage. Therefore length is 0.<p>    * Length is used to check when it is large enough to start a checkpoint.    * This criteria should not be used for backup streams.    */
-annotation|@
-name|Override
-comment|// EditLogOutputStream
-DECL|method|length ()
-name|long
-name|length
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-literal|0
-return|;
 block|}
 comment|/**    * Get backup node registration.    */
 DECL|method|getRegistration ()

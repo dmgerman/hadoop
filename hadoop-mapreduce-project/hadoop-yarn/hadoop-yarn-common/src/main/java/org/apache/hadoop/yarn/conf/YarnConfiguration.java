@@ -165,16 +165,6 @@ name|APPLICATION_ACL_MODIFY_APP
 init|=
 literal|"yarn.app.acl.modify-job"
 decl_stmt|;
-comment|/**     * Security info class This is an internal config set and    * read by YARN itself.    */
-DECL|field|YARN_SECURITY_INFO
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|YARN_SECURITY_INFO
-init|=
-literal|"yarn.security.info.class"
-decl_stmt|;
 comment|/** Delay before deleting resource to ease debugging of NM issues */
 DECL|field|DEBUG_NM_DELETE_DELAY_SEC
 specifier|public

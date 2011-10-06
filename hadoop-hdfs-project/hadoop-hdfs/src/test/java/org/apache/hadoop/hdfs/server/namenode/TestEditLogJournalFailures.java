@@ -62,6 +62,18 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doNothing
@@ -193,6 +205,26 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|JournalSet
+operator|.
+name|JournalAndStream
 import|;
 end_import
 
@@ -394,6 +426,8 @@ argument_list|(
 literal|0
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Make sure runtime.exit(...) hasn't been called at all yet.
@@ -448,11 +482,70 @@ argument_list|(
 literal|0
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|invalidateEditsDirAtIndex
 argument_list|(
 literal|1
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// Make sure runtime.exit(...) hasn't been called at all yet.
+name|assertExitInvocations
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|doAnEdit
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// The previous edit could not be synced to any persistent storage, should
+comment|// have halted the NN.
+name|assertExitInvocations
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testAllEditsDirFailOnWrite ()
+specifier|public
+name|void
+name|testAllEditsDirFailOnWrite
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assertTrue
+argument_list|(
+name|doAnEdit
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Invalidate both edits journals.
+name|invalidateEditsDirAtIndex
+argument_list|(
+literal|0
+argument_list|,
+literal|true
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|invalidateEditsDirAtIndex
+argument_list|(
+literal|1
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|)
@@ -499,6 +592,8 @@ argument_list|(
 literal|0
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Make sure runtime.exit(...) hasn't been called at all yet.
@@ -532,7 +627,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Replace the journal at index<code>index</code> with one that throws an    * exception on flush.    *     * @param index the index of the journal to take offline.    * @return the original<code>EditLogOutputStream</code> of the journal.    */
-DECL|method|invalidateEditsDirAtIndex (int index, boolean failOnFlush)
+DECL|method|invalidateEditsDirAtIndex (int index, boolean failOnFlush, boolean failOnWrite)
 specifier|private
 name|EditLogOutputStream
 name|invalidateEditsDirAtIndex
@@ -542,6 +637,9 @@ name|index
 parameter_list|,
 name|boolean
 name|failOnFlush
+parameter_list|,
+name|boolean
+name|failOnWrite
 parameter_list|)
 throws|throws
 name|IOException
@@ -565,8 +663,6 @@ operator|.
 name|getEditLog
 argument_list|()
 decl_stmt|;
-name|FSEditLog
-operator|.
 name|JournalAndStream
 name|jas
 init|=
@@ -599,6 +695,35 @@ argument_list|(
 name|elos
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|failOnWrite
+condition|)
+block|{
+name|doThrow
+argument_list|(
+operator|new
+name|IOException
+argument_list|(
+literal|"fail on write()"
+argument_list|)
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|spyElos
+argument_list|)
+operator|.
+name|write
+argument_list|(
+operator|(
+name|FSEditLogOp
+operator|)
+name|any
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|failOnFlush
@@ -696,8 +821,6 @@ operator|.
 name|getEditLog
 argument_list|()
 decl_stmt|;
-name|FSEditLog
-operator|.
 name|JournalAndStream
 name|jas
 init|=

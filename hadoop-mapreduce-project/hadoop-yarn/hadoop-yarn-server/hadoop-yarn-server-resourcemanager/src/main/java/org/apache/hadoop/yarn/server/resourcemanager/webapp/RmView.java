@@ -247,7 +247,7 @@ name|content
 parameter_list|()
 block|{
 return|return
-name|AppsBlock
+name|AppsBlockWithMetrics
 operator|.
 name|class
 return|;
@@ -282,7 +282,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{sType:'title-numeric', bSearchable:false}, null, null]"
+literal|"null,{sType:'title-numeric', bSearchable:false}, null, null]"
 argument_list|)
 decl_stmt|;
 name|String

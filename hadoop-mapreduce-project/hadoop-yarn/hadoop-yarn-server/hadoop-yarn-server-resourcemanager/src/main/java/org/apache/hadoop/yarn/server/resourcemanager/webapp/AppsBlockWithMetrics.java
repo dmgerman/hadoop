@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp
 package|package
 name|org
 operator|.
@@ -14,9 +14,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|resourcemanager
+operator|.
+name|webapp
 package|;
 end_package
 
@@ -28,69 +30,59 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceAudience
+name|webapp
 operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|view
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Stable
+name|HtmlBlock
 import|;
 end_import
 
 begin_comment
-comment|/**  * Ennumeration of various states of an<code>Application</code>.  */
+comment|/**  * Renders a block for the applications with metrics information.  */
 end_comment
 
-begin_enum
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|enum|ApplicationState
-specifier|public
-enum|enum
-name|ApplicationState
+begin_class
+DECL|class|AppsBlockWithMetrics
+class|class
+name|AppsBlockWithMetrics
+extends|extends
+name|HtmlBlock
 block|{
-comment|/** Application which was just created. */
-DECL|enumConstant|NEW
-name|NEW
-block|,
-comment|/** Application which has been submitted. */
-DECL|enumConstant|SUBMITTED
-name|SUBMITTED
-block|,
-comment|/** Application which is currently running. */
-DECL|enumConstant|RUNNING
-name|RUNNING
-block|,
-comment|/** Application which completed successfully. */
-DECL|enumConstant|SUCCEEDED
-name|SUCCEEDED
-block|,
-comment|/** Application which failed. */
-DECL|enumConstant|FAILED
-name|FAILED
-block|,
-comment|/** Application which was terminated by a user or admin. */
-DECL|enumConstant|KILLED
-name|KILLED
+DECL|method|render (Block html)
+annotation|@
+name|Override
+specifier|public
+name|void
+name|render
+parameter_list|(
+name|Block
+name|html
+parameter_list|)
+block|{
+name|html
+operator|.
+name|_
+argument_list|(
+name|MetricsOverviewTable
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|html
+operator|.
+name|_
+argument_list|(
+name|AppsBlock
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
-end_enum
+block|}
+end_class
 
 end_unit
 

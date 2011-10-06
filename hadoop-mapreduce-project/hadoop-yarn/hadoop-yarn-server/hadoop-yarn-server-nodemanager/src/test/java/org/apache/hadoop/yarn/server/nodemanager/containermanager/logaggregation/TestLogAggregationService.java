@@ -888,6 +888,10 @@ name|LogAggregationService
 argument_list|(
 name|this
 operator|.
+name|context
+argument_list|,
+name|this
+operator|.
 name|delSrvc
 argument_list|)
 decl_stmt|;
@@ -1180,6 +1184,10 @@ name|LogAggregationService
 argument_list|(
 name|this
 operator|.
+name|context
+argument_list|,
+name|this
+operator|.
 name|delSrvc
 argument_list|)
 decl_stmt|;
@@ -1344,6 +1352,10 @@ init|=
 operator|new
 name|LogAggregationService
 argument_list|(
+name|this
+operator|.
+name|context
+argument_list|,
 name|this
 operator|.
 name|delSrvc

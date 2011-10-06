@@ -86,52 +86,83 @@ specifier|public
 class|class
 name|SchedulerNodeReport
 block|{
-DECL|field|usedResources
+DECL|field|used
 specifier|private
 specifier|final
 name|Resource
-name|usedResources
+name|used
 decl_stmt|;
-DECL|field|numContainers
+DECL|field|avail
+specifier|private
+specifier|final
+name|Resource
+name|avail
+decl_stmt|;
+DECL|field|num
 specifier|private
 specifier|final
 name|int
-name|numContainers
+name|num
 decl_stmt|;
-DECL|method|SchedulerNodeReport (Resource used, int numContainers)
+DECL|method|SchedulerNodeReport (SchedulerNode node)
 specifier|public
 name|SchedulerNodeReport
 parameter_list|(
-name|Resource
-name|used
-parameter_list|,
-name|int
-name|numContainers
+name|SchedulerNode
+name|node
 parameter_list|)
 block|{
 name|this
 operator|.
-name|usedResources
-operator|=
 name|used
+operator|=
+name|node
+operator|.
+name|getUsedResource
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|numContainers
+name|avail
 operator|=
-name|numContainers
+name|node
+operator|.
+name|getAvailableResource
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|num
+operator|=
+name|node
+operator|.
+name|getNumContainers
+argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getUsedResources ()
+comment|/**    * @return the amount of resources currently used by the node.    */
+DECL|method|getUsedResource ()
 specifier|public
 name|Resource
-name|getUsedResources
+name|getUsedResource
 parameter_list|()
 block|{
 return|return
-name|usedResources
+name|used
 return|;
 block|}
+comment|/**    * @return the amount of resources currently available on the node    */
+DECL|method|getAvailableResource ()
+specifier|public
+name|Resource
+name|getAvailableResource
+parameter_list|()
+block|{
+return|return
+name|avail
+return|;
+block|}
+comment|/**    * @return the number of containers currently running on this node.    */
 DECL|method|getNumContainers ()
 specifier|public
 name|int
@@ -139,7 +170,7 @@ name|getNumContainers
 parameter_list|()
 block|{
 return|return
-name|numContainers
+name|num
 return|;
 block|}
 block|}

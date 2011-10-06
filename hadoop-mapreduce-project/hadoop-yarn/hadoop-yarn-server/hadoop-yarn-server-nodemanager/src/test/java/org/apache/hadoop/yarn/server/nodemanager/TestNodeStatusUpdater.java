@@ -937,7 +937,7 @@ operator|.
 name|getLocalHost
 argument_list|()
 operator|.
-name|getHostAddress
+name|getCanonicalHostName
 argument_list|()
 operator|+
 literal|":12345"

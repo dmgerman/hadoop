@@ -1263,13 +1263,19 @@ argument_list|,
 name|requests
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- Added"
-operator|+
-literal|" priority="
+literal|"Added priority="
 operator|+
 name|priority
 operator|+
@@ -1278,6 +1284,7 @@ operator|+
 name|applicationId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 specifier|final
 name|Resource
@@ -1361,13 +1368,19 @@ operator|+
 name|priority
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- addTask:"
-operator|+
-literal|" application="
+literal|"addTask: application="
 operator|+
 name|applicationId
 operator|+
@@ -1379,6 +1392,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Create resource requests
 for|for
 control|(
@@ -1731,13 +1745,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// clone to ensure the RM doesn't manipulate the same obj
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- addResourceRequest:"
-operator|+
-literal|" applicationId="
+literal|"addResourceRequest: applicationId="
 operator|+
 name|applicationId
 operator|.
@@ -1775,6 +1795,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 DECL|method|getResources ()
 specifier|public
 specifier|synchronized
@@ -1787,11 +1808,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- getResources begin:"
+literal|"getResources begin:"
 operator|+
 literal|" application="
 operator|+
@@ -1815,9 +1844,9 @@ control|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- getResources:"
+literal|"getResources:"
 operator|+
 literal|" application="
 operator|+
@@ -1828,6 +1857,7 @@ operator|+
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Get resources from the ResourceManager
 name|resourceManager
@@ -1912,11 +1942,19 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- getResources() for "
+literal|"getResources() for "
 operator|+
 name|applicationId
 operator|+
@@ -1937,6 +1975,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|containers
 return|;
@@ -2365,11 +2404,19 @@ name|getHosts
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- updateResourceRequests:"
+literal|"updateResourceRequests:"
 operator|+
 literal|" application="
 operator|+
@@ -2403,6 +2450,7 @@ argument_list|)
 operator|)
 argument_list|)
 expr_stmt|;
+block|}
 name|updateResourceRequest
 argument_list|(
 name|requests
@@ -2441,11 +2489,19 @@ name|getRacks
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- updateResourceRequests:"
+literal|"updateResourceRequests:"
 operator|+
 literal|" application="
 operator|+
@@ -2479,6 +2535,7 @@ argument_list|)
 operator|)
 argument_list|)
 expr_stmt|;
+block|}
 name|updateResourceRequest
 argument_list|(
 name|requests
@@ -2517,11 +2574,19 @@ name|ANY
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- updateResourceRequests:"
+literal|"updateResourceRequests:"
 operator|+
 literal|" application="
 operator|+
@@ -2535,6 +2600,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|updateResourceRequest (ResourceRequest request)
 specifier|private
@@ -2588,11 +2654,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// clone to ensure the RM doesn't manipulate the same obj
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- updateResourceRequest:"
+literal|"updateResourceRequest:"
 operator|+
 literal|" application="
 operator|+
@@ -2603,6 +2677,7 @@ operator|+
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|createCLC (Container container)
 specifier|private

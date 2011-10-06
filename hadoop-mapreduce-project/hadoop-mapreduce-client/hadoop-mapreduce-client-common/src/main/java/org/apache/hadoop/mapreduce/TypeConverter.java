@@ -52,6 +52,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -466,7 +480,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -2145,17 +2159,9 @@ return|return
 name|yCntrs
 return|;
 block|}
-DECL|method|fromYarn ( JobReport jobreport, String jobFile)
+DECL|method|fromYarn (JobReport jobreport, String trackingUrl)
 specifier|public
 specifier|static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
 name|JobStatus
 name|fromYarn
 parameter_list|(
@@ -2163,7 +2169,7 @@ name|JobReport
 name|jobreport
 parameter_list|,
 name|String
-name|jobFile
+name|trackingUrl
 parameter_list|)
 block|{
 name|JobPriority
@@ -2173,14 +2179,6 @@ name|JobPriority
 operator|.
 name|NORMAL
 decl_stmt|;
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
 name|JobStatus
 name|jobStatus
 init|=
@@ -2243,12 +2241,12 @@ operator|.
 name|getJobName
 argument_list|()
 argument_list|,
-name|jobFile
-argument_list|,
 name|jobreport
 operator|.
-name|getTrackingUrl
+name|getJobFile
 argument_list|()
+argument_list|,
+name|trackingUrl
 argument_list|)
 decl_stmt|;
 name|jobStatus
@@ -2881,7 +2879,7 @@ return|return
 name|reports
 return|;
 block|}
-DECL|method|fromYarn (ApplicationState state)
+DECL|method|fromYarn (YarnApplicationState state)
 specifier|public
 specifier|static
 name|JobStatus
@@ -2889,7 +2887,7 @@ operator|.
 name|State
 name|fromYarn
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 block|{
@@ -2915,7 +2913,7 @@ operator|.
 name|RUNNING
 return|;
 case|case
-name|SUCCEEDED
+name|FINISHED
 case|:
 return|return
 name|State
@@ -3112,7 +3110,7 @@ name|fromYarn
 argument_list|(
 name|application
 operator|.
-name|getState
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 argument_list|,

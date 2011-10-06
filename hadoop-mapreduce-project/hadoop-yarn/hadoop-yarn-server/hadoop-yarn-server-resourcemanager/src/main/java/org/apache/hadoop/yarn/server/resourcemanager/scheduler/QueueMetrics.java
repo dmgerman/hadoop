@@ -801,6 +801,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getUserMetrics (String userName)
+specifier|public
 specifier|synchronized
 name|QueueMetrics
 name|getUserMetrics

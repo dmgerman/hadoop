@@ -96,6 +96,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -169,6 +183,14 @@ DECL|field|proxyProvider
 specifier|private
 name|FailoverProxyProvider
 name|proxyProvider
+decl_stmt|;
+comment|/**    * The number of times the associated proxyProvider has ever been failed over.    */
+DECL|field|proxyProviderFailoverCount
+specifier|private
+name|long
+name|proxyProviderFailoverCount
+init|=
+literal|0
 decl_stmt|;
 DECL|field|defaultPolicy
 specifier|private
@@ -321,8 +343,9 @@ operator|=
 name|defaultPolicy
 expr_stmt|;
 block|}
+comment|// The number of times this method invocation has been failed over.
 name|int
-name|failovers
+name|invocationFailoverCount
 init|=
 literal|0
 decl_stmt|;
@@ -336,6 +359,22 @@ condition|(
 literal|true
 condition|)
 block|{
+comment|// The number of times this invocation handler has ever been failed over,
+comment|// before this method invocation attempt. Used to prevent concurrent
+comment|// failed method invocations from triggering multiple failover attempts.
+name|long
+name|invocationAttemptFailoverCount
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|proxyProvider
+init|)
+block|{
+name|invocationAttemptFailoverCount
+operator|=
+name|proxyProviderFailoverCount
+expr_stmt|;
+block|}
 try|try
 block|{
 return|return
@@ -393,7 +432,7 @@ argument_list|,
 name|retries
 operator|++
 argument_list|,
-name|failovers
+name|invocationFailoverCount
 argument_list|,
 name|isMethodIdempotent
 argument_list|)
@@ -483,14 +522,31 @@ operator|.
 name|getClass
 argument_list|()
 operator|+
-literal|". Trying to fail over."
+literal|" after "
+operator|+
+name|invocationFailoverCount
+operator|+
+literal|" fail over attempts."
+operator|+
+literal|" Trying to fail over."
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|failovers
-operator|++
-expr_stmt|;
+comment|// Make sure that concurrent failed method invocations only cause a
+comment|// single actual fail over.
+synchronized|synchronized
+init|(
+name|proxyProvider
+init|)
+block|{
+if|if
+condition|(
+name|invocationAttemptFailoverCount
+operator|==
+name|proxyProviderFailoverCount
+condition|)
+block|{
 name|proxyProvider
 operator|.
 name|performFailover
@@ -498,12 +554,35 @@ argument_list|(
 name|currentProxy
 argument_list|)
 expr_stmt|;
+name|proxyProviderFailoverCount
+operator|++
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"A failover has occurred since the start of this method"
+operator|+
+literal|" invocation attempt."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// The call to getProxy() could technically only be made in the event
+comment|// performFailover() is called, but it needs to be out here for the
+comment|// purpose of testing.
 name|currentProxy
 operator|=
 name|proxyProvider
 operator|.
 name|getProxy
 argument_list|()
+expr_stmt|;
+name|invocationFailoverCount
+operator|++
 expr_stmt|;
 block|}
 if|if

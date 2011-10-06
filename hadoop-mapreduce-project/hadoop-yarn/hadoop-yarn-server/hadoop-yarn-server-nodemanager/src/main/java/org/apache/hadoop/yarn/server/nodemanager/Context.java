@@ -96,6 +96,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|nodemanager
@@ -140,6 +158,12 @@ specifier|public
 interface|interface
 name|Context
 block|{
+comment|/**    * Return the nodeId. Usable only when the ContainerManager is started.    *     * @return the NodeId    */
+DECL|method|getNodeId ()
+name|NodeId
+name|getNodeId
+parameter_list|()
+function_decl|;
 DECL|method|getApplications ()
 name|ConcurrentMap
 argument_list|<

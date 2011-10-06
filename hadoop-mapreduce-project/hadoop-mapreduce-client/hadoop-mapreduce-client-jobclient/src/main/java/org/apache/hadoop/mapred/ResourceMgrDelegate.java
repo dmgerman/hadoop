@@ -900,34 +900,6 @@ operator|+
 name|rmAddress
 argument_list|)
 expr_stmt|;
-name|Configuration
-name|appsManagerServerConf
-init|=
-operator|new
-name|Configuration
-argument_list|(
-name|this
-operator|.
-name|conf
-argument_list|)
-decl_stmt|;
-name|appsManagerServerConf
-operator|.
-name|setClass
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_INFO
-argument_list|,
-name|ClientRMSecurityInfo
-operator|.
-name|class
-argument_list|,
-name|SecurityInfo
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 name|applicationsManager
 operator|=
 operator|(
@@ -943,7 +915,9 @@ name|class
 argument_list|,
 name|rmAddress
 argument_list|,
-name|appsManagerServerConf
+name|this
+operator|.
+name|conf
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1923,9 +1897,9 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- getStagingAreaDir: dir="
+literal|"getStagingAreaDir: dir="
 operator|+
 name|path
 argument_list|)

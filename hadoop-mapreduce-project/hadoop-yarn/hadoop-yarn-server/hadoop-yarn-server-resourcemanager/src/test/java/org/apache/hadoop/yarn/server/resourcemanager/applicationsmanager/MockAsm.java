@@ -92,6 +92,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -146,7 +164,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -452,7 +470,7 @@ annotation|@
 name|Override
 DECL|method|getState ()
 specifier|public
-name|ApplicationState
+name|YarnApplicationState
 name|getState
 parameter_list|()
 block|{
@@ -625,12 +643,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|setState (ApplicationState state)
+DECL|method|setState (YarnApplicationState state)
 specifier|public
 name|void
 name|setState
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 block|{
@@ -975,10 +993,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMFinalState ()
+DECL|method|getFinalApplicationStatus ()
 specifier|public
-name|String
-name|getAMFinalState
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 block|{
 throw|throw
@@ -1258,6 +1276,19 @@ name|Math
 operator|.
 name|random
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
+parameter_list|()
+block|{
+return|return
+name|FinalApplicationStatus
+operator|.
+name|UNDEFINED
 return|;
 block|}
 block|}

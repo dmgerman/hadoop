@@ -1363,14 +1363,9 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
-argument_list|(
 name|getConfig
 argument_list|()
-argument_list|)
 decl_stmt|;
-comment|// Just for not messing up sec-info class config
 name|YarnRPC
 name|rpc
 init|=
@@ -1485,24 +1480,6 @@ argument_list|,
 name|bytes
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setClass
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_INFO
-argument_list|,
-name|SchedulerSecurityInfo
-operator|.
-name|class
-argument_list|,
-name|SecurityInfo
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-comment|// Same for now.
 block|}
 name|server
 operator|=

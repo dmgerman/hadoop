@@ -80,6 +80,22 @@ name|ATTEMPT_STATE
 init|=
 literal|"attempt.state"
 decl_stmt|;
+DECL|field|COUNTER_GROUP
+specifier|static
+specifier|final
+name|String
+name|COUNTER_GROUP
+init|=
+literal|"counter.group"
+decl_stmt|;
+DECL|field|COUNTER_NAME
+specifier|static
+specifier|final
+name|String
+name|COUNTER_NAME
+init|=
+literal|"counter.name"
+decl_stmt|;
 block|}
 end_interface
 

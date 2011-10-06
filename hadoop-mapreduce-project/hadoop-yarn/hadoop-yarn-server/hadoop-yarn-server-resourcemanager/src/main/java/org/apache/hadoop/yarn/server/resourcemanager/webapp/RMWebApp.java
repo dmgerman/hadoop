@@ -120,6 +120,14 @@ name|QUEUE_NAME
 init|=
 literal|"queue.name"
 decl_stmt|;
+DECL|field|NODE_STATE
+specifier|static
+specifier|final
+name|String
+name|NODE_STATE
+init|=
+literal|"node.state"
+decl_stmt|;
 DECL|field|rm
 specifier|private
 specifier|final
@@ -195,7 +203,12 @@ argument_list|)
 expr_stmt|;
 name|route
 argument_list|(
+name|pajoin
+argument_list|(
 literal|"/nodes"
+argument_list|,
+name|NODE_STATE
+argument_list|)
 argument_list|,
 name|RmController
 operator|.
@@ -221,7 +234,7 @@ name|RmController
 operator|.
 name|class
 argument_list|,
-literal|"info"
+literal|"about"
 argument_list|)
 expr_stmt|;
 name|route

@@ -3982,6 +3982,11 @@ argument_list|,
 literal|0.0f
 argument_list|,
 name|cleanupProgress
+argument_list|,
+name|remoteJobConfFile
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -4015,6 +4020,11 @@ name|reduceTasks
 argument_list|)
 argument_list|,
 name|cleanupProgress
+argument_list|,
+name|remoteJobConfFile
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -6079,13 +6089,19 @@ argument_list|,
 name|user
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- startJobs:"
-operator|+
-literal|" parent="
+literal|"startJobs: parent="
 operator|+
 name|path
 operator|+
@@ -6094,6 +6110,7 @@ operator|+
 name|oldJobIDString
 argument_list|)
 expr_stmt|;
+block|}
 name|job
 operator|.
 name|remoteJobSubmitDir
@@ -6825,6 +6842,11 @@ name|getState
 argument_list|()
 operator|.
 name|toString
+argument_list|()
+argument_list|,
+name|job
+operator|.
+name|isUber
 argument_list|()
 argument_list|)
 decl_stmt|;

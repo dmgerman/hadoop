@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -182,7 +192,7 @@ comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webap
 annotation|@
 name|Override
 DECL|method|countersPage ()
-specifier|protected
+specifier|public
 name|Class
 argument_list|<
 name|?
@@ -290,6 +300,21 @@ name|jobCounters
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#taskCounters()    */
+annotation|@
+name|Override
+DECL|method|taskCounters ()
+specifier|public
+name|void
+name|taskCounters
+parameter_list|()
+block|{
+name|super
+operator|.
+name|taskCounters
+argument_list|()
+expr_stmt|;
+block|}
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#tasks()    */
 annotation|@
 name|Override
@@ -385,6 +410,60 @@ argument_list|(
 name|aboutPage
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#singleCounterPage()    */
+annotation|@
+name|Override
+DECL|method|singleCounterPage ()
+specifier|protected
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|View
+argument_list|>
+name|singleCounterPage
+parameter_list|()
+block|{
+return|return
+name|HsSingleCounterPage
+operator|.
+name|class
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#singleJobCounter()    */
+annotation|@
+name|Override
+DECL|method|singleJobCounter ()
+specifier|public
+name|void
+name|singleJobCounter
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|singleJobCounter
+argument_list|()
+expr_stmt|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.webapp.AppController#singleTaskCounter()    */
+annotation|@
+name|Override
+DECL|method|singleTaskCounter ()
+specifier|public
+name|void
+name|singleTaskCounter
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|singleTaskCounter
+argument_list|()
 expr_stmt|;
 block|}
 block|}

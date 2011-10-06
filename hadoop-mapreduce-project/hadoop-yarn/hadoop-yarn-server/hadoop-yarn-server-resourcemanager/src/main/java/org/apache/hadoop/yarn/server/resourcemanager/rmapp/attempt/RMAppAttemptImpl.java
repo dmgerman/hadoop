@@ -190,6 +190,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -1074,12 +1092,14 @@ name|trackingUrl
 init|=
 literal|"N/A"
 decl_stmt|;
-DECL|field|finalState
+comment|// Set to null initially. Will eventually get set
+comment|// if an RMAppAttemptUnregistrationEvent occurs
+DECL|field|finalStatus
 specifier|private
-name|String
-name|finalState
+name|FinalApplicationStatus
+name|finalStatus
 init|=
-literal|"N/A"
+literal|null
 decl_stmt|;
 DECL|field|diagnostics
 specifier|private
@@ -1857,10 +1877,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMFinalState ()
+DECL|method|getFinalApplicationStatus ()
 specifier|public
-name|String
-name|getAMFinalState
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 block|{
 name|this
@@ -1875,7 +1895,7 @@ block|{
 return|return
 name|this
 operator|.
-name|finalState
+name|finalStatus
 return|;
 block|}
 finally|finally
@@ -2458,7 +2478,7 @@ parameter_list|,
 name|RMAppAttemptEvent
 name|event
 parameter_list|)
-block|{           }
+block|{     }
 block|}
 DECL|class|AttemptStartedTransition
 specifier|private
@@ -3554,11 +3574,6 @@ name|RMAppAttemptUnregistrationEvent
 operator|)
 name|event
 decl_stmt|;
-name|unregisterEvent
-operator|.
-name|getFinalState
-argument_list|()
-expr_stmt|;
 name|appAttempt
 operator|.
 name|diagnostics
@@ -3582,11 +3597,11 @@ argument_list|()
 expr_stmt|;
 name|appAttempt
 operator|.
-name|finalState
+name|finalStatus
 operator|=
 name|unregisterEvent
 operator|.
-name|getFinalState
+name|getFinalApplicationStatus
 argument_list|()
 expr_stmt|;
 comment|// Tell the app and the scheduler

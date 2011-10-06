@@ -1026,6 +1026,7 @@ name|priority
 argument_list|)
 return|;
 block|}
+comment|/**    * Is this application pending?    * @return true if it is else false.    */
 DECL|method|isPending ()
 specifier|public
 name|boolean
@@ -1056,6 +1057,7 @@ name|getQueueName
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the list of live containers    * @return All of the live containers    */
 DECL|method|getLiveContainers ()
 specifier|public
 specifier|synchronized
@@ -2453,14 +2455,15 @@ literal|1.0f
 argument_list|)
 return|;
 block|}
-DECL|method|getAllReservedContainers ()
+comment|/**    * Get the list of reserved containers    * @return All of the reserved containers.    */
+DECL|method|getReservedContainers ()
 specifier|public
 specifier|synchronized
 name|List
 argument_list|<
 name|RMContainer
 argument_list|>
-name|getAllReservedContainers
+name|getReservedContainers
 parameter_list|()
 block|{
 name|List

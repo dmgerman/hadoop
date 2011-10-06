@@ -200,6 +200,23 @@ name|StandbyException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Idempotent
+DECL|method|failsIfIdentifierDoesntMatch (String identifier)
+specifier|public
+name|String
+name|failsIfIdentifierDoesntMatch
+parameter_list|(
+name|String
+name|identifier
+parameter_list|)
+throws|throws
+name|UnreliableException
+throws|,
+name|StandbyException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_interface
 

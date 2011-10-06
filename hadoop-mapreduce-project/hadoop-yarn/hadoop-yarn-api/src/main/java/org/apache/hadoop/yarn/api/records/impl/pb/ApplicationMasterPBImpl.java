@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -84,24 +74,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationStatus
 import|;
 end_import
@@ -121,6 +93,24 @@ operator|.
 name|records
 operator|.
 name|ProtoBase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationState
 import|;
 end_import
 
@@ -192,7 +182,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ApplicationStateProto
+name|ApplicationStatusProto
 import|;
 end_import
 
@@ -210,7 +200,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ApplicationStatusProto
+name|YarnApplicationStateProto
 import|;
 end_import
 
@@ -495,7 +485,7 @@ annotation|@
 name|Override
 DECL|method|getState ()
 specifier|public
-name|ApplicationState
+name|YarnApplicationState
 name|getState
 parameter_list|()
 block|{
@@ -533,12 +523,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setState (ApplicationState state)
+DECL|method|setState (YarnApplicationState state)
 specifier|public
 name|void
 name|setState
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 block|{
@@ -1164,12 +1154,12 @@ name|diagnostics
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|convertToProtoFormat (ApplicationState e)
+DECL|method|convertToProtoFormat (YarnApplicationState e)
 specifier|private
-name|ApplicationStateProto
+name|YarnApplicationStateProto
 name|convertToProtoFormat
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|e
 parameter_list|)
 block|{
@@ -1182,12 +1172,12 @@ name|e
 argument_list|)
 return|;
 block|}
-DECL|method|convertFromProtoFormat (ApplicationStateProto e)
+DECL|method|convertFromProtoFormat (YarnApplicationStateProto e)
 specifier|private
-name|ApplicationState
+name|YarnApplicationState
 name|convertFromProtoFormat
 parameter_list|(
-name|ApplicationStateProto
+name|YarnApplicationStateProto
 name|e
 parameter_list|)
 block|{

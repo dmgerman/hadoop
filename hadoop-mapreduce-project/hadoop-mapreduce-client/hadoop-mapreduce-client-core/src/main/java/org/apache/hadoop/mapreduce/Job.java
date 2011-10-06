@@ -1591,28 +1591,6 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"history URL: "
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-name|status
-operator|.
-name|getHistoryFile
-argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
 literal|"retired: "
 argument_list|)
 operator|.

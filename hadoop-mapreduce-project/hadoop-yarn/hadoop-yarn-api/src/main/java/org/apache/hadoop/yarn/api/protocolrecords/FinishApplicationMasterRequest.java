@@ -86,8 +86,26 @@ name|ApplicationAttemptId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
 begin_comment
-comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to   * inform the<code>ResourceManager</code> about its completion.</p>  *   *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
+comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the  *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_interface
@@ -96,7 +114,7 @@ specifier|public
 interface|interface
 name|FinishApplicationMasterRequest
 block|{
-comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -106,7 +124,7 @@ name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed     *                             by the<code>ApplicationMaster</code>    */
+comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed    *                             by the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -124,22 +142,22 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getFinalState ()
-name|String
-name|getFinalState
+DECL|method|getFinalApplicationStatus ()
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Set<em>final state</em> of the<code>ApplicationMaster</code>    * @param finalState<em>final state</em> of the<code>ApplicationMaster</code>    */
+comment|/**    * Set the<em>finish state</em> of the<code>ApplicationMaster</code>    * @param finishState<em>finish state</em> of the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setFinalState (String finalState)
+DECL|method|setFinishApplicationStatus (FinalApplicationStatus finishState)
 name|void
-name|setFinalState
+name|setFinishApplicationStatus
 parameter_list|(
-name|String
-name|finalState
+name|FinalApplicationStatus
+name|finishState
 parameter_list|)
 function_decl|;
 comment|/**    * Get<em>diagnostic information</em> on application failure.    * @return<em>diagnostic information</em> on application failure    */
@@ -175,7 +193,7 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>tracking URL</em>for the<code>ApplicationMaster</code>    * @param url<em>tracking URL</em>for the     *<code>ApplicationMaster</code>    */
+comment|/**    * Set the<em>tracking URL</em>for the<code>ApplicationMaster</code>    * @param url<em>tracking URL</em>for the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@

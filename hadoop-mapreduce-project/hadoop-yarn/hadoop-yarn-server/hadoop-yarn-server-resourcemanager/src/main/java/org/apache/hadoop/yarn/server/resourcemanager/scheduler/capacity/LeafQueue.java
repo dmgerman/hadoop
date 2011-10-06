@@ -38,6 +38,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -202,6 +212,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -307,6 +331,24 @@ operator|.
 name|records
 operator|.
 name|ContainerToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -1380,11 +1422,19 @@ argument_list|,
 name|acls
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- LeafQueue:"
+literal|"LeafQueue:"
 operator|+
 literal|" name="
 operator|+
@@ -1396,6 +1446,7 @@ name|getQueuePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|pendingApplications
@@ -3396,13 +3447,19 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- assignContainers:"
-operator|+
-literal|" node="
+literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
@@ -3417,6 +3474,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Check for reserved resources
 name|RMContainer
 name|reservedContainer
@@ -3466,11 +3524,19 @@ range|:
 name|activeApplications
 control|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- pre-assignContainers for application "
+literal|"pre-assignContainers for application "
 operator|+
 name|application
 operator|.
@@ -3478,6 +3544,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -3694,11 +3761,19 @@ break|break;
 block|}
 block|}
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- post-assignContainers for application "
+literal|"post-assignContainers for application "
 operator|+
 name|application
 operator|.
@@ -3706,6 +3781,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -5235,6 +5311,14 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|NodeId
+name|nodeId
+init|=
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+decl_stmt|;
 name|ContainerTokenIdentifier
 name|tokenidentifier
 init|=
@@ -5246,10 +5330,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|,
-name|container
-operator|.
-name|getNodeId
-argument_list|()
+name|nodeId
 operator|.
 name|toString
 argument_list|()
@@ -5304,16 +5385,42 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// RPC layer client expects ip:port as service for tokens
+name|InetSocketAddress
+name|addr
+init|=
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
+argument_list|,
+name|nodeId
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|containerToken
 operator|.
 name|setService
 argument_list|(
-name|container
+name|addr
 operator|.
-name|getNodeId
+name|getAddress
 argument_list|()
 operator|.
-name|toString
+name|getHostAddress
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|addr
+operator|.
+name|getPort
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5366,11 +5473,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- assignContainers:"
-operator|+
-literal|" node="
+literal|"assignContainers: node="
 operator|+
 name|node
 operator|.

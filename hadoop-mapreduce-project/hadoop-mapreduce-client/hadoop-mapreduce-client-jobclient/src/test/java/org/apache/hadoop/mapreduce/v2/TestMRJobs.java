@@ -1965,8 +1965,6 @@ index|]
 operator|.
 name|getStatus
 argument_list|()
-operator|.
-name|FAILED
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1977,7 +1975,7 @@ name|TaskCompletionEvent
 operator|.
 name|Status
 operator|.
-name|FAILED
+name|TIPFAILED
 argument_list|,
 name|events
 index|[
@@ -1986,8 +1984,6 @@ index|]
 operator|.
 name|getStatus
 argument_list|()
-operator|.
-name|FAILED
 argument_list|)
 expr_stmt|;
 name|Assert

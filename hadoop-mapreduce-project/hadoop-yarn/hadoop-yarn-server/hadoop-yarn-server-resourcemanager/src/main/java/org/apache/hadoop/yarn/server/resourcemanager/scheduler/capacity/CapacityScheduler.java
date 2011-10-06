@@ -692,6 +692,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|QueueMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceScheduler
 import|;
 end_import
@@ -713,6 +733,26 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerApp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerAppReport
 import|;
 end_import
 
@@ -1254,6 +1294,21 @@ specifier|public
 name|CapacityScheduler
 parameter_list|()
 block|{}
+annotation|@
+name|Override
+DECL|method|getRootQueueMetrics ()
+specifier|public
+name|QueueMetrics
+name|getRootQueueMetrics
+parameter_list|()
+block|{
+return|return
+name|root
+operator|.
+name|getMetrics
+argument_list|()
+return|;
+block|}
 DECL|method|getRootQueue ()
 specifier|public
 name|CSQueue
@@ -1310,50 +1365,6 @@ parameter_list|()
 block|{
 return|return
 name|maximumAllocation
-return|;
-block|}
-DECL|method|getUsedResource (NodeId nodeId)
-specifier|public
-specifier|synchronized
-name|Resource
-name|getUsedResource
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
-block|{
-return|return
-name|nodes
-operator|.
-name|get
-argument_list|(
-name|nodeId
-argument_list|)
-operator|.
-name|getUsedResource
-argument_list|()
-return|;
-block|}
-DECL|method|getAvailableResource (NodeId nodeId)
-specifier|public
-specifier|synchronized
-name|Resource
-name|getAvailableResource
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
-block|{
-return|return
-name|nodes
-operator|.
-name|get
-argument_list|(
-name|nodeId
-argument_list|)
-operator|.
-name|getAvailableResource
-argument_list|()
 return|;
 block|}
 DECL|method|getNumClusterNodes ()
@@ -2523,7 +2534,7 @@ name|rmContainer
 range|:
 name|application
 operator|.
-name|getAllReservedContainers
+name|getReservedContainers
 argument_list|()
 control|)
 block|{
@@ -2800,11 +2811,19 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate: pre-update"
+literal|"allocate: pre-update"
 operator|+
 literal|" applicationAttemptId="
 operator|+
@@ -2815,6 +2834,7 @@ operator|+
 name|application
 argument_list|)
 expr_stmt|;
+block|}
 name|application
 operator|.
 name|showRequests
@@ -2830,9 +2850,9 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate: post-update"
+literal|"allocate: post-update"
 argument_list|)
 expr_stmt|;
 name|application
@@ -2841,11 +2861,19 @@ name|showRequests
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG --- allocate:"
+literal|"allocate:"
 operator|+
 literal|" applicationAttemptId="
 operator|+
@@ -2859,6 +2887,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|Allocation
@@ -3210,9 +3239,9 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"DEBUG --- Container FINISHED: "
+literal|"Container FINISHED: "
 operator|+
 name|containerId
 argument_list|)
@@ -3233,11 +3262,19 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Now node data structures are upto date and ready for scheduling.
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"DEBUG -- Node being looked for scheduling "
+literal|"Node being looked for scheduling "
 operator|+
 name|nm
 operator|+
@@ -3249,6 +3286,7 @@ name|getAvailableResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Assign new containers...
 comment|// 1. Check for reserved applications
 comment|// 2. Schedule if there are no reservations
@@ -4059,6 +4097,39 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|Override
+DECL|method|getSchedulerAppInfo ( ApplicationAttemptId applicationAttemptId)
+specifier|public
+name|SchedulerAppReport
+name|getSchedulerAppInfo
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|)
+block|{
+name|SchedulerApp
+name|app
+init|=
+name|getApplication
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+decl_stmt|;
+return|return
+name|app
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+operator|new
+name|SchedulerAppReport
+argument_list|(
+name|app
+argument_list|)
+return|;
+block|}
+annotation|@
 name|Lock
 argument_list|(
 name|Lock
@@ -4176,18 +4247,16 @@ name|nodeId
 argument_list|)
 decl_stmt|;
 return|return
+name|node
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 operator|new
 name|SchedulerNodeReport
 argument_list|(
 name|node
-operator|.
-name|getUsedResource
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getNumContainers
-argument_list|()
 argument_list|)
 return|;
 block|}

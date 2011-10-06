@@ -749,7 +749,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:2}"
+literal|"{autoHeight:false, active:3}"
 argument_list|)
 expr_stmt|;
 name|set

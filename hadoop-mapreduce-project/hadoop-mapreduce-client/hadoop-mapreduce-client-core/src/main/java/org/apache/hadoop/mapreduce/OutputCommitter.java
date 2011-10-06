@@ -193,6 +193,29 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Is task output recovery supported for restarting jobs?    *     * If task output recovery is supported, job restart can be done more     * efficiently.    *     * @return<code>true</code> if task output recovery is supported,    *<code>false</code> otherwise    * @see #recoverTask(TaskAttemptContext)             */
+DECL|method|isRecoverySupported ()
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRJobConfig#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
+DECL|method|recoverTask (TaskAttemptContext taskContext)
+specifier|public
+name|void
+name|recoverTask
+parameter_list|(
+name|TaskAttemptContext
+name|taskContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 

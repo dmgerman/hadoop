@@ -2055,6 +2055,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|datanode
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|DataOutputStream

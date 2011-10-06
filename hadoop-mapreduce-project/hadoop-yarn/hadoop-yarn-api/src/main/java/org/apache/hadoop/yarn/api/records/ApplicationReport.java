@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code>is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link ApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *   * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
+comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code>is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
 end_comment
 
 begin_interface
@@ -202,7 +202,7 @@ name|String
 name|name
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code>     * is running.    * @return<em>host</em> on which the<code>ApplicationMaster</code>     *         is running    */
+comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code>    * is running.    * @return<em>host</em> on which the<code>ApplicationMaster</code>    *         is running    */
 annotation|@
 name|Public
 annotation|@
@@ -246,7 +246,7 @@ name|int
 name|rpcPort
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>client token</em> for communicating with the     *<code>ApplicationMaster</code>.    * @return<em>client token</em> for communicating with the     *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>.    * @return<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -268,29 +268,29 @@ name|String
 name|clientToken
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<code>ApplicationState</code> of the application.    * @return<code>ApplicationState</code> of the application    */
+comment|/**    * Get the<code>YarnApplicationState</code> of the application.    * @return<code>YarnApplicationState</code> of the application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getState ()
-name|ApplicationState
-name|getState
+DECL|method|getYarnApplicationState ()
+name|YarnApplicationState
+name|getYarnApplicationState
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setState (ApplicationState state)
+DECL|method|setYarnApplicationState (YarnApplicationState state)
 name|void
-name|setState
+name|setYarnApplicationState
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 function_decl|;
-comment|/**    * Get  the<em>diagnositic information</em> of the application in case of     * errors.    * @return<em>diagnositic information</em> of the application in case     *         of errors    */
+comment|/**    * Get  the<em>diagnositic information</em> of the application in case of    * errors.    * @return<em>diagnositic information</em> of the application in case    *         of errors    */
 annotation|@
 name|Public
 annotation|@
@@ -376,6 +376,28 @@ name|setFinishTime
 parameter_list|(
 name|long
 name|finishTime
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>final finish status</em> of the application.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getFinalApplicationStatus ()
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFinalApplicationStatus (FinalApplicationStatus finishState)
+name|void
+name|setFinalApplicationStatus
+parameter_list|(
+name|FinalApplicationStatus
+name|finishState
 parameter_list|)
 function_decl|;
 block|}

@@ -104,7 +104,25 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationState
 import|;
 end_import
 
@@ -227,7 +245,7 @@ specifier|static
 specifier|final
 name|Iterator
 argument_list|<
-name|ApplicationState
+name|YarnApplicationState
 argument_list|>
 name|STATES
 init|=
@@ -235,7 +253,7 @@ name|Iterators
 operator|.
 name|cycle
 argument_list|(
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|values
 argument_list|()
@@ -422,7 +440,7 @@ name|i
 argument_list|)
 decl_stmt|;
 specifier|final
-name|ApplicationState
+name|YarnApplicationState
 name|state
 init|=
 name|newAppState
@@ -448,6 +466,14 @@ name|queue
 init|=
 name|newQueue
 argument_list|()
+decl_stmt|;
+specifier|final
+name|FinalApplicationStatus
+name|finishState
+init|=
+name|FinalApplicationStatus
+operator|.
+name|UNDEFINED
 decl_stmt|;
 return|return
 operator|new
@@ -490,8 +516,8 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|ApplicationState
-name|getState
+name|YarnApplicationState
+name|getYarnApplicationState
 parameter_list|()
 block|{
 return|return
@@ -522,6 +548,15 @@ return|;
 block|}
 annotation|@
 name|Override
+specifier|public
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
+parameter_list|()
+block|{
+return|return
+name|finishState
+return|;
+block|}
 specifier|public
 name|void
 name|setApplicationId
@@ -572,9 +607,9 @@ annotation|@
 name|Override
 specifier|public
 name|void
-name|setState
+name|setYarnApplicationState
 parameter_list|(
-name|ApplicationState
+name|YarnApplicationState
 name|state
 parameter_list|)
 block|{
@@ -736,6 +771,18 @@ parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setFinalApplicationStatus
+parameter_list|(
+name|FinalApplicationStatus
+name|finishState
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
+block|}
 block|}
 return|;
 block|}
@@ -825,7 +872,7 @@ block|}
 DECL|method|newAppState ()
 specifier|public
 specifier|static
-name|ApplicationState
+name|YarnApplicationState
 name|newAppState
 parameter_list|()
 block|{

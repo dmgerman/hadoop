@@ -206,6 +206,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -242,7 +260,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -1409,10 +1427,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMFinalState ()
+DECL|method|getFinalApplicationStatus ()
 specifier|public
-name|String
-name|getAMFinalState
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
 parameter_list|()
 block|{
 name|this
@@ -1424,9 +1442,20 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// finish state is obtained based on the state machine's current state
+comment|// as a fall-back in case the application has not been unregistered
+comment|// ( or if the app never unregistered itself )
+comment|// when the report is requested
 if|if
 condition|(
 name|currentAttempt
+operator|!=
+literal|null
+operator|&&
+name|currentAttempt
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
 operator|!=
 literal|null
 condition|)
@@ -1434,12 +1463,20 @@ block|{
 return|return
 name|currentAttempt
 operator|.
-name|getAMFinalState
+name|getFinalApplicationStatus
 argument_list|()
 return|;
 block|}
 return|return
-literal|"UNKNOWN"
+name|createFinalApplicationStatus
+argument_list|(
+name|this
+operator|.
+name|stateMachine
+operator|.
+name|getCurrentState
+argument_list|()
+argument_list|)
 return|;
 block|}
 finally|finally
@@ -1674,7 +1711,7 @@ return|;
 block|}
 DECL|method|createApplicationState (RMAppState rmAppState)
 specifier|private
-name|ApplicationState
+name|YarnApplicationState
 name|createApplicationState
 parameter_list|(
 name|RMAppState
@@ -1690,7 +1727,7 @@ case|case
 name|NEW
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|NEW
 return|;
@@ -1701,7 +1738,7 @@ case|case
 name|ACCEPTED
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|SUBMITTED
 return|;
@@ -1709,7 +1746,7 @@ case|case
 name|RUNNING
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|RUNNING
 return|;
@@ -1717,15 +1754,15 @@ case|case
 name|FINISHED
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
-name|SUCCEEDED
+name|FINISHED
 return|;
 case|case
 name|KILLED
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|KILLED
 return|;
@@ -1733,9 +1770,69 @@ case|case
 name|FAILED
 case|:
 return|return
-name|ApplicationState
+name|YarnApplicationState
 operator|.
 name|FAILED
+return|;
+block|}
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Unknown state passed!"
+argument_list|)
+throw|;
+block|}
+DECL|method|createFinalApplicationStatus (RMAppState state)
+specifier|private
+name|FinalApplicationStatus
+name|createFinalApplicationStatus
+parameter_list|(
+name|RMAppState
+name|state
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|state
+condition|)
+block|{
+case|case
+name|NEW
+case|:
+case|case
+name|SUBMITTED
+case|:
+case|case
+name|ACCEPTED
+case|:
+case|case
+name|RUNNING
+case|:
+return|return
+name|FinalApplicationStatus
+operator|.
+name|UNDEFINED
+return|;
+comment|// finished without a proper final state is the same as failed
+case|case
+name|FINISHED
+case|:
+case|case
+name|FAILED
+case|:
+return|return
+name|FinalApplicationStatus
+operator|.
+name|FAILED
+return|;
+case|case
+name|KILLED
+case|:
+return|return
+name|FinalApplicationStatus
+operator|.
+name|KILLED
 return|;
 block|}
 throw|throw
@@ -1783,6 +1880,12 @@ name|rpcPort
 init|=
 operator|-
 literal|1
+decl_stmt|;
+name|FinalApplicationStatus
+name|finishState
+init|=
+name|getFinalApplicationStatus
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1883,6 +1986,8 @@ argument_list|,
 name|this
 operator|.
 name|finishTime
+argument_list|,
+name|finishState
 argument_list|)
 return|;
 block|}

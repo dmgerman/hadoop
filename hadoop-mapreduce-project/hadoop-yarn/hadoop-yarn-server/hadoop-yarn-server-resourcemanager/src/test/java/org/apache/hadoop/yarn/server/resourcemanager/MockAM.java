@@ -188,7 +188,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -733,6 +733,9 @@ throws|throws
 name|Exception
 block|{
 name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
 name|reqs
 init|=
 name|createReq
@@ -1074,9 +1077,11 @@ argument_list|)
 expr_stmt|;
 name|req
 operator|.
-name|setFinalState
+name|setFinishApplicationStatus
 argument_list|(
-literal|""
+name|FinalApplicationStatus
+operator|.
+name|SUCCEEDED
 argument_list|)
 expr_stmt|;
 name|req

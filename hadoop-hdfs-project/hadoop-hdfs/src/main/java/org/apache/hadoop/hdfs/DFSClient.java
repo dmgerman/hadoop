@@ -4039,7 +4039,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Rename file or directory.    * @see ClientProtocol#rename(String, String, Options.Rename...)    */
+comment|/**    * Rename file or directory.    * @see ClientProtocol#rename2(String, String, Options.Rename...)    */
 DECL|method|rename (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
@@ -4067,7 +4067,7 @@ try|try
 block|{
 name|namenode
 operator|.
-name|rename
+name|rename2
 argument_list|(
 name|src
 argument_list|,

@@ -112,18 +112,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|anyByte
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|doThrow
@@ -342,9 +330,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|Writable
+name|server
+operator|.
+name|namenode
+operator|.
+name|JournalSet
+operator|.
+name|JournalAndStream
 import|;
 end_import
 
@@ -933,8 +927,6 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|FSEditLog
-operator|.
 name|JournalAndStream
 name|j
 range|:

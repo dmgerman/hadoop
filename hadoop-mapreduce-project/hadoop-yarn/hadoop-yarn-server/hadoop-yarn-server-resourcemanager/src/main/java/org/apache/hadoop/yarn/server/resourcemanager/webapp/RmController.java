@@ -86,15 +86,13 @@ end_import
 
 begin_import
 import|import
-name|org
+name|javax
 operator|.
-name|apache
+name|servlet
 operator|.
-name|hadoop
+name|http
 operator|.
-name|util
-operator|.
-name|StringUtils
+name|HttpServletResponse
 import|;
 end_import
 
@@ -108,7 +106,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|VersionInfo
+name|StringUtils
 import|;
 end_import
 
@@ -324,22 +322,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|YarnVersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|Controller
@@ -419,10 +401,10 @@ literal|"Applications"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|info ()
+DECL|method|about ()
 specifier|public
 name|void
-name|info
+name|about
 parameter_list|()
 block|{
 name|setTitle
@@ -430,94 +412,9 @@ argument_list|(
 literal|"About the Cluster"
 argument_list|)
 expr_stmt|;
-name|long
-name|ts
-init|=
-name|ResourceManager
-operator|.
-name|clusterTimeStamp
-decl_stmt|;
-name|ResourceManager
-name|rm
-init|=
-name|getInstance
-argument_list|(
-name|ResourceManager
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|info
-argument_list|(
-literal|"Cluster overview"
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"Cluster ID:"
-argument_list|,
-name|ts
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"ResourceManager state:"
-argument_list|,
-name|rm
-operator|.
-name|getServiceState
-argument_list|()
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"ResourceManager started on:"
-argument_list|,
-name|Times
-operator|.
-name|format
-argument_list|(
-name|ts
-argument_list|)
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"ResourceManager version:"
-argument_list|,
-name|YarnVersionInfo
-operator|.
-name|getBuildVersion
-argument_list|()
-operator|+
-literal|" on "
-operator|+
-name|YarnVersionInfo
-operator|.
-name|getDate
-argument_list|()
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"Hadoop version:"
-argument_list|,
-name|VersionInfo
-operator|.
-name|getBuildVersion
-argument_list|()
-operator|+
-literal|" on "
-operator|+
-name|VersionInfo
-operator|.
-name|getDate
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|render
 argument_list|(
-name|InfoPage
+name|AboutPage
 operator|.
 name|class
 argument_list|)
@@ -547,8 +444,7 @@ condition|)
 block|{
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_BAD_REQUEST
 argument_list|)
@@ -603,8 +499,7 @@ block|{
 comment|// TODO: handle redirect to jobhistory server
 name|setStatus
 argument_list|(
-name|response
-argument_list|()
+name|HttpServletResponse
 operator|.
 name|SC_NOT_FOUND
 argument_list|)
@@ -690,21 +585,6 @@ name|_
 argument_list|(
 literal|"State:"
 argument_list|,
-operator|(
-name|app
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|RMAppState
-operator|.
-name|FINISHED
-condition|?
-name|app
-operator|.
-name|getAMFinalState
-argument_list|()
-else|:
 name|app
 operator|.
 name|getState
@@ -712,7 +592,19 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"FinalStatus:"
+argument_list|,
+name|app
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 operator|.
 name|_
@@ -856,7 +748,7 @@ expr_stmt|;
 block|}
 name|render
 argument_list|(
-name|InfoPage
+name|AboutPage
 operator|.
 name|class
 argument_list|)

@@ -31,18 +31,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|zip
-operator|.
-name|Checksum
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -62,34 +50,6 @@ name|now
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|DataOutputBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
 begin_comment
 comment|/**  * A generic abstract class to support journaling of edits logs into   * a persistent storage.  */
 end_comment
@@ -99,8 +59,6 @@ DECL|class|EditLogOutputStream
 specifier|abstract
 class|class
 name|EditLogOutputStream
-implements|implements
-name|JournalStream
 block|{
 comment|// these are statistics counters
 DECL|field|numSync
@@ -118,8 +76,6 @@ comment|// total time to sync
 DECL|method|EditLogOutputStream ()
 name|EditLogOutputStream
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|numSync
 operator|=
@@ -243,15 +199,6 @@ name|start
 operator|)
 expr_stmt|;
 block|}
-comment|/**    * Return the size of the current edits log.    * Length is used to check when it is large enough to start a checkpoint.    */
-DECL|method|length ()
-specifier|abstract
-name|long
-name|length
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Implement the policy when to automatically sync the buffered edits log    * The buffered edits can be flushed when the buffer becomes full or    * a certain period of time is elapsed.    *     * @return true if the buffered data should be automatically synced to disk    */
 DECL|method|shouldForceSync ()
 specifier|public
@@ -275,26 +222,13 @@ return|;
 block|}
 comment|/**    * Return number of calls to {@link #flushAndSync()}    */
 DECL|method|getNumSync ()
+specifier|protected
 name|long
 name|getNumSync
 parameter_list|()
 block|{
 return|return
 name|numSync
-return|;
-block|}
-annotation|@
-name|Override
-comment|// Object
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|getName
-argument_list|()
 return|;
 block|}
 block|}
