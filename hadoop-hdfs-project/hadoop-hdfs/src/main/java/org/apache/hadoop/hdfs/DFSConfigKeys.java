@@ -2148,6 +2148,24 @@ name|DFS_NAMENODE_CHECKED_VOLUMES_KEY
 init|=
 literal|"dfs.namenode.resource.checked.volumes"
 decl_stmt|;
+DECL|field|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+init|=
+literal|"dfs.web.authentication.kerberos.principal"
+decl_stmt|;
+DECL|field|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
+init|=
+literal|"dfs.web.authentication.kerberos.keytab"
+decl_stmt|;
 block|}
 end_class
 

@@ -24,16 +24,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Properties
 import|;
 end_import
@@ -50,15 +40,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|javax
 operator|.
-name|apache
+name|servlet
 operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|ServletException
 import|;
 end_import
 
@@ -151,7 +137,7 @@ name|CONF_PREFIX
 init|=
 literal|"dfs.web.authentication."
 decl_stmt|;
-comment|/**    * Returns the filter configuration properties,    * including the ones prefixed with {@link #CONF_PREFIX}.    * The prefix is removed from the returned property names.    *    * @param prefix parameter not used.    * @param config parameter not used.    * @return Hadoop-Auth configuration properties.    */
+comment|/**    * Returns the filter configuration properties,    * including the ones prefixed with {@link #CONF_PREFIX}.    * The prefix is removed from the returned property names.    *    * @param prefix parameter not used.    * @param config parameter contains the initialization values.    * @return Hadoop-Auth configuration properties.    * @throws ServletException     */
 annotation|@
 name|Override
 DECL|method|getConfiguration (String prefix, FilterConfig config)
@@ -165,24 +151,23 @@ parameter_list|,
 name|FilterConfig
 name|config
 parameter_list|)
+throws|throws
+name|ServletException
 block|{
-specifier|final
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
 specifier|final
 name|Properties
 name|p
 init|=
-operator|new
-name|Properties
-argument_list|()
+name|super
+operator|.
+name|getConfiguration
+argument_list|(
+name|CONF_PREFIX
+argument_list|,
+name|config
+argument_list|)
 decl_stmt|;
-comment|//set authentication type
+comment|// set authentication type
 name|p
 operator|.
 name|setProperty
@@ -225,66 +210,6 @@ argument_list|,
 literal|"/"
 argument_list|)
 expr_stmt|;
-comment|//set other configurations with CONF_PREFIX
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|entry
-range|:
-name|conf
-control|)
-block|{
-specifier|final
-name|String
-name|key
-init|=
-name|entry
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|key
-operator|.
-name|startsWith
-argument_list|(
-name|CONF_PREFIX
-argument_list|)
-condition|)
-block|{
-comment|//remove prefix from the key and set property
-name|p
-operator|.
-name|setProperty
-argument_list|(
-name|key
-operator|.
-name|substring
-argument_list|(
-name|CONF_PREFIX
-operator|.
-name|length
-argument_list|()
-argument_list|)
-argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 return|return
 name|p
 return|;
