@@ -3765,6 +3765,13 @@ operator|+
 literal|"Failing this attempt."
 argument_list|)
 expr_stmt|;
+comment|/*          * In the case when the AM dies, the trackingUrl is left pointing to the AM's          * URL, which shows up in the scheduler UI as a broken link. Setting it here          * to empty string will prevent any link from being displayed.          * NOTE: don't set trackingUrl to 'null'. That will cause null-pointer exceptions          * in the generated proto code.          */
+name|appAttempt
+operator|.
+name|trackingUrl
+operator|=
+literal|""
+expr_stmt|;
 operator|new
 name|FinalTransition
 argument_list|(
