@@ -432,9 +432,9 @@ name|MiniDFSCluster
 operator|.
 name|getFinalizedDir
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,

@@ -212,6 +212,26 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|math
+operator|.
+name|stat
+operator|.
+name|descriptive
+operator|.
+name|rank
+operator|.
+name|Min
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -873,6 +893,26 @@ name|MiniDFSCluster
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/** System property to set the data dir: {@value} */
+DECL|field|PROP_TEST_BUILD_DATA
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PROP_TEST_BUILD_DATA
+init|=
+literal|"test.build.data"
+decl_stmt|;
+comment|/** Configuration option to set the data dir: {@value} */
+DECL|field|HDFS_MINIDFS_BASEDIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDFS_MINIDFS_BASEDIR
+init|=
+literal|"hdfs.minidfs.basedir"
 decl_stmt|;
 static|static
 block|{
@@ -2035,7 +2075,7 @@ operator|=
 operator|new
 name|File
 argument_list|(
-name|getBaseDirectory
+name|determineDfsBaseDir
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2087,11 +2127,9 @@ name|rpcEngineName
 argument_list|)
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"HDFS using RPCEngine: "
 operator|+
@@ -3766,7 +3804,7 @@ block|{
 name|File
 name|dir1
 init|=
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|i
 argument_list|,
@@ -3776,7 +3814,7 @@ decl_stmt|;
 name|File
 name|dir2
 init|=
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|i
 argument_list|,
@@ -3899,11 +3937,9 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Starting DataNode "
 operator|+
@@ -3950,11 +3986,9 @@ name|curDatanodesNum
 index|]
 argument_list|)
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Starting DataNode "
 operator|+
@@ -3990,11 +4024,9 @@ operator|-
 name|curDatanodesNum
 index|]
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Adding node with hostname : "
 operator|+
@@ -4125,11 +4157,9 @@ operator|.
 name|getPort
 argument_list|()
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Adding node with IP:port : "
 operator|+
@@ -4703,11 +4733,9 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Shutting down the Mini HDFS Cluster"
 argument_list|)
@@ -4872,11 +4900,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Shutting down the namenode"
 argument_list|)
@@ -5047,11 +5073,9 @@ block|{
 name|waitClusterUp
 argument_list|()
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Restarted the namenode"
 argument_list|)
@@ -5059,11 +5083,9 @@ expr_stmt|;
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Cluster is active"
 argument_list|)
@@ -5382,11 +5404,9 @@ name|dnprop
 operator|.
 name|datanode
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"MiniDFSCluster Stopping DataNode "
 operator|+
@@ -5757,11 +5777,9 @@ condition|)
 return|return
 literal|false
 return|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Restarted DataNode "
 operator|+
@@ -5846,6 +5864,10 @@ block|{
 comment|// This method above should never throw.
 comment|// It only throws IOE since it is exposed via RPC
 throw|throw
+call|(
+name|AssertionError
+call|)
+argument_list|(
 operator|new
 name|AssertionError
 argument_list|(
@@ -5854,6 +5876,12 @@ operator|+
 name|StringUtils
 operator|.
 name|stringifyException
+argument_list|(
+name|ioe
+argument_list|)
+argument_list|)
+operator|.
+name|initCause
 argument_list|(
 name|ioe
 argument_list|)
@@ -6459,11 +6487,9 @@ operator|>
 literal|1
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|warn
 argument_list|(
 literal|"Tried waitActive() "
 operator|+
@@ -6650,7 +6676,7 @@ operator|=
 operator|new
 name|File
 argument_list|(
-name|getBaseDirectory
+name|determineDfsBaseDir
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7202,6 +7228,43 @@ name|getAbsolutePath
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the base directory for this MiniDFS instance.    *<p/>    * Within the MiniDFCluster class and any subclasses, this method should be    * used instead of {@link #getBaseDirectory()} which doesn't support    * configuration-specific base directories.    *<p/>    * First the Configuration property {@link #HDFS_MINIDFS_BASEDIR} is fetched.    * If non-null, this is returned.    * If this is null, then {@link #getBaseDirectory()} is called.    * @return the base directory for this instance.    */
+DECL|method|determineDfsBaseDir ()
+specifier|protected
+name|String
+name|determineDfsBaseDir
+parameter_list|()
+block|{
+name|String
+name|dfsdir
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HDFS_MINIDFS_BASEDIR
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|dfsdir
+operator|==
+literal|null
+condition|)
+block|{
+name|dfsdir
+operator|=
+name|getBaseDirectory
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|dfsdir
+return|;
+block|}
+comment|/**    * Get the base directory for any DFS cluster whose configuration does    * not explicitly set it. This is done by retrieving the system property    * {@link #PROP_TEST_BUILD_DATA} (defaulting to "build/test/data" ),    * and returning that directory with a subdir of /dfs.    * @return a directory for use as a miniDFS filesystem.    */
 DECL|method|getBaseDirectory ()
 specifier|public
 specifier|static
@@ -7214,12 +7277,40 @@ name|System
 operator|.
 name|getProperty
 argument_list|(
-literal|"test.build.data"
+name|PROP_TEST_BUILD_DATA
 argument_list|,
 literal|"build/test/data"
 argument_list|)
 operator|+
 literal|"/dfs/"
+return|;
+block|}
+comment|/**    * Get a storage directory for a datanode in this specific instance of    * a MiniCluster.    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index (0 or 1). Index 0 provides access to the    *          first storage directory. Index 1 provides access to the second    *          storage directory.    * @return Storage directory    */
+DECL|method|getInstanceStorageDir (int dnIndex, int dirIndex)
+specifier|public
+name|File
+name|getInstanceStorageDir
+parameter_list|(
+name|int
+name|dnIndex
+parameter_list|,
+name|int
+name|dirIndex
+parameter_list|)
+block|{
+return|return
+operator|new
+name|File
+argument_list|(
+name|base_dir
+argument_list|,
+name|getStorageDirPath
+argument_list|(
+name|dnIndex
+argument_list|,
+name|dirIndex
+argument_list|)
+argument_list|)
 return|;
 block|}
 comment|/**    * Get a storage directory for a datanode. There are two storage directories    * per datanode:    *<ol>    *<li><base directory>/data/data<2*dnIndex + 1></li>    *<li><base directory>/data/data<2*dnIndex + 2></li>    *</ol>    *     * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index (0 or 1). Index 0 provides access to the    *          first storage directory. Index 1 provides access to the second    *          storage directory.    * @return Storage directory    */
@@ -7242,7 +7333,31 @@ name|File
 argument_list|(
 name|getBaseDirectory
 argument_list|()
-operator|+
+argument_list|,
+name|getStorageDirPath
+argument_list|(
+name|dnIndex
+argument_list|,
+name|dirIndex
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Calculate the DN instance-specific path for appending to the base dir    * to determine the location of the storage of a DN instance in the mini cluster    * @param dnIndex datanode index    * @param dirIndex directory index (0 or 1).    * @return    */
+DECL|method|getStorageDirPath (int dnIndex, int dirIndex)
+specifier|private
+specifier|static
+name|String
+name|getStorageDirPath
+parameter_list|(
+name|int
+name|dnIndex
+parameter_list|,
+name|int
+name|dirIndex
+parameter_list|)
+block|{
+return|return
 literal|"data/data"
 operator|+
 operator|(
@@ -7254,10 +7369,9 @@ literal|1
 operator|+
 name|dirIndex
 operator|)
-argument_list|)
 return|;
 block|}
-comment|/**    * Get current directory corresponding to the datanode    * @param storageDir    * @return current directory    */
+comment|/**    * Get current directory corresponding to the datanode as defined in    * (@link Storage#STORAGE_DIR_CURRENT}    * @param storageDir the storage directory of a datanode.    * @return the datanode current directory    */
 DECL|method|getDNCurrentDir (File storageDir)
 specifier|public
 specifier|static
@@ -7280,7 +7394,7 @@ operator|+
 literal|"/"
 return|;
 block|}
-comment|/**    * Get directory corresponding to block pool directory in the datanode    * @param storageDir    * @return current directory    */
+comment|/**    * Get directory corresponding to block pool directory in the datanode    * @param storageDir the storage directory of a datanode.    * @return the block pool directory    */
 DECL|method|getBPDir (File storageDir, String bpid)
 specifier|public
 specifier|static
@@ -7439,6 +7553,31 @@ name|getBlockName
 argument_list|()
 argument_list|)
 return|;
+block|}
+comment|/**    * Shut down a cluster if it is not null    * @param cluster cluster reference or null    */
+DECL|method|shutdownCluster (MiniDFSCluster cluster)
+specifier|public
+specifier|static
+name|void
+name|shutdownCluster
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|)
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get all files related to a block from all the datanodes    * @param block block for which corresponding files are needed    */
 DECL|method|getAllBlockFiles (ExtendedBlock block)

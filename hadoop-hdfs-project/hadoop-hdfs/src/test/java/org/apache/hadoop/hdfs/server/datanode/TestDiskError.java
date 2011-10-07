@@ -519,9 +519,9 @@ decl_stmt|;
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|dnIndex
 argument_list|,
@@ -542,9 +542,9 @@ argument_list|)
 decl_stmt|;
 name|storageDir
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|dnIndex
 argument_list|,
@@ -957,9 +957,9 @@ decl_stmt|;
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|sndNode
 argument_list|,
@@ -980,9 +980,9 @@ argument_list|)
 decl_stmt|;
 name|storageDir
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|sndNode
 argument_list|,

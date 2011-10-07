@@ -516,9 +516,9 @@ comment|// Now deliberately remove the blocks
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|2
 argument_list|,
@@ -938,9 +938,9 @@ decl_stmt|;
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,
@@ -978,9 +978,9 @@ condition|)
 block|{
 name|storageDir
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,

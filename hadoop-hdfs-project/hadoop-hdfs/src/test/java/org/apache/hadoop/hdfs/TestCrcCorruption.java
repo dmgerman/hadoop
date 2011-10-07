@@ -285,9 +285,9 @@ comment|//
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,
@@ -694,9 +694,9 @@ comment|// directory of the first datanode
 comment|//
 name|storageDir
 operator|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,

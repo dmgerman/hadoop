@@ -3465,9 +3465,9 @@ block|{
 name|File
 name|storageDir
 init|=
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|i
 argument_list|,
