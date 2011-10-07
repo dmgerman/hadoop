@@ -2274,6 +2274,8 @@ name|getMeta
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// TODO launchedContainer misplaced -> doesn't necessarily mean a container
+comment|// launch. A finished Application will not launch containers.
 name|metrics
 operator|.
 name|launchedContainer

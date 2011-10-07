@@ -1174,6 +1174,9 @@ operator|+
 name|subDir
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
 name|lfs
 operator|.
 name|delete
@@ -1182,7 +1185,21 @@ name|subDir
 argument_list|,
 literal|true
 argument_list|)
+condition|)
+block|{
+comment|//Maybe retry
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"delete returned false for path: ["
+operator|+
+name|subDir
+operator|+
+literal|"]"
+argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 for|for
@@ -1219,6 +1236,9 @@ operator|+
 name|del
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
 name|lfs
 operator|.
 name|delete
@@ -1227,7 +1247,20 @@ name|del
 argument_list|,
 literal|true
 argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"delete returned false for path: ["
+operator|+
+name|del
+operator|+
+literal|"]"
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/** Permissions for user dir.    * $loaal.dir/usercache/$user */

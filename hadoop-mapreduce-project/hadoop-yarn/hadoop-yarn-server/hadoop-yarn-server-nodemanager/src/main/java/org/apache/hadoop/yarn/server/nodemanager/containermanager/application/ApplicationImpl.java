@@ -887,6 +887,11 @@ argument_list|>
 name|stateMachine
 decl_stmt|;
 comment|/**    * Notify services of new application.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|AppInitTransition
 specifier|static
 class|class
@@ -1043,6 +1048,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|AppInitDoneTransition
 specifier|static
 class|class
@@ -1137,6 +1147,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|DuplicateAppInitTransition
 specifier|static
 class|class
@@ -1329,6 +1344,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|handleAppFinishWithContainersCleanedup ()
 name|void
 name|handleAppFinishWithContainersCleanedup
@@ -1357,6 +1377,11 @@ argument_list|)
 expr_stmt|;
 comment|// TODO: Trigger the LogsManager
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|AppFinishTriggeredTransition
 specifier|static
 class|class
@@ -1544,6 +1569,11 @@ name|FINISHING_CONTAINERS_WAIT
 return|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|AppCompletelyDoneTransition
 specifier|static
 class|class

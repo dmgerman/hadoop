@@ -38,18 +38,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|LinkedBlockingQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ScheduledThreadPoolExecutor
 import|;
 end_import
@@ -679,6 +667,21 @@ else|else
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting path: ["
+operator|+
+name|subDir
+operator|+
+literal|"] as user: ["
+operator|+
+name|user
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|exec
 operator|.
 name|deleteAsUser

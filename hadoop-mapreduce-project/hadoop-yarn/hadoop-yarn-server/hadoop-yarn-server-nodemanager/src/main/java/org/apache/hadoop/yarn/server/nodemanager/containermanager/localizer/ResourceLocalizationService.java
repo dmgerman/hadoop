@@ -2645,6 +2645,7 @@ name|retain
 argument_list|)
 expr_stmt|;
 block|}
+comment|//TODO Check if appRsrcs should also be added to the retention set.
 break|break;
 case|case
 name|CLEANUP_CONTAINER_RESOURCES
@@ -5019,12 +5020,16 @@ name|void
 name|run
 parameter_list|()
 block|{
-try|try
-block|{
-comment|// Use LocalDirAllocator to get nmPrivateDir
 name|Path
 name|nmPrivateCTokensPath
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+comment|// Use LocalDirAllocator to get nmPrivateDir
+name|nmPrivateCTokensPath
+operator|=
 name|localDirsSelector
 operator|.
 name|getLocalPathForWrite
@@ -5049,7 +5054,7 @@ argument_list|,
 name|getConfig
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// 0) init queue, etc.
 comment|// 1) write credentials to private dir
 name|DataOutputStream
@@ -5278,6 +5283,20 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+name|delService
+operator|.
+name|delete
+argument_list|(
+literal|null
+argument_list|,
+name|nmPrivateCTokensPath
+argument_list|,
+operator|new
+name|Path
+index|[]
+block|{}
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
