@@ -3734,9 +3734,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|application
-operator|.
-name|getUser
-argument_list|()
 argument_list|,
 name|assignedResource
 argument_list|)
@@ -4047,7 +4044,10 @@ operator|.
 name|getUser
 argument_list|()
 argument_list|,
-name|resourceLimit
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5996,9 +5996,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|application
-operator|.
-name|getUser
-argument_list|()
 argument_list|,
 name|container
 operator|.
@@ -6062,7 +6059,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|allocateResource (Resource clusterResource, String userName, Resource resource)
+DECL|method|allocateResource (Resource clusterResource, SchedulerApp application, Resource resource)
 specifier|synchronized
 name|void
 name|allocateResource
@@ -6070,8 +6067,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|String
-name|userName
+name|SchedulerApp
+name|application
 parameter_list|,
 name|Resource
 name|resource
@@ -6096,6 +6093,14 @@ operator|++
 name|numContainers
 expr_stmt|;
 comment|// Update user metrics
+name|String
+name|userName
+init|=
+name|application
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 name|User
 name|user
 init|=
@@ -6109,6 +6114,18 @@ operator|.
 name|assignContainer
 argument_list|(
 name|resource
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|setAvailableResourcesToUser
+argument_list|(
+name|userName
+argument_list|,
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -6139,7 +6156,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|releaseResource (Resource clusterResource, String userName, Resource resource)
+DECL|method|releaseResource (Resource clusterResource, SchedulerApp application, Resource resource)
 specifier|synchronized
 name|void
 name|releaseResource
@@ -6147,8 +6164,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|String
-name|userName
+name|SchedulerApp
+name|application
 parameter_list|,
 name|Resource
 name|resource
@@ -6173,6 +6190,14 @@ operator|--
 name|numContainers
 expr_stmt|;
 comment|// Update user metrics
+name|String
+name|userName
+init|=
+name|application
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 name|User
 name|user
 init|=
@@ -6186,6 +6211,18 @@ operator|.
 name|releaseContainer
 argument_list|(
 name|resource
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|setAvailableResourcesToUser
+argument_list|(
+name|userName
+argument_list|,
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -6305,10 +6342,13 @@ name|Resources
 operator|.
 name|createResource
 argument_list|(
+name|roundUp
+argument_list|(
 operator|(
 name|int
 operator|)
 name|queueLimit
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|metrics
@@ -6515,9 +6555,6 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|application
-operator|.
-name|getUser
-argument_list|()
 argument_list|,
 name|container
 operator|.
