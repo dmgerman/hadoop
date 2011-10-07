@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -127,6 +137,8 @@ DECL|class|ResourceUsageMatcher
 specifier|public
 class|class
 name|ResourceUsageMatcher
+implements|implements
+name|Progressive
 block|{
 comment|/**    * Configuration key to set resource usage emulators.    */
 DECL|field|RESOURCE_USAGE_EMULATION_PLUGINS
@@ -322,7 +334,9 @@ name|void
 name|matchResourceUsage
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 for|for
 control|(
@@ -339,6 +353,62 @@ name|emulate
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Returns the average progress.    */
+annotation|@
+name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+if|if
+condition|(
+name|emulationPlugins
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// return the average progress
+name|float
+name|progress
+init|=
+literal|0f
+decl_stmt|;
+for|for
+control|(
+name|ResourceUsageEmulatorPlugin
+name|emulator
+range|:
+name|emulationPlugins
+control|)
+block|{
+comment|// consider weighted progress of each emulator
+name|progress
+operator|+=
+name|emulator
+operator|.
+name|getProgress
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|progress
+operator|/
+name|emulationPlugins
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+comment|// if no emulators are configured then return 1
+return|return
+literal|1f
+return|;
 block|}
 block|}
 end_class

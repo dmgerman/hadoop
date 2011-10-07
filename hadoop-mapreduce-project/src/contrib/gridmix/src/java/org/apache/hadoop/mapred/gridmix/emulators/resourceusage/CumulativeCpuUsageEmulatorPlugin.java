@@ -158,10 +158,10 @@ name|lastSeenProgress
 init|=
 literal|0
 decl_stmt|;
-DECL|field|lastSeenCpuUsageCpuUsage
+DECL|field|lastSeenCpuUsage
 specifier|private
 name|long
-name|lastSeenCpuUsageCpuUsage
+name|lastSeenCpuUsage
 init|=
 literal|0
 decl_stmt|;
@@ -565,6 +565,50 @@ operator|*
 name|progress
 return|;
 block|}
+DECL|method|getCurrentCPUUsage ()
+specifier|private
+specifier|synchronized
+name|long
+name|getCurrentCPUUsage
+parameter_list|()
+block|{
+return|return
+name|monitor
+operator|.
+name|getProcResourceValues
+argument_list|()
+operator|.
+name|getCumulativeCpuTime
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|min
+argument_list|(
+literal|1f
+argument_list|,
+operator|(
+operator|(
+name|float
+operator|)
+name|getCurrentCPUUsage
+argument_list|()
+operator|)
+operator|/
+name|targetCpuUsage
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 comment|//TODO Multi-threading for speedup?
@@ -626,12 +670,7 @@ comment|//   section
 name|long
 name|currentCpuUsage
 init|=
-name|monitor
-operator|.
-name|getProcResourceValues
-argument_list|()
-operator|.
-name|getCumulativeCpuTime
+name|getCurrentCPUUsage
 argument_list|()
 decl_stmt|;
 comment|// estimate the cpu usage rate
@@ -641,7 +680,7 @@ init|=
 operator|(
 name|currentCpuUsage
 operator|-
-name|lastSeenCpuUsageCpuUsage
+name|lastSeenCpuUsage
 operator|)
 operator|/
 operator|(
@@ -694,12 +733,7 @@ argument_list|)
 decl_stmt|;
 while|while
 condition|(
-name|monitor
-operator|.
-name|getProcResourceValues
-argument_list|()
-operator|.
-name|getCumulativeCpuTime
+name|getCurrentCPUUsage
 argument_list|()
 operator|<
 name|currentWeighedTarget
@@ -751,14 +785,9 @@ name|getProgress
 argument_list|()
 expr_stmt|;
 comment|// set the last seen usage
-name|lastSeenCpuUsageCpuUsage
+name|lastSeenCpuUsage
 operator|=
-name|monitor
-operator|.
-name|getProcResourceValues
-argument_list|()
-operator|.
-name|getCumulativeCpuTime
+name|getCurrentCPUUsage
 argument_list|()
 expr_stmt|;
 block|}
@@ -850,7 +879,7 @@ name|lastSeenProgress
 operator|=
 literal|0
 expr_stmt|;
-name|lastSeenCpuUsageCpuUsage
+name|lastSeenCpuUsage
 operator|=
 literal|0
 expr_stmt|;

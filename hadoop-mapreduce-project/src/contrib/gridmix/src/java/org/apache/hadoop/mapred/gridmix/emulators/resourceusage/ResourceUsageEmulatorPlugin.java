@@ -103,6 +103,8 @@ DECL|interface|ResourceUsageEmulatorPlugin
 specifier|public
 interface|interface
 name|ResourceUsageEmulatorPlugin
+extends|extends
+name|Progressive
 block|{
 comment|/**    * Initialize the plugin. This might involve    *   - initializing the variables    *   - calibrating the plugin    */
 DECL|method|initialize (Configuration conf, ResourceUsageMetrics metrics, ResourceCalculatorPlugin monitor, Progressive progress)
