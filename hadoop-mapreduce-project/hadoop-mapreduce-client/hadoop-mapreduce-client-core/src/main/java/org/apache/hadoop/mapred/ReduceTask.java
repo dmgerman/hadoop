@@ -1954,7 +1954,7 @@ name|FRAMEWORK_NAME
 argument_list|,
 name|MRConfig
 operator|.
-name|CLASSIC_FRAMEWORK_NAME
+name|YARN_FRAMEWORK_NAME
 argument_list|)
 decl_stmt|;
 if|if
