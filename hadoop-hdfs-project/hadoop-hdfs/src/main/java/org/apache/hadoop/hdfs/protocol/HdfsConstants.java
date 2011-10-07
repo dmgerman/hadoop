@@ -71,13 +71,12 @@ operator|.
 name|Private
 DECL|class|HdfsConstants
 specifier|public
-specifier|final
 class|class
 name|HdfsConstants
 block|{
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
-specifier|private
+specifier|protected
 name|HdfsConstants
 parameter_list|()
 block|{   }
@@ -258,6 +257,7 @@ decl_stmt|;
 comment|// SafeMode actions
 DECL|enum|SafeModeAction
 specifier|public
+specifier|static
 enum|enum
 name|SafeModeAction
 block|{
