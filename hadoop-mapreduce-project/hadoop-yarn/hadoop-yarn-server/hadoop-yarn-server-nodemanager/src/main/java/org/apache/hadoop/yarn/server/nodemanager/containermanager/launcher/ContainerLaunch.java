@@ -1763,7 +1763,7 @@ expr_stmt|;
 block|}
 name|line
 argument_list|(
-literal|"ln -sf "
+literal|"ln -sf \""
 argument_list|,
 name|src
 operator|.
@@ -1773,12 +1773,14 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|,
-literal|" "
+literal|"\" \""
 argument_list|,
 name|dst
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|"\""
 argument_list|)
 expr_stmt|;
 return|return
@@ -2150,7 +2152,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeLaunchEnv (OutputStream out, Map<String,String> environment, Map<Path,String> resources, List<String> command)
-specifier|private
 specifier|static
 name|void
 name|writeLaunchEnv
