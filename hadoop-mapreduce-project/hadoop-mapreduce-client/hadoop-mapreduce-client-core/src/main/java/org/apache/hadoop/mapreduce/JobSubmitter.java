@@ -1800,6 +1800,12 @@ name|InterruptedException
 throws|,
 name|IOException
 block|{
+comment|//validate the jobs output specs
+name|checkSpecs
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 name|Path
 name|jobStagingArea
 init|=
@@ -1986,11 +1992,6 @@ argument_list|(
 name|submitJobDir
 argument_list|)
 decl_stmt|;
-name|checkSpecs
-argument_list|(
-name|job
-argument_list|)
-expr_stmt|;
 comment|// Create the splits for the job
 name|LOG
 operator|.
