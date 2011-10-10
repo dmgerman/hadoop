@@ -1924,6 +1924,8 @@ operator|.
 name|toFileStatus
 argument_list|(
 name|json
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -2995,9 +2997,8 @@ operator|.
 name|get
 argument_list|(
 name|HdfsFileStatus
-index|[]
 operator|.
-expr|class
+name|class
 operator|.
 name|getSimpleName
 argument_list|()
@@ -3073,6 +3074,8 @@ operator|.
 name|toFileStatus
 argument_list|(
 name|m
+argument_list|,
+literal|false
 argument_list|)
 argument_list|,
 name|f

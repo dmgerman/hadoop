@@ -332,6 +332,8 @@ operator|.
 name|toJsonString
 argument_list|(
 name|status
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|System
@@ -374,6 +376,8 @@ name|parse
 argument_list|(
 name|json
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 specifier|final

@@ -3472,6 +3472,8 @@ operator|.
 name|toJsonString
 argument_list|(
 name|status
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 return|return
@@ -3820,9 +3822,8 @@ argument_list|(
 literal|"{\""
 operator|+
 name|HdfsFileStatus
-index|[]
 operator|.
-expr|class
+name|class
 operator|.
 name|getSimpleName
 argument_list|()
@@ -3861,6 +3862,8 @@ name|partial
 index|[
 literal|0
 index|]
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3901,6 +3904,8 @@ name|partial
 index|[
 name|i
 index|]
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3960,6 +3965,8 @@ operator|.
 name|toJsonString
 argument_list|(
 name|s
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
