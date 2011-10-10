@@ -535,27 +535,6 @@ name|DEFAULT_RM_ADMIN_CLIENT_THREAD_COUNT
 init|=
 literal|1
 decl_stmt|;
-comment|/** How often should the RM check that the AM is still alive.*/
-DECL|field|RM_AM_LIVENESS_MONITOR_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_AM_LIVENESS_MONITOR_INTERVAL_MS
-init|=
-name|RM_PREFIX
-operator|+
-literal|"amliveliness-monitor.interval-ms"
-decl_stmt|;
-DECL|field|DEFAULT_RM_AM_LIVENESS_MONITOR_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_RM_AM_LIVENESS_MONITOR_INTERVAL_MS
-init|=
-literal|1000
-decl_stmt|;
 comment|/** The maximum number of application master retries.*/
 DECL|field|RM_AM_MAX_RETRIES
 specifier|public
@@ -576,27 +555,6 @@ name|int
 name|DEFAULT_RM_AM_MAX_RETRIES
 init|=
 literal|1
-decl_stmt|;
-comment|/** How often to check that containers are still alive. */
-DECL|field|RM_CONTAINER_LIVENESS_MONITOR_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_CONTAINER_LIVENESS_MONITOR_INTERVAL_MS
-init|=
-name|RM_PREFIX
-operator|+
-literal|"container.liveness-monitor.interval-ms"
-decl_stmt|;
-DECL|field|DEFAULT_RM_CONTAINER_LIVENESS_MONITOR_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_RM_CONTAINER_LIVENESS_MONITOR_INTERVAL_MS
-init|=
-literal|600000
 decl_stmt|;
 comment|/** The keytab for the resource manager.*/
 DECL|field|RM_KEYTAB
@@ -631,26 +589,26 @@ name|DEFAULT_RM_NM_EXPIRY_INTERVAL_MS
 init|=
 literal|600000
 decl_stmt|;
-comment|/** How often to check that node managers are still alive.*/
-DECL|field|RM_NM_LIVENESS_MONITOR_INTERVAL_MS
+comment|/** How long to wait until a container is considered dead.*/
+DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_NM_LIVENESS_MONITOR_INTERVAL_MS
+name|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"nm.liveness-monitor.interval-ms"
+literal|"rm.container-allocation.expiry-interval-ms"
 decl_stmt|;
-DECL|field|DEFAULT_RM_NM_LIVENESS_MONITOR_INTERVAL_MS
+DECL|field|DEFAULT_RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RM_NM_LIVENESS_MONITOR_INTERVAL_MS
+name|DEFAULT_RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 init|=
-literal|1000
+literal|600000
 decl_stmt|;
 comment|/** Path to file with nodes to include.*/
 DECL|field|RM_NODES_INCLUDE_FILE_PATH
