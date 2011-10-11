@@ -1846,6 +1846,16 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|userRsrc
+operator|.
+name|remove
+argument_list|(
+name|jobId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
