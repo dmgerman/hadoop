@@ -594,7 +594,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns the path upto the random directory component.    */
+comment|/**    * Returns the path up to the random directory component.    */
 DECL|method|getPathToDelete (Path localPath)
 specifier|private
 name|Path
@@ -648,7 +648,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Random directroy component did not match. "
+literal|"Random directory component did not match. "
 operator|+
 literal|"Deleting localized path only"
 argument_list|)

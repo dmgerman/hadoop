@@ -622,7 +622,7 @@ name|MR_AM_TASK_ESTIMATOR_SMOOTH_LAMBDA_MS
 argument_list|,
 name|MRJobConfig
 operator|.
-name|DEFAULT_MR_AM_TASK_ESTIMATOR_SMNOOTH_LAMBDA_MS
+name|DEFAULT_MR_AM_TASK_ESTIMATOR_SMOOTH_LAMBDA_MS
 argument_list|)
 expr_stmt|;
 name|smoothedValue
@@ -633,7 +633,7 @@ name|getBoolean
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MR_AM_TASK_EXTIMATOR_EXPONENTIAL_RATE_ENABLE
+name|MR_AM_TASK_ESTIMATOR_EXPONENTIAL_RATE_ENABLE
 argument_list|,
 literal|true
 argument_list|)

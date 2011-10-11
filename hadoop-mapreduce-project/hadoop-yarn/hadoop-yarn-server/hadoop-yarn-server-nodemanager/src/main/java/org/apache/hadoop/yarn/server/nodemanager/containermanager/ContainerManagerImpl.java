@@ -1349,11 +1349,11 @@ specifier|final
 name|ContainersLauncher
 name|containersLauncher
 decl_stmt|;
-DECL|field|auxiluaryServices
+DECL|field|auxiliaryServices
 specifier|private
 specifier|final
 name|AuxServices
-name|auxiluaryServices
+name|auxiliaryServices
 decl_stmt|;
 DECL|field|metrics
 specifier|private
@@ -1495,13 +1495,13 @@ operator|=
 name|containerTokenSecretManager
 expr_stmt|;
 comment|// Start configurable services
-name|auxiluaryServices
+name|auxiliaryServices
 operator|=
 operator|new
 name|AuxServices
 argument_list|()
 expr_stmt|;
-name|auxiluaryServices
+name|auxiliaryServices
 operator|.
 name|register
 argument_list|(
@@ -1510,7 +1510,7 @@ argument_list|)
 expr_stmt|;
 name|addService
 argument_list|(
-name|auxiluaryServices
+name|auxiliaryServices
 argument_list|)
 expr_stmt|;
 name|this
@@ -1600,7 +1600,7 @@ name|AuxServicesEventType
 operator|.
 name|class
 argument_list|,
-name|auxiluaryServices
+name|auxiliaryServices
 argument_list|)
 expr_stmt|;
 name|dispatcher
@@ -1905,7 +1905,7 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|auxiluaryServices
+name|auxiliaryServices
 operator|.
 name|getServiceState
 argument_list|()
@@ -1913,7 +1913,7 @@ operator|==
 name|STARTED
 condition|)
 block|{
-name|auxiluaryServices
+name|auxiliaryServices
 operator|.
 name|unregister
 argument_list|(
@@ -2268,7 +2268,7 @@ name|response
 operator|.
 name|addAllServiceResponse
 argument_list|(
-name|auxiluaryServices
+name|auxiliaryServices
 operator|.
 name|getMeta
 argument_list|()

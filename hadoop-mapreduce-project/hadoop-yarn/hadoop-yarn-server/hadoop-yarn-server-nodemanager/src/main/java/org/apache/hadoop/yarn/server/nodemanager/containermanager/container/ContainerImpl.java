@@ -2557,6 +2557,7 @@ block|{
 comment|// Just drain the event and change the state.
 block|}
 block|}
+comment|/**    * State transition when a NEW container receives the INIT_CONTAINER    * message.    *     * If there are resources to localize, sends a    * ContainerLocalizationRequest (INIT_CONTAINER_RESOURCES)     * to the ResourceLocalizationManager and enters LOCALIZING state.    *     * If there are no resources to localize, sends LAUNCH_CONTAINER event    * and enters LOCALIZED state directly.    *     * If there are any invalid resources specified, enters LOCALIZATION_FAILED    * directly.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3044,6 +3045,7 @@ return|;
 block|}
 block|}
 block|}
+comment|/**    * Transition when one of the requested resources for this container    * has been successfully localized.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3202,6 +3204,7 @@ name|LOCALIZED
 return|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZED state to RUNNING state upon receiving    * a CONTAINER_LAUNCHED event    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3283,6 +3286,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from RUNNING or KILLING state to EXITED_WITH_SUCCESS state    * upon EXITED_WITH_SUCCESS message.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3370,6 +3374,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition to EXITED_WITH_FAILURE state upon    * CONTAINER_EXITED_WITH_FAILURE state.    **/
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3468,6 +3473,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition to EXITED_WITH_FAILURE upon receiving KILLED_ON_REQUEST    */
 DECL|class|KilledExternallyTransition
 specifier|static
 class|class
@@ -3519,6 +3525,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZING to LOCALIZATION_FAILED upon receiving    * RESOURCE_FAILED event.    */
 DECL|class|ResourceFailedTransition
 specifier|static
 class|class
@@ -3591,6 +3598,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZING to KILLING upon receiving    * KILL_CONTAINER event.    */
 DECL|class|KillDuringLocalizationTransition
 specifier|static
 class|class
@@ -3658,6 +3666,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Remain in KILLING state when receiving a RESOURCE_LOCALIZED request    * while in the process of killing.    */
 DECL|class|LocalizedResourceDuringKillTransition
 specifier|static
 class|class
@@ -3755,6 +3764,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transitions upon receiving KILL_CONTAINER:    * - LOCALIZED -> KILLING    * - RUNNING -> KILLING    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3835,6 +3845,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from KILLING to CONTAINER_CLEANEDUP_AFTER_KILL    * upon receiving CONTAINER_KILLED_ON_REQUEST.    */
 DECL|class|ContainerKilledTransition
 specifier|static
 class|class
@@ -3887,6 +3898,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Handle the following transitions:    * - NEW -> DONE upon KILL_CONTAINER    * - {LOCALIZATION_FAILED, EXITED_WITH_SUCCESS, EXITED_WITH_FAILURE,    *    KILLING, CONTAINER_CLEANEDUP_AFTER_KILL}    *   -> DONE upon CONTAINER_RESOURCES_CLEANEDUP    */
 DECL|class|ContainerDoneTransition
 specifier|static
 class|class
@@ -3920,6 +3932,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Update diagnostics, staying in the same state.    */
 DECL|class|ContainerDiagnosticsUpdateTransition
 specifier|static
 class|class

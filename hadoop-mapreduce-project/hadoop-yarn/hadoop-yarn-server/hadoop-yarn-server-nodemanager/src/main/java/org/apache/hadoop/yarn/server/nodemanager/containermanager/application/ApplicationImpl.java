@@ -232,6 +232,28 @@ name|containermanager
 operator|.
 name|localizer
 operator|.
+name|ResourceLocalizationService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|localizer
+operator|.
 name|event
 operator|.
 name|ApplicationLocalizationEvent
@@ -427,6 +449,10 @@ operator|.
 name|ConverterUtils
 import|;
 end_import
+
+begin_comment
+comment|/**  * The state machine for the representation of an Application  * within the NodeManager.  */
+end_comment
 
 begin_class
 DECL|class|ApplicationImpl
@@ -886,7 +912,7 @@ name|ApplicationEvent
 argument_list|>
 name|stateMachine
 decl_stmt|;
-comment|/**    * Notify services of new application.    */
+comment|/**    * Notify services of new application.    *     * In particular, this requests that the {@link ResourceLocalizationService}    * localize the application-scoped resources.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
