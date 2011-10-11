@@ -65,24 +65,6 @@ operator|.
 name|namenode
 operator|.
 name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
 operator|.
 name|OperationCategory
 import|;
@@ -144,15 +126,15 @@ name|name
 expr_stmt|;
 block|}
 comment|/**    * Internal method to transition the state of a given namenode to a new state.    * @param nn Namenode    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
-DECL|method|setStateInternal (final NameNode nn, final HAState s)
+DECL|method|setStateInternal (final HAContext context, final HAState s)
 specifier|protected
 specifier|final
 name|void
 name|setStateInternal
 parameter_list|(
 specifier|final
-name|NameNode
-name|nn
+name|HAContext
+name|context
 parameter_list|,
 specifier|final
 name|HAState
@@ -163,10 +145,10 @@ name|ServiceFailedException
 block|{
 name|exitState
 argument_list|(
-name|nn
+name|context
 argument_list|)
 expr_stmt|;
-name|nn
+name|context
 operator|.
 name|setState
 argument_list|(
@@ -177,46 +159,46 @@ name|s
 operator|.
 name|enterState
 argument_list|(
-name|nn
+name|context
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * entering a state.    * @param nn Namenode    * @throws ServiceFailedException on failure to enter the state.    */
-DECL|method|enterState (final NameNode nn)
-specifier|protected
+comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * entering a state.    * @param context HA context    * @throws ServiceFailedException on failure to enter the state.    */
+DECL|method|enterState (final HAContext context)
+specifier|public
 specifier|abstract
 name|void
 name|enterState
 parameter_list|(
 specifier|final
-name|NameNode
-name|nn
+name|HAContext
+name|context
 parameter_list|)
 throws|throws
 name|ServiceFailedException
 function_decl|;
-comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * exiting a state.    * @param nn Namenode    * @throws ServiceFailedException on failure to enter the state.    */
-DECL|method|exitState (final NameNode nn)
-specifier|protected
+comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * exiting a state.    * @param context HA context    * @throws ServiceFailedException on failure to enter the state.    */
+DECL|method|exitState (final HAContext context)
+specifier|public
 specifier|abstract
 name|void
 name|exitState
 parameter_list|(
 specifier|final
-name|NameNode
-name|nn
+name|HAContext
+name|context
 parameter_list|)
 throws|throws
 name|ServiceFailedException
 function_decl|;
-comment|/**    * Move from the existing state to a new state    * @param nn Namenode    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
-DECL|method|setState (NameNode nn, HAState s)
+comment|/**    * Move from the existing state to a new state    * @param context HA context    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
+DECL|method|setState (HAContext context, HAState s)
 specifier|public
 name|void
 name|setState
 parameter_list|(
-name|NameNode
-name|nn
+name|HAContext
+name|context
 parameter_list|,
 name|HAState
 name|s
@@ -250,15 +232,15 @@ literal|" is not allowed."
 argument_list|)
 throw|;
 block|}
-comment|/**    * Check if an operation is supported in a given state.    * @param nn Namenode    * @param op Type of the operation.    * @throws UnsupportedActionException if a given type of operation is not    *           supported in this state.    */
-DECL|method|checkOperation (final NameNode nn, final OperationCategory op)
+comment|/**    * Check if an operation is supported in a given state.    * @param context HA context    * @param op Type of the operation.    * @throws UnsupportedActionException if a given type of operation is not    *           supported in this state.    */
+DECL|method|checkOperation (final HAContext context, final OperationCategory op)
 specifier|public
 name|void
 name|checkOperation
 parameter_list|(
 specifier|final
-name|NameNode
-name|nn
+name|HAContext
+name|context
 parameter_list|,
 specifier|final
 name|OperationCategory
@@ -276,7 +258,7 @@ name|op
 operator|+
 literal|" is not supported in state "
 operator|+
-name|nn
+name|context
 operator|.
 name|getState
 argument_list|()

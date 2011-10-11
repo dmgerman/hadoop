@@ -461,8 +461,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|String
 name|addr
@@ -495,8 +493,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|String
 name|addr
@@ -746,23 +742,6 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-comment|// Backup node should never do lease recovery,
-comment|// therefore lease hard limit should never expire.
-name|namesystem
-operator|.
-name|leaseManager
-operator|.
-name|setLeasePeriod
-argument_list|(
-name|HdfsConstants
-operator|.
-name|LEASE_SOFTLIMIT_PERIOD
-argument_list|,
-name|Long
-operator|.
-name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 name|clusterId
