@@ -3555,26 +3555,11 @@ init|(
 name|application
 init|)
 block|{
-name|Resource
-name|userLimit
-init|=
-name|computeUserLimit
+name|computeAndSetUserResourceLimit
 argument_list|(
 name|application
 argument_list|,
 name|clusterResource
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|setUserResourceLimit
-argument_list|(
-name|application
-argument_list|,
-name|userLimit
 argument_list|)
 expr_stmt|;
 for|for
@@ -3643,8 +3628,9 @@ argument_list|()
 return|;
 block|}
 comment|// User limits
+name|Resource
 name|userLimit
-operator|=
+init|=
 name|computeUserLimit
 argument_list|(
 name|application
@@ -3653,7 +3639,7 @@ name|clusterResource
 argument_list|,
 name|required
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -4016,23 +4002,38 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|setUserResourceLimit (SchedulerApp application, Resource resourceLimit)
+DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource)
 specifier|private
 name|void
-name|setUserResourceLimit
+name|computeAndSetUserResourceLimit
 parameter_list|(
 name|SchedulerApp
 name|application
 parameter_list|,
 name|Resource
-name|resourceLimit
+name|clusterResource
 parameter_list|)
 block|{
+name|Resource
+name|userLimit
+init|=
+name|computeUserLimit
+argument_list|(
+name|application
+argument_list|,
+name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|application
 operator|.
 name|setAvailableResourceLimit
 argument_list|(
-name|resourceLimit
+name|userLimit
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -6265,6 +6266,7 @@ name|Resource
 name|clusterResource
 parameter_list|)
 block|{
+comment|// Update queue properties
 name|maxActiveApplications
 operator|=
 name|computeMaxActiveApplications
@@ -6287,6 +6289,23 @@ argument_list|,
 name|userLimitFactor
 argument_list|)
 expr_stmt|;
+comment|// Update application properties
+for|for
+control|(
+name|SchedulerApp
+name|application
+range|:
+name|activeApplications
+control|)
+block|{
+name|computeAndSetUserResourceLimit
+argument_list|(
+name|application
+argument_list|,
+name|clusterResource
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|updateResource (Resource clusterResource)
 specifier|private

@@ -767,6 +767,50 @@ return|return
 name|userLimit
 return|;
 block|}
+DECL|method|setUserLimit (String queue, int userLimit)
+specifier|public
+name|void
+name|setUserLimit
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|int
+name|userLimit
+parameter_list|)
+block|{
+name|setInt
+argument_list|(
+name|getQueuePrefix
+argument_list|(
+name|queue
+argument_list|)
+operator|+
+name|USER_LIMIT
+argument_list|,
+name|userLimit
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"here setUserLimit: queuePrefix="
+operator|+
+name|getQueuePrefix
+argument_list|(
+name|queue
+argument_list|)
+operator|+
+literal|", userLimit="
+operator|+
+name|getUserLimit
+argument_list|(
+name|queue
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getUserLimitFactor (String queue)
 specifier|public
 name|float
