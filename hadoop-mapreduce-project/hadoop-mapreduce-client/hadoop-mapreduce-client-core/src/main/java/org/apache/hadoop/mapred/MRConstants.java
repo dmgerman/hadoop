@@ -146,6 +146,16 @@ name|WORKDIR
 init|=
 literal|"work"
 decl_stmt|;
+comment|/** Used on by MRv2 */
+DECL|field|APPLICATION_ATTEMPT_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_ATTEMPT_ID
+init|=
+literal|"mapreduce.job.application.attempt.id"
+decl_stmt|;
 block|}
 end_interface
 
