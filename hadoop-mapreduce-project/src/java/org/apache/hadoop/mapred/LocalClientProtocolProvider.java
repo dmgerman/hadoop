@@ -176,7 +176,9 @@ name|framework
 operator|.
 name|equals
 argument_list|(
-literal|"local"
+name|MRConfig
+operator|.
+name|LOCAL_FRAMEWORK_NAME
 argument_list|)
 condition|)
 block|{

@@ -158,7 +158,9 @@ name|MRConfig
 operator|.
 name|FRAMEWORK_NAME
 argument_list|,
-literal|"local"
+name|MRConfig
+operator|.
+name|LOCAL_FRAMEWORK_NAME
 argument_list|)
 expr_stmt|;
 name|conf

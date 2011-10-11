@@ -1574,6 +1574,20 @@ operator|)
 name|task
 decl_stmt|;
 comment|// a.k.a. "mapreduce.jobtracker.address" in LocalJobRunner:
+comment|// set framework name to local to make task local
+name|conf
+operator|.
+name|set
+argument_list|(
+name|MRConfig
+operator|.
+name|FRAMEWORK_NAME
+argument_list|,
+name|MRConfig
+operator|.
+name|LOCAL_FRAMEWORK_NAME
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|set

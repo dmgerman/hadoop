@@ -1044,7 +1044,7 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// set master address to local to test that local mode applied iff framework == classic and master_address == local
+comment|// set master address to local to test that local mode applied iff framework == local
 name|sleepConf
 operator|.
 name|set
