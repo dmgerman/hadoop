@@ -384,13 +384,10 @@ operator|.
 name|getAuthority
 argument_list|()
 argument_list|,
-name|normalizePath
-argument_list|(
 name|resolved
 operator|.
 name|getPath
 argument_list|()
-argument_list|)
 argument_list|,
 name|resolved
 operator|.
