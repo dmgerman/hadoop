@@ -400,6 +400,29 @@ name|FinalApplicationStatus
 name|finishState
 parameter_list|)
 function_decl|;
+comment|/**    * Retrieve the structure containing the job resources for this application    * @return the job resources structure for this application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationResourceUsageReport ()
+name|ApplicationResourceUsageReport
+name|getApplicationResourceUsageReport
+parameter_list|()
+function_decl|;
+comment|/**    * Store the structure containing the job resources for this application    * @param appResources structure for this application    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationResourceUsageReport (ApplicationResourceUsageReport appResources)
+name|void
+name|setApplicationResourceUsageReport
+parameter_list|(
+name|ApplicationResourceUsageReport
+name|appResources
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -368,6 +368,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationResourceUsageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|URL
 import|;
 end_import
@@ -1534,7 +1552,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus)
+DECL|method|newApplicationReport ( ApplicationId applicationId, String user, String queue, String name, String host, int rpcPort, String clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -1578,6 +1596,9 @@ name|finishTime
 parameter_list|,
 name|FinalApplicationStatus
 name|finalStatus
+parameter_list|,
+name|ApplicationResourceUsageReport
+name|appResources
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -1681,6 +1702,13 @@ operator|.
 name|setFinalApplicationStatus
 argument_list|(
 name|finalStatus
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setApplicationResourceUsageReport
+argument_list|(
+name|appResources
 argument_list|)
 expr_stmt|;
 return|return

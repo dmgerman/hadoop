@@ -892,6 +892,8 @@ argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|UNDEFINED
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

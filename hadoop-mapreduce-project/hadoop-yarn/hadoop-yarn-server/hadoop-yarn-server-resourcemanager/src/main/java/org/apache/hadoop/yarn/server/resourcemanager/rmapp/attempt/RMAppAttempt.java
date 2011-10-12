@@ -76,6 +76,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationResourceUsageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -310,6 +328,12 @@ comment|/**    * The application submission context for this {@link RMAppAttempt
 DECL|method|getSubmissionContext ()
 name|ApplicationSubmissionContext
 name|getSubmissionContext
+parameter_list|()
+function_decl|;
+comment|/*    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */
+DECL|method|getApplicationResourceUsageReport ()
+name|ApplicationResourceUsageReport
+name|getApplicationResourceUsageReport
 parameter_list|()
 function_decl|;
 block|}
