@@ -9763,7 +9763,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Can't replicate block "
 operator|+
