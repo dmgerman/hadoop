@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|regex
@@ -166,6 +176,96 @@ return|return
 name|jobId
 return|;
 block|}
+comment|/**    * Extracts job id from the current hadoop version's job history file name.    * @param fileName job history file name from which job id is to be extracted    * @return job id if the history file name format is same as that of the    * current hadoop version. Returns null otherwise.    */
+DECL|method|extractJobIDFromCurrentHistoryFile (String fileName)
+specifier|private
+specifier|static
+name|String
+name|extractJobIDFromCurrentHistoryFile
+parameter_list|(
+name|String
+name|fileName
+parameter_list|)
+block|{
+name|JobID
+name|id
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|jobhistory
+operator|.
+name|JobHistoryUtils
+operator|.
+name|isValidJobHistoryFileName
+argument_list|(
+name|fileName
+argument_list|)
+condition|)
+block|{
+try|try
+block|{
+name|id
+operator|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|jobhistory
+operator|.
+name|JobHistoryUtils
+operator|.
+name|getJobIDFromHistoryFilePath
+argument_list|(
+name|fileName
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Ignore this exception and go ahead with getting of jobID assuming
+comment|// older hadoop verison's history file
+block|}
+block|}
+if|if
+condition|(
+name|id
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|id
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Extracts jobID string from the given job history file name.    * @param fileName name of the job history file    * @return JobID if the given<code>fileName</code> is a valid job history    *         file name,<code>null</code> otherwise.    */
 DECL|method|extractJobIDFromHistoryFileName (String fileName)
 specifier|private
@@ -181,6 +281,29 @@ comment|// History file name could be in one of the following formats
 comment|// (1) old pre21 job history file name format
 comment|// (2) new pre21 job history file name format
 comment|// (3) current job history file name format i.e. 0.22
+comment|// Try to get the jobID assuming that the history file is from the current
+comment|// hadoop version
+name|String
+name|jobID
+init|=
+name|extractJobIDFromCurrentHistoryFile
+argument_list|(
+name|fileName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|jobID
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|jobID
+return|;
+comment|//history file is of current hadoop version
+block|}
+comment|// History file could be of older hadoop versions
 name|String
 name|pre21JobID
 init|=
@@ -212,26 +335,8 @@ name|JOBHISTORY_FILENAME_REGEX_V2
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|pre21JobID
-operator|!=
-literal|null
-condition|)
-block|{
 return|return
 name|pre21JobID
-return|;
-block|}
-return|return
-name|applyParser
-argument_list|(
-name|fileName
-argument_list|,
-name|JobHistory
-operator|.
-name|JOBHISTORY_FILENAME_REGEX
-argument_list|)
 return|;
 block|}
 comment|/**    * Extracts jobID string from the given job conf xml file name.    * @param fileName name of the job conf xml file    * @return job id if the given<code>fileName</code> is a valid job conf xml    *         file name,<code>null</code> otherwise.    */
