@@ -141,8 +141,8 @@ operator|new
 name|TaskAttemptStarted
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    */
-DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort)
+comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    * @param shufflePort The shuffle port number of the container    */
+DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort)
 specifier|public
 name|TaskAttemptStartedEvent
 parameter_list|(
@@ -160,6 +160,9 @@ name|trackerName
 parameter_list|,
 name|int
 name|httpPort
+parameter_list|,
+name|int
+name|shufflePort
 parameter_list|)
 block|{
 name|datum
@@ -225,6 +228,12 @@ operator|.
 name|httpPort
 operator|=
 name|httpPort
+expr_stmt|;
+name|datum
+operator|.
+name|shufflePort
+operator|=
+name|shufflePort
 expr_stmt|;
 block|}
 DECL|method|TaskAttemptStartedEvent ()
@@ -342,6 +351,19 @@ return|return
 name|datum
 operator|.
 name|httpPort
+return|;
+block|}
+comment|/** Get the shuffle port */
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|shufflePort
 return|;
 block|}
 comment|/** Get the attempt id */

@@ -1148,6 +1148,15 @@ operator|.
 name|getTaskType
 argument_list|()
 expr_stmt|;
+name|attemptInfo
+operator|.
+name|shufflePort
+operator|=
+name|event
+operator|.
+name|getShufflePort
+argument_list|()
+expr_stmt|;
 name|taskInfo
 operator|.
 name|attemptsMap
@@ -2677,6 +2686,10 @@ DECL|field|httpPort
 name|int
 name|httpPort
 decl_stmt|;
+DECL|field|shufflePort
+name|int
+name|shufflePort
+decl_stmt|;
 DECL|field|hostname
 name|String
 name|hostname
@@ -2711,6 +2724,11 @@ operator|=
 literal|""
 expr_stmt|;
 name|httpPort
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|shufflePort
 operator|=
 operator|-
 literal|1
@@ -2823,6 +2841,17 @@ argument_list|(
 literal|"HTTP_PORT:"
 operator|+
 name|httpPort
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"SHUFFLE_PORT:"
+operator|+
+name|shufflePort
 argument_list|)
 expr_stmt|;
 if|if
@@ -3000,6 +3029,17 @@ parameter_list|()
 block|{
 return|return
 name|httpPort
+return|;
+block|}
+comment|/** @return the Shuffle port for the tracker */
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+block|{
+return|return
+name|shufflePort
 return|;
 block|}
 block|}

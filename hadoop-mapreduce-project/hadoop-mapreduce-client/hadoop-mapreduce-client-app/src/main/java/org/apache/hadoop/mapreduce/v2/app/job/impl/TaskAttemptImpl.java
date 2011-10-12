@@ -6340,6 +6340,15 @@ operator|.
 name|getTime
 argument_list|()
 expr_stmt|;
+name|taskAttempt
+operator|.
+name|shufflePort
+operator|=
+name|event
+operator|.
+name|getShufflePort
+argument_list|()
+expr_stmt|;
 comment|// register it to TaskAttemptListener so that it start listening
 comment|// for it
 name|taskAttempt
@@ -6474,6 +6483,10 @@ name|nodeHttpInetAddr
 operator|.
 name|getPort
 argument_list|()
+argument_list|,
+name|taskAttempt
+operator|.
+name|shufflePort
 argument_list|)
 decl_stmt|;
 name|taskAttempt
@@ -6530,15 +6543,6 @@ operator|.
 name|remoteTask
 operator|=
 literal|null
-expr_stmt|;
-name|taskAttempt
-operator|.
-name|shufflePort
-operator|=
-name|event
-operator|.
-name|getShufflePort
-argument_list|()
 expr_stmt|;
 comment|//tell the Task that attempt has started
 name|taskAttempt

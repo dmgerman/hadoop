@@ -11935,6 +11935,9 @@ name|ttStatus
 operator|.
 name|getHttpPort
 argument_list|()
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|jobHistory
@@ -14452,6 +14455,9 @@ argument_list|,
 name|taskTrackerName
 argument_list|,
 name|taskTrackerPort
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|jobHistory
