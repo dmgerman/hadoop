@@ -2714,6 +2714,35 @@ name|values
 argument_list|()
 control|)
 block|{
+switch|switch
+condition|(
+name|at
+operator|.
+name|getState
+argument_list|()
+condition|)
+block|{
+comment|// ignore all failed task attempts
+case|case
+name|FAIL_CONTAINER_CLEANUP
+case|:
+case|case
+name|FAIL_TASK_CLEANUP
+case|:
+case|case
+name|FAILED
+case|:
+case|case
+name|KILL_CONTAINER_CLEANUP
+case|:
+case|case
+name|KILL_TASK_CLEANUP
+case|:
+case|case
+name|KILLED
+case|:
+continue|continue;
+block|}
 if|if
 condition|(
 name|result
@@ -2727,7 +2756,6 @@ name|at
 expr_stmt|;
 comment|//The first time around
 block|}
-comment|//TODO: consider the nextAttemptNumber only if it is not failed/killed ?
 comment|// calculate the best progress
 if|if
 condition|(
@@ -2934,6 +2962,11 @@ case|case
 literal|1
 case|:
 name|Map
+argument_list|<
+name|TaskAttemptId
+argument_list|,
+name|TaskAttempt
+argument_list|>
 name|newAttempts
 init|=
 operator|new
