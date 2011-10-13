@@ -5944,13 +5944,13 @@ literal|"Authorization ("
 operator|+
 name|CommonConfigurationKeys
 operator|.
-name|HADOOP_SECURITY_AUTHENTICATION
+name|HADOOP_SECURITY_AUTHORIZATION
 operator|+
 literal|") is enabled but authentication ("
 operator|+
 name|CommonConfigurationKeys
 operator|.
-name|HADOOP_SECURITY_AUTHORIZATION
+name|HADOOP_SECURITY_AUTHENTICATION
 operator|+
 literal|") is configured as simple. Please configure another method "
 operator|+
