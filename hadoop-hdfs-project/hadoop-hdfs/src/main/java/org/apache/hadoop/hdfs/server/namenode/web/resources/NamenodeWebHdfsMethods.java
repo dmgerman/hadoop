@@ -130,6 +130,18 @@ begin_import
 import|import
 name|javax
 operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -1196,6 +1208,13 @@ name|Context
 name|HttpServletRequest
 name|request
 decl_stmt|;
+DECL|field|response
+specifier|private
+annotation|@
+name|Context
+name|HttpServletResponse
+name|response
+decl_stmt|;
 DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset )
 specifier|private
 specifier|static
@@ -2098,6 +2117,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 return|return
 name|ugi
 operator|.
@@ -2735,6 +2762,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 return|return
 name|ugi
 operator|.
@@ -3251,6 +3286,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 return|return
 name|ugi
 operator|.
@@ -4094,6 +4137,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 return|return
 name|ugi
 operator|.
