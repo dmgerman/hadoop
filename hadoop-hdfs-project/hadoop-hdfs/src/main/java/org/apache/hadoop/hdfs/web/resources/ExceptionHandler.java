@@ -140,6 +140,20 @@ name|JsonUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|ParamException
+import|;
+end_import
+
 begin_comment
 comment|/** Handle exceptions. */
 end_comment
@@ -175,12 +189,11 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|toResponse (final Exception e)
+DECL|method|toResponse (Exception e)
 specifier|public
 name|Response
 name|toResponse
 parameter_list|(
-specifier|final
 name|Exception
 name|e
 parameter_list|)
@@ -203,6 +216,50 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|//Convert exception
+if|if
+condition|(
+name|e
+operator|instanceof
+name|ParamException
+condition|)
+block|{
+specifier|final
+name|ParamException
+name|paramexception
+init|=
+operator|(
+name|ParamException
+operator|)
+name|e
+decl_stmt|;
+name|e
+operator|=
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid value for webhdfs parameter \""
+operator|+
+name|paramexception
+operator|.
+name|getParameterName
+argument_list|()
+operator|+
+literal|"\": "
+operator|+
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|//Map response status
 specifier|final
 name|Response
 operator|.
@@ -276,8 +333,34 @@ operator|.
 name|BAD_REQUEST
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
+name|IllegalArgumentException
+condition|)
+block|{
+name|s
+operator|=
+name|Response
+operator|.
+name|Status
+operator|.
+name|BAD_REQUEST
+expr_stmt|;
+block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"INTERNAL_SERVER_ERROR"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|s
 operator|=
 name|Response
