@@ -5940,7 +5940,21 @@ init|=
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Authentication is required"
+literal|"Authorization ("
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_AUTHENTICATION
+operator|+
+literal|") is enabled but authentication ("
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+operator|+
+literal|") is configured as simple. Please configure another method "
+operator|+
+literal|"like kerberos or digest."
 argument_list|)
 decl_stmt|;
 name|setupResponse
