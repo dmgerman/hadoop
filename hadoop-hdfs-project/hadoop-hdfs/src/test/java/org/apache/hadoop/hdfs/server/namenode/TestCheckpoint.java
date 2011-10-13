@@ -5484,7 +5484,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -5502,7 +5502,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.

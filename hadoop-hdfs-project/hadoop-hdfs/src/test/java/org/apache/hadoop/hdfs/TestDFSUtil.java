@@ -513,7 +513,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|key
 argument_list|,
@@ -565,7 +565,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test {@link DFSUtil#getNameNodeNameServiceId(Configuration)} to ensure    * nameserviceId for namenode is determined based on matching the address with    * local node's address    */
+comment|/**    * Test {@link DFSUtil#getNamenodeNameServiceId(Configuration)} to ensure    * nameserviceId for namenode is determined based on matching the address with    * local node's address    */
 annotation|@
 name|Test
 DECL|method|getNameNodeNameServiceId ()
@@ -655,7 +655,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test {@link DFSUtil#getNameServiceId(Configuration, String))} to ensure    * exception is thrown when multiple rpc addresses match the local node's    * address    */
+comment|/**    * Test {@link DFSUtil#getNamenodeNameServiceId(Configuration)} to ensure    * exception is thrown when multiple rpc addresses match the local node's    * address    */
 annotation|@
 name|Test
 argument_list|(
@@ -693,7 +693,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
@@ -709,7 +709,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
@@ -870,7 +870,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
@@ -886,7 +886,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
@@ -1244,8 +1244,6 @@ specifier|public
 name|void
 name|testConfModification
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|HdfsConfiguration
@@ -1302,7 +1300,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|key
 argument_list|,
@@ -1387,7 +1385,9 @@ parameter_list|(
 name|IOException
 name|expected
 parameter_list|)
-block|{     }
+block|{
+comment|/** Expected */
+block|}
 try|try
 block|{
 name|DFSUtil
@@ -1408,7 +1408,9 @@ parameter_list|(
 name|IOException
 name|expected
 parameter_list|)
-block|{     }
+block|{
+comment|/** Expected */
+block|}
 try|try
 block|{
 name|DFSUtil
@@ -1429,7 +1431,9 @@ parameter_list|(
 name|IOException
 name|expected
 parameter_list|)
-block|{     }
+block|{
+comment|/** Expected */
+block|}
 block|}
 annotation|@
 name|Test

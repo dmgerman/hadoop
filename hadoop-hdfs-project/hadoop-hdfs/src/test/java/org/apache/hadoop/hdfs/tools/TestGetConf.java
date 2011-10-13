@@ -428,7 +428,7 @@ name|specificKey
 init|=
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|key
 argument_list|,
