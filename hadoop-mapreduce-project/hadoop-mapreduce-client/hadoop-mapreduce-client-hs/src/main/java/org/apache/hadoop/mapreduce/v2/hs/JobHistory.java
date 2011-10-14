@@ -660,7 +660,7 @@ specifier|final
 name|int
 name|DEFAULT_LOADEDJOB_CACHE_SIZE
 init|=
-literal|2000
+literal|5
 decl_stmt|;
 DECL|field|DEFAULT_DATESTRING_CACHE_SIZE
 specifier|private
