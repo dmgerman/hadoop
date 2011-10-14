@@ -23,26 +23,42 @@ package|;
 end_package
 
 begin_import
-import|import
-name|com
+import|import static
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|base
+name|metrics2
 operator|.
-name|Splitter
+name|lib
+operator|.
+name|Interns
+operator|.
+name|info
 import|;
 end_import
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
+name|Resources
+operator|.
+name|multiply
 import|;
 end_import
 
@@ -53,6 +69,16 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -147,24 +173,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|Interns
-operator|.
-name|info
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -193,6 +201,22 @@ operator|.
 name|lib
 operator|.
 name|MutableCounterInt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableCounterLong
 import|;
 end_import
 
@@ -253,24 +277,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|apache
+name|slf4j
 operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|Resources
-operator|.
-name|*
+name|Logger
 import|;
 end_import
 
@@ -286,11 +298,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|slf4j
+name|google
 operator|.
-name|Logger
+name|common
+operator|.
+name|base
+operator|.
+name|Splitter
 import|;
 end_import
 
@@ -382,6 +398,24 @@ literal|"# of allocated containers"
 argument_list|)
 name|MutableGaugeInt
 name|allocatedContainers
+decl_stmt|;
+DECL|field|aggregateContainersAllocated
+annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate # of allocated containers"
+argument_list|)
+name|MutableCounterLong
+name|aggregateContainersAllocated
+decl_stmt|;
+DECL|field|aggregateContainersReleased
+annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate # of released containers"
+argument_list|)
+name|MutableCounterLong
+name|aggregateContainersReleased
 decl_stmt|;
 DECL|field|availableGB
 annotation|@
@@ -1427,6 +1461,13 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
+name|aggregateContainersAllocated
+operator|.
+name|incr
+argument_list|(
+name|containers
+argument_list|)
+expr_stmt|;
 name|allocatedGB
 operator|.
 name|incr
@@ -1518,6 +1559,13 @@ block|{
 name|allocatedContainers
 operator|.
 name|decr
+argument_list|(
+name|containers
+argument_list|)
+expr_stmt|;
+name|aggregateContainersReleased
+operator|.
+name|incr
 argument_list|(
 name|containers
 argument_list|)
