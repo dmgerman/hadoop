@@ -1173,7 +1173,9 @@ argument_list|,
 name|replication
 operator|.
 name|getValue
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 name|blockSize
 operator|.
