@@ -103,6 +103,7 @@ extends|extends
 name|AbstractDelegationTokenIdentifier
 block|{
 DECL|field|MAPREDUCE_DELEGATION_KIND
+specifier|public
 specifier|static
 specifier|final
 name|Text

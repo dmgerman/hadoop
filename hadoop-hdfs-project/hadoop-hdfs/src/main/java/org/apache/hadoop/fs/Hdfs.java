@@ -2231,7 +2231,7 @@ return|return
 name|tokenList
 return|;
 block|}
-comment|/**    * Renew an existing delegation token.    *     * @param token delegation token obtained earlier    * @return the new expiration time    * @throws InvalidToken    * @throws IOException    */
+comment|/**    * Renew an existing delegation token.    *     * @param token delegation token obtained earlier    * @return the new expiration time    * @throws InvalidToken    * @throws IOException    * @deprecated Use Token.renew instead.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -2270,7 +2270,7 @@ name|token
 argument_list|)
 return|;
 block|}
-comment|/**    * Cancel an existing delegation token.    *     * @param token delegation token    * @throws InvalidToken    * @throws IOException    */
+comment|/**    * Cancel an existing delegation token.    *     * @param token delegation token    * @throws InvalidToken    * @throws IOException    * @deprecated Use Token.cancel instead.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
