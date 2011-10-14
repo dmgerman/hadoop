@@ -3612,7 +3612,7 @@ name|renewer
 argument_list|)
 return|;
 block|}
-comment|/**    * Renew a delegation token    * @param token the token to renew    * @return true if the renewal went well    * @throws InvalidToken    * @throws IOException    * @deprecated Use {@link Token.renew} instead    */
+comment|/**    * Renew a delegation token    * @param token the token to renew    * @return true if the renewal went well    * @throws InvalidToken    * @throws IOException    * @deprecated Use {@link Token#renew} instead    */
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token )
 specifier|public
 name|long
@@ -3641,7 +3641,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Cancel a delegation token from the JobTracker    * @param token the token to cancel    * @throws IOException    * @deprecated Use {@link Token.cancel} instead    */
+comment|/**    * Cancel a delegation token from the JobTracker    * @param token the token to cancel    * @throws IOException    * @deprecated Use {@link Token#cancel} instead    */
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token )
 specifier|public
 name|void
