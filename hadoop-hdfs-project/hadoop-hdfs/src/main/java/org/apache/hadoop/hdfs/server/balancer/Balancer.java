@@ -5489,7 +5489,7 @@ name|threshold
 operator|)
 return|;
 block|}
-comment|/* Return true if the given datanode is above average utilized    * but not overUtilized */
+comment|/* Return true if the given datanode is above or equal to average utilized    * but not overUtilized */
 DECL|method|isAboveAvgUtilized (BalancerDatanode datanode)
 specifier|private
 name|boolean
@@ -5525,7 +5525,7 @@ operator|(
 name|datanode
 operator|.
 name|utilization
-operator|>
+operator|>=
 name|avg
 operator|)
 return|;
