@@ -341,6 +341,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|outputPath
+operator|!=
+literal|null
+condition|)
+block|{
 name|FileSystem
 name|outputFileSystem
 init|=
@@ -437,6 +444,8 @@ name|moveJobOutputs
 argument_list|(
 name|outputFileSystem
 argument_list|,
+name|jobOutputPath
+argument_list|,
 name|outputPath
 argument_list|,
 name|jobOutputPath
@@ -466,6 +475,7 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// Create a _success file in the job's output folder
@@ -541,13 +551,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|moveJobOutputs (FileSystem fs, Path finalOutputDir, Path jobOutput)
+DECL|method|moveJobOutputs (FileSystem fs, final Path origJobOutputPath, Path finalOutputDir, Path jobOutput)
 specifier|private
 name|void
 name|moveJobOutputs
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|origJobOutputPath
 parameter_list|,
 name|Path
 name|finalOutputDir
@@ -558,6 +572,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Told to move job output from "
+operator|+
+name|jobOutput
+operator|+
+literal|" to "
+operator|+
+name|finalOutputDir
+operator|+
+literal|" and orig job output path is "
+operator|+
+name|origJobOutputPath
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|fs
@@ -573,11 +604,13 @@ name|finalOutputPath
 init|=
 name|getFinalPath
 argument_list|(
+name|fs
+argument_list|,
 name|finalOutputDir
 argument_list|,
 name|jobOutput
 argument_list|,
-name|jobOutput
+name|origJobOutputPath
 argument_list|)
 decl_stmt|;
 if|if
@@ -640,7 +673,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Moved "
+literal|"Moved job output file from "
 operator|+
 name|jobOutput
 operator|+
@@ -664,6 +697,17 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Job output file "
+operator|+
+name|jobOutput
+operator|+
+literal|" is a dir"
+argument_list|)
+expr_stmt|;
 name|FileStatus
 index|[]
 name|paths
@@ -680,17 +724,28 @@ name|finalOutputPath
 init|=
 name|getFinalPath
 argument_list|(
+name|fs
+argument_list|,
 name|finalOutputDir
 argument_list|,
 name|jobOutput
 argument_list|,
-name|jobOutput
+name|origJobOutputPath
 argument_list|)
 decl_stmt|;
 name|fs
 operator|.
 name|mkdirs
 argument_list|(
+name|finalOutputPath
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating dirs along job output path "
+operator|+
 name|finalOutputPath
 argument_list|)
 expr_stmt|;
@@ -712,6 +767,8 @@ block|{
 name|moveJobOutputs
 argument_list|(
 name|fs
+argument_list|,
+name|origJobOutputPath
 argument_list|,
 name|finalOutputDir
 argument_list|,
@@ -1073,6 +1130,19 @@ operator|.
 name|progress
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Told to move taskoutput from "
+operator|+
+name|taskOutput
+operator|+
+literal|" to "
+operator|+
+name|jobOutputDir
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|fs
@@ -1088,6 +1158,8 @@ name|finalOutputPath
 init|=
 name|getFinalPath
 argument_list|(
+name|fs
+argument_list|,
 name|jobOutputDir
 argument_list|,
 name|taskOutput
@@ -1186,6 +1258,17 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Taskoutput "
+operator|+
+name|taskOutput
+operator|+
+literal|" is a dir"
+argument_list|)
+expr_stmt|;
 name|FileStatus
 index|[]
 name|paths
@@ -1202,6 +1285,8 @@ name|finalOutputPath
 init|=
 name|getFinalPath
 argument_list|(
+name|fs
+argument_list|,
 name|jobOutputDir
 argument_list|,
 name|taskOutput
@@ -1216,6 +1301,15 @@ name|fs
 operator|.
 name|mkdirs
 argument_list|(
+name|finalOutputPath
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating dirs along path "
+operator|+
 name|finalOutputPath
 argument_list|)
 expr_stmt|;
@@ -1310,11 +1404,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getFinalPath (Path jobOutputDir, Path taskOutput, Path taskOutputPath)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+DECL|method|getFinalPath (FileSystem fs, Path jobOutputDir, Path taskOutput, Path taskOutputPath)
 specifier|private
 name|Path
 name|getFinalPath
 parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
 name|Path
 name|jobOutputDir
 parameter_list|,
@@ -1332,16 +1434,31 @@ name|taskOutputUri
 init|=
 name|taskOutput
 operator|.
+name|makeQualified
+argument_list|(
+name|fs
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+decl_stmt|;
+name|URI
+name|taskOutputPathUri
+init|=
+name|taskOutputPath
+operator|.
+name|makeQualified
+argument_list|(
+name|fs
+argument_list|)
+operator|.
 name|toUri
 argument_list|()
 decl_stmt|;
 name|URI
 name|relativePath
 init|=
-name|taskOutputPath
-operator|.
-name|toUri
-argument_list|()
+name|taskOutputPathUri
 operator|.
 name|relativize
 argument_list|(
@@ -1362,11 +1479,11 @@ name|IOException
 argument_list|(
 literal|"Can not get the relative path: base = "
 operator|+
-name|taskOutputPath
+name|taskOutputPathUri
 operator|+
 literal|" child = "
 operator|+
-name|taskOutput
+name|taskOutputUri
 argument_list|)
 throw|;
 block|}
@@ -1808,9 +1925,24 @@ argument_list|)
 condition|)
 block|{
 comment|// Move the task outputs to their final place
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Trying to recover task from "
+operator|+
+name|pathToRecover
+operator|+
+literal|" into "
+operator|+
+name|jobOutputPath
+argument_list|)
+expr_stmt|;
 name|moveJobOutputs
 argument_list|(
 name|outputFileSystem
+argument_list|,
+name|pathToRecover
 argument_list|,
 name|jobOutputPath
 argument_list|,
