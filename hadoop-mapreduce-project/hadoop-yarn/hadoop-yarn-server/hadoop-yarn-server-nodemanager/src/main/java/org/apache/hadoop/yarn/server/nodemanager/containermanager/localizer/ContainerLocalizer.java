@@ -712,6 +712,22 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
 begin_class
 DECL|class|ContainerLocalizer
 specifier|public
@@ -1345,7 +1361,19 @@ return|return
 name|Executors
 operator|.
 name|newSingleThreadExecutor
+argument_list|(
+operator|new
+name|ThreadFactoryBuilder
 argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"ContainerLocalizer Downloader"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|download (LocalDirAllocator lda, LocalResource rsrc, UserGroupInformation ugi)

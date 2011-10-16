@@ -391,6 +391,13 @@ argument_list|)
 expr_stmt|;
 name|lostTaskCheckerThread
 operator|.
+name|setName
+argument_list|(
+literal|"TaskHeartbeatHandler PingChecker"
+argument_list|)
+expr_stmt|;
+name|lostTaskCheckerThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;

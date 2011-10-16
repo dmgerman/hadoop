@@ -1249,7 +1249,13 @@ DECL|method|MonitoringThread ()
 specifier|public
 name|MonitoringThread
 parameter_list|()
-block|{      }
+block|{
+name|super
+argument_list|(
+literal|"Container Monitor"
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|run ()

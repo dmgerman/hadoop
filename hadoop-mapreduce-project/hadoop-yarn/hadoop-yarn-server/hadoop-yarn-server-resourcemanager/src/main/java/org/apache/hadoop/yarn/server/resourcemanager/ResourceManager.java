@@ -1706,6 +1706,15 @@ name|EventProcessor
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|eventProcessor
+operator|.
+name|setName
+argument_list|(
+literal|"ResourceManager Event Processor"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

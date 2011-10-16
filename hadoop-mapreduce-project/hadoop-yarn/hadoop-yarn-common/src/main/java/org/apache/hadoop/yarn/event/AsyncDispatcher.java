@@ -389,6 +389,13 @@ argument_list|)
 expr_stmt|;
 name|eventHandlingThread
 operator|.
+name|setName
+argument_list|(
+literal|"AsyncDispatcher event handler"
+argument_list|)
+expr_stmt|;
+name|eventHandlingThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;

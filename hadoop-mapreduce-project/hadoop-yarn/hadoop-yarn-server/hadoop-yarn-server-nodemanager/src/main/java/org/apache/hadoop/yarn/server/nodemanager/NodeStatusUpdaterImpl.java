@@ -1526,7 +1526,9 @@ parameter_list|()
 block|{
 operator|new
 name|Thread
-argument_list|()
+argument_list|(
+literal|"Node Status Updater"
+argument_list|)
 block|{
 annotation|@
 name|Override

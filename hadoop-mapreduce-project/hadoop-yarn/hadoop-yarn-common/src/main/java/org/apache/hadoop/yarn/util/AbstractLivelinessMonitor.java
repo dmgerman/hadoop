@@ -245,6 +245,13 @@ argument_list|)
 expr_stmt|;
 name|checkerThread
 operator|.
+name|setName
+argument_list|(
+literal|"Ping Checker"
+argument_list|)
+expr_stmt|;
+name|checkerThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;

@@ -1570,6 +1570,13 @@ argument_list|)
 expr_stmt|;
 name|allocatorThread
 operator|.
+name|setName
+argument_list|(
+literal|"RMCommunicator Allocator"
+argument_list|)
+expr_stmt|;
+name|allocatorThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;

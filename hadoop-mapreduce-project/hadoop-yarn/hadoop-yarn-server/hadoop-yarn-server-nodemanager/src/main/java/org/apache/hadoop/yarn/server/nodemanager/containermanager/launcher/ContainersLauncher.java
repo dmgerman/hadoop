@@ -344,6 +344,22 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
 begin_comment
 comment|/**  * The launcher for the containers. This service should be started only after  * the {@link ResourceLocalizationService} is started as it depends on creation  * of system directories on the local file-system.  *   */
 end_comment
@@ -388,7 +404,19 @@ init|=
 name|Executors
 operator|.
 name|newCachedThreadPool
+argument_list|(
+operator|new
+name|ThreadFactoryBuilder
 argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"ContainersLauncher #%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|field|running
 specifier|private
