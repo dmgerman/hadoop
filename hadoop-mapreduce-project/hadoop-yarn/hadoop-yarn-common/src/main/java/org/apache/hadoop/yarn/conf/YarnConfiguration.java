@@ -470,7 +470,7 @@ specifier|final
 name|boolean
 name|DEFAULT_RM_ACL_ENABLE
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** ACL of who can be admin of RM.*/
 DECL|field|RM_ADMIN_ACL
