@@ -2301,12 +2301,6 @@ literal|1.0f
 expr_stmt|;
 name|taskAttemptStatus
 operator|.
-name|diagnosticInfo
-operator|=
-literal|""
-expr_stmt|;
-name|taskAttemptStatus
-operator|.
 name|stateString
 operator|=
 name|attemptInfo

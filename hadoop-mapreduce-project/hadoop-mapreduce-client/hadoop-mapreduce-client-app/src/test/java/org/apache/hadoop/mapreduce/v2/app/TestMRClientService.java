@@ -873,12 +873,6 @@ literal|0.5f
 expr_stmt|;
 name|taskAttemptStatus
 operator|.
-name|diagnosticInfo
-operator|=
-name|diagnostic2
-expr_stmt|;
-name|taskAttemptStatus
-operator|.
 name|stateString
 operator|=
 literal|"RUNNING"

@@ -1738,16 +1738,6 @@ name|getProgress
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Task sends the diagnostic information to the TT
-name|taskAttemptStatus
-operator|.
-name|diagnosticInfo
-operator|=
-name|taskStatus
-operator|.
-name|getDiagnosticInfo
-argument_list|()
-expr_stmt|;
 comment|// Task sends the updated state-string to the TT.
 name|taskAttemptStatus
 operator|.
