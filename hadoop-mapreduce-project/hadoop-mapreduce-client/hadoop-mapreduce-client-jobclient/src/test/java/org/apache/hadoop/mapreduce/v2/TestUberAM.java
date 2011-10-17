@@ -40,16 +40,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -208,7 +198,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|BeforeClass
+name|Assert
 import|;
 end_import
 
@@ -218,7 +208,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
+name|BeforeClass
 import|;
 end_import
 
@@ -233,8 +223,6 @@ import|;
 end_import
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestUberAM
 specifier|public
 class|class
@@ -856,7 +844,7 @@ name|TaskCompletionEvent
 operator|.
 name|Status
 operator|.
-name|FAILED
+name|TIPFAILED
 argument_list|,
 name|events
 index|[
@@ -865,8 +853,6 @@ index|]
 operator|.
 name|getStatus
 argument_list|()
-operator|.
-name|FAILED
 argument_list|)
 expr_stmt|;
 name|Assert
