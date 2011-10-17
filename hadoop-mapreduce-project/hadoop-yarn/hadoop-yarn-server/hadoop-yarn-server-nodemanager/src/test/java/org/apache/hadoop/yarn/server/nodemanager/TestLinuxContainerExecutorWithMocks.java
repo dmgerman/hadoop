@@ -671,7 +671,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"file:///bin/true"
+literal|"file:///bin/echo"
 argument_list|)
 decl_stmt|;
 name|Path
@@ -738,7 +738,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"/bin/true"
+literal|"/bin/echo"
 argument_list|,
 literal|"/dev/null"
 argument_list|)
