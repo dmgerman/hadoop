@@ -783,7 +783,11 @@ operator|=
 operator|new
 name|FSEditLog
 argument_list|(
+name|conf
+argument_list|,
 name|storage
+argument_list|,
+name|editsDirs
 argument_list|)
 expr_stmt|;
 name|archivalManager
@@ -891,9 +895,9 @@ name|URI
 argument_list|>
 name|editsDirs
 init|=
-name|storage
+name|editLog
 operator|.
-name|getEditsDirectories
+name|getEditURIs
 argument_list|()
 decl_stmt|;
 comment|// none of the data dirs exist
