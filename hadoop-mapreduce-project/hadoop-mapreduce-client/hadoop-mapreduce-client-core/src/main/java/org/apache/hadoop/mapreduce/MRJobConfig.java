@@ -1432,23 +1432,23 @@ init|=
 literal|"-Xmx1536m"
 decl_stmt|;
 comment|/** Root Logging level passed to the MR app master.*/
-DECL|field|MR_AM_LOG_OPTS
+DECL|field|MR_AM_LOG_LEVEL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|MR_AM_LOG_OPTS
+name|MR_AM_LOG_LEVEL
 init|=
 name|MR_AM_PREFIX
 operator|+
-literal|"log-opts"
+literal|"log.level"
 decl_stmt|;
-DECL|field|DEFAULT_MR_AM_LOG_OPTS
+DECL|field|DEFAULT_MR_AM_LOG_LEVEL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_MR_AM_LOG_OPTS
+name|DEFAULT_MR_AM_LOG_LEVEL
 init|=
 literal|"INFO"
 decl_stmt|;
@@ -1791,6 +1791,8 @@ name|HADOOP_WORK_DIR
 init|=
 literal|"HADOOP_WORK_DIR"
 decl_stmt|;
+comment|// Environment variables used by Pipes. (TODO: these
+comment|// do not appear to be used by current pipes source code!)
 DECL|field|STDOUT_LOGFILE_ENV
 specifier|public
 specifier|static
