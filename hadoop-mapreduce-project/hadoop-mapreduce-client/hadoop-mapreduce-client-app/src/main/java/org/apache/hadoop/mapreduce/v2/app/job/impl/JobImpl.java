@@ -4659,6 +4659,27 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create the default file System for this job.    * @param conf the conf object    * @return the default filesystem for this job    * @throws IOException    */
+DECL|method|getFileSystem (Configuration conf)
+specifier|protected
+name|FileSystem
+name|getFileSystem
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
 DECL|method|checkJobCompleteSuccess (JobImpl job)
 specifier|static
 name|JobState
@@ -4988,9 +5009,9 @@ name|job
 operator|.
 name|fs
 operator|=
-name|FileSystem
+name|job
 operator|.
-name|get
+name|getFileSystem
 argument_list|(
 name|job
 operator|.
@@ -5517,7 +5538,8 @@ name|getInputDataLength
 argument_list|()
 expr_stmt|;
 block|}
-comment|//FIXME:  need new memory criterion for uber-decision (oops, too late here; until AM-resizing supported, must depend on job client to pass fat-slot needs)
+comment|//FIXME:  need new memory criterion for uber-decision (oops, too late here;
+comment|// until AM-resizing supported, must depend on job client to pass fat-slot needs)
 comment|// these are no longer "system" settings, necessarily; user may override
 name|int
 name|sysMaxMaps
@@ -5580,8 +5602,10 @@ literal|1024
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|//FIXME: this is wrong; get FS from [File?]InputFormat and default block size from that
-comment|//long sysMemSizeForUberSlot = JobTracker.getMemSizeForReduceSlot(); // FIXME [could use default AM-container memory size...]
+comment|//FIXME: this is
+comment|// wrong; get FS from [File?]InputFormat and default block size from that
+comment|//long sysMemSizeForUberSlot = JobTracker.getMemSizeForReduceSlot();
+comment|// FIXME [could use default AM-container memory size...]
 name|boolean
 name|uberEnabled
 init|=
@@ -5757,7 +5781,9 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// disable speculation:  makes no sense to speculate an entire job
-comment|//        canSpeculateMaps = canSpeculateReduces = false; // [TODO: in old version, ultimately was from conf.getMapSpeculativeExecution(), conf.getReduceSpeculativeExecution()]
+comment|//canSpeculateMaps = canSpeculateReduces = false; // [TODO: in old
+comment|//version, ultimately was from conf.getMapSpeculativeExecution(),
+comment|//conf.getReduceSpeculativeExecution()]
 block|}
 else|else
 block|{

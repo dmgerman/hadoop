@@ -172,6 +172,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -243,6 +257,22 @@ operator|.
 name|mapreduce
 operator|.
 name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
+name|JobFinishedEvent
 import|;
 end_import
 
@@ -1807,6 +1837,323 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// end of init()
+DECL|method|keepJobFiles (JobConf conf)
+specifier|protected
+name|boolean
+name|keepJobFiles
+parameter_list|(
+name|JobConf
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|(
+name|conf
+operator|.
+name|getKeepTaskFilesPattern
+argument_list|()
+operator|!=
+literal|null
+operator|||
+name|conf
+operator|.
+name|getKeepFailedTaskFiles
+argument_list|()
+operator|)
+return|;
+block|}
+comment|/**    * Create the default file System for this job.    * @param conf the conf object    * @return the default filesystem for this job    * @throws IOException    */
+DECL|method|getFileSystem (Configuration conf)
+specifier|protected
+name|FileSystem
+name|getFileSystem
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+comment|/**    * clean up staging directories for the job.    * @throws IOException    */
+DECL|method|cleanupStagingDir ()
+specifier|public
+name|void
+name|cleanupStagingDir
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|/* make sure we clean the staging files */
+name|String
+name|jobTempDir
+init|=
+literal|null
+decl_stmt|;
+name|FileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+if|if
+condition|(
+operator|!
+name|keepJobFiles
+argument_list|(
+operator|new
+name|JobConf
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|jobTempDir
+operator|=
+name|getConfig
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_DIR
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|jobTempDir
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Job Staging directory is null"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|Path
+name|jobTempDirPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|jobTempDir
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting staging directory "
+operator|+
+name|fs
+operator|.
+name|getDefaultUri
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+operator|+
+literal|" "
+operator|+
+name|jobTempDir
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|jobTempDirPath
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|io
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to cleanup staging dir "
+operator|+
+name|jobTempDir
+argument_list|,
+name|io
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Exit call. Just in a function call to enable testing.    */
+DECL|method|sysexit ()
+specifier|protected
+name|void
+name|sysexit
+parameter_list|()
+block|{
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+DECL|class|JobFinishEventHandler
+specifier|private
+class|class
+name|JobFinishEventHandler
+implements|implements
+name|EventHandler
+argument_list|<
+name|JobFinishEvent
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|handle (JobFinishEvent event)
+specifier|public
+name|void
+name|handle
+parameter_list|(
+name|JobFinishEvent
+name|event
+parameter_list|)
+block|{
+comment|// job has finished
+comment|// this is the only job, so shut down the Appmaster
+comment|// note in a workflow scenario, this may lead to creation of a new
+comment|// job (FIXME?)
+comment|// TODO:currently just wait for some time so clients can know the
+comment|// final states. Will be removed once RM come on.
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Calling stop for all the services"
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Graceful stop failed "
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|cleanupStagingDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|io
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to delete staging dir"
+argument_list|)
+expr_stmt|;
+block|}
+comment|//TODO: this is required because rpc server does not shut down
+comment|// in spite of calling server.stop().
+comment|//Bring the process down by force.
+comment|//Not needed after HADOOP-7140
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Exiting MR AppMaster..GoodBye!"
+argument_list|)
+expr_stmt|;
+name|sysexit
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * create an event handler that handles the job finish event.    * @return the job finish event handler.    */
+DECL|method|createJobFinishEventHandler ()
+specifier|protected
+name|EventHandler
+argument_list|<
+name|JobFinishEvent
+argument_list|>
+name|createJobFinishEventHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|JobFinishEventHandler
+argument_list|()
+return|;
+block|}
 comment|/** Create and initialize (but don't start) a single job. */
 DECL|method|createJob (Configuration conf)
 specifier|protected
@@ -1880,100 +2227,8 @@ name|Type
 operator|.
 name|class
 argument_list|,
-operator|new
-name|EventHandler
-argument_list|<
-name|JobFinishEvent
-argument_list|>
+name|createJobFinishEventHandler
 argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|handle
-parameter_list|(
-name|JobFinishEvent
-name|event
-parameter_list|)
-block|{
-comment|// job has finished
-comment|// this is the only job, so shut down the Appmaster
-comment|// note in a workflow scenario, this may lead to creation of a new
-comment|// job (FIXME?)
-comment|// TODO:currently just wait for some time so clients can know the
-comment|// final states. Will be removed once RM come on.
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|5000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Calling stop for all the services"
-argument_list|)
-expr_stmt|;
-try|try
-block|{
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Graceful stop failed "
-argument_list|,
-name|t
-argument_list|)
-expr_stmt|;
-block|}
-comment|//TODO: this is required because rpc server does not shut down
-comment|// in spite of calling server.stop().
-comment|//Bring the process down by force.
-comment|//Not needed after HADOOP-7140
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Exiting MR AppMaster..GoodBye!"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 argument_list|)
 expr_stmt|;
 return|return

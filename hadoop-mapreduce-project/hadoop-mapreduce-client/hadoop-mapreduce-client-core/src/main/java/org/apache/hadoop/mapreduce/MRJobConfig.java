@@ -1030,6 +1030,15 @@ name|REDUCE_ULIMIT
 init|=
 literal|"mapreduce.reduce.ulimit"
 decl_stmt|;
+DECL|field|MAPREDUCE_JOB_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_DIR
+init|=
+literal|"mapreduce.job.dir"
+decl_stmt|;
 DECL|field|REDUCE_MAX_ATTEMPTS
 specifier|public
 specifier|static

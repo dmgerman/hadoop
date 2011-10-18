@@ -5033,7 +5033,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"mapreduce.job.dir"
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_DIR
 argument_list|)
 decl_stmt|;
 name|Path
