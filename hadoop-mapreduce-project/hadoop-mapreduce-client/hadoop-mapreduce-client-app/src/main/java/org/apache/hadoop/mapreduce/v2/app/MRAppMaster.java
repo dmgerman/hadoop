@@ -272,22 +272,6 @@ name|mapreduce
 operator|.
 name|jobhistory
 operator|.
-name|JobFinishedEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|jobhistory
-operator|.
 name|JobHistoryEvent
 import|;
 end_import
@@ -1245,6 +1229,11 @@ comment|/**  * The Map-Reduce Application Master.  * The state machine is encaps
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|MRAppMaster
 specifier|public
 class|class
@@ -1966,7 +1955,7 @@ name|info
 argument_list|(
 literal|"Deleting staging directory "
 operator|+
-name|fs
+name|FileSystem
 operator|.
 name|getDefaultUri
 argument_list|(
@@ -3341,6 +3330,11 @@ name|jobs
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|getEventHandler ()
 specifier|public
@@ -3389,6 +3383,11 @@ name|clock
 return|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|start ()
@@ -3525,6 +3524,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * This can be overridden to instantiate multiple jobs and create a     * workflow.    *    * TODO:  Rework the design to actually support this.  Currently much of the    * job stuff has been moved to init() above to support uberization (MR-1220).    * In a typical workflow, one presumably would want to uberize only a subset    * of the jobs (the "small" ones), which is awkward with the current design.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|startJobs ()
 specifier|protected
 name|void
@@ -3571,6 +3575,11 @@ name|JobEvent
 argument_list|>
 block|{
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|handle (JobEvent event)
 specifier|public
@@ -3616,6 +3625,11 @@ argument_list|<
 name|TaskEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|handle (TaskEvent event)
@@ -3678,6 +3692,11 @@ argument_list|<
 name|TaskAttemptEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|handle (TaskAttemptEvent event)
