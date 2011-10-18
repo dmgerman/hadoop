@@ -1311,9 +1311,6 @@ operator|.
 name|getService
 argument_list|()
 operator|.
-name|toString
-argument_list|()
-operator|.
 name|equals
 argument_list|(
 name|hdfsServiceName
