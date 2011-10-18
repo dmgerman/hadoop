@@ -132,13 +132,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
+name|yarn
 operator|.
 name|util
 operator|.
-name|MRApps
+name|Apps
 import|;
 end_import
 
@@ -404,7 +402,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Add pwd to LD_LIBRARY_PATH, add this before adding anything else
-name|MRApps
+name|Apps
 operator|.
 name|addToEnvironment
 argument_list|(
@@ -439,7 +437,7 @@ name|isMapTask
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|MRApps
+name|Apps
 operator|.
 name|setEnvFromInputString
 argument_list|(
@@ -448,7 +446,7 @@ argument_list|,
 name|mapredChildEnv
 argument_list|)
 expr_stmt|;
-name|MRApps
+name|Apps
 operator|.
 name|setEnvFromInputString
 argument_list|(

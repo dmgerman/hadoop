@@ -237,6 +237,13 @@ argument_list|(
 literal|"HADOOP_HDFS_HOME"
 argument_list|)
 block|,
+comment|/**      * $MALLOC_ARENA_MAX      */
+DECL|enumConstant|MALLOC_ARENA_MAX
+name|MALLOC_ARENA_MAX
+argument_list|(
+literal|"MALLOC_ARENA_MAX"
+argument_list|)
+block|,
 comment|/**      * $YARN_HOME      */
 DECL|enumConstant|YARN_HOME
 name|YARN_HOME
