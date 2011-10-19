@@ -217,6 +217,24 @@ operator|*
 name|DT
 argument_list|)
 decl_stmt|;
+DECL|field|submit
+name|long
+name|submit
+init|=
+name|start
+operator|-
+call|(
+name|int
+call|)
+argument_list|(
+name|Math
+operator|.
+name|random
+argument_list|()
+operator|*
+name|DT
+argument_list|)
+decl_stmt|;
 DECL|field|finish
 name|long
 name|finish
@@ -620,6 +638,18 @@ parameter_list|()
 block|{
 return|return
 name|start
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+return|return
+name|submit
 return|;
 block|}
 DECL|method|setStartTime (long time)

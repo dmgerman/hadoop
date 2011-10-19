@@ -5298,10 +5298,10 @@ return|return
 name|jce
 return|;
 block|}
-DECL|method|createTaskAttemptUnsuccessfulCompletionEvent ( TaskAttemptImpl taskAttempt, TaskAttemptState attemptState)
 specifier|private
 specifier|static
 name|TaskAttemptUnsuccessfulCompletionEvent
+DECL|method|createTaskAttemptUnsuccessfulCompletionEvent (TaskAttemptImpl taskAttempt, TaskAttemptState attemptState)
 name|createTaskAttemptUnsuccessfulCompletionEvent
 parameter_list|(
 name|TaskAttemptImpl
@@ -5352,7 +5352,7 @@ name|finishTime
 argument_list|,
 name|taskAttempt
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 operator|==
 literal|null
 condition|?
@@ -5360,7 +5360,7 @@ literal|"UNKNOWN"
 else|:
 name|taskAttempt
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 argument_list|,
 name|StringUtils
 operator|.
@@ -6493,6 +6493,31 @@ argument_list|(
 name|jce
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"TaskAttempt: ["
+operator|+
+name|taskAttempt
+operator|.
+name|attemptId
+operator|+
+literal|"] using containerId: ["
+operator|+
+name|taskAttempt
+operator|.
+name|containerID
+operator|+
+literal|" on NM: ["
+operator|+
+name|taskAttempt
+operator|.
+name|containerMgrAddress
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|TaskAttemptStartedEvent
 name|tase
 init|=
@@ -6540,6 +6565,10 @@ argument_list|,
 name|taskAttempt
 operator|.
 name|shufflePort
+argument_list|,
+name|taskAttempt
+operator|.
+name|containerID
 argument_list|)
 decl_stmt|;
 name|taskAttempt
@@ -7149,7 +7178,7 @@ name|finishTime
 argument_list|,
 name|this
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 operator|==
 literal|null
 condition|?
@@ -7157,7 +7186,7 @@ literal|"UNKNOWN"
 else|:
 name|this
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 argument_list|,
 name|this
 operator|.
@@ -7249,7 +7278,7 @@ name|finishTime
 argument_list|,
 name|this
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 operator|==
 literal|null
 condition|?
@@ -7257,7 +7286,7 @@ literal|"UNKNOWN"
 else|:
 name|this
 operator|.
-name|nodeHostName
+name|containerMgrAddress
 argument_list|,
 name|this
 operator|.

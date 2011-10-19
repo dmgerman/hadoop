@@ -62,15 +62,35 @@ name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
 literal|"AppClientTokenEnv"
 decl_stmt|;
-comment|/**    * The environmental variable for APPLICATION_ATTEMPT_ID. Set in    * ApplicationMaster's environment only.    */
-DECL|field|APPLICATION_ATTEMPT_ID_ENV
+comment|/**    * The environment variable for CONTAINER_ID. Set in AppMaster environment    * only    */
+DECL|field|AM_CONTAINER_ID_ENV
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|APPLICATION_ATTEMPT_ID_ENV
+name|AM_CONTAINER_ID_ENV
 init|=
-literal|"APPLICATION_ATTEMPT_ID"
+literal|"AM_CONTAINER_ID"
+decl_stmt|;
+comment|/**    * The environment variable for NM_HTTP_ADDRESS. Set in AppMaster environment    * only    */
+DECL|field|NM_HTTP_ADDRESS_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HTTP_ADDRESS_ENV
+init|=
+literal|"NM_HTTP_ADDRESS"
+decl_stmt|;
+comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
+DECL|field|APP_SUBMIT_TIME_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_SUBMIT_TIME_ENV
+init|=
+literal|"APP_SUBMIT_TIME_ENV"
 decl_stmt|;
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
 specifier|public

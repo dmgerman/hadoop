@@ -811,6 +811,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getFinishTime ()
 specifier|public
 name|long

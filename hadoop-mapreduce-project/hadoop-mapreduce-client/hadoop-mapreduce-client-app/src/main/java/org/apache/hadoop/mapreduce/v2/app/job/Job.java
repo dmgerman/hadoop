@@ -80,6 +80,24 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|jobhistory
+operator|.
+name|JobHistoryParser
+operator|.
+name|AMInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -372,6 +390,15 @@ parameter_list|,
 name|int
 name|maxEvents
 parameter_list|)
+function_decl|;
+comment|/**    * @return information for MR AppMasters (previously failed and current)    */
+DECL|method|getAMInfos ()
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|getAMInfos
+parameter_list|()
 function_decl|;
 DECL|method|checkAccess (UserGroupInformation callerUGI, JobACL jobOperation)
 name|boolean

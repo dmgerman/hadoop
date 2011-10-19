@@ -280,6 +280,12 @@ name|long
 name|getStartTime
 parameter_list|()
 function_decl|;
+comment|/**    * the submit time of the application.    * @return the submit time of the application.    */
+DECL|method|getSubmitTime ()
+name|long
+name|getSubmitTime
+parameter_list|()
+function_decl|;
 comment|/**    * The tracking url for the application master.    * @return the tracking url for the application master.    */
 DECL|method|getTrackingUrl ()
 name|String

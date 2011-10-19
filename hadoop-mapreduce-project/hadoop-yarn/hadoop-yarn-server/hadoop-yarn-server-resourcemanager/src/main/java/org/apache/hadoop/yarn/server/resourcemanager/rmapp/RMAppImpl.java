@@ -845,6 +845,12 @@ name|RMAppAttempt
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|submitTime
+specifier|private
+specifier|final
+name|long
+name|submitTime
+decl_stmt|;
 comment|// Mutable fields
 DECL|field|startTime
 specifier|private
@@ -1244,7 +1250,7 @@ argument_list|>
 DECL|field|stateMachine
 name|stateMachine
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, ApplicationStore appStore, YarnScheduler scheduler, ApplicationMasterService masterService)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, ApplicationStore appStore, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -1280,6 +1286,9 @@ name|scheduler
 parameter_list|,
 name|ApplicationMasterService
 name|masterService
+parameter_list|,
+name|long
+name|submitTime
 parameter_list|)
 block|{
 name|this
@@ -1365,6 +1374,12 @@ operator|.
 name|masterService
 operator|=
 name|masterService
+expr_stmt|;
+name|this
+operator|.
+name|submitTime
+operator|=
+name|submitTime
 expr_stmt|;
 name|this
 operator|.
@@ -2101,6 +2116,20 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|submitTime
+return|;
 block|}
 annotation|@
 name|Override

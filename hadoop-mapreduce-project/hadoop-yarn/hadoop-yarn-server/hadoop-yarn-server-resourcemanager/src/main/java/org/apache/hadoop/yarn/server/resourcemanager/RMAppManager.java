@@ -1275,7 +1275,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime)
 specifier|protected
 specifier|synchronized
 name|void
@@ -1283,6 +1283,9 @@ name|submitApplication
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
+parameter_list|,
+name|long
+name|submitTime
 parameter_list|)
 block|{
 name|ApplicationId
@@ -1463,6 +1466,8 @@ argument_list|,
 name|this
 operator|.
 name|masterService
+argument_list|,
+name|submitTime
 argument_list|)
 expr_stmt|;
 if|if
@@ -1672,9 +1677,24 @@ operator|.
 name|getSubmissionContext
 argument_list|()
 decl_stmt|;
+name|long
+name|submitTime
+init|=
+operator|(
+operator|(
+name|RMAppManagerSubmitEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getSubmitTime
+argument_list|()
+decl_stmt|;
 name|submitApplication
 argument_list|(
 name|submissionContext
+argument_list|,
+name|submitTime
 argument_list|)
 expr_stmt|;
 block|}

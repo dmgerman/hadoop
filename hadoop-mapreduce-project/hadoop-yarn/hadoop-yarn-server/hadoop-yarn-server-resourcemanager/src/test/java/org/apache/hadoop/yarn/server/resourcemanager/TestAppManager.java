@@ -1105,6 +1105,11 @@ operator|.
 name|submitApplication
 argument_list|(
 name|submissionContext
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

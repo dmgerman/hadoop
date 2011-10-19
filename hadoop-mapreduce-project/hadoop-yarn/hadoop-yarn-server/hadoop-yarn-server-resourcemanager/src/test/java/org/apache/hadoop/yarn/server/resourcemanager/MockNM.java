@@ -298,6 +298,14 @@ specifier|final
 name|ResourceTrackerService
 name|resourceTracker
 decl_stmt|;
+DECL|field|httpPort
+specifier|private
+specifier|final
+name|int
+name|httpPort
+init|=
+literal|2
+decl_stmt|;
 DECL|method|MockNM (String nodeIdStr, int memory, ResourceTrackerService resourceTracker)
 name|MockNM
 parameter_list|(
@@ -338,6 +346,28 @@ parameter_list|()
 block|{
 return|return
 name|nodeId
+return|;
+block|}
+DECL|method|getHttpAddress ()
+specifier|public
+name|String
+name|getHttpAddress
+parameter_list|()
+block|{
+return|return
+name|nodeId
+operator|.
+name|getHost
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|httpPort
+argument_list|)
 return|;
 block|}
 DECL|method|containerStatus (Container container)
@@ -491,7 +521,7 @@ name|req
 operator|.
 name|setHttpPort
 argument_list|(
-literal|2
+name|httpPort
 argument_list|)
 expr_stmt|;
 name|Resource

@@ -54,9 +54,47 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|yarn
 operator|.
-name|JobID
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ConverterUtils
 import|;
 end_import
 
@@ -75,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Event to record the initialization of a job  *  */
+comment|/**  * Event to record start of a task attempt  *   */
 end_comment
 
 begin_class
@@ -87,54 +125,51 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|JobInitedEvent
+DECL|class|AMStartedEvent
 specifier|public
 class|class
-name|JobInitedEvent
+name|AMStartedEvent
 implements|implements
 name|HistoryEvent
 block|{
 DECL|field|datum
 specifier|private
-name|JobInited
+name|AMStarted
 name|datum
 init|=
 operator|new
-name|JobInited
+name|AMStarted
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record job initialization    * @param id    * @param launchTime    * @param totalMaps    * @param totalReduces    * @param jobStatus    * @param uberized True if the job's map and reduce stages were combined    */
-DECL|method|JobInitedEvent (JobID id, long launchTime, int totalMaps, int totalReduces, String jobStatus, boolean uberized)
+comment|/**    * Create an event to record the start of an MR AppMaster    *     * @param appAttemptId    *          the application attempt id.    * @param startTime    *          the start time of the AM.    * @param containerId    *          the containerId of the AM.    * @param nodeManagerHost    *          the node on which the AM is running.    * @param nodeManagerHttpPort    *          the httpPort for the node running the AM.    */
+DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerHttpPort)
 specifier|public
-name|JobInitedEvent
+name|AMStartedEvent
 parameter_list|(
-name|JobID
-name|id
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|long
-name|launchTime
+name|startTime
 parameter_list|,
-name|int
-name|totalMaps
-parameter_list|,
-name|int
-name|totalReduces
+name|ContainerId
+name|containerId
 parameter_list|,
 name|String
-name|jobStatus
+name|nodeManagerHost
 parameter_list|,
-name|boolean
-name|uberized
+name|int
+name|nodeManagerHttpPort
 parameter_list|)
 block|{
 name|datum
 operator|.
-name|jobid
+name|applicationAttemptId
 operator|=
 operator|new
 name|Utf8
 argument_list|(
-name|id
+name|appAttemptId
 operator|.
 name|toString
 argument_list|()
@@ -142,43 +177,44 @@ argument_list|)
 expr_stmt|;
 name|datum
 operator|.
-name|launchTime
+name|startTime
 operator|=
-name|launchTime
+name|startTime
 expr_stmt|;
 name|datum
 operator|.
-name|totalMaps
-operator|=
-name|totalMaps
-expr_stmt|;
-name|datum
-operator|.
-name|totalReduces
-operator|=
-name|totalReduces
-expr_stmt|;
-name|datum
-operator|.
-name|jobStatus
+name|containerId
 operator|=
 operator|new
 name|Utf8
 argument_list|(
-name|jobStatus
+name|containerId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|datum
 operator|.
-name|uberized
+name|nodeManagerHost
 operator|=
-name|uberized
+operator|new
+name|Utf8
+argument_list|(
+name|nodeManagerHost
+argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|nodeManagerHttpPort
+operator|=
+name|nodeManagerHttpPort
 expr_stmt|;
 block|}
-DECL|method|JobInitedEvent ()
-name|JobInitedEvent
+DECL|method|AMStartedEvent ()
+name|AMStartedEvent
 parameter_list|()
-block|{ }
+block|{   }
 DECL|method|getDatum ()
 specifier|public
 name|Object
@@ -203,88 +239,98 @@ operator|.
 name|datum
 operator|=
 operator|(
-name|JobInited
+name|AMStarted
 operator|)
 name|datum
 expr_stmt|;
 block|}
-comment|/** Get the job ID */
-DECL|method|getJobId ()
+comment|/**    * @return the ApplicationAttemptId    */
+DECL|method|getAppAttemptId ()
 specifier|public
-name|JobID
-name|getJobId
+name|ApplicationAttemptId
+name|getAppAttemptId
 parameter_list|()
 block|{
 return|return
-name|JobID
+name|ConverterUtils
 operator|.
-name|forName
+name|toApplicationAttemptId
 argument_list|(
 name|datum
 operator|.
-name|jobid
+name|applicationAttemptId
 operator|.
 name|toString
 argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/** Get the launch time */
-DECL|method|getLaunchTime ()
+comment|/**    * @return the start time for the MRAppMaster    */
+DECL|method|getStartTime ()
 specifier|public
 name|long
-name|getLaunchTime
+name|getStartTime
 parameter_list|()
 block|{
 return|return
 name|datum
 operator|.
-name|launchTime
+name|startTime
 return|;
 block|}
-comment|/** Get the total number of maps */
-DECL|method|getTotalMaps ()
+comment|/**    * @return the ContainerId for the MRAppMaster.    */
+DECL|method|getContainerId ()
 specifier|public
-name|int
-name|getTotalMaps
+name|ContainerId
+name|getContainerId
 parameter_list|()
 block|{
 return|return
+name|ConverterUtils
+operator|.
+name|toContainerId
+argument_list|(
 name|datum
 operator|.
-name|totalMaps
-return|;
-block|}
-comment|/** Get the total number of reduces */
-DECL|method|getTotalReduces ()
-specifier|public
-name|int
-name|getTotalReduces
-parameter_list|()
-block|{
-return|return
-name|datum
+name|containerId
 operator|.
-name|totalReduces
+name|toString
+argument_list|()
+argument_list|)
 return|;
 block|}
-comment|/** Get the status */
-DECL|method|getStatus ()
+comment|/**    * @return the node manager host.    */
+DECL|method|getNodeManagerHost ()
 specifier|public
 name|String
-name|getStatus
+name|getNodeManagerHost
 parameter_list|()
 block|{
 return|return
 name|datum
 operator|.
-name|jobStatus
+name|nodeManagerHost
 operator|.
 name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the event type */
+comment|/**    * @return the http port for the tracker.    */
+DECL|method|getNodeManagerHttpPort ()
+specifier|public
+name|int
+name|getNodeManagerHttpPort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|nodeManagerHttpPort
+return|;
+block|}
+comment|/** Get the attempt id */
+annotation|@
+name|Override
 DECL|method|getEventType ()
 specifier|public
 name|EventType
@@ -294,20 +340,7 @@ block|{
 return|return
 name|EventType
 operator|.
-name|JOB_INITED
-return|;
-block|}
-comment|/** Get whether the job's map and reduce stages were combined */
-DECL|method|getUberized ()
-specifier|public
-name|boolean
-name|getUberized
-parameter_list|()
-block|{
-return|return
-name|datum
-operator|.
-name|uberized
+name|AM_STARTED
 return|;
 block|}
 block|}

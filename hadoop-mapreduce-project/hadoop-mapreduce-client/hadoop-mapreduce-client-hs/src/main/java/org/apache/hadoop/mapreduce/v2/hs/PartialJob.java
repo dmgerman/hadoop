@@ -78,6 +78,24 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|jobhistory
+operator|.
+name|JobHistoryParser
+operator|.
+name|AMInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -759,6 +777,21 @@ argument_list|(
 literal|"Not implemented yet"
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAMInfos ()
+specifier|public
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|getAMInfos
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_class
