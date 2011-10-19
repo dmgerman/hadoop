@@ -1940,7 +1940,9 @@ name|isLocal
 init|=
 literal|false
 decl_stmt|;
-comment|// local iff framework == local
+comment|// local if
+comment|// 1) framework == local or
+comment|// 2) framework == null and job tracker address == local
 name|String
 name|framework
 init|=
@@ -1951,14 +1953,42 @@ argument_list|(
 name|MRConfig
 operator|.
 name|FRAMEWORK_NAME
-argument_list|,
-name|MRConfig
-operator|.
-name|YARN_FRAMEWORK_NAME
 argument_list|)
 decl_stmt|;
-name|isLocal
-operator|=
+name|String
+name|masterAddr
+init|=
+name|job
+operator|.
+name|get
+argument_list|(
+name|MRConfig
+operator|.
+name|MASTER_ADDRESS
+argument_list|,
+literal|"local"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|framework
+operator|==
+literal|null
+operator|&&
+name|masterAddr
+operator|.
+name|equals
+argument_list|(
+literal|"local"
+argument_list|)
+operator|)
+operator|||
+operator|(
+name|framework
+operator|!=
+literal|null
+operator|&&
 name|framework
 operator|.
 name|equals
@@ -1967,7 +1997,14 @@ name|MRConfig
 operator|.
 name|LOCAL_FRAMEWORK_NAME
 argument_list|)
+operator|)
+condition|)
+block|{
+name|isLocal
+operator|=
+literal|true
 expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
