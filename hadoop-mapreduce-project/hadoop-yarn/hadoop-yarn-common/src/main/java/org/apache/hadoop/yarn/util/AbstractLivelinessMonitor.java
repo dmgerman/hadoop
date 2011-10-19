@@ -233,6 +233,12 @@ name|void
 name|start
 parameter_list|()
 block|{
+assert|assert
+operator|!
+name|stopped
+operator|:
+literal|"starting when already stopped"
+assert|;
 name|checkerThread
 operator|=
 operator|new
@@ -273,11 +279,19 @@ name|stopped
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|checkerThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|checkerThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|stop
