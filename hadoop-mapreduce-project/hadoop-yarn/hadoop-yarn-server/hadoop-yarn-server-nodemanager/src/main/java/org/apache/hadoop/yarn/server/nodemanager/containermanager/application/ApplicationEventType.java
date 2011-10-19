@@ -34,6 +34,9 @@ comment|// Source: ContainerManager
 DECL|enumConstant|INIT_APPLICATION
 name|INIT_APPLICATION
 block|,
+DECL|enumConstant|INIT_CONTAINER
+name|INIT_CONTAINER
+block|,
 DECL|enumConstant|FINISH_APPLICATION
 name|FINISH_APPLICATION
 block|,

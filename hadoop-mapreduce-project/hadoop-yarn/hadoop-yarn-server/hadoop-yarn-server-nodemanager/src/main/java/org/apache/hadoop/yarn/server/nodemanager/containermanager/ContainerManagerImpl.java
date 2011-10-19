@@ -820,6 +820,28 @@ name|containermanager
 operator|.
 name|application
 operator|.
+name|ApplicationContainerInitEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|application
+operator|.
 name|ApplicationEvent
 import|;
 end_import
@@ -1942,6 +1964,11 @@ expr_stmt|;
 block|}
 comment|/**    * Start a container on this NodeManager.    */
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|startContainer (StartContainerRequest request)
 specifier|public
@@ -2216,6 +2243,20 @@ operator|+
 name|applicationID
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ApplicationInitEvent
+argument_list|(
+name|applicationID
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|// TODO: Validate the request
 name|dispatcher
@@ -2226,7 +2267,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|ApplicationInitEvent
+name|ApplicationContainerInitEvent
 argument_list|(
 name|container
 argument_list|)
