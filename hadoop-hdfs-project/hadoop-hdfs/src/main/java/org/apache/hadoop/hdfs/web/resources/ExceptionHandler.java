@@ -44,6 +44,32 @@ begin_import
 import|import
 name|javax
 operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|Context
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -187,6 +213,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|response
+specifier|private
+annotation|@
+name|Context
+name|HttpServletResponse
+name|response
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|toResponse (Exception e)
@@ -216,6 +249,14 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 comment|//Convert exception
 if|if
 condition|(
