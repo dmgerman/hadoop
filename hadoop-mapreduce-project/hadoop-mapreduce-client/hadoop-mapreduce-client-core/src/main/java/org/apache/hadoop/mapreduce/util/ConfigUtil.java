@@ -181,6 +181,20 @@ argument_list|(
 literal|"mapred-site.xml"
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"yarn-default.xml"
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"yarn-site.xml"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Adds deprecated keys and the corresponding new keys to the Configuration    */
 DECL|method|addDeprecatedKeys ()

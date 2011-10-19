@@ -164,20 +164,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|lib
 operator|.
 name|output
@@ -543,7 +529,7 @@ decl_stmt|;
 name|committer
 operator|=
 operator|new
-name|TeraOutputCommitter
+name|FileOutputCommitter
 argument_list|(
 name|output
 argument_list|,
@@ -554,69 +540,6 @@ block|}
 return|return
 name|committer
 return|;
-block|}
-DECL|class|TeraOutputCommitter
-specifier|public
-specifier|static
-class|class
-name|TeraOutputCommitter
-extends|extends
-name|FileOutputCommitter
-block|{
-DECL|method|TeraOutputCommitter (Path outputPath, TaskAttemptContext context)
-specifier|public
-name|TeraOutputCommitter
-parameter_list|(
-name|Path
-name|outputPath
-parameter_list|,
-name|TaskAttemptContext
-name|context
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-argument_list|(
-name|outputPath
-argument_list|,
-name|context
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|commitJob (JobContext jobContext)
-specifier|public
-name|void
-name|commitJob
-parameter_list|(
-name|JobContext
-name|jobContext
-parameter_list|)
-block|{     }
-annotation|@
-name|Override
-DECL|method|setupJob (JobContext jobContext)
-specifier|public
-name|void
-name|setupJob
-parameter_list|(
-name|JobContext
-name|jobContext
-parameter_list|)
-block|{     }
-annotation|@
-name|Override
-DECL|method|setupTask (TaskAttemptContext taskContext)
-specifier|public
-name|void
-name|setupTask
-parameter_list|(
-name|TaskAttemptContext
-name|taskContext
-parameter_list|)
-block|{     }
 block|}
 block|}
 end_class
