@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -66,38 +64,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocolR23Compatible
-operator|.
-name|ClientNamenodeWireProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocolR23Compatible
-operator|.
-name|JournalWireProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|VersionedProtocol
@@ -119,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Protocol used to journal edits to a remote node. Currently,  * this is used to publish edits from the NameNode to a BackupNode.  */
+comment|/**  * This class defines the actual protocol used to communicate with the  * NN via RPC using writable types.  * The parameters in the methods which are specified in the  * package are separate from those used internally in the NN and DFSClient  * and hence need to be converted using {@link JournalProtocolTranslatorR23}  * and {@link JournalProtocolServerSideTranslatorR23}.  *  */
 end_comment
 
 begin_interface
@@ -142,14 +108,14 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|JournalProtocol
+DECL|interface|JournalWireProtocol
 specifier|public
 interface|interface
-name|JournalProtocol
+name|JournalWireProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    *     * This class is used by both the Namenode (client) and BackupNode (server)     * to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link JournalWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link ClientNamenodeWireProtocol}    */
+comment|/**    * The  rules for changing this protocol are the same as that for    * {@link ClientNamenodeWireProtocol} - see that java file for details.    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -160,12 +126,12 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * Journal edit records.    * This message is sent by the active name-node to the backup node    * via {@code EditLogBackupOutputStream} in order to synchronize meta-data    * changes with the backup namespace image.    *     * @param registration active node registration    * @param firstTxnId the first transaction of this batch    * @param numTxns number of transactions    * @param records byte array containing serialized journal records    */
-DECL|method|journal (NamenodeRegistration registration, long firstTxnId, int numTxns, byte[] records)
+DECL|method|journal (NamenodeRegistrationWritable registration, long firstTxnId, int numTxns, byte[] records)
 specifier|public
 name|void
 name|journal
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|,
 name|long
@@ -182,16 +148,44 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Notify the BackupNode that the NameNode has rolled its edit logs    * and is now writing a new log segment.    * @param registration the registration of the active NameNode    * @param txid the first txid in the new log    */
-DECL|method|startLogSegment (NamenodeRegistration registration, long txid)
+DECL|method|startLogSegment (NamenodeRegistrationWritable registration, long txid)
 specifier|public
 name|void
 name|startLogSegment
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|,
 name|long
 name|txid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 the method name    * to avoid conflict.    */
+specifier|public
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|ProtocolSignatureWritable
+DECL|method|getProtocolSignature2 (String protocol, long clientVersion, int clientMethodsHash)
+name|getProtocolSignature2
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
 parameter_list|)
 throws|throws
 name|IOException

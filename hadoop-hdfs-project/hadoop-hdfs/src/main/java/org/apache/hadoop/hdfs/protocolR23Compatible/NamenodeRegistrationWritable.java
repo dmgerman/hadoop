@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -148,7 +146,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|Storage
+name|HdfsServerConstants
+operator|.
+name|NamenodeRole
 import|;
 end_import
 
@@ -182,11 +182,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
+name|protocol
 operator|.
-name|HdfsServerConstants
-operator|.
-name|NamenodeRole
+name|NamenodeRegistration
 import|;
 end_import
 
@@ -203,61 +201,58 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|NamenodeRegistration
+DECL|class|NamenodeRegistrationWritable
 specifier|public
 class|class
-name|NamenodeRegistration
-extends|extends
-name|StorageInfo
+name|NamenodeRegistrationWritable
 implements|implements
-name|NodeRegistration
+name|Writable
 block|{
 DECL|field|rpcAddress
+specifier|private
 name|String
 name|rpcAddress
 decl_stmt|;
 comment|// RPC address of the node
 DECL|field|httpAddress
+specifier|private
 name|String
 name|httpAddress
 decl_stmt|;
 comment|// HTTP address of the node
 DECL|field|role
+specifier|private
 name|NamenodeRole
 name|role
 decl_stmt|;
 comment|// node role
-DECL|method|NamenodeRegistration ()
+DECL|field|storageInfo
+specifier|private
+name|StorageInfoWritable
+name|storageInfo
+decl_stmt|;
+DECL|method|NamenodeRegistrationWritable ()
 specifier|public
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|NamenodeRegistration (String address, String httpAddress, StorageInfo storageInfo, NamenodeRole role)
+block|{ }
+DECL|method|NamenodeRegistrationWritable (String address, String httpAddress, NamenodeRole role, StorageInfo storageInfo)
 specifier|public
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 parameter_list|(
 name|String
 name|address
 parameter_list|,
 name|String
 name|httpAddress
+parameter_list|,
+name|NamenodeRole
+name|role
 parameter_list|,
 name|StorageInfo
 name|storageInfo
-parameter_list|,
-name|NamenodeRole
-name|role
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|storageInfo
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|rpcAddress
@@ -276,120 +271,17 @@ name|role
 operator|=
 name|role
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-comment|// NodeRegistration
-DECL|method|getAddress ()
-specifier|public
-name|String
-name|getAddress
-parameter_list|()
-block|{
-return|return
-name|rpcAddress
-return|;
-block|}
-DECL|method|getHttpAddress ()
-specifier|public
-name|String
-name|getHttpAddress
-parameter_list|()
-block|{
-return|return
-name|httpAddress
-return|;
-block|}
-annotation|@
-name|Override
-comment|// NodeRegistration
-DECL|method|getRegistrationID ()
-specifier|public
-name|String
-name|getRegistrationID
-parameter_list|()
-block|{
-return|return
-name|Storage
-operator|.
-name|getRegistrationID
-argument_list|(
 name|this
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-comment|// NodeRegistration
-DECL|method|getVersion ()
-specifier|public
-name|int
-name|getVersion
-parameter_list|()
-block|{
-return|return
-name|super
 operator|.
-name|getLayoutVersion
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// NodeRegistration
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|getClass
-argument_list|()
+name|storageInfo
+operator|=
+name|StorageInfoWritable
 operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|"("
-operator|+
-name|rpcAddress
-operator|+
-literal|", role="
-operator|+
-name|getRole
-argument_list|()
-operator|+
-literal|")"
-return|;
-block|}
-comment|/**    * Get name-node role.    */
-DECL|method|getRole ()
-specifier|public
-name|NamenodeRole
-name|getRole
-parameter_list|()
-block|{
-return|return
-name|role
-return|;
-block|}
-DECL|method|isRole (NamenodeRole that)
-specifier|public
-name|boolean
-name|isRole
-parameter_list|(
-name|NamenodeRole
-name|that
-parameter_list|)
-block|{
-return|return
-name|role
-operator|.
-name|equals
+name|convert
 argument_list|(
-name|that
+name|storageInfo
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 comment|/////////////////////////////////////////////////
 comment|// Writable
@@ -400,7 +292,7 @@ name|WritableFactories
 operator|.
 name|setFactory
 argument_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 operator|.
 name|class
 argument_list|,
@@ -415,7 +307,7 @@ parameter_list|()
 block|{
 return|return
 operator|new
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 argument_list|()
 return|;
 block|}
@@ -467,7 +359,7 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|super
+name|storageInfo
 operator|.
 name|write
 argument_list|(
@@ -521,13 +413,69 @@ name|in
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|super
+name|storageInfo
 operator|.
 name|readFields
 argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|convert (NamenodeRegistration reg)
+specifier|public
+specifier|static
+name|NamenodeRegistrationWritable
+name|convert
+parameter_list|(
+name|NamenodeRegistration
+name|reg
+parameter_list|)
+block|{
+return|return
+operator|new
+name|NamenodeRegistrationWritable
+argument_list|(
+name|reg
+operator|.
+name|getAddress
+argument_list|()
+argument_list|,
+name|reg
+operator|.
+name|getHttpAddress
+argument_list|()
+argument_list|,
+name|reg
+operator|.
+name|getRole
+argument_list|()
+argument_list|,
+name|reg
+argument_list|)
+return|;
+block|}
+DECL|method|convert ()
+specifier|public
+name|NamenodeRegistration
+name|convert
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NamenodeRegistration
+argument_list|(
+name|rpcAddress
+argument_list|,
+name|httpAddress
+argument_list|,
+name|storageInfo
+operator|.
+name|convert
+argument_list|()
+argument_list|,
+name|role
+argument_list|)
+return|;
 block|}
 block|}
 end_class
