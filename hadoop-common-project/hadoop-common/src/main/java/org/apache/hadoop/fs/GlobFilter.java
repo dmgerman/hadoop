@@ -38,12 +38,49 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
-comment|// A class that could decide if a string matches the glob or not
+comment|/**  * A filter for POSIX glob pattern with brace expansions.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|GlobFilter
+specifier|public
 class|class
 name|GlobFilter
 implements|implements
@@ -86,7 +123,9 @@ specifier|private
 name|GlobPattern
 name|pattern
 decl_stmt|;
+comment|/**    * Creates a glob filter with the specified file pattern.    *    * @param filePattern the file pattern.    * @throws IOException thrown if the file pattern is incorrect.    */
 DECL|method|GlobFilter (String filePattern)
+specifier|public
 name|GlobFilter
 parameter_list|(
 name|String
@@ -103,7 +142,9 @@ name|DEFAULT_FILTER
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates a glob filter with the specified file pattern and an user filter.    *    * @param filePattern the file pattern.    * @param filter user filter in addition to the glob pattern.    * @throws IOException thrown if the file pattern is incorrect.    */
 DECL|method|GlobFilter (String filePattern, PathFilter filter)
+specifier|public
 name|GlobFilter
 parameter_list|(
 name|String
