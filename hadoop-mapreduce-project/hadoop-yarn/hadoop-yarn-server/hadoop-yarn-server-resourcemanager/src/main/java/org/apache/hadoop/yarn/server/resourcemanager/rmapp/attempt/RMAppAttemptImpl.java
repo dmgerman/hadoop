@@ -1784,6 +1784,14 @@ name|of
 argument_list|(
 name|RMAppAttemptEventType
 operator|.
+name|APP_ACCEPTED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|APP_REJECTED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
 name|EXPIRE
 argument_list|,
 name|RMAppAttemptEventType

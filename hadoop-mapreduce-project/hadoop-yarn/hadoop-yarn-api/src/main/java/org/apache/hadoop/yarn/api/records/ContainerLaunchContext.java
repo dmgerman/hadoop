@@ -332,6 +332,41 @@ argument_list|>
 name|commands
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>ApplicationACL</code>s for the application.     * @return all the<code>ApplicationACL</code>s    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationACLs
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>ApplicationACL</code>s for the application.     * @param acls    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setApplicationACLs (Map<ApplicationAccessType, String> acls)
+specifier|public
+name|void
+name|setApplicationACLs
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|acls
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

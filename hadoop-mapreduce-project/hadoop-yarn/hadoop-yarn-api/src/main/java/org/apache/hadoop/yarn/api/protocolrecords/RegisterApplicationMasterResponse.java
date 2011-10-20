@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -114,6 +124,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -178,6 +206,41 @@ name|setMaximumResourceCapability
 parameter_list|(
 name|Resource
 name|capability
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>ApplicationACL</code>s for the application.     * @return all the<code>ApplicationACL</code>s    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationACLs
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>ApplicationACL</code>s for the application.     * @param acls    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationACLs (Map<ApplicationAccessType, String> acls)
+specifier|public
+name|void
+name|setApplicationACLs
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|acls
 parameter_list|)
 function_decl|;
 block|}

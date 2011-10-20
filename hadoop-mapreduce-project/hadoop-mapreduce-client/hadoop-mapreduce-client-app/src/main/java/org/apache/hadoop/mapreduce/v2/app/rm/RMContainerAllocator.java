@@ -3647,6 +3647,8 @@ operator|.
 name|attemptID
 argument_list|,
 name|allocated
+argument_list|,
+name|applicationACLs
 argument_list|)
 argument_list|)
 expr_stmt|;

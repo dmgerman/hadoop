@@ -145,25 +145,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//Configurations
-comment|/** ACL of who can view this application.*/
-DECL|field|APPLICATION_ACL_VIEW_APP
+DECL|field|YARN_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|APPLICATION_ACL_VIEW_APP
+name|YARN_PREFIX
 init|=
-literal|"yarn.app.acl.view-job"
-decl_stmt|;
-comment|/** ACL of who can modify this application.*/
-DECL|field|APPLICATION_ACL_MODIFY_APP
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APPLICATION_ACL_MODIFY_APP
-init|=
-literal|"yarn.app.acl.modify-job"
+literal|"yarn."
 decl_stmt|;
 comment|/** Delay before deleting resource to ease debugging of NM issues */
 DECL|field|DEBUG_NM_DELETE_DELAY_SEC
@@ -189,7 +178,9 @@ specifier|final
 name|String
 name|IPC_PREFIX
 init|=
-literal|"yarn.ipc."
+name|YARN_PREFIX
+operator|+
+literal|"ipc."
 decl_stmt|;
 comment|/** Factory to create client IPC classes.*/
 DECL|field|IPC_CLIENT_FACTORY
@@ -451,45 +442,45 @@ name|DEFAULT_RM_RESOURCE_TRACKER_ADDRESS
 init|=
 literal|"0.0.0.0:8025"
 decl_stmt|;
-comment|/** Are RM acls enabled.*/
-DECL|field|RM_ACL_ENABLE
+comment|/** Are acls enabled.*/
+DECL|field|YARN_ACL_ENABLE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_ACL_ENABLE
+name|YARN_ACL_ENABLE
 init|=
-name|RM_PREFIX
+name|YARN_PREFIX
 operator|+
 literal|"acl.enable"
 decl_stmt|;
-DECL|field|DEFAULT_RM_ACL_ENABLE
+DECL|field|DEFAULT_YARN_ACL_ENABLE
 specifier|public
 specifier|static
 specifier|final
 name|boolean
-name|DEFAULT_RM_ACL_ENABLE
+name|DEFAULT_YARN_ACL_ENABLE
 init|=
 literal|true
 decl_stmt|;
-comment|/** ACL of who can be admin of RM.*/
-DECL|field|RM_ADMIN_ACL
+comment|/** ACL of who can be admin of YARN cluster.*/
+DECL|field|YARN_ADMIN_ACL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_ADMIN_ACL
+name|YARN_ADMIN_ACL
 init|=
-name|RM_PREFIX
+name|YARN_PREFIX
 operator|+
 literal|"admin.acl"
 decl_stmt|;
-DECL|field|DEFAULT_RM_ADMIN_ACL
+DECL|field|DEFAULT_YARN_ADMIN_ACL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_RM_ADMIN_ACL
+name|DEFAULT_YARN_ADMIN_ACL
 init|=
 literal|"*"
 decl_stmt|;

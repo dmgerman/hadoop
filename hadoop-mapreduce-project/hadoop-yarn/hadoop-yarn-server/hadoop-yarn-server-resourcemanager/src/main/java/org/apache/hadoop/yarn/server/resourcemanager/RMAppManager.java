@@ -42,6 +42,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+operator|.
+name|Entry
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -141,6 +153,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAccessType
 import|;
 end_import
 
@@ -428,6 +458,24 @@ name|YarnScheduler
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class manages the list of applications for the resource manager.   */
 end_comment
@@ -507,12 +555,18 @@ specifier|final
 name|YarnScheduler
 name|scheduler
 decl_stmt|;
+DECL|field|applicationACLsManager
+specifier|private
+specifier|final
+name|ApplicationACLsManager
+name|applicationACLsManager
+decl_stmt|;
 DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|RMAppManager (RMContext context, ClientToAMSecretManager clientToAMSecretManager, YarnScheduler scheduler, ApplicationMasterService masterService, Configuration conf)
+DECL|method|RMAppManager (RMContext context, ClientToAMSecretManager clientToAMSecretManager, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
 specifier|public
 name|RMAppManager
 parameter_list|(
@@ -527,6 +581,9 @@ name|scheduler
 parameter_list|,
 name|ApplicationMasterService
 name|masterService
+parameter_list|,
+name|ApplicationACLsManager
+name|applicationACLsManager
 parameter_list|,
 name|Configuration
 name|conf
@@ -555,6 +612,12 @@ operator|.
 name|masterService
 operator|=
 name|masterService
+expr_stmt|;
+name|this
+operator|.
+name|applicationACLsManager
+operator|=
+name|applicationACLsManager
 expr_stmt|;
 name|this
 operator|.
@@ -1268,6 +1331,15 @@ argument_list|(
 name|removeId
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|applicationACLsManager
+operator|.
+name|removeApplication
+argument_list|(
+name|removeId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1516,6 +1588,23 @@ else|else
 block|{
 name|this
 operator|.
+name|applicationACLsManager
+operator|.
+name|addApplication
+argument_list|(
+name|applicationId
+argument_list|,
+name|submissionContext
+operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
+name|getApplicationACLs
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|rmContext
 operator|.
 name|getDispatcher
@@ -1561,6 +1650,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// TODO: Weird setup.
 name|this
 operator|.
 name|rmContext

@@ -1336,6 +1336,8 @@ name|getResource
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 comment|// DKDC - Doesn't matter
 argument_list|)
 decl_stmt|;

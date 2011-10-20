@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -14,9 +14,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
+name|records
 package|;
 end_package
 
@@ -30,7 +30,9 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|*
+name|InterfaceAudience
+operator|.
+name|Public
 import|;
 end_import
 
@@ -42,78 +44,37 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|conf
+name|InterfaceStability
 operator|.
-name|YarnConfiguration
+name|Stable
 import|;
 end_import
 
 begin_comment
-comment|/**  * Application related ACLs  */
+comment|/**  * Application access types.  */
 end_comment
 
 begin_enum
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|enum|ApplicationACL
+name|Public
+annotation|@
+name|Stable
+DECL|enum|ApplicationAccessType
 specifier|public
 enum|enum
-name|ApplicationACL
+name|ApplicationAccessType
 block|{
-comment|/**    * ACL for 'viewing' application. Dictates who can 'view' some or all of the application    * related details.    */
+comment|/**    * Access-type representing 'viewing' application. ACLs against this type    * dictate who can 'view' some or all of the application related details.    */
 DECL|enumConstant|VIEW_APP
 name|VIEW_APP
-parameter_list|(
-name|YarnConfiguration
-operator|.
-name|APPLICATION_ACL_VIEW_APP
-parameter_list|)
-operator|,
-comment|/**    * ACL for 'modifying' application. Dictates who can 'modify' the application for e.g., by    * killing the application    */
+block|,
+comment|/**    * Access-type representing 'modifying' application. ACLs against this type    * dictate who can 'modify' the application for e.g., by killing the    * application    */
 DECL|enumConstant|MODIFY_APP
-constructor|MODIFY_APP(YarnConfiguration.APPLICATION_ACL_MODIFY_APP
-block|)
-enum|;
+name|MODIFY_APP
+block|; }
 end_enum
 
-begin_decl_stmt
-DECL|field|aclName
-name|String
-name|aclName
-decl_stmt|;
-end_decl_stmt
-
-begin_expr_stmt
-DECL|method|ApplicationACL (String name)
-name|ApplicationACL
-argument_list|(
-name|String
-name|name
-argument_list|)
-block|{
-name|this
-operator|.
-name|aclName
-operator|=
-name|name
-block|;   }
-comment|/**    * Get the name of the ACL. Here it is same as the name of the configuration    * property for specifying the ACL for the application.    *     * @return aclName    */
-DECL|method|getAclName ()
-specifier|public
-name|String
-name|getAclName
-argument_list|()
-block|{
-return|return
-name|aclName
-return|;
-block|}
-end_expr_stmt
-
-unit|}
 end_unit
 

@@ -867,6 +867,8 @@ name|getAttemptID
 argument_list|()
 argument_list|,
 name|container
+argument_list|,
+name|applicationACLs
 argument_list|)
 argument_list|)
 expr_stmt|;

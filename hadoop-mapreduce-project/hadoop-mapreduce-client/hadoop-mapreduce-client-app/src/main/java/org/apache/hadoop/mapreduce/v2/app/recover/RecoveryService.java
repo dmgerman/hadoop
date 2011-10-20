@@ -2554,6 +2554,8 @@ argument_list|(
 name|yarnAttemptID
 argument_list|,
 name|container
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;

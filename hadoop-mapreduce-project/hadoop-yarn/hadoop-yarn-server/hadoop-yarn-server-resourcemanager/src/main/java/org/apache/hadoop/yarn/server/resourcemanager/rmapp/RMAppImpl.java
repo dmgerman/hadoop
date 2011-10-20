@@ -1218,6 +1218,14 @@ name|of
 argument_list|(
 name|RMAppEventType
 operator|.
+name|APP_ACCEPTED
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
+argument_list|,
+name|RMAppEventType
+operator|.
 name|KILL
 argument_list|,
 name|RMAppEventType

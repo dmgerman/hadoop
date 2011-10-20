@@ -150,6 +150,24 @@ name|server
 operator|.
 name|security
 operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
 name|ContainerTokenSecretManager
 import|;
 end_import
@@ -660,7 +678,7 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager applicationACLsManager)
 specifier|public
 name|DummyContainerManager
 parameter_list|(
@@ -681,6 +699,9 @@ name|metrics
 parameter_list|,
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|ApplicationACLsManager
+name|applicationACLsManager
 parameter_list|)
 block|{
 name|super
@@ -696,6 +717,8 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenSecretManager
+argument_list|,
+name|applicationACLsManager
 argument_list|)
 expr_stmt|;
 block|}

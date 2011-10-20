@@ -806,6 +806,24 @@ name|server
 operator|.
 name|security
 operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
 name|ContainerTokenSecretManager
 import|;
 end_import
@@ -932,11 +950,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|YarnConfiguration
-name|conf
-decl_stmt|;
 DECL|field|clientToAMSecretManager
 specifier|protected
 name|ClientToAMSecretManager
@@ -1022,6 +1035,11 @@ specifier|protected
 name|RMAppManager
 name|rmAppManager
 decl_stmt|;
+DECL|field|applicationACLsManager
+specifier|protected
+name|ApplicationACLsManager
+name|applicationACLsManager
+decl_stmt|;
 DECL|field|webApp
 specifier|private
 name|WebApp
@@ -1042,6 +1060,11 @@ DECL|field|resourceTracker
 specifier|protected
 name|ResourceTrackerService
 name|resourceTracker
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
 decl_stmt|;
 DECL|method|ResourceManager (Store store)
 specifier|public
@@ -1095,6 +1118,12 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|this
 operator|.
 name|rmDispatcher
@@ -1164,17 +1193,6 @@ expr_stmt|;
 name|addService
 argument_list|(
 name|nodesListManager
-argument_list|)
-expr_stmt|;
-comment|// Initialize the config
-name|this
-operator|.
-name|conf
-operator|=
-operator|new
-name|YarnConfiguration
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 comment|// Initialize the scheduler
@@ -1326,8 +1344,6 @@ name|scheduler
 operator|.
 name|reinitialize
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|,
 name|this
@@ -1364,6 +1380,16 @@ expr_stmt|;
 name|addService
 argument_list|(
 name|masterService
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|applicationACLsManager
+operator|=
+operator|new
+name|ApplicationACLsManager
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|this
@@ -1512,6 +1538,8 @@ name|ReflectionUtils
 operator|.
 name|newInstance
 argument_list|(
+name|this
+operator|.
 name|conf
 operator|.
 name|getClass
@@ -1619,6 +1647,10 @@ argument_list|,
 name|this
 operator|.
 name|masterService
+argument_list|,
+name|this
+operator|.
+name|applicationACLsManager
 argument_list|,
 name|this
 operator|.
@@ -2371,6 +2403,8 @@ argument_list|)
 operator|.
 name|at
 argument_list|(
+name|this
+operator|.
 name|conf
 operator|.
 name|get
@@ -2454,6 +2488,8 @@ name|SecurityUtil
 operator|.
 name|login
 argument_list|(
+name|this
+operator|.
 name|conf
 argument_list|,
 name|YarnConfiguration
@@ -2546,6 +2582,10 @@ argument_list|,
 name|this
 operator|.
 name|rmAppManager
+argument_list|,
+name|this
+operator|.
+name|applicationACLsManager
 argument_list|)
 return|;
 block|}
@@ -2581,6 +2621,8 @@ return|return
 operator|new
 name|AdminService
 argument_list|(
+name|this
+operator|.
 name|conf
 argument_list|,
 name|scheduler
@@ -2649,6 +2691,20 @@ return|return
 name|this
 operator|.
 name|masterService
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getApplicationACLsManager ()
+specifier|public
+name|ApplicationACLsManager
+name|getApplicationACLsManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationACLsManager
 return|;
 block|}
 annotation|@

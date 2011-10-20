@@ -1059,6 +1059,8 @@ name|getResourceScheduler
 argument_list|()
 argument_list|,
 name|rmAppManager
+argument_list|,
+name|applicationACLsManager
 argument_list|)
 block|{
 annotation|@

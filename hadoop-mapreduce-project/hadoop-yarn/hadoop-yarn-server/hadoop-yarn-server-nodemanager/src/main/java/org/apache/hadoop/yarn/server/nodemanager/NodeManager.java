@@ -462,6 +462,24 @@ name|server
 operator|.
 name|security
 operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
 name|ContainerTokenSecretManager
 import|;
 end_import
@@ -554,6 +572,11 @@ specifier|protected
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
+DECL|field|aclsManager
+specifier|private
+name|ApplicationACLsManager
+name|aclsManager
+decl_stmt|;
 DECL|method|NodeManager ()
 specifier|public
 name|NodeManager
@@ -616,7 +639,7 @@ name|NodeResourceMonitorImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -635,6 +658,9 @@ name|nodeStatusUpdater
 parameter_list|,
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|ApplicationACLsManager
+name|aclsManager
 parameter_list|)
 block|{
 return|return
@@ -652,10 +678,12 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenSecretManager
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}
-DECL|method|createWebServer (Context nmContext, ResourceView resourceView)
+DECL|method|createWebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager)
 specifier|protected
 name|WebServer
 name|createWebServer
@@ -665,6 +693,9 @@ name|nmContext
 parameter_list|,
 name|ResourceView
 name|resourceView
+parameter_list|,
+name|ApplicationACLsManager
+name|aclsManager
 parameter_list|)
 block|{
 return|return
@@ -674,6 +705,8 @@ argument_list|(
 name|nmContext
 argument_list|,
 name|resourceView
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}
@@ -747,6 +780,16 @@ name|ContainerTokenSecretManager
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|aclsManager
+operator|=
+operator|new
+name|ApplicationACLsManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ContainerExecutor
 name|exec
 init|=
@@ -866,6 +909,10 @@ argument_list|,
 name|this
 operator|.
 name|containerTokenSecretManager
+argument_list|,
+name|this
+operator|.
+name|aclsManager
 argument_list|)
 decl_stmt|;
 name|addService
@@ -884,6 +931,10 @@ name|containerManager
 operator|.
 name|getContainersMonitor
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|aclsManager
 argument_list|)
 decl_stmt|;
 name|addService

@@ -1192,6 +1192,15 @@ name|JOB_ACL_VIEW_JOB
 init|=
 literal|"mapreduce.job.acl-view-job"
 decl_stmt|;
+DECL|field|DEFAULT_JOB_ACL_VIEW_JOB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_JOB_ACL_VIEW_JOB
+init|=
+literal|" "
+decl_stmt|;
 DECL|field|JOB_ACL_MODIFY_JOB
 specifier|public
 specifier|static
@@ -1200,6 +1209,15 @@ name|String
 name|JOB_ACL_MODIFY_JOB
 init|=
 literal|"mapreduce.job.acl-modify-job"
+decl_stmt|;
+DECL|field|DEFAULT_JOB_ACL_MODIFY_JOB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_JOB_ACL_MODIFY_JOB
+init|=
+literal|" "
 decl_stmt|;
 DECL|field|JOB_SUBMITHOST
 specifier|public
