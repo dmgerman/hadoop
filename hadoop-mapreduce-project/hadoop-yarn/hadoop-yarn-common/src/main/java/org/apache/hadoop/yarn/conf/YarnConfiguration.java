@@ -836,7 +836,7 @@ specifier|final
 name|String
 name|DEFAULT_NM_ADDRESS
 init|=
-literal|"0.0.0.0:45454"
+literal|"0.0.0.0:0"
 decl_stmt|;
 comment|/** who will execute(launch) the containers.*/
 DECL|field|NM_CONTAINER_EXECUTOR
