@@ -2110,6 +2110,14 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_LOCALIZER_ADDRESS
 argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOCALIZER_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|NM_LOCALIZER_ADDRESS
 argument_list|)
 expr_stmt|;
 name|localizerTracker

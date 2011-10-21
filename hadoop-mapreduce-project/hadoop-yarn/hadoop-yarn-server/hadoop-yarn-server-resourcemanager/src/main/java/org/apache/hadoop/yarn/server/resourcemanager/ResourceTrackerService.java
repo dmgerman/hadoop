@@ -844,6 +844,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|resourceTrackerBindAddress
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_RESOURCE_TRACKER_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RM_RESOURCE_TRACKER_ADDRESS
 argument_list|)
 expr_stmt|;
 name|RackResolver

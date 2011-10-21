@@ -296,6 +296,15 @@ name|RM_PREFIX
 operator|+
 literal|"address"
 decl_stmt|;
+DECL|field|DEFAULT_RM_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_PORT
+init|=
+literal|8040
+decl_stmt|;
 DECL|field|DEFAULT_RM_ADDRESS
 specifier|public
 specifier|static
@@ -303,7 +312,9 @@ specifier|final
 name|String
 name|DEFAULT_RM_ADDRESS
 init|=
-literal|"0.0.0.0:8040"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_PORT
 decl_stmt|;
 comment|/** The number of threads used to handle applications manager requests.*/
 DECL|field|RM_CLIENT_THREAD_COUNT
@@ -371,6 +382,15 @@ name|RM_PREFIX
 operator|+
 literal|"scheduler.address"
 decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_SCHEDULER_PORT
+init|=
+literal|8030
+decl_stmt|;
 DECL|field|DEFAULT_RM_SCHEDULER_ADDRESS
 specifier|public
 specifier|static
@@ -378,7 +398,9 @@ specifier|final
 name|String
 name|DEFAULT_RM_SCHEDULER_ADDRESS
 init|=
-literal|"0.0.0.0:8030"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_SCHEDULER_PORT
 decl_stmt|;
 comment|/** Number of threads to handle scheduler interface.*/
 DECL|field|RM_SCHEDULER_CLIENT_THREAD_COUNT
@@ -413,6 +435,15 @@ name|RM_PREFIX
 operator|+
 literal|"webapp.address"
 decl_stmt|;
+DECL|field|DEFAULT_RM_WEBAPP_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_WEBAPP_PORT
+init|=
+literal|8088
+decl_stmt|;
 DECL|field|DEFAULT_RM_WEBAPP_ADDRESS
 specifier|public
 specifier|static
@@ -420,7 +451,9 @@ specifier|final
 name|String
 name|DEFAULT_RM_WEBAPP_ADDRESS
 init|=
-literal|"0.0.0.0:8088"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_WEBAPP_PORT
 decl_stmt|;
 DECL|field|RM_RESOURCE_TRACKER_ADDRESS
 specifier|public
@@ -433,6 +466,15 @@ name|RM_PREFIX
 operator|+
 literal|"resource-tracker.address"
 decl_stmt|;
+DECL|field|DEFAULT_RM_RESOURCE_TRACKER_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_RESOURCE_TRACKER_PORT
+init|=
+literal|8025
+decl_stmt|;
 DECL|field|DEFAULT_RM_RESOURCE_TRACKER_ADDRESS
 specifier|public
 specifier|static
@@ -440,7 +482,9 @@ specifier|final
 name|String
 name|DEFAULT_RM_RESOURCE_TRACKER_ADDRESS
 init|=
-literal|"0.0.0.0:8025"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_RESOURCE_TRACKER_PORT
 decl_stmt|;
 comment|/** Are acls enabled.*/
 DECL|field|YARN_ACL_ENABLE
@@ -496,6 +540,15 @@ name|RM_PREFIX
 operator|+
 literal|"admin.address"
 decl_stmt|;
+DECL|field|DEFAULT_RM_ADMIN_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_ADMIN_PORT
+init|=
+literal|8141
+decl_stmt|;
 DECL|field|DEFAULT_RM_ADMIN_ADDRESS
 specifier|public
 specifier|static
@@ -503,7 +556,9 @@ specifier|final
 name|String
 name|DEFAULT_RM_ADMIN_ADDRESS
 init|=
-literal|"0.0.0.0:8141"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_ADMIN_PORT
 decl_stmt|;
 comment|/**Number of threads used to handle RM admin interface.*/
 DECL|field|RM_ADMIN_CLIENT_THREAD_COUNT
@@ -959,6 +1014,15 @@ name|NM_PREFIX
 operator|+
 literal|"localizer.address"
 decl_stmt|;
+DECL|field|DEFAULT_NM_LOCALIZER_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_LOCALIZER_PORT
+init|=
+literal|4344
+decl_stmt|;
 DECL|field|DEFAULT_NM_LOCALIZER_ADDRESS
 specifier|public
 specifier|static
@@ -966,7 +1030,9 @@ specifier|final
 name|String
 name|DEFAULT_NM_LOCALIZER_ADDRESS
 init|=
-literal|"0.0.0.0:4344"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_NM_LOCALIZER_PORT
 decl_stmt|;
 comment|/** Interval in between cache cleanups.*/
 DECL|field|NM_LOCALIZER_CACHE_CLEANUP_INTERVAL_MS
@@ -1133,6 +1199,15 @@ name|NM_PREFIX
 operator|+
 literal|"webapp.address"
 decl_stmt|;
+DECL|field|DEFAULT_NM_WEBAPP_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_WEBAPP_PORT
+init|=
+literal|9999
+decl_stmt|;
 DECL|field|DEFAULT_NM_WEBAPP_ADDRESS
 specifier|public
 specifier|static
@@ -1140,7 +1215,9 @@ specifier|final
 name|String
 name|DEFAULT_NM_WEBAPP_ADDRESS
 init|=
-literal|"0.0.0.0:9999"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_NM_WEBAPP_PORT
 decl_stmt|;
 comment|/** How often to monitor containers.*/
 DECL|field|NM_CONTAINER_MON_INTERVAL_MS

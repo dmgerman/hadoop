@@ -172,7 +172,7 @@ name|MRConfig
 operator|.
 name|MASTER_ADDRESS
 argument_list|,
-literal|"local"
+literal|"local:invalid"
 argument_list|)
 expr_stmt|;
 comment|// should throw an exception for invalid value

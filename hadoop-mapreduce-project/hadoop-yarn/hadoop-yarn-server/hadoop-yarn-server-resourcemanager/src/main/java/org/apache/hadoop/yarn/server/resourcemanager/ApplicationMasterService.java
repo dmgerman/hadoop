@@ -924,6 +924,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|bindAddress
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_ADDRESS
 argument_list|)
 expr_stmt|;
 name|super

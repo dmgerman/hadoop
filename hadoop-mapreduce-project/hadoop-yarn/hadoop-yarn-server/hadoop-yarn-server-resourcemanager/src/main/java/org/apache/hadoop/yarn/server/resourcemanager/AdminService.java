@@ -749,6 +749,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|bindAddress
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_ADMIN_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RM_ADMIN_ADDRESS
 argument_list|)
 expr_stmt|;
 name|adminAcl

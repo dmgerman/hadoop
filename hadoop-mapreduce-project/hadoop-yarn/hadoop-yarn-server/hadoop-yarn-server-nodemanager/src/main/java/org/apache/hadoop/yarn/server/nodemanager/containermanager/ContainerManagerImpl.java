@@ -1797,6 +1797,14 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_ADDRESS
 argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|NM_ADDRESS
 argument_list|)
 decl_stmt|;
 name|server

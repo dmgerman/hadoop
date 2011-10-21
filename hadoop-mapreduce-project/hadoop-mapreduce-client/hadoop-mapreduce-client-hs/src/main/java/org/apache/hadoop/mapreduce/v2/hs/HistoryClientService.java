@@ -1154,6 +1154,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|serviceAddr
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_PORT
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_ADDRESS
 argument_list|)
 decl_stmt|;
 name|InetAddress
