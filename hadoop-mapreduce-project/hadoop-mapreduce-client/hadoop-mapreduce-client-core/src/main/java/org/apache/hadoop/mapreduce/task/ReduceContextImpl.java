@@ -1068,6 +1068,20 @@ return|return
 name|value
 return|;
 block|}
+DECL|method|getBackupStore ()
+name|BackupStore
+argument_list|<
+name|KEYIN
+argument_list|,
+name|VALUEIN
+argument_list|>
+name|getBackupStore
+parameter_list|()
+block|{
+return|return
+name|backupStore
+return|;
+block|}
 DECL|class|ValueIterator
 specifier|protected
 class|class
@@ -1366,7 +1380,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|backupStore
+name|getBackupStore
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -1546,7 +1561,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|backupStore
+name|getBackupStore
+argument_list|()
 operator|==
 literal|null
 condition|)
@@ -1594,7 +1610,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|backupStore
+name|getBackupStore
+argument_list|()
 operator|==
 literal|null
 condition|)
