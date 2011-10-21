@@ -692,7 +692,7 @@ name|web
 operator|.
 name|resources
 operator|.
-name|DstPathParam
+name|DestinationParam
 import|;
 end_import
 
@@ -1836,7 +1836,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DstPathParam.NAME) @DefaultValue(DstPathParam.DEFAULT) final DstPathParam dstPath, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions )
+DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions )
 specifier|public
 name|Response
 name|put
@@ -1897,20 +1897,20 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-name|DstPathParam
+name|DestinationParam
 operator|.
 name|NAME
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-name|DstPathParam
+name|DestinationParam
 operator|.
 name|DEFAULT
 argument_list|)
 specifier|final
-name|DstPathParam
-name|dstPath
+name|DestinationParam
+name|destination
 parameter_list|,
 annotation|@
 name|QueryParam
@@ -2125,7 +2125,7 @@ name|toSortedString
 argument_list|(
 literal|", "
 argument_list|,
-name|dstPath
+name|destination
 argument_list|,
 name|owner
 argument_list|,
@@ -2388,7 +2388,7 @@ name|rename
 argument_list|(
 name|fullpath
 argument_list|,
-name|dstPath
+name|destination
 operator|.
 name|getValue
 argument_list|()
@@ -2434,7 +2434,7 @@ name|rename2
 argument_list|(
 name|fullpath
 argument_list|,
-name|dstPath
+name|destination
 operator|.
 name|getValue
 argument_list|()

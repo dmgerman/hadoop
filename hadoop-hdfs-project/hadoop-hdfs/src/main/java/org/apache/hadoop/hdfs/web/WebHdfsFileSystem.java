@@ -580,7 +580,7 @@ name|web
 operator|.
 name|resources
 operator|.
-name|DstPathParam
+name|DestinationParam
 import|;
 end_import
 
@@ -2243,7 +2243,7 @@ argument_list|,
 name|src
 argument_list|,
 operator|new
-name|DstPathParam
+name|DestinationParam
 argument_list|(
 name|makeQualified
 argument_list|(
@@ -2326,7 +2326,7 @@ argument_list|,
 name|src
 argument_list|,
 operator|new
-name|DstPathParam
+name|DestinationParam
 argument_list|(
 name|makeQualified
 argument_list|(

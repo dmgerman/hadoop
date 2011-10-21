@@ -108,6 +108,10 @@ argument_list|(
 name|DOMAIN
 argument_list|,
 name|value
+argument_list|,
+literal|1
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

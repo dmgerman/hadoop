@@ -39,7 +39,7 @@ operator|.
 name|Domain
 argument_list|>
 block|{
-DECL|method|ShortParam (final Domain domain, final Short value)
+DECL|method|ShortParam (final Domain domain, final Short value, final Short min, final Short max)
 name|ShortParam
 parameter_list|(
 specifier|final
@@ -49,6 +49,14 @@ parameter_list|,
 specifier|final
 name|Short
 name|value
+parameter_list|,
+specifier|final
+name|Short
+name|min
+parameter_list|,
+specifier|final
+name|Short
+name|max
 parameter_list|)
 block|{
 name|super
@@ -58,6 +66,117 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+name|checkRange
+argument_list|(
+name|min
+argument_list|,
+name|max
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|checkRange (final Short min, final Short max)
+specifier|private
+name|void
+name|checkRange
+parameter_list|(
+specifier|final
+name|Short
+name|min
+parameter_list|,
+specifier|final
+name|Short
+name|max
+parameter_list|)
+block|{
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+name|min
+operator|!=
+literal|null
+operator|&&
+name|value
+operator|<
+name|min
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid parameter range: "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" = "
+operator|+
+name|domain
+operator|.
+name|toString
+argument_list|(
+name|value
+argument_list|)
+operator|+
+literal|"< "
+operator|+
+name|domain
+operator|.
+name|toString
+argument_list|(
+name|min
+argument_list|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|max
+operator|!=
+literal|null
+operator|&&
+name|value
+operator|>
+name|max
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid parameter range: "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|" = "
+operator|+
+name|domain
+operator|.
+name|toString
+argument_list|(
+name|value
+argument_list|)
+operator|+
+literal|"> "
+operator|+
+name|domain
+operator|.
+name|toString
+argument_list|(
+name|max
+argument_list|)
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -173,6 +292,8 @@ name|String
 name|str
 parameter_list|)
 block|{
+try|try
+block|{
 return|return
 name|NULL
 operator|.
@@ -192,6 +313,31 @@ argument_list|,
 name|radix
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Failed to parse \""
+operator|+
+name|str
+operator|+
+literal|"\" as a radix-"
+operator|+
+name|radix
+operator|+
+literal|" short integer."
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/** Convert a Short to a String. */
 DECL|method|toString (final Short n)

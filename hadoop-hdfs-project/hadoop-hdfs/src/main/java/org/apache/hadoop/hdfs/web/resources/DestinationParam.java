@@ -39,10 +39,10 @@ comment|/** Destination path parameter. */
 end_comment
 
 begin_class
-DECL|class|DstPathParam
+DECL|class|DestinationParam
 specifier|public
 class|class
-name|DstPathParam
+name|DestinationParam
 extends|extends
 name|StringParam
 block|{
@@ -54,7 +54,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"dstpath"
+literal|"destination"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -81,20 +81,19 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|DstPathParam (final String str)
-specifier|public
-name|DstPathParam
+DECL|method|validate (final String str)
+specifier|private
+specifier|static
+name|String
+name|validate
 parameter_list|(
 specifier|final
 name|String
 name|str
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|DOMAIN
-argument_list|,
+if|if
+condition|(
 name|str
 operator|==
 literal|null
@@ -105,9 +104,42 @@ name|equals
 argument_list|(
 name|DEFAULT
 argument_list|)
-condition|?
+condition|)
+block|{
+return|return
 literal|null
-else|:
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|str
+operator|.
+name|startsWith
+argument_list|(
+name|Path
+operator|.
+name|SEPARATOR
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid parameter value: "
+operator|+
+name|NAME
+operator|+
+literal|" = \""
+operator|+
+name|str
+operator|+
+literal|"\" is not an absolute path."
+argument_list|)
+throw|;
+block|}
+return|return
 operator|new
 name|Path
 argument_list|(
@@ -119,6 +151,26 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
+return|;
+block|}
+comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
+DECL|method|DestinationParam (final String str)
+specifier|public
+name|DestinationParam
+parameter_list|(
+specifier|final
+name|String
+name|str
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|DOMAIN
+argument_list|,
+name|validate
+argument_list|(
+name|str
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
