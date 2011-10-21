@@ -624,20 +624,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -736,22 +722,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|YarnRemoteException
@@ -837,22 +807,6 @@ operator|.
 name|security
 operator|.
 name|ApplicationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|SchedulerSecurityInfo
 import|;
 end_import
 
@@ -1193,7 +1147,6 @@ return|return
 name|realProxy
 return|;
 block|}
-comment|//TODO RM NPEs for unknown jobs. History may still be aware.
 comment|// Possibly allow nulls through the PB tunnel, otherwise deal with an exception
 comment|// and redirect to the history server.
 name|ApplicationReport
@@ -1235,14 +1188,11 @@ operator|||
 name|YarnApplicationState
 operator|.
 name|RUNNING
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|application
 operator|.
 name|getYarnApplicationState
 argument_list|()
-argument_list|)
 condition|)
 block|{
 if|if
@@ -2006,7 +1956,22 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception thrown by remote end."
+literal|"Error from remote end: "
+operator|+
+name|e
+operator|.
+name|getTargetException
+argument_list|()
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Tracing remote error "
 argument_list|,
 name|e
 operator|.
@@ -2032,7 +1997,14 @@ literal|"Failed to contact AM/History for job "
 operator|+
 name|jobId
 operator|+
-literal|"  Will retry.."
+literal|" retrying.."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Failed exception on AM/History contact"
 argument_list|,
 name|e
 operator|.
@@ -2060,8 +2032,6 @@ operator|+
 name|jobId
 operator|+
 literal|"  Will retry.."
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 name|LOG
