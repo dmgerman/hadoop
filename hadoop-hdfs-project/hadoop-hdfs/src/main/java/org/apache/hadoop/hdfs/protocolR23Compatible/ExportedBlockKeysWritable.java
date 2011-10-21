@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.security.token.block
+DECL|package|org.apache.hadoop.hdfs.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -14,11 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|block
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -74,6 +70,46 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
+name|BlockKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
+name|ExportedBlockKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -117,24 +153,13 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|ExportedBlockKeys
+DECL|class|ExportedBlockKeysWritable
 specifier|public
 class|class
-name|ExportedBlockKeys
+name|ExportedBlockKeysWritable
 implements|implements
 name|Writable
 block|{
-DECL|field|DUMMY_KEYS
-specifier|public
-specifier|static
-specifier|final
-name|ExportedBlockKeys
-name|DUMMY_KEYS
-init|=
-operator|new
-name|ExportedBlockKeys
-argument_list|()
-decl_stmt|;
 DECL|field|isBlockTokenEnabled
 specifier|private
 name|boolean
@@ -161,9 +186,9 @@ name|BlockKey
 index|[]
 name|allKeys
 decl_stmt|;
-DECL|method|ExportedBlockKeys ()
+DECL|method|ExportedBlockKeysWritable ()
 specifier|public
-name|ExportedBlockKeys
+name|ExportedBlockKeysWritable
 parameter_list|()
 block|{
 name|this
@@ -186,9 +211,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ExportedBlockKeys (boolean isBlockTokenEnabled, long keyUpdateInterval, long tokenLifetime, BlockKey currentKey, BlockKey[] allKeys)
-specifier|public
-name|ExportedBlockKeys
+DECL|method|ExportedBlockKeysWritable (boolean isBlockTokenEnabled, long keyUpdateInterval, long tokenLifetime, BlockKey currentKey, BlockKey[] allKeys)
+name|ExportedBlockKeysWritable
 parameter_list|(
 name|boolean
 name|isBlockTokenEnabled
@@ -256,57 +280,6 @@ else|:
 name|allKeys
 expr_stmt|;
 block|}
-DECL|method|isBlockTokenEnabled ()
-specifier|public
-name|boolean
-name|isBlockTokenEnabled
-parameter_list|()
-block|{
-return|return
-name|isBlockTokenEnabled
-return|;
-block|}
-DECL|method|getKeyUpdateInterval ()
-specifier|public
-name|long
-name|getKeyUpdateInterval
-parameter_list|()
-block|{
-return|return
-name|keyUpdateInterval
-return|;
-block|}
-DECL|method|getTokenLifetime ()
-specifier|public
-name|long
-name|getTokenLifetime
-parameter_list|()
-block|{
-return|return
-name|tokenLifetime
-return|;
-block|}
-DECL|method|getCurrentKey ()
-specifier|public
-name|BlockKey
-name|getCurrentKey
-parameter_list|()
-block|{
-return|return
-name|currentKey
-return|;
-block|}
-DECL|method|getAllKeys ()
-specifier|public
-name|BlockKey
-index|[]
-name|getAllKeys
-parameter_list|()
-block|{
-return|return
-name|allKeys
-return|;
-block|}
 comment|// ///////////////////////////////////////////////
 comment|// Writable
 comment|// ///////////////////////////////////////////////
@@ -317,7 +290,7 @@ name|WritableFactories
 operator|.
 name|setFactory
 argument_list|(
-name|ExportedBlockKeys
+name|ExportedBlockKeysWritable
 operator|.
 name|class
 argument_list|,
@@ -332,7 +305,7 @@ parameter_list|()
 block|{
 return|return
 operator|new
-name|ExportedBlockKeys
+name|ExportedBlockKeysWritable
 argument_list|()
 return|;
 block|}
@@ -340,7 +313,8 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -418,7 +392,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -508,6 +483,78 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|convert (ExportedBlockKeys blockKeys)
+specifier|public
+specifier|static
+name|ExportedBlockKeysWritable
+name|convert
+parameter_list|(
+name|ExportedBlockKeys
+name|blockKeys
+parameter_list|)
+block|{
+if|if
+condition|(
+name|blockKeys
+operator|==
+literal|null
+condition|)
+return|return
+literal|null
+return|;
+return|return
+operator|new
+name|ExportedBlockKeysWritable
+argument_list|(
+name|blockKeys
+operator|.
+name|isBlockTokenEnabled
+argument_list|()
+argument_list|,
+name|blockKeys
+operator|.
+name|getKeyUpdateInterval
+argument_list|()
+argument_list|,
+name|blockKeys
+operator|.
+name|getTokenLifetime
+argument_list|()
+argument_list|,
+name|blockKeys
+operator|.
+name|getCurrentKey
+argument_list|()
+argument_list|,
+name|blockKeys
+operator|.
+name|getAllKeys
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|convert ()
+specifier|public
+name|ExportedBlockKeys
+name|convert
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ExportedBlockKeys
+argument_list|(
+name|isBlockTokenEnabled
+argument_list|,
+name|keyUpdateInterval
+argument_list|,
+name|tokenLifetime
+argument_list|,
+name|currentKey
+argument_list|,
+name|allKeys
+argument_list|)
+return|;
 block|}
 block|}
 end_class

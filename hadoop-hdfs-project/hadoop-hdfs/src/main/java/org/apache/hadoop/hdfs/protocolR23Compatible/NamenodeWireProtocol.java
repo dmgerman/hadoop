@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -68,29 +66,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
 name|protocol
 operator|.
-name|DatanodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|block
-operator|.
-name|ExportedBlockKeys
+name|CheckpointCommand
 import|;
 end_import
 
@@ -106,9 +86,23 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|protocol
 operator|.
-name|CheckpointSignature
+name|NamenodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RemoteException
 import|;
 end_import
 
@@ -144,6 +138,10 @@ begin_comment
 comment|/*****************************************************************************  * Protocol that a secondary NameNode uses to communicate with the NameNode.  * It's used to get part of the name node state  *****************************************************************************/
 end_comment
 
+begin_comment
+comment|/**   * This class defines the actual protocol used to communicate between namenodes.  * The parameters in the methods which are specified in the  * package are separate from those used internally in the DN and DFSClient  * and hence need to be converted using {@link NamenodeProtocolTranslatorR23}  * and {@link NamenodeProtocolServerSideTranslatorR23}.  */
+end_comment
+
 begin_interface
 annotation|@
 name|KerberosInfo
@@ -164,14 +162,14 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|NamenodeProtocol
+DECL|interface|NamenodeWireProtocol
 specifier|public
 interface|interface
-name|NamenodeProtocol
+name|NamenodeWireProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * Until version 6L, this class served as both    * the client interface to the NN AND the RPC protocol used to     * communicate with the NN.    *     * Post version 70 (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/ClientNamenodeWireProtocol}    *     * This class is used by both the DFSClient and the     * NN server side to insulate from the protocol serialization.    *     * If you are adding/changing NN's interface then you need to     * change both this class and ALSO    * {@link org.apache.hadoop.hdfs.protocolR23Compatible.NamenodeWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link org.apache.hadoop.hdfs.protocolR23Compatible.ClientNamenodeWireProtocol}    *     * 6: Switch to txid-based file naming for image and edits    */
+comment|/**    * The  rules for changing this protocol are the same as that for    * {@link ClientNamenodeWireProtocol} - see that java file for details.    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -181,60 +179,13 @@ name|versionID
 init|=
 literal|6L
 decl_stmt|;
-comment|// Error codes passed by errorReport().
-DECL|field|NOTIFY
-specifier|final
-specifier|static
-name|int
-name|NOTIFY
-init|=
-literal|0
-decl_stmt|;
-DECL|field|FATAL
-specifier|final
-specifier|static
-name|int
-name|FATAL
-init|=
-literal|1
-decl_stmt|;
-DECL|field|ACT_UNKNOWN
+comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *     * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @return          a list of blocks& their locations    * @throws RemoteException if size is less than or equal to 0 or    *                               datanode does not exist    */
+DECL|method|getBlocks (DatanodeInfoWritable datanode, long size)
 specifier|public
-specifier|final
-specifier|static
-name|int
-name|ACT_UNKNOWN
-init|=
-literal|0
-decl_stmt|;
-comment|// unknown action
-DECL|field|ACT_SHUTDOWN
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|ACT_SHUTDOWN
-init|=
-literal|50
-decl_stmt|;
-comment|// shutdown node
-DECL|field|ACT_CHECKPOINT
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|ACT_CHECKPOINT
-init|=
-literal|51
-decl_stmt|;
-comment|// do checkpoint
-comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *     * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @return          a list of blocks& their locations    * @throws IOException if size is less than or equal to 0 or                                    datanode does not exist    */
-DECL|method|getBlocks (DatanodeInfo datanode, long size)
-specifier|public
-name|BlocksWithLocations
+name|BlocksWithLocationsWritable
 name|getBlocks
 parameter_list|(
-name|DatanodeInfo
+name|DatanodeInfoWritable
 name|datanode
 parameter_list|,
 name|long
@@ -246,7 +197,7 @@ function_decl|;
 comment|/**    * Get the current block keys    *     * @return ExportedBlockKeys containing current block keys    * @throws IOException     */
 DECL|method|getBlockKeys ()
 specifier|public
-name|ExportedBlockKeys
+name|ExportedBlockKeysWritable
 name|getBlockKeys
 parameter_list|()
 throws|throws
@@ -266,28 +217,28 @@ annotation|@
 name|Deprecated
 DECL|method|rollEditLog ()
 specifier|public
-name|CheckpointSignature
+name|CheckpointSignatureWritable
 name|rollEditLog
 parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Request name-node version and storage information.    *     * @return {@link NamespaceInfo} identifying versions and storage information     *          of the name-node    * @throws IOException    */
+comment|/**    * Request name-node version and storage information.    * @throws IOException    */
 DECL|method|versionRequest ()
 specifier|public
-name|NamespaceInfo
+name|NamespaceInfoWritable
 name|versionRequest
 parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Report to the active name-node an error occurred on a subordinate node.    * Depending on the error code the active node may decide to unregister the    * reporting node.    *     * @param registration requesting node.    * @param errorCode indicates the error    * @param msg free text description of the error    * @throws IOException    */
-DECL|method|errorReport (NamenodeRegistration registration, int errorCode, String msg)
+DECL|method|errorReport (NamenodeRegistrationWritable registration, int errorCode, String msg)
 specifier|public
 name|void
 name|errorReport
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|,
 name|int
@@ -300,39 +251,39 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**     * Register a subordinate name-node like backup node.    *    * @return  {@link NamenodeRegistration} of the node,    *          which this node has just registered with.    */
-DECL|method|register (NamenodeRegistration registration)
+DECL|method|register ( NamenodeRegistrationWritable registration)
 specifier|public
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|register
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * A request to the active name-node to start a checkpoint.    * The name-node should decide whether to admit it or reject.    * The name-node also decides what should be done with the backup node    * image before and after the checkpoint.    *     * @see CheckpointCommand    * @see NamenodeCommand    * @see #ACT_SHUTDOWN    *     * @param registration the requesting node    * @return {@link CheckpointCommand} if checkpoint is allowed.    * @throws IOException    */
-DECL|method|startCheckpoint (NamenodeRegistration registration)
+comment|/**    * A request to the active name-node to start a checkpoint.    * The name-node should decide whether to admit it or reject.    * The name-node also decides what should be done with the backup node    * image before and after the checkpoint.    *     * @see CheckpointCommand    * @see NamenodeCommandWritable    * @see #ACT_SHUTDOWN    *     * @param registration the requesting node    * @return {@link CheckpointCommand} if checkpoint is allowed.    * @throws IOException    */
+DECL|method|startCheckpoint ( NamenodeRegistrationWritable registration)
 specifier|public
-name|NamenodeCommand
+name|NamenodeCommandWritable
 name|startCheckpoint
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * A request to the active name-node to finalize    * previously started checkpoint.    *     * @param registration the requesting node    * @param sig {@code CheckpointSignature} which identifies the checkpoint.    * @throws IOException    */
-DECL|method|endCheckpoint (NamenodeRegistration registration, CheckpointSignature sig)
+DECL|method|endCheckpoint (NamenodeRegistrationWritable registration, CheckpointSignatureWritable sig)
 specifier|public
 name|void
 name|endCheckpoint
 parameter_list|(
-name|NamenodeRegistration
+name|NamenodeRegistrationWritable
 name|registration
 parameter_list|,
-name|CheckpointSignature
+name|CheckpointSignatureWritable
 name|sig
 parameter_list|)
 throws|throws
@@ -341,11 +292,39 @@ function_decl|;
 comment|/**    * Return a structure containing details about all edit logs    * available to be fetched from the NameNode.    * @param sinceTxId return only logs that contain transactions>= sinceTxId    */
 DECL|method|getEditLogManifest (long sinceTxId)
 specifier|public
-name|RemoteEditLogManifest
+name|RemoteEditLogManifestWritable
 name|getEditLogManifest
 parameter_list|(
 name|long
 name|sinceTxId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 the method name    * to avoid conflict.    */
+specifier|public
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|ProtocolSignatureWritable
+DECL|method|getProtocolSignature2 (String protocol, long clientVersion, int clientMethodsHash)
+name|getProtocolSignature2
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
 parameter_list|)
 throws|throws
 name|IOException
