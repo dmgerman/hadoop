@@ -884,6 +884,15 @@ name|NM_PREFIX
 operator|+
 literal|"address"
 decl_stmt|;
+DECL|field|DEFAULT_NM_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_PORT
+init|=
+literal|0
+decl_stmt|;
 DECL|field|DEFAULT_NM_ADDRESS
 specifier|public
 specifier|static
@@ -891,7 +900,9 @@ specifier|final
 name|String
 name|DEFAULT_NM_ADDRESS
 init|=
-literal|"0.0.0.0:0"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_NM_PORT
 decl_stmt|;
 comment|/** who will execute(launch) the containers.*/
 DECL|field|NM_CONTAINER_EXECUTOR
