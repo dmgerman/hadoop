@@ -2157,18 +2157,6 @@ name|myConf
 operator|.
 name|setInt
 argument_list|(
-literal|"mapreduce.task.timeout"
-argument_list|,
-literal|10
-operator|*
-literal|1000
-argument_list|)
-expr_stmt|;
-comment|//reduce the timeout
-name|myConf
-operator|.
-name|setInt
-argument_list|(
 name|MRJobConfig
 operator|.
 name|MAP_MAX_ATTEMPTS

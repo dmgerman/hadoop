@@ -1916,6 +1916,13 @@ name|getMapResourceUsageMetrics
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|matcher
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// start the status reporter thread
 name|reporter
 operator|=
@@ -1925,6 +1932,13 @@ argument_list|(
 name|ctxt
 argument_list|,
 name|matcher
+argument_list|)
+expr_stmt|;
+name|reporter
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 name|reporter

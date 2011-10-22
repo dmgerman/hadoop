@@ -1225,7 +1225,7 @@ condition|)
 block|{
 name|umbilical
 operator|.
-name|reportDiagnosticInfo
+name|fatalError
 argument_list|(
 name|taskid
 argument_list|,
