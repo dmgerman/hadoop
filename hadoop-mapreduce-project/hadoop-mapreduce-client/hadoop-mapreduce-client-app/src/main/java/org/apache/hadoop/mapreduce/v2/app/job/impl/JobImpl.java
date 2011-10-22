@@ -6338,44 +6338,6 @@ name|fsTokens
 argument_list|)
 expr_stmt|;
 block|}
-name|Path
-name|remoteJobTokenFile
-init|=
-operator|new
-name|Path
-argument_list|(
-name|job
-operator|.
-name|remoteJobSubmitDir
-argument_list|,
-name|MRJobConfig
-operator|.
-name|APPLICATION_TOKENS_FILE
-argument_list|)
-decl_stmt|;
-name|tokenStorage
-operator|.
-name|writeTokenStorageFile
-argument_list|(
-name|remoteJobTokenFile
-argument_list|,
-name|job
-operator|.
-name|conf
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Writing back the job-token file on the remote file system:"
-operator|+
-name|remoteJobTokenFile
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**      * ChainMapper and ChainReducer must execute in parallel, so they're not      * compatible with uberization/LocalContainerLauncher (100% sequential).      */
 DECL|method|isChainJob (Configuration conf)
