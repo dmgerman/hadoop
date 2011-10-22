@@ -1501,6 +1501,14 @@ argument_list|)
 operator|.
 name|getFile
 argument_list|()
+operator|.
+name|split
+argument_list|(
+literal|"!"
+argument_list|)
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 comment|// Add standard Hadoop classes
