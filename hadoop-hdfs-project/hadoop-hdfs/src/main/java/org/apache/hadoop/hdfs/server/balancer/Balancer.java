@@ -3484,7 +3484,7 @@ name|getUtilization
 argument_list|(
 name|datanode
 argument_list|)
-operator|>
+operator|>=
 name|avg
 condition|)
 block|{
