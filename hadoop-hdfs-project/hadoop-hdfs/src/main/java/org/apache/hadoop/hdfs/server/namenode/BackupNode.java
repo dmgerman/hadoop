@@ -924,6 +924,13 @@ expr_stmt|;
 block|}
 block|}
 comment|// Stop the RPC client
+if|if
+condition|(
+name|namenode
+operator|!=
+literal|null
+condition|)
+block|{
 name|RPC
 operator|.
 name|stopProxy
@@ -931,6 +938,7 @@ argument_list|(
 name|namenode
 argument_list|)
 expr_stmt|;
+block|}
 name|namenode
 operator|=
 literal|null
@@ -1006,7 +1014,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|server
+name|clientRpcServer
 operator|.
 name|addProtocol
 argument_list|(
@@ -1227,7 +1235,7 @@ argument_list|()
 operator|+
 literal|" expecting "
 operator|+
-name|rpcAddress
+name|clientRpcAddress
 argument_list|)
 throw|;
 name|getBNImage
