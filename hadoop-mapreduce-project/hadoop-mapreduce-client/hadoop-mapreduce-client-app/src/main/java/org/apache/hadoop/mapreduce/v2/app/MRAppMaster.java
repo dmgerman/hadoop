@@ -2804,6 +2804,10 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
+try|try
+block|{
+comment|// Stop all services
+comment|// This will also send the final report to the ResourceManager
 name|LOG
 operator|.
 name|info
@@ -2811,11 +2815,77 @@ argument_list|(
 literal|"Calling stop for all the services"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|stop
 argument_list|()
 expr_stmt|;
+comment|// Send job-end notification
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Job end notification started for jobID : "
+operator|+
+name|job
+operator|.
+name|getReport
+argument_list|()
+operator|.
+name|getJobId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|JobEndNotifier
+name|notifier
+init|=
+operator|new
+name|JobEndNotifier
+argument_list|()
+decl_stmt|;
+name|notifier
+operator|.
+name|setConf
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|notifier
+operator|.
+name|notify
+argument_list|(
+name|job
+operator|.
+name|getReport
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Job end notification interrupted for jobID : "
+operator|+
+name|job
+operator|.
+name|getReport
+argument_list|()
+operator|.
+name|getJobId
+argument_list|()
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2833,6 +2903,7 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Cleanup staging directory
 try|try
 block|{
 name|cleanupStagingDir
@@ -2853,8 +2924,6 @@ literal|"Failed to delete staging dir"
 argument_list|)
 expr_stmt|;
 block|}
-comment|//TODO: this is required because rpc server does not shut down
-comment|// in spite of calling server.stop().
 comment|//Bring the process down by force.
 comment|//Not needed after HADOOP-7140
 name|LOG

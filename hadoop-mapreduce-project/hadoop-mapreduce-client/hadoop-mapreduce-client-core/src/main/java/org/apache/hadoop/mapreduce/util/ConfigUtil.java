@@ -1192,7 +1192,7 @@ index|[]
 block|{
 name|MRJobConfig
 operator|.
-name|END_NOTIFICATION_URL
+name|MR_JOB_END_NOTIFICATION_URL
 block|}
 argument_list|)
 expr_stmt|;
@@ -1208,7 +1208,7 @@ index|[]
 block|{
 name|MRJobConfig
 operator|.
-name|END_NOTIFICATION_RETRIES
+name|MR_JOB_END_RETRY_ATTEMPTS
 block|}
 argument_list|)
 expr_stmt|;
@@ -1224,7 +1224,7 @@ index|[]
 block|{
 name|MRJobConfig
 operator|.
-name|END_NOTIFICATION_RETRIE_INTERVAL
+name|MR_JOB_END_RETRY_INTERVAL
 block|}
 argument_list|)
 expr_stmt|;

@@ -3416,7 +3416,7 @@ name|get
 argument_list|(
 name|JobContext
 operator|.
-name|END_NOTIFICATION_URL
+name|MR_JOB_END_NOTIFICATION_URL
 argument_list|)
 return|;
 block|}
@@ -3434,7 +3434,7 @@ name|set
 argument_list|(
 name|JobContext
 operator|.
-name|END_NOTIFICATION_URL
+name|MR_JOB_END_NOTIFICATION_URL
 argument_list|,
 name|uri
 argument_list|)
