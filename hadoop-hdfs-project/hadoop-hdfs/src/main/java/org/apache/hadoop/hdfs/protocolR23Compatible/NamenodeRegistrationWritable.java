@@ -414,6 +414,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|storageInfo
+operator|=
+operator|new
+name|StorageInfoWritable
+argument_list|()
+expr_stmt|;
+name|storageInfo
 operator|.
 name|readFields
 argument_list|(
