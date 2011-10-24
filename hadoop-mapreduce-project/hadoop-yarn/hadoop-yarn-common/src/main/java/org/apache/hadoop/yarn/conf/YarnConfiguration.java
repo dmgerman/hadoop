@@ -1359,6 +1359,18 @@ name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.path"
 decl_stmt|;
+comment|/**     * The UNIX group that the linux-container-executor should run as.    * This is intended to be set as part of container-executor.cfg.     */
+DECL|field|NM_LINUX_CONTAINER_GROUP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_GROUP
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.group"
+decl_stmt|;
 comment|/** T-file compression types used to compress aggregated logs.*/
 DECL|field|NM_LOG_AGG_COMPRESSION_TYPE
 specifier|public

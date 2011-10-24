@@ -642,7 +642,7 @@ specifier|final
 name|String
 name|CONTAINER_SCRIPT
 init|=
-literal|"task.sh"
+literal|"launch_container.sh"
 decl_stmt|;
 DECL|field|FINAL_CONTAINER_TOKENS_FILE
 specifier|public
