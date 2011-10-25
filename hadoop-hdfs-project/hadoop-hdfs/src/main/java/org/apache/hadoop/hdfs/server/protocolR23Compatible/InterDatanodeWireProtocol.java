@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.server.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -96,22 +96,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|ExtendedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocolR23Compatible
 operator|.
 name|ClientNamenodeWireProtocol
@@ -128,13 +112,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocolR23Compatible
 operator|.
-name|protocol
-operator|.
-name|BlockRecoveryCommand
-operator|.
-name|RecoveringBlock
+name|ExtendedBlockWritable
 import|;
 end_import
 
@@ -148,11 +128,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
 name|protocolR23Compatible
 operator|.
-name|InterDatanodeWireProtocol
+name|ProtocolSignatureWritable
 import|;
 end_import
 
@@ -208,10 +186,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|InterDatanodeProtocol
+DECL|interface|InterDatanodeWireProtocol
 specifier|public
 interface|interface
-name|InterDatanodeProtocol
+name|InterDatanodeWireProtocol
 extends|extends
 name|VersionedProtocol
 block|{
@@ -226,12 +204,12 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|InterDatanodeProtocol
+name|InterDatanodeWireProtocol
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Until version 9, this class InterDatanodeProtocol served as both    * the interface to the DN AND the RPC protocol used to communicate with the     * DN.    *     * Post version 6L (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/InterDatanodeWireProtocol}    *     * This class is used by both the DN to insulate from the protocol     * serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link InterDatanodeWireProtocol}    * These changes need to be done in a compatible fashion as described in     * {@link ClientNamenodeWireProtocol}    *     * The log of historical changes can be retrieved from the svn).    * 6: Add block pool ID to Block    */
+comment|/**    * The  rules for changing this protocol are the same as that for    * {@link ClientNamenodeWireProtocol} - see that java file for details.    * 6: Add block pool ID to Block    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -242,22 +220,22 @@ init|=
 literal|6L
 decl_stmt|;
 comment|/**    * Initialize a replica recovery.    *     * @return actual state of the replica on this data-node or     * null if data-node does not have the replica.    */
-DECL|method|initReplicaRecovery (RecoveringBlock rBlock)
-name|ReplicaRecoveryInfo
+DECL|method|initReplicaRecovery (RecoveringBlockWritable rBlock)
+name|ReplicaRecoveryInfoWritable
 name|initReplicaRecovery
 parameter_list|(
-name|RecoveringBlock
+name|RecoveringBlockWritable
 name|rBlock
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update replica with the new generation stamp and length.      */
-DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
-name|ExtendedBlock
+DECL|method|updateReplicaUnderRecovery ( ExtendedBlockWritable oldBlock, long recoveryId, long newLength)
+name|ExtendedBlockWritable
 name|updateReplicaUnderRecovery
 parameter_list|(
-name|ExtendedBlock
+name|ExtendedBlockWritable
 name|oldBlock
 parameter_list|,
 name|long
@@ -265,6 +243,24 @@ name|recoveryId
 parameter_list|,
 name|long
 name|newLength
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 to the method name    * to avoid conflict.    */
+DECL|method|getProtocolSignature2 ( String protocol, long clientVersion, int clientMethodsHash)
+specifier|public
+name|ProtocolSignatureWritable
+name|getProtocolSignature2
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
 parameter_list|)
 throws|throws
 name|IOException
