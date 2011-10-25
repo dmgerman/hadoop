@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Event indicating that the {@link ResourceLocalizationService.LocalizerTracker}  * should fetch this resource.  */
+comment|/**  * Event indicating that the {@link ResourceLocalizationService}  * should fetch this resource.  */
 end_comment
 
 begin_class

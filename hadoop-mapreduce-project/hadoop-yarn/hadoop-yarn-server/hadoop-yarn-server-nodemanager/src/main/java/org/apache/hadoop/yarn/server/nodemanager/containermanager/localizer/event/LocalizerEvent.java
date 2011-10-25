@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Events delivered to the {@link ResourceLocalizationService.LocalizerTracker}  */
+comment|/**  * Events delivered to the {@link ResourceLocalizationService}  */
 end_comment
 
 begin_class
