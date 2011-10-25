@@ -272,6 +272,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -628,7 +642,7 @@ operator|=
 name|startCount
 expr_stmt|;
 block|}
-comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.service.AbstractService#init(org.apache.hadoop.conf.Configuration)    * Initializes the FileSystem and Path objects for the log and done directories.    * Creates these directories if they do not already exist.    */
+comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.service.AbstractService#init(org.    * apache.hadoop.conf.Configuration)    * Initializes the FileSystem and Path objects for the log and done directories.    * Creates these directories if they do not already exist.    */
 annotation|@
 name|Override
 DECL|method|init (Configuration conf)
@@ -908,7 +922,9 @@ name|MRJobConfig
 operator|.
 name|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 operator|+
-literal|". Either set to true or pre-create this directory with appropriate permissions"
+literal|". Either set to true or pre-create this directory with"
+operator|+
+literal|" appropriate permissions"
 decl_stmt|;
 name|LOG
 operator|.
@@ -937,7 +953,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed checking for the existance of history intermediate done directory: ["
+literal|"Failed checking for the existance of history intermediate "
+operator|+
+literal|"done directory: ["
 operator|+
 name|doneDirPath
 operator|+
@@ -1937,6 +1955,16 @@ operator|.
 name|getHistoryEvent
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|historyEvent
+operator|instanceof
+name|NormalizedResourceEvent
+operator|)
+condition|)
+block|{
 name|mi
 operator|.
 name|writeEvent
@@ -1944,6 +1972,7 @@ argument_list|(
 name|historyEvent
 argument_list|)
 expr_stmt|;
+block|}
 name|processEventForJobSummary
 argument_list|(
 name|event
@@ -2272,7 +2301,7 @@ block|}
 block|}
 block|}
 DECL|method|processEventForJobSummary (HistoryEvent event, JobSummary summary, JobId jobId)
-specifier|private
+specifier|public
 name|void
 name|processEventForJobSummary
 parameter_list|(
@@ -2336,6 +2365,65 @@ name|getSubmitTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+break|break;
+case|case
+name|NORMALIZED_RESOURCE
+case|:
+name|NormalizedResourceEvent
+name|normalizedResourceEvent
+init|=
+operator|(
+name|NormalizedResourceEvent
+operator|)
+name|event
+decl_stmt|;
+if|if
+condition|(
+name|normalizedResourceEvent
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|MAP
+condition|)
+block|{
+name|summary
+operator|.
+name|setResourcesPerMap
+argument_list|(
+name|normalizedResourceEvent
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|normalizedResourceEvent
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|REDUCE
+condition|)
+block|{
+name|summary
+operator|.
+name|setResourcesPerReduce
+argument_list|(
+name|normalizedResourceEvent
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 break|break;
 case|case
 name|JOB_INITED
@@ -2740,7 +2828,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Inactive Writer: Likely received multiple JobFinished / JobUnsuccessful events for JobId: ["
+literal|"Inactive Writer: Likely received multiple JobFinished / "
+operator|+
+literal|"JobUnsuccessful events for JobId: ["
 operator|+
 name|jobId
 operator|+

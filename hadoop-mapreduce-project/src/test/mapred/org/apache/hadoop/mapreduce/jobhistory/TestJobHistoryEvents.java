@@ -20,21 +20,11 @@ end_package
 
 begin_import
 import|import
-name|java
+name|junit
 operator|.
-name|util
+name|framework
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
+name|TestCase
 import|;
 end_import
 
@@ -91,16 +81,6 @@ operator|.
 name|mapreduce
 operator|.
 name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 

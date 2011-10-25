@@ -20,11 +20,15 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|avro
+operator|.
+name|util
+operator|.
+name|Utf8
 import|;
 end_import
 
@@ -53,6 +57,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|ProgressSplitsBlock
 import|;
 end_import
 
@@ -109,34 +127,6 @@ operator|.
 name|mapreduce
 operator|.
 name|TaskType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|ProgressSplitsBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|util
-operator|.
-name|Utf8
 import|;
 end_import
 
