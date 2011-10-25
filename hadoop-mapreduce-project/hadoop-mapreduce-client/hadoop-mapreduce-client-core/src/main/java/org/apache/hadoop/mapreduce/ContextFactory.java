@@ -76,6 +76,24 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|lib
+operator|.
+name|map
+operator|.
+name|WrappedMapper
+import|;
+end_import
+
 begin_comment
 comment|/**  * A factory to allow applications to deal with inconsistencies between  * MapReduce Context Objects API between hadoop-0.20 and later versions.  */
 end_comment
@@ -584,7 +602,7 @@ argument_list|)
 expr_stmt|;
 name|REPORTER_FIELD
 operator|=
-name|taskIOContextCls
+name|taskContextCls
 operator|.
 name|getDeclaredField
 argument_list|(
@@ -696,7 +714,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Clone a job or task attempt context with a new configuration.    * @param original the original context    * @param conf the new configuration    * @return a new context object    * @throws InterruptedException     * @throws IOException     */
+comment|/**    * Clone a {@link JobContext} or {@link TaskAttemptContext} with a     * new configuration.    * @param original the original context    * @param conf the new configuration    * @return a new context object    * @throws InterruptedException     * @throws IOException     */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -882,7 +900,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Copy a mapper context, optionally replacing the input and output.    * @param<K1> input key type    * @param<V1> input value type    * @param<K2> output key type    * @param<V2> output value type    * @param context the context to clone    * @param conf a new configuration    * @param reader Reader to read from. Null means to clone from context.    * @param writer Writer to write to. Null means to clone from context.    * @return a new context. it will not be the same class as the original.    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Copy a custom {@link WrappedMapper.Context}, optionally replacing     * the input and output.    * @param<K1> input key type    * @param<V1> input value type    * @param<K2> output key type    * @param<V2> output value type    * @param context the context to clone    * @param conf a new configuration    * @param reader Reader to read from. Null means to clone from context.    * @param writer Writer to write to. Null means to clone from context.    * @return a new context. it will not be the same class as the original.    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
