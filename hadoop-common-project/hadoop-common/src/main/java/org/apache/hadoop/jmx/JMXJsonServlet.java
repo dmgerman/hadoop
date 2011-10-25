@@ -542,6 +542,11 @@ argument_list|,
 literal|"query format is not as expected."
 argument_list|)
 expr_stmt|;
+name|jg
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
 name|response
 operator|.
 name|setStatus
