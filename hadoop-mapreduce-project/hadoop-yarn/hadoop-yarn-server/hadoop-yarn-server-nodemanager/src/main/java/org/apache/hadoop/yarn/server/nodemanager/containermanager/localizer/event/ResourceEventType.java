@@ -26,18 +26,47 @@ name|event
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|localizer
+operator|.
+name|LocalizedResource
+import|;
+end_import
+
+begin_comment
+comment|/**  * Events delivered to {@link LocalizedResource}. Each of these  * events is a subclass of {@link ResourceEvent}.  */
+end_comment
+
 begin_enum
 DECL|enum|ResourceEventType
 specifier|public
 enum|enum
 name|ResourceEventType
 block|{
+comment|/** See {@link ResourceRequestEvent} */
 DECL|enumConstant|REQUEST
 name|REQUEST
 block|,
+comment|/** See {@link ResourceLocalizedEvent} */
 DECL|enumConstant|LOCALIZED
 name|LOCALIZED
 block|,
+comment|/** See {@link ResourceReleaseEvent} */
 DECL|enumConstant|RELEASE
 name|RELEASE
 block|}

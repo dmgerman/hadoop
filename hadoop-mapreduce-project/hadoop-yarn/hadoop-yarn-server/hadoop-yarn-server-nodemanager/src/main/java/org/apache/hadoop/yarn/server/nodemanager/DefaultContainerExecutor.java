@@ -1835,32 +1835,6 @@ argument_list|,
 name|appId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|lfs
-operator|.
-name|util
-argument_list|()
-operator|.
-name|exists
-argument_list|(
-name|fullAppDir
-argument_list|)
-condition|)
-block|{
-comment|// this will happen on a partial execution of localizeJob. Sometimes
-comment|// copying job.xml to the local disk succeeds but copying job.jar might
-comment|// throw out an exception. We should clean up and then try again.
-name|lfs
-operator|.
-name|delete
-argument_list|(
-name|fullAppDir
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
 comment|// create $local.dir/usercache/$user/appcache/$appId
 try|try
 block|{
