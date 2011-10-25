@@ -1240,10 +1240,10 @@ name|providers
 expr_stmt|;
 block|}
 comment|/**    * Look up the KerberosInfo for a given protocol. It searches all known    * SecurityInfo providers.    * @param protocol the protocol class to get the information for    * @param conf configuration object    * @return the KerberosInfo or null if it has no KerberosInfo defined    */
-DECL|method|getKerberosInfo (Class<?> protocol, Configuration conf)
 specifier|public
 specifier|static
 name|KerberosInfo
+DECL|method|getKerberosInfo (Class<?> protocol, Configuration conf)
 name|getKerberosInfo
 parameter_list|(
 name|Class
@@ -1255,6 +1255,11 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|testProviders
+init|)
 block|{
 for|for
 control|(
@@ -1288,6 +1293,12 @@ name|result
 return|;
 block|}
 block|}
+block|}
+synchronized|synchronized
+init|(
+name|securityInfoProviders
+init|)
+block|{
 for|for
 control|(
 name|SecurityInfo
@@ -1318,6 +1329,7 @@ block|{
 return|return
 name|result
 return|;
+block|}
 block|}
 block|}
 return|return
@@ -1341,6 +1353,11 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|testProviders
+init|)
+block|{
 for|for
 control|(
 name|SecurityInfo
@@ -1373,6 +1390,12 @@ name|result
 return|;
 block|}
 block|}
+block|}
+synchronized|synchronized
+init|(
+name|securityInfoProviders
+init|)
+block|{
 for|for
 control|(
 name|SecurityInfo
@@ -1403,6 +1426,7 @@ block|{
 return|return
 name|result
 return|;
+block|}
 block|}
 block|}
 return|return

@@ -42,7 +42,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
+name|hadoop
 operator|.
 name|ipc
 operator|.
@@ -1186,7 +1186,7 @@ argument_list|)
 expr_stmt|;
 name|server
 operator|.
-name|close
+name|stop
 argument_list|()
 expr_stmt|;
 name|Assert

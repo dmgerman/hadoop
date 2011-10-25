@@ -516,7 +516,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
+name|hadoop
 operator|.
 name|ipc
 operator|.
@@ -563,6 +563,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -1352,7 +1366,7 @@ name|localizer
 operator|.
 name|security
 operator|.
-name|LocalizerSecurityInfo
+name|LocalizerTokenSecretManager
 import|;
 end_import
 
@@ -1370,13 +1384,11 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|containermanager
-operator|.
-name|localizer
-operator|.
 name|security
 operator|.
-name|LocalizerTokenSecretManager
+name|authorize
+operator|.
+name|NMPolicyProvider
 import|;
 end_import
 
@@ -2269,7 +2281,9 @@ name|LocalizerTokenSecretManager
 argument_list|()
 expr_stmt|;
 block|}
-return|return
+name|Server
+name|server
+init|=
 name|rpc
 operator|.
 name|getServer
@@ -2299,6 +2313,36 @@ operator|.
 name|DEFAULT_NM_LOCALIZER_CLIENT_THREAD_COUNT
 argument_list|)
 argument_list|)
+decl_stmt|;
+comment|// Enable service authorization?
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+name|server
+operator|.
+name|refreshServiceAcl
+argument_list|(
+name|conf
+argument_list|,
+operator|new
+name|NMPolicyProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|server
 return|;
 block|}
 annotation|@
@@ -2318,7 +2362,7 @@ condition|)
 block|{
 name|server
 operator|.
-name|close
+name|stop
 argument_list|()
 expr_stmt|;
 block|}

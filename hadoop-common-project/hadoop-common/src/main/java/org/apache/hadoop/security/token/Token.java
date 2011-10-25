@@ -1249,6 +1249,11 @@ name|renewer
 operator|=
 name|TRIVIAL_RENEWER
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|renewers
+init|)
+block|{
 for|for
 control|(
 name|TokenRenewer
@@ -1276,6 +1281,7 @@ expr_stmt|;
 return|return
 name|renewer
 return|;
+block|}
 block|}
 block|}
 name|LOG

@@ -1971,6 +1971,25 @@ name|MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL
 init|=
 literal|"mapreduce.job.end-notification.max.retry.interval"
 decl_stmt|;
+comment|/*    * MR AM Service Authorization    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|MR_AM_SECURITY_SERVICE_AUTHORIZATION_TASK_UMBILICAL
+name|MR_AM_SECURITY_SERVICE_AUTHORIZATION_TASK_UMBILICAL
+init|=
+literal|"security.job.task.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|MR_AM_SECURITY_SERVICE_AUTHORIZATION_CLIENT
+name|MR_AM_SECURITY_SERVICE_AUTHORIZATION_CLIENT
+init|=
+literal|"security.job.client.protocol.acl"
+decl_stmt|;
 block|}
 end_interface
 

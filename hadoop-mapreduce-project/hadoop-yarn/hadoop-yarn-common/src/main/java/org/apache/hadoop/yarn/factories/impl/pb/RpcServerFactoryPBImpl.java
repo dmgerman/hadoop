@@ -126,7 +126,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RPC
+name|Server
 import|;
 end_import
 
@@ -141,8 +141,6 @@ operator|.
 name|ipc
 operator|.
 name|RPC
-operator|.
-name|Server
 import|;
 end_import
 
