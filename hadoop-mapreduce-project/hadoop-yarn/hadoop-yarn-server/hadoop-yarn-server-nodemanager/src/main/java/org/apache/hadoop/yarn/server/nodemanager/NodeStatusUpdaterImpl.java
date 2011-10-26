@@ -846,7 +846,7 @@ name|DEFAULT_NM_TO_RM_HEARTBEAT_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 name|int
-name|memory
+name|memoryMb
 init|=
 name|conf
 operator|.
@@ -854,11 +854,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_VMEM_GB
+name|NM_PMEM_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_VMEM_GB
+name|DEFAULT_NM_PMEM_MB
 argument_list|)
 decl_stmt|;
 name|this
@@ -880,9 +880,7 @@ name|totalResource
 operator|.
 name|setMemory
 argument_list|(
-name|memory
-operator|*
-literal|1024
+name|memoryMb
 argument_list|)
 expr_stmt|;
 name|metrics

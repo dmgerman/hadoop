@@ -818,6 +818,8 @@ init|=
 operator|new
 name|ContainerImpl
 argument_list|(
+name|conf
+argument_list|,
 name|dispatcher
 argument_list|,
 name|launchContext

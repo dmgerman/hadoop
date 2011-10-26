@@ -150,6 +150,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileContext
@@ -854,6 +868,16 @@ name|NodeId
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
 annotation|@
 name|After
 DECL|method|tearDown ()
@@ -1365,6 +1389,8 @@ init|=
 operator|new
 name|ContainerImpl
 argument_list|(
+name|conf
+argument_list|,
 literal|null
 argument_list|,
 name|launchContext
@@ -1540,6 +1566,8 @@ init|=
 operator|new
 name|ContainerImpl
 argument_list|(
+name|conf
+argument_list|,
 literal|null
 argument_list|,
 name|launchContext
@@ -2274,9 +2302,11 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_VMEM_GB
+name|NM_PMEM_MB
 argument_list|,
 literal|5
+operator|*
+literal|1024
 argument_list|)
 expr_stmt|;
 comment|// 5GB

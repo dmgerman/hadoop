@@ -182,6 +182,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -845,6 +859,13 @@ specifier|final
 name|StringBuilder
 name|diagnostics
 decl_stmt|;
+comment|/** The NM-wide configuration - not specific to this container */
+DECL|field|daemonConf
+specifier|private
+specifier|final
+name|Configuration
+name|daemonConf
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -962,10 +983,13 @@ name|LocalResourceRequest
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ContainerImpl (Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics)
+DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics)
 specifier|public
 name|ContainerImpl
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|Dispatcher
 name|dispatcher
 parameter_list|,
@@ -979,6 +1003,12 @@ name|NodeManagerMetrics
 name|metrics
 parameter_list|)
 block|{
+name|this
+operator|.
+name|daemonConf
+operator|=
+name|conf
+expr_stmt|;
 name|this
 operator|.
 name|dispatcher
@@ -3234,9 +3264,8 @@ parameter_list|)
 block|{
 comment|// Inform the ContainersMonitor to start monitoring the container's
 comment|// resource usage.
-comment|// TODO: Fix pmem limits below
 name|long
-name|vmemBytes
+name|pmemBytes
 init|=
 name|container
 operator|.
@@ -3252,6 +3281,36 @@ operator|*
 literal|1024
 operator|*
 literal|1024L
+decl_stmt|;
+name|float
+name|pmemRatio
+init|=
+name|container
+operator|.
+name|daemonConf
+operator|.
+name|getFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_VMEM_PMEM_RATIO
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_VMEM_PMEM_RATIO
+argument_list|)
+decl_stmt|;
+name|long
+name|vmemBytes
+init|=
+call|(
+name|long
+call|)
+argument_list|(
+name|pmemRatio
+operator|*
+name|pmemBytes
+argument_list|)
 decl_stmt|;
 name|container
 operator|.
@@ -3272,8 +3331,7 @@ argument_list|()
 argument_list|,
 name|vmemBytes
 argument_list|,
-operator|-
-literal|1
+name|pmemBytes
 argument_list|)
 argument_list|)
 expr_stmt|;

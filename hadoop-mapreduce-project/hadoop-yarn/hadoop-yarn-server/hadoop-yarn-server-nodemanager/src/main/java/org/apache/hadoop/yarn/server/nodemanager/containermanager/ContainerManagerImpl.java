@@ -2227,6 +2227,9 @@ init|=
 operator|new
 name|ContainerImpl
 argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
 name|this
 operator|.
 name|dispatcher

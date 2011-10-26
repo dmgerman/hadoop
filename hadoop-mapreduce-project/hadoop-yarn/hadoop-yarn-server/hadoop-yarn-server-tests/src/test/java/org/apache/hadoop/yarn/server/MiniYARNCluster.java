@@ -1105,9 +1105,11 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_VMEM_GB
+name|NM_PMEM_MB
 argument_list|,
 literal|4
+operator|*
+literal|1024
 argument_list|)
 expr_stmt|;
 comment|// By default AM + 2 containers

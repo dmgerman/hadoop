@@ -1768,15 +1768,17 @@ literal|",containerID="
 operator|+
 name|cId
 operator|+
-literal|"\\] is running beyond memory-limits. Current usage : "
+literal|"\\] is running beyond virtual memory limits. Current usage: "
 operator|+
-literal|"[0-9]*bytes. Limit : [0-9]*"
+literal|"[0-9.]+m?b of [0-9.]+m?b physical memory used; "
 operator|+
-literal|"bytes. Killing container. \nDump of the process-tree for "
+literal|"[0-9.]+m?b of [0-9.]+m?b virtual memory used. "
+operator|+
+literal|"Killing container.\nDump of the process-tree for "
 operator|+
 name|cId
 operator|+
-literal|" : \n"
+literal|" :\n"
 decl_stmt|;
 name|Pattern
 name|pat
@@ -1792,7 +1794,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Expected message patterns is: "
+literal|"Expected message pattern is: "
 operator|+
 name|expectedMsgPattern
 operator|+
