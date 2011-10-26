@@ -544,6 +544,8 @@ argument_list|,
 name|cae
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

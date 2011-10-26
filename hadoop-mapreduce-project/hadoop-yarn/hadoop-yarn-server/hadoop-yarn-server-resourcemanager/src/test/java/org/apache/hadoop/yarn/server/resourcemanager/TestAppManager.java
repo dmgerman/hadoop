@@ -805,6 +805,8 @@ argument_list|,
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
+argument_list|,
+literal|null
 argument_list|)
 block|{
 annotation|@
@@ -1011,10 +1013,10 @@ name|checkAppNumCompletedLimit
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|addCompletedApp (ApplicationId appId)
+DECL|method|finishApplication (ApplicationId appId)
 specifier|public
 name|void
-name|addCompletedApp
+name|finishApplication
 parameter_list|(
 name|ApplicationId
 name|appId
@@ -1022,7 +1024,7 @@ parameter_list|)
 block|{
 name|super
 operator|.
-name|addCompletedApp
+name|finishApplication
 argument_list|(
 name|appId
 argument_list|)
@@ -1139,7 +1141,7 @@ condition|)
 block|{
 name|appMonitor
 operator|.
-name|addCompletedApp
+name|finishApplication
 argument_list|(
 name|app
 operator|.
@@ -1893,7 +1895,7 @@ argument_list|)
 expr_stmt|;
 name|appMonitor
 operator|.
-name|addCompletedApp
+name|finishApplication
 argument_list|(
 literal|null
 argument_list|)

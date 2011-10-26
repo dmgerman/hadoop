@@ -1171,6 +1171,8 @@ argument_list|,
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|scheduler

@@ -34,9 +34,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|LinkedList
+name|ByteBuffer
 import|;
 end_import
 
@@ -46,9 +46,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-operator|.
-name|Entry
+name|LinkedList
 import|;
 end_import
 
@@ -91,6 +89,34 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|DataInputByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|Credentials
 import|;
 end_import
 
@@ -153,24 +179,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAccessType
 import|;
 end_import
 
@@ -1085,19 +1093,19 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|addCompletedApp (ApplicationId appId)
+DECL|method|finishApplication (ApplicationId applicationId)
 specifier|protected
 specifier|synchronized
 name|void
-name|addCompletedApp
+name|finishApplication
 parameter_list|(
 name|ApplicationId
-name|appId
+name|applicationId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|appId
+name|applicationId
 operator|==
 literal|null
 condition|)
@@ -1112,16 +1120,36 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Inform the DelegationTokenRenewer
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|rmContext
+operator|.
+name|getDelegationTokenRenewer
+argument_list|()
+operator|.
+name|removeApplication
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
 name|completedApps
 operator|.
 name|add
 argument_list|(
-name|appId
+name|applicationId
 argument_list|)
 expr_stmt|;
 name|writeAuditLog
 argument_list|(
-name|appId
+name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1542,6 +1570,7 @@ argument_list|,
 name|submitTime
 argument_list|)
 expr_stmt|;
+comment|// Sanity check - duplicate?
 if|if
 condition|(
 name|rmContext
@@ -1584,8 +1613,7 @@ name|message
 argument_list|)
 throw|;
 block|}
-else|else
-block|{
+comment|// Inform the ACLs Manager
 name|this
 operator|.
 name|applicationACLsManager
@@ -1603,6 +1631,34 @@ name|getApplicationACLs
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Setup tokens for renewal
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDelegationTokenRenewer
+argument_list|()
+operator|.
+name|addApplication
+argument_list|(
+name|applicationId
+argument_list|,
+name|parseCredentials
+argument_list|(
+name|submissionContext
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// All done, start the RMApp
 name|this
 operator|.
 name|rmContext
@@ -1627,7 +1683,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 catch|catch
 parameter_list|(
 name|IOException
@@ -1650,7 +1705,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// TODO: Weird setup.
+comment|// Sending APP_REJECTED is fine, since we assume that the
+comment|// RMApp is in NEW state and thus we havne't yet informed the
+comment|// Scheduler about the existence of the application
 name|this
 operator|.
 name|rmContext
@@ -1678,6 +1735,73 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|parseCredentials (ApplicationSubmissionContext application)
+specifier|private
+name|Credentials
+name|parseCredentials
+parameter_list|(
+name|ApplicationSubmissionContext
+name|application
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Credentials
+name|credentials
+init|=
+operator|new
+name|Credentials
+argument_list|()
+decl_stmt|;
+name|DataInputByteBuffer
+name|dibb
+init|=
+operator|new
+name|DataInputByteBuffer
+argument_list|()
+decl_stmt|;
+name|ByteBuffer
+name|tokens
+init|=
+name|application
+operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
+name|getContainerTokens
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|tokens
+operator|!=
+literal|null
+condition|)
+block|{
+name|dibb
+operator|.
+name|reset
+argument_list|(
+name|tokens
+argument_list|)
+expr_stmt|;
+name|credentials
+operator|.
+name|readTokenStorageStream
+argument_list|(
+name|dibb
+argument_list|)
+expr_stmt|;
+name|tokens
+operator|.
+name|rewind
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|credentials
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|handle (RMAppManagerEvent event)
@@ -1690,7 +1814,7 @@ name|event
 parameter_list|)
 block|{
 name|ApplicationId
-name|appID
+name|applicationId
 init|=
 name|event
 operator|.
@@ -1703,7 +1827,7 @@ name|debug
 argument_list|(
 literal|"RMAppManager processing event for "
 operator|+
-name|appID
+name|applicationId
 operator|+
 literal|" of type "
 operator|+
@@ -1725,9 +1849,9 @@ case|case
 name|APP_COMPLETED
 case|:
 block|{
-name|addCompletedApp
+name|finishApplication
 argument_list|(
-name|appID
+name|applicationId
 argument_list|)
 expr_stmt|;
 name|ApplicationSummary
@@ -1741,7 +1865,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|appID
+name|applicationId
 argument_list|)
 argument_list|)
 expr_stmt|;
