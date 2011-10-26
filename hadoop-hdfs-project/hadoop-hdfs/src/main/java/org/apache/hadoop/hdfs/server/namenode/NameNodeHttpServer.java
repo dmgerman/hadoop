@@ -672,8 +672,6 @@ specifier|final
 name|String
 name|pathSpec
 init|=
-literal|"/"
-operator|+
 name|WebHdfsFileSystem
 operator|.
 name|PATH_PREFIX

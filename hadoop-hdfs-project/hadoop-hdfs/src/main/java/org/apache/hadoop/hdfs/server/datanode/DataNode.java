@@ -4326,8 +4326,6 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|"/"
-operator|+
 name|WebHdfsFileSystem
 operator|.
 name|PATH_PREFIX

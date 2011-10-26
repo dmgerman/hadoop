@@ -1064,6 +1064,16 @@ name|SCHEME
 init|=
 literal|"webhdfs"
 decl_stmt|;
+comment|/** WebHdfs version. */
+DECL|field|VERSION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|VERSION
+init|=
+literal|1
+decl_stmt|;
 comment|/** Http URI: http://namenode:port/{PATH_PREFIX}/path/to/file */
 DECL|field|PATH_PREFIX
 specifier|public
@@ -1072,7 +1082,13 @@ specifier|final
 name|String
 name|PATH_PREFIX
 init|=
+literal|"/"
+operator|+
 name|SCHEME
+operator|+
+literal|"/v"
+operator|+
+name|VERSION
 decl_stmt|;
 DECL|field|AUTH
 specifier|private
@@ -1575,8 +1591,6 @@ specifier|final
 name|String
 name|path
 init|=
-literal|"/"
-operator|+
 name|PATH_PREFIX
 operator|+
 operator|(
