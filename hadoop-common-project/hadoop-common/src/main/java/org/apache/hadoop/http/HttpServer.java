@@ -976,6 +976,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|connector
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1021,33 +1023,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|String
-name|path
-range|:
-name|pathSpecs
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"adding path spec: "
-operator|+
-name|path
-argument_list|)
-expr_stmt|;
-name|addFilterPathMapping
-argument_list|(
-name|path
 argument_list|,
-name|webAppContext
+name|pathSpecs
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Create a status server on the given port.    * The jsp scripts are taken from src/webapps/<name>.    * @param name The name of the server    * @param port The port to use on the server    * @param findPort whether the server should start at the given port and     *        increment by 1 until it finds a free port.    * @param conf Configuration     */
 DECL|method|HttpServer (String name, String bindAddress, int port, boolean findPort, Configuration conf)
@@ -1083,6 +1062,8 @@ argument_list|,
 name|findPort
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -1130,10 +1111,12 @@ argument_list|,
 name|adminsAcl
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a status server on the given port.    * The jsp scripts are taken from src/webapps/<name>.    * @param name The name of the server    * @param port The port to use on the server    * @param findPort whether the server should start at the given port and     *        increment by 1 until it finds a free port.    * @param conf Configuration     * @param adminsAcl {@link AccessControlList} of the admins    */
+comment|/**    * Create a status server on the given port.    * The jsp scripts are taken from src/webapps/<name>.    * @param name The name of the server    * @param bindAddress The address for this server    * @param port The port to use on the server    * @param findPort whether the server should start at the given port and     *        increment by 1 until it finds a free port.    * @param conf Configuration     * @param adminsAcl {@link AccessControlList} of the admins    */
 DECL|method|HttpServer (String name, String bindAddress, int port, boolean findPort, Configuration conf, AccessControlList adminsAcl, Connector connector)
 specifier|public
 name|HttpServer
@@ -1158,6 +1141,59 @@ name|adminsAcl
 parameter_list|,
 name|Connector
 name|connector
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|name
+argument_list|,
+name|bindAddress
+argument_list|,
+name|port
+argument_list|,
+name|findPort
+argument_list|,
+name|conf
+argument_list|,
+name|adminsAcl
+argument_list|,
+name|connector
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a status server on the given port.    * The jsp scripts are taken from src/webapps/<name>.    * @param name The name of the server    * @param bindAddress The address for this server    * @param port The port to use on the server    * @param findPort whether the server should start at the given port and     *        increment by 1 until it finds a free port.    * @param conf Configuration     * @param adminsAcl {@link AccessControlList} of the admins    * @param connector A jetty connection listener    * @param pathSpecs Path specifications that this httpserver will be serving.     *        These will be added to any filters.    */
+DECL|method|HttpServer (String name, String bindAddress, int port, boolean findPort, Configuration conf, AccessControlList adminsAcl, Connector connector, String[] pathSpecs)
+specifier|public
+name|HttpServer
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|String
+name|bindAddress
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|boolean
+name|findPort
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|AccessControlList
+name|adminsAcl
+parameter_list|,
+name|Connector
+name|connector
+parameter_list|,
+name|String
+index|[]
+name|pathSpecs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1438,6 +1474,39 @@ block|}
 name|addDefaultServlets
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|pathSpecs
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|String
+name|path
+range|:
+name|pathSpecs
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"adding path spec: "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
+name|addFilterPathMapping
+argument_list|(
+name|path
+argument_list|,
+name|webAppContext
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Create a required listener for the Jetty instance listening on the port    * provided. This wrapper and all subclasses must create at least one    * listener.    */
 DECL|method|createBaseListener (Configuration conf)
