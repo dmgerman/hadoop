@@ -571,6 +571,17 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+block|{
+return|return
+literal|""
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
 name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
@@ -614,6 +625,16 @@ parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setOriginalTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+block|{ }
 annotation|@
 name|Override
 specifier|public

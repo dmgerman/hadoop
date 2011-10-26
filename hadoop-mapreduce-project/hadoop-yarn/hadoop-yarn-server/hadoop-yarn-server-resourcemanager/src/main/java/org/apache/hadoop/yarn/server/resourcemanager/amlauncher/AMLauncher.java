@@ -1314,6 +1314,20 @@ operator|.
 name|getEnvironment
 argument_list|()
 decl_stmt|;
+name|environment
+operator|.
+name|put
+argument_list|(
+name|ApplicationConstants
+operator|.
+name|APPLICATION_WEB_PROXY_BASE_ENV
+argument_list|,
+name|application
+operator|.
+name|getWebProxyBase
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Set the AppAttemptId, containerId, NMHTTPAdress, AppSubmitTime to be
 comment|// consumable by the AM.
 name|environment

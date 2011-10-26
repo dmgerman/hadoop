@@ -1922,6 +1922,15 @@ name|conf
 operator|.
 name|set
 argument_list|(
+literal|"hadoop.http.filter.initializers"
+argument_list|,
+literal|"org.apache.hadoop.yarn.server.webproxy.amfilter.AmFilterInitializer"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
 name|MRJobConfig
 operator|.
 name|MAPREDUCE_JOB_DIR

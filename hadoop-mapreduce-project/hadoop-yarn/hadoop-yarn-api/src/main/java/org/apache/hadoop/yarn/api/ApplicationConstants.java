@@ -112,6 +112,16 @@ name|LOCAL_DIR_ENV
 init|=
 literal|"YARN_LOCAL_DIRS"
 decl_stmt|;
+comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in     * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
+DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_WEB_PROXY_BASE_ENV
+init|=
+literal|"APPLICATION_WEB_PROXY_BASE"
+decl_stmt|;
 DECL|field|LOG_DIR_EXPANSION_VAR
 specifier|public
 specifier|static

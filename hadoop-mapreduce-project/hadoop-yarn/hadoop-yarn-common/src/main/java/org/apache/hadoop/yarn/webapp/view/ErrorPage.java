@@ -112,7 +112,12 @@ argument_list|)
 operator|.
 name|link
 argument_list|(
-literal|"/static/yarn.css"
+name|root_url
+argument_list|(
+literal|"static"
+argument_list|,
+literal|"yarn.css"
+argument_list|)
 argument_list|)
 operator|.
 name|_

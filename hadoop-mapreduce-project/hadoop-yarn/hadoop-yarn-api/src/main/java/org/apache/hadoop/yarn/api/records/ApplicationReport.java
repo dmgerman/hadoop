@@ -334,6 +334,28 @@ name|String
 name|url
 parameter_list|)
 function_decl|;
+comment|/**    * Get the original not-proxied<em>tracking url</em> for the application.    * This is intended to only be used by the proxy itself.    * @return the original not-proxied<em>tracking url</em> for the application    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getOriginalTrackingUrl ()
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setOriginalTrackingUrl (String url)
+name|void
+name|setOriginalTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+function_decl|;
 comment|/**    * Get the<em>start time</em> of the application.    * @return<em>start time</em> of the application    */
 annotation|@
 name|Public

@@ -267,6 +267,18 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
+comment|/**    * The original url at which the status of the application attempt can be     * accessed. This url is not fronted by a proxy. This is only intended to be    * used by the proxy.    * @return the url at which the status of the attempt can be accessed and is    * not fronted by a proxy.    */
+DECL|method|getOriginalTrackingUrl ()
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+function_decl|;
+comment|/**    * The base to be prepended to web URLs that are not relative, and the user    * has been checked.    * @return the base URL to be prepended to web URLs that are not relative.    */
+DECL|method|getWebProxyBase ()
+name|String
+name|getWebProxyBase
+parameter_list|()
+function_decl|;
 comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
 DECL|method|getClientToken ()
 name|String
