@@ -553,7 +553,7 @@ name|setInt
 argument_list|(
 name|JobContext
 operator|.
-name|END_NOTIFICATION_RETRIES
+name|MR_JOB_END_RETRY_ATTEMPTS
 argument_list|,
 literal|3
 argument_list|)
@@ -564,7 +564,7 @@ name|setInt
 argument_list|(
 name|JobContext
 operator|.
-name|END_NOTIFICATION_RETRIE_INTERVAL
+name|MR_JOB_END_RETRY_INTERVAL
 argument_list|,
 literal|200
 argument_list|)
