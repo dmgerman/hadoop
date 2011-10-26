@@ -862,42 +862,6 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|KillApplicationRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|KillApplicationResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
 name|GetAllApplicationsRequest
 import|;
 end_import
@@ -1133,6 +1097,42 @@ operator|.
 name|protocolrecords
 operator|.
 name|GetQueueUserAclsInfoResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|KillApplicationRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|KillApplicationResponse
 import|;
 end_import
 
@@ -1527,6 +1527,7 @@ argument_list|,
 name|HSHOSTADDRESS
 argument_list|)
 expr_stmt|;
+comment|// Start the RM.
 name|RMService
 name|rmService
 init|=
@@ -1548,6 +1549,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+comment|// Start the AM.
 name|AMService
 name|amService
 init|=
@@ -1569,10 +1571,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|amRunning
-operator|=
-literal|true
-expr_stmt|;
+comment|// Start the HS.
 name|HistoryService
 name|historyService
 init|=
@@ -1691,10 +1690,6 @@ name|amService
 operator|.
 name|stop
 argument_list|()
-expr_stmt|;
-name|amRunning
-operator|=
-literal|false
 expr_stmt|;
 name|LOG
 operator|.
@@ -1873,10 +1868,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|amRunning
-operator|=
-literal|true
-expr_stmt|;
 name|amContact
 operator|=
 literal|false
@@ -1906,9 +1897,12 @@ argument_list|(
 name|amContact
 argument_list|)
 expr_stmt|;
-name|amRunning
-operator|=
-literal|false
+comment|// Stop the AM. It is not even restarting. So it should be treated as
+comment|// completed.
+name|amService
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 comment|// Same client
 name|counters
@@ -2809,6 +2803,10 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|amRunning
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|stop ()
 specifier|public
@@ -2825,6 +2823,10 @@ name|super
 operator|.
 name|stop
 argument_list|()
+expr_stmt|;
+name|amRunning
+operator|=
+literal|false
 expr_stmt|;
 block|}
 annotation|@

@@ -893,11 +893,6 @@ specifier|final
 name|MRClientProtocol
 name|historyServerProxy
 decl_stmt|;
-DECL|field|forceRefresh
-specifier|private
-name|boolean
-name|forceRefresh
-decl_stmt|;
 DECL|field|realProxy
 specifier|private
 name|MRClientProtocol
@@ -1135,9 +1130,6 @@ name|YarnRemoteException
 block|{
 if|if
 condition|(
-operator|!
-name|forceRefresh
-operator|&&
 name|realProxy
 operator|!=
 literal|null
@@ -1408,6 +1400,8 @@ operator|+
 name|serviceAddr
 argument_list|)
 expr_stmt|;
+name|realProxy
+operator|=
 name|instantiateAMProxy
 argument_list|(
 name|serviceAddr
@@ -1735,8 +1729,7 @@ name|historyServerProxy
 return|;
 block|}
 DECL|method|instantiateAMProxy (final String serviceAddr)
-specifier|private
-name|void
+name|MRClientProtocol
 name|instantiateAMProxy
 parameter_list|(
 specifier|final
@@ -1763,8 +1756,9 @@ operator|+
 name|serviceAddr
 argument_list|)
 expr_stmt|;
-name|realProxy
-operator|=
+name|MRClientProtocol
+name|proxy
+init|=
 name|currentUser
 operator|.
 name|doAs
@@ -1818,7 +1812,7 @@ return|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|trace
@@ -1828,6 +1822,9 @@ operator|+
 name|serviceAddr
 argument_list|)
 expr_stmt|;
+return|return
+name|proxy
+return|;
 block|}
 DECL|method|invoke (String method, Class argClass, Object args)
 specifier|private
@@ -2012,9 +2009,10 @@ name|getTargetException
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|forceRefresh
+comment|// Force reconnection by setting the proxy to null.
+name|realProxy
 operator|=
-literal|true
+literal|null
 expr_stmt|;
 block|}
 catch|catch
@@ -2043,9 +2041,10 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|forceRefresh
+comment|// Force reconnection by setting the proxy to null.
+name|realProxy
 operator|=
-literal|true
+literal|null
 expr_stmt|;
 block|}
 block|}
