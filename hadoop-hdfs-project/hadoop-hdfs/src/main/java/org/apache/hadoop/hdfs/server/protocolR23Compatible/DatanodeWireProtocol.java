@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.server.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -26,7 +26,21 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|avro
+operator|.
+name|reflect
+operator|.
+name|Nullable
 import|;
 end_import
 
@@ -70,23 +84,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|DatanodeID
+name|ClientProtocol
 import|;
 end_import
 
@@ -132,11 +130,73 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocolR23Compatible
+operator|.
+name|DatanodeIDWritable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
 operator|.
 name|protocolR23Compatible
 operator|.
-name|DatanodeWireProtocol
+name|ExtendedBlockWritable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|LocatedBlockWritable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|NamespaceInfoWritable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolR23Compatible
+operator|.
+name|ProtocolSignatureWritable
 import|;
 end_import
 
@@ -168,20 +228,6 @@ name|KerberosInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
 begin_comment
 comment|/**********************************************************************  * Protocol that a DFS datanode uses to communicate with the NameNode.  * It's used to upload current load information and block reports.  *  * The only way a NameNode can communicate with a DataNode is by  * returning values from these functions.  *  **********************************************************************/
 end_comment
@@ -206,14 +252,14 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|DatanodeProtocol
+DECL|interface|DatanodeWireProtocol
 specifier|public
 interface|interface
-name|DatanodeProtocol
+name|DatanodeWireProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    * This class is used by both the Namenode (client) and BackupNode (server)     * to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link DatanodeWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link ClientNamenodeWireProtocol}    */
+comment|/**    * The  rules for changing this protocol are the same as that for    * {@link ClientNamenodeWireProtocol} - see that java file for details.    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -340,13 +386,13 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
-comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    *     * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
-DECL|method|registerDatanode (DatanodeRegistration registration )
+comment|/**     * Register Datanode.    * @return updated {@link DatanodeRegistrationWritable}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
+DECL|method|registerDatanode ( DatanodeRegistrationWritable registration)
 specifier|public
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registerDatanode
 parameter_list|(
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registration
 parameter_list|)
 throws|throws
@@ -355,13 +401,13 @@ function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
 annotation|@
 name|Nullable
-DECL|method|sendHeartbeat (DatanodeRegistration registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat ( DatanodeRegistrationWritable registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommand
+name|DatanodeCommandWritable
 index|[]
 name|sendHeartbeat
 parameter_list|(
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registration
 parameter_list|,
 name|long
@@ -389,12 +435,12 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param blocks - the block list as an array of longs.    *     Each block is represented as 2 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
-DECL|method|blockReport (DatanodeRegistration registration, String poolId, long[] blocks)
+DECL|method|blockReport ( DatanodeRegistrationWritable registration, String poolId, long[] blocks)
 specifier|public
-name|DatanodeCommand
+name|DatanodeCommandWritable
 name|blockReport
 parameter_list|(
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registration
 parameter_list|,
 name|String
@@ -408,18 +454,18 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * blockReceivedAndDeleted() allows the DataNode to tell the NameNode about    * recently-received and -deleted block data.     *     * For the case of received blocks, a hint for preferred replica to be     * deleted when there is any excessive blocks is provided.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
-DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, ReceivedDeletedBlockInfo[] receivedAndDeletedBlocks)
+DECL|method|blockReceivedAndDeleted ( DatanodeRegistrationWritable registration, String poolId, ReceivedDeletedBlockInfoWritable[] receivedAndDeletedBlocks)
 specifier|public
 name|void
 name|blockReceivedAndDeleted
 parameter_list|(
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registration
 parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|ReceivedDeletedBlockInfo
+name|ReceivedDeletedBlockInfoWritable
 index|[]
 name|receivedAndDeletedBlocks
 parameter_list|)
@@ -427,12 +473,12 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * errorReport() tells the NameNode about something that has gone    * awry.  Useful for debugging.    */
-DECL|method|errorReport (DatanodeRegistration registration, int errorCode, String msg)
+DECL|method|errorReport (DatanodeRegistrationWritable registration, int errorCode, String msg)
 specifier|public
 name|void
 name|errorReport
 parameter_list|(
-name|DatanodeRegistration
+name|DatanodeRegistrationWritable
 name|registration
 parameter_list|,
 name|int
@@ -446,30 +492,30 @@ name|IOException
 function_decl|;
 DECL|method|versionRequest ()
 specifier|public
-name|NamespaceInfo
+name|NamespaceInfoWritable
 name|versionRequest
 parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * This is a very general way to send a command to the name-node during    * distributed upgrade process.    *     * The generosity is because the variety of upgrade commands is unpredictable.    * The reply from the name-node is also received in the form of an upgrade     * command.     *     * @return a reply in the form of an upgrade command    */
-DECL|method|processUpgradeCommand (UpgradeCommand comm)
-name|UpgradeCommand
+DECL|method|processUpgradeCommand (UpgradeCommandWritable comm)
+name|UpgradeCommandWritable
 name|processUpgradeCommand
 parameter_list|(
-name|UpgradeCommand
+name|UpgradeCommandWritable
 name|comm
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * same as {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#reportBadBlocks(LocatedBlock[])}    * }    */
-DECL|method|reportBadBlocks (LocatedBlock[] blocks)
+comment|/**    * same as {@link ClientProtocol#reportBadBlocks(LocatedBlock[])}    * }    */
+DECL|method|reportBadBlocks (LocatedBlockWritable[] blocks)
 specifier|public
 name|void
 name|reportBadBlocks
 parameter_list|(
-name|LocatedBlock
+name|LocatedBlockWritable
 index|[]
 name|blocks
 parameter_list|)
@@ -477,12 +523,12 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Commit block synchronization in lease recovery    */
-DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets )
+DECL|method|commitBlockSynchronization (ExtendedBlockWritable block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeIDWritable[] newtargets)
 specifier|public
 name|void
 name|commitBlockSynchronization
 parameter_list|(
-name|ExtendedBlock
+name|ExtendedBlockWritable
 name|block
 parameter_list|,
 name|long
@@ -497,9 +543,27 @@ parameter_list|,
 name|boolean
 name|deleteblock
 parameter_list|,
-name|DatanodeID
+name|DatanodeIDWritable
 index|[]
 name|newtargets
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 the method name    * to avoid conflict.    */
+DECL|method|getProtocolSignature2 (String protocol, long clientVersion, int clientMethodsHash)
+specifier|public
+name|ProtocolSignatureWritable
+name|getProtocolSignature2
+parameter_list|(
+name|String
+name|protocol
+parameter_list|,
+name|long
+name|clientVersion
+parameter_list|,
+name|int
+name|clientMethodsHash
 parameter_list|)
 throws|throws
 name|IOException

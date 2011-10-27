@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.server.protocolR23Compatible
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|protocolR23Compatible
 package|;
 end_package
 
@@ -56,7 +56,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
+name|ArrayList
 import|;
 end_import
 
@@ -66,7 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Collection
 import|;
 end_import
 
@@ -108,9 +108,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
 name|protocol
 operator|.
-name|DatanodeInfo
+name|BlockRecoveryCommand
 import|;
 end_import
 
@@ -124,9 +126,13 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
+name|BlockRecoveryCommand
+operator|.
+name|RecoveringBlock
 import|;
 end_import
 
@@ -140,9 +146,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|DatanodeCommand
 import|;
 end_import
 
@@ -189,7 +197,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockRecoveryCommand is an instruction to a data-node to recover  * the specified blocks.  *  * The data-node that receives this command treats itself as a primary  * data-node in the recover process.  *  * Block recovery is identified by a recoveryId, which is also the new  * generation stamp, which the block will have after the recovery succeeds.  */
+comment|/**  * BlockRecoveryCommand is an instruction to a data-node to recover the  * specified blocks.  *   * The data-node that receives this command treats itself as a primary data-node  * in the recover process.  *   * Block recovery is identified by a recoveryId, which is also the new  * generation stamp, which the block will have after the recovery succeeds.  */
 end_comment
 
 begin_class
@@ -201,206 +209,30 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|BlockRecoveryCommand
+DECL|class|BlockRecoveryCommandWritable
 specifier|public
 class|class
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 extends|extends
-name|DatanodeCommand
+name|DatanodeCommandWritable
 block|{
 DECL|field|recoveringBlocks
 name|Collection
 argument_list|<
-name|RecoveringBlock
+name|RecoveringBlockWritable
 argument_list|>
 name|recoveringBlocks
 decl_stmt|;
-comment|/**    * This is a block with locations from which it should be recovered    * and the new generation stamp, which the block will have after     * successful recovery.    *     * The new generation stamp of the block, also plays role of the recovery id.    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
-DECL|class|RecoveringBlock
-specifier|public
-specifier|static
-class|class
-name|RecoveringBlock
-extends|extends
-name|LocatedBlock
-block|{
-DECL|field|newGenerationStamp
-specifier|private
-name|long
-name|newGenerationStamp
-decl_stmt|;
-comment|/**      * Create empty RecoveringBlock.      */
-DECL|method|RecoveringBlock ()
-specifier|public
-name|RecoveringBlock
-parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-name|newGenerationStamp
-operator|=
-operator|-
-literal|1L
-expr_stmt|;
-block|}
-comment|/**      * Create RecoveringBlock.      */
-DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, long newGS)
-specifier|public
-name|RecoveringBlock
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|,
-name|DatanodeInfo
-index|[]
-name|locs
-parameter_list|,
-name|long
-name|newGS
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|b
-argument_list|,
-name|locs
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-comment|// startOffset is unknown
-name|this
-operator|.
-name|newGenerationStamp
-operator|=
-name|newGS
-expr_stmt|;
-block|}
-comment|/**      * Return the new generation stamp of the block,      * which also plays role of the recovery id.      */
-DECL|method|getNewGenerationStamp ()
-specifier|public
-name|long
-name|getNewGenerationStamp
-parameter_list|()
-block|{
-return|return
-name|newGenerationStamp
-return|;
-block|}
-comment|///////////////////////////////////////////
-comment|// Writable
-comment|///////////////////////////////////////////
-static|static
-block|{
-comment|// register a ctor
-name|WritableFactories
-operator|.
-name|setFactory
-argument_list|(
-name|RecoveringBlock
-operator|.
-name|class
-argument_list|,
-operator|new
-name|WritableFactory
-argument_list|()
-block|{
-specifier|public
-name|Writable
-name|newInstance
-parameter_list|()
-block|{
-return|return
-operator|new
-name|RecoveringBlock
-argument_list|()
-return|;
-block|}
-block|}
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|write (DataOutput out)
-specifier|public
-name|void
-name|write
-parameter_list|(
-name|DataOutput
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-operator|.
-name|write
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|writeLong
-argument_list|(
-name|newGenerationStamp
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|readFields (DataInput in)
-specifier|public
-name|void
-name|readFields
-parameter_list|(
-name|DataInput
-name|in
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-operator|.
-name|readFields
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-name|newGenerationStamp
-operator|=
-name|in
-operator|.
-name|readLong
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Create empty BlockRecoveryCommand.    */
-DECL|method|BlockRecoveryCommand ()
+DECL|method|BlockRecoveryCommandWritable ()
 specifier|public
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 parameter_list|()
-block|{
-name|this
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Create BlockRecoveryCommand with    * the specified capacity for recovering blocks.    */
-DECL|method|BlockRecoveryCommand (int capacity)
+block|{ }
+comment|/**    * Create BlockRecoveryCommand with the specified capacity for recovering    * blocks.    */
+DECL|method|BlockRecoveryCommandWritable (int capacity)
 specifier|public
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 parameter_list|(
 name|int
 name|capacity
@@ -411,7 +243,7 @@ argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
-name|RecoveringBlock
+name|RecoveringBlockWritable
 argument_list|>
 argument_list|(
 name|capacity
@@ -419,20 +251,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockRecoveryCommand (Collection<RecoveringBlock> blocks)
+DECL|method|BlockRecoveryCommandWritable (Collection<RecoveringBlockWritable> blocks)
 specifier|public
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 parameter_list|(
 name|Collection
 argument_list|<
-name|RecoveringBlock
+name|RecoveringBlockWritable
 argument_list|>
 name|blocks
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|DatanodeProtocol
+name|DatanodeWireProtocol
 operator|.
 name|DNA_RECOVERBLOCK
 argument_list|)
@@ -442,41 +274,9 @@ operator|=
 name|blocks
 expr_stmt|;
 block|}
-comment|/**    * Return the list of recovering blocks.    */
-DECL|method|getRecoveringBlocks ()
-specifier|public
-name|Collection
-argument_list|<
-name|RecoveringBlock
-argument_list|>
-name|getRecoveringBlocks
-parameter_list|()
-block|{
-return|return
-name|recoveringBlocks
-return|;
-block|}
-comment|/**    * Add recovering block to the command.    */
-DECL|method|add (RecoveringBlock block)
-specifier|public
-name|void
-name|add
-parameter_list|(
-name|RecoveringBlock
-name|block
-parameter_list|)
-block|{
-name|recoveringBlocks
-operator|.
-name|add
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
-block|}
-comment|///////////////////////////////////////////
+comment|// /////////////////////////////////////////
 comment|// Writable
-comment|///////////////////////////////////////////
+comment|// /////////////////////////////////////////
 static|static
 block|{
 comment|// register a ctor
@@ -484,7 +284,7 @@ name|WritableFactories
 operator|.
 name|setFactory
 argument_list|(
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 operator|.
 name|class
 argument_list|,
@@ -499,7 +299,7 @@ parameter_list|()
 block|{
 return|return
 operator|new
-name|BlockRecoveryCommand
+name|BlockRecoveryCommandWritable
 argument_list|()
 return|;
 block|}
@@ -537,7 +337,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|RecoveringBlock
+name|RecoveringBlockWritable
 name|block
 range|:
 name|recoveringBlocks
@@ -583,7 +383,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|RecoveringBlock
+name|RecoveringBlockWritable
 argument_list|>
 argument_list|(
 name|numBlocks
@@ -604,11 +404,11 @@ name|i
 operator|++
 control|)
 block|{
-name|RecoveringBlock
+name|RecoveringBlockWritable
 name|b
 init|=
 operator|new
-name|RecoveringBlock
+name|RecoveringBlockWritable
 argument_list|()
 decl_stmt|;
 name|b
@@ -618,12 +418,139 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+name|recoveringBlocks
+operator|.
 name|add
 argument_list|(
 name|b
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|convert ()
+specifier|public
+name|DatanodeCommand
+name|convert
+parameter_list|()
+block|{
+name|Collection
+argument_list|<
+name|RecoveringBlock
+argument_list|>
+name|blks
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|RecoveringBlock
+argument_list|>
+argument_list|(
+name|recoveringBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|RecoveringBlockWritable
+name|b
+range|:
+name|recoveringBlocks
+control|)
+block|{
+name|blks
+operator|.
+name|add
+argument_list|(
+name|b
+operator|.
+name|convert
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|BlockRecoveryCommand
+argument_list|(
+name|blks
+argument_list|)
+return|;
+block|}
+DECL|method|convert (BlockRecoveryCommand cmd)
+specifier|public
+specifier|static
+name|BlockRecoveryCommandWritable
+name|convert
+parameter_list|(
+name|BlockRecoveryCommand
+name|cmd
+parameter_list|)
+block|{
+if|if
+condition|(
+name|cmd
+operator|==
+literal|null
+condition|)
+return|return
+literal|null
+return|;
+name|Collection
+argument_list|<
+name|RecoveringBlockWritable
+argument_list|>
+name|blks
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|RecoveringBlockWritable
+argument_list|>
+argument_list|(
+name|cmd
+operator|.
+name|getRecoveringBlocks
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|RecoveringBlock
+name|b
+range|:
+name|cmd
+operator|.
+name|getRecoveringBlocks
+argument_list|()
+control|)
+block|{
+name|blks
+operator|.
+name|add
+argument_list|(
+name|RecoveringBlockWritable
+operator|.
+name|convert
+argument_list|(
+name|b
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|BlockRecoveryCommandWritable
+argument_list|(
+name|blks
+argument_list|)
+return|;
 block|}
 block|}
 end_class

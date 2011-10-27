@@ -198,22 +198,6 @@ name|ClientDatanodeProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-DECL|field|LOG
-specifier|public
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|ClientDatanodeProtocol
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 comment|/**    * Until version 9, this class ClientDatanodeProtocol served as both    * the client interface to the DN AND the RPC protocol used to     * communicate with the NN.    *     * Post version 10 (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/ClientDatanodeWireProtocol}    *     * This class is used by both the DFSClient and the     * DN server side to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link org.apache.hadoop.hdfs.protocolR23Compatible.ClientDatanodeWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link org.apache.hadoop.hdfs.protocolR23Compatible.ClientNamenodeWireProtocol}    *     * The log of historical changes can be retrieved from the svn).    * 9: Added deleteBlockPool method    *     * 9 is the last version id when this class was used for protocols    *  serialization. DO not update this version any further.     *  Changes are recorded in R23 classes.    */
 DECL|field|versionID
 specifier|public
