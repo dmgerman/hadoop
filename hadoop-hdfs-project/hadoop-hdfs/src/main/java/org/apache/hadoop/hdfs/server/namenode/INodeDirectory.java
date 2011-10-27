@@ -981,8 +981,8 @@ operator|-
 name|nextPos
 return|;
 block|}
-comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param inheritPermission inherit permission from parent?    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @return  null if the child with this name already exists;     *          node, otherwise    */
-DECL|method|addChild (final T node, boolean inheritPermission, boolean setModTime)
+comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @return  null if the child with this name already exists;     *          node, otherwise    */
+DECL|method|addChild (final T node, boolean setModTime)
 parameter_list|<
 name|T
 extends|extends
@@ -996,77 +996,9 @@ name|T
 name|node
 parameter_list|,
 name|boolean
-name|inheritPermission
-parameter_list|,
-name|boolean
 name|setModTime
 parameter_list|)
 block|{
-if|if
-condition|(
-name|inheritPermission
-condition|)
-block|{
-name|FsPermission
-name|p
-init|=
-name|getFsPermission
-argument_list|()
-decl_stmt|;
-comment|//make sure the  permission has wx for the user
-if|if
-condition|(
-operator|!
-name|p
-operator|.
-name|getUserAction
-argument_list|()
-operator|.
-name|implies
-argument_list|(
-name|FsAction
-operator|.
-name|WRITE_EXECUTE
-argument_list|)
-condition|)
-block|{
-name|p
-operator|=
-operator|new
-name|FsPermission
-argument_list|(
-name|p
-operator|.
-name|getUserAction
-argument_list|()
-operator|.
-name|or
-argument_list|(
-name|FsAction
-operator|.
-name|WRITE_EXECUTE
-argument_list|)
-argument_list|,
-name|p
-operator|.
-name|getGroupAction
-argument_list|()
-argument_list|,
-name|p
-operator|.
-name|getOtherAction
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|node
-operator|.
-name|setPermission
-argument_list|(
-name|p
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|children
@@ -1163,8 +1095,8 @@ return|return
 name|node
 return|;
 block|}
-comment|/**    * Equivalent to addNode(path, newNode, false).    * @see #addNode(String, INode, boolean)    */
-DECL|method|addNode (String path, T newNode)
+comment|/**    * Add new INode to the file tree.    * Find the parent and insert     *     * @param path file path    * @param newNode INode to be added    * @return null if the node already exists; inserted INode, otherwise    * @throws FileNotFoundException if parent does not exist or     * @throws UnresolvedLinkException if any path component is a symbolic link    * is not a directory.    */
+DECL|method|addNode (String path, T newNode )
 parameter_list|<
 name|T
 extends|extends
@@ -1178,41 +1110,6 @@ name|path
 parameter_list|,
 name|T
 name|newNode
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-throws|,
-name|UnresolvedLinkException
-block|{
-return|return
-name|addNode
-argument_list|(
-name|path
-argument_list|,
-name|newNode
-argument_list|,
-literal|false
-argument_list|)
-return|;
-block|}
-comment|/**    * Add new INode to the file tree.    * Find the parent and insert     *     * @param path file path    * @param newNode INode to be added    * @param inheritPermission If true, copy the parent's permission to newNode.    * @return null if the node already exists; inserted INode, otherwise    * @throws FileNotFoundException if parent does not exist or     * @throws UnresolvedLinkException if any path component is a symbolic link    * is not a directory.    */
-DECL|method|addNode (String path, T newNode, boolean inheritPermission )
-parameter_list|<
-name|T
-extends|extends
-name|INode
-parameter_list|>
-name|T
-name|addNode
-parameter_list|(
-name|String
-name|path
-parameter_list|,
-name|T
-name|newNode
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|)
 throws|throws
 name|FileNotFoundException
@@ -1237,8 +1134,6 @@ name|pathComponents
 argument_list|,
 name|newNode
 argument_list|,
-name|inheritPermission
-argument_list|,
 literal|true
 argument_list|)
 operator|==
@@ -1252,7 +1147,7 @@ name|newNode
 return|;
 block|}
 comment|/**    * Add new inode to the parent if specified.    * Optimized version of addNode() if parent is not null.    *     * @return  parent INode if new inode is inserted    *          or null if it already exists.    * @throws  FileNotFoundException if parent does not exist or     *          is not a directory.    */
-DECL|method|addToParent ( byte[] localname, INode newNode, INodeDirectory parent, boolean inheritPermission, boolean propagateModTime )
+DECL|method|addToParent ( byte[] localname, INode newNode, INodeDirectory parent, boolean propagateModTime )
 name|INodeDirectory
 name|addToParent
 parameter_list|(
@@ -1265,9 +1160,6 @@ name|newNode
 parameter_list|,
 name|INodeDirectory
 name|parent
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|,
 name|boolean
 name|propagateModTime
@@ -1291,8 +1183,6 @@ operator|.
 name|addChild
 argument_list|(
 name|newNode
-argument_list|,
-name|inheritPermission
 argument_list|,
 name|propagateModTime
 argument_list|)
@@ -1419,7 +1309,7 @@ name|inode
 return|;
 block|}
 comment|/**    * Add new inode     * Optimized version of addNode()    *     * @return  parent INode if new inode is inserted    *          or null if it already exists.    * @throws  FileNotFoundException if parent does not exist or     *          is not a directory.    */
-DECL|method|addToParent ( byte[][] pathComponents, INode newNode, boolean inheritPermission, boolean propagateModTime )
+DECL|method|addToParent ( byte[][] pathComponents, INode newNode, boolean propagateModTime )
 name|INodeDirectory
 name|addToParent
 parameter_list|(
@@ -1430,9 +1320,6 @@ name|pathComponents
 parameter_list|,
 name|INode
 name|newNode
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|,
 name|boolean
 name|propagateModTime
@@ -1486,8 +1373,6 @@ operator|.
 name|addChild
 argument_list|(
 name|newNode
-argument_list|,
-name|inheritPermission
 argument_list|,
 name|propagateModTime
 argument_list|)
