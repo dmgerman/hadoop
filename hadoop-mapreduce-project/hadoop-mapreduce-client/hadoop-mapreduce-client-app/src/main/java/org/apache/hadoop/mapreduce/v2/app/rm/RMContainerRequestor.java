@@ -1120,9 +1120,6 @@ name|foundAll
 operator|=
 literal|false
 expr_stmt|;
-block|}
-else|else
-block|{
 comment|// if ask already sent to RM, we can try and overwrite it if possible.
 comment|// send a new ask to RM with numContainers
 comment|// specified for the blacklisted host to be 0.

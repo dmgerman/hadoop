@@ -1957,7 +1957,7 @@ name|assertEquals
 argument_list|(
 name|ExitCode
 operator|.
-name|KILLED
+name|TERMINATED
 operator|.
 name|getExitCode
 argument_list|()

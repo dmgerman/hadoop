@@ -1374,8 +1374,6 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
-comment|// TODO race: Can lead to a CONTAINER_LAUNCHED event at state KILLING,
-comment|// and a container which will never be killed by the NM.
 operator|.
 name|addTransition
 argument_list|(
@@ -1722,6 +1720,28 @@ operator|.
 name|CONTAINER_RESOURCES_CLEANEDUP
 argument_list|,
 name|CONTAINER_DONE_TRANSITION
+argument_list|)
+comment|// Handle a launched container during killing stage is a no-op
+comment|// as cleanup container is always handled after launch container event
+comment|// in the container launcher
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_LAUNCHED
+argument_list|,
+operator|new
+name|ContainerTransition
+argument_list|()
 argument_list|)
 comment|// From CONTAINER_CLEANEDUP_AFTER_KILL State.
 operator|.
