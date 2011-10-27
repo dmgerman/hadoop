@@ -629,11 +629,40 @@ argument_list|,
 name|tokenDst
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Copying from "
+operator|+
+name|nmPrivateContainerTokensPath
+operator|+
+literal|" to "
+operator|+
+name|tokenDst
+argument_list|)
+expr_stmt|;
 name|lfs
 operator|.
 name|setWorkingDirectory
 argument_list|(
 name|appStorageDir
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"CWD set to "
+operator|+
+name|appStorageDir
+operator|+
+literal|" = "
+operator|+
+name|lfs
+operator|.
+name|getWorkingDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// TODO: DO it over RPC for maintaining similarity?

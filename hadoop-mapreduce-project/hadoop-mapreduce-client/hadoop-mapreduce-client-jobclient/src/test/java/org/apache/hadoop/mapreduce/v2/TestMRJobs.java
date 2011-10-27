@@ -899,6 +899,8 @@ name|class
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 name|Configuration

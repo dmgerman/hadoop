@@ -1945,6 +1945,15 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Registering "
+operator|+
+name|attemptId
+argument_list|)
+expr_stmt|;
 name|responseMap
 operator|.
 name|put

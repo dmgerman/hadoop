@@ -349,9 +349,30 @@ name|String
 name|testName
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|testName
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|MiniMRYarnCluster (String testName, int noOfNMs)
+specifier|public
+name|MiniMRYarnCluster
+parameter_list|(
+name|String
+name|testName
+parameter_list|,
+name|int
+name|noOfNMs
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|testName
+argument_list|,
+name|noOfNMs
 argument_list|)
 expr_stmt|;
 comment|//TODO: add the history server
@@ -495,7 +516,7 @@ name|ShuffleHandler
 operator|.
 name|SHUFFLE_PORT_CONFIG_KEY
 argument_list|,
-literal|8083
+literal|0
 argument_list|)
 expr_stmt|;
 name|conf

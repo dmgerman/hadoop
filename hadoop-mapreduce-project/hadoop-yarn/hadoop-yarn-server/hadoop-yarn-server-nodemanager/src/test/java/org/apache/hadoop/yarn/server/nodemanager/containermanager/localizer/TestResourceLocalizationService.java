@@ -1494,7 +1494,7 @@ name|Configuration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|AbstractFileSystem
@@ -2721,7 +2721,7 @@ name|Configuration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|AbstractFileSystem
