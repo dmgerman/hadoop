@@ -759,6 +759,9 @@ argument_list|,
 literal|"/dev/null"
 argument_list|,
 name|pidFile
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|,
 name|readMockParams
