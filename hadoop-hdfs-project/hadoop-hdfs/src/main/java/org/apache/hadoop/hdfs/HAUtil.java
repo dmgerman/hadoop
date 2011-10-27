@@ -206,7 +206,9 @@ name|DFS_NAMENODE_RPC_ADDRESS_KEY
 operator|+
 literal|" must be suffixed with"
 operator|+
-literal|" namenodeId for HA configuration."
+name|namenodeId
+operator|+
+literal|" for HA configuration."
 decl_stmt|;
 throw|throw
 operator|new
