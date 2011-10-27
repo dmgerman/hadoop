@@ -806,7 +806,12 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect username "
 argument_list|,
-literal|"mapred"
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
 argument_list|,
 name|jobInfo
 operator|.
@@ -1556,7 +1561,12 @@ name|assertEquals
 argument_list|(
 literal|"User does not match"
 argument_list|,
-literal|"mapred"
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
 argument_list|,
 name|jobSummaryElements
 operator|.
