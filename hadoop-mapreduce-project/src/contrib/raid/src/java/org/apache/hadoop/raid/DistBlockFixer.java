@@ -535,7 +535,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * distributed block fixer, uses map reduce jobs to fix corrupt files  *  * configuration options  * raid.blockfix.filespertask       - number of corrupt files to fix in a single  *                                    map reduce task (i.e., at one mapper node)  *  * raid.blockfix.fairscheduler.pool - the pool to use for block fixer jobs  *  * raid.blockfix.maxpendingfiles    - maximum number of files to fix   *                                    simultaneously  */
+comment|/**  * distributed block fixer, uses map reduce jobs to fix corrupt files  *  * configuration options  * raid.blockfix.filespertask       - number of corrupt files to fix in a single  *                                    map reduce task (i.e., at one mapper node)  *  * raid.blockfix.maxpendingfiles    - maximum number of files to fix   *                                    simultaneously  */
 end_comment
 
 begin_class
@@ -601,26 +601,6 @@ name|BLOCKFIX_MAX_PENDING_FILES
 init|=
 literal|"raid.blockfix.maxpendingfiles"
 decl_stmt|;
-DECL|field|BLOCKFIX_POOL
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|BLOCKFIX_POOL
-init|=
-literal|"raid.blockfix.fairscheduler.pool"
-decl_stmt|;
-comment|// mapred.fairscheduler.pool is only used in the local configuration
-comment|// passed to a block fixing job
-DECL|field|MAPRED_POOL
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|MAPRED_POOL
-init|=
-literal|"mapred.fairscheduler.pool"
-decl_stmt|;
 comment|// default number of files to fix in a task
 DECL|field|DEFAULT_BLOCKFIX_FILES_PER_TASK
 specifier|private
@@ -675,12 +655,6 @@ DECL|field|pendingFiles
 specifier|private
 name|long
 name|pendingFiles
-decl_stmt|;
-comment|// pool name to use (may be null, in which case no special pool is used)
-DECL|field|poolName
-specifier|private
-name|String
-name|poolName
 decl_stmt|;
 DECL|field|lastCheckTime
 specifier|private
@@ -793,15 +767,6 @@ expr_stmt|;
 name|pendingFiles
 operator|=
 literal|0L
-expr_stmt|;
-name|poolName
-operator|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|BLOCKFIX_POOL
-argument_list|)
 expr_stmt|;
 comment|// start off due for the first iteration
 name|lastCheckTime
@@ -1882,23 +1847,6 @@ name|getConf
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|poolName
-operator|!=
-literal|null
-condition|)
-block|{
-name|jobConf
-operator|.
-name|set
-argument_list|(
-name|MAPRED_POOL
-argument_list|,
-name|poolName
-argument_list|)
-expr_stmt|;
-block|}
 name|Job
 name|job
 init|=
