@@ -1011,13 +1011,27 @@ block|{
 comment|// Bump up the pool size to idealPoolSize+INITIAL_POOL_SIZE, the
 comment|// later is just a buffer so we are not always increasing the
 comment|// pool-size
+name|int
+name|newPoolSize
+init|=
+name|idealPoolSize
+operator|+
+name|INITIAL_POOL_SIZE
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting pool size to "
+operator|+
+name|newPoolSize
+argument_list|)
+expr_stmt|;
 name|launcherPool
 operator|.
 name|setCorePoolSize
 argument_list|(
-name|idealPoolSize
-operator|+
-name|INITIAL_POOL_SIZE
+name|newPoolSize
 argument_list|)
 expr_stmt|;
 block|}

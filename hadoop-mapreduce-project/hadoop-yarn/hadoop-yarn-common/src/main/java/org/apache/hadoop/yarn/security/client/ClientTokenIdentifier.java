@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.security
+DECL|package|org.apache.hadoop.yarn.security.client
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|yarn
 operator|.
 name|security
+operator|.
+name|client
 package|;
 end_package
 
@@ -136,15 +138,15 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
 begin_class
-DECL|class|ApplicationTokenIdentifier
+DECL|class|ClientTokenIdentifier
 specifier|public
 class|class
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 extends|extends
 name|TokenIdentifier
 block|{
@@ -158,39 +160,66 @@ init|=
 operator|new
 name|Text
 argument_list|(
-literal|"YARN_APPLICATION_TOKEN"
+literal|"YARN_CLIENT_TOKEN"
 argument_list|)
 decl_stmt|;
-DECL|field|applicationAttemptId
+DECL|field|appId
 specifier|private
-name|String
-name|applicationAttemptId
+name|Text
+name|appId
 decl_stmt|;
-DECL|method|ApplicationTokenIdentifier ()
+comment|// TODO: Add more information in the tokenID such that it is not
+comment|// transferrable, more secure etc.
+DECL|method|ClientTokenIdentifier (ApplicationId id)
 specifier|public
-name|ApplicationTokenIdentifier
-parameter_list|()
-block|{   }
-DECL|method|ApplicationTokenIdentifier (ApplicationAttemptId appAttemptId)
-specifier|public
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
+name|ApplicationId
+name|id
 parameter_list|)
 block|{
 name|this
-argument_list|()
-expr_stmt|;
-name|this
 operator|.
-name|applicationAttemptId
+name|appId
 operator|=
-name|appAttemptId
+operator|new
+name|Text
+argument_list|(
+name|Integer
 operator|.
 name|toString
+argument_list|(
+name|id
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ClientTokenIdentifier ()
+specifier|public
+name|ClientTokenIdentifier
+parameter_list|()
+block|{
+name|this
+operator|.
+name|appId
+operator|=
+operator|new
+name|Text
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getApplicationID ()
+specifier|public
+name|Text
+name|getApplicationID
+parameter_list|()
+block|{
+return|return
+name|appId
+return|;
 block|}
 annotation|@
 name|Override
@@ -205,15 +234,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Text
+name|appId
 operator|.
-name|writeString
+name|write
 argument_list|(
 name|out
-argument_list|,
-name|this
-operator|.
-name|applicationAttemptId
 argument_list|)
 expr_stmt|;
 block|}
@@ -230,13 +255,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
+name|appId
 operator|.
-name|applicationAttemptId
-operator|=
-name|Text
-operator|.
-name|readString
+name|readFields
 argument_list|(
 name|in
 argument_list|)
@@ -264,9 +285,7 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|this
-operator|.
-name|applicationAttemptId
+name|appId
 operator|==
 literal|null
 operator|||
@@ -274,9 +293,7 @@ literal|""
 operator|.
 name|equals
 argument_list|(
-name|this
-operator|.
-name|applicationAttemptId
+name|appId
 operator|.
 name|toString
 argument_list|()
@@ -292,9 +309,7 @@ name|UserGroupInformation
 operator|.
 name|createRemoteUser
 argument_list|(
-name|this
-operator|.
-name|applicationAttemptId
+name|appId
 operator|.
 name|toString
 argument_list|()

@@ -1736,7 +1736,10 @@ init|=
 operator|new
 name|ApplicationTokenIdentifier
 argument_list|(
-name|appID
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ApplicationTokenSecretManager

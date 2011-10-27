@@ -260,7 +260,9 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|client
+operator|.
+name|ClientToAMSecretManager
 import|;
 end_import
 
@@ -278,7 +280,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientToAMSecretManager
+name|ClientTokenIdentifier
 import|;
 end_import
 
@@ -1429,18 +1431,18 @@ condition|)
 block|{
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|>
 name|clientToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|>
 argument_list|(
 operator|new
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|(
 name|applicationId
 argument_list|)
