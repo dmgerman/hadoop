@@ -122,6 +122,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|MD5MD5CRC32FileChecksum
 import|;
 end_import
@@ -2628,7 +2642,7 @@ name|array
 operator|.
 name|get
 argument_list|(
-literal|0
+name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3396,7 +3410,7 @@ expr_stmt|;
 return|return
 name|toJsonString
 argument_list|(
-name|MD5MD5CRC32FileChecksum
+name|FileChecksum
 operator|.
 name|class
 argument_list|,
@@ -3455,7 +3469,7 @@ name|json
 operator|.
 name|get
 argument_list|(
-name|MD5MD5CRC32FileChecksum
+name|FileChecksum
 operator|.
 name|class
 operator|.
