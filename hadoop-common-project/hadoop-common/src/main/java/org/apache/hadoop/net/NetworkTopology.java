@@ -189,7 +189,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/* Inner Node represent a switch/router of a data center or rack.    * Different from a leave node, it has non-null children.    */
+comment|/** InnerNode represents a switch/router of a data center or rack.    * Different from a leaf node, it has non-null children.    */
 DECL|class|InnerNode
 specifier|private
 class|class
@@ -279,7 +279,7 @@ name|level
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get its children */
+comment|/** @return its children */
 DECL|method|getChildren ()
 name|Collection
 argument_list|<
@@ -292,7 +292,7 @@ return|return
 name|children
 return|;
 block|}
-comment|/** Return the number of children this node has */
+comment|/** @return the number of children this node has */
 DECL|method|getNumOfChildren ()
 name|int
 name|getNumOfChildren
@@ -305,7 +305,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/** Judge if this node represents a rack       * Return true if it has no child or its children are not InnerNodes      */
+comment|/** Judge if this node represents a rack       * @return true if it has no child or its children are not InnerNodes      */
 DECL|method|isRack ()
 name|boolean
 name|isRack
@@ -1038,7 +1038,7 @@ return|;
 block|}
 block|}
 comment|// end of remove
-comment|/** Given a node's string representation, return a reference to the node */
+comment|/** Given a node's string representation, return a reference to the node      * @param loc string location of the form /rack/node      * @return null if the node is not found or the childnode is there but      * not an instance of {@link InnerNode}      */
 DECL|method|getLoc (String loc)
 specifier|private
 name|Node
@@ -1184,7 +1184,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/** get<i>leafIndex</i> leaf of this subtree       * if it is not in the<i>excludedNode</i>*/
+comment|/** get<i>leafIndex</i> leaf of this subtree       * if it is not in the<i>excludedNode</i>      *      * @param leafIndex an indexed leaf of the node      * @param excludedNode an excluded node (can be null)      * @return      */
 DECL|method|getLeaf (int leafIndex, Node excludedNode)
 specifier|private
 name|Node
@@ -1445,6 +1445,7 @@ return|;
 block|}
 block|}
 comment|// end of InnerNode
+comment|/**    * the root cluster map    */
 DECL|field|clusterMap
 name|InnerNode
 name|clusterMap
@@ -1457,7 +1458,7 @@ operator|.
 name|ROOT
 argument_list|)
 decl_stmt|;
-comment|// the root
+comment|/** rack counter */
 DECL|field|numOfRacks
 specifier|private
 name|int
@@ -1465,7 +1466,7 @@ name|numOfRacks
 init|=
 literal|0
 decl_stmt|;
-comment|// rack counter
+comment|/** the lock used to manage access */
 DECL|field|netlock
 specifier|private
 name|ReadWriteLock
@@ -1483,7 +1484,7 @@ name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node    *          node to be added    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
+comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
 DECL|method|add (Node node)
 specifier|public
 name|void
@@ -1642,7 +1643,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Remove a node    * Update node counter& rack counter if necessary    * @param node    *          node to be removed    */
+comment|/** Remove a node    * Update node counter and rack counter if necessary    * @param node node to be removed; can be null    */
 DECL|method|remove (Node node)
 specifier|public
 name|void
@@ -1775,7 +1776,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Check if the tree contains node<i>node</i>    *     * @param node    *          a node    * @return true if<i>node</i> is already in the tree; false otherwise    */
+comment|/** Check if the tree contains node<i>node</i>    *     * @param node a node    * @return true if<i>node</i> is already in the tree; false otherwise    */
 DECL|method|contains (Node node)
 specifier|public
 name|boolean
@@ -1847,9 +1848,11 @@ name|parent
 operator|==
 name|clusterMap
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 block|}
 block|}
 finally|finally
@@ -1938,7 +1941,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Return the total number of racks */
+comment|/** @return the total number of racks */
 DECL|method|getNumOfRacks ()
 specifier|public
 name|int
@@ -1971,7 +1974,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Return the total number of nodes */
+comment|/** @return the total number of leaf nodes */
 DECL|method|getNumOfLeaves ()
 specifier|public
 name|int
@@ -2007,7 +2010,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Return the distance between two nodes    * It is assumed that the distance from one node to its parent is 1    * The distance between two nodes is calculated by summing up their distances    * to their closest common  ancestor.    * @param node1 one node    * @param node2 another node    * @return the distance between node1 and node2    * node1 or node2 do not belong to the cluster    */
+comment|/** Return the distance between two nodes    * It is assumed that the distance from one node to its parent is 1    * The distance between two nodes is calculated by summing up their distances    * to their closest common ancestor.    * @param node1 one node    * @param node2 another node    * @return the distance between node1 and node2 which is zero if they are the same    *  or {@link Integer#MAX_VALUE} if node1 or node2 do not belong to the cluster    */
 DECL|method|getDistance (Node node1, Node node2)
 specifier|public
 name|int
@@ -2232,7 +2235,7 @@ operator|+
 literal|2
 return|;
 block|}
-comment|/** Check if two nodes are on the same rack    * @param node1 one node    * @param node2 another node    * @return true if node1 and node2 are on the same rack; false otherwise    * @exception IllegalArgumentException when either node1 or node2 is null, or    * node1 or node2 do not belong to the cluster    */
+comment|/** Check if two nodes are on the same rack    * @param node1 one node (can be null)    * @param node2 another node (can be null)    * @return true if node1 and node2 are on the same rack; false otherwise    * @exception IllegalArgumentException when either node1 or node2 is null, or    * node1 or node2 do not belong to the cluster    */
 DECL|method|isOnSameRack ( Node node1, Node node2)
 specifier|public
 name|boolean
@@ -2879,7 +2882,7 @@ operator|=
 name|tempNode
 expr_stmt|;
 block|}
-comment|/** Sort nodes array by their distances to<i>reader</i>    * It linearly scans the array, if a local node is found, swap it with    * the first element of the array.    * If a local rack node is found, swap it with the first element following    * the local node.    * If neither local node or local rack node is found, put a random replica    * location at position 0.    * It leaves the rest nodes untouched.    */
+comment|/** Sort nodes array by their distances to<i>reader</i>    * It linearly scans the array, if a local node is found, swap it with    * the first element of the array.    * If a local rack node is found, swap it with the first element following    * the local node.    * If neither local node or local rack node is found, put a random replica    * location at position 0.    * It leaves the rest nodes untouched.    * @param reader the node that wishes to read a block from one of the nodes    * @param nodes the list of nodes containing data for the reader    */
 DECL|method|pseudoSortByDistance ( Node reader, Node[] nodes )
 specifier|public
 name|void

@@ -69,14 +69,14 @@ specifier|public
 interface|interface
 name|Node
 block|{
-comment|/** Return the string representation of this node's network location */
+comment|/** @return the string representation of this node's network location */
 DECL|method|getNetworkLocation ()
 specifier|public
 name|String
 name|getNetworkLocation
 parameter_list|()
 function_decl|;
-comment|/** Set the node's network location */
+comment|/** Set this node's network location    * @param location the location    */
 DECL|method|setNetworkLocation (String location)
 specifier|public
 name|void
@@ -86,21 +86,21 @@ name|String
 name|location
 parameter_list|)
 function_decl|;
-comment|/** Return this node's name */
+comment|/** @return this node's name */
 DECL|method|getName ()
 specifier|public
 name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/** Return this node's parent */
+comment|/** @return this node's parent */
 DECL|method|getParent ()
 specifier|public
 name|Node
 name|getParent
 parameter_list|()
 function_decl|;
-comment|/** Set this node's parent */
+comment|/** Set this node's parent    * @param parent the parent    */
 DECL|method|setParent (Node parent)
 specifier|public
 name|void
@@ -110,14 +110,14 @@ name|Node
 name|parent
 parameter_list|)
 function_decl|;
-comment|/** Return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
+comment|/** @return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
 DECL|method|getLevel ()
 specifier|public
 name|int
 name|getLevel
 parameter_list|()
 function_decl|;
-comment|/** Set this node's level in the tree.*/
+comment|/** Set this node's level in the tree    * @param i the level    */
 DECL|method|setLevel (int i)
 specifier|public
 name|void

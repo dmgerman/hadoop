@@ -71,6 +71,7 @@ name|NodeBase
 implements|implements
 name|Node
 block|{
+comment|/** Path separator {@value} */
 DECL|field|PATH_SEPARATOR
 specifier|public
 specifier|final
@@ -80,6 +81,7 @@ name|PATH_SEPARATOR
 init|=
 literal|'/'
 decl_stmt|;
+comment|/** Path separator as a string {@value} */
 DECL|field|PATH_SEPARATOR_STR
 specifier|public
 specifier|final
@@ -89,6 +91,7 @@ name|PATH_SEPARATOR_STR
 init|=
 literal|"/"
 decl_stmt|;
+comment|/** string representation of root {@value} */
 DECL|field|ROOT
 specifier|public
 specifier|final
@@ -98,7 +101,6 @@ name|ROOT
 init|=
 literal|""
 decl_stmt|;
-comment|// string representation of root
 DECL|field|name
 specifier|protected
 name|String
@@ -196,7 +198,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Construct a node from its name and its location    * @param name this node's name     * @param location this node's location     */
+comment|/** Construct a node from its name and its location    * @param name this node's name (can be null, must not contain {@link #PATH_SEPARATOR})    * @param location this node's location     */
 DECL|method|NodeBase (String name, String location)
 specifier|public
 name|NodeBase
@@ -219,7 +221,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Construct a node from its name and its location    * @param name this node's name     * @param location this node's location     * @param parent this node's parent node    * @param level this node's level in the tree    */
+comment|/** Construct a node from its name and its location    * @param name this node's name (can be null, must not contain {@link #PATH_SEPARATOR})    * @param location this node's location     * @param parent this node's parent node    * @param level this node's level in the tree    */
 DECL|method|NodeBase (String name, String location, Node parent, int level)
 specifier|public
 name|NodeBase
@@ -260,7 +262,7 @@ operator|=
 name|level
 expr_stmt|;
 block|}
-comment|/* set this node's name and location */
+comment|/**    * set this node's name and location    * @param name the (nullable) name -which cannot contain the {@link #PATH_SEPARATOR}    * @param location the location    */
 DECL|method|set (String name, String location)
 specifier|private
 name|void
@@ -316,7 +318,9 @@ operator|=
 name|location
 expr_stmt|;
 block|}
-comment|/** Return this node's name */
+comment|/** @return this node's name */
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
@@ -327,7 +331,9 @@ return|return
 name|name
 return|;
 block|}
-comment|/** Return this node's network location */
+comment|/** @return this node's network location */
+annotation|@
+name|Override
 DECL|method|getNetworkLocation ()
 specifier|public
 name|String
@@ -338,7 +344,9 @@ return|return
 name|location
 return|;
 block|}
-comment|/** Set this node's network location */
+comment|/** Set this node's network location    * @param location the location    */
+annotation|@
+name|Override
 DECL|method|setNetworkLocation (String location)
 specifier|public
 name|void
@@ -355,7 +363,7 @@ operator|=
 name|location
 expr_stmt|;
 block|}
-comment|/** Return this node's path */
+comment|/**    * Get the path of a node    * @param node a non-null node    * @return the path of a node    */
 DECL|method|getPath (Node node)
 specifier|public
 specifier|static
@@ -380,7 +388,9 @@ name|getName
 argument_list|()
 return|;
 block|}
-comment|/** Return this node's string representation */
+comment|/** @return this node's path as its string representation */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -394,10 +404,10 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/** Normalize a path */
+comment|/** Normalize a path by stripping off any trailing {@link #PATH_SEPARATOR}    * @param path path to normalize.    * @return the normalised path    * If<i>path</i>is null or empty {@link #ROOT} is returned    * @throws IllegalArgumentException if the first character of a non empty path    * is not {@link #PATH_SEPARATOR}    */
 DECL|method|normalize (String path)
-specifier|static
 specifier|public
+specifier|static
 name|String
 name|normalize
 parameter_list|(
@@ -486,7 +496,9 @@ return|return
 name|path
 return|;
 block|}
-comment|/** Return this node's parent */
+comment|/** @return this node's parent */
+annotation|@
+name|Override
 DECL|method|getParent ()
 specifier|public
 name|Node
@@ -497,7 +509,9 @@ return|return
 name|parent
 return|;
 block|}
-comment|/** Set this node's parent */
+comment|/** Set this node's parent    * @param parent the parent    */
+annotation|@
+name|Override
 DECL|method|setParent (Node parent)
 specifier|public
 name|void
@@ -514,7 +528,9 @@ operator|=
 name|parent
 expr_stmt|;
 block|}
-comment|/** Return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
+comment|/** @return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
+annotation|@
+name|Override
 DECL|method|getLevel ()
 specifier|public
 name|int
@@ -525,7 +541,9 @@ return|return
 name|level
 return|;
 block|}
-comment|/** Set this node's level in the tree */
+comment|/** Set this node's level in the tree    * @param level the level    */
+annotation|@
+name|Override
 DECL|method|setLevel (int level)
 specifier|public
 name|void
