@@ -6844,6 +6844,12 @@ operator|-
 name|startTime
 argument_list|)
 expr_stmt|;
+name|long
+name|startProcessCommands
+init|=
+name|now
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -6853,6 +6859,43 @@ name|cmds
 argument_list|)
 condition|)
 continue|continue;
+name|long
+name|endProcessCommands
+init|=
+name|now
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|endProcessCommands
+operator|-
+name|startProcessCommands
+operator|>
+literal|2000
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Took "
+operator|+
+operator|(
+name|endProcessCommands
+operator|-
+name|startProcessCommands
+operator|)
+operator|+
+literal|"ms to process "
+operator|+
+name|cmds
+operator|.
+name|length
+operator|+
+literal|" commands from NN"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 if|if

@@ -10582,19 +10582,6 @@ name|getGenerationStamp
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|long
-name|dfsBytes
-init|=
-name|f
-operator|.
-name|length
-argument_list|()
-operator|+
-name|metaFile
-operator|.
-name|length
-argument_list|()
-decl_stmt|;
 comment|// Delete the block asynchronously to make sure we can do it fast enough
 name|asyncDiskService
 operator|.
@@ -10605,8 +10592,6 @@ argument_list|,
 name|f
 argument_list|,
 name|metaFile
-argument_list|,
-name|dfsBytes
 argument_list|,
 operator|new
 name|ExtendedBlock
