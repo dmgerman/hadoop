@@ -2436,6 +2436,12 @@ specifier|static
 class|class
 name|Saver
 block|{
+DECL|field|context
+specifier|private
+specifier|final
+name|SaveNamespaceContext
+name|context
+decl_stmt|;
 comment|/** Set to true once an image has been written */
 DECL|field|saved
 specifier|private
@@ -2510,6 +2516,20 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|Saver (SaveNamespaceContext context)
+name|Saver
+parameter_list|(
+name|SaveNamespaceContext
+name|context
+parameter_list|)
+block|{
+name|this
+operator|.
+name|context
+operator|=
+name|context
+expr_stmt|;
+block|}
 comment|/**      * Return the MD5 checksum of the image file that was saved.      */
 DECL|method|getSavedDigest ()
 name|MD5Hash
@@ -2523,18 +2543,12 @@ return|return
 name|savedDigest
 return|;
 block|}
-DECL|method|save (File newFile, long txid, FSNamesystem sourceNamesystem, FSImageCompression compression)
+DECL|method|save (File newFile, FSImageCompression compression)
 name|void
 name|save
 parameter_list|(
 name|File
 name|newFile
-parameter_list|,
-name|long
-name|txid
-parameter_list|,
-name|FSNamesystem
-name|sourceNamesystem
 parameter_list|,
 name|FSImageCompression
 name|compression
@@ -2545,6 +2559,15 @@ block|{
 name|checkNotSaved
 argument_list|()
 expr_stmt|;
+specifier|final
+name|FSNamesystem
+name|sourceNamesystem
+init|=
+name|context
+operator|.
+name|getSourceNamesystem
+argument_list|()
+decl_stmt|;
 name|FSDirectory
 name|fsDir
 init|=
@@ -2653,7 +2676,10 @@ name|out
 operator|.
 name|writeLong
 argument_list|(
-name|txid
+name|context
+operator|.
+name|getTxId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// write compression info and set up compressed stream
@@ -2735,6 +2761,11 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|checkCancelled
+argument_list|()
+expr_stmt|;
 name|sourceNamesystem
 operator|.
 name|saveSecretManagerState
@@ -2746,9 +2777,19 @@ name|strbuf
 operator|=
 literal|null
 expr_stmt|;
+name|context
+operator|.
+name|checkCancelled
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|flush
+argument_list|()
+expr_stmt|;
+name|context
+operator|.
+name|checkCancelled
 argument_list|()
 expr_stmt|;
 name|fout
@@ -2815,7 +2856,6 @@ block|}
 comment|/**      * Save file tree image starting from the given root.      * This is a recursive procedure, which first saves all children of      * a current directory and then moves inside the sub-directories.      */
 DECL|method|saveImage (ByteBuffer currentDirName, INodeDirectory current, DataOutputStream out)
 specifier|private
-specifier|static
 name|void
 name|saveImage
 parameter_list|(
@@ -2831,6 +2871,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|context
+operator|.
+name|checkCancelled
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|INode
