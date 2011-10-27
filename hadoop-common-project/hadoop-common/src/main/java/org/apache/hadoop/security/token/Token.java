@@ -510,6 +510,7 @@ block|}
 comment|/**    * Get the token kind    * @return the kind of the token    */
 DECL|method|getKind ()
 specifier|public
+specifier|synchronized
 name|Text
 name|getKind
 parameter_list|()
