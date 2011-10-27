@@ -220,7 +220,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|MD5_SUFFIX
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String

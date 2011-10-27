@@ -12825,6 +12825,55 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Cancel an ongoing saveNamespace operation and wait for its    * threads to exit, if one is currently in progress.    *    * If no such operation is in progress, this call does nothing.    *    * @param reason a reason to be communicated to the caller saveNamespace     * @throws IOException    */
+DECL|method|cancelSaveNamespace (String reason)
+name|void
+name|cancelSaveNamespace
+parameter_list|(
+name|String
+name|reason
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|getFSImage
+argument_list|()
+operator|.
+name|cancelSaveNamespace
+argument_list|(
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Enables/Disables/Checks restoring failed storage replicas if the storage becomes available again.    * Requires superuser privilege.    *     * @throws AccessControlException if superuser privilege is violated.    */
 DECL|method|restoreFailedStorage (String arg)
 name|boolean
