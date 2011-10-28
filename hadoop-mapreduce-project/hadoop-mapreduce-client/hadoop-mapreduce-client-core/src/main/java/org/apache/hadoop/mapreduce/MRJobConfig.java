@@ -1673,6 +1673,27 @@ name|DEFAULT_MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS
 init|=
 literal|2000
 decl_stmt|;
+comment|/**    * If contact with RM is lost, the AM will wait MR_AM_TO_RM_WAIT_INTERVAL_MS    * milliseconds before aborting. During this interval, AM will still try    * to contact the RM.    */
+DECL|field|MR_AM_TO_RM_WAIT_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_TO_RM_WAIT_INTERVAL_MS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"scheduler.connection.wait.interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_TO_RM_WAIT_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_TO_RM_WAIT_INTERVAL_MS
+init|=
+literal|360000
+decl_stmt|;
 comment|/**    * Boolean. Create the base dirs in the JobHistoryEventHandler    * Set to false for multi-user clusters.  This is an internal config that    * is set by the MR framework and read by it too.    */
 DECL|field|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 specifier|public
