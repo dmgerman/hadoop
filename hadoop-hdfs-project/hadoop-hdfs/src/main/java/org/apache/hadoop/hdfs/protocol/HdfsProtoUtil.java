@@ -511,6 +511,14 @@ name|getInfoPort
 argument_list|()
 argument_list|)
 operator|.
+name|setIpcPort
+argument_list|(
+name|dni
+operator|.
+name|getIpcPort
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -546,11 +554,12 @@ operator|.
 name|getInfoPort
 argument_list|()
 argument_list|,
-operator|-
-literal|1
+name|idProto
+operator|.
+name|getIpcPort
+argument_list|()
 argument_list|)
 return|;
-comment|// ipc port not serialized in writables either
 block|}
 comment|//// DatanodeInfo ////
 DECL|method|toProto (DatanodeInfo dni)
