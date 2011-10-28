@@ -592,14 +592,6 @@ argument_list|)
 argument_list|)
 argument_list|,
 name|item
-operator|.
-name|path
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|out

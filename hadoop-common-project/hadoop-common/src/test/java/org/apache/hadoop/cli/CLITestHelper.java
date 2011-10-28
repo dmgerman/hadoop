@@ -877,10 +877,13 @@ name|info
 argument_list|(
 literal|"            Expected output:   ["
 operator|+
+name|expandCommand
+argument_list|(
 name|cd
 operator|.
 name|getExpectedOutput
 argument_list|()
+argument_list|)
 operator|+
 literal|"]"
 argument_list|)
@@ -1448,10 +1451,13 @@ operator|.
 name|getCommandOutput
 argument_list|()
 argument_list|,
+name|expandCommand
+argument_list|(
 name|compdata
 operator|.
 name|getExpectedOutput
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
