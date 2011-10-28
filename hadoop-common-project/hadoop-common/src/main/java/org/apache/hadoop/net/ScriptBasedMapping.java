@@ -74,20 +74,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Shell
 operator|.
 name|ShellCommandExecutor
@@ -132,7 +118,21 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|*
+name|Configurable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -539,7 +539,7 @@ block|{
 comment|// invalid number of entries returned by the script
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Script "
 operator|+
