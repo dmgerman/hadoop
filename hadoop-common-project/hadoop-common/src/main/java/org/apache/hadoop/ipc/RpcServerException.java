@@ -37,8 +37,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Constructs exception with the specified detail message.    *     * @param messages detailed message.    */
+comment|/**    * Constructs exception with the specified detail message.    * @param message detailed message.    */
 DECL|method|RpcServerException (final String message)
+specifier|public
 name|RpcServerException
 parameter_list|(
 specifier|final
@@ -52,8 +53,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs exception with the specified detail message and cause.    *     * @param message message.    * @param cause that cause this exception    * @param cause the cause (can be retried by the {@link #getCause()} method).    *          (A<tt>null</tt> value is permitted, and indicates that the cause    *          is nonexistent or unknown.)    */
+comment|/**    * Constructs exception with the specified detail message and cause.    *     * @param message message.    * @param cause the cause (can be retried by the {@link #getCause()} method).    *          (A<tt>null</tt> value is permitted, and indicates that the cause    *          is nonexistent or unknown.)    */
 DECL|method|RpcServerException (final String message, final Throwable cause)
+specifier|public
 name|RpcServerException
 parameter_list|(
 specifier|final
