@@ -79,9 +79,9 @@ name|int
 name|getResponseId
 parameter_list|()
 function_decl|;
-DECL|method|getReboot ()
-name|boolean
-name|getReboot
+DECL|method|getNodeAction ()
+name|NodeAction
+name|getNodeAction
 parameter_list|()
 function_decl|;
 DECL|method|getContainersToCleanupList ()
@@ -134,12 +134,12 @@ name|int
 name|responseId
 parameter_list|)
 function_decl|;
-DECL|method|setReboot (boolean reboot)
+DECL|method|setNodeAction (NodeAction action)
 name|void
-name|setReboot
+name|setNodeAction
 parameter_list|(
-name|boolean
-name|reboot
+name|NodeAction
+name|action
 parameter_list|)
 function_decl|;
 DECL|method|addAllContainersToCleanup (List<ContainerId> containers)

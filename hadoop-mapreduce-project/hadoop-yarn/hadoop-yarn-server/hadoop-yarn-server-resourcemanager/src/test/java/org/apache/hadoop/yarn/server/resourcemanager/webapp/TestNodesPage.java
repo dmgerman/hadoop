@@ -212,7 +212,7 @@ specifier|final
 name|int
 name|numberOfThInMetricsTable
 init|=
-literal|9
+literal|10
 decl_stmt|;
 specifier|final
 name|int

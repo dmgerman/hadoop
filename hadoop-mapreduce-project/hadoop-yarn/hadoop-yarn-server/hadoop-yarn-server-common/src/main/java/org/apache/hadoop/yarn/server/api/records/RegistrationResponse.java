@@ -55,6 +55,23 @@ name|ByteBuffer
 name|secretKey
 parameter_list|)
 function_decl|;
+DECL|method|getNodeAction ()
+specifier|public
+specifier|abstract
+name|NodeAction
+name|getNodeAction
+parameter_list|()
+function_decl|;
+DECL|method|setNodeAction (NodeAction nodeAction)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeAction
+parameter_list|(
+name|NodeAction
+name|nodeAction
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

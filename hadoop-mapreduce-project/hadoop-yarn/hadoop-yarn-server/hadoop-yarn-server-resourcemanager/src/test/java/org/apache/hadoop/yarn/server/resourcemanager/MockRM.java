@@ -1292,6 +1292,18 @@ block|}
 block|}
 return|;
 block|}
+DECL|method|getNodesListManager ()
+specifier|public
+name|NodesListManager
+name|getNodesListManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodesListManager
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|startWepApp ()

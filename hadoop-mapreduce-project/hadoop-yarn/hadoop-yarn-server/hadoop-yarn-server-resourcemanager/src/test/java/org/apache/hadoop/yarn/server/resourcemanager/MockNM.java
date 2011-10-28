@@ -428,6 +428,8 @@ argument_list|(
 name|conts
 argument_list|,
 literal|true
+argument_list|,
+name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
@@ -576,10 +578,12 @@ argument_list|>
 argument_list|()
 argument_list|,
 name|b
+argument_list|,
+name|nodeId
 argument_list|)
 return|;
 block|}
-DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy)
+DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy, NodeId nodeId)
 specifier|public
 name|HeartbeatResponse
 name|nodeHeartbeat
@@ -597,6 +601,9 @@ name|conts
 parameter_list|,
 name|boolean
 name|isHealthy
+parameter_list|,
+name|NodeId
+name|nodeId
 parameter_list|)
 throws|throws
 name|Exception

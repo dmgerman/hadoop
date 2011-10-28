@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmnode
+DECL|package|org.apache.hadoop.yarn.server.api.records
 package|package
 name|org
 operator|.
@@ -16,32 +16,30 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|api
 operator|.
-name|rmnode
+name|records
 package|;
 end_package
 
+begin_comment
+comment|/**  * The NodeManager is instructed to perform the given action.  *   */
+end_comment
+
 begin_enum
-DECL|enum|RMNodeState
+DECL|enum|NodeAction
 specifier|public
 enum|enum
-name|RMNodeState
+name|NodeAction
 block|{
-DECL|enumConstant|NEW
-DECL|enumConstant|RUNNING
-DECL|enumConstant|UNHEALTHY
-DECL|enumConstant|DECOMMISSIONED
-DECL|enumConstant|LOST
-name|NEW
+DECL|enumConstant|NORMAL
+DECL|enumConstant|REBOOT
+DECL|enumConstant|SHUTDOWN
+name|NORMAL
 block|,
-name|RUNNING
+name|REBOOT
 block|,
-name|UNHEALTHY
-block|,
-name|DECOMMISSIONED
-block|,
-name|LOST
+name|SHUTDOWN
 block|}
 end_enum
 
