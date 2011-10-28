@@ -117,6 +117,13 @@ index|[]
 name|getStats
 parameter_list|()
 function_decl|;
+comment|/** @return the expired heartbeats */
+DECL|method|getExpiredHeartbeats ()
+specifier|public
+name|int
+name|getExpiredHeartbeats
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

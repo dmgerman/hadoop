@@ -158,7 +158,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|Namesystem
 import|;
 end_import
 
@@ -254,15 +254,24 @@ argument_list|)
 decl_stmt|;
 DECL|field|namesystem
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
 decl_stmt|;
-DECL|method|HeartbeatManager (final FSNamesystem namesystem, final Configuration conf)
+DECL|field|blockManager
+specifier|final
+name|BlockManager
+name|blockManager
+decl_stmt|;
+DECL|method|HeartbeatManager (final Namesystem namesystem, final BlockManager blockManager, final Configuration conf)
 name|HeartbeatManager
 parameter_list|(
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
+parameter_list|,
+specifier|final
+name|BlockManager
+name|blockManager
 parameter_list|,
 specifier|final
 name|Configuration
@@ -292,6 +301,12 @@ operator|.
 name|namesystem
 operator|=
 name|namesystem
+expr_stmt|;
+name|this
+operator|.
+name|blockManager
+operator|=
+name|blockManager
 expr_stmt|;
 block|}
 DECL|method|activate (Configuration conf)
@@ -550,6 +565,21 @@ block|,
 name|getBlockPoolUsed
 argument_list|()
 block|}
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getExpiredHeartbeats ()
+specifier|public
+specifier|synchronized
+name|int
+name|getExpiredHeartbeats
+parameter_list|()
+block|{
+return|return
+name|stats
+operator|.
+name|expiredHeartbeats
 return|;
 block|}
 DECL|method|register (final DatanodeDescriptor d)
@@ -813,10 +843,7 @@ specifier|final
 name|DatanodeManager
 name|dm
 init|=
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|blockManager
 operator|.
 name|getDatanodeManager
 argument_list|()
@@ -873,7 +900,7 @@ name|d
 argument_list|)
 condition|)
 block|{
-name|namesystem
+name|stats
 operator|.
 name|incrExpiredHeartbeats
 argument_list|()
@@ -1005,10 +1032,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|blockManager
 operator|.
 name|shouldUpdateBlockKey
 argument_list|(
@@ -1122,6 +1146,13 @@ DECL|field|xceiverCount
 specifier|private
 name|int
 name|xceiverCount
+init|=
+literal|0
+decl_stmt|;
+DECL|field|expiredHeartbeats
+specifier|private
+name|int
+name|expiredHeartbeats
 init|=
 literal|0
 decl_stmt|;
@@ -1270,6 +1301,17 @@ name|getDfsUsed
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/** Increment expired heartbeat counter. */
+DECL|method|incrExpiredHeartbeats ()
+specifier|private
+name|void
+name|incrExpiredHeartbeats
+parameter_list|()
+block|{
+name|expiredHeartbeats
+operator|++
+expr_stmt|;
 block|}
 block|}
 block|}

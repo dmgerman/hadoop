@@ -100,7 +100,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|Namesystem
 import|;
 end_import
 
@@ -136,25 +136,41 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|fsnamesystem
+DECL|field|namesystem
 specifier|private
 specifier|final
-name|FSNamesystem
-name|fsnamesystem
+name|Namesystem
+name|namesystem
 decl_stmt|;
-DECL|method|DecommissionManager (final FSNamesystem namesystem)
+DECL|field|blockmanager
+specifier|private
+specifier|final
+name|BlockManager
+name|blockmanager
+decl_stmt|;
+DECL|method|DecommissionManager (final Namesystem namesystem, final BlockManager blockmanager)
 name|DecommissionManager
 parameter_list|(
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
+parameter_list|,
+specifier|final
+name|BlockManager
+name|blockmanager
 parameter_list|)
 block|{
 name|this
 operator|.
-name|fsnamesystem
+name|namesystem
 operator|=
 name|namesystem
+expr_stmt|;
+name|this
+operator|.
+name|blockmanager
+operator|=
+name|blockmanager
 expr_stmt|;
 block|}
 comment|/** Periodically check decommission status. */
@@ -223,14 +239,14 @@ block|{
 for|for
 control|(
 init|;
-name|fsnamesystem
+name|namesystem
 operator|.
 name|isRunning
 argument_list|()
 condition|;
 control|)
 block|{
-name|fsnamesystem
+name|namesystem
 operator|.
 name|writeLock
 argument_list|()
@@ -243,7 +259,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fsnamesystem
+name|namesystem
 operator|.
 name|writeUnlock
 argument_list|()
@@ -295,10 +311,7 @@ specifier|final
 name|DatanodeManager
 name|dm
 init|=
-name|fsnamesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|blockmanager
 operator|.
 name|getDatanodeManager
 argument_list|()

@@ -588,6 +588,8 @@ name|BlockManager
 argument_list|(
 name|fsn
 argument_list|,
+name|fsn
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
