@@ -616,6 +616,11 @@ name|$
 argument_list|(
 name|CONTAINER_ID
 argument_list|)
+argument_list|,
+name|container
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 argument_list|,
 literal|"Link to logs"

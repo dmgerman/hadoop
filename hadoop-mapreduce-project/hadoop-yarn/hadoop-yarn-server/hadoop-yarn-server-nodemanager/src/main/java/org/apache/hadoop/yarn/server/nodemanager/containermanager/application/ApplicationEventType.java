@@ -51,10 +51,10 @@ comment|// Source: Container
 DECL|enumConstant|APPLICATION_CONTAINER_FINISHED
 name|APPLICATION_CONTAINER_FINISHED
 block|,
-comment|// Source: LogAggregationService.
-DECL|enumConstant|APPLICATION_FINISHED
-name|APPLICATION_FINISHED
-block|, }
+comment|// Source: Log Aggregation
+DECL|enumConstant|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_AGGREGATION_FINISHED
+block|}
 end_enum
 
 end_unit

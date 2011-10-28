@@ -625,6 +625,8 @@ literal|"/containerlogs"
 argument_list|,
 name|CONTAINER_ID
 argument_list|,
+name|APP_OWNER
+argument_list|,
 name|CONTAINER_LOG_TYPE
 argument_list|)
 argument_list|,

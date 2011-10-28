@@ -1709,6 +1709,8 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+comment|// TODO Better error handling. Thread can die with the rest of the
+comment|// NM still running.
 name|LOG
 operator|.
 name|error

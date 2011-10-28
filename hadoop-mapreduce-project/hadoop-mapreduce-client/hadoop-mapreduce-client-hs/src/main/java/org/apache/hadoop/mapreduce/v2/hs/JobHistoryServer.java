@@ -221,23 +221,6 @@ specifier|private
 name|JobHistory
 name|jobHistoryService
 decl_stmt|;
-static|static
-block|{
-name|Configuration
-operator|.
-name|addDefaultResource
-argument_list|(
-literal|"mapred-default.xml"
-argument_list|)
-expr_stmt|;
-name|Configuration
-operator|.
-name|addDefaultResource
-argument_list|(
-literal|"mapred-site.xml"
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|JobHistoryServer ()
 specifier|public
 name|JobHistoryServer

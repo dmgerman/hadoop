@@ -52,6 +52,18 @@ name|CONTAINER_LOG_TYPE
 init|=
 literal|"nm.containerLogType"
 decl_stmt|;
+DECL|field|ENTITY_STRING
+name|String
+name|ENTITY_STRING
+init|=
+literal|"nm.entityString"
+decl_stmt|;
+DECL|field|APP_OWNER
+name|String
+name|APP_OWNER
+init|=
+literal|"nm.appOwner"
+decl_stmt|;
 block|}
 end_interface
 

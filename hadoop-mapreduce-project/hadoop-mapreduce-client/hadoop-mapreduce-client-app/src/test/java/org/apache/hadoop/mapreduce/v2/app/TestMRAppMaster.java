@@ -265,6 +265,9 @@ argument_list|,
 operator|-
 literal|1
 argument_list|,
+operator|-
+literal|1
+argument_list|,
 name|System
 operator|.
 name|currentTimeMillis
@@ -346,7 +349,7 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, long submitTime)
+DECL|method|MRAppMasterTest (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String host, int port, int httpPort, long submitTime)
 specifier|public
 name|MRAppMasterTest
 parameter_list|(
@@ -362,6 +365,9 @@ parameter_list|,
 name|int
 name|port
 parameter_list|,
+name|int
+name|httpPort
+parameter_list|,
 name|long
 name|submitTime
 parameter_list|)
@@ -375,6 +381,8 @@ argument_list|,
 name|host
 argument_list|,
 name|port
+argument_list|,
+name|httpPort
 argument_list|,
 name|submitTime
 argument_list|)

@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * "License"); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -25,6 +25,16 @@ operator|.
 name|event
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
 
 begin_import
 import|import
@@ -55,6 +65,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAccessType
 import|;
 end_import
 
@@ -112,7 +140,18 @@ specifier|final
 name|Credentials
 name|credentials
 decl_stmt|;
-DECL|method|LogAggregatorAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy)
+DECL|field|appAcls
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|appAcls
+decl_stmt|;
+DECL|method|LogAggregatorAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
 specifier|public
 name|LogAggregatorAppStartedEvent
 parameter_list|(
@@ -127,6 +166,14 @@ name|credentials
 parameter_list|,
 name|ContainerLogsRetentionPolicy
 name|retentionPolicy
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|appAcls
 parameter_list|)
 block|{
 name|super
@@ -159,6 +206,12 @@ operator|.
 name|retentionPolicy
 operator|=
 name|retentionPolicy
+expr_stmt|;
+name|this
+operator|.
+name|appAcls
+operator|=
+name|appAcls
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -207,6 +260,23 @@ return|return
 name|this
 operator|.
 name|user
+return|;
+block|}
+DECL|method|getApplicationAcls ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationAcls
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appAcls
 return|;
 block|}
 block|}

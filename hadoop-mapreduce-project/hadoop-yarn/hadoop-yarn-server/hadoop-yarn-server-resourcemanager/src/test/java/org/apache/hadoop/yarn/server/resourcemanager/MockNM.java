@@ -348,26 +348,14 @@ return|return
 name|nodeId
 return|;
 block|}
-DECL|method|getHttpAddress ()
+DECL|method|getHttpPort ()
 specifier|public
-name|String
-name|getHttpAddress
+name|int
+name|getHttpPort
 parameter_list|()
 block|{
 return|return
-name|nodeId
-operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|httpPort
-argument_list|)
 return|;
 block|}
 DECL|method|containerStatus (Container container)

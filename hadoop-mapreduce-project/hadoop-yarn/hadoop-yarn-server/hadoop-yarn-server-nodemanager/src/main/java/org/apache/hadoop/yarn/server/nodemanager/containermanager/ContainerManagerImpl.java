@@ -1735,6 +1735,10 @@ return|return
 operator|new
 name|LogAggregationService
 argument_list|(
+name|this
+operator|.
+name|dispatcher
+argument_list|,
 name|context
 argument_list|,
 name|deletionService
@@ -2333,6 +2337,8 @@ argument_list|,
 name|applicationID
 argument_list|,
 name|credentials
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 if|if
@@ -2464,6 +2470,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|stopContainer (StopContainerRequest request)
 specifier|public
 name|StopContainerResponse
@@ -2919,6 +2930,11 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|handle (ContainerManagerEvent event)
 specifier|public
 name|void

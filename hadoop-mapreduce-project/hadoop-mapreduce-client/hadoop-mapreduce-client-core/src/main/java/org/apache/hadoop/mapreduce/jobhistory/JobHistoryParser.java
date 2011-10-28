@@ -1749,6 +1749,15 @@ argument_list|()
 expr_stmt|;
 name|amInfo
 operator|.
+name|nodeManagerPort
+operator|=
+name|event
+operator|.
+name|getNodeManagerPort
+argument_list|()
+expr_stmt|;
+name|amInfo
+operator|.
 name|nodeManagerHttpPort
 operator|=
 name|event
@@ -3318,6 +3327,10 @@ DECL|field|nodeManagerHost
 name|String
 name|nodeManagerHost
 decl_stmt|;
+DECL|field|nodeManagerPort
+name|int
+name|nodeManagerPort
+decl_stmt|;
 DECL|field|nodeManagerHttpPort
 name|int
 name|nodeManagerHttpPort
@@ -3343,7 +3356,7 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-DECL|method|AMInfo (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerHttpPort)
+DECL|method|AMInfo (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort)
 specifier|public
 name|AMInfo
 parameter_list|(
@@ -3358,6 +3371,9 @@ name|containerId
 parameter_list|,
 name|String
 name|nodeManagerHost
+parameter_list|,
+name|int
+name|nodeManagerPort
 parameter_list|,
 name|int
 name|nodeManagerHttpPort
@@ -3386,6 +3402,12 @@ operator|.
 name|nodeManagerHost
 operator|=
 name|nodeManagerHost
+expr_stmt|;
+name|this
+operator|.
+name|nodeManagerPort
+operator|=
+name|nodeManagerPort
 expr_stmt|;
 name|this
 operator|.
@@ -3457,6 +3479,17 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"NODE_MANAGER_PORT: "
+operator|+
+name|nodeManagerPort
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
 literal|"NODE_MANAGER_HTTP_PORT: "
 operator|+
 name|nodeManagerHttpPort
@@ -3505,6 +3538,17 @@ parameter_list|()
 block|{
 return|return
 name|nodeManagerHost
+return|;
+block|}
+comment|/** @return the port for the node manager running the AM */
+DECL|method|getNodeManagerPort ()
+specifier|public
+name|int
+name|getNodeManagerPort
+parameter_list|()
+block|{
+return|return
+name|nodeManagerPort
 return|;
 block|}
 comment|/** @return the http port for the node manager running the AM */

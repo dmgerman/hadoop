@@ -141,8 +141,8 @@ operator|new
 name|AMStarted
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record the start of an MR AppMaster    *     * @param appAttemptId    *          the application attempt id.    * @param startTime    *          the start time of the AM.    * @param containerId    *          the containerId of the AM.    * @param nodeManagerHost    *          the node on which the AM is running.    * @param nodeManagerHttpPort    *          the httpPort for the node running the AM.    */
-DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerHttpPort)
+comment|/**    * Create an event to record the start of an MR AppMaster    *     * @param appAttemptId    *          the application attempt id.    * @param startTime    *          the start time of the AM.    * @param containerId    *          the containerId of the AM.    * @param nodeManagerHost    *          the node on which the AM is running.    * @param nodeManagerPort    *          the port on which the AM is running.    * @param nodeManagerHttpPort    *          the httpPort for the node running the AM.    */
+DECL|method|AMStartedEvent (ApplicationAttemptId appAttemptId, long startTime, ContainerId containerId, String nodeManagerHost, int nodeManagerPort, int nodeManagerHttpPort)
 specifier|public
 name|AMStartedEvent
 parameter_list|(
@@ -157,6 +157,9 @@ name|containerId
 parameter_list|,
 name|String
 name|nodeManagerHost
+parameter_list|,
+name|int
+name|nodeManagerPort
 parameter_list|,
 name|int
 name|nodeManagerHttpPort
@@ -203,6 +206,12 @@ name|Utf8
 argument_list|(
 name|nodeManagerHost
 argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|nodeManagerPort
+operator|=
+name|nodeManagerPort
 expr_stmt|;
 name|datum
 operator|.
@@ -313,6 +322,19 @@ name|nodeManagerHost
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**    * @return the node manager port.    */
+DECL|method|getNodeManagerPort ()
+specifier|public
+name|int
+name|getNodeManagerPort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|nodeManagerPort
 return|;
 block|}
 comment|/**    * @return the http port for the tracker.    */

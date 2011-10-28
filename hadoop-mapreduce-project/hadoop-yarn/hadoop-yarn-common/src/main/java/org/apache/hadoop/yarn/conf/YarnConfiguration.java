@@ -528,6 +528,16 @@ name|DEFAULT_YARN_ADMIN_ACL
 init|=
 literal|"*"
 decl_stmt|;
+comment|/** ACL used in case none is found. Allows nothing. */
+DECL|field|DEFAULT_YARN_APP_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_YARN_APP_ACL
+init|=
+literal|" "
+decl_stmt|;
 comment|/** The address of the RM admin interface.*/
 DECL|field|RM_ADMIN_ADDRESS
 specifier|public
@@ -1156,6 +1166,18 @@ name|DEFAULT_NM_LOG_DIRS
 init|=
 literal|"/tmp/logs"
 decl_stmt|;
+comment|/** Whether to enable log aggregation */
+DECL|field|NM_LOG_AGGREGATION_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LOG_AGGREGATION_ENABLED
+init|=
+name|NM_PREFIX
+operator|+
+literal|"log-aggregation.enable"
+decl_stmt|;
 comment|/** Where to aggregate logs to.*/
 DECL|field|NM_REMOTE_APP_LOG_DIR
 specifier|public
@@ -1176,6 +1198,38 @@ name|String
 name|DEFAULT_NM_REMOTE_APP_LOG_DIR
 init|=
 literal|"/tmp/logs"
+decl_stmt|;
+comment|/**    * The remote log dir will be created at    * NM_REMOTE_APP_LOG_DIR/${user}/NM_REMOTE_APP_LOG_DIR_SUFFIX/${appId}    */
+DECL|field|NM_REMOTE_APP_LOG_DIR_SUFFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_REMOTE_APP_LOG_DIR_SUFFIX
+init|=
+name|NM_PREFIX
+operator|+
+literal|"remote-app-log-dir-suffix"
+decl_stmt|;
+DECL|field|DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX
+init|=
+literal|"logs"
+decl_stmt|;
+DECL|field|YARN_LOG_SERVER_URL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_LOG_SERVER_URL
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"log.server.url"
 decl_stmt|;
 comment|/** Amount of memory in GB that can be allocated for containers.*/
 DECL|field|NM_PMEM_MB

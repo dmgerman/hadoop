@@ -72,15 +72,35 @@ name|AM_CONTAINER_ID_ENV
 init|=
 literal|"AM_CONTAINER_ID"
 decl_stmt|;
-comment|/**    * The environment variable for NM_HTTP_ADDRESS. Set in AppMaster environment    * only    */
-DECL|field|NM_HTTP_ADDRESS_ENV
+comment|/**    * The environment variable for the NM_HOST. Set in the AppMaster environment    * only    */
+DECL|field|NM_HOST_ENV
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|NM_HTTP_ADDRESS_ENV
+name|NM_HOST_ENV
 init|=
-literal|"NM_HTTP_ADDRESS"
+literal|"NM_HOST"
+decl_stmt|;
+comment|/**    * The environment variable for the NM_PORT. Set in the AppMaster environment    * only    */
+DECL|field|NM_PORT_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PORT_ENV
+init|=
+literal|"NM_PORT"
+decl_stmt|;
+comment|/**    * The environment variable for the NM_HTTP_PORT. Set in the AppMaster environment    * only    */
+DECL|field|NM_HTTP_PORT_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HTTP_PORT_ENV
+init|=
+literal|"NM_HTTP_PORT"
 decl_stmt|;
 comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
 DECL|field|APP_SUBMIT_TIME_ENV
