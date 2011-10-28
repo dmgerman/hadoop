@@ -346,6 +346,11 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 if|if
 condition|(
 name|proxyAddresses
@@ -360,11 +365,6 @@ operator|)
 operator|>=
 name|now
 condition|)
-block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
 block|{
 try|try
 block|{
@@ -425,10 +425,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-block|}
 return|return
 name|proxyAddresses
 return|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -157,6 +157,8 @@ implements|implements
 name|Configurable
 block|{
 DECL|field|JOB_ID
+specifier|private
+specifier|static
 specifier|final
 name|String
 name|JOB_ID
@@ -164,6 +166,8 @@ init|=
 literal|"$jobId"
 decl_stmt|;
 DECL|field|JOB_STATUS
+specifier|private
+specifier|static
 specifier|final
 name|String
 name|JOB_STATUS

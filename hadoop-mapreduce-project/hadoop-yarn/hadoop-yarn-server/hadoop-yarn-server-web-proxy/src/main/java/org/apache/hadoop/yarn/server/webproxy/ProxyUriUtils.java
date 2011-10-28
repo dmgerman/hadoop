@@ -383,8 +383,6 @@ condition|(
 name|approved
 condition|)
 block|{
-name|first
-operator|=
 name|appendQuery
 argument_list|(
 name|newp
