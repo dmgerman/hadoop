@@ -2897,6 +2897,9 @@ name|state
 condition|)
 block|{
 case|case
+name|NEW
+case|:
+case|case
 name|SUBMITTED
 case|:
 return|return
