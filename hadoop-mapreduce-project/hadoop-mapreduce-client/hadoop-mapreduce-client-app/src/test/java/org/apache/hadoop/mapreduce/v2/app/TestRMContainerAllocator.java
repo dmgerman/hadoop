@@ -3725,6 +3725,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|assigned
 operator|=
 name|allocator
