@@ -162,6 +162,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|SafeModeAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocolR23Compatible
 operator|.
 name|JournalProtocolServerSideTranslatorR23
@@ -780,6 +798,26 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+literal|false
+operator|==
+name|namesystem
+operator|.
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+name|namesystem
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_ENTER
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Backup node should never do lease recovery,
 comment|// therefore lease hard limit should never expire.
 name|namesystem
@@ -967,6 +1005,27 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+comment|/* @Override */
+comment|// NameNode
+DECL|method|setSafeMode (SafeModeAction action)
+specifier|public
+name|boolean
+name|setSafeMode
+parameter_list|(
+name|SafeModeAction
+name|action
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+literal|"setSafeMode"
+argument_list|)
+throw|;
 block|}
 DECL|class|BackupNodeRpcServer
 specifier|static

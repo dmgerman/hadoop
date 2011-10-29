@@ -15379,7 +15379,6 @@ expr_stmt|;
 block|}
 comment|/**    * Set the total number of blocks in the system.     */
 DECL|method|setBlockTotal ()
-specifier|private
 name|void
 name|setBlockTotal
 parameter_list|()

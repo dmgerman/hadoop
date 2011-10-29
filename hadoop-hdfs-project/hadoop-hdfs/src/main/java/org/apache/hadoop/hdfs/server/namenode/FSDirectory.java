@@ -1023,6 +1023,20 @@ argument_list|,
 literal|"FSDirectory already loaded"
 argument_list|)
 expr_stmt|;
+name|setReady
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|setReady ()
+name|void
+name|setReady
+parameter_list|()
+block|{
+if|if
+condition|(
+name|ready
+condition|)
+return|return;
 name|writeLock
 argument_list|()
 expr_stmt|;
