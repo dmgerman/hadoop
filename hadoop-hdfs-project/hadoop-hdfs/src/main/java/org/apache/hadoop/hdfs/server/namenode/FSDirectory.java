@@ -5883,21 +5883,12 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|INode
 name|inode
 init|=
-name|rootDir
-operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|src
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -5926,6 +5917,38 @@ operator|(
 name|INodeFile
 operator|)
 name|inode
+return|;
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getINode (String src)
+name|INode
+name|getINode
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|INode
+name|iNode
+init|=
+name|rootDir
+operator|.
+name|getNode
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+return|return
+name|iNode
 return|;
 block|}
 finally|finally
@@ -9174,15 +9197,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sets the access time on the file. Logs it in the transaction log.    */
-DECL|method|setTimes (String src, INodeFile inode, long mtime, long atime, boolean force)
+comment|/**    * Sets the access time on the file/directory. Logs it in the transaction log.    */
+DECL|method|setTimes (String src, INode inode, long mtime, long atime, boolean force)
 name|void
 name|setTimes
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|INodeFile
+name|INode
 name|inode
 parameter_list|,
 name|long
@@ -9271,10 +9294,10 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INodeFile
+name|INode
 name|inode
 init|=
-name|getFileINode
+name|getINode
 argument_list|(
 name|src
 argument_list|)
@@ -9294,7 +9317,7 @@ name|force
 argument_list|)
 return|;
 block|}
-DECL|method|unprotectedSetTimes (String src, INodeFile inode, long mtime, long atime, boolean force)
+DECL|method|unprotectedSetTimes (String src, INode inode, long mtime, long atime, boolean force)
 specifier|private
 name|boolean
 name|unprotectedSetTimes
@@ -9302,7 +9325,7 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|INodeFile
+name|INode
 name|inode
 parameter_list|,
 name|long

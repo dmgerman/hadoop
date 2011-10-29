@@ -5793,12 +5793,12 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 block|}
-name|INodeFile
+name|INode
 name|inode
 init|=
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
 name|src
 argument_list|)
@@ -5878,7 +5878,7 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"File "
+literal|"File/Directory "
 operator|+
 name|src
 operator|+
