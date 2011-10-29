@@ -858,11 +858,9 @@ specifier|protected
 name|ContainerManager
 name|getContainerMgrProxy
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ContainerId
+name|containerId
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|containerManager

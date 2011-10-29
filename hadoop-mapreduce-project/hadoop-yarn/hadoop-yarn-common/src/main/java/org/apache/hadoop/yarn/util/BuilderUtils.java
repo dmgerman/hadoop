@@ -124,6 +124,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -160,7 +178,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAccessType
+name|ApplicationReport
 import|;
 end_import
 
@@ -178,7 +196,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationReport
+name|ApplicationResourceUsageReport
 import|;
 end_import
 
@@ -431,24 +449,6 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationResourceUsageReport
 import|;
 end_import
 
@@ -1731,6 +1731,39 @@ argument_list|)
 expr_stmt|;
 return|return
 name|container
+return|;
+block|}
+DECL|method|newPriority (int p)
+specifier|public
+specifier|static
+name|Priority
+name|newPriority
+parameter_list|(
+name|int
+name|p
+parameter_list|)
+block|{
+name|Priority
+name|priority
+init|=
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|Priority
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|priority
+operator|.
+name|setPriority
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+return|return
+name|priority
 return|;
 block|}
 DECL|method|newResourceRequest (Priority priority, String hostName, Resource capability, int numContainers)

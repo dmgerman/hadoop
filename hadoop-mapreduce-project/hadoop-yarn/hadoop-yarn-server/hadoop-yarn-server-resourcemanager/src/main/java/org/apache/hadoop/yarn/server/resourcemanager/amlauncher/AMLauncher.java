@@ -336,24 +336,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -893,12 +875,6 @@ operator|=
 name|getContainerMgrProxy
 argument_list|(
 name|masterContainerID
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1056,17 +1032,15 @@ name|stopRequest
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getContainerMgrProxy ( final ApplicationId applicationID)
+DECL|method|getContainerMgrProxy ( final ContainerId containerId)
 specifier|protected
 name|ContainerManager
 name|getContainerMgrProxy
 parameter_list|(
 specifier|final
-name|ApplicationId
-name|applicationID
+name|ContainerId
+name|containerId
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Container
 name|container
@@ -1107,10 +1081,12 @@ name|UserGroupInformation
 operator|.
 name|createRemoteUser
 argument_list|(
-literal|"yarn"
+name|containerId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// TODO
 if|if
 condition|(
 name|UserGroupInformation

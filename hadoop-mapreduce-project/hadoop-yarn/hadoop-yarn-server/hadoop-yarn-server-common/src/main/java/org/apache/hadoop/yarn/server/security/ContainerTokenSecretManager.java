@@ -283,7 +283,7 @@ literal|" to be run on NM "
 operator|+
 name|identifier
 operator|.
-name|getNmHostName
+name|getNmHostAddress
 argument_list|()
 operator|+
 literal|" "
@@ -296,7 +296,7 @@ name|get
 argument_list|(
 name|identifier
 operator|.
-name|getNmHostName
+name|getNmHostAddress
 argument_list|()
 argument_list|)
 argument_list|)
@@ -317,7 +317,7 @@ name|get
 argument_list|(
 name|identifier
 operator|.
-name|getNmHostName
+name|getNmHostAddress
 argument_list|()
 argument_list|)
 argument_list|)
@@ -364,7 +364,7 @@ literal|" to be run on NM "
 operator|+
 name|identifier
 operator|.
-name|getNmHostName
+name|getNmHostAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -384,7 +384,7 @@ name|get
 argument_list|(
 name|identifier
 operator|.
-name|getNmHostName
+name|getNmHostAddress
 argument_list|()
 argument_list|)
 argument_list|)
