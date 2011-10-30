@@ -2406,7 +2406,7 @@ annotation|@
 name|Override
 specifier|public
 name|void
-name|register
+name|registerLaunchedTask
 parameter_list|(
 name|TaskAttemptId
 name|attemptID
@@ -2435,6 +2435,16 @@ parameter_list|(
 name|TaskAttemptId
 name|attemptID
 parameter_list|,
+name|WrappedJvmID
+name|jvmID
+parameter_list|)
+block|{       }
+annotation|@
+name|Override
+specifier|public
+name|void
+name|registerPendingTask
+parameter_list|(
 name|WrappedJvmID
 name|jvmID
 parameter_list|)

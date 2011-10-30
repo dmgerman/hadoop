@@ -78,6 +78,10 @@ name|TaskAttemptId
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class listens for changes to the state of a Task.  */
+end_comment
+
 begin_interface
 DECL|interface|TaskAttemptListener
 specifier|public
@@ -89,9 +93,19 @@ name|InetSocketAddress
 name|getAddress
 parameter_list|()
 function_decl|;
-DECL|method|register (TaskAttemptId attemptID, Task task, WrappedJvmID jvmID)
+comment|/**    * register a JVM with the listener.  This should be called as soon as a     * JVM ID is assigned to a task attempt, before it has been launched.    * @param jvmID The ID of the JVM .    */
+DECL|method|registerPendingTask (WrappedJvmID jvmID)
 name|void
-name|register
+name|registerPendingTask
+parameter_list|(
+name|WrappedJvmID
+name|jvmID
+parameter_list|)
+function_decl|;
+comment|/**    * Register the task and task attempt with the JVM.  This should be called    * when the JVM has been launched.    * @param attemptID the id of the attempt for this JVM.    * @param task the task itself for this JVM.    * @param jvmID the id of the JVM handling the task.    */
+DECL|method|registerLaunchedTask (TaskAttemptId attemptID, Task task, WrappedJvmID jvmID)
+name|void
+name|registerLaunchedTask
 parameter_list|(
 name|TaskAttemptId
 name|attemptID
@@ -103,6 +117,7 @@ name|WrappedJvmID
 name|jvmID
 parameter_list|)
 function_decl|;
+comment|/**    * Unregister the JVM and the attempt associated with it.  This should be     * called when the attempt/JVM has finished executing and is being cleaned up.    * @param attemptID the ID of the attempt.    * @param jvmID the ID of the JVM for that attempt.    */
 DECL|method|unregister (TaskAttemptId attemptID, WrappedJvmID jvmID)
 name|void
 name|unregister

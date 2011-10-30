@@ -72,6 +72,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -83,6 +93,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -597,7 +617,7 @@ name|Server
 name|server
 decl_stmt|;
 DECL|field|taskHeartbeatHandler
-specifier|private
+specifier|protected
 name|TaskHeartbeatHandler
 name|taskHeartbeatHandler
 decl_stmt|;
@@ -606,7 +626,7 @@ specifier|private
 name|InetSocketAddress
 name|address
 decl_stmt|;
-DECL|field|jvmIDToAttemptMap
+DECL|field|jvmIDToActiveAttemptMap
 specifier|private
 name|Map
 argument_list|<
@@ -622,7 +642,7 @@ name|mapred
 operator|.
 name|Task
 argument_list|>
-name|jvmIDToAttemptMap
+name|jvmIDToActiveAttemptMap
 init|=
 name|Collections
 operator|.
@@ -652,6 +672,26 @@ name|JobTokenSecretManager
 name|jobTokenSecretManager
 init|=
 literal|null
+decl_stmt|;
+DECL|field|pendingJvms
+specifier|private
+name|Set
+argument_list|<
+name|WrappedJvmID
+argument_list|>
+name|pendingJvms
+init|=
+name|Collections
+operator|.
+name|synchronizedSet
+argument_list|(
+operator|new
+name|HashSet
+argument_list|<
+name|WrappedJvmID
+argument_list|>
+argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|method|TaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager)
 specifier|public
@@ -2139,8 +2179,12 @@ operator|+
 literal|" asked for a task"
 argument_list|)
 expr_stmt|;
-comment|// TODO: Is it an authorised container to get a task? Otherwise return null.
-comment|// TODO: Is the request for task-launch still valid?
+name|JvmTask
+name|jvmTask
+init|=
+literal|null
+decl_stmt|;
+comment|// TODO: Is it an authorized container to get a task? Otherwise return null.
 comment|// TODO: Child.java's firstTaskID isn't really firstTaskID. Ask for update
 comment|// to jobId and task-type.
 name|WrappedJvmID
@@ -2164,6 +2208,21 @@ name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|pendingJvms
+operator|.
+name|contains
+argument_list|(
+name|wJvmID
+argument_list|)
+condition|)
+block|{
 name|org
 operator|.
 name|apache
@@ -2175,7 +2234,7 @@ operator|.
 name|Task
 name|task
 init|=
-name|jvmIDToAttemptMap
+name|jvmIDToActiveAttemptMap
 operator|.
 name|get
 argument_list|(
@@ -2206,9 +2265,8 @@ name|getTaskID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|JvmTask
 name|jvmTask
-init|=
+operator|=
 operator|new
 name|JvmTask
 argument_list|(
@@ -2216,29 +2274,82 @@ name|task
 argument_list|,
 literal|false
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|//remove the task as it is no more needed and free up the memory
-name|jvmIDToAttemptMap
+comment|//Also we have already told the JVM to process a task, so it is no
+comment|//longer pending, and further request should ask it to exit.
+name|pendingJvms
 operator|.
 name|remove
 argument_list|(
 name|wJvmID
 argument_list|)
 expr_stmt|;
+name|jvmIDToActiveAttemptMap
+operator|.
+name|remove
+argument_list|(
+name|wJvmID
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"JVM with ID: "
+operator|+
+name|jvmId
+operator|+
+literal|" is invalid and will be killed."
+argument_list|)
+expr_stmt|;
+name|jvmTask
+operator|=
+operator|new
+name|JvmTask
+argument_list|(
+literal|null
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|jvmTask
 return|;
 block|}
-return|return
-literal|null
-return|;
+annotation|@
+name|Override
+DECL|method|registerPendingTask (WrappedJvmID jvmID)
+specifier|public
+specifier|synchronized
+name|void
+name|registerPendingTask
+parameter_list|(
+name|WrappedJvmID
+name|jvmID
+parameter_list|)
+block|{
+comment|//Save this JVM away as one that has not been handled yet
+name|pendingJvms
+operator|.
+name|add
+argument_list|(
+name|jvmID
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|register (org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, org.apache.hadoop.mapred.Task task, WrappedJvmID jvmID)
+DECL|method|registerLaunchedTask ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, org.apache.hadoop.mapred.Task task, WrappedJvmID jvmID)
 specifier|public
 name|void
-name|register
+name|registerLaunchedTask
 parameter_list|(
 name|org
 operator|.
@@ -2272,9 +2383,14 @@ name|WrappedJvmID
 name|jvmID
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 comment|//create the mapping so that it is easy to look up
 comment|//when it comes back to ask for Task.
-name|jvmIDToAttemptMap
+name|jvmIDToActiveAttemptMap
 operator|.
 name|put
 argument_list|(
@@ -2283,6 +2399,29 @@ argument_list|,
 name|task
 argument_list|)
 expr_stmt|;
+comment|//This should not need to happen here, but just to be on the safe side
+if|if
+condition|(
+operator|!
+name|pendingJvms
+operator|.
+name|add
+argument_list|(
+name|jvmID
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|jvmID
+operator|+
+literal|" launched without first being registered"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|//register this attempt
 name|taskHeartbeatHandler
 operator|.
@@ -2321,7 +2460,15 @@ name|jvmID
 parameter_list|)
 block|{
 comment|//remove the mapping if not already removed
-name|jvmIDToAttemptMap
+name|jvmIDToActiveAttemptMap
+operator|.
+name|remove
+argument_list|(
+name|jvmID
+argument_list|)
+expr_stmt|;
+comment|//remove the pending if not already removed
+name|pendingJvms
 operator|.
 name|remove
 argument_list|(

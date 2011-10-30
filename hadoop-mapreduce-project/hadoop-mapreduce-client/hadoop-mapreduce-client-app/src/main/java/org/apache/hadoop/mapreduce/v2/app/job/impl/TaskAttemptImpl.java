@@ -5970,6 +5970,17 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|taskAttempt
+operator|.
+name|taskAttemptListener
+operator|.
+name|registerPendingTask
+argument_list|(
+name|taskAttempt
+operator|.
+name|jvmID
+argument_list|)
+expr_stmt|;
 comment|//launch the container
 comment|//create the container object to be launched for a given Task attempt
 name|taskAttempt
@@ -6376,7 +6387,7 @@ name|taskAttempt
 operator|.
 name|taskAttemptListener
 operator|.
-name|register
+name|registerLaunchedTask
 argument_list|(
 name|taskAttempt
 operator|.
