@@ -1719,7 +1719,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"block move is failed"
+literal|"block move is failed: "
+operator|+
+name|response
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}

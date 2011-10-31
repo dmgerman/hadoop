@@ -458,6 +458,48 @@ name|proto
 operator|.
 name|DataTransferProtos
 operator|.
+name|BlockOpResponseProto
+operator|.
+name|Builder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DataTransferProtos
+operator|.
+name|BlockOpResponseProtoOrBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DataTransferProtos
+operator|.
 name|ClientReadStatusProto
 import|;
 end_import
@@ -1526,10 +1568,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|msg
+init|=
 literal|"opReadBlock "
 operator|+
 name|block
@@ -1537,6 +1578,12 @@ operator|+
 literal|" received exception "
 operator|+
 name|e
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|msg
 argument_list|)
 expr_stmt|;
 name|sendResponse
@@ -1544,6 +1591,8 @@ argument_list|(
 name|s
 argument_list|,
 name|ERROR
+argument_list|,
+name|msg
 argument_list|,
 name|datanode
 operator|.
@@ -1560,6 +1609,8 @@ argument_list|(
 name|s
 argument_list|,
 name|SUCCESS
+argument_list|,
+literal|null
 argument_list|,
 name|datanode
 operator|.
@@ -2739,6 +2790,8 @@ name|writeResponse
 argument_list|(
 name|SUCCESS
 argument_list|,
+literal|null
+argument_list|,
 name|replyOut
 argument_list|)
 expr_stmt|;
@@ -3004,6 +3057,8 @@ argument_list|(
 name|Status
 operator|.
 name|SUCCESS
+argument_list|,
+literal|null
 argument_list|,
 name|out
 argument_list|)
@@ -3403,6 +3458,8 @@ name|s
 argument_list|,
 name|ERROR_ACCESS_TOKEN
 argument_list|,
+literal|"Invalid access token"
+argument_list|,
 name|datanode
 operator|.
 name|socketWriteTimeout
@@ -3423,10 +3480,9 @@ argument_list|()
 condition|)
 block|{
 comment|// not able to start
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|msg
+init|=
 literal|"Not able to copy block "
 operator|+
 name|block
@@ -3442,6 +3498,12 @@ name|getRemoteSocketAddress
 argument_list|()
 operator|+
 literal|" because threads quota is exceeded."
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|msg
 argument_list|)
 expr_stmt|;
 name|sendResponse
@@ -3449,6 +3511,8 @@ argument_list|(
 name|s
 argument_list|,
 name|ERROR
+argument_list|,
+name|msg
 argument_list|,
 name|datanode
 operator|.
@@ -3533,6 +3597,8 @@ comment|// send status first
 name|writeResponse
 argument_list|(
 name|SUCCESS
+argument_list|,
+literal|null
 argument_list|,
 name|reply
 argument_list|)
@@ -3787,6 +3853,8 @@ name|s
 argument_list|,
 name|ERROR_ACCESS_TOKEN
 argument_list|,
+literal|"Invalid access token"
+argument_list|,
 name|datanode
 operator|.
 name|socketWriteTimeout
@@ -3807,10 +3875,9 @@ argument_list|()
 condition|)
 block|{
 comment|// not able to start
-name|LOG
-operator|.
-name|warn
-argument_list|(
+name|String
+name|msg
+init|=
 literal|"Not able to receive block "
 operator|+
 name|block
@@ -3826,6 +3893,12 @@ name|getRemoteSocketAddress
 argument_list|()
 operator|+
 literal|" because threads quota is exceeded."
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|msg
 argument_list|)
 expr_stmt|;
 name|sendResponse
@@ -3833,6 +3906,8 @@ argument_list|(
 name|s
 argument_list|,
 name|ERROR
+argument_list|,
+name|msg
 argument_list|,
 name|datanode
 operator|.
@@ -3855,6 +3930,11 @@ name|Status
 name|opStatus
 init|=
 name|SUCCESS
+decl_stmt|;
+name|String
+name|errMsg
+init|=
+literal|null
 decl_stmt|;
 name|BlockReceiver
 name|blockReceiver
@@ -4148,10 +4228,8 @@ name|opStatus
 operator|=
 name|ERROR
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|errMsg
+operator|=
 literal|"opReplaceBlock "
 operator|+
 name|block
@@ -4159,6 +4237,12 @@ operator|+
 literal|" received exception "
 operator|+
 name|ioe
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|errMsg
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -4206,6 +4290,8 @@ argument_list|(
 name|s
 argument_list|,
 name|opStatus
+argument_list|,
+name|errMsg
 argument_list|,
 name|datanode
 operator|.
@@ -4280,7 +4366,7 @@ name|opStartTime
 return|;
 block|}
 comment|/**    * Utility function for sending a response.    * @param s socket to write to    * @param opStatus status message to write    * @param timeout send timeout    **/
-DECL|method|sendResponse (Socket s, Status status, long timeout)
+DECL|method|sendResponse (Socket s, Status status, String message, long timeout)
 specifier|private
 name|void
 name|sendResponse
@@ -4290,6 +4376,9 @@ name|s
 parameter_list|,
 name|Status
 name|status
+parameter_list|,
+name|String
+name|message
 parameter_list|,
 name|long
 name|timeout
@@ -4317,17 +4406,22 @@ name|writeResponse
 argument_list|(
 name|status
 argument_list|,
+name|message
+argument_list|,
 name|reply
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeResponse (Status status, OutputStream out)
+DECL|method|writeResponse (Status status, String message, OutputStream out)
 specifier|private
 name|void
 name|writeResponse
 parameter_list|(
 name|Status
 name|status
+parameter_list|,
+name|String
+name|message
 parameter_list|,
 name|OutputStream
 name|out
@@ -4336,6 +4430,8 @@ throws|throws
 name|IOException
 block|{
 name|BlockOpResponseProto
+operator|.
+name|Builder
 name|response
 init|=
 name|BlockOpResponseProto
@@ -4347,11 +4443,26 @@ name|setStatus
 argument_list|(
 name|status
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|message
+operator|!=
+literal|null
+condition|)
+block|{
+name|response
+operator|.
+name|setMessage
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+name|response
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-name|response
 operator|.
 name|writeDelimitedTo
 argument_list|(

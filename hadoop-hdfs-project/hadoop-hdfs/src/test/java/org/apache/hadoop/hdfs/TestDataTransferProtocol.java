@@ -849,9 +849,8 @@ name|info
 argument_list|(
 literal|"Received: "
 operator|+
-name|StringUtils
-operator|.
-name|byteToHexString
+operator|new
+name|String
 argument_list|(
 name|retBuf
 argument_list|)
@@ -903,55 +902,23 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|retBuf
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|print
-argument_list|(
-name|retBuf
-index|[
-name|i
-index|]
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"checking byte["
-operator|+
-name|i
-operator|+
-literal|"]"
-argument_list|,
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
 name|needed
-index|[
-name|i
-index|]
+argument_list|)
 argument_list|,
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
 name|retBuf
-index|[
-name|i
-index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -1140,6 +1107,8 @@ name|SUCCESS
 argument_list|,
 literal|""
 argument_list|,
+literal|null
+argument_list|,
 name|recvOut
 argument_list|)
 expr_stmt|;
@@ -1171,7 +1140,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|sendResponse (Status status, String firstBadLink, DataOutputStream out)
+DECL|method|sendResponse (Status status, String firstBadLink, String message, DataOutputStream out)
 specifier|private
 name|void
 name|sendResponse
@@ -1181,6 +1150,9 @@ name|status
 parameter_list|,
 name|String
 name|firstBadLink
+parameter_list|,
+name|String
+name|message
 parameter_list|,
 name|DataOutputStream
 name|out
@@ -1213,6 +1185,21 @@ operator|.
 name|setFirstBadLink
 argument_list|(
 name|firstBadLink
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|message
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 block|}
@@ -1310,6 +1297,8 @@ name|ERROR
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 name|recvOut
 argument_list|)
 expr_stmt|;
@@ -1339,6 +1328,8 @@ operator|.
 name|SUCCESS
 argument_list|,
 literal|""
+argument_list|,
+literal|null
 argument_list|,
 name|recvOut
 argument_list|)
@@ -2550,6 +2541,8 @@ name|ERROR
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 name|recvOut
 argument_list|)
 expr_stmt|;
@@ -2673,6 +2666,8 @@ operator|.
 name|SUCCESS
 argument_list|,
 literal|""
+argument_list|,
+literal|null
 argument_list|,
 name|recvOut
 argument_list|)
@@ -2826,6 +2821,8 @@ operator|.
 name|SUCCESS
 argument_list|,
 literal|""
+argument_list|,
+literal|null
 argument_list|,
 name|recvOut
 argument_list|)
@@ -3033,6 +3030,8 @@ name|SUCCESS
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 name|recvOut
 argument_list|)
 expr_stmt|;
@@ -3091,6 +3090,18 @@ operator|.
 name|ERROR
 argument_list|,
 literal|null
+argument_list|,
+literal|"opReadBlock "
+operator|+
+name|firstBlock
+operator|+
+literal|" received exception java.io.IOException:  "
+operator|+
+literal|"Offset 0 and length 4097 don't match block "
+operator|+
+name|firstBlock
+operator|+
+literal|" ( blockLen 4096 )"
 argument_list|,
 name|recvOut
 argument_list|)
