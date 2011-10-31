@@ -200,9 +200,11 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|jobhistory
+name|v2
 operator|.
-name|JobHistoryParser
+name|api
+operator|.
+name|records
 operator|.
 name|AMInfo
 import|;

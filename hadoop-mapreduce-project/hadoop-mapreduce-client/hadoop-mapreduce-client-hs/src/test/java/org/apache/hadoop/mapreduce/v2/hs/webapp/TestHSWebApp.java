@@ -1489,9 +1489,13 @@ name|BuilderUtils
 operator|.
 name|newNodeId
 argument_list|(
-literal|"testhost"
+name|MockJobs
+operator|.
+name|NM_HOST
 argument_list|,
-literal|2222
+name|MockJobs
+operator|.
+name|NM_PORT
 argument_list|)
 operator|.
 name|toString
@@ -1557,7 +1561,17 @@ literal|"Logs not available for container_10_0001_01_000001. Aggregation "
 operator|+
 literal|"may not be complete,"
 operator|+
-literal|" Check back later or try the nodemanager on testhost:2222"
+literal|" Check back later or try the nodemanager on "
+operator|+
+name|MockJobs
+operator|.
+name|NM_HOST
+operator|+
+literal|":"
+operator|+
+name|MockJobs
+operator|.
+name|NM_PORT
 argument_list|)
 expr_stmt|;
 block|}

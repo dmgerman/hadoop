@@ -948,7 +948,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"testhost"
+name|MRApp
+operator|.
+name|NM_HOST
 argument_list|,
 name|jobInfo
 operator|.
@@ -981,7 +983,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2222
+name|MRApp
+operator|.
+name|NM_PORT
 argument_list|,
 name|amInfo
 operator|.
@@ -993,7 +997,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3333
+name|MRApp
+operator|.
+name|NM_HTTP_PORT
 argument_list|,
 name|amInfo
 operator|.

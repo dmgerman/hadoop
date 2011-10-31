@@ -1162,7 +1162,11 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|"jobfile"
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1601,7 +1605,11 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|"jobfile"
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1983,7 +1991,11 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|"jobfile"
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2586,6 +2598,8 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 name|this
 operator|.
 name|setupProgress
@@ -2603,6 +2617,8 @@ operator|.
 name|cleanupProgress
 argument_list|,
 literal|"jobfile"
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -3406,7 +3422,11 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 literal|"jobfile"
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
