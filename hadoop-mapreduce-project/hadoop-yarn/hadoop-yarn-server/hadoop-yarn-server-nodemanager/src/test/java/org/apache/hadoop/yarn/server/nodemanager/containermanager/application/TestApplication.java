@@ -570,11 +570,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorEvent
+name|LogHandlerEventType
 import|;
 end_import
 
@@ -594,11 +594,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorEventType
+name|LogHandlerEvent
 import|;
 end_import
 
@@ -2555,7 +2555,7 @@ DECL|field|logAggregationBus
 specifier|final
 name|EventHandler
 argument_list|<
-name|LogAggregatorEvent
+name|LogHandlerEvent
 argument_list|>
 name|logAggregationBus
 decl_stmt|;
@@ -2729,7 +2729,7 @@ name|dispatcher
 operator|.
 name|register
 argument_list|(
-name|LogAggregatorEventType
+name|LogHandlerEventType
 operator|.
 name|class
 argument_list|,

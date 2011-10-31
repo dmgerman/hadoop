@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.application
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.loghandler.event
 package|package
 name|org
 operator|.
@@ -20,42 +20,80 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|application
+name|loghandler
+operator|.
+name|event
 package|;
 end_package
 
-begin_enum
-DECL|enum|ApplicationEventType
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_class
+DECL|class|LogHandlerAppFinishedEvent
 specifier|public
-enum|enum
-name|ApplicationEventType
+class|class
+name|LogHandlerAppFinishedEvent
+extends|extends
+name|LogHandlerEvent
 block|{
-comment|// Source: ContainerManager
-DECL|enumConstant|INIT_APPLICATION
-name|INIT_APPLICATION
-block|,
-DECL|enumConstant|INIT_CONTAINER
-name|INIT_CONTAINER
-block|,
-DECL|enumConstant|FINISH_APPLICATION
-name|FINISH_APPLICATION
-block|,
-comment|// Source: ResourceLocalizationService
-DECL|enumConstant|APPLICATION_INITED
-name|APPLICATION_INITED
-block|,
-DECL|enumConstant|APPLICATION_RESOURCES_CLEANEDUP
-name|APPLICATION_RESOURCES_CLEANEDUP
-block|,
-comment|// Source: Container
-DECL|enumConstant|APPLICATION_CONTAINER_FINISHED
-name|APPLICATION_CONTAINER_FINISHED
-block|,
-comment|// Source: Log Handler
-DECL|enumConstant|APPLICATION_LOG_HANDLING_FINISHED
-name|APPLICATION_LOG_HANDLING_FINISHED
+DECL|field|applicationId
+specifier|private
+specifier|final
+name|ApplicationId
+name|applicationId
+decl_stmt|;
+DECL|method|LogHandlerAppFinishedEvent (ApplicationId appId)
+specifier|public
+name|LogHandlerAppFinishedEvent
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|LogHandlerEventType
+operator|.
+name|APPLICATION_FINISHED
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|applicationId
+operator|=
+name|appId
+expr_stmt|;
 block|}
-end_enum
+DECL|method|getApplicationId ()
+specifier|public
+name|ApplicationId
+name|getApplicationId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationId
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation.event
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.loghandler.event
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 package|;
@@ -109,12 +109,12 @@ import|;
 end_import
 
 begin_class
-DECL|class|LogAggregatorAppStartedEvent
+DECL|class|LogHandlerAppStartedEvent
 specifier|public
 class|class
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 extends|extends
-name|LogAggregatorEvent
+name|LogHandlerEvent
 block|{
 DECL|field|applicationId
 specifier|private
@@ -151,9 +151,9 @@ name|String
 argument_list|>
 name|appAcls
 decl_stmt|;
-DECL|method|LogAggregatorAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
+DECL|method|LogHandlerAppStartedEvent (ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
 specifier|public
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 parameter_list|(
 name|ApplicationId
 name|appId
@@ -178,7 +178,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|LogAggregatorEventType
+name|LogHandlerEventType
 operator|.
 name|APPLICATION_STARTED
 argument_list|)

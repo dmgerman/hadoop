@@ -444,11 +444,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 import|;
 end_import
 
@@ -468,11 +468,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 import|;
 end_import
 
@@ -1159,7 +1159,7 @@ name|FINISHED
 argument_list|,
 name|ApplicationEventType
 operator|.
-name|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
 argument_list|,
 operator|new
 name|AppLogsAggregatedTransition
@@ -1446,7 +1446,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|app
 operator|.
@@ -1890,7 +1890,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|app
 operator|.

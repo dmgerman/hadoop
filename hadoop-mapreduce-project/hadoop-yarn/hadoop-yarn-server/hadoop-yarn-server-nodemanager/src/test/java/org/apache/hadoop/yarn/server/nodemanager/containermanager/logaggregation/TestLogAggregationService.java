@@ -766,11 +766,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 import|;
 end_import
 
@@ -790,11 +790,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 import|;
 end_import
 
@@ -814,11 +814,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 import|;
 end_import
 
@@ -1074,19 +1074,6 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_AGGREGATION_ENABLED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|DrainDispatcher
 name|dispatcher
 init|=
@@ -1187,7 +1174,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|application1
 argument_list|,
@@ -1244,7 +1231,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container11
 argument_list|,
@@ -1257,7 +1244,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|application1
 argument_list|)
@@ -1410,7 +1397,7 @@ name|assertEquals
 argument_list|(
 name|ApplicationEventType
 operator|.
-name|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
 argument_list|,
 name|eventCaptor
 operator|.
@@ -1483,19 +1470,6 @@ name|remoteRootLogDir
 operator|.
 name|getAbsolutePath
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_AGGREGATION_ENABLED
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 name|DrainDispatcher
@@ -1598,7 +1572,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|application1
 argument_list|,
@@ -1623,7 +1597,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|application1
 argument_list|)
@@ -1700,7 +1674,7 @@ name|assertEquals
 argument_list|(
 name|ApplicationEventType
 operator|.
-name|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
 argument_list|,
 name|eventCaptor
 operator|.
@@ -1787,19 +1761,6 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_AGGREGATION_ENABLED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|DrainDispatcher
 name|dispatcher
 init|=
@@ -1900,7 +1861,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|application1
 argument_list|,
@@ -1957,7 +1918,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container11
 argument_list|,
@@ -2015,7 +1976,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|application2
 argument_list|,
@@ -2059,7 +2020,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container21
 argument_list|,
@@ -2091,7 +2052,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container12
 argument_list|,
@@ -2149,7 +2110,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppStartedEvent
+name|LogHandlerAppStartedEvent
 argument_list|(
 name|application3
 argument_list|,
@@ -2193,7 +2154,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container31
 argument_list|,
@@ -2225,7 +2186,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container32
 argument_list|,
@@ -2258,7 +2219,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container22
 argument_list|,
@@ -2290,7 +2251,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|container33
 argument_list|,
@@ -2303,7 +2264,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|application2
 argument_list|)
@@ -2314,7 +2275,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|application3
 argument_list|)
@@ -2325,7 +2286,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorAppFinishedEvent
+name|LogHandlerAppFinishedEvent
 argument_list|(
 name|application1
 argument_list|)
@@ -2456,7 +2417,7 @@ name|assertEquals
 argument_list|(
 name|ApplicationEventType
 operator|.
-name|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
 argument_list|,
 name|eventCaptor
 operator|.
@@ -3155,19 +3116,6 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|this
-operator|.
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_AGGREGATION_ENABLED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|containerManager

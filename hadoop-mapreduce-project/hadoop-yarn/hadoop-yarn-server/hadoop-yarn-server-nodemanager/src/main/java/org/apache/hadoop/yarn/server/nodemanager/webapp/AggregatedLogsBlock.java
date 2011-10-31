@@ -534,6 +534,40 @@ name|toString
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_LOG_AGGREGATION_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOG_AGGREGATION_ENABLED
+argument_list|)
+condition|)
+block|{
+name|html
+operator|.
+name|h1
+argument_list|()
+operator|.
+name|_
+argument_list|(
+literal|"Aggregation is not enabled. Try the nodemanager at "
+operator|+
+name|nodeId
+argument_list|)
+operator|.
+name|_
+argument_list|()
+expr_stmt|;
+return|return;
+block|}
 name|Path
 name|remoteRootLogDir
 init|=
@@ -614,7 +648,7 @@ name|logEntity
 operator|+
 literal|". Aggregation may not be complete, "
 operator|+
-literal|"Check back later or try the nodemanager on "
+literal|"Check back later or try the nodemanager at "
 operator|+
 name|nodeId
 argument_list|)

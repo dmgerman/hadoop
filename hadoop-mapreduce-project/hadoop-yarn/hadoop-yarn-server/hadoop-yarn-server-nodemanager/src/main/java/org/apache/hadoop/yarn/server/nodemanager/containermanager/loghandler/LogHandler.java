@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation.event
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.loghandler
 package|package
 name|org
 operator|.
@@ -20,9 +20,7 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
-operator|.
-name|event
+name|loghandler
 package|;
 end_package
 
@@ -38,37 +36,56 @@ name|yarn
 operator|.
 name|event
 operator|.
-name|AbstractEvent
+name|EventHandler
 import|;
 end_import
 
-begin_class
-DECL|class|LogAggregatorEvent
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|loghandler
+operator|.
+name|event
+operator|.
+name|LogHandlerEvent
+import|;
+end_import
+
+begin_interface
+DECL|interface|LogHandler
 specifier|public
-class|class
-name|LogAggregatorEvent
+interface|interface
+name|LogHandler
 extends|extends
-name|AbstractEvent
+name|EventHandler
 argument_list|<
-name|LogAggregatorEventType
+name|LogHandlerEvent
 argument_list|>
 block|{
-DECL|method|LogAggregatorEvent (LogAggregatorEventType type)
+DECL|method|handle (LogHandlerEvent event)
 specifier|public
-name|LogAggregatorEvent
+name|void
+name|handle
 parameter_list|(
-name|LogAggregatorEventType
-name|type
+name|LogHandlerEvent
+name|event
 parameter_list|)
-block|{
-name|super
-argument_list|(
-name|type
-argument_list|)
-expr_stmt|;
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

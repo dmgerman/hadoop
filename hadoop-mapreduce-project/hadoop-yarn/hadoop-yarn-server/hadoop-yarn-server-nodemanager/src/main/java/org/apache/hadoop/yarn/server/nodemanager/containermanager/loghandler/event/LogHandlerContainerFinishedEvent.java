@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation.event
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.loghandler.event
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 package|;
@@ -45,12 +45,12 @@ import|;
 end_import
 
 begin_class
-DECL|class|LogAggregatorContainerFinishedEvent
+DECL|class|LogHandlerContainerFinishedEvent
 specifier|public
 class|class
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 extends|extends
-name|LogAggregatorEvent
+name|LogHandlerEvent
 block|{
 DECL|field|containerId
 specifier|private
@@ -64,9 +64,9 @@ specifier|final
 name|int
 name|exitCode
 decl_stmt|;
-DECL|method|LogAggregatorContainerFinishedEvent (ContainerId containerId, int exitCode)
+DECL|method|LogHandlerContainerFinishedEvent (ContainerId containerId, int exitCode)
 specifier|public
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 parameter_list|(
 name|ContainerId
 name|containerId
@@ -77,7 +77,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|LogAggregatorEventType
+name|LogHandlerEventType
 operator|.
 name|CONTAINER_FINISHED
 argument_list|)

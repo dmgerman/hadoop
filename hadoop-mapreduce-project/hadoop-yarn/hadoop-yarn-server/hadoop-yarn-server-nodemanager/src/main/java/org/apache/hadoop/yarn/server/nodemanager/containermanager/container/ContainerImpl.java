@@ -632,11 +632,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 import|;
 end_import
 
@@ -2454,7 +2454,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|containerID
 argument_list|,

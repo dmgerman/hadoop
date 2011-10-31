@@ -1147,7 +1147,7 @@ name|appId
 argument_list|,
 name|ApplicationEventType
 operator|.
-name|APPLICATION_LOG_AGGREGATION_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
 argument_list|)
 argument_list|)
 expr_stmt|;

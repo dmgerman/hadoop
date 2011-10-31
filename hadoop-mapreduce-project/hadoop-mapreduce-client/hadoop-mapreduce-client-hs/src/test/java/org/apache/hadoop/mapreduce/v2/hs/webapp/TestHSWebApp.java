@@ -1557,11 +1557,7 @@ argument_list|)
 operator|.
 name|write
 argument_list|(
-literal|"Logs not available for container_10_0001_01_000001. Aggregation "
-operator|+
-literal|"may not be complete,"
-operator|+
-literal|" Check back later or try the nodemanager on "
+literal|"Aggregation is not enabled. Try the nodemanager at "
 operator|+
 name|MockJobs
 operator|.
