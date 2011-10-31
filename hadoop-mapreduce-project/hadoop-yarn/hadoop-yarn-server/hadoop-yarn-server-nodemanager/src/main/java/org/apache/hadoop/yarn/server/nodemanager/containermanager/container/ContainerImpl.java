@@ -1316,6 +1316,55 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
+comment|// container not launched so kill is a no-op
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|KILL_CONTAINER
+argument_list|)
+comment|// container cleanup triggers a release of all resources
+comment|// regardless of whether they were localized or not
+comment|// LocalizedResource handles release event in all states
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RESOURCE_LOCALIZED
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RESOURCE_FAILED
+argument_list|)
 comment|// From LOCALIZED State
 operator|.
 name|addTransition
@@ -1643,6 +1692,21 @@ name|KILLING
 argument_list|,
 name|ContainerEventType
 operator|.
+name|RESOURCE_FAILED
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerEventType
+operator|.
 name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
@@ -1738,10 +1802,6 @@ argument_list|,
 name|ContainerEventType
 operator|.
 name|CONTAINER_LAUNCHED
-argument_list|,
-operator|new
-name|ContainerTransition
-argument_list|()
 argument_list|)
 comment|// From CONTAINER_CLEANEDUP_AFTER_KILL State.
 operator|.
