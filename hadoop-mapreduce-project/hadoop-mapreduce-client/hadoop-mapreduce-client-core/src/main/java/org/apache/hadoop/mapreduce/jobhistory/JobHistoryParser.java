@@ -934,6 +934,15 @@ operator|.
 name|getHostname
 argument_list|()
 expr_stmt|;
+name|attemptInfo
+operator|.
+name|rackname
+operator|=
+name|event
+operator|.
+name|getRackName
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|handleMapAttemptFinishedEvent (MapAttemptFinishedEvent event)
 specifier|private
@@ -1026,6 +1035,15 @@ operator|=
 name|event
 operator|.
 name|getHostname
+argument_list|()
+expr_stmt|;
+name|attemptInfo
+operator|.
+name|rackname
+operator|=
+name|event
+operator|.
+name|getRackname
 argument_list|()
 expr_stmt|;
 block|}
@@ -2929,6 +2947,10 @@ DECL|field|hostname
 name|String
 name|hostname
 decl_stmt|;
+DECL|field|rackname
+name|String
+name|rackname
+decl_stmt|;
 DECL|field|containerId
 name|ContainerId
 name|containerId
@@ -2959,6 +2981,8 @@ operator|=
 name|trackerName
 operator|=
 name|hostname
+operator|=
+name|rackname
 operator|=
 literal|""
 expr_stmt|;
@@ -3257,6 +3281,17 @@ parameter_list|()
 block|{
 return|return
 name|hostname
+return|;
+block|}
+comment|/** @return the rack name */
+DECL|method|getRackname ()
+specifier|public
+name|String
+name|getRackname
+parameter_list|()
+block|{
+return|return
+name|rackname
 return|;
 block|}
 comment|/** @return the counters for the attempt */

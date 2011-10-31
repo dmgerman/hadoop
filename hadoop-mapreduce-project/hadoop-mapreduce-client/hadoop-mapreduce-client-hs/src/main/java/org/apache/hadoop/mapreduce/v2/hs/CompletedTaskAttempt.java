@@ -680,6 +680,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNodeRackName ()
+specifier|public
+name|String
+name|getNodeRackName
+parameter_list|()
+block|{
+return|return
+name|attemptInfo
+operator|.
+name|getRackname
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getCounters ()
 specifier|public
 name|Counters

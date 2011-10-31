@@ -197,6 +197,12 @@ name|String
 name|getNodeHttpAddress
 parameter_list|()
 function_decl|;
+comment|/**    * @return node's rack name if a container is assigned, otherwise null.    */
+DECL|method|getNodeRackName ()
+name|String
+name|getNodeRackName
+parameter_list|()
+function_decl|;
 comment|/**     * @return time at which container is launched. If container is not launched    * yet, returns 0.    */
 DECL|method|getLaunchTime ()
 name|long

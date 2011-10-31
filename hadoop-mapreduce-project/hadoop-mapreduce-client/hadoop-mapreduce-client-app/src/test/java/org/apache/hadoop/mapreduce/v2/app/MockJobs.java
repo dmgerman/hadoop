@@ -2117,6 +2117,17 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|String
+name|getNodeRackName
+parameter_list|()
+block|{
+return|return
+literal|"/default-rack"
+return|;
+block|}
 block|}
 return|;
 block|}

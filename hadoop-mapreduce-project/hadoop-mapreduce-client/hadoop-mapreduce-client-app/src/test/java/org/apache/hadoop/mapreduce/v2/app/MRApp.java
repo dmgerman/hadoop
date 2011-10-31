@@ -2544,6 +2544,11 @@ operator|-
 literal|1
 decl_stmt|;
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|handle (ContainerLauncherEvent event)
 specifier|public

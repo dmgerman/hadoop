@@ -2943,6 +2943,11 @@ name|event
 operator|.
 name|getHostname
 argument_list|()
+argument_list|,
+name|event
+operator|.
+name|getRackName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// XXX There may be redundant location info available in the event.
@@ -3101,6 +3106,11 @@ argument_list|(
 name|event
 operator|.
 name|getHostname
+argument_list|()
+argument_list|,
+name|event
+operator|.
+name|getRackname
 argument_list|()
 argument_list|)
 expr_stmt|;

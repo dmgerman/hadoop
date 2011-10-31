@@ -3712,6 +3712,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNodeRackName ()
+specifier|public
+name|String
+name|getNodeRackName
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLaunchTime ()
 specifier|public
 name|long

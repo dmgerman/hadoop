@@ -860,6 +860,14 @@ operator|.
 name|getAssignedContainerMgrAddress
 argument_list|()
 decl_stmt|;
+name|String
+name|nodeRackName
+init|=
+name|ta
+operator|.
+name|getNodeRackName
+argument_list|()
+decl_stmt|;
 name|long
 name|attemptStartTime
 init|=
@@ -1098,6 +1106,10 @@ argument_list|,
 name|nodeHttpAddr
 argument_list|)
 argument_list|,
+name|nodeRackName
+operator|+
+literal|"/"
+operator|+
 name|nodeHttpAddr
 argument_list|)
 expr_stmt|;
