@@ -167,6 +167,12 @@ specifier|final
 name|LocalResourceType
 name|type
 decl_stmt|;
+DECL|field|visibility
+specifier|private
+specifier|final
+name|LocalResourceVisibility
+name|visibility
+decl_stmt|;
 comment|/**    * Wrap API resource to match against cache of localized resources.    * @param resource Resource requested by container    * @throws URISyntaxException If the path is malformed    */
 DECL|method|LocalResourceRequest (LocalResource resource)
 specifier|public
@@ -199,10 +205,15 @@ name|resource
 operator|.
 name|getType
 argument_list|()
+argument_list|,
+name|resource
+operator|.
+name|getVisibility
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|LocalResourceRequest (Path loc, long timestamp, LocalResourceType type)
+DECL|method|LocalResourceRequest (Path loc, long timestamp, LocalResourceType type, LocalResourceVisibility visibility)
 name|LocalResourceRequest
 parameter_list|(
 name|Path
@@ -213,6 +224,9 @@ name|timestamp
 parameter_list|,
 name|LocalResourceType
 name|type
+parameter_list|,
+name|LocalResourceVisibility
+name|visibility
 parameter_list|)
 block|{
 name|this
@@ -232,6 +246,12 @@ operator|.
 name|type
 operator|=
 name|type
+expr_stmt|;
+name|this
+operator|.
+name|visibility
+operator|=
+name|visibility
 expr_stmt|;
 block|}
 annotation|@
@@ -500,11 +520,9 @@ name|LocalResourceVisibility
 name|getVisibility
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+return|return
+name|visibility
+return|;
 block|}
 annotation|@
 name|Override
