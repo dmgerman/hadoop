@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -38,6 +48,8 @@ begin_interface
 DECL|interface|JournalManager
 interface|interface
 name|JournalManager
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Begin writing to a new segment of the log stream, which starts at    * the given transaction ID.    */
 DECL|method|startLogSegment (long txId)
@@ -112,6 +124,14 @@ comment|/**    * Recover segments which have not been finalized.    */
 DECL|method|recoverUnfinalizedSegments ()
 name|void
 name|recoverUnfinalizedSegments
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Close the journal manager, freeing any resources it may hold.    */
+DECL|method|close ()
+name|void
+name|close
 parameter_list|()
 throws|throws
 name|IOException
