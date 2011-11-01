@@ -304,6 +304,13 @@ name|recursive
 init|=
 literal|false
 decl_stmt|;
+DECL|field|depth
+specifier|private
+name|int
+name|depth
+init|=
+literal|0
+decl_stmt|;
 DECL|field|exceptions
 specifier|protected
 name|ArrayList
@@ -419,6 +426,16 @@ parameter_list|()
 block|{
 return|return
 name|recursive
+return|;
+block|}
+DECL|method|getDepth ()
+specifier|protected
+name|int
+name|getDepth
+parameter_list|()
+block|{
+return|return
+name|depth
 return|;
 block|}
 comment|/**     * Execute the command on the input path    *     * @param path the input path    * @throws IOException if any error occurs    */
@@ -864,6 +881,10 @@ name|IOException
 block|{
 comment|// null indicates that the call is not via recursion, ie. there is
 comment|// no parent directory that was expanded
+name|depth
+operator|=
+literal|0
+expr_stmt|;
 name|processPaths
 argument_list|(
 literal|null
@@ -992,6 +1013,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|depth
+operator|++
+expr_stmt|;
 name|processPaths
 argument_list|(
 name|item
@@ -1002,6 +1028,13 @@ name|getDirectoryContents
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|depth
+operator|--
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Display an exception prefaced with the command name.  Also increments    * the error count for the command which will result in a non-zero exit    * code.    * @param e exception to display    */
 DECL|method|displayError (Exception e)

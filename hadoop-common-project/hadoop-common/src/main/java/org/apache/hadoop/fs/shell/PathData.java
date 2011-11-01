@@ -720,6 +720,44 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns a temporary file for this PathData with the given extension.    * The file will be deleted on exit.    * @param extension for the temporary file    * @return PathData    * @throws IOException shouldn't happen    */
+DECL|method|createTempFile (String extension)
+specifier|public
+name|PathData
+name|createTempFile
+parameter_list|(
+name|String
+name|extension
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathData
+name|tmpFile
+init|=
+operator|new
+name|PathData
+argument_list|(
+name|fs
+argument_list|,
+name|uri
+operator|+
+literal|"._COPYING_"
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|deleteOnExit
+argument_list|(
+name|tmpFile
+operator|.
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+name|tmpFile
+return|;
+block|}
 comment|/**    * Returns a list of PathData objects of the items contained in the given    * directory.    * @return list of PathData objects for its children    * @throws IOException if anything else goes wrong...    */
 DECL|method|getDirectoryContents ()
 specifier|public
