@@ -274,9 +274,11 @@ name|tipMsg
 operator|.
 name|contains
 argument_list|(
-literal|"The number of live datanodes 0 needs an "
+literal|"The number of live datanodes 0 needs an additional "
 operator|+
-literal|"additional 1 live"
+literal|"2 live datanodes to reach the minimum number 1. "
+operator|+
+literal|"Safe mode will be turned off automatically."
 argument_list|)
 argument_list|)
 expr_stmt|;

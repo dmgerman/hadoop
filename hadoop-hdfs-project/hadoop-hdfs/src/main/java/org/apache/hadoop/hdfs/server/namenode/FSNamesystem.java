@@ -13686,6 +13686,23 @@ argument_list|,
 name|DFS_NAMENODE_SAFEMODE_THRESHOLD_PCT_DEFAULT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|threshold
+operator|>
+literal|1.0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The threshold value should't be greater than 1, threshold: "
+operator|+
+name|threshold
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|datanodeThreshold
@@ -14686,6 +14703,8 @@ name|blockThreshold
 operator|-
 name|blockSafe
 operator|)
+operator|+
+literal|1
 argument_list|,
 name|threshold
 argument_list|,
@@ -14728,9 +14747,13 @@ literal|"datanodes to reach the minimum number %d."
 argument_list|,
 name|numLive
 argument_list|,
+operator|(
 name|datanodeThreshold
 operator|-
 name|numLive
+operator|)
+operator|+
+literal|1
 argument_list|,
 name|datanodeThreshold
 argument_list|)
