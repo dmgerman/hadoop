@@ -474,12 +474,6 @@ name|NamenodeProtocol
 implements|,
 name|Closeable
 block|{
-DECL|field|rpcProxyWithoutRetry
-specifier|final
-specifier|private
-name|NamenodeWireProtocol
-name|rpcProxyWithoutRetry
-decl_stmt|;
 DECL|field|rpcProxy
 specifier|final
 specifier|private
@@ -723,8 +717,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|rpcProxyWithoutRetry
+name|rpcProxy
 operator|=
+name|createNamenodeWithRetry
+argument_list|(
 name|createNamenode
 argument_list|(
 name|nameNodeAddr
@@ -733,24 +729,8 @@ name|conf
 argument_list|,
 name|ugi
 argument_list|)
-expr_stmt|;
-name|rpcProxy
-operator|=
-name|createNamenodeWithRetry
-argument_list|(
-name|rpcProxyWithoutRetry
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getProxyWithoutRetry ()
-specifier|public
-name|Object
-name|getProxyWithoutRetry
-parameter_list|()
-block|{
-return|return
-name|rpcProxyWithoutRetry
-return|;
 block|}
 DECL|method|close ()
 specifier|public
@@ -762,7 +742,7 @@ name|RPC
 operator|.
 name|stopProxy
 argument_list|(
-name|rpcProxyWithoutRetry
+name|rpcProxy
 argument_list|)
 expr_stmt|;
 block|}
