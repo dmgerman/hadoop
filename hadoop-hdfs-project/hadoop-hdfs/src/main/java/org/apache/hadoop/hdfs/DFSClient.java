@@ -4896,11 +4896,8 @@ throws|throws
 name|IOException
 block|{
 comment|//get all block locations
-name|List
-argument_list|<
-name|LocatedBlock
-argument_list|>
-name|locatedblocks
+name|LocatedBlocks
+name|blockLocations
 init|=
 name|callGetBlockLocations
 argument_list|(
@@ -4914,6 +4911,31 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|blockLocations
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File does not exist: "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
+name|List
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|locatedblocks
+init|=
+name|blockLocations
 operator|.
 name|getLocatedBlocks
 argument_list|()
@@ -4972,7 +4994,7 @@ name|refetchBlocks
 condition|)
 block|{
 comment|// refetch to get fresh tokens
-name|locatedblocks
+name|blockLocations
 operator|=
 name|callGetBlockLocations
 argument_list|(
@@ -4986,6 +5008,27 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|blockLocations
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File does not exist: "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
+name|locatedblocks
+operator|=
+name|blockLocations
 operator|.
 name|getLocatedBlocks
 argument_list|()
