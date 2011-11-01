@@ -12002,7 +12002,7 @@ argument_list|()
 argument_list|,
 name|trackerHostname
 argument_list|,
-literal|null
+literal|""
 argument_list|,
 name|status
 operator|.
@@ -12091,7 +12091,7 @@ argument_list|()
 argument_list|,
 name|trackerHostname
 argument_list|,
-literal|null
+literal|""
 argument_list|,
 name|status
 operator|.

@@ -413,7 +413,7 @@ name|finishTime
 argument_list|,
 name|hostname
 argument_list|,
-literal|null
+literal|""
 argument_list|,
 name|state
 argument_list|,
