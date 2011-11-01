@@ -2073,6 +2073,16 @@ name|storedPassword
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//verify by secret manager api
+name|dtSecretManager
+operator|.
+name|verifyToken
+argument_list|(
+name|id
+argument_list|,
+name|password
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 finally|finally

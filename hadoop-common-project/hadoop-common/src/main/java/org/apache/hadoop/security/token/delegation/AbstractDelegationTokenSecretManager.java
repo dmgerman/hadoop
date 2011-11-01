@@ -970,6 +970,58 @@ name|getPassword
 argument_list|()
 return|;
 block|}
+comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    * @throws InvalidToken    */
+DECL|method|verifyToken (TokenIdent identifier, byte[] password)
+specifier|public
+specifier|synchronized
+name|void
+name|verifyToken
+parameter_list|(
+name|TokenIdent
+name|identifier
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+name|byte
+index|[]
+name|storedPassword
+init|=
+name|retrievePassword
+argument_list|(
+name|identifier
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Arrays
+operator|.
+name|equals
+argument_list|(
+name|password
+argument_list|,
+name|storedPassword
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"token ("
+operator|+
+name|identifier
+operator|+
+literal|") is invalid, password doesn't match"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Renew a delegation token.    * @param token the token to renew    * @param renewer the full principal name of the user doing the renewal    * @return the new expiration time    * @throws InvalidToken if the token is invalid    * @throws AccessControlException if the user can't renew token    */
 DECL|method|renewToken (Token<TokenIdent> token, String renewer)
 specifier|public
