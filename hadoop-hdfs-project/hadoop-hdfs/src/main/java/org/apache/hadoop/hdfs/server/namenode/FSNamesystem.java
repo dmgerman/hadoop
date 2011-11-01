@@ -15937,7 +15937,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|writeLock
+name|readLock
 argument_list|()
 expr_stmt|;
 try|try
@@ -15976,17 +15976,12 @@ operator|.
 name|endCheckpoint
 argument_list|(
 name|sig
-argument_list|,
-name|registration
-operator|.
-name|getRole
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 finally|finally
 block|{
-name|writeUnlock
+name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}

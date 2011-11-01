@@ -4812,16 +4812,13 @@ name|needToReturnImg
 argument_list|)
 return|;
 block|}
-comment|/**    * End checkpoint.    *<p>    * Rename uploaded checkpoint to the new image;    * purge old edits file;    * rename edits.new to edits;    * redirect edit log streams to the new edits;    * update checkpoint time if the remote node is a checkpoint only node.    *     * @param sig    * @param remoteNNRole    * @throws IOException    */
-DECL|method|endCheckpoint (CheckpointSignature sig, NamenodeRole remoteNNRole)
+comment|/**    * End checkpoint.    *<p>    * Validate the current storage info with the given signature.    *     * @param sig to validate the current storage info against    * @throws IOException if the checkpoint fields are inconsistent    */
+DECL|method|endCheckpoint (CheckpointSignature sig)
 name|void
 name|endCheckpoint
 parameter_list|(
 name|CheckpointSignature
 name|sig
-parameter_list|,
-name|NamenodeRole
-name|remoteNNRole
 parameter_list|)
 throws|throws
 name|IOException
