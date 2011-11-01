@@ -1442,6 +1442,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|FSDownload
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
