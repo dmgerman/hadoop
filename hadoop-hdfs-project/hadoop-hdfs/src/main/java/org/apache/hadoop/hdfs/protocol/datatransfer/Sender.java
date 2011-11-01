@@ -182,6 +182,26 @@ name|proto
 operator|.
 name|DataTransferProtos
 operator|.
+name|ChecksumProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DataTransferProtos
+operator|.
 name|ClientOperationHeaderProto
 import|;
 end_import
@@ -339,6 +359,20 @@ operator|.
 name|token
 operator|.
 name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
 import|;
 end_import
 
@@ -555,7 +589,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp)
+DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum)
 specifier|public
 name|void
 name|writeBlock
@@ -603,6 +637,9 @@ parameter_list|,
 specifier|final
 name|long
 name|latestGenerationStamp
+parameter_list|,
+name|DataChecksum
+name|requestedChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -619,6 +656,16 @@ argument_list|,
 name|clientName
 argument_list|,
 name|blockToken
+argument_list|)
+decl_stmt|;
+name|ChecksumProto
+name|checksumProto
+init|=
+name|DataTransferProtoUtil
+operator|.
+name|toProto
+argument_list|(
+name|requestedChecksum
 argument_list|)
 decl_stmt|;
 name|OpWriteBlockProto
@@ -672,6 +719,11 @@ operator|.
 name|setLatestGenerationStamp
 argument_list|(
 name|latestGenerationStamp
+argument_list|)
+operator|.
+name|setRequestedChecksum
+argument_list|(
+name|checksumProto
 argument_list|)
 decl_stmt|;
 if|if

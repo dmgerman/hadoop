@@ -708,7 +708,7 @@ specifier|final
 name|boolean
 name|isTransfer
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode)
+DECL|method|BlockReceiver (final ExtendedBlock block, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum)
 name|BlockReceiver
 parameter_list|(
 specifier|final
@@ -754,6 +754,9 @@ parameter_list|,
 specifier|final
 name|DataNode
 name|datanode
+parameter_list|,
+name|DataChecksum
+name|requestedChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -1118,12 +1121,7 @@ name|this
 operator|.
 name|checksum
 operator|=
-name|DataChecksum
-operator|.
-name|newDataChecksum
-argument_list|(
-name|in
-argument_list|)
+name|requestedChecksum
 expr_stmt|;
 name|this
 operator|.
@@ -3378,24 +3376,6 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|writeChecksumHeader (DataOutputStream mirrorOut)
-name|void
-name|writeChecksumHeader
-parameter_list|(
-name|DataOutputStream
-name|mirrorOut
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checksum
-operator|.
-name|writeHeader
-argument_list|(
-name|mirrorOut
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|receiveBlock ( DataOutputStream mirrOut, DataInputStream mirrIn, DataOutputStream replyOut, String mirrAddr, DataTransferThrottler throttlerArg, DatanodeInfo[] downstreams)
 name|void

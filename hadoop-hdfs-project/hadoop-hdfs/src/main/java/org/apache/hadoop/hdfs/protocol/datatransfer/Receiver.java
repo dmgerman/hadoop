@@ -624,6 +624,14 @@ name|proto
 operator|.
 name|getLatestGenerationStamp
 argument_list|()
+argument_list|,
+name|fromProto
+argument_list|(
+name|proto
+operator|.
+name|getRequestedChecksum
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

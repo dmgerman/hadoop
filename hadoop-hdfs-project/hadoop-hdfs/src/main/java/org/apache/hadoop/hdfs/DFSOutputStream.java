@@ -4936,19 +4936,9 @@ argument_list|,
 name|bytesSent
 argument_list|,
 name|newGS
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|checksum
-operator|.
-name|writeHeader
-argument_list|(
-name|out
 argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|flush
-argument_list|()
 expr_stmt|;
 comment|// receive ack for connect
 name|BlockOpResponseProto

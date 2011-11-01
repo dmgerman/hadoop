@@ -497,13 +497,6 @@ specifier|final
 name|boolean
 name|corruptChecksumOk
 decl_stmt|;
-comment|/** true if chunk offset is needed to be sent in Checksum header */
-DECL|field|chunkOffsetOK
-specifier|private
-specifier|final
-name|boolean
-name|chunkOffsetOK
-decl_stmt|;
 comment|/** Sequence number of packet being sent */
 DECL|field|seqno
 specifier|private
@@ -608,8 +601,8 @@ operator|.
 name|getInstance
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param chunkOffsetOK need to send check offset in checksum header    * @param verifyChecksum verify checksum while reading the data    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
-DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean chunkOffsetOK, boolean verifyChecksum, DataNode datanode, String clientTraceFmt)
+comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
+DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, DataNode datanode, String clientTraceFmt)
 name|BlockSender
 parameter_list|(
 name|ExtendedBlock
@@ -623,9 +616,6 @@ name|length
 parameter_list|,
 name|boolean
 name|corruptChecksumOk
-parameter_list|,
-name|boolean
-name|chunkOffsetOK
 parameter_list|,
 name|boolean
 name|verifyChecksum
@@ -646,12 +636,6 @@ operator|.
 name|block
 operator|=
 name|block
-expr_stmt|;
-name|this
-operator|.
-name|chunkOffsetOK
-operator|=
-name|chunkOffsetOK
 expr_stmt|;
 name|this
 operator|.
@@ -2489,11 +2473,6 @@ literal|0
 decl_stmt|;
 try|try
 block|{
-name|writeChecksumHeader
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
 name|int
 name|maxChunksPerPacket
 decl_stmt|;
@@ -2867,61 +2846,6 @@ operator|>
 name|LONG_READ_THRESHOLD_BYTES
 return|;
 block|}
-comment|/**    * Write checksum header to the output stream    */
-DECL|method|writeChecksumHeader (DataOutputStream out)
-specifier|private
-name|void
-name|writeChecksumHeader
-parameter_list|(
-name|DataOutputStream
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-try|try
-block|{
-name|checksum
-operator|.
-name|writeHeader
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|chunkOffsetOK
-condition|)
-block|{
-name|out
-operator|.
-name|writeLong
-argument_list|(
-name|offset
-argument_list|)
-expr_stmt|;
-block|}
-name|out
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|//socket error
-throw|throw
-name|ioeToSocketException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 comment|/**    * Write packet header into {@code pkt}    */
 DECL|method|writePacketHeader (ByteBuffer pkt, int dataLen, int packetLen)
 specifier|private
@@ -2979,6 +2903,26 @@ parameter_list|()
 block|{
 return|return
 name|sentEntireByteRange
+return|;
+block|}
+comment|/**    * @return the checksum type that will be used with this block transfer.    */
+DECL|method|getChecksum ()
+name|DataChecksum
+name|getChecksum
+parameter_list|()
+block|{
+return|return
+name|checksum
+return|;
+block|}
+comment|/**    * @return the offset into the block file where the sender is currently    * reading.    */
+DECL|method|getOffset ()
+name|long
+name|getOffset
+parameter_list|()
+block|{
+return|return
+name|offset
 return|;
 block|}
 block|}

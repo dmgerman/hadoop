@@ -10489,8 +10489,6 @@ literal|false
 argument_list|,
 literal|false
 argument_list|,
-literal|false
-argument_list|,
 name|DataNode
 operator|.
 name|this
@@ -10573,6 +10571,11 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+name|blockSender
+operator|.
+name|getChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// send data& checksum
