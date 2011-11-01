@@ -2521,6 +2521,13 @@ expr_stmt|;
 block|}
 try|try
 block|{
+if|if
+condition|(
+name|state
+operator|!=
+literal|null
+condition|)
+block|{
 name|state
 operator|.
 name|exitState
@@ -2528,6 +2535,7 @@ argument_list|(
 name|haContext
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
