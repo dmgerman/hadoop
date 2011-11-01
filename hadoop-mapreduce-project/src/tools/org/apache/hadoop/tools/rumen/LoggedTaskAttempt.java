@@ -176,10 +176,6 @@ DECL|field|hostName
 name|String
 name|hostName
 decl_stmt|;
-DECL|field|rackName
-name|String
-name|rackName
-decl_stmt|;
 DECL|field|hdfsBytesRead
 name|long
 name|hdfsBytesRead
@@ -1412,6 +1408,7 @@ return|return
 name|hostName
 return|;
 block|}
+comment|// hostName is saved in the format rackName/NodeName
 DECL|method|setHostName (String hostName, String rackName)
 name|void
 name|setHostName
@@ -1431,22 +1428,20 @@ name|hostName
 operator|==
 literal|null
 operator|||
-name|this
-operator|.
 name|rackName
 operator|==
 literal|null
 condition|?
 literal|null
 else|:
-name|hostName
+name|rackName
 operator|.
 name|intern
 argument_list|()
 operator|+
 literal|"/"
 operator|+
-name|rackName
+name|hostName
 operator|.
 name|intern
 argument_list|()
