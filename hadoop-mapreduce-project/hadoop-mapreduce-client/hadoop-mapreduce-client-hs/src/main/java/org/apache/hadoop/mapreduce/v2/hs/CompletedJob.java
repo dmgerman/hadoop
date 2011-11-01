@@ -741,6 +741,11 @@ specifier|final
 name|Path
 name|confFile
 decl_stmt|;
+DECL|field|aclsMgr
+specifier|private
+name|JobACLsManager
+name|aclsMgr
+decl_stmt|;
 DECL|field|completionEvents
 specifier|private
 name|List
@@ -756,7 +761,7 @@ specifier|private
 name|JobInfo
 name|jobInfo
 decl_stmt|;
-DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName, Path confFile)
+DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName, Path confFile, JobACLsManager aclsMgr)
 specifier|public
 name|CompletedJob
 parameter_list|(
@@ -777,6 +782,9 @@ name|userName
 parameter_list|,
 name|Path
 name|confFile
+parameter_list|,
+name|JobACLsManager
+name|aclsMgr
 parameter_list|)
 throws|throws
 name|IOException
@@ -811,6 +819,12 @@ operator|.
 name|confFile
 operator|=
 name|confFile
+expr_stmt|;
+name|this
+operator|.
+name|aclsMgr
+operator|=
+name|aclsMgr
 expr_stmt|;
 name|loadFullHistoryData
 argument_list|(
@@ -2081,15 +2095,6 @@ operator|.
 name|get
 argument_list|(
 name|jobOperation
-argument_list|)
-decl_stmt|;
-name|JobACLsManager
-name|aclsMgr
-init|=
-operator|new
-name|JobACLsManager
-argument_list|(
-name|conf
 argument_list|)
 decl_stmt|;
 return|return

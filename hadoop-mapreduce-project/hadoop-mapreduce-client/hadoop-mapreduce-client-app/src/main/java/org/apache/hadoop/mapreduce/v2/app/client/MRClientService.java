@@ -26,16 +26,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|InetAddress
@@ -59,16 +49,6 @@ operator|.
 name|net
 operator|.
 name|UnknownHostException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|AccessControlException
 import|;
 end_import
 
@@ -175,20 +155,6 @@ operator|.
 name|ipc
 operator|.
 name|Server
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|JobACL
 import|;
 end_import
 
@@ -1775,13 +1741,6 @@ name|jobID
 argument_list|)
 throw|;
 block|}
-comment|//TODO fix job acls.
-comment|//JobACL operation = JobACL.VIEW_JOB;
-comment|//if (modifyAccess) {
-comment|//  operation = JobACL.MODIFY_JOB;
-comment|//}
-comment|//TO disable check access ofr now.
-comment|//checkAccess(job, operation);
 return|return
 name|job
 return|;
@@ -1893,105 +1852,6 @@ block|}
 return|return
 name|attempt
 return|;
-block|}
-DECL|method|checkAccess (Job job, JobACL jobOperation)
-specifier|private
-name|void
-name|checkAccess
-parameter_list|(
-name|Job
-name|job
-parameter_list|,
-name|JobACL
-name|jobOperation
-parameter_list|)
-throws|throws
-name|YarnRemoteException
-block|{
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-name|UserGroupInformation
-name|callerUGI
-decl_stmt|;
-try|try
-block|{
-name|callerUGI
-operator|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|job
-operator|.
-name|checkAccess
-argument_list|(
-name|callerUGI
-argument_list|,
-name|jobOperation
-argument_list|)
-condition|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"User "
-operator|+
-name|callerUGI
-operator|.
-name|getShortUserName
-argument_list|()
-operator|+
-literal|" cannot perform operation "
-operator|+
-name|jobOperation
-operator|.
-name|name
-argument_list|()
-operator|+
-literal|" on "
-operator|+
-name|job
-operator|.
-name|getID
-argument_list|()
-argument_list|)
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -2294,6 +2154,11 @@ name|response
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|killJob (KillJobRequest request)
 specifier|public
@@ -2386,6 +2251,11 @@ name|response
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|killTask (KillTaskRequest request)
 specifier|public
@@ -2461,6 +2331,11 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|killTaskAttempt ( KillTaskAttemptRequest request)
@@ -2605,6 +2480,11 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|failTaskAttempt ( FailTaskAttemptRequest request)
