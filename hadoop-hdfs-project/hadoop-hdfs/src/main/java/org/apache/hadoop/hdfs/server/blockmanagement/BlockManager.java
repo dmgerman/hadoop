@@ -7234,6 +7234,15 @@ name|added
 operator|:
 literal|"Delimiting block cannot be present in the node"
 assert|;
+name|int
+name|headIndex
+init|=
+literal|0
+decl_stmt|;
+comment|//currently the delimiter is in the head of the list
+name|int
+name|curIndex
+decl_stmt|;
 if|if
 condition|(
 name|newReport
@@ -7306,22 +7315,34 @@ name|storedBlock
 operator|!=
 literal|null
 operator|&&
+operator|(
+name|curIndex
+operator|=
 name|storedBlock
 operator|.
 name|findDatanode
 argument_list|(
 name|dn
 argument_list|)
+operator|)
 operator|>=
 literal|0
 condition|)
+block|{
+name|headIndex
+operator|=
 name|dn
 operator|.
 name|moveBlockToHead
 argument_list|(
 name|storedBlock
+argument_list|,
+name|curIndex
+argument_list|,
+name|headIndex
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// collect blocks that have not been reported
 comment|// all of them are next to the delimiter

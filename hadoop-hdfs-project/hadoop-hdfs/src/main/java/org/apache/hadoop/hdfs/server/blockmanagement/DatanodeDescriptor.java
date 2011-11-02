@@ -894,39 +894,52 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Move block to the head of the list of blocks belonging to the data-node.    */
-DECL|method|moveBlockToHead (BlockInfo b)
-name|void
+comment|/**    * Move block to the head of the list of blocks belonging to the data-node.    * @return the index of the head of the blockList    */
+DECL|method|moveBlockToHead (BlockInfo b, int curIndex, int headIndex)
+name|int
 name|moveBlockToHead
 parameter_list|(
 name|BlockInfo
 name|b
+parameter_list|,
+name|int
+name|curIndex
+parameter_list|,
+name|int
+name|headIndex
 parameter_list|)
 block|{
 name|blockList
 operator|=
 name|b
 operator|.
-name|listRemove
+name|moveBlockToHead
 argument_list|(
 name|blockList
 argument_list|,
 name|this
-argument_list|)
-expr_stmt|;
-name|blockList
-operator|=
-name|b
-operator|.
-name|listInsert
-argument_list|(
-name|blockList
 argument_list|,
-name|this
+name|curIndex
+argument_list|,
+name|headIndex
 argument_list|)
 expr_stmt|;
+return|return
+name|curIndex
+return|;
 block|}
-comment|/**    * Replace specified old block with a new one in the DataNodeDescriptor.    *     * @param oldBlock - block to be replaced    * @param newBlock - a replacement block    * @return the new block    */
+comment|/**    * Used for testing only    * @return the head of the blockList    */
+DECL|method|getHead ()
+specifier|protected
+name|BlockInfo
+name|getHead
+parameter_list|()
+block|{
+return|return
+name|blockList
+return|;
+block|}
+comment|/**    * Replace specified old block with a new one in the DataNodeDescriptor.    *    * @param oldBlock - block to be replaced    * @param newBlock - a replacement block    * @return the new block    */
 DECL|method|replaceBlock (BlockInfo oldBlock, BlockInfo newBlock)
 specifier|public
 name|BlockInfo
