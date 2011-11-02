@@ -20,9 +20,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
+name|io
 operator|.
-name|*
+name|IOException
 import|;
 end_import
 
@@ -30,9 +30,19 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|net
 operator|.
-name|*
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
 import|;
 end_import
 
@@ -47,6 +57,20 @@ operator|.
 name|reflect
 operator|.
 name|Stringable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -360,13 +384,10 @@ operator|.
 name|getAuthority
 argument_list|()
 argument_list|,
-name|normalizePath
-argument_list|(
 name|resolved
 operator|.
 name|getPath
 argument_list|()
-argument_list|)
 argument_list|,
 name|resolved
 operator|.
@@ -749,10 +770,12 @@ block|{
 comment|// remove double slashes& backslashes
 name|path
 operator|=
-name|path
+name|StringUtils
 operator|.
 name|replace
 argument_list|(
+name|path
+argument_list|,
 literal|"//"
 argument_list|,
 literal|"/"
@@ -760,10 +783,12 @@ argument_list|)
 expr_stmt|;
 name|path
 operator|=
-name|path
+name|StringUtils
 operator|.
 name|replace
 argument_list|(
+name|path
+argument_list|,
 literal|"\\"
 argument_list|,
 literal|"/"

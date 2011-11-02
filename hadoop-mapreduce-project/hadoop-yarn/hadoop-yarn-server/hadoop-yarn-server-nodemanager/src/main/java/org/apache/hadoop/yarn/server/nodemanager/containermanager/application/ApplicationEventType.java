@@ -34,6 +34,9 @@ comment|// Source: ContainerManager
 DECL|enumConstant|INIT_APPLICATION
 name|INIT_APPLICATION
 block|,
+DECL|enumConstant|INIT_CONTAINER
+name|INIT_CONTAINER
+block|,
 DECL|enumConstant|FINISH_APPLICATION
 name|FINISH_APPLICATION
 block|,
@@ -48,10 +51,10 @@ comment|// Source: Container
 DECL|enumConstant|APPLICATION_CONTAINER_FINISHED
 name|APPLICATION_CONTAINER_FINISHED
 block|,
-comment|// Source: LogAggregationService.
-DECL|enumConstant|APPLICATION_FINISHED
-name|APPLICATION_FINISHED
-block|, }
+comment|// Source: Log Handler
+DECL|enumConstant|APPLICATION_LOG_HANDLING_FINISHED
+name|APPLICATION_LOG_HANDLING_FINISHED
+block|}
 end_enum
 
 end_unit

@@ -112,7 +112,18 @@ specifier|private
 name|int
 name|numFailedReduces
 decl_stmt|;
-comment|// private int numSlotsPerMap; | Doesn't make sense with potentially different
+DECL|field|resourcesPerMap
+specifier|private
+name|int
+name|resourcesPerMap
+decl_stmt|;
+comment|// resources used per map/min resource
+DECL|field|resourcesPerReduce
+specifier|private
+name|int
+name|resourcesPerReduce
+decl_stmt|;
+comment|// resources used per reduce/min resource
 comment|// resource models
 comment|// private int numSlotsPerReduce; | Doesn't make sense with potentially
 comment|// different resource models
@@ -356,13 +367,32 @@ operator|=
 name|numFailedMaps
 expr_stmt|;
 block|}
-comment|// public int getNumSlotsPerMap() {
-comment|// return numSlotsPerMap;
-comment|// }
-comment|//
-comment|// public void setNumSlotsPerMap(int numSlotsPerMap) {
-comment|// this.numSlotsPerMap = numSlotsPerMap;
-comment|// }
+DECL|method|getResourcesPerMap ()
+specifier|public
+name|int
+name|getResourcesPerMap
+parameter_list|()
+block|{
+return|return
+name|resourcesPerMap
+return|;
+block|}
+DECL|method|setResourcesPerMap (int resourcesPerMap)
+specifier|public
+name|void
+name|setResourcesPerMap
+parameter_list|(
+name|int
+name|resourcesPerMap
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourcesPerMap
+operator|=
+name|resourcesPerMap
+expr_stmt|;
+block|}
 DECL|method|getNumFinishedReduces ()
 specifier|public
 name|int
@@ -415,13 +445,34 @@ operator|=
 name|numFailedReduces
 expr_stmt|;
 block|}
-comment|// public int getNumSlotsPerReduce() {
-comment|// return numSlotsPerReduce;
-comment|// }
-comment|//
-comment|// public void setNumSlotsPerReduce(int numSlotsPerReduce) {
-comment|// this.numSlotsPerReduce = numSlotsPerReduce;
-comment|// }
+DECL|method|getResourcesPerReduce ()
+specifier|public
+name|int
+name|getResourcesPerReduce
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resourcesPerReduce
+return|;
+block|}
+DECL|method|setResourcesPerReduce (int resourcesPerReduce)
+specifier|public
+name|void
+name|setResourcesPerReduce
+parameter_list|(
+name|int
+name|resourcesPerReduce
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourcesPerReduce
+operator|=
+name|resourcesPerReduce
+expr_stmt|;
+block|}
 DECL|method|getUser ()
 specifier|public
 name|String
@@ -552,13 +603,6 @@ operator|=
 name|reduceSlotSeconds
 expr_stmt|;
 block|}
-comment|// public int getClusterSlotCapacity() {
-comment|// return clusterSlotCapacity;
-comment|// }
-comment|//
-comment|// public void setClusterSlotCapacity(int clusterSlotCapacity) {
-comment|// this.clusterSlotCapacity = clusterSlotCapacity;
-comment|// }
 DECL|method|getJobSummaryString ()
 specifier|public
 name|String
@@ -612,6 +656,20 @@ argument_list|(
 literal|"finishTime"
 argument_list|,
 name|jobFinishTime
+argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"resourcesPerMap"
+argument_list|,
+name|resourcesPerMap
+argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"resourcesPerReduce"
+argument_list|,
+name|resourcesPerReduce
 argument_list|)
 operator|.
 name|add

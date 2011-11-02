@@ -1800,6 +1800,12 @@ name|InterruptedException
 throws|,
 name|IOException
 block|{
+comment|//validate the jobs output specs
+name|checkSpecs
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 name|Path
 name|jobStagingArea
 init|=
@@ -1916,7 +1922,18 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"mapreduce.job.dir"
+literal|"hadoop.http.filter.initializers"
+argument_list|,
+literal|"org.apache.hadoop.yarn.server.webproxy.amfilter.AmFilterInitializer"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_DIR
 argument_list|,
 name|submitJobDir
 operator|.
@@ -1986,11 +2003,6 @@ argument_list|(
 name|submitJobDir
 argument_list|)
 decl_stmt|;
-name|checkSpecs
-argument_list|(
-name|job
-argument_list|)
-expr_stmt|;
 comment|// Create the splits for the job
 name|LOG
 operator|.

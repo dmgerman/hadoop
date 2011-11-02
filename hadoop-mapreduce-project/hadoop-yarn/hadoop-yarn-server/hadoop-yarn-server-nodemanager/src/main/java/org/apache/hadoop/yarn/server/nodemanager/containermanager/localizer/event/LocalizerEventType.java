@@ -32,6 +32,7 @@ specifier|public
 enum|enum
 name|LocalizerEventType
 block|{
+comment|/** See {@link LocalizerResourceRequestEvent} */
 DECL|enumConstant|REQUEST_RESOURCE_LOCALIZATION
 name|REQUEST_RESOURCE_LOCALIZATION
 block|,

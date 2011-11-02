@@ -22,6 +22,24 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
 begin_interface
 DECL|interface|TaskAttemptReport
 specifier|public
@@ -105,6 +123,34 @@ specifier|public
 specifier|abstract
 name|Phase
 name|getPhase
+parameter_list|()
+function_decl|;
+DECL|method|getNodeManagerHost ()
+specifier|public
+specifier|abstract
+name|String
+name|getNodeManagerHost
+parameter_list|()
+function_decl|;
+DECL|method|getNodeManagerPort ()
+specifier|public
+specifier|abstract
+name|int
+name|getNodeManagerPort
+parameter_list|()
+function_decl|;
+DECL|method|getNodeManagerHttpPort ()
+specifier|public
+specifier|abstract
+name|int
+name|getNodeManagerHttpPort
+parameter_list|()
+function_decl|;
+DECL|method|getContainerId ()
+specifier|public
+specifier|abstract
+name|ContainerId
+name|getContainerId
 parameter_list|()
 function_decl|;
 DECL|method|setTaskAttemptId (TaskAttemptId taskAttemptId)
@@ -195,6 +241,46 @@ name|setPhase
 parameter_list|(
 name|Phase
 name|phase
+parameter_list|)
+function_decl|;
+DECL|method|setNodeManagerHost (String nmHost)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeManagerHost
+parameter_list|(
+name|String
+name|nmHost
+parameter_list|)
+function_decl|;
+DECL|method|setNodeManagerPort (int nmPort)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeManagerPort
+parameter_list|(
+name|int
+name|nmPort
+parameter_list|)
+function_decl|;
+DECL|method|setNodeManagerHttpPort (int nmHttpPort)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeManagerHttpPort
+parameter_list|(
+name|int
+name|nmHttpPort
+parameter_list|)
+function_decl|;
+DECL|method|setContainerId (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|setContainerId
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 function_decl|;
 comment|/**     * Set the shuffle finish time. Applicable only for reduce attempts    * @param time the time the shuffle finished.    */

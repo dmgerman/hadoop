@@ -361,6 +361,47 @@ operator|++
 index|]
 expr_stmt|;
 block|}
+DECL|method|CheckpointSignature (StorageInfo info, String blockpoolID, long mostRecentCheckpointTxId, long curSegmentTxId)
+specifier|public
+name|CheckpointSignature
+parameter_list|(
+name|StorageInfo
+name|info
+parameter_list|,
+name|String
+name|blockpoolID
+parameter_list|,
+name|long
+name|mostRecentCheckpointTxId
+parameter_list|,
+name|long
+name|curSegmentTxId
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockpoolID
+operator|=
+name|blockpoolID
+expr_stmt|;
+name|this
+operator|.
+name|mostRecentCheckpointTxId
+operator|=
+name|mostRecentCheckpointTxId
+expr_stmt|;
+name|this
+operator|.
+name|curSegmentTxId
+operator|=
+name|curSegmentTxId
+expr_stmt|;
+block|}
 comment|/**    * Get the cluster id from CheckpointSignature    * @return the cluster id    */
 DECL|method|getClusterID ()
 specifier|public
@@ -381,6 +422,26 @@ parameter_list|()
 block|{
 return|return
 name|blockpoolID
+return|;
+block|}
+DECL|method|getMostRecentCheckpointTxId ()
+specifier|public
+name|long
+name|getMostRecentCheckpointTxId
+parameter_list|()
+block|{
+return|return
+name|mostRecentCheckpointTxId
+return|;
+block|}
+DECL|method|getCurSegmentTxId ()
+specifier|public
+name|long
+name|getCurSegmentTxId
+parameter_list|()
+block|{
+return|return
+name|curSegmentTxId
 return|;
 block|}
 comment|/**    * Set the block pool id of CheckpointSignature.    *     * @param blockpoolID the new blockpool id    */

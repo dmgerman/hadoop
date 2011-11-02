@@ -242,7 +242,7 @@ name|getRpcServer
 argument_list|()
 operator|)
 operator|.
-name|server
+name|clientRpcServer
 return|;
 block|}
 DECL|method|getDtSecretManager ( final FSNamesystem ns)

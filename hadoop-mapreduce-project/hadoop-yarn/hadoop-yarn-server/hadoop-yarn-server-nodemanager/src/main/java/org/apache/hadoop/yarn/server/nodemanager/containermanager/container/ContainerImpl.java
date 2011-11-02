@@ -182,6 +182,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -618,11 +632,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 import|;
 end_import
 
@@ -845,6 +859,13 @@ specifier|final
 name|StringBuilder
 name|diagnostics
 decl_stmt|;
+comment|/** The NM-wide configuration - not specific to this container */
+DECL|field|daemonConf
+specifier|private
+specifier|final
+name|Configuration
+name|daemonConf
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -962,10 +983,13 @@ name|LocalResourceRequest
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ContainerImpl (Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics)
+DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics)
 specifier|public
 name|ContainerImpl
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|Dispatcher
 name|dispatcher
 parameter_list|,
@@ -979,6 +1003,12 @@ name|NodeManagerMetrics
 name|metrics
 parameter_list|)
 block|{
+name|this
+operator|.
+name|daemonConf
+operator|=
+name|conf
+expr_stmt|;
 name|this
 operator|.
 name|dispatcher
@@ -1286,6 +1316,55 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
+comment|// container not launched so kill is a no-op
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|KILL_CONTAINER
+argument_list|)
+comment|// container cleanup triggers a release of all resources
+comment|// regardless of whether they were localized or not
+comment|// LocalizedResource handles release event in all states
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RESOURCE_LOCALIZED
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerState
+operator|.
+name|LOCALIZATION_FAILED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RESOURCE_FAILED
+argument_list|)
 comment|// From LOCALIZED State
 operator|.
 name|addTransition
@@ -1344,8 +1423,6 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
-comment|// TODO race: Can lead to a CONTAINER_LAUNCHED event at state KILLING,
-comment|// and a container which will never be killed by the NM.
 operator|.
 name|addTransition
 argument_list|(
@@ -1615,6 +1692,21 @@ name|KILLING
 argument_list|,
 name|ContainerEventType
 operator|.
+name|RESOURCE_FAILED
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerEventType
+operator|.
 name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
@@ -1692,6 +1784,24 @@ operator|.
 name|CONTAINER_RESOURCES_CLEANEDUP
 argument_list|,
 name|CONTAINER_DONE_TRANSITION
+argument_list|)
+comment|// Handle a launched container during killing stage is a no-op
+comment|// as cleanup container is always handled after launch container event
+comment|// in the container launcher
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerState
+operator|.
+name|KILLING
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_LAUNCHED
 argument_list|)
 comment|// From CONTAINER_CLEANEDUP_AFTER_KILL State.
 operator|.
@@ -2404,7 +2514,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|LogAggregatorContainerFinishedEvent
+name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|containerID
 argument_list|,
@@ -2557,6 +2667,7 @@ block|{
 comment|// Just drain the event and change the state.
 block|}
 block|}
+comment|/**    * State transition when a NEW container receives the INIT_CONTAINER    * message.    *     * If there are resources to localize, sends a    * ContainerLocalizationRequest (INIT_CONTAINER_RESOURCES)     * to the ResourceLocalizationManager and enters LOCALIZING state.    *     * If there are no resources to localize, sends LAUNCH_CONTAINER event    * and enters LOCALIZED state directly.    *     * If there are any invalid resources specified, enters LOCALIZATION_FAILED    * directly.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3044,6 +3155,7 @@ return|;
 block|}
 block|}
 block|}
+comment|/**    * Transition when one of the requested resources for this container    * has been successfully localized.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3202,6 +3314,7 @@ name|LOCALIZED
 return|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZED state to RUNNING state upon receiving    * a CONTAINER_LAUNCHED event    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3231,9 +3344,8 @@ parameter_list|)
 block|{
 comment|// Inform the ContainersMonitor to start monitoring the container's
 comment|// resource usage.
-comment|// TODO: Fix pmem limits below
 name|long
-name|vmemBytes
+name|pmemBytes
 init|=
 name|container
 operator|.
@@ -3249,6 +3361,36 @@ operator|*
 literal|1024
 operator|*
 literal|1024L
+decl_stmt|;
+name|float
+name|pmemRatio
+init|=
+name|container
+operator|.
+name|daemonConf
+operator|.
+name|getFloat
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_VMEM_PMEM_RATIO
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_VMEM_PMEM_RATIO
+argument_list|)
+decl_stmt|;
+name|long
+name|vmemBytes
+init|=
+call|(
+name|long
+call|)
+argument_list|(
+name|pmemRatio
+operator|*
+name|pmemBytes
+argument_list|)
 decl_stmt|;
 name|container
 operator|.
@@ -3269,8 +3411,7 @@ argument_list|()
 argument_list|,
 name|vmemBytes
 argument_list|,
-operator|-
-literal|1
+name|pmemBytes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3283,6 +3424,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from RUNNING or KILLING state to EXITED_WITH_SUCCESS state    * upon EXITED_WITH_SUCCESS message.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3370,6 +3512,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition to EXITED_WITH_FAILURE state upon    * CONTAINER_EXITED_WITH_FAILURE state.    **/
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3468,6 +3611,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition to EXITED_WITH_FAILURE upon receiving KILLED_ON_REQUEST    */
 DECL|class|KilledExternallyTransition
 specifier|static
 class|class
@@ -3519,6 +3663,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZING to LOCALIZATION_FAILED upon receiving    * RESOURCE_FAILED event.    */
 DECL|class|ResourceFailedTransition
 specifier|static
 class|class
@@ -3591,6 +3736,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from LOCALIZING to KILLING upon receiving    * KILL_CONTAINER event.    */
 DECL|class|KillDuringLocalizationTransition
 specifier|static
 class|class
@@ -3658,6 +3804,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Remain in KILLING state when receiving a RESOURCE_LOCALIZED request    * while in the process of killing.    */
 DECL|class|LocalizedResourceDuringKillTransition
 specifier|static
 class|class
@@ -3755,6 +3902,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transitions upon receiving KILL_CONTAINER:    * - LOCALIZED -> KILLING    * - RUNNING -> KILLING    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3835,6 +3983,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Transition from KILLING to CONTAINER_CLEANEDUP_AFTER_KILL    * upon receiving CONTAINER_KILLED_ON_REQUEST.    */
 DECL|class|ContainerKilledTransition
 specifier|static
 class|class
@@ -3887,6 +4036,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Handle the following transitions:    * - NEW -> DONE upon KILL_CONTAINER    * - {LOCALIZATION_FAILED, EXITED_WITH_SUCCESS, EXITED_WITH_FAILURE,    *    KILLING, CONTAINER_CLEANEDUP_AFTER_KILL}    *   -> DONE upon CONTAINER_RESOURCES_CLEANEDUP    */
 DECL|class|ContainerDoneTransition
 specifier|static
 class|class
@@ -3920,6 +4070,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Update diagnostics, staying in the same state.    */
 DECL|class|ContainerDiagnosticsUpdateTransition
 specifier|static
 class|class

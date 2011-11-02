@@ -206,6 +206,30 @@ name|RMNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|DelegationTokenRenewer
+import|;
+end_import
+
+begin_comment
+comment|/**  * Context of the ResourceManager.  */
+end_comment
+
 begin_interface
 DECL|interface|RMContext
 specifier|public
@@ -255,6 +279,11 @@ function_decl|;
 DECL|method|getContainerAllocationExpirer ()
 name|ContainerAllocationExpirer
 name|getContainerAllocationExpirer
+parameter_list|()
+function_decl|;
+DECL|method|getDelegationTokenRenewer ()
+name|DelegationTokenRenewer
+name|getDelegationTokenRenewer
 parameter_list|()
 function_decl|;
 block|}

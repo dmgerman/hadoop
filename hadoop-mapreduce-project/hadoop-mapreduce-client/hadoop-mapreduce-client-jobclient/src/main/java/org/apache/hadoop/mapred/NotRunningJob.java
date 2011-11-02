@@ -892,6 +892,10 @@ argument_list|,
 name|FinalApplicationStatus
 operator|.
 name|UNDEFINED
+argument_list|,
+literal|null
+argument_list|,
+literal|"N/A"
 argument_list|)
 return|;
 block|}

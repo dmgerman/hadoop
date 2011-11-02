@@ -1651,7 +1651,9 @@ name|targetFileSystem
 operator|.
 name|getFileChecksum
 argument_list|(
-name|f
+name|res
+operator|.
+name|remainingPath
 argument_list|)
 return|;
 block|}

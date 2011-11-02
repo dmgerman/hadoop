@@ -270,6 +270,34 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
+comment|/**    * Service Authorization    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_POLICY
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_POLICY
+init|=
+literal|"security.refresh.policy.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_GET_USER_MAPPINGS
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_GET_USER_MAPPINGS
+init|=
+literal|"security.get.user.mappings.protocol.acl"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_USER_MAPPINGS
+name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_USER_MAPPINGS
+init|=
+literal|"security.refresh.user.mappings.protocol.acl"
+decl_stmt|;
 block|}
 end_class
 

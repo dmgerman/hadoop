@@ -526,7 +526,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|FSClusterStats
 import|;
 end_import
 
@@ -773,7 +773,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  * This class is a helper class for {@link FSNamesystem} and requires several  * methods to be called with lock held on {@link FSNamesystem}.  */
+comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  */
 end_comment
 
 begin_class
@@ -1093,22 +1093,30 @@ specifier|private
 name|BlockPlacementPolicy
 name|blockplacement
 decl_stmt|;
-DECL|method|BlockManager (FSNamesystem fsn, Configuration conf)
+DECL|method|BlockManager (final Namesystem namesystem, final FSClusterStats stats, final Configuration conf)
 specifier|public
 name|BlockManager
 parameter_list|(
-name|FSNamesystem
-name|fsn
+specifier|final
+name|Namesystem
+name|namesystem
 parameter_list|,
+specifier|final
+name|FSClusterStats
+name|stats
+parameter_list|,
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
 name|namesystem
 operator|=
-name|fsn
+name|namesystem
 expr_stmt|;
 name|datanodeManager
 operator|=
@@ -1117,7 +1125,7 @@ name|DatanodeManager
 argument_list|(
 name|this
 argument_list|,
-name|fsn
+name|namesystem
 argument_list|,
 name|conf
 argument_list|)
@@ -1153,7 +1161,7 @@ name|getInstance
 argument_list|(
 name|conf
 argument_list|,
-name|fsn
+name|stats
 argument_list|,
 name|datanodeManager
 operator|.
@@ -12347,7 +12355,7 @@ argument_list|(
 name|blocksToProcess
 argument_list|)
 expr_stmt|;
-comment|// Update FSNamesystemMetrics counters
+comment|// Update counters
 name|namesystem
 operator|.
 name|writeLock

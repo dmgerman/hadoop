@@ -187,6 +187,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|ExportedBlockKeys (boolean isBlockTokenEnabled, long keyUpdateInterval, long tokenLifetime, BlockKey currentKey, BlockKey[] allKeys)
+specifier|public
 name|ExportedBlockKeys
 parameter_list|(
 name|boolean

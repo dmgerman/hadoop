@@ -1872,6 +1872,11 @@ init|=
 literal|1
 decl_stmt|;
 comment|// only need to get a new access token once
+name|boolean
+name|connectFailedOnce
+init|=
+literal|false
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1987,6 +1992,30 @@ operator|.
 name|clientName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|connectFailedOnce
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully connected to "
+operator|+
+name|targetAddr
+operator|+
+literal|" for block "
+operator|+
+name|blk
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|chosenNode
 return|;
@@ -2037,6 +2066,10 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|connectFailedOnce
+operator|=
+literal|true
+expr_stmt|;
 name|DFSClient
 operator|.
 name|LOG
@@ -2047,33 +2080,15 @@ literal|"Failed to connect to "
 operator|+
 name|targetAddr
 operator|+
-literal|", add to deadNodes and continue "
+literal|" for block"
+operator|+
+literal|", add to deadNodes and continue. "
 operator|+
 name|ex
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Connection failure "
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Put chosen node into dead list, continue
 name|addToDeadNodes
 argument_list|(

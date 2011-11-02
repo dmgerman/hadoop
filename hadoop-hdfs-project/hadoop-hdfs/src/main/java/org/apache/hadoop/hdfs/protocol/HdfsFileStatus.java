@@ -771,6 +771,18 @@ name|symlink
 argument_list|)
 return|;
 block|}
+DECL|method|getSymlinkInBytes ()
+specifier|final
+specifier|public
+name|byte
+index|[]
+name|getSymlinkInBytes
+parameter_list|()
+block|{
+return|return
+name|symlink
+return|;
+block|}
 comment|//////////////////////////////////////////////////
 comment|// Writable
 comment|//////////////////////////////////////////////////

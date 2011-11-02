@@ -701,8 +701,8 @@ argument_list|,
 literal|"-"
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
+try|try
+block|{
 name|cf
 operator|.
 name|parse
@@ -722,15 +722,21 @@ block|}
 argument_list|,
 literal|1
 argument_list|)
-operator|.
-name|get
+expr_stmt|;
+name|fail
 argument_list|(
-literal|1
-argument_list|)
-argument_list|,
-literal|"/foo"
+literal|"Expected parsing to fail as it should stop at first non-option"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Expected
+block|}
 name|cf
 operator|=
 operator|new

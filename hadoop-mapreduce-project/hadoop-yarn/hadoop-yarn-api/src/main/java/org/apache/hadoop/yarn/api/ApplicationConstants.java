@@ -62,15 +62,55 @@ name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
 literal|"AppClientTokenEnv"
 decl_stmt|;
-comment|/**    * The environmental variable for APPLICATION_ATTEMPT_ID. Set in    * ApplicationMaster's environment only.    */
-DECL|field|APPLICATION_ATTEMPT_ID_ENV
+comment|/**    * The environment variable for CONTAINER_ID. Set in AppMaster environment    * only    */
+DECL|field|AM_CONTAINER_ID_ENV
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|APPLICATION_ATTEMPT_ID_ENV
+name|AM_CONTAINER_ID_ENV
 init|=
-literal|"APPLICATION_ATTEMPT_ID"
+literal|"AM_CONTAINER_ID"
+decl_stmt|;
+comment|/**    * The environment variable for the NM_HOST. Set in the AppMaster environment    * only    */
+DECL|field|NM_HOST_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HOST_ENV
+init|=
+literal|"NM_HOST"
+decl_stmt|;
+comment|/**    * The environment variable for the NM_PORT. Set in the AppMaster environment    * only    */
+DECL|field|NM_PORT_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_PORT_ENV
+init|=
+literal|"NM_PORT"
+decl_stmt|;
+comment|/**    * The environment variable for the NM_HTTP_PORT. Set in the AppMaster environment    * only    */
+DECL|field|NM_HTTP_PORT_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HTTP_PORT_ENV
+init|=
+literal|"NM_HTTP_PORT"
+decl_stmt|;
+comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
+DECL|field|APP_SUBMIT_TIME_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_SUBMIT_TIME_ENV
+init|=
+literal|"APP_SUBMIT_TIME_ENV"
 decl_stmt|;
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
 specifier|public
@@ -91,6 +131,16 @@ name|String
 name|LOCAL_DIR_ENV
 init|=
 literal|"YARN_LOCAL_DIRS"
+decl_stmt|;
+comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in     * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
+DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_WEB_PROXY_BASE_ENV
+init|=
+literal|"APPLICATION_WEB_PROXY_BASE"
 decl_stmt|;
 DECL|field|LOG_DIR_EXPANSION_VAR
 specifier|public
@@ -235,6 +285,13 @@ DECL|enumConstant|HADOOP_HDFS_HOME
 name|HADOOP_HDFS_HOME
 argument_list|(
 literal|"HADOOP_HDFS_HOME"
+argument_list|)
+block|,
+comment|/**      * $MALLOC_ARENA_MAX      */
+DECL|enumConstant|MALLOC_ARENA_MAX
+name|MALLOC_ARENA_MAX
+argument_list|(
+literal|"MALLOC_ARENA_MAX"
 argument_list|)
 block|,
 comment|/**      * $YARN_HOME      */

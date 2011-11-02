@@ -272,6 +272,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -628,7 +642,7 @@ operator|=
 name|startCount
 expr_stmt|;
 block|}
-comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.service.AbstractService#init(org.apache.hadoop.conf.Configuration)    * Initializes the FileSystem and Path objects for the log and done directories.    * Creates these directories if they do not already exist.    */
+comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.service.AbstractService#init(org.    * apache.hadoop.conf.Configuration)    * Initializes the FileSystem and Path objects for the log and done directories.    * Creates these directories if they do not already exist.    */
 annotation|@
 name|Override
 DECL|method|init (Configuration conf)
@@ -908,7 +922,9 @@ name|MRJobConfig
 operator|.
 name|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 operator|+
-literal|". Either set to true or pre-create this directory with appropriate permissions"
+literal|". Either set to true or pre-create this directory with"
+operator|+
+literal|" appropriate permissions"
 decl_stmt|;
 name|LOG
 operator|.
@@ -937,7 +953,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed checking for the existance of history intermediate done directory: ["
+literal|"Failed checking for the existance of history intermediate "
+operator|+
+literal|"done directory: ["
 operator|+
 name|doneDirPath
 operator|+
@@ -1437,16 +1455,13 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create an event writer for the Job represented by the jobID.    * Writes out the job configuration to the log directory.    * This should be the first call to history for a job    *     * @param jobId the jobId.    * @throws IOException    */
-DECL|method|setupEventWriter (JobId jobId, JobSubmittedEvent jse)
+DECL|method|setupEventWriter (JobId jobId)
 specifier|protected
 name|void
 name|setupEventWriter
 parameter_list|(
 name|JobId
 name|jobId
-parameter_list|,
-name|JobSubmittedEvent
-name|jse
 parameter_list|)
 throws|throws
 name|IOException
@@ -1487,26 +1502,6 @@ name|Configuration
 name|conf
 init|=
 name|getConfig
-argument_list|()
-decl_stmt|;
-name|long
-name|submitTime
-init|=
-name|oldFi
-operator|==
-literal|null
-condition|?
-name|jse
-operator|.
-name|getSubmitTime
-argument_list|()
-else|:
-name|oldFi
-operator|.
-name|getJobIndexInfo
-argument_list|()
-operator|.
-name|getSubmitTime
 argument_list|()
 decl_stmt|;
 comment|// TODO Ideally this should be written out to the job dir
@@ -1579,6 +1574,20 @@ name|oldFi
 operator|.
 name|writer
 decl_stmt|;
+name|Path
+name|logDirConfPath
+init|=
+name|JobHistoryUtils
+operator|.
+name|getStagingConfFile
+argument_list|(
+name|stagingDirPath
+argument_list|,
+name|jobId
+argument_list|,
+name|startCount
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|writer
@@ -1649,12 +1658,7 @@ throw|throw
 name|ioe
 throw|;
 block|}
-block|}
-name|Path
-name|logDirConfPath
-init|=
-literal|null
-decl_stmt|;
+comment|//Write out conf only if the writer isn't already setup.
 if|if
 condition|(
 name|conf
@@ -1664,19 +1668,6 @@ condition|)
 block|{
 comment|// TODO Ideally this should be written out to the job dir
 comment|// (.staging/jobid/files - RecoveryService will need to be patched)
-name|logDirConfPath
-operator|=
-name|JobHistoryUtils
-operator|.
-name|getStagingConfFile
-argument_list|(
-name|stagingDirPath
-argument_list|,
-name|jobId
-argument_list|,
-name|startCount
-argument_list|)
-expr_stmt|;
 name|FSDataOutputStream
 name|jobFileOut
 init|=
@@ -1736,6 +1727,7 @@ name|e
 throw|;
 block|}
 block|}
+block|}
 name|MetaInfo
 name|fi
 init|=
@@ -1747,8 +1739,6 @@ argument_list|,
 name|logDirConfPath
 argument_list|,
 name|writer
-argument_list|,
-name|submitTime
 argument_list|,
 name|user
 argument_list|,
@@ -1765,16 +1755,6 @@ operator|.
 name|setJobId
 argument_list|(
 name|jobId
-argument_list|)
-expr_stmt|;
-name|fi
-operator|.
-name|getJobSummary
-argument_list|()
-operator|.
-name|setJobSubmitTime
-argument_list|(
-name|submitTime
 argument_list|)
 expr_stmt|;
 name|fileMap
@@ -1909,30 +1889,17 @@ argument_list|()
 operator|==
 name|EventType
 operator|.
-name|JOB_SUBMITTED
+name|AM_STARTED
 condition|)
 block|{
 try|try
 block|{
-name|JobSubmittedEvent
-name|jobSubmittedEvent
-init|=
-operator|(
-name|JobSubmittedEvent
-operator|)
-name|event
-operator|.
-name|getHistoryEvent
-argument_list|()
-decl_stmt|;
 name|setupEventWriter
 argument_list|(
 name|event
 operator|.
 name|getJobID
 argument_list|()
-argument_list|,
-name|jobSubmittedEvent
 argument_list|)
 expr_stmt|;
 block|}
@@ -1988,6 +1955,16 @@ operator|.
 name|getHistoryEvent
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|historyEvent
+operator|instanceof
+name|NormalizedResourceEvent
+operator|)
+condition|)
+block|{
 name|mi
 operator|.
 name|writeEvent
@@ -1995,6 +1972,7 @@ argument_list|(
 name|historyEvent
 argument_list|)
 expr_stmt|;
+block|}
 name|processEventForJobSummary
 argument_list|(
 name|event
@@ -2056,6 +2034,46 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|event
+operator|.
+name|getHistoryEvent
+argument_list|()
+operator|.
+name|getEventType
+argument_list|()
+operator|==
+name|EventType
+operator|.
+name|JOB_SUBMITTED
+condition|)
+block|{
+name|JobSubmittedEvent
+name|jobSubmittedEvent
+init|=
+operator|(
+name|JobSubmittedEvent
+operator|)
+name|event
+operator|.
+name|getHistoryEvent
+argument_list|()
+decl_stmt|;
+name|mi
+operator|.
+name|getJobIndexInfo
+argument_list|()
+operator|.
+name|setSubmitTime
+argument_list|(
+name|jobSubmittedEvent
+operator|.
+name|getSubmitTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// If this is JobFinishedEvent, close the writer and setup the job-index
 if|if
@@ -2283,7 +2301,7 @@ block|}
 block|}
 block|}
 DECL|method|processEventForJobSummary (HistoryEvent event, JobSummary summary, JobId jobId)
-specifier|private
+specifier|public
 name|void
 name|processEventForJobSummary
 parameter_list|(
@@ -2337,6 +2355,75 @@ name|getJobQueueName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|summary
+operator|.
+name|setJobSubmitTime
+argument_list|(
+name|jse
+operator|.
+name|getSubmitTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|NORMALIZED_RESOURCE
+case|:
+name|NormalizedResourceEvent
+name|normalizedResourceEvent
+init|=
+operator|(
+name|NormalizedResourceEvent
+operator|)
+name|event
+decl_stmt|;
+if|if
+condition|(
+name|normalizedResourceEvent
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|MAP
+condition|)
+block|{
+name|summary
+operator|.
+name|setResourcesPerMap
+argument_list|(
+name|normalizedResourceEvent
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|normalizedResourceEvent
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|REDUCE
+condition|)
+block|{
+name|summary
+operator|.
+name|setResourcesPerReduce
+argument_list|(
+name|normalizedResourceEvent
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 break|break;
 case|case
 name|JOB_INITED
@@ -2741,7 +2828,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Inactive Writer: Likely received multiple JobFinished / JobUnsuccessful events for JobId: ["
+literal|"Inactive Writer: Likely received multiple JobFinished / "
+operator|+
+literal|"JobUnsuccessful events for JobId: ["
 operator|+
 name|jobId
 operator|+
@@ -3127,7 +3216,7 @@ DECL|field|jobSummary
 name|JobSummary
 name|jobSummary
 decl_stmt|;
-DECL|method|MetaInfo (Path historyFile, Path conf, EventWriter writer, long submitTime, String user, String jobName, JobId jobId)
+DECL|method|MetaInfo (Path historyFile, Path conf, EventWriter writer, String user, String jobName, JobId jobId)
 name|MetaInfo
 parameter_list|(
 name|Path
@@ -3138,9 +3227,6 @@ name|conf
 parameter_list|,
 name|EventWriter
 name|writer
-parameter_list|,
-name|long
-name|submitTime
 parameter_list|,
 name|String
 name|user
@@ -3177,7 +3263,8 @@ operator|=
 operator|new
 name|JobIndexInfo
 argument_list|(
-name|submitTime
+operator|-
+literal|1
 argument_list|,
 operator|-
 literal|1

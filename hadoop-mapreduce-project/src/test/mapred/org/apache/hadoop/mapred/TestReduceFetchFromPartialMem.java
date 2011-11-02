@@ -170,6 +170,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|MRConfig
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io

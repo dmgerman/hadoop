@@ -925,6 +925,15 @@ block|{
 while|while
 condition|(
 literal|true
+operator|&&
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
 condition|)
 block|{
 name|MapHost

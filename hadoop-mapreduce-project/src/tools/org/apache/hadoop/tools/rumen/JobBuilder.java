@@ -142,6 +142,22 @@ name|mapreduce
 operator|.
 name|jobhistory
 operator|.
+name|AMStartedEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
 name|HistoryEvent
 import|;
 end_import
@@ -793,6 +809,18 @@ argument_list|)
 throw|;
 block|}
 comment|// these are in lexicographical order by class name.
+if|if
+condition|(
+name|event
+operator|instanceof
+name|AMStartedEvent
+condition|)
+block|{
+comment|// ignore this event as Rumen currently doesnt need this event
+comment|//TODO Enhance Rumen to process this event and capture restarts
+return|return;
+block|}
+elseif|else
 if|if
 condition|(
 name|event
@@ -2915,6 +2943,11 @@ name|event
 operator|.
 name|getHostname
 argument_list|()
+argument_list|,
+name|event
+operator|.
+name|getRackName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// XXX There may be redundant location info available in the event.
@@ -3073,6 +3106,11 @@ argument_list|(
 name|event
 operator|.
 name|getHostname
+argument_list|()
+argument_list|,
+name|event
+operator|.
+name|getRackname
 argument_list|()
 argument_list|)
 expr_stmt|;

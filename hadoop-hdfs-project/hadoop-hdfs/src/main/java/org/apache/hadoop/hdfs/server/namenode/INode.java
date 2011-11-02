@@ -1177,11 +1177,6 @@ name|long
 name|modtime
 parameter_list|)
 block|{
-assert|assert
-operator|!
-name|isDirectory
-argument_list|()
-assert|;
 name|this
 operator|.
 name|modificationTime

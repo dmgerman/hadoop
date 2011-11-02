@@ -1719,7 +1719,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"block move is failed"
+literal|"block move is failed: "
+operator|+
+name|response
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -3484,7 +3489,7 @@ name|getUtilization
 argument_list|(
 name|datanode
 argument_list|)
-operator|>
+operator|>=
 name|avg
 condition|)
 block|{
@@ -5489,7 +5494,7 @@ name|threshold
 operator|)
 return|;
 block|}
-comment|/* Return true if the given datanode is above average utilized    * but not overUtilized */
+comment|/* Return true if the given datanode is above or equal to average utilized    * but not overUtilized */
 DECL|method|isAboveAvgUtilized (BalancerDatanode datanode)
 specifier|private
 name|boolean
@@ -5525,7 +5530,7 @@ operator|(
 name|datanode
 operator|.
 name|utilization
-operator|>
+operator|>=
 name|avg
 operator|)
 return|;

@@ -889,6 +889,14 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_ADDRESS
 argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RM_ADDRESS
 argument_list|)
 decl_stmt|;
 name|LOG

@@ -2206,6 +2206,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|hsAddress
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_WEBAPP_PORT
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_WEBAPP_ADDRESS
 argument_list|)
 decl_stmt|;
 name|StringBuffer

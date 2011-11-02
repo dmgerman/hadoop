@@ -35,7 +35,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Delegation token parameter. */
+comment|/** Represents delegation token used for authentication. */
 end_comment
 
 begin_class

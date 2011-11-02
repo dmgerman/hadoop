@@ -298,6 +298,14 @@ specifier|final
 name|ResourceTrackerService
 name|resourceTracker
 decl_stmt|;
+DECL|field|httpPort
+specifier|private
+specifier|final
+name|int
+name|httpPort
+init|=
+literal|2
+decl_stmt|;
 DECL|method|MockNM (String nodeIdStr, int memory, ResourceTrackerService resourceTracker)
 name|MockNM
 parameter_list|(
@@ -338,6 +346,16 @@ parameter_list|()
 block|{
 return|return
 name|nodeId
+return|;
+block|}
+DECL|method|getHttpPort ()
+specifier|public
+name|int
+name|getHttpPort
+parameter_list|()
+block|{
+return|return
+name|httpPort
 return|;
 block|}
 DECL|method|containerStatus (Container container)
@@ -410,6 +428,8 @@ argument_list|(
 name|conts
 argument_list|,
 literal|true
+argument_list|,
+name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
@@ -491,7 +511,7 @@ name|req
 operator|.
 name|setHttpPort
 argument_list|(
-literal|2
+name|httpPort
 argument_list|)
 expr_stmt|;
 name|Resource
@@ -558,10 +578,12 @@ argument_list|>
 argument_list|()
 argument_list|,
 name|b
+argument_list|,
+name|nodeId
 argument_list|)
 return|;
 block|}
-DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy)
+DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy, NodeId nodeId)
 specifier|public
 name|HeartbeatResponse
 name|nodeHeartbeat
@@ -579,6 +601,9 @@ name|conts
 parameter_list|,
 name|boolean
 name|isHealthy
+parameter_list|,
+name|NodeId
+name|nodeId
 parameter_list|)
 throws|throws
 name|Exception

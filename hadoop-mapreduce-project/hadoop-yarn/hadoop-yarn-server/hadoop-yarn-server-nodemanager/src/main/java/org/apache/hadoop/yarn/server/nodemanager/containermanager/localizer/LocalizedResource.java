@@ -1302,6 +1302,7 @@ argument_list|>
 block|{
 comment|// typedef
 block|}
+comment|/**    * Transition from INIT to DOWNLOADING.    * Sends a {@link LocalizerResourceRequestEvent} to the    * {@link ResourceLocalizationService}.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

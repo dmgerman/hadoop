@@ -428,6 +428,31 @@ name|trackingUrl
 init|=
 literal|""
 decl_stmt|;
+DECL|field|numUsedSlots
+specifier|private
+name|int
+name|numUsedSlots
+decl_stmt|;
+DECL|field|numReservedSlots
+specifier|private
+name|int
+name|numReservedSlots
+decl_stmt|;
+DECL|field|usedMem
+specifier|private
+name|int
+name|usedMem
+decl_stmt|;
+DECL|field|reservedMem
+specifier|private
+name|int
+name|reservedMem
+decl_stmt|;
+DECL|field|neededMem
+specifier|private
+name|int
+name|neededMem
+decl_stmt|;
 comment|/**    */
 DECL|method|JobStatus ()
 specifier|public
@@ -1755,6 +1780,144 @@ return|return
 name|historyFile
 return|;
 block|}
+comment|/**    * @return number of used mapred slots    */
+DECL|method|getNumUsedSlots ()
+specifier|public
+name|int
+name|getNumUsedSlots
+parameter_list|()
+block|{
+return|return
+name|numUsedSlots
+return|;
+block|}
+comment|/**    * @param n number of used mapred slots    */
+DECL|method|setNumUsedSlots (int n)
+specifier|public
+name|void
+name|setNumUsedSlots
+parameter_list|(
+name|int
+name|n
+parameter_list|)
+block|{
+name|numUsedSlots
+operator|=
+name|n
+expr_stmt|;
+block|}
+comment|/**    * @return the number of reserved slots    */
+DECL|method|getNumReservedSlots ()
+specifier|public
+name|int
+name|getNumReservedSlots
+parameter_list|()
+block|{
+return|return
+name|numReservedSlots
+return|;
+block|}
+comment|/**    * @param n the number of reserved slots    */
+DECL|method|setNumReservedSlots (int n)
+specifier|public
+name|void
+name|setNumReservedSlots
+parameter_list|(
+name|int
+name|n
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numReservedSlots
+operator|=
+name|n
+expr_stmt|;
+block|}
+comment|/**    * @return the used memory    */
+DECL|method|getUsedMem ()
+specifier|public
+name|int
+name|getUsedMem
+parameter_list|()
+block|{
+return|return
+name|usedMem
+return|;
+block|}
+comment|/**    * @param m the used memory    */
+DECL|method|setUsedMem (int m)
+specifier|public
+name|void
+name|setUsedMem
+parameter_list|(
+name|int
+name|m
+parameter_list|)
+block|{
+name|this
+operator|.
+name|usedMem
+operator|=
+name|m
+expr_stmt|;
+block|}
+comment|/**    * @return the reserved memory    */
+DECL|method|getReservedMem ()
+specifier|public
+name|int
+name|getReservedMem
+parameter_list|()
+block|{
+return|return
+name|reservedMem
+return|;
+block|}
+comment|/**    * @param r the reserved memory    */
+DECL|method|setReservedMem (int r)
+specifier|public
+name|void
+name|setReservedMem
+parameter_list|(
+name|int
+name|r
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reservedMem
+operator|=
+name|r
+expr_stmt|;
+block|}
+comment|/**    * @return the needed memory    */
+DECL|method|getNeededMem ()
+specifier|public
+name|int
+name|getNeededMem
+parameter_list|()
+block|{
+return|return
+name|neededMem
+return|;
+block|}
+comment|/**    * @param n the needed memory    */
+DECL|method|setNeededMem (int n)
+specifier|public
+name|void
+name|setNeededMem
+parameter_list|(
+name|int
+name|n
+parameter_list|)
+block|{
+name|this
+operator|.
+name|neededMem
+operator|=
+name|n
+expr_stmt|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1856,6 +2019,51 @@ argument_list|(
 literal|"scheduling-info : "
 operator|+
 name|schedulingInfo
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"num-used-slots"
+operator|+
+name|numUsedSlots
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"num-reserved-slots"
+operator|+
+name|numReservedSlots
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"used-mem"
+operator|+
+name|usedMem
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"reserved-mem"
+operator|+
+name|reservedMem
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"needed-mem"
+operator|+
+name|neededMem
 argument_list|)
 expr_stmt|;
 return|return

@@ -130,6 +130,7 @@ specifier|protected
 name|DNSToSwitchMapping
 name|rawMapping
 decl_stmt|;
+comment|/**    * cache a raw DNS mapping    * @param rawMapping the raw mapping to cache    */
 DECL|method|CachedDNSToSwitchMapping (DNSToSwitchMapping rawMapping)
 specifier|public
 name|CachedDNSToSwitchMapping
@@ -145,7 +146,7 @@ operator|=
 name|rawMapping
 expr_stmt|;
 block|}
-comment|/**    * Returns the hosts from 'names' that have not been cached previously    */
+comment|/**    * @param names a list of hostnames to probe for being cached    * @return the hosts from 'names' that have not been cached previously    */
 DECL|method|getUncachedHosts (List<String> names)
 specifier|private
 name|List
@@ -213,7 +214,7 @@ return|return
 name|unCachedHosts
 return|;
 block|}
-comment|/**    * Caches the resolved hosts    */
+comment|/**    * Caches the resolved host:rack mappings. The two list    * parameters must be of equal size.    *    * @param uncachedHosts a list of hosts that were uncached    * @param resolvedHosts a list of resolved host entries where the element    * at index(i) is the resolved value for the entry in uncachedHosts[i]    */
 DECL|method|cacheResolvedHosts (List<String> uncachedHosts, List<String> resolvedHosts)
 specifier|private
 name|void
@@ -280,7 +281,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns the cached resolution of the list of hostnames/addresses.    * Returns null if any of the names are not currently in the cache    */
+comment|/**    * @param names a list of hostnames to look up (can be be empty)    * @return the cached resolution of the list of hostnames/addresses.    *  or null if any of the names are not currently in the cache    */
 DECL|method|getCachedHosts (List<String> names)
 specifier|private
 name|List
@@ -359,6 +360,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|resolve (List<String> names)
 specifier|public
 name|List
@@ -420,8 +423,6 @@ name|String
 argument_list|>
 name|uncachedHosts
 init|=
-name|this
-operator|.
 name|getUncachedHosts
 argument_list|(
 name|names
@@ -441,8 +442,7 @@ argument_list|(
 name|uncachedHosts
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
+comment|//cache them
 name|cacheResolvedHosts
 argument_list|(
 name|uncachedHosts
@@ -450,9 +450,8 @@ argument_list|,
 name|resolvedHosts
 argument_list|)
 expr_stmt|;
+comment|//now look up the entire list in the cache
 return|return
-name|this
-operator|.
 name|getCachedHosts
 argument_list|(
 name|names

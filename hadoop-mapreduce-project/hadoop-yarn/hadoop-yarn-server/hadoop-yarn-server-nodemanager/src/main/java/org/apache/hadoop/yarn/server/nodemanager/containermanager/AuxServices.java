@@ -288,7 +288,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|serviceMap
-specifier|public
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -299,7 +299,7 @@ argument_list|>
 name|serviceMap
 decl_stmt|;
 DECL|field|serviceMeta
-specifier|public
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -907,7 +907,30 @@ operator|.
 name|getType
 argument_list|()
 operator|+
-literal|" for service "
+literal|" for appId "
+operator|+
+name|event
+operator|.
+name|getApplicationID
+argument_list|()
+argument_list|)
+expr_stmt|;
+switch|switch
+condition|(
+name|event
+operator|.
+name|getType
+argument_list|()
+condition|)
+block|{
+case|case
+name|APPLICATION_INIT
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got APPLICATION_INIT for service "
 operator|+
 name|event
 operator|.
@@ -935,20 +958,16 @@ operator|==
 name|service
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"service is null"
+argument_list|)
+expr_stmt|;
 comment|// TODO kill all containers waiting on Application
 return|return;
 block|}
-switch|switch
-condition|(
-name|event
-operator|.
-name|getType
-argument_list|()
-condition|)
-block|{
-case|case
-name|APPLICATION_INIT
-case|:
 name|service
 operator|.
 name|initApp
@@ -973,7 +992,18 @@ break|break;
 case|case
 name|APPLICATION_STOP
 case|:
-name|service
+for|for
+control|(
+name|AuxiliaryService
+name|serv
+range|:
+name|serviceMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|serv
 operator|.
 name|stopApp
 argument_list|(
@@ -983,6 +1013,7 @@ name|getApplicationID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 default|default:
 throw|throw

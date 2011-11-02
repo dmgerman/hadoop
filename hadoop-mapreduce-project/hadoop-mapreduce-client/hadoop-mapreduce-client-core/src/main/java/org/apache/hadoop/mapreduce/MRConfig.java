@@ -251,6 +251,15 @@ name|YARN_FRAMEWORK_NAME
 init|=
 literal|"yarn"
 decl_stmt|;
+DECL|field|LOCAL_FRAMEWORK_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCAL_FRAMEWORK_NAME
+init|=
+literal|"local"
+decl_stmt|;
 DECL|field|TASK_LOCAL_OUTPUT_CLASS
 specifier|public
 specifier|static

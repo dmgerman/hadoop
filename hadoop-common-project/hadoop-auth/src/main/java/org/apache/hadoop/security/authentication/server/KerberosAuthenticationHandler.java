@@ -807,25 +807,6 @@ name|keytab
 argument_list|)
 throw|;
 block|}
-name|String
-name|nameRules
-init|=
-name|config
-operator|.
-name|getProperty
-argument_list|(
-name|NAME_RULES
-argument_list|,
-literal|"DEFAULT"
-argument_list|)
-decl_stmt|;
-name|KerberosName
-operator|.
-name|setRules
-argument_list|(
-name|nameRules
-argument_list|)
-expr_stmt|;
 name|Set
 argument_list|<
 name|Principal
@@ -886,6 +867,19 @@ argument_list|,
 name|principal
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Login using keytab "
+operator|+
+name|keytab
+operator|+
+literal|", for principal "
+operator|+
+name|principal
+argument_list|)
+expr_stmt|;
 name|loginContext
 operator|=
 operator|new

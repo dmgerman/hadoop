@@ -34,7 +34,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
+name|hadoop
 operator|.
 name|ipc
 operator|.

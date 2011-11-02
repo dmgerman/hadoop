@@ -20,11 +20,15 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|avro
+operator|.
+name|util
+operator|.
+name|Utf8
 import|;
 end_import
 
@@ -53,6 +57,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|ProgressSplitsBlock
 import|;
 end_import
 
@@ -112,34 +130,6 @@ name|TaskType
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|ProgressSplitsBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|util
-operator|.
-name|Utf8
-import|;
-end_import
-
 begin_comment
 comment|/**  * Event to record successful completion of a reduce attempt  *  */
 end_comment
@@ -169,8 +159,8 @@ operator|new
 name|ReduceAttemptFinished
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record completion of a reduce attempt    * @param id Attempt Id    * @param taskType Type of task    * @param taskStatus Status of the task    * @param shuffleFinishTime Finish time of the shuffle phase    * @param sortFinishTime Finish time of the sort phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param state State of the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
-DECL|method|ReduceAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long shuffleFinishTime, long sortFinishTime, long finishTime, String hostname, String state, Counters counters, int[][] allSplits)
+comment|/**    * Create an event to record completion of a reduce attempt    * @param id Attempt Id    * @param taskType Type of task    * @param taskStatus Status of the task    * @param shuffleFinishTime Finish time of the shuffle phase    * @param sortFinishTime Finish time of the sort phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param rackName Name of the rack where the attempt executed    * @param state State of the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
+DECL|method|ReduceAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long shuffleFinishTime, long sortFinishTime, long finishTime, String hostname, String rackName, String state, Counters counters, int[][] allSplits)
 specifier|public
 name|ReduceAttemptFinishedEvent
 parameter_list|(
@@ -194,6 +184,9 @@ name|finishTime
 parameter_list|,
 name|String
 name|hostname
+parameter_list|,
+name|String
+name|rackName
 parameter_list|,
 name|String
 name|state
@@ -285,6 +278,16 @@ operator|new
 name|Utf8
 argument_list|(
 name|hostname
+argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|rackname
+operator|=
+operator|new
+name|Utf8
+argument_list|(
+name|rackName
 argument_list|)
 expr_stmt|;
 name|datum
@@ -421,6 +424,8 @@ argument_list|,
 name|finishTime
 argument_list|,
 name|hostname
+argument_list|,
+literal|""
 argument_list|,
 name|state
 argument_list|,
@@ -592,6 +597,22 @@ return|return
 name|datum
 operator|.
 name|hostname
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/** Get the rack name of the node where the attempt ran */
+DECL|method|getRackName ()
+specifier|public
+name|String
+name|getRackName
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|rackname
 operator|.
 name|toString
 argument_list|()

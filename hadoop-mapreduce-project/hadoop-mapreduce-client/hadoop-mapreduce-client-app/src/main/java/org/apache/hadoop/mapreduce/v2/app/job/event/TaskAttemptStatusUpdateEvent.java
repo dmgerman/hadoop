@@ -186,11 +186,6 @@ specifier|public
 name|Counters
 name|counters
 decl_stmt|;
-DECL|field|diagnosticInfo
-specifier|public
-name|String
-name|diagnosticInfo
-decl_stmt|;
 DECL|field|stateString
 specifier|public
 name|String

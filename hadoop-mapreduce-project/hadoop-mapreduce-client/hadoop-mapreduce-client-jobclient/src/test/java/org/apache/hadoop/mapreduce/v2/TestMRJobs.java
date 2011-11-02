@@ -104,16 +104,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -710,6 +700,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|BeforeClass
 import|;
 end_import
@@ -899,6 +899,8 @@ name|class
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -1044,7 +1046,7 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// set master address to local to test that local mode applied iff framework == classic and master_address == local
+comment|// set master address to local to test that local mode applied iff framework == local
 name|sleepConf
 operator|.
 name|set
@@ -2153,18 +2155,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|myConf
-operator|.
-name|setInt
-argument_list|(
-literal|"mapreduce.task.timeout"
-argument_list|,
-literal|10
-operator|*
-literal|1000
-argument_list|)
-expr_stmt|;
-comment|//reduce the timeout
 name|myConf
 operator|.
 name|setInt

@@ -462,6 +462,24 @@ name|server
 operator|.
 name|security
 operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
 name|ContainerTokenSecretManager
 import|;
 end_import
@@ -508,6 +526,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|service
+operator|.
+name|ServiceStateChangeListener
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -521,6 +555,8 @@ class|class
 name|NodeManager
 extends|extends
 name|CompositeService
+implements|implements
+name|ServiceStateChangeListener
 block|{
 DECL|field|LOG
 specifier|private
@@ -553,6 +589,11 @@ DECL|field|containerTokenSecretManager
 specifier|protected
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
+decl_stmt|;
+DECL|field|aclsManager
+specifier|private
+name|ApplicationACLsManager
+name|aclsManager
 decl_stmt|;
 DECL|method|NodeManager ()
 specifier|public
@@ -616,7 +657,7 @@ name|NodeResourceMonitorImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -635,6 +676,9 @@ name|nodeStatusUpdater
 parameter_list|,
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|ApplicationACLsManager
+name|aclsManager
 parameter_list|)
 block|{
 return|return
@@ -652,10 +696,12 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenSecretManager
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}
-DECL|method|createWebServer (Context nmContext, ResourceView resourceView)
+DECL|method|createWebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager)
 specifier|protected
 name|WebServer
 name|createWebServer
@@ -665,6 +711,9 @@ name|nmContext
 parameter_list|,
 name|ResourceView
 name|resourceView
+parameter_list|,
+name|ApplicationACLsManager
+name|aclsManager
 parameter_list|)
 block|{
 return|return
@@ -674,6 +723,8 @@ argument_list|(
 name|nmContext
 argument_list|,
 name|resourceView
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}
@@ -747,6 +798,16 @@ name|ContainerTokenSecretManager
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|aclsManager
+operator|=
+operator|new
+name|ApplicationACLsManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|ContainerExecutor
 name|exec
 init|=
@@ -839,6 +900,13 @@ operator|.
 name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
+name|nodeStatusUpdater
+operator|.
+name|register
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 name|NodeResourceMonitor
 name|nodeResourceMonitor
 init|=
@@ -866,6 +934,10 @@ argument_list|,
 name|this
 operator|.
 name|containerTokenSecretManager
+argument_list|,
+name|this
+operator|.
+name|aclsManager
 argument_list|)
 decl_stmt|;
 name|addService
@@ -884,6 +956,10 @@ name|containerManager
 operator|.
 name|getContainersMonitor
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|aclsManager
 argument_list|)
 decl_stmt|;
 name|addService
@@ -1170,6 +1246,53 @@ name|this
 operator|.
 name|nodeHealthStatus
 return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|stateChanged (Service service)
+specifier|public
+name|void
+name|stateChanged
+parameter_list|(
+name|Service
+name|service
+parameter_list|)
+block|{
+comment|// Shutdown the Nodemanager when the NodeStatusUpdater is stopped.
+if|if
+condition|(
+name|NodeStatusUpdaterImpl
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|service
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|&&
+name|STATE
+operator|.
+name|STOPPED
+operator|.
+name|equals
+argument_list|(
+name|service
+operator|.
+name|getServiceState
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|main (String[] args)

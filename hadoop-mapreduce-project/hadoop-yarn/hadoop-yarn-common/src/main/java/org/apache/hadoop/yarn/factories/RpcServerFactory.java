@@ -52,8 +52,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RPC
-operator|.
 name|Server
 import|;
 end_import

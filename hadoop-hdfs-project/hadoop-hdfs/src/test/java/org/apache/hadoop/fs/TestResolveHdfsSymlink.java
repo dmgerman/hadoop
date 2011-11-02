@@ -553,7 +553,11 @@ comment|/**    * Tests delegation token APIs in FileContext for Hdfs; and renew 
 annotation|@
 name|SuppressWarnings
 argument_list|(
+block|{
 literal|"unchecked"
+block|,
+literal|"deprecation"
+block|}
 argument_list|)
 annotation|@
 name|Test

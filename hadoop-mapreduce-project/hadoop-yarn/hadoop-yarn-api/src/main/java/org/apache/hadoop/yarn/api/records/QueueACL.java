@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>QueueACL</code> enumerates the various ACLs for queues.</p>  *   *<p>The ACLs are one of:  *<ul>  *<li>{@link #SUBMIT_JOB} - ACL to submit jobs to the queue.</li>  *<li>{@link #ADMINISTER_QUEUE} - ACL to administer the queue.</li>  *<li>{@link #ADMINISTER_JOBS} - ACL to administer jobs in the queue.</li>  *</ul>  *</p>  *   * @see QueueInfo  * @see ClientRMProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
+comment|/**  *<p>  *<code>QueueACL</code> enumerates the various ACLs for queues.  *</p>  *   *<p>  * The ACLs are one of:  *<ul>  *<li>{@link #SUBMIT_APPLICATIONS} - ACL to submit applications to the  * queue.</li>  *<li>{@link #ADMINISTER_QUEUE} - ACL to administer the queue.</li>  *</ul>  *</p>  *   * @see QueueInfo  * @see ClientRMProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
 end_comment
 
 begin_enum
@@ -82,20 +82,14 @@ specifier|public
 enum|enum
 name|QueueACL
 block|{
-comment|/**    * ACL to submit jobs to the queue.    */
-DECL|enumConstant|SUBMIT_JOB
-name|SUBMIT_JOB
+comment|/**    * ACL to submit applications to the queue.    */
+DECL|enumConstant|SUBMIT_APPLICATIONS
+name|SUBMIT_APPLICATIONS
 block|,
 comment|/**    * ACL to administer the queue.    */
 DECL|enumConstant|ADMINISTER_QUEUE
 name|ADMINISTER_QUEUE
-block|,
-comment|/**    * ACL to administer jobs in the queue.    */
-DECL|enumConstant|ADMINISTER_JOBS
-name|ADMINISTER_JOBS
-block|;
-comment|// currently unused
-block|}
+block|, }
 end_enum
 
 end_unit

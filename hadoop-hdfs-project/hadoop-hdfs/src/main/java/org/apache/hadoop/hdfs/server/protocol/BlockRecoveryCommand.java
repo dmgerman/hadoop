@@ -406,6 +406,30 @@ name|int
 name|capacity
 parameter_list|)
 block|{
+name|this
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|RecoveringBlock
+argument_list|>
+argument_list|(
+name|capacity
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|BlockRecoveryCommand (Collection<RecoveringBlock> blocks)
+specifier|public
+name|BlockRecoveryCommand
+parameter_list|(
+name|Collection
+argument_list|<
+name|RecoveringBlock
+argument_list|>
+name|blocks
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|DatanodeProtocol
@@ -415,14 +439,7 @@ argument_list|)
 expr_stmt|;
 name|recoveringBlocks
 operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|RecoveringBlock
-argument_list|>
-argument_list|(
-name|capacity
-argument_list|)
+name|blocks
 expr_stmt|;
 block|}
 comment|/**    * Return the list of recovering blocks.    */

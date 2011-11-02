@@ -26,16 +26,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|InetAddress
@@ -66,16 +56,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Arrays
@@ -89,20 +69,6 @@ operator|.
 name|util
 operator|.
 name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|ipc
-operator|.
-name|Server
 import|;
 end_import
 
@@ -172,9 +138,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|fs
 operator|.
-name|JobACL
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Server
 import|;
 end_import
 
@@ -998,6 +978,28 @@ name|v2
 operator|.
 name|app
 operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|MRAMPolicyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|webapp
 operator|.
 name|AMWebApp
@@ -1028,7 +1030,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityInfo
+name|UserGroupInformation
 import|;
 end_import
 
@@ -1042,7 +1044,9 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
+name|authorize
+operator|.
+name|PolicyProvider
 import|;
 end_import
 
@@ -1073,22 +1077,6 @@ operator|.
 name|api
 operator|.
 name|ApplicationConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -1186,23 +1174,9 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|client
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|SchedulerSecurityInfo
+name|ClientToAMSecretManager
 import|;
 end_import
 
@@ -1220,7 +1194,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientToAMSecretManager
+name|ClientTokenIdentifier
 import|;
 end_import
 
@@ -1457,11 +1431,11 @@ argument_list|(
 name|secretKeyStr
 argument_list|)
 decl_stmt|;
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 init|=
 operator|new
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|(
 name|this
 operator|.
@@ -1513,6 +1487,31 @@ name|DEFAULT_MR_AM_JOB_CLIENT_THREAD_COUNT
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Enable service authorization?
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+name|refreshServiceAcls
+argument_list|(
+name|conf
+argument_list|,
+operator|new
+name|MRAMPolicyProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|server
 operator|.
 name|start
@@ -1602,6 +1601,29 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|refreshServiceAcls (Configuration configuration, PolicyProvider policyProvider)
+name|void
+name|refreshServiceAcls
+parameter_list|(
+name|Configuration
+name|configuration
+parameter_list|,
+name|PolicyProvider
+name|policyProvider
+parameter_list|)
+block|{
+name|this
+operator|.
+name|server
+operator|.
+name|refreshServiceAcl
+argument_list|(
+name|configuration
+argument_list|,
+name|policyProvider
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|stop ()
 specifier|public
 name|void
@@ -1610,7 +1632,7 @@ parameter_list|()
 block|{
 name|server
 operator|.
-name|close
+name|stop
 argument_list|()
 expr_stmt|;
 if|if
@@ -1719,13 +1741,6 @@ name|jobID
 argument_list|)
 throw|;
 block|}
-comment|//TODO fix job acls.
-comment|//JobACL operation = JobACL.VIEW_JOB;
-comment|//if (modifyAccess) {
-comment|//  operation = JobACL.MODIFY_JOB;
-comment|//}
-comment|//TO disable check access ofr now.
-comment|//checkAccess(job, operation);
 return|return
 name|job
 return|;
@@ -1837,105 +1852,6 @@ block|}
 return|return
 name|attempt
 return|;
-block|}
-DECL|method|checkAccess (Job job, JobACL jobOperation)
-specifier|private
-name|void
-name|checkAccess
-parameter_list|(
-name|Job
-name|job
-parameter_list|,
-name|JobACL
-name|jobOperation
-parameter_list|)
-throws|throws
-name|YarnRemoteException
-block|{
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-name|UserGroupInformation
-name|callerUGI
-decl_stmt|;
-try|try
-block|{
-name|callerUGI
-operator|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|job
-operator|.
-name|checkAccess
-argument_list|(
-name|callerUGI
-argument_list|,
-name|jobOperation
-argument_list|)
-condition|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"User "
-operator|+
-name|callerUGI
-operator|.
-name|getShortUserName
-argument_list|()
-operator|+
-literal|" cannot perform operation "
-operator|+
-name|jobOperation
-operator|.
-name|name
-argument_list|()
-operator|+
-literal|" on "
-operator|+
-name|job
-operator|.
-name|getID
-argument_list|()
-argument_list|)
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -2238,6 +2154,11 @@ name|response
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|killJob (KillJobRequest request)
 specifier|public
@@ -2330,6 +2251,11 @@ name|response
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|killTask (KillTaskRequest request)
 specifier|public
@@ -2405,6 +2331,11 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|killTaskAttempt ( KillTaskAttemptRequest request)
@@ -2549,6 +2480,11 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|failTaskAttempt ( FailTaskAttemptRequest request)

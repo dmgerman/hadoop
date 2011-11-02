@@ -1599,7 +1599,7 @@ name|ContainerManager
 name|getCMProxy
 parameter_list|(
 name|ContainerId
-name|containerID
+name|contianerID
 parameter_list|,
 name|String
 name|containerManagerBindAddr

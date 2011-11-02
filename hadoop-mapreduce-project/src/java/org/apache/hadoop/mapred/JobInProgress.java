@@ -11935,6 +11935,9 @@ name|ttStatus
 operator|.
 name|getHttpPort
 argument_list|()
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|jobHistory
@@ -11998,6 +12001,8 @@ name|getFinishTime
 argument_list|()
 argument_list|,
 name|trackerHostname
+argument_list|,
+literal|""
 argument_list|,
 name|status
 operator|.
@@ -12085,6 +12090,8 @@ name|getFinishTime
 argument_list|()
 argument_list|,
 name|trackerHostname
+argument_list|,
+literal|""
 argument_list|,
 name|status
 operator|.
@@ -14452,6 +14459,9 @@ argument_list|,
 name|taskTrackerName
 argument_list|,
 name|taskTrackerPort
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|jobHistory

@@ -621,6 +621,11 @@ argument_list|(
 literal|"containerlogs"
 argument_list|,
 name|containerIdStr
+argument_list|,
+name|container
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 argument_list|,
 literal|"logs"

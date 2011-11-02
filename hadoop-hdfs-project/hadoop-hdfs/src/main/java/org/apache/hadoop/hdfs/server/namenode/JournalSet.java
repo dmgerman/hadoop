@@ -335,10 +335,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Closes the stream, also sets it to null.      */
-DECL|method|close ()
+DECL|method|closeStream ()
 specifier|public
 name|void
-name|close
+name|closeStream
 parameter_list|()
 throws|throws
 name|IOException
@@ -358,6 +358,24 @@ expr_stmt|;
 name|stream
 operator|=
 literal|null
+expr_stmt|;
+block|}
+comment|/**      * Close the Journal and Stream      */
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|closeStream
+argument_list|()
+expr_stmt|;
+name|journal
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Aborts the stream, also sets it to null.      */
@@ -611,7 +629,7 @@ condition|)
 block|{
 name|jas
 operator|.
-name|close
+name|closeStream
 argument_list|()
 expr_stmt|;
 name|jas
@@ -637,6 +655,46 @@ operator|+
 literal|", "
 operator|+
 name|lastTxId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|mapJournalsAndReportErrors
+argument_list|(
+operator|new
+name|JournalClosure
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|apply
+parameter_list|(
+name|JournalAndStream
+name|jas
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|jas
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+argument_list|,
+literal|"close journal"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1299,7 +1357,7 @@ name|IOException
 block|{
 name|jas
 operator|.
-name|close
+name|closeStream
 argument_list|()
 expr_stmt|;
 block|}

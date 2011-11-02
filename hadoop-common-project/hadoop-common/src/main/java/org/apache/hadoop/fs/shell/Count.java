@@ -350,8 +350,6 @@ name|showQuotas
 argument_list|)
 operator|+
 name|src
-operator|.
-name|path
 argument_list|)
 expr_stmt|;
 block|}

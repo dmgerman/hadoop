@@ -1296,9 +1296,9 @@ block|{
 operator|new
 name|File
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|dnIndex
 argument_list|,
@@ -1311,9 +1311,9 @@ block|,
 operator|new
 name|File
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 name|dnIndex
 argument_list|,
@@ -1506,9 +1506,9 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|MiniDFSCluster
+name|cluster
 operator|.
-name|getStorageDir
+name|getInstanceStorageDir
 argument_list|(
 literal|0
 argument_list|,

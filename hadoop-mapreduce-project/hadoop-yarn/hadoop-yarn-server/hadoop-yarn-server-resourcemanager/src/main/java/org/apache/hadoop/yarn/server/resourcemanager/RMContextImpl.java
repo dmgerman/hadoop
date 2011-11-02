@@ -238,6 +238,26 @@ name|RMNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|DelegationTokenRenewer
+import|;
+end_import
+
 begin_class
 DECL|class|RMContextImpl
 specifier|public
@@ -308,7 +328,13 @@ specifier|private
 name|ContainerAllocationExpirer
 name|containerAllocationExpirer
 decl_stmt|;
-DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor)
+DECL|field|tokenRenewer
+specifier|private
+specifier|final
+name|DelegationTokenRenewer
+name|tokenRenewer
+decl_stmt|;
+DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, DelegationTokenRenewer tokenRenewer)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -323,6 +349,9 @@ name|containerAllocationExpirer
 parameter_list|,
 name|AMLivelinessMonitor
 name|amLivelinessMonitor
+parameter_list|,
+name|DelegationTokenRenewer
+name|tokenRenewer
 parameter_list|)
 block|{
 name|this
@@ -348,6 +377,12 @@ operator|.
 name|amLivelinessMonitor
 operator|=
 name|amLivelinessMonitor
+expr_stmt|;
+name|this
+operator|.
+name|tokenRenewer
+operator|=
+name|tokenRenewer
 expr_stmt|;
 block|}
 annotation|@
@@ -452,6 +487,18 @@ return|return
 name|this
 operator|.
 name|amLivelinessMonitor
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDelegationTokenRenewer ()
+specifier|public
+name|DelegationTokenRenewer
+name|getDelegationTokenRenewer
+parameter_list|()
+block|{
+return|return
+name|tokenRenewer
 return|;
 block|}
 block|}

@@ -478,6 +478,16 @@ name|CompositeService
 name|compositeService
 parameter_list|)
 block|{
+name|super
+argument_list|(
+literal|"CompositeServiceShutdownHook for "
+operator|+
+name|compositeService
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|compositeService

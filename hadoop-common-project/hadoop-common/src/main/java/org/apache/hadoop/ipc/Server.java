@@ -898,6 +898,39 @@ name|getBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|/**    * If the user accidentally sends an HTTP GET to an IPC port, we detect this    * and send back a nicer response.    */
+DECL|field|HTTP_GET_BYTES
+specifier|private
+specifier|static
+specifier|final
+name|ByteBuffer
+name|HTTP_GET_BYTES
+init|=
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+literal|"GET "
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|/**    * An HTTP response to send back if we detect an HTTP request to our IPC    * port.    */
+DECL|field|RECEIVED_HTTP_REQ_RESPONSE
+specifier|static
+specifier|final
+name|String
+name|RECEIVED_HTTP_REQ_RESPONSE
+init|=
+literal|"HTTP/1.1 404 Not Found\r\n"
+operator|+
+literal|"Content-type: text/plain\r\n\r\n"
+operator|+
+literal|"It looks like you are making an HTTP request to a Hadoop IPC port. "
+operator|+
+literal|"This is not the correct port for the web interface on this daemon.\r\n"
+decl_stmt|;
 comment|// 1 : Introduce ping and server does not throw away RPCs
 comment|// 3 : Introduce the protocol into the RPC connection header
 comment|// 4 : Introduced SASL security layer
@@ -5856,6 +5889,27 @@ operator|.
 name|flip
 argument_list|()
 expr_stmt|;
+comment|// Check if it looks like the user is hitting an IPC port
+comment|// with an HTTP GET - this is a common error, so we can
+comment|// send back a simple string indicating as much.
+if|if
+condition|(
+name|HTTP_GET_BYTES
+operator|.
+name|equals
+argument_list|(
+name|dataLengthBuffer
+argument_list|)
+condition|)
+block|{
+name|setupHttpRequestOnIpcPortResponse
+argument_list|()
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 if|if
 condition|(
 operator|!
@@ -5940,7 +5994,21 @@ init|=
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Authentication is required"
+literal|"Authorization ("
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_AUTHORIZATION
+operator|+
+literal|") is enabled but authentication ("
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_AUTHENTICATION
+operator|+
+literal|") is configured as simple. Please configure another method "
+operator|+
+literal|"like kerberos or digest."
 argument_list|)
 decl_stmt|;
 name|setupResponse
@@ -6395,6 +6463,50 @@ name|fakeCall
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setupHttpRequestOnIpcPortResponse ()
+specifier|private
+name|void
+name|setupHttpRequestOnIpcPortResponse
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Call
+name|fakeCall
+init|=
+operator|new
+name|Call
+argument_list|(
+literal|0
+argument_list|,
+literal|null
+argument_list|,
+name|this
+argument_list|)
+decl_stmt|;
+name|fakeCall
+operator|.
+name|setResponse
+argument_list|(
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|RECEIVED_HTTP_REQ_RESPONSE
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|responder
+operator|.
+name|doRespond
+argument_list|(
+name|fakeCall
+argument_list|)
+expr_stmt|;
 block|}
 comment|/// Reads the connection header following version
 DECL|method|processHeader (byte[] buf)
@@ -8837,6 +8949,17 @@ name|addr
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Get the port on which the IPC Server is listening for incoming connections.    * This could be an ephemeral port too, in which case we return the real    * port on which the Server has bound.    * @return port on which IPC Server is listening    */
+DECL|method|getPort ()
+specifier|public
+name|int
+name|getPort
+parameter_list|()
+block|{
+return|return
+name|port
+return|;
 block|}
 comment|/**    * The number of open RPC conections    * @return the number of open rpc connections    */
 DECL|method|getNumOpenConnections ()

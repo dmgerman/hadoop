@@ -150,7 +150,9 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSelector
+name|client
+operator|.
+name|ClientTokenSelector
 import|;
 end_import
 
@@ -260,7 +262,7 @@ name|value
 parameter_list|()
 block|{
 return|return
-name|ApplicationTokenSelector
+name|ClientTokenSelector
 operator|.
 name|class
 return|;

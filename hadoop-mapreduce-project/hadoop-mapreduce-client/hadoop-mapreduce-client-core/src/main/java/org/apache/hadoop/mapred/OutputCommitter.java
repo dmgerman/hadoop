@@ -206,6 +206,31 @@ function_decl|;
 comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this    * is a bridge between the two.    */
 annotation|@
 name|Override
+DECL|method|isRecoverySupported ()
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRConstants#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
+DECL|method|recoverTask (TaskAttemptContext taskContext)
+specifier|public
+name|void
+name|recoverTask
+parameter_list|(
+name|TaskAttemptContext
+name|taskContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this    * is a bridge between the two.    */
+annotation|@
+name|Override
 DECL|method|setupJob (org.apache.hadoop.mapreduce.JobContext jobContext )
 specifier|public
 specifier|final
@@ -507,6 +532,38 @@ throws|throws
 name|IOException
 block|{
 name|abortTask
+argument_list|(
+operator|(
+name|TaskAttemptContext
+operator|)
+name|taskContext
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This method implements the new interface by calling the old method. Note    * that the input types are different between the new and old apis and this    * is a bridge between the two.    */
+annotation|@
+name|Override
+specifier|public
+specifier|final
+DECL|method|recoverTask (org.apache.hadoop.mapreduce.TaskAttemptContext taskContext )
+name|void
+name|recoverTask
+parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TaskAttemptContext
+name|taskContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|recoverTask
 argument_list|(
 operator|(
 name|TaskAttemptContext

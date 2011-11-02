@@ -550,7 +550,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Delete the block file and meta file from the disk asynchronously, adjust    * dfsUsed statistics accordingly.    */
-DECL|method|deleteAsync (FSDataset.FSVolume volume, File blockFile, File metaFile, long dfsBytes, ExtendedBlock block)
+DECL|method|deleteAsync (FSDataset.FSVolume volume, File blockFile, File metaFile, ExtendedBlock block)
 name|void
 name|deleteAsync
 parameter_list|(
@@ -564,9 +564,6 @@ name|blockFile
 parameter_list|,
 name|File
 name|metaFile
-parameter_list|,
-name|long
-name|dfsBytes
 parameter_list|,
 name|ExtendedBlock
 name|block
@@ -608,8 +605,6 @@ argument_list|,
 name|blockFile
 argument_list|,
 name|metaFile
-argument_list|,
-name|dfsBytes
 argument_list|,
 name|block
 argument_list|)
@@ -655,17 +650,12 @@ specifier|final
 name|File
 name|metaFile
 decl_stmt|;
-DECL|field|dfsBytes
-specifier|final
-name|long
-name|dfsBytes
-decl_stmt|;
 DECL|field|block
 specifier|final
 name|ExtendedBlock
 name|block
 decl_stmt|;
-DECL|method|ReplicaFileDeleteTask (FSDataset dataset, FSDataset.FSVolume volume, File blockFile, File metaFile, long dfsBytes, ExtendedBlock block)
+DECL|method|ReplicaFileDeleteTask (FSDataset dataset, FSDataset.FSVolume volume, File blockFile, File metaFile, ExtendedBlock block)
 name|ReplicaFileDeleteTask
 parameter_list|(
 name|FSDataset
@@ -681,9 +671,6 @@ name|blockFile
 parameter_list|,
 name|File
 name|metaFile
-parameter_list|,
-name|long
-name|dfsBytes
 parameter_list|,
 name|ExtendedBlock
 name|block
@@ -712,12 +699,6 @@ operator|.
 name|metaFile
 operator|=
 name|metaFile
-expr_stmt|;
-name|this
-operator|.
-name|dfsBytes
-operator|=
-name|dfsBytes
 expr_stmt|;
 name|this
 operator|.
@@ -785,6 +766,19 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|long
+name|dfsBytes
+init|=
+name|blockFile
+operator|.
+name|length
+argument_list|()
+operator|+
+name|metaFile
+operator|.
+name|length
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!

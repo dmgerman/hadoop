@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -275,6 +285,31 @@ name|TaskAttemptContext
 name|taskContext
 parameter_list|)
 block|{ }
+annotation|@
+name|Override
+specifier|public
+name|boolean
+name|isRecoverySupported
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|recoverTask
+parameter_list|(
+name|TaskAttemptContext
+name|taskContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Nothing to do for recovering the task.
+block|}
 block|}
 return|;
 block|}

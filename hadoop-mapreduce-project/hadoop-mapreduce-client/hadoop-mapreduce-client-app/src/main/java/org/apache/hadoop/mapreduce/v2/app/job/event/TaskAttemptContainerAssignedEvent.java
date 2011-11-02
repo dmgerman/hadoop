@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -41,6 +51,24 @@ operator|.
 name|records
 operator|.
 name|TaskAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAccessType
 import|;
 end_import
 
@@ -76,7 +104,18 @@ specifier|final
 name|Container
 name|container
 decl_stmt|;
-DECL|method|TaskAttemptContainerAssignedEvent (TaskAttemptId id, Container container)
+DECL|field|applicationACLs
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|applicationACLs
+decl_stmt|;
+DECL|method|TaskAttemptContainerAssignedEvent (TaskAttemptId id, Container container, Map<ApplicationAccessType, String> applicationACLs)
 specifier|public
 name|TaskAttemptContainerAssignedEvent
 parameter_list|(
@@ -85,6 +124,14 @@ name|id
 parameter_list|,
 name|Container
 name|container
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|applicationACLs
 parameter_list|)
 block|{
 name|super
@@ -102,6 +149,12 @@ name|container
 operator|=
 name|container
 expr_stmt|;
+name|this
+operator|.
+name|applicationACLs
+operator|=
+name|applicationACLs
+expr_stmt|;
 block|}
 DECL|method|getContainer ()
 specifier|public
@@ -113,6 +166,23 @@ return|return
 name|this
 operator|.
 name|container
+return|;
+block|}
+DECL|method|getApplicationACLs ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationACLs
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationACLs
 return|;
 block|}
 block|}

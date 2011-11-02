@@ -334,6 +334,28 @@ name|String
 name|url
 parameter_list|)
 function_decl|;
+comment|/**    * Get the original not-proxied<em>tracking url</em> for the application.    * This is intended to only be used by the proxy itself.    * @return the original not-proxied<em>tracking url</em> for the application    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getOriginalTrackingUrl ()
+name|String
+name|getOriginalTrackingUrl
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setOriginalTrackingUrl (String url)
+name|void
+name|setOriginalTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+function_decl|;
 comment|/**    * Get the<em>start time</em> of the application.    * @return<em>start time</em> of the application    */
 annotation|@
 name|Public
@@ -398,6 +420,29 @@ name|setFinalApplicationStatus
 parameter_list|(
 name|FinalApplicationStatus
 name|finishState
+parameter_list|)
+function_decl|;
+comment|/**    * Retrieve the structure containing the job resources for this application    * @return the job resources structure for this application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationResourceUsageReport ()
+name|ApplicationResourceUsageReport
+name|getApplicationResourceUsageReport
+parameter_list|()
+function_decl|;
+comment|/**    * Store the structure containing the job resources for this application    * @param appResources structure for this application    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationResourceUsageReport (ApplicationResourceUsageReport appResources)
+name|void
+name|setApplicationResourceUsageReport
+parameter_list|(
+name|ApplicationResourceUsageReport
+name|appResources
 parameter_list|)
 function_decl|;
 block|}

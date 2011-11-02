@@ -1408,12 +1408,16 @@ return|return
 name|hostName
 return|;
 block|}
-DECL|method|setHostName (String hostName)
+comment|// hostName is saved in the format rackName/NodeName
+DECL|method|setHostName (String hostName, String rackName)
 name|void
 name|setHostName
 parameter_list|(
 name|String
 name|hostName
+parameter_list|,
+name|String
+name|rackName
 parameter_list|)
 block|{
 name|this
@@ -1423,9 +1427,20 @@ operator|=
 name|hostName
 operator|==
 literal|null
+operator|||
+name|rackName
+operator|==
+literal|null
 condition|?
 literal|null
 else|:
+name|rackName
+operator|.
+name|intern
+argument_list|()
+operator|+
+literal|"/"
+operator|+
 name|hostName
 operator|.
 name|intern

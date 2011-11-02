@@ -450,7 +450,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|NameNode
 import|;
 end_import
 
@@ -468,7 +468,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
+name|Namesystem
 import|;
 end_import
 
@@ -615,6 +615,24 @@ operator|.
 name|protocol
 operator|.
 name|DisallowedDatanodeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|RegisterCommand
 import|;
 end_import
 
@@ -782,7 +800,7 @@ decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
 decl_stmt|;
 DECL|field|blockManager
@@ -866,7 +884,7 @@ specifier|final
 name|int
 name|blockInvalidateLimit
 decl_stmt|;
-DECL|method|DatanodeManager (final BlockManager blockManager, final FSNamesystem namesystem, final Configuration conf )
+DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf )
 name|DatanodeManager
 parameter_list|(
 specifier|final
@@ -874,7 +892,7 @@ name|BlockManager
 name|blockManager
 parameter_list|,
 specifier|final
-name|FSNamesystem
+name|Namesystem
 name|namesystem
 parameter_list|,
 specifier|final
@@ -904,6 +922,8 @@ operator|new
 name|HeartbeatManager
 argument_list|(
 name|namesystem
+argument_list|,
+name|blockManager
 argument_list|,
 name|conf
 argument_list|)
@@ -1097,6 +1117,18 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+specifier|final
+name|DecommissionManager
+name|dm
+init|=
+operator|new
+name|DecommissionManager
+argument_list|(
+name|namesystem
+argument_list|,
+name|blockManager
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|decommissionthread
@@ -1104,13 +1136,9 @@ operator|=
 operator|new
 name|Daemon
 argument_list|(
-operator|new
-name|DecommissionManager
-argument_list|(
-name|namesystem
-argument_list|)
+name|dm
 operator|.
-operator|new
+expr|new
 name|Monitor
 argument_list|(
 name|conf
@@ -4147,7 +4175,7 @@ operator|new
 name|DatanodeCommand
 index|[]
 block|{
-name|DatanodeCommand
+name|RegisterCommand
 operator|.
 name|REGISTER
 block|}
@@ -4196,7 +4224,7 @@ operator|new
 name|DatanodeCommand
 index|[]
 block|{
-name|DatanodeCommand
+name|RegisterCommand
 operator|.
 name|REGISTER
 block|}

@@ -28,10 +28,14 @@ specifier|public
 enum|enum
 name|RMNodeState
 block|{
+DECL|enumConstant|NEW
 DECL|enumConstant|RUNNING
 DECL|enumConstant|UNHEALTHY
 DECL|enumConstant|DECOMMISSIONED
 DECL|enumConstant|LOST
+DECL|enumConstant|REBOOTED
+name|NEW
+block|,
 name|RUNNING
 block|,
 name|UNHEALTHY
@@ -39,6 +43,8 @@ block|,
 name|DECOMMISSIONED
 block|,
 name|LOST
+block|,
+name|REBOOTED
 block|}
 end_enum
 

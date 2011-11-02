@@ -22,6 +22,16 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_interface
 DECL|interface|JobReport
 specifier|public
@@ -68,6 +78,13 @@ specifier|public
 specifier|abstract
 name|float
 name|getSetupProgress
+parameter_list|()
+function_decl|;
+DECL|method|getSubmitTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getSubmitTime
 parameter_list|()
 function_decl|;
 DECL|method|getStartTime ()
@@ -117,6 +134,16 @@ specifier|public
 specifier|abstract
 name|String
 name|getJobFile
+parameter_list|()
+function_decl|;
+DECL|method|getAMInfos ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|getAMInfos
 parameter_list|()
 function_decl|;
 DECL|method|setJobId (JobId jobId)
@@ -177,6 +204,16 @@ name|setSetupProgress
 parameter_list|(
 name|float
 name|progress
+parameter_list|)
+function_decl|;
+DECL|method|setSubmitTime (long submitTime)
+specifier|public
+specifier|abstract
+name|void
+name|setSubmitTime
+parameter_list|(
+name|long
+name|submitTime
 parameter_list|)
 function_decl|;
 DECL|method|setStartTime (long startTime)
@@ -247,6 +284,19 @@ name|setJobFile
 parameter_list|(
 name|String
 name|jobFile
+parameter_list|)
+function_decl|;
+DECL|method|setAMInfos (List<AMInfo> amInfos)
+specifier|public
+specifier|abstract
+name|void
+name|setAMInfos
+parameter_list|(
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|amInfos
 parameter_list|)
 function_decl|;
 block|}

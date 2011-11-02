@@ -601,6 +601,14 @@ argument_list|,
 literal|"containerlogs"
 argument_list|,
 name|containerIdStr
+argument_list|,
+name|app
+operator|.
+name|getJob
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 argument_list|,
 literal|"logs"

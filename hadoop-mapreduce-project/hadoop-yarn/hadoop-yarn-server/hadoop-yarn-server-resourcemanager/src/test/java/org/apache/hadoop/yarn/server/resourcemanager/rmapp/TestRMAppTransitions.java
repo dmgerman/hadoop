@@ -46,16 +46,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
 name|framework
@@ -520,16 +510,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -576,11 +556,7 @@ name|appId
 init|=
 literal|1
 decl_stmt|;
-DECL|field|rmDispatcher
-specifier|private
-name|AsyncDispatcher
-name|rmDispatcher
-decl_stmt|;
+comment|//  private AsyncDispatcher rmDispatcher;
 comment|// ignore all the RM application attempt events
 DECL|class|TestApplicationAttemptEventDispatcher
 specifier|private
@@ -884,6 +860,8 @@ argument_list|,
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|rmDispatcher
@@ -1063,6 +1041,11 @@ argument_list|,
 name|scheduler
 argument_list|,
 name|masterService
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|testAppStartState

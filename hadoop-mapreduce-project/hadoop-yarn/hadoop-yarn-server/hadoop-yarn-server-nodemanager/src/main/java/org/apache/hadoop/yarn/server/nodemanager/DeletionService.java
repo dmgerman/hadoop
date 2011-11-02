@@ -38,7 +38,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|LinkedBlockingQueue
+name|ScheduledThreadPoolExecutor
 import|;
 end_import
 
@@ -50,7 +50,7 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ScheduledThreadPoolExecutor
+name|ThreadFactory
 import|;
 end_import
 
@@ -211,6 +211,22 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
 import|;
 end_import
 
@@ -375,6 +391,21 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|ThreadFactory
+name|tf
+init|=
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"DeletionService #%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|conf
@@ -399,6 +430,8 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_DELETE_THREAD_COUNT
 argument_list|)
+argument_list|,
+name|tf
 argument_list|)
 expr_stmt|;
 name|debugDelay
@@ -425,6 +458,8 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_DELETE_THREAD_COUNT
+argument_list|,
+name|tf
 argument_list|)
 expr_stmt|;
 block|}
@@ -679,6 +714,21 @@ else|else
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting path: ["
+operator|+
+name|subDir
+operator|+
+literal|"] as user: ["
+operator|+
+name|user
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|exec
 operator|.
 name|deleteAsUser

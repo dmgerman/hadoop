@@ -4021,18 +4021,6 @@ name|renewer
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|result
-operator|.
-name|setService
-argument_list|(
-operator|new
-name|Text
-argument_list|(
-name|getCanonicalServiceName
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 return|return
 name|result
 return|;
@@ -4056,11 +4044,12 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|dfs
-operator|.
 name|getDelegationToken
 argument_list|(
 name|renewer
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -4127,7 +4116,7 @@ return|return
 name|tokenList
 return|;
 block|}
-comment|/**    * Renew an existing delegation token.    *     * @param token delegation token obtained earlier    * @return the new expiration time    * @throws IOException    */
+comment|/**    * Renew an existing delegation token.    *     * @param token delegation token obtained earlier    * @return the new expiration time    * @throws IOException    * @deprecated Use Token.renew instead.    */
 DECL|method|renewDelegationToken (Token<DelegationTokenIdentifier> token)
 specifier|public
 name|long
@@ -4144,16 +4133,36 @@ name|InvalidToken
 throws|,
 name|IOException
 block|{
+try|try
+block|{
 return|return
-name|dfs
-operator|.
-name|renewDelegationToken
-argument_list|(
 name|token
+operator|.
+name|renew
+argument_list|(
+name|getConf
+argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Cancel an existing delegation token.    *     * @param token delegation token    * @throws IOException    */
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Caught interrupted"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Cancel an existing delegation token.    *     * @param token delegation token    * @throws IOException    * @deprecated Use Token.cancel instead.    */
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
 specifier|public
 name|void
@@ -4168,13 +4177,33 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|dfs
-operator|.
-name|cancelDelegationToken
-argument_list|(
+try|try
+block|{
 name|token
+operator|.
+name|cancel
+argument_list|(
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Caught interrupted"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * The bandwidth parameter is the max number of bytes per second of network    * bandwidth to be used by a datanode during balancing.    *    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
 DECL|method|setBalancerBandwidth (long bandwidth)

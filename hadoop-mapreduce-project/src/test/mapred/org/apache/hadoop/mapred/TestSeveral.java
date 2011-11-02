@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -93,46 +105,6 @@ operator|.
 name|util
 operator|.
 name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|extensions
-operator|.
-name|TestSetup
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestSuite
 import|;
 end_import
 
@@ -372,6 +344,46 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**   * This is a test case that tests several miscellaneous functionality.   * This is intended for a fast test and encompasses the following:  * TestJobName  * TestJobClient  * TestJobDirCleanup  * TestJobKillAndFail  * TestUserDefinedCounters  * TestJobInProgressListener  * TestJobHistory  * TestMiniMRClassPath  * TestMiniMRWithDFSWithDistinctUsers  */
 end_comment
@@ -386,8 +398,6 @@ DECL|class|TestSeveral
 specifier|public
 class|class
 name|TestSeveral
-extends|extends
-name|TestCase
 block|{
 DECL|field|DFS_UGI
 specifier|static
@@ -482,29 +492,10 @@ name|numTT
 init|=
 literal|5
 decl_stmt|;
-DECL|method|suite ()
+annotation|@
+name|Before
+DECL|method|setUp ()
 specifier|public
-specifier|static
-name|Test
-name|suite
-parameter_list|()
-block|{
-name|TestSetup
-name|setup
-init|=
-operator|new
-name|TestSetup
-argument_list|(
-operator|new
-name|TestSuite
-argument_list|(
-name|TestSeveral
-operator|.
-name|class
-argument_list|)
-argument_list|)
-block|{
-specifier|protected
 name|void
 name|setUp
 parameter_list|()
@@ -712,7 +703,10 @@ name|myListener
 argument_list|)
 expr_stmt|;
 block|}
-specifier|protected
+annotation|@
+name|After
+DECL|method|tearDown ()
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -758,12 +752,6 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-block|}
-decl_stmt|;
-return|return
-name|setup
-return|;
 block|}
 comment|/**     * Utility class to create input for the jobs    * @param inDir    * @param conf    * @throws IOException    */
 DECL|method|makeInput (Path inDir, JobConf conf)
@@ -1063,7 +1051,11 @@ block|{
 comment|// Do nothing
 block|}
 block|}
-comment|/**    * Submit a job with a complex name (TestJobName.testComplexName)    * Check the status of the job as successful (TestJobKillAndFail)    * Check that the task tracker directory is cleaned up (TestJobDirCleanup)    * Create some user defined counters and check them (TestUserDefinedCounters)    * Job uses a reducer from an External Jar (TestMiniMRClassPath)    * Check task directories (TestMiniMRWithDFS)    * Check if the listener notifications are received(TestJobInProgressListener)    * Verify if priority changes to the job are reflected (TestJobClient)    * Validate JobHistory file format, content, userlog location (TestJobHistory)    *     * @throws Exception    */
+comment|/**    * Submit a job with a complex name (TestJobName.testComplexName)    * Check the status of the job as successful (TestJobKillAndFail)    * Check that the task tracker directory is cleaned up (TestJobDirCleanup)    * Create some user defined counters and check them (TestUserDefinedCounters)    * Job uses a reducer from an External Jar (TestMiniMRClassPath)    * Check task directories (TestMiniMRWithDFS)    * Check if the listener notifications are received(TestJobInProgressListener)    * Verify if priority changes to the job are reflected (TestJobClient)    * Validate JobHistory file format, content, userlog location (TestJobHistory)    *     * @throws Exception    *     * TODO fix testcase    */
+annotation|@
+name|Test
+annotation|@
+name|Ignore
 DECL|method|testSuccessfulJob ()
 specifier|public
 name|void
@@ -1744,7 +1736,11 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Submit a job with BackSlashed name (TestJobName) that will fail    * Test JobHistory User Location to none (TetsJobHistory)    * Verify directory up for the Failed Job (TestJobDirCleanup)    * Verify Event is generated for the failed job (TestJobInProgressListener)    *     * @throws Exception    */
+comment|/**    * Submit a job with BackSlashed name (TestJobName) that will fail    * Test JobHistory User Location to none (TetsJobHistory)    * Verify directory up for the Failed Job (TestJobDirCleanup)    * Verify Event is generated for the failed job (TestJobInProgressListener)    *     * @throws Exception    *     * TODO fix testcase    */
+annotation|@
+name|Test
+annotation|@
+name|Ignore
 DECL|method|testFailedJob ()
 specifier|public
 name|void
@@ -1973,7 +1969,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Submit a job that will get Killed with a Regex Name (TestJobName)    * Verify Job Directory Cleanup (TestJobDirCleanup)    * Verify Even is generated for Killed Job (TestJobInProgressListener)    *     * @throws Exception    */
+comment|/**    * Submit a job that will get Killed with a Regex Name (TestJobName)    * Verify Job Directory Cleanup (TestJobDirCleanup)    * Verify Even is generated for Killed Job (TestJobInProgressListener)    *     * @throws Exception    *     * TODO fix testcase    */
+annotation|@
+name|Test
+annotation|@
+name|Ignore
 DECL|method|testKilledJob ()
 specifier|public
 name|void

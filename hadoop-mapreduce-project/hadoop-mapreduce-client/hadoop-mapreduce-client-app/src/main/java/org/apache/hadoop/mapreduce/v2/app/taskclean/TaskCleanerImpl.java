@@ -54,6 +54,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ThreadFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ThreadPoolExecutor
 import|;
 end_import
@@ -190,6 +202,22 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
 begin_class
 DECL|class|TaskCleanerImpl
 specifier|public
@@ -273,6 +301,21 @@ name|void
 name|start
 parameter_list|()
 block|{
+name|ThreadFactory
+name|tf
+init|=
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"TaskCleaner #%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 name|launcherPool
 operator|=
 operator|new
@@ -294,6 +337,8 @@ argument_list|<
 name|Runnable
 argument_list|>
 argument_list|()
+argument_list|,
+name|tf
 argument_list|)
 expr_stmt|;
 name|eventHandlingThread
@@ -372,6 +417,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
+argument_list|)
+expr_stmt|;
+name|eventHandlingThread
+operator|.
+name|setName
+argument_list|(
+literal|"TaskCleaner Event Handler"
 argument_list|)
 expr_stmt|;
 name|eventHandlingThread

@@ -277,10 +277,23 @@ operator|==
 name|STATE
 operator|.
 name|STOPPED
+operator|||
+name|state
+operator|==
+name|STATE
+operator|.
+name|INITED
+operator|||
+name|state
+operator|==
+name|STATE
+operator|.
+name|NOTINITED
 condition|)
 block|{
+comment|// already stopped, or else it was never
+comment|// started (eg another service failing canceled startup)
 return|return;
-comment|//already stopped
 block|}
 name|ensureCurrentState
 argument_list|(

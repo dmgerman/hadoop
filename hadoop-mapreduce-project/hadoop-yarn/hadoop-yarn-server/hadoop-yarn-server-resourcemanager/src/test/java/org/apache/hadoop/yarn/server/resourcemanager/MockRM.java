@@ -1059,6 +1059,8 @@ name|getResourceScheduler
 argument_list|()
 argument_list|,
 name|rmAppManager
+argument_list|,
+name|applicationACLsManager
 argument_list|)
 block|{
 annotation|@
@@ -1231,11 +1233,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAdminService ()
+DECL|method|createAdminService ( ClientRMService clientRMService, ApplicationMasterService applicationMasterService, ResourceTrackerService resourceTrackerService)
 specifier|protected
 name|AdminService
 name|createAdminService
-parameter_list|()
+parameter_list|(
+name|ClientRMService
+name|clientRMService
+parameter_list|,
+name|ApplicationMasterService
+name|applicationMasterService
+parameter_list|,
+name|ResourceTrackerService
+name|resourceTrackerService
+parameter_list|)
 block|{
 return|return
 operator|new
@@ -1252,6 +1263,12 @@ argument_list|,
 name|this
 operator|.
 name|nodesListManager
+argument_list|,
+name|clientRMService
+argument_list|,
+name|applicationMasterService
+argument_list|,
+name|resourceTrackerService
 argument_list|)
 block|{
 annotation|@
@@ -1273,6 +1290,18 @@ block|{
 comment|// don't do anything
 block|}
 block|}
+return|;
+block|}
+DECL|method|getNodesListManager ()
+specifier|public
+name|NodesListManager
+name|getNodesListManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nodesListManager
 return|;
 block|}
 annotation|@

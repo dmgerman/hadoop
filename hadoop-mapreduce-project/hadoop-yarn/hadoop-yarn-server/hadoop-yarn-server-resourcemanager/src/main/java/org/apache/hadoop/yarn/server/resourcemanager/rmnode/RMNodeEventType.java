@@ -28,6 +28,9 @@ specifier|public
 enum|enum
 name|RMNodeEventType
 block|{
+DECL|enumConstant|STARTED
+name|STARTED
+block|,
 comment|// Source: AdminService
 DECL|enumConstant|DECOMMISSION
 name|DECOMMISSION

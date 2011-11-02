@@ -256,6 +256,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -1007,6 +1023,20 @@ argument_list|,
 literal|"FSDirectory already loaded"
 argument_list|)
 expr_stmt|;
+name|setReady
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|setReady ()
+name|void
+name|setReady
+parameter_list|()
+block|{
+if|if
+condition|(
+name|ready
+condition|)
+return|return;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -1257,8 +1287,6 @@ argument_list|,
 name|newNode
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1446,8 +1474,6 @@ argument_list|,
 name|newNode
 argument_list|,
 name|diskspace
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -1580,8 +1606,6 @@ argument_list|,
 name|newNode
 argument_list|,
 name|parentINode
-argument_list|,
-literal|false
 argument_list|,
 name|propagateModTime
 argument_list|)
@@ -2816,8 +2840,6 @@ argument_list|,
 name|srcChild
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -2925,8 +2947,6 @@ argument_list|,
 name|srcChild
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3702,8 +3722,6 @@ argument_list|,
 name|removedSrc
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|int
@@ -3863,8 +3881,6 @@ argument_list|,
 name|removedSrc
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3896,8 +3912,6 @@ argument_list|,
 name|removedDst
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5883,21 +5897,12 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|INode
 name|inode
 init|=
-name|rootDir
-operator|.
-name|getNode
+name|getINode
 argument_list|(
 name|src
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -5926,6 +5931,38 @@ operator|(
 name|INodeFile
 operator|)
 name|inode
+return|;
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getINode (String src)
+name|INode
+name|getINode
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|INode
+name|iNode
+init|=
+name|rootDir
+operator|.
+name|getNode
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+return|return
+name|iNode
 return|;
 block|}
 finally|finally
@@ -6673,7 +6710,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param inheritPermission if the permission of the directory should inherit    *                          from its parent or not. The automatically created    *                          ones always inherit its permission from its parent    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws FileNotFoundException if an ancestor or itself is a file    * @throws QuotaExceededException if directory creation violates     *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          */
+comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param isAutocreate if the permission of the directory should inherit    *                          from its parent or not. u+wx is implicitly added to    *                          the automatically created directories, and to the    *                          given directory if inheritPermission is true    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws FileNotFoundException if an ancestor or itself is a file    * @throws QuotaExceededException if directory creation violates     *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          */
 DECL|method|mkdirs (String src, PermissionStatus permissions, boolean inheritPermission, long now)
 name|boolean
 name|mkdirs
@@ -6738,6 +6775,16 @@ name|components
 operator|.
 name|length
 index|]
+decl_stmt|;
+specifier|final
+name|int
+name|lastInodeIndex
+init|=
+name|inodes
+operator|.
+name|length
+operator|-
+literal|1
 decl_stmt|;
 name|writeLock
 argument_list|()
@@ -6835,6 +6882,137 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// default to creating parent dirs with the given perms
+name|PermissionStatus
+name|parentPermissions
+init|=
+name|permissions
+decl_stmt|;
+comment|// if not inheriting and it's the last inode, there's no use in
+comment|// computing perms that won't be used
+if|if
+condition|(
+name|inheritPermission
+operator|||
+operator|(
+name|i
+operator|<
+name|lastInodeIndex
+operator|)
+condition|)
+block|{
+comment|// if inheriting (ie. creating a file or symlink), use the parent dir,
+comment|// else the supplied permissions
+comment|// NOTE: the permissions of the auto-created directories violate posix
+name|FsPermission
+name|parentFsPerm
+init|=
+name|inheritPermission
+condition|?
+name|inodes
+index|[
+name|i
+operator|-
+literal|1
+index|]
+operator|.
+name|getFsPermission
+argument_list|()
+else|:
+name|permissions
+operator|.
+name|getPermission
+argument_list|()
+decl_stmt|;
+comment|// ensure that the permissions allow user write+execute
+if|if
+condition|(
+operator|!
+name|parentFsPerm
+operator|.
+name|getUserAction
+argument_list|()
+operator|.
+name|implies
+argument_list|(
+name|FsAction
+operator|.
+name|WRITE_EXECUTE
+argument_list|)
+condition|)
+block|{
+name|parentFsPerm
+operator|=
+operator|new
+name|FsPermission
+argument_list|(
+name|parentFsPerm
+operator|.
+name|getUserAction
+argument_list|()
+operator|.
+name|or
+argument_list|(
+name|FsAction
+operator|.
+name|WRITE_EXECUTE
+argument_list|)
+argument_list|,
+name|parentFsPerm
+operator|.
+name|getGroupAction
+argument_list|()
+argument_list|,
+name|parentFsPerm
+operator|.
+name|getOtherAction
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|parentPermissions
+operator|.
+name|getPermission
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|parentFsPerm
+argument_list|)
+condition|)
+block|{
+name|parentPermissions
+operator|=
+operator|new
+name|PermissionStatus
+argument_list|(
+name|parentPermissions
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|parentPermissions
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|,
+name|parentFsPerm
+argument_list|)
+expr_stmt|;
+comment|// when inheriting, use same perms for entire path
+if|if
+condition|(
+name|inheritPermission
+condition|)
+name|permissions
+operator|=
+name|parentPermissions
+expr_stmt|;
+block|}
+block|}
 comment|// create directories beginning from the first null index
 for|for
 control|(
@@ -6882,17 +7060,15 @@ index|[
 name|i
 index|]
 argument_list|,
-name|permissions
-argument_list|,
-name|inheritPermission
-operator|||
+operator|(
 name|i
-operator|!=
-name|components
-operator|.
-name|length
-operator|-
-literal|1
+operator|<
+name|lastInodeIndex
+operator|)
+condition|?
+name|parentPermissions
+else|:
+name|permissions
 argument_list|,
 name|now
 argument_list|)
@@ -7056,8 +7232,6 @@ index|]
 argument_list|,
 name|permissions
 argument_list|,
-literal|false
-argument_list|,
 name|timestamp
 argument_list|)
 expr_stmt|;
@@ -7073,7 +7247,7 @@ index|]
 return|;
 block|}
 comment|/** create a directory at index pos.    * The parent path to the directory is at [0, pos-1].    * All ancestors exist. Newly created one stored at index pos.    */
-DECL|method|unprotectedMkdir (INode[] inodes, int pos, byte[] name, PermissionStatus permission, boolean inheritPermission, long timestamp)
+DECL|method|unprotectedMkdir (INode[] inodes, int pos, byte[] name, PermissionStatus permission, long timestamp)
 specifier|private
 name|void
 name|unprotectedMkdir
@@ -7091,9 +7265,6 @@ name|name
 parameter_list|,
 name|PermissionStatus
 name|permission
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|,
 name|long
 name|timestamp
@@ -7128,13 +7299,11 @@ argument_list|)
 argument_list|,
 operator|-
 literal|1
-argument_list|,
-name|inheritPermission
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add a node child to the namespace. The full path name of the node is src.    * childDiskspace should be -1, if unknown.     * QuotaExceededException is thrown if it violates quota limit */
-DECL|method|addNode (String src, T child, long childDiskspace, boolean inheritPermission)
+DECL|method|addNode (String src, T child, long childDiskspace)
 specifier|private
 parameter_list|<
 name|T
@@ -7152,9 +7321,6 @@ name|child
 parameter_list|,
 name|long
 name|childDiskspace
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -7240,8 +7406,6 @@ argument_list|,
 name|child
 argument_list|,
 name|childDiskspace
-argument_list|,
-name|inheritPermission
 argument_list|)
 return|;
 block|}
@@ -7777,7 +7941,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].     * QuotaExceededException is thrown if it violates quota limit */
-DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace, boolean inheritPermission, boolean checkQuota)
+DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace, boolean checkQuota)
 specifier|private
 parameter_list|<
 name|T
@@ -7799,9 +7963,6 @@ name|child
 parameter_list|,
 name|long
 name|childDiskspace
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|,
 name|boolean
 name|checkQuota
@@ -7918,8 +8079,6 @@ name|addChild
 argument_list|(
 name|child
 argument_list|,
-name|inheritPermission
-argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
@@ -7953,7 +8112,7 @@ return|return
 name|addedNode
 return|;
 block|}
-DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace, boolean inheritPermission)
+DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace)
 specifier|private
 parameter_list|<
 name|T
@@ -7975,9 +8134,6 @@ name|child
 parameter_list|,
 name|long
 name|childDiskspace
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -7993,13 +8149,11 @@ name|child
 argument_list|,
 name|childDiskspace
 argument_list|,
-name|inheritPermission
-argument_list|,
 literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|addChildNoQuotaCheck (INode[] pathComponents, int pos, T child, long childDiskspace, boolean inheritPermission)
+DECL|method|addChildNoQuotaCheck (INode[] pathComponents, int pos, T child, long childDiskspace)
 specifier|private
 parameter_list|<
 name|T
@@ -8021,9 +8175,6 @@ name|child
 parameter_list|,
 name|long
 name|childDiskspace
-parameter_list|,
-name|boolean
-name|inheritPermission
 parameter_list|)
 block|{
 name|T
@@ -8044,8 +8195,6 @@ argument_list|,
 name|child
 argument_list|,
 name|childDiskspace
-argument_list|,
-name|inheritPermission
 argument_list|,
 literal|false
 argument_list|)
@@ -9062,15 +9211,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sets the access time on the file. Logs it in the transaction log.    */
-DECL|method|setTimes (String src, INodeFile inode, long mtime, long atime, boolean force)
+comment|/**    * Sets the access time on the file/directory. Logs it in the transaction log.    */
+DECL|method|setTimes (String src, INode inode, long mtime, long atime, boolean force)
 name|void
 name|setTimes
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|INodeFile
+name|INode
 name|inode
 parameter_list|,
 name|long
@@ -9159,10 +9308,10 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INodeFile
+name|INode
 name|inode
 init|=
-name|getFileINode
+name|getINode
 argument_list|(
 name|src
 argument_list|)
@@ -9182,7 +9331,7 @@ name|force
 argument_list|)
 return|;
 block|}
-DECL|method|unprotectedSetTimes (String src, INodeFile inode, long mtime, long atime, boolean force)
+DECL|method|unprotectedSetTimes (String src, INode inode, long mtime, long atime, boolean force)
 specifier|private
 name|boolean
 name|unprotectedSetTimes
@@ -9190,7 +9339,7 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|INodeFile
+name|INode
 name|inode
 parameter_list|,
 name|long
@@ -9949,8 +10098,6 @@ argument_list|,
 name|newNode
 argument_list|,
 name|UNKNOWN_DISK_SPACE
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

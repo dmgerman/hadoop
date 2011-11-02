@@ -176,6 +176,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -210,6 +224,10 @@ operator|.
 name|Counter
 argument_list|()
 block|{
+specifier|private
+name|long
+name|value
+decl_stmt|;
 annotation|@
 name|Override
 specifier|public
@@ -220,7 +238,12 @@ name|long
 name|value
 parameter_list|)
 block|{
-comment|// TODO Auto-generated method stub
+name|this
+operator|.
+name|value
+operator|=
+name|value
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -244,7 +267,12 @@ name|long
 name|incr
 parameter_list|)
 block|{
-comment|// TODO Auto-generated method stub
+name|this
+operator|.
+name|value
+operator|+=
+name|incr
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -253,9 +281,8 @@ name|long
 name|getValue
 parameter_list|()
 block|{
-comment|// TODO Auto-generated method stub
 return|return
-literal|0
+name|value
 return|;
 block|}
 annotation|@
@@ -301,9 +328,8 @@ name|long
 name|getCounter
 parameter_list|()
 block|{
-comment|// TODO Auto-generated method stub
 return|return
-literal|0
+name|value
 return|;
 block|}
 annotation|@
@@ -394,7 +420,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"mapred.combine.recordsBeforeProgress"
+name|MRJobConfig
+operator|.
+name|COMBINE_RECORDS_BEFORE_PROGRESS
 argument_list|,
 literal|"2"
 argument_list|)

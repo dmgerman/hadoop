@@ -312,13 +312,15 @@ condition|)
 block|{
 try|try
 block|{
+comment|// TODO(HA): This will create a NN proxy with an underlying retry
+comment|// proxy. We don't want this.
 name|current
 operator|.
 name|namenode
 operator|=
 name|DFSUtil
 operator|.
-name|createRPCNamenode
+name|createNamenode
 argument_list|(
 name|current
 operator|.

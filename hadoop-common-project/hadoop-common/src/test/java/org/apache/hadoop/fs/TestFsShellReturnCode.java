@@ -183,6 +183,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1677,11 +1693,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|FsConfig
-operator|.
-name|setDefaultFS
-argument_list|(
 name|conf
+operator|.
+name|set
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
 argument_list|,
 literal|"hhhh://doesnotexist/"
 argument_list|)

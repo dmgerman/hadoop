@@ -74,20 +74,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Shell
 operator|.
 name|ShellCommandExecutor
@@ -132,7 +118,21 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|*
+name|Configurable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -151,7 +151,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via net.topology.script.file.name .  */
+comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via the {@link CommonConfigurationKeys#NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY}  */
 end_comment
 
 begin_class
@@ -186,7 +186,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// script must accept at least this many args
+comment|/**    * Minimum number of arguments: {@value}    */
 DECL|field|MIN_ALLOWABLE_ARGS
 specifier|static
 specifier|final
@@ -195,6 +195,7 @@ name|MIN_ALLOWABLE_ARGS
 init|=
 literal|1
 decl_stmt|;
+comment|/**    * Default number of arguments: {@value}    */
 DECL|field|DEFAULT_ARG_COUNT
 specifier|static
 specifier|final
@@ -205,6 +206,7 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_DEFAULT
 decl_stmt|;
+comment|/**    * key to the script filename {@value}    */
 DECL|field|SCRIPT_FILENAME_KEY
 specifier|static
 specifier|final
@@ -215,6 +217,7 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 decl_stmt|;
+comment|/**    * key to the argument count that the script supports    */
 DECL|field|SCRIPT_ARG_COUNT_KEY
 specifier|static
 specifier|final
@@ -225,6 +228,7 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
 decl_stmt|;
+comment|/**    * Create an instance from the given configuration    * @param conf configuration    */
 DECL|method|ScriptBasedMapping (Configuration conf)
 specifier|public
 name|ScriptBasedMapping
@@ -242,6 +246,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -260,6 +266,8 @@ name|getConf
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -282,6 +290,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This is the uncached script mapping that is fed into the cache managed    * by the superclass {@link CachedDNSToSwitchMapping}    */
 DECL|class|RawScriptBasedMapping
 specifier|private
 specifier|static
@@ -322,6 +331,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**      * Set the configuration and      * @param conf extract the configuration parameters of interest      */
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -362,6 +372,7 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+comment|/**      * Get the configuration      * @return the configuration      */
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -372,11 +383,14 @@ return|return
 name|conf
 return|;
 block|}
+comment|/**      * Constructor. The mapping is not ready to use until      * {@link #setConf(Configuration)} has been called      */
 DECL|method|RawScriptBasedMapping ()
 specifier|public
 name|RawScriptBasedMapping
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|resolve (List<String> names)
 specifier|public
 name|List
@@ -525,7 +539,7 @@ block|{
 comment|// invalid number of entries returned by the script
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Script "
 operator|+
@@ -575,6 +589,7 @@ return|return
 name|m
 return|;
 block|}
+comment|/**      * Build and execute the resolution command. The command is      * executed in the directory specified by the system property      * "user.dir" if set; otherwise the current working directory is used      * @param args a list of arguments      * @return null if the number of arguments is out of range,      * or the output of the command.      */
 DECL|method|runResolveCommand (List<String> args)
 specifier|private
 name|String

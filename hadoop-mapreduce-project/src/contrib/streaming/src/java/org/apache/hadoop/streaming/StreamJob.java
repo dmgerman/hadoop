@@ -4203,6 +4203,10 @@ operator|new
 name|JobConf
 argument_list|(
 name|config_
+argument_list|,
+name|StreamJob
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 comment|// All streaming jobs get the task timeout value

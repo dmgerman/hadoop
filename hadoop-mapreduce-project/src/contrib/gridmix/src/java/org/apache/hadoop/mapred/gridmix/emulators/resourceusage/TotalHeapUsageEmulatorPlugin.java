@@ -470,6 +470,33 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|min
+argument_list|(
+literal|1f
+argument_list|,
+operator|(
+operator|(
+name|float
+operator|)
+name|getTotalHeapUsageInMB
+argument_list|()
+operator|)
+operator|/
+name|targetHeapUsageInMB
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|emulate ()
 specifier|public
 name|void

@@ -1225,7 +1225,7 @@ condition|)
 block|{
 name|umbilical
 operator|.
-name|reportDiagnosticInfo
+name|fatalError
 argument_list|(
 name|taskid
 argument_list|,
@@ -1600,6 +1600,44 @@ operator|.
 name|setCredentials
 argument_list|(
 name|credentials
+argument_list|)
+expr_stmt|;
+name|String
+name|appAttemptIdEnv
+init|=
+name|System
+operator|.
+name|getenv
+argument_list|(
+name|MRJobConfig
+operator|.
+name|APPLICATION_ATTEMPT_ID_ENV
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"APPLICATION_ATTEMPT_ID: "
+operator|+
+name|appAttemptIdEnv
+argument_list|)
+expr_stmt|;
+comment|// Set it in conf, so as to be able to be used the the OutputCommitter.
+name|job
+operator|.
+name|setInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|APPLICATION_ATTEMPT_ID
+argument_list|,
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|appAttemptIdEnv
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// set tcp nodelay

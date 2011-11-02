@@ -136,6 +136,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -300,6 +314,20 @@ name|ResourceCalculatorPlugin
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|inject
+operator|.
+name|internal
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 DECL|class|ContainersMonitorImpl
 specifier|public
@@ -417,17 +445,6 @@ name|DISABLED_MEMORY_LIMIT
 init|=
 operator|-
 literal|1L
-decl_stmt|;
-DECL|field|MEMORY_USAGE_STRING
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|MEMORY_USAGE_STRING
-init|=
-literal|"Memory usage of ProcessTree %s for container-id %s : Virtual %d bytes, "
-operator|+
-literal|"limit : %d bytes; Physical %d bytes, limit %d bytes"
 decl_stmt|;
 DECL|method|ContainersMonitorImpl (ContainerExecutor exec, AsyncDispatcher dispatcher, Context context)
 specifier|public
@@ -622,10 +639,10 @@ name|DISABLED_MEMORY_LIMIT
 expr_stmt|;
 block|}
 block|}
-comment|// ///////// Virtual memory configuration //////
+comment|// ///////// Physical memory configuration //////
 name|this
 operator|.
-name|maxVmemAllottedForContainers
+name|maxPmemAllottedForContainers
 operator|=
 name|conf
 operator|.
@@ -633,106 +650,114 @@ name|getLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_VMEM_GB
+name|NM_PMEM_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_VMEM_GB
+name|DEFAULT_NM_PMEM_MB
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|maxVmemAllottedForContainers
+name|maxPmemAllottedForContainers
 operator|=
 name|this
 operator|.
-name|maxVmemAllottedForContainers
-operator|*
-literal|1024
+name|maxPmemAllottedForContainers
 operator|*
 literal|1024
 operator|*
 literal|1024L
 expr_stmt|;
-comment|//Normalize
+comment|//Normalize to bytes
 if|if
 condition|(
+name|totalPhysicalMemoryOnNM
+operator|!=
+name|DISABLED_MEMORY_LIMIT
+operator|&&
 name|this
 operator|.
-name|maxVmemAllottedForContainers
+name|maxPmemAllottedForContainers
 operator|>
 name|totalPhysicalMemoryOnNM
+operator|*
+literal|0.80f
 condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"totalMemoryAllottedForContainers> totalPhysicalMemoryOnNM."
+literal|"NodeManager configured with "
 operator|+
-literal|" Thrashing might happen."
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|maxPmemAllottedForContainers
+argument_list|)
+operator|+
+literal|" physical memory allocated to containers, which is more than "
+operator|+
+literal|"80% of the total physical memory available ("
+operator|+
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|totalPhysicalMemoryOnNM
+argument_list|)
+operator|+
+literal|"). Thrashing might happen."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// ///////// Physical memory configuration //////
-name|long
-name|reservedPmemOnNM
+comment|// ///////// Virtual memory configuration //////
+name|float
+name|vmemRatio
 init|=
 name|conf
 operator|.
-name|getLong
+name|getFloat
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_RESERVED_MEMORY_MB
+name|NM_VMEM_PMEM_RATIO
 argument_list|,
-name|DISABLED_MEMORY_LIMIT
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_VMEM_PMEM_RATIO
 argument_list|)
 decl_stmt|;
-name|reservedPmemOnNM
-operator|=
-name|reservedPmemOnNM
-operator|==
-name|DISABLED_MEMORY_LIMIT
-condition|?
-name|DISABLED_MEMORY_LIMIT
-else|:
-name|reservedPmemOnNM
-operator|*
-literal|1024
-operator|*
-literal|1024
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|vmemRatio
+operator|>
+literal|0.99f
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|NM_VMEM_PMEM_RATIO
+operator|+
+literal|" should be at least 1.0"
+argument_list|)
 expr_stmt|;
-comment|// normalize to bytes
-if|if
-condition|(
-name|reservedPmemOnNM
-operator|==
-name|DISABLED_MEMORY_LIMIT
-operator|||
-name|totalPhysicalMemoryOnNM
-operator|==
-name|DISABLED_MEMORY_LIMIT
-condition|)
-block|{
 name|this
 operator|.
-name|maxPmemAllottedForContainers
+name|maxVmemAllottedForContainers
 operator|=
-name|DISABLED_MEMORY_LIMIT
-expr_stmt|;
-block|}
-else|else
-block|{
-name|this
-operator|.
+call|(
+name|long
+call|)
+argument_list|(
+name|vmemRatio
+operator|*
 name|maxPmemAllottedForContainers
-operator|=
-name|totalPhysicalMemoryOnNM
-operator|-
-name|reservedPmemOnNM
+argument_list|)
 expr_stmt|;
-block|}
 name|super
 operator|.
 name|init
@@ -1249,7 +1274,13 @@ DECL|method|MonitoringThread ()
 specifier|public
 name|MonitoringThread
 parameter_list|()
-block|{      }
+block|{
+name|super
+argument_list|(
+literal|"Container Monitor"
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|run ()
@@ -1696,7 +1727,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|MEMORY_USAGE_STRING
+literal|"Memory usage of ProcessTree %s for container-id %s: "
 argument_list|,
 name|pId
 argument_list|,
@@ -1704,7 +1735,10 @@ name|containerId
 operator|.
 name|toString
 argument_list|()
-argument_list|,
+argument_list|)
+operator|+
+name|formatUsageString
+argument_list|(
 name|currentVmemUsage
 argument_list|,
 name|vmemLimit
@@ -1750,34 +1784,24 @@ comment|// memory.
 comment|// Dump the process-tree and then clean it up.
 name|msg
 operator|=
-literal|"Container [pid="
-operator|+
-name|pId
-operator|+
-literal|",containerID="
-operator|+
-name|containerId
-operator|+
-literal|"] is running beyond memory-limits. Current usage : "
-operator|+
+name|formatErrorMessage
+argument_list|(
+literal|"virtual"
+argument_list|,
 name|currentVmemUsage
-operator|+
-literal|"bytes. Limit : "
-operator|+
+argument_list|,
 name|vmemLimit
-operator|+
-literal|"bytes. Killing container. "
-operator|+
-literal|"\nDump of the process-tree for "
-operator|+
+argument_list|,
+name|currentPmemUsage
+argument_list|,
+name|pmemLimit
+argument_list|,
+name|pId
+argument_list|,
 name|containerId
-operator|+
-literal|" : \n"
-operator|+
+argument_list|,
 name|pTree
-operator|.
-name|getProcessTreeDump
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
 operator|=
@@ -1810,34 +1834,24 @@ comment|// memory.
 comment|// Dump the process-tree and then clean it up.
 name|msg
 operator|=
-literal|"Container [pid="
-operator|+
-name|pId
-operator|+
-literal|",tipID="
-operator|+
-name|containerId
-operator|+
-literal|"] is running beyond physical memory-limits."
-operator|+
-literal|" Current usage : "
-operator|+
+name|formatErrorMessage
+argument_list|(
+literal|"physical"
+argument_list|,
+name|currentVmemUsage
+argument_list|,
+name|vmemLimit
+argument_list|,
 name|currentPmemUsage
-operator|+
-literal|"bytes. Limit : "
-operator|+
+argument_list|,
 name|pmemLimit
-operator|+
-literal|"bytes. Killing container. \nDump of the process-tree for "
-operator|+
+argument_list|,
+name|pId
+argument_list|,
 name|containerId
-operator|+
-literal|" : \n"
-operator|+
+argument_list|,
 name|pTree
-operator|.
-name|getProcessTreeDump
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
 operator|=
@@ -1983,6 +1997,134 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+block|}
+DECL|method|formatErrorMessage (String memTypeExceeded, long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit, String pId, ContainerId containerId, ProcfsBasedProcessTree pTree)
+specifier|private
+name|String
+name|formatErrorMessage
+parameter_list|(
+name|String
+name|memTypeExceeded
+parameter_list|,
+name|long
+name|currentVmemUsage
+parameter_list|,
+name|long
+name|vmemLimit
+parameter_list|,
+name|long
+name|currentPmemUsage
+parameter_list|,
+name|long
+name|pmemLimit
+parameter_list|,
+name|String
+name|pId
+parameter_list|,
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ProcfsBasedProcessTree
+name|pTree
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Container [pid=%s,containerID=%s] is running beyond %s memory limits. "
+argument_list|,
+name|pId
+argument_list|,
+name|containerId
+argument_list|,
+name|memTypeExceeded
+argument_list|)
+operator|+
+literal|"Current usage: "
+operator|+
+name|formatUsageString
+argument_list|(
+name|currentVmemUsage
+argument_list|,
+name|vmemLimit
+argument_list|,
+name|currentPmemUsage
+argument_list|,
+name|pmemLimit
+argument_list|)
+operator|+
+literal|". Killing container.\n"
+operator|+
+literal|"Dump of the process-tree for "
+operator|+
+name|containerId
+operator|+
+literal|" :\n"
+operator|+
+name|pTree
+operator|.
+name|getProcessTreeDump
+argument_list|()
+return|;
+block|}
+DECL|method|formatUsageString (long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit)
+specifier|private
+name|String
+name|formatUsageString
+parameter_list|(
+name|long
+name|currentVmemUsage
+parameter_list|,
+name|long
+name|vmemLimit
+parameter_list|,
+name|long
+name|currentPmemUsage
+parameter_list|,
+name|long
+name|pmemLimit
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%sb of %sb physical memory used; "
+operator|+
+literal|"%sb of %sb virtual memory used"
+argument_list|,
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|currentPmemUsage
+argument_list|)
+argument_list|,
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|pmemLimit
+argument_list|)
+argument_list|,
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|currentVmemUsage
+argument_list|)
+argument_list|,
+name|StringUtils
+operator|.
+name|humanReadableInt
+argument_list|(
+name|vmemLimit
+argument_list|)
+argument_list|)
+return|;
 block|}
 block|}
 annotation|@

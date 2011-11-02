@@ -112,6 +112,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocolR23Compatible
+operator|.
+name|ClientNamenodeWireProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|protocol
@@ -119,6 +135,24 @@ operator|.
 name|BlockRecoveryCommand
 operator|.
 name|RecoveringBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocolR23Compatible
+operator|.
+name|InterDatanodeWireProtocol
 import|;
 end_import
 
@@ -197,7 +231,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * 6: Add block pool ID to Block    */
+comment|/**    * Until version 9, this class InterDatanodeProtocol served as both    * the interface to the DN AND the RPC protocol used to communicate with the     * DN.    *     * Post version 6L (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/InterDatanodeWireProtocol}    *     * This class is used by both the DN to insulate from the protocol     * serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link InterDatanodeWireProtocol}    * These changes need to be done in a compatible fashion as described in     * {@link ClientNamenodeWireProtocol}    *     * The log of historical changes can be retrieved from the svn).    * 6: Add block pool ID to Block    */
 DECL|field|versionID
 specifier|public
 specifier|static

@@ -78,6 +78,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -112,27 +126,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|factories
+name|server
 operator|.
-name|RecordFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|security
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|factory
-operator|.
-name|providers
-operator|.
-name|RecordFactoryProvider
+name|ApplicationACLsManager
 import|;
 end_import
 
@@ -572,9 +570,9 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
-name|LogAggregationService
+name|LogHandler
 import|;
 end_import
 
@@ -594,11 +592,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|logaggregation
+name|loghandler
 operator|.
 name|event
 operator|.
-name|LogAggregatorEvent
+name|LogHandlerEvent
 import|;
 end_import
 
@@ -646,21 +644,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|recordFactory
-specifier|private
-specifier|static
-specifier|final
-name|RecordFactory
-name|recordFactory
-init|=
-name|RecordFactoryProvider
-operator|.
-name|getRecordFactory
-argument_list|(
-literal|null
-argument_list|)
-decl_stmt|;
-DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager applicationACLsManager)
 specifier|public
 name|DummyContainerManager
 parameter_list|(
@@ -681,6 +665,9 @@ name|metrics
 parameter_list|,
 name|ContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|ApplicationACLsManager
+name|applicationACLsManager
 parameter_list|)
 block|{
 name|super
@@ -696,11 +683,18 @@ argument_list|,
 name|metrics
 argument_list|,
 name|containerTokenSecretManager
+argument_list|,
+name|applicationACLsManager
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|createResourceLocalizationService (ContainerExecutor exec, DeletionService deletionContext)
 specifier|protected
 name|ResourceLocalizationService
@@ -978,6 +972,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|createContainersLauncher (Context context, ContainerExecutor exec)
 specifier|protected
 name|ContainersLauncher
@@ -1090,11 +1089,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createLogAggregationService (Context context, DeletionService deletionService)
+DECL|method|createLogHandler (Configuration conf, Context context, DeletionService deletionService)
 specifier|protected
-name|LogAggregationService
-name|createLogAggregationService
+name|LogHandler
+name|createLogHandler
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|Context
 name|context
 parameter_list|,
@@ -1104,12 +1106,8 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|LogAggregationService
-argument_list|(
-name|context
-argument_list|,
-name|deletionService
-argument_list|)
+name|LogHandler
+argument_list|()
 block|{
 annotation|@
 name|Override
@@ -1117,7 +1115,7 @@ specifier|public
 name|void
 name|handle
 parameter_list|(
-name|LogAggregatorEvent
+name|LogHandlerEvent
 name|event
 parameter_list|)
 block|{

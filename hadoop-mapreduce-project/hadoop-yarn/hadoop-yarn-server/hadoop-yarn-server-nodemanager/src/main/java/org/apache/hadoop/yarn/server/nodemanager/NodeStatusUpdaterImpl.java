@@ -162,7 +162,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityInfo
+name|UserGroupInformation
 import|;
 end_import
 
@@ -174,9 +174,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|yarn
 operator|.
-name|UserGroupInformation
+name|YarnException
 import|;
 end_import
 
@@ -416,22 +416,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|RMNMSecurityInfoClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|api
 operator|.
 name|ResourceTracker
@@ -495,6 +479,26 @@ operator|.
 name|records
 operator|.
 name|HeartbeatResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeAction
 import|;
 end_import
 
@@ -846,7 +850,7 @@ name|DEFAULT_NM_TO_RM_HEARTBEAT_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 name|int
-name|memory
+name|memoryMb
 init|=
 name|conf
 operator|.
@@ -854,11 +858,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_VMEM_GB
+name|NM_PMEM_MB
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_VMEM_GB
+name|DEFAULT_NM_PMEM_MB
 argument_list|)
 decl_stmt|;
 name|this
@@ -880,9 +884,7 @@ name|totalResource
 operator|.
 name|setMemory
 argument_list|(
-name|memory
-operator|*
-literal|1024
+name|memoryMb
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -945,6 +947,14 @@ operator|.
 name|createSocketAddr
 argument_list|(
 name|httpBindAddressStr
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_WEBAPP_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|NM_WEBAPP_ADDRESS
 argument_list|)
 decl_stmt|;
 try|try
@@ -1042,6 +1052,14 @@ argument_list|(
 name|this
 operator|.
 name|rmAddress
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_RESOURCE_TRACKER_PORT
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RM_RESOURCE_TRACKER_ADDRESS
 argument_list|)
 decl_stmt|;
 return|return
@@ -1142,6 +1160,30 @@ operator|.
 name|getRegistrationResponse
 argument_list|()
 decl_stmt|;
+comment|// if the Resourcemanager instructs NM to shutdown.
+if|if
+condition|(
+name|NodeAction
+operator|.
+name|SHUTDOWN
+operator|.
+name|equals
+argument_list|(
+name|regResponse
+operator|.
+name|getNodeAction
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed"
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|UserGroupInformation
@@ -1526,7 +1568,9 @@ parameter_list|()
 block|{
 operator|new
 name|Thread
-argument_list|()
+argument_list|(
+literal|"Node Status Updater"
+argument_list|)
 block|{
 annotation|@
 name|Override
@@ -1607,6 +1651,66 @@ operator|.
 name|getHeartbeatResponse
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|response
+operator|.
+name|getNodeAction
+argument_list|()
+operator|==
+name|NodeAction
+operator|.
+name|SHUTDOWN
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recieved SHUTDOWN signal from Resourcemanager as part of heartbeat,"
+operator|+
+literal|" hence shutting down."
+argument_list|)
+expr_stmt|;
+name|NodeStatusUpdaterImpl
+operator|.
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
+if|if
+condition|(
+name|response
+operator|.
+name|getNodeAction
+argument_list|()
+operator|==
+name|NodeAction
+operator|.
+name|REBOOT
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Node is out of sync with ResourceManager,"
+operator|+
+literal|" hence shutting down."
+argument_list|)
+expr_stmt|;
+name|NodeStatusUpdaterImpl
+operator|.
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
 name|lastHeartBeatID
 operator|=
 name|response
@@ -1693,6 +1797,8 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+comment|// TODO Better error handling. Thread can die with the rest of the
+comment|// NM still running.
 name|LOG
 operator|.
 name|error
@@ -1702,7 +1808,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-break|break;
 block|}
 block|}
 block|}

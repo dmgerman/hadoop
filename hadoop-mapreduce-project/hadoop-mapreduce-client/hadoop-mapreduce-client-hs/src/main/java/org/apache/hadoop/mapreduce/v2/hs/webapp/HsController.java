@@ -96,6 +96,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|webapp
+operator|.
+name|AggregatedLogsPage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|View
@@ -409,6 +429,36 @@ name|render
 argument_list|(
 name|aboutPage
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Render the logs page.    */
+DECL|method|logs ()
+specifier|public
+name|void
+name|logs
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|HsLogsPage
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Render the nm logs page.    */
+DECL|method|nmlogs ()
+specifier|public
+name|void
+name|nmlogs
+parameter_list|()
+block|{
+name|render
+argument_list|(
+name|AggregatedLogsPage
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 block|}

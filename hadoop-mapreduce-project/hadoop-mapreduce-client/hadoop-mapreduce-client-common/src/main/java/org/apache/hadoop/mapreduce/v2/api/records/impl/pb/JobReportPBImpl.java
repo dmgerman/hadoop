@@ -28,6 +28,46 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AMInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -83,6 +123,26 @@ operator|.
 name|records
 operator|.
 name|JobState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|proto
+operator|.
+name|MRProtos
+operator|.
+name|AMInfoProto
 import|;
 end_import
 
@@ -245,6 +305,16 @@ name|jobId
 init|=
 literal|null
 decl_stmt|;
+DECL|field|amInfos
+specifier|private
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|amInfos
+init|=
+literal|null
+decl_stmt|;
 DECL|method|JobReportPBImpl ()
 specifier|public
 name|JobReportPBImpl
@@ -279,6 +349,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|JobReportProto
 name|getProto
 parameter_list|()
@@ -307,6 +378,7 @@ return|;
 block|}
 DECL|method|mergeLocalToBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToBuilder
 parameter_list|()
@@ -333,9 +405,23 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|amInfos
+operator|!=
+literal|null
+condition|)
+block|{
+name|addAMInfosToProto
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|mergeLocalToProto ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToProto
 parameter_list|()
@@ -364,6 +450,7 @@ expr_stmt|;
 block|}
 DECL|method|maybeInitBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|maybeInitBuilder
 parameter_list|()
@@ -396,6 +483,7 @@ annotation|@
 name|Override
 DECL|method|getJobId ()
 specifier|public
+specifier|synchronized
 name|JobId
 name|getJobId
 parameter_list|()
@@ -459,6 +547,7 @@ annotation|@
 name|Override
 DECL|method|setJobId (JobId jobId)
 specifier|public
+specifier|synchronized
 name|void
 name|setJobId
 parameter_list|(
@@ -491,6 +580,7 @@ annotation|@
 name|Override
 DECL|method|getJobState ()
 specifier|public
+specifier|synchronized
 name|JobState
 name|getJobState
 parameter_list|()
@@ -531,6 +621,7 @@ annotation|@
 name|Override
 DECL|method|setJobState (JobState jobState)
 specifier|public
+specifier|synchronized
 name|void
 name|setJobState
 parameter_list|(
@@ -570,6 +661,7 @@ annotation|@
 name|Override
 DECL|method|getMapProgress ()
 specifier|public
+specifier|synchronized
 name|float
 name|getMapProgress
 parameter_list|()
@@ -596,6 +688,7 @@ annotation|@
 name|Override
 DECL|method|setMapProgress (float mapProgress)
 specifier|public
+specifier|synchronized
 name|void
 name|setMapProgress
 parameter_list|(
@@ -620,6 +713,7 @@ annotation|@
 name|Override
 DECL|method|getReduceProgress ()
 specifier|public
+specifier|synchronized
 name|float
 name|getReduceProgress
 parameter_list|()
@@ -646,6 +740,7 @@ annotation|@
 name|Override
 DECL|method|setReduceProgress (float reduceProgress)
 specifier|public
+specifier|synchronized
 name|void
 name|setReduceProgress
 parameter_list|(
@@ -670,6 +765,7 @@ annotation|@
 name|Override
 DECL|method|getCleanupProgress ()
 specifier|public
+specifier|synchronized
 name|float
 name|getCleanupProgress
 parameter_list|()
@@ -696,6 +792,7 @@ annotation|@
 name|Override
 DECL|method|setCleanupProgress (float cleanupProgress)
 specifier|public
+specifier|synchronized
 name|void
 name|setCleanupProgress
 parameter_list|(
@@ -720,6 +817,7 @@ annotation|@
 name|Override
 DECL|method|getSetupProgress ()
 specifier|public
+specifier|synchronized
 name|float
 name|getSetupProgress
 parameter_list|()
@@ -746,6 +844,7 @@ annotation|@
 name|Override
 DECL|method|setSetupProgress (float setupProgress)
 specifier|public
+specifier|synchronized
 name|void
 name|setSetupProgress
 parameter_list|(
@@ -768,8 +867,61 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getSubmitTime ()
+specifier|public
+specifier|synchronized
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+name|JobReportProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+return|return
+operator|(
+name|p
+operator|.
+name|getSubmitTime
+argument_list|()
+operator|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setSubmitTime (long submitTime)
+specifier|public
+specifier|synchronized
+name|void
+name|setSubmitTime
+parameter_list|(
+name|long
+name|submitTime
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setSubmitTime
+argument_list|(
+operator|(
+name|submitTime
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStartTime ()
 specifier|public
+specifier|synchronized
 name|long
 name|getStartTime
 parameter_list|()
@@ -796,6 +948,7 @@ annotation|@
 name|Override
 DECL|method|setStartTime (long startTime)
 specifier|public
+specifier|synchronized
 name|void
 name|setStartTime
 parameter_list|(
@@ -820,6 +973,7 @@ annotation|@
 name|Override
 DECL|method|getFinishTime ()
 specifier|public
+specifier|synchronized
 name|long
 name|getFinishTime
 parameter_list|()
@@ -846,6 +1000,7 @@ annotation|@
 name|Override
 DECL|method|setFinishTime (long finishTime)
 specifier|public
+specifier|synchronized
 name|void
 name|setFinishTime
 parameter_list|(
@@ -870,6 +1025,7 @@ annotation|@
 name|Override
 DECL|method|getUser ()
 specifier|public
+specifier|synchronized
 name|String
 name|getUser
 parameter_list|()
@@ -896,6 +1052,7 @@ annotation|@
 name|Override
 DECL|method|setUser (String user)
 specifier|public
+specifier|synchronized
 name|void
 name|setUser
 parameter_list|(
@@ -920,6 +1077,7 @@ annotation|@
 name|Override
 DECL|method|getJobName ()
 specifier|public
+specifier|synchronized
 name|String
 name|getJobName
 parameter_list|()
@@ -946,6 +1104,7 @@ annotation|@
 name|Override
 DECL|method|setJobName (String jobName)
 specifier|public
+specifier|synchronized
 name|void
 name|setJobName
 parameter_list|(
@@ -970,6 +1129,7 @@ annotation|@
 name|Override
 DECL|method|getTrackingUrl ()
 specifier|public
+specifier|synchronized
 name|String
 name|getTrackingUrl
 parameter_list|()
@@ -996,6 +1156,7 @@ annotation|@
 name|Override
 DECL|method|setTrackingUrl (String trackingUrl)
 specifier|public
+specifier|synchronized
 name|void
 name|setTrackingUrl
 parameter_list|(
@@ -1018,6 +1179,7 @@ annotation|@
 name|Override
 DECL|method|getDiagnostics ()
 specifier|public
+specifier|synchronized
 name|String
 name|getDiagnostics
 parameter_list|()
@@ -1042,6 +1204,7 @@ annotation|@
 name|Override
 DECL|method|setDiagnostics (String diagnostics)
 specifier|public
+specifier|synchronized
 name|void
 name|setDiagnostics
 parameter_list|(
@@ -1064,6 +1227,7 @@ annotation|@
 name|Override
 DECL|method|getJobFile ()
 specifier|public
+specifier|synchronized
 name|String
 name|getJobFile
 parameter_list|()
@@ -1088,6 +1252,7 @@ annotation|@
 name|Override
 DECL|method|setJobFile (String jobFile)
 specifier|public
+specifier|synchronized
 name|void
 name|setJobFile
 parameter_list|(
@@ -1105,6 +1270,242 @@ argument_list|(
 name|jobFile
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAMInfos ()
+specifier|public
+specifier|synchronized
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|getAMInfos
+parameter_list|()
+block|{
+name|initAMInfos
+argument_list|()
+expr_stmt|;
+return|return
+name|this
+operator|.
+name|amInfos
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setAMInfos (List<AMInfo> amInfos)
+specifier|public
+specifier|synchronized
+name|void
+name|setAMInfos
+parameter_list|(
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|amInfos
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|amInfos
+operator|==
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|builder
+operator|.
+name|clearAmInfos
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|amInfos
+operator|=
+literal|null
+expr_stmt|;
+return|return;
+block|}
+name|initAMInfos
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|amInfos
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|amInfos
+operator|.
+name|addAll
+argument_list|(
+name|amInfos
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|initAMInfos ()
+specifier|private
+specifier|synchronized
+name|void
+name|initAMInfos
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|amInfos
+operator|!=
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|JobReportProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+name|List
+argument_list|<
+name|AMInfoProto
+argument_list|>
+name|list
+init|=
+name|p
+operator|.
+name|getAmInfosList
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|amInfos
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|AMInfo
+argument_list|>
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|AMInfoProto
+name|amInfoProto
+range|:
+name|list
+control|)
+block|{
+name|this
+operator|.
+name|amInfos
+operator|.
+name|add
+argument_list|(
+name|convertFromProtoFormat
+argument_list|(
+name|amInfoProto
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|addAMInfosToProto ()
+specifier|private
+specifier|synchronized
+name|void
+name|addAMInfosToProto
+parameter_list|()
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|clearAmInfos
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|amInfos
+operator|==
+literal|null
+condition|)
+return|return;
+for|for
+control|(
+name|AMInfo
+name|amInfo
+range|:
+name|this
+operator|.
+name|amInfos
+control|)
+block|{
+name|builder
+operator|.
+name|addAmInfos
+argument_list|(
+name|convertToProtoFormat
+argument_list|(
+name|amInfo
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|convertFromProtoFormat (AMInfoProto p)
+specifier|private
+name|AMInfoPBImpl
+name|convertFromProtoFormat
+parameter_list|(
+name|AMInfoProto
+name|p
+parameter_list|)
+block|{
+return|return
+operator|new
+name|AMInfoPBImpl
+argument_list|(
+name|p
+argument_list|)
+return|;
+block|}
+DECL|method|convertToProtoFormat (AMInfo t)
+specifier|private
+name|AMInfoProto
+name|convertToProtoFormat
+parameter_list|(
+name|AMInfo
+name|t
+parameter_list|)
+block|{
+return|return
+operator|(
+operator|(
+name|AMInfoPBImpl
+operator|)
+name|t
+operator|)
+operator|.
+name|getProto
+argument_list|()
+return|;
 block|}
 DECL|method|convertFromProtoFormat (JobIdProto p)
 specifier|private

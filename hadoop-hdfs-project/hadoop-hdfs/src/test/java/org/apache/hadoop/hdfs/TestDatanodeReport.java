@@ -410,7 +410,7 @@ argument_list|(
 literal|5000
 argument_list|)
 expr_stmt|;
-name|assertCounter
+name|assertGauge
 argument_list|(
 literal|"ExpiredHeartbeats"
 argument_list|,

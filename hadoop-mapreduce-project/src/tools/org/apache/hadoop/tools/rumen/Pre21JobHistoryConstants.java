@@ -44,8 +44,24 @@ name|JobID
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
+name|JobHistory
+import|;
+end_import
+
 begin_comment
-comment|/**  *   *  */
+comment|/**  * Job History related constants for Hadoop releases prior to 0.21  */
 end_comment
 
 begin_class
@@ -199,12 +215,12 @@ name|PREP
 block|,
 name|SETUP
 block|}
-comment|/**    * Pre21 regex for jobhistory filename     *   i.e jt-identifier_job-id_user-name_job-name    */
-DECL|field|JOBHISTORY_FILENAME_REGEX
+comment|/**    * Regex for Pre21 V1(old) jobhistory filename    *   i.e jt-identifier_job-id_user-name_job-name    */
+DECL|field|JOBHISTORY_FILENAME_REGEX_V1
 specifier|static
 specifier|final
 name|Pattern
-name|JOBHISTORY_FILENAME_REGEX
+name|JOBHISTORY_FILENAME_REGEX_V1
 init|=
 name|Pattern
 operator|.
@@ -219,12 +235,51 @@ operator|+
 literal|")_.+"
 argument_list|)
 decl_stmt|;
-comment|/**    * Pre21 regex for jobhistory conf filename     *   i.e jt-identifier_job-id_conf.xml    */
-DECL|field|CONF_FILENAME_REGEX
+comment|/**    * Regex for Pre21 V2(new) jobhistory filename    *   i.e job-id_user-name_job-name    */
+DECL|field|JOBHISTORY_FILENAME_REGEX_V2
 specifier|static
 specifier|final
 name|Pattern
-name|CONF_FILENAME_REGEX
+name|JOBHISTORY_FILENAME_REGEX_V2
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"("
+operator|+
+name|JobID
+operator|.
+name|JOBID_REGEX
+operator|+
+literal|")_.+"
+argument_list|)
+decl_stmt|;
+DECL|field|OLD_FULL_SUFFIX_REGEX_STRING
+specifier|static
+specifier|final
+name|String
+name|OLD_FULL_SUFFIX_REGEX_STRING
+init|=
+literal|"(?:\\.[0-9]+"
+operator|+
+name|Pattern
+operator|.
+name|quote
+argument_list|(
+name|JobHistory
+operator|.
+name|OLD_SUFFIX
+argument_list|)
+operator|+
+literal|")"
+decl_stmt|;
+comment|/**    * Regex for Pre21 V1(old) jobhistory conf filename     *   i.e jt-identifier_job-id_conf.xml    */
+DECL|field|CONF_FILENAME_REGEX_V1
+specifier|static
+specifier|final
+name|Pattern
+name|CONF_FILENAME_REGEX_V1
 init|=
 name|Pattern
 operator|.
@@ -236,7 +291,35 @@ name|JobID
 operator|.
 name|JOBID_REGEX
 operator|+
-literal|")_conf.xml(?:\\.[0-9a-zA-Z]+)?"
+literal|")_conf.xml"
+operator|+
+name|OLD_FULL_SUFFIX_REGEX_STRING
+operator|+
+literal|"?"
+argument_list|)
+decl_stmt|;
+comment|/**    * Regex for Pre21 V2(new) jobhistory conf filename    *   i.e job-id_conf.xml    */
+DECL|field|CONF_FILENAME_REGEX_V2
+specifier|static
+specifier|final
+name|Pattern
+name|CONF_FILENAME_REGEX_V2
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"("
+operator|+
+name|JobID
+operator|.
+name|JOBID_REGEX
+operator|+
+literal|")_conf.xml"
+operator|+
+name|OLD_FULL_SUFFIX_REGEX_STRING
+operator|+
+literal|"?"
 argument_list|)
 decl_stmt|;
 block|}

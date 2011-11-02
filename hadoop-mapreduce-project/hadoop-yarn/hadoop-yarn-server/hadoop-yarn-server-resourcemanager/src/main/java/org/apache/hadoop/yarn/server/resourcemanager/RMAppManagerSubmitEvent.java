@@ -52,12 +52,21 @@ specifier|final
 name|ApplicationSubmissionContext
 name|submissionContext
 decl_stmt|;
-DECL|method|RMAppManagerSubmitEvent (ApplicationSubmissionContext submissionContext)
+DECL|field|submitTime
+specifier|private
+specifier|final
+name|long
+name|submitTime
+decl_stmt|;
+DECL|method|RMAppManagerSubmitEvent ( ApplicationSubmissionContext submissionContext, long submitTime)
 specifier|public
 name|RMAppManagerSubmitEvent
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
+parameter_list|,
+name|long
+name|submitTime
 parameter_list|)
 block|{
 name|super
@@ -78,6 +87,12 @@ name|submissionContext
 operator|=
 name|submissionContext
 expr_stmt|;
+name|this
+operator|.
+name|submitTime
+operator|=
+name|submitTime
+expr_stmt|;
 block|}
 DECL|method|getSubmissionContext ()
 specifier|public
@@ -89,6 +104,18 @@ return|return
 name|this
 operator|.
 name|submissionContext
+return|;
+block|}
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|submitTime
 return|;
 block|}
 block|}

@@ -124,22 +124,6 @@ name|SecretManager
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|ApplicationTokenIdentifier
-import|;
-end_import
-
 begin_class
 DECL|class|ClientToAMSecretManager
 specifier|public
@@ -148,7 +132,7 @@ name|ClientToAMSecretManager
 extends|extends
 name|SecretManager
 argument_list|<
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|>
 block|{
 DECL|field|LOG
@@ -186,12 +170,12 @@ name|SecretKey
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|setMasterKey (ApplicationTokenIdentifier identifier, byte[] key)
+DECL|method|setMasterKey (ClientTokenIdentifier identifier, byte[] key)
 specifier|public
 name|void
 name|setMasterKey
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 parameter_list|,
 name|byte
@@ -270,12 +254,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addMasterKey (ApplicationTokenIdentifier identifier)
+DECL|method|addMasterKey (ClientTokenIdentifier identifier)
 specifier|private
 name|void
 name|addMasterKey
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -342,13 +326,13 @@ expr_stmt|;
 block|}
 block|}
 comment|// TODO: Handle the masterKey invalidation.
-DECL|method|getMasterKey ( ApplicationTokenIdentifier identifier)
+DECL|method|getMasterKey ( ClientTokenIdentifier identifier)
 specifier|public
 specifier|synchronized
 name|SecretKey
 name|getMasterKey
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -392,14 +376,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createPassword ( ApplicationTokenIdentifier identifier)
+DECL|method|createPassword ( ClientTokenIdentifier identifier)
 specifier|public
 specifier|synchronized
 name|byte
 index|[]
 name|createPassword
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -453,13 +437,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|retrievePassword (ApplicationTokenIdentifier identifier)
+DECL|method|retrievePassword (ClientTokenIdentifier identifier)
 specifier|public
 name|byte
 index|[]
 name|retrievePassword
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|identifier
 parameter_list|)
 throws|throws
@@ -519,13 +503,13 @@ annotation|@
 name|Override
 DECL|method|createIdentifier ()
 specifier|public
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 name|createIdentifier
 parameter_list|()
 block|{
 return|return
 operator|new
-name|ApplicationTokenIdentifier
+name|ClientTokenIdentifier
 argument_list|()
 return|;
 block|}

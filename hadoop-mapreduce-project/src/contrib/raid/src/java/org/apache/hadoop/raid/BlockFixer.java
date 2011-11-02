@@ -3963,6 +3963,13 @@ argument_list|,
 name|blockSize
 argument_list|,
 literal|0L
+argument_list|,
+name|DataChecksum
+operator|.
+name|newDataChecksum
+argument_list|(
+name|metadataIn
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|blockSender

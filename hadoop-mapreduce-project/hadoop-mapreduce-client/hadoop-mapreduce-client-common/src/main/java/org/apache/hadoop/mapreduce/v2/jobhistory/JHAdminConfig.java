@@ -88,6 +88,15 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"address"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_PORT
+init|=
+literal|10020
+decl_stmt|;
 DECL|field|DEFAULT_MR_HISTORY_ADDRESS
 specifier|public
 specifier|static
@@ -95,7 +104,9 @@ specifier|final
 name|String
 name|DEFAULT_MR_HISTORY_ADDRESS
 init|=
-literal|"0.0.0.0:10020"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_MR_HISTORY_PORT
 decl_stmt|;
 comment|/** If history cleaning should be enabled or not.*/
 DECL|field|MR_HISTORY_CLEANER_ENABLE
@@ -286,6 +297,15 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"webapp.address"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_WEBAPP_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_WEBAPP_PORT
+init|=
+literal|19888
+decl_stmt|;
 DECL|field|DEFAULT_MR_HISTORY_WEBAPP_ADDRESS
 specifier|public
 specifier|static
@@ -293,7 +313,9 @@ specifier|final
 name|String
 name|DEFAULT_MR_HISTORY_WEBAPP_ADDRESS
 init|=
-literal|"0.0.0.0:19888"
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_MR_HISTORY_WEBAPP_PORT
 decl_stmt|;
 block|}
 end_class

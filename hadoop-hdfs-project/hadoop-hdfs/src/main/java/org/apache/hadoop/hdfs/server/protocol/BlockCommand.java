@@ -373,6 +373,39 @@ name|blocks
 index|[]
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|action
+argument_list|,
+name|poolId
+argument_list|,
+name|blocks
+argument_list|,
+name|EMPTY_TARGET
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create BlockCommand for the given action    * @param blocks blocks related to the action    */
+DECL|method|BlockCommand (int action, String poolId, Block[] blocks, DatanodeInfo[][] targets)
+specifier|public
+name|BlockCommand
+parameter_list|(
+name|int
+name|action
+parameter_list|,
+name|String
+name|poolId
+parameter_list|,
+name|Block
+index|[]
+name|blocks
+parameter_list|,
+name|DatanodeInfo
+index|[]
+index|[]
+name|targets
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|action
@@ -394,7 +427,7 @@ name|this
 operator|.
 name|targets
 operator|=
-name|EMPTY_TARGET
+name|targets
 expr_stmt|;
 block|}
 DECL|method|getBlockPoolId ()

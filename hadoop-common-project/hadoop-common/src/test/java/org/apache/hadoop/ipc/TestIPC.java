@@ -3125,6 +3125,32 @@ name|RESPONSE_TO_HADOOP_0_21_0_RPC
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testHttpGetResponse ()
+specifier|public
+name|void
+name|testHttpGetResponse
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doIpcVersionTest
+argument_list|(
+literal|"GET / HTTP/1.0\r\n\r\n"
+operator|.
+name|getBytes
+argument_list|()
+argument_list|,
+name|Server
+operator|.
+name|RECEIVED_HTTP_REQ_RESPONSE
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|doIpcVersionTest ( byte[] requestData, byte[] expectedResponse)
 specifier|private
 name|void

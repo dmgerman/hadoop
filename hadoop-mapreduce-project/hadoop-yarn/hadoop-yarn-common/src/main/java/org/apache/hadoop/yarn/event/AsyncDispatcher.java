@@ -389,6 +389,13 @@ argument_list|)
 expr_stmt|;
 name|eventHandlingThread
 operator|.
+name|setName
+argument_list|(
+literal|"AsyncDispatcher event handler"
+argument_list|)
+expr_stmt|;
+name|eventHandlingThread
+operator|.
 name|start
 argument_list|()
 expr_stmt|;
@@ -405,6 +412,13 @@ name|stopped
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|eventHandlingThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|eventHandlingThread
 operator|.
 name|interrupt
@@ -428,13 +442,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Interruped Exception while stopping"
+literal|"Interrupted Exception while stopping"
 argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
 block|}
-comment|//stop all the components
+block|}
+comment|// stop all the components
 name|super
 operator|.
 name|stop

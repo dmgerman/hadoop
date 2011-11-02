@@ -178,6 +178,20 @@ name|Util
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  *   * NameNodeResourceChecker provides a method -  *<code>hasAvailableDiskSpace</code> - which will return true if and only if  * the NameNode has disk space available on all volumes which are configured to  * be checked. Volumes containing file system name/edits dirs are added by  * default, and arbitrary extra volumes may be configured as well.  */
 end_comment
@@ -400,7 +414,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return true if disk space is available on all all the configured volumes.    *     * @return True if the configured amount of disk space is available on all    *         volumes, false otherwise.    * @throws IOException    */
+comment|/**    * Return true if disk space is available on at least one of the configured    * volumes.    *     * @return True if the configured amount of disk space is available on at    *         least one volume, false otherwise.    * @throws IOException    */
 DECL|method|hasAvailableDiskSpace ()
 name|boolean
 name|hasAvailableDiskSpace
@@ -414,8 +428,11 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|0
+operator|<
+name|volumes
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 comment|/**    * Return the set of directories which are low on space.    * @return the set of directories whose free space is below the threshold.    * @throws IOException     */
@@ -548,6 +565,28 @@ block|}
 return|return
 name|lowVolumes
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setVolumes (Map<String, DF> volumes)
+name|void
+name|setVolumes
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|DF
+argument_list|>
+name|volumes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|volumes
+operator|=
+name|volumes
+expr_stmt|;
 block|}
 block|}
 end_class

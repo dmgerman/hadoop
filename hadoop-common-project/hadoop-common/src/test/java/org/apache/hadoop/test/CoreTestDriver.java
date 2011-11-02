@@ -206,8 +206,16 @@ name|argv
 index|[]
 parameter_list|)
 block|{
+name|int
+name|exitCode
+init|=
+operator|-
+literal|1
+decl_stmt|;
 try|try
 block|{
+name|exitCode
+operator|=
 name|pgd
 operator|.
 name|driver
@@ -228,6 +236,13 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
+name|System
+operator|.
+name|exit
+argument_list|(
+name|exitCode
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|main (String argv[])
 specifier|public

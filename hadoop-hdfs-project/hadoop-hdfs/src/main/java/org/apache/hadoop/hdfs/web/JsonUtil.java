@@ -122,6 +122,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|MD5MD5CRC32FileChecksum
 import|;
 end_import
@@ -724,14 +738,14 @@ name|m
 operator|.
 name|put
 argument_list|(
-literal|"className"
+literal|"exception"
 argument_list|,
 name|e
 operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -744,6 +758,21 @@ argument_list|,
 name|e
 operator|.
 name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|m
+operator|.
+name|put
+argument_list|(
+literal|"javaClassName"
+argument_list|,
+name|e
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -806,20 +835,6 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|String
-name|className
-init|=
-operator|(
-name|String
-operator|)
-name|m
-operator|.
-name|get
-argument_list|(
-literal|"className"
-argument_list|)
-decl_stmt|;
-specifier|final
-name|String
 name|message
 init|=
 operator|(
@@ -832,11 +847,25 @@ argument_list|(
 literal|"message"
 argument_list|)
 decl_stmt|;
+specifier|final
+name|String
+name|javaClassName
+init|=
+operator|(
+name|String
+operator|)
+name|m
+operator|.
+name|get
+argument_list|(
+literal|"javaClassName"
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|RemoteException
 argument_list|(
-name|className
+name|javaClassName
 argument_list|,
 name|message
 argument_list|)
@@ -978,7 +1007,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Convert a HdfsFileStatus object to a Json string. */
-DECL|method|toJsonString (final HdfsFileStatus status)
+DECL|method|toJsonString (final HdfsFileStatus status, boolean includeType)
 specifier|public
 specifier|static
 name|String
@@ -987,6 +1016,9 @@ parameter_list|(
 specifier|final
 name|HdfsFileStatus
 name|status
+parameter_list|,
+name|boolean
+name|includeType
 parameter_list|)
 block|{
 if|if
@@ -1000,8 +1032,6 @@ return|return
 literal|null
 return|;
 block|}
-else|else
-block|{
 specifier|final
 name|Map
 argument_list|<
@@ -1177,6 +1207,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
+name|includeType
+condition|?
 name|toJsonString
 argument_list|(
 name|HdfsFileStatus
@@ -1185,11 +1217,17 @@ name|class
 argument_list|,
 name|m
 argument_list|)
+else|:
+name|JSON
+operator|.
+name|toString
+argument_list|(
+name|m
+argument_list|)
 return|;
 block|}
-block|}
 comment|/** Convert a Json map to a HdfsFileStatus object. */
-DECL|method|toFileStatus (final Map<?, ?> json)
+DECL|method|toFileStatus (final Map<?, ?> json, boolean includesType)
 specifier|public
 specifier|static
 name|HdfsFileStatus
@@ -1203,6 +1241,9 @@ argument_list|,
 name|?
 argument_list|>
 name|json
+parameter_list|,
+name|boolean
+name|includesType
 parameter_list|)
 block|{
 if|if
@@ -1225,6 +1266,8 @@ name|?
 argument_list|>
 name|m
 init|=
+name|includesType
+condition|?
 operator|(
 name|Map
 argument_list|<
@@ -1244,6 +1287,8 @@ operator|.
 name|getSimpleName
 argument_list|()
 argument_list|)
+else|:
+name|json
 decl_stmt|;
 specifier|final
 name|String
@@ -2597,7 +2642,7 @@ name|array
 operator|.
 name|get
 argument_list|(
-literal|0
+name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3365,7 +3410,7 @@ expr_stmt|;
 return|return
 name|toJsonString
 argument_list|(
-name|MD5MD5CRC32FileChecksum
+name|FileChecksum
 operator|.
 name|class
 argument_list|,
@@ -3424,7 +3469,7 @@ name|json
 operator|.
 name|get
 argument_list|(
-name|MD5MD5CRC32FileChecksum
+name|FileChecksum
 operator|.
 name|class
 operator|.

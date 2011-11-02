@@ -206,6 +206,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|AMInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Counters
 import|;
 end_import
@@ -2725,6 +2745,25 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAMInfos ()
+specifier|public
+name|List
+argument_list|<
+name|AMInfo
+argument_list|>
+name|getAMInfos
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/*    * We follow the pattern of the real XxxImpl .  We create a job and initialize    * it with a full suite of tasks which in turn have one attempt each in the    * NEW state.  Attempts transition only from NEW to RUNNING to SUCCEEDED .    */
 DECL|class|MyTaskAttemptImpl
@@ -3661,6 +3700,22 @@ DECL|method|getNodeHttpAddress ()
 specifier|public
 name|String
 name|getNodeHttpAddress
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeRackName ()
+specifier|public
+name|String
+name|getNodeRackName
 parameter_list|()
 block|{
 throw|throw

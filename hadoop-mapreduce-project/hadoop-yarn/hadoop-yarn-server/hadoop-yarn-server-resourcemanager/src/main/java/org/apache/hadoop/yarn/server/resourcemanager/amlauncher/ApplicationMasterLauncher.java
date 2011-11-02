@@ -492,6 +492,17 @@ name|LauncherThread
 extends|extends
 name|Thread
 block|{
+DECL|method|LauncherThread ()
+specifier|public
+name|LauncherThread
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|"ApplicationMaster Launcher"
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|run ()

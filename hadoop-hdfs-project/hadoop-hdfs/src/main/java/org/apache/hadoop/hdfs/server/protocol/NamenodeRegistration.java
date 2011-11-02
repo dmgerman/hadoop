@@ -254,7 +254,9 @@ name|role
 parameter_list|)
 block|{
 name|super
-argument_list|()
+argument_list|(
+name|storageInfo
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -267,13 +269,6 @@ operator|.
 name|httpAddress
 operator|=
 name|httpAddress
-expr_stmt|;
-name|this
-operator|.
-name|setStorageInfo
-argument_list|(
-name|storageInfo
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -293,6 +288,16 @@ parameter_list|()
 block|{
 return|return
 name|rpcAddress
+return|;
+block|}
+DECL|method|getHttpAddress ()
+specifier|public
+name|String
+name|getHttpAddress
+parameter_list|()
+block|{
+return|return
+name|httpAddress
 return|;
 block|}
 annotation|@

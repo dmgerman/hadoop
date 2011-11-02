@@ -42,6 +42,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|io
@@ -109,6 +137,27 @@ argument_list|<
 name|LocalizerTokenIdentifier
 argument_list|>
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|LocalizerTokenSelector
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|selectToken (Text service, Collection<Token<? extends TokenIdentifier>> tokens)
@@ -134,18 +183,13 @@ argument_list|>
 name|tokens
 parameter_list|)
 block|{
-name|System
+name|LOG
 operator|.
-name|err
-operator|.
-name|print
+name|debug
 argument_list|(
-literal|"=========== Using localizerTokenSelector"
+literal|"Using localizerTokenSelector."
 argument_list|)
 expr_stmt|;
-comment|//    if (service == null) {
-comment|//      return null;
-comment|//    }
 for|for
 control|(
 name|Token
@@ -159,13 +203,11 @@ range|:
 name|tokens
 control|)
 block|{
-name|System
+name|LOG
 operator|.
-name|err
-operator|.
-name|print
+name|debug
 argument_list|(
-literal|"============ token of kind "
+literal|"Token of kind "
 operator|+
 name|token
 operator|.
@@ -188,7 +230,6 @@ operator|.
 name|getKind
 argument_list|()
 argument_list|)
-comment|//&& service.equals(token.getService())
 condition|)
 block|{
 return|return
@@ -202,13 +243,11 @@ name|token
 return|;
 block|}
 block|}
-name|System
+name|LOG
 operator|.
-name|err
-operator|.
-name|print
+name|debug
 argument_list|(
-literal|"returning null ========== "
+literal|"Returning null."
 argument_list|)
 expr_stmt|;
 return|return

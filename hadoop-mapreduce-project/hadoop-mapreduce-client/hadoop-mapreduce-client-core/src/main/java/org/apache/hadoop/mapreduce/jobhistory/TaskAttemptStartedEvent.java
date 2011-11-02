@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -104,6 +94,40 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ConverterUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|avro
 operator|.
 name|util
@@ -141,8 +165,8 @@ operator|new
 name|TaskAttemptStarted
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    */
-DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort)
+comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    * @param shufflePort The shuffle port number of the container    * @param containerId The containerId for the task attempt.    */
+DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort, ContainerId containerId)
 specifier|public
 name|TaskAttemptStartedEvent
 parameter_list|(
@@ -160,6 +184,12 @@ name|trackerName
 parameter_list|,
 name|int
 name|httpPort
+parameter_list|,
+name|int
+name|shufflePort
+parameter_list|,
+name|ContainerId
+name|containerId
 parameter_list|)
 block|{
 name|datum
@@ -225,6 +255,73 @@ operator|.
 name|httpPort
 operator|=
 name|httpPort
+expr_stmt|;
+name|datum
+operator|.
+name|shufflePort
+operator|=
+name|shufflePort
+expr_stmt|;
+name|datum
+operator|.
+name|containerId
+operator|=
+operator|new
+name|Utf8
+argument_list|(
+name|containerId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// TODO Remove after MrV1 is removed.
+comment|// Using a dummy containerId to prevent jobHistory parse failures.
+DECL|method|TaskAttemptStartedEvent (TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort)
+specifier|public
+name|TaskAttemptStartedEvent
+parameter_list|(
+name|TaskAttemptID
+name|attemptId
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|long
+name|startTime
+parameter_list|,
+name|String
+name|trackerName
+parameter_list|,
+name|int
+name|httpPort
+parameter_list|,
+name|int
+name|shufflePort
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|attemptId
+argument_list|,
+name|taskType
+argument_list|,
+name|startTime
+argument_list|,
+name|trackerName
+argument_list|,
+name|httpPort
+argument_list|,
+name|shufflePort
+argument_list|,
+name|ConverterUtils
+operator|.
+name|toContainerId
+argument_list|(
+literal|"container_-1_-1_-1_-1"
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TaskAttemptStartedEvent ()
@@ -344,6 +441,19 @@ operator|.
 name|httpPort
 return|;
 block|}
+comment|/** Get the shuffle port */
+DECL|method|getShufflePort ()
+specifier|public
+name|int
+name|getShufflePort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|shufflePort
+return|;
+block|}
 comment|/** Get the attempt id */
 DECL|method|getTaskAttemptId ()
 specifier|public
@@ -392,6 +502,27 @@ else|:
 name|EventType
 operator|.
 name|REDUCE_ATTEMPT_STARTED
+return|;
+block|}
+comment|/** Get the ContainerId */
+DECL|method|getContainerId ()
+specifier|public
+name|ContainerId
+name|getContainerId
+parameter_list|()
+block|{
+return|return
+name|ConverterUtils
+operator|.
+name|toContainerId
+argument_list|(
+name|datum
+operator|.
+name|containerId
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

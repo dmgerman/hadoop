@@ -319,6 +319,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1259,11 +1291,13 @@ name|URI
 operator|.
 name|create
 argument_list|(
-name|FsConfig
-operator|.
-name|getDefaultFsURI
-argument_list|(
 name|aConf
+operator|.
+name|get
+argument_list|(
+name|FS_DEFAULT_NAME_KEY
+argument_list|,
+name|FS_DEFAULT_NAME_DEFAULT
 argument_list|)
 argument_list|)
 argument_list|,

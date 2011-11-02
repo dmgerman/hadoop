@@ -389,6 +389,8 @@ argument_list|)
 argument_list|,
 name|hostName
 argument_list|,
+literal|null
+argument_list|,
 name|state
 argument_list|,
 name|maybeParseCounters
