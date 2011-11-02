@@ -19693,6 +19693,34 @@ return|return
 name|blockManager
 return|;
 block|}
+comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    * @throws InvalidToken    */
+DECL|method|verifyToken (DelegationTokenIdentifier identifier, byte[] password)
+specifier|public
+specifier|synchronized
+name|void
+name|verifyToken
+parameter_list|(
+name|DelegationTokenIdentifier
+name|identifier
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+name|getDelegationTokenSecretManager
+argument_list|()
+operator|.
+name|verifyToken
+argument_list|(
+name|identifier
+argument_list|,
+name|password
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

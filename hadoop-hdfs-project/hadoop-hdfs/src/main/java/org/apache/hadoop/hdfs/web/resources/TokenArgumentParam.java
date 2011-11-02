@@ -20,29 +20,15 @@ name|resources
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
 begin_comment
-comment|/** Represents delegation token used for authentication. */
+comment|/**  * Represents delegation token parameter as method arguments. This is  * different from {@link DelegationParam}.  */
 end_comment
 
 begin_class
-DECL|class|DelegationParam
+DECL|class|TokenArgumentParam
 specifier|public
 class|class
-name|DelegationParam
+name|TokenArgumentParam
 extends|extends
 name|StringParam
 block|{
@@ -54,7 +40,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"delegation"
+literal|"token"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -81,10 +67,10 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|DelegationParam (final String str)
+comment|/**    * Constructor.    * @param str A string representation of the parameter value.    */
+DECL|method|TokenArgumentParam (final String str)
 specifier|public
-name|DelegationParam
+name|TokenArgumentParam
 parameter_list|(
 specifier|final
 name|String
@@ -95,11 +81,6 @@ name|super
 argument_list|(
 name|DOMAIN
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-operator|&&
 name|str
 operator|!=
 literal|null

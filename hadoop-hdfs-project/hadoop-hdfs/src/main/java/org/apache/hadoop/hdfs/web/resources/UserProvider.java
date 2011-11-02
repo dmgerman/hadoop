@@ -327,7 +327,7 @@ name|JspHelper
 operator|.
 name|getUGI
 argument_list|(
-literal|null
+name|servletcontext
 argument_list|,
 name|request
 argument_list|,

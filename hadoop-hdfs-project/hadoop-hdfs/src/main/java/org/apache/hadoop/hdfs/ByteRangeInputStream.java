@@ -148,8 +148,9 @@ name|ByteRangeInputStream
 extends|extends
 name|FSInputStream
 block|{
-comment|/**    * This class wraps a URL to allow easy mocking when testing. The URL class    * cannot be easily mocked because it is public.    */
+comment|/**    * This class wraps a URL and provides method to open connection.    * It can be overridden to change how a connection is opened.    */
 DECL|class|URLOpener
+specifier|public
 specifier|static
 class|class
 name|URLOpener
@@ -161,7 +162,7 @@ name|url
 decl_stmt|;
 comment|/** The url with offset parameter */
 DECL|field|offsetUrl
-specifier|private
+specifier|protected
 name|URL
 name|offsetUrl
 decl_stmt|;
@@ -203,6 +204,7 @@ name|url
 return|;
 block|}
 DECL|method|openConnection ()
+specifier|protected
 name|HttpURLConnection
 name|openConnection
 parameter_list|()
@@ -582,7 +584,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create with the specified URLOpeners. Original url is used to open the     * stream for the first time. Resolved url is used in subsequent requests.    * @param o Original url    * @param r Resolved url    */
 DECL|method|ByteRangeInputStream (URLOpener o, URLOpener r)
+specifier|public
 name|ByteRangeInputStream
 parameter_list|(
 name|URLOpener

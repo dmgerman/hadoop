@@ -726,6 +726,24 @@ name|web
 operator|.
 name|resources
 operator|.
+name|TokenArgumentParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
 name|DeleteOpParam
 import|;
 end_import
@@ -1872,7 +1890,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions )
+DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument )
 specifier|public
 name|Response
 name|putRoot
@@ -2116,6 +2134,24 @@ argument_list|)
 specifier|final
 name|RenameOptionSetParam
 name|renameOptions
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|TokenArgumentParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|TokenArgumentParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|TokenArgumentParam
+name|delegationTokenArgument
 parameter_list|)
 throws|throws
 name|IOException
@@ -2154,6 +2190,8 @@ argument_list|,
 name|accessTime
 argument_list|,
 name|renameOptions
+argument_list|,
+name|delegationTokenArgument
 argument_list|)
 return|;
 block|}
@@ -2187,7 +2225,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions )
+DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument )
 specifier|public
 name|Response
 name|put
@@ -2442,6 +2480,24 @@ argument_list|)
 specifier|final
 name|RenameOptionSetParam
 name|renameOptions
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|TokenArgumentParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|TokenArgumentParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|TokenArgumentParam
+name|delegationTokenArgument
 parameter_list|)
 throws|throws
 name|IOException
@@ -3055,7 +3111,7 @@ name|token
 operator|.
 name|decodeFromUrlString
 argument_list|(
-name|delegation
+name|delegationTokenArgument
 operator|.
 name|getValue
 argument_list|()
@@ -3126,7 +3182,7 @@ name|token
 operator|.
 name|decodeFromUrlString
 argument_list|(
-name|delegation
+name|delegationTokenArgument
 operator|.
 name|getValue
 argument_list|()
