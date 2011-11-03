@@ -1720,7 +1720,7 @@ name|assertEquals
 argument_list|(
 name|HttpServletResponse
 operator|.
-name|SC_FORBIDDEN
+name|SC_OK
 argument_list|,
 name|conn
 operator|.
