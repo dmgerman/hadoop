@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation
+DECL|package|org.apache.hadoop.yarn.logaggregation
 package|package
 name|org
 operator|.
@@ -13,12 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
 operator|.
 name|logaggregation
 package|;
@@ -338,12 +332,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|logaggregation
 operator|.
 name|AggregatedLogFormat
@@ -361,12 +349,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
 operator|.
 name|logaggregation
 operator|.
@@ -859,7 +841,7 @@ argument_list|(
 name|getConf
 argument_list|()
 argument_list|,
-name|LogAggregationService
+name|LogAggregationUtils
 operator|.
 name|getRemoteNodeLogFileForApp
 argument_list|(
@@ -951,7 +933,7 @@ decl_stmt|;
 name|String
 name|suffix
 init|=
-name|LogAggregationService
+name|LogAggregationUtils
 operator|.
 name|getRemoteNodeLogDirSuffix
 argument_list|(
@@ -972,7 +954,7 @@ argument_list|(
 name|getConf
 argument_list|()
 argument_list|,
-name|LogAggregationService
+name|LogAggregationUtils
 operator|.
 name|getRemoteNodeLogFileForApp
 argument_list|(
@@ -1211,7 +1193,7 @@ comment|//TODO Change this to get a list of files from the LAS.
 name|Path
 name|remoteAppLogDir
 init|=
-name|LogAggregationService
+name|LogAggregationUtils
 operator|.
 name|getRemoteAppLogDir
 argument_list|(

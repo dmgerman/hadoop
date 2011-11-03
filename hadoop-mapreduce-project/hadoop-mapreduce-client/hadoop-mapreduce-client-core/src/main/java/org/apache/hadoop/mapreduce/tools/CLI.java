@@ -412,12 +412,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|logaggregation
 operator|.
 name|LogDumper

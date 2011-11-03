@@ -96,13 +96,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
 name|webapp
 operator|.
-name|AggregatedLogsPage
+name|View
 import|;
 end_import
 
@@ -118,7 +114,9 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|View
+name|log
+operator|.
+name|AggregatedLogsPage
 import|;
 end_import
 
