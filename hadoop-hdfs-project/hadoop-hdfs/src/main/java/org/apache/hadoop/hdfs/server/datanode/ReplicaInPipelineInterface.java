@@ -50,6 +50,20 @@ name|BlockWriteStreams
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
+import|;
+end_import
+
 begin_comment
 comment|/**   * This defines the interface of a replica in Pipeline that's being written to  */
 end_comment
@@ -106,8 +120,8 @@ name|ChunkChecksum
 name|getLastChecksumAndDataLen
 parameter_list|()
 function_decl|;
-comment|/**    * Create output streams for writing to this replica,     * one for block file and one for CRC file    *     * @param isCreate if it is for creation    * @param bytePerChunk number of bytes per CRC chunk    * @param checksumSize number of bytes per checksum    * @return output streams for writing    * @throws IOException if any error occurs    */
-DECL|method|createStreams (boolean isCreate, int bytesPerChunk, int checksumSize)
+comment|/**    * Create output streams for writing to this replica,     * one for block file and one for CRC file    *     * @param isCreate if it is for creation    * @param requestedChecksum the checksum the writer would prefer to use    * @return output streams for writing    * @throws IOException if any error occurs    */
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|public
 name|BlockWriteStreams
 name|createStreams
@@ -115,11 +129,8 @@ parameter_list|(
 name|boolean
 name|isCreate
 parameter_list|,
-name|int
-name|bytesPerChunk
-parameter_list|,
-name|int
-name|checksumSize
+name|DataChecksum
+name|requestedChecksum
 parameter_list|)
 throws|throws
 name|IOException

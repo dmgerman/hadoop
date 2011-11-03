@@ -1089,7 +1089,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createStreams (boolean isCreate, int bytesPerChunk, int checksumSize)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|synchronized
 specifier|public
 name|BlockWriteStreams
@@ -1098,11 +1098,8 @@ parameter_list|(
 name|boolean
 name|isCreate
 parameter_list|,
-name|int
-name|bytesPerChunk
-parameter_list|,
-name|int
-name|checksumSize
+name|DataChecksum
+name|requestedChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -1138,6 +1135,8 @@ argument_list|(
 name|oStream
 argument_list|,
 name|crcStream
+argument_list|,
+name|requestedChecksum
 argument_list|)
 return|;
 block|}

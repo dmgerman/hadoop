@@ -810,20 +810,6 @@ name|Progressable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|PureJavaCrc32
-import|;
-end_import
-
 begin_comment
 comment|/****************************************************************  * DFSOutputStream creates files from a stream of bytes.  *  * The client application writes data that is cached internally by  * this stream. Data is broken up into packets, each packet is  * typically 64K in size. A packet comprises of chunks. Each chunk  * is typically 512 bytes and has an associated checksum with it.  *  * When a client application fills up the currentPacket, it is  * enqueued into dataQueue.  The DataStreamer thread picks up  * packets from the dataQueue, sends it to the first datanode in  * the pipeline and moves it from the dataQueue to the ackQueue.  * The ResponseProcessor receives acks from the datanodes. When an  * successful ack for a packet is received from all datanodes, the  * ResponseProcessor removes the corresponding packet from the  * ackQueue.  *  * In case of error, all outstanding packets and moved from  * ackQueue. A new pipeline is setup by eliminating the bad  * datanode from the original pipeline. The DataStreamer now  * starts sending packets from the dataQueue. ****************************************************************/
 end_comment
@@ -5718,7 +5704,7 @@ return|return
 name|value
 return|;
 block|}
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, long blockSize, Progressable progress, int bytesPerChecksum, short replication)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, long blockSize, Progressable progress, DataChecksum checksum, short replication)
 specifier|private
 name|DFSOutputStream
 parameter_list|(
@@ -5734,8 +5720,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|DataChecksum
+name|checksum
 parameter_list|,
 name|short
 name|replication
@@ -5745,15 +5731,27 @@ name|IOException
 block|{
 name|super
 argument_list|(
-operator|new
-name|PureJavaCrc32
+name|checksum
+argument_list|,
+name|checksum
+operator|.
+name|getBytesPerChecksum
 argument_list|()
 argument_list|,
-name|bytesPerChecksum
-argument_list|,
-literal|4
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
+name|int
+name|bytesPerChecksum
+init|=
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|dfsClient
@@ -5845,22 +5843,15 @@ literal|"multiple of io.bytes.per.checksum"
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
 name|checksum
 operator|=
-name|DataChecksum
-operator|.
-name|newDataChecksum
-argument_list|(
-name|DataChecksum
-operator|.
-name|CHECKSUM_CRC32
-argument_list|,
-name|bytesPerChecksum
-argument_list|)
+name|checksum
 expr_stmt|;
 block|}
 comment|/**    * Create a new output stream to the given DataNode.    * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable, boolean, short, long)    */
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, int bytesPerChecksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum)
 name|DFSOutputStream
 parameter_list|(
 name|DFSClient
@@ -5893,8 +5884,8 @@ parameter_list|,
 name|int
 name|buffersize
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|DataChecksum
+name|checksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -5909,7 +5900,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksum
 argument_list|,
 name|replication
 argument_list|)
@@ -5923,7 +5914,10 @@ argument_list|()
 operator|.
 name|writePacketSize
 argument_list|,
-name|bytesPerChecksum
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -6017,7 +6011,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a new output stream to the given DataNode.    * @see ClientProtocol#create(String, FsPermission, String, boolean, short, long)    */
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, int bytesPerChecksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, int buffersize, Progressable progress, LocatedBlock lastBlock, HdfsFileStatus stat, DataChecksum checksum)
 name|DFSOutputStream
 parameter_list|(
 name|DFSClient
@@ -6038,8 +6032,8 @@ parameter_list|,
 name|HdfsFileStatus
 name|stat
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|DataChecksum
+name|checksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -6057,7 +6051,7 @@ argument_list|()
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksum
 argument_list|,
 name|stat
 operator|.
@@ -6100,7 +6094,10 @@ name|lastBlock
 argument_list|,
 name|stat
 argument_list|,
-name|bytesPerChecksum
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6115,7 +6112,10 @@ argument_list|()
 operator|.
 name|writePacketSize
 argument_list|,
-name|bytesPerChecksum
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|streamer
