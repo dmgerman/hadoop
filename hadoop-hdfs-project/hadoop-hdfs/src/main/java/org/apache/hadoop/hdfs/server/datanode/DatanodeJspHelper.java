@@ -853,6 +853,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|firstBlock
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|String
@@ -2109,6 +2111,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|lastBlk
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -3573,6 +3577,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|nextBlock
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|String
@@ -3953,6 +3959,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|prevBlock
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|String
@@ -4696,6 +4704,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|lastBlk
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

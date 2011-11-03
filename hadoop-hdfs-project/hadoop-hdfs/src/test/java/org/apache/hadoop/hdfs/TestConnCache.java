@@ -136,20 +136,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|RemoteBlockReader
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DFSClient
 import|;
 end_import
@@ -481,12 +467,12 @@ name|MockGetBlockReader
 implements|implements
 name|Answer
 argument_list|<
-name|RemoteBlockReader
+name|RemoteBlockReader2
 argument_list|>
 block|{
 DECL|field|reader
 specifier|public
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|reader
 init|=
 literal|null
@@ -500,7 +486,7 @@ literal|null
 decl_stmt|;
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|answer
 parameter_list|(
 name|InvocationOnMock
@@ -509,7 +495,7 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|prevReader
 init|=
 name|reader
@@ -517,7 +503,7 @@ decl_stmt|;
 name|reader
 operator|=
 operator|(
-name|RemoteBlockReader
+name|RemoteBlockReader2
 operator|)
 name|invocation
 operator|.
@@ -544,14 +530,8 @@ condition|(
 name|prevReader
 operator|!=
 literal|null
-operator|&&
-name|prevReader
-operator|.
-name|hasSentStatusCode
-argument_list|()
 condition|)
 block|{
-comment|// Can't reuse socket if the previous BlockReader didn't read till EOS.
 name|assertSame
 argument_list|(
 literal|"DFSInputStream should use the same socket"

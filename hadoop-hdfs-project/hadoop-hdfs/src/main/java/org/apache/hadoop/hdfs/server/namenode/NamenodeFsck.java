@@ -3049,6 +3049,8 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
+name|conf
+argument_list|,
 name|s
 argument_list|,
 name|file
@@ -3064,15 +3066,6 @@ literal|0
 argument_list|,
 operator|-
 literal|1
-argument_list|,
-name|conf
-operator|.
-name|getInt
-argument_list|(
-literal|"io.file.buffer.size"
-argument_list|,
-literal|4096
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -36,7 +36,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|RemoteBlockReader
+name|DFSClient
 import|;
 end_import
 
@@ -46,11 +46,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|commons
 operator|.
-name|hdfs
+name|logging
 operator|.
-name|DFSClient
+name|impl
+operator|.
+name|Log4JLogger
 import|;
 end_import
 
@@ -101,6 +103,18 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
 import|;
 end_import
 
@@ -210,6 +224,28 @@ name|testBlock
 init|=
 literal|null
 decl_stmt|;
+static|static
+block|{
+operator|(
+operator|(
+name|Log4JLogger
+operator|)
+name|RemoteBlockReader2
+operator|.
+name|LOG
+operator|)
+operator|.
+name|getLogger
+argument_list|()
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|ALL
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|BeforeClass
 DECL|method|setupCluster ()
@@ -281,11 +317,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader
+name|RemoteBlockReader2
 operator|)
 name|spy
 argument_list|(
@@ -349,11 +385,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader
+name|RemoteBlockReader2
 operator|)
 name|spy
 argument_list|(
@@ -425,11 +461,11 @@ throws|throws
 name|Exception
 block|{
 comment|// Ask for half the file
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader
+name|RemoteBlockReader2
 operator|)
 name|spy
 argument_list|(
@@ -565,11 +601,11 @@ operator|+
 name|length
 argument_list|)
 expr_stmt|;
-name|RemoteBlockReader
+name|RemoteBlockReader2
 name|reader
 init|=
 operator|(
-name|RemoteBlockReader
+name|RemoteBlockReader2
 operator|)
 name|spy
 argument_list|(

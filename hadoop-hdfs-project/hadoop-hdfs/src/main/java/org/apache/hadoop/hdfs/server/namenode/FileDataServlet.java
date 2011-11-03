@@ -347,6 +347,18 @@ literal|1
 argument_list|)
 decl_stmt|;
 specifier|final
+name|Configuration
+name|conf
+init|=
+name|NameNodeHttpServer
+operator|.
+name|getConfFromContext
+argument_list|(
+name|getServletContext
+argument_list|()
+argument_list|)
+decl_stmt|;
+specifier|final
 name|DatanodeID
 name|host
 init|=
@@ -355,6 +367,8 @@ argument_list|(
 name|blks
 argument_list|,
 name|status
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -513,8 +527,8 @@ name|addrParam
 argument_list|)
 return|;
 block|}
-comment|/** Select a datanode to service this request.    * Currently, this looks at no more than the first five blocks of a file,    * selecting a datanode randomly from the most represented.    */
-DECL|method|pickSrcDatanode (LocatedBlocks blks, HdfsFileStatus i)
+comment|/** Select a datanode to service this request.    * Currently, this looks at no more than the first five blocks of a file,    * selecting a datanode randomly from the most represented.    * @param conf     */
+DECL|method|pickSrcDatanode (LocatedBlocks blks, HdfsFileStatus i, Configuration conf)
 specifier|private
 name|DatanodeID
 name|pickSrcDatanode
@@ -524,6 +538,9 @@ name|blks
 parameter_list|,
 name|HdfsFileStatus
 name|i
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -575,6 +592,8 @@ operator|.
 name|bestNode
 argument_list|(
 name|blks
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}

@@ -1416,6 +1416,11 @@ specifier|final
 name|FsPermission
 name|uMask
 decl_stmt|;
+DECL|field|useLegacyBlockReader
+specifier|final
+name|boolean
+name|useLegacyBlockReader
+decl_stmt|;
 DECL|method|Conf (Configuration conf)
 name|Conf
 parameter_list|(
@@ -1616,6 +1621,17 @@ operator|.
 name|getUMask
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|useLegacyBlockReader
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
+argument_list|,
+name|DFS_CLIENT_USE_LEGACY_BLOCKREADER_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

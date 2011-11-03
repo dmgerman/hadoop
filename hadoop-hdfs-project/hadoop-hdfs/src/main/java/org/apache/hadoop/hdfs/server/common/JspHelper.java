@@ -538,6 +538,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|Text
 import|;
 end_import
@@ -885,7 +899,7 @@ literal|0
 return|;
 block|}
 block|}
-DECL|method|bestNode (LocatedBlocks blks)
+DECL|method|bestNode (LocatedBlocks blks, Configuration conf)
 specifier|public
 specifier|static
 name|DatanodeInfo
@@ -893,6 +907,9 @@ name|bestNode
 parameter_list|(
 name|LocatedBlocks
 name|blks
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1023,10 +1040,12 @@ argument_list|(
 name|nodes
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|bestNode (LocatedBlock blk)
+DECL|method|bestNode (LocatedBlock blk, Configuration conf)
 specifier|public
 specifier|static
 name|DatanodeInfo
@@ -1034,6 +1053,9 @@ name|bestNode
 parameter_list|(
 name|LocatedBlock
 name|blk
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1053,10 +1075,12 @@ argument_list|(
 name|nodes
 argument_list|,
 literal|true
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|bestNode (DatanodeInfo[] nodes, boolean doRandom)
+DECL|method|bestNode (DatanodeInfo[] nodes, boolean doRandom, Configuration conf)
 specifier|public
 specifier|static
 name|DatanodeInfo
@@ -1068,6 +1092,9 @@ name|nodes
 parameter_list|,
 name|boolean
 name|doRandom
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1220,8 +1247,14 @@ try|try
 block|{
 name|s
 operator|=
-operator|new
-name|Socket
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|createSocket
 argument_list|()
 expr_stmt|;
 name|s
@@ -1348,8 +1381,14 @@ return|return;
 name|Socket
 name|s
 init|=
-operator|new
-name|Socket
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|createSocket
 argument_list|()
 decl_stmt|;
 name|s
@@ -1372,9 +1411,12 @@ operator|.
 name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
-name|long
+name|int
 name|amtToRead
 init|=
+operator|(
+name|int
+operator|)
 name|Math
 operator|.
 name|min
@@ -1387,22 +1429,6 @@ name|offsetIntoBlock
 argument_list|)
 decl_stmt|;
 comment|// Use the block name for file name.
-name|int
-name|bufferSize
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-argument_list|)
-decl_stmt|;
 name|String
 name|file
 init|=
@@ -1424,6 +1450,8 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
+name|conf
+argument_list|,
 name|s
 argument_list|,
 name|file
@@ -1445,8 +1473,6 @@ argument_list|,
 name|offsetIntoBlock
 argument_list|,
 name|amtToRead
-argument_list|,
-name|bufferSize
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1481,22 +1507,19 @@ condition|)
 block|{
 name|int
 name|numRead
+init|=
+name|amtToRead
 decl_stmt|;
 try|try
 block|{
-name|numRead
-operator|=
 name|blockReader
 operator|.
-name|readAll
+name|readFully
 argument_list|(
 name|buf
 argument_list|,
 name|readOffset
 argument_list|,
-operator|(
-name|int
-operator|)
 name|amtToRead
 argument_list|)
 expr_stmt|;

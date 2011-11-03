@@ -1298,7 +1298,7 @@ name|Context
 name|HttpServletResponse
 name|response
 decl_stmt|;
-DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset )
+DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, Configuration conf)
 specifier|private
 specifier|static
 name|DatanodeInfo
@@ -1321,6 +1321,9 @@ parameter_list|,
 specifier|final
 name|long
 name|openOffset
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1510,6 +1513,8 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -1685,6 +1690,22 @@ throws|,
 name|IOException
 block|{
 specifier|final
+name|Configuration
+name|conf
+init|=
+operator|(
+name|Configuration
+operator|)
+name|context
+operator|.
+name|getAttribute
+argument_list|(
+name|JspHelper
+operator|.
+name|CURRENT_CONF
+argument_list|)
+decl_stmt|;
+specifier|final
 name|DatanodeInfo
 name|dn
 init|=
@@ -1697,6 +1718,8 @@ argument_list|,
 name|op
 argument_list|,
 name|openOffset
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
