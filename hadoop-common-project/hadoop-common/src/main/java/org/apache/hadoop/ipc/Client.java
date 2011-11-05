@@ -310,6 +310,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|RpcPayloadHeader
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -774,48 +790,65 @@ operator|==
 literal|0
 return|;
 block|}
-comment|/** A call waiting for a value. */
+comment|/**     * Class that represents an RPC call    */
 DECL|class|Call
 specifier|private
 class|class
 name|Call
 block|{
 DECL|field|id
+specifier|final
 name|int
 name|id
 decl_stmt|;
 comment|// call id
-DECL|field|param
+DECL|field|rpcRequest
+specifier|final
 name|Writable
-name|param
+name|rpcRequest
 decl_stmt|;
-comment|// parameter
-DECL|field|value
+comment|// the serialized rpc request - RpcPayload
+DECL|field|rpcResponse
 name|Writable
-name|value
+name|rpcResponse
 decl_stmt|;
-comment|// value, null if error
+comment|// null if rpc has error
 DECL|field|error
 name|IOException
 name|error
 decl_stmt|;
-comment|// exception, null if value
+comment|// exception, null if success
+DECL|field|rpcKind
+specifier|final
+name|RpcKind
+name|rpcKind
+decl_stmt|;
+comment|// Rpc EngineKind
 DECL|field|done
 name|boolean
 name|done
 decl_stmt|;
 comment|// true when call is done
-DECL|method|Call (Writable param)
+DECL|method|Call (RpcKind rpcKind, Writable param)
 specifier|protected
 name|Call
 parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
 name|Writable
 name|param
 parameter_list|)
 block|{
 name|this
 operator|.
-name|param
+name|rpcKind
+operator|=
+name|rpcKind
+expr_stmt|;
+name|this
+operator|.
+name|rpcRequest
 operator|=
 name|param
 expr_stmt|;
@@ -875,36 +908,36 @@ name|callComplete
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Set the return value when there is no error.       * Notify the caller the call is done.      *       * @param value return value of the call.      */
-DECL|method|setValue (Writable value)
+comment|/** Set the return value when there is no error.       * Notify the caller the call is done.      *       * @param rpcResponse return value of the rpc call.      */
+DECL|method|setRpcResponse (Writable rpcResponse)
 specifier|public
 specifier|synchronized
 name|void
-name|setValue
+name|setRpcResponse
 parameter_list|(
 name|Writable
-name|value
+name|rpcResponse
 parameter_list|)
 block|{
 name|this
 operator|.
-name|value
+name|rpcResponse
 operator|=
-name|value
+name|rpcResponse
 expr_stmt|;
 name|callComplete
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getValue ()
+DECL|method|getRpcResult ()
 specifier|public
 specifier|synchronized
 name|Writable
-name|getValue
+name|getRpcResult
 parameter_list|()
 block|{
 return|return
-name|value
+name|rpcResponse
 return|;
 block|}
 block|}
@@ -3211,6 +3244,11 @@ literal|false
 return|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unused"
+argument_list|)
 DECL|method|getRemoteAddress ()
 specifier|public
 name|InetSocketAddress
@@ -3441,18 +3479,35 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 expr_stmt|;
-name|d
-operator|.
-name|writeInt
+name|RpcPayloadHeader
+name|header
+init|=
+operator|new
+name|RpcPayloadHeader
 argument_list|(
+name|call
+operator|.
+name|rpcKind
+argument_list|,
+name|RpcPayloadOperation
+operator|.
+name|RPC_FINAL_PAYLOAD
+argument_list|,
 name|call
 operator|.
 name|id
 argument_list|)
+decl_stmt|;
+name|header
+operator|.
+name|write
+argument_list|(
+name|d
+argument_list|)
 expr_stmt|;
 name|call
 operator|.
-name|param
+name|rpcRequest
 operator|.
 name|write
 argument_list|(
@@ -3630,7 +3685,7 @@ expr_stmt|;
 comment|// read value
 name|call
 operator|.
-name|setValue
+name|setRpcResponse
 argument_list|(
 name|value
 argument_list|)
@@ -4024,6 +4079,10 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|param
 argument_list|)
 expr_stmt|;
@@ -4124,7 +4183,7 @@ index|]
 operator|=
 name|call
 operator|.
-name|getValue
+name|getRpcResult
 argument_list|()
 expr_stmt|;
 comment|// store the value
@@ -4316,9 +4375,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(Writable, ConnectionId)} instead     */
-annotation|@
-name|Deprecated
+comment|/**    * Same as {@link #call(RpcKind, Writable, ConnectionId)} for Writable    */
 DECL|method|call (Writable param, InetSocketAddress address)
 specifier|public
 name|Writable
@@ -4338,6 +4395,43 @@ block|{
 return|return
 name|call
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
+name|param
+argument_list|,
+name|address
+argument_list|)
+return|;
+block|}
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(RpcKind, Writable, ConnectionId)} instead     */
+annotation|@
+name|Deprecated
+DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress address)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|param
+parameter_list|,
+name|InetSocketAddress
+name|address
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
+block|{
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
 name|param
 argument_list|,
 name|address
@@ -4346,14 +4440,17 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(Writable, ConnectionId)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(RpcKind, Writable, ConnectionId)} instead     */
 annotation|@
 name|Deprecated
-DECL|method|call (Writable param, InetSocketAddress addr, UserGroupInformation ticket)
+DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, UserGroupInformation ticket)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
 name|Writable
 name|param
 parameter_list|,
@@ -4389,20 +4486,25 @@ decl_stmt|;
 return|return
 name|call
 argument_list|(
+name|rpcKind
+argument_list|,
 name|param
 argument_list|,
 name|remoteId
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials and<code>rpcTimeout</code> as     * timeout, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.     * @deprecated Use {@link #call(Writable, ConnectionId)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials and<code>rpcTimeout</code> as     * timeout, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.     * @deprecated Use {@link #call(RpcKind, Writable, ConnectionId)} instead     */
 annotation|@
 name|Deprecated
-DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
+DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
 name|Writable
 name|param
 parameter_list|,
@@ -4447,13 +4549,15 @@ decl_stmt|;
 return|return
 name|call
 argument_list|(
+name|rpcKind
+argument_list|,
 name|param
 argument_list|,
 name|remoteId
 argument_list|)
 return|;
 block|}
-comment|/**    * Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,    * with the<code>ticket</code> credentials,<code>rpcTimeout</code> as    * timeout and<code>conf</code> as conf for this connection, returning the    * value. Throws exceptions if there are network problems or if the remote    * code threw an exception.    */
+comment|/**    * Same as {@link #call(RpcKind, Writable, InetSocketAddress,     * Class, UserGroupInformation, int, Configuration)}    * except that rpcKind is writable.    */
 DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
 specifier|public
 name|Writable
@@ -4506,6 +4610,104 @@ decl_stmt|;
 return|return
 name|call
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
+name|param
+argument_list|,
+name|remoteId
+argument_list|)
+return|;
+block|}
+comment|/**    * Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,    * with the<code>ticket</code> credentials,<code>rpcTimeout</code> as    * timeout and<code>conf</code> as conf for this connection, returning the    * value. Throws exceptions if there are network problems or if the remote    * code threw an exception.    */
+DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
+name|Writable
+name|param
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|,
+name|UserGroupInformation
+name|ticket
+parameter_list|,
+name|int
+name|rpcTimeout
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
+block|{
+name|ConnectionId
+name|remoteId
+init|=
+name|ConnectionId
+operator|.
+name|getConnectionId
+argument_list|(
+name|addr
+argument_list|,
+name|protocol
+argument_list|,
+name|ticket
+argument_list|,
+name|rpcTimeout
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+return|return
+name|call
+argument_list|(
+name|rpcKind
+argument_list|,
+name|param
+argument_list|,
+name|remoteId
+argument_list|)
+return|;
+block|}
+comment|/**    * Same as {link {@link #call(RpcKind, Writable, ConnectionId)}    * except the rpcKind is RPC_WRITABLE    */
+DECL|method|call (Writable param, ConnectionId remoteId)
+specifier|public
+name|Writable
+name|call
+parameter_list|(
+name|Writable
+name|param
+parameter_list|,
+name|ConnectionId
+name|remoteId
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
+block|{
+return|return
+name|call
+argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|param
 argument_list|,
 name|remoteId
@@ -4513,11 +4715,14 @@ argument_list|)
 return|;
 block|}
 comment|/** Make a call, passing<code>param</code>, to the IPC server defined by    *<code>remoteId</code>, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception. */
-DECL|method|call (Writable param, ConnectionId remoteId)
+DECL|method|call (RpcKind rpcKind, Writable param, ConnectionId remoteId)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RpcKind
+name|rpcKind
+parameter_list|,
 name|Writable
 name|param
 parameter_list|,
@@ -4535,6 +4740,8 @@ init|=
 operator|new
 name|Call
 argument_list|(
+name|rpcKind
+argument_list|,
 name|param
 argument_list|)
 decl_stmt|;
@@ -4687,7 +4894,7 @@ block|{
 return|return
 name|call
 operator|.
-name|value
+name|rpcResponse
 return|;
 block|}
 block|}
