@@ -533,7 +533,13 @@ specifier|public
 name|TimerTask
 name|timerTask
 decl_stmt|;
-DECL|method|DelegationTokenToRenew ( ApplicationId jId, Token<?> token, Configuration conf, long expirationDate)
+DECL|field|shouldCancelAtEnd
+specifier|public
+specifier|final
+name|boolean
+name|shouldCancelAtEnd
+decl_stmt|;
+DECL|method|DelegationTokenToRenew ( ApplicationId jId, Token<?> token, Configuration conf, long expirationDate, boolean shouldCancelAtEnd)
 specifier|public
 name|DelegationTokenToRenew
 parameter_list|(
@@ -551,6 +557,9 @@ name|conf
 parameter_list|,
 name|long
 name|expirationDate
+parameter_list|,
+name|boolean
+name|shouldCancelAtEnd
 parameter_list|)
 block|{
 name|this
@@ -582,6 +591,12 @@ operator|.
 name|timerTask
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|shouldCancelAtEnd
+operator|=
+name|shouldCancelAtEnd
 expr_stmt|;
 if|if
 condition|(
@@ -1051,8 +1066,8 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @throws IOException    */
-DECL|method|addApplication ( ApplicationId applicationId, Credentials ts)
+comment|/**    * Add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @throws IOException    */
+DECL|method|addApplication ( ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd)
 specifier|public
 specifier|synchronized
 name|void
@@ -1063,6 +1078,9 @@ name|applicationId
 parameter_list|,
 name|Credentials
 name|ts
+parameter_list|,
+name|boolean
+name|shouldCancelAtEnd
 parameter_list|)
 throws|throws
 name|IOException
@@ -1153,6 +1171,8 @@ name|getConfig
 argument_list|()
 argument_list|,
 name|now
+argument_list|,
+name|shouldCancelAtEnd
 argument_list|)
 decl_stmt|;
 name|addTokenToList
@@ -1455,6 +1475,13 @@ name|DelegationTokenToRenew
 name|t
 parameter_list|)
 block|{
+if|if
+condition|(
+name|t
+operator|.
+name|shouldCancelAtEnd
+condition|)
+block|{
 name|dtCancelThread
 operator|.
 name|cancelToken
@@ -1468,6 +1495,19 @@ operator|.
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Did not cancel "
+operator|+
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * removing failed DT    * @param applicationId    */
 DECL|method|removeFailedDelegationToken (DelegationTokenToRenew t)
