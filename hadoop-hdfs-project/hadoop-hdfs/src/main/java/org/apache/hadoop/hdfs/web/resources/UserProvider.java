@@ -349,8 +349,10 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|RuntimeException
+name|SecurityException
 argument_list|(
+literal|"Failed to obtain user group information."
+argument_list|,
 name|e
 argument_list|)
 throw|;

@@ -597,9 +597,9 @@ name|delegationToken
 operator|.
 name|setKind
 argument_list|(
-name|DelegationTokenIdentifier
+name|WebHdfsFileSystem
 operator|.
-name|HDFS_DELEGATION_KIND
+name|TOKEN_KIND
 argument_list|)
 expr_stmt|;
 name|Assert

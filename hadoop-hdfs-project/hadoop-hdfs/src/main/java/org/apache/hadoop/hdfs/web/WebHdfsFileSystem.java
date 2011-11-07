@@ -1304,16 +1304,59 @@ argument_list|(
 literal|"WEBHDFS delegation"
 argument_list|)
 decl_stmt|;
-DECL|field|dtRenewer
-specifier|private
+comment|/** Token selector */
+DECL|field|DT_SELECTOR
+specifier|public
 specifier|static
 specifier|final
+name|AbstractDelegationTokenSelector
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+name|DT_SELECTOR
+init|=
+operator|new
+name|AbstractDelegationTokenSelector
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+argument_list|(
+name|TOKEN_KIND
+argument_list|)
+block|{}
+decl_stmt|;
+DECL|field|DT_RENEWER
+specifier|private
+specifier|static
 name|DelegationTokenRenewer
 argument_list|<
 name|WebHdfsFileSystem
 argument_list|>
-name|dtRenewer
+name|DT_RENEWER
 init|=
+literal|null
+decl_stmt|;
+DECL|method|addRenewAction (final WebHdfsFileSystem webhdfs)
+specifier|private
+specifier|static
+specifier|synchronized
+name|void
+name|addRenewAction
+parameter_list|(
+specifier|final
+name|WebHdfsFileSystem
+name|webhdfs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|DT_RENEWER
+operator|==
+literal|null
+condition|)
+block|{
+name|DT_RENEWER
+operator|=
 operator|new
 name|DelegationTokenRenewer
 argument_list|<
@@ -1324,13 +1367,19 @@ name|WebHdfsFileSystem
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-static|static
-block|{
-name|dtRenewer
+expr_stmt|;
+name|DT_RENEWER
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+block|}
+name|DT_RENEWER
+operator|.
+name|addRenewAction
+argument_list|(
+name|webhdfs
+argument_list|)
 expr_stmt|;
 block|}
 DECL|field|ugi
@@ -1351,14 +1400,6 @@ argument_list|<
 name|?
 argument_list|>
 name|delegationToken
-decl_stmt|;
-DECL|field|renewToken
-specifier|private
-name|Token
-argument_list|<
-name|?
-argument_list|>
-name|renewToken
 decl_stmt|;
 DECL|field|authToken
 specifier|private
@@ -1496,7 +1537,7 @@ name|?
 argument_list|>
 name|token
 init|=
-name|webhdfspTokenSelector
+name|DT_SELECTOR
 operator|.
 name|selectToken
 argument_list|(
@@ -1577,8 +1618,6 @@ condition|(
 name|createdToken
 condition|)
 block|{
-name|dtRenewer
-operator|.
 name|addRenewAction
 argument_list|(
 name|this
@@ -4520,7 +4559,7 @@ name|getRenewToken
 parameter_list|()
 block|{
 return|return
-name|renewToken
+name|delegationToken
 return|;
 block|}
 annotation|@
@@ -4548,37 +4587,10 @@ init|(
 name|this
 init|)
 block|{
-name|renewToken
+name|delegationToken
 operator|=
 name|token
 expr_stmt|;
-comment|// emulate the 203 usage of the tokens
-comment|// by setting the kind and service as if they were hdfs tokens
-name|delegationToken
-operator|=
-operator|new
-name|Token
-argument_list|<
-name|T
-argument_list|>
-argument_list|(
-name|token
-argument_list|)
-expr_stmt|;
-comment|// NOTE: the remote nn must be configured to use hdfs
-name|delegationToken
-operator|.
-name|setKind
-argument_list|(
-name|DelegationTokenIdentifier
-operator|.
-name|HDFS_DELEGATION_KIND
-argument_list|)
-expr_stmt|;
-comment|// no need to change service because we aren't exactly sure what it
-comment|// should be.  we can guess, but it might be wrong if the local conf
-comment|// value is incorrect.  the service is a client side field, so the remote
-comment|// end does not care about the value
 block|}
 block|}
 DECL|method|renewDelegationToken (final Token<?> token )
@@ -4948,40 +4960,6 @@ argument_list|(
 name|m
 argument_list|)
 return|;
-block|}
-DECL|field|webhdfspTokenSelector
-specifier|private
-specifier|static
-specifier|final
-name|DtSelector
-name|webhdfspTokenSelector
-init|=
-operator|new
-name|DtSelector
-argument_list|()
-decl_stmt|;
-DECL|class|DtSelector
-specifier|private
-specifier|static
-class|class
-name|DtSelector
-extends|extends
-name|AbstractDelegationTokenSelector
-argument_list|<
-name|DelegationTokenIdentifier
-argument_list|>
-block|{
-DECL|method|DtSelector ()
-specifier|private
-name|DtSelector
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|TOKEN_KIND
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/** Delegation token renewer. */
 DECL|class|DtRenewer

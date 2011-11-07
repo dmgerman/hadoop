@@ -1600,7 +1600,7 @@ name|t
 argument_list|,
 name|namenode
 operator|.
-name|getNameNodeAddress
+name|getHttpAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
