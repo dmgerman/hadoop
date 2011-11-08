@@ -136,6 +136,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|MD5MD5CRC32FileChecksum
 import|;
 end_import
@@ -1096,7 +1110,7 @@ name|m
 operator|.
 name|put
 argument_list|(
-literal|"localName"
+literal|"pathSuffix"
 argument_list|,
 name|status
 operator|.
@@ -1243,7 +1257,7 @@ name|includeType
 condition|?
 name|toJsonString
 argument_list|(
-name|HdfsFileStatus
+name|FileStatus
 operator|.
 name|class
 argument_list|,
@@ -1312,7 +1326,7 @@ name|json
 operator|.
 name|get
 argument_list|(
-name|HdfsFileStatus
+name|FileStatus
 operator|.
 name|class
 operator|.
@@ -1333,7 +1347,7 @@ name|m
 operator|.
 name|get
 argument_list|(
-literal|"localName"
+literal|"pathSuffix"
 argument_list|)
 decl_stmt|;
 specifier|final
