@@ -2634,6 +2634,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTotalMaps ()
 specifier|public
 name|int

@@ -2958,6 +2958,17 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+literal|"mockqueue"
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
 name|Path
 name|getConfFile
 parameter_list|()

@@ -463,6 +463,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|jobIndexInfo
+operator|.
+name|getQueueName
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getState ()
 specifier|public
 name|JobState

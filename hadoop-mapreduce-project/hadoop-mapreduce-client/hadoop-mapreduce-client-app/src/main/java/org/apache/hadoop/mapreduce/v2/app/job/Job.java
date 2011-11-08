@@ -364,6 +364,11 @@ name|String
 name|getUserName
 parameter_list|()
 function_decl|;
+DECL|method|getQueueName ()
+name|String
+name|getQueueName
+parameter_list|()
+function_decl|;
 comment|/**    * @return a path to where the config file for this job is located.    */
 DECL|method|getConfFile ()
 name|Path

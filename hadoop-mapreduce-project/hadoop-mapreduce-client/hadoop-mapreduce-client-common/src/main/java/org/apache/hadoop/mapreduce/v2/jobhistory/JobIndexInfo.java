@@ -65,6 +65,11 @@ specifier|private
 name|String
 name|user
 decl_stmt|;
+DECL|field|queueName
+specifier|private
+name|String
+name|queueName
+decl_stmt|;
 DECL|field|jobName
 specifier|private
 name|String
@@ -249,6 +254,32 @@ operator|.
 name|user
 operator|=
 name|user
+expr_stmt|;
+block|}
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|queueName
+return|;
+block|}
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueName
+operator|=
+name|queueName
 expr_stmt|;
 block|}
 DECL|method|getJobName ()

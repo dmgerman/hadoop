@@ -849,6 +849,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Queue:"
+argument_list|,
+name|job
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"State:"
 argument_list|,
 name|job

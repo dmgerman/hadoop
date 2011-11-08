@@ -2074,6 +2074,19 @@ name|getSubmitTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|mi
+operator|.
+name|getJobIndexInfo
+argument_list|()
+operator|.
+name|setQueueName
+argument_list|(
+name|jobSubmittedEvent
+operator|.
+name|getJobQueueName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// If this is JobFinishedEvent, close the writer and setup the job-index
 if|if

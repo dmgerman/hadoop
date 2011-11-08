@@ -1958,6 +1958,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getQueueName ()
+specifier|public
+name|String
+name|getQueueName
+parameter_list|()
+block|{
+return|return
+name|jobInfo
+operator|.
+name|getJobQueueName
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTotalMaps ()
 specifier|public
 name|int
