@@ -524,6 +524,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|Gridmix ()
+specifier|public
 name|Gridmix
 parameter_list|()
 block|{

@@ -116,6 +116,26 @@ name|JTConfig
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|gridmix
+operator|.
+name|emulators
+operator|.
+name|resourceusage
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Gridmix system tests configurations.   */
 end_comment
@@ -473,6 +493,63 @@ init|=
 name|JTConfig
 operator|.
 name|JT_MAX_REDUCEMEMORY_MB
+decl_stmt|;
+comment|/**   * Gridmix cpu emulation.   */
+DECL|field|GRIDMIX_CPU_EMULATON
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_CPU_EMULATON
+init|=
+name|ResourceUsageMatcher
+operator|.
+name|RESOURCE_USAGE_EMULATION_PLUGINS
+decl_stmt|;
+comment|/**   *  Gridmix cpu usage emulation plugin.   */
+DECL|field|GRIDMIX_CPU_USAGE_PLUGIN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_CPU_USAGE_PLUGIN
+init|=
+name|CumulativeCpuUsageEmulatorPlugin
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
+comment|/**   * Gridmix cpu emulation custom interval.   */
+DECL|field|GRIDMIX_CPU_CUSTOM_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_CPU_CUSTOM_INTERVAL
+init|=
+name|CumulativeCpuUsageEmulatorPlugin
+operator|.
+name|CPU_EMULATION_PROGRESS_INTERVAL
+decl_stmt|;
+comment|/**   * Gridmix cpu emulation lower limit.   */
+DECL|field|GRIDMIX_CPU_EMULATION_LOWER_LIMIT
+specifier|public
+specifier|static
+name|int
+name|GRIDMIX_CPU_EMULATION_LOWER_LIMIT
+init|=
+literal|55
+decl_stmt|;
+comment|/**   * Gridmix cpu emulation upper limit.   */
+DECL|field|GRIDMIX_CPU_EMULATION_UPPER_LIMIT
+specifier|public
+specifier|static
+name|int
+name|GRIDMIX_CPU_EMULATION_UPPER_LIMIT
+init|=
+literal|130
 decl_stmt|;
 block|}
 end_class
