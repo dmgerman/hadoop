@@ -1048,6 +1048,8 @@ return|return
 name|actualReturnMessage
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

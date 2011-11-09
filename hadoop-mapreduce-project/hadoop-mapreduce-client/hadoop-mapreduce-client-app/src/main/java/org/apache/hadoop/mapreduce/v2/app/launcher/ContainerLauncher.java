@@ -87,11 +87,11 @@ operator|+
 literal|"nm-command-timeout"
 decl_stmt|;
 comment|/**    *  Maximum of 1 minute timeout for a Node to react to the command    */
-DECL|field|DEFAULT_NM__COMMAND_TIMEOUT
+DECL|field|DEFAULT_NM_COMMAND_TIMEOUT
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_NM__COMMAND_TIMEOUT
+name|DEFAULT_NM_COMMAND_TIMEOUT
 init|=
 literal|60000
 decl_stmt|;
