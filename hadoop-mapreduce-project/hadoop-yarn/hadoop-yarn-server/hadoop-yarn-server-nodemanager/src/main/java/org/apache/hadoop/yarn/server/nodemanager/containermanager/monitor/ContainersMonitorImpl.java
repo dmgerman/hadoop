@@ -320,9 +320,9 @@ name|com
 operator|.
 name|google
 operator|.
-name|inject
+name|common
 operator|.
-name|internal
+name|base
 operator|.
 name|Preconditions
 import|;
