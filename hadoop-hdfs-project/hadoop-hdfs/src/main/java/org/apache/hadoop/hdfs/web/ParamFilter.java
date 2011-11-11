@@ -259,7 +259,6 @@ return|;
 block|}
 comment|/** Do the strings contain upper case letters? */
 DECL|method|containsUpperCase (final Iterable<String> strings)
-specifier|private
 specifier|static
 name|boolean
 name|containsUpperCase

@@ -351,7 +351,9 @@ throw|throw
 operator|new
 name|SecurityException
 argument_list|(
-literal|"Failed to obtain user group information."
+literal|"Failed to obtain user group information: "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)

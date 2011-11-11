@@ -1126,6 +1126,40 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authorize
+operator|.
+name|AuthorizationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|SecretManager
+operator|.
+name|InvalidToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -1724,6 +1758,27 @@ literal|null
 return|;
 block|}
 block|}
+comment|/** @return the home directory. */
+DECL|method|getHomeDirectoryString (final UserGroupInformation ugi)
+specifier|public
+specifier|static
+name|String
+name|getHomeDirectoryString
+parameter_list|(
+specifier|final
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+return|return
+literal|"/user/"
+operator|+
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getHomeDirectory ()
@@ -1738,12 +1793,10 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"/user/"
-operator|+
+name|getHomeDirectoryString
+argument_list|(
 name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 return|;
@@ -1844,7 +1897,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|jsonParse (final InputStream in)
-specifier|private
 specifier|static
 name|Map
 argument_list|<
@@ -2042,7 +2094,15 @@ name|AccessControlException
 operator|.
 name|class
 argument_list|,
-name|DSQuotaExceededException
+name|InvalidToken
+operator|.
+name|class
+argument_list|,
+name|AuthenticationException
+operator|.
+name|class
+argument_list|,
+name|AuthorizationException
 operator|.
 name|class
 argument_list|,
@@ -2058,15 +2118,19 @@ name|ParentNotDirectoryException
 operator|.
 name|class
 argument_list|,
+name|UnresolvedPathException
+operator|.
+name|class
+argument_list|,
 name|SafeModeException
 operator|.
 name|class
 argument_list|,
-name|NSQuotaExceededException
+name|DSQuotaExceededException
 operator|.
 name|class
 argument_list|,
-name|UnresolvedPathException
+name|NSQuotaExceededException
 operator|.
 name|class
 argument_list|)
@@ -2549,9 +2613,8 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Two-step Create/Append:    * Step 1) Submit a Http request with neither auto-redirect nor data.     * Step 2) Submit Http PUT with the URL from the Location header with data.    *     * The reason of having two-step create/append is for preventing clients to    * send out the data before the redirect. This issue is addressed by the    * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.    * Unfortunately, there are software library bugs (e.g. Jetty 6 http server    * and Java 6 http client), which do not correctly implement "Expect:    * 100-continue". The two-step create/append is a temporary workaround for    * the software library bugs.    */
+comment|/**    * Two-step Create/Append:    * Step 1) Submit a Http request with neither auto-redirect nor data.     * Step 2) Submit another Http request with the URL from the Location header with data.    *     * The reason of having two-step create/append is for preventing clients to    * send out the data before the redirect. This issue is addressed by the    * "Expect: 100-continue" header in HTTP/1.1; see RFC 2616, Section 8.2.3.    * Unfortunately, there are software library bugs (e.g. Jetty 6 http server    * and Java 6 http client), which do not correctly implement "Expect:    * 100-continue". The two-step create/append is a temporary workaround for    * the software library bugs.    */
 DECL|method|twoStepWrite (HttpURLConnection conn, final HttpOpParam.Op op)
-specifier|private
 specifier|static
 name|HttpURLConnection
 name|twoStepWrite
@@ -2618,7 +2681,7 @@ operator|.
 name|disconnect
 argument_list|()
 expr_stmt|;
-comment|//Step 2) Submit Http PUT with the URL from the Location header with data.
+comment|//Step 2) Submit another Http request with the URL from the Location header with data.
 name|conn
 operator|=
 operator|(
@@ -3524,7 +3587,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|write (final HttpOpParam.Op op, final HttpURLConnection conn, final int bufferSize)
-specifier|private
 name|FSDataOutputStream
 name|write
 parameter_list|(
@@ -3582,6 +3644,8 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+try|try
+block|{
 name|validateResponse
 argument_list|(
 name|op
@@ -3589,6 +3653,15 @@ argument_list|,
 name|conn
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|conn
+operator|.
+name|disconnect
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -4261,13 +4334,13 @@ name|OffsetUrlInputStream
 extends|extends
 name|ByteRangeInputStream
 block|{
-DECL|method|OffsetUrlInputStream (URLOpener o, URLOpener r)
+DECL|method|OffsetUrlInputStream (OffsetUrlOpener o, OffsetUrlOpener r)
 name|OffsetUrlInputStream
 parameter_list|(
-name|URLOpener
+name|OffsetUrlOpener
 name|o
 parameter_list|,
-name|URLOpener
+name|OffsetUrlOpener
 name|r
 parameter_list|)
 block|{
@@ -4580,16 +4653,13 @@ argument_list|(
 name|m
 argument_list|)
 decl_stmt|;
-name|token
+name|SecurityUtil
 operator|.
-name|setService
+name|setTokenService
 argument_list|(
-operator|new
-name|Text
-argument_list|(
-name|getCanonicalServiceName
-argument_list|()
-argument_list|)
+name|token
+argument_list|,
+name|nnAddr
 argument_list|)
 expr_stmt|;
 return|return

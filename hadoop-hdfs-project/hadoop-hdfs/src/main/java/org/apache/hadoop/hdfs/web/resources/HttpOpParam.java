@@ -203,6 +203,7 @@ return|return
 name|CREATE
 return|;
 block|}
+elseif|else
 if|if
 condition|(
 name|op

@@ -90,6 +90,14 @@ operator|.
 name|HTTP_OK
 argument_list|)
 operator|,
+DECL|enumConstant|GETHOMEDIRECTORY
+name|GETHOMEDIRECTORY
+argument_list|(
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+operator|,
 DECL|enumConstant|GETDELEGATIONTOKEN
 name|GETDELEGATIONTOKEN
 argument_list|(
