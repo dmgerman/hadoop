@@ -551,13 +551,23 @@ operator|+
 literal|" with non-zero refcount"
 argument_list|)
 expr_stmt|;
-assert|assert
-literal|false
-assert|;
 return|return
 literal|false
 return|;
 block|}
+else|else
+block|{
+comment|// ResourceState is LOCALIZED or INIT
+name|localrsrc
+operator|.
+name|remove
+argument_list|(
+name|rem
+operator|.
+name|getRequest
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ResourceState
@@ -593,6 +603,7 @@ block|}
 return|return
 literal|true
 return|;
+block|}
 block|}
 comment|/**    * Returns the path up to the random directory component.    */
 DECL|method|getPathToDelete (Path localPath)
