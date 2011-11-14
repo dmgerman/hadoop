@@ -1775,45 +1775,151 @@ literal|"Initializing "
 operator|+
 name|queueName
 operator|+
-literal|", capacity="
+literal|"\n"
+operator|+
+literal|"capacity = "
 operator|+
 name|capacity
 operator|+
-literal|", asboluteCapacity="
+literal|" [= (float) configuredCapacity / 100 ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"asboluteCapacity = "
 operator|+
 name|absoluteCapacity
 operator|+
-literal|", maxCapacity="
+literal|" [= parentAbsoluteCapacity * capacity ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxCapacity = "
 operator|+
 name|maxCapacity
 operator|+
-literal|", asboluteMaxCapacity="
+literal|" [= configuredMaxCapacity ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"absoluteMaxCapacity = "
 operator|+
 name|absoluteMaxCapacity
 operator|+
-literal|", userLimit="
+literal|" [= Float.MAX_VALUE if maximumCapacity undefined, "
+operator|+
+literal|"(parentAbsoluteCapacity * maximumCapacity) / 100 otherwise ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"userLimit = "
 operator|+
 name|userLimit
 operator|+
-literal|", userLimitFactor="
+literal|" [= configuredUserLimit ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"userLimitFactor = "
 operator|+
 name|userLimitFactor
 operator|+
-literal|", maxApplications="
+literal|" [= configuredUserLimitFactor ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxApplications = "
 operator|+
 name|maxApplications
 operator|+
-literal|", maxApplicationsPerUser="
+literal|" [= (int)(configuredMaximumSystemApplications * absoluteCapacity) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxApplicationsPerUser = "
 operator|+
 name|maxApplicationsPerUser
 operator|+
-literal|", state="
+literal|" [= (int)(maxApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxActiveApplications = "
+operator|+
+name|maxActiveApplications
+operator|+
+literal|" [= max("
+operator|+
+literal|"(int)((clusterResourceMemory / (float)DEFAULT_AM_RESOURCE) *"
+operator|+
+literal|"maxAMResourcePercent * absoluteCapacity),"
+operator|+
+literal|"1) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxActiveApplicationsPerUser = "
+operator|+
+name|maxActiveApplicationsPerUser
+operator|+
+literal|" [= (int)(maxActiveApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"utilization = "
+operator|+
+name|utilization
+operator|+
+literal|" [= usedResourcesMemory / queueLimit ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"usedCapacity = "
+operator|+
+name|usedCapacity
+operator|+
+literal|" [= usedResourcesMemory / (clusterResourceMemory * capacity) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxAMResourcePercent = "
+operator|+
+name|maxAMResourcePercent
+operator|+
+literal|" [= configuredMaximumAMResourcePercent ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"minimumAllocationFactor = "
+operator|+
+name|minimumAllocationFactor
+operator|+
+literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / maximumAllocationMemory ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"numContainers = "
+operator|+
+name|numContainers
+operator|+
+literal|" [= currentNumContainers ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"state = "
 operator|+
 name|state
 operator|+
-literal|", acls="
+literal|" [= configuredState ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"acls = "
 operator|+
 name|aclsString
+operator|+
+literal|" [= configuredAcls ]"
+operator|+
+literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
