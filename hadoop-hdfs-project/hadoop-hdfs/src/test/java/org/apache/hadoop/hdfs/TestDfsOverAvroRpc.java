@@ -26,6 +26,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/** Test for simple signs of life using Avro RPC.  Not an exhaustive test  * yet, just enough to catch fundamental problems using Avro reflection to  * infer namenode RPC protocols. */
 end_comment
@@ -38,6 +48,13 @@ name|TestDfsOverAvroRpc
 extends|extends
 name|TestLocalDFS
 block|{
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testWorkingDirectory ()
 specifier|public
 name|void
