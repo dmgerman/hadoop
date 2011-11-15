@@ -684,12 +684,18 @@ decl_stmt|;
 comment|// We return back N files that are corrupt; the list of files returned is
 comment|// ordered by block id; to allow continuation support, pass in the last block
 comment|// # from previous call
-DECL|field|startBlockAfter
+DECL|field|currentCookie
 specifier|private
 name|String
-name|startBlockAfter
+index|[]
+name|currentCookie
 init|=
+operator|new
+name|String
+index|[]
+block|{
 literal|null
+block|}
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -993,7 +999,10 @@ condition|)
 block|{
 name|this
 operator|.
-name|startBlockAfter
+name|currentCookie
+index|[
+literal|0
+index|]
 operator|=
 name|pmap
 operator|.
@@ -1341,7 +1350,7 @@ name|listCorruptFileBlocks
 argument_list|(
 name|path
 argument_list|,
-name|startBlockAfter
+name|currentCookie
 argument_list|)
 decl_stmt|;
 name|int
@@ -1375,9 +1384,15 @@ block|}
 elseif|else
 if|if
 condition|(
-name|startBlockAfter
-operator|==
-literal|null
+name|currentCookie
+index|[
+literal|0
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"0"
+argument_list|)
 condition|)
 block|{
 name|filler
@@ -1392,6 +1407,18 @@ operator|=
 literal|"no more"
 expr_stmt|;
 block|}
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Cookie:\t"
+operator|+
+name|currentCookie
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|FSNamesystem

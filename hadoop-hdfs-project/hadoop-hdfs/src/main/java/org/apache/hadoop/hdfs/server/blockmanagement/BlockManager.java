@@ -738,6 +738,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|LightWeightLinkedSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|Node
@@ -1001,7 +1017,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -1013,7 +1029,7 @@ name|TreeMap
 argument_list|<
 name|String
 argument_list|,
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -6309,7 +6325,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -9156,7 +9172,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -9745,7 +9761,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -9771,7 +9787,7 @@ block|{
 name|excessBlocks
 operator|=
 operator|new
-name|TreeSet
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -9975,7 +9991,7 @@ comment|//
 comment|// We've removed a block from a node, so it's definitely no longer
 comment|// in "excess" there.
 comment|//
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -10796,7 +10812,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Collection
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
