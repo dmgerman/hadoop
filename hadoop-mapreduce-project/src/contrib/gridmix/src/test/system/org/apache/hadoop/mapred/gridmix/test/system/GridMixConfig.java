@@ -551,6 +551,75 @@ name|GRIDMIX_CPU_EMULATION_UPPER_LIMIT
 init|=
 literal|130
 decl_stmt|;
+comment|/**   * Gridmix heap memory custom interval   */
+DECL|field|GRIDMIX_HEAP_MEMORY_CUSTOM_INTRVL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_HEAP_MEMORY_CUSTOM_INTRVL
+init|=
+name|TotalHeapUsageEmulatorPlugin
+operator|.
+name|HEAP_EMULATION_PROGRESS_INTERVAL
+decl_stmt|;
+comment|/**   *  Gridmix heap free memory ratio   */
+DECL|field|GRIDMIX_HEAP_FREE_MEMORY_RATIO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_HEAP_FREE_MEMORY_RATIO
+init|=
+name|TotalHeapUsageEmulatorPlugin
+operator|.
+name|MIN_HEAP_FREE_RATIO
+decl_stmt|;
+comment|/**   *  Gridmix memory emulation plugin   */
+DECL|field|GRIDMIX_MEMORY_EMULATION_PLUGIN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_MEMORY_EMULATION_PLUGIN
+init|=
+name|TotalHeapUsageEmulatorPlugin
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
+comment|/**   *  Gridmix memory emulation   */
+DECL|field|GRIDMIX_MEMORY_EMULATON
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GRIDMIX_MEMORY_EMULATON
+init|=
+name|ResourceUsageMatcher
+operator|.
+name|RESOURCE_USAGE_EMULATION_PLUGINS
+decl_stmt|;
+comment|/**   *  Gridmix memory emulation lower limit.   */
+DECL|field|GRIDMIX_MEMORY_EMULATION_LOWER_LIMIT
+specifier|public
+specifier|static
+name|int
+name|GRIDMIX_MEMORY_EMULATION_LOWER_LIMIT
+init|=
+literal|55
+decl_stmt|;
+comment|/**   * Gridmix memory emulation upper limit.    */
+DECL|field|GRIDMIX_MEMORY_EMULATION_UPPER_LIMIT
+specifier|public
+specifier|static
+name|int
+name|GRIDMIX_MEMORY_EMULATION_UPPER_LIMIT
+init|=
+literal|130
+decl_stmt|;
 block|}
 end_class
 
