@@ -493,6 +493,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|init ()
+specifier|public
+name|void
+name|init
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// nothing to do or verify here
+block|}
+annotation|@
+name|Override
 DECL|method|startLocalizer (Path nmPrivateContainerTokensPath, InetSocketAddress nmAddr, String user, String appId, String locId, List<Path> localDirs)
 specifier|public
 name|void
