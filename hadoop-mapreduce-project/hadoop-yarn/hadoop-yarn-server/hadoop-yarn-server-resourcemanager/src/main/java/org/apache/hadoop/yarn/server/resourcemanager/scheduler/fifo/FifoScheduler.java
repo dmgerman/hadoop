@@ -1902,6 +1902,11 @@ name|RELEASED
 argument_list|)
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|application
+init|)
+block|{
 if|if
 condition|(
 operator|!
@@ -1993,6 +1998,7 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 return|;
+block|}
 block|}
 DECL|method|getApplication ( ApplicationAttemptId applicationAttemptId)
 specifier|private

@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|DataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -608,7 +618,7 @@ block|}
 annotation|@
 name|Override
 comment|// ReplicaInPipelineInterface
-DECL|method|createStreams (boolean isCreate, int bytesPerChunk, int checksumSize)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|public
 name|BlockWriteStreams
 name|createStreams
@@ -616,11 +626,8 @@ parameter_list|(
 name|boolean
 name|isCreate
 parameter_list|,
-name|int
-name|bytesPerChunk
-parameter_list|,
-name|int
-name|checksumSize
+name|DataChecksum
+name|requestedChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -694,13 +701,99 @@ name|crcDiskSize
 init|=
 literal|0L
 decl_stmt|;
+comment|// the checksum that should actually be used -- this
+comment|// may differ from requestedChecksum for appends.
+name|DataChecksum
+name|checksum
+decl_stmt|;
+name|RandomAccessFile
+name|metaRAF
+init|=
+operator|new
+name|RandomAccessFile
+argument_list|(
+name|metaFile
+argument_list|,
+literal|"rw"
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|!
 name|isCreate
 condition|)
 block|{
-comment|// check on disk file
+comment|// For append or recovery, we must enforce the existing checksum.
+comment|// Also, verify that the file has correct lengths, etc.
+name|boolean
+name|checkedMeta
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|BlockMetadataHeader
+name|header
+init|=
+name|BlockMetadataHeader
+operator|.
+name|readHeader
+argument_list|(
+name|metaRAF
+argument_list|)
+decl_stmt|;
+name|checksum
+operator|=
+name|header
+operator|.
+name|getChecksum
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+operator|!=
+name|requestedChecksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Client requested checksum "
+operator|+
+name|requestedChecksum
+operator|+
+literal|" when appending to an existing block "
+operator|+
+literal|"with different chunk size: "
+operator|+
+name|checksum
+argument_list|)
+throw|;
+block|}
+name|int
+name|bytesPerChunk
+init|=
+name|checksum
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+decl_stmt|;
+name|int
+name|checksumSize
+init|=
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
+decl_stmt|;
 name|blockDiskSize
 operator|=
 name|bytesOnDisk
@@ -757,6 +850,37 @@ name|this
 argument_list|)
 throw|;
 block|}
+name|checkedMeta
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|checkedMeta
+condition|)
+block|{
+comment|// clean up in case of exceptions.
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|metaRAF
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+else|else
+block|{
+comment|// for create, we can use the requested checksum
+name|checksum
+operator|=
+name|requestedChecksum
+expr_stmt|;
 block|}
 name|FileOutputStream
 name|blockOut
@@ -792,13 +916,7 @@ operator|=
 operator|new
 name|FileOutputStream
 argument_list|(
-operator|new
-name|RandomAccessFile
-argument_list|(
-name|metaFile
-argument_list|,
-literal|"rw"
-argument_list|)
+name|metaRAF
 operator|.
 name|getFD
 argument_list|()
@@ -838,6 +956,8 @@ argument_list|(
 name|blockOut
 argument_list|,
 name|crcOut
+argument_list|,
+name|checksum
 argument_list|)
 return|;
 block|}
@@ -858,7 +978,7 @@ name|IOUtils
 operator|.
 name|closeStream
 argument_list|(
-name|crcOut
+name|metaRAF
 argument_list|)
 expr_stmt|;
 throw|throw

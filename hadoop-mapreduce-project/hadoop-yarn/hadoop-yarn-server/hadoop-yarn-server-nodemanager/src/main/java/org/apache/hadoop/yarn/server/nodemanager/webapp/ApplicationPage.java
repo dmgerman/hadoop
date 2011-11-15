@@ -286,6 +286,22 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|YarnWebParams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|SubView
 import|;
 end_import
@@ -384,7 +400,7 @@ name|ApplicationPage
 extends|extends
 name|NMView
 implements|implements
-name|NMWebParams
+name|YarnWebParams
 block|{
 DECL|method|preHead (Page.HTML<_> html)
 annotation|@
@@ -481,7 +497,7 @@ name|ApplicationBlock
 extends|extends
 name|HtmlBlock
 implements|implements
-name|NMWebParams
+name|YarnWebParams
 block|{
 DECL|field|nmContext
 specifier|private

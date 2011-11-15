@@ -1657,6 +1657,11 @@ name|parseCredentials
 argument_list|(
 name|submissionContext
 argument_list|)
+argument_list|,
+name|submissionContext
+operator|.
+name|getCancelTokensWhenComplete
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

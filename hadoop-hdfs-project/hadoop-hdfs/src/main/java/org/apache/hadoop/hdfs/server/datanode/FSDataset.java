@@ -6387,7 +6387,6 @@ block|}
 comment|/**    * Get File name for a given block.    */
 DECL|method|getBlockFile (String bpid, Block b)
 specifier|public
-specifier|synchronized
 name|File
 name|getBlockFile
 parameter_list|(
@@ -6464,7 +6463,6 @@ name|Override
 comment|// FSDatasetInterface
 DECL|method|getBlockInputStream (ExtendedBlock b)
 specifier|public
-specifier|synchronized
 name|InputStream
 name|getBlockInputStream
 parameter_list|(
@@ -6474,15 +6472,98 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|File
+name|f
+init|=
+name|getBlockFileNoExistsCheck
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+try|try
+block|{
 return|return
 operator|new
 name|FileInputStream
 argument_list|(
-name|getBlockFile
+name|f
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fnfe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block "
+operator|+
+name|b
+operator|+
+literal|" is not valid. "
+operator|+
+literal|"Expected block file at "
+operator|+
+name|f
+operator|+
+literal|" does not exist."
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Return the File associated with a block, without first    * checking that it exists. This should be used when the    * next operation is going to open the file for read anyway,    * and thus the exists check is redundant.    */
+DECL|method|getBlockFileNoExistsCheck (ExtendedBlock b)
+specifier|private
+name|File
+name|getBlockFileNoExistsCheck
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|File
+name|f
+init|=
+name|getFile
 argument_list|(
 name|b
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getLocalBlock
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|f
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block "
+operator|+
+name|b
+operator|+
+literal|" is not valid"
 argument_list|)
+throw|;
+block|}
+return|return
+name|f
 return|;
 block|}
 annotation|@
@@ -6490,7 +6571,6 @@ name|Override
 comment|// FSDatasetInterface
 DECL|method|getBlockInputStream (ExtendedBlock b, long seekOffset)
 specifier|public
-specifier|synchronized
 name|InputStream
 name|getBlockInputStream
 parameter_list|(
@@ -6506,14 +6586,18 @@ block|{
 name|File
 name|blockFile
 init|=
-name|getBlockFile
+name|getBlockFileNoExistsCheck
 argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
 name|RandomAccessFile
 name|blockInFile
-init|=
+decl_stmt|;
+try|try
+block|{
+name|blockInFile
+operator|=
 operator|new
 name|RandomAccessFile
 argument_list|(
@@ -6521,7 +6605,32 @@ name|blockFile
 argument_list|,
 literal|"r"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fnfe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block "
+operator|+
+name|b
+operator|+
+literal|" is not valid. "
+operator|+
+literal|"Expected block file at "
+operator|+
+name|blockFile
+operator|+
+literal|" does not exist."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|seekOffset

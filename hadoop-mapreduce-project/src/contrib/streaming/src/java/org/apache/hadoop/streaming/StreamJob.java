@@ -5746,83 +5746,6 @@ name|JT_IPC_ADDRESS
 argument_list|)
 return|;
 block|}
-DECL|method|jobInfo ()
-specifier|protected
-name|void
-name|jobInfo
-parameter_list|()
-block|{
-if|if
-condition|(
-name|isLocalHadoop
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Job running in-process (local Hadoop)"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|String
-name|hp
-init|=
-name|getJobTrackerHostPort
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"To kill this job, run:"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|getHadoopClientHome
-argument_list|()
-operator|+
-literal|"/bin/hadoop job  -D"
-operator|+
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-operator|+
-literal|"="
-operator|+
-name|hp
-operator|+
-literal|" -kill "
-operator|+
-name|jobId_
-argument_list|)
-expr_stmt|;
-comment|//LOG.info("Job file: " + running_.getJobFile());
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Tracking URL: "
-operator|+
-name|StreamUtil
-operator|.
-name|qualifyHost
-argument_list|(
-name|running_
-operator|.
-name|getTrackingURL
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|// Based on JobClient
 DECL|method|submitAndMonitorJob ()
 specifier|public
@@ -5898,9 +5821,6 @@ operator|=
 name|running_
 operator|.
 name|getID
-argument_list|()
-expr_stmt|;
-name|jobInfo
 argument_list|()
 expr_stmt|;
 if|if

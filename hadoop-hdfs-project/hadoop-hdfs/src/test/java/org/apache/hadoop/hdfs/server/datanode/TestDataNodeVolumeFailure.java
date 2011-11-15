@@ -444,6 +444,11 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|dn_num
 name|int
 name|dn_num
@@ -531,13 +536,12 @@ throws|throws
 name|Exception
 block|{
 comment|// bring up a cluster of 2
-name|Configuration
 name|conf
-init|=
+operator|=
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|conf
 operator|.
 name|setLong
@@ -1404,8 +1408,14 @@ argument_list|)
 expr_stmt|;
 name|s
 operator|=
-operator|new
-name|Socket
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|createSocket
 argument_list|()
 expr_stmt|;
 name|s
@@ -1452,6 +1462,8 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
+name|conf
+argument_list|,
 name|s
 argument_list|,
 name|file
@@ -1467,8 +1479,6 @@ literal|0
 argument_list|,
 operator|-
 literal|1
-argument_list|,
-literal|4096
 argument_list|)
 decl_stmt|;
 comment|// nothing - if it fails - it will throw and exception

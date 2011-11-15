@@ -32,15 +32,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|nodemanager
+name|StringHelper
 operator|.
-name|webapp
-operator|.
-name|NMWebParams
-operator|.
-name|CONTAINER_ID
+name|join
 import|;
 end_import
 
@@ -54,11 +50,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|webapp
 operator|.
-name|StringHelper
+name|YarnWebParams
 operator|.
-name|join
+name|CONTAINER_ID
 import|;
 end_import
 
@@ -504,6 +500,22 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|YarnWebParams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|SubView
 import|;
 end_import
@@ -729,7 +741,7 @@ name|ContainersLogsBlock
 extends|extends
 name|HtmlBlock
 implements|implements
-name|NMWebParams
+name|YarnWebParams
 block|{
 DECL|field|conf
 specifier|private

@@ -36,34 +36,6 @@ name|Socket
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|PositionedReadable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Seekable
-import|;
-end_import
-
 begin_comment
 comment|/**  * A BlockReader is responsible for reading a single block  * from a single datanode.  */
 end_comment
@@ -73,10 +45,6 @@ DECL|interface|BlockReader
 specifier|public
 interface|interface
 name|BlockReader
-extends|extends
-name|Seekable
-extends|,
-name|PositionedReadable
 block|{
 comment|/* same interface as inputStream java.io.InputStream#read()    * used by DFSInputStream#read()    * This violates one rule when there is a checksum error:    * "Read should not modify user buffer before successful read"    * because it first reads the data to user buffer and then checks    * the checksum.    */
 DECL|method|read (byte[] buf, int off, int len)
@@ -107,14 +75,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Read a single byte, returning -1 at enf of stream.    */
-DECL|method|read ()
-name|int
-name|read
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 DECL|method|close ()
 name|void
 name|close
@@ -122,7 +82,25 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * kind of like readFully(). Only reads as much as possible.    * And allows use of protected readFully().    */
+comment|/**    * Read exactly the given amount of data, throwing an exception    * if EOF is reached before that amount    */
+DECL|method|readFully (byte[] buf, int readOffset, int amtToRead)
+name|void
+name|readFully
+parameter_list|(
+name|byte
+index|[]
+name|buf
+parameter_list|,
+name|int
+name|readOffset
+parameter_list|,
+name|int
+name|amtToRead
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Similar to {@link #readFully(byte[], int, int)} except that it will    * not throw an exception on EOF. However, it differs from the simple    * {@link #read(byte[], int, int)} call in that it is guaranteed to    * read the data if it is available. In other words, if this call    * does not throw an exception, then either the buffer has been    * filled or the next call will return EOF.    */
 DECL|method|readAll (byte[] buf, int offset, int len)
 name|int
 name|readAll

@@ -228,6 +228,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|DataChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|DiskChecker
 operator|.
 name|DiskErrorException
@@ -444,7 +458,11 @@ DECL|field|checksumOut
 name|OutputStream
 name|checksumOut
 decl_stmt|;
-DECL|method|BlockWriteStreams (OutputStream dOut, OutputStream cOut)
+DECL|field|checksum
+name|DataChecksum
+name|checksum
+decl_stmt|;
+DECL|method|BlockWriteStreams (OutputStream dOut, OutputStream cOut, DataChecksum checksum)
 name|BlockWriteStreams
 parameter_list|(
 name|OutputStream
@@ -452,6 +470,9 @@ name|dOut
 parameter_list|,
 name|OutputStream
 name|cOut
+parameter_list|,
+name|DataChecksum
+name|checksum
 parameter_list|)
 block|{
 name|dataOut
@@ -461,6 +482,12 @@ expr_stmt|;
 name|checksumOut
 operator|=
 name|cOut
+expr_stmt|;
+name|this
+operator|.
+name|checksum
+operator|=
+name|checksum
 expr_stmt|;
 block|}
 DECL|method|close ()
@@ -484,6 +511,15 @@ argument_list|(
 name|checksumOut
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getChecksum ()
+name|DataChecksum
+name|getChecksum
+parameter_list|()
+block|{
+return|return
+name|checksum
+return|;
 block|}
 block|}
 comment|/**    * This class contains the input streams for the data and checksum    * of a block    */

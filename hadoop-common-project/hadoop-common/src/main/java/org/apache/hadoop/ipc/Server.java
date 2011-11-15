@@ -484,6 +484,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|RpcPayloadHeader
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|BytesWritable
@@ -545,6 +561,22 @@ operator|.
 name|RPC
 operator|.
 name|VersionMismatch
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RpcPayloadHeader
+operator|.
+name|RpcPayloadOperation
 import|;
 end_import
 
@@ -936,6 +968,7 @@ comment|// 3 : Introduce the protocol into the RPC connection header
 comment|// 4 : Introduced SASL security layer
 comment|// 5 : Introduced use of {@link ArrayPrimitiveWritable$Internal}
 comment|//     in ObjectWritable to efficiently transmit arrays of primitives
+comment|// 6 : Made RPC payload header explicit
 DECL|field|CURRENT_VERSION
 specifier|public
 specifier|static
@@ -943,7 +976,7 @@ specifier|final
 name|byte
 name|CURRENT_VERSION
 init|=
-literal|5
+literal|6
 decl_stmt|;
 comment|/**    * Initial and max size of response buffer    */
 DECL|field|INITIAL_RESP_BUF_SIZE
@@ -1532,20 +1565,23 @@ specifier|static
 class|class
 name|Call
 block|{
-DECL|field|id
+DECL|field|callId
 specifier|private
+specifier|final
 name|int
-name|id
+name|callId
 decl_stmt|;
 comment|// the client's call id
-DECL|field|param
+DECL|field|rpcRequest
 specifier|private
+specifier|final
 name|Writable
-name|param
+name|rpcRequest
 decl_stmt|;
-comment|// the parameter passed
+comment|// Serialized Rpc request from client
 DECL|field|connection
 specifier|private
+specifier|final
 name|Connection
 name|connection
 decl_stmt|;
@@ -1555,14 +1591,20 @@ specifier|private
 name|long
 name|timestamp
 decl_stmt|;
-comment|// the time received when response is null
-comment|// the time served when response is not null
-DECL|field|response
+comment|// time received when response is null
+comment|// time served when response is not null
+DECL|field|rpcResponse
 specifier|private
 name|ByteBuffer
-name|response
+name|rpcResponse
 decl_stmt|;
 comment|// the response for this call
+DECL|field|rpcKind
+specifier|private
+specifier|final
+name|RpcKind
+name|rpcKind
+decl_stmt|;
 DECL|method|Call (int id, Writable param, Connection connection)
 specifier|public
 name|Call
@@ -1578,14 +1620,45 @@ name|connection
 parameter_list|)
 block|{
 name|this
-operator|.
+argument_list|(
 name|id
+argument_list|,
+name|param
+argument_list|,
+name|connection
+argument_list|,
+name|RpcKind
+operator|.
+name|RPC_BUILTIN
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|Call (int id, Writable param, Connection connection, RpcKind kind)
+specifier|public
+name|Call
+parameter_list|(
+name|int
+name|id
+parameter_list|,
+name|Writable
+name|param
+parameter_list|,
+name|Connection
+name|connection
+parameter_list|,
+name|RpcKind
+name|kind
+parameter_list|)
+block|{
+name|this
+operator|.
+name|callId
 operator|=
 name|id
 expr_stmt|;
 name|this
 operator|.
-name|param
+name|rpcRequest
 operator|=
 name|param
 expr_stmt|;
@@ -1606,9 +1679,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|response
+name|rpcResponse
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|rpcKind
+operator|=
+name|kind
 expr_stmt|;
 block|}
 annotation|@
@@ -1620,7 +1699,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|param
+name|rpcRequest
 operator|.
 name|toString
 argument_list|()
@@ -1644,7 +1723,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|response
+name|rpcResponse
 operator|=
 name|response
 expr_stmt|;
@@ -4015,7 +4094,7 @@ literal|": responding to #"
 operator|+
 name|call
 operator|.
-name|id
+name|callId
 operator|+
 literal|" from "
 operator|+
@@ -4037,7 +4116,7 @@ name|channel
 argument_list|,
 name|call
 operator|.
-name|response
+name|rpcResponse
 argument_list|)
 decl_stmt|;
 if|if
@@ -4056,7 +4135,7 @@ condition|(
 operator|!
 name|call
 operator|.
-name|response
+name|rpcResponse
 operator|.
 name|hasRemaining
 argument_list|()
@@ -4110,7 +4189,7 @@ literal|": responding to #"
 operator|+
 name|call
 operator|.
-name|id
+name|callId
 operator|+
 literal|" from "
 operator|+
@@ -4223,7 +4302,7 @@ literal|": responding to #"
 operator|+
 name|call
 operator|.
-name|id
+name|callId
 operator|+
 literal|" from "
 operator|+
@@ -6976,15 +7055,21 @@ name|buf
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|int
-name|id
+name|RpcPayloadHeader
+name|header
 init|=
-name|dis
-operator|.
-name|readInt
+operator|new
+name|RpcPayloadHeader
 argument_list|()
 decl_stmt|;
-comment|// try to read an id
+name|header
+operator|.
+name|readFields
+argument_list|(
+name|dis
+argument_list|)
+expr_stmt|;
+comment|// Read the RpcPayload header
 if|if
 condition|(
 name|LOG
@@ -6998,15 +7083,44 @@ name|debug
 argument_list|(
 literal|" got #"
 operator|+
-name|id
+name|header
+operator|.
+name|getCallId
+argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|header
+operator|.
+name|getOperation
+argument_list|()
+operator|!=
+name|RpcPayloadOperation
+operator|.
+name|RPC_FINAL_PAYLOAD
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"IPC Server does not implement operation"
+operator|+
+name|header
+operator|.
+name|getOperation
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|Writable
-name|param
+name|rpcRequest
 decl_stmt|;
 try|try
 block|{
-name|param
+comment|//Read the rpc request
+name|rpcRequest
 operator|=
 name|ReflectionUtils
 operator|.
@@ -7017,8 +7131,7 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|//read param
-name|param
+name|rpcRequest
 operator|.
 name|readFields
 argument_list|(
@@ -7051,7 +7164,10 @@ init|=
 operator|new
 name|Call
 argument_list|(
-name|id
+name|header
+operator|.
+name|getCallId
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -7108,11 +7224,19 @@ init|=
 operator|new
 name|Call
 argument_list|(
-name|id
+name|header
+operator|.
+name|getCallId
+argument_list|()
 argument_list|,
-name|param
+name|rpcRequest
 argument_list|,
 name|this
+argument_list|,
+name|header
+operator|.
+name|getkind
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|callQueue
@@ -7459,11 +7583,17 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|": has #"
+literal|": has Call#"
 operator|+
 name|call
 operator|.
-name|id
+name|callId
+operator|+
+literal|"for RpcKind "
+operator|+
+name|call
+operator|.
+name|rpcKind
 operator|+
 literal|" from "
 operator|+
@@ -7521,7 +7651,7 @@ name|protocolName
 argument_list|,
 name|call
 operator|.
-name|param
+name|rpcRequest
 argument_list|,
 name|call
 operator|.
@@ -7569,7 +7699,7 @@ name|protocolName
 argument_list|,
 name|call
 operator|.
-name|param
+name|rpcRequest
 argument_list|,
 name|call
 operator|.
@@ -8296,7 +8426,7 @@ name|writeInt
 argument_list|(
 name|call
 operator|.
-name|id
+name|callId
 argument_list|)
 expr_stmt|;
 comment|// write call id

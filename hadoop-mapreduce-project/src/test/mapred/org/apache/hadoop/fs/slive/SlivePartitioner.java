@@ -124,6 +124,7 @@ name|value
 argument_list|)
 decl_stmt|;
 return|return
+operator|(
 name|oo
 operator|.
 name|getOperationType
@@ -131,6 +132,11 @@ argument_list|()
 operator|.
 name|hashCode
 argument_list|()
+operator|&
+name|Integer
+operator|.
+name|MAX_VALUE
+operator|)
 operator|%
 name|numPartitions
 return|;

@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.webapp
+DECL|package|org.apache.hadoop.yarn.webapp.log
 package|package
 name|org
 operator|.
@@ -14,11 +14,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
 name|webapp
+operator|.
+name|log
 package|;
 end_package
 
@@ -47,8 +45,6 @@ class|class
 name|AggregatedLogsNavBlock
 extends|extends
 name|HtmlBlock
-implements|implements
-name|NMWebParams
 block|{
 annotation|@
 name|Override

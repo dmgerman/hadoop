@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.logaggregation
+DECL|package|org.apache.hadoop.yarn.logaggregation
 package|package
 name|org
 operator|.
@@ -13,12 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
 operator|.
 name|logaggregation
 package|;

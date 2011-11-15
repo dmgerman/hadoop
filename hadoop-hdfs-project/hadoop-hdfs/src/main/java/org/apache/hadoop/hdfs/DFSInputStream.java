@@ -3585,6 +3585,11 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+argument_list|,
 name|sock
 argument_list|,
 name|file

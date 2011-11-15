@@ -960,6 +960,53 @@ operator|=
 name|amContainer
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCancelTokensWhenComplete ()
+specifier|public
+name|boolean
+name|getCancelTokensWhenComplete
+parameter_list|()
+block|{
+name|ApplicationSubmissionContextProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+comment|//There is a default so cancelTokens should never be null
+return|return
+name|p
+operator|.
+name|getCancelTokensWhenComplete
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setCancelTokensWhenComplete (boolean cancel)
+specifier|public
+name|void
+name|setCancelTokensWhenComplete
+parameter_list|(
+name|boolean
+name|cancel
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setCancelTokensWhenComplete
+argument_list|(
+name|cancel
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|convertFromProtoFormat (PriorityProto p)
 specifier|private
 name|PriorityPBImpl

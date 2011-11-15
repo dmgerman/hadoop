@@ -465,7 +465,9 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"page should show preview of file contents"
+literal|"page should show preview of file contents, got: "
+operator|+
+name|viewFilePage
 argument_list|,
 name|viewFilePage
 operator|.

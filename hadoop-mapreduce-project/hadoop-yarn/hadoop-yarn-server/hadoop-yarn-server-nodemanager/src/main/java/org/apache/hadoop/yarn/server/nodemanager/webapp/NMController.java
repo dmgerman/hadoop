@@ -180,6 +180,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|YarnWebParams
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -198,7 +214,7 @@ name|NMController
 extends|extends
 name|Controller
 implements|implements
-name|NMWebParams
+name|YarnWebParams
 block|{
 DECL|field|nmContext
 specifier|private

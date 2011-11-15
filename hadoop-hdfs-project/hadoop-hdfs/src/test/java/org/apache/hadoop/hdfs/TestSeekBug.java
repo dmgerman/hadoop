@@ -126,6 +126,20 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the presence of seek bug as described  * in HADOOP-508   */
 end_comment
@@ -392,10 +406,12 @@ index|[
 literal|100000
 index|]
 expr_stmt|;
-name|stm
+name|IOUtils
 operator|.
-name|read
+name|readFully
 argument_list|(
+name|stm
+argument_list|,
 name|actual
 argument_list|,
 literal|0
@@ -433,10 +449,12 @@ index|[
 literal|128
 index|]
 expr_stmt|;
-name|stm
+name|IOUtils
 operator|.
-name|read
+name|readFully
 argument_list|(
+name|stm
+argument_list|,
 name|actual
 argument_list|,
 literal|0

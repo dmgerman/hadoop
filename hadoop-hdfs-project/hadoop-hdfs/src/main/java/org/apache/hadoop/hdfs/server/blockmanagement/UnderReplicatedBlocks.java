@@ -96,6 +96,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|util
+operator|.
+name|LightWeightLinkedSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -175,10 +191,9 @@ decl_stmt|;
 comment|/** the queues themselves */
 DECL|field|priorityQueues
 specifier|private
-specifier|final
 name|List
 argument_list|<
-name|NavigableSet
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -188,14 +203,12 @@ init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|NavigableSet
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
 argument_list|>
-argument_list|(
-name|LEVEL
-argument_list|)
+argument_list|()
 decl_stmt|;
 comment|/** Create an object. */
 DECL|method|UnderReplicatedBlocks ()
@@ -222,7 +235,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|TreeSet
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>
@@ -391,7 +404,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|NavigableSet
+name|LightWeightLinkedSet
 argument_list|<
 name|Block
 argument_list|>

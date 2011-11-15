@@ -85,6 +85,15 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+DECL|method|stopClient (Object proxy)
+specifier|public
+name|void
+name|stopClient
+parameter_list|(
+name|Object
+name|proxy
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

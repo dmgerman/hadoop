@@ -1437,6 +1437,17 @@ argument_list|(
 name|renewer
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|result
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|result
+return|;
+block|}
 name|InetSocketAddress
 name|addr
 init|=

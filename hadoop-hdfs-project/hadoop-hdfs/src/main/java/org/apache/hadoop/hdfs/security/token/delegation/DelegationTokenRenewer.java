@@ -611,14 +611,14 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|DelegationTokenRenewer (final Class<?> clazz)
+DECL|method|DelegationTokenRenewer (final Class<T> clazz)
 specifier|public
 name|DelegationTokenRenewer
 parameter_list|(
 specifier|final
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|clazz
 parameter_list|)

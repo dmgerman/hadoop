@@ -190,16 +190,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -297,9 +287,12 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Test
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
-name|Ignore
+name|Test
 DECL|method|testDelegationToken ()
 specifier|public
 name|void
@@ -308,6 +301,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+specifier|final
 name|JobClient
 name|client
 decl_stmt|;
@@ -347,6 +341,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+specifier|final
 name|JobClient
 name|bobClient
 decl_stmt|;
@@ -386,6 +381,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+specifier|final
 name|Token
 argument_list|<
 name|DelegationTokenIdentifier
@@ -535,6 +531,27 @@ operator|<
 name|maxTime
 argument_list|)
 expr_stmt|;
+comment|// renew should work as user alice
+name|user1
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|client
 operator|.
 name|renewDelegationToken
@@ -549,6 +566,34 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// bob should fail to renew
+name|user2
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 try|try
 block|{
 name|bobClient
@@ -574,6 +619,34 @@ parameter_list|)
 block|{
 comment|// PASS
 block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// bob should fail to cancel
+name|user2
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 try|try
 block|{
 name|bobClient
@@ -587,7 +660,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"bob renew"
+literal|"bob cancel"
 argument_list|)
 expr_stmt|;
 block|}
@@ -599,6 +672,34 @@ parameter_list|)
 block|{
 comment|// PASS
 block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+comment|// alice should be able to cancel but only cancel once
+name|user1
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|client
 operator|.
 name|cancelDelegationToken
@@ -631,6 +732,13 @@ parameter_list|)
 block|{
 comment|// PASS
 block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

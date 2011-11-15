@@ -18,11 +18,23 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -87,8 +99,6 @@ DECL|class|TestLocalDFS
 specifier|public
 class|class
 name|TestLocalDFS
-extends|extends
-name|TestCase
 block|{
 DECL|method|writeFile (FileSystem fileSys, Path name)
 specifier|private
@@ -283,6 +293,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Tests get/set working directory in DFS.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testWorkingDirectory ()
 specifier|public
 name|void

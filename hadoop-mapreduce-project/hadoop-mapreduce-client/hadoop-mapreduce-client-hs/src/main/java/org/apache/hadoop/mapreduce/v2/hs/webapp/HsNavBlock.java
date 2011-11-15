@@ -467,6 +467,19 @@ argument_list|()
 operator|.
 name|a
 argument_list|(
+literal|"/logs"
+argument_list|,
+literal|"Local logs"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|li
+argument_list|()
+operator|.
+name|a
+argument_list|(
 literal|"/stacks"
 argument_list|,
 literal|"Server stacks"
