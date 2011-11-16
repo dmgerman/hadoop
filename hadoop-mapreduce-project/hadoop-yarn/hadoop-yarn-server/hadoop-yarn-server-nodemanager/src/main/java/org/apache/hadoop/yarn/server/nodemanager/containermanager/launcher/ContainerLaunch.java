@@ -1951,6 +1951,14 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1977,6 +1985,7 @@ literal|"null"
 operator|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// however the container process may have already started
 try|try
 block|{

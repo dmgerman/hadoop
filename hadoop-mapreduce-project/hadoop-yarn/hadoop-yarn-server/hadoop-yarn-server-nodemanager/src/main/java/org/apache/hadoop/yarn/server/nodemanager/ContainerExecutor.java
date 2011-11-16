@@ -409,6 +409,16 @@ return|return
 name|conf
 return|;
 block|}
+comment|/**    * Run the executor initialization steps.     * Verify that the necessary configs, permissions are in place.    * @throws IOException    */
+DECL|method|init ()
+specifier|public
+specifier|abstract
+name|void
+name|init
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Prepare the environment for containers in this application to execute.    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens -> $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc -> $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc -> $N/$user/$appId/filecache/idef    * @param user user name of application owner    * @param appId id of the application    * @param nmPrivateContainerTokens path to localized credentials, rsrc by NM    * @param nmAddr RPC address to contact NM    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
 DECL|method|startLocalizer (Path nmPrivateContainerTokens, InetSocketAddress nmAddr, String user, String appId, String locId, List<Path> localDirs)
 specifier|public

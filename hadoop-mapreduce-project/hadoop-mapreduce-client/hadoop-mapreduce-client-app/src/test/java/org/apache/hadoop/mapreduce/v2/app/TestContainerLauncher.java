@@ -632,33 +632,58 @@ operator|.
 name|FAILED
 argument_list|)
 expr_stmt|;
+name|String
+name|diagnostics
+init|=
+name|attempt
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"attempt.getDiagnostics: "
 operator|+
-name|attempt
-operator|.
-name|getDiagnostics
-argument_list|()
+name|diagnostics
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|swallowInterrupts
+condition|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"[Container launch failed for "
+operator|+
+literal|"container_0_0000_01_000000 : Start-container for "
+operator|+
+literal|"container_0_0000_01_000000 got interrupted. Returning.]"
+argument_list|,
+name|diagnostics
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|attempt
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+name|diagnostics
 operator|.
 name|contains
 argument_list|(
-literal|"Container launch failed for container_0_0000_01_000000 : "
+literal|"Container launch failed for "
+operator|+
+literal|"container_0_0000_01_000000 : "
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -666,13 +691,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|attempt
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+name|diagnostics
 operator|.
 name|contains
 argument_list|(
@@ -680,6 +699,7 @@ literal|": java.lang.InterruptedException"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|app
 operator|.
 name|stop
@@ -792,6 +812,10 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
+name|MRAppWithSlowNM
+operator|.
+name|this
+operator|.
 name|swallowInterrupts
 condition|)
 block|{
@@ -803,8 +827,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-else|else
-block|{
 name|Thread
 operator|.
 name|currentThread
@@ -813,7 +835,6 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 return|return
 literal|null

@@ -556,7 +556,9 @@ argument_list|()
 operator|.
 name|exec
 argument_list|(
-literal|"id -Gn"
+literal|"id -Gn "
+operator|+
+name|userName
 argument_list|)
 expr_stmt|;
 name|br
