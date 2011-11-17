@@ -114,6 +114,20 @@ name|MiniMRYarnCluster
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|JarFinder
+import|;
+end_import
+
 begin_comment
 comment|/**  * A MiniMRCluster factory. In MR2, it provides a wrapper MiniMRClientCluster  * interface around the MiniMRYarnCluster. While in MR1, it provides such  * wrapper around MiniMRCluster. This factory should be used in tests to provide  * an easy migration of tests across MR1 and MR2.  */
 end_comment
@@ -252,11 +266,21 @@ argument_list|(
 name|appJar
 argument_list|)
 expr_stmt|;
-name|job
+name|String
+name|callerJar
+init|=
+name|JarFinder
 operator|.
-name|setJarByClass
+name|getJar
 argument_list|(
 name|caller
+argument_list|)
+decl_stmt|;
+name|job
+operator|.
+name|setJar
+argument_list|(
+name|callerJar
 argument_list|)
 expr_stmt|;
 name|MiniMRYarnCluster
