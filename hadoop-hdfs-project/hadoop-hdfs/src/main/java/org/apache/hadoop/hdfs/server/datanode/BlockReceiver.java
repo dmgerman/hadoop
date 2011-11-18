@@ -1134,8 +1134,10 @@ name|dropCacheBehindWrites
 operator|=
 name|datanode
 operator|.
-name|shouldDropCacheBehindWrites
+name|getDnConf
 argument_list|()
+operator|.
+name|dropCacheBehindWrites
 expr_stmt|;
 name|this
 operator|.
@@ -1143,8 +1145,10 @@ name|syncBehindWrites
 operator|=
 name|datanode
 operator|.
-name|shouldSyncBehindWrites
+name|getDnConf
 argument_list|()
+operator|.
+name|syncBehindWrites
 expr_stmt|;
 specifier|final
 name|boolean
@@ -1441,6 +1445,9 @@ if|if
 condition|(
 name|datanode
 operator|.
+name|getDnConf
+argument_list|()
+operator|.
 name|syncOnClose
 operator|&&
 operator|(
@@ -1516,6 +1523,9 @@ expr_stmt|;
 if|if
 condition|(
 name|datanode
+operator|.
+name|getDnConf
+argument_list|()
 operator|.
 name|syncOnClose
 operator|&&
@@ -2195,6 +2205,9 @@ name|chunksPerPacket
 init|=
 operator|(
 name|datanode
+operator|.
+name|getDnConf
+argument_list|()
 operator|.
 name|writePacketSize
 operator|-
