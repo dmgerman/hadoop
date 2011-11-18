@@ -1094,6 +1094,9 @@ name|conf
 argument_list|,
 name|datanode
 operator|.
+name|getDnConf
+argument_list|()
+operator|.
 name|socketTimeout
 argument_list|)
 decl_stmt|;

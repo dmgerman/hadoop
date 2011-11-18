@@ -282,20 +282,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -847,16 +833,17 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+DECL|field|dnConf
+specifier|private
+specifier|final
+name|DNConf
+name|dnConf
+decl_stmt|;
 DECL|field|dataXceiverServer
 specifier|private
 specifier|final
 name|DataXceiverServer
 name|dataXceiverServer
-decl_stmt|;
-DECL|field|socketKeepaliveTimeout
-specifier|private
-name|int
-name|socketKeepaliveTimeout
 decl_stmt|;
 DECL|field|opStartTime
 specifier|private
@@ -933,6 +920,15 @@ name|datanode
 expr_stmt|;
 name|this
 operator|.
+name|dnConf
+operator|=
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|dataXceiverServer
 operator|=
 name|dataXceiverServer
@@ -956,24 +952,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-expr_stmt|;
-name|socketKeepaliveTimeout
-operator|=
-name|datanode
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
-argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -1139,6 +1117,8 @@ literal|0
 condition|)
 block|{
 assert|assert
+name|dnConf
+operator|.
 name|socketKeepaliveTimeout
 operator|>
 literal|0
@@ -1147,6 +1127,8 @@ name|s
 operator|.
 name|setSoTimeout
 argument_list|(
+name|dnConf
+operator|.
 name|socketKeepaliveTimeout
 argument_list|)
 expr_stmt|;
@@ -1298,6 +1280,8 @@ operator|.
 name|isClosed
 argument_list|()
 operator|&&
+name|dnConf
+operator|.
 name|socketKeepaliveTimeout
 operator|>
 literal|0
@@ -1450,7 +1434,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -1630,7 +1614,7 @@ name|ERROR
 argument_list|,
 name|msg
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -1648,7 +1632,7 @@ name|getStreamWithTimeout
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -2171,7 +2155,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -2366,7 +2350,7 @@ block|{
 name|int
 name|timeoutValue
 init|=
-name|datanode
+name|dnConf
 operator|.
 name|socketTimeout
 operator|+
@@ -2383,7 +2367,7 @@ decl_stmt|;
 name|int
 name|writeTimeout
 init|=
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 operator|+
@@ -3061,7 +3045,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3137,7 +3121,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3488,7 +3472,7 @@ name|ERROR_ACCESS_TOKEN
 argument_list|,
 literal|"Invalid access token"
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3542,7 +3526,7 @@ name|ERROR
 argument_list|,
 name|msg
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3598,7 +3582,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3879,7 +3863,7 @@ name|ERROR_ACCESS_TOKEN
 argument_list|,
 literal|"Invalid access token"
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -3933,7 +3917,7 @@ name|ERROR
 argument_list|,
 name|msg
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -4001,7 +3985,7 @@ name|proxySock
 argument_list|,
 name|proxyAddr
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketTimeout
 argument_list|)
@@ -4010,7 +3994,7 @@ name|proxySock
 operator|.
 name|setSoTimeout
 argument_list|(
-name|datanode
+name|dnConf
 operator|.
 name|socketTimeout
 argument_list|)
@@ -4024,7 +4008,7 @@ name|getOutputStream
 argument_list|(
 name|proxySock
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -4341,7 +4325,7 @@ name|opStatus
 argument_list|,
 name|errMsg
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)
@@ -4721,7 +4705,7 @@ name|getOutputStream
 argument_list|(
 name|s
 argument_list|,
-name|datanode
+name|dnConf
 operator|.
 name|socketWriteTimeout
 argument_list|)

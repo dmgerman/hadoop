@@ -661,8 +661,10 @@ name|readaheadLength
 operator|=
 name|datanode
 operator|.
-name|getReadaheadLength
+name|getDnConf
 argument_list|()
+operator|.
+name|readaheadLength
 expr_stmt|;
 name|this
 operator|.
@@ -670,8 +672,10 @@ name|shouldDropCacheBehindRead
 operator|=
 name|datanode
 operator|.
-name|shouldDropCacheBehindReads
+name|getDnConf
 argument_list|()
+operator|.
+name|dropCacheBehindReads
 expr_stmt|;
 synchronized|synchronized
 init|(
@@ -828,6 +832,9 @@ operator|.
 name|transferToAllowed
 operator|=
 name|datanode
+operator|.
+name|getDnConf
+argument_list|()
 operator|.
 name|transferToAllowed
 operator|&&

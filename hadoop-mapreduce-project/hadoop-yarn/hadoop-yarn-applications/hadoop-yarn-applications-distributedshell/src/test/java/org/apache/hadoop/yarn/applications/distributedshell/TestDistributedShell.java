@@ -80,9 +80,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|util
 operator|.
-name|JobConf
+name|JarFinder
 import|;
 end_import
 
@@ -178,20 +178,13 @@ specifier|static
 name|String
 name|APPMASTER_JAR
 init|=
-name|System
+name|JarFinder
 operator|.
-name|getProperty
-argument_list|(
-literal|"yarn.ds.jar"
-argument_list|,
-name|JobConf
-operator|.
-name|findContainingJar
+name|getJar
 argument_list|(
 name|ApplicationMaster
 operator|.
 name|class
-argument_list|)
 argument_list|)
 decl_stmt|;
 annotation|@
