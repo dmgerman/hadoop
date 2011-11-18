@@ -233,10 +233,14 @@ argument_list|,
 name|nn
 argument_list|)
 expr_stmt|;
-name|bpos
+name|dn
 operator|.
-name|setupBPStorage
-argument_list|()
+name|initBlockPool
+argument_list|(
+name|bpos
+argument_list|,
+name|nsifno
+argument_list|)
 expr_stmt|;
 block|}
 block|}

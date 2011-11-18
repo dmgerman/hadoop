@@ -233,6 +233,25 @@ return|return
 name|secretMgr
 return|;
 block|}
+DECL|method|isBlockPoolRegistered (String bpid)
+specifier|public
+specifier|synchronized
+name|boolean
+name|isBlockPoolRegistered
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+return|return
+name|map
+operator|.
+name|containsKey
+argument_list|(
+name|bpid
+argument_list|)
+return|;
+block|}
 comment|/** Return an empty BlockTokenIdentifer */
 annotation|@
 name|Override
