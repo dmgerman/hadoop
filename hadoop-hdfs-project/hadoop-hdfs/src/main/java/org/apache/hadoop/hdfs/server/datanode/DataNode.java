@@ -2408,6 +2408,34 @@ name|JSON
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**********************************************************  * DataNode is a class (and program) that stores a set of  * blocks for a DFS deployment.  A single deployment can  * have one or many DataNodes.  Each DataNode communicates  * regularly with a single NameNode.  It also communicates  * with client code and other DataNodes from time to time.  *  * DataNodes store a series of named blocks.  The DataNode  * allows client code to read these blocks, or to write new  * block data.  The DataNode may also, in response to instructions  * from its NameNode, delete blocks or copy blocks to/from other  * DataNodes.  *  * The DataNode maintains just one critical table:  *   block-> stream of bytes (of BLOCK_SIZE or less)  *  * This info is stored on a local disk.  The DataNode  * reports the table's contents to the NameNode upon startup  * and every so often afterwards.  *  * DataNodes spend their lives in an endless loop of asking  * the NameNode for something to do.  A NameNode cannot connect  * to a DataNode directly; a NameNode simply returns values from  * functions invoked by a DataNode.  *  * DataNodes maintain an open server socket so that client code   * or other DataNodes can read/write data.  The host/port for  * this server is reported to the NameNode, which then sends that  * information to clients or other DataNodes that might be interested.  *  **********************************************************/
 end_comment
@@ -4773,13 +4801,15 @@ specifier|final
 name|InetSocketAddress
 name|nnAddr
 decl_stmt|;
-DECL|field|bpRegistration
-name|DatanodeRegistration
-name|bpRegistration
-decl_stmt|;
+comment|/**      * Information about the namespace that this service      * is registering with. This is assigned after      * the first phase of the handshake.      */
 DECL|field|bpNSInfo
 name|NamespaceInfo
 name|bpNSInfo
+decl_stmt|;
+comment|/**      * The registration information for this block pool.      * This is assigned after the second phase of the      * handshake.      */
+DECL|field|bpRegistration
+name|DatanodeRegistration
+name|bpRegistration
 decl_stmt|;
 DECL|field|lastBlockReport
 name|long
@@ -4808,11 +4838,6 @@ DECL|field|bpNamenode
 specifier|private
 name|DatanodeProtocol
 name|bpNamenode
-decl_stmt|;
-DECL|field|blockPoolId
-specifier|private
-name|String
-name|blockPoolId
 decl_stmt|;
 DECL|field|lastHeartbeat
 specifier|private
@@ -4897,15 +4922,6 @@ name|dn
 expr_stmt|;
 name|this
 operator|.
-name|bpRegistration
-operator|=
-name|dn
-operator|.
-name|createRegistration
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
 name|nnAddr
 operator|=
 name|nnAddr
@@ -4921,10 +4937,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * returns true if BP thread has completed initialization of storage      * and has registered with the corresponding namenode      * @return true if initialized      */
-DECL|method|initialized ()
+DECL|method|isInitialized ()
 specifier|public
 name|boolean
-name|initialized
+name|isInitialized
 parameter_list|()
 block|{
 return|return
@@ -4952,9 +4968,124 @@ name|String
 name|getBlockPoolId
 parameter_list|()
 block|{
+if|if
+condition|(
+name|bpNSInfo
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
-name|blockPoolId
+name|bpNSInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 return|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Block pool ID needed, but service not yet registered with NN"
+argument_list|,
+operator|new
+name|Exception
+argument_list|(
+literal|"trace"
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+DECL|method|getNamespaceInfo ()
+specifier|public
+name|NamespaceInfo
+name|getNamespaceInfo
+parameter_list|()
+block|{
+return|return
+name|bpNSInfo
+return|;
+block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+if|if
+condition|(
+name|bpNSInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// If we haven't yet connected to our NN, we don't yet know our
+comment|// own block pool ID.
+comment|// If _none_ of the block pools have connected yet, we don't even
+comment|// know the storage ID of this DN.
+name|String
+name|storageId
+init|=
+name|dn
+operator|.
+name|getStorageId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|storageId
+operator|==
+literal|null
+operator|||
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|storageId
+argument_list|)
+condition|)
+block|{
+name|storageId
+operator|=
+literal|"unknown"
+expr_stmt|;
+block|}
+return|return
+literal|"Block pool<registering> (storage id "
+operator|+
+name|storageId
+operator|+
+literal|") connecting to "
+operator|+
+name|nnAddr
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|"Block pool "
+operator|+
+name|getBlockPoolId
+argument_list|()
+operator|+
+literal|" (storage id "
+operator|+
+name|dn
+operator|.
+name|getStorageId
+argument_list|()
+operator|+
+literal|") registered with "
+operator|+
+name|nnAddr
+return|;
+block|}
 block|}
 DECL|method|getNNSocketAddress ()
 specifier|private
@@ -4966,28 +5097,9 @@ return|return
 name|nnAddr
 return|;
 block|}
-DECL|method|setNamespaceInfo (NamespaceInfo nsinfo)
-name|void
-name|setNamespaceInfo
-parameter_list|(
-name|NamespaceInfo
-name|nsinfo
-parameter_list|)
-block|{
-name|bpNSInfo
-operator|=
-name|nsinfo
-expr_stmt|;
-name|this
-operator|.
-name|blockPoolId
-operator|=
-name|nsinfo
-operator|.
-name|getBlockPoolID
-argument_list|()
-expr_stmt|;
-block|}
+comment|/**      * Used to inject a spy NN in the unit tests.      */
+annotation|@
+name|VisibleForTesting
 DECL|method|setNameNode (DatanodeProtocol dnProtocol)
 name|void
 name|setNameNode
@@ -5001,28 +5113,23 @@ operator|=
 name|dnProtocol
 expr_stmt|;
 block|}
-DECL|method|handshake ()
-specifier|private
+comment|/**      * Perform the first part of the handshake with the NameNode.      * This calls<code>versionRequest</code> to determine the NN's      * namespace and version info. It automatically retries until      * the NN responds or the DN is shutting down.      *       * @return the NamespaceInfo      * @throws IncorrectVersionException if the remote NN does not match      * this DN's version      */
+DECL|method|retrieveNamespaceInfo ()
 name|NamespaceInfo
-name|handshake
+name|retrieveNamespaceInfo
 parameter_list|()
 throws|throws
-name|IOException
+name|IncorrectVersionException
 block|{
 name|NamespaceInfo
 name|nsInfo
 init|=
-operator|new
-name|NamespaceInfo
-argument_list|()
+literal|null
 decl_stmt|;
 while|while
 condition|(
-name|dn
-operator|.
 name|shouldRun
-operator|&&
-name|shouldServiceRun
+argument_list|()
 condition|)
 block|{
 try|try
@@ -5034,83 +5141,18 @@ operator|.
 name|versionRequest
 argument_list|()
 expr_stmt|;
-comment|// verify build version
-name|String
-name|nsVer
-init|=
-name|nsInfo
-operator|.
-name|getBuildVersion
-argument_list|()
-decl_stmt|;
-name|String
-name|stVer
-init|=
-name|Storage
-operator|.
-name|getBuildVersion
-argument_list|()
-decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"handshake: namespace info = "
+name|this
+operator|+
+literal|" received versionRequest response: "
 operator|+
 name|nsInfo
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|nsVer
-operator|.
-name|equals
-argument_list|(
-name|stVer
-argument_list|)
-condition|)
-block|{
-name|String
-name|errorMsg
-init|=
-literal|"Incompatible build versions: bp = "
-operator|+
-name|blockPoolId
-operator|+
-literal|"namenode BV = "
-operator|+
-name|nsVer
-operator|+
-literal|"; datanode BV = "
-operator|+
-name|stVer
-decl_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|errorMsg
-argument_list|)
-expr_stmt|;
-name|bpNamenode
-operator|.
-name|errorReport
-argument_list|(
-name|bpRegistration
-argument_list|,
-name|DatanodeProtocol
-operator|.
-name|NOTIFY
-argument_list|,
-name|errorMsg
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 break|break;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -5147,36 +5189,118 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// try again in a second
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
+name|sleepAndLogInterrupts
 argument_list|(
 literal|5000
+argument_list|,
+literal|"requesting version info from NN"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{}
+if|if
+condition|(
+name|nsInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|checkNNVersion
+argument_list|(
+name|nsInfo
+argument_list|)
+expr_stmt|;
 block|}
-assert|assert
+return|return
+name|nsInfo
+return|;
+block|}
+DECL|method|checkNNVersion (NamespaceInfo nsInfo)
+specifier|private
+name|void
+name|checkNNVersion
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+throws|throws
+name|IncorrectVersionException
+block|{
+comment|// build and layout versions should match
+name|String
+name|nsBuildVer
+init|=
+name|nsInfo
+operator|.
+name|getBuildVersion
+argument_list|()
+decl_stmt|;
+name|String
+name|stBuildVer
+init|=
+name|Storage
+operator|.
+name|getBuildVersion
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|nsBuildVer
+operator|.
+name|equals
+argument_list|(
+name|stBuildVer
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Data-node and name-node Build versions must be the same. "
+operator|+
+literal|"Namenode build version: "
+operator|+
+name|nsBuildVer
+operator|+
+literal|"Datanode "
+operator|+
+literal|"build version: "
+operator|+
+name|stBuildVer
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IncorrectVersionException
+argument_list|(
+name|nsBuildVer
+argument_list|,
+literal|"namenode"
+argument_list|,
+name|stBuildVer
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
-operator|==
+operator|!=
 name|nsInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|:
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
 literal|"Data-node and name-node layout versions must be the same."
 operator|+
-literal|"Expected: "
+literal|" Expected: "
 operator|+
 name|HdfsConstants
 operator|.
@@ -5184,29 +5308,37 @@ name|LAYOUT_VERSION
 operator|+
 literal|" actual "
 operator|+
-name|nsInfo
+name|bpNSInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-assert|;
-return|return
-name|nsInfo
-return|;
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IncorrectVersionException
+argument_list|(
+name|bpNSInfo
+operator|.
+name|getLayoutVersion
+argument_list|()
+argument_list|,
+literal|"namenode"
+argument_list|)
+throw|;
 block|}
-DECL|method|setupBP (Configuration conf)
+block|}
+DECL|method|connectToNNAndHandshake ()
+specifier|private
 name|void
-name|setupBP
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+name|connectToNNAndHandshake
+parameter_list|()
 throws|throws
 name|IOException
 block|{
 comment|// get NN proxy
-name|DatanodeProtocol
-name|dnp
-init|=
+name|bpNamenode
+operator|=
 operator|(
 name|DatanodeProtocol
 operator|)
@@ -5224,93 +5356,33 @@ name|versionID
 argument_list|,
 name|nnAddr
 argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-name|setNameNode
-argument_list|(
-name|dnp
-argument_list|)
-expr_stmt|;
-comment|// handshake with NN
-name|NamespaceInfo
-name|nsInfo
-init|=
-name|handshake
+name|dn
+operator|.
+name|getConf
 argument_list|()
-decl_stmt|;
-name|setNamespaceInfo
-argument_list|(
-name|nsInfo
 argument_list|)
 expr_stmt|;
+comment|// First phase of the handshake with NN - get the namespace
+comment|// info.
+name|bpNSInfo
+operator|=
+name|retrieveNamespaceInfo
+argument_list|()
+expr_stmt|;
+comment|// Now that we know the namespace ID, etc, we can pass this to the DN.
+comment|// The DN can now initialize its local storage if we are the
+comment|// first BP to handshake, etc.
 name|dn
 operator|.
 name|initBlockPool
 argument_list|(
 name|this
-argument_list|,
-name|nsInfo
 argument_list|)
 expr_stmt|;
-name|bpRegistration
-operator|.
-name|setStorageID
-argument_list|(
-name|dn
-operator|.
-name|getStorageId
+comment|// Second phase of the handshake with the NN.
+name|register
 argument_list|()
-argument_list|)
 expr_stmt|;
-name|StorageInfo
-name|storageInfo
-init|=
-name|dn
-operator|.
-name|storage
-operator|.
-name|getBPStorage
-argument_list|(
-name|blockPoolId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|storageInfo
-operator|==
-literal|null
-condition|)
-block|{
-comment|// it's null in the case of SimulatedDataSet
-name|bpRegistration
-operator|.
-name|storageInfo
-operator|.
-name|layoutVersion
-operator|=
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-expr_stmt|;
-name|bpRegistration
-operator|.
-name|setStorageInfo
-argument_list|(
-name|nsInfo
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|bpRegistration
-operator|.
-name|setStorageInfo
-argument_list|(
-name|storageInfo
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**      * This methods  arranges for the data node to send the block report at       * the next heartbeat.      */
 DECL|method|scheduleBlockReport (long delay)
@@ -5519,7 +5591,8 @@ name|blockReceivedAndDeleted
 argument_list|(
 name|bpRegistration
 argument_list|,
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|receivedAndDeletedBlockArray
 argument_list|)
@@ -5611,7 +5684,8 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -5628,7 +5702,8 @@ argument_list|()
 operator|+
 literal|" vs. "
 operator|+
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -5697,7 +5772,8 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -5714,7 +5790,8 @@ argument_list|()
 operator|+
 literal|" vs. "
 operator|+
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;
@@ -5791,7 +5868,8 @@ name|data
 operator|.
 name|getBlockReport
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Send block report
@@ -5809,7 +5887,8 @@ name|blockReport
 argument_list|(
 name|bpRegistration
 argument_list|,
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|bReport
 operator|.
@@ -5974,7 +6053,8 @@ name|data
 operator|.
 name|getBlockPoolUsed
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 argument_list|,
 name|dn
@@ -6191,11 +6271,8 @@ comment|// Now loop for a long time....
 comment|//
 while|while
 condition|(
-name|dn
-operator|.
 name|shouldRun
-operator|&&
-name|shouldServiceRun
+argument_list|()
 condition|)
 block|{
 try|try
@@ -6366,7 +6443,8 @@ name|addBlockPool
 argument_list|(
 name|this
 operator|.
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6426,16 +6504,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"BPOfferService for block pool="
+literal|"BPOfferService for "
 operator|+
 name|this
-operator|.
-name|getBlockPoolId
-argument_list|()
 operator|+
-literal|" received exception:"
-operator|+
-name|ie
+literal|" interrupted"
 argument_list|)
 expr_stmt|;
 block|}
@@ -6500,9 +6573,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"blockpool "
-operator|+
-name|blockPoolId
+name|this
 operator|+
 literal|" is shutting down"
 argument_list|,
@@ -6581,7 +6652,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// while (shouldRun&& shouldServiceRun)
+comment|// while (shouldRun())
 block|}
 comment|// offerService
 comment|/**      * Register one bp with the corresponding NameNode      *<p>      * The bpDatanode needs to register with the namenode on startup in order      * 1) to report which storage it is serving now and       * 2) to receive a registrationID      *        * issued by the namenode to recognize registered datanodes.      *       * @see FSNamesystem#registerDatanode(DatanodeRegistration)      * @throws IOException      */
@@ -6592,136 +6663,41 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|bpNSInfo
+operator|!=
+literal|null
+argument_list|,
+literal|"register() should be called after handshake()"
+argument_list|)
+expr_stmt|;
+comment|// The handshake() phase loaded the block pool storage
+comment|// off disk - so update the bpRegistration object from that info
+name|bpRegistration
+operator|=
+name|dn
+operator|.
+name|createBPRegistration
+argument_list|(
+name|bpNSInfo
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"in register: sid="
+name|this
 operator|+
-name|bpRegistration
-operator|.
-name|getStorageID
-argument_list|()
-operator|+
-literal|";SI="
-operator|+
-name|bpRegistration
-operator|.
-name|storageInfo
+literal|" beginning handshake with NN"
 argument_list|)
 expr_stmt|;
-comment|// build and layout versions should match
-name|String
-name|nsBuildVer
-init|=
-name|bpNamenode
-operator|.
-name|versionRequest
-argument_list|()
-operator|.
-name|getBuildVersion
-argument_list|()
-decl_stmt|;
-name|String
-name|stBuildVer
-init|=
-name|Storage
-operator|.
-name|getBuildVersion
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|nsBuildVer
-operator|.
-name|equals
-argument_list|(
-name|stBuildVer
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Data-node and name-node Build versions must be "
-operator|+
-literal|"the same. Namenode build version: "
-operator|+
-name|nsBuildVer
-operator|+
-literal|"Datanode "
-operator|+
-literal|"build version: "
-operator|+
-name|stBuildVer
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IncorrectVersionException
-argument_list|(
-name|nsBuildVer
-argument_list|,
-literal|"namenode"
-argument_list|,
-name|stBuildVer
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-operator|!=
-name|bpNSInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Data-node and name-node layout versions must be "
-operator|+
-literal|"the same. Expected: "
-operator|+
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-operator|+
-literal|" actual "
-operator|+
-name|bpNSInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IncorrectVersionException
-argument_list|(
-name|bpNSInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-argument_list|,
-literal|"namenode"
-argument_list|)
-throw|;
-block|}
 while|while
 condition|(
-name|dn
-operator|.
 name|shouldRun
-operator|&&
-name|shouldServiceRun
+argument_list|()
 condition|)
 block|{
 try|try
@@ -6734,30 +6710,6 @@ operator|.
 name|registerDatanode
 argument_list|(
 name|bpRegistration
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"bpReg after ="
-operator|+
-name|bpRegistration
-operator|.
-name|storageInfo
-operator|+
-literal|";sid="
-operator|+
-name|bpRegistration
-operator|.
-name|storageID
-operator|+
-literal|";name="
-operator|+
-name|bpRegistration
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6778,44 +6730,34 @@ operator|+
 name|nnAddr
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
+name|sleepAndLogInterrupts
 argument_list|(
 literal|1000
+argument_list|,
+literal|"connecting to server"
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{}
 block|}
-block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Block pool "
+operator|+
+name|this
+operator|+
+literal|" successfully registered with NN"
+argument_list|)
+expr_stmt|;
 name|dn
 operator|.
 name|bpRegistrationSucceeded
 argument_list|(
 name|bpRegistration
 argument_list|,
-name|blockPoolId
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"in register:"
-operator|+
-literal|";bpDNR="
-operator|+
-name|bpRegistration
-operator|.
-name|storageInfo
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// random short delay - helps scatter the BR from all DNs
@@ -6826,6 +6768,49 @@ operator|.
 name|initialBlockReportDelay
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|sleepAndLogInterrupts (int millis, String stateString)
+specifier|private
+name|void
+name|sleepAndLogInterrupts
+parameter_list|(
+name|int
+name|millis
+parameter_list|,
+name|String
+name|stateString
+parameter_list|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|millis
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BPOfferService "
+operator|+
+name|this
+operator|+
+literal|" interrupted while "
+operator|+
+name|stateString
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**      * No matter what kind of exception we get, keep retrying to offerService().      * That's the loop that connects to the NameNode and provides basic DataNode      * functionality.      *      * Only stop when "shouldRun" or "shouldServiceRun" is turned off, which can      * happen either at shutdown or due to refreshNamenodes.      */
 annotation|@
@@ -6840,17 +6825,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|bpRegistration
+name|this
 operator|+
-literal|"In BPOfferService.run, data = "
-operator|+
-name|dn
-operator|.
-name|data
-operator|+
-literal|";bp="
-operator|+
-name|blockPoolId
+literal|" starting to offer service"
 argument_list|)
 expr_stmt|;
 try|try
@@ -6859,14 +6836,7 @@ comment|// init stuff
 try|try
 block|{
 comment|// setup storage
-name|setupBP
-argument_list|(
-name|dn
-operator|.
-name|conf
-argument_list|)
-expr_stmt|;
-name|register
+name|connectToNNAndHandshake
 argument_list|()
 expr_stmt|;
 block|}
@@ -6882,11 +6852,9 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-name|bpRegistration
+literal|"Initialization failed for block pool "
 operator|+
-literal|" initialization failed for block pool "
-operator|+
-name|blockPoolId
+name|this
 argument_list|,
 name|ioe
 argument_list|)
@@ -6900,11 +6868,8 @@ expr_stmt|;
 comment|// bp is initialized;
 while|while
 condition|(
-name|dn
-operator|.
 name|shouldRun
-operator|&&
-name|shouldServiceRun
+argument_list|()
 condition|)
 block|{
 try|try
@@ -6926,47 +6891,20 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Exception in BPOfferService"
+literal|"Exception in BPOfferService for "
+operator|+
+name|this
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|dn
-operator|.
-name|shouldRun
-operator|&&
-name|shouldServiceRun
-condition|)
-block|{
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
+name|sleepAndLogInterrupts
 argument_list|(
 literal|5000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Received exception"
 argument_list|,
-name|ie
+literal|"offering service"
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 block|}
 block|}
@@ -6980,7 +6918,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpected exception"
+literal|"Unexpected exception in block pool "
+operator|+
+name|this
 argument_list|,
 name|ex
 argument_list|)
@@ -6992,27 +6932,30 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|bpRegistration
+literal|"Ending block pool service for: "
 operator|+
-literal|" ending block pool service for: "
-operator|+
-name|blockPoolId
-operator|+
-literal|" thread "
-operator|+
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|getId
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 name|cleanUp
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|shouldRun ()
+specifier|private
+name|boolean
+name|shouldRun
+parameter_list|()
+block|{
+return|return
+name|shouldServiceRun
+operator|&&
+name|dn
+operator|.
+name|shouldRun
+argument_list|()
+return|;
 block|}
 comment|/**      * Process an array of datanode commands      *       * @param cmds an array of datanode commands      * @return true if further processing may be required or false otherwise.       */
 DECL|method|processCommand (DatanodeCommand[] cmds)
@@ -7279,13 +7222,16 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|dn
-operator|.
 name|shouldRun
-operator|&&
-name|shouldServiceRun
+argument_list|()
 condition|)
 block|{
+comment|// re-retrieve namespace info to make sure that, if the NN
+comment|// was restarted, we still match its version (HDFS-2120)
+name|retrieveNamespaceInfo
+argument_list|()
+expr_stmt|;
+comment|// and re-register
 name|register
 argument_list|()
 expr_stmt|;
@@ -7375,7 +7321,8 @@ name|blockPoolTokenSecretManager
 operator|.
 name|setKeys
 argument_list|(
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 operator|(
 operator|(
@@ -7508,7 +7455,8 @@ name|UpgradeManagerDatanode
 argument_list|(
 name|dn
 argument_list|,
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -7683,6 +7631,87 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Create a DatanodeRegistration for a specific block pool.    * @param nsInfo the namespace info from the first part of the NN handshake    */
+DECL|method|createBPRegistration (NamespaceInfo nsInfo)
+name|DatanodeRegistration
+name|createBPRegistration
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+block|{
+name|DatanodeRegistration
+name|bpRegistration
+init|=
+name|createUnknownBPRegistration
+argument_list|()
+decl_stmt|;
+name|String
+name|blockPoolId
+init|=
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
+decl_stmt|;
+name|bpRegistration
+operator|.
+name|setStorageID
+argument_list|(
+name|getStorageId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|StorageInfo
+name|storageInfo
+init|=
+name|storage
+operator|.
+name|getBPStorage
+argument_list|(
+name|blockPoolId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storageInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// it's null in the case of SimulatedDataSet
+name|bpRegistration
+operator|.
+name|storageInfo
+operator|.
+name|layoutVersion
+operator|=
+name|HdfsConstants
+operator|.
+name|LAYOUT_VERSION
+expr_stmt|;
+name|bpRegistration
+operator|.
+name|setStorageInfo
+argument_list|(
+name|nsInfo
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|bpRegistration
+operator|.
+name|setStorageInfo
+argument_list|(
+name|storageInfo
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|bpRegistration
+return|;
 block|}
 comment|/**    * Check that the registration returned from a NameNode is consistent    * with the information in the storage. If the storage is fresh/unformatted,    * sets the storage ID based on this registration.    * Also updates the block pool's state in the secret manager.    */
 DECL|method|bpRegistrationSucceeded (DatanodeRegistration bpRegistration, String blockPoolId)
@@ -8013,19 +8042,42 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initBlockPool (BPOfferService bpOfferService, NamespaceInfo nsInfo)
+comment|/**    * One of the Block Pools has successfully connected to its NN.    * This initializes the local storage for that block pool,    * checks consistency of the NN's cluster ID, etc.    *     * If this is the first block pool to register, this also initializes    * the datanode-scoped storage.    *     * @param nsInfo the handshake response from the NN.    * @throws IOException if the NN is inconsistent with the local storage.    */
+DECL|method|initBlockPool (BPOfferService bpos)
 name|void
 name|initBlockPool
 parameter_list|(
 name|BPOfferService
-name|bpOfferService
-parameter_list|,
-name|NamespaceInfo
-name|nsInfo
+name|bpos
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|NamespaceInfo
+name|nsInfo
+init|=
+name|bpos
+operator|.
+name|getNamespaceInfo
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|nsInfo
+operator|!=
+literal|null
+argument_list|,
+literal|"Block pool "
+operator|+
+name|bpos
+operator|+
+literal|" should have retrieved "
+operator|+
+literal|"its namespace info before calling initBlockPool."
+argument_list|)
+expr_stmt|;
 name|String
 name|blockPoolId
 init|=
@@ -8034,11 +8086,12 @@ operator|.
 name|getBlockPoolID
 argument_list|()
 decl_stmt|;
+comment|// Register the new block pool with the BP manager.
 name|blockPoolManager
 operator|.
 name|addBlockPool
 argument_list|(
-name|bpOfferService
+name|bpos
 argument_list|)
 expr_stmt|;
 synchronized|synchronized
@@ -8186,6 +8239,8 @@ name|nsInfo
 argument_list|)
 expr_stmt|;
 block|}
+comment|// In the case that this is the first block pool to connect, initialize
+comment|// the dataset, block scanners, etc.
 name|initFsDataSet
 argument_list|()
 expr_stmt|;
@@ -8198,19 +8253,17 @@ name|data
 operator|.
 name|addBlockPool
 argument_list|(
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
+name|blockPoolId
 argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createRegistration ()
+comment|/**    * Create a DatanodeRegistration object with no valid StorageInfo.    * This is used when reporting an error during handshake - ie    * before we can load any specific block pool.    */
+DECL|method|createUnknownBPRegistration ()
 specifier|private
 name|DatanodeRegistration
-name|createRegistration
+name|createUnknownBPRegistration
 parameter_list|()
 block|{
 name|DatanodeRegistration
@@ -12473,44 +12526,6 @@ operator|.
 name|bpNamenode
 return|;
 block|}
-comment|/**    * To be used by tests only to set a mock namenode in BPOfferService    */
-DECL|method|setBPNamenode (String bpid, DatanodeProtocol namenode)
-name|void
-name|setBPNamenode
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|DatanodeProtocol
-name|namenode
-parameter_list|)
-block|{
-name|BPOfferService
-name|bp
-init|=
-name|blockPoolManager
-operator|.
-name|get
-argument_list|(
-name|bpid
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|bp
-operator|!=
-literal|null
-condition|)
-block|{
-name|bp
-operator|.
-name|setNameNode
-argument_list|(
-name|namenode
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/** Block synchronization */
 DECL|method|syncBlock (RecoveringBlock rBlock, List<BlockRecord> syncList)
 name|void
@@ -13766,7 +13781,8 @@ argument_list|()
 argument_list|,
 name|bpos
 operator|.
-name|blockPoolId
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -14151,7 +14167,7 @@ condition|(
 operator|!
 name|bp
 operator|.
-name|initialized
+name|isInitialized
 argument_list|()
 operator|||
 operator|!
@@ -14233,6 +14249,15 @@ parameter_list|()
 block|{
 return|return
 name|dnConf
+return|;
+block|}
+DECL|method|shouldRun ()
+name|boolean
+name|shouldRun
+parameter_list|()
+block|{
+return|return
+name|shouldRun
 return|;
 block|}
 block|}
