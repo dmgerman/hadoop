@@ -2539,7 +2539,7 @@ decl_stmt|;
 comment|/**    * Use {@link NetUtils#createSocketAddr(String)} instead.    */
 annotation|@
 name|Deprecated
-DECL|method|createSocketAddr (String target )
+DECL|method|createSocketAddr (String target)
 specifier|public
 specifier|static
 name|InetSocketAddress
@@ -2548,8 +2548,6 @@ parameter_list|(
 name|String
 name|target
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|NetUtils
@@ -2986,8 +2984,6 @@ DECL|method|joinAll ()
 name|void
 name|joinAll
 parameter_list|()
-throws|throws
-name|InterruptedException
 block|{
 for|for
 control|(
@@ -3016,8 +3012,6 @@ name|conf
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|LOG
 operator|.
@@ -9991,8 +9985,6 @@ specifier|final
 name|String
 name|clientname
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -13947,8 +13939,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
 name|blockPoolManager
 operator|.
 name|refreshNamenodes
@@ -13956,31 +13946,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ex
-parameter_list|)
-block|{
-name|IOException
-name|eio
-init|=
-operator|new
-name|IOException
-argument_list|()
-decl_stmt|;
-name|eio
-operator|.
-name|initCause
-argument_list|(
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-name|eio
-throw|;
-block|}
 block|}
 annotation|@
 name|Override

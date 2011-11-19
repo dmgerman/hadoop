@@ -2510,9 +2510,6 @@ name|Math
 operator|.
 name|min
 argument_list|(
-operator|(
-name|long
-operator|)
 name|len
 argument_list|,
 operator|(

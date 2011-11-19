@@ -7864,9 +7864,6 @@ name|blockManager
 operator|.
 name|maxReplication
 argument_list|,
-operator|(
-name|long
-operator|)
 literal|0
 argument_list|)
 expr_stmt|;
@@ -8190,9 +8187,6 @@ argument_list|()
 expr_stmt|;
 name|replication
 operator|=
-operator|(
-name|int
-operator|)
 name|pendingFile
 operator|.
 name|getReplication
@@ -11354,6 +11348,10 @@ operator|-
 literal|2
 operator|&&
 name|curBlock
+operator|!=
+literal|null
+operator|&&
+name|curBlock
 operator|.
 name|getBlockUCState
 argument_list|()
@@ -11736,8 +11734,6 @@ parameter_list|,
 name|INodeFileUnderConstruction
 name|pendingFile
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 assert|assert
 name|hasWriteLock
@@ -12258,7 +12254,15 @@ block|}
 block|}
 if|if
 condition|(
+operator|(
 name|closeFile
+operator|)
+operator|&&
+operator|(
+name|descriptors
+operator|!=
+literal|null
+operator|)
 condition|)
 block|{
 comment|// the file is getting closed. Insert block locations into blockManager.
@@ -14453,12 +14457,7 @@ call|(
 name|int
 call|)
 argument_list|(
-operator|(
-operator|(
-name|double
-operator|)
 name|blockTotal
-operator|)
 operator|*
 name|replQueueThreshold
 argument_list|)
@@ -14480,9 +14479,6 @@ parameter_list|)
 block|{
 if|if
 condition|(
-operator|(
-name|int
-operator|)
 name|replication
 operator|==
 name|safeReplication
@@ -14960,7 +14956,7 @@ return|return
 name|resText
 return|;
 block|}
-comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      */
+comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      * @throws IOException       */
 DECL|method|isConsistent ()
 specifier|private
 name|boolean

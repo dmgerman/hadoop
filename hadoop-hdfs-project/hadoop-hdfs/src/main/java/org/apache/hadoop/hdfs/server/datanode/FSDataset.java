@@ -2505,9 +2505,6 @@ argument_list|()
 operator|||
 name|metaFileLen
 operator|<
-operator|(
-name|long
-operator|)
 name|crcHeaderLen
 condition|)
 block|{
@@ -3133,8 +3130,6 @@ DECL|method|getCapacity ()
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|long
 name|remaining
@@ -4332,8 +4327,6 @@ specifier|private
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|long
 name|capacity
@@ -8408,9 +8401,6 @@ name|IOException
 argument_list|(
 literal|"Block "
 operator|+
-operator|(
-name|Block
-operator|)
 name|replicaInfo
 operator|+
 literal|" reopen failed. "
@@ -10155,8 +10145,6 @@ parameter_list|,
 name|Block
 name|b
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|//Should we check for metadata file too?
 name|File
@@ -11566,9 +11554,6 @@ name|warn
 argument_list|(
 literal|"Added missing block to memory "
 operator|+
-operator|(
-name|Block
-operator|)
 name|diskBlockInfo
 argument_list|)
 expr_stmt|;
@@ -12871,8 +12856,6 @@ name|String
 index|[]
 name|getBPIdlist
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|volumeMap
