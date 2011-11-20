@@ -62,16 +62,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -111,20 +101,6 @@ operator|.
 name|fs
 operator|.
 name|ChecksumException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CreateFlag
 import|;
 end_import
 

@@ -448,20 +448,6 @@ name|DataChecksum
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|PureJavaCrc32
-import|;
-end_import
-
 begin_comment
 comment|/** A class that receives a block and writes to its own disk, meanwhile  * may copies it to another site. If a throttler is provided,  * streaming throttling is also supported.  **/
 end_comment

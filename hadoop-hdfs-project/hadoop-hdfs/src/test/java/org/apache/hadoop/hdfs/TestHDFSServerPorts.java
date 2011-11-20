@@ -264,20 +264,6 @@ name|DNS
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * This test checks correctness of port usage by hdfs components:  * NameNode, DataNode, SecondaryNamenode and BackupNode.  *   * The correct behavior is:<br>   * - when a specific port is provided the server must either start on that port   * or fail by throwing {@link java.net.BindException}.<br>  * - if the port = 0 (ephemeral) then the server should choose   * a free port and start on it.  */
 end_comment

@@ -33,30 +33,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doReturn
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -73,16 +49,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -228,26 +194,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FileJournalManager
-operator|.
-name|EditLogFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|FSImageStorageInspector
 operator|.
 name|FSImageFile
@@ -261,16 +207,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
 import|;
 end_import
 
