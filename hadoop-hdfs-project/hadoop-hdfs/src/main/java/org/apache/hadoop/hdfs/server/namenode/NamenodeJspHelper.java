@@ -2598,6 +2598,31 @@ operator|.
 name|CURRENT_CONF
 argument_list|)
 decl_stmt|;
+comment|// We can't redirect if there isn't a DN to redirect to.
+comment|// Lets instead show a proper error message.
+if|if
+condition|(
+name|nn
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getNumLiveDataNodes
+argument_list|()
+operator|<
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't browse the DFS since there are no "
+operator|+
+literal|"live nodes available to redirect to."
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|DatanodeID
 name|datanode
@@ -2607,6 +2632,7 @@ argument_list|(
 name|nn
 argument_list|)
 decl_stmt|;
+empty_stmt|;
 name|UserGroupInformation
 name|ugi
 init|=
