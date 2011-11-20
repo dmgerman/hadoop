@@ -88,7 +88,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|HashSet
 import|;
 end_import
 
@@ -108,7 +108,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|Set
 import|;
 end_import
 
@@ -248,23 +248,19 @@ name|datanode
 decl_stmt|;
 comment|// Record all sockets opened for data transfer
 DECL|field|childSockets
-name|Map
+name|Set
 argument_list|<
-name|Socket
-argument_list|,
 name|Socket
 argument_list|>
 name|childSockets
 init|=
 name|Collections
 operator|.
-name|synchronizedMap
+name|synchronizedSet
 argument_list|(
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Socket
-argument_list|,
 name|Socket
 argument_list|>
 argument_list|()
@@ -737,9 +733,6 @@ argument_list|>
 name|it
 init|=
 name|childSockets
-operator|.
-name|values
-argument_list|()
 operator|.
 name|iterator
 argument_list|()

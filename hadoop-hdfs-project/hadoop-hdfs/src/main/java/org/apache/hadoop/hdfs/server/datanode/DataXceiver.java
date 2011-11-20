@@ -1032,10 +1032,8 @@ name|dataXceiverServer
 operator|.
 name|childSockets
 operator|.
-name|put
+name|add
 argument_list|(
-name|s
-argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
