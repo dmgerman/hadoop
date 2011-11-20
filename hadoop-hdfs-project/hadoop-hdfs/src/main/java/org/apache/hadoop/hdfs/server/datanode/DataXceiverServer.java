@@ -480,6 +480,36 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Make sure the xceiver count is not exceeded
+name|int
+name|curXceiverCount
+init|=
+name|datanode
+operator|.
+name|getXceiverCount
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|curXceiverCount
+operator|>
+name|maxXceiverCount
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Xceiver count "
+operator|+
+name|curXceiverCount
+operator|+
+literal|" exceeds the limit of concurrent xcievers: "
+operator|+
+name|maxXceiverCount
+argument_list|)
+throw|;
+block|}
 operator|new
 name|Daemon
 argument_list|(

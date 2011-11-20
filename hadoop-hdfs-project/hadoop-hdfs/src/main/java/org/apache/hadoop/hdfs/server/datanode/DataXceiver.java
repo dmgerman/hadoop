@@ -1180,40 +1180,6 @@ name|stdTimeout
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Make sure the xceiver count is not exceeded
-name|int
-name|curXceiverCount
-init|=
-name|datanode
-operator|.
-name|getXceiverCount
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|curXceiverCount
-operator|>
-name|dataXceiverServer
-operator|.
-name|maxXceiverCount
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"xceiverCount "
-operator|+
-name|curXceiverCount
-operator|+
-literal|" exceeds the limit of concurrent xcievers "
-operator|+
-name|dataXceiverServer
-operator|.
-name|maxXceiverCount
-argument_list|)
-throw|;
-block|}
 name|opStartTime
 operator|=
 name|now
