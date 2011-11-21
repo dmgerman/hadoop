@@ -797,6 +797,13 @@ name|int
 name|maxSize
 decl_stmt|;
 comment|// = 8*1024;
+DECL|field|minSize
+specifier|private
+name|int
+name|minSize
+init|=
+literal|1
+decl_stmt|;
 DECL|field|nFiles
 specifier|private
 name|int
@@ -1063,11 +1070,15 @@ argument_list|)
 expr_stmt|;
 name|size
 operator|=
+name|minSize
+operator|+
 name|gen
 operator|.
 name|nextInt
 argument_list|(
 name|maxSize
+operator|-
+name|minSize
 argument_list|)
 expr_stmt|;
 name|seed
