@@ -10596,7 +10596,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the file info for a specific file.    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlinks    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    */
+comment|/**    * Get the file info for a specific file.    *    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlink    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    */
 DECL|method|getFileInfo (String src, boolean resolveLink)
 name|HdfsFileStatus
 name|getFileInfo

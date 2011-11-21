@@ -114,24 +114,30 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|field|originalPath
+DECL|field|path
 specifier|private
 name|String
-name|originalPath
+name|path
 decl_stmt|;
-comment|// The original path containing the link
+comment|// The path containing the link
+DECL|field|preceding
+specifier|private
+name|String
+name|preceding
+decl_stmt|;
+comment|// The path part preceding the link
+DECL|field|remainder
+specifier|private
+name|String
+name|remainder
+decl_stmt|;
+comment|// The path part following the link
 DECL|field|linkTarget
 specifier|private
 name|String
 name|linkTarget
 decl_stmt|;
-comment|// The target of the link
-DECL|field|remainingPath
-specifier|private
-name|String
-name|remainingPath
-decl_stmt|;
-comment|// The path part following the link
+comment|// The link's target
 comment|/**    * Used by RemoteException to instantiate an UnresolvedPathException.    */
 DECL|method|UnresolvedPathException (String msg)
 specifier|public
@@ -147,15 +153,18 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|UnresolvedPathException (String originalPath, String remainingPath, String linkTarget)
+DECL|method|UnresolvedPathException (String path, String preceding, String remainder, String linkTarget)
 specifier|public
 name|UnresolvedPathException
 parameter_list|(
 name|String
-name|originalPath
+name|path
 parameter_list|,
 name|String
-name|remainingPath
+name|preceding
+parameter_list|,
+name|String
+name|remainder
 parameter_list|,
 name|String
 name|linkTarget
@@ -163,15 +172,21 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|originalPath
+name|path
 operator|=
-name|originalPath
+name|path
 expr_stmt|;
 name|this
 operator|.
-name|remainingPath
+name|preceding
 operator|=
-name|remainingPath
+name|preceding
+expr_stmt|;
+name|this
+operator|.
+name|remainder
+operator|=
+name|remainder
 expr_stmt|;
 name|this
 operator|.
@@ -180,22 +195,7 @@ operator|=
 name|linkTarget
 expr_stmt|;
 block|}
-DECL|method|getUnresolvedPath ()
-specifier|public
-name|Path
-name|getUnresolvedPath
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-operator|new
-name|Path
-argument_list|(
-name|originalPath
-argument_list|)
-return|;
-block|}
+comment|/**    * Return a path with the link resolved with the target.    */
 DECL|method|getResolvedPath ()
 specifier|public
 name|Path
@@ -204,9 +204,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|remainingPath
+comment|// If the path is absolute we cam throw out the preceding part and
+comment|// just append the remainder to the target, otherwise append each
+comment|// piece to resolve the link in path.
+name|boolean
+name|noRemainder
+init|=
+operator|(
+name|remainder
 operator|==
 literal|null
 operator|||
@@ -214,27 +219,69 @@ literal|""
 operator|.
 name|equals
 argument_list|(
-name|remainingPath
+name|remainder
 argument_list|)
+operator|)
+decl_stmt|;
+name|Path
+name|target
+init|=
+operator|new
+name|Path
+argument_list|(
+name|linkTarget
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|target
+operator|.
+name|isUriPathAbsolute
+argument_list|()
 condition|)
 block|{
 return|return
+name|noRemainder
+condition|?
+name|target
+else|:
 operator|new
 name|Path
 argument_list|(
-name|linkTarget
+name|target
+argument_list|,
+name|remainder
 argument_list|)
 return|;
 block|}
+else|else
+block|{
 return|return
+name|noRemainder
+condition|?
 operator|new
 name|Path
 argument_list|(
-name|linkTarget
+name|preceding
 argument_list|,
-name|remainingPath
+name|target
+argument_list|)
+else|:
+operator|new
+name|Path
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|preceding
+argument_list|,
+name|linkTarget
+argument_list|)
+argument_list|,
+name|remainder
 argument_list|)
 return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -268,7 +315,7 @@ name|myMsg
 init|=
 literal|"Unresolved path "
 operator|+
-name|originalPath
+name|path
 decl_stmt|;
 try|try
 block|{
