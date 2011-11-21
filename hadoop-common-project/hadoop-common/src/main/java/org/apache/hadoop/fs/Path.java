@@ -313,6 +313,7 @@ literal|""
 argument_list|)
 operator|)
 condition|)
+block|{
 try|try
 block|{
 name|parentUri
@@ -359,6 +360,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 name|URI
 name|resolved
@@ -1059,7 +1061,7 @@ argument_list|)
 return|;
 block|}
 comment|/** True if the path component of this URI is absolute. */
-comment|/**    * There is some ambiguity here. An absolute path is a slash    * relative name without a scheme or an authority.    * So either this method was incorrectly named or its    * implementation is incorrect.    */
+comment|/**    * There is some ambiguity here. An absolute path is a slash    * relative name without a scheme or an authority.    * So either this method was incorrectly named or its    * implementation is incorrect. This method returns true    * even if there is a scheme and authority.    */
 DECL|method|isAbsolute ()
 specifier|public
 name|boolean
