@@ -21,6 +21,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_ADDRESS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -880,7 +928,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"dfs.https.enable"
+name|DFSConfigKeys
+operator|.
+name|DFS_HTTPS_ENABLE_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -959,9 +1009,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.https.server.keystore.resource"
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
 argument_list|,
-literal|"ssl-server.xml"
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -991,7 +1041,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.datanode.https.address"
+name|DFS_DATANODE_HTTPS_ADDRESS_KEY
 argument_list|,
 name|infoHost
 operator|+

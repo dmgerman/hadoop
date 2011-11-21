@@ -1454,7 +1454,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|FileSystem
 operator|.
@@ -1471,7 +1473,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1495,7 +1499,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1504,7 +1510,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|config
 operator|.
@@ -1534,7 +1542,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1543,7 +1553,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1552,7 +1564,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.ipc.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)

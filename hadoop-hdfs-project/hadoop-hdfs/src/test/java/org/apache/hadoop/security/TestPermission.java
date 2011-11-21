@@ -892,7 +892,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -1535,12 +1537,6 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
 name|cluster
 operator|.
 name|shutdown

@@ -258,20 +258,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|CommonConfigurationKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileSystem
 import|;
 end_import
@@ -287,6 +273,22 @@ operator|.
 name|fs
 operator|.
 name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|*
 import|;
 end_import
 
@@ -1669,7 +1671,7 @@ index|]
 expr_stmt|;
 comment|// No namenode in the cluster
 block|}
-comment|/**    * Modify the config and start up the servers with the given operation.    * Servers will be started on free ports.    *<p>    * The caller must manage the creation of NameNode and DataNode directories    * and have already set {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} and     * {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} in the given conf.    *     * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param nameNodeOperation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    */
+comment|/**    * Modify the config and start up the servers with the given operation.    * Servers will be started on free ports.    *<p>    * The caller must manage the creation of NameNode and DataNode directories    * and have already set {@link #DFS_NAMENODE_NAME_DIR_KEY} and     * {@link #DFS_DATANODE_DATA_DIR_KEY} in the given conf.    *     * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param nameNodeOperation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    */
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
@@ -1813,7 +1815,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free     * ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting     *          up    * @param manageDfsDirs if true, the data directories for servers will be    *          created and {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    */
+comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free     * ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting     *          up    * @param manageDfsDirs if true, the data directories for servers will be    *          created and {@link #DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link #DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    */
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
@@ -1870,7 +1872,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting up    * @param manageDfsDirs if true, the data directories for servers will be    *          created and {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param simulatedCapacities array of capacities of the simulated data nodes    */
+comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting up    * @param manageDfsDirs if true, the data directories for servers will be    *          created and {@link #DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link #DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param simulatedCapacities array of capacities of the simulated data nodes    */
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
@@ -1931,7 +1933,7 @@ name|simulatedCapacities
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting up    * @param manageNameDfsDirs if true, the data directories for servers will be    *          created and {@link DFSConfigKeys#DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param manageDataDfsDirs if true, the data directories for datanodes will    *          be created and {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY}     *          set to same in the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames of each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    */
+comment|/**    * NOTE: if possible, the other constructors that don't have nameNode port     * parameter should be used as they will ensure that the servers use free ports.    *<p>    * Modify the config and start up the servers.      *     * @param nameNodePort suggestion for which rpc port to use.  caller should    *          use getNameNodePort() to get the actual port used.    * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param format if true, format the NameNode and DataNodes before starting up    * @param manageNameDfsDirs if true, the data directories for servers will be    *          created and {@link #DFS_NAMENODE_NAME_DIR_KEY} and     *          {@link #DFS_DATANODE_DATA_DIR_KEY} will be set in     *          the conf    * @param manageDataDfsDirs if true, the data directories for datanodes will    *          be created and {@link #DFS_DATANODE_DATA_DIR_KEY}     *          set to same in the conf    * @param operation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames of each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    */
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
@@ -2282,8 +2284,6 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-name|CommonConfigurationKeys
-operator|.
 name|HADOOP_SECURITY_AUTHORIZATION
 argument_list|,
 literal|false
@@ -2297,8 +2297,6 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_REPLICATION_KEY
 argument_list|,
 literal|3
@@ -2308,8 +2306,6 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_REPLICATION_KEY
 argument_list|,
 name|Math
@@ -2326,8 +2322,6 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
 argument_list|,
 literal|0
@@ -2337,8 +2331,6 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_DECOMMISSION_INTERVAL_KEY
 argument_list|,
 literal|3
@@ -2349,8 +2341,6 @@ name|conf
 operator|.
 name|setClass
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|NET_TOPOLOGY_NODE_SWITCH_MAPPING_IMPL_KEY
 argument_list|,
 name|StaticMapping
@@ -2398,8 +2388,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
 literal|"127.0.0.1:"
@@ -2411,8 +2399,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:"
@@ -2677,8 +2663,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_FEDERATION_NAMESERVICES
 argument_list|,
 name|nameserviceIdList
@@ -2710,8 +2694,6 @@ name|DFSUtil
 operator|.
 name|getNameServiceIdKey
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|nameserviceId
@@ -2732,8 +2714,6 @@ name|DFSUtil
 operator|.
 name|getNameServiceIdKey
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
 name|nameserviceId
@@ -2854,8 +2834,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
 name|fileAsURI
@@ -2903,8 +2881,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CHECKPOINT_DIR_KEY
 argument_list|,
 name|fileAsURI
@@ -3065,8 +3041,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_FEDERATION_NAMESERVICE_ID
 argument_list|,
 name|nameserviceId
@@ -3100,8 +3074,6 @@ name|DFSUtil
 operator|.
 name|getNameServiceIdKey
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
 name|nameserviceId
@@ -3126,8 +3098,6 @@ name|DFSUtil
 operator|.
 name|getNameServiceIdKey
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|nameserviceId
@@ -3152,8 +3122,6 @@ name|conf
 argument_list|,
 name|nameserviceId
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|)
 expr_stmt|;
@@ -3419,7 +3387,7 @@ block|{         }
 block|}
 block|}
 block|}
-comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be set     *          in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    *    * @throws IllegalStateException if NameNode has been shutdown    */
+comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link #DFS_DATANODE_DATA_DIR_KEY} will be set     *          in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    *    * @throws IllegalStateException if NameNode has been shutdown    */
 DECL|method|startDataNodes (Configuration conf, int numDataNodes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities)
 specifier|public
 specifier|synchronized
@@ -3473,7 +3441,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    *    * @throws IllegalStateException if NameNode has been shutdown    */
+comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link #DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    *    * @throws IllegalStateException if NameNode has been shutdown    */
 DECL|method|startDataNodes (Configuration conf, int numDataNodes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile)
 specifier|public
 specifier|synchronized
@@ -3532,7 +3500,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link DFSConfigKeys#DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    * @param checkDataNodeAddrConfig if true, only set DataNode port addresses if not already set in config    *    * @throws IllegalStateException if NameNode has been shutdown    */
+comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link #DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    * @param checkDataNodeAddrConfig if true, only set DataNode port addresses if not already set in config    *    * @throws IllegalStateException if NameNode has been shutdown    */
 DECL|method|startDataNodes (Configuration conf, int numDataNodes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig)
 specifier|public
 specifier|synchronized
@@ -3576,8 +3544,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_HOST_NAME_KEY
 argument_list|,
 literal|"127.0.0.1"
@@ -3598,8 +3564,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
 argument_list|)
 operator|==
@@ -3610,8 +3574,6 @@ name|conf
 operator|.
 name|setLong
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
 argument_list|,
 literal|0
@@ -3917,8 +3879,6 @@ name|dnConf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|dirs
@@ -3928,8 +3888,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|,
 name|dirs
@@ -4151,8 +4109,6 @@ name|dnConf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|)
 argument_list|)
@@ -5649,7 +5605,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|addr
 operator|.
@@ -6143,8 +6099,6 @@ parameter_list|(
 name|int
 name|nnIndex
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 literal|"http://"
@@ -6158,8 +6112,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|)
 return|;
@@ -6190,8 +6142,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -7899,8 +7849,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_FEDERATION_NAMESERVICES
 argument_list|)
 decl_stmt|;
@@ -7914,8 +7862,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_FEDERATION_NAMESERVICES
 argument_list|,
 name|nameserviceIds
@@ -8067,8 +8013,6 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_HOSTS
 argument_list|,
 literal|""
@@ -8113,7 +8057,7 @@ name|conf
 operator|.
 name|setIfUnset
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|address
 argument_list|)
@@ -8125,7 +8069,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|address
 argument_list|)
@@ -8163,7 +8107,7 @@ name|conf
 operator|.
 name|setIfUnset
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -8172,7 +8116,7 @@ name|conf
 operator|.
 name|setIfUnset
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -8181,7 +8125,7 @@ name|conf
 operator|.
 name|setIfUnset
 argument_list|(
-literal|"dfs.datanode.ipc.address"
+name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -8193,7 +8137,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -8202,7 +8146,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
@@ -8211,7 +8155,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.ipc.address"
+name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)

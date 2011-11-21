@@ -336,6 +336,22 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_DATANODE_HTTPS_ADDRESS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_DATANODE_IPC_ADDRESS_KEY
 import|;
 end_import
@@ -497,6 +513,22 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_FEDERATION_NAMESERVICES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_HTTPS_ENABLE_KEY
 import|;
 end_import
 
@@ -3396,7 +3428,7 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"dfs.https.enable"
+name|DFS_HTTPS_ENABLE_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -3425,7 +3457,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.datanode.https.address"
+name|DFS_DATANODE_HTTPS_ADDRESS_KEY
 argument_list|,
 name|infoHost
 operator|+
@@ -3710,7 +3742,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.datanode.ipc.address"
+name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|)
 argument_list|)
 decl_stmt|;

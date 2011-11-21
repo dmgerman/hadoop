@@ -140,6 +140,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|CreateFlag
 import|;
 end_import
@@ -666,7 +680,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -676,9 +692,6 @@ name|short
 operator|)
 name|repl
 argument_list|,
-operator|(
-name|long
-operator|)
 name|blockSize
 argument_list|)
 decl_stmt|;
@@ -3640,10 +3653,6 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|// Create a file when parent dir exists as file, should fail
-name|expectedException
-operator|=
-literal|null
-expr_stmt|;
 try|try
 block|{
 name|createNonRecursive
@@ -3995,7 +4004,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -4005,9 +4016,6 @@ name|short
 operator|)
 name|repl
 argument_list|,
-operator|(
-name|long
-operator|)
 name|blockSize
 argument_list|,
 literal|null

@@ -1486,7 +1486,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.support.append"
+name|DFSConfigKeys
+operator|.
+name|DFS_SUPPORT_APPEND_KEY
 argument_list|,
 name|syncType
 operator|==
@@ -1499,7 +1501,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.datanode.transferTo.allowed"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_TRANSFERTO_ALLOWED_KEY
 argument_list|,
 name|transferToAllowed
 argument_list|)

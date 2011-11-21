@@ -405,7 +405,9 @@ specifier|final
 name|String
 name|CONFIG_PROPERTY_SIMULATED
 init|=
-literal|"dfs.datanode.simulateddatastorage"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_SIMULATEDDATASTORAGE_KEY
 decl_stmt|;
 DECL|field|CONFIG_PROPERTY_CAPACITY
 specifier|public
@@ -414,7 +416,9 @@ specifier|final
 name|String
 name|CONFIG_PROPERTY_CAPACITY
 init|=
-literal|"dfs.datanode.simulateddatastorage.capacity"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_SIMULATEDDATASTORAGE_CAPACITY_KEY
 decl_stmt|;
 DECL|field|DEFAULT_CAPACITY
 specifier|public
@@ -779,8 +783,6 @@ specifier|synchronized
 name|SimulatedInputStream
 name|getIStream
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -1689,8 +1691,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|setConf
 argument_list|(

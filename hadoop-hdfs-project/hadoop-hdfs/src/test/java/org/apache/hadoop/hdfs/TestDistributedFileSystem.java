@@ -154,6 +154,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FSDataInputStream
 import|;
 end_import
@@ -498,6 +512,12 @@ decl_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|cluster
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -513,7 +533,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|FileSystem
 name|fileSys
 init|=
@@ -522,8 +542,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 comment|// create two files
 name|fileSys
 operator|.
@@ -589,6 +607,12 @@ decl_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|cluster
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -604,7 +628,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|FileSystem
 name|fileSys
 init|=
@@ -613,8 +637,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|String
 name|file
 init|=
@@ -2733,7 +2755,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
