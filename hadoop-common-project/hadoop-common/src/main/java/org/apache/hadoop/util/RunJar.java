@@ -759,11 +759,7 @@ expr_stmt|;
 specifier|final
 name|File
 name|workDir
-decl_stmt|;
-try|try
-block|{
-name|workDir
-operator|=
+init|=
 name|File
 operator|.
 name|createTempFile
@@ -774,44 +770,7 @@ literal|""
 argument_list|,
 name|tmpDir
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-comment|// If user has insufficient perms to write to tmpDir, default
-comment|// "Permission denied" message doesn't specify a filename.
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Error creating temp dir in hadoop.tmp.dir "
-operator|+
-name|tmpDir
-operator|+
-literal|" due to "
-operator|+
-name|ioe
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
+decl_stmt|;
 if|if
 condition|(
 operator|!
