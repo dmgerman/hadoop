@@ -2745,29 +2745,29 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a fully qualified version of the given symlink target if it    * has no scheme and authority. Partially and fully qualified paths     * are returned unmodified.    * @param linkFS The AbstractFileSystem of link     * @param link   The path of the symlink    * @param target The symlink's target    * @return Fully qualified version of the target.    */
-DECL|method|qualifySymlinkTarget (final AbstractFileSystem linkFS, Path link, Path target)
+comment|/**    * Return a fully qualified version of the given symlink target if it    * has no scheme and authority. Partially and fully qualified paths     * are returned unmodified.    * @param pathFS The AbstractFileSystem of the path    * @param pathWithLink Path that contains the symlink    * @param target The symlink's absolute target    * @return Fully qualified version of the target.    */
+DECL|method|qualifySymlinkTarget (final AbstractFileSystem pathFS, Path pathWithLink, Path target)
 specifier|private
 name|Path
 name|qualifySymlinkTarget
 parameter_list|(
 specifier|final
 name|AbstractFileSystem
-name|linkFS
+name|pathFS
 parameter_list|,
 name|Path
-name|link
+name|pathWithLink
 parameter_list|,
 name|Path
 name|target
 parameter_list|)
 block|{
-comment|/* NB: makeQualified uses link's scheme/authority, if specified,       * and the scheme/authority of linkFS, if not. If link does have      * a scheme and authority they should match those of linkFS since      * resolve updates the path and file system of a path that contains      * links each time a link is encountered.      */
+comment|/* NB: makeQualified uses the target's scheme and authority, if      * specified, and the scheme and authority of pathFS, if not. If      * the path does have a scheme and authority we assert they match      * those of pathFS since resolve updates the file system of a path      * that contains links each time a link is encountered.      */
 specifier|final
 name|String
-name|linkScheme
+name|scheme
 init|=
-name|link
+name|target
 operator|.
 name|toUri
 argument_list|()
@@ -2777,9 +2777,9 @@ argument_list|()
 decl_stmt|;
 specifier|final
 name|String
-name|linkAuth
+name|auth
 init|=
-name|link
+name|target
 operator|.
 name|toUri
 argument_list|()
@@ -2789,21 +2789,21 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|linkScheme
+name|scheme
 operator|!=
 literal|null
 operator|&&
-name|linkAuth
+name|auth
 operator|!=
 literal|null
 condition|)
 block|{
 assert|assert
-name|linkScheme
+name|scheme
 operator|.
 name|equals
 argument_list|(
-name|linkFS
+name|pathFS
 operator|.
 name|getUri
 argument_list|()
@@ -2813,11 +2813,11 @@ argument_list|()
 argument_list|)
 assert|;
 assert|assert
-name|linkAuth
+name|auth
 operator|.
 name|equals
 argument_list|(
-name|linkFS
+name|pathFS
 operator|.
 name|getUri
 argument_list|()
@@ -2827,45 +2827,27 @@ argument_list|()
 argument_list|)
 assert|;
 block|}
-specifier|final
-name|boolean
-name|justPath
-init|=
+return|return
 operator|(
-name|target
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
+name|scheme
 operator|==
 literal|null
 operator|&&
-name|target
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
+name|auth
 operator|==
 literal|null
 operator|)
-decl_stmt|;
-return|return
-name|justPath
 condition|?
 name|target
 operator|.
 name|makeQualified
 argument_list|(
-name|linkFS
+name|pathFS
 operator|.
 name|getUri
 argument_list|()
 argument_list|,
-name|link
+name|pathWithLink
 operator|.
 name|getParent
 argument_list|()
@@ -2977,7 +2959,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the un-interpreted target of the given symbolic link.    * Transparently resolves all links up to the final path component.    * @param f    * @return The un-interpreted target of the symbolic link.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If path<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    */
+comment|/**    * Returns the target of the given symbolic link as it was specified    * when the link was created.  Links in the path leading up to the    * final path component are resolved transparently.    *    * @param f the path to return the target of    * @return The un-interpreted target of the symbolic link.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If path<code>f</code> does not exist    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If the given path does not refer to a symlink    *           or an I/O error occurred    */
 DECL|method|getLinkTarget (final Path f)
 specifier|public
 name|Path
@@ -3245,7 +3227,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storign a fully qualified URI.     * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file sytem. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    *    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>linkcode> already exists    * @throws FileNotFoundException If<code>target</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for     *<code>target</code> or<code>link</code> is not supported    * @throws IOException If an I/O error occurred    */
+comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storing a fully qualified URI.    * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file sytem. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    *    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>linkcode> already exists    * @throws FileNotFoundException If<code>target</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for     *<code>target</code> or<code>link</code> is not supported    * @throws IOException If an I/O error occurred    */
 DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
 specifier|public
 name|void

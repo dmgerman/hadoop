@@ -406,6 +406,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockLocalPathInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -2505,9 +2521,6 @@ argument_list|()
 operator|||
 name|metaFileLen
 operator|<
-operator|(
-name|long
-operator|)
 name|crcHeaderLen
 condition|)
 block|{
@@ -3133,8 +3146,6 @@ DECL|method|getCapacity ()
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|long
 name|remaining
@@ -4332,8 +4343,6 @@ specifier|private
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|long
 name|capacity
@@ -8408,9 +8417,6 @@ name|IOException
 argument_list|(
 literal|"Block "
 operator|+
-operator|(
-name|Block
-operator|)
 name|replicaInfo
 operator|+
 literal|" reopen failed. "
@@ -10155,8 +10161,6 @@ parameter_list|,
 name|Block
 name|b
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|//Should we check for metadata file too?
 name|File
@@ -11566,9 +11570,6 @@ name|warn
 argument_list|(
 literal|"Added missing block to memory "
 operator|+
-operator|(
-name|Block
-operator|)
 name|diskBlockInfo
 argument_list|)
 expr_stmt|;
@@ -12871,8 +12872,6 @@ name|String
 index|[]
 name|getBPIdlist
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|volumeMap
@@ -13150,6 +13149,64 @@ name|force
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetInterface
+DECL|method|getBlockLocalPathInfo (ExtendedBlock block)
+specifier|public
+name|BlockLocalPathInfo
+name|getBlockLocalPathInfo
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|File
+name|datafile
+init|=
+name|getBlockFile
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+name|File
+name|metafile
+init|=
+name|getMetaFile
+argument_list|(
+name|datafile
+argument_list|,
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|BlockLocalPathInfo
+name|info
+init|=
+operator|new
+name|BlockLocalPathInfo
+argument_list|(
+name|block
+argument_list|,
+name|datafile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|metafile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|info
+return|;
 block|}
 block|}
 end_class

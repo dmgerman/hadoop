@@ -2179,7 +2179,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.hosts.exclude"
+name|DFSConfigKeys
+operator|.
+name|DFS_HOSTS_EXCLUDE
 argument_list|,
 name|excludeFile
 operator|.
@@ -2493,7 +2495,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"dfs.hosts.exclude"
+name|DFSConfigKeys
+operator|.
+name|DFS_HOSTS_EXCLUDE
 argument_list|,
 name|excludeFile
 operator|.

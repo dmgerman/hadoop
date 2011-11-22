@@ -1685,7 +1685,7 @@ literal|"Path part "
 operator|+
 name|s
 operator|+
-literal|" from URI"
+literal|" from URI "
 operator|+
 name|p
 operator|+

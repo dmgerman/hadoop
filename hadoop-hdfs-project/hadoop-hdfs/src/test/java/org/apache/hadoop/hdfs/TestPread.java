@@ -211,9 +211,6 @@ name|short
 operator|)
 literal|1
 argument_list|,
-operator|(
-name|long
-operator|)
 name|blockSize
 argument_list|)
 decl_stmt|;
@@ -343,9 +340,6 @@ name|short
 operator|)
 literal|1
 argument_list|,
-operator|(
-name|long
-operator|)
 name|blockSize
 argument_list|)
 expr_stmt|;
@@ -1341,7 +1335,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.datanode.simulateddatastorage"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_SIMULATEDDATASTORAGE_KEY
 argument_list|,
 literal|true
 argument_list|)

@@ -5063,7 +5063,6 @@ operator|.
 name|incrGetLinkTargetOps
 argument_list|()
 expr_stmt|;
-comment|/* Resolves the first symlink in the given path, returning a      * new path consisting of the target of the symlink and any       * remaining path components from the original path.      */
 try|try
 block|{
 name|HdfsFileStatus

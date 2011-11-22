@@ -61,6 +61,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -249,7 +265,7 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -312,7 +328,7 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -414,7 +430,7 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)

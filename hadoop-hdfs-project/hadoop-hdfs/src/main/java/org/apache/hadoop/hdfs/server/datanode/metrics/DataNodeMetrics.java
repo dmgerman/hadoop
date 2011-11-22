@@ -319,6 +319,12 @@ name|Metric
 name|MutableCounterLong
 name|writesFromRemoteClient
 decl_stmt|;
+DECL|field|blocksGetLocalPathInfo
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|blocksGetLocalPathInfo
+decl_stmt|;
 DECL|field|volumeFailures
 annotation|@
 name|Metric
@@ -810,6 +816,19 @@ name|incrVolumeFailures
 parameter_list|()
 block|{
 name|volumeFailures
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+comment|/** Increment for getBlockLocalPathInfo calls */
+DECL|method|incrBlocksGetLocalPathInfo ()
+specifier|public
+name|void
+name|incrBlocksGetLocalPathInfo
+parameter_list|()
+block|{
+name|blocksGetLocalPathInfo
 operator|.
 name|incr
 argument_list|()

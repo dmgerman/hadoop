@@ -820,7 +820,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -830,9 +832,6 @@ name|short
 operator|)
 name|repl
 argument_list|,
-operator|(
-name|long
-operator|)
 name|BLOCK_SIZE
 argument_list|)
 return|;

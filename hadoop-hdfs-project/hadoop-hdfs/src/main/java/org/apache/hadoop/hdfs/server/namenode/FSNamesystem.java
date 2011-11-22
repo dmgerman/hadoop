@@ -2803,6 +2803,76 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|namespaceDirs
+init|=
+name|FSNamesystem
+operator|.
+name|getNamespaceDirs
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|namespaceEditsDirs
+init|=
+name|FSNamesystem
+operator|.
+name|getNamespaceEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|namespaceDirs
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Only one "
+operator|+
+name|DFS_NAMENODE_NAME_DIR_KEY
+operator|+
+literal|" directory configured , beware data loss!"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|namespaceEditsDirs
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Only one "
+operator|+
+name|DFS_NAMENODE_EDITS_DIR_KEY
+operator|+
+literal|" directory configured , beware data loss!"
+argument_list|)
+expr_stmt|;
+block|}
 name|FSImage
 name|fsImage
 init|=
@@ -2810,6 +2880,10 @@ operator|new
 name|FSImage
 argument_list|(
 name|conf
+argument_list|,
+name|namespaceDirs
+argument_list|,
+name|namespaceEditsDirs
 argument_list|)
 decl_stmt|;
 name|FSNamesystem
@@ -10631,7 +10705,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the file info for a specific file.    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlinks    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    */
+comment|/**    * Get the file info for a specific file.    *    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException     *        if src refers to a symlink    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    */
 DECL|method|getFileInfo (String src, boolean resolveLink)
 name|HdfsFileStatus
 name|getFileInfo
@@ -11455,6 +11529,10 @@ operator|==
 name|nrBlocks
 operator|-
 literal|2
+operator|&&
+name|curBlock
+operator|!=
+literal|null
 operator|&&
 name|curBlock
 operator|.
@@ -12359,7 +12437,15 @@ block|}
 block|}
 if|if
 condition|(
+operator|(
 name|closeFile
+operator|)
+operator|&&
+operator|(
+name|descriptors
+operator|!=
+literal|null
+operator|)
 condition|)
 block|{
 comment|// the file is getting closed. Insert block locations into blockManager.
@@ -15029,7 +15115,7 @@ return|return
 name|resText
 return|;
 block|}
-comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      */
+comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      * @throws IOException       */
 DECL|method|isConsistent ()
 specifier|private
 name|boolean

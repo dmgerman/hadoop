@@ -1383,8 +1383,8 @@ name|SEPARATOR_CHAR
 argument_list|)
 return|;
 block|}
-comment|/**    * Given some components, create a path name.    * @param components    * @return concatenated path    */
-DECL|method|constructPath (byte[][] components, int start)
+comment|/**    * Given some components, create a path name.    * @param components The path components    * @param start index    * @param end index    * @return concatenated path    */
+DECL|method|constructPath (byte[][] components, int start, int end)
 specifier|static
 name|String
 name|constructPath
@@ -1396,6 +1396,9 @@ name|components
 parameter_list|,
 name|int
 name|start
+parameter_list|,
+name|int
+name|end
 parameter_list|)
 block|{
 name|StringBuilder
@@ -1414,9 +1417,7 @@ name|start
 init|;
 name|i
 operator|<
-name|components
-operator|.
-name|length
+name|end
 condition|;
 name|i
 operator|++
@@ -1441,9 +1442,7 @@ if|if
 condition|(
 name|i
 operator|<
-name|components
-operator|.
-name|length
+name|end
 operator|-
 literal|1
 condition|)

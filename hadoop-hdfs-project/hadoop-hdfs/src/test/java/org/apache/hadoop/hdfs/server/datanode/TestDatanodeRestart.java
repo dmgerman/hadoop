@@ -519,7 +519,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.support.append"
+name|DFSConfigKeys
+operator|.
+name|DFS_SUPPORT_APPEND_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -989,7 +991,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.support.append"
+name|DFSConfigKeys
+operator|.
+name|DFS_SUPPORT_APPEND_KEY
 argument_list|,
 literal|true
 argument_list|)

@@ -58,20 +58,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|security
-operator|.
-name|auth
-operator|.
-name|login
-operator|.
-name|LoginException
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
 name|framework
@@ -129,6 +115,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
 import|;
 end_import
 
@@ -1269,7 +1269,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -3123,8 +3125,6 @@ name|UserGroupInformation
 name|ugi
 parameter_list|)
 throws|throws
-name|LoginException
-throws|,
 name|IOException
 block|{
 if|if
@@ -3324,8 +3324,6 @@ parameter_list|(
 name|UserGroupInformation
 name|ugi
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(

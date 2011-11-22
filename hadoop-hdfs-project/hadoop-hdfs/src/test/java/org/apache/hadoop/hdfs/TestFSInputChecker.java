@@ -62,16 +62,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -124,7 +114,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|CreateFlag
+name|CommonConfigurationKeys
 import|;
 end_import
 
@@ -369,7 +359,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)
@@ -1900,7 +1892,9 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeys
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 literal|4096
 argument_list|)

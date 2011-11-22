@@ -50,16 +50,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -278,6 +268,28 @@ name|GenericTestUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  */
 end_comment
@@ -287,8 +299,6 @@ DECL|class|TestDistributedUpgrade
 specifier|public
 class|class
 name|TestDistributedUpgrade
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -503,6 +513,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testDistributedUpgrade ()
 specifier|public
 name|void

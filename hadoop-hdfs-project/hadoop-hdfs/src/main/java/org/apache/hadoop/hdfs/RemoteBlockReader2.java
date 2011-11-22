@@ -520,7 +520,7 @@ name|ReadableByteChannel
 name|in
 decl_stmt|;
 DECL|field|checksum
-specifier|private
+specifier|protected
 name|DataChecksum
 name|checksum
 decl_stmt|;
@@ -554,18 +554,18 @@ literal|1
 decl_stmt|;
 comment|/** offset in block where reader wants to actually read */
 DECL|field|startOffset
-specifier|private
+specifier|protected
 name|long
 name|startOffset
 decl_stmt|;
 DECL|field|filename
-specifier|private
+specifier|protected
 specifier|final
 name|String
 name|filename
 decl_stmt|;
 DECL|field|bufferPool
-specifier|private
+specifier|protected
 specifier|static
 name|DirectBufferPool
 name|bufferPool
@@ -589,23 +589,23 @@ name|PKT_HEADER_LEN
 argument_list|)
 decl_stmt|;
 DECL|field|bytesPerChecksum
-specifier|private
+specifier|protected
 name|int
 name|bytesPerChecksum
 decl_stmt|;
 DECL|field|checksumSize
-specifier|private
+specifier|protected
 name|int
 name|checksumSize
 decl_stmt|;
 comment|/**    * The total number of bytes we need to transfer from the DN.    * This is the amount that the user has requested plus some padding    * at the beginning so that the read can begin on a chunk boundary.    */
 DECL|field|bytesNeededToFinish
-specifier|private
+specifier|protected
 name|long
 name|bytesNeededToFinish
 decl_stmt|;
 DECL|field|verifyChecksum
-specifier|private
+specifier|protected
 specifier|final
 name|boolean
 name|verifyChecksum
@@ -1353,7 +1353,7 @@ throw|;
 block|}
 block|}
 DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, ReadableByteChannel in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Socket dnSock)
-specifier|private
+specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
 name|String

@@ -106,22 +106,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
-operator|.
-name|methods
-operator|.
-name|GetMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|io
@@ -144,12 +128,49 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockMetadataHeader manages metadata for data blocks on Datanodes.  * This is not related to the Block related functionality in Namenode.  * The biggest part of data block metadata is CRC for the block.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|BlockMetadataHeader
+specifier|public
 class|class
 name|BlockMetadataHeader
 block|{
@@ -199,7 +220,9 @@ operator|=
 name|version
 expr_stmt|;
 block|}
+comment|/** Get the version */
 DECL|method|getVersion ()
+specifier|public
 name|short
 name|getVersion
 parameter_list|()
@@ -208,7 +231,9 @@ return|return
 name|version
 return|;
 block|}
+comment|/** Get the checksum */
 DECL|method|getChecksum ()
+specifier|public
 name|DataChecksum
 name|getChecksum
 parameter_list|()
@@ -219,6 +244,7 @@ return|;
 block|}
 comment|/**    * This reads all the fields till the beginning of checksum.    * @param in     * @return Metadata Header    * @throws IOException    */
 DECL|method|readHeader (DataInputStream in)
+specifier|public
 specifier|static
 name|BlockMetadataHeader
 name|readHeader

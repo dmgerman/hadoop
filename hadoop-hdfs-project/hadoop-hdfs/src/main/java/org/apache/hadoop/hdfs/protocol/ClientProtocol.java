@@ -1388,7 +1388,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Create symlink to a file or directory.    * @param target The pathname of the destination that the    *               link points to.    * @param link The pathname of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</target> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</target> contains a symlink.     * @throws IOException If an I/O error occurred    */
 DECL|method|createSymlink (String target, String link, FsPermission dirPerm, boolean createParent)
 specifier|public
 name|void
@@ -1421,7 +1421,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Resolve the first symbolic link on the specified path.    * @param path The pathname that needs to be resolved    *     * @return The pathname after resolving the first symbolic link if any.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException If<code>path</code> does not exist    * @throws IOException If an I/O error occurred    */
+comment|/**    * Return the target of the given symlink. If there is an intermediate    * symlink in the path (ie a symlink leading up to the final path component)    * then the given path is returned with this symlink resolved.    *    * @param path The path with a link that needs resolution.    * @return The path after resolving the first symbolic link in the path.    * @throws AccessControlException permission denied    * @throws FileNotFoundException If<code>path</code> does not exist    * @throws IOException If the given path does not refer to a symlink    *           or an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|getLinkTarget (String path)

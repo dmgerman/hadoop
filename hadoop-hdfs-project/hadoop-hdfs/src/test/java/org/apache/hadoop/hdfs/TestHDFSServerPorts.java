@@ -264,20 +264,6 @@ name|DNS
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * This test checks correctness of port usage by hdfs components:  * NameNode, DataNode, SecondaryNamenode and BackupNode.  *   * The correct behavior is:<br>   * - when a specific port is provided the server must either start on that port   * or fail by throwing {@link java.net.BindException}.<br>  * - if the port = 0 (ephemeral) then the server should choose   * a free port and start on it.  */
 end_comment
@@ -1468,7 +1454,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|FileSystem
 operator|.
@@ -1485,7 +1473,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1509,7 +1499,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1518,7 +1510,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|config
 operator|.
@@ -1548,7 +1542,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1557,7 +1553,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.http.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
@@ -1566,7 +1564,9 @@ name|conf2
 operator|.
 name|set
 argument_list|(
-literal|"dfs.datanode.ipc.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_ADDRESS_KEY
 argument_list|,
 name|THIS_HOST
 argument_list|)
