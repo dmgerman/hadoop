@@ -36,6 +36,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FilterInputStream
 import|;
 end_import
@@ -185,6 +195,22 @@ operator|.
 name|protocol
 operator|.
 name|BlockListAsLongs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockLocalPathInfo
 import|;
 end_import
 
@@ -893,6 +919,18 @@ name|bpid
 parameter_list|,
 name|boolean
 name|force
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get {@link BlockLocalPathInfo} for the given block.    **/
+DECL|method|getBlockLocalPathInfo (ExtendedBlock b)
+specifier|public
+name|BlockLocalPathInfo
+name|getBlockLocalPathInfo
+parameter_list|(
+name|ExtendedBlock
+name|b
 parameter_list|)
 throws|throws
 name|IOException
