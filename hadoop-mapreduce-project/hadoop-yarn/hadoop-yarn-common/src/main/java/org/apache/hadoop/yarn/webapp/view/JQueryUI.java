@@ -451,7 +451,7 @@ name|link
 argument_list|(
 name|join
 argument_list|(
-literal|"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/"
+literal|"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/"
 argument_list|,
 name|getTheme
 argument_list|()
@@ -470,12 +470,12 @@ argument_list|)
 operator|.
 name|script
 argument_list|(
-literal|"https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
+literal|"https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"
 argument_list|)
 operator|.
 name|script
 argument_list|(
-literal|"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"
+literal|"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"
 argument_list|)
 operator|.
 name|script
