@@ -188,7 +188,7 @@ return|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Looking for a token with service "
 operator|+
@@ -213,7 +213,7 @@ control|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Token kind is "
 operator|+

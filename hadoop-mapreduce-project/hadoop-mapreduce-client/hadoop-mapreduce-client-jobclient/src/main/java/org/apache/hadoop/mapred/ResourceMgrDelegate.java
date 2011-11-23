@@ -92,20 +92,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|FileSystem
@@ -314,20 +300,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -361,24 +333,6 @@ operator|.
 name|api
 operator|.
 name|ClientRMProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|KillApplicationRequest
 import|;
 end_import
 
@@ -594,6 +548,24 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|KillApplicationRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|SubmitApplicationRequest
 import|;
 end_import
@@ -770,24 +742,6 @@ name|YarnRPC
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|client
-operator|.
-name|ClientRMSecurityInfo
-import|;
-end_import
-
 begin_comment
 comment|// TODO: This should be part of something like yarn-client.
 end_comment
@@ -813,6 +767,12 @@ name|ResourceMgrDelegate
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+DECL|field|rmAddress
+specifier|private
+specifier|final
+name|String
+name|rmAddress
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -899,9 +859,18 @@ operator|.
 name|RM_ADDRESS
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|rmAddress
+operator|=
+name|rmAddress
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Connecting to ResourceManager at "
 operator|+
@@ -930,7 +899,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Connected to ResourceManager at "
 operator|+
@@ -938,7 +907,7 @@ name|rmAddress
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Used for injecting applicationsManager, mostly for testing.    * @param conf the configuration object    * @param applicationsManager the handle to talk the resource managers {@link ClientRMProtocol}.    */
+comment|/**    * Used for injecting applicationsManager, mostly for testing.    * @param conf the configuration object    * @param applicationsManager the handle to talk the resource managers     *                            {@link ClientRMProtocol}.    */
 DECL|method|ResourceMgrDelegate (YarnConfiguration conf, ClientRMProtocol applicationsManager)
 specifier|public
 name|ResourceMgrDelegate
@@ -961,6 +930,15 @@ operator|.
 name|applicationsManager
 operator|=
 name|applicationsManager
+expr_stmt|;
+name|this
+operator|.
+name|rmAddress
+operator|=
+name|applicationsManager
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> arg0)
@@ -2026,7 +2004,7 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|submitApplication (ApplicationSubmissionContext appContext)
+DECL|method|submitApplication ( ApplicationSubmissionContext appContext)
 specifier|public
 name|ApplicationId
 name|submitApplication
@@ -2079,6 +2057,10 @@ operator|+
 name|applicationId
 operator|+
 literal|" to ResourceManager"
+operator|+
+literal|" at "
+operator|+
+name|rmAddress
 argument_list|)
 expr_stmt|;
 return|return

@@ -1750,7 +1750,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"AppMaster capability = "
 operator|+
@@ -2185,7 +2185,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Command to launch container for ApplicationMaster is : "
 operator|+
