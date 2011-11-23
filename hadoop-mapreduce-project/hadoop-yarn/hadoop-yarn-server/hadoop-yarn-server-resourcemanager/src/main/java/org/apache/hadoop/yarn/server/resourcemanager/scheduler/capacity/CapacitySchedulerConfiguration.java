@@ -739,6 +739,31 @@ return|return
 name|maxCapacity
 return|;
 block|}
+DECL|method|setMaximumCapacity (String queue, int maxCapacity)
+specifier|public
+name|void
+name|setMaximumCapacity
+parameter_list|(
+name|String
+name|queue
+parameter_list|,
+name|int
+name|maxCapacity
+parameter_list|)
+block|{
+name|setInt
+argument_list|(
+name|getQueuePrefix
+argument_list|(
+name|queue
+argument_list|)
+operator|+
+name|MAXIMUM_CAPACITY
+argument_list|,
+name|maxCapacity
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getUserLimit (String queue)
 specifier|public
 name|int

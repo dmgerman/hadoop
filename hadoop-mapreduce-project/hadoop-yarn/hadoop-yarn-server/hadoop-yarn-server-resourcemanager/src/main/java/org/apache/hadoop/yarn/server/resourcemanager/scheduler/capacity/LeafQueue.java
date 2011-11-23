@@ -1569,7 +1569,7 @@ name|userLimitFactor
 argument_list|)
 return|;
 block|}
-DECL|method|setupQueueConfigs ( float capacity, float absoluteCapacity, float maxCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
+DECL|method|setupQueueConfigs ( float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
 specifier|private
 specifier|synchronized
 name|void
@@ -1582,7 +1582,7 @@ name|float
 name|absoluteCapacity
 parameter_list|,
 name|float
-name|maxCapacity
+name|maximumCapacity
 parameter_list|,
 name|float
 name|absoluteMaxCapacity
@@ -1617,6 +1617,19 @@ argument_list|>
 name|acls
 parameter_list|)
 block|{
+comment|// Sanity check
+name|CSQueueUtils
+operator|.
+name|checkMaxCapacity
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|capacity
+argument_list|,
+name|maximumCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capacity
@@ -1638,7 +1651,7 @@ name|this
 operator|.
 name|maximumCapacity
 operator|=
-name|maxCapacity
+name|maximumCapacity
 expr_stmt|;
 name|this
 operator|.
@@ -1700,6 +1713,8 @@ name|queueInfo
 operator|.
 name|setCapacity
 argument_list|(
+name|this
+operator|.
 name|capacity
 argument_list|)
 expr_stmt|;
@@ -1709,6 +1724,8 @@ name|queueInfo
 operator|.
 name|setMaximumCapacity
 argument_list|(
+name|this
+operator|.
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
@@ -1718,6 +1735,8 @@ name|queueInfo
 operator|.
 name|setQueueState
 argument_list|(
+name|this
+operator|.
 name|state
 argument_list|)
 expr_stmt|;
@@ -1795,7 +1814,7 @@ literal|"\n"
 operator|+
 literal|"maxCapacity = "
 operator|+
-name|maxCapacity
+name|maximumCapacity
 operator|+
 literal|" [= configuredMaxCapacity ]"
 operator|+
@@ -2197,6 +2216,19 @@ name|float
 name|maximumCapacity
 parameter_list|)
 block|{
+comment|// Sanity check
+name|CSQueueUtils
+operator|.
+name|checkMaxCapacity
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|capacity
+argument_list|,
+name|maximumCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|maximumCapacity
