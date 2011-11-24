@@ -398,9 +398,9 @@ argument_list|)
 expr_stmt|;
 name|namesystem
 operator|.
-name|lmthread
+name|leaseManager
 operator|.
-name|interrupt
+name|triggerMonitorCheckNow
 argument_list|()
 expr_stmt|;
 block|}
