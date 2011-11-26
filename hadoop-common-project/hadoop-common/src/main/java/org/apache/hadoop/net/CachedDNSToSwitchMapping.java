@@ -103,8 +103,8 @@ DECL|class|CachedDNSToSwitchMapping
 specifier|public
 class|class
 name|CachedDNSToSwitchMapping
-implements|implements
-name|DNSToSwitchMapping
+extends|extends
+name|AbstractDNSToSwitchMapping
 block|{
 DECL|field|cache
 specifier|private
@@ -125,8 +125,10 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * The uncached mapping    */
 DECL|field|rawMapping
 specifier|protected
+specifier|final
 name|DNSToSwitchMapping
 name|rawMapping
 decl_stmt|;
@@ -455,6 +457,22 @@ return|return
 name|getCachedHosts
 argument_list|(
 name|names
+argument_list|)
+return|;
+block|}
+comment|/**    * Delegate the switch topology query to the raw mapping, via    * {@link AbstractDNSToSwitchMapping#isMappingSingleSwitch(DNSToSwitchMapping)}    * @return true iff the raw mapper is considered single-switch.    */
+annotation|@
+name|Override
+DECL|method|isSingleSwitch ()
+specifier|public
+name|boolean
+name|isSingleSwitch
+parameter_list|()
+block|{
+return|return
+name|isMappingSingleSwitch
+argument_list|(
+name|rawMapping
 argument_list|)
 return|;
 block|}

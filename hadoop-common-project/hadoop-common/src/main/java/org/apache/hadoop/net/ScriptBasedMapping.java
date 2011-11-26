@@ -151,7 +151,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via the {@link CommonConfigurationKeys#NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY}  */
+comment|/**  * This class implements the {@link DNSToSwitchMapping} interface using a   * script configured via the  * {@link CommonConfigurationKeys#NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY} option.  *<p/>  * It contains a static class<code>RawScriptBasedMapping</code> that performs  * the work: reading the configuration parameters, executing any defined  * script, handling errors and such like. The outer  * class extends {@link CachedDNSToSwitchMapping} to cache the delegated  * queries.  *<p/>  * This DNS mapper's {@link #isSingleSwitch()} predicate returns  * true if and only if a script is defined.  */
 end_comment
 
 begin_class
@@ -170,22 +170,7 @@ class|class
 name|ScriptBasedMapping
 extends|extends
 name|CachedDNSToSwitchMapping
-implements|implements
-name|Configurable
 block|{
-DECL|method|ScriptBasedMapping ()
-specifier|public
-name|ScriptBasedMapping
-parameter_list|()
-block|{
-name|super
-argument_list|(
-operator|new
-name|RawScriptBasedMapping
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Minimum number of arguments: {@value}    */
 DECL|field|MIN_ALLOWABLE_ARGS
 specifier|static
@@ -228,6 +213,20 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
 decl_stmt|;
+comment|/**    * Create an instance with the default configuration.    *</p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    *    */
+DECL|method|ScriptBasedMapping ()
+specifier|public
+name|ScriptBasedMapping
+parameter_list|()
+block|{
+name|super
+argument_list|(
+operator|new
+name|RawScriptBasedMapping
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Create an instance from the given configuration    * @param conf configuration    */
 DECL|method|ScriptBasedMapping (Configuration conf)
 specifier|public
@@ -246,6 +245,20 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get the cached mapping and convert it to its real type    * @return the inner raw script mapping.    */
+DECL|method|getRawMapping ()
+specifier|private
+name|RawScriptBasedMapping
+name|getRawMapping
+parameter_list|()
+block|{
+return|return
+operator|(
+name|RawScriptBasedMapping
+operator|)
+name|rawMapping
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getConf ()
@@ -255,17 +268,14 @@ name|getConf
 parameter_list|()
 block|{
 return|return
-operator|(
-operator|(
-name|RawScriptBasedMapping
-operator|)
-name|rawMapping
-operator|)
+name|getRawMapping
+argument_list|()
 operator|.
 name|getConf
 argument_list|()
 return|;
 block|}
+comment|/**    * {@inheritDoc}    *<p/>    * This will get called in the superclass constructor, so a check is needed    * to ensure that the raw mapping is defined before trying to relaying a null    * configuration.    * @param conf    */
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)
@@ -277,12 +287,15 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-operator|(
-operator|(
-name|RawScriptBasedMapping
-operator|)
-name|rawMapping
-operator|)
+name|super
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|getRawMapping
+argument_list|()
 operator|.
 name|setConf
 argument_list|(
@@ -297,18 +310,13 @@ specifier|static
 specifier|final
 class|class
 name|RawScriptBasedMapping
-implements|implements
-name|DNSToSwitchMapping
+extends|extends
+name|AbstractDNSToSwitchMapping
 block|{
 DECL|field|scriptName
 specifier|private
 name|String
 name|scriptName
-decl_stmt|;
-DECL|field|conf
-specifier|private
-name|Configuration
-name|conf
 decl_stmt|;
 DECL|field|maxArgs
 specifier|private
@@ -319,6 +327,7 @@ comment|//max hostnames per call of the script
 DECL|field|LOG
 specifier|private
 specifier|static
+specifier|final
 name|Log
 name|LOG
 init|=
@@ -331,7 +340,9 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**      * Set the configuration and      * @param conf extract the configuration parameters of interest      */
+comment|/**      * Set the configuration and extract the configuration parameters of interest      * @param conf the new configuration      */
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -341,8 +352,20 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|this
+name|super
 operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
 name|scriptName
 operator|=
 name|conf
@@ -352,8 +375,6 @@ argument_list|(
 name|SCRIPT_FILENAME_KEY
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|maxArgs
 operator|=
 name|conf
@@ -365,23 +386,18 @@ argument_list|,
 name|DEFAULT_ARG_COUNT
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|conf
+block|}
+else|else
+block|{
+name|scriptName
 operator|=
-name|conf
+literal|null
+expr_stmt|;
+name|maxArgs
+operator|=
+literal|0
 expr_stmt|;
 block|}
-comment|/**      * Get the configuration      * @return the configuration      */
-DECL|method|getConf ()
-specifier|public
-name|Configuration
-name|getConf
-parameter_list|()
-block|{
-return|return
-name|conf
-return|;
 block|}
 comment|/**      * Constructor. The mapping is not ready to use until      * {@link #setConf(Configuration)} has been called      */
 DECL|method|RawScriptBasedMapping ()
@@ -445,20 +461,10 @@ condition|)
 block|{
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
+name|String
+name|name
+range|:
 name|names
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
 control|)
 block|{
 name|m
@@ -792,7 +798,10 @@ argument_list|(
 operator|new
 name|String
 index|[
-literal|0
+name|cmdList
+operator|.
+name|size
+argument_list|()
 index|]
 argument_list|)
 argument_list|,
@@ -814,7 +823,10 @@ name|s
 operator|.
 name|getOutput
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" "
 argument_list|)
 expr_stmt|;
@@ -847,6 +859,21 @@ name|allOutput
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**      * Declare that the mapper is single-switched if a script was not named      * in the configuration.      * @return true iff there is no script      */
+annotation|@
+name|Override
+DECL|method|isSingleSwitch ()
+specifier|public
+name|boolean
+name|isSingleSwitch
+parameter_list|()
+block|{
+return|return
+name|scriptName
+operator|==
+literal|null
 return|;
 block|}
 block|}
