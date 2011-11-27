@@ -7526,7 +7526,7 @@ parameter_list|()
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|getName
 argument_list|()
@@ -7963,7 +7963,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|getName
 argument_list|()

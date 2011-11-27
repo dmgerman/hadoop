@@ -1551,7 +1551,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Registered source "
 operator|+
@@ -2459,7 +2459,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Stopping metrics source "
 operator|+
@@ -2467,12 +2467,9 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
+operator|+
+literal|": class="
+operator|+
 name|sa
 operator|.
 name|source
@@ -2535,7 +2532,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Stopping metrics sink "
 operator|+
@@ -2543,12 +2540,9 @@ name|entry
 operator|.
 name|getKey
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
+operator|+
+literal|": class="
+operator|+
 name|sa
 operator|.
 name|sink

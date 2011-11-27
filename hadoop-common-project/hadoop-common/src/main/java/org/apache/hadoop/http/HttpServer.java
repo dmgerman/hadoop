@@ -3303,7 +3303,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Port returned by webServer.getConnectors()[0]."
 operator|+
@@ -3330,7 +3330,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"listener.getLocalPort() returned "
 operator|+
