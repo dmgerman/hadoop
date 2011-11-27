@@ -2762,7 +2762,8 @@ name|Path
 name|target
 parameter_list|)
 block|{
-comment|/* NB: makeQualified uses the target's scheme and authority, if      * specified, and the scheme and authority of pathFS, if not. If      * the path does have a scheme and authority we assert they match      * those of pathFS since resolve updates the file system of a path      * that contains links each time a link is encountered.      */
+comment|// NB: makeQualified uses the target's scheme and authority, if
+comment|// specified, and the scheme and authority of pathFS, if not.
 specifier|final
 name|String
 name|scheme
@@ -2787,46 +2788,6 @@ operator|.
 name|getAuthority
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|scheme
-operator|!=
-literal|null
-operator|&&
-name|auth
-operator|!=
-literal|null
-condition|)
-block|{
-assert|assert
-name|scheme
-operator|.
-name|equals
-argument_list|(
-name|pathFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
-argument_list|)
-assert|;
-assert|assert
-name|auth
-operator|.
-name|equals
-argument_list|(
-name|pathFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
-argument_list|)
-assert|;
-block|}
 return|return
 operator|(
 name|scheme
