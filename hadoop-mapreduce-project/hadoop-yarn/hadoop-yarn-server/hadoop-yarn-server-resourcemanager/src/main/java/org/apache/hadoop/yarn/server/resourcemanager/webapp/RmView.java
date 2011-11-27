@@ -285,6 +285,14 @@ argument_list|(
 literal|"null,{sType:'title-numeric', bSearchable:false}, null, null]"
 argument_list|)
 decl_stmt|;
+comment|// Sort by id upon page load
+name|init
+operator|.
+name|append
+argument_list|(
+literal|", aaSorting: [[0, 'asc']]"
+argument_list|)
+expr_stmt|;
 name|String
 name|rows
 init|=

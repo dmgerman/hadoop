@@ -386,29 +386,39 @@ return|return
 name|tableInit
 argument_list|()
 operator|.
+comment|// Sort by id upon page load
 name|append
 argument_list|(
-literal|",aoColumnDefs:["
+literal|", aaSorting: [[2, 'asc']]"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 6 ] }"
+literal|", aoColumnDefs:["
 argument_list|)
 operator|.
+comment|// Maps Total
 name|append
 argument_list|(
-literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7 ] }"
+literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7 ] }"
 argument_list|)
 operator|.
+comment|// Maps Completed
 name|append
 argument_list|(
 literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 8 ] }"
 argument_list|)
 operator|.
+comment|// Reduces Total
 name|append
 argument_list|(
 literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 9 ] }"
+argument_list|)
+operator|.
+comment|// Reduces Completed
+name|append
+argument_list|(
+literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 10 ] }"
 argument_list|)
 operator|.
 name|append

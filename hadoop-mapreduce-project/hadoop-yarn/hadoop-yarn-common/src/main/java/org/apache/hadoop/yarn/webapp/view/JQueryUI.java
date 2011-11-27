@@ -1374,7 +1374,7 @@ return|return
 operator|new
 name|StringBuilder
 argument_list|(
-literal|"{bJQueryUI:true, aaSorting:[], "
+literal|"{bJQueryUI:true, "
 argument_list|)
 operator|.
 name|append

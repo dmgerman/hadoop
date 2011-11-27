@@ -414,14 +414,22 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|" ] }"
+literal|" ] }]"
+argument_list|)
+expr_stmt|;
+comment|// Sort by id upon page load
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", aaSorting: [[0, 'asc']]"
 argument_list|)
 expr_stmt|;
 name|b
 operator|.
 name|append
 argument_list|(
-literal|"]}"
+literal|"}"
 argument_list|)
 expr_stmt|;
 return|return
