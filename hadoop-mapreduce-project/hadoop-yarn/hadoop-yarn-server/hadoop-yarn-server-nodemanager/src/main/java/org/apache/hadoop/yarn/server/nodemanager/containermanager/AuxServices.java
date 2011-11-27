@@ -420,7 +420,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * @return the meta data for all registered services, that have been started.    * If a service has not been started no metadata will be available. The key    * the the name of the service as defined in the configuration.    */
+comment|/**    * @return the meta data for all registered services, that have been started.    * If a service has not been started no metadata will be available. The key    * is the name of the service as defined in the configuration.    */
 DECL|method|getMeta ()
 specifier|public
 name|Map

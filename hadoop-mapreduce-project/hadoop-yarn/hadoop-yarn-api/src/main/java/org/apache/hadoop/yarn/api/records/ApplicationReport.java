@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code>is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
+comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code> is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
 end_comment
 
 begin_interface
@@ -400,7 +400,7 @@ name|long
 name|finishTime
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>final finish status</em> of the application.    */
+comment|/**    * Get the<em>final finish status</em> of the application.    * @return<em>final finish status</em> of the application    */
 annotation|@
 name|Public
 annotation|@

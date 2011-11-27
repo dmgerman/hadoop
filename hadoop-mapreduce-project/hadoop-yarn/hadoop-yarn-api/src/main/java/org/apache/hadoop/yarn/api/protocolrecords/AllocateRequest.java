@@ -183,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *<li></li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_interface
@@ -219,7 +219,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>response id</em>.    * @return<em>response id</em>    */
+comment|/**    * Get the<em>response id</em> used to track duplicate responses.    * @return<em>response id</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -229,7 +229,7 @@ name|int
 name|getResponseId
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>response id</em>    * @param id<em>response id</em>    */
+comment|/**    * Set the<em>response id</em> used to track duplicate responses.    * @param id<em>response id</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -265,7 +265,7 @@ name|float
 name|progress
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of<code>ResourceRequest</code> to upate the     *<code>ResourceManager</code> about the application's resource requirements.    * @return the list of<code>ResourceRequest</code>    */
+comment|/**    * Get the list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's resource requirements.    * @return the list of<code>ResourceRequest</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -299,7 +299,7 @@ name|int
 name|getAskCount
 parameter_list|()
 function_decl|;
-comment|/**    * Add list of<code>ResourceRequest</code> to upate the     *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequest list of<code>ResourceRequest</code> to upate the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
+comment|/**    * Add list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequest list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
 annotation|@
 name|Public
 annotation|@

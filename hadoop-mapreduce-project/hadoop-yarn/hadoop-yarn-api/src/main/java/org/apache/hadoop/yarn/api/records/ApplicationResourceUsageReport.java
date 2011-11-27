@@ -128,6 +128,7 @@ specifier|public
 interface|interface
 name|ApplicationResourceUsageReport
 block|{
+comment|/**    * Get the number of used containers    * @return the number of used containers    */
 annotation|@
 name|Public
 annotation|@
@@ -137,6 +138,7 @@ name|int
 name|getNumUsedContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Set the number of used containers    * @param num_containers the number of used containers    */
 annotation|@
 name|Private
 annotation|@
@@ -149,6 +151,7 @@ name|int
 name|num_containers
 parameter_list|)
 function_decl|;
+comment|/**    * Get the number of reserved containers    * @return the number of reserved containers    */
 annotation|@
 name|Public
 annotation|@
@@ -158,6 +161,7 @@ name|int
 name|getNumReservedContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Set the number of reserved containers    * @param num_reserved_containers the number of reserved containers    */
 annotation|@
 name|Private
 annotation|@
@@ -170,6 +174,7 @@ name|int
 name|num_reserved_containers
 parameter_list|)
 function_decl|;
+comment|/**    * Get the used<code>Resource</code>    * @return the used<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -191,6 +196,7 @@ name|Resource
 name|resources
 parameter_list|)
 function_decl|;
+comment|/**    * Get the reserved<code>Resource</code>    * @return the reserved<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -212,6 +218,7 @@ name|Resource
 name|reserved_resources
 parameter_list|)
 function_decl|;
+comment|/**    * Get the needed<code>Resource</code>    * @return the needed<code>Resource</code>    */
 annotation|@
 name|Public
 annotation|@
