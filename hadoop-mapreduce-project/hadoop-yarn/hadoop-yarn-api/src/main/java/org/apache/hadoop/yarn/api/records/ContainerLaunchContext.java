@@ -99,7 +99,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ContainerLaunchContext</code> represents the all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
+comment|/**  *<p><code>ContainerLaunchContext</code> represents all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
 end_comment
 
 begin_interface
@@ -219,7 +219,7 @@ argument_list|>
 name|getLocalResources
 parameter_list|()
 function_decl|;
-comment|/**    * Set<code>LocalResource</code> required by the container.    * @param localResources<code>LocalResource</code> required by the container    */
+comment|/**    * Set<code>LocalResource</code> required by the container. All pre-existing    * Map entries are cleared before adding the new Map    * @param localResources<code>LocalResource</code> required by the container    */
 annotation|@
 name|Public
 annotation|@
@@ -252,7 +252,7 @@ argument_list|>
 name|getServiceData
 parameter_list|()
 function_decl|;
-comment|/**    * Set application-specific binary<em>service data</em>.    * @param serviceData application-specific binary<em>service data</em>    */
+comment|/**    * Set application-specific binary<em>service data</em>. All pre-existing Map    * entries are preserved.    * @param serviceData application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -285,7 +285,7 @@ argument_list|>
 name|getEnvironment
 parameter_list|()
 function_decl|;
-comment|/**    * Add<em>environment variables</em> for the container.    * @param environment<em>environment variables</em> for the container    */
+comment|/**    * Add<em>environment variables</em> for the container. All pre-existing Map    * entries are cleared before adding the new Map    * @param environment<em>environment variables</em> for the container    */
 annotation|@
 name|Public
 annotation|@
@@ -316,7 +316,7 @@ argument_list|>
 name|getCommands
 parameter_list|()
 function_decl|;
-comment|/**    * Add the list of<em>commands</em> for launching the container.    * @param commands the list of<em>commands</em> for launching the container    */
+comment|/**    * Add the list of<em>commands</em> for launching the container. All    * pre-existing List entries are cleared before adding the new List    * @param commands the list of<em>commands</em> for launching the container    */
 annotation|@
 name|Public
 annotation|@
@@ -348,7 +348,7 @@ argument_list|>
 name|getApplicationACLs
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ApplicationACL</code>s for the application.     * @param acls    */
+comment|/**    * Set the<code>ApplicationACL</code>s for the application. All pre-existing    * Map entries are cleared before adding the new Map    * @param acls<code>ApplicationACL</code>s for the application    */
 annotation|@
 name|Public
 annotation|@

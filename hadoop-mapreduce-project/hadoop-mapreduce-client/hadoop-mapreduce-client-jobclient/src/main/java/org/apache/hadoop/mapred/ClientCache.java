@@ -170,43 +170,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|security
-operator|.
-name|client
-operator|.
-name|ClientHSSecurityInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|net
 operator|.
 name|NetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|SecurityInfo
 import|;
 end_import
 
@@ -235,22 +201,6 @@ operator|.
 name|yarn
 operator|.
 name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -486,7 +436,7 @@ return|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Connecting to HistoryServer at: "
 operator|+
@@ -506,7 +456,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Connected to HistoryServer at: "
 operator|+

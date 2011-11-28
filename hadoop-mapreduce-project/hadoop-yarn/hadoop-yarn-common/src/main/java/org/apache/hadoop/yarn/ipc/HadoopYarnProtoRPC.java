@@ -157,7 +157,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|HadoopYarnRPC
+name|HadoopYarnProtoRPC
 operator|.
 name|class
 argument_list|)
@@ -181,7 +181,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Creating a HadoopYarnProtoRpc proxy for protocol "
 operator|+
@@ -268,7 +268,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Creating a HadoopYarnProtoRpc server for protocol "
 operator|+

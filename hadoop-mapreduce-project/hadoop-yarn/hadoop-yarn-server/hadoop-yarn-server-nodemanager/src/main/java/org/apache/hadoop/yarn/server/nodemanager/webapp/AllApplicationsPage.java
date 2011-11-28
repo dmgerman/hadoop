@@ -400,6 +400,12 @@ return|return
 name|tableInit
 argument_list|()
 operator|.
+comment|// Sort by id upon page load
+name|append
+argument_list|(
+literal|", aaSorting: [[0, 'asc']]"
+argument_list|)
+operator|.
 comment|// applicationid, applicationstate
 name|append
 argument_list|(

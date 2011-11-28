@@ -129,7 +129,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link NodeReport} for all nodes.</p>  *   *<p>The<code>NodeReport</code> contains per-node information such as   * available resources, number of containers, tracking url, rack name, health  * status etc.  *   * @see NodeReport  * @see ClientRMProtocol#getClusterNodes(GetClusterNodesRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting a {@link NodeReport} for all nodes.</p>  *   *<p>The<code>NodeReport</code> contains per-node information such as   * available resources, number of containers, tracking url, rack name, health  * status etc.  *   * @see NodeReport  * @see ClientRMProtocol#getClusterNodes(GetClusterNodesRequest)  */
 end_comment
 
 begin_interface

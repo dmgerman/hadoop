@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
+comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
 end_comment
 
 begin_interface

@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -42,20 +32,46 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|conf
+name|util
 operator|.
-name|Configured
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
 begin_comment
-comment|/**  * Implements the {@link DNSToSwitchMapping} via static mappings. Used  * in testcases that simulate racks.  *  */
+comment|/**  * Implements the {@link DNSToSwitchMapping} via static mappings. Used  * in testcases that simulate racks, and in the  * {@link org.apache.hadoop.hdfs.MiniDFSCluster}  *  * A shared, static mapping is used; to reset it call {@link #resetMap()}.  *  * When an instance of the class has its {@link #setConf(Configuration)}  * method called, nodes listed in the configuration will be added to the map.  * These do not get removed when the instance is garbage collected.  */
 end_comment
 
 begin_class
@@ -64,18 +80,43 @@ specifier|public
 class|class
 name|StaticMapping
 extends|extends
-name|Configured
-implements|implements
-name|DNSToSwitchMapping
+name|AbstractDNSToSwitchMapping
 block|{
-DECL|method|setconf (Configuration conf)
+comment|/**    * key to define the node mapping as a comma-delimited list of host=rack    * mappings, e.g.<code>host1=r1,host2=r1,host3=r2</code>.    *</p>    *<b>Important:</b>spaces not trimmed and are considered significant.    */
+DECL|field|KEY_HADOOP_CONFIGURED_NODE_MAPPING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_HADOOP_CONFIGURED_NODE_MAPPING
+init|=
+literal|"hadoop.configured.node.mapping"
+decl_stmt|;
+comment|/**    * Configure the mapping by extracting any mappings defined in the    * {@link #KEY_HADOOP_CONFIGURED_NODE_MAPPING} field    * @param conf new configuration    */
+annotation|@
+name|Override
+DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
-name|setconf
+name|setConf
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+block|{
+name|super
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
 block|{
 name|String
 index|[]
@@ -85,7 +126,7 @@ name|conf
 operator|.
 name|getStrings
 argument_list|(
-literal|"hadoop.configured.node.mapping"
+name|KEY_HADOOP_CONFIGURED_NODE_MAPPING
 argument_list|)
 decl_stmt|;
 if|if
@@ -97,29 +138,12 @@ condition|)
 block|{
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|mappings
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
 name|String
 name|str
-init|=
+range|:
 name|mappings
-index|[
-name|i
-index|]
-decl_stmt|;
+control|)
+block|{
 name|String
 name|host
 init|=
@@ -164,10 +188,28 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+comment|/**    * retained lower case setter for compatibility reasons; relays to    * {@link #setConf(Configuration)}    * @param conf new configuration    */
+DECL|method|setconf (Configuration conf)
+specifier|public
+name|void
+name|setconf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 comment|/* Only one instance per JVM */
 DECL|field|nameToRackMap
 specifier|private
 specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -185,10 +227,10 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Add a node to the static map. The moment any entry is added to the map,    * the map goes multi-rack.    * @param name node name    * @param rackId rack ID    */
 DECL|method|addNodeToRack (String name, String rackId)
-specifier|static
-specifier|synchronized
 specifier|public
+specifier|static
 name|void
 name|addNodeToRack
 parameter_list|(
@@ -198,6 +240,11 @@ parameter_list|,
 name|String
 name|rackId
 parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|nameToRackMap
+init|)
 block|{
 name|nameToRackMap
 operator|.
@@ -209,6 +256,9 @@ name|rackId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
 DECL|method|resolve (List<String> names)
 specifier|public
 name|List
@@ -293,6 +343,48 @@ block|}
 return|return
 name|m
 return|;
+block|}
+block|}
+comment|/**    * This mapping is only single switch if the map is empty    * @return the current switching status    */
+annotation|@
+name|Override
+DECL|method|isSingleSwitch ()
+specifier|public
+name|boolean
+name|isSingleSwitch
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|nameToRackMap
+init|)
+block|{
+return|return
+name|nameToRackMap
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
+block|}
+comment|/**    * Clear the map and revert to being a single switch    */
+DECL|method|resetMap ()
+specifier|public
+specifier|static
+name|void
+name|resetMap
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|nameToRackMap
+init|)
+block|{
+name|nameToRackMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}

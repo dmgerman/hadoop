@@ -687,7 +687,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Cannot pick "
 operator|+

@@ -1318,7 +1318,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Could not get Job info from RM for job "
 operator|+
@@ -1505,7 +1505,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Tracking Url of JOB is "
+literal|"The url to track the job: "
 operator|+
 name|application
 operator|.
@@ -1515,7 +1515,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Connecting to "
 operator|+
@@ -1604,7 +1604,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Could not get Job info from RM for job "
 operator|+
@@ -2110,20 +2110,13 @@ throw|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Failed to contact AM/History for job "
 operator|+
 name|jobId
 operator|+
 literal|" retrying.."
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Failed exception on AM/History contact"
 argument_list|,
 name|e
 operator|.
@@ -2145,20 +2138,13 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Failed to contact AM/History for job "
 operator|+
 name|jobId
 operator|+
 literal|"  Will retry.."
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Failing to contact application master"
 argument_list|,
 name|e
 argument_list|)

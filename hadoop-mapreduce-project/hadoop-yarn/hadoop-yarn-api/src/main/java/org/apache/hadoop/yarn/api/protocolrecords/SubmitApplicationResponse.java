@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client on  * application submission.</p>  *   * @see ClientRMProtocol#submitApplication(SubmitApplicationRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client on  * application submission.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#submitApplication(SubmitApplicationRequest)  */
 end_comment
 
 begin_interface

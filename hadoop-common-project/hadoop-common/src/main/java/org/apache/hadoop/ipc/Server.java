@@ -7526,7 +7526,7 @@ parameter_list|()
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|getName
 argument_list|()
@@ -7718,22 +7718,56 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|logMsg
+init|=
 name|getName
 argument_list|()
 operator|+
-literal|", call: "
+literal|", call "
 operator|+
 name|call
 operator|+
-literal|", error: "
+literal|": error: "
+operator|+
+name|e
+decl_stmt|;
+if|if
+condition|(
+name|e
+operator|instanceof
+name|RuntimeException
+operator|||
+name|e
+operator|instanceof
+name|Error
+condition|)
+block|{
+comment|// These exception types indicate something is probably wrong
+comment|// on the server side, as opposed to just a normal exceptional
+comment|// result.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|logMsg
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|logMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|errorClass
 operator|=
 name|e
@@ -7929,7 +7963,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 name|getName
 argument_list|()

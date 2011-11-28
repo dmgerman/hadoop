@@ -244,7 +244,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Creating YarnRPC for "
 operator|+

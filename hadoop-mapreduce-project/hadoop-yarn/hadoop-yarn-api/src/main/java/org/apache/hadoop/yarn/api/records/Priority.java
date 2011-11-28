@@ -20,6 +20,10 @@ name|records
 package|;
 end_package
 
+begin_comment
+comment|/**  * The priority assigned to a ResourceRequest or Application or Container   * allocation   *  */
+end_comment
+
 begin_interface
 DECL|interface|Priority
 specifier|public
@@ -31,6 +35,7 @@ argument_list|<
 name|Priority
 argument_list|>
 block|{
+comment|/**    * Get the assigned priority    * @return the assigned priority    */
 DECL|method|getPriority ()
 specifier|public
 specifier|abstract
@@ -38,6 +43,7 @@ name|int
 name|getPriority
 parameter_list|()
 function_decl|;
+comment|/**    * Set the assigned priority    * @param priority the assigned priority    */
 DECL|method|setPriority (int priority)
 specifier|public
 specifier|abstract

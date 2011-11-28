@@ -1037,6 +1037,19 @@ argument_list|>
 name|acls
 parameter_list|)
 block|{
+comment|// Sanity check
+name|CSQueueUtils
+operator|.
+name|checkMaxCapacity
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|capacity
+argument_list|,
+name|maximumCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capacity
@@ -1079,6 +1092,8 @@ name|queueInfo
 operator|.
 name|setCapacity
 argument_list|(
+name|this
+operator|.
 name|capacity
 argument_list|)
 expr_stmt|;
@@ -1088,6 +1103,8 @@ name|queueInfo
 operator|.
 name|setMaximumCapacity
 argument_list|(
+name|this
+operator|.
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
@@ -1097,6 +1114,8 @@ name|queueInfo
 operator|.
 name|setQueueState
 argument_list|(
+name|this
+operator|.
 name|state
 argument_list|)
 expr_stmt|;
@@ -2504,6 +2523,19 @@ name|float
 name|maximumCapacity
 parameter_list|)
 block|{
+comment|// Sanity check
+name|CSQueueUtils
+operator|.
+name|checkMaxCapacity
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|capacity
+argument_list|,
+name|maximumCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|maximumCapacity

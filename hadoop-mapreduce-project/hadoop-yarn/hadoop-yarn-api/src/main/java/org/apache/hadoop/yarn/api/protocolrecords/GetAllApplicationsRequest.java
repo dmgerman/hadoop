@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request from clients to get a report of all Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  * @see ClientRMProtocol#getAllApplications(GetAllApplicationsRequest)  */
+comment|/**  *<p>The request from clients to get a report of all Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#getAllApplications(GetAllApplicationsRequest)  */
 end_comment
 
 begin_interface

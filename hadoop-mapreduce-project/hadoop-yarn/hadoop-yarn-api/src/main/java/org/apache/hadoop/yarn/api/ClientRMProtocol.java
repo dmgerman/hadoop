@@ -512,7 +512,7 @@ specifier|public
 interface|interface
 name|ClientRMProtocol
 block|{
-comment|/**    *<p>The interface used by clients to obtain a new {@link ApplicationId} for     * submitting new applications.</p>    *     *<p>The<code>ResourceManager</code> responds with a new, monotonically    * increasing, {@link ApplicationId} which is used by the client to submit    * a new application.</p>    *    *<p>The<code>ResourceManager</code> also responds with details such     * as minimum and maximum resource capabilities in the cluster as specified in    * {@link GetNewApplicationResponse}.</p>    *    * @param request request to get a new<code>ApplicationId</code>    * @return new<code>ApplicationId</code> to be used to submit an application    * @throws YarnRemoteException    * @see #submitApplication(SubmitApplicationRequest)    */
+comment|/**    *<p>The interface used by clients to obtain a new {@link ApplicationId} for     * submitting new applications.</p>    *     *<p>The<code>ResourceManager</code> responds with a new, monotonically    * increasing, {@link ApplicationId} which is used by the client to submit    * a new application.</p>    *    *<p>The<code>ResourceManager</code> also responds with details such     * as minimum and maximum resource capabilities in the cluster as specified in    * {@link GetNewApplicationResponse}.</p>    *    * @param request request to get a new<code>ApplicationId</code>    * @return response containing the new<code>ApplicationId</code> to be used    * to submit an application    * @throws YarnRemoteException    * @see #submitApplication(SubmitApplicationRequest)    */
 DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
 name|GetNewApplicationResponse
@@ -608,7 +608,7 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to get information about<em>queue     * acls</em> for<em>current users</em> from the<code>ResourceManager</code>.    *</p>    *     *<p>The<code>ResourceManager</code> responds with queue acls for all    * existing queues.</p>    *     * @param request request to get queue acls for<em>current user</em>    * @return queue acls for<em>current user</em>    * @throws YarnRemoteException    */
+comment|/**    *<p>The interface used by clients to get information about<em>queue     * acls</em> for<em>current user</em> from the<code>ResourceManager</code>.    *</p>    *     *<p>The<code>ResourceManager</code> responds with queue acls for all    * existing queues.</p>    *     * @param request request to get queue acls for<em>current user</em>    * @return queue acls for<em>current user</em>    * @throws YarnRemoteException    */
 DECL|method|getQueueUserAcls ( GetQueueUserAclsInfoRequest request)
 specifier|public
 name|GetQueueUserAclsInfoResponse
