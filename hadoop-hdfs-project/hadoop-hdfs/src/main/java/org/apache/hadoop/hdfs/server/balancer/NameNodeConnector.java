@@ -76,6 +76,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -506,6 +526,34 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Collections2
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
 begin_comment
 comment|/**  * The class provides utilities for {@link Balancer} to access a NameNode  */
 end_comment
@@ -600,11 +648,14 @@ name|Daemon
 name|keyupdaterthread
 decl_stmt|;
 comment|// AccessKeyUpdater thread
-DECL|method|NameNodeConnector (InetSocketAddress namenodeAddress, Configuration conf )
+DECL|method|NameNodeConnector (Collection<InetSocketAddress> haNNs, Configuration conf)
 name|NameNodeConnector
 parameter_list|(
+name|Collection
+argument_list|<
 name|InetSocketAddress
-name|namenodeAddress
+argument_list|>
+name|haNNs
 parameter_list|,
 name|Configuration
 name|conf
@@ -612,11 +663,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|InetSocketAddress
+name|nn
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+name|haNNs
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|// TODO(HA): need to deal with connecting to HA NN pair here
 name|this
 operator|.
 name|namenodeAddress
 operator|=
-name|namenodeAddress
+name|nn
 expr_stmt|;
 name|this
 operator|.
@@ -624,7 +691,7 @@ name|namenode
 operator|=
 name|createNamenode
 argument_list|(
-name|namenodeAddress
+name|nn
 argument_list|,
 name|conf
 argument_list|)
@@ -652,7 +719,7 @@ name|NameNode
 operator|.
 name|getUri
 argument_list|(
-name|namenodeAddress
+name|nn
 argument_list|)
 argument_list|,
 name|conf

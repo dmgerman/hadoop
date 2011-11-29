@@ -54,6 +54,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -91,8 +101,8 @@ parameter_list|()
 block|{
 comment|/* Hidden constructor */
 block|}
-comment|/**    * Returns true if HA for namenode is configured.    *     * @param conf Configuration    * @return true if HA is configured in the configuration; else false.    */
-DECL|method|isHAEnabled (Configuration conf)
+comment|/**    * Returns true if HA for namenode is configured for the given nameservice    *     * @param conf Configuration    * @param nsId nameservice, or null if no federated NS is configured    * @return true if HA is configured in the configuration; else false.    */
+DECL|method|isHAEnabled (Configuration conf, String nsId)
 specifier|public
 specifier|static
 name|boolean
@@ -100,35 +110,70 @@ name|isHAEnabled
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|nsId
 parameter_list|)
 block|{
-name|Collection
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|InetSocketAddress
 argument_list|>
-name|collection
+argument_list|>
+name|addresses
 init|=
 name|DFSUtil
 operator|.
-name|getNameNodeIds
+name|getHaNnRpcAddresses
 argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|addresses
+operator|==
+literal|null
+condition|)
 return|return
-name|collection
+literal|false
+return|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|InetSocketAddress
+argument_list|>
+name|nnMap
+init|=
+name|addresses
+operator|.
+name|get
+argument_list|(
+name|nsId
+argument_list|)
+decl_stmt|;
+return|return
+name|nnMap
 operator|!=
 literal|null
 operator|&&
-operator|!
-name|collection
+name|nnMap
 operator|.
-name|isEmpty
+name|size
 argument_list|()
+operator|>
+literal|1
 return|;
 block|}
 comment|/**    * Get the namenode Id by matching the {@code addressKey}    * with the the address of the local node.    *     * If {@link DFSConfigKeys#DFS_HA_NAMENODE_ID_KEY} is not specifically    * configured, this method determines the namenode Id by matching the local    * node's address with the configured addresses. When a match is found, it    * returns the namenode Id from the corresponding configuration key.    *     * @param conf Configuration    * @return namenode Id on success, null on failure.    * @throws HadoopIllegalArgumentException on error    */
-DECL|method|getNameNodeId (Configuration conf)
+DECL|method|getNameNodeId (Configuration conf, String nsId)
 specifier|public
 specifier|static
 name|String
@@ -136,6 +181,9 @@ name|getNameNodeId
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|nsId
 parameter_list|)
 block|{
 name|String
@@ -143,7 +191,7 @@ name|namenodeId
 init|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFS_HA_NAMENODE_ID_KEY
 argument_list|)
@@ -159,21 +207,10 @@ return|return
 name|namenodeId
 return|;
 block|}
-if|if
-condition|(
-operator|!
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-name|namenodeId
-operator|=
+name|String
+name|suffixes
+index|[]
+init|=
 name|DFSUtil
 operator|.
 name|getSuffixIDs
@@ -182,17 +219,18 @@ name|conf
 argument_list|,
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
+name|nsId
+argument_list|,
+literal|null
+argument_list|,
 name|DFSUtil
 operator|.
 name|LOCAL_ADDRESS_MATCHER
 argument_list|)
-index|[
-literal|1
-index|]
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
-name|namenodeId
+name|suffixes
 operator|==
 literal|null
 condition|)
@@ -219,7 +257,10 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|namenodeId
+name|suffixes
+index|[
+literal|1
+index|]
 return|;
 block|}
 comment|/**    * Similar to    * {@link DFSUtil#getNameServiceIdFromAddress(Configuration,     * InetSocketAddress, String...)}    */
@@ -243,19 +284,6 @@ name|keys
 parameter_list|)
 block|{
 comment|// Configuration with a single namenode and no nameserviceId
-if|if
-condition|(
-operator|!
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
 name|String
 index|[]
 name|ids

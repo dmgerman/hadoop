@@ -2348,6 +2348,14 @@ name|role
 operator|=
 name|role
 expr_stmt|;
+name|String
+name|nsId
+init|=
+name|getNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|haEnabled
@@ -2357,6 +2365,8 @@ operator|.
 name|isHAEnabled
 argument_list|(
 name|conf
+argument_list|,
+name|nsId
 argument_list|)
 expr_stmt|;
 name|this
@@ -2373,10 +2383,7 @@ name|initializeGenericKeys
 argument_list|(
 name|conf
 argument_list|,
-name|getNameServiceId
-argument_list|(
-name|conf
-argument_list|)
+name|nsId
 argument_list|)
 expr_stmt|;
 name|initialize
@@ -3878,6 +3885,8 @@ operator|.
 name|getNameNodeId
 argument_list|(
 name|conf
+argument_list|,
+name|nameserviceId
 argument_list|)
 decl_stmt|;
 if|if

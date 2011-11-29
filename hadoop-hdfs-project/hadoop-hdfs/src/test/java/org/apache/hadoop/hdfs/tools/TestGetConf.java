@@ -94,6 +94,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|StringTokenizer
 import|;
 end_import
@@ -153,6 +163,22 @@ operator|.
 name|hdfs
 operator|.
 name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|ConfiguredNNAddress
 import|;
 end_import
 
@@ -465,8 +491,8 @@ return|return
 name|values
 return|;
 block|}
-comment|/*    * Convert list of InetSocketAddress to string array with each address    * represented as "host:port"    */
-DECL|method|toStringArray (List<InetSocketAddress> list)
+comment|/*    * Convert the map returned from DFSUtil functions to an array of    * addresses represented as "host:port"    */
+DECL|method|toStringArray (List<ConfiguredNNAddress> list)
 specifier|private
 name|String
 index|[]
@@ -474,7 +500,7 @@ name|toStringArray
 parameter_list|(
 name|List
 argument_list|<
-name|InetSocketAddress
+name|ConfiguredNNAddress
 argument_list|>
 name|list
 parameter_list|)
@@ -525,6 +551,9 @@ name|get
 argument_list|(
 name|i
 argument_list|)
+operator|.
+name|getAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -533,11 +562,18 @@ name|ret
 return|;
 block|}
 comment|/**    * Using DFSUtil methods get the list of given {@code type} of address    */
-DECL|method|getAddressListFromConf (TestType type, HdfsConfiguration conf)
+DECL|method|getAddressListFromConf ( TestType type, HdfsConfiguration conf)
 specifier|private
-name|List
+name|Map
 argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
 name|InetSocketAddress
+argument_list|>
 argument_list|>
 name|getAddressListFromConf
 parameter_list|(
@@ -802,7 +838,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Using {@link GetConf} methods get the list of given {@code type} of    * addresses    *     * @param type, TestType    * @param conf, configuration    * @param checkPort, If checkPort is true, verify NNPRCADDRESSES whose     *      expected value is hostname:rpc-port.  If checkPort is false, the     *      expected is hostname only.    * @param expected, expected addresses    */
-DECL|method|getAddressListFromTool (TestType type, HdfsConfiguration conf, boolean checkPort, List<InetSocketAddress> expected)
+DECL|method|getAddressListFromTool (TestType type, HdfsConfiguration conf, boolean checkPort, List<ConfiguredNNAddress> expected)
 specifier|private
 name|void
 name|getAddressListFromTool
@@ -818,7 +854,7 @@ name|checkPort
 parameter_list|,
 name|List
 argument_list|<
-name|InetSocketAddress
+name|ConfiguredNNAddress
 argument_list|>
 name|expected
 parameter_list|)
@@ -931,12 +967,20 @@ index|]
 decl_stmt|;
 for|for
 control|(
-name|InetSocketAddress
-name|addr
+name|ConfiguredNNAddress
+name|cnn
 range|:
 name|expected
 control|)
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+name|cnn
+operator|.
+name|getAddress
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1013,17 +1057,37 @@ throws|throws
 name|Exception
 block|{
 comment|// Ensure DFSUtil returned the right set of addresses
-name|List
+name|Map
 argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
 name|InetSocketAddress
 argument_list|>
-name|list
+argument_list|>
+name|map
 init|=
 name|getAddressListFromConf
 argument_list|(
 name|type
 argument_list|,
 name|conf
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|ConfiguredNNAddress
+argument_list|>
+name|list
+init|=
+name|DFSUtil
+operator|.
+name|flattenAddressMap
+argument_list|(
+name|map
 argument_list|)
 decl_stmt|;
 name|String
