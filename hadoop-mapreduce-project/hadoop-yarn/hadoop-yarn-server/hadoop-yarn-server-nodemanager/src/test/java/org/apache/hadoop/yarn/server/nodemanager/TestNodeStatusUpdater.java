@@ -138,18 +138,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|NodeHealthCheckerService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -2738,6 +2726,9 @@ name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|diskhandler
 parameter_list|)
 block|{
 return|return
@@ -2757,6 +2748,8 @@ argument_list|,
 name|containerTokenSecretManager
 argument_list|,
 name|aclsManager
+argument_list|,
+name|diskhandler
 argument_list|)
 block|{
 annotation|@

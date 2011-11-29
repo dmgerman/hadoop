@@ -1381,6 +1381,66 @@ name|NM_PREFIX
 operator|+
 literal|"container-monitor.resource-calculator.class"
 decl_stmt|;
+comment|/**    * Enable/Disable disks' health checker. Default is true.    * An expert level configuration property.    */
+DECL|field|NM_DISK_HEALTH_CHECK_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DISK_HEALTH_CHECK_ENABLE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"disk-health-checker.enable"
+decl_stmt|;
+comment|/** Frequency of running disks' health checker.*/
+DECL|field|NM_DISK_HEALTH_CHECK_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DISK_HEALTH_CHECK_INTERVAL_MS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"disk-health-checker.interval-ms"
+decl_stmt|;
+comment|/** By default, disks' health is checked every 2 minutes. */
+DECL|field|DEFAULT_NM_DISK_HEALTH_CHECK_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NM_DISK_HEALTH_CHECK_INTERVAL_MS
+init|=
+literal|2
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|/**    * The minimum fraction of number of disks to be healthy for the nodemanager    * to launch new containers. This applies to nm-local-dirs and nm-log-dirs.    */
+DECL|field|NM_MIN_HEALTHY_DISKS_FRACTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_MIN_HEALTHY_DISKS_FRACTION
+init|=
+name|NM_PREFIX
+operator|+
+literal|"disk-health-checker.min-healthy-disks"
+decl_stmt|;
+comment|/**    * By default, at least 5% of disks are to be healthy to say that the node    * is healthy in terms of disks.    */
+DECL|field|DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION
+init|=
+literal|0.25F
+decl_stmt|;
 comment|/** Frequency of running node health script.*/
 DECL|field|NM_HEALTH_CHECK_INTERVAL_MS
 specifier|public
@@ -1406,7 +1466,7 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-comment|/** Script time out period.*/
+comment|/** Health check script time out period.*/
 DECL|field|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
 specifier|public
 specifier|static

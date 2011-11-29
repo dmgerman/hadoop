@@ -144,6 +144,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|LocalDirsHandlerService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|ResourceView
 import|;
 end_import
@@ -271,7 +289,7 @@ specifier|private
 name|WebApp
 name|webApp
 decl_stmt|;
-DECL|method|WebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager)
+DECL|method|WebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|WebServer
 parameter_list|(
@@ -283,6 +301,9 @@ name|resourceView
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 name|super
@@ -311,6 +332,8 @@ argument_list|(
 name|resourceView
 argument_list|,
 name|aclsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 block|}
@@ -497,7 +520,13 @@ specifier|final
 name|ApplicationACLsManager
 name|aclsManager
 decl_stmt|;
-DECL|method|NMWebApp (ResourceView resourceView, ApplicationACLsManager aclsManager)
+DECL|field|dirsHandler
+specifier|private
+specifier|final
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
+DECL|method|NMWebApp (ResourceView resourceView, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|NMWebApp
 parameter_list|(
@@ -506,6 +535,9 @@ name|resourceView
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 name|this
@@ -519,6 +551,12 @@ operator|.
 name|aclsManager
 operator|=
 name|aclsManager
+expr_stmt|;
+name|this
+operator|.
+name|dirsHandler
+operator|=
+name|dirsHandler
 expr_stmt|;
 block|}
 annotation|@
@@ -555,6 +593,18 @@ argument_list|(
 name|this
 operator|.
 name|aclsManager
+argument_list|)
+expr_stmt|;
+name|bind
+argument_list|(
+name|LocalDirsHandlerService
+operator|.
+name|class
+argument_list|)
+operator|.
+name|toInstance
+argument_list|(
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 name|route

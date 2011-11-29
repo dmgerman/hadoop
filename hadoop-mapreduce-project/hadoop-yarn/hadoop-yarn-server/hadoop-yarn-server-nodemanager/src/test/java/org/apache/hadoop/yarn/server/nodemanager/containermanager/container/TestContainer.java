@@ -112,6 +112,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URISyntaxException
@@ -4213,6 +4223,10 @@ operator|.
 name|CONTAINER_EXITED_WITH_FAILURE
 argument_list|,
 name|exitCode
+argument_list|,
+literal|"Container completed with exit code "
+operator|+
+name|exitCode
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4249,6 +4263,16 @@ name|void
 name|containerKilledOnRequest
 parameter_list|()
 block|{
+name|int
+name|exitCode
+init|=
+name|ExitCode
+operator|.
+name|FORCE_KILLED
+operator|.
+name|getExitCode
+argument_list|()
+decl_stmt|;
 name|c
 operator|.
 name|handle
@@ -4262,12 +4286,11 @@ name|ContainerEventType
 operator|.
 name|CONTAINER_KILLED_ON_REQUEST
 argument_list|,
-name|ExitCode
-operator|.
-name|FORCE_KILLED
-operator|.
-name|getExitCode
-argument_list|()
+name|exitCode
+argument_list|,
+literal|"Container completed with exit code "
+operator|+
+name|exitCode
 argument_list|)
 argument_list|)
 expr_stmt|;

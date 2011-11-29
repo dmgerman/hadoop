@@ -212,22 +212,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|event
 operator|.
 name|Dispatcher
@@ -265,6 +249,24 @@ operator|.
 name|nodemanager
 operator|.
 name|ContainerExecutor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|LocalDirsHandlerService
 import|;
 end_import
 
@@ -435,6 +437,11 @@ specifier|final
 name|Dispatcher
 name|dispatcher
 decl_stmt|;
+DECL|field|dirsHandler
+specifier|private
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
 DECL|field|containerLauncher
 specifier|private
 specifier|final
@@ -529,7 +536,7 @@ name|ContainerLaunch
 name|launcher
 decl_stmt|;
 block|}
-DECL|method|ContainersLauncher (Context context, Dispatcher dispatcher, ContainerExecutor exec)
+DECL|method|ContainersLauncher (Context context, Dispatcher dispatcher, ContainerExecutor exec, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|ContainersLauncher
 parameter_list|(
@@ -541,6 +548,9 @@ name|dispatcher
 parameter_list|,
 name|ContainerExecutor
 name|exec
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 name|super
@@ -565,6 +575,12 @@ operator|.
 name|dispatcher
 operator|=
 name|dispatcher
+expr_stmt|;
+name|this
+operator|.
+name|dirsHandler
+operator|=
+name|dirsHandler
 expr_stmt|;
 block|}
 annotation|@
@@ -709,6 +725,8 @@ name|event
 operator|.
 name|getContainer
 argument_list|()
+argument_list|,
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|running
@@ -745,6 +763,16 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|rContainerDatum
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Container not launched. So nothing needs to be done.
+return|return;
+block|}
 name|Future
 argument_list|<
 name|Integer

@@ -102,18 +102,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|NodeHealthCheckerService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -595,6 +583,16 @@ specifier|private
 name|ApplicationACLsManager
 name|aclsManager
 decl_stmt|;
+DECL|field|nodeHealthChecker
+specifier|private
+name|NodeHealthCheckerService
+name|nodeHealthChecker
+decl_stmt|;
+DECL|field|dirsHandler
+specifier|private
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
 DECL|method|NodeManager ()
 specifier|public
 name|NodeManager
@@ -657,7 +655,7 @@ name|NodeResourceMonitorImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -679,6 +677,9 @@ name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 return|return
@@ -698,10 +699,12 @@ argument_list|,
 name|containerTokenSecretManager
 argument_list|,
 name|aclsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}
-DECL|method|createWebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager)
+DECL|method|createWebServer (Context nmContext, ResourceView resourceView, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|protected
 name|WebServer
 name|createWebServer
@@ -714,6 +717,9 @@ name|resourceView
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 return|return
@@ -725,6 +731,8 @@ argument_list|,
 name|resourceView
 argument_list|,
 name|aclsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -881,22 +889,7 @@ operator|new
 name|AsyncDispatcher
 argument_list|()
 decl_stmt|;
-name|NodeHealthCheckerService
-name|healthChecker
-init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-name|NodeHealthCheckerService
-operator|.
-name|shouldRun
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-name|healthChecker
+name|nodeHealthChecker
 operator|=
 operator|new
 name|NodeHealthCheckerService
@@ -904,10 +897,16 @@ argument_list|()
 expr_stmt|;
 name|addService
 argument_list|(
-name|healthChecker
+name|nodeHealthChecker
 argument_list|)
 expr_stmt|;
-block|}
+name|dirsHandler
+operator|=
+name|nodeHealthChecker
+operator|.
+name|getDiskHandler
+argument_list|()
+expr_stmt|;
 name|NodeStatusUpdater
 name|nodeStatusUpdater
 init|=
@@ -917,7 +916,7 @@ name|context
 argument_list|,
 name|dispatcher
 argument_list|,
-name|healthChecker
+name|nodeHealthChecker
 argument_list|,
 name|this
 operator|.
@@ -962,6 +961,8 @@ argument_list|,
 name|this
 operator|.
 name|aclsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|addService
@@ -984,6 +985,8 @@ argument_list|,
 name|this
 operator|.
 name|aclsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|addService
@@ -1271,6 +1274,17 @@ operator|.
 name|nodeHealthStatus
 return|;
 block|}
+block|}
+comment|/**    * @return the node health checker    */
+DECL|method|getNodeHealthChecker ()
+specifier|public
+name|NodeHealthCheckerService
+name|getNodeHealthChecker
+parameter_list|()
+block|{
+return|return
+name|nodeHealthChecker
+return|;
 block|}
 annotation|@
 name|Override

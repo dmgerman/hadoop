@@ -55,7 +55,13 @@ specifier|private
 name|int
 name|exitCode
 decl_stmt|;
-DECL|method|ContainerExitEvent (ContainerId cID, ContainerEventType eventType, int exitCode)
+DECL|field|diagnosticInfo
+specifier|private
+specifier|final
+name|String
+name|diagnosticInfo
+decl_stmt|;
+DECL|method|ContainerExitEvent (ContainerId cID, ContainerEventType eventType, int exitCode, String diagnosticInfo)
 specifier|public
 name|ContainerExitEvent
 parameter_list|(
@@ -67,6 +73,9 @@ name|eventType
 parameter_list|,
 name|int
 name|exitCode
+parameter_list|,
+name|String
+name|diagnosticInfo
 parameter_list|)
 block|{
 name|super
@@ -82,6 +91,12 @@ name|exitCode
 operator|=
 name|exitCode
 expr_stmt|;
+name|this
+operator|.
+name|diagnosticInfo
+operator|=
+name|diagnosticInfo
+expr_stmt|;
 block|}
 DECL|method|getExitCode ()
 specifier|public
@@ -93,6 +108,16 @@ return|return
 name|this
 operator|.
 name|exitCode
+return|;
+block|}
+DECL|method|getDiagnosticInfo ()
+specifier|public
+name|String
+name|getDiagnosticInfo
+parameter_list|()
+block|{
+return|return
+name|diagnosticInfo
 return|;
 block|}
 block|}

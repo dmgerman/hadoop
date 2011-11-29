@@ -820,6 +820,18 @@ operator|.
 name|newCachedThreadPool
 argument_list|()
 decl_stmt|;
+name|Path
+name|destPath
+init|=
+name|localDirAllocator
+operator|.
+name|getLocalPathForWrite
+argument_list|(
+literal|"."
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|LocalResource
@@ -846,7 +858,7 @@ name|ugi
 argument_list|,
 name|conf
 argument_list|,
-name|localDirAllocator
+name|destPath
 argument_list|,
 name|resource
 argument_list|,

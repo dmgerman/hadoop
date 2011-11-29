@@ -108,6 +108,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -265,22 +275,6 @@ operator|.
 name|records
 operator|.
 name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -505,7 +499,7 @@ comment|// nothing to do or verify here
 block|}
 annotation|@
 name|Override
-DECL|method|startLocalizer (Path nmPrivateContainerTokensPath, InetSocketAddress nmAddr, String user, String appId, String locId, List<Path> localDirs)
+DECL|method|startLocalizer (Path nmPrivateContainerTokensPath, InetSocketAddress nmAddr, String user, String appId, String locId, List<String> localDirs, List<String> logDirs)
 specifier|public
 name|void
 name|startLocalizer
@@ -527,9 +521,15 @@ name|locId
 parameter_list|,
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -542,8 +542,6 @@ init|=
 operator|new
 name|ContainerLocalizer
 argument_list|(
-name|this
-operator|.
 name|lfs
 argument_list|,
 name|user
@@ -552,7 +550,10 @@ name|appId
 argument_list|,
 name|locId
 argument_list|,
+name|getPaths
+argument_list|(
 name|localDirs
+argument_list|)
 argument_list|,
 name|RecordFactoryProvider
 operator|.
@@ -589,6 +590,8 @@ expr_stmt|;
 name|createAppLogDirs
 argument_list|(
 name|appId
+argument_list|,
+name|logDirs
 argument_list|)
 expr_stmt|;
 comment|// TODO: Why pick first app dir. The same in LCE why not random?
@@ -688,7 +691,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|launchContainer (Container container, Path nmPrivateContainerScriptPath, Path nmPrivateTokensPath, String userName, String appId, Path containerWorkDir)
+DECL|method|launchContainer (Container container, Path nmPrivateContainerScriptPath, Path nmPrivateTokensPath, String userName, String appId, Path containerWorkDir, List<String> localDirs, List<String> logDirs)
 specifier|public
 name|int
 name|launchContainer
@@ -710,6 +713,18 @@ name|appId
 parameter_list|,
 name|Path
 name|containerWorkDir
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|localDirs
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -752,30 +767,12 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|String
-index|[]
-name|sLocalDirs
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getStrings
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOCAL_DIRS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_LOCAL_DIRS
-argument_list|)
-decl_stmt|;
 for|for
 control|(
 name|String
 name|sLocalDir
 range|:
-name|sLocalDirs
+name|localDirs
 control|)
 block|{
 name|Path
@@ -855,6 +852,8 @@ argument_list|(
 name|appIdStr
 argument_list|,
 name|containerIdStr
+argument_list|,
+name|logDirs
 argument_list|)
 expr_stmt|;
 comment|// copy launch script to work dir
@@ -1719,14 +1718,14 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-DECL|method|getFirstApplicationDir (List<Path> localDirs, String user, String appId)
+DECL|method|getFirstApplicationDir (List<String> localDirs, String user, String appId)
 specifier|private
 name|Path
 name|getFirstApplicationDir
 parameter_list|(
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
 parameter_list|,
@@ -1740,11 +1739,15 @@ block|{
 return|return
 name|getApplicationDir
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|localDirs
 operator|.
 name|get
 argument_list|(
 literal|0
+argument_list|)
 argument_list|)
 argument_list|,
 name|user
@@ -1872,14 +1875,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *</ul>    */
-DECL|method|createUserLocalDirs (List<Path> localDirs, String user)
+DECL|method|createUserLocalDirs (List<String> localDirs, String user)
 specifier|private
 name|void
 name|createUserLocalDirs
 parameter_list|(
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
 parameter_list|,
@@ -1905,7 +1908,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Path
+name|String
 name|localDir
 range|:
 name|localDirs
@@ -1920,7 +1923,11 @@ name|mkdir
 argument_list|(
 name|getUserCacheDir
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|localDir
+argument_list|)
 argument_list|,
 name|user
 argument_list|)
@@ -1975,14 +1982,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Initialize the local cache directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *<li>$local.dir/usercache/$user/appcache</li>    *<li>$local.dir/usercache/$user/filecache</li>    *</ul>    */
-DECL|method|createUserCacheDirs (List<Path> localDirs, String user)
+DECL|method|createUserCacheDirs (List<String> localDirs, String user)
 specifier|private
 name|void
 name|createUserCacheDirs
 parameter_list|(
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
 parameter_list|,
@@ -2031,20 +2038,29 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Path
+name|String
 name|localDir
 range|:
 name|localDirs
 control|)
 block|{
 comment|// create $local.dir/usercache/$user/appcache
+name|Path
+name|localDirPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|localDir
+argument_list|)
+decl_stmt|;
 specifier|final
 name|Path
 name|appDir
 init|=
 name|getAppcacheDir
 argument_list|(
-name|localDir
+name|localDirPath
 argument_list|,
 name|user
 argument_list|)
@@ -2092,7 +2108,7 @@ name|distDir
 init|=
 name|getFileCacheDir
 argument_list|(
-name|localDir
+name|localDirPath
 argument_list|,
 name|user
 argument_list|)
@@ -2172,14 +2188,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user/appcache/$appid</li>    *</ul>    * @param localDirs     */
-DECL|method|createAppDirs (List<Path> localDirs, String user, String appId)
+DECL|method|createAppDirs (List<String> localDirs, String user, String appId)
 specifier|private
 name|void
 name|createAppDirs
 parameter_list|(
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
 parameter_list|,
@@ -2208,7 +2224,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Path
+name|String
 name|localDir
 range|:
 name|localDirs
@@ -2219,7 +2235,11 @@ name|fullAppDir
 init|=
 name|getApplicationDir
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|localDir
+argument_list|)
 argument_list|,
 name|user
 argument_list|,
@@ -2290,35 +2310,23 @@ throw|;
 block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
-DECL|method|createAppLogDirs (String appId)
+DECL|method|createAppLogDirs (String appId, List<String> logDirs)
 specifier|private
 name|void
 name|createAppLogDirs
 parameter_list|(
 name|String
 name|appId
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-index|[]
-name|rootLogDirs
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getStrings
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_DIRS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_LOG_DIRS
-argument_list|)
-decl_stmt|;
 name|boolean
 name|appLogDirStatus
 init|=
@@ -2338,7 +2346,7 @@ control|(
 name|String
 name|rootLogDir
 range|:
-name|rootLogDirs
+name|logDirs
 control|)
 block|{
 comment|// create $log.dir/$appid
@@ -2411,7 +2419,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
-DECL|method|createContainerLogDirs (String appId, String containerId)
+DECL|method|createContainerLogDirs (String appId, String containerId, List<String> logDirs)
 specifier|private
 name|void
 name|createContainerLogDirs
@@ -2421,28 +2429,16 @@ name|appId
 parameter_list|,
 name|String
 name|containerId
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-index|[]
-name|rootLogDirs
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getStrings
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LOG_DIRS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_LOG_DIRS
-argument_list|)
-decl_stmt|;
 name|boolean
 name|containerLogDirStatus
 init|=
@@ -2462,7 +2458,7 @@ control|(
 name|String
 name|rootLogDir
 range|:
-name|rootLogDirs
+name|logDirs
 control|)
 block|{
 comment|// create $log.dir/$appid/$containerid
@@ -2544,6 +2540,80 @@ name|containerId
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * @return the list of paths of given local directories    */
+DECL|method|getPaths (List<String> dirs)
+specifier|private
+specifier|static
+name|List
+argument_list|<
+name|Path
+argument_list|>
+name|getPaths
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|dirs
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Path
+argument_list|>
+argument_list|(
+name|dirs
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|dirs
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|paths
+operator|.
+name|add
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|dirs
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|paths
+return|;
 block|}
 block|}
 end_class

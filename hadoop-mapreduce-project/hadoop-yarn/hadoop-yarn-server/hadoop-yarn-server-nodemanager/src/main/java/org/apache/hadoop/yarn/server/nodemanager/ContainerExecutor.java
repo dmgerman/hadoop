@@ -419,8 +419,8 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Prepare the environment for containers in this application to execute.    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens -> $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc -> $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc -> $N/$user/$appId/filecache/idef    * @param user user name of application owner    * @param appId id of the application    * @param nmPrivateContainerTokens path to localized credentials, rsrc by NM    * @param nmAddr RPC address to contact NM    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
-DECL|method|startLocalizer (Path nmPrivateContainerTokens, InetSocketAddress nmAddr, String user, String appId, String locId, List<Path> localDirs)
+comment|/**    * Prepare the environment for containers in this application to execute.    * For $x in local.dirs    *   create $x/$user/$appId    * Copy $nmLocal/appTokens -> $N/$user/$appId    * For $rsrc in private resources    *   Copy $rsrc -> $N/$user/filecache/[idef]    * For $rsrc in job resources    *   Copy $rsrc -> $N/$user/$appId/filecache/idef    * @param user user name of application owner    * @param appId id of the application    * @param nmPrivateContainerTokens path to localized credentials, rsrc by NM    * @param nmAddr RPC address to contact NM    * @param localDirs nm-local-dirs    * @param logDirs nm-log-dirs    * @throws IOException For most application init failures    * @throws InterruptedException If application init thread is halted by NM    */
+DECL|method|startLocalizer (Path nmPrivateContainerTokens, InetSocketAddress nmAddr, String user, String appId, String locId, List<String> localDirs, List<String> logDirs)
 specifier|public
 specifier|abstract
 name|void
@@ -443,17 +443,23 @@ name|locId
 parameter_list|,
 name|List
 argument_list|<
-name|Path
+name|String
 argument_list|>
 name|localDirs
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param container the container to be launched    * @param nmPrivateContainerScriptPath the path for launch script    * @param nmPrivateTokensPath the path for tokens for the container    * @param user the user of the container    * @param appId the appId of the container    * @param containerWorkDir the work dir for the container    * @return the return status of the launch    * @throws IOException    */
-DECL|method|launchContainer (Container container, Path nmPrivateContainerScriptPath, Path nmPrivateTokensPath, String user, String appId, Path containerWorkDir)
+comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param container the container to be launched    * @param nmPrivateContainerScriptPath the path for launch script    * @param nmPrivateTokensPath the path for tokens for the container    * @param user the user of the container    * @param appId the appId of the container    * @param containerWorkDir the work dir for the container    * @param localDirs nm-local-dirs to be used for this container    * @param logDirs nm-log-dirs to be used for this container    * @return the return status of the launch    * @throws IOException    */
+DECL|method|launchContainer (Container container, Path nmPrivateContainerScriptPath, Path nmPrivateTokensPath, String user, String appId, Path containerWorkDir, List<String> localDirs, List<String> logDirs)
 specifier|public
 specifier|abstract
 name|int
@@ -476,6 +482,18 @@ name|appId
 parameter_list|,
 name|Path
 name|containerWorkDir
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|localDirs
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|logDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -534,6 +552,13 @@ DECL|enumConstant|TERMINATED
 name|TERMINATED
 argument_list|(
 literal|143
+argument_list|)
+block|,
+DECL|enumConstant|DISKS_FAILED
+name|DISKS_FAILED
+argument_list|(
+operator|-
+literal|101
 argument_list|)
 block|;
 DECL|field|code
