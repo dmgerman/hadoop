@@ -734,14 +734,14 @@ literal|" + "
 operator|+
 name|len
 operator|+
-literal|" should be< "
+literal|" should be<= "
 operator|+
 name|fileSize
 argument_list|,
 name|start
 operator|+
 name|len
-operator|<
+operator|<=
 name|fileSize
 argument_list|)
 expr_stmt|;
