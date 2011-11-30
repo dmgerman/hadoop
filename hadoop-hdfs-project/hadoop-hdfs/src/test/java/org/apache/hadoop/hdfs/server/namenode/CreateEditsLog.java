@@ -1066,7 +1066,7 @@ argument_list|)
 decl_stmt|;
 name|editLog
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|addFiles

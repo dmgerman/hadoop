@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides an interface for accessing list of blocks that  * has been implemented as long[].  * This class is useful for block report. Rather than send block reports  * as a Block[] we can send it as a long[].  *  * The structure of the array is as follows:  * 0: the length of the finalized replica list;  * 1: the length of the under-construction replica list;  * - followed by finalized replica list where each replica is represented by  *   3 longs: one for the blockId, one for the block length, and one for  *   the generation stamp;  * - followed by the invalid replica represented with three -1s;  * - followed by the under-construction replica list where each replica is  *   represented by 4 longs: three for the block id, length, generation   *   stamp, and the forth for the replica state.  */
+comment|/**  * This class provides an interface for accessing list of blocks that  * has been implemented as long[].  * This class is useful for block report. Rather than send block reports  * as a Block[] we can send it as a long[].  *  * The structure of the array is as follows:  * 0: the length of the finalized replica list;  * 1: the length of the under-construction replica list;  * - followed by finalized replica list where each replica is represented by  *   3 longs: one for the blockId, one for the block length, and one for  *   the generation stamp;  * - followed by the invalid replica represented with three -1s;  * - followed by the under-construction replica list where each replica is  *   represented by 4 longs: three for the block id, length, generation   *   stamp, and the fourth for the replica state.  */
 end_comment
 
 begin_class
@@ -1003,6 +1003,66 @@ operator|=
 operator|-
 literal|1
 expr_stmt|;
+block|}
+DECL|method|getMaxGsInBlockList ()
+specifier|public
+name|long
+name|getMaxGsInBlockList
+parameter_list|()
+block|{
+name|long
+name|maxGs
+init|=
+operator|-
+literal|1
+decl_stmt|;
+name|Iterator
+argument_list|<
+name|Block
+argument_list|>
+name|iter
+init|=
+name|getBlockReportIterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|Block
+name|b
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|>
+name|maxGs
+condition|)
+block|{
+name|maxGs
+operator|=
+name|b
+operator|.
+name|getGenerationStamp
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+return|return
+name|maxGs
+return|;
 block|}
 block|}
 end_class

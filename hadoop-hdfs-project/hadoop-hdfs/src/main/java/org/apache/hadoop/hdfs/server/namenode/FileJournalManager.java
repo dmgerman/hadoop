@@ -531,7 +531,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Finalizing edits file "
 operator|+
@@ -642,6 +642,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Purging logs older than "
+operator|+
+name|minTxIdToKeep
+argument_list|)
+expr_stmt|;
 name|File
 index|[]
 name|files
@@ -1144,6 +1153,11 @@ argument_list|,
 name|elf
 operator|.
 name|getLastTxId
+argument_list|()
+argument_list|,
+name|elf
+operator|.
+name|isInProgress
 argument_list|()
 argument_list|)
 return|;

@@ -156,6 +156,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -872,6 +882,13 @@ name|newArrayList
 argument_list|(
 name|editsDirs
 argument_list|)
+argument_list|,
+name|FSNamesystem
+operator|.
+name|getSharedEditsDirs
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1224,7 +1241,7 @@ operator|.
 name|removedStorageDirs
 return|;
 block|}
-comment|/**    * Set the storage directories which will be used. This should only ever be    * called from inside NNStorage. However, it needs to remain package private    * for testing, as StorageDirectories need to be reinitialised after using    * Mockito.spy() on this class, as Mockito doesn't work well with inner    * classes, such as StorageDirectory in this case.    *    * Synchronized due to initialization of storageDirs and removedStorageDirs.    *    * @param fsNameDirs Locations to store images.    * @param fsEditsDirs Locations to store edit logs.    * @throws IOException    */
+comment|/**    * See {@link NNStorage#setStorageDirectories(Collection, Collection, Collection)}    */
 annotation|@
 name|VisibleForTesting
 DECL|method|setStorageDirectories (Collection<URI> fsNameDirs, Collection<URI> fsEditsDirs)
@@ -1243,6 +1260,50 @@ argument_list|<
 name|URI
 argument_list|>
 name|fsEditsDirs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|setStorageDirectories
+argument_list|(
+name|fsNameDirs
+argument_list|,
+name|fsEditsDirs
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|URI
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the storage directories which will be used. This should only ever be    * called from inside NNStorage. However, it needs to remain package private    * for testing, as StorageDirectories need to be reinitialised after using    * Mockito.spy() on this class, as Mockito doesn't work well with inner    * classes, such as StorageDirectory in this case.    *    * Synchronized due to initialization of storageDirs and removedStorageDirs.    *    * @param fsNameDirs Locations to store images.    * @param fsEditsDirs Locations to store edit logs.    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setStorageDirectories (Collection<URI> fsNameDirs, Collection<URI> fsEditsDirs, Collection<URI> sharedEditsDirs)
+specifier|synchronized
+name|void
+name|setStorageDirectories
+parameter_list|(
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|fsNameDirs
+parameter_list|,
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|fsEditsDirs
+parameter_list|,
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|sharedEditsDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1371,9 +1432,18 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|dirType
+argument_list|,
+operator|!
+name|sharedEditsDirs
+operator|.
+name|contains
+argument_list|(
+name|dirName
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Don't lock the dir if it's shared.
 block|}
 block|}
 comment|// Add edits dirs if they are different from name dirs
@@ -1433,6 +1503,14 @@ argument_list|,
 name|NameNodeDirType
 operator|.
 name|EDITS
+argument_list|,
+operator|!
+name|sharedEditsDirs
+operator|.
+name|contains
+argument_list|(
+name|dirName
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

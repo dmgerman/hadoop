@@ -189,6 +189,53 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Set up an HA topology with a single HA nameservice.    */
+DECL|method|simpleHATopology ()
+specifier|public
+specifier|static
+name|MiniDFSNNTopology
+name|simpleHATopology
+parameter_list|()
+block|{
+return|return
+operator|new
+name|MiniDFSNNTopology
+argument_list|()
+operator|.
+name|addNameservice
+argument_list|(
+operator|new
+name|MiniDFSNNTopology
+operator|.
+name|NSConf
+argument_list|(
+literal|null
+argument_list|)
+operator|.
+name|addNN
+argument_list|(
+operator|new
+name|MiniDFSNNTopology
+operator|.
+name|NNConf
+argument_list|(
+literal|"nn1"
+argument_list|)
+argument_list|)
+operator|.
+name|addNN
+argument_list|(
+operator|new
+name|MiniDFSNNTopology
+operator|.
+name|NNConf
+argument_list|(
+literal|"nn2"
+argument_list|)
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Set up federated cluster with the given number of nameservices, each    * of which has only a single NameNode.    */
 DECL|method|simpleFederatedTopology ( int numNameservices)
 specifier|public

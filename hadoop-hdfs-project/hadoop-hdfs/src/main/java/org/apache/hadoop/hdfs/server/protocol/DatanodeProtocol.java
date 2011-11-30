@@ -388,7 +388,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param blocks - the block list as an array of longs.    *     Each block is represented as 2 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
+comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param blocks - the block list as an array of longs.    *     Each finalized block is represented as 3 longs. Each under-    *     construction replica is represented as 4 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
 DECL|method|blockReport (DatanodeRegistration registration, String poolId, long[] blocks)
 specifier|public
 name|DatanodeCommand

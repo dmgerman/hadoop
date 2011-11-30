@@ -562,6 +562,34 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -623,7 +651,7 @@ implements|implements
 name|Closeable
 block|{
 DECL|field|LOG
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|Log
@@ -797,6 +825,43 @@ argument_list|,
 name|editsDirs
 argument_list|)
 expr_stmt|;
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|editLog
+operator|.
+name|initSharedJournalsForRead
+argument_list|()
+expr_stmt|;
+block|}
 name|archivalManager
 operator|=
 operator|new
@@ -1218,6 +1283,7 @@ default|default:
 break|break;
 block|}
 block|}
+comment|// TODO(HA): Have to figure out a story for the first 3 of these.
 comment|// 3. Do transitions
 switch|switch
 condition|(
@@ -1336,6 +1402,51 @@ argument_list|,
 name|storage
 argument_list|)
 expr_stmt|;
+comment|// TODO(HA): Fix this.
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|curState
+operator|!=
+name|StorageState
+operator|.
+name|NORMAL
+operator|&&
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot start an HA namenode with name dirs "
+operator|+
+literal|"that need recovery. Dir: "
+operator|+
+name|sd
+operator|+
+literal|" state: "
+operator|+
+name|curState
+argument_list|)
+throw|;
+block|}
 comment|// sd is locked but not opened
 switch|switch
 condition|(
@@ -1726,7 +1837,7 @@ assert|assert
 operator|!
 name|editLog
 operator|.
-name|isOpen
+name|isOpenForWrite
 argument_list|()
 operator|:
 literal|"Edits log must not be open."
@@ -2729,9 +2840,9 @@ return|return
 name|editLog
 return|;
 block|}
-DECL|method|openEditLog ()
+DECL|method|openEditLogForWrite ()
 name|void
-name|openEditLog
+name|openEditLogForWrite
 parameter_list|()
 throws|throws
 name|IOException
@@ -2750,7 +2861,7 @@ argument_list|(
 operator|!
 name|editLog
 operator|.
-name|isOpen
+name|isOpenForWrite
 argument_list|()
 argument_list|,
 literal|"edit log should not yet be open"
@@ -2758,7 +2869,7 @@ argument_list|)
 expr_stmt|;
 name|editLog
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|storage
@@ -2863,6 +2974,7 @@ name|editStreams
 init|=
 literal|null
 decl_stmt|;
+comment|// TODO(HA): We shouldn't run this when coming up in standby state
 name|editLog
 operator|.
 name|recoverUnclosedStreams
@@ -3142,6 +3254,8 @@ operator|+
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// TODO(HA): This should probably always return false when HA is enabled and
+comment|// we're coming up in standby state.
 return|return
 name|needToSave
 return|;
@@ -3224,7 +3338,7 @@ return|;
 block|}
 comment|/**    * Load the specified list of edit files into the image.    * @return the number of transactions loaded    */
 DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
-specifier|protected
+specifier|public
 name|long
 name|loadEdits
 parameter_list|(
@@ -3333,6 +3447,7 @@ block|}
 block|}
 finally|finally
 block|{
+comment|// TODO(HA): Should this happen when called by the tailer?
 name|FSEditLog
 operator|.
 name|closeAllStreams
@@ -3342,6 +3457,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// update the counts
+comment|// TODO(HA): this may be very slow -- we probably want to
+comment|// update them as we go for HA.
 name|target
 operator|.
 name|dir
@@ -3405,7 +3522,7 @@ name|target
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.  Return whether we should    * "re-save" and consolidate the edit-logs    */
+comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.    */
 DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target)
 specifier|private
 name|void
@@ -3864,7 +3981,7 @@ name|editLogWasOpen
 init|=
 name|editLog
 operator|.
-name|isOpen
+name|isOpenForWrite
 argument_list|()
 decl_stmt|;
 if|if

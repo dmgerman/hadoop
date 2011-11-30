@@ -3823,6 +3823,17 @@ operator|.
 name|FILE
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isInProgress ()
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 DECL|method|testFailedOpen ()
 specifier|public
@@ -3869,7 +3880,7 @@ argument_list|)
 expr_stmt|;
 name|log
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|fail
@@ -3946,6 +3957,11 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"[[1,100], [101,200]]"
@@ -3996,6 +4012,11 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"[[1,100], [101,200], [201,300], [301,400]]"
@@ -4030,6 +4051,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4066,6 +4092,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4116,6 +4147,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4585,7 +4621,12 @@ comment|// logGenerationStamp is used, simply because it doesn't
 comment|// require complex arguments.
 name|editlog
 operator|.
-name|open
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+name|editlog
+operator|.
+name|openForWrite
 argument_list|()
 expr_stmt|;
 for|for
@@ -4918,6 +4959,11 @@ argument_list|(
 name|storage
 argument_list|)
 decl_stmt|;
+name|editlog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|long
 name|startTxId
 init|=
@@ -5172,6 +5218,11 @@ argument_list|(
 name|storage
 argument_list|)
 decl_stmt|;
+name|editlog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|long
 name|startTxId
 init|=

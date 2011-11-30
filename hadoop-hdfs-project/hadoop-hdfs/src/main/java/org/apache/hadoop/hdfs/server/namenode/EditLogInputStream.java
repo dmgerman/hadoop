@@ -40,12 +40,49 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A generic abstract class to support reading edits log data from   * persistent storage.  *   * It should stream bytes from the storage exactly as they were written  * into the #{@link EditLogOutputStream}.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|EditLogInputStream
+specifier|public
 specifier|abstract
 class|class
 name|EditLogInputStream
@@ -120,6 +157,13 @@ name|length
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Return true if this stream is in progress, false if it is finalized.    */
+DECL|method|isInProgress ()
+specifier|abstract
+name|boolean
+name|isInProgress
+parameter_list|()
 function_decl|;
 block|}
 end_class

@@ -1103,7 +1103,9 @@ name|anyObject
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
+name|FSEditLog
+name|editLog
+init|=
 operator|new
 name|FSEditLog
 argument_list|(
@@ -1123,6 +1125,14 @@ name|toURI
 argument_list|()
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+return|return
+name|editLog
 return|;
 block|}
 comment|/**    * Assert that all of the given directories have the same newest filename    * for fsimage that they hold the same data.    */

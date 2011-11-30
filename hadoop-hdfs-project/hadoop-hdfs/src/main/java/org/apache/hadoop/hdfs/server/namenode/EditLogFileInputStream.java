@@ -199,6 +199,12 @@ operator|.
 name|PositionTrackingInputStream
 name|tracker
 decl_stmt|;
+DECL|field|isInProgress
+specifier|private
+specifier|final
+name|boolean
+name|isInProgress
+decl_stmt|;
 comment|/**    * Open an EditLogInputStream for the given file.    * The file is pretransactional, so has no txids    * @param name filename to open    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
 DECL|method|EditLogFileInputStream (File name)
 name|EditLogFileInputStream
@@ -222,11 +228,13 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @param firstTxId first transaction found in file    * @param lastTxId last transaction id found in file    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
-DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId)
+DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId, boolean isInProgress)
 name|EditLogFileInputStream
 parameter_list|(
 name|File
@@ -237,6 +245,9 @@ name|firstTxId
 parameter_list|,
 name|long
 name|lastTxId
+parameter_list|,
+name|boolean
+name|isInProgress
 parameter_list|)
 throws|throws
 name|LogHeaderCorruptException
@@ -330,6 +341,12 @@ operator|.
 name|lastTxId
 operator|=
 name|lastTxId
+expr_stmt|;
+name|this
+operator|.
+name|isInProgress
+operator|=
+name|isInProgress
 expr_stmt|;
 block|}
 annotation|@
@@ -468,6 +485,17 @@ name|file
 operator|.
 name|length
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isInProgress ()
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+name|isInProgress
 return|;
 block|}
 annotation|@

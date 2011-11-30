@@ -1289,7 +1289,7 @@ if|if
 condition|(
 name|editLog
 operator|.
-name|isOpen
+name|isOpenForWrite
 argument_list|()
 condition|)
 block|{

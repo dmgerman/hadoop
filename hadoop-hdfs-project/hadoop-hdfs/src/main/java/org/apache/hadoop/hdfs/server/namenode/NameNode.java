@@ -4265,7 +4265,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO:HA Start reading editlog from active
+name|namesystem
+operator|.
+name|startStandbyServices
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -4277,8 +4281,30 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO:HA Stop reading editlog from active
+comment|// TODO(HA): Are we guaranteed to be the only active here?
+name|namesystem
+operator|.
+name|stopStandbyServices
+argument_list|()
+expr_stmt|;
 block|}
+block|}
+DECL|method|isStandbyState ()
+specifier|public
+name|boolean
+name|isStandbyState
+parameter_list|()
+block|{
+return|return
+operator|(
+name|state
+operator|.
+name|equals
+argument_list|(
+name|STANDBY_STATE
+argument_list|)
+operator|)
+return|;
 block|}
 block|}
 end_class

@@ -1179,6 +1179,15 @@ name|DFS_NAMENODE_EDITS_DIR_KEY
 init|=
 literal|"dfs.namenode.edits.dir"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+init|=
+literal|"dfs.namenode.shared.edits.dir"
+decl_stmt|;
 DECL|field|DFS_CLIENT_READ_PREFETCH_SIZE_KEY
 specifier|public
 specifier|static

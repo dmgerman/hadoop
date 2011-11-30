@@ -990,7 +990,7 @@ argument_list|)
 expr_stmt|;
 name|fsel
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|assertTrue
