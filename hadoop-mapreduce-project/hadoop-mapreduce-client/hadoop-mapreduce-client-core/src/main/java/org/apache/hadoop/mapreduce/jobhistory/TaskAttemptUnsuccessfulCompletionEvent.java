@@ -159,8 +159,8 @@ operator|new
 name|TaskAttemptUnsuccessfulCompletion
 argument_list|()
 decl_stmt|;
-comment|/**     * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param error Error string    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
-DECL|method|TaskAttemptUnsuccessfulCompletionEvent (TaskAttemptID id, TaskType taskType, String status, long finishTime, String hostname, String error, int[][] allSplits)
+comment|/**     * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param port rpc port for for the tracker    * @param error Error string    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
+DECL|method|TaskAttemptUnsuccessfulCompletionEvent (TaskAttemptID id, TaskType taskType, String status, long finishTime, String hostname, int port, String error, int[][] allSplits)
 specifier|public
 name|TaskAttemptUnsuccessfulCompletionEvent
 parameter_list|(
@@ -178,6 +178,9 @@ name|finishTime
 parameter_list|,
 name|String
 name|hostname
+parameter_list|,
+name|int
+name|port
 parameter_list|,
 name|String
 name|error
@@ -245,6 +248,12 @@ name|Utf8
 argument_list|(
 name|hostname
 argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|port
+operator|=
+name|port
 expr_stmt|;
 name|datum
 operator|.
@@ -366,6 +375,9 @@ argument_list|,
 name|finishTime
 argument_list|,
 name|hostname
+argument_list|,
+operator|-
+literal|1
 argument_list|,
 name|error
 argument_list|,
@@ -496,6 +508,19 @@ name|hostname
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/** Get the rpc port for the host where the attempt executed */
+DECL|method|getPort ()
+specifier|public
+name|int
+name|getPort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|port
 return|;
 block|}
 comment|/** Get the error string */

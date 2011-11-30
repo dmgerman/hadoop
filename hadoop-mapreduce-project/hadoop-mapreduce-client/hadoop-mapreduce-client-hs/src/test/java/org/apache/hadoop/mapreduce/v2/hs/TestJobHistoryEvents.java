@@ -1287,6 +1287,27 @@ name|fakeCid
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//Verify complete contianerManagerAddress
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|MRApp
+operator|.
+name|NM_HOST
+operator|+
+literal|":"
+operator|+
+name|MRApp
+operator|.
+name|NM_PORT
+argument_list|,
+name|attempt
+operator|.
+name|getAssignedContainerMgrAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|class|MRAppWithHistory
 specifier|static

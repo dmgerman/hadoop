@@ -713,6 +713,9 @@ argument_list|)
 argument_list|,
 name|hostName
 argument_list|,
+operator|-
+literal|1
+argument_list|,
 name|error
 argument_list|,
 literal|null

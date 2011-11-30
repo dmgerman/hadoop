@@ -936,6 +936,15 @@ argument_list|()
 expr_stmt|;
 name|attemptInfo
 operator|.
+name|port
+operator|=
+name|event
+operator|.
+name|getPort
+argument_list|()
+expr_stmt|;
+name|attemptInfo
+operator|.
 name|rackname
 operator|=
 name|event
@@ -1039,6 +1048,15 @@ argument_list|()
 expr_stmt|;
 name|attemptInfo
 operator|.
+name|port
+operator|=
+name|event
+operator|.
+name|getPort
+argument_list|()
+expr_stmt|;
+name|attemptInfo
+operator|.
 name|rackname
 operator|=
 name|event
@@ -1120,6 +1138,15 @@ operator|=
 name|event
 operator|.
 name|getHostname
+argument_list|()
+expr_stmt|;
+name|attemptInfo
+operator|.
+name|port
+operator|=
+name|event
+operator|.
+name|getPort
 argument_list|()
 expr_stmt|;
 name|attemptInfo
@@ -2947,6 +2974,10 @@ DECL|field|hostname
 name|String
 name|hostname
 decl_stmt|;
+DECL|field|port
+name|int
+name|port
+decl_stmt|;
 DECL|field|rackname
 name|String
 name|rackname
@@ -2985,6 +3016,11 @@ operator|=
 name|rackname
 operator|=
 literal|""
+expr_stmt|;
+name|port
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 name|httpPort
 operator|=
@@ -3281,6 +3317,17 @@ parameter_list|()
 block|{
 return|return
 name|hostname
+return|;
+block|}
+comment|/** @return the port */
+DECL|method|getPort ()
+specifier|public
+name|int
+name|getPort
+parameter_list|()
+block|{
+return|return
+name|port
 return|;
 block|}
 comment|/** @return the rack name */
