@@ -436,7 +436,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to find TGT from current Subject"
+literal|"Failed to find TGT from current Subject:"
+operator|+
+name|current
 argument_list|)
 throw|;
 block|}
