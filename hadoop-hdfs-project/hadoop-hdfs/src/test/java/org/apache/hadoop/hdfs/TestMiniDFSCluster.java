@@ -144,6 +144,8 @@ argument_list|(
 name|MiniDFSCluster
 operator|.
 name|PROP_TEST_BUILD_DATA
+argument_list|,
+literal|"build/test/data"
 argument_list|)
 expr_stmt|;
 name|testDataDir

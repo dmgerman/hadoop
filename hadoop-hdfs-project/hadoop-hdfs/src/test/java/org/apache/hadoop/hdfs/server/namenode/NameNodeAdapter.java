@@ -482,6 +482,26 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Return the FSNamesystem stats    */
+DECL|method|getStats (final FSNamesystem fsn)
+specifier|public
+specifier|static
+name|long
+index|[]
+name|getStats
+parameter_list|(
+specifier|final
+name|FSNamesystem
+name|fsn
+parameter_list|)
+block|{
+return|return
+name|fsn
+operator|.
+name|getStats
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

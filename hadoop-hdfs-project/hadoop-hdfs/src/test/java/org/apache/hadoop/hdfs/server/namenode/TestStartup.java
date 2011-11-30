@@ -3184,11 +3184,6 @@ name|list
 argument_list|)
 expr_stmt|;
 name|int
-name|numNameNodes
-init|=
-literal|1
-decl_stmt|;
-name|int
 name|numDatanodes
 init|=
 literal|1
@@ -3203,11 +3198,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|numNameNodes
-argument_list|(
-name|numNameNodes
 argument_list|)
 operator|.
 name|numDataNodes
