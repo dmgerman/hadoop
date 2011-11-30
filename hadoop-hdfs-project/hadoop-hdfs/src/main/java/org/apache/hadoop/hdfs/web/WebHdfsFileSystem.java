@@ -2627,6 +2627,15 @@ argument_list|,
 name|op
 argument_list|)
 expr_stmt|;
+name|conn
+operator|.
+name|setRequestProperty
+argument_list|(
+literal|"Content-Type"
+argument_list|,
+literal|"application/octet-stream"
+argument_list|)
+expr_stmt|;
 block|}
 name|conn
 operator|.
