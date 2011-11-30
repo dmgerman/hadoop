@@ -1139,6 +1139,10 @@ argument_list|,
 name|this
 operator|.
 name|delSrvc
+argument_list|,
+name|super
+operator|.
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|logAggregationService
@@ -1537,6 +1541,10 @@ argument_list|,
 name|this
 operator|.
 name|delSrvc
+argument_list|,
+name|super
+operator|.
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|logAggregationService
@@ -1826,6 +1834,10 @@ argument_list|,
 name|this
 operator|.
 name|delSrvc
+argument_list|,
+name|super
+operator|.
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|logAggregationService

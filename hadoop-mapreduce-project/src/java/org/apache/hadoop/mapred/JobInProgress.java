@@ -12002,6 +12002,9 @@ argument_list|()
 argument_list|,
 name|trackerHostname
 argument_list|,
+operator|-
+literal|1
+argument_list|,
 literal|""
 argument_list|,
 name|status
@@ -12090,6 +12093,9 @@ name|getFinishTime
 argument_list|()
 argument_list|,
 name|trackerHostname
+argument_list|,
+operator|-
+literal|1
 argument_list|,
 literal|""
 argument_list|,
@@ -14510,6 +14516,9 @@ argument_list|,
 name|finishTime
 argument_list|,
 name|taskTrackerHostName
+argument_list|,
+operator|-
+literal|1
 argument_list|,
 name|diagInfo
 argument_list|,

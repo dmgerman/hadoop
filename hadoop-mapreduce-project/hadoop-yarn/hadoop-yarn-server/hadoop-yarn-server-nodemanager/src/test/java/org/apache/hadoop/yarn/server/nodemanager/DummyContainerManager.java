@@ -644,7 +644,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager applicationACLsManager)
+DECL|method|DummyContainerManager (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager applicationACLsManager, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|DummyContainerManager
 parameter_list|(
@@ -668,6 +668,9 @@ name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|applicationACLsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 name|super
@@ -685,6 +688,8 @@ argument_list|,
 name|containerTokenSecretManager
 argument_list|,
 name|applicationACLsManager
+argument_list|,
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 block|}
@@ -695,7 +700,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createResourceLocalizationService (ContainerExecutor exec, DeletionService deletionContext)
+DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext)
 specifier|protected
 name|ResourceLocalizationService
 name|createResourceLocalizationService
@@ -718,6 +723,10 @@ argument_list|,
 name|exec
 argument_list|,
 name|deletionContext
+argument_list|,
+name|super
+operator|.
+name|dirsHandler
 argument_list|)
 block|{
 annotation|@
@@ -1000,6 +1009,10 @@ operator|.
 name|dispatcher
 argument_list|,
 name|exec
+argument_list|,
+name|super
+operator|.
+name|dirsHandler
 argument_list|)
 block|{
 annotation|@
@@ -1078,6 +1091,8 @@ operator|.
 name|CONTAINER_KILLED_ON_REQUEST
 argument_list|,
 literal|0
+argument_list|,
+literal|"Container exited with exit code 0."
 argument_list|)
 argument_list|)
 expr_stmt|;

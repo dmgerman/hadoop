@@ -154,6 +154,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -696,8 +706,10 @@ block|{
 DECL|field|rootLogDirs
 specifier|private
 specifier|final
+name|List
+argument_list|<
 name|String
-index|[]
+argument_list|>
 name|rootLogDirs
 decl_stmt|;
 DECL|field|containerId
@@ -708,12 +720,14 @@ name|containerId
 decl_stmt|;
 comment|// TODO Maybe add a version string here. Instead of changing the version of
 comment|// the entire k-v format
-DECL|method|LogValue (String[] rootLogDirs, ContainerId containerId)
+DECL|method|LogValue (List<String> rootLogDirs, ContainerId containerId)
 specifier|public
 name|LogValue
 parameter_list|(
+name|List
+argument_list|<
 name|String
-index|[]
+argument_list|>
 name|rootLogDirs
 parameter_list|,
 name|ContainerId

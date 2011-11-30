@@ -2511,6 +2511,8 @@ name|ApplicationACLsManager
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|dirsHandler
 argument_list|)
 expr_stmt|;
 name|containerManager

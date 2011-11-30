@@ -4,13 +4,19 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop
+DECL|package|org.apache.hadoop.yarn.server.nodemanager
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
 package|;
 end_package
 
@@ -172,24 +178,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeHealthStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -213,14 +201,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *   * The class which provides functionality of checking the health of the node and  * reporting back to the service for which the health checker has been asked to  * report.  */
+comment|/**  *   * The class which provides functionality of checking the health of the node  * using the configured node health script and reporting back to the service  * for which the health checker has been asked to report.  */
 end_comment
 
 begin_class
-DECL|class|NodeHealthCheckerService
+DECL|class|NodeHealthScriptRunner
 specifier|public
 class|class
-name|NodeHealthCheckerService
+name|NodeHealthScriptRunner
 extends|extends
 name|AbstractService
 block|{
@@ -234,7 +222,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|NodeHealthCheckerService
+name|NodeHealthScriptRunner
 operator|.
 name|class
 argument_list|)
@@ -687,14 +675,14 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|NodeHealthCheckerService ()
+DECL|method|NodeHealthScriptRunner ()
 specifier|public
-name|NodeHealthCheckerService
+name|NodeHealthScriptRunner
 parameter_list|()
 block|{
 name|super
 argument_list|(
-name|NodeHealthCheckerService
+name|NodeHealthScriptRunner
 operator|.
 name|class
 operator|.
@@ -722,23 +710,6 @@ operator|.
 name|healthReport
 operator|=
 literal|""
-expr_stmt|;
-block|}
-DECL|method|NodeHealthCheckerService (Configuration conf)
-specifier|public
-name|NodeHealthCheckerService
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|this
-argument_list|()
-expr_stmt|;
-name|init
-argument_list|(
-name|conf
-argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Method which initializes the values for the script path and interval time.    */
@@ -942,7 +913,7 @@ block|}
 block|}
 comment|/**    * Gets the if the node is healthy or not    *     * @return true if node is healthy    */
 DECL|method|isHealthy ()
-specifier|private
+specifier|public
 name|boolean
 name|isHealthy
 parameter_list|()
@@ -951,7 +922,7 @@ return|return
 name|isHealthy
 return|;
 block|}
-comment|/**    * Sets if the node is healhty or not.    *     * @param isHealthy    *          if or not node is healthy    */
+comment|/**    * Sets if the node is healhty or not considering disks' health also.    *     * @param isHealthy    *          if or not node is healthy    */
 DECL|method|setHealthy (boolean isHealthy)
 specifier|private
 specifier|synchronized
@@ -971,7 +942,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns output from health script. if node is healthy then an empty string    * is returned.    *     * @return output from health script    */
 DECL|method|getHealthReport ()
-specifier|private
+specifier|public
 name|String
 name|getHealthReport
 parameter_list|()
@@ -980,7 +951,7 @@ return|return
 name|healthReport
 return|;
 block|}
-comment|/**    * Sets the health report from the node health script.    *     * @param healthReport    */
+comment|/**    * Sets the health report from the node health script. Also set the disks'    * health info obtained from DiskHealthCheckerService.    *    * @param healthReport    */
 DECL|method|setHealthReport (String healthReport)
 specifier|private
 specifier|synchronized
@@ -1000,7 +971,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns time stamp when node health script was last run.    *     * @return timestamp when node health script was last run    */
 DECL|method|getLastReportedTime ()
-specifier|private
+specifier|public
 name|long
 name|getLastReportedTime
 parameter_list|()
@@ -1151,53 +1122,10 @@ name|time
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Method to populate the fields for the {@link NodeHealthStatus}    *     * @param healthStatus    */
-DECL|method|setHealthStatus (NodeHealthStatus healthStatus)
-specifier|public
-specifier|synchronized
-name|void
-name|setHealthStatus
-parameter_list|(
-name|NodeHealthStatus
-name|healthStatus
-parameter_list|)
-block|{
-name|healthStatus
-operator|.
-name|setIsNodeHealthy
-argument_list|(
-name|this
-operator|.
-name|isHealthy
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|healthStatus
-operator|.
-name|setHealthReport
-argument_list|(
-name|this
-operator|.
-name|getHealthReport
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|healthStatus
-operator|.
-name|setLastHealthReportTime
-argument_list|(
-name|this
-operator|.
-name|getLastReportedTime
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Test method to directly access the timer which node     * health checker would use.    *     *    * @return Timer task    */
-comment|//XXX:Not to be used directly.
-DECL|method|getTimer ()
+comment|/**    * Used only by tests to access the timer task directly    * @return the timer task    */
+DECL|method|getTimerTask ()
 name|TimerTask
-name|getTimer
+name|getTimerTask
 parameter_list|()
 block|{
 return|return

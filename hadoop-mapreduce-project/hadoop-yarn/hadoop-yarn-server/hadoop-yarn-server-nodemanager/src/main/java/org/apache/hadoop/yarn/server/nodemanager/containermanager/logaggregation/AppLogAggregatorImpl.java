@@ -50,6 +50,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -173,6 +183,20 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -348,6 +372,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|LocalDirsHandlerService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|containermanager
 operator|.
 name|application
@@ -436,6 +478,12 @@ name|TMP_FILE_SUFFIX
 init|=
 literal|".tmp"
 decl_stmt|;
+DECL|field|dirsHandler
+specifier|private
+specifier|final
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
 DECL|field|dispatcher
 specifier|private
 specifier|final
@@ -478,13 +526,6 @@ specifier|private
 specifier|final
 name|UserGroupInformation
 name|userUgi
-decl_stmt|;
-DECL|field|rootLogDirs
-specifier|private
-specifier|final
-name|String
-index|[]
-name|rootLogDirs
 decl_stmt|;
 DECL|field|remoteNodeLogFileForApp
 specifier|private
@@ -551,7 +592,7 @@ name|writer
 init|=
 literal|null
 decl_stmt|;
-DECL|method|AppLogAggregatorImpl (Dispatcher dispatcher, DeletionService deletionService, Configuration conf, ApplicationId appId, UserGroupInformation userUgi, String[] localRootLogDirs, Path remoteNodeLogFileForApp, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
+DECL|method|AppLogAggregatorImpl (Dispatcher dispatcher, DeletionService deletionService, Configuration conf, ApplicationId appId, UserGroupInformation userUgi, LocalDirsHandlerService dirsHandler, Path remoteNodeLogFileForApp, ContainerLogsRetentionPolicy retentionPolicy, Map<ApplicationAccessType, String> appAcls)
 specifier|public
 name|AppLogAggregatorImpl
 parameter_list|(
@@ -570,9 +611,8 @@ parameter_list|,
 name|UserGroupInformation
 name|userUgi
 parameter_list|,
-name|String
-index|[]
-name|localRootLogDirs
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|,
 name|Path
 name|remoteNodeLogFileForApp
@@ -632,9 +672,9 @@ name|userUgi
 expr_stmt|;
 name|this
 operator|.
-name|rootLogDirs
+name|dirsHandler
 operator|=
-name|localRootLogDirs
+name|dirsHandler
 expr_stmt|;
 name|this
 operator|.
@@ -802,6 +842,20 @@ argument_list|(
 literal|"Uploading logs for container "
 operator|+
 name|containerId
+operator|+
+literal|". Current good log dirs are "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|dirsHandler
+operator|.
+name|getLogDirs
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|LogKey
@@ -819,9 +873,10 @@ init|=
 operator|new
 name|LogValue
 argument_list|(
-name|this
+name|dirsHandler
 operator|.
-name|rootLogDirs
+name|getLogDirs
+argument_list|()
 argument_list|,
 name|containerId
 argument_list|)
@@ -960,6 +1015,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Remove the local app-log-dirs
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|rootLogDirs
+init|=
+name|dirsHandler
+operator|.
+name|getLogDirs
+argument_list|()
+decl_stmt|;
 name|Path
 index|[]
 name|localAppLogDirs
@@ -967,11 +1033,10 @@ init|=
 operator|new
 name|Path
 index|[
-name|this
-operator|.
 name|rootLogDirs
 operator|.
-name|length
+name|size
+argument_list|()
 index|]
 decl_stmt|;
 name|int
@@ -984,8 +1049,6 @@ control|(
 name|String
 name|rootLogDir
 range|:
-name|this
-operator|.
 name|rootLogDirs
 control|)
 block|{

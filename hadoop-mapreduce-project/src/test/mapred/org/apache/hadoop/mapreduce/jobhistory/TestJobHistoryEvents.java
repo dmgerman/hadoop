@@ -371,6 +371,9 @@ literal|0L
 argument_list|,
 literal|""
 argument_list|,
+operator|-
+literal|1
+argument_list|,
 literal|""
 argument_list|,
 name|NULL_SPLITS_ARRAY

@@ -386,6 +386,10 @@ argument_list|(
 name|testName
 argument_list|,
 name|noOfNMs
+argument_list|,
+literal|4
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 comment|//TODO: add the history server

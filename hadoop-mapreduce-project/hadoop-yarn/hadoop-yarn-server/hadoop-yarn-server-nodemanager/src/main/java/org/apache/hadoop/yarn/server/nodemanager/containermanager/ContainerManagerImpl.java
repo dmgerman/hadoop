@@ -786,6 +786,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|LocalDirsHandlerService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|NMAuditLogger
 import|;
 end_import
@@ -1546,6 +1564,11 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|field|dirsHandler
+specifier|protected
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
 DECL|field|dispatcher
 specifier|protected
 specifier|final
@@ -1564,7 +1587,7 @@ specifier|final
 name|DeletionService
 name|deletionService
 decl_stmt|;
-DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager)
+DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|ContainerManagerImpl
 parameter_list|(
@@ -1588,6 +1611,9 @@ name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
 parameter_list|)
 block|{
 name|super
@@ -1605,6 +1631,12 @@ operator|.
 name|context
 operator|=
 name|context
+expr_stmt|;
+name|this
+operator|.
+name|dirsHandler
+operator|=
+name|dirsHandler
 expr_stmt|;
 name|dispatcher
 operator|=
@@ -1907,6 +1939,8 @@ argument_list|,
 name|context
 argument_list|,
 name|deletionService
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -1921,6 +1955,8 @@ operator|.
 name|dispatcher
 argument_list|,
 name|deletionService
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -1960,6 +1996,8 @@ argument_list|,
 name|exec
 argument_list|,
 name|deletionContext
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -1986,6 +2024,8 @@ operator|.
 name|dispatcher
 argument_list|,
 name|exec
+argument_list|,
+name|dirsHandler
 argument_list|)
 return|;
 block|}

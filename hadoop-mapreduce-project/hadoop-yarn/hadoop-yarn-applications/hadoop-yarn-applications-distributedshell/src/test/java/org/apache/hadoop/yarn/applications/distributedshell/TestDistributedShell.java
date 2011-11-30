@@ -225,6 +225,12 @@ name|class
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|yarnCluster

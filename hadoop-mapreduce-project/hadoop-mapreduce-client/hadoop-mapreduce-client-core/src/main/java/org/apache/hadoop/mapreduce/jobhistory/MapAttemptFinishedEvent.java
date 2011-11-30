@@ -159,8 +159,8 @@ operator|new
 name|MapAttemptFinished
 argument_list|()
 decl_stmt|;
-comment|/**     * Create an event for successful completion of map attempts    * @param id Task Attempt ID    * @param taskType Type of the task    * @param taskStatus Status of the task    * @param mapFinishTime Finish time of the map phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the map executed    * @param rackName Name of the rack where the map executed    * @param state State string for the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.     *    *        If you have no splits data, code {@code null} for this    *        parameter.     */
-DECL|method|MapAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long mapFinishTime, long finishTime, String hostname, String rackName, String state, Counters counters, int[][] allSplits)
+comment|/**     * Create an event for successful completion of map attempts    * @param id Task Attempt ID    * @param taskType Type of the task    * @param taskStatus Status of the task    * @param mapFinishTime Finish time of the map phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the map executed    * @param port RPC port for the tracker host.    * @param rackName Name of the rack where the map executed    * @param state State string for the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.     *    *        If you have no splits data, code {@code null} for this    *        parameter.     */
+DECL|method|MapAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long mapFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits)
 specifier|public
 name|MapAttemptFinishedEvent
 parameter_list|(
@@ -181,6 +181,9 @@ name|finishTime
 parameter_list|,
 name|String
 name|hostname
+parameter_list|,
+name|int
+name|port
 parameter_list|,
 name|String
 name|rackName
@@ -270,6 +273,12 @@ name|Utf8
 argument_list|(
 name|hostname
 argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|port
+operator|=
+name|port
 expr_stmt|;
 name|datum
 operator|.
@@ -412,6 +421,9 @@ argument_list|,
 name|finishTime
 argument_list|,
 name|hostname
+argument_list|,
+operator|-
+literal|1
 argument_list|,
 literal|""
 argument_list|,
@@ -575,6 +587,19 @@ name|hostname
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/** Get the tracker rpc port */
+DECL|method|getPort ()
+specifier|public
+name|int
+name|getPort
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|port
 return|;
 block|}
 comment|/** Get the rack name */
