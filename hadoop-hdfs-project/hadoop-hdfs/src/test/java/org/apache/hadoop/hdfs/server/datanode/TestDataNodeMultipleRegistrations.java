@@ -649,29 +649,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"reg: bpid="
-operator|+
-literal|"; name="
+literal|"BP: "
 operator|+
 name|bpos
-operator|.
-name|bpRegistration
-operator|.
-name|name
-operator|+
-literal|"; sid="
-operator|+
-name|bpos
-operator|.
-name|bpRegistration
-operator|.
-name|storageID
-operator|+
-literal|"; nna="
-operator|+
-name|bpos
-operator|.
-name|nnAddr
 argument_list|)
 expr_stmt|;
 block|}
@@ -702,7 +682,8 @@ if|if
 condition|(
 name|bpos1
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -733,7 +714,8 @@ literal|"wrong nn address"
 argument_list|,
 name|bpos1
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 argument_list|,
 name|nn1
 operator|.
@@ -747,7 +729,8 @@ literal|"wrong nn address"
 argument_list|,
 name|bpos2
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 argument_list|,
 name|nn2
 operator|.
@@ -1071,7 +1054,8 @@ literal|"; nna="
 operator|+
 name|bpos
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1089,13 +1073,7 @@ index|]
 decl_stmt|;
 name|bpos1
 operator|.
-name|lastBlockReport
-operator|=
-literal|0
-expr_stmt|;
-name|bpos1
-operator|.
-name|blockReport
+name|triggerBlockReportForTests
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -1104,7 +1082,8 @@ literal|"wrong nn address"
 argument_list|,
 name|bpos1
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 argument_list|,
 name|nn1
 operator|.

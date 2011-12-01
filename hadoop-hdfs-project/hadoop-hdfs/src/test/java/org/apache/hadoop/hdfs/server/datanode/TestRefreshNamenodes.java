@@ -421,7 +421,8 @@ index|[
 name|j
 index|]
 operator|.
-name|nnAddr
+name|getNNSocketAddress
+argument_list|()
 argument_list|)
 condition|)
 block|{
