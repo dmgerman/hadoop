@@ -97,10 +97,12 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is an MR2 replacement for older MR1 MiniMRCluster, that was used  * by tests prior to MR2. This replacement class uses the new MiniMRYarnCluster  * in MR2 but provides the same old MR1 interface, so tests can be migrated from  * MR1 to MR2 with minimal changes.  *  * Due to major differences between MR1 and MR2, a number of methods are either  * unimplemented/unsupported or were re-implemented to provide wrappers around  * MR2 functionality.  */
+comment|/**  * This class is an MR2 replacement for older MR1 MiniMRCluster, that was used  * by tests prior to MR2. This replacement class uses the new MiniMRYarnCluster  * in MR2 but provides the same old MR1 interface, so tests can be migrated from  * MR1 to MR2 with minimal changes.  *  * Due to major differences between MR1 and MR2, a number of methods are either  * unimplemented/unsupported or were re-implemented to provide wrappers around  * MR2 functionality.  *  * @deprecated Use {@link org.apache.hadoop.mapred.MiniMRClientClusterFactory}  * instead  */
 end_comment
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|MiniMRCluster
 specifier|public
 class|class
