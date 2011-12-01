@@ -2190,8 +2190,9 @@ name|isKrbTkt
 return|;
 block|}
 comment|/**    * Return the current user, including any doAs in the current stack.    * @return the current user    * @throws IOException if login fails    */
-DECL|method|getCurrentUser ()
 specifier|public
+specifier|synchronized
+DECL|method|getCurrentUser ()
 specifier|static
 name|UserGroupInformation
 name|getCurrentUser
