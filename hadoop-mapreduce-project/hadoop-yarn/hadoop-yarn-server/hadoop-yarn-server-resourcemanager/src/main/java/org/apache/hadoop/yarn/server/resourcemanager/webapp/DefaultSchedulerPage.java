@@ -897,8 +897,6 @@ name|qInfo
 operator|.
 name|getCurrentCapacity
 argument_list|()
-operator|/
-literal|100.0f
 decl_stmt|;
 name|float
 name|set
@@ -907,8 +905,6 @@ name|qInfo
 operator|.
 name|getCapacity
 argument_list|()
-operator|/
-literal|100.0f
 decl_stmt|;
 name|float
 name|delta
