@@ -609,6 +609,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|check (FileSystem fs, Path p, long length)
+specifier|public
 specifier|static
 name|void
 name|check
