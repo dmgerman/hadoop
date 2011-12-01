@@ -213,6 +213,11 @@ name|EventHandler
 argument_list|>
 name|eventDispatchers
 decl_stmt|;
+DECL|field|exitOnDispatchException
+specifier|private
+name|boolean
+name|exitOnDispatchException
+decl_stmt|;
 DECL|method|AsyncDispatcher ()
 specifier|public
 name|AsyncDispatcher
@@ -240,10 +245,47 @@ argument_list|<
 name|Event
 argument_list|>
 argument_list|()
+operator|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|AsyncDispatcher ( Map<Class<? extends Enum>, EventHandler> eventDispatchers, BlockingQueue<Event> eventQueue)
+DECL|method|AsyncDispatcher (boolean exitOnException)
+specifier|public
+name|AsyncDispatcher
+parameter_list|(
+name|boolean
+name|exitOnException
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|HashMap
+argument_list|<
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|Enum
+argument_list|>
+argument_list|,
+name|EventHandler
+argument_list|>
+argument_list|()
+operator|,
+operator|new
+name|LinkedBlockingQueue
+argument_list|<
+name|Event
+argument_list|>
+argument_list|()
+operator|,
+name|exitOnException
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|AsyncDispatcher ( Map<Class<? extends Enum>, EventHandler> eventDispatchers, BlockingQueue<Event> eventQueue, boolean exitOnException)
 name|AsyncDispatcher
 parameter_list|(
 name|Map
@@ -264,6 +306,9 @@ argument_list|<
 name|Event
 argument_list|>
 name|eventQueue
+parameter_list|,
+name|boolean
+name|exitOnException
 parameter_list|)
 block|{
 name|super
@@ -282,6 +327,12 @@ operator|.
 name|eventDispatchers
 operator|=
 name|eventDispatchers
+expr_stmt|;
+name|this
+operator|.
+name|exitOnDispatchException
+operator|=
+name|exitOnException
 expr_stmt|;
 block|}
 DECL|method|createThread ()
@@ -540,6 +591,11 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|exitOnDispatchException
+condition|)
+block|{
 name|System
 operator|.
 name|exit
@@ -548,6 +604,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

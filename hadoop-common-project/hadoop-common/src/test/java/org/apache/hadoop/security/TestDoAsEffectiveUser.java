@@ -717,21 +717,20 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+name|PROXY_USER_NAME
+operator|+
+literal|" (auth:PROXY) via "
+operator|+
+name|REAL_USER_NAME
+operator|+
+literal|" (auth:SIMPLE)"
+argument_list|,
 name|curUGI
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|PROXY_USER_NAME
-operator|+
-literal|" via "
-operator|+
-name|REAL_USER_NAME
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1018,9 +1017,11 @@ name|assertEquals
 argument_list|(
 name|PROXY_USER_NAME
 operator|+
-literal|" via "
+literal|" (auth:SIMPLE) via "
 operator|+
 name|REAL_USER_NAME
+operator|+
+literal|" (auth:SIMPLE)"
 argument_list|,
 name|retVal
 argument_list|)
@@ -1242,9 +1243,11 @@ name|assertEquals
 argument_list|(
 name|PROXY_USER_NAME
 operator|+
-literal|" via "
+literal|" (auth:SIMPLE) via "
 operator|+
 name|REAL_USER_NAME
+operator|+
+literal|" (auth:SIMPLE)"
 argument_list|,
 name|retVal
 argument_list|)
@@ -2428,7 +2431,7 @@ name|assertEquals
 argument_list|(
 name|REAL_USER_NAME
 operator|+
-literal|" via SomeSuperUser"
+literal|" (auth:TOKEN) via SomeSuperUser (auth:SIMPLE)"
 argument_list|,
 name|retVal
 argument_list|)
@@ -2721,7 +2724,7 @@ name|expected
 init|=
 name|REAL_USER_NAME
 operator|+
-literal|" via SomeSuperUser"
+literal|" (auth:TOKEN) via SomeSuperUser (auth:SIMPLE)"
 decl_stmt|;
 name|Assert
 operator|.
