@@ -1985,14 +1985,9 @@ argument_list|)
 expr_stmt|;
 name|recoveryServ
 operator|=
-operator|new
-name|RecoveryService
+name|createRecoveryService
 argument_list|(
-name|appAttemptID
-argument_list|,
-name|clock
-argument_list|,
-name|committer
+name|context
 argument_list|)
 expr_stmt|;
 name|addIfService
@@ -2903,6 +2898,35 @@ return|return
 operator|new
 name|JobFinishEventHandler
 argument_list|()
+return|;
+block|}
+comment|/**    * Create the recovery service.    * @return an instance of the recovery service.    */
+DECL|method|createRecoveryService (AppContext appContext)
+specifier|protected
+name|Recovery
+name|createRecoveryService
+parameter_list|(
+name|AppContext
+name|appContext
+parameter_list|)
+block|{
+return|return
+operator|new
+name|RecoveryService
+argument_list|(
+name|appContext
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+name|appContext
+operator|.
+name|getClock
+argument_list|()
+argument_list|,
+name|getCommitter
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/** Create and initialize (but don't start) a single job. */

@@ -141,6 +141,8 @@ argument_list|>
 argument_list|()
 operator|,
 name|eventQueue
+operator|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|this
