@@ -437,8 +437,7 @@ annotation|@
 name|Override
 DECL|method|sendHeartbeat ( DatanodeRegistrationWritable registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommandWritable
-index|[]
+name|HeartbeatResponseWritable
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeRegistrationWritable
@@ -469,7 +468,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|DatanodeCommandWritable
+name|HeartbeatResponseWritable
 operator|.
 name|convert
 argument_list|(

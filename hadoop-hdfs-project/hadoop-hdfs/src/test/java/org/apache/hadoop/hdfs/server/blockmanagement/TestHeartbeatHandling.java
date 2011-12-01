@@ -268,7 +268,7 @@ name|TestHeartbeatHandling
 extends|extends
 name|TestCase
 block|{
-comment|/**    * Test if    * {@link FSNamesystem#handleHeartbeat(DatanodeRegistration, long, long, long, long, int, int)}    * can pick up replication and/or invalidate requests and observes the max    * limit    */
+comment|/**    * Test if    * {@link FSNamesystem#handleHeartbeat}    * can pick up replication and/or invalidate requests and observes the max    * limit    */
 DECL|method|testHeartbeat ()
 specifier|public
 name|void
@@ -495,6 +495,9 @@ name|dd
 argument_list|,
 name|namesystem
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -607,6 +610,9 @@ name|dd
 argument_list|,
 name|namesystem
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -699,6 +705,9 @@ name|dd
 argument_list|,
 name|namesystem
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -791,6 +800,9 @@ name|dd
 argument_list|,
 name|namesystem
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -848,6 +860,9 @@ name|dd
 argument_list|,
 name|namesystem
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(

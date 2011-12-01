@@ -354,6 +354,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|HeartbeatResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NamespaceInfo
 import|;
 end_import
@@ -911,8 +929,7 @@ annotation|@
 name|Override
 DECL|method|sendHeartbeat (DatanodeRegistration registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeRegistration
@@ -943,10 +960,6 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|DatanodeCommandWritable
-operator|.
-name|convert
-argument_list|(
 name|rpcProxy
 operator|.
 name|sendHeartbeat
@@ -972,7 +985,9 @@ name|xceiverCount
 argument_list|,
 name|failedVolumes
 argument_list|)
-argument_list|)
+operator|.
+name|convert
+argument_list|()
 return|;
 block|}
 annotation|@

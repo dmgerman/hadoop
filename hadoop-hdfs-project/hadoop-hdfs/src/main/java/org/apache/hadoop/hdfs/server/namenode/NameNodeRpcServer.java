@@ -906,6 +906,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|HeartbeatResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NamenodeCommand
 import|;
 end_import
@@ -5231,8 +5249,7 @@ name|Override
 comment|// DatanodeProtocol
 DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeRegistration

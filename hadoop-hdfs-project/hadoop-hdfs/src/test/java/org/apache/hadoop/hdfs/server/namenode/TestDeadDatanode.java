@@ -764,6 +764,9 @@ literal|0
 argument_list|,
 literal|0
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 decl_stmt|;
 name|Assert
 operator|.

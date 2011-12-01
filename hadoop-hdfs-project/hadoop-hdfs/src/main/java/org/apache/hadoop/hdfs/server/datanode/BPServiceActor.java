@@ -378,6 +378,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|HeartbeatResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NamespaceInfo
 import|;
 end_import
@@ -1479,8 +1497,7 @@ name|cmd
 return|;
 block|}
 DECL|method|sendHeartBeat ()
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartBeat
 parameter_list|()
 throws|throws
@@ -1838,9 +1855,8 @@ name|areHeartbeatsDisabledForTests
 argument_list|()
 condition|)
 block|{
-name|DatanodeCommand
-index|[]
-name|cmds
+name|HeartbeatResponse
+name|resp
 init|=
 name|sendHeartBeat
 argument_list|()
@@ -1869,7 +1885,10 @@ condition|(
 operator|!
 name|processCommand
 argument_list|(
-name|cmds
+name|resp
+operator|.
+name|getCommands
+argument_list|()
 argument_list|)
 condition|)
 continue|continue;
@@ -1902,7 +1921,10 @@ operator|)
 operator|+
 literal|"ms to process "
 operator|+
-name|cmds
+name|resp
+operator|.
+name|getCommands
+argument_list|()
 operator|.
 name|length
 operator|+

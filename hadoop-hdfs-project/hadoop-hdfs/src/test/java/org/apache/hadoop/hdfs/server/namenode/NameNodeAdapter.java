@@ -160,7 +160,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|DatanodeCommand
+name|DatanodeRegistration
 import|;
 end_import
 
@@ -178,7 +178,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|DatanodeRegistration
+name|HeartbeatResponse
 import|;
 end_import
 
@@ -474,8 +474,7 @@ block|}
 DECL|method|sendHeartBeat (DatanodeRegistration nodeReg, DatanodeDescriptor dd, FSNamesystem namesystem)
 specifier|public
 specifier|static
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartBeat
 parameter_list|(
 name|DatanodeRegistration

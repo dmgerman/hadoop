@@ -70,7 +70,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
+name|DatanodeID
 import|;
 end_import
 
@@ -86,7 +86,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|ExtendedBlock
 import|;
 end_import
 
@@ -352,13 +352,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
+comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
 annotation|@
 name|Nullable
 DECL|method|sendHeartbeat (DatanodeRegistration registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeRegistration
