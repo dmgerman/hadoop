@@ -818,7 +818,7 @@ literal|20
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*   Vocabulory Used:    pending -> requests which are NOT yet sent to RM   scheduled -> requests which are sent to RM but not yet assigned   assigned -> requests which are assigned to a container   completed -> request corresponding to which container has completed      Lifecycle of map   scheduled->assigned->completed      Lifecycle of reduce   pending->scheduled->assigned->completed      Maps are scheduled as soon as their requests are received. Reduces are    added to the pending and are ramped up (added to scheduled) based    on completed maps and current availability in the cluster.   */
+comment|/*   Vocabulary Used:    pending -> requests which are NOT yet sent to RM   scheduled -> requests which are sent to RM but not yet assigned   assigned -> requests which are assigned to a container   completed -> request corresponding to which container has completed      Lifecycle of map   scheduled->assigned->completed      Lifecycle of reduce   pending->scheduled->assigned->completed      Maps are scheduled as soon as their requests are received. Reduces are    added to the pending and are ramped up (added to scheduled) based    on completed maps and current availability in the cluster.   */
 comment|//reduces which are not yet scheduled
 DECL|field|pendingReduces
 specifier|private
@@ -3398,6 +3398,20 @@ argument_list|,
 name|PRIORITY_FAST_FAIL_MAP
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Added "
+operator|+
+name|event
+operator|.
+name|getAttemptID
+argument_list|()
+operator|+
+literal|" to list of failed maps"
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -3665,6 +3679,23 @@ argument_list|(
 literal|"Assigning container "
 operator|+
 name|allocated
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" with priority "
+operator|+
+name|allocated
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|" to NM "
+operator|+
+name|allocated
+operator|.
+name|getNodeId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// check if allocated container meets memory requirements
@@ -3846,7 +3877,17 @@ name|info
 argument_list|(
 literal|"Got allocated container on a blacklisted "
 operator|+
-literal|" host. Releasing container "
+literal|" host "
+operator|+
+name|allocated
+operator|.
+name|getNodeId
+argument_list|()
+operator|.
+name|getHost
+argument_list|()
+operator|+
+literal|". Releasing container "
 operator|+
 name|allocated
 argument_list|)
@@ -4220,6 +4261,15 @@ name|Container
 name|allocated
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Finding containerReq for allocated container: "
+operator|+
+name|allocated
+argument_list|)
+expr_stmt|;
 name|Priority
 name|priority
 init|=
@@ -4241,7 +4291,72 @@ name|equals
 argument_list|(
 name|priority
 argument_list|)
-operator|||
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Replacing FAST_FAIL_MAP container "
+operator|+
+name|allocated
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Iterator
+argument_list|<
+name|TaskAttemptId
+argument_list|>
+name|iter
+init|=
+name|earlierFailedMaps
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|toBeReplaced
+operator|==
+literal|null
+operator|&&
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|toBeReplaced
+operator|=
+name|maps
+operator|.
+name|get
+argument_list|(
+name|iter
+operator|.
+name|next
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found replacement: "
+operator|+
+name|toBeReplaced
+argument_list|)
+expr_stmt|;
+return|return
+name|toBeReplaced
+return|;
+block|}
+elseif|else
+if|if
+condition|(
 name|PRIORITY_MAP
 operator|.
 name|equals
@@ -4250,6 +4365,18 @@ name|priority
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Replacing MAP container "
+operator|+
+name|allocated
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// allocated container was for a map
 name|String
 name|host
@@ -4380,6 +4507,15 @@ name|tId
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found replacement: "
+operator|+
+name|toBeReplaced
+argument_list|)
+expr_stmt|;
 return|return
 name|toBeReplaced
 return|;
