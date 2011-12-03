@@ -1858,6 +1858,16 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
+comment|// update our Cluster instance with the one created by Job for submission
+comment|// (we can't pass our Cluster instance to Job, since Job wraps the config
+comment|// instance, and the two configs would then diverge)
+name|cluster
+operator|=
+name|job
+operator|.
+name|getCluster
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|NetworkedJob

@@ -1410,6 +1410,18 @@ name|isRetired
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Private
+DECL|method|getCluster ()
+specifier|public
+name|Cluster
+name|getCluster
+parameter_list|()
+block|{
+return|return
+name|cluster
+return|;
+block|}
 comment|/** Only for mocks in unit tests. */
 annotation|@
 name|Private
