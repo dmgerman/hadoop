@@ -120,6 +120,20 @@ name|WritableFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 DECL|class|ProtocolSignature
 specifier|public
@@ -604,8 +618,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * A cache that maps a protocol's name to its signature& finger print    */
-specifier|final
 specifier|private
+specifier|final
 specifier|static
 name|HashMap
 argument_list|<
@@ -625,6 +639,21 @@ name|ProtocolSigFingerprint
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|resetCache ()
+specifier|public
+specifier|static
+name|void
+name|resetCache
+parameter_list|()
+block|{
+name|PROTOCOL_FINGERPRINT_CACHE
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Return a protocol's signature and finger print from cache    *     * @param protocol a protocol class    * @param serverVersion protocol version    * @return its signature and finger print    */
 DECL|method|getSigFingerprint ( Class <? extends VersionedProtocol> protocol, long serverVersion)
 specifier|private
@@ -647,10 +676,12 @@ block|{
 name|String
 name|protocolName
 init|=
-name|protocol
+name|RPC
 operator|.
-name|getName
-argument_list|()
+name|getProtocolName
+argument_list|(
+name|protocol
+argument_list|)
 decl_stmt|;
 synchronized|synchronized
 init|(
