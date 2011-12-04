@@ -462,6 +462,7 @@ block|}
 DECL|field|NUM_ROWS
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|NUM_ROWS
 init|=

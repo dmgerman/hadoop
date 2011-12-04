@@ -882,7 +882,7 @@ name|result
 return|;
 block|}
 block|}
-comment|/**    * Use the input splits to take samples of the input and generate sample    * keys. By default reads 100,000 keys from 10 locations in the input, sorts    * them and picks N-1 keys to generate N equally sized partitions.    * @param job the job to sample    * @param partFile where to write the output file to    * @throws IOException if something goes wrong    */
+comment|/**    * Use the input splits to take samples of the input and generate sample    * keys. By default reads 100,000 keys from 10 locations in the input, sorts    * them and picks N-1 keys to generate N equally sized partitions.    * @param job the job to sample    * @param partFile where to write the output file to    * @throws Throwable if something goes wrong    */
 DECL|method|writePartitionFile (final JobContext job, Path partFile)
 specifier|public
 specifier|static
@@ -897,9 +897,7 @@ name|Path
 name|partFile
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
-name|InterruptedException
+name|Throwable
 block|{
 name|long
 name|t1
@@ -1061,6 +1059,15 @@ index|[
 name|samples
 index|]
 decl_stmt|;
+name|SamplerThreadGroup
+name|threadGroup
+init|=
+operator|new
+name|SamplerThreadGroup
+argument_list|(
+literal|"Sampler Reader Thread Group"
+argument_list|)
+decl_stmt|;
 comment|// take N samples from different parts of the input
 for|for
 control|(
@@ -1091,6 +1098,8 @@ operator|=
 operator|new
 name|Thread
 argument_list|(
+name|threadGroup
+argument_list|,
 literal|"Sampler Reader "
 operator|+
 name|idx
@@ -1230,14 +1239,13 @@ name|ie
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+throw|throw
+operator|new
+name|RuntimeException
 argument_list|(
-operator|-
-literal|1
+name|ie
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 catch|catch
 parameter_list|(
@@ -1318,6 +1326,23 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|threadGroup
+operator|.
+name|getThrowable
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+name|threadGroup
+operator|.
+name|getThrowable
+argument_list|()
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1377,6 +1402,66 @@ operator|+
 literal|"ms"
 argument_list|)
 expr_stmt|;
+block|}
+DECL|class|SamplerThreadGroup
+specifier|static
+class|class
+name|SamplerThreadGroup
+extends|extends
+name|ThreadGroup
+block|{
+DECL|field|throwable
+specifier|private
+name|Throwable
+name|throwable
+decl_stmt|;
+DECL|method|SamplerThreadGroup (String s)
+specifier|public
+name|SamplerThreadGroup
+parameter_list|(
+name|String
+name|s
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|uncaughtException (Thread thread, Throwable throwable)
+specifier|public
+name|void
+name|uncaughtException
+parameter_list|(
+name|Thread
+name|thread
+parameter_list|,
+name|Throwable
+name|throwable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|throwable
+operator|=
+name|throwable
+expr_stmt|;
+block|}
+DECL|method|getThrowable ()
+specifier|public
+name|Throwable
+name|getThrowable
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|throwable
+return|;
+block|}
 block|}
 DECL|class|TeraRecordReader
 specifier|static

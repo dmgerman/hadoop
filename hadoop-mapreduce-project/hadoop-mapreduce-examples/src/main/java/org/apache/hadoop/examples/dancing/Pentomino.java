@@ -309,6 +309,9 @@ parameter_list|()
 block|{
 return|return
 name|rotations
+operator|.
+name|clone
+argument_list|()
 return|;
 block|}
 DECL|method|getFlippable ()
