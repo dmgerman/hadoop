@@ -1362,12 +1362,9 @@ condition|)
 block|{
 name|ret
 operator|=
-name|ExitCode
+name|YarnConfiguration
 operator|.
 name|DISKS_FAILED
-operator|.
-name|getExitCode
-argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
