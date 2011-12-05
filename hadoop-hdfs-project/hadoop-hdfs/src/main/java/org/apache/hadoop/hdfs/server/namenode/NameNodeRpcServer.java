@@ -1647,6 +1647,10 @@ name|serviceRpcServer
 operator|.
 name|addProtocol
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|HAServiceProtocol
 operator|.
 name|class
@@ -1824,6 +1828,10 @@ name|clientRpcServer
 operator|.
 name|addProtocol
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|HAServiceProtocol
 operator|.
 name|class
