@@ -2756,6 +2756,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
 name|RPC
 operator|.
 name|stopProxy
@@ -2763,6 +2765,7 @@ argument_list|(
 name|namenode
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/** Abort and release resources held.  Ignore all errors. */
 DECL|method|abort ()
