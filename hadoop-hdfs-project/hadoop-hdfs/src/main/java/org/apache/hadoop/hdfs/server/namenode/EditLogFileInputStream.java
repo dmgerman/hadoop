@@ -456,6 +456,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|length ()
+specifier|public
 name|long
 name|length
 parameter_list|()

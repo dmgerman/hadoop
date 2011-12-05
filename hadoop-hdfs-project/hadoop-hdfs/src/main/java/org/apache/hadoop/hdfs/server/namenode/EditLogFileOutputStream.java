@@ -331,6 +331,7 @@ comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|write (FSEditLogOp op)
+specifier|public
 name|void
 name|write
 parameter_list|(
@@ -352,6 +353,7 @@ comment|/**    * Write a transaction to the stream. The serialization format is:
 annotation|@
 name|Override
 DECL|method|writeRaw (byte[] bytes, int offset, int length)
+specifier|public
 name|void
 name|writeRaw
 parameter_list|(
@@ -384,6 +386,7 @@ comment|/**    * Create empty edits logs file.    */
 annotation|@
 name|Override
 DECL|method|create ()
+specifier|public
 name|void
 name|create
 parameter_list|()
@@ -591,6 +594,7 @@ comment|/**    * All data that has been written to the stream so far will be flu
 annotation|@
 name|Override
 DECL|method|setReadyToFlush ()
+specifier|public
 name|void
 name|setReadyToFlush
 parameter_list|()

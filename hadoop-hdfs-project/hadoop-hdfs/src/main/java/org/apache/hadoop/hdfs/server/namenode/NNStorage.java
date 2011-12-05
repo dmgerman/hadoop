@@ -595,6 +595,14 @@ name|DEPRECATED_MESSAGE_DIGEST_PROPERTY
 init|=
 literal|"imageMD5Digest"
 decl_stmt|;
+DECL|field|LOCAL_URI_SCHEME
+specifier|static
+specifier|final
+name|String
+name|LOCAL_URI_SCHEME
+init|=
+literal|"file"
+decl_stmt|;
 comment|//
 comment|// The filenames used for storing the images
 comment|//
@@ -1533,7 +1541,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Checks the consistency of a URI, in particular if the scheme    * is specified and is supported by a concrete implementation    * @param u URI whose consistency is being checked.    */
+comment|/**    * Checks the consistency of a URI, in particular if the scheme    * is specified     * @param u URI whose consistency is being checked.    */
 DECL|method|checkSchemeConsistency (URI u)
 specifier|private
 specifier|static
@@ -1561,6 +1569,7 @@ name|scheme
 operator|==
 literal|null
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -1570,40 +1579,6 @@ operator|+
 name|u
 argument_list|)
 throw|;
-else|else
-block|{
-try|try
-block|{
-comment|// the scheme should be enumerated as JournalType
-name|JournalType
-operator|.
-name|valueOf
-argument_list|(
-name|scheme
-operator|.
-name|toUpperCase
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|iae
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unknown scheme "
-operator|+
-name|scheme
-operator|+
-literal|". It should correspond to a JournalType enumeration value"
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 comment|/**    * Retrieve current directories of type IMAGE    * @return Collection of URI representing image directories    * @throws IOException in case of URI processing error    */

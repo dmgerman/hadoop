@@ -22,6 +22,34 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -45,7 +73,16 @@ comment|/**  * A generic abstract class to support reading edits log data from  
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|EditLogInputStream
+specifier|public
 specifier|abstract
 class|class
 name|EditLogInputStream
@@ -114,6 +151,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Return the size of the current edits log.    */
 DECL|method|length ()
+specifier|public
 specifier|abstract
 name|long
 name|length

@@ -50,12 +50,49 @@ name|now
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A generic abstract class to support journaling of edits logs into   * a persistent storage.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|EditLogOutputStream
+specifier|public
 specifier|abstract
 class|class
 name|EditLogOutputStream
@@ -74,8 +111,11 @@ name|totalTimeSync
 decl_stmt|;
 comment|// total time to sync
 DECL|method|EditLogOutputStream ()
+specifier|public
 name|EditLogOutputStream
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|numSync
 operator|=
@@ -87,6 +127,7 @@ block|}
 comment|/**    * Write edits log operation to the stream.    *     * @param op operation    * @throws IOException    */
 DECL|method|write (FSEditLogOp op)
 specifier|abstract
+specifier|public
 name|void
 name|write
 parameter_list|(
@@ -99,6 +140,7 @@ function_decl|;
 comment|/**    * Write raw data to an edit log. This data should already have    * the transaction ID, checksum, etc included. It is for use    * within the BackupNode when replicating edits from the    * NameNode.    *    * @param bytes the bytes to write.    * @param offset offset in the bytes to write from    * @param length number of bytes to write    * @throws IOException    */
 DECL|method|writeRaw (byte[] bytes, int offset, int length)
 specifier|abstract
+specifier|public
 name|void
 name|writeRaw
 parameter_list|(
@@ -118,6 +160,7 @@ function_decl|;
 comment|/**    * Create and initialize underlying persistent edits log storage.    *     * @throws IOException    */
 DECL|method|create ()
 specifier|abstract
+specifier|public
 name|void
 name|create
 parameter_list|()
@@ -147,6 +190,7 @@ function_decl|;
 comment|/**    * All data that has been written to the stream so far will be flushed.    * New data can be still written to the stream while flushing is performed.    */
 DECL|method|setReadyToFlush ()
 specifier|abstract
+specifier|public
 name|void
 name|setReadyToFlush
 parameter_list|()

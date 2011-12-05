@@ -40,12 +40,49 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JournalManager is responsible for managing a single place of storing  * edit logs. It may correspond to multiple files, a backup node, etc.  * Even when the actual underlying storage is rolled, or failed and restored,  * each conceptual place of storage corresponds to exactly one instance of  * this class, which is created when the EditLog is first opened.  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|interface|JournalManager
+specifier|public
 interface|interface
 name|JournalManager
 extends|extends
@@ -109,7 +146,7 @@ name|int
 name|size
 parameter_list|)
 function_decl|;
-comment|/**    * The JournalManager may archive/purge any logs for transactions less than    * or equal to minImageTxId.    *    * @param minTxIdToKeep the earliest txid that must be retained after purging    *                      old logs    * @param purger the purging implementation to use    * @throws IOException if purging fails    */
+comment|/**    * The JournalManager may archive/purge any logs for transactions less than    * or equal to minImageTxId.    *    * @param minTxIdToKeep the earliest txid that must be retained after purging    *                      old logs    * @throws IOException if purging fails    */
 DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
 name|void
 name|purgeLogsOlderThan

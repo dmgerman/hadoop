@@ -875,6 +875,16 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+DECL|method|getTransactionId ()
+specifier|public
+name|long
+name|getTransactionId
+parameter_list|()
+block|{
+return|return
+name|txid
+return|;
+block|}
 DECL|method|setTransactionId (long txid)
 specifier|public
 name|void
