@@ -4487,7 +4487,11 @@ block|}
 block|}
 block|}
 return|return
-literal|null
+operator|new
+name|DatanodeCommand
+index|[
+literal|0
+index|]
 return|;
 block|}
 comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.balance.bandwidthPerSec.    *    * A system administrator can tune the balancer bandwidth parameter    * (dfs.datanode.balance.bandwidthPerSec) dynamically by calling    * "dfsadmin -setBalanacerBandwidth newbandwidth", at which point the    * following 'bandwidth' variable gets updated with the new value for each    * node. Once the heartbeat command is issued to update the value on the    * specified datanode, this value will be set back to 0.    *    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
