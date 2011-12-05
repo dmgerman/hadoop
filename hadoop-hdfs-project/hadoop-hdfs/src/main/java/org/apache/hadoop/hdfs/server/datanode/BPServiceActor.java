@@ -1512,8 +1512,6 @@ operator|+
 name|this
 argument_list|)
 expr_stmt|;
-comment|// TODO: saw an NPE here - maybe if the two BPOS register at
-comment|// same time, this one won't block on the other one?
 return|return
 name|bpNamenode
 operator|.
