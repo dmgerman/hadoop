@@ -338,6 +338,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|length ()
+specifier|public
 name|long
 name|length
 parameter_list|()
@@ -470,6 +471,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|isInProgress ()
+specifier|public
 name|boolean
 name|isInProgress
 parameter_list|()

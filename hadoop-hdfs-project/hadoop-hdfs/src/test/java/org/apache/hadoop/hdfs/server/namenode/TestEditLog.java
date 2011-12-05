@@ -3826,6 +3826,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|isInProgress ()
+specifier|public
 name|boolean
 name|isInProgress
 parameter_list|()

@@ -1152,6 +1152,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|write (final FSEditLogOp op)
+specifier|public
 name|void
 name|write
 parameter_list|(
@@ -1209,6 +1210,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|writeRaw (final byte[] data, final int offset, final int length)
+specifier|public
 name|void
 name|writeRaw
 parameter_list|(
@@ -1279,6 +1281,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|create ()
+specifier|public
 name|void
 name|create
 parameter_list|()
@@ -1410,6 +1413,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|setReadyToFlush ()
+specifier|public
 name|void
 name|setReadyToFlush
 parameter_list|()

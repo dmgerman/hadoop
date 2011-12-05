@@ -98,6 +98,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|permission
@@ -677,6 +705,14 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|FSEditLogLoader
 specifier|public
 class|class
@@ -2858,6 +2894,7 @@ block|}
 block|}
 comment|/**    * Stream wrapper that keeps track of the current stream position.    */
 DECL|class|PositionTrackingInputStream
+specifier|public
 specifier|static
 class|class
 name|PositionTrackingInputStream

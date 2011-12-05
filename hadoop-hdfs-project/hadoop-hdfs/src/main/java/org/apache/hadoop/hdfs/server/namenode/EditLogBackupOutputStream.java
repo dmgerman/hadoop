@@ -330,6 +330,7 @@ annotation|@
 name|Override
 comment|// EditLogOutputStream
 DECL|method|write (FSEditLogOp op)
+specifier|public
 name|void
 name|write
 parameter_list|(
@@ -350,6 +351,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|writeRaw (byte[] bytes, int offset, int length)
+specifier|public
 name|void
 name|writeRaw
 parameter_list|(
@@ -379,6 +381,7 @@ annotation|@
 name|Override
 comment|// EditLogOutputStream
 DECL|method|create ()
+specifier|public
 name|void
 name|create
 parameter_list|()
@@ -488,6 +491,7 @@ annotation|@
 name|Override
 comment|// EditLogOutputStream
 DECL|method|setReadyToFlush ()
+specifier|public
 name|void
 name|setReadyToFlush
 parameter_list|()
