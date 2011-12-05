@@ -1632,6 +1632,16 @@ init|=
 operator|-
 literal|100
 decl_stmt|;
+DECL|field|DISKS_FAILED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DISKS_FAILED
+init|=
+operator|-
+literal|101
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Web Proxy Configs
 comment|////////////////////////////////

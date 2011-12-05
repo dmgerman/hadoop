@@ -177,6 +177,7 @@ name|keyBytes
 init|=
 literal|null
 decl_stmt|;
+comment|/** Default constructore required for Writable */
 DECL|method|DelegationKey ()
 specifier|public
 name|DelegationKey
@@ -188,6 +189,9 @@ literal|0
 argument_list|,
 literal|0L
 argument_list|,
+operator|(
+name|SecretKey
+operator|)
 literal|null
 argument_list|)
 expr_stmt|;
@@ -207,6 +211,40 @@ name|key
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|keyId
+argument_list|,
+name|expiryDate
+argument_list|,
+name|key
+operator|!=
+literal|null
+condition|?
+name|key
+operator|.
+name|getEncoded
+argument_list|()
+else|:
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DelegationKey (int keyId, long expiryDate, byte[] encodedKey)
+specifier|public
+name|DelegationKey
+parameter_list|(
+name|int
+name|keyId
+parameter_list|,
+name|long
+name|expiryDate
+parameter_list|,
+name|byte
+index|[]
+name|encodedKey
+parameter_list|)
+block|{
+name|this
 operator|.
 name|keyId
 operator|=
@@ -220,7 +258,7 @@ name|expiryDate
 expr_stmt|;
 if|if
 condition|(
-name|key
+name|encodedKey
 operator|!=
 literal|null
 condition|)
@@ -229,10 +267,7 @@ name|this
 operator|.
 name|keyBytes
 operator|=
-name|key
-operator|.
-name|getEncoded
-argument_list|()
+name|encodedKey
 expr_stmt|;
 block|}
 block|}
@@ -295,6 +330,17 @@ return|return
 name|key
 return|;
 block|}
+block|}
+DECL|method|getEncodedKey ()
+specifier|public
+name|byte
+index|[]
+name|getEncodedKey
+parameter_list|()
+block|{
+return|return
+name|keyBytes
+return|;
 block|}
 DECL|method|setExpiryDate (long expiryDate)
 specifier|public

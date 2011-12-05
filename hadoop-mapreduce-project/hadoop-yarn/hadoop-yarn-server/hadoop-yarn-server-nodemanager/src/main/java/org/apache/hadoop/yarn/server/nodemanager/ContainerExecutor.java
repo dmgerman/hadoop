@@ -553,13 +553,6 @@ name|TERMINATED
 argument_list|(
 literal|143
 argument_list|)
-block|,
-DECL|enumConstant|DISKS_FAILED
-name|DISKS_FAILED
-argument_list|(
-operator|-
-literal|101
-argument_list|)
 block|;
 DECL|field|code
 specifier|private

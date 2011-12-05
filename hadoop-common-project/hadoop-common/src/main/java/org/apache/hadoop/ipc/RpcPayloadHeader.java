@@ -198,7 +198,7 @@ operator|)
 literal|1
 argument_list|)
 block|,
-comment|// Used for built in calls
+comment|// Used for built in calls by tests
 DECL|enumConstant|RPC_WRITABLE
 name|RPC_WRITABLE
 argument_list|(
@@ -208,6 +208,7 @@ operator|)
 literal|2
 argument_list|)
 block|,
+comment|// Use WritableRpcEngine
 DECL|enumConstant|RPC_PROTOCOL_BUFFER
 name|RPC_PROTOCOL_BUFFER
 argument_list|(
@@ -217,6 +218,7 @@ operator|)
 literal|3
 argument_list|)
 block|,
+comment|// Use ProtobufRpcEngine
 DECL|enumConstant|RPC_AVRO
 name|RPC_AVRO
 argument_list|(
@@ -226,12 +228,18 @@ operator|)
 literal|4
 argument_list|)
 block|;
-DECL|field|value
-specifier|private
+comment|// Use AvroRpcEngine
+DECL|field|MAX_INDEX
+specifier|static
 specifier|final
 name|short
+name|MAX_INDEX
+init|=
+name|RPC_AVRO
+operator|.
 name|value
 decl_stmt|;
+comment|// used for array size
 DECL|field|FIRST_INDEX
 specifier|private
 specifier|static
@@ -241,6 +249,12 @@ name|FIRST_INDEX
 init|=
 name|RPC_BUILTIN
 operator|.
+name|value
+decl_stmt|;
+DECL|field|value
+specifier|private
+specifier|final
+name|short
 name|value
 decl_stmt|;
 DECL|method|RpcKind (short val)

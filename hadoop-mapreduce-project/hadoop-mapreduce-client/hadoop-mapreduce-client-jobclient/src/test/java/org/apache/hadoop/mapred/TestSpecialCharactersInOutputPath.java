@@ -286,7 +286,7 @@ name|OUTPUT_FILENAME
 init|=
 literal|"result[0]"
 decl_stmt|;
-DECL|method|launchJob (URI fileSys, String jobTracker, JobConf conf, int numMaps, int numReduces)
+DECL|method|launchJob (URI fileSys, JobConf conf, int numMaps, int numReduces)
 specifier|public
 specifier|static
 name|boolean
@@ -294,9 +294,6 @@ name|launchJob
 parameter_list|(
 name|URI
 name|fileSys
-parameter_list|,
-name|String
-name|jobTracker
 parameter_list|,
 name|JobConf
 name|conf
@@ -412,30 +409,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|fileSys
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|MRConfig
-operator|.
-name|FRAMEWORK_NAME
-argument_list|,
-name|MRConfig
-operator|.
-name|CLASSIC_FRAMEWORK_NAME
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-argument_list|,
-name|jobTracker
 argument_list|)
 expr_stmt|;
 name|conf
@@ -706,17 +679,6 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-specifier|final
-name|String
-name|jobTrackerName
-init|=
-literal|"localhost:"
-operator|+
-name|mr
-operator|.
-name|getJobTrackerPort
-argument_list|()
-decl_stmt|;
 name|JobConf
 name|jobConf
 init|=
@@ -735,8 +697,6 @@ name|fileSys
 operator|.
 name|getUri
 argument_list|()
-argument_list|,
-name|jobTrackerName
 argument_list|,
 name|jobConf
 argument_list|,

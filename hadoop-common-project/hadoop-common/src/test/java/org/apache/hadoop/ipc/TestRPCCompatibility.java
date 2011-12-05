@@ -144,6 +144,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|RpcPayloadHeader
+operator|.
+name|RpcKind
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -281,6 +297,7 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
+comment|// TestProtocol2 is a compatible impl of TestProtocol1 - hence use its name
 annotation|@
 name|ProtocolInfo
 argument_list|(
@@ -554,6 +571,10 @@ name|getProxy
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|proxy
+operator|=
+literal|null
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -566,6 +587,10 @@ name|server
 operator|.
 name|stop
 argument_list|()
+expr_stmt|;
+name|server
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
@@ -617,6 +642,10 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|TestProtocol0
 operator|.
 name|class
@@ -863,6 +892,15 @@ name|class
 argument_list|)
 condition|)
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"echo int is supported"
+argument_list|)
+expr_stmt|;
 return|return
 operator|-
 name|value
@@ -872,6 +910,15 @@ block|}
 else|else
 block|{
 comment|// server is version 2
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"echo int is NOT supported"
+argument_list|)
+expr_stmt|;
 return|return
 name|Integer
 operator|.
@@ -975,6 +1022,10 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|TestProtocol0
 operator|.
 name|class
@@ -1046,6 +1097,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|ProtocolSignature
+operator|.
+name|resetCache
+argument_list|()
+expr_stmt|;
 comment|// create a server with two handlers
 name|TestImpl2
 name|impl
@@ -1083,6 +1139,10 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RpcKind
+operator|.
+name|RPC_WRITABLE
+argument_list|,
 name|TestProtocol0
 operator|.
 name|class

@@ -894,7 +894,7 @@ expr_stmt|;
 block|}
 name|render
 argument_list|(
-name|AboutPage
+name|AppPage
 operator|.
 name|class
 argument_list|)

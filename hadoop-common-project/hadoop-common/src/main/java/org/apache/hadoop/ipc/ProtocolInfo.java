@@ -63,6 +63,15 @@ name|protocolName
 parameter_list|()
 function_decl|;
 comment|// the name of the protocol (i.e. rpc service)
+DECL|method|protocolVersion ()
+name|long
+name|protocolVersion
+parameter_list|()
+default|default
+operator|-
+literal|1
+function_decl|;
+comment|// default means not defined use old way
 block|}
 end_annotation_defn
 
