@@ -3253,7 +3253,7 @@ name|protobuf
 operator|.
 name|MessageOrBuilder
 block|{
-comment|// required .ReplicaState state = 1;
+comment|// required .ReplicaStateProto state = 1;
 DECL|method|hasState ()
 name|boolean
 name|hasState
@@ -3274,7 +3274,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|getState
 parameter_list|()
 function_decl|;
@@ -3462,7 +3462,7 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required .ReplicaState state = 1;
+comment|// required .ReplicaStateProto state = 1;
 DECL|field|STATE_FIELD_NUMBER
 specifier|public
 specifier|static
@@ -3488,7 +3488,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|state_
 decl_stmt|;
 DECL|method|hasState ()
@@ -3525,7 +3525,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|getState
 parameter_list|()
 block|{
@@ -3650,7 +3650,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|FINALIZED
 expr_stmt|;
@@ -5174,7 +5174,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|FINALIZED
 expr_stmt|;
@@ -5983,7 +5983,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|value
 init|=
 name|org
@@ -6000,7 +6000,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|valueOf
 argument_list|(
@@ -6121,7 +6121,7 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required .ReplicaState state = 1;
+comment|// required .ReplicaStateProto state = 1;
 DECL|field|state_
 specifier|private
 name|org
@@ -6138,7 +6138,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|state_
 init|=
 name|org
@@ -6155,7 +6155,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|FINALIZED
 decl_stmt|;
@@ -6193,7 +6193,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|getState
 parameter_list|()
 block|{
@@ -6201,7 +6201,7 @@ return|return
 name|state_
 return|;
 block|}
-DECL|method|setState (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.ReplicaState value)
+DECL|method|setState (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.ReplicaStateProto value)
 specifier|public
 name|Builder
 name|setState
@@ -6220,7 +6220,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 name|value
 parameter_list|)
 block|{
@@ -6283,7 +6283,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|FINALIZED
 expr_stmt|;
@@ -16467,37 +16467,39 @@ literal|"\n\033InterDatanodeProtocol.proto\032\nhdfs.prot"
 operator|+
 literal|"o\"G\n\037InitReplicaRecoveryRequestProto\022$\n\005"
 operator|+
-literal|"block\030\001 \002(\0132\025.RecoveringBlockProto\"\\\n In"
+literal|"block\030\001 \002(\0132\025.RecoveringBlockProto\"a\n In"
 operator|+
-literal|"itReplicaRecoveryResponseProto\022\034\n\005state\030"
+literal|"itReplicaRecoveryResponseProto\022!\n\005state\030"
 operator|+
-literal|"\001 \002(\0162\r.ReplicaState\022\032\n\005block\030\002 \002(\0132\013.Bl"
+literal|"\001 \002(\0162\022.ReplicaStateProto\022\032\n\005block\030\002 \002(\013"
 operator|+
-literal|"ockProto\"s\n&UpdateReplicaUnderRecoveryRe"
+literal|"2\013.BlockProto\"s\n&UpdateReplicaUnderRecov"
 operator|+
-literal|"questProto\022\"\n\005block\030\001 \002(\0132\023.ExtendedBloc"
+literal|"eryRequestProto\022\"\n\005block\030\001 \002(\0132\023.Extende"
 operator|+
-literal|"kProto\022\022\n\nrecoveryId\030\002 \002(\004\022\021\n\tnewLength\030"
+literal|"dBlockProto\022\022\n\nrecoveryId\030\002 \002(\004\022\021\n\tnewLe"
 operator|+
-literal|"\003 \002(\004\"M\n\'UpdateReplicaUnderRecoveryRespo"
+literal|"ngth\030\003 \002(\004\"M\n\'UpdateReplicaUnderRecovery"
 operator|+
-literal|"nseProto\022\"\n\005block\030\001 \002(\0132\023.ExtendedBlockP"
+literal|"ResponseProto\022\"\n\005block\030\001 \002(\0132\023.ExtendedB"
 block|,
-literal|"roto2\353\001\n\034InterDatanodeProtocolService\022Z\n"
+literal|"lockProto2\353\001\n\034InterDatanodeProtocolServi"
 operator|+
-literal|"\023initReplicaRecovery\022 .InitReplicaRecove"
+literal|"ce\022Z\n\023initReplicaRecovery\022 .InitReplicaR"
 operator|+
-literal|"ryRequestProto\032!.InitReplicaRecoveryResp"
+literal|"ecoveryRequestProto\032!.InitReplicaRecover"
 operator|+
-literal|"onseProto\022o\n\032updateReplicaUnderRecovery\022"
+literal|"yResponseProto\022o\n\032updateReplicaUnderReco"
 operator|+
-literal|"\'.UpdateReplicaUnderRecoveryRequestProto"
+literal|"very\022\'.UpdateReplicaUnderRecoveryRequest"
 operator|+
-literal|"\032(.UpdateReplicaUnderRecoveryResponsePro"
+literal|"Proto\032(.UpdateReplicaUnderRecoveryRespon"
 operator|+
-literal|"toBJ\n%org.apache.hadoop.hdfs.protocol.pr"
+literal|"seProtoBJ\n%org.apache.hadoop.hdfs.protoc"
 operator|+
-literal|"otoB\033InterDatanodeProtocolProtos\210\001\001\240\001\001"
+literal|"ol.protoB\033InterDatanodeProtocolProtos\210\001\001"
+operator|+
+literal|"\240\001\001"
 block|}
 decl_stmt|;
 name|com

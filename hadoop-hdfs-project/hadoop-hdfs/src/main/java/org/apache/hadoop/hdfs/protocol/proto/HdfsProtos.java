@@ -52,10 +52,10 @@ name|ExtensionRegistry
 name|registry
 parameter_list|)
 block|{   }
-DECL|enum|ReplicaState
+DECL|enum|ReplicaStateProto
 specifier|public
 enum|enum
-name|ReplicaState
+name|ReplicaStateProto
 implements|implements
 name|com
 operator|.
@@ -164,7 +164,7 @@ block|}
 DECL|method|valueOf (int value)
 specifier|public
 specifier|static
-name|ReplicaState
+name|ReplicaStateProto
 name|valueOf
 parameter_list|(
 name|int
@@ -224,7 +224,7 @@ name|Internal
 operator|.
 name|EnumLiteMap
 argument_list|<
-name|ReplicaState
+name|ReplicaStateProto
 argument_list|>
 DECL|method|internalGetValueMap ()
 name|internalGetValueMap
@@ -246,7 +246,7 @@ name|Internal
 operator|.
 name|EnumLiteMap
 argument_list|<
-name|ReplicaState
+name|ReplicaStateProto
 argument_list|>
 DECL|field|internalValueMap
 name|internalValueMap
@@ -262,12 +262,12 @@ name|Internal
 operator|.
 name|EnumLiteMap
 argument_list|<
-name|ReplicaState
+name|ReplicaStateProto
 argument_list|>
 argument_list|()
 block|{
 specifier|public
-name|ReplicaState
+name|ReplicaStateProto
 name|findValueByNumber
 parameter_list|(
 name|int
@@ -275,7 +275,7 @@ name|number
 parameter_list|)
 block|{
 return|return
-name|ReplicaState
+name|ReplicaStateProto
 operator|.
 name|valueOf
 argument_list|(
@@ -380,7 +380,7 @@ DECL|field|VALUES
 specifier|private
 specifier|static
 specifier|final
-name|ReplicaState
+name|ReplicaStateProto
 index|[]
 name|VALUES
 init|=
@@ -399,7 +399,7 @@ decl_stmt|;
 DECL|method|valueOf ( com.google.protobuf.Descriptors.EnumValueDescriptor desc)
 specifier|public
 specifier|static
-name|ReplicaState
+name|ReplicaStateProto
 name|valueOf
 parameter_list|(
 name|com
@@ -459,9 +459,9 @@ specifier|final
 name|int
 name|value
 decl_stmt|;
-DECL|method|ReplicaState (int index, int value)
+DECL|method|ReplicaStateProto (int index, int value)
 specifier|private
-name|ReplicaState
+name|ReplicaStateProto
 parameter_list|(
 name|int
 name|index
@@ -483,7 +483,7 @@ operator|=
 name|value
 expr_stmt|;
 block|}
-comment|// @@protoc_insertion_point(enum_scope:ReplicaState)
+comment|// @@protoc_insertion_point(enum_scope:ReplicaStateProto)
 block|}
 DECL|interface|ExtendedBlockProtoOrBuilder
 specifier|public
@@ -125035,13 +125035,13 @@ literal|" \003(\0132\016.BlockKeyProto\"N\n\024RecoveringBlockP"
 operator|+
 literal|"roto\022\023\n\013newGenStamp\030\001 \002(\004\022!\n\005block\030\002 \002(\013"
 operator|+
-literal|"2\022.LocatedBlockProto*G\n\014ReplicaState\022\r\n\t"
+literal|"2\022.LocatedBlockProto*L\n\021ReplicaStateProt"
 operator|+
-literal|"FINALIZED\020\000\022\007\n\003RBW\020\001\022\007\n\003RWR\020\002\022\007\n\003RUR\020\003\022\r"
+literal|"o\022\r\n\tFINALIZED\020\000\022\007\n\003RBW\020\001\022\007\n\003RWR\020\002\022\007\n\003RU"
 operator|+
-literal|"\n\tTEMPORARY\020\004B6\n%org.apache.hadoop.hdfs."
+literal|"R\020\003\022\r\n\tTEMPORARY\020\004B6\n%org.apache.hadoop."
 block|,
-literal|"protocol.protoB\nHdfsProtos\240\001\001"
+literal|"hdfs.protocol.protoB\nHdfsProtos\240\001\001"
 block|}
 decl_stmt|;
 name|com
