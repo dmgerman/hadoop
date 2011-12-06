@@ -113,6 +113,31 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|BlockKey (int keyId, long expiryDate, byte[] encodedKey)
+specifier|public
+name|BlockKey
+parameter_list|(
+name|int
+name|keyId
+parameter_list|,
+name|long
+name|expiryDate
+parameter_list|,
+name|byte
+index|[]
+name|encodedKey
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|keyId
+argument_list|,
+name|expiryDate
+argument_list|,
+name|encodedKey
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
