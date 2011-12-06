@@ -1464,7 +1464,7 @@ argument_list|(
 name|msg
 argument_list|)
 operator|.
-name|setRegistartion
+name|setRegistration
 argument_list|(
 name|PBHelper
 operator|.
