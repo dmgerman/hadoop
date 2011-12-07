@@ -3637,7 +3637,7 @@ name|txid
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * FSImageSaver is being run in a separate thread when saving    * FSImage. There is one thread per each copy of the image.    *    * FSImageSaver assumes that it was launched from a thread that holds    * FSNamesystem lock and waits for the execution of FSImageSaver thread    * to finish.    * This way we are guraranteed that the namespace is not being updated    * while multiple instances of FSImageSaver are traversing it    * and writing it out.    */
+comment|/**    * FSImageSaver is being run in a separate thread when saving    * FSImage. There is one thread per each copy of the image.    *    * FSImageSaver assumes that it was launched from a thread that holds    * FSNamesystem lock and waits for the execution of FSImageSaver thread    * to finish.    * This way we are guaranteed that the namespace is not being updated    * while multiple instances of FSImageSaver are traversing it    * and writing it out.    */
 DECL|class|FSImageSaver
 specifier|private
 class|class

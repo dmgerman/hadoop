@@ -516,6 +516,17 @@ argument_list|,
 literal|"dummy://test"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECKED_VOLUMES_MINIMUM_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|cluster

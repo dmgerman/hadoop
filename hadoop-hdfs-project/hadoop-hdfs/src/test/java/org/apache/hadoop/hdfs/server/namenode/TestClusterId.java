@@ -331,13 +331,11 @@ name|URI
 argument_list|>
 name|editsToFormat
 init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|URI
-argument_list|>
+name|FSNamesystem
+operator|.
+name|getNamespaceEditsDirs
 argument_list|(
-literal|0
+name|config
 argument_list|)
 decl_stmt|;
 name|FSImage
