@@ -379,7 +379,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The {@link KerberosAuthenticationHandler} implements the Kerberos SPNEGO authentication mechanism for HTTP.  *<p/>  * The supported configuration properties are:  *<ul>  *<li>kerberos.principal: the Kerberos principal to used by the server. As stated by the Kerberos SPNEGO  * specification, it should be<code>HTTP/${HOSTNAME}@{REALM}</code>. The realm can be omitted from the  * principal as the JDK GSS libraries will use the realm name of the configured default realm.  * It does not have a default value.</li>  *<li>kerberos.keytab: the keytab file containing the credentials for the Kerberos principal.  * It does not have a default value.</li>  *</ul>  */
+comment|/**  * The {@link KerberosAuthenticationHandler} implements the Kerberos SPNEGO authentication mechanism for HTTP.  *<p/>  * The supported configuration properties are:  *<ul>  *<li>kerberos.principal: the Kerberos principal to used by the server. As stated by the Kerberos SPNEGO  * specification, it should be<code>HTTP/${HOSTNAME}@{REALM}</code>. The realm can be omitted from the  * principal as the JDK GSS libraries will use the realm name of the configured default realm.  * It does not have a default value.</li>  *<li>kerberos.keytab: the keytab file containing the credentials for the Kerberos principal.  * It does not have a default value.</li>  *<li>kerberos.name.rules: kerberos names rules to resolve principal names, see   * {@link KerberosName#setRules(String)}</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -806,6 +806,33 @@ operator|+
 name|keytab
 argument_list|)
 throw|;
+block|}
+name|String
+name|nameRules
+init|=
+name|config
+operator|.
+name|getProperty
+argument_list|(
+name|NAME_RULES
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nameRules
+operator|!=
+literal|null
+condition|)
+block|{
+name|KerberosName
+operator|.
+name|setRules
+argument_list|(
+name|nameRules
+argument_list|)
+expr_stmt|;
 block|}
 name|Set
 argument_list|<
