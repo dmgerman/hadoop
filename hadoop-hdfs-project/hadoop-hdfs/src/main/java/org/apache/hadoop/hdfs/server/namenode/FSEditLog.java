@@ -1157,12 +1157,59 @@ argument_list|,
 name|state
 argument_list|)
 expr_stmt|;
-name|startLogSegment
-argument_list|(
+name|long
+name|segmentTxId
+init|=
 name|getLastWrittenTxId
 argument_list|()
 operator|+
 literal|1
+decl_stmt|;
+comment|// Safety check: we should never start a segment if there are
+comment|// newer txids readable.
+name|EditLogInputStream
+name|s
+init|=
+name|journalSet
+operator|.
+name|getInputStream
+argument_list|(
+name|segmentTxId
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|s
+operator|==
+literal|null
+argument_list|,
+literal|"Cannot start writing at txid %s when there is a stream "
+operator|+
+literal|"available for read: %s"
+argument_list|,
+name|segmentTxId
+argument_list|,
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+name|startLogSegment
+argument_list|(
+name|segmentTxId
 argument_list|,
 literal|true
 argument_list|)
@@ -1179,6 +1226,7 @@ operator|+
 name|state
 assert|;
 block|}
+comment|/**    * @return true if the log is currently open in write mode, regardless    * of whether it actually has an open segment.    */
 DECL|method|isOpenForWrite ()
 specifier|synchronized
 name|boolean
@@ -1191,8 +1239,30 @@ operator|==
 name|State
 operator|.
 name|IN_SEGMENT
+operator|||
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
 return|;
 block|}
+comment|/**    * @return true if the log is open in write mode and has a segment open    * ready to take edits.    */
+DECL|method|isSegmentOpen ()
+specifier|synchronized
+name|boolean
+name|isSegmentOpen
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|State
+operator|.
+name|IN_SEGMENT
+return|;
+block|}
+comment|/**    * @return true if the log is open in read mode.    */
 DECL|method|isOpenForRead ()
 specifier|synchronized
 name|boolean
@@ -1306,17 +1376,8 @@ name|this
 init|)
 block|{
 assert|assert
-name|state
-operator|!=
-name|State
-operator|.
-name|CLOSED
-operator|&&
-name|state
-operator|!=
-name|State
-operator|.
-name|OPEN_FOR_READING
+name|isOpenForWrite
+argument_list|()
 operator|:
 literal|"bad state: "
 operator|+
@@ -1562,11 +1623,8 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|state
-operator|==
-name|State
-operator|.
-name|IN_SEGMENT
+name|isSegmentOpen
+argument_list|()
 argument_list|,
 literal|"Bad state: %s"
 argument_list|,
@@ -3242,11 +3300,8 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|state
-operator|==
-name|State
-operator|.
-name|IN_SEGMENT
+name|isSegmentOpen
+argument_list|()
 argument_list|,
 literal|"Bad state: %s"
 argument_list|,
@@ -3724,6 +3779,21 @@ name|void
 name|recoverUnclosedStreams
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+argument_list|,
+literal|"May not recover segments - wrong state: %s"
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|journalSet

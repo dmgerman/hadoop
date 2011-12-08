@@ -796,6 +796,14 @@ range|:
 name|journals
 control|)
 block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isDisabled
+argument_list|()
+condition|)
+continue|continue;
 name|JournalManager
 name|candidate
 init|=
@@ -838,6 +846,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to read input streams from JournalManager "
+operator|+
+name|candidate
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 continue|continue;
 comment|// error reading disk, just skip
 block|}
@@ -930,9 +949,24 @@ if|if
 condition|(
 name|jas
 operator|.
-name|isActive
+name|isDisabled
 argument_list|()
 condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping jas "
+operator|+
+name|jas
+operator|+
+literal|" since it's disabled"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+else|else
 block|{
 name|long
 name|newNum

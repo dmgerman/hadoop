@@ -574,7 +574,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalStateException
 argument_list|(
 literal|"Unable to finalize edits file "
 operator|+
@@ -840,7 +840,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalStateException
 argument_list|(
 literal|"Asked for firstTxId "
 operator|+
@@ -1328,7 +1328,56 @@ block|{
 break|break;
 block|}
 block|}
-comment|// else skip
+elseif|else
+if|if
+condition|(
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|<
+name|fromTxId
+operator|&&
+name|elf
+operator|.
+name|getLastTxId
+argument_list|()
+operator|>=
+name|fromTxId
+condition|)
+block|{
+comment|// Middle of a log segment - this should never happen
+comment|// since getLogFiles checks for it. But we should be
+comment|// paranoid about this case since it might result in
+comment|// overlapping txid ranges, etc, if we had a bug.
+name|IOException
+name|ioe
+init|=
+operator|new
+name|IOException
+argument_list|(
+literal|"txid "
+operator|+
+name|fromTxId
+operator|+
+literal|" falls in the middle of file "
+operator|+
+name|elf
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Broken invariant in edit log file management"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
 block|}
 if|if
 condition|(
@@ -1430,6 +1479,15 @@ operator|.
 name|getCurrentDir
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recovering unfinalized segments in "
+operator|+
+name|currentDir
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|EditLogFile

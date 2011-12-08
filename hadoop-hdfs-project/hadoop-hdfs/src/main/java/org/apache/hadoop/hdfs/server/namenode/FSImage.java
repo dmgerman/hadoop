@@ -1837,7 +1837,7 @@ assert|assert
 operator|!
 name|editLog
 operator|.
-name|isOpenForWrite
+name|isSegmentOpen
 argument_list|()
 operator|:
 literal|"Edits log must not be open."
@@ -2854,19 +2854,6 @@ literal|null
 operator|:
 literal|"editLog must be initialized"
 assert|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|editLog
-operator|.
-name|isOpenForWrite
-argument_list|()
-argument_list|,
-literal|"edit log should not yet be open"
-argument_list|)
-expr_stmt|;
 name|editLog
 operator|.
 name|openForWrite
@@ -2974,12 +2961,21 @@ name|editStreams
 init|=
 literal|null
 decl_stmt|;
-comment|// TODO(HA): We shouldn't run this when coming up in standby state
+if|if
+condition|(
+name|editLog
+operator|.
+name|isOpenForWrite
+argument_list|()
+condition|)
+block|{
+comment|// We only want to recover streams if we're going into Active mode.
 name|editLog
 operator|.
 name|recoverUnclosedStreams
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|LayoutVersion
@@ -3012,6 +3008,8 @@ name|inspector
 operator|.
 name|getMaxSeenTxId
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3981,7 +3979,7 @@ name|editLogWasOpen
 init|=
 name|editLog
 operator|.
-name|isOpenForWrite
+name|isSegmentOpen
 argument_list|()
 decl_stmt|;
 if|if
