@@ -68,6 +68,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1046,6 +1056,13 @@ operator|.
 name|getOperations
 argument_list|()
 decl_stmt|;
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|ops
+argument_list|)
+expr_stmt|;
 name|int
 name|max
 init|=

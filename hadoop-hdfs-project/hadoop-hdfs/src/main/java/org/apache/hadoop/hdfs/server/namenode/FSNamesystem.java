@@ -288,6 +288,22 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_EDITS_DIR_REQUIRED_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_NAMENODE_MAX_OBJECTS_DEFAULT
 import|;
 end_import
@@ -3963,6 +3979,28 @@ name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|)
 return|;
 block|}
+DECL|method|getRequiredNamespaceEditsDirs (Configuration conf)
+specifier|public
+specifier|static
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|getRequiredNamespaceEditsDirs
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|getStorageDirs
+argument_list|(
+name|conf
+argument_list|,
+name|DFS_NAMENODE_EDITS_DIR_REQUIRED_KEY
+argument_list|)
+return|;
+block|}
 DECL|method|getStorageDirs (Configuration conf, String propertyName)
 specifier|private
 specifier|static
@@ -4160,9 +4198,29 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|editsDirs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// If this is the case, no edit dirs have been explicitly configured.
+comment|// Image dirs are to be used for edits too.
+return|return
+name|getNamespaceDirs
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 return|return
 name|editsDirs
 return|;
+block|}
 block|}
 comment|/**    * Returns edit directories that are shared between primary and secondary.    * @param conf    * @return Collection of edit directories.    */
 DECL|method|getSharedEditsDirs (Configuration conf)

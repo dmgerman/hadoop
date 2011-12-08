@@ -86,16 +86,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -109,6 +99,20 @@ operator|.
 name|reflect
 operator|.
 name|Constructor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -644,6 +648,23 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|editsDirs
+specifier|private
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|editsDirs
+decl_stmt|;
+comment|/**    * The edit directories that are shared between primary and secondary.    */
+DECL|field|sharedEditsDirs
+specifier|private
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|sharedEditsDirs
+decl_stmt|;
 DECL|class|TransactionId
 specifier|private
 specifier|static
@@ -706,26 +727,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|field|editsDirs
-specifier|final
-specifier|private
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|editsDirs
-decl_stmt|;
-comment|/**    * The edit directories that are shared between primary and secondary.    */
-DECL|field|sharedEditsDirs
-specifier|final
-specifier|private
-name|Collection
-argument_list|<
-name|URI
-argument_list|>
-name|sharedEditsDirs
-decl_stmt|;
-comment|/**    * Construct FSEditLog with default configuration, taking editDirs from NNStorage    * @param storage Storage object used by namenode    */
+comment|/**    * Construct FSEditLog with default configuration, taking editDirs from NNStorage    *     * @param storage Storage object used by namenode    */
 annotation|@
 name|VisibleForTesting
 DECL|method|FSEditLog (NNStorage storage)
@@ -734,26 +736,54 @@ parameter_list|(
 name|NNStorage
 name|storage
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|this
-argument_list|(
+name|Configuration
+name|conf
+init|=
 operator|new
 name|Configuration
 argument_list|()
+decl_stmt|;
+comment|// Make sure the edits dirs are set in the provided configuration object.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_DIR_KEY
+argument_list|,
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|storage
+operator|.
+name|getEditsDirectories
+argument_list|()
+argument_list|,
+literal|","
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|init
+argument_list|(
+name|conf
 argument_list|,
 name|storage
 argument_list|,
-name|Collections
+name|FSNamesystem
 operator|.
-expr|<
-name|URI
-operator|>
-name|emptyList
-argument_list|()
+name|getNamespaceEditsDirs
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor for FSEditLog. Add underlying journals are constructed, but     * no streams are opened until open() is called.    *     * @param conf The namenode configuration    * @param storage Storage object used by namenode    * @param editsDirs List of journals to use    */
+comment|/**    * Constructor for FSEditLog. Underlying journals are constructed, but     * no streams are opened until open() is called.    *     * @param conf The namenode configuration    * @param storage Storage object used by namenode    * @param editsDirs List of journals to use    */
 DECL|method|FSEditLog (Configuration conf, NNStorage storage, Collection<URI> editsDirs)
 name|FSEditLog
 parameter_list|(
@@ -770,15 +800,43 @@ argument_list|>
 name|editsDirs
 parameter_list|)
 block|{
+name|init
+argument_list|(
+name|conf
+argument_list|,
+name|storage
+argument_list|,
+name|editsDirs
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|init (Configuration conf, NNStorage storage, Collection<URI> editsDirs)
+specifier|private
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|NNStorage
+name|storage
+parameter_list|,
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|editsDirs
+parameter_list|)
+block|{
+name|isSyncRunning
+operator|=
+literal|false
+expr_stmt|;
 name|this
 operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|isSyncRunning
-operator|=
-literal|false
 expr_stmt|;
 name|this
 operator|.
@@ -798,50 +856,8 @@ operator|=
 name|now
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|editsDirs
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// if this is the case, no edit dirs have been explictly configured
-comment|// image dirs are to be used for edits too
-try|try
-block|{
-name|editsDirs
-operator|=
-name|Lists
-operator|.
-name|newArrayList
-argument_list|(
-name|storage
-operator|.
-name|getEditsDirectories
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-comment|// cannot get list from storage, so the empty editsDirs
-comment|// will be assigned. an error will be thrown on first use
+comment|// If this list is empty, an error will be thrown on first use
 comment|// of the editlog, as no journals will exist
-block|}
-name|this
-operator|.
-name|editsDirs
-operator|=
-name|editsDirs
-expr_stmt|;
-block|}
-else|else
-block|{
 name|this
 operator|.
 name|editsDirs
@@ -853,7 +869,6 @@ argument_list|(
 name|editsDirs
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|sharedEditsDirs
@@ -978,13 +993,29 @@ argument_list|>
 name|dirs
 parameter_list|)
 block|{
-name|this
+name|int
+name|minimumRedundantJournals
+init|=
+name|conf
 operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_DIR_MINIMUM_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_DIR_MINIMUM_DEFAULT
+argument_list|)
+decl_stmt|;
 name|journalSet
 operator|=
 operator|new
 name|JournalSet
-argument_list|()
+argument_list|(
+name|minimumRedundantJournals
+argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -994,6 +1025,21 @@ range|:
 name|dirs
 control|)
 block|{
+name|boolean
+name|required
+init|=
+name|FSNamesystem
+operator|.
+name|getRequiredNamespaceEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|u
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|u
@@ -1035,6 +1081,8 @@ name|FileJournalManager
 argument_list|(
 name|sd
 argument_list|)
+argument_list|,
+name|required
 argument_list|)
 expr_stmt|;
 block|}
@@ -1049,6 +1097,8 @@ name|createJournal
 argument_list|(
 name|u
 argument_list|)
+argument_list|,
+name|required
 argument_list|)
 expr_stmt|;
 block|}
@@ -1748,7 +1798,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Could not sync any journal to persistent storage. "
+literal|"Could not sync enough journals to persistent storage. "
 operator|+
 literal|"Unsynced transactions: "
 operator|+
@@ -1824,7 +1874,7 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Could not sync any journal to persistent storage. "
+literal|"Could not sync enough journals to persistent storage. "
 operator|+
 literal|"Unsynced transactions: "
 operator|+
@@ -3512,6 +3562,8 @@ operator|.
 name|add
 argument_list|(
 name|bjm
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

@@ -255,6 +255,17 @@ return|return
 name|localBlockPath
 return|;
 block|}
+comment|/**    * @return the Block    */
+DECL|method|getBlock ()
+specifier|public
+name|ExtendedBlock
+name|getBlock
+parameter_list|()
+block|{
+return|return
+name|block
+return|;
+block|}
 comment|/**    * Get the Block metadata file.    * @return Block metadata file.    */
 DECL|method|getMetaPath ()
 specifier|public

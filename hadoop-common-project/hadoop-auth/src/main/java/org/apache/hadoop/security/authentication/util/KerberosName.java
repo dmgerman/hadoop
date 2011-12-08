@@ -1578,6 +1578,20 @@ name|ruleString
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Indicates if the name rules have been set.    *     * @return if the name rules have been set.    */
+DECL|method|hasRulesBeenSet ()
+specifier|public
+specifier|static
+name|boolean
+name|hasRulesBeenSet
+parameter_list|()
+block|{
+return|return
+name|rules
+operator|!=
+literal|null
+return|;
+block|}
 DECL|method|printRules ()
 specifier|static
 name|void

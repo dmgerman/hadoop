@@ -259,13 +259,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Container for a JournalManager paired with its currently    * active stream.    *     * If a Journal gets disabled due to an error writing to its    * stream, then the stream will be aborted and set to null.    *     * This should be used outside JournalSet only for testing.    */
-annotation|@
-name|VisibleForTesting
+comment|/**    * Container for a JournalManager paired with its currently    * active stream.    *     * If a Journal gets disabled due to an error writing to its    * stream, then the stream will be aborted and set to null.    */
 DECL|class|JournalAndStream
 specifier|static
 class|class
 name|JournalAndStream
+implements|implements
+name|CheckableNameNodeResource
 block|{
 DECL|field|journal
 specifier|private
@@ -285,12 +285,22 @@ specifier|private
 name|EditLogOutputStream
 name|stream
 decl_stmt|;
-DECL|method|JournalAndStream (JournalManager manager)
+DECL|field|required
+specifier|private
+name|boolean
+name|required
+init|=
+literal|false
+decl_stmt|;
+DECL|method|JournalAndStream (JournalManager manager, boolean required)
 specifier|public
 name|JournalAndStream
 parameter_list|(
 name|JournalManager
 name|manager
+parameter_list|,
+name|boolean
+name|required
 parameter_list|)
 block|{
 name|this
@@ -298,6 +308,12 @@ operator|.
 name|journal
 operator|=
 name|manager
+expr_stmt|;
+name|this
+operator|.
+name|required
+operator|=
+name|required
 expr_stmt|;
 block|}
 DECL|method|startLogSegment (long txId)
@@ -516,6 +532,32 @@ operator|=
 name|disabled
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isResourceAvailable ()
+specifier|public
+name|boolean
+name|isResourceAvailable
+parameter_list|()
+block|{
+return|return
+operator|!
+name|isDisabled
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isRequired ()
+specifier|public
+name|boolean
+name|isRequired
+parameter_list|()
+block|{
+return|return
+name|required
+return|;
+block|}
 block|}
 DECL|field|journals
 specifier|private
@@ -530,6 +572,25 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
+DECL|field|minimumRedundantJournals
+specifier|final
+name|int
+name|minimumRedundantJournals
+decl_stmt|;
+DECL|method|JournalSet (int minimumRedundantResources)
+name|JournalSet
+parameter_list|(
+name|int
+name|minimumRedundantResources
+parameter_list|)
+block|{
+name|this
+operator|.
+name|minimumRedundantJournals
+operator|=
+name|minimumRedundantResources
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|startLogSegment (final long txId)
@@ -904,37 +965,23 @@ return|return
 name|num
 return|;
 block|}
-comment|/**    * Returns true if there are no journals or all are disabled.    * @return True if no journals or all are disabled.    */
+comment|/**    * Returns true if there are no journals, all redundant journals are disabled,    * or any required journals are disabled.    *     * @return True if there no journals, all redundant journals are disabled,    * or any required journals are disabled.    */
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
 name|isEmpty
 parameter_list|()
 block|{
-for|for
-control|(
-name|JournalAndStream
-name|jas
-range|:
-name|journals
-control|)
-block|{
-if|if
-condition|(
+return|return
 operator|!
-name|jas
+name|NameNodeResourcePolicy
 operator|.
-name|isDisabled
-argument_list|()
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
-return|return
-literal|true
+name|areResourcesAvailable
+argument_list|(
+name|journals
+argument_list|,
+name|minimumRedundantJournals
+argument_list|)
 return|;
 block|}
 comment|/**    * Called when some journals experience an error in some operation.    */
@@ -1098,35 +1145,38 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|badJAS
+operator|!
+name|NameNodeResourcePolicy
 operator|.
-name|size
-argument_list|()
-operator|>=
+name|areResourcesAvailable
+argument_list|(
 name|journals
-operator|.
-name|size
-argument_list|()
+argument_list|,
+name|minimumRedundantJournals
+argument_list|)
 condition|)
 block|{
+name|String
+name|message
+init|=
+name|status
+operator|+
+literal|" failed for too many journals"
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
 literal|"Error: "
 operator|+
-name|status
-operator|+
-literal|" failed for all journals"
+name|message
 argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|status
-operator|+
-literal|" failed on all the journals"
+name|message
 argument_list|)
 throw|;
 block|}
@@ -1769,23 +1819,33 @@ return|return
 name|jList
 return|;
 block|}
-DECL|method|add (JournalManager j)
+DECL|method|add (JournalManager j, boolean required)
 name|void
 name|add
 parameter_list|(
 name|JournalManager
 name|j
+parameter_list|,
+name|boolean
+name|required
 parameter_list|)
 block|{
-name|journals
-operator|.
-name|add
-argument_list|(
+name|JournalAndStream
+name|jas
+init|=
 operator|new
 name|JournalAndStream
 argument_list|(
 name|j
+argument_list|,
+name|required
 argument_list|)
+decl_stmt|;
+name|journals
+operator|.
+name|add
+argument_list|(
+name|jas
 argument_list|)
 expr_stmt|;
 block|}
