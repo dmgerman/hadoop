@@ -2884,7 +2884,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"createNonRecursive unsupported for this filesystem"
+literal|"createNonRecursive unsupported for this filesystem "
+operator|+
+name|this
+operator|.
+name|getClass
+argument_list|()
 argument_list|)
 throw|;
 block|}
