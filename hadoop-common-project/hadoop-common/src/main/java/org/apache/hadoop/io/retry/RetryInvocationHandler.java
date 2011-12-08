@@ -557,6 +557,13 @@ expr_stmt|;
 name|proxyProviderFailoverCount
 operator|++
 expr_stmt|;
+name|currentProxy
+operator|=
+name|proxyProvider
+operator|.
+name|getProxy
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -571,16 +578,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// The call to getProxy() could technically only be made in the event
-comment|// performFailover() is called, but it needs to be out here for the
-comment|// purpose of testing.
-name|currentProxy
-operator|=
-name|proxyProvider
-operator|.
-name|getProxy
-argument_list|()
-expr_stmt|;
 name|invocationFailoverCount
 operator|++
 expr_stmt|;
