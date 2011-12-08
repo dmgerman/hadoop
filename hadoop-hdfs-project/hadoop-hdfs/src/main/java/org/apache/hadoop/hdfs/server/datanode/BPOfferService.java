@@ -316,6 +316,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|NNHAStatusHeartbeat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NamespaceInfo
 import|;
 end_import
@@ -394,7 +412,7 @@ name|common
 operator|.
 name|base
 operator|.
-name|Preconditions
+name|Joiner
 import|;
 end_import
 
@@ -406,9 +424,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|collect
+name|base
 operator|.
-name|Lists
+name|Preconditions
 import|;
 end_import
 
@@ -471,11 +489,15 @@ specifier|final
 name|DataNode
 name|dn
 decl_stmt|;
+comment|/**    * A reference to the BPServiceActor associated with the currently    * ACTIVE NN. In the case that all NameNodes are in STANDBY mode,    * this can be null. If non-null, this must always refer to a member    * of the {@link #bpServices} list.    */
 DECL|field|bpServiceToActive
 specifier|private
 name|BPServiceActor
 name|bpServiceToActive
+init|=
+literal|null
 decl_stmt|;
+comment|/**    * The list of all actors for namenodes in this nameservice, regardless    * of their active or standby states.    */
 DECL|field|bpServices
 specifier|private
 name|List
@@ -490,6 +512,15 @@ argument_list|<
 name|BPServiceActor
 argument_list|>
 argument_list|()
+decl_stmt|;
+comment|/**    * Each time we receive a heartbeat from a NN claiming to be ACTIVE,    * we record that NN's most recent transaction ID here, so long as it    * is more recent than the previous value. This allows us to detect    * split-brain scenarios in which a prior NN is still asserting its    * ACTIVE state but with a too-low transaction ID. See HDFS-2627    * for details.     */
+DECL|field|lastActiveClaimTxId
+specifier|private
+name|long
+name|lastActiveClaimTxId
+init|=
+operator|-
+literal|1
 decl_stmt|;
 DECL|method|BPOfferService (List<InetSocketAddress> nnAddrs, DataNode dn)
 name|BPOfferService
@@ -547,22 +578,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO(HA): currently we just make the first one the initial
-comment|// active. In reality it should start in an unknown state and then
-comment|// as we figure out which is active, designate one as such.
-name|this
-operator|.
-name|bpServiceToActive
-operator|=
-name|this
-operator|.
-name|bpServices
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|refreshNNList (ArrayList<InetSocketAddress> addrs)
 name|void
@@ -648,39 +663,47 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * returns true if BP thread has completed initialization of storage    * and has registered with the corresponding namenode    * @return true if initialized    */
+comment|/**    * @return true if the service has registered with at least one NameNode.    */
 DECL|method|isInitialized ()
 name|boolean
 name|isInitialized
 parameter_list|()
 block|{
-comment|// TODO(HA) is this right?
 return|return
-name|bpServiceToActive
+name|bpRegistration
 operator|!=
 literal|null
-operator|&&
-name|bpServiceToActive
-operator|.
-name|isInitialized
-argument_list|()
 return|;
 block|}
+comment|/**    * @return true if there is at least one actor thread running which is    * talking to a NameNode.    */
 DECL|method|isAlive ()
 name|boolean
 name|isAlive
 parameter_list|()
 block|{
-comment|// TODO: should || all the bp actors probably?
-return|return
-name|bpServiceToActive
-operator|!=
-literal|null
-operator|&&
-name|bpServiceToActive
+for|for
+control|(
+name|BPServiceActor
+name|actor
+range|:
+name|bpServices
+control|)
+block|{
+if|if
+condition|(
+name|actor
 operator|.
 name|isAlive
 argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
 return|;
 block|}
 DECL|method|getBlockPoolId ()
@@ -1407,6 +1430,7 @@ return|;
 block|}
 comment|/**    * Called when an actor shuts down. If this is the last actor    * to shut down, shuts down the whole blockpool in the DN.    */
 DECL|method|shutdownActor (BPServiceActor actor)
+specifier|synchronized
 name|void
 name|shutdownActor
 parameter_list|(
@@ -1465,6 +1489,7 @@ block|}
 annotation|@
 name|Deprecated
 DECL|method|getNNSocketAddress ()
+specifier|synchronized
 name|InetSocketAddress
 name|getNNSocketAddress
 parameter_list|()
@@ -1594,15 +1619,229 @@ comment|/**    * TODO: this is still used in a few places where we need to sort 
 annotation|@
 name|Deprecated
 DECL|method|getActiveNN ()
+specifier|synchronized
 name|DatanodeProtocol
 name|getActiveNN
 parameter_list|()
+block|{
+if|if
+condition|(
+name|bpServiceToActive
+operator|!=
+literal|null
+condition|)
 block|{
 return|return
 name|bpServiceToActive
 operator|.
 name|bpNamenode
 return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+comment|/**    * Update the BPOS's view of which NN is active, based on a heartbeat    * response from one of the actors.    *     * @param actor the actor which received the heartbeat    * @param nnHaState the HA-related heartbeat contents    */
+DECL|method|updateActorStatesFromHeartbeat ( BPServiceActor actor, NNHAStatusHeartbeat nnHaState)
+specifier|synchronized
+name|void
+name|updateActorStatesFromHeartbeat
+parameter_list|(
+name|BPServiceActor
+name|actor
+parameter_list|,
+name|NNHAStatusHeartbeat
+name|nnHaState
+parameter_list|)
+block|{
+specifier|final
+name|long
+name|txid
+init|=
+name|nnHaState
+operator|.
+name|getTxId
+argument_list|()
+decl_stmt|;
+specifier|final
+name|boolean
+name|nnClaimsActive
+init|=
+name|nnHaState
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|NNHAStatusHeartbeat
+operator|.
+name|State
+operator|.
+name|ACTIVE
+decl_stmt|;
+specifier|final
+name|boolean
+name|bposThinksActive
+init|=
+name|bpServiceToActive
+operator|==
+name|actor
+decl_stmt|;
+specifier|final
+name|boolean
+name|isMoreRecentClaim
+init|=
+name|txid
+operator|>
+name|lastActiveClaimTxId
+decl_stmt|;
+if|if
+condition|(
+name|nnClaimsActive
+operator|&&
+operator|!
+name|bposThinksActive
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Namenode "
+operator|+
+name|actor
+operator|+
+literal|" trying to claim ACTIVE state with "
+operator|+
+literal|"txid="
+operator|+
+name|txid
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|isMoreRecentClaim
+condition|)
+block|{
+comment|// Split-brain scenario - an NN is trying to claim active
+comment|// state when a different NN has already claimed it with a higher
+comment|// txid.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"NN "
+operator|+
+name|actor
+operator|+
+literal|" tried to claim ACTIVE state at txid="
+operator|+
+name|txid
+operator|+
+literal|" but there was already a more recent claim at txid="
+operator|+
+name|lastActiveClaimTxId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|bpServiceToActive
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Acknowledging ACTIVE Namenode "
+operator|+
+name|actor
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Namenode "
+operator|+
+name|actor
+operator|+
+literal|" taking over ACTIVE state from "
+operator|+
+name|bpServiceToActive
+operator|+
+literal|" at higher txid="
+operator|+
+name|txid
+argument_list|)
+expr_stmt|;
+block|}
+name|bpServiceToActive
+operator|=
+name|actor
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|nnClaimsActive
+operator|&&
+name|bposThinksActive
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Namenode "
+operator|+
+name|actor
+operator|+
+literal|" relinquishing ACTIVE state with "
+operator|+
+literal|"txid="
+operator|+
+name|nnHaState
+operator|.
+name|getTxId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|bpServiceToActive
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|bpServiceToActive
+operator|==
+name|actor
+condition|)
+block|{
+assert|assert
+name|txid
+operator|>=
+name|lastActiveClaimTxId
+assert|;
+name|lastActiveClaimTxId
+operator|=
+name|txid
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return true if the given NN address is one of the NNs for this    * block pool    */
 DECL|method|containsNN (InetSocketAddress addr)
@@ -1682,7 +1921,33 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Run an immediate heartbeat from all actors. Used by tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|triggerHeartbeatForTests ()
+name|void
+name|triggerHeartbeatForTests
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|BPServiceActor
+name|actor
+range|:
+name|bpServices
+control|)
+block|{
+name|actor
+operator|.
+name|triggerHeartbeatForTests
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|processCommandFromActor (DatanodeCommand cmd, BPServiceActor actor)
+specifier|synchronized
 name|boolean
 name|processCommandFromActor
 parameter_list|(

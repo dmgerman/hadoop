@@ -130,6 +130,12 @@ name|DatanodeCommand
 index|[]
 name|commands
 decl_stmt|;
+comment|/** Information about the current HA-related state of the NN */
+DECL|field|haStatus
+specifier|private
+name|NNHAStatusHeartbeat
+name|haStatus
+decl_stmt|;
 DECL|method|HeartbeatResponse ()
 specifier|public
 name|HeartbeatResponse
@@ -137,18 +143,27 @@ parameter_list|()
 block|{
 comment|// Empty constructor required for Writable
 block|}
-DECL|method|HeartbeatResponse (DatanodeCommand[] cmds)
+DECL|method|HeartbeatResponse (DatanodeCommand[] cmds, NNHAStatusHeartbeat haStatus)
 specifier|public
 name|HeartbeatResponse
 parameter_list|(
 name|DatanodeCommand
 index|[]
 name|cmds
+parameter_list|,
+name|NNHAStatusHeartbeat
+name|haStatus
 parameter_list|)
 block|{
 name|commands
 operator|=
 name|cmds
+expr_stmt|;
+name|this
+operator|.
+name|haStatus
+operator|=
+name|haStatus
 expr_stmt|;
 block|}
 DECL|method|getCommands ()
@@ -160,6 +175,16 @@ parameter_list|()
 block|{
 return|return
 name|commands
+return|;
+block|}
+DECL|method|getNameNodeHaState ()
+specifier|public
+name|NNHAStatusHeartbeat
+name|getNameNodeHaState
+parameter_list|()
+block|{
+return|return
+name|haStatus
 return|;
 block|}
 comment|///////////////////////////////////////////
@@ -238,6 +263,13 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+name|haStatus
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -310,6 +342,19 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+name|haStatus
+operator|=
+operator|new
+name|NNHAStatusHeartbeat
+argument_list|()
+expr_stmt|;
+name|haStatus
+operator|.
+name|readFields
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

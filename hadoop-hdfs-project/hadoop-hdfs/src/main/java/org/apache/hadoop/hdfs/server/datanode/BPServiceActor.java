@@ -1300,6 +1300,31 @@ name|blockReport
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|triggerHeartbeatForTests ()
+name|void
+name|triggerHeartbeatForTests
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|receivedAndDeletedBlockList
+init|)
+block|{
+name|lastHeartbeat
+operator|=
+literal|0
+expr_stmt|;
+name|receivedAndDeletedBlockList
+operator|.
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Report the list blocks to the Namenode    * @throws IOException    */
 DECL|method|blockReport ()
 name|DatanodeCommand
@@ -1859,6 +1884,11 @@ init|=
 name|sendHeartBeat
 argument_list|()
 decl_stmt|;
+assert|assert
+name|resp
+operator|!=
+literal|null
+assert|;
 name|dn
 operator|.
 name|getMetrics
@@ -1870,6 +1900,24 @@ name|now
 argument_list|()
 operator|-
 name|startTime
+argument_list|)
+expr_stmt|;
+comment|// If the state of this NN has changed (eg STANDBY->ACTIVE)
+comment|// then let the BPOfferService update itself.
+comment|//
+comment|// Important that this happens before processCommand below,
+comment|// since the first heartbeat to a new active might have commands
+comment|// that we should actually process.
+name|bpos
+operator|.
+name|updateActorStatesFromHeartbeat
+argument_list|(
+name|this
+argument_list|,
+name|resp
+operator|.
+name|getNameNodeHaState
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|long

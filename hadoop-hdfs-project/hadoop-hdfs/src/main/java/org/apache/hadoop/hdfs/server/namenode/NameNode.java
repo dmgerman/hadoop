@@ -1948,6 +1948,8 @@ operator|.
 name|startCommonServices
 argument_list|(
 name|conf
+argument_list|,
+name|haContext
 argument_list|)
 expr_stmt|;
 name|startHttpServer
