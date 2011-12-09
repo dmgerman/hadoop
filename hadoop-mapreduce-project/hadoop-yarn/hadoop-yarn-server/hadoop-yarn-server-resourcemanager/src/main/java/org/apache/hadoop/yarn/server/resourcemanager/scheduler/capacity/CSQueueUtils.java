@@ -47,7 +47,14 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|Math
+operator|.
+name|round
+argument_list|(
+literal|100
+operator|*
 name|maximumCapacity
+argument_list|)
 operator|!=
 name|CapacitySchedulerConfiguration
 operator|.
