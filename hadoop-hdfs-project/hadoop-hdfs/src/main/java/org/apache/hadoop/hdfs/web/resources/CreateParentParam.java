@@ -20,33 +20,17 @@ name|resources
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|FsPermission
-import|;
-end_import
-
 begin_comment
-comment|/** Permission parameter, use a Short to represent a FsPermission. */
+comment|/** Create Parent parameter. */
 end_comment
 
 begin_class
-DECL|class|PermissionParam
+DECL|class|CreateParentParam
 specifier|public
 class|class
-name|PermissionParam
+name|CreateParentParam
 extends|extends
-name|ShortParam
+name|BooleanParam
 block|{
 comment|/** Parameter name. */
 DECL|field|NAME
@@ -56,7 +40,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"permission"
+literal|"createparent"
 decl_stmt|;
 comment|/** Default parameter value. */
 DECL|field|DEFAULT
@@ -66,7 +50,7 @@ specifier|final
 name|String
 name|DEFAULT
 init|=
-name|NULL
+name|FALSE
 decl_stmt|;
 DECL|field|DOMAIN
 specifier|private
@@ -79,42 +63,15 @@ operator|new
 name|Domain
 argument_list|(
 name|NAME
-argument_list|,
-literal|8
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_PERMISSION
-specifier|private
-specifier|static
-specifier|final
-name|short
-name|DEFAULT_PERMISSION
-init|=
-literal|0755
-decl_stmt|;
-comment|/** @return the default FsPermission. */
-DECL|method|getDefaultFsPermission ()
-specifier|public
-specifier|static
-name|FsPermission
-name|getDefaultFsPermission
-parameter_list|()
-block|{
-return|return
-operator|new
-name|FsPermission
-argument_list|(
-name|DEFAULT_PERMISSION
-argument_list|)
-return|;
-block|}
 comment|/**    * Constructor.    * @param value the parameter value.    */
-DECL|method|PermissionParam (final FsPermission value)
+DECL|method|CreateParentParam (final Boolean value)
 specifier|public
-name|PermissionParam
+name|CreateParentParam
 parameter_list|(
 specifier|final
-name|FsPermission
+name|Boolean
 name|value
 parameter_list|)
 block|{
@@ -123,52 +80,27 @@ argument_list|(
 name|DOMAIN
 argument_list|,
 name|value
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|value
-operator|.
-name|toShort
-argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-DECL|method|PermissionParam (final String str)
+DECL|method|CreateParentParam (final String str)
 specifier|public
-name|PermissionParam
+name|CreateParentParam
 parameter_list|(
 specifier|final
 name|String
 name|str
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
-name|DOMAIN
-argument_list|,
 name|DOMAIN
 operator|.
 name|parse
 argument_list|(
 name|str
 argument_list|)
-argument_list|,
-operator|(
-name|short
-operator|)
-literal|0
-argument_list|,
-operator|(
-name|short
-operator|)
-literal|01777
 argument_list|)
 expr_stmt|;
 block|}
@@ -182,34 +114,6 @@ parameter_list|()
 block|{
 return|return
 name|NAME
-return|;
-block|}
-comment|/** @return the represented FsPermission. */
-DECL|method|getFsPermission ()
-specifier|public
-name|FsPermission
-name|getFsPermission
-parameter_list|()
-block|{
-specifier|final
-name|Short
-name|v
-init|=
-name|getValue
-argument_list|()
-decl_stmt|;
-return|return
-operator|new
-name|FsPermission
-argument_list|(
-name|v
-operator|!=
-literal|null
-condition|?
-name|v
-else|:
-name|DEFAULT_PERMISSION
-argument_list|)
 return|;
 block|}
 block|}

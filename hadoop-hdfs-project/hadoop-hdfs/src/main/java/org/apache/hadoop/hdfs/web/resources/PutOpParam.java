@@ -78,6 +78,16 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
+DECL|enumConstant|CREATESYMLINK
+name|CREATESYMLINK
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|RENAME
 name|RENAME
 argument_list|(
