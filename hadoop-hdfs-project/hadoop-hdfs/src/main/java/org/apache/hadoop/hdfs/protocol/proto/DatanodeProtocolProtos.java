@@ -109,13 +109,13 @@ name|DatanodeIDProtoOrBuilder
 name|getDatanodeIDOrBuilder
 parameter_list|()
 function_decl|;
-comment|// required .StorageInfoProto storateInfo = 2;
-DECL|method|hasStorateInfo ()
+comment|// required .StorageInfoProto storageInfo = 2;
+DECL|method|hasStorageInfo ()
 name|boolean
-name|hasStorateInfo
+name|hasStorageInfo
 parameter_list|()
 function_decl|;
-DECL|method|getStorateInfo ()
+DECL|method|getStorageInfo ()
 name|org
 operator|.
 name|apache
@@ -131,10 +131,10 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProto
-name|getStorateInfo
+name|getStorageInfo
 parameter_list|()
 function_decl|;
-DECL|method|getStorateInfoOrBuilder ()
+DECL|method|getStorageInfoOrBuilder ()
 name|org
 operator|.
 name|apache
@@ -150,7 +150,7 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProtoOrBuilder
-name|getStorateInfoOrBuilder
+name|getStorageInfoOrBuilder
 parameter_list|()
 function_decl|;
 comment|// required .ExportedBlockKeysProto keys = 3;
@@ -432,17 +432,17 @@ return|return
 name|datanodeID_
 return|;
 block|}
-comment|// required .StorageInfoProto storateInfo = 2;
-DECL|field|STORATEINFO_FIELD_NUMBER
+comment|// required .StorageInfoProto storageInfo = 2;
+DECL|field|STORAGEINFO_FIELD_NUMBER
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|STORATEINFO_FIELD_NUMBER
+name|STORAGEINFO_FIELD_NUMBER
 init|=
 literal|2
 decl_stmt|;
-DECL|field|storateInfo_
+DECL|field|storageInfo_
 specifier|private
 name|org
 operator|.
@@ -459,12 +459,12 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProto
-name|storateInfo_
+name|storageInfo_
 decl_stmt|;
-DECL|method|hasStorateInfo ()
+DECL|method|hasStorageInfo ()
 specifier|public
 name|boolean
-name|hasStorateInfo
+name|hasStorageInfo
 parameter_list|()
 block|{
 return|return
@@ -479,7 +479,7 @@ literal|0x00000002
 operator|)
 return|;
 block|}
-DECL|method|getStorateInfo ()
+DECL|method|getStorageInfo ()
 specifier|public
 name|org
 operator|.
@@ -496,14 +496,14 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProto
-name|getStorateInfo
+name|getStorageInfo
 parameter_list|()
 block|{
 return|return
-name|storateInfo_
+name|storageInfo_
 return|;
 block|}
-DECL|method|getStorateInfoOrBuilder ()
+DECL|method|getStorageInfoOrBuilder ()
 specifier|public
 name|org
 operator|.
@@ -520,11 +520,11 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProtoOrBuilder
-name|getStorateInfoOrBuilder
+name|getStorageInfoOrBuilder
 parameter_list|()
 block|{
 return|return
-name|storateInfo_
+name|storageInfo_
 return|;
 block|}
 comment|// required .ExportedBlockKeysProto keys = 3;
@@ -649,7 +649,7 @@ operator|.
 name|getDefaultInstance
 argument_list|()
 expr_stmt|;
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|org
 operator|.
@@ -742,7 +742,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
@@ -790,7 +790,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 operator|.
 name|isInitialized
@@ -897,7 +897,7 @@ name|writeMessage
 argument_list|(
 literal|2
 argument_list|,
-name|storateInfo_
+name|storageInfo_
 argument_list|)
 expr_stmt|;
 block|}
@@ -1024,7 +1024,7 @@ name|computeMessageSize
 argument_list|(
 literal|2
 argument_list|,
-name|storateInfo_
+name|storageInfo_
 argument_list|)
 expr_stmt|;
 block|}
@@ -1259,18 +1259,18 @@ operator|=
 name|result
 operator|&&
 operator|(
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 operator|==
 name|other
 operator|.
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 operator|)
 expr_stmt|;
 if|if
 condition|(
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
@@ -1278,14 +1278,14 @@ name|result
 operator|=
 name|result
 operator|&&
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|other
 operator|.
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1409,7 +1409,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
@@ -1421,7 +1421,7 @@ operator|*
 name|hash
 operator|)
 operator|+
-name|STORATEINFO_FIELD_NUMBER
+name|STORAGEINFO_FIELD_NUMBER
 expr_stmt|;
 name|hash
 operator|=
@@ -1431,7 +1431,7 @@ operator|*
 name|hash
 operator|)
 operator|+
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 operator|.
 name|hashCode
@@ -2315,7 +2315,7 @@ block|{
 name|getDatanodeIDFieldBuilder
 argument_list|()
 expr_stmt|;
-name|getStorateInfoFieldBuilder
+name|getStorageInfoFieldBuilder
 argument_list|()
 expr_stmt|;
 name|getKeysFieldBuilder
@@ -2395,12 +2395,12 @@ operator|)
 expr_stmt|;
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|org
 operator|.
@@ -2424,7 +2424,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|clear
 argument_list|()
@@ -2844,25 +2844,25 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
 name|result
 operator|.
-name|storateInfo_
+name|storageInfo_
 operator|=
-name|storateInfo_
+name|storageInfo_
 expr_stmt|;
 block|}
 else|else
 block|{
 name|result
 operator|.
-name|storateInfo_
+name|storageInfo_
 operator|=
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|build
 argument_list|()
@@ -3069,15 +3069,15 @@ if|if
 condition|(
 name|other
 operator|.
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
-name|mergeStorateInfo
+name|mergeStorageInfo
 argument_list|(
 name|other
 operator|.
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3134,7 +3134,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
@@ -3170,7 +3170,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 operator|.
 name|isInitialized
@@ -3449,7 +3449,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|hasStorateInfo
+name|hasStorageInfo
 argument_list|()
 condition|)
 block|{
@@ -3457,7 +3457,7 @@ name|subBuilder
 operator|.
 name|mergeFrom
 argument_list|(
-name|getStorateInfo
+name|getStorageInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3471,7 +3471,7 @@ argument_list|,
 name|extensionRegistry
 argument_list|)
 expr_stmt|;
-name|setStorateInfo
+name|setStorageInfo
 argument_list|(
 name|subBuilder
 operator|.
@@ -4270,8 +4270,8 @@ return|return
 name|datanodeIDBuilder_
 return|;
 block|}
-comment|// required .StorageInfoProto storateInfo = 2;
-DECL|field|storateInfo_
+comment|// required .StorageInfoProto storageInfo = 2;
+DECL|field|storageInfo_
 specifier|private
 name|org
 operator|.
@@ -4288,7 +4288,7 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProto
-name|storateInfo_
+name|storageInfo_
 init|=
 name|org
 operator|.
@@ -4318,7 +4318,7 @@ name|protobuf
 operator|.
 name|SingleFieldBuilder
 argument_list|<
-DECL|field|storateInfoBuilder_
+DECL|field|storageInfoBuilder_
 name|org
 operator|.
 name|apache
@@ -4369,12 +4369,12 @@ name|HdfsProtos
 operator|.
 name|StorageInfoProtoOrBuilder
 argument_list|>
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 decl_stmt|;
-DECL|method|hasStorateInfo ()
+DECL|method|hasStorageInfo ()
 specifier|public
 name|boolean
-name|hasStorateInfo
+name|hasStorageInfo
 parameter_list|()
 block|{
 return|return
@@ -4389,7 +4389,7 @@ literal|0x00000002
 operator|)
 return|;
 block|}
-DECL|method|getStorateInfo ()
+DECL|method|getStorageInfo ()
 specifier|public
 name|org
 operator|.
@@ -4406,34 +4406,34 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProto
-name|getStorateInfo
+name|getStorageInfo
 parameter_list|()
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
 return|return
-name|storateInfo_
+name|storageInfo_
 return|;
 block|}
 else|else
 block|{
 return|return
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|getMessage
 argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setStorateInfo (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto value)
+DECL|method|setStorageInfo (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto value)
 specifier|public
 name|Builder
-name|setStorateInfo
+name|setStorageInfo
 parameter_list|(
 name|org
 operator|.
@@ -4455,7 +4455,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
@@ -4473,7 +4473,7 @@ name|NullPointerException
 argument_list|()
 throw|;
 block|}
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|value
 expr_stmt|;
@@ -4483,7 +4483,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|setMessage
 argument_list|(
@@ -4499,10 +4499,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setStorateInfo ( org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto.Builder builderForValue)
+DECL|method|setStorageInfo ( org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto.Builder builderForValue)
 specifier|public
 name|Builder
-name|setStorateInfo
+name|setStorageInfo
 parameter_list|(
 name|org
 operator|.
@@ -4526,12 +4526,12 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|builderForValue
 operator|.
@@ -4544,7 +4544,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|setMessage
 argument_list|(
@@ -4563,10 +4563,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|mergeStorateInfo (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto value)
+DECL|method|mergeStorageInfo (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.StorageInfoProto value)
 specifier|public
 name|Builder
-name|mergeStorateInfo
+name|mergeStorageInfo
 parameter_list|(
 name|org
 operator|.
@@ -4588,7 +4588,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
@@ -4605,7 +4605,7 @@ operator|==
 literal|0x00000002
 operator|)
 operator|&&
-name|storateInfo_
+name|storageInfo_
 operator|!=
 name|org
 operator|.
@@ -4627,7 +4627,7 @@ name|getDefaultInstance
 argument_list|()
 condition|)
 block|{
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|org
 operator|.
@@ -4647,7 +4647,7 @@ name|StorageInfoProto
 operator|.
 name|newBuilder
 argument_list|(
-name|storateInfo_
+name|storageInfo_
 argument_list|)
 operator|.
 name|mergeFrom
@@ -4661,7 +4661,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|value
 expr_stmt|;
@@ -4672,7 +4672,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|mergeFrom
 argument_list|(
@@ -4688,20 +4688,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|clearStorateInfo ()
+DECL|method|clearStorageInfo ()
 specifier|public
 name|Builder
-name|clearStorateInfo
+name|clearStorageInfo
 parameter_list|()
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
-name|storateInfo_
+name|storageInfo_
 operator|=
 name|org
 operator|.
@@ -4728,7 +4728,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|clear
 argument_list|()
@@ -4747,7 +4747,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|getStorateInfoBuilder ()
+DECL|method|getStorageInfoBuilder ()
 specifier|public
 name|org
 operator|.
@@ -4766,7 +4766,7 @@ operator|.
 name|StorageInfoProto
 operator|.
 name|Builder
-name|getStorateInfoBuilder
+name|getStorageInfoBuilder
 parameter_list|()
 block|{
 name|bitField0_
@@ -4777,14 +4777,14 @@ name|onChanged
 argument_list|()
 expr_stmt|;
 return|return
-name|getStorateInfoFieldBuilder
+name|getStorageInfoFieldBuilder
 argument_list|()
 operator|.
 name|getBuilder
 argument_list|()
 return|;
 block|}
-DECL|method|getStorateInfoOrBuilder ()
+DECL|method|getStorageInfoOrBuilder ()
 specifier|public
 name|org
 operator|.
@@ -4801,18 +4801,18 @@ operator|.
 name|HdfsProtos
 operator|.
 name|StorageInfoProtoOrBuilder
-name|getStorateInfoOrBuilder
+name|getStorageInfoOrBuilder
 parameter_list|()
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|!=
 literal|null
 condition|)
 block|{
 return|return
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|.
 name|getMessageOrBuilder
 argument_list|()
@@ -4821,7 +4821,7 @@ block|}
 else|else
 block|{
 return|return
-name|storateInfo_
+name|storageInfo_
 return|;
 block|}
 block|}
@@ -4884,18 +4884,18 @@ name|HdfsProtos
 operator|.
 name|StorageInfoProtoOrBuilder
 argument_list|>
-DECL|method|getStorateInfoFieldBuilder ()
-name|getStorateInfoFieldBuilder
+DECL|method|getStorageInfoFieldBuilder ()
+name|getStorageInfoFieldBuilder
 parameter_list|()
 block|{
 if|if
 condition|(
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|==
 literal|null
 condition|)
 block|{
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 operator|=
 operator|new
 name|com
@@ -4957,7 +4957,7 @@ operator|.
 name|StorageInfoProtoOrBuilder
 argument_list|>
 argument_list|(
-name|storateInfo_
+name|storageInfo_
 argument_list|,
 name|getParentForChildren
 argument_list|()
@@ -4966,13 +4966,13 @@ name|isClean
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|storateInfo_
+name|storageInfo_
 operator|=
 literal|null
 expr_stmt|;
 block|}
 return|return
-name|storateInfoBuilder_
+name|storageInfoBuilder_
 return|;
 block|}
 comment|// required .ExportedBlockKeysProto keys = 3;
@@ -5828,7 +5828,7 @@ name|BlockCommandProtoOrBuilder
 name|getBlkCmdOrBuilder
 parameter_list|()
 function_decl|;
-comment|// optional .BlockRecoveryCommndProto recoveryCmd = 4;
+comment|// optional .BlockRecoveryCommandProto recoveryCmd = 4;
 DECL|method|hasRecoveryCmd ()
 name|boolean
 name|hasRecoveryCmd
@@ -5849,7 +5849,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getRecoveryCmd
 parameter_list|()
 function_decl|;
@@ -5868,7 +5868,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 name|getRecoveryCmdOrBuilder
 parameter_list|()
 function_decl|;
@@ -6938,7 +6938,7 @@ return|return
 name|blkCmd_
 return|;
 block|}
-comment|// optional .BlockRecoveryCommndProto recoveryCmd = 4;
+comment|// optional .BlockRecoveryCommandProto recoveryCmd = 4;
 DECL|field|RECOVERYCMD_FIELD_NUMBER
 specifier|public
 specifier|static
@@ -6964,7 +6964,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|recoveryCmd_
 decl_stmt|;
 DECL|method|hasRecoveryCmd ()
@@ -7001,7 +7001,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getRecoveryCmd
 parameter_list|()
 block|{
@@ -7025,7 +7025,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 name|getRecoveryCmdOrBuilder
 parameter_list|()
 block|{
@@ -7499,7 +7499,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -10078,7 +10078,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -11730,7 +11730,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 name|subBuilder
@@ -11749,7 +11749,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -13693,7 +13693,7 @@ return|return
 name|blkCmdBuilder_
 return|;
 block|}
-comment|// optional .BlockRecoveryCommndProto recoveryCmd = 4;
+comment|// optional .BlockRecoveryCommandProto recoveryCmd = 4;
 DECL|field|recoveryCmd_
 specifier|private
 name|org
@@ -13710,7 +13710,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|recoveryCmd_
 init|=
 name|org
@@ -13727,7 +13727,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -13756,7 +13756,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 argument_list|,
 name|org
 operator|.
@@ -13772,7 +13772,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 argument_list|,
@@ -13790,7 +13790,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 argument_list|>
 name|recoveryCmdBuilder_
 decl_stmt|;
@@ -13828,7 +13828,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getRecoveryCmd
 parameter_list|()
 block|{
@@ -13853,7 +13853,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|setRecoveryCmd (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto value)
+DECL|method|setRecoveryCmd (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto value)
 specifier|public
 name|Builder
 name|setRecoveryCmd
@@ -13872,7 +13872,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|value
 parameter_list|)
 block|{
@@ -13922,7 +13922,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setRecoveryCmd ( org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto.Builder builderForValue)
+DECL|method|setRecoveryCmd ( org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto.Builder builderForValue)
 specifier|public
 name|Builder
 name|setRecoveryCmd
@@ -13941,7 +13941,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 name|builderForValue
@@ -13986,7 +13986,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|mergeRecoveryCmd (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto value)
+DECL|method|mergeRecoveryCmd (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto value)
 specifier|public
 name|Builder
 name|mergeRecoveryCmd
@@ -14005,7 +14005,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|value
 parameter_list|)
 block|{
@@ -14044,7 +14044,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -14066,7 +14066,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -14140,7 +14140,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -14186,7 +14186,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 name|getRecoveryCmdBuilder
@@ -14223,7 +14223,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 name|getRecoveryCmdOrBuilder
 parameter_list|()
 block|{
@@ -14271,7 +14271,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 argument_list|,
 name|org
 operator|.
@@ -14287,7 +14287,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 argument_list|,
@@ -14305,7 +14305,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 argument_list|>
 DECL|method|getRecoveryCmdFieldBuilder ()
 name|getRecoveryCmdFieldBuilder
@@ -14343,7 +14343,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 argument_list|,
 name|org
 operator|.
@@ -14359,7 +14359,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 argument_list|,
@@ -14377,7 +14377,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 argument_list|>
 argument_list|(
 name|recoveryCmd_
@@ -19567,14 +19567,30 @@ name|protobuf
 operator|.
 name|MessageOrBuilder
 block|{
-comment|// required uint32 action = 1;
+comment|// required .BlockCommandProto.Action action = 1;
 DECL|method|hasAction ()
 name|boolean
 name|hasAction
 parameter_list|()
 function_decl|;
 DECL|method|getAction ()
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 function_decl|;
@@ -19693,7 +19709,7 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
-comment|// repeated .DatanodeIDsProto targets = 4;
+comment|// repeated .DatanodeInfosProto targets = 4;
 name|java
 operator|.
 name|util
@@ -19714,7 +19730,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 DECL|method|getTargetsList ()
 name|getTargetsList
@@ -19735,7 +19751,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|getTargets
 parameter_list|(
 name|int
@@ -19769,7 +19785,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 DECL|method|getTargetsOrBuilderList ()
 name|getTargetsOrBuilderList
@@ -19790,7 +19806,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 name|getTargetsOrBuilder
 parameter_list|(
 name|int
@@ -19945,18 +19961,10 @@ name|protobuf
 operator|.
 name|ProtocolMessageEnum
 block|{
-DECL|enumConstant|UNKNOWN
-name|UNKNOWN
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-block|,
 DECL|enumConstant|TRANSFER
 name|TRANSFER
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 literal|1
 argument_list|)
@@ -19964,28 +19972,11 @@ block|,
 DECL|enumConstant|INVALIDATE
 name|INVALIDATE
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 literal|2
-argument_list|)
-block|,
-DECL|enumConstant|SHUTDOWN
-name|SHUTDOWN
-argument_list|(
-literal|3
-argument_list|,
-literal|3
 argument_list|)
 block|,       ;
-DECL|field|UNKNOWN_VALUE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|UNKNOWN_VALUE
-init|=
-literal|0
-decl_stmt|;
 DECL|field|TRANSFER_VALUE
 specifier|public
 specifier|static
@@ -20003,15 +19994,6 @@ name|int
 name|INVALIDATE_VALUE
 init|=
 literal|2
-decl_stmt|;
-DECL|field|SHUTDOWN_VALUE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|SHUTDOWN_VALUE
-init|=
-literal|3
 decl_stmt|;
 DECL|method|getNumber ()
 specifier|public
@@ -20040,12 +20022,6 @@ name|value
 condition|)
 block|{
 case|case
-literal|0
-case|:
-return|return
-name|UNKNOWN
-return|;
-case|case
 literal|1
 case|:
 return|return
@@ -20056,12 +20032,6 @@ literal|2
 case|:
 return|return
 name|INVALIDATE
-return|;
-case|case
-literal|3
-case|:
-return|return
-name|SHUTDOWN
 return|;
 default|default:
 return|return
@@ -20244,13 +20214,9 @@ index|[]
 name|VALUES
 init|=
 block|{
-name|UNKNOWN
-block|,
 name|TRANSFER
 block|,
 name|INVALIDATE
-block|,
-name|SHUTDOWN
 block|,        }
 decl_stmt|;
 DECL|method|valueOf ( com.google.protobuf.Descriptors.EnumValueDescriptor desc)
@@ -20347,7 +20313,7 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required uint32 action = 1;
+comment|// required .BlockCommandProto.Action action = 1;
 DECL|field|ACTION_FIELD_NUMBER
 specifier|public
 specifier|static
@@ -20359,7 +20325,23 @@ literal|1
 decl_stmt|;
 DECL|field|action_
 specifier|private
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|action_
 decl_stmt|;
 DECL|method|hasAction ()
@@ -20382,7 +20364,23 @@ return|;
 block|}
 DECL|method|getAction ()
 specifier|public
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 block|{
@@ -20766,7 +20764,7 @@ name|index
 argument_list|)
 return|;
 block|}
-comment|// repeated .DatanodeIDsProto targets = 4;
+comment|// repeated .DatanodeInfosProto targets = 4;
 DECL|field|TARGETS_FIELD_NUMBER
 specifier|public
 specifier|static
@@ -20798,7 +20796,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 name|targets_
 decl_stmt|;
@@ -20824,7 +20822,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 name|getTargetsList
 parameter_list|()
@@ -20856,7 +20854,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 DECL|method|getTargetsOrBuilderList ()
 name|getTargetsOrBuilderList
@@ -20895,7 +20893,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|getTargets
 parameter_list|(
 name|int
@@ -20927,7 +20925,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 name|getTargetsOrBuilder
 parameter_list|(
 name|int
@@ -20951,7 +20949,25 @@ parameter_list|()
 block|{
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+operator|.
+name|TRANSFER
 expr_stmt|;
 name|blockPoolId_
 operator|=
@@ -21163,11 +21179,14 @@ condition|)
 block|{
 name|output
 operator|.
-name|writeUInt32
+name|writeEnum
 argument_list|(
 literal|1
 argument_list|,
 name|action_
+operator|.
+name|getNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -21326,11 +21345,14 @@ name|protobuf
 operator|.
 name|CodedOutputStream
 operator|.
-name|computeUInt32Size
+name|computeEnumSize
 argument_list|(
 literal|1
 argument_list|,
 name|action_
+operator|.
+name|getNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -21782,8 +21804,11 @@ operator|*
 name|hash
 operator|)
 operator|+
+name|hashEnum
+argument_list|(
 name|getAction
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -22760,7 +22785,25 @@ argument_list|()
 expr_stmt|;
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+operator|.
+name|TRANSFER
 expr_stmt|;
 name|bitField0_
 operator|=
@@ -24018,17 +24061,84 @@ case|case
 literal|8
 case|:
 block|{
+name|int
+name|rawValue
+init|=
+name|input
+operator|.
+name|readEnum
+argument_list|()
+decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+name|value
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+operator|.
+name|valueOf
+argument_list|(
+name|rawValue
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+name|unknownFields
+operator|.
+name|mergeVarintField
+argument_list|(
+literal|1
+argument_list|,
+name|rawValue
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|bitField0_
 operator||=
 literal|0x00000001
 expr_stmt|;
 name|action_
 operator|=
-name|input
-operator|.
-name|readUInt32
-argument_list|()
+name|value
 expr_stmt|;
+block|}
 break|break;
 block|}
 case|case
@@ -24127,7 +24237,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|subBuilder
@@ -24146,7 +24256,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -24178,11 +24288,47 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required uint32 action = 1;
+comment|// required .BlockCommandProto.Action action = 1;
 DECL|field|action_
 specifier|private
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|action_
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+operator|.
+name|TRANSFER
 decl_stmt|;
 DECL|method|hasAction ()
 specifier|public
@@ -24204,7 +24350,23 @@ return|;
 block|}
 DECL|method|getAction ()
 specifier|public
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 block|{
@@ -24212,15 +24374,44 @@ return|return
 name|action_
 return|;
 block|}
-DECL|method|setAction (int value)
+DECL|method|setAction (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockCommandProto.Action value)
 specifier|public
 name|Builder
 name|setAction
 parameter_list|(
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
 name|value
 parameter_list|)
 block|{
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NullPointerException
+argument_list|()
+throw|;
+block|}
 name|bitField0_
 operator||=
 literal|0x00000001
@@ -24253,7 +24444,25 @@ operator|)
 expr_stmt|;
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|BlockCommandProto
+operator|.
+name|Action
+operator|.
+name|TRANSFER
 expr_stmt|;
 name|onChanged
 argument_list|()
@@ -25784,7 +25993,7 @@ return|return
 name|blocksBuilder_
 return|;
 block|}
-comment|// repeated .DatanodeIDsProto targets = 4;
+comment|// repeated .DatanodeInfosProto targets = 4;
 DECL|field|targets_
 specifier|private
 name|java
@@ -25807,7 +26016,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 name|targets_
 init|=
@@ -25863,7 +26072,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 argument_list|(
 name|targets_
@@ -25899,7 +26108,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|,
 name|org
 operator|.
@@ -25915,7 +26124,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 argument_list|,
@@ -25933,7 +26142,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 name|targetsBuilder_
 decl_stmt|;
@@ -25959,7 +26168,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 name|getTargetsList
 parameter_list|()
@@ -26040,7 +26249,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|getTargets
 parameter_list|(
 name|int
@@ -26075,7 +26284,7 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|setTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto value)
+DECL|method|setTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto value)
 specifier|public
 name|Builder
 name|setTargets
@@ -26097,7 +26306,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|value
 parameter_list|)
 block|{
@@ -26153,7 +26362,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto.Builder builderForValue)
+DECL|method|setTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto.Builder builderForValue)
 specifier|public
 name|Builder
 name|setTargets
@@ -26175,7 +26384,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|builderForValue
@@ -26226,7 +26435,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|addTargets (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto value)
+DECL|method|addTargets (org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto value)
 specifier|public
 name|Builder
 name|addTargets
@@ -26245,7 +26454,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|value
 parameter_list|)
 block|{
@@ -26297,7 +26506,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|addTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto value)
+DECL|method|addTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto value)
 specifier|public
 name|Builder
 name|addTargets
@@ -26319,7 +26528,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 name|value
 parameter_list|)
 block|{
@@ -26375,7 +26584,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|addTargets ( org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto.Builder builderForValue)
+DECL|method|addTargets ( org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto.Builder builderForValue)
 specifier|public
 name|Builder
 name|addTargets
@@ -26394,7 +26603,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|builderForValue
@@ -26441,7 +26650,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|addTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto.Builder builderForValue)
+DECL|method|addTargets ( int index, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto.Builder builderForValue)
 specifier|public
 name|Builder
 name|addTargets
@@ -26463,7 +26672,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|builderForValue
@@ -26514,7 +26723,7 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|addAllTargets ( java.lang.Iterable<? extends org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeIDsProto> values)
+DECL|method|addAllTargets ( java.lang.Iterable<? extends org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.DatanodeInfosProto> values)
 specifier|public
 name|Builder
 name|addAllTargets
@@ -26541,7 +26750,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|>
 name|values
 parameter_list|)
@@ -26692,7 +26901,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|getTargetsBuilder
@@ -26727,7 +26936,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 name|getTargetsOrBuilder
 parameter_list|(
 name|int
@@ -26785,7 +26994,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 DECL|method|getTargetsOrBuilderList ()
 name|getTargetsOrBuilderList
@@ -26837,7 +27046,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|addTargetsBuilder
@@ -26863,7 +27072,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -26886,7 +27095,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 name|addTargetsBuilder
@@ -26917,7 +27126,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -26945,7 +27154,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 argument_list|>
@@ -26984,7 +27193,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|,
 name|org
 operator|.
@@ -27000,7 +27209,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 argument_list|,
@@ -27018,7 +27227,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 DECL|method|getTargetsFieldBuilder ()
 name|getTargetsFieldBuilder
@@ -27056,7 +27265,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 argument_list|,
 name|org
 operator|.
@@ -27072,7 +27281,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProto
+name|DatanodeInfosProto
 operator|.
 name|Builder
 argument_list|,
@@ -27090,7 +27299,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|DatanodeIDsProtoOrBuilder
+name|DatanodeInfosProtoOrBuilder
 argument_list|>
 argument_list|(
 name|targets_
@@ -27141,10 +27350,10 @@ expr_stmt|;
 block|}
 comment|// @@protoc_insertion_point(class_scope:BlockCommandProto)
 block|}
-DECL|interface|BlockRecoveryCommndProtoOrBuilder
+DECL|interface|BlockRecoveryCommandProtoOrBuilder
 specifier|public
 interface|interface
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 extends|extends
 name|com
 operator|.
@@ -27259,12 +27468,12 @@ name|index
 parameter_list|)
 function_decl|;
 block|}
-DECL|class|BlockRecoveryCommndProto
+DECL|class|BlockRecoveryCommandProto
 specifier|public
 specifier|static
 specifier|final
 class|class
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 extends|extends
 name|com
 operator|.
@@ -27274,12 +27483,12 @@ name|protobuf
 operator|.
 name|GeneratedMessage
 implements|implements
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 block|{
-comment|// Use BlockRecoveryCommndProto.newBuilder() to construct.
-DECL|method|BlockRecoveryCommndProto (Builder builder)
+comment|// Use BlockRecoveryCommandProto.newBuilder() to construct.
+DECL|method|BlockRecoveryCommandProto (Builder builder)
 specifier|private
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 parameter_list|(
 name|Builder
 name|builder
@@ -27291,9 +27500,9 @@ name|builder
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockRecoveryCommndProto (boolean noInit)
+DECL|method|BlockRecoveryCommandProto (boolean noInit)
 specifier|private
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 parameter_list|(
 name|boolean
 name|noInit
@@ -27303,13 +27512,13 @@ DECL|field|defaultInstance
 specifier|private
 specifier|static
 specifier|final
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|defaultInstance
 decl_stmt|;
 DECL|method|getDefaultInstance ()
 specifier|public
 specifier|static
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getDefaultInstance
 parameter_list|()
 block|{
@@ -27319,7 +27528,7 @@ return|;
 block|}
 DECL|method|getDefaultInstanceForType ()
 specifier|public
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getDefaultInstanceForType
 parameter_list|()
 block|{
@@ -27358,7 +27567,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|internal_static_BlockRecoveryCommndProto_descriptor
+name|internal_static_BlockRecoveryCommandProto_descriptor
 return|;
 block|}
 specifier|protected
@@ -27390,7 +27599,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|internal_static_BlockRecoveryCommndProto_fieldAccessorTable
+name|internal_static_BlockRecoveryCommandProto_fieldAccessorTable
 return|;
 block|}
 comment|// repeated .RecoveringBlockProto blocks = 1;
@@ -27910,7 +28119,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|)
 condition|)
 block|{
@@ -27937,7 +28146,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|other
 init|=
 operator|(
@@ -27955,7 +28164,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|)
 name|obj
 decl_stmt|;
@@ -28097,7 +28306,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|com
@@ -28148,7 +28357,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|com
@@ -28210,7 +28419,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|byte
@@ -28256,7 +28465,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|byte
@@ -28313,7 +28522,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|java
@@ -28360,7 +28569,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|java
@@ -28418,7 +28627,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseDelimitedFrom
 parameter_list|(
 name|java
@@ -28482,7 +28691,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseDelimitedFrom
 parameter_list|(
 name|java
@@ -28557,7 +28766,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|com
@@ -28606,7 +28815,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|parseFrom
 parameter_list|(
 name|com
@@ -28674,7 +28883,7 @@ name|newBuilder
 argument_list|()
 return|;
 block|}
-DECL|method|newBuilder (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto prototype)
+DECL|method|newBuilder (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto prototype)
 specifier|public
 specifier|static
 name|Builder
@@ -28694,7 +28903,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|prototype
 parameter_list|)
 block|{
@@ -28791,7 +29000,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProtoOrBuilder
+name|BlockRecoveryCommandProtoOrBuilder
 block|{
 specifier|public
 specifier|static
@@ -28824,7 +29033,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|internal_static_BlockRecoveryCommndProto_descriptor
+name|internal_static_BlockRecoveryCommandProto_descriptor
 return|;
 block|}
 specifier|protected
@@ -28856,10 +29065,10 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|internal_static_BlockRecoveryCommndProto_fieldAccessorTable
+name|internal_static_BlockRecoveryCommandProto_fieldAccessorTable
 return|;
 block|}
-comment|// Construct using org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto.newBuilder()
+comment|// Construct using org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto.newBuilder()
 DECL|method|Builder ()
 specifier|private
 name|Builder
@@ -29020,7 +29229,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDescriptor
 argument_list|()
@@ -29042,7 +29251,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|getDefaultInstanceForType
 parameter_list|()
 block|{
@@ -29061,7 +29270,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -29083,7 +29292,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|build
 parameter_list|()
 block|{
@@ -29101,7 +29310,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|result
 init|=
 name|buildPartial
@@ -29143,7 +29352,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|buildParsed
 parameter_list|()
 throws|throws
@@ -29169,7 +29378,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|result
 init|=
 name|buildPartial
@@ -29214,7 +29423,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|buildPartial
 parameter_list|()
 block|{
@@ -29232,7 +29441,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|result
 init|=
 operator|new
@@ -29250,7 +29459,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 argument_list|(
 name|this
 argument_list|)
@@ -29362,7 +29571,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 condition|)
 block|{
 return|return
@@ -29383,7 +29592,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|)
 name|other
 argument_list|)
@@ -29403,7 +29612,7 @@ name|this
 return|;
 block|}
 block|}
-DECL|method|mergeFrom (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommndProto other)
+DECL|method|mergeFrom (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.BlockRecoveryCommandProto other)
 specifier|public
 name|Builder
 name|mergeFrom
@@ -29422,7 +29631,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 name|other
 parameter_list|)
 block|{
@@ -29444,7 +29653,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -31185,14 +31394,14 @@ return|return
 name|blocksBuilder_
 return|;
 block|}
-comment|// @@protoc_insertion_point(builder_scope:BlockRecoveryCommndProto)
+comment|// @@protoc_insertion_point(builder_scope:BlockRecoveryCommandProto)
 block|}
 static|static
 block|{
 name|defaultInstance
 operator|=
 operator|new
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 argument_list|(
 literal|true
 argument_list|)
@@ -31203,7 +31412,7 @@ name|initFields
 argument_list|()
 expr_stmt|;
 block|}
-comment|// @@protoc_insertion_point(class_scope:BlockRecoveryCommndProto)
+comment|// @@protoc_insertion_point(class_scope:BlockRecoveryCommandProto)
 block|}
 DECL|interface|FinalizeCommandProtoOrBuilder
 specifier|public
@@ -38911,14 +39120,30 @@ name|protobuf
 operator|.
 name|MessageOrBuilder
 block|{
-comment|// required uint32 action = 1;
+comment|// required .UpgradeCommandProto.Action action = 1;
 DECL|method|hasAction ()
 name|boolean
 name|hasAction
 parameter_list|()
 function_decl|;
 DECL|method|getAction ()
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 function_decl|;
@@ -39469,7 +39694,7 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required uint32 action = 1;
+comment|// required .UpgradeCommandProto.Action action = 1;
 DECL|field|ACTION_FIELD_NUMBER
 specifier|public
 specifier|static
@@ -39481,7 +39706,23 @@ literal|1
 decl_stmt|;
 DECL|field|action_
 specifier|private
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|action_
 decl_stmt|;
 DECL|method|hasAction ()
@@ -39504,7 +39745,23 @@ return|;
 block|}
 DECL|method|getAction ()
 specifier|public
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 block|{
@@ -39606,7 +39863,25 @@ parameter_list|()
 block|{
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+operator|.
+name|UNKNOWN
 expr_stmt|;
 name|version_
 operator|=
@@ -39741,11 +40016,14 @@ condition|)
 block|{
 name|output
 operator|.
-name|writeUInt32
+name|writeEnum
 argument_list|(
 literal|1
 argument_list|,
 name|action_
+operator|.
+name|getNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -39860,11 +40138,14 @@ name|protobuf
 operator|.
 name|CodedOutputStream
 operator|.
-name|computeUInt32Size
+name|computeEnumSize
 argument_list|(
 literal|1
 argument_list|,
 name|action_
+operator|.
+name|getNumber
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -40268,8 +40549,11 @@ operator|*
 name|hash
 operator|)
 operator|+
+name|hashEnum
+argument_list|(
 name|getAction
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -41198,7 +41482,25 @@ argument_list|()
 expr_stmt|;
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+operator|.
+name|UNKNOWN
 expr_stmt|;
 name|bitField0_
 operator|=
@@ -41981,17 +42283,84 @@ case|case
 literal|8
 case|:
 block|{
+name|int
+name|rawValue
+init|=
+name|input
+operator|.
+name|readEnum
+argument_list|()
+decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+name|value
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+operator|.
+name|valueOf
+argument_list|(
+name|rawValue
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+name|unknownFields
+operator|.
+name|mergeVarintField
+argument_list|(
+literal|1
+argument_list|,
+name|rawValue
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|bitField0_
 operator||=
 literal|0x00000001
 expr_stmt|;
 name|action_
 operator|=
-name|input
-operator|.
-name|readUInt32
-argument_list|()
+name|value
 expr_stmt|;
+block|}
 break|break;
 block|}
 case|case
@@ -42036,11 +42405,47 @@ specifier|private
 name|int
 name|bitField0_
 decl_stmt|;
-comment|// required uint32 action = 1;
+comment|// required .UpgradeCommandProto.Action action = 1;
 DECL|field|action_
 specifier|private
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|action_
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+operator|.
+name|UNKNOWN
 decl_stmt|;
 DECL|method|hasAction ()
 specifier|public
@@ -42062,7 +42467,23 @@ return|;
 block|}
 DECL|method|getAction ()
 specifier|public
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|getAction
 parameter_list|()
 block|{
@@ -42070,15 +42491,44 @@ return|return
 name|action_
 return|;
 block|}
-DECL|method|setAction (int value)
+DECL|method|setAction (org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.UpgradeCommandProto.Action value)
 specifier|public
 name|Builder
 name|setAction
 parameter_list|(
-name|int
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
 name|value
 parameter_list|)
 block|{
+if|if
+condition|(
+name|value
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NullPointerException
+argument_list|()
+throw|;
+block|}
 name|bitField0_
 operator||=
 literal|0x00000001
@@ -42111,7 +42561,25 @@ operator|)
 expr_stmt|;
 name|action_
 operator|=
-literal|0
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|UpgradeCommandProto
+operator|.
+name|Action
+operator|.
+name|UNKNOWN
 expr_stmt|;
 name|onChanged
 argument_list|()
@@ -105684,6 +106152,65 @@ argument_list|>
 name|done
 parameter_list|)
 function_decl|;
+DECL|method|versionRequest ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionRequestProto request, com.google.protobuf.RpcCallback<org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionResponseProto> done)
+specifier|public
+specifier|abstract
+name|void
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+name|request
+parameter_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcCallback
+argument_list|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+argument_list|>
+name|done
+parameter_list|)
+function_decl|;
 DECL|method|processUpgrade ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.ProcessUpgradeRequestProto request, com.google.protobuf.RpcCallback<org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.ProcessUpgradeResponseProto> done)
 specifier|public
 specifier|abstract
@@ -106267,6 +106794,81 @@ operator|.
 name|Override
 specifier|public
 name|void
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+name|request
+parameter_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcCallback
+argument_list|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+argument_list|>
+name|done
+parameter_list|)
+block|{
+name|impl
+operator|.
+name|versionRequest
+argument_list|(
+name|controller
+argument_list|,
+name|request
+argument_list|,
+name|done
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|java
+operator|.
+name|lang
+operator|.
+name|Override
+specifier|public
+name|void
 name|processUpgrade
 parameter_list|(
 name|com
@@ -106772,6 +107374,36 @@ case|:
 return|return
 name|impl
 operator|.
+name|versionRequest
+argument_list|(
+name|controller
+argument_list|,
+operator|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+operator|)
+name|request
+argument_list|)
+return|;
+case|case
+literal|6
+case|:
+return|return
+name|impl
+operator|.
 name|processUpgrade
 argument_list|(
 name|controller
@@ -106797,7 +107429,7 @@ name|request
 argument_list|)
 return|;
 case|case
-literal|6
+literal|7
 case|:
 return|return
 name|impl
@@ -106827,7 +107459,7 @@ name|request
 argument_list|)
 return|;
 case|case
-literal|7
+literal|8
 case|:
 return|return
 name|impl
@@ -107057,9 +107689,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|DatanodeProtocolProtos
+name|HdfsProtos
 operator|.
-name|ProcessUpgradeRequestProto
+name|VersionRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -107082,13 +107714,36 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|ReportBadBlocksRequestProto
+name|ProcessUpgradeRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 return|;
 case|case
 literal|7
+case|:
+return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|ReportBadBlocksRequestProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+return|;
+case|case
+literal|8
 case|:
 return|return
 name|org
@@ -107311,9 +107966,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|DatanodeProtocolProtos
+name|HdfsProtos
 operator|.
-name|ProcessUpgradeResponseProto
+name|VersionResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -107336,13 +107991,36 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|ReportBadBlocksResponseProto
+name|ProcessUpgradeResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 return|;
 case|case
 literal|7
+case|:
+return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|ReportBadBlocksResponseProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+return|;
+case|case
+literal|8
 case|:
 return|return
 name|org
@@ -107672,6 +108350,65 @@ operator|.
 name|DatanodeProtocolProtos
 operator|.
 name|ErrorReportResponseProto
+argument_list|>
+name|done
+parameter_list|)
+function_decl|;
+DECL|method|versionRequest ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionRequestProto request, com.google.protobuf.RpcCallback<org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionResponseProto> done)
+specifier|public
+specifier|abstract
+name|void
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+name|request
+parameter_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcCallback
+argument_list|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
 argument_list|>
 name|done
 parameter_list|)
@@ -108308,6 +109045,66 @@ literal|5
 case|:
 name|this
 operator|.
+name|versionRequest
+argument_list|(
+name|controller
+argument_list|,
+operator|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+operator|)
+name|request
+argument_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcUtil
+operator|.
+expr|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|>
+name|specializeCallback
+argument_list|(
+name|done
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return;
+case|case
+literal|6
+case|:
+name|this
+operator|.
 name|processUpgrade
 argument_list|(
 name|controller
@@ -108364,7 +109161,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 case|case
-literal|6
+literal|7
 case|:
 name|this
 operator|.
@@ -108424,7 +109221,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 case|case
-literal|7
+literal|8
 case|:
 name|this
 operator|.
@@ -108685,9 +109482,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|DatanodeProtocolProtos
+name|HdfsProtos
 operator|.
-name|ProcessUpgradeRequestProto
+name|VersionRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -108710,13 +109507,36 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|ReportBadBlocksRequestProto
+name|ProcessUpgradeRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 return|;
 case|case
 literal|7
+case|:
+return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|ReportBadBlocksRequestProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+return|;
+case|case
+literal|8
 case|:
 return|return
 name|org
@@ -108940,9 +109760,9 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|DatanodeProtocolProtos
+name|HdfsProtos
 operator|.
-name|ProcessUpgradeResponseProto
+name|VersionResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
@@ -108965,13 +109785,36 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|ReportBadBlocksResponseProto
+name|ProcessUpgradeResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 return|;
 case|case
 literal|7
+case|:
+return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|DatanodeProtocolProtos
+operator|.
+name|ReportBadBlocksResponseProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+return|;
+case|case
+literal|8
 case|:
 return|return
 name|org
@@ -109845,6 +110688,154 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|versionRequest ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionRequestProto request, com.google.protobuf.RpcCallback<org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionResponseProto> done)
+specifier|public
+name|void
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+name|request
+parameter_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcCallback
+argument_list|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+argument_list|>
+name|done
+parameter_list|)
+block|{
+name|channel
+operator|.
+name|callMethod
+argument_list|(
+name|getDescriptor
+argument_list|()
+operator|.
+name|getMethods
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|5
+argument_list|)
+argument_list|,
+name|controller
+argument_list|,
+name|request
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+argument_list|,
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcUtil
+operator|.
+name|generalizeCallback
+argument_list|(
+name|done
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|.
+name|class
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|processUpgrade ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.ProcessUpgradeRequestProto request, com.google.protobuf.RpcCallback<org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.ProcessUpgradeResponseProto> done)
 specifier|public
 name|void
@@ -109915,7 +110906,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|5
+literal|6
 argument_list|)
 argument_list|,
 name|controller
@@ -110063,7 +111054,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|6
+literal|7
 argument_list|)
 argument_list|,
 name|controller
@@ -110211,7 +111202,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|7
+literal|8
 argument_list|)
 argument_list|,
 name|controller
@@ -110578,6 +111569,60 @@ operator|.
 name|DatanodeProtocolProtos
 operator|.
 name|ErrorReportRequestProto
+name|request
+parameter_list|)
+throws|throws
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ServiceException
+function_decl|;
+DECL|method|versionRequest ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionRequestProto request)
+specifier|public
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -111354,6 +112399,118 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|versionRequest ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.HdfsProtos.VersionRequestProto request)
+specifier|public
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+name|versionRequest
+parameter_list|(
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|RpcController
+name|controller
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionRequestProto
+name|request
+parameter_list|)
+throws|throws
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ServiceException
+block|{
+return|return
+operator|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|)
+name|channel
+operator|.
+name|callBlockingMethod
+argument_list|(
+name|getDescriptor
+argument_list|()
+operator|.
+name|getMethods
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|5
+argument_list|)
+argument_list|,
+name|controller
+argument_list|,
+name|request
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HdfsProtos
+operator|.
+name|VersionResponseProto
+operator|.
+name|getDefaultInstance
+argument_list|()
+argument_list|)
+return|;
+block|}
 DECL|method|processUpgrade ( com.google.protobuf.RpcController controller, org.apache.hadoop.hdfs.protocol.proto.DatanodeProtocolProtos.ProcessUpgradeRequestProto request)
 specifier|public
 name|org
@@ -111438,7 +112595,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|5
+literal|6
 argument_list|)
 argument_list|,
 name|controller
@@ -111550,7 +112707,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|6
+literal|7
 argument_list|)
 argument_list|,
 name|controller
@@ -111662,7 +112819,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|7
+literal|8
 argument_list|)
 argument_list|,
 name|controller
@@ -111815,8 +112972,8 @@ operator|.
 name|Descriptors
 operator|.
 name|Descriptor
-DECL|field|internal_static_BlockRecoveryCommndProto_descriptor
-name|internal_static_BlockRecoveryCommndProto_descriptor
+DECL|field|internal_static_BlockRecoveryCommandProto_descriptor
+name|internal_static_BlockRecoveryCommandProto_descriptor
 decl_stmt|;
 specifier|private
 specifier|static
@@ -111829,8 +112986,8 @@ operator|.
 name|GeneratedMessage
 operator|.
 name|FieldAccessorTable
-DECL|field|internal_static_BlockRecoveryCommndProto_fieldAccessorTable
-name|internal_static_BlockRecoveryCommndProto_fieldAccessorTable
+DECL|field|internal_static_BlockRecoveryCommandProto_fieldAccessorTable
+name|internal_static_BlockRecoveryCommandProto_fieldAccessorTable
 decl_stmt|;
 specifier|private
 specifier|static
@@ -112468,11 +113625,11 @@ literal|"\n\026DatanodeProtocol.proto\032\nhdfs.proto\"\220\001\n"
 operator|+
 literal|"\031DatanodeRegistrationProto\022$\n\ndatanodeID"
 operator|+
-literal|"\030\001 \002(\0132\020.DatanodeIDProto\022&\n\013storateInfo\030"
+literal|"\030\001 \002(\0132\020.DatanodeIDProto\022&\n\013storageInfo\030"
 operator|+
 literal|"\002 \002(\0132\021.StorageInfoProto\022%\n\004keys\030\003 \002(\0132\027"
 operator|+
-literal|".ExportedBlockKeysProto\"\243\004\n\024DatanodeComm"
+literal|".ExportedBlockKeysProto\"\244\004\n\024DatanodeComm"
 operator|+
 literal|"andProto\022+\n\007cmdType\030\001 \002(\0162\032.DatanodeComm"
 operator|+
@@ -112480,173 +113637,179 @@ literal|"andProto.Type\0223\n\013balancerCmd\030\002 \001(\0132\036.Bal"
 operator|+
 literal|"ancerBandwidthCommandProto\022\"\n\006blkCmd\030\003 \001"
 operator|+
-literal|"(\0132\022.BlockCommandProto\022.\n\013recoveryCmd\030\004 "
+literal|"(\0132\022.BlockCommandProto\022/\n\013recoveryCmd\030\004 "
 operator|+
-literal|"\001(\0132\031.BlockRecoveryCommndProto\022*\n\013finali"
+literal|"\001(\0132\032.BlockRecoveryCommandProto\022*\n\013final"
 block|,
-literal|"zeCmd\030\005 \001(\0132\025.FinalizeCommandProto\022,\n\014ke"
+literal|"izeCmd\030\005 \001(\0132\025.FinalizeCommandProto\022,\n\014k"
 operator|+
-literal|"yUpdateCmd\030\006 \001(\0132\026.KeyUpdateCommandProto"
+literal|"eyUpdateCmd\030\006 \001(\0132\026.KeyUpdateCommandProt"
 operator|+
-literal|"\022*\n\013registerCmd\030\007 \001(\0132\025.RegisterCommandP"
+literal|"o\022*\n\013registerCmd\030\007 \001(\0132\025.RegisterCommand"
 operator|+
-literal|"roto\022(\n\nupgradeCmd\030\010 \001(\0132\024.UpgradeComman"
+literal|"Proto\022(\n\nupgradeCmd\030\010 \001(\0132\024.UpgradeComma"
 operator|+
-literal|"dProto\"\244\001\n\004Type\022\034\n\030BalancerBandwidthComm"
+literal|"ndProto\"\244\001\n\004Type\022\034\n\030BalancerBandwidthCom"
 operator|+
-literal|"and\020\000\022\020\n\014BlockCommand\020\001\022\030\n\024BlockRecovery"
+literal|"mand\020\000\022\020\n\014BlockCommand\020\001\022\030\n\024BlockRecover"
 operator|+
-literal|"Command\020\002\022\023\n\017FinalizeCommand\020\003\022\024\n\020KeyUpd"
+literal|"yCommand\020\002\022\023\n\017FinalizeCommand\020\003\022\024\n\020KeyUp"
 operator|+
-literal|"ateCommand\020\004\022\023\n\017RegisterCommand\020\005\022\022\n\016Upg"
+literal|"dateCommand\020\004\022\023\n\017RegisterCommand\020\005\022\022\n\016Up"
 operator|+
-literal|"radeCommand\020\006\"2\n\035BalancerBandwidthComman"
+literal|"gradeCommand\020\006\"2\n\035BalancerBandwidthComma"
 operator|+
-literal|"dProto\022\021\n\tbandwidth\030\001 \002(\004\"\274\001\n\021BlockComma"
+literal|"ndProto\022\021\n\tbandwidth\030\001 \002(\004\"\276\001\n\021BlockComm"
 block|,
-literal|"ndProto\022\016\n\006action\030\001 \002(\r\022\023\n\013blockPoolId\030\002"
+literal|"andProto\022)\n\006action\030\001 \002(\0162\031.BlockCommandP"
 operator|+
-literal|" \002(\t\022\033\n\006blocks\030\003 \003(\0132\013.BlockProto\022\"\n\007tar"
+literal|"roto.Action\022\023\n\013blockPoolId\030\002 \002(\t\022\033\n\006bloc"
 operator|+
-literal|"gets\030\004 \003(\0132\021.DatanodeIDsProto\"A\n\006Action\022"
+literal|"ks\030\003 \003(\0132\013.BlockProto\022$\n\007targets\030\004 \003(\0132\023"
 operator|+
-literal|"\013\n\007UNKNOWN\020\000\022\014\n\010TRANSFER\020\001\022\016\n\nINVALIDATE"
+literal|".DatanodeInfosProto\"&\n\006Action\022\014\n\010TRANSFE"
 operator|+
-literal|"\020\002\022\014\n\010SHUTDOWN\020\003\"A\n\030BlockRecoveryCommndP"
+literal|"R\020\001\022\016\n\nINVALIDATE\020\002\"B\n\031BlockRecoveryComm"
 operator|+
-literal|"roto\022%\n\006blocks\030\001 \003(\0132\025.RecoveringBlockPr"
+literal|"andProto\022%\n\006blocks\030\001 \003(\0132\025.RecoveringBlo"
 operator|+
-literal|"oto\"+\n\024FinalizeCommandProto\022\023\n\013blockPool"
+literal|"ckProto\"+\n\024FinalizeCommandProto\022\023\n\013block"
 operator|+
-literal|"Id\030\001 \002(\t\">\n\025KeyUpdateCommandProto\022%\n\004key"
+literal|"PoolId\030\001 \002(\t\">\n\025KeyUpdateCommandProto\022%\n"
 operator|+
-literal|"s\030\001 \002(\0132\027.ExportedBlockKeysProto\"\026\n\024Regi"
+literal|"\004keys\030\001 \002(\0132\027.ExportedBlockKeysProto\"\026\n\024"
 operator|+
-literal|"sterCommandProto\"\212\001\n\023UpgradeCommandProto"
+literal|"RegisterCommandProto\"\247\001\n\023UpgradeCommandP"
 block|,
-literal|"\022\016\n\006action\030\001 \002(\r\022\017\n\007version\030\002 \002(\r\022\025\n\rupg"
+literal|"roto\022+\n\006action\030\001 \002(\0162\033.UpgradeCommandPro"
 operator|+
-literal|"radeStatus\030\003 \002(\r\";\n\006Action\022\013\n\007UNKNOWN\020\000\022"
+literal|"to.Action\022\017\n\007version\030\002 \002(\r\022\025\n\rupgradeSta"
 operator|+
-literal|"\021\n\rREPORT_STATUS\020d\022\021\n\rSTART_UPGRADE\020e\"P\n"
+literal|"tus\030\003 \002(\r\";\n\006Action\022\013\n\007UNKNOWN\020\000\022\021\n\rREPO"
 operator|+
-literal|"\034RegisterDatanodeRequestProto\0220\n\014registr"
+literal|"RT_STATUS\020d\022\021\n\rSTART_UPGRADE\020e\"P\n\034Regist"
 operator|+
-literal|"ation\030\001 \002(\0132\032.DatanodeRegistrationProto\""
+literal|"erDatanodeRequestProto\0220\n\014registration\030\001"
 operator|+
-literal|"Q\n\035RegisterDatanodeResponseProto\0220\n\014regi"
+literal|" \002(\0132\032.DatanodeRegistrationProto\"Q\n\035Regi"
 operator|+
-literal|"stration\030\001 \002(\0132\032.DatanodeRegistrationPro"
+literal|"sterDatanodeResponseProto\0220\n\014registratio"
 operator|+
-literal|"to\"\334\001\n\025HeartbeatRequestProto\0220\n\014registra"
+literal|"n\030\001 \002(\0132\032.DatanodeRegistrationProto\"\334\001\n\025"
 operator|+
-literal|"tion\030\001 \002(\0132\032.DatanodeRegistrationProto\022\020"
+literal|"HeartbeatRequestProto\0220\n\014registration\030\001 "
 operator|+
-literal|"\n\010capacity\030\002 \002(\004\022\017\n\007dfsUsed\030\003 \002(\004\022\021\n\trem"
+literal|"\002(\0132\032.DatanodeRegistrationProto\022\020\n\010capac"
 block|,
-literal|"aining\030\004 \002(\004\022\025\n\rblockPoolUsed\030\005 \002(\004\022\027\n\017x"
+literal|"ity\030\002 \002(\004\022\017\n\007dfsUsed\030\003 \002(\004\022\021\n\tremaining\030"
 operator|+
-literal|"mitsInProgress\030\006 \002(\r\022\024\n\014xceiverCount\030\007 \002"
+literal|"\004 \002(\004\022\025\n\rblockPoolUsed\030\005 \002(\004\022\027\n\017xmitsInP"
 operator|+
-literal|"(\r\022\025\n\rfailedVolumes\030\010 \002(\r\"=\n\026HeartbeatRe"
+literal|"rogress\030\006 \002(\r\022\024\n\014xceiverCount\030\007 \002(\r\022\025\n\rf"
 operator|+
-literal|"sponseProto\022#\n\004cmds\030\001 \003(\0132\025.DatanodeComm"
+literal|"ailedVolumes\030\010 \002(\r\"=\n\026HeartbeatResponseP"
 operator|+
-literal|"andProto\"t\n\027BlockReportRequestProto\0220\n\014r"
+literal|"roto\022#\n\004cmds\030\001 \003(\0132\025.DatanodeCommandProt"
 operator|+
-literal|"egistration\030\001 \002(\0132\032.DatanodeRegistration"
+literal|"o\"t\n\027BlockReportRequestProto\0220\n\014registra"
 operator|+
-literal|"Proto\022\023\n\013blockPoolId\030\002 \002(\t\022\022\n\006blocks\030\003 \003"
+literal|"tion\030\001 \002(\0132\032.DatanodeRegistrationProto\022\023"
 operator|+
-literal|"(\004B\002\020\001\">\n\030BlockReportResponseProto\022\"\n\003cm"
+literal|"\n\013blockPoolId\030\002 \002(\t\022\022\n\006blocks\030\003 \003(\004B\002\020\001\""
 operator|+
-literal|"d\030\001 \002(\0132\025.DatanodeCommandProto\"O\n\035Receiv"
+literal|">\n\030BlockReportResponseProto\022\"\n\003cmd\030\001 \002(\013"
 operator|+
-literal|"edDeletedBlockInfoProto\022\032\n\005block\030\001 \002(\0132\013"
+literal|"2\025.DatanodeCommandProto\"O\n\035ReceivedDelet"
 block|,
-literal|".BlockProto\022\022\n\ndeleteHint\030\002 \001(\t\"\234\001\n#Bloc"
+literal|"edBlockInfoProto\022\032\n\005block\030\001 \002(\0132\013.BlockP"
 operator|+
-literal|"kReceivedAndDeletedRequestProto\0220\n\014regis"
+literal|"roto\022\022\n\ndeleteHint\030\002 \001(\t\"\234\001\n#BlockReceiv"
 operator|+
-literal|"tration\030\001 \002(\0132\032.DatanodeRegistrationProt"
+literal|"edAndDeletedRequestProto\0220\n\014registration"
 operator|+
-literal|"o\022\023\n\013blockPoolId\030\002 \002(\t\022.\n\006blocks\030\003 \003(\0132\036"
+literal|"\030\001 \002(\0132\032.DatanodeRegistrationProto\022\023\n\013bl"
 operator|+
-literal|".ReceivedDeletedBlockInfoProto\"&\n$BlockR"
+literal|"ockPoolId\030\002 \002(\t\022.\n\006blocks\030\003 \003(\0132\036.Receiv"
 operator|+
-literal|"eceivedAndDeletedResponseProto\"\275\001\n\027Error"
+literal|"edDeletedBlockInfoProto\"&\n$BlockReceived"
 operator|+
-literal|"ReportRequestProto\0220\n\014registartion\030\001 \002(\013"
+literal|"AndDeletedResponseProto\"\275\001\n\027ErrorReportR"
 operator|+
-literal|"2\032.DatanodeRegistrationProto\022\021\n\terrorCod"
+literal|"equestProto\0220\n\014registartion\030\001 \002(\0132\032.Data"
 operator|+
-literal|"e\030\002 \002(\r\022\013\n\003msg\030\003 \002(\t\"P\n\tErrorCode\022\n\n\006NOT"
+literal|"nodeRegistrationProto\022\021\n\terrorCode\030\002 \002(\r"
 operator|+
-literal|"IFY\020\000\022\016\n\nDISK_ERROR\020\001\022\021\n\rINVALID_BLOCK\020\002"
+literal|"\022\013\n\003msg\030\003 \002(\t\"P\n\tErrorCode\022\n\n\006NOTIFY\020\000\022\016"
 block|,
-literal|"\022\024\n\020FATAL_DISK_ERROR\020\003\"\032\n\030ErrorReportRes"
+literal|"\n\nDISK_ERROR\020\001\022\021\n\rINVALID_BLOCK\020\002\022\024\n\020FAT"
 operator|+
-literal|"ponseProto\"?\n\032ProcessUpgradeRequestProto"
+literal|"AL_DISK_ERROR\020\003\"\032\n\030ErrorReportResponsePr"
 operator|+
-literal|"\022!\n\003cmd\030\001 \001(\0132\024.UpgradeCommandProto\"@\n\033P"
+literal|"oto\"?\n\032ProcessUpgradeRequestProto\022!\n\003cmd"
 operator|+
-literal|"rocessUpgradeResponseProto\022!\n\003cmd\030\001 \001(\0132"
+literal|"\030\001 \001(\0132\024.UpgradeCommandProto\"@\n\033ProcessU"
 operator|+
-literal|"\024.UpgradeCommandProto\"A\n\033ReportBadBlocks"
+literal|"pgradeResponseProto\022!\n\003cmd\030\001 \001(\0132\024.Upgra"
 operator|+
-literal|"RequestProto\022\"\n\006blocks\030\001 \003(\0132\022.LocatedBl"
+literal|"deCommandProto\"A\n\033ReportBadBlocksRequest"
 operator|+
-literal|"ockProto\"\036\n\034ReportBadBlocksResponseProto"
+literal|"Proto\022\"\n\006blocks\030\001 \003(\0132\022.LocatedBlockProt"
 operator|+
-literal|"\"\303\001\n&CommitBlockSynchronizationRequestPr"
+literal|"o\"\036\n\034ReportBadBlocksResponseProto\"\303\001\n&Co"
 operator|+
-literal|"oto\022\"\n\005block\030\001 \002(\0132\023.ExtendedBlockProto\022"
+literal|"mmitBlockSynchronizationRequestProto\022\"\n\005"
 operator|+
-literal|"\023\n\013newGenStamp\030\002 \002(\004\022\021\n\tnewLength\030\003 \002(\004\022"
+literal|"block\030\001 \002(\0132\023.ExtendedBlockProto\022\023\n\013newG"
 block|,
-literal|"\021\n\tcloseFile\030\004 \002(\010\022\023\n\013deleteBlock\030\005 \002(\010\022"
+literal|"enStamp\030\002 \002(\004\022\021\n\tnewLength\030\003 \002(\004\022\021\n\tclos"
 operator|+
-literal|"%\n\013newTaragets\030\006 \003(\0132\020.DatanodeIDProto\")"
+literal|"eFile\030\004 \002(\010\022\023\n\013deleteBlock\030\005 \002(\010\022%\n\013newT"
 operator|+
-literal|"\n\'CommitBlockSynchronizationResponseProt"
+literal|"aragets\030\006 \003(\0132\020.DatanodeIDProto\")\n\'Commi"
 operator|+
-literal|"o2\254\005\n\027DatanodeProtocolService\022Q\n\020registe"
+literal|"tBlockSynchronizationResponseProto2\353\005\n\027D"
 operator|+
-literal|"rDatanode\022\035.RegisterDatanodeRequestProto"
+literal|"atanodeProtocolService\022Q\n\020registerDatano"
 operator|+
-literal|"\032\036.RegisterDatanodeResponseProto\022@\n\rsend"
+literal|"de\022\035.RegisterDatanodeRequestProto\032\036.Regi"
 operator|+
-literal|"Heartbeat\022\026.HeartbeatRequestProto\032\027.Hear"
+literal|"sterDatanodeResponseProto\022@\n\rsendHeartbe"
 operator|+
-literal|"tbeatResponseProto\022B\n\013blockReport\022\030.Bloc"
+literal|"at\022\026.HeartbeatRequestProto\032\027.HeartbeatRe"
 operator|+
-literal|"kReportRequestProto\032\031.BlockReportRespons"
+literal|"sponseProto\022B\n\013blockReport\022\030.BlockReport"
 operator|+
-literal|"eProto\022f\n\027blockReceivedAndDeleted\022$.Bloc"
+literal|"RequestProto\032\031.BlockReportResponseProto\022"
 block|,
-literal|"kReceivedAndDeletedRequestProto\032%.BlockR"
+literal|"f\n\027blockReceivedAndDeleted\022$.BlockReceiv"
 operator|+
-literal|"eceivedAndDeletedResponseProto\022B\n\013errorR"
+literal|"edAndDeletedRequestProto\032%.BlockReceived"
 operator|+
-literal|"eport\022\030.ErrorReportRequestProto\032\031.ErrorR"
+literal|"AndDeletedResponseProto\022B\n\013errorReport\022\030"
 operator|+
-literal|"eportResponseProto\022K\n\016processUpgrade\022\033.P"
+literal|".ErrorReportRequestProto\032\031.ErrorReportRe"
 operator|+
-literal|"rocessUpgradeRequestProto\032\034.ProcessUpgra"
+literal|"sponseProto\022=\n\016versionRequest\022\024.VersionR"
 operator|+
-literal|"deResponseProto\022N\n\017reportBadBlocks\022\034.Rep"
+literal|"equestProto\032\025.VersionResponseProto\022K\n\016pr"
 operator|+
-literal|"ortBadBlocksRequestProto\032\035.ReportBadBloc"
+literal|"ocessUpgrade\022\033.ProcessUpgradeRequestProt"
 operator|+
-literal|"ksResponseProto\022o\n\032commitBlockSynchroniz"
+literal|"o\032\034.ProcessUpgradeResponseProto\022N\n\017repor"
 operator|+
-literal|"ation\022\'.CommitBlockSynchronizationReques"
+literal|"tBadBlocks\022\034.ReportBadBlocksRequestProto"
 operator|+
-literal|"tProto\032(.CommitBlockSynchronizationRespo"
+literal|"\032\035.ReportBadBlocksResponseProto\022o\n\032commi"
 block|,
-literal|"nseProtoBE\n%org.apache.hadoop.hdfs.proto"
+literal|"tBlockSynchronization\022\'.CommitBlockSynch"
 operator|+
-literal|"col.protoB\026DatanodeProtocolProtos\210\001\001\240\001\001"
+literal|"ronizationRequestProto\032(.CommitBlockSync"
+operator|+
+literal|"hronizationResponseProtoBE\n%org.apache.h"
+operator|+
+literal|"adoop.hdfs.protocol.protoB\026DatanodeProto"
+operator|+
+literal|"colProtos\210\001\001\240\001\001"
 block|}
 decl_stmt|;
 name|com
@@ -112740,7 +113903,7 @@ index|[]
 block|{
 literal|"DatanodeID"
 block|,
-literal|"StorateInfo"
+literal|"StorageInfo"
 block|,
 literal|"Keys"
 block|, }
@@ -113038,7 +114201,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|internal_static_BlockRecoveryCommndProto_descriptor
+name|internal_static_BlockRecoveryCommandProto_descriptor
 operator|=
 name|getDescriptor
 argument_list|()
@@ -113051,7 +114214,7 @@ argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
-name|internal_static_BlockRecoveryCommndProto_fieldAccessorTable
+name|internal_static_BlockRecoveryCommandProto_fieldAccessorTable
 operator|=
 operator|new
 name|com
@@ -113064,7 +114227,7 @@ name|GeneratedMessage
 operator|.
 name|FieldAccessorTable
 argument_list|(
-name|internal_static_BlockRecoveryCommndProto_descriptor
+name|internal_static_BlockRecoveryCommandProto_descriptor
 argument_list|,
 operator|new
 name|java
@@ -113091,7 +114254,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|class
 argument_list|,
@@ -113109,7 +114272,7 @@ name|proto
 operator|.
 name|DatanodeProtocolProtos
 operator|.
-name|BlockRecoveryCommndProto
+name|BlockRecoveryCommandProto
 operator|.
 name|Builder
 operator|.
