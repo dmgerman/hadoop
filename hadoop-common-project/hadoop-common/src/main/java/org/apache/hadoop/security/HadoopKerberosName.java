@@ -207,13 +207,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|hasRulesBeenSet
-argument_list|()
-condition|)
-block|{
 name|String
 name|ruleString
 init|=
@@ -231,7 +224,6 @@ argument_list|(
 name|ruleString
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|main (String[] args)
 specifier|public
