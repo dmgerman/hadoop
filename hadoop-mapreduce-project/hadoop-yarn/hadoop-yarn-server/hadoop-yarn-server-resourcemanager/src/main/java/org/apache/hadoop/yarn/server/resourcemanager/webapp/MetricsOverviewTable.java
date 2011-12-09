@@ -24,18 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -45,24 +33,6 @@ operator|.
 name|util
 operator|.
 name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeId
 import|;
 end_import
 
@@ -117,26 +87,6 @@ operator|.
 name|resourcemanager
 operator|.
 name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNode
 import|;
 end_import
 
@@ -543,7 +493,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Memopry Total"
+literal|"Memory Total"
 argument_list|)
 operator|.
 name|_
