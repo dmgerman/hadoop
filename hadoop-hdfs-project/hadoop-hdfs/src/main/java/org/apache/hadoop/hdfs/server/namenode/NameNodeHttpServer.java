@@ -1218,11 +1218,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|httpServer
+operator|!=
+literal|null
+condition|)
+block|{
 name|httpServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|getHttpAddress ()
 specifier|public

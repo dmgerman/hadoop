@@ -74,9 +74,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocolR23Compatible
+name|protocolPB
 operator|.
-name|JournalProtocolTranslatorR23
+name|JournalProtocolTranslatorPB
 import|;
 end_import
 
@@ -272,7 +272,7 @@ operator|.
 name|backupNode
 operator|=
 operator|new
-name|JournalProtocolTranslatorR23
+name|JournalProtocolTranslatorPB
 argument_list|(
 name|bnAddress
 argument_list|,
