@@ -193,6 +193,18 @@ specifier|private
 name|Text
 name|value
 decl_stmt|;
+DECL|method|getKeyClass ()
+specifier|public
+name|Class
+name|getKeyClass
+parameter_list|()
+block|{
+return|return
+name|Text
+operator|.
+name|class
+return|;
+block|}
 DECL|method|KeyValueLineRecordReader (Configuration conf)
 specifier|public
 name|KeyValueLineRecordReader

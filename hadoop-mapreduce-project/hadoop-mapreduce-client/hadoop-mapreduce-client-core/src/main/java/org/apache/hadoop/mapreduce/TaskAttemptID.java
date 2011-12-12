@@ -231,6 +231,22 @@ return|return
 name|taskId
 return|;
 block|}
+comment|/**Returns whether this TaskID is a map ID */
+annotation|@
+name|Deprecated
+DECL|method|isMap ()
+specifier|public
+name|boolean
+name|isMap
+parameter_list|()
+block|{
+return|return
+name|taskId
+operator|.
+name|isMap
+argument_list|()
+return|;
+block|}
 comment|/**Returns the TaskType of the TaskAttemptID */
 DECL|method|getTaskType ()
 specifier|public

@@ -309,6 +309,23 @@ return|return
 name|jobId
 return|;
 block|}
+comment|/**Returns whether this TaskID is a map ID */
+annotation|@
+name|Deprecated
+DECL|method|isMap ()
+specifier|public
+name|boolean
+name|isMap
+parameter_list|()
+block|{
+return|return
+name|type
+operator|==
+name|TaskType
+operator|.
+name|MAP
+return|;
+block|}
 comment|/**    * Get the type of the task    */
 DECL|method|getTaskType ()
 specifier|public
