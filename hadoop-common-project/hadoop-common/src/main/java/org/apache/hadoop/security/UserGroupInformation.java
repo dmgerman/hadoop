@@ -492,6 +492,24 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authentication
+operator|.
+name|util
+operator|.
+name|KerberosName
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -1119,12 +1137,17 @@ argument_list|(
 operator|new
 name|Configuration
 argument_list|()
+argument_list|,
+name|KerberosName
+operator|.
+name|hasRulesBeenSet
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Initialize UGI and related classes.    * @param conf the configuration to use    */
-DECL|method|initialize (Configuration conf)
+DECL|method|initialize (Configuration conf, boolean skipRulesSetting)
 specifier|private
 specifier|static
 specifier|synchronized
@@ -1133,6 +1156,9 @@ name|initialize
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|skipRulesSetting
 parameter_list|)
 block|{
 name|initUGI
@@ -1143,6 +1169,12 @@ expr_stmt|;
 comment|// give the configuration on how to translate Kerberos names
 try|try
 block|{
+if|if
+condition|(
+operator|!
+name|skipRulesSetting
+condition|)
+block|{
 name|HadoopKerberosName
 operator|.
 name|setConfiguration
@@ -1150,6 +1182,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1289,6 +1322,8 @@ block|{
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

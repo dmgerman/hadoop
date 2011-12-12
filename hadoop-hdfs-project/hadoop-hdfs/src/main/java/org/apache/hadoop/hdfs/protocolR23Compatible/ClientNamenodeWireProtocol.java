@@ -1127,6 +1127,8 @@ name|arg
 parameter_list|)
 throws|throws
 name|AccessControlException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#refreshNodes()}    */
 DECL|method|refreshNodes ()

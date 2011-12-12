@@ -92,6 +92,22 @@ name|DEFAULT_PERMISSION
 init|=
 literal|0755
 decl_stmt|;
+comment|/** @return the default FsPermission. */
+DECL|method|getDefaultFsPermission ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getDefaultFsPermission
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+name|DEFAULT_PERMISSION
+argument_list|)
+return|;
+block|}
 comment|/**    * Constructor.    * @param value the parameter value.    */
 DECL|method|PermissionParam (final FsPermission value)
 specifier|public

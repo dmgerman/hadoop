@@ -116,9 +116,9 @@ init|=
 name|newInstance
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-literal|"Empty maps are not single switch"
+literal|"Empty maps should not be not single switch"
 argument_list|,
 name|mapping
 operator|.
@@ -152,16 +152,6 @@ argument_list|(
 name|staticMapping
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Expected single switch"
-argument_list|,
-name|mapping
-operator|.
-name|isSingleSwitch
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|StaticMapping
 operator|.
 name|addNodeToRack
@@ -173,7 +163,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Expected to be multi switch"
+literal|"Expected multi switch"
 argument_list|,
 name|mapping
 operator|.
@@ -470,9 +460,9 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-literal|"Null maps is not single switch"
+literal|"Null maps are expected to be multi switch"
 argument_list|,
 name|mapping
 operator|.
@@ -480,9 +470,9 @@ name|isSingleSwitch
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-literal|"Expected to be single switch"
+literal|"Expected to be multi switch"
 argument_list|,
 name|AbstractDNSToSwitchMapping
 operator|.

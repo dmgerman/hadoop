@@ -424,7 +424,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Node Manger Version:"
+literal|"Node Manager Version:"
 argument_list|,
 name|YarnVersionInfo
 operator|.

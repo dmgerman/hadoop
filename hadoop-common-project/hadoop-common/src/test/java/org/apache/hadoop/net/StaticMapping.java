@@ -82,7 +82,7 @@ name|StaticMapping
 extends|extends
 name|AbstractDNSToSwitchMapping
 block|{
-comment|/**    * key to define the node mapping as a comma-delimited list of host=rack    * mappings, e.g.<code>host1=r1,host2=r1,host3=r2</code>.    *</p>    *<b>Important:</b>spaces not trimmed and are considered significant.    */
+comment|/**    * Key to define the node mapping as a comma-delimited list of host=rack    * mappings, e.g.<code>host1=r1,host2=r1,host3=r2</code>.    *<p/>    * Value: {@value}    *<p/>    *<b>Important:</b>spaces not trimmed and are considered significant.    */
 DECL|field|KEY_HADOOP_CONFIGURED_NODE_MAPPING
 specifier|public
 specifier|static
@@ -345,7 +345,7 @@ name|m
 return|;
 block|}
 block|}
-comment|/**    * This mapping is only single switch if the map is empty    * @return the current switching status    */
+comment|/**    * Declare that this mapping is always multi-switch    * @return false, always    */
 annotation|@
 name|Override
 DECL|method|isSingleSwitch ()
@@ -354,20 +354,11 @@ name|boolean
 name|isSingleSwitch
 parameter_list|()
 block|{
-synchronized|synchronized
-init|(
-name|nameToRackMap
-init|)
-block|{
 return|return
-name|nameToRackMap
-operator|.
-name|isEmpty
-argument_list|()
+literal|false
 return|;
 block|}
-block|}
-comment|/**    * Clear the map and revert to being a single switch    */
+comment|/**    * Clear the map    */
 DECL|method|resetMap ()
 specifier|public
 specifier|static

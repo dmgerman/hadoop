@@ -141,6 +141,7 @@ extends|extends
 name|DatanodeCommand
 block|{
 DECL|field|UC_ACTION_UNKNOWN
+specifier|public
 specifier|final
 specifier|static
 name|int

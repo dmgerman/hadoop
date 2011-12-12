@@ -6844,6 +6844,8 @@ name|arg
 parameter_list|)
 throws|throws
 name|AccessControlException
+throws|,
+name|IOException
 block|{
 return|return
 name|namenode

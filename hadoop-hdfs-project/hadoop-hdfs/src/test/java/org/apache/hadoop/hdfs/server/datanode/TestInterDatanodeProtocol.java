@@ -1049,13 +1049,6 @@ operator|.
 name|socketTimeout
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-name|datanode
-operator|!=
-literal|null
-argument_list|)
-expr_stmt|;
 comment|//stop block scanner, so we could compare lastScanTime
 if|if
 condition|(
@@ -2256,13 +2249,20 @@ block|}
 comment|/** Test to verify that InterDatanode RPC timesout as expected when    *  the server DN does not respond.    */
 annotation|@
 name|Test
+argument_list|(
+name|expected
+operator|=
+name|SocketTimeoutException
+operator|.
+name|class
+argument_list|)
 DECL|method|testInterDNProtocolTimeout ()
 specifier|public
 name|void
 name|testInterDNProtocolTimeout
 parameter_list|()
 throws|throws
-name|Exception
+name|Throwable
 block|{
 specifier|final
 name|Server
@@ -2348,30 +2348,26 @@ name|proxy
 operator|.
 name|initReplicaRecovery
 argument_list|(
+operator|new
+name|RecoveringBlock
+argument_list|(
+operator|new
+name|ExtendedBlock
+argument_list|(
+literal|"bpid"
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
 literal|null
+argument_list|,
+literal|100
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
 literal|"Expected SocketTimeoutException exception, but did not get."
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|SocketTimeoutException
-name|e
-parameter_list|)
-block|{
-name|DataNode
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got expected Exception: SocketTimeoutException"
-operator|+
-name|e
 argument_list|)
 expr_stmt|;
 block|}

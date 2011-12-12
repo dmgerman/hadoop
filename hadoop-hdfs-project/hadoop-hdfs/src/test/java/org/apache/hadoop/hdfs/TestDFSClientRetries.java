@@ -3637,7 +3637,13 @@ name|proxy
 operator|.
 name|getReplicaVisibleLength
 argument_list|(
-literal|null
+operator|new
+name|ExtendedBlock
+argument_list|(
+literal|"bpid"
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|fail

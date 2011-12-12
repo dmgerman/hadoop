@@ -1199,6 +1199,9 @@ decl_stmt|;
 name|float
 name|maximumCapacity
 init|=
+operator|(
+name|float
+operator|)
 name|cs
 operator|.
 name|getConfiguration
@@ -1209,12 +1212,21 @@ argument_list|(
 name|getQueuePath
 argument_list|()
 argument_list|)
+operator|/
+literal|100
 decl_stmt|;
 name|float
 name|absoluteMaxCapacity
 init|=
 operator|(
+name|Math
+operator|.
+name|round
+argument_list|(
 name|maximumCapacity
+operator|*
+literal|100
+argument_list|)
 operator|==
 name|CapacitySchedulerConfiguration
 operator|.
@@ -1233,8 +1245,6 @@ argument_list|()
 operator|*
 name|maximumCapacity
 operator|)
-operator|/
-literal|100
 decl_stmt|;
 name|int
 name|userLimit
@@ -2240,7 +2250,14 @@ operator|.
 name|absoluteMaxCapacity
 operator|=
 operator|(
+name|Math
+operator|.
+name|round
+argument_list|(
 name|maximumCapacity
+operator|*
+literal|100
+argument_list|)
 operator|==
 name|CapacitySchedulerConfiguration
 operator|.
@@ -4092,13 +4109,6 @@ operator|.
 name|getMemory
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|potentialNewCapacity
-operator|>
-name|absoluteMaxCapacity
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -4143,13 +4153,20 @@ name|potentialNewCapacity
 operator|+
 literal|" ( "
 operator|+
-literal|"> max-capacity ("
+literal|" max-capacity: "
 operator|+
 name|absoluteMaxCapacity
 operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|potentialNewCapacity
+operator|>
+name|absoluteMaxCapacity
+condition|)
+block|{
 return|return
 literal|false
 return|;

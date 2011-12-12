@@ -73,7 +73,7 @@ parameter_list|()
 block|{
 comment|// Hidden constructor for class with only static helper methods
 block|}
-comment|/**    * Return the RemoteException wrapped in ServiceException as cause.    * @param se ServiceException that wraps RemoteException    * @return RemoteException wrapped in ServiceException or    *         a new IOException that wraps unexpected ServiceException.    */
+comment|/**    * Return the IOException thrown by the remote server wrapped in     * ServiceException as cause.    * @param se ServiceException that wraps IO exception thrown by the server    * @return Exception wrapped in ServiceException or    *         a new IOException that wraps the unexpected ServiceException.    */
 DECL|method|getRemoteException (ServiceException se)
 specifier|public
 specifier|static
@@ -92,13 +92,25 @@ operator|.
 name|getCause
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|e
+operator|==
+literal|null
+condition|)
+block|{
 return|return
-operator|(
-operator|(
+operator|new
+name|IOException
+argument_list|(
+name|se
+argument_list|)
+return|;
+block|}
+return|return
 name|e
 operator|instanceof
-name|RemoteException
-operator|)
+name|IOException
 condition|?
 operator|(
 name|IOException
@@ -110,7 +122,6 @@ name|IOException
 argument_list|(
 name|se
 argument_list|)
-operator|)
 return|;
 block|}
 block|}

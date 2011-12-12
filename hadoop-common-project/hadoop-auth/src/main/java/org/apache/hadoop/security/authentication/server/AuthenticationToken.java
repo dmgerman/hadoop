@@ -108,8 +108,20 @@ name|StringTokenizer
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletRequest
+import|;
+end_import
+
 begin_comment
-comment|/**  * The {@link AuthenticationToken} contains information about an authenticated HTTP client and doubles  * as the {@link Principal} to be returned by authenticated {@link HttpServletRequest}s  *<p/>  * The token can be serialized/deserialized to and from a string as it is sent and received in HTTP client  * responses and requests as a HTTP cookie (this is done by the {@link AuthenticationFilter}).  */
+comment|/**  * The {@link AuthenticationToken} contains information about an authenticated  * HTTP client and doubles as the {@link Principal} to be returned by  * authenticated {@link HttpServletRequest}s  *<p/>  * The token can be serialized/deserialized to and from a string as it is sent  * and received in HTTP client responses and requests as a HTTP cookie (this is  * done by the {@link AuthenticationFilter}).  */
 end_comment
 
 begin_class

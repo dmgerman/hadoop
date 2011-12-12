@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|net
+operator|.
+name|SocketFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -316,6 +326,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -376,15 +400,24 @@ specifier|private
 name|InterDatanodeProtocolPB
 name|rpcProxy
 decl_stmt|;
-DECL|method|InterDatanodeProtocolTranslatorPB (InetSocketAddress nameNodeAddr, Configuration conf)
+DECL|method|InterDatanodeProtocolTranslatorPB (InetSocketAddress addr, UserGroupInformation ugi, Configuration conf, SocketFactory factory, int socketTimeout)
 specifier|public
 name|InterDatanodeProtocolTranslatorPB
 parameter_list|(
 name|InetSocketAddress
-name|nameNodeAddr
+name|addr
+parameter_list|,
+name|UserGroupInformation
+name|ugi
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|SocketFactory
+name|factory
+parameter_list|,
+name|int
+name|socketTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -423,9 +456,15 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|nameNodeAddr
+name|addr
+argument_list|,
+name|ugi
 argument_list|,
 name|conf
+argument_list|,
+name|factory
+argument_list|,
+name|socketTimeout
 argument_list|)
 expr_stmt|;
 block|}

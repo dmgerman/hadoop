@@ -763,6 +763,22 @@ argument_list|,
 name|maxCapacity
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"CSConf - setMaxCapacity: queuePrefix="
+operator|+
+name|getQueuePrefix
+argument_list|(
+name|queue
+argument_list|)
+operator|+
+literal|", maxCapacity="
+operator|+
+name|maxCapacity
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getUserLimit (String queue)
 specifier|public
