@@ -310,6 +310,15 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get failure info for the job.    * @return the failure info for the job.    * @throws IOException    */
+DECL|method|getFailureInfo ()
+specifier|public
+name|String
+name|getFailureInfo
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

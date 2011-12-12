@@ -106,6 +106,39 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|InvalidJobConfException (String msg, Throwable t)
+specifier|public
+name|InvalidJobConfException
+parameter_list|(
+name|String
+name|msg
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|InvalidJobConfException (Throwable t)
+specifier|public
+name|InvalidJobConfException
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
