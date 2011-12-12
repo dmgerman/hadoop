@@ -370,10 +370,11 @@ name|list
 operator|.
 name|add
 argument_list|(
-operator|(
+operator|new
 name|JobQueueInfo
-operator|)
+argument_list|(
 name|q
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
