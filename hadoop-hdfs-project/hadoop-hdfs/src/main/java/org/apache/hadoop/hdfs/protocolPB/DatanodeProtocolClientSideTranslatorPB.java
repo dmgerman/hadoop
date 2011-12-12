@@ -813,7 +813,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is the client side translator to translate the requests made on  * {@link DatanodeProtocolProtocol} interfaces to the RPC server implementing  * {@link DatanodeProtocolProtocolPB}.  */
+comment|/**  * This class is the client side translator to translate the requests made on  * {@link DatanodeProtocol} interfaces to the RPC server implementing  * {@link DatanodeProtocolPB}.  */
 end_comment
 
 begin_class

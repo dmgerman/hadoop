@@ -1132,6 +1132,8 @@ name|arg
 parameter_list|)
 throws|throws
 name|AccessControlException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * Tells the namenode to reread the hosts and exclude files.     * @throws IOException    */
 DECL|method|refreshNodes ()
