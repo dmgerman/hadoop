@@ -146,6 +146,13 @@ argument_list|>
 name|getAMInfos
 parameter_list|()
 function_decl|;
+DECL|method|isUber ()
+specifier|public
+specifier|abstract
+name|boolean
+name|isUber
+parameter_list|()
+function_decl|;
 DECL|method|setJobId (JobId jobId)
 specifier|public
 specifier|abstract
@@ -297,6 +304,16 @@ argument_list|<
 name|AMInfo
 argument_list|>
 name|amInfos
+parameter_list|)
+function_decl|;
+DECL|method|setIsUber (boolean isUber)
+specifier|public
+specifier|abstract
+name|void
+name|setIsUber
+parameter_list|(
+name|boolean
+name|isUber
 parameter_list|)
 function_decl|;
 block|}

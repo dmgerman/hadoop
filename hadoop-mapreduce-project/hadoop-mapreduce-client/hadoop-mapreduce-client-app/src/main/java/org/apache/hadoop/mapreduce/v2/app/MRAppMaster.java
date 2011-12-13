@@ -1624,6 +1624,11 @@ name|inRecovery
 init|=
 literal|false
 decl_stmt|;
+DECL|field|speculatorEventDispatcher
+specifier|private
+name|SpeculatorEventDispatcher
+name|speculatorEventDispatcher
+decl_stmt|;
 DECL|field|job
 specifier|private
 name|Job
@@ -2220,6 +2225,14 @@ name|speculator
 argument_list|)
 expr_stmt|;
 block|}
+name|speculatorEventDispatcher
+operator|=
+operator|new
+name|SpeculatorEventDispatcher
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|dispatcher
 operator|.
 name|register
@@ -2230,11 +2243,7 @@ name|EventType
 operator|.
 name|class
 argument_list|,
-operator|new
-name|SpeculatorEventDispatcher
-argument_list|(
-name|conf
-argument_list|)
+name|speculatorEventDispatcher
 argument_list|)
 expr_stmt|;
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
@@ -4418,8 +4427,50 @@ argument_list|(
 name|initJobEvent
 argument_list|)
 expr_stmt|;
-comment|// send init to speculator. This won't yest start as dispatcher isn't
-comment|// started yet.
+comment|// JobImpl's InitTransition is done (call above is synchronous), so the
+comment|// "uber-decision" (MR-1220) has been made.  Query job and switch to
+comment|// ubermode if appropriate (by registering different container-allocator
+comment|// and container-launcher services/event-handlers).
+if|if
+condition|(
+name|job
+operator|.
+name|isUber
+argument_list|()
+condition|)
+block|{
+name|speculatorEventDispatcher
+operator|.
+name|disableSpeculation
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"MRAppMaster uberizing job "
+operator|+
+name|job
+operator|.
+name|getID
+argument_list|()
+operator|+
+literal|" in local container (\"uber-AM\") on node "
+operator|+
+name|nmHost
+operator|+
+literal|":"
+operator|+
+name|nmPort
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// send init to speculator only for non-uber jobs.
+comment|// This won't yet start as dispatcher isn't started yet.
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -4442,35 +4493,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// JobImpl's InitTransition is done (call above is synchronous), so the
-comment|// "uber-decision" (MR-1220) has been made.  Query job and switch to
-comment|// ubermode if appropriate (by registering different container-allocator
-comment|// and container-launcher services/event-handlers).
-if|if
-condition|(
-name|job
-operator|.
-name|isUber
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"MRAppMaster uberizing job "
-operator|+
-name|job
-operator|.
-name|getID
-argument_list|()
-operator|+
-literal|" in local container (\"uber-AM\")."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|LOG
 operator|.
 name|info
@@ -4765,6 +4787,12 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|disabled
+specifier|private
+specifier|volatile
+name|boolean
+name|disabled
+decl_stmt|;
 DECL|method|SpeculatorEventDispatcher (Configuration config)
 specifier|public
 name|SpeculatorEventDispatcher
@@ -4793,6 +4821,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+operator|!
+name|disabled
+operator|&&
+operator|(
 name|conf
 operator|.
 name|getBoolean
@@ -4814,6 +4846,7 @@ name|REDUCE_SPECULATIVE
 argument_list|,
 literal|false
 argument_list|)
+operator|)
 condition|)
 block|{
 comment|// Speculator IS enabled, direct the event to there.
@@ -4825,6 +4858,17 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|disableSpeculation ()
+specifier|public
+name|void
+name|disableSpeculation
+parameter_list|()
+block|{
+name|disabled
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 DECL|method|validateInputParam (String value, String param)

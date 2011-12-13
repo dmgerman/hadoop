@@ -2247,6 +2247,11 @@ name|getJobFile
 argument_list|()
 argument_list|,
 name|trackingUrl
+argument_list|,
+name|jobreport
+operator|.
+name|isUber
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|jobStatus
@@ -3147,6 +3152,8 @@ argument_list|,
 name|jobFile
 argument_list|,
 name|trackingUrl
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|jobStatus

@@ -60,16 +60,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|HashSet
@@ -97,30 +87,6 @@ operator|.
 name|concurrent
 operator|.
 name|LinkedBlockingQueue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ThreadPoolExecutor
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
 import|;
 end_import
 
@@ -163,6 +129,20 @@ operator|.
 name|fs
 operator|.
 name|FSError
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileStatus
 import|;
 end_import
 
@@ -219,6 +199,20 @@ operator|.
 name|fs
 operator|.
 name|UnsupportedFileSystemException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobContext
 import|;
 end_import
 
@@ -444,46 +438,6 @@ name|v2
 operator|.
 name|app
 operator|.
-name|job
-operator|.
-name|Task
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|job
-operator|.
-name|TaskAttempt
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
 name|launcher
 operator|.
 name|ContainerLauncher
@@ -555,6 +509,22 @@ operator|.
 name|yarn
 operator|.
 name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationConstants
 import|;
 end_import
 
@@ -698,7 +668,10 @@ name|umbilical
 operator|=
 name|umbilical
 expr_stmt|;
-comment|// umbilical:  MRAppMaster creates (taskAttemptListener), passes to us  (TODO/FIXME:  pointless to use RPC to talk to self; should create LocalTaskAttemptListener or similar:  implement umbilical protocol but skip RPC stuff)
+comment|// umbilical:  MRAppMaster creates (taskAttemptListener), passes to us
+comment|// (TODO/FIXME:  pointless to use RPC to talk to self; should create
+comment|// LocalTaskAttemptListener or similar:  implement umbilical protocol
+comment|// but skip RPC stuff)
 try|try
 block|{
 name|curFC
@@ -886,7 +859,7 @@ throw|;
 comment|// FIXME? YarnException is "for runtime exceptions only"
 block|}
 block|}
-comment|/*    * Uber-AM lifecycle/ordering ("normal" case):    *    * - [somebody] sends TA_ASSIGNED    *   - handled by ContainerAssignedTransition (TaskAttemptImpl.java)    *     - creates "remoteTask" for us == real Task    *     - sends CONTAINER_REMOTE_LAUNCH    *     - TA: UNASSIGNED -> ASSIGNED    * - CONTAINER_REMOTE_LAUNCH handled by LocalContainerLauncher (us)    *   - sucks "remoteTask" out of TaskAttemptImpl via getRemoteTask()    *   - sends TA_CONTAINER_LAUNCHED    *     [[ elsewhere...    *       - TA_CONTAINER_LAUNCHED handled by LaunchedContainerTransition    *         - registers "remoteTask" with TaskAttemptListener (== umbilical)    *         - NUKES "remoteTask"    *         - sends T_ATTEMPT_LAUNCHED (Task: SCHEDULED -> RUNNING)    *         - TA: ASSIGNED -> RUNNING    *     ]]    *   - runs Task (runSubMap() or runSubReduce())    *     - TA can safely send TA_UPDATE since in RUNNING state    *       [modulo possible TA-state-machine race noted below:  CHECK (TODO)]    */
+comment|/*    * Uber-AM lifecycle/ordering ("normal" case):    *    * - [somebody] sends TA_ASSIGNED    *   - handled by ContainerAssignedTransition (TaskAttemptImpl.java)    *     - creates "remoteTask" for us == real Task    *     - sends CONTAINER_REMOTE_LAUNCH    *     - TA: UNASSIGNED -> ASSIGNED    * - CONTAINER_REMOTE_LAUNCH handled by LocalContainerLauncher (us)    *   - sucks "remoteTask" out of TaskAttemptImpl via getRemoteTask()    *   - sends TA_CONTAINER_LAUNCHED    *     [[ elsewhere...    *       - TA_CONTAINER_LAUNCHED handled by LaunchedContainerTransition    *         - registers "remoteTask" with TaskAttemptListener (== umbilical)    *         - NUKES "remoteTask"    *         - sends T_ATTEMPT_LAUNCHED (Task: SCHEDULED -> RUNNING)    *         - TA: ASSIGNED -> RUNNING    *     ]]    *   - runs Task (runSubMap() or runSubReduce())    *     - TA can safely send TA_UPDATE since in RUNNING state    */
 DECL|class|SubtaskRunner
 specifier|private
 class|class
@@ -912,6 +885,11 @@ DECL|method|SubtaskRunner ()
 name|SubtaskRunner
 parameter_list|()
 block|{     }
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|run ()
@@ -1008,7 +986,6 @@ operator|.
 name|getTaskAttemptID
 argument_list|()
 decl_stmt|;
-comment|//FIXME:  can attemptID ever be null?  (only if retrieved over umbilical?)
 name|Job
 name|job
 init|=
@@ -1112,7 +1089,6 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//FIXME:  race condition here?  or do we have same kind of lock on TA handler => MapTask can't send TA_UPDATE before TA_CONTAINER_LAUNCHED moves TA to RUNNING state?  (probably latter)
 if|if
 condition|(
 name|numMapTasks
@@ -1380,6 +1356,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|runSubtask (org.apache.hadoop.mapred.Task task, final TaskType taskType, TaskAttemptId attemptID, final int numMapTasks, boolean renameOutputs)
 specifier|private
 name|void
@@ -1445,6 +1426,136 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|JobContext
+operator|.
+name|TASK_ID
+argument_list|,
+name|task
+operator|.
+name|getTaskID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|JobContext
+operator|.
+name|TASK_ATTEMPT_ID
+argument_list|,
+name|classicAttemptID
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|JobContext
+operator|.
+name|TASK_ISMAP
+argument_list|,
+operator|(
+name|taskType
+operator|==
+name|TaskType
+operator|.
+name|MAP
+operator|)
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|JobContext
+operator|.
+name|TASK_PARTITION
+argument_list|,
+name|task
+operator|.
+name|getPartition
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|JobContext
+operator|.
+name|ID
+argument_list|,
+name|task
+operator|.
+name|getJobID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Use the AM's local dir env to generate the intermediate step
+comment|// output files
+name|String
+index|[]
+name|localSysDirs
+init|=
+name|StringUtils
+operator|.
+name|getTrimmedStrings
+argument_list|(
+name|System
+operator|.
+name|getenv
+argument_list|(
+name|ApplicationConstants
+operator|.
+name|LOCAL_DIR_ENV
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|setStrings
+argument_list|(
+name|MRConfig
+operator|.
+name|LOCAL_DIR
+argument_list|,
+name|localSysDirs
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|MRConfig
+operator|.
+name|LOCAL_DIR
+operator|+
+literal|" for uber task: "
+operator|+
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRConfig
+operator|.
+name|LOCAL_DIR
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// mark this as an uberized subtask so it can set task counter
 comment|// (longer-term/FIXME:  could redefine as job counter and send
 comment|// "JobCounterEvent" to JobImpl on [successful] completion of subtask;
@@ -1487,7 +1598,11 @@ operator|+
 literal|"), but should be finished with maps"
 argument_list|)
 expr_stmt|;
-comment|// throw new RuntimeException()  (FIXME: what's appropriate here?)
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|()
+throw|;
 block|}
 name|MapTask
 name|map
@@ -1497,7 +1612,13 @@ name|MapTask
 operator|)
 name|task
 decl_stmt|;
-comment|//CODE-REVIEWER QUESTION: why not task.getConf() or map.getConf() instead of conf? do we need Task's localizeConfiguration() run on this first?
+name|map
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|map
 operator|.
 name|run
@@ -1551,7 +1672,10 @@ operator|!
 name|doneWithMaps
 condition|)
 block|{
-comment|//check if event-queue empty?  whole idea of counting maps vs. checking event queue is a tad wacky...but could enforce ordering (assuming no "lost events") at LocalMRAppMaster [CURRENT BUG(?):  doesn't send reduce event until maps all done]
+comment|// check if event-queue empty?  whole idea of counting maps vs.
+comment|// checking event queue is a tad wacky...but could enforce ordering
+comment|// (assuming no "lost events") at LocalMRAppMaster [CURRENT BUG(?):
+comment|// doesn't send reduce event until maps all done]
 name|LOG
 operator|.
 name|error
@@ -1563,16 +1687,12 @@ operator|+
 literal|"), but not yet finished with maps"
 argument_list|)
 expr_stmt|;
-comment|// throw new RuntimeException()  (FIXME) // or push reduce event back onto end of queue? (probably former)
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|()
+throw|;
 block|}
-name|ReduceTask
-name|reduce
-init|=
-operator|(
-name|ReduceTask
-operator|)
-name|task
-decl_stmt|;
 comment|// a.k.a. "mapreduce.jobtracker.address" in LocalJobRunner:
 comment|// set framework name to local to make task local
 name|conf
@@ -1600,6 +1720,21 @@ literal|"local"
 argument_list|)
 expr_stmt|;
 comment|// bypass shuffle
+name|ReduceTask
+name|reduce
+init|=
+operator|(
+name|ReduceTask
+operator|)
+name|task
+decl_stmt|;
+name|reduce
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|reduce
 operator|.
 name|run
@@ -1676,7 +1811,6 @@ literal|null
 condition|)
 block|{
 comment|// do cleanup for the task
-comment|//          if (childUGI == null) { // no need to job into doAs block
 name|task
 operator|.
 name|taskCleanup
@@ -1684,16 +1818,6 @@ argument_list|(
 name|umbilical
 argument_list|)
 expr_stmt|;
-comment|//          } else {
-comment|//            final Task taskFinal = task;
-comment|//            childUGI.doAs(new PrivilegedExceptionAction<Object>() {
-comment|//              @Override
-comment|//              public Object run() throws Exception {
-comment|//                taskFinal.taskCleanup(umbilical);
-comment|//                return null;
-comment|//              }
-comment|//            });
-comment|//          }
 block|}
 block|}
 catch|catch
@@ -1736,7 +1860,6 @@ name|baos
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//      if (classicAttemptID != null) {
 name|umbilical
 operator|.
 name|reportDiagnosticInfo
@@ -1749,7 +1872,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//      }
 throw|throw
 operator|new
 name|RuntimeException
@@ -1776,7 +1898,6 @@ name|throwable
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//      if (classicAttemptID != null) {
 name|Throwable
 name|tCause
 init|=
@@ -1815,20 +1936,19 @@ argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
-comment|//      }
 throw|throw
 operator|new
 name|RuntimeException
 argument_list|()
 throw|;
 block|}
-finally|finally
-block|{
-comment|/* FIXME:  do we need to do any of this stuff?  (guessing not since not in own JVM)         RPC.stopProxy(umbilical);         DefaultMetricsSystem.shutdown();         // Shutting down log4j of the child-vm...         // This assumes that on return from Task.run()         // there is no more logging done.         LogManager.shutdown();  */
 block|}
-block|}
-comment|/* FIXME:  may not need renameMapOutputForReduce() anymore?  TEST!  ${local.dir}/usercache/$user/appcache/$appId/$contId/ == $cwd for containers; contains launch_container.sh script, which, when executed, creates symlinks and  sets up env  "$local.dir"/usercache/$user/appcache/$appId/$contId/file.out  "$local.dir"/usercache/$user/appcache/$appId/$contId/file.out.idx (?)  "$local.dir"/usercache/$user/appcache/$appId/output/$taskId/ is where file.out* is moved after MapTask done  	OHO!  no further need for this at all?  $taskId is unique per subtask 	now => should work fine to leave alone.  TODO:  test with teragen or 	similar  */
 comment|/**      * Within the _local_ filesystem (not HDFS), all activity takes place within      * a single subdir (${local.dir}/usercache/$user/appcache/$appId/$contId/),      * and all sub-MapTasks create the same filename ("file.out").  Rename that      * to something unique (e.g., "map_0.out") to avoid collisions.      *      * Longer-term, we'll modify [something] to use TaskAttemptID-based      * filenames instead of "file.out". (All of this is entirely internal,      * so there are no particular compatibility issues.)      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|renameMapOutputForReduce (JobConf conf, TaskAttemptId mapId, MapOutputFile subMapOutputFile)
 specifier|private
 name|void
@@ -1865,6 +1985,16 @@ operator|.
 name|getOutputFile
 argument_list|()
 decl_stmt|;
+name|FileStatus
+name|mStatus
+init|=
+name|localFs
+operator|.
+name|getFileStatus
+argument_list|(
+name|mapOut
+argument_list|)
+decl_stmt|;
 name|Path
 name|reduceIn
 init|=
@@ -1882,14 +2012,47 @@ operator|.
 name|getTaskID
 argument_list|()
 argument_list|,
-name|localFs
+name|mStatus
 operator|.
-name|getLength
-argument_list|(
-name|mapOut
-argument_list|)
+name|getLen
+argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Renaming map output file for task attempt "
+operator|+
+name|mapId
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" from original location "
+operator|+
+name|mapOut
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" to destination "
+operator|+
+name|reduceIn
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -1942,7 +2105,7 @@ name|mapOut
 argument_list|)
 throw|;
 block|}
-comment|/**      * Also within the local filesystem, we need to restore the initial state      * of the directory as much as possible.  Compare current contents against      * the saved original state and nuke everything that doesn't belong, with      * the exception of the renamed map outputs (see above). FIXME:  do we really need to worry about renamed map outputs, or already moved to output dir on commit?  if latter, fix comment      *      * Any jobs that go out of their way to rename or delete things from the      * local directory are considered broken and deserve what they get...      */
+comment|/**      * Also within the local filesystem, we need to restore the initial state      * of the directory as much as possible.  Compare current contents against      * the saved original state and nuke everything that doesn't belong, with      * the exception of the renamed map outputs.      *      * Any jobs that go out of their way to rename or delete things from the      * local directory are considered broken and deserve what they get...      */
 DECL|method|relocalize ()
 specifier|private
 name|void

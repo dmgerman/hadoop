@@ -574,13 +574,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|field|eventHandler
 specifier|private
 specifier|final
 name|EventHandler
 name|eventHandler
 decl_stmt|;
-comment|//  private final ApplicationId appID;
 DECL|field|containerCount
 specifier|private
 name|AtomicInteger
@@ -640,7 +644,6 @@ operator|.
 name|getEventHandler
 argument_list|()
 expr_stmt|;
-comment|//    this.appID = context.getApplicationID();
 block|}
 annotation|@
 name|Override
@@ -686,6 +689,11 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|heartbeat ()
@@ -877,6 +885,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|handle (ContainerAllocatorEvent event)

@@ -1589,6 +1589,18 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|false
+argument_list|,
+name|jr
+operator|.
+name|isUber
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|verifyTaskAttemptReport (TaskAttemptReport tar)
 specifier|private
