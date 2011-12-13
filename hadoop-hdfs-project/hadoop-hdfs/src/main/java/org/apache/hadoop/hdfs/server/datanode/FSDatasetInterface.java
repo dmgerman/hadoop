@@ -589,7 +589,8 @@ operator|=
 name|checksumIn
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -344,7 +344,8 @@ DECL|method|BlockPlacementPolicyDefault ()
 name|BlockPlacementPolicyDefault
 parameter_list|()
 block|{   }
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
 specifier|public
 name|void
@@ -418,7 +419,8 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, long blocksize)
 specifier|public
 name|DatanodeDescriptor
@@ -461,7 +463,6 @@ name|blocksize
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
@@ -2597,7 +2598,8 @@ return|return
 name|nodes
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int minRacks)
 specifier|public
 name|int
@@ -2706,7 +2708,8 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|chooseReplicaToDelete (FSInodeInfo inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
 name|DatanodeDescriptor

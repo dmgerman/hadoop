@@ -226,7 +226,8 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|doGet (final HttpServletRequest request, final HttpServletResponse response)
 specifier|public
 name|void

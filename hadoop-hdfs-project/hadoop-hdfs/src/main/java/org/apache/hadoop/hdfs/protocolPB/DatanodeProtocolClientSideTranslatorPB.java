@@ -1652,6 +1652,11 @@ argument_list|)
 throw|;
 block|}
 return|return
+name|resp
+operator|.
+name|hasCmd
+argument_list|()
+condition|?
 name|PBHelper
 operator|.
 name|convert
@@ -1661,6 +1666,8 @@ operator|.
 name|getCmd
 argument_list|()
 argument_list|)
+else|:
+literal|null
 return|;
 block|}
 annotation|@
@@ -1979,6 +1986,11 @@ argument_list|)
 throw|;
 block|}
 return|return
+name|resp
+operator|.
+name|hasCmd
+argument_list|()
+condition|?
 name|PBHelper
 operator|.
 name|convert
@@ -1988,6 +2000,8 @@ operator|.
 name|getCmd
 argument_list|()
 argument_list|)
+else|:
+literal|null
 return|;
 block|}
 annotation|@

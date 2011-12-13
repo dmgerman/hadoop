@@ -1392,7 +1392,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|getChildQueues (org.apache.hadoop.yarn.api.records.QueueInfo parent, List<org.apache.hadoop.yarn.api.records.QueueInfo> queues)
+DECL|method|getChildQueues (org.apache.hadoop.yarn.api.records.QueueInfo parent, List<org.apache.hadoop.yarn.api.records.QueueInfo> queues, boolean recursive)
 specifier|private
 name|void
 name|getChildQueues
@@ -1429,6 +1429,9 @@ operator|.
 name|QueueInfo
 argument_list|>
 name|queues
+parameter_list|,
+name|boolean
+name|recursive
 parameter_list|)
 block|{
 name|List
@@ -1481,13 +1484,21 @@ argument_list|(
 name|child
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|recursive
+condition|)
+block|{
 name|getChildQueues
 argument_list|(
 name|child
 argument_list|,
 name|queues
+argument_list|,
+name|recursive
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|getQueueAclsForCurrentUser ()
@@ -1625,6 +1636,8 @@ argument_list|(
 name|rootQueue
 argument_list|,
 name|queues
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 return|return
@@ -1715,7 +1728,7 @@ literal|false
 argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 argument_list|)
 operator|.
@@ -1727,6 +1740,8 @@ argument_list|(
 name|rootQueue
 argument_list|,
 name|queues
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 return|return
@@ -1832,6 +1847,8 @@ argument_list|(
 name|parentQueue
 argument_list|,
 name|queues
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 return|return

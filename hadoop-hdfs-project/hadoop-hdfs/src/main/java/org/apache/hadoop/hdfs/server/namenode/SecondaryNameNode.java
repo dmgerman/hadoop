@@ -943,7 +943,8 @@ specifier|private
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

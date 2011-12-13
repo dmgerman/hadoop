@@ -1455,10 +1455,6 @@ throw|;
 block|}
 block|}
 block|}
-DECL|field|cluster
-name|Cluster
-name|cluster
-decl_stmt|;
 comment|/**    * Ugi of the client. We store this ugi when the client is created and     * then make sure that the same ugi is used to run the various protocols.    */
 DECL|field|clientUgi
 name|UserGroupInformation

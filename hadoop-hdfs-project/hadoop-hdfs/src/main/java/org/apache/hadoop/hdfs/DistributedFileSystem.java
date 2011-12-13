@@ -1217,7 +1217,6 @@ name|dir
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getHomeDirectory ()
@@ -1906,7 +1905,6 @@ name|srcs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1952,7 +1950,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**     * {@inheritDoc}    * This rename operation is guaranteed to be atomic.    */
+comment|/**     * This rename operation is guaranteed to be atomic.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -2042,7 +2040,6 @@ name|recursive
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getContentSummary (Path f)
@@ -2989,7 +2986,6 @@ name|absolutePermission
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -3135,7 +3131,6 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getStatus (Path p)
@@ -3275,7 +3270,6 @@ name|getCorruptBlocksCount
 argument_list|()
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listCorruptFileBlocks (Path path)
@@ -3477,7 +3471,6 @@ name|pathname
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getServerDefaults ()
@@ -3797,7 +3790,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getFileChecksum (Path f)
@@ -3830,7 +3822,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc }*/
 annotation|@
 name|Override
 DECL|method|setPermission (Path p, FsPermission permission )
@@ -3867,7 +3858,6 @@ name|permission
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc }*/
 annotation|@
 name|Override
 DECL|method|setOwner (Path p, String username, String groupname )
@@ -3928,7 +3918,6 @@ name|groupname
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc }*/
 annotation|@
 name|Override
 DECL|method|setTimes (Path p, long mtime, long atime )

@@ -327,7 +327,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|write (FSEditLogOp op)

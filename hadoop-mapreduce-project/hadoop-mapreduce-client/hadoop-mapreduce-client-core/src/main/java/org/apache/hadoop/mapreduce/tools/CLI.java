@@ -457,7 +457,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|cluster
-specifier|private
+specifier|protected
 name|Cluster
 name|cluster
 decl_stmt|;
