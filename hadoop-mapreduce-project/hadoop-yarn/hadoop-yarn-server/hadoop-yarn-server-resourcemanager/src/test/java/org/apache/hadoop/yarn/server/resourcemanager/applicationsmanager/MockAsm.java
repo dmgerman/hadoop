@@ -1307,6 +1307,17 @@ operator|.
 name|UNDEFINED
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|RMAppAttempt
+name|getCurrentAppAttempt
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 return|;
 block|}

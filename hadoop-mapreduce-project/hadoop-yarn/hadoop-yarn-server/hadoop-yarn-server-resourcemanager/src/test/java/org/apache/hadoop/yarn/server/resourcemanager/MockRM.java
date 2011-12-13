@@ -218,7 +218,41 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|Dispatcher
 import|;
 end_import
 
@@ -409,6 +443,106 @@ operator|.
 name|event
 operator|.
 name|RMAppAttemptLaunchFailedEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeEventType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeState
 import|;
 end_import
 
@@ -673,7 +807,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|//client
+comment|// client
 DECL|method|submitApp (int masterMemory)
 specifier|public
 name|RMApp
@@ -880,6 +1014,172 @@ return|return
 name|nm
 return|;
 block|}
+DECL|method|sendNodeStarted (MockNM nm)
+specifier|public
+name|void
+name|sendNodeStarted
+parameter_list|(
+name|MockNM
+name|nm
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|RMNodeImpl
+name|node
+init|=
+operator|(
+name|RMNodeImpl
+operator|)
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMNodes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|nm
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|node
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMNodeEvent
+argument_list|(
+name|nm
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|RMNodeEventType
+operator|.
+name|STARTED
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|NMwaitForState (NodeId nodeid, RMNodeState finalState)
+specifier|public
+name|void
+name|NMwaitForState
+parameter_list|(
+name|NodeId
+name|nodeid
+parameter_list|,
+name|RMNodeState
+name|finalState
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|RMNode
+name|node
+init|=
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMNodes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|nodeid
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"node shouldn't be null"
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
+name|int
+name|timeoutSecs
+init|=
+literal|0
+decl_stmt|;
+while|while
+condition|(
+operator|!
+name|finalState
+operator|.
+name|equals
+argument_list|(
+name|node
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+operator|&&
+name|timeoutSecs
+operator|++
+operator|<
+literal|20
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Node State is : "
+operator|+
+name|node
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|" Waiting for state : "
+operator|+
+name|finalState
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Node State is : "
+operator|+
+name|node
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Node state is not correct (timedout)"
+argument_list|,
+name|finalState
+argument_list|,
+name|node
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|killApp (ApplicationId appId)
 specifier|public
 name|void
@@ -924,7 +1224,7 @@ name|req
 argument_list|)
 expr_stmt|;
 block|}
-comment|//from AMLauncher
+comment|// from AMLauncher
 DECL|method|sendAMLaunched (ApplicationAttemptId appAttemptId)
 specifier|public
 name|MockAM
@@ -1070,7 +1370,7 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|//override to not start rpc handler
+comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
@@ -1117,7 +1417,7 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|//override to not start rpc handler
+comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
@@ -1160,7 +1460,7 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|//override to not start rpc handler
+comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
@@ -1205,7 +1505,7 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|//override to not start rpc handler
+comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
@@ -1217,7 +1517,7 @@ name|AMLauncherEvent
 name|appEvent
 parameter_list|)
 block|{
-comment|//don't do anything
+comment|// don't do anything
 block|}
 annotation|@
 name|Override
@@ -1233,7 +1533,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAdminService ( ClientRMService clientRMService, ApplicationMasterService applicationMasterService, ResourceTrackerService resourceTrackerService)
+DECL|method|createAdminService (ClientRMService clientRMService, ApplicationMasterService applicationMasterService, ResourceTrackerService resourceTrackerService)
 specifier|protected
 name|AdminService
 name|createAdminService
@@ -1278,7 +1578,7 @@ name|void
 name|start
 parameter_list|()
 block|{
-comment|//override to not start rpc handler
+comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
@@ -1312,7 +1612,7 @@ name|void
 name|startWepApp
 parameter_list|()
 block|{
-comment|//override to disable webapp
+comment|// override to disable webapp
 block|}
 block|}
 end_class
