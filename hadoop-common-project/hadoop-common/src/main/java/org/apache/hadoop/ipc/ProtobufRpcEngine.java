@@ -1774,9 +1774,7 @@ name|bindAddress
 argument_list|,
 name|port
 argument_list|,
-name|RpcRequestWritable
-operator|.
-name|class
+literal|null
 argument_list|,
 name|numHandlers
 argument_list|,
