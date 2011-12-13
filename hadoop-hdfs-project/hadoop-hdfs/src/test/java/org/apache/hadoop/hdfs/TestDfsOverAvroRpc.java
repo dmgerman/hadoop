@@ -63,20 +63,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|System
-operator|.
-name|setProperty
-argument_list|(
-literal|"hdfs.rpc.engine"
-argument_list|,
-literal|"org.apache.hadoop.ipc.AvroRpcEngine"
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|testWorkingDirectory
-argument_list|()
-expr_stmt|;
+comment|/*     Test turned off - see HDFS-2647 and HDFS-2660 for related comments.     This test can be turned on when Avro RPC is enabled using mechanism     similar to protobuf.     */
+comment|/*     System.setProperty("hdfs.rpc.engine",                        "org.apache.hadoop.ipc.AvroRpcEngine");     super.testWorkingDirectory();     */
 block|}
 block|}
 end_class
