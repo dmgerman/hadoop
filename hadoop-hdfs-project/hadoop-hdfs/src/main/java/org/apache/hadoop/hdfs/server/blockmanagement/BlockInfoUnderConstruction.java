@@ -307,7 +307,6 @@ name|obj
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -969,7 +968,6 @@ name|obj
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|toString ()

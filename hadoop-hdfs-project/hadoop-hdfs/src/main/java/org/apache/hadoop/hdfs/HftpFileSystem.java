@@ -3218,7 +3218,8 @@ specifier|private
 name|FileChecksum
 name|filechecksum
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|startElement (String ns, String localname, String qname, Attributes attrs)
 specifier|public
 name|void
@@ -3426,11 +3427,9 @@ block|}
 block|}
 end_class
 
-begin_comment
-comment|/** {@inheritDoc} */
-end_comment
-
 begin_function
+annotation|@
+name|Override
 DECL|method|getFileChecksum (Path f)
 specifier|public
 name|FileChecksum
@@ -3683,7 +3682,8 @@ specifier|private
 name|ContentSummary
 name|contentsummary
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|startElement (String ns, String localname, String qname, Attributes attrs)
 specifier|public
 name|void
@@ -4128,11 +4128,9 @@ block|}
 block|}
 end_function
 
-begin_comment
-comment|/** {@inheritDoc} */
-end_comment
-
 begin_function
+annotation|@
+name|Override
 DECL|method|getContentSummary (Path f)
 specifier|public
 name|ContentSummary

@@ -767,7 +767,8 @@ return|return
 literal|1
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|computeContentSummary (long[] summary)
 name|long
 index|[]

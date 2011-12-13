@@ -360,7 +360,8 @@ block|}
 comment|/////////////////////////////////////////////////
 comment|// Writable
 comment|/////////////////////////////////////////////////
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -404,7 +405,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

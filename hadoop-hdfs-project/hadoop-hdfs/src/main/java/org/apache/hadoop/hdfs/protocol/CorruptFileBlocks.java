@@ -182,7 +182,6 @@ return|return
 name|cookie
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|readFields (DataInput in)
@@ -250,7 +249,6 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)
@@ -313,7 +311,8 @@ name|cookie
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -378,7 +377,8 @@ name|files
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

@@ -7279,8 +7279,6 @@ parameter_list|(
 name|InetSocketAddress
 name|targetAddr
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -7386,7 +7384,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

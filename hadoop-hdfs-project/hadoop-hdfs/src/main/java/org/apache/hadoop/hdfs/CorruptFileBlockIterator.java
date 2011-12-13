@@ -309,7 +309,6 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|hasNext ()
@@ -324,7 +323,6 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|next ()

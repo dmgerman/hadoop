@@ -9496,7 +9496,8 @@ name|r
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getProtocolVersion (String protocol, long clientVersion )
 specifier|public
 name|long
@@ -9659,7 +9660,8 @@ operator|=
 name|rInfo
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -10735,7 +10737,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// ClientDataNodeProtocol implementation
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 comment|// ClientDataNodeProtocol

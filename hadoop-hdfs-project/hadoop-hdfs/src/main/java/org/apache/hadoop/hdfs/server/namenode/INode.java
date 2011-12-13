@@ -1058,7 +1058,8 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getFullPathName ()
 specifier|public
 name|String
@@ -1075,7 +1076,8 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

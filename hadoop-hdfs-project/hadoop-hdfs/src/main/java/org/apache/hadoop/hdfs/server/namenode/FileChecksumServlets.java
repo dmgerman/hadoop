@@ -593,7 +593,8 @@ name|addrParam
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|doGet (HttpServletRequest request, HttpServletResponse response )
 specifier|public
 name|void
@@ -727,7 +728,8 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|doGet (HttpServletRequest request, HttpServletResponse response )
 specifier|public
 name|void

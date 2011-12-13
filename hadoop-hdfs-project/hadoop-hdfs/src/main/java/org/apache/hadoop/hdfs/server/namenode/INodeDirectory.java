@@ -1379,7 +1379,8 @@ return|return
 name|parent
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|spaceConsumedInTree (DirCounts counts)
 name|DirCounts
 name|spaceConsumedInTree
@@ -1422,7 +1423,8 @@ return|return
 name|counts
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|computeContentSummary (long[] summary)
 name|long
 index|[]
