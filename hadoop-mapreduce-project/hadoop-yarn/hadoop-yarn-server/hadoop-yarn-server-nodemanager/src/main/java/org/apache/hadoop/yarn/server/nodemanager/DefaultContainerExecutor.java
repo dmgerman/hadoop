@@ -501,6 +501,7 @@ annotation|@
 name|Override
 DECL|method|startLocalizer (Path nmPrivateContainerTokensPath, InetSocketAddress nmAddr, String user, String appId, String locId, List<String> localDirs, List<String> logDirs)
 specifier|public
+specifier|synchronized
 name|void
 name|startLocalizer
 parameter_list|(
