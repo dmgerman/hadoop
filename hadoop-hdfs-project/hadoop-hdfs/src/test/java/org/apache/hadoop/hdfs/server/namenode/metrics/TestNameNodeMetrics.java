@@ -935,22 +935,8 @@ name|filesTotal
 operator|--
 expr_stmt|;
 comment|// reduce the filecount for deleted file
-comment|// Wait for more than DATANODE_COUNT replication intervals to ensure all
-comment|// the blocks pending deletion are sent for deletion to the datanodes.
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|DFS_REPLICATION_INTERVAL
-operator|*
-operator|(
-name|DATANODE_COUNT
-operator|+
-literal|1
-operator|)
-operator|*
-literal|1000
-argument_list|)
+name|waitForDeletion
+argument_list|()
 expr_stmt|;
 name|updateMetrics
 argument_list|()
@@ -1140,7 +1126,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|updateMetrics
+name|waitForDeletion
 argument_list|()
 expr_stmt|;
 name|rb
@@ -1373,7 +1359,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|updateMetrics
+name|waitForDeletion
 argument_list|()
 expr_stmt|;
 name|assertGauge
@@ -1386,6 +1372,32 @@ name|getMetrics
 argument_list|(
 name|NS_METRICS
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|waitForDeletion ()
+specifier|private
+name|void
+name|waitForDeletion
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+comment|// Wait for more than DATANODE_COUNT replication intervals to ensure all
+comment|// the blocks pending deletion are sent for deletion to the datanodes.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|DFS_REPLICATION_INTERVAL
+operator|*
+operator|(
+name|DATANODE_COUNT
+operator|+
+literal|1
+operator|)
+operator|*
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}
