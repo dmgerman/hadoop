@@ -869,6 +869,41 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+comment|// This is for test purposes since MR2, different from Streaming
+comment|// here it is not possible to add a JAR to the classpath the tool
+comment|// will when running the mapreduce job.
+name|String
+name|testJar
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+name|TEST_HADOOP_ARCHIVES_JAR_PATH
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|testJar
+operator|!=
+literal|null
+condition|)
+block|{
+operator|(
+operator|(
+name|JobConf
+operator|)
+name|conf
+operator|)
+operator|.
+name|setJar
+argument_list|(
+name|testJar
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getConf ()
 specifier|public
@@ -4977,6 +5012,14 @@ return|return
 literal|0
 return|;
 block|}
+DECL|field|TEST_HADOOP_ARCHIVES_JAR_PATH
+specifier|static
+specifier|final
+name|String
+name|TEST_HADOOP_ARCHIVES_JAR_PATH
+init|=
+literal|"test.hadoop.archives.jar"
+decl_stmt|;
 comment|/** the main functions **/
 DECL|method|main (String[] args)
 specifier|public
