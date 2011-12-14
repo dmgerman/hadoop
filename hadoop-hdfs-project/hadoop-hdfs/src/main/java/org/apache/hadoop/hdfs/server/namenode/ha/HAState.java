@@ -88,6 +88,20 @@ name|UnsupportedActionException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Namenode base state to implement state machine pattern.  */
 end_comment
@@ -235,6 +249,7 @@ block|}
 comment|/**    * Check if an operation is supported in a given state.    * @param context HA context    * @param op Type of the operation.    * @throws UnsupportedActionException if a given type of operation is not    *           supported in this state.    */
 DECL|method|checkOperation (final HAContext context, final OperationCategory op)
 specifier|public
+specifier|abstract
 name|void
 name|checkOperation
 parameter_list|(
@@ -247,30 +262,8 @@ name|OperationCategory
 name|op
 parameter_list|)
 throws|throws
-name|UnsupportedActionException
-block|{
-name|String
-name|msg
-init|=
-literal|"Operation category "
-operator|+
-name|op
-operator|+
-literal|" is not supported in state "
-operator|+
-name|context
-operator|.
-name|getState
-argument_list|()
-decl_stmt|;
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-name|msg
-argument_list|)
-throw|;
-block|}
+name|StandbyException
+function_decl|;
 annotation|@
 name|Override
 DECL|method|toString ()

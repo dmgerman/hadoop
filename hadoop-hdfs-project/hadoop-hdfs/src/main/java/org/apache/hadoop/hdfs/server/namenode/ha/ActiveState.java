@@ -156,8 +156,6 @@ parameter_list|,
 name|OperationCategory
 name|op
 parameter_list|)
-throws|throws
-name|UnsupportedActionException
 block|{
 return|return;
 comment|// Other than journal all operations are allowed in active state
