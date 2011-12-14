@@ -1734,6 +1734,11 @@ operator|.
 name|getContainersStatuses
 argument_list|()
 argument_list|,
+name|remoteNodeStatus
+operator|.
+name|getKeepAliveApplications
+argument_list|()
+argument_list|,
 name|latestResponse
 argument_list|)
 argument_list|)

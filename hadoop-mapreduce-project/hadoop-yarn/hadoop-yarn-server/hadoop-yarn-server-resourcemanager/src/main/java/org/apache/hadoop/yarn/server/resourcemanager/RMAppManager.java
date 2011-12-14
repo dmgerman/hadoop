@@ -1136,7 +1136,7 @@ operator|.
 name|getDelegationTokenRenewer
 argument_list|()
 operator|.
-name|removeApplication
+name|applicationFinished
 argument_list|(
 name|applicationId
 argument_list|)

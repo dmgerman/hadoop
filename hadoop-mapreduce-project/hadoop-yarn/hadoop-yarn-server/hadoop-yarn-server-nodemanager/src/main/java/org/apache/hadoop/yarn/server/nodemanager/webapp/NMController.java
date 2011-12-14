@@ -449,11 +449,11 @@ name|getBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_LOG_AGGREGATION_ENABLED
+name|LOG_AGGREGATION_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_NM_LOG_AGGREGATION_ENABLED
+name|DEFAULT_LOG_AGGREGATION_ENABLED
 argument_list|)
 condition|)
 block|{
