@@ -1336,6 +1336,22 @@ name|hdfs
 operator|.
 name|protocolPB
 operator|.
+name|DatanodeProtocolClientSideTranslatorPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
 name|InterDatanodeProtocolPB
 import|;
 end_import
@@ -6983,7 +6999,7 @@ name|getAllNamenodeThreads
 argument_list|()
 control|)
 block|{
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|nn
 init|=
 name|bpos
@@ -7120,7 +7136,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|nn
 init|=
 name|getBPNamenode
@@ -9956,7 +9972,7 @@ block|}
 comment|/**    * Get namenode corresponding to a block pool    * @param bpid Block pool Id    * @return Namenode corresponding to the bpid    * @throws IOException    */
 DECL|method|getBPNamenode (String bpid)
 specifier|public
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|getBPNamenode
 parameter_list|(
 name|String
@@ -10029,7 +10045,7 @@ operator|.
 name|getBlock
 argument_list|()
 decl_stmt|;
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|nn
 init|=
 name|getBPNamenode

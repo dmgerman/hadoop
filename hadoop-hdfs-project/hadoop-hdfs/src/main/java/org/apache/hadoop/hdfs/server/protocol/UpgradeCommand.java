@@ -158,9 +158,10 @@ specifier|static
 name|int
 name|UC_ACTION_REPORT_STATUS
 init|=
-literal|100
+name|DatanodeProtocol
+operator|.
+name|DNA_UC_ACTION_REPORT_STATUS
 decl_stmt|;
-comment|// report upgrade status
 DECL|field|UC_ACTION_START_UPGRADE
 specifier|public
 specifier|final
@@ -168,9 +169,10 @@ specifier|static
 name|int
 name|UC_ACTION_START_UPGRADE
 init|=
-literal|101
+name|DatanodeProtocol
+operator|.
+name|DNA_UC_ACTION_START_UPGRADE
 decl_stmt|;
-comment|// start upgrade
 DECL|field|version
 specifier|private
 name|int

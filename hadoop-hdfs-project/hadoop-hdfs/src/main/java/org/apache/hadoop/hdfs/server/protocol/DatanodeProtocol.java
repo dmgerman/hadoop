@@ -340,6 +340,24 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
+DECL|field|DNA_UC_ACTION_REPORT_STATUS
+specifier|final
+specifier|static
+name|int
+name|DNA_UC_ACTION_REPORT_STATUS
+init|=
+literal|100
+decl_stmt|;
+comment|// Report upgrade status
+DECL|field|DNA_UC_ACTION_START_UPGRADE
+specifier|final
+specifier|static
+name|int
+name|DNA_UC_ACTION_START_UPGRADE
+init|=
+literal|101
+decl_stmt|;
+comment|// start upgrade
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    *     * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public

@@ -872,6 +872,8 @@ block|{
 name|DatanodeCommand
 index|[]
 name|cmds
+init|=
+literal|null
 decl_stmt|;
 try|try
 block|{
@@ -1029,6 +1031,8 @@ name|ServiceException
 block|{
 name|DatanodeCommand
 name|cmd
+init|=
+literal|null
 decl_stmt|;
 name|List
 argument_list|<

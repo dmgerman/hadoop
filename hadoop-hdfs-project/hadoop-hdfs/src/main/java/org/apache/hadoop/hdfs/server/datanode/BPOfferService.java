@@ -264,6 +264,38 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocolPB
+operator|.
+name|DatanodeProtocolClientSideTranslatorPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|DatanodeProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -657,7 +689,7 @@ name|Thread
 name|bpThread
 decl_stmt|;
 DECL|field|bpNamenode
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|bpNamenode
 decl_stmt|;
 DECL|field|lastHeartbeat
@@ -920,11 +952,11 @@ block|}
 comment|/**    * Used to inject a spy NN in the unit tests.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|setNameNode (DatanodeProtocol dnProtocol)
+DECL|method|setNameNode (DatanodeProtocolClientSideTranslatorPB dnProtocol)
 name|void
 name|setNameNode
 parameter_list|(
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|dnProtocol
 parameter_list|)
 block|{
@@ -1159,21 +1191,9 @@ block|{
 comment|// get NN proxy
 name|bpNamenode
 operator|=
-operator|(
-name|DatanodeProtocol
-operator|)
-name|RPC
-operator|.
-name|waitForProxy
+operator|new
+name|DatanodeProtocolClientSideTranslatorPB
 argument_list|(
-name|DatanodeProtocol
-operator|.
-name|class
-argument_list|,
-name|DatanodeProtocol
-operator|.
-name|versionID
-argument_list|,
 name|nnAddr
 argument_list|,
 name|dn

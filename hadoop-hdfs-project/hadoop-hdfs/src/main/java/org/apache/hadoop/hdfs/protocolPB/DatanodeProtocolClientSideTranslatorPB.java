@@ -1360,7 +1360,7 @@ argument_list|(
 name|capacity
 argument_list|)
 operator|.
-name|setCapacity
+name|setDfsUsed
 argument_list|(
 name|dfsUsed
 argument_list|)
@@ -1548,10 +1548,8 @@ control|)
 block|{
 name|builder
 operator|.
-name|setBlocks
+name|addBlocks
 argument_list|(
-name|i
-argument_list|,
 name|blocks
 index|[
 name|i
@@ -1690,10 +1688,8 @@ control|)
 block|{
 name|builder
 operator|.
-name|setBlocks
+name|addBlocks
 argument_list|(
-name|i
-argument_list|,
 name|PBHelper
 operator|.
 name|convert
@@ -2136,10 +2132,8 @@ control|)
 block|{
 name|builder
 operator|.
-name|setNewTaragets
+name|addNewTaragets
 argument_list|(
-name|i
-argument_list|,
 name|PBHelper
 operator|.
 name|convert
