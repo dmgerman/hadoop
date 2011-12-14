@@ -505,6 +505,122 @@ if|if
 condition|(
 name|action
 operator|.
+name|action
+operator|==
+name|RetryAction
+operator|.
+name|RetryDecision
+operator|.
+name|FAILOVER_AND_RETRY
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Exception while invoking "
+operator|+
+name|method
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" of "
+operator|+
+name|currentProxy
+operator|.
+name|getClass
+argument_list|()
+operator|+
+literal|" after "
+operator|+
+name|invocationFailoverCount
+operator|+
+literal|" fail over attempts."
+operator|+
+literal|" Trying to fail over "
+operator|+
+name|formatSleepMessage
+argument_list|(
+name|action
+operator|.
+name|delayMillis
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|msg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception while invoking "
+operator|+
+name|method
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" of "
+operator|+
+name|currentProxy
+operator|.
+name|getClass
+argument_list|()
+operator|+
+literal|". Retrying "
+operator|+
+name|formatSleepMessage
+argument_list|(
+name|action
+operator|.
+name|delayMillis
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|action
+operator|.
 name|delayMillis
 operator|>
 literal|0
@@ -533,35 +649,6 @@ operator|.
 name|FAILOVER_AND_RETRY
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Exception while invoking "
-operator|+
-name|method
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" of "
-operator|+
-name|currentProxy
-operator|.
-name|getClass
-argument_list|()
-operator|+
-literal|" after "
-operator|+
-name|invocationFailoverCount
-operator|+
-literal|" fail over attempts."
-operator|+
-literal|" Trying to fail over."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 comment|// Make sure that concurrent failed method invocations only cause a
 comment|// single actual fail over.
 synchronized|synchronized
@@ -612,39 +699,39 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+block|}
+DECL|method|formatSleepMessage (long millis)
+specifier|private
+specifier|static
+name|String
+name|formatSleepMessage
+parameter_list|(
+name|long
+name|millis
+parameter_list|)
+block|{
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
+name|millis
+operator|>
+literal|0
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Exception while invoking "
+return|return
+literal|"after sleeping for "
 operator|+
-name|method
-operator|.
-name|getName
-argument_list|()
+name|millis
 operator|+
-literal|" of "
-operator|+
-name|currentProxy
-operator|.
-name|getClass
-argument_list|()
-operator|+
-literal|". Retrying."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
+literal|"ms."
+return|;
 block|}
-block|}
+else|else
+block|{
+return|return
+literal|"immediately."
+return|;
 block|}
 block|}
 DECL|method|invokeMethod (Method method, Object[] args)
