@@ -138,6 +138,22 @@ name|UNRELIABLE_EXCEPTION
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setIdentifier (String identifier)
+specifier|public
+name|void
+name|setIdentifier
+parameter_list|(
+name|String
+name|identifier
+parameter_list|)
+block|{
+name|this
+operator|.
+name|identifier
+operator|=
+name|identifier
+expr_stmt|;
+block|}
 DECL|method|UnreliableImplementation (String identifier, TypeOfExceptionToFailWith exceptionToFailWith)
 specifier|public
 name|UnreliableImplementation
@@ -531,6 +547,21 @@ return|;
 block|}
 else|else
 block|{
+name|String
+name|message
+init|=
+literal|"expected '"
+operator|+
+name|this
+operator|.
+name|identifier
+operator|+
+literal|"' but received '"
+operator|+
+name|identifier
+operator|+
+literal|"'"
+decl_stmt|;
 switch|switch
 condition|(
 name|exceptionToFailWith
@@ -543,7 +574,7 @@ throw|throw
 operator|new
 name|StandbyException
 argument_list|(
-name|identifier
+name|message
 argument_list|)
 throw|;
 case|case
@@ -553,7 +584,7 @@ throw|throw
 operator|new
 name|UnreliableException
 argument_list|(
-name|identifier
+name|message
 argument_list|)
 throw|;
 case|case
@@ -563,7 +594,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|identifier
+name|message
 argument_list|)
 throw|;
 default|default:
@@ -571,7 +602,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-name|identifier
+name|message
 argument_list|)
 throw|;
 block|}
