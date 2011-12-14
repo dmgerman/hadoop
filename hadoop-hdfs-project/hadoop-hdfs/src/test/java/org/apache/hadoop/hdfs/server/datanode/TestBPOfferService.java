@@ -188,6 +188,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocolPB
+operator|.
+name|DatanodeProtocolClientSideTranslatorPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -573,12 +589,12 @@ expr_stmt|;
 block|}
 DECL|field|mockNN1
 specifier|private
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|mockNN1
 decl_stmt|;
 DECL|field|mockNN2
 specifier|private
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|mockNN2
 decl_stmt|;
 DECL|field|mockHaStatuses
@@ -773,7 +789,7 @@ block|}
 comment|/**    * Set up a mock NN with the bare minimum for a DN to register to it.    */
 DECL|method|setupNNMock (int nnIdx)
 specifier|private
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|setupNNMock
 parameter_list|(
 name|int
@@ -782,14 +798,14 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|mock
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 operator|.
 name|class
 argument_list|)
@@ -1631,12 +1647,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a BPOfferService which registers with and heartbeats with the    * specified namenode proxy objects.    */
-DECL|method|setupBPOSForNNs (DatanodeProtocol .... nns)
+DECL|method|setupBPOSForNNs ( DatanodeProtocolClientSideTranslatorPB .... nns)
 specifier|private
 name|BPOfferService
 name|setupBPOSForNNs
 parameter_list|(
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 modifier|...
 name|nns
 parameter_list|)
@@ -1648,7 +1664,7 @@ name|Map
 argument_list|<
 name|InetSocketAddress
 argument_list|,
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 argument_list|>
 name|nnMap
 init|=
@@ -1710,7 +1726,7 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|connectToNN
 parameter_list|(
 name|InetSocketAddress
@@ -1719,7 +1735,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|nn
 init|=
 name|nnMap
@@ -1803,13 +1819,13 @@ literal|10000
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForBlockReport (final DatanodeProtocol mockNN)
+DECL|method|waitForBlockReport (final DatanodeProtocolClientSideTranslatorPB mockNN)
 specifier|private
 name|void
 name|waitForBlockReport
 parameter_list|(
 specifier|final
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|mockNN
 parameter_list|)
 throws|throws
@@ -2015,7 +2031,7 @@ literal|10000
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForBlockReceived ( ExtendedBlock fakeBlock, DatanodeProtocol mockNN)
+DECL|method|waitForBlockReceived ( ExtendedBlock fakeBlock, DatanodeProtocolClientSideTranslatorPB mockNN)
 specifier|private
 name|ReceivedDeletedBlockInfo
 index|[]
@@ -2024,7 +2040,7 @@ parameter_list|(
 name|ExtendedBlock
 name|fakeBlock
 parameter_list|,
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|mockNN
 parameter_list|)
 throws|throws

@@ -216,20 +216,6 @@ name|HadoopIllegalArgumentException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
 begin_comment
 comment|/**   * DatanodeInfo represents the status of a DataNode.  * This object is used for communication in the  * Datanode Protocol and the Client Protocol.  */
 end_comment
@@ -290,8 +276,6 @@ operator|.
 name|DEFAULT_RACK
 decl_stmt|;
 comment|/** HostName as supplied by the datanode during registration as its     * name. Namenode uses datanode IP address as the name.    */
-annotation|@
-name|Nullable
 DECL|field|hostName
 specifier|protected
 name|String
@@ -425,8 +409,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Nullable
 DECL|field|adminState
 specifier|protected
 name|AdminStates

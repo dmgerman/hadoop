@@ -3394,7 +3394,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/**       * Currently we have simply burnt-in support for a SINGLE      * protocol - protocolR23Compatible. This will be replaced      * by a way to pick the right protocol based on the       * version of the target server.        */
+comment|/**       * Currently we have simply burnt-in support for a SINGLE      * protocol - protocolPB. This will be replaced      * by a way to pick the right protocol based on the       * version of the target server.        */
 return|return
 operator|new
 name|org
@@ -3405,9 +3405,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocolR23Compatible
+name|protocolPB
 operator|.
-name|ClientNamenodeProtocolTranslatorR23
+name|ClientNamenodeProtocolTranslatorPB
 argument_list|(
 name|nameNodeAddr
 argument_list|,

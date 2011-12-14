@@ -92,11 +92,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocolPB
 operator|.
-name|common
-operator|.
-name|IncorrectVersionException
+name|DatanodeProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -112,9 +110,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|common
 operator|.
-name|DatanodeProtocol
+name|IncorrectVersionException
 import|;
 end_import
 
@@ -289,12 +287,12 @@ argument_list|(
 literal|"NSBuildVersion"
 argument_list|)
 expr_stmt|;
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 name|fakeDNProt
 init|=
 name|mock
 argument_list|(
-name|DatanodeProtocol
+name|DatanodeProtocolClientSideTranslatorPB
 operator|.
 name|class
 argument_list|)

@@ -1295,13 +1295,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Closing log when already closed"
-argument_list|,
-operator|new
-name|Exception
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;

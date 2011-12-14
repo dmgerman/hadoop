@@ -168,20 +168,6 @@ name|KerberosInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
 begin_comment
 comment|/**********************************************************************  * Protocol that a DFS datanode uses to communicate with the NameNode.  * It's used to upload current load information and block reports.  *  * The only way a NameNode can communicate with a DataNode is by  * returning values from these functions.  *  **********************************************************************/
 end_comment
@@ -340,6 +326,24 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
+DECL|field|DNA_UC_ACTION_REPORT_STATUS
+specifier|final
+specifier|static
+name|int
+name|DNA_UC_ACTION_REPORT_STATUS
+init|=
+literal|100
+decl_stmt|;
+comment|// Report upgrade status
+DECL|field|DNA_UC_ACTION_START_UPGRADE
+specifier|final
+specifier|static
+name|int
+name|DNA_UC_ACTION_START_UPGRADE
+init|=
+literal|101
+decl_stmt|;
+comment|// start upgrade
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    *     * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public
@@ -353,8 +357,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
-annotation|@
-name|Nullable
 DECL|method|sendHeartbeat (DatanodeRegistration registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
 package|;
 end_package
 
@@ -26,45 +30,66 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
-comment|/** Test for simple signs of life using Avro RPC.  Not an exhaustive test  * yet, just enough to catch fundamental problems using Avro reflection to  * infer namenode RPC protocols. */
+comment|/**  * Utilities for testing edit logs  */
 end_comment
 
 begin_class
-DECL|class|TestDfsOverAvroRpc
+DECL|class|FSEditLogTestUtil
 specifier|public
 class|class
-name|TestDfsOverAvroRpc
-extends|extends
-name|TestLocalDFS
+name|FSEditLogTestUtil
 block|{
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|20000
-argument_list|)
-DECL|method|testWorkingDirectory ()
+DECL|method|getNoOpInstance ()
 specifier|public
-name|void
-name|testWorkingDirectory
+specifier|static
+name|FSEditLogOp
+name|getNoOpInstance
 parameter_list|()
+block|{
+return|return
+name|FSEditLogOp
+operator|.
+name|LogSegmentOp
+operator|.
+name|getInstance
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_END_LOG_SEGMENT
+argument_list|)
+return|;
+block|}
+DECL|method|countTransactionsInStream (EditLogInputStream in)
+specifier|public
+specifier|static
+name|long
+name|countTransactionsInStream
+parameter_list|(
+name|EditLogInputStream
+name|in
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/*     Test turned off - see HDFS-2647 and HDFS-2660 for related comments.     This test can be turned on when Avro RPC is enabled using mechanism     similar to protobuf.     */
-comment|/*     System.setProperty("hdfs.rpc.engine",                        "org.apache.hadoop.ipc.AvroRpcEngine");     super.testWorkingDirectory();     */
+name|FSEditLogLoader
+operator|.
+name|EditLogValidation
+name|validation
+init|=
+name|FSEditLogLoader
+operator|.
+name|validateEditLog
+argument_list|(
+name|in
+argument_list|)
+decl_stmt|;
+return|return
+name|validation
+operator|.
+name|getNumTransactions
+argument_list|()
+return|;
 block|}
 block|}
 end_class
