@@ -2735,45 +2735,6 @@ comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
 comment|// note in a workflow scenario, this may lead to creation of a new
 comment|// job (FIXME?)
-comment|// TODO:currently just wait for some time so clients can know the
-comment|// final states. Will be removed once RM come on.
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|5000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
-try|try
-block|{
-comment|// Stop all services
-comment|// This will also send the final report to the ResourceManager
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Calling stop for all the services"
-argument_list|)
-expr_stmt|;
-name|stop
-argument_list|()
-expr_stmt|;
-comment|// Send job-end notification
 try|try
 block|{
 name|LOG
@@ -2841,6 +2802,45 @@ name|ie
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO:currently just wait for some time so clients can know the
+comment|// final states. Will be removed once RM come on.
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
+try|try
+block|{
+comment|// Stop all services
+comment|// This will also send the final report to the ResourceManager
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Calling stop for all the services"
+argument_list|)
+expr_stmt|;
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// Send job-end notification
 block|}
 catch|catch
 parameter_list|(
