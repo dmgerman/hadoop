@@ -484,6 +484,35 @@ name|exitcode
 return|;
 block|}
 comment|// format and print information about the passed in job queue.
+DECL|method|printJobQueueInfo (JobQueueInfo jobQueueInfo, Writer writer)
+name|void
+name|printJobQueueInfo
+parameter_list|(
+name|JobQueueInfo
+name|jobQueueInfo
+parameter_list|,
+name|Writer
+name|writer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|printJobQueueInfo
+argument_list|(
+name|jobQueueInfo
+argument_list|,
+name|writer
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+comment|// format and print information about the passed in job queue.
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|printJobQueueInfo (JobQueueInfo jobQueueInfo, Writer writer, String prefix)
 name|void
 name|printJobQueueInfo
@@ -695,8 +724,6 @@ name|System
 operator|.
 name|out
 argument_list|)
-argument_list|,
-literal|""
 argument_list|)
 expr_stmt|;
 block|}
@@ -846,8 +873,6 @@ name|System
 operator|.
 name|out
 argument_list|)
-argument_list|,
-literal|""
 argument_list|)
 expr_stmt|;
 if|if

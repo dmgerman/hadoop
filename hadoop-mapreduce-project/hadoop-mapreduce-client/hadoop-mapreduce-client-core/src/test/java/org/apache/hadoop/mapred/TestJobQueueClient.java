@@ -160,8 +160,6 @@ argument_list|(
 name|parent
 argument_list|,
 name|writer
-argument_list|,
-literal|""
 argument_list|)
 expr_stmt|;
 name|Assert

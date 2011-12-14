@@ -385,7 +385,7 @@ return|return
 name|taskAttemptId
 return|;
 block|}
-DECL|method|newJobReport (JobId jobId, String jobName, String userName, JobState state, long submitTime, long startTime, long finishTime, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, String jobFile, List<AMInfo> amInfos)
+DECL|method|newJobReport (JobId jobId, String jobName, String userName, JobState state, long submitTime, long startTime, long finishTime, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, String jobFile, List<AMInfo> amInfos, boolean isUber)
 specifier|public
 specifier|static
 name|JobReport
@@ -432,6 +432,9 @@ argument_list|<
 name|AMInfo
 argument_list|>
 name|amInfos
+parameter_list|,
+name|boolean
+name|isUber
 parameter_list|)
 block|{
 name|JobReport
@@ -535,6 +538,13 @@ operator|.
 name|setAMInfos
 argument_list|(
 name|amInfos
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setIsUber
+argument_list|(
+name|isUber
 argument_list|)
 expr_stmt|;
 return|return

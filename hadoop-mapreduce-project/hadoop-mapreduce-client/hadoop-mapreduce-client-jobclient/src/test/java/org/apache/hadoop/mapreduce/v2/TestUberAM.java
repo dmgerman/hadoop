@@ -287,6 +287,8 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Test
 DECL|method|testSleepJob ()
 specifier|public
 name|void
@@ -525,6 +527,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Test
 DECL|method|testRandomWriter ()
 specifier|public
 name|void
@@ -614,6 +618,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Test
 DECL|method|testFailingMapper ()
 specifier|public
 name|void

@@ -2543,7 +2543,13 @@ name|$for
 argument_list|(
 literal|"cluster"
 argument_list|,
+name|ApplicationMasterService
+operator|.
+name|class
+argument_list|,
 name|masterService
+argument_list|,
+literal|"ws"
 argument_list|)
 operator|.
 name|at

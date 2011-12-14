@@ -30,20 +30,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|VersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|server
@@ -64,9 +50,15 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
 operator|.
-name|Times
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|ClusterInfo
 import|;
 end_import
 
@@ -82,7 +74,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|YarnVersionInfo
+name|Times
 import|;
 end_import
 
@@ -191,13 +183,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|long
-name|ts
-init|=
-name|ResourceManager
-operator|.
-name|clusterTimeStamp
-decl_stmt|;
 name|ResourceManager
 name|rm
 init|=
@@ -206,6 +191,15 @@ argument_list|(
 name|ResourceManager
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+name|ClusterInfo
+name|cinfo
+init|=
+operator|new
+name|ClusterInfo
+argument_list|(
+name|rm
 argument_list|)
 decl_stmt|;
 name|info
@@ -217,16 +211,19 @@ name|_
 argument_list|(
 literal|"Cluster ID:"
 argument_list|,
-name|ts
+name|cinfo
+operator|.
+name|getClusterId
+argument_list|()
 argument_list|)
 operator|.
 name|_
 argument_list|(
 literal|"ResourceManager state:"
 argument_list|,
-name|rm
+name|cinfo
 operator|.
-name|getServiceState
+name|getState
 argument_list|()
 argument_list|)
 operator|.
@@ -238,7 +235,10 @@ name|Times
 operator|.
 name|format
 argument_list|(
-name|ts
+name|cinfo
+operator|.
+name|getStartedOn
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
@@ -246,16 +246,16 @@ name|_
 argument_list|(
 literal|"ResourceManager version:"
 argument_list|,
-name|YarnVersionInfo
+name|cinfo
 operator|.
-name|getBuildVersion
+name|getRMBuildVersion
 argument_list|()
 operator|+
 literal|" on "
 operator|+
-name|YarnVersionInfo
+name|cinfo
 operator|.
-name|getDate
+name|getRMVersionBuiltOn
 argument_list|()
 argument_list|)
 operator|.
@@ -263,16 +263,16 @@ name|_
 argument_list|(
 literal|"Hadoop version:"
 argument_list|,
-name|VersionInfo
+name|cinfo
 operator|.
-name|getBuildVersion
+name|getHadoopBuildVersion
 argument_list|()
 operator|+
 literal|" on "
 operator|+
-name|VersionInfo
+name|cinfo
 operator|.
-name|getDate
+name|getHadoopVersionBuiltOn
 argument_list|()
 argument_list|)
 expr_stmt|;

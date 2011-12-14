@@ -1959,7 +1959,7 @@ DECL|field|errorInfo
 name|String
 name|errorInfo
 init|=
-literal|"None"
+literal|""
 decl_stmt|;
 DECL|field|submitTime
 name|long

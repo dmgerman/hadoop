@@ -70,9 +70,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|mapreduce
 operator|.
-name|VersionInfo
+name|v2
+operator|.
+name|hs
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|HistoryInfo
 import|;
 end_import
 
@@ -172,6 +180,13 @@ argument_list|>
 name|content
 parameter_list|()
 block|{
+name|HistoryInfo
+name|info
+init|=
+operator|new
+name|HistoryInfo
+argument_list|()
+decl_stmt|;
 name|info
 argument_list|(
 literal|"History Server"
@@ -181,9 +196,16 @@ name|_
 argument_list|(
 literal|"BuildVersion"
 argument_list|,
-name|VersionInfo
+name|info
 operator|.
-name|getBuildVersion
+name|getHadoopBuildVersion
+argument_list|()
+operator|+
+literal|" on "
+operator|+
+name|info
+operator|.
+name|getHadoopVersionBuiltOn
 argument_list|()
 argument_list|)
 expr_stmt|;

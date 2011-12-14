@@ -106,20 +106,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|Server
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|commons
 operator|.
 name|logging
@@ -166,7 +152,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|CommonConfigurationKeys
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -178,9 +164,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|ipc
 operator|.
-name|CommonConfigurationKeysPublic
+name|Server
 import|;
 end_import
 
@@ -1009,7 +995,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This module is responsible for talking to the   * JobClient (user facing).  *  */
+comment|/**  * This module is responsible for talking to the  * JobClient (user facing).  *  */
 end_comment
 
 begin_class
@@ -1321,7 +1307,13 @@ name|$for
 argument_list|(
 literal|"jobhistory"
 argument_list|,
+name|HistoryClientService
+operator|.
+name|class
+argument_list|,
 name|this
+argument_list|,
+literal|"ws"
 argument_list|)
 operator|.
 name|with

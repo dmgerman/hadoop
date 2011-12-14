@@ -1564,6 +1564,8 @@ operator|.
 name|class
 argument_list|,
 name|appContext
+argument_list|,
+literal|"ws"
 argument_list|)
 operator|.
 name|with

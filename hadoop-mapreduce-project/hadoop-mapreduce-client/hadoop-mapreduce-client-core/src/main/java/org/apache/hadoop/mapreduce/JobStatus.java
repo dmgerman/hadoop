@@ -453,13 +453,18 @@ specifier|private
 name|int
 name|neededMem
 decl_stmt|;
+DECL|field|isUber
+specifier|private
+name|boolean
+name|isUber
+decl_stmt|;
 comment|/**    */
 DECL|method|JobStatus ()
 specifier|public
 name|JobStatus
 parameter_list|()
 block|{   }
-comment|/**    * Create a job status object for a given jobid.    * @param jobid The jobid of the job    * @param setupProgress The progress made on the setup    * @param mapProgress The progress made on the maps    * @param reduceProgress The progress made on the reduces    * @param cleanupProgress The progress made on the cleanup    * @param runState The current state of the job    * @param jp Priority of the job.    * @param user userid of the person who submitted the job.    * @param jobName user-specified job name.    * @param jobFile job configuration file.     * @param trackingUrl link to the web-ui for details of the job.    */
+comment|/**    * Create a job status object for a given jobid.    * @param jobid The jobid of the job    * @param setupProgress The progress made on the setup    * @param mapProgress The progress made on the maps    * @param reduceProgress The progress made on the reduces    * @param cleanupProgress The progress made on the cleanup    * @param runState The current state of the job    * @param jp Priority of the job.    * @param user userid of the person who submitted the job.    * @param jobName user-specified job name.    * @param jobFile job configuration file.    * @param trackingUrl link to the web-ui for details of the job.    */
 DECL|method|JobStatus (JobID jobid, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, State runState, JobPriority jp, String user, String jobName, String jobFile, String trackingUrl)
 specifier|public
 name|JobStatus
@@ -523,10 +528,12 @@ argument_list|,
 name|jobFile
 argument_list|,
 name|trackingUrl
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Create a job status object for a given jobid.     * @param jobid The jobid of the job     * @param setupProgress The progress made on the setup     * @param mapProgress The progress made on the maps     * @param reduceProgress The progress made on the reduces     * @param cleanupProgress The progress made on the cleanup     * @param runState The current state of the job     * @param jp Priority of the job.     * @param user userid of the person who submitted the job.     * @param jobName user-specified job name.     * @param queue queue name     * @param jobFile job configuration file.      * @param trackingUrl link to the web-ui for details of the job.     */
+comment|/**     * Create a job status object for a given jobid.     * @param jobid The jobid of the job     * @param setupProgress The progress made on the setup     * @param mapProgress The progress made on the maps     * @param reduceProgress The progress made on the reduces     * @param cleanupProgress The progress made on the cleanup     * @param runState The current state of the job     * @param jp Priority of the job.     * @param user userid of the person who submitted the job.     * @param jobName user-specified job name.     * @param queue queue name     * @param jobFile job configuration file.     * @param trackingUrl link to the web-ui for details of the job.     */
 DECL|method|JobStatus (JobID jobid, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, State runState, JobPriority jp, String user, String jobName, String queue, String jobFile, String trackingUrl)
 specifier|public
 name|JobStatus
@@ -566,6 +573,81 @@ name|jobFile
 parameter_list|,
 name|String
 name|trackingUrl
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|jobid
+argument_list|,
+name|setupProgress
+argument_list|,
+name|mapProgress
+argument_list|,
+name|reduceProgress
+argument_list|,
+name|cleanupProgress
+argument_list|,
+name|runState
+argument_list|,
+name|jp
+argument_list|,
+name|user
+argument_list|,
+name|jobName
+argument_list|,
+name|queue
+argument_list|,
+name|jobFile
+argument_list|,
+name|trackingUrl
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**     * Create a job status object for a given jobid.     * @param jobid The jobid of the job     * @param setupProgress The progress made on the setup     * @param mapProgress The progress made on the maps     * @param reduceProgress The progress made on the reduces     * @param cleanupProgress The progress made on the cleanup     * @param runState The current state of the job     * @param jp Priority of the job.     * @param user userid of the person who submitted the job.     * @param jobName user-specified job name.     * @param queue queue name     * @param jobFile job configuration file.     * @param trackingUrl link to the web-ui for details of the job.     * @param isUber Whether job running in uber mode     */
+DECL|method|JobStatus (JobID jobid, float setupProgress, float mapProgress, float reduceProgress, float cleanupProgress, State runState, JobPriority jp, String user, String jobName, String queue, String jobFile, String trackingUrl, boolean isUber)
+specifier|public
+name|JobStatus
+parameter_list|(
+name|JobID
+name|jobid
+parameter_list|,
+name|float
+name|setupProgress
+parameter_list|,
+name|float
+name|mapProgress
+parameter_list|,
+name|float
+name|reduceProgress
+parameter_list|,
+name|float
+name|cleanupProgress
+parameter_list|,
+name|State
+name|runState
+parameter_list|,
+name|JobPriority
+name|jp
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|jobName
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|String
+name|jobFile
+parameter_list|,
+name|String
+name|trackingUrl
+parameter_list|,
+name|boolean
+name|isUber
 parameter_list|)
 block|{
 name|this
@@ -652,6 +734,12 @@ operator|.
 name|trackingUrl
 operator|=
 name|trackingUrl
+expr_stmt|;
+name|this
+operator|.
+name|isUber
+operator|=
+name|isUber
 expr_stmt|;
 block|}
 comment|/**    * Sets the map progress of this job    * @param p The value of map progress to set to    */
@@ -1404,6 +1492,13 @@ argument_list|,
 name|jobFile
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+name|isUber
+argument_list|)
+expr_stmt|;
 comment|// Serialize the job's ACLs
 name|out
 operator|.
@@ -1642,6 +1737,15 @@ name|readString
 argument_list|(
 name|in
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isUber
+operator|=
+name|in
+operator|.
+name|readBoolean
+argument_list|()
 expr_stmt|;
 comment|// De-serialize the job's ACLs
 name|int
@@ -1918,6 +2022,36 @@ operator|=
 name|n
 expr_stmt|;
 block|}
+comment|/**    * Whether job running in uber mode    * @return job in uber-mode    */
+DECL|method|isUber ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isUber
+parameter_list|()
+block|{
+return|return
+name|isUber
+return|;
+block|}
+comment|/**    * Set uber-mode flag     * @param isUber Whether job running in uber-mode    */
+DECL|method|setUber (boolean isUber)
+specifier|public
+specifier|synchronized
+name|void
+name|setUber
+parameter_list|(
+name|boolean
+name|isUber
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isUber
+operator|=
+name|isUber
+expr_stmt|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1938,6 +2072,15 @@ argument_list|(
 literal|"job-id : "
 operator|+
 name|jobid
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"uber-mode : "
+operator|+
+name|isUber
 argument_list|)
 expr_stmt|;
 name|buffer

@@ -46,6 +46,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
 import|;
 end_import
@@ -127,6 +145,29 @@ argument_list|<
 name|ContainerStatus
 argument_list|>
 name|containersStatuses
+parameter_list|)
+function_decl|;
+DECL|method|getKeepAliveApplications ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|getKeepAliveApplications
+parameter_list|()
+function_decl|;
+DECL|method|setKeepAliveApplications (List<ApplicationId> appIds)
+specifier|public
+specifier|abstract
+name|void
+name|setKeepAliveApplications
+parameter_list|(
+name|List
+argument_list|<
+name|ApplicationId
+argument_list|>
+name|appIds
 parameter_list|)
 function_decl|;
 DECL|method|getNodeHealthStatus ()

@@ -217,25 +217,15 @@ name|short
 operator|)
 literal|3
 argument_list|)
-block|,
-comment|// Use ProtobufRpcEngine
-DECL|enumConstant|RPC_AVRO
-name|RPC_AVRO
-argument_list|(
-operator|(
-name|short
-operator|)
-literal|4
-argument_list|)
 block|;
-comment|// Use AvroRpcEngine
+comment|// Use ProtobufRpcEngine
 DECL|field|MAX_INDEX
-specifier|static
 specifier|final
+specifier|static
 name|short
 name|MAX_INDEX
 init|=
-name|RPC_AVRO
+name|RPC_PROTOCOL_BUFFER
 operator|.
 name|value
 decl_stmt|;

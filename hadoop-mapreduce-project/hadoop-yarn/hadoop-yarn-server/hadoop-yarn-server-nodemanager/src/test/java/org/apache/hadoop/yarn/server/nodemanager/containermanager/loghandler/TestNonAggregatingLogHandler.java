@@ -597,7 +597,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_LOG_AGGREGATION_ENABLED
+name|LOG_AGGREGATION_ENABLED
 argument_list|,
 literal|false
 argument_list|)
@@ -1067,7 +1067,7 @@ name|setBoolean
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_LOG_AGGREGATION_ENABLED
+name|LOG_AGGREGATION_ENABLED
 argument_list|,
 literal|false
 argument_list|)
