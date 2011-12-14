@@ -3934,7 +3934,6 @@ name|MyAppContext
 implements|implements
 name|AppContext
 block|{
-comment|// I'll be making Avro objects by hand.  Please don't do that very often.
 DECL|field|myAppAttemptID
 specifier|private
 specifier|final

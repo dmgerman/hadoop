@@ -558,15 +558,6 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-comment|//  @Test
-comment|//  public void testAvroRPC() throws Exception {
-comment|//    test(AvroYarnRPC.class.getName());
-comment|//  }
-comment|//
-comment|//  @Test
-comment|//  public void testHadoopNativeRPC() throws Exception {
-comment|//    test(HadoopYarnRPC.class.getName());
-comment|//  }
 annotation|@
 name|Test
 DECL|method|testUnknownCall ()
