@@ -44,20 +44,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -497,8 +483,6 @@ comment|///////////////////////////////////////
 comment|// File contents
 comment|///////////////////////////////////////
 comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#getBlockLocations}    */
-annotation|@
-name|Nullable
 DECL|method|getBlockLocations (String src, long offset, long length)
 specifier|public
 name|LocatedBlocksWritable
@@ -706,7 +690,7 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#addBlock(String,     * String, org.apache.hadoop.hdfs.protocol.ExtendedBlock,     * org.apache.hadoop.hdfs.protocol.DatanodeInfo[])}    */
-DECL|method|addBlock (String src, String clientName, @Nullable ExtendedBlockWritable previous, @Nullable DatanodeInfoWritable[] excludeNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlockWritable previous, DatanodeInfoWritable[] excludeNodes)
 specifier|public
 name|LocatedBlockWritable
 name|addBlock
@@ -717,13 +701,9 @@ parameter_list|,
 name|String
 name|clientName
 parameter_list|,
-annotation|@
-name|Nullable
 name|ExtendedBlockWritable
 name|previous
 parameter_list|,
-annotation|@
-name|Nullable
 name|DatanodeInfoWritable
 index|[]
 name|excludeNodes
@@ -1149,8 +1129,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#distributedUpgradeProgress}    */
-annotation|@
-name|Nullable
 DECL|method|distributedUpgradeProgress ( UpgradeAction action)
 specifier|public
 name|UpgradeStatusReportWritable
@@ -1202,8 +1180,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * The specification of this method matches that of    * {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#getFileInfo(String)}    */
-annotation|@
-name|Nullable
 DECL|method|getFileInfo (String src)
 specifier|public
 name|HdfsFileStatusWritable

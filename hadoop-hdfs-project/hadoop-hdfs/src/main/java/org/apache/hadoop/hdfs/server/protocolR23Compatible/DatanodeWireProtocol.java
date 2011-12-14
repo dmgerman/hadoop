@@ -36,20 +36,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -399,8 +385,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
-annotation|@
-name|Nullable
 DECL|method|sendHeartbeat ( DatanodeRegistrationWritable registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeCommandWritable

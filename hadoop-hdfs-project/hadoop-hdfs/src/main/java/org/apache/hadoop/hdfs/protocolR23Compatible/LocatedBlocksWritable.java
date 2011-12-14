@@ -138,20 +138,6 @@ name|WritableFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
 begin_comment
 comment|/**  * Collection of blocks with their locations and the file length.  */
 end_comment
@@ -191,8 +177,6 @@ specifier|private
 name|boolean
 name|underConstruction
 decl_stmt|;
-annotation|@
-name|Nullable
 DECL|field|lastLocatedBlock
 specifier|private
 name|LocatedBlockWritable

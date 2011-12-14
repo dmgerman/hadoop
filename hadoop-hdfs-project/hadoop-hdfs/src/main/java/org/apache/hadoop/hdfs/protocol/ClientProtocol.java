@@ -44,20 +44,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -502,8 +488,6 @@ comment|///////////////////////////////////////
 comment|// File contents
 comment|///////////////////////////////////////
 comment|/**    * Get locations of the blocks of the specified file within the specified range.    * DataNode locations for each block are sorted by    * the proximity to the client.    *<p>    * Return {@link LocatedBlocks} which contains    * file length, blocks and their locations.    * DataNode locations for each block are sorted by    * the distance to the client's address.    *<p>    * The client will then have to contact     * one of the indicated DataNodes to obtain the actual data.    *     * @param src file name    * @param offset range start offset    * @param length range length    *    * @return file length and array of blocks with their locations    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> does not exist    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
-annotation|@
-name|Nullable
 DECL|method|getBlockLocations (String src, long offset, long length)
 specifier|public
 name|LocatedBlocks
@@ -711,7 +695,7 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * A client that wants to write an additional block to the     * indicated filename (which must currently be open for writing)    * should call addBlock().      *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *     * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    *    * @return LocatedBlock allocated block information.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws NotReplicatedYetException previous blocks of the file are not    *           replicated yet. Blocks cannot be added until replication    *           completes.    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
-DECL|method|addBlock (String src, String clientName, @Nullable ExtendedBlock previous, @Nullable DatanodeInfo[] excludeNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -722,13 +706,9 @@ parameter_list|,
 name|String
 name|clientName
 parameter_list|,
-annotation|@
-name|Nullable
 name|ExtendedBlock
 name|previous
 parameter_list|,
-annotation|@
-name|Nullable
 name|DatanodeInfo
 index|[]
 name|excludeNodes
@@ -1154,8 +1134,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
-annotation|@
-name|Nullable
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
 specifier|public
 name|UpgradeStatusReport
@@ -1207,8 +1185,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the file info for a specific file or directory.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if the path contains a symlink.     * @throws IOException If an I/O error occurred            */
-annotation|@
-name|Nullable
 DECL|method|getFileInfo (String src)
 specifier|public
 name|HdfsFileStatus

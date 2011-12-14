@@ -160,20 +160,6 @@ name|WritableFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
 begin_comment
 comment|/** Interface that represents the over the wire information for a file.  */
 end_comment
@@ -231,8 +217,6 @@ index|[]
 name|path
 decl_stmt|;
 comment|// local name of the inode that's encoded in java UTF8
-annotation|@
-name|Nullable
 DECL|field|symlink
 specifier|private
 name|byte
