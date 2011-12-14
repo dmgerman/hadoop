@@ -1540,6 +1540,48 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Private
+DECL|method|getContainersToCleanUp ()
+specifier|public
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getContainersToCleanUp
+parameter_list|()
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|(
+name|containersToClean
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
 name|Override
 DECL|method|pullContainersToCleanUp ()
 specifier|public
@@ -2160,7 +2202,6 @@ name|getContainers
 argument_list|()
 control|)
 block|{
-comment|// Process running containers
 name|ContainerId
 name|containerId
 init|=
@@ -2169,6 +2210,36 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+comment|// Don't bother with containers already scheduled for cleanup,
+comment|// the scheduler doens't need to know any more about this container
+if|if
+condition|(
+name|rmNode
+operator|.
+name|containersToClean
+operator|.
+name|contains
+argument_list|(
+name|containerId
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" already scheduled for "
+operator|+
+literal|"cleanup, no further processing"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+comment|// Process running containers
 if|if
 condition|(
 name|remoteContainer
