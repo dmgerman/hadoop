@@ -534,6 +534,19 @@ return|return
 literal|null
 return|;
 block|}
+comment|// TODO(HA): Test this.
+annotation|@
+name|Override
+DECL|method|isInProgress ()
+specifier|public
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * Input stream implementation which can be used by     * FSEditLogOp.Reader    */
 DECL|class|LedgerInputStream
 specifier|private

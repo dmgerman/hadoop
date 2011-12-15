@@ -189,6 +189,7 @@ name|IOException
 function_decl|;
 comment|/**    * Return true if this stream is in progress, false if it is finalized.    */
 DECL|method|isInProgress ()
+specifier|public
 specifier|abstract
 name|boolean
 name|isInProgress
