@@ -2244,7 +2244,7 @@ name|failoverProxyProviderClass
 init|=
 name|getFailoverProxyProviderClass
 argument_list|(
-name|authority
+name|nameNodeUri
 argument_list|,
 name|conf
 argument_list|)
@@ -2442,7 +2442,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getFailoverProxyProviderClass (String authority, Configuration conf)
+DECL|method|getFailoverProxyProviderClass (URI nameNodeUri, Configuration conf)
 specifier|private
 name|Class
 argument_list|<
@@ -2450,8 +2450,8 @@ name|?
 argument_list|>
 name|getFailoverProxyProviderClass
 parameter_list|(
-name|String
-name|authority
+name|URI
+name|nameNodeUri
 parameter_list|,
 name|Configuration
 name|conf
@@ -2459,6 +2459,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|nameNodeUri
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|String
+name|host
+init|=
+name|nameNodeUri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
 name|String
 name|configKey
 init|=
@@ -2466,11 +2485,16 @@ name|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
 operator|+
 literal|"."
 operator|+
-name|authority
+name|host
 decl_stmt|;
 try|try
 block|{
-return|return
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|ret
+init|=
 name|conf
 operator|.
 name|getClass
@@ -2479,6 +2503,62 @@ name|configKey
 argument_list|,
 literal|null
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ret
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// If we found a proxy provider, then this URI should be a logical NN.
+comment|// Given that, it shouldn't have a non-default port number.
+name|int
+name|port
+init|=
+name|nameNodeUri
+operator|.
+name|getPort
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|port
+operator|>
+literal|0
+operator|&&
+name|port
+operator|!=
+name|NameNode
+operator|.
+name|DEFAULT_PORT
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Port "
+operator|+
+name|port
+operator|+
+literal|" specified in URI "
+operator|+
+name|nameNodeUri
+operator|+
+literal|" but host '"
+operator|+
+name|host
+operator|+
+literal|"' is a logical (HA) namenode"
+operator|+
+literal|" and does not use port information."
+argument_list|)
+throw|;
+block|}
+block|}
+return|return
+name|ret
 return|;
 block|}
 catch|catch
@@ -2512,7 +2592,7 @@ argument_list|)
 operator|+
 literal|" which is configured for authority "
 operator|+
-name|authority
+name|nameNodeUri
 argument_list|,
 name|e
 argument_list|)
