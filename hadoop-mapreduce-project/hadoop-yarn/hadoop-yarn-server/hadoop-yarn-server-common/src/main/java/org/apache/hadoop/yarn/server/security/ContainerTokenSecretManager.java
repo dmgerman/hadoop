@@ -26,7 +26,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
 import|;
 end_import
 
@@ -36,7 +36,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -137,7 +139,6 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|secretkeys
-specifier|private
 name|Map
 argument_list|<
 name|String
@@ -147,7 +148,7 @@ argument_list|>
 name|secretkeys
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
