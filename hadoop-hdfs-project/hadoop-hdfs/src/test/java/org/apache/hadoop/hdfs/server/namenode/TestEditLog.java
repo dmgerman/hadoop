@@ -748,7 +748,12 @@ name|blockSize
 init|=
 literal|64
 decl_stmt|;
-DECL|method|Transactions (FSNamesystem ns, int num)
+DECL|field|id
+specifier|final
+name|int
+name|id
+decl_stmt|;
+DECL|method|Transactions (FSNamesystem ns, int num, int id)
 name|Transactions
 parameter_list|(
 name|FSNamesystem
@@ -756,6 +761,9 @@ name|ns
 parameter_list|,
 name|int
 name|num
+parameter_list|,
+name|int
+name|id
 parameter_list|)
 block|{
 name|namesystem
@@ -765,6 +773,12 @@ expr_stmt|;
 name|numTransactions
 operator|=
 name|num
+expr_stmt|;
+name|this
+operator|.
+name|id
+operator|=
+name|id
 expr_stmt|;
 block|}
 comment|// add a bunch of transactions.
@@ -835,13 +849,22 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|String
+name|fileName
+init|=
+literal|"/filename-"
+operator|+
+name|id
+operator|+
+literal|"-"
+operator|+
+name|i
+decl_stmt|;
 name|editLog
 operator|.
 name|logOpenFile
 argument_list|(
-literal|"/filename"
-operator|+
-name|i
+name|fileName
 argument_list|,
 name|inode
 argument_list|)
@@ -850,9 +873,7 @@ name|editLog
 operator|.
 name|logCloseFile
 argument_list|(
-literal|"/filename"
-operator|+
-name|i
+name|fileName
 argument_list|,
 name|inode
 argument_list|)
@@ -1571,6 +1592,8 @@ argument_list|(
 name|namesystem
 argument_list|,
 name|NUM_TRANSACTIONS
+argument_list|,
+name|i
 argument_list|)
 decl_stmt|;
 name|threadId

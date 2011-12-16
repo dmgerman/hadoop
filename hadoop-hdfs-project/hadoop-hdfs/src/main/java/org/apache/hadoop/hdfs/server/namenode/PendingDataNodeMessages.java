@@ -714,7 +714,7 @@ name|m
 operator|.
 name|getTargetGs
 argument_list|()
-operator|<
+operator|<=
 name|gs
 condition|)
 block|{

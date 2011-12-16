@@ -172,6 +172,28 @@ operator|>
 literal|1
 return|;
 block|}
+comment|/**    * Returns true if HA is using a shared edits directory.    *    * @param conf Configuration    * @return true if HA config is using a shared edits dir, false otherwise.    */
+DECL|method|usesSharedEditsDir (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|usesSharedEditsDir
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+literal|null
+operator|!=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the namenode Id by matching the {@code addressKey}    * with the the address of the local node.    *     * If {@link DFSConfigKeys#DFS_HA_NAMENODE_ID_KEY} is not specifically    * configured, this method determines the namenode Id by matching the local    * node's address with the configured addresses. When a match is found, it    * returns the namenode Id from the corresponding configuration key.    *     * @param conf Configuration    * @return namenode Id on success, null on failure.    * @throws HadoopIllegalArgumentException on error    */
 DECL|method|getNameNodeId (Configuration conf, String nsId)
 specifier|public

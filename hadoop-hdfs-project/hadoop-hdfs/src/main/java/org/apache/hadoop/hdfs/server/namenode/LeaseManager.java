@@ -722,6 +722,22 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Removing non-existent lease! holder="
+operator|+
+name|holder
+operator|+
+literal|" src="
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Reassign lease for file src to the new holder.    */
 DECL|method|reassignLease (Lease lease, String src, String newHolder)

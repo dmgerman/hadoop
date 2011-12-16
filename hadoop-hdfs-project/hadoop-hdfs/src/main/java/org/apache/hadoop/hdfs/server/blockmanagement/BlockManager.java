@@ -2364,6 +2364,8 @@ name|numBlocks
 argument_list|()
 operator|-
 literal|1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 return|return
@@ -2371,7 +2373,7 @@ name|b
 return|;
 block|}
 comment|/**    * Convert a specified block of the file to a complete block.    * @param fileINode file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|completeBlock (final INodeFile fileINode, final int blkIndex)
+DECL|method|completeBlock (final INodeFile fileINode, final int blkIndex, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
@@ -2383,6 +2385,9 @@ parameter_list|,
 specifier|final
 name|int
 name|blkIndex
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -2427,6 +2432,9 @@ name|curBlock
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|force
+operator|&&
 name|ucBlock
 operator|.
 name|numNodes
@@ -2471,7 +2479,7 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-DECL|method|completeBlock (final INodeFile fileINode, final BlockInfo block)
+DECL|method|completeBlock (final INodeFile fileINode, final BlockInfo block, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
@@ -2483,6 +2491,9 @@ parameter_list|,
 specifier|final
 name|BlockInfo
 name|block
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -2528,11 +2539,48 @@ argument_list|(
 name|fileINode
 argument_list|,
 name|idx
+argument_list|,
+name|force
 argument_list|)
 return|;
 block|}
 return|return
 name|block
+return|;
+block|}
+comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
+DECL|method|forceCompleteBlock (final INodeFile fileINode, final BlockInfoUnderConstruction block)
+specifier|public
+name|BlockInfo
+name|forceCompleteBlock
+parameter_list|(
+specifier|final
+name|INodeFile
+name|fileINode
+parameter_list|,
+specifier|final
+name|BlockInfoUnderConstruction
+name|block
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|block
+operator|.
+name|commitBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+return|return
+name|completeBlock
+argument_list|(
+name|fileINode
+argument_list|,
+name|block
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param fileINode file    * @return the last block locations if the block is partial or null otherwise    */
@@ -3228,6 +3276,11 @@ index|[
 name|numMachines
 index|]
 decl_stmt|;
+name|int
+name|j
+init|=
+literal|0
+decl_stmt|;
 if|if
 condition|(
 name|numMachines
@@ -3235,11 +3288,6 @@ operator|>
 literal|0
 condition|)
 block|{
-name|int
-name|j
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 name|Iterator
@@ -3306,6 +3354,33 @@ name|d
 expr_stmt|;
 block|}
 block|}
+assert|assert
+name|j
+operator|==
+name|machines
+operator|.
+name|length
+operator|:
+literal|"isCorrupt: "
+operator|+
+name|isCorrupt
+operator|+
+literal|" numMachines: "
+operator|+
+name|numMachines
+operator|+
+literal|" numNodes: "
+operator|+
+name|numNodes
+operator|+
+literal|" numCorrupt: "
+operator|+
+name|numCorruptNodes
+operator|+
+literal|" numCorruptRepls: "
+operator|+
+name|numCorruptReplicas
+assert|;
 specifier|final
 name|ExtendedBlock
 name|eb
@@ -7896,6 +7971,8 @@ name|getINode
 argument_list|()
 argument_list|,
 name|storedBlock
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// check whether safe replication is reached for the block
@@ -8187,6 +8264,8 @@ argument_list|(
 name|fileINode
 argument_list|,
 name|storedBlock
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// check whether safe replication is reached for the block
