@@ -4637,10 +4637,16 @@ name|e
 argument_list|)
 throw|;
 block|}
+specifier|final
+name|int
+name|EXPECTED_TXNS_FIRST_SEG
+init|=
+literal|12
+decl_stmt|;
 comment|// the following steps should have happened:
-comment|//   edits_inprogress_1 -> edits_1-8  (finalized)
-comment|//   fsimage_8 created
-comment|//   edits_inprogress_9 created
+comment|//   edits_inprogress_1 -> edits_1-12  (finalized)
+comment|//   fsimage_12 created
+comment|//   edits_inprogress_13 created
 comment|//
 for|for
 control|(
@@ -4738,16 +4744,15 @@ name|getFinalizedEditsFileName
 argument_list|(
 literal|1
 argument_list|,
-literal|8
+name|EXPECTED_TXNS_FIRST_SEG
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|GenericTestUtils
+operator|.
+name|assertExists
 argument_list|(
 name|finalizedEdits
-operator|.
-name|exists
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -4766,7 +4771,9 @@ operator|.
 name|SIZE
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|GenericTestUtils
+operator|.
+name|assertExists
 argument_list|(
 operator|new
 name|File
@@ -4779,12 +4786,11 @@ name|NNStorage
 operator|.
 name|getInProgressEditsFileName
 argument_list|(
-literal|9
+name|EXPECTED_TXNS_FIRST_SEG
+operator|+
+literal|1
 argument_list|)
 argument_list|)
-operator|.
-name|exists
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4835,7 +4841,7 @@ name|NNStorage
 operator|.
 name|getImageFileName
 argument_list|(
-literal|8
+name|EXPECTED_TXNS_FIRST_SEG
 argument_list|)
 argument_list|)
 decl_stmt|;

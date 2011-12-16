@@ -2032,7 +2032,7 @@ expr_stmt|;
 comment|// test PIPELINE_SETUP_APPEND on an existing block
 name|newGS
 operator|=
-name|newBlock
+name|firstBlock
 operator|.
 name|getGenerationStamp
 argument_list|()

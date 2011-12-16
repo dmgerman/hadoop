@@ -365,7 +365,7 @@ specifier|final
 name|int
 name|EXPECTED_TXID
 init|=
-literal|33
+literal|49
 decl_stmt|;
 DECL|field|LOG
 specifier|private

@@ -3801,7 +3801,7 @@ condition|(
 operator|!
 name|editLog
 operator|.
-name|isSegmentOpen
+name|isOpenForWrite
 argument_list|()
 condition|)
 block|{
@@ -13684,6 +13684,12 @@ condition|(
 name|cmds
 operator|==
 literal|null
+operator|||
+name|cmds
+operator|.
+name|length
+operator|==
+literal|0
 condition|)
 block|{
 name|DatanodeCommand

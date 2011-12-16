@@ -866,9 +866,11 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|null
+literal|0
 argument_list|,
 name|cmds
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 block|}

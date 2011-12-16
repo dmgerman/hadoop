@@ -1073,6 +1073,17 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|// Abort current log segment - otherwise the NN shutdown code
+comment|// will close it gracefully, which is incorrect.
+name|getFSImage
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|abortCurrentLogSegment
+argument_list|()
+expr_stmt|;
 comment|// Stop name-node threads
 name|super
 operator|.

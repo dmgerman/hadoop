@@ -3394,6 +3394,12 @@ name|editLogStream
 operator|=
 literal|null
 expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+expr_stmt|;
 block|}
 block|}
 catch|catch

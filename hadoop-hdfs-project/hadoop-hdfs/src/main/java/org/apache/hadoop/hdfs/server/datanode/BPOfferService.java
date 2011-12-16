@@ -1463,6 +1463,16 @@ operator|=
 name|reg
 expr_stmt|;
 block|}
+name|dn
+operator|.
+name|bpRegistrationSucceeded
+argument_list|(
+name|bpRegistration
+argument_list|,
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Verify equality of two namespace-related fields, throwing    * an exception if they are unequal.    */
 DECL|method|checkNSEquality ( Object ourID, Object theirID, String idHelpText)
