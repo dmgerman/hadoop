@@ -1648,7 +1648,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalStateException
 argument_list|(
 literal|"Asked for fromTxId "
 operator|+

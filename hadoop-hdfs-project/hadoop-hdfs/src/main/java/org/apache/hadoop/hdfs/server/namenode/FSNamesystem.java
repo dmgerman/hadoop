@@ -3938,6 +3938,15 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// Update the fsimage with the last txid that we wrote
+comment|// so that the tailer starts from the right spot.
+name|dir
+operator|.
+name|fsImage
+operator|.
+name|updateLastAppliedTxIdFromWritten
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -13794,25 +13803,11 @@ name|NNHAStatusHeartbeat
 argument_list|(
 name|hbState
 argument_list|,
-name|Math
-operator|.
-name|max
-argument_list|(
 name|getFSImage
 argument_list|()
 operator|.
-name|getLastAppliedTxId
+name|getLastAppliedOrWrittenTxId
 argument_list|()
-argument_list|,
-name|getFSImage
-argument_list|()
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|getLastWrittenTxId
-argument_list|()
-argument_list|)
 argument_list|)
 return|;
 block|}

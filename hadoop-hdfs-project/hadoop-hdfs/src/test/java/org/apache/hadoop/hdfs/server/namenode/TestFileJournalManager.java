@@ -1208,7 +1208,7 @@ name|Test
 argument_list|(
 name|expected
 operator|=
-name|IOException
+name|IllegalStateException
 operator|.
 name|class
 argument_list|)
@@ -1797,7 +1797,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|IllegalStateException
 name|ioe
 parameter_list|)
 block|{

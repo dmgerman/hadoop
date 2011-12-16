@@ -6615,7 +6615,7 @@ argument_list|(
 name|nnIndex
 argument_list|)
 operator|.
-name|transitionToActive
+name|transitionToStandby
 argument_list|()
 expr_stmt|;
 block|}
