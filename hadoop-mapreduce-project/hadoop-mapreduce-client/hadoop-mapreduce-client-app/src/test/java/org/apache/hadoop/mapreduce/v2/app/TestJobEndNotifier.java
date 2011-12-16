@@ -447,7 +447,7 @@ name|MRJobConfig
 operator|.
 name|MR_JOB_END_RETRY_INTERVAL
 argument_list|,
-literal|"3"
+literal|"3000"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -458,7 +458,7 @@ name|MRJobConfig
 operator|.
 name|MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL
 argument_list|,
-literal|"3"
+literal|"3000"
 argument_list|)
 expr_stmt|;
 name|JobReport

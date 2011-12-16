@@ -2735,6 +2735,21 @@ comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
 comment|// note in a workflow scenario, this may lead to creation of a new
 comment|// job (FIXME?)
+if|if
+condition|(
+name|getConfig
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_JOB_END_NOTIFICATION_URL
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|LOG
@@ -2801,6 +2816,7 @@ argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// TODO:currently just wait for some time so clients can know the
 comment|// final states. Will be removed once RM come on.

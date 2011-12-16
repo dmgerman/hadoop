@@ -548,6 +548,13 @@ argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
+name|appMaster
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|EventHandler
 argument_list|<
 name|JobFinishEvent
