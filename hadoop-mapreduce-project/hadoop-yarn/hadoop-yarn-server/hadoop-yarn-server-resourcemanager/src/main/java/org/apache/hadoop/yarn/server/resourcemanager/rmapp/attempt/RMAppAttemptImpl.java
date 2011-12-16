@@ -1993,6 +1993,13 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|proxiedTrackingUrl
+operator|=
+name|generateProxyUriWithoutScheme
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|stateMachine
 operator|=
 name|stateMachineFactory
@@ -2278,6 +2285,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|generateProxyUriWithoutScheme ()
+specifier|private
+name|String
+name|generateProxyUriWithoutScheme
+parameter_list|()
+block|{
+return|return
+name|generateProxyUriWithoutScheme
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
 DECL|method|generateProxyUriWithoutScheme ( final String trackingUriWithoutScheme)
 specifier|private
 name|String
@@ -2300,6 +2320,12 @@ block|{
 name|URI
 name|trackingUri
 init|=
+name|trackingUriWithoutScheme
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|ProxyUriUtils
 operator|.
 name|getUriFromAMUrl
