@@ -150,6 +150,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|ID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|InputSplit
 import|;
 end_import
@@ -225,6 +239,24 @@ operator|.
 name|input
 operator|.
 name|FileSplit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|rumen
+operator|.
+name|datatypes
+operator|.
+name|*
 import|;
 end_import
 
@@ -579,6 +611,9 @@ operator|.
 name|getJobProperties
 argument_list|()
 operator|.
+name|getValue
+argument_list|()
+operator|.
 name|entrySet
 argument_list|()
 control|)
@@ -800,7 +835,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|String
+name|NodeName
 argument_list|>
 name|layers
 init|=
@@ -847,6 +882,9 @@ argument_list|()
 operator|-
 literal|1
 argument_list|)
+operator|.
+name|getValue
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1203,7 +1241,7 @@ name|String
 name|getName
 parameter_list|()
 block|{
-name|String
+name|JobName
 name|jobName
 init|=
 name|job
@@ -1226,6 +1264,9 @@ else|else
 block|{
 return|return
 name|jobName
+operator|.
+name|getValue
+argument_list|()
 return|;
 block|}
 block|}
@@ -1238,19 +1279,14 @@ name|getJobID
 parameter_list|()
 block|{
 return|return
-name|JobID
-operator|.
-name|forName
-argument_list|(
 name|getLoggedJob
 argument_list|()
 operator|.
 name|getJobID
 argument_list|()
-argument_list|)
 return|;
 block|}
-DECL|method|sanitizeValue (int oldVal, int defaultVal, String name, String id)
+DECL|method|sanitizeValue (int oldVal, int defaultVal, String name, JobID id)
 specifier|private
 name|int
 name|sanitizeValue
@@ -1264,7 +1300,7 @@ parameter_list|,
 name|String
 name|name
 parameter_list|,
-name|String
+name|JobID
 name|id
 parameter_list|)
 block|{
@@ -1392,7 +1428,7 @@ name|String
 name|getQueueName
 parameter_list|()
 block|{
-name|String
+name|QueueName
 name|queue
 init|=
 name|job
@@ -1405,6 +1441,13 @@ operator|(
 name|queue
 operator|==
 literal|null
+operator|||
+name|queue
+operator|.
+name|getValue
+argument_list|()
+operator|==
+literal|null
 operator|)
 condition|?
 name|JobConf
@@ -1412,6 +1455,9 @@ operator|.
 name|DEFAULT_QUEUE_NAME
 else|:
 name|queue
+operator|.
+name|getValue
+argument_list|()
 return|;
 block|}
 comment|/**    * Getting the number of map tasks that are actually logged in the trace.    * @return The number of map tasks that are actually logged in the trace.    */
@@ -1749,14 +1795,9 @@ name|put
 argument_list|(
 name|maskTaskID
 argument_list|(
-name|TaskID
-operator|.
-name|forName
-argument_list|(
 name|map
 operator|.
 name|taskID
-argument_list|)
 argument_list|)
 argument_list|,
 name|map
@@ -1790,15 +1831,10 @@ block|{
 name|TaskAttemptID
 name|id
 init|=
-name|TaskAttemptID
-operator|.
-name|forName
-argument_list|(
 name|mapAttempt
 operator|.
 name|getAttemptID
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|loggedTaskAttemptMap
 operator|.
@@ -1847,14 +1883,9 @@ name|put
 argument_list|(
 name|maskTaskID
 argument_list|(
-name|TaskID
-operator|.
-name|forName
-argument_list|(
 name|reduce
 operator|.
 name|taskID
-argument_list|)
 argument_list|)
 argument_list|,
 name|reduce
@@ -1888,15 +1919,10 @@ block|{
 name|TaskAttemptID
 name|id
 init|=
-name|TaskAttemptID
-operator|.
-name|forName
-argument_list|(
 name|reduceAttempt
 operator|.
 name|getAttemptID
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|loggedTaskAttemptMap
 operator|.
@@ -1925,7 +1951,7 @@ name|String
 name|getUser
 parameter_list|()
 block|{
-name|String
+name|UserName
 name|retval
 init|=
 name|job
@@ -1938,11 +1964,21 @@ operator|(
 name|retval
 operator|==
 literal|null
+operator|||
+name|retval
+operator|.
+name|getValue
+argument_list|()
+operator|==
+literal|null
 operator|)
 condition|?
 literal|"(unknown)"
 else|:
 name|retval
+operator|.
+name|getValue
+argument_list|()
 return|;
 block|}
 comment|/**    * Get the underlining {@link LoggedJob} object read directly from the trace.    * This is mainly for debugging.    *     * @return the underlining {@link LoggedJob} object    */
@@ -2406,7 +2442,7 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|sanitizeTaskRuntime (long time, String id)
+DECL|method|sanitizeTaskRuntime (long time, ID id)
 specifier|private
 name|long
 name|sanitizeTaskRuntime
@@ -2414,7 +2450,7 @@ parameter_list|(
 name|long
 name|time
 parameter_list|,
-name|String
+name|ID
 name|id
 parameter_list|)
 block|{
@@ -2651,6 +2687,9 @@ name|loggedAttempt
 operator|.
 name|getHostName
 argument_list|()
+operator|.
+name|getValue
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -2710,7 +2749,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|String
+name|NodeName
 argument_list|>
 name|layers
 init|=
@@ -2751,6 +2790,9 @@ argument_list|()
 operator|-
 literal|1
 argument_list|)
+operator|.
+name|getValue
+argument_list|()
 decl_stmt|;
 name|MachineNode
 name|dataNode
@@ -3505,15 +3547,10 @@ argument_list|(
 operator|new
 name|TaskID
 argument_list|(
-name|JobID
-operator|.
-name|forName
-argument_list|(
 name|job
 operator|.
 name|getJobID
 argument_list|()
-argument_list|)
 argument_list|,
 name|taskType
 argument_list|,
@@ -3602,9 +3639,6 @@ name|taskNumber
 argument_list|,
 name|taskAttemptNumber
 argument_list|)
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|TaskAttemptInfo

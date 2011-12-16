@@ -62,8 +62,27 @@ name|Matcher
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|rumen
+operator|.
+name|datatypes
+operator|.
+name|NodeName
+import|;
+end_import
+
 begin_class
 DECL|class|ParsedHost
+specifier|public
 class|class
 name|ParsedHost
 block|{
@@ -226,7 +245,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|String
+name|NodeName
 argument_list|>
 name|coordinates
 init|=
@@ -243,6 +262,9 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|getRackName
+argument_list|()
 expr_stmt|;
 name|nodeName
 operator|=
@@ -252,6 +274,9 @@ name|get
 argument_list|(
 literal|1
 argument_list|)
+operator|.
+name|getHostName
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|makeLoggedLocation ()
@@ -305,6 +330,7 @@ name|result
 return|;
 block|}
 DECL|method|getNodeName ()
+specifier|public
 name|String
 name|getNodeName
 parameter_list|()
@@ -314,6 +340,7 @@ name|nodeName
 return|;
 block|}
 DECL|method|getRackName ()
+specifier|public
 name|String
 name|getRackName
 parameter_list|()

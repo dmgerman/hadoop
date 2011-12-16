@@ -486,6 +486,9 @@ name|n
 operator|.
 name|getName
 argument_list|()
+operator|.
+name|getValue
+argument_list|()
 argument_list|,
 name|level
 argument_list|)
@@ -532,6 +535,9 @@ name|n
 operator|.
 name|getName
 argument_list|()
+operator|.
+name|getValue
+argument_list|()
 argument_list|,
 name|level
 argument_list|)
@@ -542,6 +548,9 @@ argument_list|(
 name|n
 operator|.
 name|getName
+argument_list|()
+operator|.
+name|getValue
 argument_list|()
 argument_list|,
 name|level
