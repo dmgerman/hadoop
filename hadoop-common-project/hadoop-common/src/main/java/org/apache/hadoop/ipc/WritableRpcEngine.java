@@ -310,9 +310,62 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|//writableRpcVersion should be updated if there is a change
+comment|//in format of the rpc messages.
+comment|// 2L - added declared class to Invocation
+DECL|field|writableRpcVersion
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|writableRpcVersion
+init|=
+literal|2L
+decl_stmt|;
+comment|/**    * Whether or not this class has been initialized.    */
+DECL|field|isInitialized
+specifier|private
+specifier|static
+name|boolean
+name|isInitialized
+init|=
+literal|false
+decl_stmt|;
 static|static
 block|{
-comment|// Register the rpcRequest deserializer for WritableRpcEngine
+name|ensureInitialized
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Initialize this class if it isn't already.    */
+DECL|method|ensureInitialized ()
+specifier|public
+specifier|static
+specifier|synchronized
+name|void
+name|ensureInitialized
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|isInitialized
+condition|)
+block|{
+name|initialize
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Register the rpcRequest deserializer for WritableRpcEngine    */
+DECL|method|initialize ()
+specifier|private
+specifier|static
+specifier|synchronized
+name|void
+name|initialize
+parameter_list|()
+block|{
 name|org
 operator|.
 name|apache
@@ -340,19 +393,11 @@ name|WritableRpcInvoker
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|isInitialized
+operator|=
+literal|true
+expr_stmt|;
 block|}
-comment|//writableRpcVersion should be updated if there is a change
-comment|//in format of the rpc messages.
-comment|// 2L - added declared class to Invocation
-DECL|field|writableRpcVersion
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|writableRpcVersion
-init|=
-literal|2L
-decl_stmt|;
 comment|/** A method invocation, including the method name and its parameters.*/
 DECL|class|Invocation
 specifier|private
