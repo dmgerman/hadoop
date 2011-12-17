@@ -489,7 +489,7 @@ return|return
 name|first
 return|;
 block|}
-comment|/**    * Get a proxied URI for the original URI.    * @param originalUri the original URI to go through the proxy    * @param proxyUri the URI of the proxy itself, scheme, host and port are used.    * @param id the id of the application    * @return the proxied URI    */
+comment|/**    * Get a proxied URI for the original URI.    * @param originalUri the original URI to go through the proxy, or null if    * a default path "/" can be used.     * @param proxyUri the URI of the proxy itself, scheme, host and port are used.    * @param id the id of the application    * @return the proxied URI    */
 DECL|method|getProxyUri (URI originalUri, URI proxyUri, ApplicationId id)
 specifier|public
 specifier|static
@@ -516,6 +516,12 @@ argument_list|(
 name|id
 argument_list|,
 name|originalUri
+operator|==
+literal|null
+condition|?
+literal|"/"
+else|:
+name|originalUri
 operator|.
 name|getPath
 argument_list|()
@@ -538,10 +544,22 @@ argument_list|,
 name|path
 argument_list|,
 name|originalUri
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|originalUri
 operator|.
 name|getQuery
 argument_list|()
 argument_list|,
+name|originalUri
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|originalUri
 operator|.
 name|getFragment

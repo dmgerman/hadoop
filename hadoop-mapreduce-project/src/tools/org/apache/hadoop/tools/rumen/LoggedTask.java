@@ -78,9 +78,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|jobhistory
-operator|.
-name|Events
+name|TaskID
 import|;
 end_import
 
@@ -187,7 +185,7 @@ operator|-
 literal|1L
 decl_stmt|;
 DECL|field|taskID
-name|String
+name|TaskID
 name|taskID
 decl_stmt|;
 DECL|field|startTime
@@ -258,11 +256,6 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unused"
-argument_list|)
 comment|// for input parameter ignored.
 annotation|@
 name|JsonAnySetter
@@ -454,7 +447,7 @@ expr_stmt|;
 block|}
 DECL|method|getTaskID ()
 specifier|public
-name|String
+name|TaskID
 name|getTaskID
 parameter_list|()
 block|{
@@ -474,7 +467,12 @@ name|this
 operator|.
 name|taskID
 operator|=
+name|TaskID
+operator|.
+name|forName
+argument_list|(
 name|taskID
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getStartTime ()
@@ -1713,10 +1711,16 @@ expr_stmt|;
 name|compare1
 argument_list|(
 name|taskID
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|other
 operator|.
 name|taskID
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|loc
 argument_list|,

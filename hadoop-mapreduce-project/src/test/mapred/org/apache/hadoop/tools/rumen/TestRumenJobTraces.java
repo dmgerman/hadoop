@@ -5121,6 +5121,9 @@ operator|.
 name|getName
 argument_list|()
 operator|.
+name|getValue
+argument_list|()
+operator|.
 name|endsWith
 argument_list|(
 literal|".64"
@@ -5150,6 +5153,9 @@ condition|(
 name|rack
 operator|.
 name|getName
+argument_list|()
+operator|.
+name|getValue
 argument_list|()
 operator|.
 name|endsWith

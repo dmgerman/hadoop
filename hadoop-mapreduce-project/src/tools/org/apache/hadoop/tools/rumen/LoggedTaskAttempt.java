@@ -98,6 +98,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TaskAttemptID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|jobhistory
 operator|.
 name|JhCounter
@@ -136,6 +150,24 @@ name|JhCounters
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|rumen
+operator|.
+name|datatypes
+operator|.
+name|NodeName
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link LoggedTaskAttempt} represents an attempt to run an hadoop task in a  * hadoop job. Note that a task can have several attempts.  *   * All of the public methods are simply accessors for the instance variables we  * want to write out in the JSON files.  *   */
 end_comment
@@ -149,7 +181,7 @@ implements|implements
 name|DeepCompare
 block|{
 DECL|field|attemptID
-name|String
+name|TaskAttemptID
 name|attemptID
 decl_stmt|;
 DECL|field|result
@@ -173,7 +205,7 @@ operator|-
 literal|1L
 decl_stmt|;
 DECL|field|hostName
-name|String
+name|NodeName
 name|hostName
 decl_stmt|;
 DECL|field|hdfsBytesRead
@@ -822,11 +854,6 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unused"
-argument_list|)
 comment|// for input parameter ignored.
 annotation|@
 name|JsonAnySetter
@@ -1296,7 +1323,7 @@ expr_stmt|;
 block|}
 DECL|method|getAttemptID ()
 specifier|public
-name|String
+name|TaskAttemptID
 name|getAttemptID
 parameter_list|()
 block|{
@@ -1316,7 +1343,12 @@ name|this
 operator|.
 name|attemptID
 operator|=
+name|TaskAttemptID
+operator|.
+name|forName
+argument_list|(
 name|attemptID
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getResult ()
@@ -1400,7 +1432,7 @@ expr_stmt|;
 block|}
 DECL|method|getHostName ()
 specifier|public
-name|String
+name|NodeName
 name|getHostName
 parameter_list|()
 block|{
@@ -1408,6 +1440,7 @@ return|return
 name|hostName
 return|;
 block|}
+comment|// This is needed for JSON deserialization
 DECL|method|setHostName (String hostName)
 name|void
 name|setHostName
@@ -1421,9 +1454,20 @@ operator|.
 name|hostName
 operator|=
 name|hostName
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+operator|new
+name|NodeName
+argument_list|(
+name|hostName
+argument_list|)
 expr_stmt|;
 block|}
-comment|// hostName is saved in the format rackName/NodeName
+comment|// In job-history, hostName is saved in the format rackName/NodeName
+comment|//TODO this is a hack! The '/' handling needs fixing.
 DECL|method|setHostName (String hostName, String rackName)
 name|void
 name|setHostName
@@ -2758,6 +2802,92 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|compare1 (NodeName c1, NodeName c2, TreePath loc, String eltname)
+specifier|private
+name|void
+name|compare1
+parameter_list|(
+name|NodeName
+name|c1
+parameter_list|,
+name|NodeName
+name|c2
+parameter_list|,
+name|TreePath
+name|loc
+parameter_list|,
+name|String
+name|eltname
+parameter_list|)
+throws|throws
+name|DeepInequalityException
+block|{
+if|if
+condition|(
+name|c1
+operator|==
+literal|null
+operator|&&
+name|c2
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+name|c1
+operator|==
+literal|null
+operator|||
+name|c2
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|DeepInequalityException
+argument_list|(
+name|eltname
+operator|+
+literal|" miscompared"
+argument_list|,
+operator|new
+name|TreePath
+argument_list|(
+name|loc
+argument_list|,
+name|eltname
+argument_list|)
+argument_list|)
+throw|;
+block|}
+name|compare1
+argument_list|(
+name|c1
+operator|.
+name|getValue
+argument_list|()
+argument_list|,
+name|c2
+operator|.
+name|getValue
+argument_list|()
+argument_list|,
+operator|new
+name|TreePath
+argument_list|(
+name|loc
+argument_list|,
+name|eltname
+argument_list|)
+argument_list|,
+literal|"value"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|compare1 (long c1, long c2, TreePath loc, String eltname)
 specifier|private
 name|void
@@ -3129,10 +3259,16 @@ decl_stmt|;
 name|compare1
 argument_list|(
 name|attemptID
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|other
 operator|.
 name|attemptID
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|loc
 argument_list|,

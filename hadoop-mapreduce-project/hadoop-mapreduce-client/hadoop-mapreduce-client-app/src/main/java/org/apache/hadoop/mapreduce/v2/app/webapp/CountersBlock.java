@@ -911,6 +911,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|task
+operator|==
+literal|null
+operator|&&
 name|mg
 operator|==
 literal|null

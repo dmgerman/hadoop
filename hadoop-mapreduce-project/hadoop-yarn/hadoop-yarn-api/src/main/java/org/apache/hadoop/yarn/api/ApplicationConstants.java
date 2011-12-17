@@ -192,9 +192,9 @@ literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/*"
 block|,
 literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*"
 block|,
-literal|"$YARN_HOME/modules/*"
+literal|"$YARN_HOME/share/hadoop/mapreduce/*"
 block|,
-literal|"$YARN_HOME/lib/*"
+literal|"$YARN_HOME/share/hadoop/mapreduce/lib/*"
 block|}
 decl_stmt|;
 comment|/**    * Environment for Applications.    *     * Some of the environment variables for applications are<em>final</em>     * i.e. they cannot be modified by the applications.    */
