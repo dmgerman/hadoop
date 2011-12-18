@@ -166,6 +166,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|SecureRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -570,7 +580,39 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/** @return a pseudorandom number generator. */
+DECL|field|SECURE_RANDOM
+specifier|private
+specifier|static
+specifier|final
+name|ThreadLocal
+argument_list|<
+name|SecureRandom
+argument_list|>
+name|SECURE_RANDOM
+init|=
+operator|new
+name|ThreadLocal
+argument_list|<
+name|SecureRandom
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|SecureRandom
+name|initialValue
+parameter_list|()
+block|{
+return|return
+operator|new
+name|SecureRandom
+argument_list|()
+return|;
+block|}
+block|}
+decl_stmt|;
+comment|/** @return a pseudo random number generator. */
 DECL|method|getRandom ()
 specifier|public
 specifier|static
@@ -580,6 +622,21 @@ parameter_list|()
 block|{
 return|return
 name|RANDOM
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/** @return a pseudo secure random number generator. */
+DECL|method|getSecureRandom ()
+specifier|public
+specifier|static
+name|SecureRandom
+name|getSecureRandom
+parameter_list|()
+block|{
+return|return
+name|SECURE_RANDOM
 operator|.
 name|get
 argument_list|()
