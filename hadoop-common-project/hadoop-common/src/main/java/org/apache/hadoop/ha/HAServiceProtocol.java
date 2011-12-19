@@ -88,6 +88,54 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
+comment|/**    * An HA service may be in active or standby state.    */
+DECL|enum|HAServiceState
+specifier|public
+enum|enum
+name|HAServiceState
+block|{
+DECL|enumConstant|ACTIVE
+name|ACTIVE
+argument_list|(
+literal|"active"
+argument_list|)
+block|,
+DECL|enumConstant|STANDBY
+name|STANDBY
+argument_list|(
+literal|"standby"
+argument_list|)
+block|;
+DECL|field|name
+specifier|private
+name|String
+name|name
+decl_stmt|;
+DECL|method|HAServiceState (String name)
+name|HAServiceState
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
+block|}
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|name
+return|;
+block|}
+block|}
 comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    */
 DECL|method|monitorHealth ()
 specifier|public
@@ -114,6 +162,13 @@ name|transitionToStandby
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+function_decl|;
+comment|/**    * Return the current state of the service.    */
+DECL|method|getServiceState ()
+specifier|public
+name|HAServiceState
+name|getServiceState
+parameter_list|()
 function_decl|;
 block|}
 end_interface
