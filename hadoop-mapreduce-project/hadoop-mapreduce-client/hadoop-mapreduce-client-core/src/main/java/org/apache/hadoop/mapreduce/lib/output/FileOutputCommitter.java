@@ -1122,7 +1122,7 @@ name|attemptId
 operator|+
 literal|"' to "
 operator|+
-name|outputPath
+name|jobOutputPath
 argument_list|)
 expr_stmt|;
 block|}
