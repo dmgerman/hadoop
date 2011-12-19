@@ -586,7 +586,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Makes the path absolute adding '/' to it.      *<p/>      * This is required because JAX-RS resolution of paths does not add      * the root '/'.      *      * @returns absolute path.      */
+comment|/**      * Makes the path absolute adding '/' to it.      *<p/>      * This is required because JAX-RS resolution of paths does not add      * the root '/'.      */
 DECL|method|makeAbsolute ()
 specifier|public
 name|void
