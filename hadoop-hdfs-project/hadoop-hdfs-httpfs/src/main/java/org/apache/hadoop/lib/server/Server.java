@@ -747,7 +747,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/**    * Sets a new server status.    *<p/>    * The status must be settable.    *<p/>    * All services will be notified o the status change via the    * {@link Service#serverStatusChange(Status, Status)} method. If a service    * throws an exception during the notification, the server will be destroyed.    *    * @param status status to set.    *    * @throws ServerException thrown if the service has been destroy because of    * a failed notification to a service.    */
+comment|/**    * Sets a new server status.    *<p/>    * The status must be settable.    *<p/>    * All services will be notified o the status change via the    * {@link Service#serverStatusChange(Server.Status, Server.Status)} method. If a service    * throws an exception during the notification, the server will be destroyed.    *    * @param status status to set.    *    * @throws ServerException thrown if the service has been destroy because of    * a failed notification to a service.    */
 DECL|method|setStatus (Status status)
 specifier|public
 name|void
@@ -2782,7 +2782,7 @@ return|return
 name|tempDir
 return|;
 block|}
-comment|/**    * Returns the server configuration.    *    * @return    */
+comment|/**    * Returns the server configuration.    *    * @return the server configuration.    */
 DECL|method|getConfig ()
 specifier|public
 name|Configuration

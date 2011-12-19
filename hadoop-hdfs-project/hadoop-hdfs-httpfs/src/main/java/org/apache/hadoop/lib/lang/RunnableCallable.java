@@ -161,7 +161,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Invokes the wrapped callable/runnable as a runnable.    *    * @return void    *    * @throws Exception thrown by the wrapped callable/runnable invocation.    */
+comment|/**    * Invokes the wrapped callable/runnable as a runnable.    *    * @throws RuntimeException thrown by the wrapped callable/runnable invocation.    */
 annotation|@
 name|Override
 DECL|method|run ()
