@@ -424,9 +424,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
+name|io
 operator|.
-name|RPC
+name|IOUtils
 import|;
 end_import
 
@@ -1762,10 +1762,12 @@ name|shouldServiceRun
 operator|=
 literal|false
 expr_stmt|;
-name|RPC
+name|IOUtils
 operator|.
-name|stopProxy
+name|cleanup
 argument_list|(
+name|LOG
+argument_list|,
 name|bpNamenode
 argument_list|)
 expr_stmt|;

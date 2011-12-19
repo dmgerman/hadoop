@@ -270,6 +270,28 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
+comment|/** Internal buffer size for Snappy compressor/decompressors */
+DECL|field|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_KEY
+init|=
+literal|"io.compression.codec.lz4.buffersize"
+decl_stmt|;
+comment|/** Default value for IO_COMPRESSION_CODEC_SNAPPY_BUFFERSIZE_KEY */
+DECL|field|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_DEFAULT
+init|=
+literal|256
+operator|*
+literal|1024
+decl_stmt|;
 comment|/**    * Service Authorization    */
 specifier|public
 specifier|static
