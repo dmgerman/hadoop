@@ -563,6 +563,26 @@ init|=
 literal|10
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY
+init|=
+literal|"ipc.client.connect.max.retries.on.timeouts"
+decl_stmt|;
+comment|/** Default value for IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY */
+DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
+init|=
+literal|45
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_CLIENT_TCPNODELAY_KEY
 specifier|public
 specifier|static
