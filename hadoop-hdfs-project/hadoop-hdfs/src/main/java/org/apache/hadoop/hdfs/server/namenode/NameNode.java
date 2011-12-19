@@ -168,6 +168,22 @@ name|hadoop
 operator|.
 name|ha
 operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
 name|HealthCheckFailedException
 import|;
 end_import
@@ -4170,6 +4186,19 @@ argument_list|,
 name|STANDBY_STATE
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getServiceState ()
+specifier|synchronized
+name|HAServiceState
+name|getServiceState
+parameter_list|()
+block|{
+return|return
+name|state
+operator|.
+name|getServiceState
+argument_list|()
+return|;
 block|}
 comment|/** Check if an operation of given category is allowed */
 DECL|method|checkOperation (final OperationCategory op)

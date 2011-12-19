@@ -6433,6 +6433,23 @@ name|transitionToStandby
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|getServiceState ()
+specifier|public
+specifier|synchronized
+name|HAServiceState
+name|getServiceState
+parameter_list|()
+block|{
+return|return
+name|nn
+operator|.
+name|getServiceState
+argument_list|()
+return|;
+block|}
 comment|/**    * Verify version.    *     * @param version    * @throws IOException    */
 DECL|method|verifyVersion (int version)
 name|void

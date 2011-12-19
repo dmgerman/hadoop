@@ -46,6 +46,22 @@ name|hadoop
 operator|.
 name|ha
 operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
 name|ServiceFailedException
 import|;
 end_import
@@ -117,27 +133,38 @@ specifier|public
 class|class
 name|HAState
 block|{
-DECL|field|name
+DECL|field|state
 specifier|protected
 specifier|final
-name|String
-name|name
+name|HAServiceState
+name|state
 decl_stmt|;
 comment|/**    * Constructor    * @param name Name of the state.    */
-DECL|method|HAState (String name)
+DECL|method|HAState (HAServiceState state)
 specifier|public
 name|HAState
 parameter_list|(
-name|String
-name|name
+name|HAServiceState
+name|state
 parameter_list|)
 block|{
 name|this
 operator|.
-name|name
+name|state
 operator|=
-name|name
+name|state
 expr_stmt|;
+block|}
+comment|/**    * @return the generic service state    */
+DECL|method|getServiceState ()
+specifier|public
+name|HAServiceState
+name|getServiceState
+parameter_list|()
+block|{
+return|return
+name|state
+return|;
 block|}
 comment|/**    * Internal method to transition the state of a given namenode to a new state.    * @param nn Namenode    * @param s new state    * @throws ServiceFailedException on failure to transition to new state.    */
 DECL|method|setStateInternal (final HAContext context, final HAState s)
@@ -264,8 +291,7 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
-annotation|@
-name|Override
+comment|/**    * @return String representation of the service state.    */
 DECL|method|toString ()
 specifier|public
 name|String
@@ -273,7 +299,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|super
+name|state
 operator|.
 name|toString
 argument_list|()
