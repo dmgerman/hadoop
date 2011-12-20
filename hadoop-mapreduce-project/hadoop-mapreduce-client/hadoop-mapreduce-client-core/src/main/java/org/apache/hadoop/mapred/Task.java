@@ -6948,9 +6948,7 @@ name|valueClass
 argument_list|,
 name|job
 argument_list|,
-name|Reporter
-operator|.
-name|NULL
+name|reporter
 argument_list|,
 name|inputCounter
 argument_list|)
@@ -6976,9 +6974,7 @@ name|values
 argument_list|,
 name|combineCollector
 argument_list|,
-name|Reporter
-operator|.
-name|NULL
+name|reporter
 argument_list|)
 expr_stmt|;
 name|values
