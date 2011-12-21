@@ -417,6 +417,59 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Try to stop again. This should be a no-op.
+name|serviceManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// Verify that stop() call sequence numbers for every service don't change.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|NUM_OF_SERVICES
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"For "
+operator|+
+name|services
+index|[
+name|i
+index|]
+operator|+
+literal|" service, stop() call sequence number should have been "
+argument_list|,
+operator|(
+operator|(
+name|NUM_OF_SERVICES
+operator|-
+literal|1
+operator|)
+operator|-
+name|i
+operator|)
+argument_list|,
+name|services
+index|[
+name|i
+index|]
+operator|.
+name|getCallSequenceNumber
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -707,7 +760,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// Start the composite service
+comment|// Stop the composite service
 try|try
 block|{
 name|serviceManager
