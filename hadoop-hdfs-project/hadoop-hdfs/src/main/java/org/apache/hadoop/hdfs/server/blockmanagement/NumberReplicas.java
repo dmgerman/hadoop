@@ -50,6 +50,11 @@ specifier|private
 name|int
 name|excessReplicas
 decl_stmt|;
+DECL|field|replicasOnStaleNodes
+specifier|private
+name|int
+name|replicasOnStaleNodes
+decl_stmt|;
 DECL|method|NumberReplicas ()
 name|NumberReplicas
 parameter_list|()
@@ -63,10 +68,12 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NumberReplicas (int live, int decommissioned, int corrupt, int excess)
+DECL|method|NumberReplicas (int live, int decommissioned, int corrupt, int excess, int stale)
 name|NumberReplicas
 parameter_list|(
 name|int
@@ -80,6 +87,9 @@ name|corrupt
 parameter_list|,
 name|int
 name|excess
+parameter_list|,
+name|int
+name|stale
 parameter_list|)
 block|{
 name|initialize
@@ -91,10 +101,12 @@ argument_list|,
 name|corrupt
 argument_list|,
 name|excess
+argument_list|,
+name|stale
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initialize (int live, int decommissioned, int corrupt, int excess)
+DECL|method|initialize (int live, int decommissioned, int corrupt, int excess, int stale)
 name|void
 name|initialize
 parameter_list|(
@@ -109,6 +121,9 @@ name|corrupt
 parameter_list|,
 name|int
 name|excess
+parameter_list|,
+name|int
+name|stale
 parameter_list|)
 block|{
 name|liveReplicas
@@ -126,6 +141,10 @@ expr_stmt|;
 name|excessReplicas
 operator|=
 name|excess
+expr_stmt|;
+name|replicasOnStaleNodes
+operator|=
+name|stale
 expr_stmt|;
 block|}
 DECL|method|liveReplicas ()
@@ -166,6 +185,17 @@ parameter_list|()
 block|{
 return|return
 name|excessReplicas
+return|;
+block|}
+comment|/**    * @return the number of replicas which are on stale nodes.    * This is not mutually exclusive with the other counts -- ie a    * replica may count as both "live" and "stale".    */
+DECL|method|replicasOnStaleNodes ()
+specifier|public
+name|int
+name|replicasOnStaleNodes
+parameter_list|()
+block|{
+return|return
+name|replicasOnStaleNodes
 return|;
 block|}
 block|}

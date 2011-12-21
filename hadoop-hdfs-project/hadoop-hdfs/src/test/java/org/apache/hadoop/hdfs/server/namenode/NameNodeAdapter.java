@@ -468,6 +468,33 @@ name|checkForUpgrades
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|abortEditLogs (NameNode nn)
+specifier|public
+specifier|static
+name|void
+name|abortEditLogs
+parameter_list|(
+name|NameNode
+name|nn
+parameter_list|)
+block|{
+name|FSEditLog
+name|el
+init|=
+name|nn
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+decl_stmt|;
+name|el
+operator|.
+name|abortCurrentLogSegment
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Get the internal RPC server instance.    * @return rpc server    */
 DECL|method|getRpcServer (NameNode namenode)
 specifier|public

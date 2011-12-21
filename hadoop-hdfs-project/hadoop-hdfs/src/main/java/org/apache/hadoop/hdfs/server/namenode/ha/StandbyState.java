@@ -331,6 +331,18 @@ name|msg
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|shouldPopulateReplQueues ()
+specifier|public
+name|boolean
+name|shouldPopulateReplQueues
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

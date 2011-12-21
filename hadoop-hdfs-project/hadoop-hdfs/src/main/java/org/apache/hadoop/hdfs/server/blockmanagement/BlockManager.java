@@ -136,6 +136,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|TreeMap
 import|;
 end_import
@@ -778,6 +788,34 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Sets
+import|;
+end_import
+
 begin_comment
 comment|/**  * Keeps information related to the blocks stored in the Hadoop cluster.  */
 end_comment
@@ -881,6 +919,14 @@ name|excessBlocksCount
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|postponedMisreplicatedBlocksCount
+specifier|private
+specifier|volatile
+name|long
+name|postponedMisreplicatedBlocksCount
+init|=
+literal|0L
+decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
 specifier|public
@@ -950,6 +996,17 @@ return|return
 name|excessBlocksCount
 return|;
 block|}
+comment|/** Used by metrics */
+DECL|method|getPostponedMisreplicatedBlocksCount ()
+specifier|public
+name|long
+name|getPostponedMisreplicatedBlocksCount
+parameter_list|()
+block|{
+return|return
+name|postponedMisreplicatedBlocksCount
+return|;
+block|}
 comment|/**replicationRecheckInterval is how often namenode checks for new replication work*/
 DECL|field|replicationRecheckInterval
 specifier|private
@@ -993,6 +1050,21 @@ specifier|private
 specifier|final
 name|InvalidateBlocks
 name|invalidateBlocks
+decl_stmt|;
+comment|/**    * After a failover, over-replicated blocks may not be handled    * until all of the replicas have done a block report to the    * new active. This is to make sure that this NameNode has been    * notified of all block deletions that might have been pending    * when the failover happened.    */
+DECL|field|postponedMisreplicatedBlocks
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|Block
+argument_list|>
+name|postponedMisreplicatedBlocks
+init|=
+name|Sets
+operator|.
+name|newHashSet
+argument_list|()
 decl_stmt|;
 comment|//
 comment|// Keeps a TreeSet for every named node. Each treeset contains
@@ -1883,6 +1955,78 @@ range|:
 name|neededReplications
 control|)
 block|{
+name|dumpBlockMeta
+argument_list|(
+name|block
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Dump any postponed over-replicated blocks
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Mis-replicated blocks that have been postponed:"
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Block
+name|block
+range|:
+name|postponedMisreplicatedBlocks
+control|)
+block|{
+name|dumpBlockMeta
+argument_list|(
+name|block
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Dump blocks from pendingReplication
+name|pendingReplications
+operator|.
+name|metaSave
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+comment|// Dump blocks that are waiting to be deleted
+name|invalidateBlocks
+operator|.
+name|dump
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+comment|// Dump all datanodes
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|datanodeDump
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Dump the metadata for the given block in a human-readable    * form.    */
+DECL|method|dumpBlockMeta (Block block, PrintWriter out)
+specifier|private
+name|void
+name|dumpBlockMeta
+parameter_list|(
+name|Block
+name|block
+parameter_list|,
+name|PrintWriter
+name|out
+parameter_list|)
+block|{
 name|List
 argument_list|<
 name|DatanodeDescriptor
@@ -2123,6 +2267,19 @@ operator|=
 literal|"(decommissioned)"
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|node
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+name|state
+operator|+=
+literal|" (block deletions maybe out of date)"
+expr_stmt|;
+block|}
 name|out
 operator|.
 name|print
@@ -2142,33 +2299,6 @@ operator|.
 name|println
 argument_list|(
 literal|""
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// Dump blocks from pendingReplication
-name|pendingReplications
-operator|.
-name|metaSave
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-comment|// Dump blocks that are waiting to be deleted
-name|invalidateBlocks
-operator|.
-name|dump
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-comment|// Dump all datanodes
-name|getDatanodeManager
-argument_list|()
-operator|.
-name|datanodeDump
-argument_list|(
-name|out
 argument_list|)
 expr_stmt|;
 block|}
@@ -4243,6 +4373,22 @@ name|getStorageID
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// If the DN hasn't block-reported since the most recent
+comment|// failover, then we may have been holding up on processing
+comment|// over-replicated blocks because of it. But we can now
+comment|// process those blocks.
+if|if
+condition|(
+name|node
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+name|rescanPostponedMisreplicatedBlocks
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Adds block to list of blocks which will be invalidated on specified    * datanode and log the operation    */
 DECL|method|addToInvalidates (final Block block, final DatanodeInfo datanode)
@@ -4680,26 +4826,71 @@ literal|" does not exist."
 argument_list|)
 throw|;
 block|}
-comment|// Check how many copies we have of the block. If we have at least one
-comment|// copy on a live node, then we can delete it.
-name|int
-name|count
+comment|// Check how many copies we have of the block
+name|NumberReplicas
+name|nr
 init|=
 name|countNodes
 argument_list|(
 name|blk
 argument_list|)
-operator|.
-name|liveReplicas
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|count
+name|nr
+operator|.
+name|replicasOnStaleNodes
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* invalidateBlocks: postponing "
+operator|+
+literal|"invalidation of block "
+operator|+
+name|blk
+operator|+
+literal|" on "
+operator|+
+name|dn
+operator|+
+literal|" because "
+operator|+
+name|nr
+operator|.
+name|replicasOnStaleNodes
+argument_list|()
+operator|+
+literal|" replica(s) are located on nodes "
+operator|+
+literal|"with potentially out-of-date block reports."
+argument_list|)
+expr_stmt|;
+name|postponeBlock
+argument_list|(
+name|blk
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|nr
+operator|.
+name|liveReplicas
+argument_list|()
 operator|>=
 literal|1
 condition|)
 block|{
+comment|// If we have at least one copy on a live node, then we can delete it.
 name|addToInvalidates
 argument_list|(
 name|blk
@@ -4767,6 +4958,30 @@ argument_list|()
 operator|+
 literal|" is the only copy and was not deleted."
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|postponeBlock (Block blk)
+specifier|private
+name|void
+name|postponeBlock
+parameter_list|(
+name|Block
+name|blk
+parameter_list|)
+block|{
+if|if
+condition|(
+name|postponedMisreplicatedBlocks
+operator|.
+name|add
+argument_list|(
+name|blk
+argument_list|)
+condition|)
+block|{
+name|postponedMisreplicatedBlocksCount
+operator|++
 expr_stmt|;
 block|}
 block|}
@@ -4892,7 +5107,6 @@ return|;
 block|}
 comment|/**    * Scan blocks in {@link #neededReplications} and assign replication    * work to data-nodes they belong to.    *    * The number of process blocks equals either twice the number of live    * data-nodes or the number of under-replicated blocks whichever is less.    *    * @return number of blocks scheduled for replication during this iteration.    */
 DECL|method|computeReplicationWork (int blocksToProcess)
-specifier|private
 name|int
 name|computeReplicationWork
 parameter_list|(
@@ -5142,8 +5356,21 @@ name|srcNode
 operator|==
 literal|null
 condition|)
+block|{
 comment|// block can not be replicated from any node
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block "
+operator|+
+name|block
+operator|+
+literal|" cannot be repl from any node"
+argument_list|)
+expr_stmt|;
 continue|continue;
+block|}
 assert|assert
 name|liveReplicaNodes
 operator|.
@@ -6324,6 +6551,8 @@ argument_list|,
 name|corrupt
 argument_list|,
 name|excess
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 return|return
@@ -6640,6 +6869,51 @@ name|newReport
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Now that we have an up-to-date block report, we know that any
+comment|// deletions from a previous NN iteration have been accounted for.
+name|boolean
+name|staleBefore
+init|=
+name|node
+operator|.
+name|areBlockContentsStale
+argument_list|()
+decl_stmt|;
+name|node
+operator|.
+name|receivedBlockReport
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|staleBefore
+operator|&&
+operator|!
+name|node
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processReport: "
+operator|+
+literal|"Received first block report from "
+operator|+
+name|node
+operator|+
+literal|" after becoming active. Its block contents are no longer"
+operator|+
+literal|" considered stale."
+argument_list|)
+expr_stmt|;
+name|rescanPostponedMisreplicatedBlocks
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -6705,6 +6979,144 @@ operator|+
 literal|" msecs"
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Rescan the list of blocks which were previously postponed.    */
+DECL|method|rescanPostponedMisreplicatedBlocks ()
+specifier|private
+name|void
+name|rescanPostponedMisreplicatedBlocks
+parameter_list|()
+block|{
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|Block
+argument_list|>
+name|it
+init|=
+name|postponedMisreplicatedBlocks
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|Block
+name|b
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|BlockInfo
+name|bi
+init|=
+name|blocksMap
+operator|.
+name|getStoredBlock
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|bi
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* rescanPostponedMisreplicatedBlocks: "
+operator|+
+literal|"Postponed mis-replicated block "
+operator|+
+name|b
+operator|+
+literal|" no longer found "
+operator|+
+literal|"in block map."
+argument_list|)
+expr_stmt|;
+block|}
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+name|postponedMisreplicatedBlocksCount
+operator|--
+expr_stmt|;
+continue|continue;
+block|}
+name|MisReplicationResult
+name|res
+init|=
+name|processMisReplicatedBlock
+argument_list|(
+name|bi
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* rescanPostponedMisreplicatedBlocks: "
+operator|+
+literal|"Re-scanned block "
+operator|+
+name|b
+operator|+
+literal|", result is "
+operator|+
+name|res
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|res
+operator|!=
+name|MisReplicationResult
+operator|.
+name|POSTPONE
+condition|)
+block|{
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+name|postponedMisreplicatedBlocksCount
+operator|--
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|processReport (final DatanodeDescriptor node, final BlockListAsLongs report)
 specifier|private
@@ -7502,24 +7914,7 @@ name|block
 argument_list|)
 condition|)
 block|{
-assert|assert
-name|storedBlock
-operator|.
-name|findDatanode
-argument_list|(
-name|dn
-argument_list|)
-operator|<
-literal|0
-operator|:
-literal|"Block "
-operator|+
-name|block
-operator|+
-literal|" in recentInvalidatesSet should not appear in DN "
-operator|+
-name|dn
-assert|;
+comment|/*  TODO: following assertion is incorrect, see HDFS-2668 assert storedBlock.findDatanode(dn)< 0 : "Block " + block         + " in recentInvalidatesSet should not appear in DN " + dn; */
 return|return
 name|storedBlock
 return|;
@@ -8580,6 +8975,10 @@ decl_stmt|,
 name|nrUnderReplicated
 init|=
 literal|0
+decl_stmt|,
+name|nrPostponed
+init|=
+literal|0
 decl_stmt|;
 name|neededReplications
 operator|.
@@ -8597,6 +8996,149 @@ name|getBlocks
 argument_list|()
 control|)
 block|{
+name|MisReplicationResult
+name|res
+init|=
+name|processMisReplicatedBlock
+argument_list|(
+name|block
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"block "
+operator|+
+name|block
+operator|+
+literal|": "
+operator|+
+name|res
+argument_list|)
+expr_stmt|;
+switch|switch
+condition|(
+name|res
+condition|)
+block|{
+case|case
+name|UNDER_REPLICATED
+case|:
+name|nrUnderReplicated
+operator|++
+expr_stmt|;
+break|break;
+case|case
+name|OVER_REPLICATED
+case|:
+name|nrOverReplicated
+operator|++
+expr_stmt|;
+break|break;
+case|case
+name|INVALID
+case|:
+name|nrInvalid
+operator|++
+expr_stmt|;
+break|break;
+case|case
+name|POSTPONE
+case|:
+name|nrPostponed
+operator|++
+expr_stmt|;
+name|postponeBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|OK
+case|:
+break|break;
+default|default:
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Invalid enum value: "
+operator|+
+name|res
+argument_list|)
+throw|;
+block|}
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Total number of blocks            = "
+operator|+
+name|blocksMap
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of invalid blocks          = "
+operator|+
+name|nrInvalid
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of under-replicated blocks = "
+operator|+
+name|nrUnderReplicated
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of  over-replicated blocks = "
+operator|+
+name|nrOverReplicated
+operator|+
+operator|(
+operator|(
+name|nrPostponed
+operator|>
+literal|0
+operator|)
+condition|?
+operator|(
+literal|" ("
+operator|+
+name|nrPostponed
+operator|+
+literal|" postponed)"
+operator|)
+else|:
+literal|""
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Process a single possibly misreplicated block. This adds it to the    * appropriate queues if necessary, and returns a result code indicating    * what happened with it.    */
+DECL|method|processMisReplicatedBlock (BlockInfo block)
+specifier|private
+name|MisReplicationResult
+name|processMisReplicatedBlock
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|)
+block|{
 name|INodeFile
 name|fileINode
 init|=
@@ -8613,15 +9155,16 @@ literal|null
 condition|)
 block|{
 comment|// block does not belong to any file
-name|nrInvalid
-operator|++
-expr_stmt|;
 name|addToInvalidates
 argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-continue|continue;
+return|return
+name|MisReplicationResult
+operator|.
+name|INVALID
+return|;
 block|}
 comment|// calculate current replication
 name|short
@@ -8680,9 +9223,11 @@ name|expectedReplication
 argument_list|)
 condition|)
 block|{
-name|nrUnderReplicated
-operator|++
-expr_stmt|;
+return|return
+name|MisReplicationResult
+operator|.
+name|UNDER_REPLICATED
+return|;
 block|}
 block|}
 if|if
@@ -8692,10 +9237,28 @@ operator|>
 name|expectedReplication
 condition|)
 block|{
+if|if
+condition|(
+name|num
+operator|.
+name|replicasOnStaleNodes
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// If any of the replicas of this block are on nodes that are
+comment|// considered "stale", then these replicas may in fact have
+comment|// already been deleted. So, we cannot safely act on the
+comment|// over-replication until a later point in time, when
+comment|// the "stale" nodes have block reported.
+return|return
+name|MisReplicationResult
+operator|.
+name|POSTPONE
+return|;
+block|}
 comment|// over-replicated block
-name|nrOverReplicated
-operator|++
-expr_stmt|;
 name|processOverReplicatedBlock
 argument_list|(
 name|block
@@ -8707,47 +9270,17 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+return|return
+name|MisReplicationResult
+operator|.
+name|OVER_REPLICATED
+return|;
 block|}
-block|}
-name|LOG
+return|return
+name|MisReplicationResult
 operator|.
-name|info
-argument_list|(
-literal|"Total number of blocks            = "
-operator|+
-name|blocksMap
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Number of invalid blocks          = "
-operator|+
-name|nrInvalid
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Number of under-replicated blocks = "
-operator|+
-name|nrUnderReplicated
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Number of  over-replicated blocks = "
-operator|+
-name|nrOverReplicated
-argument_list|)
-expr_stmt|;
+name|OK
+return|;
 block|}
 comment|/** Set replication for the blocks. */
 DECL|method|setReplication (final short oldRepl, final short newRepl, final String src, final Block... blocks)
@@ -8969,6 +9502,40 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|cur
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processOverReplicatedBlock: "
+operator|+
+literal|"Postponing processing of over-replicated block "
+operator|+
+name|block
+operator|+
+literal|" since datanode "
+operator|+
+name|cur
+operator|+
+literal|" does not yet have up-to-date "
+operator|+
+literal|"block information."
+argument_list|)
+expr_stmt|;
+name|postponeBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|LightWeightLinkedSet
 argument_list|<
 name|Block
@@ -10495,7 +11062,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the number of nodes that are live and decommissioned.    */
+comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
 DECL|method|countNodes (Block b)
 specifier|public
 name|NumberReplicas
@@ -10506,7 +11073,7 @@ name|b
 parameter_list|)
 block|{
 name|int
-name|count
+name|decommissioned
 init|=
 literal|0
 decl_stmt|;
@@ -10522,6 +11089,11 @@ literal|0
 decl_stmt|;
 name|int
 name|excess
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|stale
 init|=
 literal|0
 decl_stmt|;
@@ -10603,7 +11175,7 @@ name|isDecommissioned
 argument_list|()
 condition|)
 block|{
-name|count
+name|decommissioned
 operator|++
 expr_stmt|;
 block|}
@@ -10650,6 +11222,18 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|node
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+name|stale
+operator|++
+expr_stmt|;
+block|}
 block|}
 return|return
 operator|new
@@ -10657,11 +11241,13 @@ name|NumberReplicas
 argument_list|(
 name|live
 argument_list|,
-name|count
+name|decommissioned
 argument_list|,
 name|corrupt
 argument_list|,
 name|excess
+argument_list|,
+name|stale
 argument_list|)
 return|;
 block|}
@@ -11376,6 +11962,12 @@ name|Block
 name|block
 parameter_list|)
 block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
 name|block
 operator|.
 name|setNumBytes
@@ -11404,6 +11996,20 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|postponedMisreplicatedBlocks
+operator|.
+name|remove
+argument_list|(
+name|block
+argument_list|)
+condition|)
+block|{
+name|postponedMisreplicatedBlocksCount
+operator|--
+expr_stmt|;
+block|}
 block|}
 DECL|method|getStoredBlock (Block block)
 specifier|public
@@ -11679,9 +12285,18 @@ operator|.
 name|isInSafeMode
 argument_list|()
 condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"In safemode, not computing replication work"
+argument_list|)
+expr_stmt|;
 return|return
 literal|0
 return|;
+block|}
 comment|// get blocks to invalidate for the nodeId
 assert|assert
 name|nodeId
@@ -12368,6 +12983,40 @@ return|return
 name|workFound
 return|;
 block|}
+comment|/**    * Clear all queues that hold decisions previously made by    * this NameNode.    */
+DECL|method|clearQueues ()
+specifier|public
+name|void
+name|clearQueues
+parameter_list|()
+block|{
+name|neededReplications
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|pendingReplications
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|excessReplicateMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|invalidateBlocks
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|datanodeManager
+operator|.
+name|clearPendingQueues
+argument_list|()
+expr_stmt|;
+block|}
+empty_stmt|;
 DECL|class|ReplicationWork
 specifier|private
 specifier|static
@@ -12502,6 +13151,31 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+comment|/**    * A simple result enum for the result of    * {@link BlockManager#processMisReplicatedBlock(BlockInfo)}.    */
+DECL|enum|MisReplicationResult
+enum|enum
+name|MisReplicationResult
+block|{
+comment|/** The block should be invalidated since it belongs to a deleted file. */
+DECL|enumConstant|INVALID
+name|INVALID
+block|,
+comment|/** The block is currently under-replicated. */
+DECL|enumConstant|UNDER_REPLICATED
+name|UNDER_REPLICATED
+block|,
+comment|/** The block is currently over-replicated. */
+DECL|enumConstant|OVER_REPLICATED
+name|OVER_REPLICATED
+block|,
+comment|/** A decision can't currently be made about this block. */
+DECL|enumConstant|POSTPONE
+name|POSTPONE
+block|,
+comment|/** The block is properly replicated */
+DECL|enumConstant|OK
+name|OK
 block|}
 block|}
 end_class

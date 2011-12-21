@@ -2035,6 +2035,31 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Run an immediate deletion report on this thread. Used by tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|triggerDeletionReportForTests ()
+name|void
+name|triggerDeletionReportForTests
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|BPServiceActor
+name|actor
+range|:
+name|bpServices
+control|)
+block|{
+name|actor
+operator|.
+name|triggerDeletionReportForTests
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Run an immediate heartbeat from all actors. Used by tests.    */
 annotation|@
 name|VisibleForTesting

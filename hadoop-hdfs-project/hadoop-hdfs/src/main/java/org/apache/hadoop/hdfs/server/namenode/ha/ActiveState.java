@@ -162,6 +162,18 @@ comment|// Other than journal all operations are allowed in active state
 block|}
 annotation|@
 name|Override
+DECL|method|shouldPopulateReplQueues ()
+specifier|public
+name|boolean
+name|shouldPopulateReplQueues
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setState (HAContext context, HAState s)
 specifier|public
 name|void

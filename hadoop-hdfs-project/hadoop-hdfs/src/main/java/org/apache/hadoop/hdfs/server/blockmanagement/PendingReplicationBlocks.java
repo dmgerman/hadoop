@@ -425,6 +425,29 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|pendingReplications
+init|)
+block|{
+name|pendingReplications
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|timedOutItems
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * The total number of blocks that are undergoing replication    */
 DECL|method|size ()
 name|int

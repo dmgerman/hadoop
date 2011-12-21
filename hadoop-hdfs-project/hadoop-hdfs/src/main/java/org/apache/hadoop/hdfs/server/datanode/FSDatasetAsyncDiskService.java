@@ -407,6 +407,45 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|countPendingDeletions ()
+specifier|synchronized
+name|long
+name|countPendingDeletions
+parameter_list|()
+block|{
+name|long
+name|count
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|ThreadPoolExecutor
+name|exec
+range|:
+name|executors
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|count
+operator|+=
+name|exec
+operator|.
+name|getTaskCount
+argument_list|()
+operator|-
+name|exec
+operator|.
+name|getCompletedTaskCount
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|count
+return|;
+block|}
 comment|/**    * Execute the task sometime in the future, using ThreadPools.    */
 DECL|method|execute (File root, Runnable task)
 specifier|synchronized

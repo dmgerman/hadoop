@@ -307,7 +307,16 @@ parameter_list|)
 throws|throws
 name|StandbyException
 function_decl|;
+DECL|method|shouldPopulateReplQueues ()
+specifier|public
+specifier|abstract
+name|boolean
+name|shouldPopulateReplQueues
+parameter_list|()
+function_decl|;
 comment|/**    * @return String representation of the service state.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
