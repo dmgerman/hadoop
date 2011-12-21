@@ -280,10 +280,7 @@ name|MessageFormat
 operator|.
 name|format
 argument_list|(
-name|error
-operator|.
-name|getTemplate
-argument_list|()
+name|template
 argument_list|,
 name|args
 argument_list|)
