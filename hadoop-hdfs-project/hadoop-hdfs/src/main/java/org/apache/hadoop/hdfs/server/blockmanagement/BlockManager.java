@@ -4391,13 +4391,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+assert|assert
 name|namesystem
 operator|.
-name|writeLock
+name|hasWriteLock
 argument_list|()
-expr_stmt|;
-try|try
-block|{
+assert|;
 specifier|final
 name|BlockInfo
 name|storedBlock
@@ -4443,15 +4442,6 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|markBlockAsCorrupt (BlockInfo storedBlock, DatanodeInfo dn)
 specifier|private

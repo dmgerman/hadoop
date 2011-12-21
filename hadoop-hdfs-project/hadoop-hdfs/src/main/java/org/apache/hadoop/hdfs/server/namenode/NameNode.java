@@ -1061,6 +1061,11 @@ specifier|final
 name|HAContext
 name|haContext
 decl_stmt|;
+DECL|field|allowStaleStandbyReads
+specifier|protected
+name|boolean
+name|allowStaleStandbyReads
+decl_stmt|;
 comment|/** httpServer */
 DECL|field|httpServer
 specifier|protected
@@ -2403,10 +2408,20 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|allowStaleStandbyReads
+operator|=
+name|HAUtil
+operator|.
+name|shouldAllowStandbyReads
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|haContext
 operator|=
-operator|new
-name|NameNodeHAContext
+name|createHAContext
 argument_list|()
 expr_stmt|;
 try|try
@@ -2501,6 +2516,18 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|createHAContext ()
+specifier|protected
+name|HAContext
+name|createHAContext
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NameNodeHAContext
+argument_list|()
+return|;
 block|}
 comment|/**    * Wait for service to finish.    * (Normally, it runs forever.)    */
 DECL|method|join ()
@@ -4200,33 +4227,9 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
-comment|/** Check if an operation of given category is allowed */
-DECL|method|checkOperation (final OperationCategory op)
-specifier|protected
-specifier|synchronized
-name|void
-name|checkOperation
-parameter_list|(
-specifier|final
-name|OperationCategory
-name|op
-parameter_list|)
-throws|throws
-name|StandbyException
-block|{
-name|state
-operator|.
-name|checkOperation
-argument_list|(
-name|haContext
-argument_list|,
-name|op
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Class used as expose {@link NameNode} as context to {@link HAState}    *     * TODO:HA    * When entering and exiting state, on failing to start services,    * appropriate action is needed todo either shutdown the node or recover    * from failure.    */
 DECL|class|NameNodeHAContext
-specifier|private
+specifier|protected
 class|class
 name|NameNodeHAContext
 implements|implements
@@ -4332,6 +4335,71 @@ operator|.
 name|stopStandbyServices
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|writeLock ()
+specifier|public
+name|void
+name|writeLock
+parameter_list|()
+block|{
+name|namesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|writeUnlock ()
+specifier|public
+name|void
+name|writeUnlock
+parameter_list|()
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+comment|/** Check if an operation of given category is allowed */
+annotation|@
+name|Override
+DECL|method|checkOperation (final OperationCategory op)
+specifier|public
+name|void
+name|checkOperation
+parameter_list|(
+specifier|final
+name|OperationCategory
+name|op
+parameter_list|)
+throws|throws
+name|StandbyException
+block|{
+name|state
+operator|.
+name|checkOperation
+argument_list|(
+name|haContext
+argument_list|,
+name|op
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|allowStaleReads ()
+specifier|public
+name|boolean
+name|allowStaleReads
+parameter_list|()
+block|{
+return|return
+name|allowStaleStandbyReads
+return|;
 block|}
 block|}
 DECL|method|isStandbyState ()

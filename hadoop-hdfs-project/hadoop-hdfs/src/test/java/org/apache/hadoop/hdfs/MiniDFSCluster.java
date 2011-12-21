@@ -1749,6 +1749,20 @@ specifier|private
 name|boolean
 name|federation
 decl_stmt|;
+comment|/**    * A unique instance identifier for the cluster. This    * is used to disambiguate HA filesystems in the case where    * multiple MiniDFSClusters are used in the same test suite.     */
+DECL|field|instanceId
+specifier|private
+name|int
+name|instanceId
+decl_stmt|;
+DECL|field|instanceCount
+specifier|private
+specifier|static
+name|int
+name|instanceCount
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * Stores the information related to a namenode in the cluster    */
 DECL|class|NameNodeInfo
 specifier|static
@@ -1804,6 +1818,19 @@ literal|0
 index|]
 expr_stmt|;
 comment|// No namenode in the cluster
+synchronized|synchronized
+init|(
+name|MiniDFSCluster
+operator|.
+name|class
+init|)
+block|{
+name|instanceId
+operator|=
+name|instanceCount
+operator|++
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Modify the config and start up the servers with the given operation.    * Servers will be started on free ports.    *<p>    * The caller must manage the creation of NameNode and DataNode directories    * and have already set {@link #DFS_NAMENODE_NAME_DIR_KEY} and     * {@link #DFS_DATANODE_DATA_DIR_KEY} in the given conf.    *     * @param conf the base configuration to use in starting the servers.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param nameNodeOperation the operation with which to start the servers.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    */
 annotation|@
@@ -2209,6 +2236,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+synchronized|synchronized
+init|(
+name|MiniDFSCluster
+operator|.
+name|class
+init|)
+block|{
+name|instanceId
+operator|=
+name|instanceCount
+operator|++
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|conf
@@ -3523,6 +3563,16 @@ expr_stmt|;
 block|}
 return|return
 name|uri
+return|;
+block|}
+DECL|method|getInstanceId ()
+specifier|public
+name|int
+name|getInstanceId
+parameter_list|()
+block|{
+return|return
+name|instanceId
 return|;
 block|}
 comment|/**    * @return Configuration of for the given namenode    */

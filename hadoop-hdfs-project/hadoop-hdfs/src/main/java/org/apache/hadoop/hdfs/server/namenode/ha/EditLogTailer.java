@@ -417,9 +417,26 @@ argument_list|,
 literal|"Tailer thread should not be running once failover starts"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|doTailEdits
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|doTailEdits ()
 specifier|private
@@ -428,10 +445,20 @@ name|doTailEdits
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
-comment|// TODO(HA) in a transition from active to standby,
-comment|// the following is wrong and ends up causing all of the
-comment|// last log segment to get re-read
+comment|// Write lock needs to be interruptible here because the
+comment|// transitionToActive RPC takes the write lock before calling
+comment|// tailer.stop() -- so if we're not interruptible, it will
+comment|// deadlock.
+name|namesystem
+operator|.
+name|writeLockInterruptibly
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|long
 name|lastTxnId
 init|=
@@ -526,6 +553,15 @@ literal|"editsLoaded: "
 operator|+
 name|editsLoaded
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|namesystem
+operator|.
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -164,6 +164,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|MiniDFSCluster
 import|;
 end_import
@@ -360,6 +374,16 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+comment|// We read from the standby to watch block locations
+name|HAUtil
+operator|.
+name|setAllowStandbyReads
+argument_list|(
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=

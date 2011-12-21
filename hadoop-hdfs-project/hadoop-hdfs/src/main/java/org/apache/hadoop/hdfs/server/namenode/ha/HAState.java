@@ -184,6 +184,13 @@ parameter_list|)
 throws|throws
 name|ServiceFailedException
 block|{
+name|context
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|exitState
 argument_list|(
 name|context
@@ -203,6 +210,15 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|context
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * entering a state.    * @param context HA context    * @throws ServiceFailedException on failure to enter the state.    */
 DECL|method|enterState (final HAContext context)

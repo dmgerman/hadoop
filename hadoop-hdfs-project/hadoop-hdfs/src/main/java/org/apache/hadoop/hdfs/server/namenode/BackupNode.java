@@ -1257,18 +1257,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|nn
+name|namesystem
 operator|.
 name|checkOperation
 argument_list|(
 name|OperationCategory
 operator|.
 name|JOURNAL
-argument_list|)
-expr_stmt|;
-name|verifyRequest
-argument_list|(
-name|registration
 argument_list|)
 expr_stmt|;
 name|verifyRequest
@@ -1308,7 +1303,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|nn
+name|namesystem
 operator|.
 name|checkOperation
 argument_list|(
@@ -1989,9 +1984,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|createHAContext ()
+specifier|protected
+name|NameNodeHAContext
+name|createHAContext
+parameter_list|()
+block|{
+return|return
+operator|new
+name|BNHAContext
+argument_list|()
+return|;
+block|}
+DECL|class|BNHAContext
+specifier|private
+class|class
+name|BNHAContext
+extends|extends
+name|NameNodeHAContext
+block|{
+annotation|@
+name|Override
 comment|// NameNode
 DECL|method|checkOperation (OperationCategory op)
-specifier|protected
+specifier|public
 name|void
 name|checkOperation
 parameter_list|(
@@ -2008,6 +2024,17 @@ operator|.
 name|JOURNAL
 operator|!=
 name|op
+operator|&&
+operator|!
+operator|(
+name|OperationCategory
+operator|.
+name|READ
+operator|==
+name|op
+operator|&&
+name|allowStaleStandbyReads
+operator|)
 condition|)
 block|{
 name|String
@@ -2026,6 +2053,7 @@ argument_list|(
 name|msg
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 annotation|@

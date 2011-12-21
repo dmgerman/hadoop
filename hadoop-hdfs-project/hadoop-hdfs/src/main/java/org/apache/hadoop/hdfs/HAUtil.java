@@ -345,6 +345,51 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * This is used only by tests at the moment.    * @return true if the NN should allow read operations while in standby mode.    */
+DECL|method|shouldAllowStandbyReads (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|shouldAllowStandbyReads
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+literal|"dfs.ha.allow.stale.reads"
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|method|setAllowStandbyReads (Configuration conf, boolean val)
+specifier|public
+specifier|static
+name|void
+name|setAllowStandbyReads
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|val
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+literal|"dfs.ha.allow.stale.reads"
+argument_list|,
+name|val
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
