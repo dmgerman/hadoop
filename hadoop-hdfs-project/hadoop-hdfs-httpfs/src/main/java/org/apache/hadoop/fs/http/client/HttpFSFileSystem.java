@@ -724,6 +724,15 @@ name|SET_REPLICATION_JSON
 init|=
 literal|"boolean"
 decl_stmt|;
+DECL|field|UPLOAD_CONTENT_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPLOAD_CONTENT_TYPE
+init|=
+literal|"application/octet-stream"
+decl_stmt|;
 DECL|enum|FILE_TYPE
 specifier|public
 specifier|static
@@ -2392,7 +2401,7 @@ name|setRequestProperty
 argument_list|(
 literal|"Content-Type"
 argument_list|,
-literal|"application/octet-stream"
+name|UPLOAD_CONTENT_TYPE
 argument_list|)
 expr_stmt|;
 try|try
