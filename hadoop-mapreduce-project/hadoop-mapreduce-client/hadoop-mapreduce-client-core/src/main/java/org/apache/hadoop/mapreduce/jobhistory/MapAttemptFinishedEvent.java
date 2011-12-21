@@ -280,6 +280,14 @@ name|port
 operator|=
 name|port
 expr_stmt|;
+comment|// This is needed for reading old jh files
+if|if
+condition|(
+name|rackName
+operator|!=
+literal|null
+condition|)
+block|{
 name|datum
 operator|.
 name|rackname
@@ -290,6 +298,7 @@ argument_list|(
 name|rackName
 argument_list|)
 expr_stmt|;
+block|}
 name|datum
 operator|.
 name|state
@@ -603,13 +612,21 @@ name|port
 return|;
 block|}
 comment|/** Get the rack name */
-DECL|method|getRackname ()
+DECL|method|getRackName ()
 specifier|public
 name|String
-name|getRackname
+name|getRackName
 parameter_list|()
 block|{
 return|return
+name|datum
+operator|.
+name|rackname
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|datum
 operator|.
 name|rackname
