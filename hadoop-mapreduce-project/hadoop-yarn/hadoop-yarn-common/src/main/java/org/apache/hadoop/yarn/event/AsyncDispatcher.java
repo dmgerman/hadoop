@@ -388,7 +388,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"AsyncDispatcher thread interrupted"
 argument_list|,
@@ -522,6 +522,14 @@ name|event
 parameter_list|)
 block|{
 comment|//all events go thru this loop
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -544,6 +552,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|Class
 argument_list|<
 name|?
@@ -608,12 +617,12 @@ block|}
 block|}
 block|}
 annotation|@
-name|Override
-annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"rawtypes"
+literal|"unchecked"
 argument_list|)
+annotation|@
+name|Override
 DECL|method|register (Class<? extends Enum> eventType, EventHandler handler)
 specifier|public
 name|void
@@ -632,11 +641,6 @@ name|handler
 parameter_list|)
 block|{
 comment|/* check to see if we have a listener registered */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 name|EventHandler
 argument_list|<
 name|Event
@@ -833,7 +837,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Very low remaining capacity in the event-queue: "
 operator|+
@@ -869,11 +873,6 @@ block|}
 empty_stmt|;
 block|}
 comment|/**    * Multiplexing an event. Sending it to different handlers that    * are interested in the event.    * @param<T> the type of event these multiple handlers are interested in.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 DECL|class|MultiListenerHandler
 specifier|static
 class|class

@@ -1251,6 +1251,17 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|downloadTokensAndSetupUGI (Configuration conf)
+specifier|protected
+name|void
+name|downloadTokensAndSetupUGI
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{   }
 DECL|method|getApplicationAttemptId ( ApplicationId applicationId, int startCount)
 specifier|private
 specifier|static

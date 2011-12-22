@@ -34,20 +34,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|Path
@@ -237,6 +223,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"rawtypes"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|ReduceTaskAttemptImpl
 specifier|public
 class|class
@@ -250,7 +245,7 @@ specifier|final
 name|int
 name|numMapTasks
 decl_stmt|;
-DECL|method|ReduceTaskAttemptImpl (TaskId id, int attempt, EventHandler eventHandler, Path jobFile, int partition, int numMapTasks, Configuration conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|ReduceTaskAttemptImpl (TaskId id, int attempt, EventHandler eventHandler, Path jobFile, int partition, int numMapTasks, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
 specifier|public
 name|ReduceTaskAttemptImpl
 parameter_list|(
@@ -272,7 +267,7 @@ parameter_list|,
 name|int
 name|numMapTasks
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|,
 name|TaskAttemptListener

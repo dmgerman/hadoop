@@ -1709,6 +1709,15 @@ comment|/**  * Implementation of TaskAttempt interface.  */
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"rawtypes"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|TaskAttemptImpl
 specifier|public
 specifier|abstract
@@ -1797,7 +1806,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|protected
 specifier|final
-name|Configuration
+name|JobConf
 name|conf
 decl_stmt|;
 DECL|field|jobFile
@@ -1812,11 +1821,6 @@ specifier|final
 name|int
 name|partition
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 DECL|field|eventHandler
 specifier|protected
 specifier|final
@@ -3267,7 +3271,7 @@ argument_list|(
 literal|"line.separator"
 argument_list|)
 decl_stmt|;
-DECL|method|TaskAttemptImpl (TaskId taskId, int i, @SuppressWarnings(R) EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, Configuration conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
 specifier|public
 name|TaskAttemptImpl
 parameter_list|(
@@ -3277,11 +3281,6 @@ parameter_list|,
 name|int
 name|i
 parameter_list|,
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 name|EventHandler
 name|eventHandler
 parameter_list|,
@@ -3294,7 +3293,7 @@ parameter_list|,
 name|int
 name|partition
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|,
 name|String
@@ -6898,13 +6897,9 @@ init|=
 operator|new
 name|TaskAttemptContextImpl
 argument_list|(
-operator|new
-name|JobConf
-argument_list|(
 name|taskAttempt
 operator|.
 name|conf
-argument_list|)
 argument_list|,
 name|TypeConverter
 operator|.
