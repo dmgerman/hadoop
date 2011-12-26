@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Initializes Alfredo AuthenticationFilter which provides support for  * Kerberos HTTP SPENGO authentication.  *<p/>  * It enables anonymous access, simple/speudo and Kerberos HTTP SPNEGO  * authentication  for Hadoop JobTracker, NameNode, DataNodes and  * TaskTrackers.  *<p/>  * Refer to the<code>core-default.xml</code> file, after the comment  * 'HTTP Authentication' for details on the configuration options.  * All related configuration properties have 'hadoop.http.authentication.'  * as prefix.  */
+comment|/**  * Initializes hadoop-auth AuthenticationFilter which provides support for  * Kerberos HTTP SPENGO authentication.  *<p/>  * It enables anonymous access, simple/speudo and Kerberos HTTP SPNEGO  * authentication  for Hadoop JobTracker, NameNode, DataNodes and  * TaskTrackers.  *<p/>  * Refer to the<code>core-default.xml</code> file, after the comment  * 'HTTP Authentication' for details on the configuration options.  * All related configuration properties have 'hadoop.http.authentication.'  * as prefix.  */
 end_comment
 
 begin_class
@@ -158,7 +158,7 @@ name|SIGNATURE_SECRET
 operator|+
 literal|".file"
 decl_stmt|;
-comment|/**    * Initializes Alfredo AuthenticationFilter.    *<p/>    * Propagates to Alfredo AuthenticationFilter configuration all Hadoop    * configuration properties prefixed with "hadoop.http.authentication."    *    * @param container The filter container    * @param conf Configuration for run-time parameters    */
+comment|/**    * Initializes hadoop-auth AuthenticationFilter.    *<p/>    * Propagates to hadoop-auth AuthenticationFilter configuration all Hadoop    * configuration properties prefixed with "hadoop.http.authentication."    *    * @param container The filter container    * @param conf Configuration for run-time parameters    */
 annotation|@
 name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
