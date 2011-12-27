@@ -32,7 +32,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
@@ -135,20 +135,6 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -643,6 +629,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"rawtypes"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|TestTaskImpl
 specifier|public
 class|class
@@ -666,7 +661,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|conf
 specifier|private
-name|Configuration
+name|JobConf
 name|conf
 decl_stmt|;
 DECL|field|taskAttemptListener
@@ -814,12 +809,7 @@ name|taskAttemptCounter
 init|=
 literal|0
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, Configuration conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Set<TaskId> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
+DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Set<TaskId> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
 specifier|public
 name|MockTaskImpl
 parameter_list|(
@@ -835,7 +825,7 @@ parameter_list|,
 name|Path
 name|remoteJobConfFile
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|,
 name|TaskAttemptListener
@@ -1012,12 +1002,7 @@ specifier|private
 name|TaskAttemptId
 name|attemptId
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, Configuration conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
 specifier|public
 name|MockTaskAttemptImpl
 parameter_list|(
@@ -1039,7 +1024,7 @@ parameter_list|,
 name|int
 name|partition
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|,
 name|OutputCommitter
@@ -1205,11 +1190,6 @@ name|Task
 block|{
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|run (JobConf job, TaskUmbilicalProtocol umbilical)
 specifier|public
 name|void
@@ -1268,7 +1248,7 @@ expr_stmt|;
 name|conf
 operator|=
 operator|new
-name|Configuration
+name|JobConf
 argument_list|()
 expr_stmt|;
 name|taskAttemptListener

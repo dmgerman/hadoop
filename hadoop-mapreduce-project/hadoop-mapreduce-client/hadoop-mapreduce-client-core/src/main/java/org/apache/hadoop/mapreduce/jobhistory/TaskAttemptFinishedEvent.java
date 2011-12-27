@@ -156,7 +156,7 @@ name|TaskAttemptFinished
 argument_list|()
 decl_stmt|;
 comment|/**    * Create an event to record successful finishes for setup and cleanup     * attempts    * @param id Attempt ID    * @param taskType Type of task    * @param taskStatus Status of task    * @param finishTime Finish time of attempt    * @param hostname Host where the attempt executed    * @param state State string    * @param counters Counters for the attempt    */
-DECL|method|TaskAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long finishTime, String hostname, String state, Counters counters)
+DECL|method|TaskAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long finishTime, String rackName, String hostname, String state, Counters counters)
 specifier|public
 name|TaskAttemptFinishedEvent
 parameter_list|(
@@ -171,6 +171,9 @@ name|taskStatus
 parameter_list|,
 name|long
 name|finishTime
+parameter_list|,
+name|String
+name|rackName
 parameter_list|,
 name|String
 name|hostname
@@ -240,6 +243,24 @@ name|finishTime
 operator|=
 name|finishTime
 expr_stmt|;
+if|if
+condition|(
+name|rackName
+operator|!=
+literal|null
+condition|)
+block|{
+name|datum
+operator|.
+name|rackname
+operator|=
+operator|new
+name|Utf8
+argument_list|(
+name|rackName
+argument_list|)
+expr_stmt|;
+block|}
 name|datum
 operator|.
 name|hostname
@@ -408,6 +429,30 @@ return|return
 name|datum
 operator|.
 name|hostname
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/** Get the rackname where the attempt executed */
+DECL|method|getRackName ()
+specifier|public
+name|String
+name|getRackName
+parameter_list|()
+block|{
+return|return
+name|datum
+operator|.
+name|rackname
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|datum
+operator|.
+name|rackname
 operator|.
 name|toString
 argument_list|()

@@ -689,6 +689,11 @@ specifier|protected
 name|Thread
 name|allocatorThread
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|field|eventHandler
 specifier|protected
 name|EventHandler

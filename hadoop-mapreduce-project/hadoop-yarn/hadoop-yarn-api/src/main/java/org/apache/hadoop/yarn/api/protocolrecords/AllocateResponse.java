@@ -176,6 +176,30 @@ name|AMResponse
 name|amResponse
 parameter_list|)
 function_decl|;
+comment|/**    * Get the number of hosts available on the cluster.    * @return the available host count.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNumClusterNodes ()
+specifier|public
+name|int
+name|getNumClusterNodes
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNumClusterNodes (int numNodes)
+specifier|public
+name|void
+name|setNumClusterNodes
+parameter_list|(
+name|int
+name|numNodes
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

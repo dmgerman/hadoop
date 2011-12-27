@@ -376,6 +376,8 @@ literal|1
 argument_list|,
 literal|""
 argument_list|,
+literal|""
+argument_list|,
 name|NULL_SPLITS_ARRAY
 argument_list|)
 decl_stmt|;
@@ -626,6 +628,8 @@ name|toString
 argument_list|()
 argument_list|,
 literal|0L
+argument_list|,
+literal|""
 argument_list|,
 literal|""
 argument_list|,

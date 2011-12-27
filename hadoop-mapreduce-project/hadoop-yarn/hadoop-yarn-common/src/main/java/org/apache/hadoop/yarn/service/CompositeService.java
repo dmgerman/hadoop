@@ -364,6 +364,21 @@ parameter_list|()
 block|{
 if|if
 condition|(
+name|this
+operator|.
+name|getServiceState
+argument_list|()
+operator|==
+name|STATE
+operator|.
+name|STOPPED
+condition|)
+block|{
+comment|// The base composite-service is already stopped, don't do anything again.
+return|return;
+block|}
+if|if
+condition|(
 name|serviceList
 operator|.
 name|size

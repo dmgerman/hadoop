@@ -3391,7 +3391,7 @@ init|=
 operator|new
 name|Signer
 argument_list|(
-literal|"alfredo"
+literal|"secret"
 operator|.
 name|getBytes
 argument_list|()
@@ -3735,7 +3735,7 @@ init|=
 operator|new
 name|Signer
 argument_list|(
-literal|"alfredo"
+literal|"secret"
 operator|.
 name|getBytes
 argument_list|()
@@ -4173,7 +4173,7 @@ init|=
 operator|new
 name|Signer
 argument_list|(
-literal|"alfredo"
+literal|"secret"
 operator|.
 name|getBytes
 argument_list|()

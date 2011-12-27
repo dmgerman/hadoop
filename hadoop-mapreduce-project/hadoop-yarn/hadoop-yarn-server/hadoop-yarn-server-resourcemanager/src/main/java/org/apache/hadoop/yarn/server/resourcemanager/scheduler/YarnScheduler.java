@@ -343,6 +343,17 @@ name|Resource
 name|getMaximumResourceCapability
 parameter_list|()
 function_decl|;
+comment|/**    * Get the number of nodes available in the cluster.    * @return the number of available nodes.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNumClusterNodes ()
+specifier|public
+name|int
+name|getNumClusterNodes
+parameter_list|()
+function_decl|;
 comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @return the {@link Allocation} for the application    */
 annotation|@
 name|Public

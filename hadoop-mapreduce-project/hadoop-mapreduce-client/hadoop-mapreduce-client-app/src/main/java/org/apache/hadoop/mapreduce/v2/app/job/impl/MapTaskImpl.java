@@ -52,9 +52,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|Path
 import|;
 end_import
 
@@ -66,9 +66,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapred
 operator|.
-name|Path
+name|JobConf
 import|;
 end_import
 
@@ -224,9 +224,7 @@ name|v2
 operator|.
 name|app
 operator|.
-name|metrics
-operator|.
-name|MRAppMetrics
+name|TaskAttemptListener
 import|;
 end_import
 
@@ -244,7 +242,9 @@ name|v2
 operator|.
 name|app
 operator|.
-name|TaskAttemptListener
+name|metrics
+operator|.
+name|MRAppMetrics
 import|;
 end_import
 
@@ -311,6 +311,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"rawtypes"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|MapTaskImpl
 specifier|public
 class|class
@@ -324,7 +333,7 @@ specifier|final
 name|TaskSplitMetaInfo
 name|taskSplitMetaInfo
 decl_stmt|;
-DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, Configuration conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Set<TaskId> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
+DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Set<TaskId> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
 specifier|public
 name|MapTaskImpl
 parameter_list|(
@@ -340,7 +349,7 @@ parameter_list|,
 name|Path
 name|remoteJobConfFile
 parameter_list|,
-name|Configuration
+name|JobConf
 name|conf
 parameter_list|,
 name|TaskSplitMetaInfo

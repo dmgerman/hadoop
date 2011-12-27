@@ -1061,7 +1061,7 @@ name|rackname
 operator|=
 name|event
 operator|.
-name|getRackname
+name|getRackName
 argument_list|()
 expr_stmt|;
 block|}
@@ -1147,6 +1147,15 @@ operator|=
 name|event
 operator|.
 name|getPort
+argument_list|()
+expr_stmt|;
+name|attemptInfo
+operator|.
+name|rackname
+operator|=
+name|event
+operator|.
+name|getRackName
 argument_list|()
 expr_stmt|;
 name|attemptInfo

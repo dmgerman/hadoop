@@ -500,24 +500,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|lib
-operator|.
-name|input
-operator|.
-name|FileInputFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|security
 operator|.
 name|TokenCache
@@ -1467,6 +1449,15 @@ comment|/** Implementation of Job interface. Maintains the state machines of Job
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"rawtypes"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|JobImpl
 specifier|public
 class|class
@@ -1753,7 +1744,7 @@ comment|// sent from LocalContainerLauncher, and eventually including a count of
 comment|// of uber-AM attempts (probably sent from MRAppMaster).
 DECL|field|conf
 specifier|public
-name|Configuration
+name|JobConf
 name|conf
 decl_stmt|;
 comment|//fields initialized in init
@@ -2927,7 +2918,11 @@ name|this
 operator|.
 name|conf
 operator|=
+operator|new
+name|JobConf
+argument_list|(
 name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -5713,13 +5708,9 @@ name|mapred
 operator|.
 name|JobContextImpl
 argument_list|(
-operator|new
-name|JobConf
-argument_list|(
 name|job
 operator|.
 name|conf
-argument_list|)
 argument_list|,
 name|job
 operator|.

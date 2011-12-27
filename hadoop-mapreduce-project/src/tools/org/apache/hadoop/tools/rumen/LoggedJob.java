@@ -1315,6 +1315,7 @@ operator|=
 name|relativeTime
 expr_stmt|;
 block|}
+comment|/**    * @return job queue name if it is available in job history file or    *         job history conf file. Returns null otherwise.    */
 DECL|method|getQueue ()
 specifier|public
 name|QueueName

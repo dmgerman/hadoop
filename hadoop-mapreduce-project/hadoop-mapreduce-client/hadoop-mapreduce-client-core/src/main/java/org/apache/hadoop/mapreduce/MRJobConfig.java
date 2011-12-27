@@ -1490,7 +1490,28 @@ name|MR_AM_JOB_NODE_BLACKLISTING_ENABLE
 init|=
 name|MR_AM_PREFIX
 operator|+
-literal|"job.node.blacklisting.enable"
+literal|"job.node-blacklisting.enable"
+decl_stmt|;
+comment|/** Ignore blacklisting if a certain percentage of nodes have been blacklisted */
+DECL|field|MR_AM_IGNORE_BLACKLISTING_BLACKLISTED_NODE_PERECENT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_IGNORE_BLACKLISTING_BLACKLISTED_NODE_PERECENT
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.node-blacklisting.ignore-threshold-node-percent"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_IGNORE_BLACKLISTING_BLACKLISTED_NODE_PERCENT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_IGNORE_BLACKLISTING_BLACKLISTED_NODE_PERCENT
+init|=
+literal|33
 decl_stmt|;
 comment|/** Enable job recovery.*/
 DECL|field|MR_AM_JOB_RECOVERY_ENABLE

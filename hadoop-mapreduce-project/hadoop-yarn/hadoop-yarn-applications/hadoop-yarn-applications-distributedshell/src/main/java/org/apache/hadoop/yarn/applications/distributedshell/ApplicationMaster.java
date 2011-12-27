@@ -2567,7 +2567,7 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//						+ ", containerToken" + allocatedContainer.getContainerToken().getIdentifier().toString());
+comment|//+ ", containerToken" + allocatedContainer.getContainerToken().getIdentifier().toString());
 name|LaunchContainerRunnable
 name|runnableLaunchContainer
 init|=
@@ -3036,6 +3036,18 @@ name|void
 name|connectToCM
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to ContainerManager for containerid="
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|String
 name|cmIpPortStr
 init|=
@@ -3071,7 +3083,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Connecting to ResourceManager at "
+literal|"Connecting to ContainerManager at "
 operator|+
 name|cmIpPortStr
 argument_list|)
@@ -3109,18 +3121,6 @@ name|run
 parameter_list|()
 block|{
 comment|// Connect to ContainerManager
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Connecting to container manager for containerid="
-operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|connectToCM
 argument_list|()
 expr_stmt|;
@@ -3559,17 +3559,17 @@ block|}
 comment|// Get container status?
 comment|// Left commented out as the shell scripts are short lived
 comment|// and we are relying on the status for completed containers from RM to detect status
-comment|//		    GetContainerStatusRequest statusReq = Records.newRecord(GetContainerStatusRequest.class);
-comment|//		    statusReq.setContainerId(container.getId());
-comment|//		    GetContainerStatusResponse statusResp;
-comment|//			try {
-comment|//				statusResp = cm.getContainerStatus(statusReq);
-comment|//			    LOG.info("Container Status"
-comment|//			    		+ ", id=" + container.getId()
-comment|//			    		+ ", status=" +statusResp.getStatus());
-comment|//			} catch (YarnRemoteException e) {
-comment|//				e.printStackTrace();
-comment|//			}
+comment|//    GetContainerStatusRequest statusReq = Records.newRecord(GetContainerStatusRequest.class);
+comment|//    statusReq.setContainerId(container.getId());
+comment|//    GetContainerStatusResponse statusResp;
+comment|//try {
+comment|//statusResp = cm.getContainerStatus(statusReq);
+comment|//    LOG.info("Container Status"
+comment|//    + ", id=" + container.getId()
+comment|//    + ", status=" +statusResp.getStatus());
+comment|//} catch (YarnRemoteException e) {
+comment|//e.printStackTrace();
+comment|//}
 block|}
 block|}
 comment|/**    * Connect to the Resource Manager    * @return Handle to communicate with the RM    */
