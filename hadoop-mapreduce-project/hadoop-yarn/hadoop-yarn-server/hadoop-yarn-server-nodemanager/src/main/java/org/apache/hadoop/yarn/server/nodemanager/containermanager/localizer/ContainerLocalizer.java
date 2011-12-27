@@ -176,7 +176,31 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CompletionService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutorCompletionService
 import|;
 end_import
 
@@ -1262,11 +1286,22 @@ operator|=
 name|createDownloadThreadPool
 argument_list|()
 expr_stmt|;
+name|CompletionService
+argument_list|<
+name|Path
+argument_list|>
+name|ecs
+init|=
+name|createCompletionService
+argument_list|(
+name|exec
+argument_list|)
+decl_stmt|;
 name|localizeFiles
 argument_list|(
 name|nodeManager
 argument_list|,
-name|exec
+name|ecs
 argument_list|,
 name|ugi
 argument_list|)
@@ -1335,6 +1370,28 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|createCompletionService (ExecutorService exec)
+name|CompletionService
+argument_list|<
+name|Path
+argument_list|>
+name|createCompletionService
+parameter_list|(
+name|ExecutorService
+name|exec
+parameter_list|)
+block|{
+return|return
+operator|new
+name|ExecutorCompletionService
+argument_list|<
+name|Path
+argument_list|>
+argument_list|(
+name|exec
 argument_list|)
 return|;
 block|}
@@ -1469,7 +1526,7 @@ name|duration
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|localizeFiles (LocalizationProtocol nodemanager, ExecutorService exec, UserGroupInformation ugi)
+DECL|method|localizeFiles (LocalizationProtocol nodemanager, CompletionService<Path> cs, UserGroupInformation ugi)
 specifier|private
 name|void
 name|localizeFiles
@@ -1477,8 +1534,11 @@ parameter_list|(
 name|LocalizationProtocol
 name|nodemanager
 parameter_list|,
-name|ExecutorService
-name|exec
+name|CompletionService
+argument_list|<
+name|Path
+argument_list|>
+name|cs
 parameter_list|,
 name|UserGroupInformation
 name|ugi
@@ -1605,7 +1665,7 @@ name|put
 argument_list|(
 name|r
 argument_list|,
-name|exec
+name|cs
 operator|.
 name|submit
 argument_list|(
@@ -1673,10 +1733,15 @@ parameter_list|)
 block|{ }
 return|return;
 block|}
-comment|// TODO HB immediately when rsrc localized
-name|sleep
+name|cs
+operator|.
+name|poll
 argument_list|(
-literal|1
+literal|1000
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
