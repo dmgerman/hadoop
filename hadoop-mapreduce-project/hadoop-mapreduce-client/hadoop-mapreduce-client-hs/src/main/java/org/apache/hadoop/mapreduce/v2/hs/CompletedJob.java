@@ -1103,6 +1103,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+literal|1.0f
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getState ()
 specifier|public
 name|JobState

@@ -2458,7 +2458,7 @@ literal|null
 condition|)
 block|{
 return|return
-literal|0
+literal|0f
 return|;
 block|}
 return|return
@@ -2768,12 +2768,17 @@ expr_stmt|;
 comment|//The first time around
 block|}
 comment|// calculate the best progress
-if|if
-condition|(
+name|float
+name|attemptProgress
+init|=
 name|at
 operator|.
 name|getProgress
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|attemptProgress
 operator|>
 name|progress
 condition|)
@@ -2784,10 +2789,7 @@ name|at
 expr_stmt|;
 name|progress
 operator|=
-name|at
-operator|.
-name|getProgress
-argument_list|()
+name|attemptProgress
 expr_stmt|;
 block|}
 block|}

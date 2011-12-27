@@ -1125,7 +1125,7 @@ literal|" resourcelimit="
 operator|+
 name|availableResources
 operator|+
-literal|"knownNMs="
+literal|" knownNMs="
 operator|+
 name|clusterNmCount
 argument_list|)
