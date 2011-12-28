@@ -2310,7 +2310,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Display the information about a job's tasks, of a particular type and    * in a particular state    *     * @param jobId the ID of the job    * @param type the type of the task (map/reduce/setup/cleanup)    * @param state the state of the task     * (pending/running/completed/failed/killed)    */
+comment|/**    * Display the information about a job's tasks, of a particular type and    * in a particular state    *     * @param jobId the ID of the job    * @param type the type of the task (map/reduce/setup/cleanup)    * @param state the state of the task     * (pending/running/completed/failed/killed)    * @throws IOException when there is an error communicating with the master    * @throws IllegalArgumentException if an invalid type/state is passed    */
 DECL|method|displayTasks (final JobID jobId, String type, String state)
 specifier|public
 name|void
