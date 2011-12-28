@@ -354,6 +354,11 @@ name|int
 name|getCompletedReduces
 parameter_list|()
 function_decl|;
+DECL|method|getProgress ()
+name|float
+name|getProgress
+parameter_list|()
+function_decl|;
 DECL|method|isUber ()
 name|boolean
 name|isUber

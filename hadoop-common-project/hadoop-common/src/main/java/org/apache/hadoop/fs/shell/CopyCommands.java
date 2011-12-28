@@ -233,7 +233,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"<src><localdst> [addnl]"
+literal|"[-nl]<src><localdst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -246,7 +246,9 @@ literal|"Get all the files in the directories that\n"
 operator|+
 literal|"match the source file pattern and merge and sort them to only\n"
 operator|+
-literal|"one file on local fs.<src> is kept."
+literal|"one file on local fs.<src> is kept.\n"
+operator|+
+literal|"  -nl   Add a newline character at the end of each file."
 decl_stmt|;
 DECL|field|dst
 specifier|protected
@@ -287,6 +289,8 @@ argument_list|(
 literal|2
 argument_list|,
 literal|3
+argument_list|,
+literal|"nl"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -296,41 +300,19 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
-comment|// TODO: this really should be a -nl option
-if|if
-condition|(
-operator|(
-name|args
+name|delimiter
+operator|=
+name|cf
 operator|.
-name|size
-argument_list|()
-operator|>
-literal|2
-operator|)
-operator|&&
-name|Boolean
-operator|.
-name|parseBoolean
+name|getOpt
 argument_list|(
-name|args
-operator|.
-name|removeLast
-argument_list|()
+literal|"nl"
 argument_list|)
-condition|)
-block|{
-name|delimiter
-operator|=
+condition|?
 literal|"\n"
-expr_stmt|;
-block|}
-else|else
-block|{
-name|delimiter
-operator|=
+else|:
 literal|null
 expr_stmt|;
-block|}
 name|dst
 operator|=
 operator|new

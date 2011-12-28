@@ -2465,6 +2465,18 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getCounters ()
 specifier|public
 name|Counters

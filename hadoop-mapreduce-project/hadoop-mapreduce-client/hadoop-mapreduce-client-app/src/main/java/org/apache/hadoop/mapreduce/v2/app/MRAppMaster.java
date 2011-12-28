@@ -2043,8 +2043,7 @@ argument_list|)
 expr_stmt|;
 name|dispatcher
 operator|=
-operator|new
-name|AsyncDispatcher
+name|createDispatcher
 argument_list|()
 expr_stmt|;
 name|addIfService
@@ -2320,6 +2319,18 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// end of init()
+DECL|method|createDispatcher ()
+specifier|protected
+name|Dispatcher
+name|createDispatcher
+parameter_list|()
+block|{
+return|return
+operator|new
+name|AsyncDispatcher
+argument_list|()
+return|;
+block|}
 DECL|method|createOutputCommitter (Configuration conf)
 specifier|private
 name|OutputCommitter

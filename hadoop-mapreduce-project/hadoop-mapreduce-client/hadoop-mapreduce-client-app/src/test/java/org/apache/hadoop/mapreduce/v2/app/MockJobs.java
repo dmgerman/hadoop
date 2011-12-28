@@ -2760,6 +2760,17 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
 name|Counters
 name|getCounters
 parameter_list|()
