@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Print statistics about path in specified format.  * Format sequences:  *   %b: Size of file in blocks  *   %n: Filename  *   %o: Block size  *   %r: replication  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;  *   %Y: Milliseconds since January 1, 1970 UTC  */
+comment|/**  * Print statistics about path in specified format.  * Format sequences:  *   %b: Size of file in blocks  *   %g: Group name of owner  *   %n: Filename  *   %o: Block size  *   %r: replication  *   %u: User name of owner  *   %y: UTC date as&quot;yyyy-MM-dd HH:mm:ss&quot;  *   %Y: Milliseconds since January 1, 1970 UTC  */
 end_comment
 
 begin_class
@@ -178,9 +178,9 @@ name|DESCRIPTION
 init|=
 literal|"Print statistics about the file/directory at<path>\n"
 operator|+
-literal|"in the specified format. Format accepts filesize in blocks (%b), filename (%n),\n"
+literal|"in the specified format. Format accepts filesize in blocks (%b), group name of owner(%g),\n"
 operator|+
-literal|"block size (%o), replication (%r), modification date (%y, %Y)\n"
+literal|"filename (%n), block size (%o), replication (%r), user name of owner(%u), modification date (%y, %Y)\n"
 decl_stmt|;
 DECL|field|timeFmt
 specifier|protected
@@ -435,6 +435,20 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
+literal|'g'
+case|:
+name|buf
+operator|.
+name|append
+argument_list|(
+name|stat
+operator|.
+name|getGroup
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
 literal|'n'
 case|:
 name|buf
@@ -474,6 +488,20 @@ argument_list|(
 name|stat
 operator|.
 name|getReplication
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+literal|'u'
+case|:
+name|buf
+operator|.
+name|append
+argument_list|(
+name|stat
+operator|.
+name|getOwner
 argument_list|()
 argument_list|)
 expr_stmt|;
