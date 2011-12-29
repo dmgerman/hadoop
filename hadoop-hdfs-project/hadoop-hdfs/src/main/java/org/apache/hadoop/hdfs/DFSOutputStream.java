@@ -5024,8 +5024,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception in createBlockOutputStream "
-operator|+
+literal|"Exception in createBlockOutputStream"
+argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
