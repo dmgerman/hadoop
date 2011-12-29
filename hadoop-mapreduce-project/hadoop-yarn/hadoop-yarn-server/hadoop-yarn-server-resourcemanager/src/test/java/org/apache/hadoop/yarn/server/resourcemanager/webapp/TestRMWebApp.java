@@ -1173,7 +1173,7 @@ name|conf
 operator|.
 name|setQueues
 argument_list|(
-name|CapacityScheduler
+name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 argument_list|,
@@ -1193,7 +1193,7 @@ name|conf
 operator|.
 name|setCapacity
 argument_list|(
-name|CapacityScheduler
+name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 argument_list|,
@@ -1204,7 +1204,7 @@ specifier|final
 name|String
 name|A
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 operator|+
@@ -1223,7 +1223,7 @@ specifier|final
 name|String
 name|B
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 operator|+
@@ -1242,7 +1242,7 @@ specifier|final
 name|String
 name|C
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 operator|+

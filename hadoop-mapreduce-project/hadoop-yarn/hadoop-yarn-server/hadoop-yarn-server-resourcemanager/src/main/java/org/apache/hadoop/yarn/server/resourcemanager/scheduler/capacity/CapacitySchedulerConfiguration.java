@@ -477,14 +477,25 @@ literal|1.0f
 decl_stmt|;
 annotation|@
 name|Private
-DECL|field|DEFAULT_ACL
+DECL|field|ALL_ACL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DEFAULT_ACL
+name|ALL_ACL
 init|=
 literal|"*"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|NONE_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NONE_ACL
+init|=
+literal|" "
 decl_stmt|;
 DECL|field|ENABLE_USER_METRICS
 annotation|@
@@ -509,6 +520,17 @@ name|boolean
 name|DEFAULT_ENABLE_USER_METRICS
 init|=
 literal|false
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|ROOT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROOT
+init|=
+literal|"root"
 decl_stmt|;
 DECL|method|CapacitySchedulerConfiguration ()
 specifier|public
@@ -652,7 +674,7 @@ throw|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - setCapacity: queuePrefix="
 operator|+
@@ -696,7 +718,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - setCapacity: queuePrefix="
 operator|+
@@ -765,7 +787,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - setMaxCapacity: queuePrefix="
 operator|+
@@ -834,7 +856,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"here setUserLimit: queuePrefix="
 operator|+
@@ -991,6 +1013,22 @@ argument_list|(
 name|queue
 argument_list|)
 decl_stmt|;
+comment|// The root queue defaults to all access if not defined
+comment|// Sub queues inherit access if not defined
+name|String
+name|defaultAcl
+init|=
+name|queue
+operator|.
+name|equals
+argument_list|(
+name|ROOT
+argument_list|)
+condition|?
+name|ALL_ACL
+else|:
+name|NONE_ACL
+decl_stmt|;
 name|String
 name|aclString
 init|=
@@ -1003,7 +1041,7 @@ argument_list|(
 name|acl
 argument_list|)
 argument_list|,
-name|DEFAULT_ACL
+name|defaultAcl
 argument_list|)
 decl_stmt|;
 return|return
@@ -1178,7 +1216,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - getQueues called for: queuePrefix="
 operator|+
@@ -1204,7 +1242,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - getQueues: queuePrefix="
 operator|+
@@ -1269,7 +1307,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"CSConf - setQueues: qPrefix="
 operator|+

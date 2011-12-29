@@ -1550,17 +1550,6 @@ block|}
 block|}
 annotation|@
 name|Private
-DECL|field|ROOT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ROOT
-init|=
-literal|"root"
-decl_stmt|;
-annotation|@
-name|Private
 DECL|field|ROOT_QUEUE
 specifier|public
 specifier|static
@@ -1572,6 +1561,8 @@ name|CapacitySchedulerConfiguration
 operator|.
 name|PREFIX
 operator|+
+name|CapacitySchedulerConfiguration
+operator|.
 name|ROOT
 decl_stmt|;
 DECL|class|QueueHook
@@ -1632,6 +1623,8 @@ name|conf
 argument_list|,
 literal|null
 argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
 name|ROOT
 argument_list|,
 name|queues
@@ -1702,6 +1695,8 @@ name|conf
 argument_list|,
 literal|null
 argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
 name|ROOT
 argument_list|,
 name|newQueues
