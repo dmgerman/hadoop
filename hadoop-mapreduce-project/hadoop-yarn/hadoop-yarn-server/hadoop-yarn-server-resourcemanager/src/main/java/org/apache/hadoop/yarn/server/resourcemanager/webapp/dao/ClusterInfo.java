@@ -108,6 +108,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|service
+operator|.
+name|Service
+operator|.
+name|STATE
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|YarnVersionInfo
@@ -141,7 +159,7 @@ name|startedOn
 decl_stmt|;
 DECL|field|state
 specifier|protected
-name|String
+name|STATE
 name|state
 decl_stmt|;
 DECL|field|resourceManagerVersion
@@ -208,9 +226,6 @@ operator|=
 name|rm
 operator|.
 name|getServiceState
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 expr_stmt|;
 name|this
@@ -284,6 +299,9 @@ return|return
 name|this
 operator|.
 name|state
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|method|getRMVersion ()

@@ -807,7 +807,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|// client
 DECL|method|submitApp (int masterMemory)
 specifier|public
 name|RMApp
@@ -815,6 +814,35 @@ name|submitApp
 parameter_list|(
 name|int
 name|masterMemory
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|submitApp
+argument_list|(
+name|masterMemory
+argument_list|,
+literal|""
+argument_list|,
+literal|""
+argument_list|)
+return|;
+block|}
+comment|// client
+DECL|method|submitApp (int masterMemory, String name, String user)
+specifier|public
+name|RMApp
+name|submitApp
+parameter_list|(
+name|int
+name|masterMemory
+parameter_list|,
+name|String
+name|name
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|Exception
@@ -885,14 +913,14 @@ name|sub
 operator|.
 name|setApplicationName
 argument_list|(
-literal|""
+name|name
 argument_list|)
 expr_stmt|;
 name|sub
 operator|.
 name|setUser
 argument_list|(
-literal|""
+name|user
 argument_list|)
 expr_stmt|;
 name|ContainerLaunchContext
