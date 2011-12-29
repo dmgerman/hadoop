@@ -2979,7 +2979,11 @@ else|else
 block|{
 name|long
 name|prefix
-init|=
+decl_stmt|;
+try|try
+block|{
+name|prefix
+operator|=
 name|TraditionalBinaryPrefix
 operator|.
 name|valueOf
@@ -2988,7 +2992,30 @@ name|lastchar
 argument_list|)
 operator|.
 name|value
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid size prefix '"
+operator|+
+name|lastchar
+operator|+
+literal|"' in '"
+operator|+
+name|s
+operator|+
+literal|"'. Allowed prefixes are k, m, g, t, p, e(case insensitive)"
+argument_list|)
+throw|;
+block|}
 name|long
 name|num
 init|=

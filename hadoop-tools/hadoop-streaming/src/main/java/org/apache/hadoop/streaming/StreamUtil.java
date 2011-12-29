@@ -22,7 +22,27 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -32,7 +52,17 @@ name|java
 operator|.
 name|net
 operator|.
-name|*
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
 import|;
 end_import
 
@@ -74,7 +104,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|FSDataInputStream
 import|;
 end_import
 
@@ -102,7 +132,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataInputStream
+name|Path
 import|;
 end_import
 
@@ -130,11 +160,7 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|server
-operator|.
-name|jobtracker
-operator|.
-name|JTConfig
+name|MRConfig
 import|;
 end_import
 
@@ -957,21 +983,30 @@ name|JobConf
 name|job
 parameter_list|)
 block|{
-return|return
+name|String
+name|framework
+init|=
 name|job
 operator|.
 name|get
 argument_list|(
-name|JTConfig
+name|MRConfig
 operator|.
-name|JT_IPC_ADDRESS
+name|FRAMEWORK_NAME
 argument_list|,
-literal|"local"
+name|MRConfig
+operator|.
+name|LOCAL_FRAMEWORK_NAME
 argument_list|)
+decl_stmt|;
+return|return
+name|framework
 operator|.
 name|equals
 argument_list|(
-literal|"local"
+name|MRConfig
+operator|.
+name|LOCAL_FRAMEWORK_NAME
 argument_list|)
 return|;
 block|}

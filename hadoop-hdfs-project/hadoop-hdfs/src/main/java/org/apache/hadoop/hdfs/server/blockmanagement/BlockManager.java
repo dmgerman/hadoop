@@ -8835,7 +8835,7 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #recentInvalidateSets} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
+comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
 DECL|method|invalidateCorruptReplicas (Block blk)
 specifier|private
 name|void
@@ -10102,7 +10102,7 @@ literal|", "
 operator|+
 name|b
 operator|+
-literal|") is added to recentInvalidateSets"
+literal|") is added to invalidated blocks set."
 argument_list|)
 expr_stmt|;
 block|}
@@ -12260,7 +12260,7 @@ name|getReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #recentInvalidateSets}.    *    * @return number of blocks scheduled for removal during this iteration.    */
+comment|/**    * Get blocks to invalidate for<i>nodeId</i>    * in {@link #invalidateBlocks}.    *    * @return number of blocks scheduled for removal during this iteration.    */
 DECL|method|invalidateWorkForOneNode (String nodeId)
 specifier|private
 name|int

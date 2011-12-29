@@ -2644,6 +2644,47 @@ name|valueString
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the value of the<code>name</code> property as a<code>long</code> or    * human readable format. If no such property exists, the provided default    * value is returned, or if the specified value is not a valid    *<code>long</code> or human readable format, then an error is thrown. You    * can use the following suffix (case insensitive): k(kilo), m(mega), g(giga),    * t(tera), p(peta), e(exa)    *    * @param name property name.    * @param defaultValue default value.    * @throws NumberFormatException when the value is invalid    * @return property value as a<code>long</code>,    *         or<code>defaultValue</code>.    */
+DECL|method|getLongBytes (String name, long defaultValue)
+specifier|public
+name|long
+name|getLongBytes
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|)
+block|{
+name|String
+name|valueString
+init|=
+name|getTrimmed
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|valueString
+operator|==
+literal|null
+condition|)
+return|return
+name|defaultValue
+return|;
+return|return
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|string2long
+argument_list|(
+name|valueString
+argument_list|)
+return|;
+block|}
 DECL|method|getHexDigits (String value)
 specifier|private
 name|String
