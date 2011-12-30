@@ -4144,6 +4144,14 @@ parameter_list|)
 throws|throws
 name|StandbyException
 block|{
+if|if
+condition|(
+name|haContext
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// null in some unit tests
 name|haContext
 operator|.
 name|checkOperation
@@ -4151,6 +4159,7 @@ argument_list|(
 name|op
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getNamespaceDirs (Configuration conf)
 specifier|public

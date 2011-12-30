@@ -1893,6 +1893,15 @@ name|Throwable
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Got exception"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 name|deferredException
 operator|.
 name|set
@@ -2376,6 +2385,15 @@ name|Throwable
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Got exception"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 name|deferredException
 operator|.
 name|set
