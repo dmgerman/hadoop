@@ -2256,7 +2256,7 @@ name|count
 return|;
 block|}
 DECL|method|waitForDNDeletions (final MiniDFSCluster cluster)
-specifier|private
+specifier|static
 name|void
 name|waitForDNDeletions
 parameter_list|(
@@ -2328,7 +2328,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|waitForNNToIssueDeletions (final NameNode nn)
-specifier|private
+specifier|static
 name|void
 name|waitForNNToIssueDeletions
 parameter_list|(

@@ -740,6 +740,13 @@ specifier|final
 name|FSNamesystem
 name|fsNamesys
 decl_stmt|;
+DECL|field|maxGenStamp
+specifier|private
+name|long
+name|maxGenStamp
+init|=
+literal|0
+decl_stmt|;
 DECL|method|FSEditLogLoader (FSNamesystem fsNamesys)
 specifier|public
 name|FSEditLogLoader
@@ -775,6 +782,13 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
+name|fsNamesys
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|int
 name|numEdits
 init|=
@@ -829,7 +843,17 @@ return|return
 name|numEdits
 return|;
 block|}
+finally|finally
+block|{
+name|fsNamesys
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|loadFSEdits (EditLogInputStream edits, boolean closeOnExit, long expectedStartingTxId)
+specifier|private
 name|int
 name|loadFSEdits
 parameter_list|(
@@ -876,6 +900,23 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|fsNamesys
+operator|.
+name|setBlockTotal
+argument_list|()
+expr_stmt|;
+comment|// Delay the notification of genstamp updates until after
+comment|// setBlockTotal() above. Otherwise, we will mark blocks
+comment|// as "safe" before they've been incorporated in the expected
+comment|// totalBlocks and threshold for SafeMode -- triggering an
+comment|// assertion failure and/or exiting safemode too early!
+name|fsNamesys
+operator|.
+name|notifyGenStampUpdate
+argument_list|(
+name|maxGenStamp
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|closeOnExit
@@ -2889,33 +2930,26 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
+comment|// Record the max genstamp seen
+for|for
+control|(
+name|Block
+name|b
+range|:
 name|addCloseOp
 operator|.
 name|blocks
-operator|.
-name|length
-operator|>
-literal|0
-condition|)
+control|)
 block|{
-name|fsNamesys
+name|maxGenStamp
+operator|=
+name|Math
 operator|.
-name|notifyGenStampUpdate
+name|max
 argument_list|(
-name|addCloseOp
-operator|.
-name|blocks
-index|[
-name|addCloseOp
-operator|.
-name|blocks
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|maxGenStamp
+argument_list|,
+name|b
 operator|.
 name|getGenerationStamp
 argument_list|()

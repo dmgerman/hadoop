@@ -3573,6 +3573,9 @@ name|success
 init|=
 literal|false
 decl_stmt|;
+name|writeLock
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 comment|// We shouldn't be calling saveNamespace if we've come up in standby state.
@@ -3632,6 +3635,9 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|writeUnlock
+argument_list|()
+expr_stmt|;
 block|}
 name|dir
 operator|.
@@ -15350,16 +15356,9 @@ name|boolean
 name|isOn
 parameter_list|()
 block|{
-assert|assert
-name|isConsistent
+name|doConsistencyCheck
 argument_list|()
-operator|:
-literal|" SafeMode: Inconsistent filesystem state: "
-operator|+
-literal|"Total num of blocks, active blocks, or "
-operator|+
-literal|"total safe blocks don't match."
-assert|;
+expr_stmt|;
 return|return
 name|this
 operator|.
@@ -15751,6 +15750,12 @@ name|void
 name|checkMode
 parameter_list|()
 block|{
+comment|// Have to have write-lock since leaving safemode initializes
+comment|// repl queues, which requires write lock
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
 if|if
 condition|(
 name|needEnter
@@ -16410,13 +16415,38 @@ return|return
 name|resText
 return|;
 block|}
-comment|/**      * Checks consistency of the class state.      * This is costly and currently called only in assert.      * @throws IOException       */
-DECL|method|isConsistent ()
+comment|/**      * Checks consistency of the class state.      * This is costly so only runs if asserts are enabled.      */
+DECL|method|doConsistencyCheck ()
 specifier|private
-name|boolean
-name|isConsistent
+name|void
+name|doConsistencyCheck
 parameter_list|()
 block|{
+name|boolean
+name|assertsOn
+init|=
+literal|false
+decl_stmt|;
+assert|assert
+name|assertsOn
+operator|=
+literal|true
+assert|;
+comment|// set to true if asserts are on
+if|if
+condition|(
+operator|!
+name|assertsOn
+condition|)
+return|return;
+name|int
+name|activeBlocks
+init|=
+name|blockManager
+operator|.
+name|getActiveBlockCount
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|blockTotal
@@ -16430,26 +16460,18 @@ operator|-
 literal|1
 condition|)
 block|{
-return|return
-literal|true
-return|;
+return|return;
 comment|// manual safe mode
 block|}
-name|int
-name|activeBlocks
-init|=
-name|blockManager
-operator|.
-name|getActiveBlockCount
-argument_list|()
-decl_stmt|;
-return|return
+if|if
+condition|(
 operator|(
 name|blockTotal
-operator|==
+operator|!=
 name|activeBlocks
 operator|)
-operator|||
+operator|&&
+operator|!
 operator|(
 name|blockSafe
 operator|>=
@@ -16459,7 +16481,30 @@ name|blockSafe
 operator|<=
 name|blockTotal
 operator|)
-return|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|" SafeMode: Inconsistent filesystem state: "
+operator|+
+literal|"SafeMode data: blockTotal="
+operator|+
+name|blockTotal
+operator|+
+literal|" blockSafe="
+operator|+
+name|blockSafe
+operator|+
+literal|"; "
+operator|+
+literal|"BlockManager data: active="
+operator|+
+name|activeBlocks
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 comment|/**    * Periodically check whether it is time to leave safe mode.    * This thread starts when the threshold level is reached.    *    */
@@ -16866,6 +16911,7 @@ expr_stmt|;
 block|}
 comment|/**    * Set the total number of blocks in the system.     */
 DECL|method|setBlockTotal ()
+specifier|public
 name|void
 name|setBlockTotal
 parameter_list|()
@@ -21506,15 +21552,28 @@ name|long
 name|gs
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"=> notified of genstamp update for: "
+literal|"Generation stamp "
 operator|+
 name|gs
+operator|+
+literal|" has been reached. "
+operator|+
+literal|"Processing pending messages from DataNodes..."
 argument_list|)
 expr_stmt|;
+block|}
 name|DataNodeMessage
 name|msg
 init|=
@@ -21532,15 +21591,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"processing message: "
+literal|"Processing previously pending message: "
 operator|+
 name|msg
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 switch|switch

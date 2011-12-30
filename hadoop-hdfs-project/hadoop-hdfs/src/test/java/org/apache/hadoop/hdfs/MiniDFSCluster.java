@@ -6197,7 +6197,9 @@ operator|)
 operator|&&
 name|sizes
 index|[
-literal|0
+name|ClientProtocol
+operator|.
+name|GET_STATS_CAPACITY_IDX
 index|]
 operator|!=
 literal|0

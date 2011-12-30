@@ -11968,15 +11968,10 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|block
-operator|.
-name|setNumBytes
-argument_list|(
-name|BlockCommand
-operator|.
-name|NO_ACK
-argument_list|)
-expr_stmt|;
+comment|// TODO(HA): the following causes some problems for HA:
+comment|// the SBN doesn't get block deletions until the next
+comment|// BR...
+comment|// block.setNumBytes(BlockCommand.NO_ACK);
 name|addToInvalidates
 argument_list|(
 name|block
