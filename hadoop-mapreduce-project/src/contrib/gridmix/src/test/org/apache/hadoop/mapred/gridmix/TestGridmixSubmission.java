@@ -3523,6 +3523,15 @@ argument_list|,
 name|policy
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"mapreduce.job.hdfs-servers"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|useDefaultQueue
