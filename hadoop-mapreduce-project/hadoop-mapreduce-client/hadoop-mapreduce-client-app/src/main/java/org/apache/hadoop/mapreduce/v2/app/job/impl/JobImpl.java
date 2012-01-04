@@ -5119,22 +5119,15 @@ name|MRJobConfig
 operator|.
 name|JOB_UBERTASK_MAXBYTES
 argument_list|,
-name|conf
+name|fs
 operator|.
-name|getLong
-argument_list|(
-literal|"dfs.block.size"
-argument_list|,
-literal|64
-operator|*
-literal|1024
-operator|*
-literal|1024
-argument_list|)
+name|getDefaultBlockSize
+argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//FIXME: this is
-comment|// wrong; get FS from [File?]InputFormat and default block size from that
+comment|// FIXME: this is wrong; get FS from
+comment|// [File?]InputFormat and default block size
+comment|// from that
 name|long
 name|sysMemSizeForUberSlot
 init|=
