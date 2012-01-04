@@ -3373,6 +3373,13 @@ argument_list|(
 name|file
 argument_list|,
 name|conf
+argument_list|,
+name|file
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3402,6 +3409,13 @@ argument_list|(
 name|archive
 argument_list|,
 name|conf
+argument_list|,
+name|archive
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -789,6 +789,15 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"mapreduce.job.hdfs-servers"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
 comment|// Set some dummy dist cache files in gridmix configuration so that they go
 comment|// into the configuration of JobStory objects.
 name|String

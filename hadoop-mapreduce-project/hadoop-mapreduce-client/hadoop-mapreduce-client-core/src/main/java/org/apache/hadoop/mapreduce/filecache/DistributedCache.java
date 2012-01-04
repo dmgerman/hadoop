@@ -544,7 +544,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add an file path to the current set of classpath entries It adds the file    * to cache as well.  Intended to be used by user code.    *     * @param file Path of the file to be added    * @param conf Configuration that contains the classpath setting    * @deprecated Use {@link Job#addFileToClassPath(Path)} instead    */
+comment|/**    * Add an file path to the current set of classpath entries It adds the file    * to cache as well.  Intended to be used by user code.    *    * @param file Path of the file to be added    * @param conf Configuration that contains the classpath setting    * @deprecated Use {@link Job#addFileToClassPath(Path)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|addFileToClassPath (Path file, Configuration conf)
@@ -558,6 +558,40 @@ name|file
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|addFileToClassPath
+argument_list|(
+name|file
+argument_list|,
+name|conf
+argument_list|,
+name|file
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add a file path to the current set of classpath entries. It adds the file    * to cache as well.  Intended to be used by user code.    *    * @param file Path of the file to be added    * @param conf Configuration that contains the classpath setting    * @param fs FileSystem with respect to which {@code archivefile} should    *              be interpreted.    */
+DECL|method|addFileToClassPath (Path file, Configuration conf, FileSystem fs)
+specifier|public
+specifier|static
+name|void
+name|addFileToClassPath
+parameter_list|(
+name|Path
+name|file
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
 parameter_list|)
 throws|throws
 name|IOException
@@ -601,16 +635,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|URI
 name|uri
 init|=
@@ -751,6 +775,40 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|addArchiveToClassPath
+argument_list|(
+name|archive
+argument_list|,
+name|conf
+argument_list|,
+name|archive
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add an archive path to the current set of classpath entries. It adds the    * archive to cache as well.  Intended to be used by user code.    *    * @param archive Path of the archive to be added    * @param conf Configuration that contains the classpath setting    * @param fs FileSystem with respect to which {@code archive} should be interpreted.    */
+DECL|method|addArchiveToClassPath (Path archive, Configuration conf, FileSystem fs)
+specifier|public
+specifier|static
+name|void
+name|addArchiveToClassPath
+parameter_list|(
+name|Path
+name|archive
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|String
 name|classpath
 init|=
@@ -790,16 +848,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|URI
 name|uri
 init|=

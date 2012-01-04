@@ -3682,7 +3682,7 @@ return|return
 name|getConf
 argument_list|()
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFSConfigKeys
 operator|.

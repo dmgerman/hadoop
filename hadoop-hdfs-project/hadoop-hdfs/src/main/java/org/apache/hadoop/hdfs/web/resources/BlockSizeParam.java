@@ -188,7 +188,7 @@ argument_list|()
 else|:
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
