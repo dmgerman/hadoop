@@ -7458,7 +7458,7 @@ control|)
 block|{
 name|super
 operator|.
-name|handle
+name|handleEvent
 argument_list|(
 name|req
 argument_list|)
@@ -7476,7 +7476,7 @@ parameter_list|)
 block|{
 name|super
 operator|.
-name|handle
+name|handleEvent
 argument_list|(
 name|f
 argument_list|)

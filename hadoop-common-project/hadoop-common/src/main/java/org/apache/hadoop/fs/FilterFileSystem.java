@@ -251,6 +251,22 @@ name|getUri
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns a qualified URI whose scheme and authority identify this    * FileSystem.    */
+annotation|@
+name|Override
+DECL|method|getCanonicalUri ()
+specifier|protected
+name|URI
+name|getCanonicalUri
+parameter_list|()
+block|{
+return|return
+name|fs
+operator|.
+name|getCanonicalUri
+argument_list|()
+return|;
+block|}
 comment|/** Make sure that a path specifies a FileSystem. */
 DECL|method|makeQualified (Path path)
 specifier|public

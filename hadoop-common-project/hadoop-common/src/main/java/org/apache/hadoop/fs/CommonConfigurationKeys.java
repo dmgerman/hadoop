@@ -134,6 +134,7 @@ name|IPC_PING_INTERVAL_DEFAULT
 init|=
 literal|60000
 decl_stmt|;
+comment|// 1 min
 comment|/** Enables pings from RPC client to the server */
 DECL|field|IPC_CLIENT_PING_KEY
 specifier|public
@@ -319,6 +320,24 @@ DECL|field|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_USER_MAPPINGS
 name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_USER_MAPPINGS
 init|=
 literal|"security.refresh.user.mappings.protocol.acl"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP
+init|=
+literal|"hadoop.security.token.service.use_ip"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP_DEFAULT
+init|=
+literal|true
 decl_stmt|;
 block|}
 end_class

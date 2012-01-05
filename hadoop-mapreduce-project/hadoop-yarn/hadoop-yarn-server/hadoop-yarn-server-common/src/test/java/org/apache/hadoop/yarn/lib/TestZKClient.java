@@ -124,7 +124,7 @@ name|zookeeper
 operator|.
 name|server
 operator|.
-name|NIOServerCnxn
+name|NIOServerCnxnFactory
 import|;
 end_import
 
@@ -251,12 +251,15 @@ literal|0
 decl_stmt|;
 DECL|field|factory
 specifier|protected
-name|NIOServerCnxn
-operator|.
-name|Factory
+name|NIOServerCnxnFactory
 name|factory
 init|=
 literal|null
+decl_stmt|;
+DECL|field|zks
+specifier|protected
+name|ZooKeeperServer
+name|zks
 decl_stmt|;
 DECL|field|tmpDir
 specifier|protected
@@ -770,9 +773,8 @@ argument_list|(
 name|BASETEST
 argument_list|)
 decl_stmt|;
-name|ZooKeeperServer
 name|zks
-init|=
+operator|=
 operator|new
 name|ZooKeeperServer
 argument_list|(
@@ -782,7 +784,7 @@ name|dataDir
 argument_list|,
 literal|3000
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 specifier|final
 name|int
 name|PORT
@@ -812,9 +814,12 @@ block|{
 name|factory
 operator|=
 operator|new
-name|NIOServerCnxn
+name|NIOServerCnxnFactory
+argument_list|()
+expr_stmt|;
+name|factory
 operator|.
-name|Factory
+name|configure
 argument_list|(
 operator|new
 name|InetSocketAddress
@@ -864,7 +869,7 @@ name|InterruptedException
 block|{
 if|if
 condition|(
-name|factory
+name|zks
 operator|!=
 literal|null
 condition|)
@@ -872,10 +877,7 @@ block|{
 name|ZKDatabase
 name|zkDb
 init|=
-name|factory
-operator|.
-name|getZooKeeperServer
-argument_list|()
+name|zks
 operator|.
 name|getZKDatabase
 argument_list|()

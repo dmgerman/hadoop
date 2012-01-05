@@ -24,7 +24,31 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -36,7 +60,19 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
 import|;
 end_import
 
@@ -329,6 +365,7 @@ name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Verify ask before registration.
 comment|//The JVM ID has not been registered yet so we should kill it.
 name|JvmContext
 name|context
@@ -365,28 +402,7 @@ operator|.
 name|shouldDie
 argument_list|)
 expr_stmt|;
-comment|//Now register the JVM, and see
-name|listener
-operator|.
-name|registerPendingTask
-argument_list|(
-name|wid
-argument_list|)
-expr_stmt|;
-name|result
-operator|=
-name|listener
-operator|.
-name|getTask
-argument_list|(
-name|context
-argument_list|)
-expr_stmt|;
-name|assertNull
-argument_list|(
-name|result
-argument_list|)
-expr_stmt|;
+comment|// Verify ask after registration but before launch
 name|TaskAttemptId
 name|attemptID
 init|=
@@ -410,13 +426,60 @@ decl_stmt|;
 comment|//Now put a task with the ID
 name|listener
 operator|.
-name|registerLaunchedTask
+name|registerPendingTask
 argument_list|(
-name|attemptID
-argument_list|,
 name|task
 argument_list|,
 name|wid
+argument_list|)
+expr_stmt|;
+name|result
+operator|=
+name|listener
+operator|.
+name|getTask
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+name|result
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|result
+operator|.
+name|shouldDie
+argument_list|)
+expr_stmt|;
+comment|// Unregister for more testing.
+name|listener
+operator|.
+name|unregister
+argument_list|(
+name|attemptID
+argument_list|,
+name|wid
+argument_list|)
+expr_stmt|;
+comment|// Verify ask after registration and launch
+comment|//Now put a task with the ID
+name|listener
+operator|.
+name|registerPendingTask
+argument_list|(
+name|task
+argument_list|,
+name|wid
+argument_list|)
+expr_stmt|;
+name|listener
+operator|.
+name|registerLaunchedTask
+argument_list|(
+name|attemptID
 argument_list|)
 expr_stmt|;
 name|verify
@@ -450,6 +513,7 @@ operator|.
 name|shouldDie
 argument_list|)
 expr_stmt|;
+comment|// Don't unregister yet for more testing.
 comment|//Verify that if we call it again a second time we are told to die.
 name|result
 operator|=
@@ -479,6 +543,28 @@ argument_list|(
 name|attemptID
 argument_list|,
 name|wid
+argument_list|)
+expr_stmt|;
+comment|// Verify after unregistration.
+name|result
+operator|=
+name|listener
+operator|.
+name|getTask
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+name|result
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|result
+operator|.
+name|shouldDie
 argument_list|)
 expr_stmt|;
 name|listener
