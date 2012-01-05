@@ -82,6 +82,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -105,6 +117,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
@@ -255,7 +281,12 @@ comment|/**  * This class provides fetching a specified file from the NameNode. 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|TransferFsImage
+specifier|public
 class|class
 name|TransferFsImage
 block|{
@@ -607,6 +638,7 @@ expr_stmt|;
 block|}
 comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param imageListenAddress the host/port where the local node is running an    *                           HTTPServer hosting GetImageServlet    * @param storage the storage directory to transfer the image from    * @param txid the transaction ID of the image to be uploaded    */
 DECL|method|uploadImageFromStorage (String fsName, InetSocketAddress imageListenAddress, NNStorage storage, long txid)
+specifier|public
 specifier|static
 name|void
 name|uploadImageFromStorage
@@ -642,6 +674,8 @@ argument_list|)
 decl_stmt|;
 comment|// this doesn't directly upload an image, but rather asks the NN
 comment|// to connect back to the 2NN to download the specified image.
+try|try
+block|{
 name|TransferFsImage
 operator|.
 name|getFileClient
@@ -657,6 +691,51 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|HttpGetFailedException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getResponseCode
+argument_list|()
+operator|==
+name|HttpServletResponse
+operator|.
+name|SC_CONFLICT
+condition|)
+block|{
+comment|// this is OK - this means that a previous attempt to upload
+comment|// this checkpoint succeeded even though we thought it failed.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Image upload with txid "
+operator|+
+name|txid
+operator|+
+literal|" conflicted with a previous image upload to the "
+operator|+
+literal|"same NameNode. Continuing..."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 name|LOG
 operator|.
 name|info
@@ -1027,7 +1106,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|HttpGetFailedException
 argument_list|(
 literal|"Image transfer servlet at "
 operator|+
@@ -1046,6 +1125,8 @@ name|connection
 operator|.
 name|getResponseMessage
 argument_list|()
+argument_list|,
+name|connection
 argument_list|)
 throw|;
 block|}
@@ -1475,6 +1556,67 @@ argument_list|)
 else|:
 literal|null
 return|;
+block|}
+DECL|class|HttpGetFailedException
+specifier|public
+specifier|static
+class|class
+name|HttpGetFailedException
+extends|extends
+name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|field|responseCode
+specifier|private
+specifier|final
+name|int
+name|responseCode
+decl_stmt|;
+DECL|method|HttpGetFailedException (String msg, HttpURLConnection connection)
+name|HttpGetFailedException
+parameter_list|(
+name|String
+name|msg
+parameter_list|,
+name|HttpURLConnection
+name|connection
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|responseCode
+operator|=
+name|connection
+operator|.
+name|getResponseCode
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getResponseCode ()
+specifier|public
+name|int
+name|getResponseCode
+parameter_list|()
+block|{
+return|return
+name|responseCode
+return|;
+block|}
 block|}
 block|}
 end_class

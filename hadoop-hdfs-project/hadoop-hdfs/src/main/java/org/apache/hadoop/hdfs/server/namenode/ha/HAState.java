@@ -184,6 +184,18 @@ parameter_list|)
 throws|throws
 name|ServiceFailedException
 block|{
+name|prepareToExitState
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|s
+operator|.
+name|prepareToEnterState
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
 name|context
 operator|.
 name|writeLock
@@ -220,6 +232,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Method to be overridden by subclasses to prepare to enter a state.    * This method is called<em>without</em> the context being locked,    * and after {@link #prepareToExitState(HAContext)} has been called    * for the previous state, but before {@link #exitState(HAContext)}    * has been called for the previous state.    * @param context HA context    * @throws ServiceFailedException on precondition failure    */
+DECL|method|prepareToEnterState (final HAContext context)
+specifier|public
+name|void
+name|prepareToEnterState
+parameter_list|(
+specifier|final
+name|HAContext
+name|context
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+block|{}
 comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * entering a state.    * @param context HA context    * @throws ServiceFailedException on failure to enter the state.    */
 DECL|method|enterState (final HAContext context)
 specifier|public
@@ -234,6 +259,19 @@ parameter_list|)
 throws|throws
 name|ServiceFailedException
 function_decl|;
+comment|/**    * Method to be overridden by subclasses to prepare to exit a state.    * This method is called<em>without</em> the context being locked.    * This is used by the standby state to cancel any checkpoints    * that are going on. It can also be used to check any preconditions    * for the state transition.    *     * This method should not make any destructuve changes to the state    * (eg stopping threads) since {@link #prepareToEnterState(HAContext)}    * may subsequently cancel the state transition.    * @param context HA context    * @throws ServiceFailedException on precondition failure    */
+DECL|method|prepareToExitState (final HAContext context)
+specifier|public
+name|void
+name|prepareToExitState
+parameter_list|(
+specifier|final
+name|HAContext
+name|context
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+block|{}
 comment|/**    * Method to be overridden by subclasses to perform steps necessary for    * exiting a state.    * @param context HA context    * @throws ServiceFailedException on failure to enter the state.    */
 DECL|method|exitState (final HAContext context)
 specifier|public

@@ -1168,7 +1168,7 @@ name|editLog
 return|;
 block|}
 comment|/**    * Create an aborted in-progress log in the given directory, containing    * only a specified number of "mkdirs" operations.    */
-DECL|method|createAbortedLogWithMkdirs (File editsLogDir, int numDirs)
+DECL|method|createAbortedLogWithMkdirs (File editsLogDir, int numDirs, long firstTxId)
 specifier|public
 specifier|static
 name|void
@@ -1179,6 +1179,9 @@ name|editsLogDir
 parameter_list|,
 name|int
 name|numDirs
+parameter_list|,
+name|long
+name|firstTxId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1193,6 +1196,13 @@ argument_list|(
 name|editsLogDir
 argument_list|)
 decl_stmt|;
+name|editLog
+operator|.
+name|setNextTxId
+argument_list|(
+name|firstTxId
+argument_list|)
+expr_stmt|;
 name|editLog
 operator|.
 name|openForWrite
@@ -2178,12 +2188,42 @@ return|;
 block|}
 comment|/**    * Assert that the NameNode has checkpoints at the expected    * transaction IDs.    */
 DECL|method|assertNNHasCheckpoints (MiniDFSCluster cluster, List<Integer> txids)
+specifier|public
 specifier|static
 name|void
 name|assertNNHasCheckpoints
 parameter_list|(
 name|MiniDFSCluster
 name|cluster
+parameter_list|,
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+name|txids
+parameter_list|)
+block|{
+name|assertNNHasCheckpoints
+argument_list|(
+name|cluster
+argument_list|,
+literal|0
+argument_list|,
+name|txids
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|assertNNHasCheckpoints (MiniDFSCluster cluster, int nnIdx, List<Integer> txids)
+specifier|public
+specifier|static
+name|void
+name|assertNNHasCheckpoints
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|int
+name|nnIdx
 parameter_list|,
 name|List
 argument_list|<
@@ -2200,6 +2240,8 @@ range|:
 name|getNameNodeCurrentDirs
 argument_list|(
 name|cluster
+argument_list|,
+name|nnIdx
 argument_list|)
 control|)
 block|{
@@ -2245,7 +2287,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getNameNodeCurrentDirs (MiniDFSCluster cluster)
+DECL|method|getNameNodeCurrentDirs (MiniDFSCluster cluster, int nnIdx)
+specifier|public
 specifier|static
 name|List
 argument_list|<
@@ -2255,6 +2298,9 @@ name|getNameNodeCurrentDirs
 parameter_list|(
 name|MiniDFSCluster
 name|cluster
+parameter_list|,
+name|int
+name|nnIdx
 parameter_list|)
 block|{
 name|List
@@ -2277,7 +2323,7 @@ name|cluster
 operator|.
 name|getNameDirs
 argument_list|(
-literal|0
+name|nnIdx
 argument_list|)
 control|)
 block|{

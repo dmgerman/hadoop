@@ -2473,6 +2473,13 @@ empty_stmt|;
 block|}
 name|state
 operator|.
+name|prepareToEnterState
+argument_list|(
+name|haContext
+argument_list|)
+expr_stmt|;
+name|state
+operator|.
 name|enterState
 argument_list|(
 name|haContext
@@ -4355,6 +4362,22 @@ block|{
 name|namesystem
 operator|.
 name|startStandbyServices
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|prepareToStopStandbyServices ()
+specifier|public
+name|void
+name|prepareToStopStandbyServices
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+block|{
+name|namesystem
+operator|.
+name|prepareToStopStandbyServices
 argument_list|()
 expr_stmt|;
 block|}

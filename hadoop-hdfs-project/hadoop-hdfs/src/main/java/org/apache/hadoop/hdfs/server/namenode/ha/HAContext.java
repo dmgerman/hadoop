@@ -50,6 +50,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|ServiceFailedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -133,6 +147,15 @@ name|startStandbyServices
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/** Prepare to exit the standby state */
+DECL|method|prepareToStopStandbyServices ()
+specifier|public
+name|void
+name|prepareToStopStandbyServices
+parameter_list|()
+throws|throws
+name|ServiceFailedException
 function_decl|;
 comment|/** Stop the services when exiting standby state */
 DECL|method|stopStandbyServices ()

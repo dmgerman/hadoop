@@ -2360,6 +2360,42 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// In an HA cluster, in order for the StandbyNode to perform checkpoints,
+comment|// it needs to know the HTTP port of the Active. So, if ephemeral ports
+comment|// are chosen, disable checkpoints for the test.
+if|if
+condition|(
+operator|!
+name|nnTopology
+operator|.
+name|allHttpPortsSpecified
+argument_list|()
+operator|&&
+name|nnTopology
+operator|.
+name|isHA
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"MiniDFSCluster disabling checkpointing in the Standby node "
+operator|+
+literal|"since no HTTP ports have been specified."
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFS_HA_STANDBY_CHECKPOINTS_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 name|federation
 operator|=
 name|nnTopology

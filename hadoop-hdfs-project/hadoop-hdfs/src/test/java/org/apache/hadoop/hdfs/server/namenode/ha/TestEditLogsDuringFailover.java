@@ -794,6 +794,8 @@ argument_list|(
 name|sharedDir
 argument_list|,
 name|NUM_DIRS_IN_LOG
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|assertEditFiles

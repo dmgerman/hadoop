@@ -164,20 +164,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -360,22 +346,15 @@ specifier|volatile
 name|boolean
 name|shouldRun
 decl_stmt|;
-DECL|field|checkpointPeriod
-specifier|private
-name|long
-name|checkpointPeriod
-decl_stmt|;
-comment|// in seconds
-comment|// Transactions count to trigger the checkpoint
-DECL|field|checkpointTxnCount
-specifier|private
-name|long
-name|checkpointTxnCount
-decl_stmt|;
 DECL|field|infoBindAddress
 specifier|private
 name|String
 name|infoBindAddress
+decl_stmt|;
+DECL|field|checkpointConf
+specifier|private
+name|CheckpointConf
+name|checkpointConf
 decl_stmt|;
 DECL|method|getFSImage ()
 specifier|private
@@ -393,10 +372,10 @@ name|getFSImage
 argument_list|()
 return|;
 block|}
-DECL|method|getNamenode ()
+DECL|method|getRemoteNamenodeProxy ()
 specifier|private
 name|NamenodeProtocol
-name|getNamenode
+name|getRemoteNamenodeProxy
 parameter_list|()
 block|{
 return|return
@@ -456,11 +435,6 @@ throw|;
 block|}
 block|}
 comment|/**    * Initialize checkpoint.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|initialize (Configuration conf)
 specifier|private
 name|void
@@ -478,39 +452,10 @@ operator|=
 literal|true
 expr_stmt|;
 comment|// Initialize other scheduling parameters from the configuration
-name|checkpointPeriod
+name|checkpointConf
 operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECKPOINT_PERIOD_DEFAULT
-argument_list|)
-expr_stmt|;
-name|checkpointTxnCount
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT
-argument_list|)
-expr_stmt|;
-name|SecondaryNameNode
-operator|.
-name|warnForDeprecatedConfigs
+operator|new
+name|CheckpointConf
 argument_list|(
 name|conf
 argument_list|)
@@ -550,13 +495,19 @@ name|info
 argument_list|(
 literal|"Checkpoint Period : "
 operator|+
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|+
 literal|" secs "
 operator|+
 literal|"("
 operator|+
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|/
 literal|60
 operator|+
@@ -569,7 +520,10 @@ name|info
 argument_list|(
 literal|"Transactions count is  : "
 operator|+
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 operator|+
 literal|", to trigger checkpoint"
 argument_list|)
@@ -611,14 +565,20 @@ decl_stmt|;
 comment|// 5 minutes
 if|if
 condition|(
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|<
 name|periodMSec
 condition|)
 block|{
 name|periodMSec
 operator|=
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 expr_stmt|;
 block|}
 name|periodMSec
@@ -689,7 +649,10 @@ if|if
 condition|(
 name|txns
 operator|>=
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 condition|)
 name|shouldCheckpoint
 operator|=
@@ -777,7 +740,7 @@ block|{
 name|long
 name|curTxId
 init|=
-name|getNamenode
+name|getRemoteNamenodeProxy
 argument_list|()
 operator|.
 name|getTransactionID
@@ -842,7 +805,7 @@ expr_stmt|;
 name|NamenodeCommand
 name|cmd
 init|=
-name|getNamenode
+name|getRemoteNamenodeProxy
 argument_list|()
 operator|.
 name|startCheckpoint
@@ -955,7 +918,7 @@ expr_stmt|;
 name|RemoteEditLogManifest
 name|manifest
 init|=
-name|getNamenode
+name|getRemoteNamenodeProxy
 argument_list|()
 operator|.
 name|getEditLogManifest
@@ -1241,7 +1204,7 @@ name|txid
 argument_list|)
 expr_stmt|;
 block|}
-name|getNamenode
+name|getRemoteNamenodeProxy
 argument_list|()
 operator|.
 name|endCheckpoint

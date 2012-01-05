@@ -241,6 +241,25 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|prepareToExitState (HAContext context)
+specifier|public
+name|void
+name|prepareToExitState
+parameter_list|(
+name|HAContext
+name|context
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+block|{
+name|context
+operator|.
+name|prepareToStopStandbyServices
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|exitState (HAContext context)
 specifier|public
 name|void

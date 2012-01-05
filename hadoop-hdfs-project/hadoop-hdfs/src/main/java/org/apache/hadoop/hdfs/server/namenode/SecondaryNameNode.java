@@ -354,6 +354,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 operator|.
 name|ErrorSimulator
@@ -932,25 +946,10 @@ name|URI
 argument_list|>
 name|checkpointEditsDirs
 decl_stmt|;
-comment|/** How often to checkpoint regardless of number of txns */
-DECL|field|checkpointPeriod
+DECL|field|checkpointConf
 specifier|private
-name|long
-name|checkpointPeriod
-decl_stmt|;
-comment|// in seconds
-comment|/** How often to poll the NN to check checkpointTxnCount */
-DECL|field|checkpointCheckPeriod
-specifier|private
-name|long
-name|checkpointCheckPeriod
-decl_stmt|;
-comment|// in seconds
-comment|/** checkpoint once every this many transactions, regardless of time */
-DECL|field|checkpointTxnCount
-specifier|private
-name|long
-name|checkpointTxnCount
+name|CheckpointConf
+name|checkpointConf
 decl_stmt|;
 DECL|field|namesystem
 specifier|private
@@ -1004,7 +1003,10 @@ operator|)
 operator|+
 literal|"\nCheckpoint Period    : "
 operator|+
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|+
 literal|" seconds"
 operator|+
@@ -1014,12 +1016,18 @@ name|StringUtils
 operator|.
 name|byteDesc
 argument_list|(
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 argument_list|)
 operator|+
 literal|" (= "
 operator|+
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 operator|+
 literal|" bytes)"
 operator|+
@@ -1468,40 +1476,10 @@ name|checkpointImage
 argument_list|)
 expr_stmt|;
 comment|// Initialize other scheduling parameters from the configuration
-name|checkpointCheckPeriod
+name|checkpointConf
 operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFS_NAMENODE_CHECKPOINT_CHECK_PERIOD_KEY
-argument_list|,
-name|DFS_NAMENODE_CHECKPOINT_CHECK_PERIOD_DEFAULT
-argument_list|)
-expr_stmt|;
-name|checkpointPeriod
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFS_NAMENODE_CHECKPOINT_PERIOD_KEY
-argument_list|,
-name|DFS_NAMENODE_CHECKPOINT_PERIOD_DEFAULT
-argument_list|)
-expr_stmt|;
-name|checkpointTxnCount
-operator|=
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
-argument_list|,
-name|DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT
-argument_list|)
-expr_stmt|;
-name|warnForDeprecatedConfigs
+operator|new
+name|CheckpointConf
 argument_list|(
 name|conf
 argument_list|)
@@ -1830,13 +1808,19 @@ name|info
 argument_list|(
 literal|"Checkpoint Period   :"
 operator|+
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|+
 literal|" secs "
 operator|+
 literal|"("
 operator|+
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 operator|/
 literal|60
 operator|+
@@ -1849,65 +1833,14 @@ name|info
 argument_list|(
 literal|"Log Size Trigger    :"
 operator|+
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 operator|+
 literal|" txns"
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|warnForDeprecatedConfigs (Configuration conf)
-specifier|static
-name|void
-name|warnForDeprecatedConfigs
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-for|for
-control|(
-name|String
-name|key
-range|:
-name|ImmutableList
-operator|.
-name|of
-argument_list|(
-literal|"fs.checkpoint.size"
-argument_list|,
-literal|"dfs.namenode.checkpoint.size"
-argument_list|)
-control|)
-block|{
-if|if
-condition|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Configuration key "
-operator|+
-name|key
-operator|+
-literal|" is deprecated! Ignoring..."
-operator|+
-literal|" Instead please specify a value for "
-operator|+
-name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 comment|/**    * Shut down this instance of the datanode.    * Returns only after shutdown is complete.    */
 DECL|method|shutdown ()
@@ -2094,14 +2027,10 @@ comment|//
 name|long
 name|period
 init|=
-name|Math
+name|checkpointConf
 operator|.
-name|min
-argument_list|(
-name|checkpointCheckPeriod
-argument_list|,
-name|checkpointPeriod
-argument_list|)
+name|getCheckPeriod
+argument_list|()
 decl_stmt|;
 while|while
 condition|(
@@ -2173,7 +2102,10 @@ name|lastCheckpointTime
 operator|+
 literal|1000
 operator|*
-name|checkpointPeriod
+name|checkpointConf
+operator|.
+name|getPeriod
+argument_list|()
 condition|)
 block|{
 name|doCheckpoint
@@ -2950,7 +2882,10 @@ if|if
 condition|(
 name|count
 operator|>
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 operator|||
 name|opts
 operator|.
@@ -2980,7 +2915,10 @@ literal|"smaller than configured checkpoint "
 operator|+
 literal|"interval "
 operator|+
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 operator|+
 literal|" transactions."
 argument_list|)
@@ -3189,7 +3127,10 @@ return|return
 name|countUncheckpointedTxns
 argument_list|()
 operator|>=
-name|checkpointTxnCount
+name|checkpointConf
+operator|.
+name|getTxnCount
+argument_list|()
 return|;
 block|}
 comment|/**    * main() has some simple utility methods.    * @param argv Command line parameters.    * @exception Exception if the filesystem does not exist.    */

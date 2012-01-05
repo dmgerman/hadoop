@@ -1264,6 +1264,7 @@ return|;
 block|}
 comment|/**    * @return true if the log is open in read mode.    */
 DECL|method|isOpenForRead ()
+specifier|public
 specifier|synchronized
 name|boolean
 name|isOpenForRead

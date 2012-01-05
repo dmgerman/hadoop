@@ -6504,63 +6504,19 @@ operator|.
 name|proceed
 argument_list|()
 expr_stmt|;
-comment|// Letting the first node continue should catch an exception
+comment|// Letting the first node continue, it should try to upload the
+comment|// same image, and gracefully ignore it, while logging an
+comment|// error message.
 name|checkpointThread
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|checkpointThread
 operator|.
 name|propagateExceptions
 argument_list|()
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Didn't throw!"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ioe
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-literal|"Unexpected exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|ioe
-argument_list|)
-argument_list|,
-name|ioe
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Another checkpointer already uploaded"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Caught expected exception"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
 comment|// primary should still consider fsimage_4 the latest
 name|assertEquals
 argument_list|(
@@ -8560,6 +8516,8 @@ argument_list|(
 name|getNameNodeCurrentDirs
 argument_list|(
 name|cluster
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

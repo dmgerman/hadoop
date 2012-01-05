@@ -3956,6 +3956,7 @@ block|}
 block|}
 comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    */
 DECL|method|saveNamespace (FSNamesystem source)
+specifier|public
 specifier|synchronized
 name|void
 name|saveNamespace
@@ -4002,9 +4003,7 @@ block|}
 name|long
 name|imageTxId
 init|=
-name|editLog
-operator|.
-name|getLastWrittenTxId
+name|getLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 try|try
@@ -4057,6 +4056,7 @@ block|}
 block|}
 block|}
 DECL|method|cancelSaveNamespace (String reason)
+specifier|public
 name|void
 name|cancelSaveNamespace
 parameter_list|(

@@ -2054,6 +2054,7 @@ expr_stmt|;
 block|}
 comment|/**    * Return the transaction ID of the last checkpoint.    */
 DECL|method|getMostRecentCheckpointTxId ()
+specifier|public
 name|long
 name|getMostRecentCheckpointTxId
 parameter_list|()

@@ -2558,6 +2558,24 @@ name|DFS_HA_NAMENODE_ID_KEY
 init|=
 literal|"dfs.ha.namenode.id"
 decl_stmt|;
+DECL|field|DFS_HA_STANDBY_CHECKPOINTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_STANDBY_CHECKPOINTS_KEY
+init|=
+literal|"dfs.ha.standby.checkpoints"
+decl_stmt|;
+DECL|field|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_class
 
