@@ -400,7 +400,7 @@ argument_list|,
 operator|-
 literal|1
 argument_list|,
-literal|null
+literal|""
 argument_list|,
 name|error
 argument_list|,
