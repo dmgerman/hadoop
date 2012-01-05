@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception thrown to indicate that an operation performed  * to modify the state of a service or application failed.  */
+comment|/**  * Exception thrown to indicate service failover has failed.  */
 end_comment
 
 begin_class
@@ -57,10 +57,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|ServiceFailedException
+DECL|class|FailoverFailedException
 specifier|public
 class|class
-name|ServiceFailedException
+name|FailoverFailedException
 extends|extends
 name|Exception
 block|{
@@ -73,9 +73,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|ServiceFailedException (final String message)
+DECL|method|FailoverFailedException (final String message)
 specifier|public
-name|ServiceFailedException
+name|FailoverFailedException
 parameter_list|(
 specifier|final
 name|String
@@ -88,9 +88,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ServiceFailedException (String message, Throwable cause)
+DECL|method|FailoverFailedException (String message, Throwable cause)
 specifier|public
-name|ServiceFailedException
+name|FailoverFailedException
 parameter_list|(
 name|String
 name|message

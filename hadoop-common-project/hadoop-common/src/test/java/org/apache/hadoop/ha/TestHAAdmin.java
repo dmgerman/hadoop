@@ -506,6 +506,31 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testFailover ()
+specifier|public
+name|void
+name|testFailover
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|runTool
+argument_list|(
+literal|"-failover"
+argument_list|,
+literal|"xxx"
+argument_list|,
+literal|"yyy"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testGetServiceState ()
 specifier|public
 name|void

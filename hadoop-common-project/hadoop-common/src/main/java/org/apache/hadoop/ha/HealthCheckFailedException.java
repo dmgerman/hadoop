@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception thrown to indicate that health check of a service  * failed.  */
+comment|/**  * Exception thrown to indicate that health check of a service failed.  */
 end_comment
 
 begin_class
@@ -73,7 +73,6 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Constructs exception with the specified detail message.    * @param  message the detail message (which is saved for later retrieval    *         by the {@link #getMessage()} method).    */
 DECL|method|HealthCheckFailedException (final String message)
 specifier|public
 name|HealthCheckFailedException
@@ -89,7 +88,6 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructs a new exception with the specified detail message and    * cause.    *    * @param  message the detail message (which is saved for later retrieval    *         by the {@link #getMessage()} method).    * @param  cause the cause (which is saved for later retrieval by the    *         {@link #getCause()} method).  (A<tt>null</tt> value is    *         permitted, and indicates that the cause is nonexistent or    *         unknown.)    */
 DECL|method|HealthCheckFailedException (String message, Throwable cause)
 specifier|public
 name|HealthCheckFailedException
