@@ -248,6 +248,17 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|line
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|Node
 name|first
 init|=

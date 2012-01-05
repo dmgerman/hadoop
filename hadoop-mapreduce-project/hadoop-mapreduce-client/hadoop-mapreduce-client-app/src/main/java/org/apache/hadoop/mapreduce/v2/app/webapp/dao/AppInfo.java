@@ -155,11 +155,6 @@ specifier|protected
 name|String
 name|user
 decl_stmt|;
-DECL|field|hostname
-specifier|protected
-name|String
-name|hostname
-decl_stmt|;
 DECL|field|startedOn
 specifier|protected
 name|long
@@ -239,10 +234,9 @@ name|Times
 operator|.
 name|elapsed
 argument_list|(
-name|context
+name|this
 operator|.
-name|getStartTime
-argument_list|()
+name|startedOn
 argument_list|,
 literal|0
 argument_list|)

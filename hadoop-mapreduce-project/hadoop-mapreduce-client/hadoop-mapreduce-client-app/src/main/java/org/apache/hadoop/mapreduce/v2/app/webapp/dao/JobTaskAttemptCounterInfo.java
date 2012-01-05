@@ -202,13 +202,13 @@ specifier|protected
 name|String
 name|id
 decl_stmt|;
-DECL|field|taskCounterGroups
+DECL|field|taskAttemptCounterGroup
 specifier|protected
 name|ArrayList
 argument_list|<
 name|TaskCounterGroupInfo
 argument_list|>
-name|taskCounterGroups
+name|taskAttemptCounterGroup
 decl_stmt|;
 DECL|method|JobTaskAttemptCounterInfo ()
 specifier|public
@@ -223,11 +223,6 @@ name|TaskAttempt
 name|taskattempt
 parameter_list|)
 block|{
-name|long
-name|value
-init|=
-literal|0
-decl_stmt|;
 name|this
 operator|.
 name|id
@@ -249,7 +244,7 @@ operator|.
 name|getCounters
 argument_list|()
 expr_stmt|;
-name|taskCounterGroups
+name|taskAttemptCounterGroup
 operator|=
 operator|new
 name|ArrayList
@@ -307,7 +302,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|taskCounterGroups
+name|taskAttemptCounterGroup
 operator|.
 name|add
 argument_list|(

@@ -680,6 +680,12 @@ operator|.
 name|isUber
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|diagnostics
+operator|=
+literal|""
+expr_stmt|;
 name|List
 argument_list|<
 name|String

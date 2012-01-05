@@ -101,10 +101,10 @@ specifier|public
 class|class
 name|CounterInfo
 block|{
-DECL|field|counterName
+DECL|field|name
 specifier|protected
 name|String
-name|counterName
+name|name
 decl_stmt|;
 DECL|field|totalCounterValue
 specifier|protected
@@ -142,7 +142,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|counterName
+name|name
 operator|=
 name|counter
 operator|.
