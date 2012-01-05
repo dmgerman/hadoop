@@ -313,7 +313,7 @@ name|IOException
 function_decl|;
 comment|/**    * Get a client of the {@link GetUserMappingsProtocol}.    * @return A {@link GetUserMappingsProtocol} client proxy.    * @throws IOException    */
 DECL|method|getUgmProtocol ()
-specifier|private
+specifier|protected
 name|GetUserMappingsProtocol
 name|getUgmProtocol
 parameter_list|()
