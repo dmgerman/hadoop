@@ -872,7 +872,6 @@ operator|=
 name|createSchedulerProxy
 argument_list|()
 expr_stmt|;
-comment|//LOG.info("Scheduler is " + scheduler);
 name|register
 argument_list|()
 expr_stmt|;
@@ -886,10 +885,9 @@ name|TypeConverter
 operator|.
 name|fromYarn
 argument_list|(
-name|context
+name|this
 operator|.
-name|getApplicationID
-argument_list|()
+name|applicationId
 argument_list|)
 decl_stmt|;
 name|JobId
