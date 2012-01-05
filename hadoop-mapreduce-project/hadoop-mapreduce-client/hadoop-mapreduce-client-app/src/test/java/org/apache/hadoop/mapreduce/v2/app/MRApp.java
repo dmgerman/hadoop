@@ -1137,6 +1137,11 @@ comment|/**  * Mock MRAppMaster. Doesn't start RPC servers.  * No threads are st
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|MRApp
 specifier|public
 class|class
@@ -2609,20 +2614,6 @@ name|registerLaunchedTask
 parameter_list|(
 name|TaskAttemptId
 name|attemptID
-parameter_list|,
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Task
-name|task
-parameter_list|,
-name|WrappedJvmID
-name|jvmID
 parameter_list|)
 block|{}
 annotation|@
@@ -2644,6 +2635,17 @@ specifier|public
 name|void
 name|registerPendingTask
 parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|Task
+name|task
+parameter_list|,
 name|WrappedJvmID
 name|jvmID
 parameter_list|)
@@ -2724,11 +2726,6 @@ specifier|public
 name|MockContainerLauncher
 parameter_list|()
 block|{     }
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 annotation|@
 name|Override
 DECL|method|handle (ContainerLauncherEvent event)

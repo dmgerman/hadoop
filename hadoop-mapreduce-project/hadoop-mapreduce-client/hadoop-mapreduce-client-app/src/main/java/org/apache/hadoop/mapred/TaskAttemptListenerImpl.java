@@ -32,6 +32,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|InetSocketAddress
 import|;
 end_import
@@ -52,36 +62,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -92,7 +72,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -102,7 +84,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
@@ -579,6 +563,15 @@ comment|/**  * This class is responsible for talking to the task umblical.  * It
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|,
+literal|"deprecation"
+block|}
+argument_list|)
 DECL|class|TaskAttemptListenerImpl
 specifier|public
 class|class
@@ -590,6 +583,21 @@ name|TaskUmbilicalProtocol
 implements|,
 name|TaskAttemptListener
 block|{
+DECL|field|TASK_FOR_INVALID_JVM
+specifier|private
+specifier|static
+specifier|final
+name|JvmTask
+name|TASK_FOR_INVALID_JVM
+init|=
+operator|new
+name|JvmTask
+argument_list|(
+literal|null
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -626,9 +634,8 @@ specifier|private
 name|InetSocketAddress
 name|address
 decl_stmt|;
-DECL|field|jvmIDToActiveAttemptMap
 specifier|private
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|WrappedJvmID
 argument_list|,
@@ -642,14 +649,11 @@ name|mapred
 operator|.
 name|Task
 argument_list|>
+DECL|field|jvmIDToActiveAttemptMap
 name|jvmIDToActiveAttemptMap
 init|=
-name|Collections
-operator|.
-name|synchronizedMap
-argument_list|(
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|WrappedJvmID
 argument_list|,
@@ -664,7 +668,6 @@ operator|.
 name|Task
 argument_list|>
 argument_list|()
-argument_list|)
 decl_stmt|;
 DECL|field|jobTokenSecretManager
 specifier|private
@@ -672,26 +675,6 @@ name|JobTokenSecretManager
 name|jobTokenSecretManager
 init|=
 literal|null
-decl_stmt|;
-DECL|field|pendingJvms
-specifier|private
-name|Set
-argument_list|<
-name|WrappedJvmID
-argument_list|>
-name|pendingJvms
-init|=
-name|Collections
-operator|.
-name|synchronizedSet
-argument_list|(
-operator|new
-name|HashSet
-argument_list|<
-name|WrappedJvmID
-argument_list|>
-argument_list|()
-argument_list|)
 decl_stmt|;
 DECL|method|TaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager)
 specifier|public
@@ -882,6 +865,11 @@ operator|.
 name|getListenerAddress
 argument_list|()
 decl_stmt|;
+name|listenerAddress
+operator|.
+name|getAddress
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|address
@@ -890,10 +878,7 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|listenerAddress
-operator|.
-name|getAddress
-argument_list|()
+name|InetAddress
 operator|.
 name|getLocalHost
 argument_list|()
@@ -2208,21 +2193,8 @@ name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-if|if
-condition|(
-name|pendingJvms
-operator|.
-name|contains
-argument_list|(
-name|wJvmID
-argument_list|)
-condition|)
-block|{
+comment|// Try to look up the task. We remove it directly as we don't give
+comment|// multiple tasks to a JVM
 name|org
 operator|.
 name|apache
@@ -2236,7 +2208,7 @@ name|task
 init|=
 name|jvmIDToActiveAttemptMap
 operator|.
-name|get
+name|remove
 argument_list|(
 name|wJvmID
 argument_list|)
@@ -2248,7 +2220,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|//there may be lag in the attempt getting added here
 name|LOG
 operator|.
 name|info
@@ -2275,24 +2246,9 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|//remove the task as it is no more needed and free up the memory
-comment|//Also we have already told the JVM to process a task, so it is no
-comment|//longer pending, and further request should ask it to exit.
-name|pendingJvms
-operator|.
-name|remove
-argument_list|(
-name|wJvmID
-argument_list|)
-expr_stmt|;
-name|jvmIDToActiveAttemptMap
-operator|.
-name|remove
-argument_list|(
-name|wJvmID
-argument_list|)
-expr_stmt|;
-block|}
+comment|// remove the task as it is no more needed and free up the memory
+comment|// Also we have already told the JVM to process a task, so it is no
+comment|// longer pending, and further request should ask it to exit.
 block|}
 else|else
 block|{
@@ -2309,15 +2265,8 @@ argument_list|)
 expr_stmt|;
 name|jvmTask
 operator|=
-operator|new
-name|JvmTask
-argument_list|(
-literal|null
-argument_list|,
-literal|true
-argument_list|)
+name|TASK_FOR_INVALID_JVM
 expr_stmt|;
-block|}
 block|}
 return|return
 name|jvmTask
@@ -2325,28 +2274,42 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|registerPendingTask (WrappedJvmID jvmID)
+DECL|method|registerPendingTask ( org.apache.hadoop.mapred.Task task, WrappedJvmID jvmID)
 specifier|public
-specifier|synchronized
 name|void
 name|registerPendingTask
 parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|Task
+name|task
+parameter_list|,
 name|WrappedJvmID
 name|jvmID
 parameter_list|)
 block|{
-comment|//Save this JVM away as one that has not been handled yet
-name|pendingJvms
+comment|// Create the mapping so that it is easy to look up
+comment|// when the jvm comes back to ask for Task.
+comment|// A JVM not present in this map is an illegal task/JVM.
+name|jvmIDToActiveAttemptMap
 operator|.
-name|add
+name|put
 argument_list|(
 name|jvmID
+argument_list|,
+name|task
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|registerLaunchedTask ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, org.apache.hadoop.mapred.Task task, WrappedJvmID jvmID)
+DECL|method|registerLaunchedTask ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID)
 specifier|public
 name|void
 name|registerLaunchedTask
@@ -2367,62 +2330,12 @@ name|records
 operator|.
 name|TaskAttemptId
 name|attemptID
-parameter_list|,
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Task
-name|task
-parameter_list|,
-name|WrappedJvmID
-name|jvmID
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-comment|//create the mapping so that it is easy to look up
-comment|//when it comes back to ask for Task.
-name|jvmIDToActiveAttemptMap
-operator|.
-name|put
-argument_list|(
-name|jvmID
-argument_list|,
-name|task
-argument_list|)
-expr_stmt|;
-comment|//This should not need to happen here, but just to be on the safe side
-if|if
-condition|(
-operator|!
-name|pendingJvms
-operator|.
-name|add
-argument_list|(
-name|jvmID
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|jvmID
-operator|+
-literal|" launched without first being registered"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|//register this attempt
+comment|// The task is launched. Register this for expiry-tracking.
+comment|// Timing can cause this to happen after the real JVM launches and gets a
+comment|// task which is still fine as we will only be tracking for expiry a little
+comment|// late than usual.
 name|taskHeartbeatHandler
 operator|.
 name|register
@@ -2433,7 +2346,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|unregister (org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, WrappedJvmID jvmID)
+DECL|method|unregister ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, WrappedJvmID jvmID)
 specifier|public
 name|void
 name|unregister
@@ -2459,16 +2372,11 @@ name|WrappedJvmID
 name|jvmID
 parameter_list|)
 block|{
-comment|//remove the mapping if not already removed
+comment|// Unregistration also comes from the same TaskAttempt which does the
+comment|// registration. Events are ordered at TaskAttempt, so unregistration will
+comment|// always come after registration.
+comment|// remove the mapping if not already removed
 name|jvmIDToActiveAttemptMap
-operator|.
-name|remove
-argument_list|(
-name|jvmID
-argument_list|)
-expr_stmt|;
-comment|//remove the pending if not already removed
-name|pendingJvms
 operator|.
 name|remove
 argument_list|(

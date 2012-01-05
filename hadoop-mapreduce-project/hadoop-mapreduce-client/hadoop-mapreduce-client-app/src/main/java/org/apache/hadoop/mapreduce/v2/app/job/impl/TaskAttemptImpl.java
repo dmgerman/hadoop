@@ -6487,6 +6487,10 @@ name|registerPendingTask
 argument_list|(
 name|taskAttempt
 operator|.
+name|remoteTask
+argument_list|,
+name|taskAttempt
+operator|.
 name|jvmID
 argument_list|)
 expr_stmt|;
@@ -6908,8 +6912,7 @@ operator|.
 name|getShufflePort
 argument_list|()
 expr_stmt|;
-comment|// register it to TaskAttemptListener so that it start listening
-comment|// for it
+comment|// register it to TaskAttemptListener so that it can start monitoring it.
 name|taskAttempt
 operator|.
 name|taskAttemptListener
@@ -6919,14 +6922,6 @@ argument_list|(
 name|taskAttempt
 operator|.
 name|attemptId
-argument_list|,
-name|taskAttempt
-operator|.
-name|remoteTask
-argument_list|,
-name|taskAttempt
-operator|.
-name|jvmID
 argument_list|)
 expr_stmt|;
 comment|//TODO Resolve to host / IP in case of a local address.
