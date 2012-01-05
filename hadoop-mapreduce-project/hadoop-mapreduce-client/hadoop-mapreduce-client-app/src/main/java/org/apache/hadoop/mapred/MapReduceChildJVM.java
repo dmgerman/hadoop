@@ -193,6 +193,11 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|MapReduceChildJVM
 specifier|public
 class|class
@@ -274,7 +279,7 @@ name|jobConf
 operator|.
 name|get
 argument_list|(
-name|jobConf
+name|JobConf
 operator|.
 name|MAPRED_TASK_ENV
 argument_list|)
@@ -363,55 +368,7 @@ name|task
 operator|.
 name|conf
 decl_stmt|;
-comment|// Shell
-name|environment
-operator|.
-name|put
-argument_list|(
-name|Environment
-operator|.
-name|SHELL
-operator|.
-name|name
-argument_list|()
-argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
-name|MRJobConfig
-operator|.
-name|MAPRED_ADMIN_USER_SHELL
-argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_SHELL
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Add pwd to LD_LIBRARY_PATH, add this before adding anything else
-name|Apps
-operator|.
-name|addToEnvironment
-argument_list|(
-name|environment
-argument_list|,
-name|Environment
-operator|.
-name|LD_LIBRARY_PATH
-operator|.
-name|name
-argument_list|()
-argument_list|,
-name|Environment
-operator|.
-name|PWD
-operator|.
-name|$
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Add the env variables passed by the user& admin
+comment|// Add the env variables passed by the user
 name|String
 name|mapredChildEnv
 init|=
@@ -432,26 +389,6 @@ argument_list|(
 name|environment
 argument_list|,
 name|mapredChildEnv
-argument_list|)
-expr_stmt|;
-name|Apps
-operator|.
-name|setEnvFromInputString
-argument_list|(
-name|environment
-argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
-name|MRJobConfig
-operator|.
-name|MAPRED_ADMIN_USER_ENV
-argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MAPRED_ADMIN_USER_ENV
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Set logging level in the environment.
