@@ -1971,8 +1971,9 @@ comment|// Do a fresh lookup with the old host name.
 name|InetSocketAddress
 name|currentAddr
 init|=
-operator|new
-name|InetSocketAddress
+name|NetUtils
+operator|.
+name|createSocketAddrForHost
 argument_list|(
 name|server
 operator|.
