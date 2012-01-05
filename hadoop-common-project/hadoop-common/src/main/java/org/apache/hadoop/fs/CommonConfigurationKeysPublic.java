@@ -542,6 +542,7 @@ name|IPC_CLIENT_CONNECTION_MAXIDLETIME_DEFAULT
 init|=
 literal|10000
 decl_stmt|;
+comment|// 10s
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
 specifier|public

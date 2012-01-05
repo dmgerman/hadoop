@@ -134,6 +134,7 @@ name|IPC_PING_INTERVAL_DEFAULT
 init|=
 literal|60000
 decl_stmt|;
+comment|// 1 min
 comment|/** Enables pings from RPC client to the server */
 DECL|field|IPC_CLIENT_PING_KEY
 specifier|public
