@@ -4914,6 +4914,30 @@ expr_stmt|;
 comment|// update lastSyncPos
 block|}
 block|}
+comment|/** flush all currently written data to the file system */
+DECL|method|syncFs ()
+specifier|public
+name|void
+name|syncFs
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|out
+operator|!=
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|sync
+argument_list|()
+expr_stmt|;
+comment|// flush contents to file system
+block|}
+block|}
 comment|/** Returns the configuration of this file. */
 DECL|method|getConf ()
 name|Configuration
