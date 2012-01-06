@@ -920,7 +920,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|testLoad
@@ -999,7 +999,7 @@ operator|.
 name|getNamesystem
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|testLoad
@@ -1069,7 +1069,7 @@ block|}
 block|}
 DECL|method|testLoad (byte[] data, FSNamesystem namesys)
 specifier|private
-name|int
+name|long
 name|testLoad
 parameter_list|(
 name|byte
@@ -1765,7 +1765,7 @@ operator|+
 name|editFile
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|loader

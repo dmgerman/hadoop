@@ -3351,6 +3351,8 @@ name|target
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|EditLogInputException
 block|{
 name|LOG
 operator|.
@@ -3379,7 +3381,7 @@ argument_list|()
 operator|+
 literal|1
 decl_stmt|;
-name|int
+name|long
 name|numLoaded
 init|=
 literal|0
@@ -3417,9 +3419,15 @@ operator|+
 name|startingTxId
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|thisNumLoaded
 init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|thisNumLoaded
+operator|=
 name|loader
 operator|.
 name|loadFSEdits
@@ -3428,7 +3436,29 @@ name|editIn
 argument_list|,
 name|startingTxId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EditLogInputException
+name|elie
+parameter_list|)
+block|{
+name|thisNumLoaded
+operator|=
+name|elie
+operator|.
+name|getNumEditsLoaded
+argument_list|()
+expr_stmt|;
+throw|throw
+name|elie
+throw|;
+block|}
+finally|finally
+block|{
+comment|// Update lastAppliedTxId even in case of error, since some ops may
+comment|// have been successfully applied before the error.
 name|lastAppliedTxId
 operator|=
 name|startingTxId
@@ -3447,9 +3477,9 @@ name|thisNumLoaded
 expr_stmt|;
 block|}
 block|}
+block|}
 finally|finally
 block|{
-comment|// TODO(HA): Should this happen when called by the tailer?
 name|FSEditLog
 operator|.
 name|closeAllStreams
@@ -3457,7 +3487,6 @@ argument_list|(
 name|editStreams
 argument_list|)
 expr_stmt|;
-block|}
 comment|// update the counts
 comment|// TODO(HA): this may be very slow -- we probably want to
 comment|// update them as we go for HA.
@@ -3468,6 +3497,7 @@ operator|.
 name|updateCountForINodeWithQuota
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|numLoaded
 return|;

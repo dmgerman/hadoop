@@ -754,7 +754,7 @@ argument_list|,
 name|logVersion
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|numLoaded
 init|=
 name|logLoader
@@ -1153,7 +1153,7 @@ argument_list|(
 name|namesystem
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|numLoaded
 init|=
 name|loader

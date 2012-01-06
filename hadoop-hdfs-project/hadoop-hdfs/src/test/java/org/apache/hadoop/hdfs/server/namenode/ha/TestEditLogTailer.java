@@ -676,6 +676,7 @@ operator|+
 name|suffix
 return|;
 block|}
+comment|/**    * Trigger an edits log roll on the active and then wait for the standby to    * catch up to all the edits done by the active. This method will check    * repeatedly for up to NN_LAG_TIMEOUT milliseconds, and then fail throwing    * {@link CouldNotCatchUpException}.    *     * @param active active NN    * @param standby standby NN which should catch up to active    * @throws IOException if an error occurs rolling the edit log    * @throws CouldNotCatchUpException if the standby doesn't catch up to the    *         active in NN_LAG_TIMEOUT milliseconds    */
 DECL|method|waitForStandbyToCatchUp (NameNode active, NameNode standby)
 specifier|static
 name|void
@@ -691,6 +692,8 @@ throws|throws
 name|InterruptedException
 throws|,
 name|IOException
+throws|,
+name|CouldNotCatchUpException
 block|{
 name|long
 name|activeTxId
@@ -768,9 +771,9 @@ name|SLEEP_TIME
 argument_list|)
 expr_stmt|;
 block|}
-name|Assert
-operator|.
-name|fail
+throw|throw
+operator|new
+name|CouldNotCatchUpException
 argument_list|(
 literal|"Standby did not catch up to txid "
 operator|+
@@ -791,7 +794,30 @@ argument_list|()
 operator|+
 literal|")"
 argument_list|)
+throw|;
+block|}
+DECL|class|CouldNotCatchUpException
+specifier|public
+specifier|static
+class|class
+name|CouldNotCatchUpException
+extends|extends
+name|IOException
+block|{
+DECL|method|CouldNotCatchUpException (String message)
+specifier|public
+name|CouldNotCatchUpException
+parameter_list|(
+name|String
+name|message
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

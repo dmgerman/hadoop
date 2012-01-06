@@ -349,6 +349,53 @@ operator|=
 name|isInProgress
 expr_stmt|;
 block|}
+comment|/**    * Skip over a number of transactions. Subsequent calls to    * {@link EditLogFileInputStream#readOp()} will begin after these skipped    * transactions. If more transactions are requested to be skipped than remain    * in the edit log, all edit log ops in the log will be skipped and subsequent    * calls to {@link EditLogInputStream#readOp} will return null.    *     * @param transactionsToSkip number of transactions to skip over.    * @throws IOException if there's an error while reading an operation    */
+DECL|method|skipTransactions (long transactionsToSkip)
+specifier|public
+name|void
+name|skipTransactions
+parameter_list|(
+name|long
+name|transactionsToSkip
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|firstTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|&&
+name|lastTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+assert|;
+for|for
+control|(
+name|long
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|transactionsToSkip
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|reader
+operator|.
+name|readOp
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getFirstTxId ()
@@ -648,13 +695,20 @@ block|}
 if|if
 condition|(
 name|logVersion
-operator|<
+argument_list|<
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
+operator|||
+comment|// future version
+name|logVersion
+argument_list|>
+name|Storage
+operator|.
+name|LAST_UPGRADABLE_LAYOUT_VERSION
 condition|)
 block|{
-comment|// future version
+comment|// unsupported
 throw|throw
 operator|new
 name|LogHeaderCorruptException
@@ -673,17 +727,6 @@ literal|"."
 argument_list|)
 throw|;
 block|}
-assert|assert
-name|logVersion
-operator|<=
-name|Storage
-operator|.
-name|LAST_UPGRADABLE_LAYOUT_VERSION
-operator|:
-literal|"Unsupported version "
-operator|+
-name|logVersion
-assert|;
 return|return
 name|logVersion
 return|;

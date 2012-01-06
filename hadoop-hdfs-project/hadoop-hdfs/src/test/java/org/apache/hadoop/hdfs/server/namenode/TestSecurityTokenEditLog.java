@@ -786,7 +786,7 @@ argument_list|(
 name|namesystem
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|loader

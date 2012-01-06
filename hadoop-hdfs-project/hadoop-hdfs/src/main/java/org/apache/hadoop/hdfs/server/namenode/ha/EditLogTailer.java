@@ -112,6 +112,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|EditLogInputException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|EditLogInputStream
 import|;
 end_import
@@ -246,17 +264,19 @@ name|namesystem
 decl_stmt|;
 DECL|field|editLog
 specifier|private
-specifier|final
 name|FSEditLog
 name|editLog
 decl_stmt|;
-DECL|field|lastError
+DECL|field|runtime
 specifier|private
 specifier|volatile
-name|Throwable
-name|lastError
+name|Runtime
+name|runtime
 init|=
-literal|null
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
 decl_stmt|;
 DECL|method|EditLogTailer (FSNamesystem namesystem)
 specifier|public
@@ -387,15 +407,49 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getLastError ()
-specifier|public
-name|Throwable
-name|getLastError
+DECL|method|getEditLog ()
+name|FSEditLog
+name|getEditLog
 parameter_list|()
 block|{
 return|return
-name|lastError
+name|editLog
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setEditLog (FSEditLog editLog)
+name|void
+name|setEditLog
+parameter_list|(
+name|FSEditLog
+name|editLog
+parameter_list|)
+block|{
+name|this
+operator|.
+name|editLog
+operator|=
+name|editLog
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setRuntime (Runtime runtime)
+specifier|synchronized
+name|void
+name|setRuntime
+parameter_list|(
+name|Runtime
+name|runtime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runtime
+operator|=
+name|runtime
+expr_stmt|;
 block|}
 DECL|method|catchupDuringFailover ()
 specifier|public
@@ -503,7 +557,11 @@ argument_list|<
 name|EditLogInputStream
 argument_list|>
 name|streams
-init|=
+decl_stmt|;
+try|try
+block|{
+name|streams
+operator|=
 name|editLog
 operator|.
 name|selectInputStreams
@@ -516,7 +574,30 @@ literal|0
 argument_list|,
 literal|false
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// This is acceptable. If we try to tail edits in the middle of an edits
+comment|// log roll, i.e. the last one has been finalized but the new inprogress
+comment|// edits file hasn't been started yet.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Edits tailer failed to find any streams. Will try again "
+operator|+
+literal|"later."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 if|if
 condition|(
 name|LOG
@@ -538,9 +619,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Once we have streams to load, errors encountered are legitimate cause
+comment|// for concern, so we don't catch them here. Simple errors reading from
+comment|// disk are ignored.
 name|long
 name|editsLoaded
 init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|editsLoaded
+operator|=
 name|image
 operator|.
 name|loadEdits
@@ -549,7 +639,31 @@ name|streams
 argument_list|,
 name|namesystem
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EditLogInputException
+name|elie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error while reading edits from disk. Will try again."
+argument_list|,
+name|elie
+argument_list|)
+expr_stmt|;
+name|editsLoaded
+operator|=
+name|elie
+operator|.
+name|getNumEditsLoaded
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|LOG
@@ -661,70 +775,18 @@ condition|)
 block|{
 try|try
 block|{
-try|try
-block|{
 name|doTailEdits
 argument_list|()
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|e
+name|InterruptedException
+name|ie
 parameter_list|)
 block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|instanceof
-name|RuntimeException
-condition|)
-block|{
-throw|throw
-operator|(
-name|RuntimeException
-operator|)
-name|e
-operator|.
-name|getCause
-argument_list|()
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|instanceof
-name|Error
-condition|)
-block|{
-throw|throw
-operator|(
-name|Error
-operator|)
-name|e
-operator|.
-name|getCause
-argument_list|()
-throw|;
-block|}
-comment|// Will try again
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got error, will try again."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
+comment|// interrupter should have already set shouldRun to false
+continue|continue;
 block|}
 catch|catch
 parameter_list|(
@@ -732,19 +794,23 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
-comment|// TODO(HA): What should we do in this case? Shutdown the standby NN?
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Edit log tailer received throwable"
+literal|"Error encountered while tailing edits. Shutting down "
+operator|+
+literal|"standby NN."
 argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-name|lastError
-operator|=
-name|t
+name|runtime
+operator|.
+name|exit
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 try|try

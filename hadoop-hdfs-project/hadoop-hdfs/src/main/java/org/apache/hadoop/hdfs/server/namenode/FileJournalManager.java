@@ -838,6 +838,7 @@ argument_list|()
 operator|)
 condition|)
 block|{
+comment|// Note that this behavior is different from getLogFiles below.
 throw|throw
 operator|new
 name|IllegalStateException
@@ -1098,10 +1099,10 @@ if|if
 condition|(
 name|elf
 operator|.
-name|getFirstTxId
-argument_list|()
-operator|==
+name|containsTxId
+argument_list|(
 name|fromTxId
+argument_list|)
 condition|)
 block|{
 if|if
@@ -1136,7 +1137,9 @@ name|elf
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+name|EditLogFileInputStream
+name|elfis
+init|=
 operator|new
 name|EditLogFileInputStream
 argument_list|(
@@ -1160,6 +1163,21 @@ operator|.
 name|isInProgress
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|elfis
+operator|.
+name|skipTransactions
+argument_list|(
+name|fromTxId
+operator|-
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|elfis
 return|;
 block|}
 block|}
@@ -1167,11 +1185,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot find editlog file with "
+literal|"Cannot find editlog file containing "
 operator|+
 name|fromTxId
-operator|+
-literal|" as first first txid"
 argument_list|)
 throw|;
 block|}
@@ -1267,12 +1283,12 @@ block|}
 elseif|else
 if|if
 condition|(
-name|fromTxId
-operator|==
 name|elf
 operator|.
-name|getFirstTxId
-argument_list|()
+name|containsTxId
+argument_list|(
+name|fromTxId
+argument_list|)
 condition|)
 block|{
 if|if
@@ -1299,6 +1315,17 @@ condition|)
 block|{
 break|break;
 block|}
+name|numTxns
+operator|+=
+name|elf
+operator|.
+name|getLastTxId
+argument_list|()
+operator|+
+literal|1
+operator|-
+name|fromTxId
+expr_stmt|;
 name|fromTxId
 operator|=
 name|elf
@@ -1307,15 +1334,6 @@ name|getLastTxId
 argument_list|()
 operator|+
 literal|1
-expr_stmt|;
-name|numTxns
-operator|+=
-name|fromTxId
-operator|-
-name|elf
-operator|.
-name|getFirstTxId
-argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1327,56 +1345,6 @@ condition|)
 block|{
 break|break;
 block|}
-block|}
-elseif|else
-if|if
-condition|(
-name|elf
-operator|.
-name|getFirstTxId
-argument_list|()
-operator|<
-name|fromTxId
-operator|&&
-name|elf
-operator|.
-name|getLastTxId
-argument_list|()
-operator|>=
-name|fromTxId
-condition|)
-block|{
-comment|// Middle of a log segment - this should never happen
-comment|// since getLogFiles checks for it. But we should be
-comment|// paranoid about this case since it might result in
-comment|// overlapping txid ranges, etc, if we had a bug.
-name|IOException
-name|ioe
-init|=
-operator|new
-name|IOException
-argument_list|(
-literal|"txid "
-operator|+
-name|fromTxId
-operator|+
-literal|" falls in the middle of file "
-operator|+
-name|elf
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Broken invariant in edit log file management"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-throw|throw
-name|ioe
-throw|;
 block|}
 block|}
 if|if
@@ -1632,44 +1600,18 @@ block|{
 if|if
 condition|(
 name|fromTxId
-operator|>
+operator|<=
 name|elf
 operator|.
 name|getFirstTxId
 argument_list|()
-operator|&&
-name|fromTxId
-operator|<=
+operator|||
 name|elf
 operator|.
-name|getLastTxId
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalStateException
+name|containsTxId
 argument_list|(
-literal|"Asked for fromTxId "
-operator|+
 name|fromTxId
-operator|+
-literal|" which is in middle of file "
-operator|+
-name|elf
-operator|.
-name|file
 argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|fromTxId
-operator|<=
-name|elf
-operator|.
-name|getFirstTxId
-argument_list|()
 condition|)
 block|{
 name|logFiles
@@ -2024,6 +1966,24 @@ name|getLastTxId
 parameter_list|()
 block|{
 return|return
+name|lastTxId
+return|;
+block|}
+DECL|method|containsTxId (long txId)
+name|boolean
+name|containsTxId
+parameter_list|(
+name|long
+name|txId
+parameter_list|)
+block|{
+return|return
+name|firstTxId
+operator|<=
+name|txId
+operator|&&
+name|txId
+operator|<=
 name|lastTxId
 return|;
 block|}
