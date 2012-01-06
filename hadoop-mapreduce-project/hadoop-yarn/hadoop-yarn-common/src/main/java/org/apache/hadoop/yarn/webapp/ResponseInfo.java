@@ -336,6 +336,18 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|items
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|iterator ()

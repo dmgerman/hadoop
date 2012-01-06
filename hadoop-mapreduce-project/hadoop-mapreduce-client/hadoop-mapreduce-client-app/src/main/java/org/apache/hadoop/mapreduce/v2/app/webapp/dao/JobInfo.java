@@ -178,6 +178,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|JobState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|TaskAttemptId
 import|;
 end_import
@@ -385,7 +405,7 @@ name|user
 decl_stmt|;
 DECL|field|state
 specifier|protected
-name|String
+name|JobState
 name|state
 decl_stmt|;
 DECL|field|mapsTotal
@@ -398,11 +418,6 @@ specifier|protected
 name|int
 name|mapsCompleted
 decl_stmt|;
-DECL|field|mapProgress
-specifier|protected
-name|float
-name|mapProgress
-decl_stmt|;
 DECL|field|reducesTotal
 specifier|protected
 name|int
@@ -412,6 +427,11 @@ DECL|field|reducesCompleted
 specifier|protected
 name|int
 name|reducesCompleted
+decl_stmt|;
+DECL|field|mapProgress
+specifier|protected
+name|float
+name|mapProgress
 decl_stmt|;
 DECL|field|reduceProgress
 specifier|protected
@@ -541,20 +561,6 @@ name|ConfEntryInfo
 argument_list|>
 name|acls
 decl_stmt|;
-annotation|@
-name|XmlTransient
-DECL|field|numMaps
-specifier|protected
-name|int
-name|numMaps
-decl_stmt|;
-annotation|@
-name|XmlTransient
-DECL|field|numReduces
-specifier|protected
-name|int
-name|numReduces
-decl_stmt|;
 DECL|method|JobInfo ()
 specifier|public
 name|JobInfo
@@ -593,11 +599,6 @@ operator|.
 name|getReport
 argument_list|()
 decl_stmt|;
-name|countTasksAndAttempts
-argument_list|(
-name|job
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|startTime
@@ -678,9 +679,6 @@ operator|=
 name|job
 operator|.
 name|getState
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 expr_stmt|;
 name|this
@@ -781,6 +779,17 @@ condition|(
 name|hasAccess
 condition|)
 block|{
+name|this
+operator|.
+name|diagnostics
+operator|=
+literal|""
+expr_stmt|;
+name|countTasksAndAttempts
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|uberized
@@ -1155,6 +1164,9 @@ return|return
 name|this
 operator|.
 name|state
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|method|getUser ()
@@ -1301,7 +1313,7 @@ operator|.
 name|reduceProgressPercent
 return|;
 block|}
-comment|/**    * Go through a job and update the member variables with counts for    * information to output in the page.    *     * @param job    *          the job to get counts for.    */
+comment|/**    * Go through a job and update the member variables with counts for    * information to output in the page.    *    * @param job    *          the job to get counts for.    */
 DECL|method|countTasksAndAttempts (Job job)
 specifier|private
 name|void
@@ -1311,14 +1323,6 @@ name|Job
 name|job
 parameter_list|)
 block|{
-name|numReduces
-operator|=
-literal|0
-expr_stmt|;
-name|numMaps
-operator|=
-literal|0
-expr_stmt|;
 specifier|final
 name|Map
 argument_list|<

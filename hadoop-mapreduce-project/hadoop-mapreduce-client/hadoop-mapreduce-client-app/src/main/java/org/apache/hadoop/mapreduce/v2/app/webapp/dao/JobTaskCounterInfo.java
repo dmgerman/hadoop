@@ -202,13 +202,13 @@ specifier|protected
 name|String
 name|id
 decl_stmt|;
-DECL|field|taskCounterGroups
+DECL|field|taskCounterGroup
 specifier|protected
 name|ArrayList
 argument_list|<
 name|TaskCounterGroupInfo
 argument_list|>
-name|taskCounterGroups
+name|taskCounterGroup
 decl_stmt|;
 DECL|method|JobTaskCounterInfo ()
 specifier|public
@@ -244,7 +244,7 @@ name|getID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|taskCounterGroups
+name|taskCounterGroup
 operator|=
 operator|new
 name|ArrayList
@@ -295,7 +295,7 @@ argument_list|,
 name|g
 argument_list|)
 decl_stmt|;
-name|taskCounterGroups
+name|taskCounterGroup
 operator|.
 name|add
 argument_list|(

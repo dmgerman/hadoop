@@ -310,13 +310,13 @@ specifier|protected
 name|String
 name|id
 decl_stmt|;
-DECL|field|counterGroups
+DECL|field|counterGroup
 specifier|protected
 name|ArrayList
 argument_list|<
 name|CounterGroupInfo
 argument_list|>
-name|counterGroups
+name|counterGroup
 decl_stmt|;
 DECL|method|JobCounterInfo ()
 specifier|public
@@ -341,7 +341,7 @@ argument_list|,
 name|job
 argument_list|)
 expr_stmt|;
-name|counterGroups
+name|counterGroup
 operator|=
 operator|new
 name|ArrayList
@@ -456,7 +456,7 @@ argument_list|,
 name|rg
 argument_list|)
 decl_stmt|;
-name|counterGroups
+name|counterGroup
 operator|.
 name|add
 argument_list|(

@@ -161,6 +161,11 @@ end_import
 begin_class
 annotation|@
 name|XmlRootElement
+argument_list|(
+name|name
+operator|=
+literal|"conf"
+argument_list|)
 annotation|@
 name|XmlAccessorType
 argument_list|(

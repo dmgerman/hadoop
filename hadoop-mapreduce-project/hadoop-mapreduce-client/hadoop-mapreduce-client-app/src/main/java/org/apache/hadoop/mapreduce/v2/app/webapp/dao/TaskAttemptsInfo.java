@@ -82,7 +82,7 @@ name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"taskattempts"
+literal|"taskAttempts"
 argument_list|)
 annotation|@
 name|XmlAccessorType
@@ -96,13 +96,13 @@ specifier|public
 class|class
 name|TaskAttemptsInfo
 block|{
-DECL|field|taskattempt
+DECL|field|taskAttempt
 specifier|protected
 name|ArrayList
 argument_list|<
 name|TaskAttemptInfo
 argument_list|>
-name|taskattempt
+name|taskAttempt
 init|=
 operator|new
 name|ArrayList
@@ -126,7 +126,7 @@ name|TaskAttemptInfo
 name|taskattemptInfo
 parameter_list|)
 block|{
-name|taskattempt
+name|taskAttempt
 operator|.
 name|add
 argument_list|(
@@ -144,7 +144,7 @@ name|getTaskAttempts
 parameter_list|()
 block|{
 return|return
-name|taskattempt
+name|taskAttempt
 return|;
 block|}
 block|}
