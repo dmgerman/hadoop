@@ -56,9 +56,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|test
+name|util
 operator|.
-name|GenericTestUtils
+name|StringUtils
 import|;
 end_import
 
@@ -295,13 +295,26 @@ name|BadFencingConfigurationException
 name|confe
 parameter_list|)
 block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
+name|assertTrue
 argument_list|(
-literal|"No argument passed"
+literal|"Unexpected exception:"
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|confe
+argument_list|)
 argument_list|,
 name|confe
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"No argument passed"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

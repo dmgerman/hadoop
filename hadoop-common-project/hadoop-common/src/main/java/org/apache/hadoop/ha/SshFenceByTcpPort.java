@@ -130,24 +130,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -209,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This fencing implementation sshes to the target node and uses<code>fuser</code>  * to kill the process listening on the NameNode's TCP port. This is  * more accurate than using "jps" since it doesn't require parsing,  * and will work even if there are multiple NameNodes running on the  * same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([username@]nnhost[:ssh-port][, target-nn-port])</code>  * where the first argument specifies the username, host, and port to ssh  * into, and the second argument specifies the port on which the target  * NN process is listening on.  *<p>  * For example,<code>sshfence(other-nn, 8020)<code> will SSH into  *<code>other-nn<code> as the current user on the standard SSH port,  * then kill whatever process is listening on port 8020.  *<p>  * If no<code>target-nn-port</code> is specified, it is assumed that the  * target NameNode is listening on the same port as the local NameNode.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.namenode.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
+comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([username@]nnhost[:ssh-port], target-port)</code>  * where the first argument specifies the username, host, and port to ssh  * into, and the second argument specifies the port on which the target  * NN process is listening on.  *<p>  * For example,<code>sshfence(other-nn, 8020)<code> will SSH into  *<code>other-nn<code> as the current user on the standard SSH port,  * then kill whatever process is listening on port 8020.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.namenode.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
 end_comment
 
 begin_class
@@ -436,22 +418,6 @@ operator|.
 name|host
 argument_list|)
 expr_stmt|;
-name|int
-name|targetPort
-init|=
-name|args
-operator|.
-name|targetPort
-operator|!=
-literal|null
-condition|?
-name|args
-operator|.
-name|targetPort
-else|:
-name|getDefaultNNPort
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 return|return
@@ -459,6 +425,8 @@ name|doFence
 argument_list|(
 name|session
 argument_list|,
+name|args
+operator|.
 name|targetPort
 argument_list|)
 return|;
@@ -568,7 +536,7 @@ return|return
 name|session
 return|;
 block|}
-DECL|method|doFence (Session session, int nnPort)
+DECL|method|doFence (Session session, int port)
 specifier|private
 name|boolean
 name|doFence
@@ -577,7 +545,7 @@ name|Session
 name|session
 parameter_list|,
 name|int
-name|nnPort
+name|port
 parameter_list|)
 throws|throws
 name|JSchException
@@ -590,7 +558,7 @@ name|info
 argument_list|(
 literal|"Looking for process running on port "
 operator|+
-name|nnPort
+name|port
 argument_list|)
 expr_stmt|;
 name|int
@@ -602,7 +570,7 @@ name|session
 argument_list|,
 literal|"PATH=$PATH:/sbin:/usr/sbin fuser -v -k -n tcp "
 operator|+
-name|nnPort
+name|port
 argument_list|)
 decl_stmt|;
 if|if
@@ -620,7 +588,7 @@ literal|"Successfully killed process that was "
 operator|+
 literal|"listening on port "
 operator|+
-name|nnPort
+name|port
 argument_list|)
 expr_stmt|;
 comment|// exit code 0 indicates the process was successfully killed.
@@ -643,7 +611,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Indeterminate response from trying to kill NameNode. "
+literal|"Indeterminate response from trying to kill service. "
 operator|+
 literal|"Verifying whether it is running using nc..."
 argument_list|)
@@ -980,25 +948,6 @@ name|CONF_IDENTITIES_KEY
 argument_list|)
 return|;
 block|}
-DECL|method|getDefaultNNPort ()
-specifier|private
-name|int
-name|getDefaultNNPort
-parameter_list|()
-block|{
-return|return
-name|NameNode
-operator|.
-name|getAddress
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
-operator|.
-name|getPort
-argument_list|()
-return|;
-block|}
 comment|/**    * Container for the parsed arg line for this fencing method.    */
 annotation|@
 name|VisibleForTesting
@@ -1047,7 +996,7 @@ name|sshPort
 decl_stmt|;
 DECL|field|targetPort
 specifier|final
-name|Integer
+name|int
 name|targetPort
 decl_stmt|;
 DECL|method|Args (String args)
@@ -1091,14 +1040,8 @@ condition|(
 name|argList
 operator|.
 name|length
-operator|>
+operator|!=
 literal|2
-operator|||
-name|argList
-operator|.
-name|length
-operator|==
-literal|0
 condition|)
 block|{
 throw|throw
@@ -1225,15 +1168,6 @@ name|DEFAULT_SSH_PORT
 expr_stmt|;
 block|}
 comment|// Parse target port.
-if|if
-condition|(
-name|argList
-operator|.
-name|length
-operator|>
-literal|1
-condition|)
-block|{
 name|targetPort
 operator|=
 name|parseConfiggedPort
@@ -1244,14 +1178,6 @@ literal|1
 index|]
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|targetPort
-operator|=
-literal|null
-expr_stmt|;
-block|}
 block|}
 DECL|method|parseConfiggedPort (String portStr)
 specifier|private

@@ -317,7 +317,7 @@ name|fence
 operator|.
 name|tryFence
 argument_list|(
-literal|"8.8.8.8"
+literal|"8.8.8.8, 1234"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -340,7 +340,7 @@ name|SshFenceByTcpPort
 operator|.
 name|Args
 argument_list|(
-literal|"foo@bar.com:1234"
+literal|"foo@bar.com:1234, 5678"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -370,8 +370,10 @@ operator|.
 name|sshPort
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
+literal|5678
+argument_list|,
 name|args
 operator|.
 name|targetPort
@@ -384,7 +386,7 @@ name|SshFenceByTcpPort
 operator|.
 name|Args
 argument_list|(
-literal|"foo@bar.com"
+literal|"foo@bar.com, 1234"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -414,8 +416,10 @@ operator|.
 name|sshPort
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
+literal|1234
+argument_list|,
 name|args
 operator|.
 name|targetPort
@@ -428,7 +432,7 @@ name|SshFenceByTcpPort
 operator|.
 name|Args
 argument_list|(
-literal|"bar.com"
+literal|"bar.com, 1234"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -463,8 +467,10 @@ operator|.
 name|sshPort
 argument_list|)
 expr_stmt|;
-name|assertNull
+name|assertEquals
 argument_list|(
+literal|1234
+argument_list|,
 name|args
 operator|.
 name|targetPort
@@ -514,12 +520,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 literal|12345
-argument_list|)
 argument_list|,
 name|args
 operator|.
@@ -538,12 +539,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 literal|8020
-argument_list|)
 argument_list|,
 name|args
 operator|.
@@ -584,6 +580,16 @@ expr_stmt|;
 name|assertBadArgs
 argument_list|(
 literal|"foo.com, x"
+argument_list|)
+expr_stmt|;
+name|assertBadArgs
+argument_list|(
+literal|"foo.com,"
+argument_list|)
+expr_stmt|;
+name|assertBadArgs
+argument_list|(
+literal|"foo.com, "
 argument_list|)
 expr_stmt|;
 block|}
