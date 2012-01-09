@@ -21,12 +21,50 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -36,7 +74,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
 import|;
 end_import
 
@@ -44,9 +82,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|io
 operator|.
-name|Random
+name|IOException
 import|;
 end_import
 
@@ -62,6 +100,44 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -71,34 +147,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|MiniDFSCluster
 import|;
 end_import
 
@@ -196,6 +244,34 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -203,6 +279,26 @@ operator|.
 name|NNStorage
 operator|.
 name|NameNodeDirType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -243,9 +339,23 @@ DECL|class|TestNameEditsConfigs
 specifier|public
 class|class
 name|TestNameEditsConfigs
-extends|extends
-name|TestCase
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FSEditLog
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|SEED
 specifier|static
 specifier|final
@@ -320,17 +430,15 @@ argument_list|,
 literal|"dfs/"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
-name|java
-operator|.
-name|lang
-operator|.
-name|Exception
+name|IOException
 block|{
 if|if
 condition|(
@@ -338,10 +446,7 @@ name|base_dir
 operator|.
 name|exists
 argument_list|()
-condition|)
-block|{
-if|if
-condition|(
+operator|&&
 operator|!
 name|FileUtil
 operator|.
@@ -350,6 +455,7 @@ argument_list|(
 name|base_dir
 argument_list|)
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -736,6 +842,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testNameEditsConfigs ()
 specifier|public
 name|void
@@ -1949,7 +2057,9 @@ name|IMAGE_AND_EDITS
 argument_list|)
 return|;
 block|}
-comment|/**    * Test various configuration options of dfs.namenode.name.dir and dfs.namenode.edits.dir    * This test tries to simulate failure scenarios.    * 1. Start cluster with shared name and edits dir    * 2. Restart cluster by adding separate name and edits dirs    * T3. Restart cluster by removing shared name and edits dir    * 4. Restart cluster with old shared name and edits dir, but only latest     *    name dir. This should fail since we dont have latest edits dir    * 5. Restart cluster with old shared name and edits dir, but only latest    *    edits dir. This should fail since we dont have latest name dir    */
+comment|/**    * Test various configuration options of dfs.namenode.name.dir and dfs.namenode.edits.dir    * This test tries to simulate failure scenarios.    * 1. Start cluster with shared name and edits dir    * 2. Restart cluster by adding separate name and edits dirs    * 3. Restart cluster by removing shared name and edits dir    * 4. Restart cluster with old shared name and edits dir, but only latest     *    name dir. This should fail since we don't have latest edits dir    * 5. Restart cluster with old shared name and edits dir, but only latest    *    edits dir. This should succeed since the latest edits will have    *    segments leading all the way from the image in name_and_edits.    */
+annotation|@
+name|Test
 DECL|method|testNameEditsConfigsFailure ()
 specifier|public
 name|void
@@ -2001,7 +2111,7 @@ init|=
 literal|null
 decl_stmt|;
 name|File
-name|newNameDir
+name|nameOnlyDir
 init|=
 operator|new
 name|File
@@ -2012,7 +2122,7 @@ literal|"name"
 argument_list|)
 decl_stmt|;
 name|File
-name|newEditsDir
+name|editsOnlyDir
 init|=
 operator|new
 name|File
@@ -2023,7 +2133,7 @@ literal|"edits"
 argument_list|)
 decl_stmt|;
 name|File
-name|nameAndEdits
+name|nameAndEditsDir
 init|=
 operator|new
 name|File
@@ -2033,6 +2143,7 @@ argument_list|,
 literal|"name_and_edits"
 argument_list|)
 decl_stmt|;
+comment|// 1
 comment|// Start namenode with same dfs.namenode.name.dir and dfs.namenode.edits.dir
 name|conf
 operator|=
@@ -2048,7 +2159,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2062,7 +2173,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2084,6 +2195,8 @@ argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 comment|// Manage our own dfs directories
 name|cluster
 operator|=
@@ -2119,7 +2232,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|nameAndEdits
+name|nameAndEditsDir
 argument_list|,
 literal|"current/VERSION"
 argument_list|)
@@ -2135,8 +2248,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|assertTrue
 argument_list|(
 operator|!
@@ -2180,6 +2291,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+comment|// 2
 comment|// Start namenode with additional dfs.namenode.name.dir and dfs.namenode.edits.dir
 name|conf
 operator|=
@@ -2189,7 +2301,7 @@ argument_list|()
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|newNameDir
+name|nameOnlyDir
 operator|.
 name|mkdir
 argument_list|()
@@ -2197,7 +2309,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|newEditsDir
+name|editsOnlyDir
 operator|.
 name|mkdir
 argument_list|()
@@ -2211,14 +2323,14 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
 operator|+
 literal|","
 operator|+
-name|newNameDir
+name|nameOnlyDir
 operator|.
 name|getPath
 argument_list|()
@@ -2232,14 +2344,14 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
 operator|+
 literal|","
 operator|+
-name|newEditsDir
+name|editsOnlyDir
 operator|.
 name|getPath
 argument_list|()
@@ -2261,6 +2373,8 @@ argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 comment|// Manage our own dfs directories. Do not format.
 name|cluster
 operator|=
@@ -2301,7 +2415,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|nameAndEdits
+name|nameAndEditsDir
 argument_list|,
 literal|"current/VERSION"
 argument_list|)
@@ -2315,7 +2429,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|newNameDir
+name|nameOnlyDir
 argument_list|,
 literal|"current/VERSION"
 argument_list|)
@@ -2329,7 +2443,7 @@ argument_list|(
 operator|new
 name|File
 argument_list|(
-name|newEditsDir
+name|editsOnlyDir
 argument_list|,
 literal|"current/VERSION"
 argument_list|)
@@ -2345,8 +2459,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|assertTrue
 argument_list|(
 name|fileSys
@@ -2405,8 +2517,11 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+comment|// 3
 comment|// Now remove common directory both have and start namenode with
 comment|// separate name and edits dirs
+try|try
+block|{
 name|conf
 operator|=
 operator|new
@@ -2421,7 +2536,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
-name|newNameDir
+name|nameOnlyDir
 operator|.
 name|getPath
 argument_list|()
@@ -2435,7 +2550,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|,
-name|newEditsDir
+name|editsOnlyDir
 operator|.
 name|getPath
 argument_list|()
@@ -2497,11 +2612,8 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|assertTrue
+name|assertFalse
 argument_list|(
-operator|!
 name|fileSys
 operator|.
 name|exists
@@ -2568,6 +2680,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+comment|// 4
 comment|// Add old shared directory for name and edits along with latest name
 name|conf
 operator|=
@@ -2583,14 +2696,14 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
-name|newNameDir
+name|nameOnlyDir
 operator|.
 name|getPath
 argument_list|()
 operator|+
 literal|","
 operator|+
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2604,7 +2717,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2656,9 +2769,9 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|fail
 argument_list|(
-literal|false
+literal|"Successfully started cluster but should not have been able to."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2669,25 +2782,39 @@ name|e
 parameter_list|)
 block|{
 comment|// expect to fail
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-literal|"cluster start failed due to missing "
+literal|"EXPECTED: cluster start failed due to missing "
 operator|+
 literal|"latest edits dir"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 name|cluster
 operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|// 5
 comment|// Add old shared directory for name and edits along with latest edits.
 comment|// This is OK, since the latest edits will have segments leading all
 comment|// the way from the image in name_and_edits.
@@ -2705,7 +2832,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|,
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2719,14 +2846,14 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|,
-name|newEditsDir
+name|editsOnlyDir
 operator|.
 name|getPath
 argument_list|()
 operator|+
 literal|","
 operator|+
-name|nameAndEdits
+name|nameAndEditsDir
 operator|.
 name|getPath
 argument_list|()
@@ -2778,9 +2905,15 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|fileSys
+operator|=
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+expr_stmt|;
+name|assertFalse
 argument_list|(
-operator|!
 name|fileSys
 operator|.
 name|exists
@@ -2789,7 +2922,7 @@ name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|fileSys
 operator|.
@@ -2799,11 +2932,21 @@ name|file2
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|fileSys
+operator|.
+name|exists
+argument_list|(
+name|file3
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|checkFile
 argument_list|(
 name|fileSys
 argument_list|,
-name|file2
+name|file3
 argument_list|,
 name|replication
 argument_list|)
@@ -2812,7 +2955,7 @@ name|cleanupFile
 argument_list|(
 name|fileSys
 argument_list|,
-name|file2
+name|file3
 argument_list|)
 expr_stmt|;
 name|writeFile
@@ -2831,23 +2974,6 @@ argument_list|,
 name|file3
 argument_list|,
 name|replication
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// expect to fail
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"cluster start failed due to missing latest name dir"
 argument_list|)
 expr_stmt|;
 block|}
