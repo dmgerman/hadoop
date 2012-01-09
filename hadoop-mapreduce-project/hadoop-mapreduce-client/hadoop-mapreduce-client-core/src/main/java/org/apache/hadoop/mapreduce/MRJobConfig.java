@@ -647,6 +647,15 @@ name|TASK_TIMEOUT
 init|=
 literal|"mapreduce.task.timeout"
 decl_stmt|;
+DECL|field|TASK_TIMEOUT_CHECK_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_TIMEOUT_CHECK_INTERVAL_MS
+init|=
+literal|"mapreduce.task.timeout.check-interval-ms"
+decl_stmt|;
 DECL|field|TASK_ID
 specifier|public
 specifier|static

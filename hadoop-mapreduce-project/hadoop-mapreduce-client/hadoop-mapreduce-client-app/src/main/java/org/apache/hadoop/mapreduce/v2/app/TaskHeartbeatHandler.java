@@ -102,6 +102,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -229,6 +243,15 @@ comment|/**  * This class keeps track of tasks that have already been launched. 
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
+argument_list|)
 DECL|class|TaskHeartbeatHandler
 specifier|public
 class|class
@@ -276,7 +299,17 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-comment|//5 mins
+comment|// 5 mins
+DECL|field|taskTimeOutCheckInterval
+specifier|private
+name|int
+name|taskTimeOutCheckInterval
+init|=
+literal|30
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 30 seconds.
 DECL|field|eventHandler
 specifier|private
 specifier|final
@@ -361,11 +394,28 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"mapreduce.task.timeout"
+name|MRJobConfig
+operator|.
+name|TASK_TIMEOUT
 argument_list|,
 literal|5
 operator|*
 literal|60
+operator|*
+literal|1000
+argument_list|)
+expr_stmt|;
+name|taskTimeOutCheckInterval
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|TASK_TIMEOUT_CHECK_INTERVAL_MS
+argument_list|,
+literal|30
 operator|*
 literal|1000
 argument_list|)
@@ -673,7 +723,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|taskTimeOut
+name|taskTimeOutCheckInterval
 argument_list|)
 expr_stmt|;
 block|}
