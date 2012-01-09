@@ -168,20 +168,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|TestDFSClientFailover
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -532,7 +518,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|TestDFSClientFailover
+name|HATestUtil
 operator|.
 name|configureFailoverFs
 argument_list|(
@@ -614,7 +600,7 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -918,7 +904,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Roll the primary and wait for the standby to catch up
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(

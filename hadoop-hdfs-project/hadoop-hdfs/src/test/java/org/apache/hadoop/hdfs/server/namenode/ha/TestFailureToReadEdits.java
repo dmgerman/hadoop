@@ -302,20 +302,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|TestDFSClientFailover
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -412,7 +398,7 @@ name|namenode
 operator|.
 name|ha
 operator|.
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|CouldNotCatchUpException
 import|;
@@ -629,7 +615,7 @@ expr_stmt|;
 name|FileSystem
 name|fs
 init|=
-name|TestDFSClientFailover
+name|HATestUtil
 operator|.
 name|configureFailoverFs
 argument_list|(
@@ -649,7 +635,7 @@ name|TEST_DIR1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -773,7 +759,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -790,6 +776,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|HATestUtil
+operator|.
 name|CouldNotCatchUpException
 name|e
 parameter_list|)
@@ -867,7 +855,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(

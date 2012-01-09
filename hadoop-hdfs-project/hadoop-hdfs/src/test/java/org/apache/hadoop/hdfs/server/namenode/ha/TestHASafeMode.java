@@ -228,20 +228,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|TestDFSClientFailover
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -478,7 +464,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|TestDFSClientFailover
+name|HATestUtil
 operator|.
 name|configureFailoverFs
 argument_list|(
@@ -747,7 +733,7 @@ argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -912,7 +898,7 @@ argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -1082,7 +1068,7 @@ argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
@@ -1255,7 +1241,7 @@ operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
-name|TestDNFencing
+name|HATestUtil
 operator|.
 name|waitForDNDeletions
 argument_list|(
@@ -1300,7 +1286,7 @@ argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
 argument_list|)
 expr_stmt|;
-name|TestEditLogTailer
+name|HATestUtil
 operator|.
 name|waitForStandbyToCatchUp
 argument_list|(
