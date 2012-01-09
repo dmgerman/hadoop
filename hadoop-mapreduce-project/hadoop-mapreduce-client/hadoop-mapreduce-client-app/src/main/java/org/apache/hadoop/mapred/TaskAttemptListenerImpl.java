@@ -1882,14 +1882,23 @@ name|getPhase
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Counters are updated by the task.
+comment|// Counters are updated by the task. Convert counters into new format as
+comment|// that is the primary storage format inside the AM to avoid multiple
+comment|// conversions and unnecessary heap usage.
 name|taskAttemptStatus
 operator|.
 name|counters
 operator|=
-name|TypeConverter
+operator|new
+name|org
 operator|.
-name|toYarn
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|Counters
 argument_list|(
 name|taskStatus
 operator|.
