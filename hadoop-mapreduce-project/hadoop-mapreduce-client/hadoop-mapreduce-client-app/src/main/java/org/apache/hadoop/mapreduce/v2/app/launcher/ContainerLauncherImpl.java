@@ -731,12 +731,12 @@ name|AppContext
 name|context
 decl_stmt|;
 DECL|field|launcherPool
-specifier|private
+specifier|protected
 name|ThreadPoolExecutor
 name|launcherPool
 decl_stmt|;
 DECL|field|INITIAL_POOL_SIZE
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|int
@@ -871,6 +871,17 @@ argument_list|,
 name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREAD_COUNT_LIMIT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Upper limit on the thread pool size is "
+operator|+
+name|this
+operator|.
+name|limitOnPoolSize
 argument_list|)
 expr_stmt|;
 name|this
@@ -1065,7 +1076,7 @@ decl_stmt|;
 if|if
 condition|(
 name|poolSize
-operator|<=
+operator|<
 name|idealPoolSize
 condition|)
 block|{
@@ -1075,9 +1086,16 @@ comment|// pool-size
 name|int
 name|newPoolSize
 init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|limitOnPoolSize
+argument_list|,
 name|idealPoolSize
 operator|+
 name|INITIAL_POOL_SIZE
+argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
@@ -1086,6 +1104,10 @@ argument_list|(
 literal|"Setting ContainerLauncher pool size to "
 operator|+
 name|newPoolSize
+operator|+
+literal|" as number-of-nodes to talk to is "
+operator|+
+name|numNodes
 argument_list|)
 expr_stmt|;
 name|launcherPool
@@ -1103,8 +1125,7 @@ name|launcherPool
 operator|.
 name|execute
 argument_list|(
-operator|new
-name|EventProcessor
+name|createEventProcessor
 argument_list|(
 name|event
 argument_list|)
@@ -1157,6 +1178,23 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|createEventProcessor (ContainerLauncherEvent event)
+specifier|protected
+name|EventProcessor
+name|createEventProcessor
+parameter_list|(
+name|ContainerLauncherEvent
+name|event
+parameter_list|)
+block|{
+return|return
+operator|new
+name|EventProcessor
+argument_list|(
+name|event
+argument_list|)
+return|;
+block|}
 DECL|method|getCMProxy (ContainerId containerID, final String containerManagerBindAddr, ContainerToken containerToken)
 specifier|protected
 name|ContainerManager
@@ -1183,15 +1221,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
-name|allNodes
-operator|.
-name|add
-argument_list|(
-name|containerManagerBindAddr
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -1525,7 +1554,6 @@ block|}
 block|}
 comment|/**    * Setup and start the container on remote nodemanager.    */
 DECL|class|EventProcessor
-specifier|private
 class|class
 name|EventProcessor
 implements|implements
@@ -1670,7 +1698,7 @@ argument_list|,
 name|containerToken
 argument_list|)
 expr_stmt|;
-comment|// Interruped during getProxy, but that didn't throw exception
+comment|// Interrupted during getProxy, but that didn't throw exception
 if|if
 condition|(
 name|Thread
@@ -2340,6 +2368,18 @@ operator|.
 name|put
 argument_list|(
 name|event
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|allNodes
+operator|.
+name|add
+argument_list|(
+name|event
+operator|.
+name|getContainerMgrAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

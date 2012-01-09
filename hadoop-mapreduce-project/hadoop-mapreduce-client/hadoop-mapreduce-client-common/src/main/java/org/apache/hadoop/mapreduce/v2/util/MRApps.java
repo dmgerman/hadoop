@@ -120,6 +120,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -1442,8 +1452,8 @@ name|mrAppGeneratedClasspathFile
 argument_list|)
 expr_stmt|;
 comment|// Put the file itself on classpath for tasks.
-name|String
-name|classpathElement
+name|URL
+name|classpathResource
 init|=
 name|thisClassLoader
 operator|.
@@ -1451,6 +1461,18 @@ name|getResource
 argument_list|(
 name|mrAppGeneratedClasspathFile
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|classpathResource
+operator|!=
+literal|null
+condition|)
+block|{
+name|String
+name|classpathElement
+init|=
+name|classpathResource
 operator|.
 name|getFile
 argument_list|()
@@ -1512,6 +1534,14 @@ argument_list|,
 name|classpathElement
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|classpathFileStream
+operator|!=
+literal|null
+condition|)
+block|{
 name|reader
 operator|=
 operator|new
@@ -1558,6 +1588,7 @@ name|trim
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Add standard Hadoop classes
 for|for
