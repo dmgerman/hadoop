@@ -2845,9 +2845,9 @@ condition|(
 name|formatThisOne
 condition|)
 block|{
-name|NameNode
+name|DFSTestUtil
 operator|.
-name|format
+name|formatNameNode
 argument_list|(
 name|conf
 argument_list|)
