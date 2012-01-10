@@ -88,12 +88,18 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * An HA service may be in active or standby state.    */
+comment|/**    * An HA service may be in active or standby state. During    * startup, it is in an unknown INITIALIZING state.    */
 DECL|enum|HAServiceState
 specifier|public
 enum|enum
 name|HAServiceState
 block|{
+DECL|enumConstant|INITIALIZING
+name|INITIALIZING
+argument_list|(
+literal|"initializing"
+argument_list|)
+block|,
 DECL|enumConstant|ACTIVE
 name|ACTIVE
 argument_list|(
