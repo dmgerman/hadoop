@@ -1555,6 +1555,25 @@ name|DEFAULT_MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 init|=
 literal|0.5f
 decl_stmt|;
+comment|/** AM ACL disabled. **/
+DECL|field|JOB_AM_ACCESS_DISABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_AM_ACCESS_DISABLED
+init|=
+literal|"mapreduce.job.am-access-disabled"
+decl_stmt|;
+DECL|field|DEFAULT_JOB_AM_ACCESS_DISABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_JOB_AM_ACCESS_DISABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Limit reduces starting until a certain percentage of maps have finished.    *  Percentage between 0.0 and 1.0    */
 DECL|field|MR_AM_JOB_REDUCE_RAMPUP_UP_LIMIT
 specifier|public

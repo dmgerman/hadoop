@@ -222,6 +222,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|TaskAttemptID
 import|;
 end_import
@@ -828,22 +842,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|YarnRemoteException
@@ -1062,6 +1060,13 @@ DECL|field|trackingUrl
 specifier|private
 name|String
 name|trackingUrl
+decl_stmt|;
+DECL|field|amAclDisabledStatusLogged
+specifier|private
+name|boolean
+name|amAclDisabledStatusLogged
+init|=
+literal|false
 decl_stmt|;
 DECL|method|ClientServiceDelegate (Configuration conf, ResourceMgrDelegate rm, JobID jobId, MRClientProtocol historyServerProxy)
 specifier|public
@@ -1420,9 +1425,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|YarnConfiguration
+name|MRJobConfig
 operator|.
-name|RM_AM_NETWORK_ACL_CLOSED
+name|JOB_AM_ACCESS_DISABLED
 argument_list|,
 literal|false
 argument_list|)
@@ -1607,11 +1612,12 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|logApplicationReportInfo
-argument_list|(
-name|application
-argument_list|)
-expr_stmt|;
+if|if
+condition|(
+operator|!
+name|amAclDisabledStatusLogged
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -1620,11 +1626,16 @@ literal|"Network ACL closed to AM for job "
 operator|+
 name|jobId
 operator|+
-literal|". Redirecting to job history server."
+literal|". Not going to try to reach the AM."
 argument_list|)
 expr_stmt|;
+name|amAclDisabledStatusLogged
+operator|=
+literal|true
+expr_stmt|;
+block|}
 return|return
-name|checkAndGetHSProxy
+name|getNotRunningJob
 argument_list|(
 literal|null
 argument_list|,
@@ -1916,187 +1927,6 @@ return|return
 name|realProxy
 return|;
 block|}
-DECL|method|logApplicationReportInfo (ApplicationReport application)
-specifier|private
-name|void
-name|logApplicationReportInfo
-parameter_list|(
-name|ApplicationReport
-name|application
-parameter_list|)
-block|{
-if|if
-condition|(
-name|application
-operator|==
-literal|null
-condition|)
-block|{
-return|return;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"AppId: "
-operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
-operator|+
-literal|" # reserved containers: "
-operator|+
-name|application
-operator|.
-name|getApplicationResourceUsageReport
-argument_list|()
-operator|.
-name|getNumReservedContainers
-argument_list|()
-operator|+
-literal|" # used containers: "
-operator|+
-name|application
-operator|.
-name|getApplicationResourceUsageReport
-argument_list|()
-operator|.
-name|getNumUsedContainers
-argument_list|()
-operator|+
-literal|" Needed resources (memory): "
-operator|+
-name|application
-operator|.
-name|getApplicationResourceUsageReport
-argument_list|()
-operator|.
-name|getNeededResources
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-operator|+
-literal|" Reserved resources (memory): "
-operator|+
-name|application
-operator|.
-name|getApplicationResourceUsageReport
-argument_list|()
-operator|.
-name|getReservedResources
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-operator|+
-literal|" Used resources (memory): "
-operator|+
-name|application
-operator|.
-name|getApplicationResourceUsageReport
-argument_list|()
-operator|.
-name|getUsedResources
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-operator|+
-literal|" Diagnostics: "
-operator|+
-name|application
-operator|.
-name|getDiagnostics
-argument_list|()
-operator|+
-literal|" Start time: "
-operator|+
-name|application
-operator|.
-name|getStartTime
-argument_list|()
-operator|+
-literal|" Finish time: "
-operator|+
-name|application
-operator|.
-name|getFinishTime
-argument_list|()
-operator|+
-literal|" Host: "
-operator|+
-name|application
-operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|" Name: "
-operator|+
-name|application
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" Orig. tracking url: "
-operator|+
-name|application
-operator|.
-name|getOriginalTrackingUrl
-argument_list|()
-operator|+
-literal|" Queue: "
-operator|+
-name|application
-operator|.
-name|getQueue
-argument_list|()
-operator|+
-literal|" RPC port: "
-operator|+
-name|application
-operator|.
-name|getRpcPort
-argument_list|()
-operator|+
-literal|" Tracking url: "
-operator|+
-name|application
-operator|.
-name|getTrackingUrl
-argument_list|()
-operator|+
-literal|" User: "
-operator|+
-name|application
-operator|.
-name|getUser
-argument_list|()
-operator|+
-literal|" Client token: "
-operator|+
-name|application
-operator|.
-name|getClientToken
-argument_list|()
-operator|+
-literal|" Final appl. status: "
-operator|+
-name|application
-operator|.
-name|getFinalApplicationStatus
-argument_list|()
-operator|+
-literal|" Yarn appl. state: "
-operator|+
-name|application
-operator|.
-name|getYarnApplicationState
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|checkAndGetHSProxy ( ApplicationReport applicationReport, JobState state)
 specifier|private
 name|MRClientProtocol
@@ -2120,9 +1950,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Job History Server is not configured or "
-operator|+
-literal|"job information not yet available on History Server."
+literal|"Job History Server is not configured."
 argument_list|)
 expr_stmt|;
 return|return

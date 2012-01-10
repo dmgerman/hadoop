@@ -559,27 +559,6 @@ name|DEFAULT_YARN_APP_ACL
 init|=
 literal|" "
 decl_stmt|;
-comment|/** RM-AM ACL disabled. **/
-DECL|field|RM_AM_NETWORK_ACL_CLOSED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_AM_NETWORK_ACL_CLOSED
-init|=
-name|RM_PREFIX
-operator|+
-literal|"am.acl.disabled"
-decl_stmt|;
-DECL|field|DEFAULT_RM_AM_NETWORK_ACL_CLOSED
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|DEFAULT_RM_AM_NETWORK_ACL_CLOSED
-init|=
-literal|false
-decl_stmt|;
 comment|/** The address of the RM admin interface.*/
 DECL|field|RM_ADMIN_ADDRESS
 specifier|public
