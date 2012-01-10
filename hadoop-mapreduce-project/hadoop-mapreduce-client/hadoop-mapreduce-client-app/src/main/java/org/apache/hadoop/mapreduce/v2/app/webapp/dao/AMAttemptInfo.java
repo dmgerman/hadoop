@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.hs.webapp.dao
+DECL|package|org.apache.hadoop.mapreduce.v2.app.webapp.dao
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|hs
+name|app
 operator|.
 name|webapp
 operator|.
@@ -99,20 +99,6 @@ operator|.
 name|annotation
 operator|.
 name|XmlRootElement
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlTransient
 import|;
 end_import
 
@@ -238,19 +224,12 @@ specifier|protected
 name|String
 name|logsLink
 decl_stmt|;
-annotation|@
-name|XmlTransient
-DECL|field|shortLogsLink
-specifier|protected
-name|String
-name|shortLogsLink
-decl_stmt|;
 DECL|method|AMAttemptInfo ()
 specifier|public
 name|AMAttemptInfo
 parameter_list|()
 block|{   }
-DECL|method|AMAttemptInfo (AMInfo amInfo, String jobId, String user, String host, String pathPrefix)
+DECL|method|AMAttemptInfo (AMInfo amInfo, String jobId, String user)
 specifier|public
 name|AMAttemptInfo
 parameter_list|(
@@ -262,12 +241,6 @@ name|jobId
 parameter_list|,
 name|String
 name|user
-parameter_list|,
-name|String
-name|host
-parameter_list|,
-name|String
-name|pathPrefix
 parameter_list|)
 block|{
 name|this
@@ -378,12 +351,6 @@ name|logsLink
 operator|=
 literal|""
 expr_stmt|;
-name|this
-operator|.
-name|shortLogsLink
-operator|=
-literal|""
-expr_stmt|;
 name|ContainerId
 name|containerId
 init|=
@@ -414,47 +381,20 @@ name|logsLink
 operator|=
 name|join
 argument_list|(
-name|host
-argument_list|,
-name|pathPrefix
+literal|"http://"
+operator|+
+name|nodeHttpAddress
 argument_list|,
 name|ujoin
 argument_list|(
-literal|"logs"
+literal|"node"
 argument_list|,
-name|this
-operator|.
-name|nodeId
+literal|"containerlogs"
 argument_list|,
 name|this
 operator|.
 name|containerId
-argument_list|,
-name|jobId
-argument_list|,
-name|user
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|shortLogsLink
-operator|=
-name|ujoin
-argument_list|(
-literal|"logs"
-argument_list|,
-name|this
-operator|.
-name|nodeId
-argument_list|,
-name|this
-operator|.
-name|containerId
-argument_list|,
-name|jobId
-argument_list|,
-name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -529,18 +469,6 @@ return|return
 name|this
 operator|.
 name|logsLink
-return|;
-block|}
-DECL|method|getShortLogsLink ()
-specifier|public
-name|String
-name|getShortLogsLink
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|shortLogsLink
 return|;
 block|}
 block|}
