@@ -943,7 +943,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|"multifs"
+literal|null
 argument_list|)
 expr_stmt|;
 name|when

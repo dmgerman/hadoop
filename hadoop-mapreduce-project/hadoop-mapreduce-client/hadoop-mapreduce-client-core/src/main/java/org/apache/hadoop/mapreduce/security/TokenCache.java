@@ -834,6 +834,17 @@ name|String
 name|namenode
 parameter_list|)
 block|{
+comment|//No fs specific tokens issues by this fs. It may however issue tokens
+comment|// for other filesystems - which would be keyed by that filesystems name.
+if|if
+condition|(
+name|namenode
+operator|==
+literal|null
+condition|)
+return|return
+literal|null
+return|;
 return|return
 operator|(
 name|Token
