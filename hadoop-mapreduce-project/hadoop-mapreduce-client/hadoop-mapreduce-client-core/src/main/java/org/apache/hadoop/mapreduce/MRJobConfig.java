@@ -1955,6 +1955,15 @@ name|MR_JOB_END_NOTIFICATION_URL
 init|=
 literal|"mapreduce.job.end-notification.url"
 decl_stmt|;
+DECL|field|MR_JOB_END_NOTIFICATION_PROXY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_JOB_END_NOTIFICATION_PROXY
+init|=
+literal|"mapreduce.job.end-notification.proxy"
+decl_stmt|;
 DECL|field|MR_JOB_END_RETRY_ATTEMPTS
 specifier|public
 specifier|static
