@@ -1205,6 +1205,16 @@ name|DEFAULT_JOB_ACL_MODIFY_JOB
 init|=
 literal|" "
 decl_stmt|;
+comment|/* config for tracking the local file where all the credentials for the job    * credentials.    */
+DECL|field|MAPREDUCE_JOB_CREDENTIALS_BINARY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
+init|=
+literal|"mapreduce.job.credentials.binary"
+decl_stmt|;
 DECL|field|JOB_SUBMITHOST
 specifier|public
 specifier|static

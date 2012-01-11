@@ -208,6 +208,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|security
 operator|.
 name|token
@@ -487,7 +501,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Can't get JobTracker Kerberos principal for use as renewer"
+literal|"Can't get Master Kerberos principal for use as renewer"
 argument_list|)
 throw|;
 block|}
@@ -536,7 +550,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"mapreduce.job.credentials.binary"
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
 argument_list|)
 decl_stmt|;
 if|if

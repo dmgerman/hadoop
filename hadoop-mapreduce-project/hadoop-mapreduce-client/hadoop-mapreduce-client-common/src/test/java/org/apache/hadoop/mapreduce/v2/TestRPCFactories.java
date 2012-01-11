@@ -180,6 +180,46 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|GetDelegationTokenRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|GetDelegationTokenResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|GetDiagnosticsRequest
 import|;
 end_import
@@ -945,7 +985,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -963,7 +1002,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -981,7 +1019,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -999,7 +1036,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1017,7 +1053,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1035,7 +1070,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1053,7 +1087,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1071,7 +1104,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1089,7 +1121,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1107,7 +1138,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 literal|null
 return|;
@@ -1125,7 +1155,23 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDelegationToken ( GetDelegationTokenRequest request)
+specifier|public
+name|GetDelegationTokenResponse
+name|getDelegationToken
+parameter_list|(
+name|GetDelegationTokenRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnRemoteException
+block|{
 return|return
 literal|null
 return|;
