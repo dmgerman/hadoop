@@ -136,6 +136,20 @@ name|BlockUCState
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
 begin_comment
 comment|/**  * I-node for file being written.  */
 end_comment
@@ -367,6 +381,21 @@ name|INodeFile
 name|convertToInodeFile
 parameter_list|()
 block|{
+assert|assert
+name|allBlocksComplete
+argument_list|()
+operator|:
+literal|"Can't finalize inode "
+operator|+
+name|this
+operator|+
+literal|" since it contains "
+operator|+
+literal|"non-complete blocks! Blocks are: "
+operator|+
+name|blocksAsString
+argument_list|()
+assert|;
 name|INodeFile
 name|obj
 init|=
@@ -394,6 +423,39 @@ argument_list|)
 decl_stmt|;
 return|return
 name|obj
+return|;
+block|}
+comment|/**    * @return true if all of the blocks in this file are marked as completed.    */
+DECL|method|allBlocksComplete ()
+specifier|private
+name|boolean
+name|allBlocksComplete
+parameter_list|()
+block|{
+for|for
+control|(
+name|BlockInfo
+name|b
+range|:
+name|blocks
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|b
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
+return|return
+literal|true
 return|;
 block|}
 comment|/**    * Remove a block from the block list. This block should be    * the last one on the list.    */
@@ -560,6 +622,28 @@ argument_list|)
 expr_stmt|;
 return|return
 name|ucBlock
+return|;
+block|}
+DECL|method|blocksAsString ()
+specifier|private
+name|String
+name|blocksAsString
+parameter_list|()
+block|{
+return|return
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|","
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|this
+operator|.
+name|blocks
+argument_list|)
 return|;
 block|}
 block|}

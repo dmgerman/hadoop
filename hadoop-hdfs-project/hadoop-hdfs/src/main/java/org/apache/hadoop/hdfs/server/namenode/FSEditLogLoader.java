@@ -2705,7 +2705,9 @@ name|isLastBlock
 init|=
 name|i
 operator|==
-name|oldBlocks
+name|addCloseOp
+operator|.
+name|blocks
 operator|.
 name|length
 operator|-
@@ -2973,7 +2975,20 @@ index|]
 decl_stmt|;
 name|BlockInfo
 name|newBI
-init|=
+decl_stmt|;
+if|if
+condition|(
+name|addCloseOp
+operator|.
+name|opCode
+operator|==
+name|FSEditLogOpCodes
+operator|.
+name|OP_ADD
+condition|)
+block|{
+name|newBI
+operator|=
 operator|new
 name|BlockInfoUnderConstruction
 argument_list|(
@@ -2984,7 +2999,28 @@ operator|.
 name|getReplication
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// OP_CLOSE should add finalized blocks. This code path
+comment|// is only executed when loading edits written by prior
+comment|// versions of Hadoop. Current versions always log
+comment|// OP_ADD operations as each block is allocated.
+name|newBI
+operator|=
+operator|new
+name|BlockInfo
+argument_list|(
+name|newBlock
+argument_list|,
+name|file
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|fsNamesys
 operator|.
 name|getBlockManager
