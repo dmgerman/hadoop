@@ -710,9 +710,6 @@ operator|.
 name|getFSImage
 argument_list|()
 operator|.
-name|getStorage
-argument_list|()
-operator|.
 name|getMostRecentCheckpointTxId
 argument_list|()
 argument_list|)
@@ -727,9 +724,6 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|getFSImage
-argument_list|()
-operator|.
-name|getStorage
 argument_list|()
 operator|.
 name|getMostRecentCheckpointTxId

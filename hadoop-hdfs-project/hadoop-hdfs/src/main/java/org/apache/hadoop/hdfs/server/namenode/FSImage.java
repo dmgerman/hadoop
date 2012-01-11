@@ -5362,6 +5362,20 @@ name|getLastWrittenTxId
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getMostRecentCheckpointTxId ()
+specifier|public
+specifier|synchronized
+name|long
+name|getMostRecentCheckpointTxId
+parameter_list|()
+block|{
+return|return
+name|storage
+operator|.
+name|getMostRecentCheckpointTxId
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
