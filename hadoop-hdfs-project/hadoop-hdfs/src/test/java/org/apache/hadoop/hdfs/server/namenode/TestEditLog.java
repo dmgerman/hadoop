@@ -4560,8 +4560,8 @@ name|TXNS_PER_FAIL
 init|=
 literal|2
 decl_stmt|;
-comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
-DECL|method|setupEdits (List<URI> editUris, int numrolls, AbortSpec... abortAtRolls)
+comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param closeOnFinish whether to close the edit log after setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
+DECL|method|setupEdits (List<URI> editUris, int numrolls, boolean closeOnFinish, AbortSpec... abortAtRolls)
 specifier|public
 specifier|static
 name|NNStorage
@@ -4575,6 +4575,9 @@ name|editUris
 parameter_list|,
 name|int
 name|numrolls
+parameter_list|,
+name|boolean
+name|closeOnFinish
 parameter_list|,
 name|AbortSpec
 modifier|...
@@ -4807,11 +4810,17 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|closeOnFinish
+condition|)
+block|{
 name|editlog
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|FSImageTestUtil
 operator|.
 name|logStorageContents
@@ -4825,7 +4834,43 @@ return|return
 name|storage
 return|;
 block|}
-comment|/**     * Test loading an editlog which has had both its storage fail    * on alternating rolls. Two edit log directories are created.    * The first on fails on odd rolls, the second on even. Test    * that we are able to load the entire editlog regardless.    */
+comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
+DECL|method|setupEdits (List<URI> editUris, int numrolls, AbortSpec... abortAtRolls)
+specifier|public
+specifier|static
+name|NNStorage
+name|setupEdits
+parameter_list|(
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|editUris
+parameter_list|,
+name|int
+name|numrolls
+parameter_list|,
+name|AbortSpec
+modifier|...
+name|abortAtRolls
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|setupEdits
+argument_list|(
+name|editUris
+argument_list|,
+name|numrolls
+argument_list|,
+literal|true
+argument_list|,
+name|abortAtRolls
+argument_list|)
+return|;
+block|}
+comment|/**     * Test loading an editlog which has had both its storage fail    * on alternating rolls. Two edit log directories are created.    * The first one fails on odd rolls, the second on even. Test    * that we are able to load the entire editlog regardless.    */
 annotation|@
 name|Test
 DECL|method|testAlternatingJournalFailure ()

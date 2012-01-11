@@ -186,6 +186,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|JournalManager
+operator|.
+name|CorruptionException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NNStorageRetentionManager
 operator|.
 name|StoragePurger
@@ -1072,7 +1092,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxId)
+DECL|method|getInputStream (long fromTxId, boolean inProgressOk)
 specifier|synchronized
 specifier|public
 name|EditLogInputStream
@@ -1080,6 +1100,9 @@ name|getInputStream
 parameter_list|(
 name|long
 name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -1105,6 +1128,19 @@ name|fromTxId
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|inProgressOk
+operator|&&
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 name|elf
@@ -1229,13 +1265,16 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxId)
+DECL|method|getNumberOfTransactions (long fromTxId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -1329,6 +1368,19 @@ condition|)
 block|{
 if|if
 condition|(
+operator|!
+name|inProgressOk
+operator|&&
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
+if|if
+condition|(
 name|elf
 operator|.
 name|isInProgress
@@ -1413,7 +1465,9 @@ name|long
 name|max
 init|=
 name|findMaxTransaction
-argument_list|()
+argument_list|(
+name|inProgressOk
+argument_list|)
 decl_stmt|;
 comment|// fromTxId should be greater than max, as it points to the next
 comment|// transaction we should expect to find. If it is less than or equal
@@ -1509,7 +1563,9 @@ decl_stmt|;
 comment|// make sure journal is aware of max seen transaction before moving corrupt
 comment|// files aside
 name|findMaxTransaction
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -1675,11 +1731,14 @@ name|logFiles
 return|;
 block|}
 comment|/**     * Find the maximum transaction in the journal.    * This gets stored in a member variable, as corrupt edit logs    * will be moved aside, but we still need to remember their first    * tranaction id in the case that it was the maximum transaction in    * the journal.    */
-DECL|method|findMaxTransaction ()
+DECL|method|findMaxTransaction (boolean inProgressOk)
 specifier|private
 name|long
 name|findMaxTransaction
-parameter_list|()
+parameter_list|(
+name|boolean
+name|inProgressOk
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1694,6 +1753,19 @@ literal|0
 argument_list|)
 control|)
 block|{
+if|if
+condition|(
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
+operator|&&
+operator|!
+name|inProgressOk
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 name|elf

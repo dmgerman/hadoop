@@ -1175,6 +1175,8 @@ operator|.
 name|getInputStream
 argument_list|(
 name|segmentTxId
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 try|try
@@ -3883,6 +3885,8 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxId
+argument_list|,
+name|inProgressOk
 argument_list|)
 decl_stmt|;
 while|while
@@ -3892,17 +3896,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|inProgressOk
-operator|||
-operator|!
-name|stream
-operator|.
-name|isInProgress
-argument_list|()
-condition|)
-block|{
 name|streams
 operator|.
 name|add
@@ -3910,7 +3903,6 @@ argument_list|(
 name|stream
 argument_list|)
 expr_stmt|;
-block|}
 comment|// We're now looking for a higher range, so reset the fromTxId
 name|fromTxId
 operator|=
@@ -3928,6 +3920,8 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxId
+argument_list|,
+name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
@@ -3947,9 +3941,20 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"No non-corrupt logs for txid "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Gap in transactions. Expected to "
 operator|+
+literal|"be able to read up until at least txid %d but unable to find any "
+operator|+
+literal|"edit logs containing txid %d"
+argument_list|,
+name|toAtLeastTxId
+argument_list|,
 name|fromTxId
+argument_list|)
 argument_list|)
 throw|;
 block|}

@@ -762,13 +762,16 @@ block|}
 comment|/**    * Find the best editlog input stream to read from txid.    * If a journal throws an CorruptionException while reading from a txn id,    * it means that it has more transactions, but can't find any from fromTxId.     * If this is the case and no other journal has transactions, we should throw    * an exception as it means more transactions exist, we just can't load them.    *    * @param fromTxnId Transaction id to start from.    * @return A edit log input stream with tranactions fromTxId     *         or null if no more exist    */
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxnId)
+DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|EditLogInputStream
 name|getInputStream
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -826,6 +829,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
@@ -916,18 +921,23 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId)
+DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -979,6 +989,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 decl_stmt|;
 if|if

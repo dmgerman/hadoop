@@ -1261,6 +1261,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1442,6 +1444,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1462,6 +1466,8 @@ argument_list|(
 name|DEFAULT_SEGMENT_SIZE
 operator|+
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1493,6 +1499,8 @@ literal|2
 operator|)
 operator|+
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1733,6 +1741,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -2253,6 +2263,8 @@ operator|.
 name|getInputStream
 argument_list|(
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 try|try

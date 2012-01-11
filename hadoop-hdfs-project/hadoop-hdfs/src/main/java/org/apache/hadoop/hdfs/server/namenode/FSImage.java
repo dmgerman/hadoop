@@ -2991,6 +2991,24 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|// If we're open for write, we're either non-HA or we're the active NN, so
+comment|// we better be able to load all the edits. If we're the standby NN, it's
+comment|// OK to not be able to read all of edits right now.
+name|long
+name|toAtLeastTxId
+init|=
+name|editLog
+operator|.
+name|isOpenForWrite
+argument_list|()
+condition|?
+name|inspector
+operator|.
+name|getMaxSeenTxId
+argument_list|()
+else|:
+literal|0
+decl_stmt|;
 name|editStreams
 operator|=
 name|editLog
@@ -3004,10 +3022,7 @@ argument_list|()
 operator|+
 literal|1
 argument_list|,
-name|inspector
-operator|.
-name|getMaxSeenTxId
-argument_list|()
+name|toAtLeastTxId
 argument_list|,
 literal|false
 argument_list|)
