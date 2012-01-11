@@ -843,10 +843,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getTransationId (RpcController unused, GetTransactionIdRequestProto request)
+DECL|method|getTransactionId (RpcController unused, GetTransactionIdRequestProto request)
 specifier|public
 name|GetTransactionIdResponseProto
-name|getTransationId
+name|getTransactionId
 parameter_list|(
 name|RpcController
 name|unused
