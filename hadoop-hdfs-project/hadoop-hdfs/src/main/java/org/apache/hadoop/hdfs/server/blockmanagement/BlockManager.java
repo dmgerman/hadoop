@@ -6811,12 +6811,11 @@ operator|.
 name|isInStartupSafeMode
 argument_list|()
 operator|&&
+operator|!
 name|node
 operator|.
-name|numBlocks
+name|isFirstBlockReport
 argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 name|NameNode

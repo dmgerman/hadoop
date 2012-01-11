@@ -615,6 +615,14 @@ name|volumeFailures
 init|=
 literal|0
 decl_stmt|;
+comment|/** Set to false after processing first block report */
+DECL|field|firstBlockReport
+specifier|private
+name|boolean
+name|firstBlockReport
+init|=
+literal|true
+decl_stmt|;
 comment|/**     * When set to true, the node is not in include list and is not allowed    * to communicate with the namenode    */
 DECL|field|disallowed
 specifier|private
@@ -2164,6 +2172,19 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+name|firstBlockReport
+operator|=
+literal|false
+expr_stmt|;
+block|}
+DECL|method|isFirstBlockReport ()
+name|boolean
+name|isFirstBlockReport
+parameter_list|()
+block|{
+return|return
+name|firstBlockReport
+return|;
 block|}
 annotation|@
 name|Override

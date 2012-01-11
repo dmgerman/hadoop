@@ -938,7 +938,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test for the following case proposed by ATM:    * 1. Both NNs are up, one is active. There are 100 blocks. Both are    *    out of safemode.    * 2. 10 block deletions get processed by NN1. NN2 enqueues these DN messages    *     until it next reads from a checkpointed edits file.    * 3. NN2 gets restarted. Its queues are lost.    * 4. NN2 comes up, reads from all the finalized edits files. Concludes there    *    should still be 100 blocks.    * 5. NN2 receives a block report from all the DNs, which only accounts for    *    90 blocks. It doesn't leave safemode.    * 6. NN1 dies or is transitioned to standby.    * 7. NN2 is transitioned to active. It reads all the edits from NN1. It now    *    knows there should only be 90 blocks, but it's still in safemode.    * 8. NN2 doesn't ever recheck whether it should leave safemode.    *     * This is essentially the inverse of {@link #testBlocksAddedWhileStandbyShutdown()}    */
+comment|/**    * Test for the following case proposed by ATM:    * 1. Both NNs are up, one is active. There are 100 blocks. Both are    *    out of safemode.    * 2. 10 block deletions get processed by NN1. NN2 enqueues these DN messages    *     until it next reads from a checkpointed edits file.    * 3. NN2 gets restarted. Its queues are lost.    * 4. NN2 comes up, reads from all the finalized edits files. Concludes there    *    should still be 100 blocks.    * 5. NN2 receives a block report from all the DNs, which only accounts for    *    90 blocks. It doesn't leave safemode.    * 6. NN1 dies or is transitioned to standby.    * 7. NN2 is transitioned to active. It reads all the edits from NN1. It now    *    knows there should only be 90 blocks, but it's still in safemode.    * 8. NN2 doesn't ever recheck whether it should leave safemode.    *     * This is essentially the inverse of {@link #testBlocksAddedBeforeStandbyRestart()}    */
 annotation|@
 name|Test
 DECL|method|testBlocksRemovedBeforeStandbyRestart ()
@@ -1510,6 +1510,125 @@ operator|+
 literal|"The reported blocks 5 has reached the threshold 0.9990 of "
 operator|+
 literal|"total blocks 5. Safe mode will be turned off automatically"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Regression test for HDFS-2753. In this bug, the following sequence was    * observed:    * - Some blocks are written to DNs while the SBN was down. This causes    *   the blockReceived messages to get queued in the BPServiceActor on the    *   DN.    * - When the SBN returns, the DN re-registers with the SBN, and then    *   flushes its blockReceived queue to the SBN before it sends its    *   first block report. This caused the first block report to be    *   incorrect ignored.    * - The SBN would become stuck in safemode.    */
+annotation|@
+name|Test
+DECL|method|testBlocksAddedWhileStandbyIsDown ()
+specifier|public
+name|void
+name|testBlocksAddedWhileStandbyIsDown
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|3
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Stopping standby"
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|shutdownNameNode
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test2"
+argument_list|)
+argument_list|,
+literal|3
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Rolling edit log so standby gets all edits on restart"
+argument_list|)
+expr_stmt|;
+name|nn0
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+expr_stmt|;
+name|restartStandby
+argument_list|()
+expr_stmt|;
+name|String
+name|status
+init|=
+name|nn1
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getSafemode
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Bad safemode status: '"
+operator|+
+name|status
+operator|+
+literal|"'"
+argument_list|,
+name|status
+operator|.
+name|startsWith
+argument_list|(
+literal|"Safe mode is ON."
+operator|+
+literal|"The reported blocks 6 has reached the threshold 0.9990 of "
+operator|+
+literal|"total blocks 6. Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
