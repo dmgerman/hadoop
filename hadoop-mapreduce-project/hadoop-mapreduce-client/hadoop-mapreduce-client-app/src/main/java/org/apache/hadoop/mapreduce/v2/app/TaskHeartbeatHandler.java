@@ -26,16 +26,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
 import|;
 end_import
@@ -47,6 +37,30 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
@@ -324,24 +338,15 @@ name|clock
 decl_stmt|;
 DECL|field|runningAttempts
 specifier|private
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|TaskAttemptId
 argument_list|,
 name|Long
 argument_list|>
 name|runningAttempts
-init|=
-operator|new
-name|HashMap
-argument_list|<
-name|TaskAttemptId
-argument_list|,
-name|Long
-argument_list|>
-argument_list|()
 decl_stmt|;
-DECL|method|TaskHeartbeatHandler (EventHandler eventHandler, Clock clock)
+DECL|method|TaskHeartbeatHandler (EventHandler eventHandler, Clock clock, int numThreads)
 specifier|public
 name|TaskHeartbeatHandler
 parameter_list|(
@@ -350,6 +355,9 @@ name|eventHandler
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|int
+name|numThreads
 parameter_list|)
 block|{
 name|super
@@ -368,6 +376,23 @@ operator|.
 name|clock
 operator|=
 name|clock
+expr_stmt|;
+name|runningAttempts
+operator|=
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|TaskAttemptId
+argument_list|,
+name|Long
+argument_list|>
+argument_list|(
+literal|16
+argument_list|,
+literal|0.75f
+argument_list|,
+name|numThreads
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -482,7 +507,6 @@ expr_stmt|;
 block|}
 DECL|method|receivedPing (TaskAttemptId attemptID)
 specifier|public
-specifier|synchronized
 name|void
 name|receivedPing
 parameter_list|(
@@ -491,19 +515,9 @@ name|attemptID
 parameter_list|)
 block|{
 comment|//only put for the registered attempts
-if|if
-condition|(
 name|runningAttempts
 operator|.
-name|containsKey
-argument_list|(
-name|attemptID
-argument_list|)
-condition|)
-block|{
-name|runningAttempts
-operator|.
-name|put
+name|replace
 argument_list|(
 name|attemptID
 argument_list|,
@@ -514,10 +528,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 DECL|method|register (TaskAttemptId attemptID)
 specifier|public
-specifier|synchronized
 name|void
 name|register
 parameter_list|(
@@ -540,7 +552,6 @@ expr_stmt|;
 block|}
 DECL|method|unregister (TaskAttemptId attemptID)
 specifier|public
-specifier|synchronized
 name|void
 name|unregister
 parameter_list|(
@@ -586,13 +597,6 @@ name|isInterrupted
 argument_list|()
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|TaskHeartbeatHandler
-operator|.
-name|this
-init|)
-block|{
 name|Iterator
 argument_list|<
 name|Map
@@ -614,7 +618,7 @@ operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
-comment|//avoid calculating current time everytime in loop
+comment|// avoid calculating current time everytime in loop
 name|long
 name|currentTime
 init|=
@@ -658,7 +662,36 @@ operator|+
 name|taskTimeOut
 condition|)
 block|{
-comment|//task is lost, remove from the list and raise lost event
+comment|//In case the iterator isn't picking up the latest.
+comment|// Extra lookup outside of the iterator - but only if the task
+comment|// is considered to be timed out.
+name|Long
+name|taskTime
+init|=
+name|runningAttempts
+operator|.
+name|get
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|taskTime
+operator|!=
+literal|null
+operator|&&
+name|currentTime
+operator|>
+name|taskTime
+operator|+
+name|taskTimeOut
+condition|)
+block|{
+comment|// task is lost, remove from the list and raise lost event
 name|iterator
 operator|.
 name|remove
