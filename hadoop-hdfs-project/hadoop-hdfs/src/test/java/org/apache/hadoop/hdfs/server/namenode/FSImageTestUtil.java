@@ -180,9 +180,37 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -527,6 +555,25 @@ specifier|abstract
 class|class
 name|FSImageTestUtil
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FSImageTestUtil
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|/**    * The position in the fsimage header where the txid is    * written.    */
 DECL|field|IMAGE_TXID_POS
 specifier|private
@@ -2246,6 +2293,29 @@ argument_list|)
 control|)
 block|{
 comment|// Should have fsimage_N for the three checkpoints
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Examining storage dir "
+operator|+
+name|nameDir
+operator|+
+literal|" with contents: "
+operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|nameDir
+operator|.
+name|listFiles
+argument_list|()
+argument_list|,
+literal|", "
+argument_list|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|long
