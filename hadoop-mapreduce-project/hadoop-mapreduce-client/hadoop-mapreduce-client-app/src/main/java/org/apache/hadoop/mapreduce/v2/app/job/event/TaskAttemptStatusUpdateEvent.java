@@ -44,12 +44,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Counters
 import|;
 end_import

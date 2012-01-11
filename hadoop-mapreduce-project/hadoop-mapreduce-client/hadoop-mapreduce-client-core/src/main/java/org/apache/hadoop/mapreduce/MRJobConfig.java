@@ -647,6 +647,15 @@ name|TASK_TIMEOUT
 init|=
 literal|"mapreduce.task.timeout"
 decl_stmt|;
+DECL|field|TASK_TIMEOUT_CHECK_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_TIMEOUT_CHECK_INTERVAL_MS
+init|=
+literal|"mapreduce.task.timeout.check-interval-ms"
+decl_stmt|;
 DECL|field|TASK_ID
 specifier|public
 specifier|static
@@ -1196,6 +1205,16 @@ name|DEFAULT_JOB_ACL_MODIFY_JOB
 init|=
 literal|" "
 decl_stmt|;
+comment|/* config for tracking the local file where all the credentials for the job    * credentials.    */
+DECL|field|MAPREDUCE_JOB_CREDENTIALS_BINARY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
+init|=
+literal|"mapreduce.job.credentials.binary"
+decl_stmt|;
 DECL|field|JOB_SUBMITHOST
 specifier|public
 specifier|static
@@ -1545,6 +1564,25 @@ name|float
 name|DEFAULT_MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 init|=
 literal|0.5f
+decl_stmt|;
+comment|/** AM ACL disabled. **/
+DECL|field|JOB_AM_ACCESS_DISABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_AM_ACCESS_DISABLED
+init|=
+literal|"mapreduce.job.am-access-disabled"
+decl_stmt|;
+DECL|field|DEFAULT_JOB_AM_ACCESS_DISABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_JOB_AM_ACCESS_DISABLED
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * Limit reduces starting until a certain percentage of maps have finished.    *  Percentage between 0.0 and 1.0    */
 DECL|field|MR_AM_JOB_REDUCE_RAMPUP_UP_LIMIT
@@ -1945,6 +1983,15 @@ name|String
 name|MR_JOB_END_NOTIFICATION_URL
 init|=
 literal|"mapreduce.job.end-notification.url"
+decl_stmt|;
+DECL|field|MR_JOB_END_NOTIFICATION_PROXY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_JOB_END_NOTIFICATION_PROXY
+init|=
+literal|"mapreduce.job.end-notification.proxy"
 decl_stmt|;
 DECL|field|MR_JOB_END_RETRY_ATTEMPTS
 specifier|public

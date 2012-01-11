@@ -86,12 +86,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Counter
 import|;
 end_import
@@ -105,12 +99,6 @@ operator|.
 name|hadoop
 operator|.
 name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
 operator|.
 name|CounterGroup
 import|;
@@ -149,7 +137,7 @@ specifier|public
 name|TaskCounterGroupInfo
 parameter_list|()
 block|{   }
-DECL|method|TaskCounterGroupInfo (String name, CounterGroup g)
+DECL|method|TaskCounterGroupInfo (String name, CounterGroup group)
 specifier|public
 name|TaskCounterGroupInfo
 parameter_list|(
@@ -157,7 +145,7 @@ name|String
 name|name
 parameter_list|,
 name|CounterGroup
-name|g
+name|group
 parameter_list|)
 block|{
 name|this
@@ -182,13 +170,7 @@ control|(
 name|Counter
 name|c
 range|:
-name|g
-operator|.
-name|getAllCounters
-argument_list|()
-operator|.
-name|values
-argument_list|()
+name|group
 control|)
 block|{
 name|TaskCounterInfo

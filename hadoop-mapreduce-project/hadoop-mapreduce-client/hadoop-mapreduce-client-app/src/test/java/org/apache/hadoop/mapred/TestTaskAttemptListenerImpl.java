@@ -228,11 +228,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|registerHeartbeatHandler ()
+DECL|method|registerHeartbeatHandler (Configuration conf)
 specifier|protected
 name|void
 name|registerHeartbeatHandler
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 comment|//Empty
 block|}

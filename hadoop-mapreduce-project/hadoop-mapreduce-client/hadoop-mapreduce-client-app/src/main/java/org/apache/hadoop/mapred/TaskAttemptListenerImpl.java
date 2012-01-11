@@ -722,7 +722,9 @@ name|conf
 parameter_list|)
 block|{
 name|registerHeartbeatHandler
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|super
 operator|.
@@ -749,11 +751,14 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|registerHeartbeatHandler ()
+DECL|method|registerHeartbeatHandler (Configuration conf)
 specifier|protected
 name|void
 name|registerHeartbeatHandler
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 name|taskHeartbeatHandler
 operator|=
@@ -769,6 +774,19 @@ name|context
 operator|.
 name|getClock
 argument_list|()
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_TASK_LISTENER_THREAD_COUNT
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_TASK_LISTENER_THREAD_COUNT
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|addService
@@ -1882,14 +1900,23 @@ name|getPhase
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Counters are updated by the task.
+comment|// Counters are updated by the task. Convert counters into new format as
+comment|// that is the primary storage format inside the AM to avoid multiple
+comment|// conversions and unnecessary heap usage.
 name|taskAttemptStatus
 operator|.
 name|counters
 operator|=
-name|TypeConverter
+operator|new
+name|org
 operator|.
-name|toYarn
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|Counters
 argument_list|(
 name|taskStatus
 operator|.

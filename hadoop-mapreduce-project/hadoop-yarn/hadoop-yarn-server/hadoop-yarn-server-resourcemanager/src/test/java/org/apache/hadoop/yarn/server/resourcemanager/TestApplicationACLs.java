@@ -809,6 +809,8 @@ argument_list|,
 name|this
 operator|.
 name|applicationACLsManager
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

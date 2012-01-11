@@ -2856,15 +2856,7 @@ name|taskAttemptStatus
 operator|.
 name|counters
 operator|=
-name|TypeConverter
-operator|.
-name|toYarn
-argument_list|(
-name|attemptInfo
-operator|.
-name|getCounters
-argument_list|()
-argument_list|)
+name|cntrs
 expr_stmt|;
 block|}
 name|actualHandler

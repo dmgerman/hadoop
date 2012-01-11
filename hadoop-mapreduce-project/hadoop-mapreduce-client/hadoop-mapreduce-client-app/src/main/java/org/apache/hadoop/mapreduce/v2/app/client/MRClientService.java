@@ -182,6 +182,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TypeConverter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|api
@@ -267,6 +281,46 @@ operator|.
 name|protocolrecords
 operator|.
 name|GetCountersResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|GetDelegationTokenRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|GetDelegationTokenResponse
 import|;
 end_import
 
@@ -1902,10 +1956,15 @@ name|response
 operator|.
 name|setCounters
 argument_list|(
+name|TypeConverter
+operator|.
+name|toYarn
+argument_list|(
 name|job
 operator|.
-name|getCounters
+name|getAllCounters
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -2579,6 +2638,16 @@ return|return
 name|response
 return|;
 block|}
+DECL|field|getTaskReportsLock
+specifier|private
+specifier|final
+name|Object
+name|getTaskReportsLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|getTaskReports ( GetTaskReportsRequest request)
@@ -2630,19 +2699,6 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Getting task report for "
-operator|+
-name|taskType
-operator|+
-literal|"   "
-operator|+
-name|jobId
-argument_list|)
-expr_stmt|;
 name|Collection
 argument_list|<
 name|Task
@@ -2663,7 +2719,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Getting task report size "
+literal|"Getting task report for "
+operator|+
+name|taskType
+operator|+
+literal|"   "
+operator|+
+name|jobId
+operator|+
+literal|". Report-size will be "
 operator|+
 name|tasks
 operator|.
@@ -2671,6 +2735,13 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Take lock to allow only one call, otherwise heap will blow up because
+comment|// of counters in the report when there are multiple callers.
+synchronized|synchronized
+init|(
+name|getTaskReportsLock
+init|)
+block|{
 for|for
 control|(
 name|Task
@@ -2690,9 +2761,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 return|return
 name|response
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDelegationToken ( GetDelegationTokenRequest request)
+specifier|public
+name|GetDelegationTokenResponse
+name|getDelegationToken
+parameter_list|(
+name|GetDelegationTokenRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnRemoteException
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"MR AM not authorized to issue delegation"
+operator|+
+literal|" token"
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

@@ -1561,7 +1561,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/mapreduce/jobs/{jobid}/attempts"
+literal|"/mapreduce/jobs/{jobid}/jobattempts"
 argument_list|)
 annotation|@
 name|Produces

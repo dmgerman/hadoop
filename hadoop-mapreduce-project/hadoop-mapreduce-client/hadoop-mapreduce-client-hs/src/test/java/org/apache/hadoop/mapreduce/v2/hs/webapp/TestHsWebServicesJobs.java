@@ -727,7 +727,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test the history server Rest API for getting jobs, a specific job, job  * counters, and job attempts.  *  * /ws/v1/history/mapreduce/jobs /ws/v1/history/mapreduce/jobs/{jobid}  * /ws/v1/history/mapreduce/jobs/{jobid}/counters  * /ws/v1/history/mapreduce/jobs/{jobid}/attempts  */
+comment|/**  * Test the history server Rest API for getting jobs, a specific job, job  * counters, and job attempts.  *  * /ws/v1/history/mapreduce/jobs /ws/v1/history/mapreduce/jobs/{jobid}  * /ws/v1/history/mapreduce/jobs/{jobid}/counters  * /ws/v1/history/mapreduce/jobs/{jobid}/jobattempts  */
 end_comment
 
 begin_class
@@ -4791,7 +4791,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"attempts"
+literal|"jobattempts"
 argument_list|)
 operator|.
 name|accept
@@ -4851,7 +4851,7 @@ name|json
 operator|.
 name|getJSONObject
 argument_list|(
-literal|"attempts"
+literal|"jobAttempts"
 argument_list|)
 decl_stmt|;
 name|verifyHsJobAttempts
@@ -4957,7 +4957,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"attempts/"
+literal|"jobattempts/"
 argument_list|)
 operator|.
 name|accept
@@ -5017,7 +5017,7 @@ name|json
 operator|.
 name|getJSONObject
 argument_list|(
-literal|"attempts"
+literal|"jobAttempts"
 argument_list|)
 decl_stmt|;
 name|verifyHsJobAttempts
@@ -5123,7 +5123,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"attempts"
+literal|"jobattempts"
 argument_list|)
 operator|.
 name|get
@@ -5176,7 +5176,7 @@ name|json
 operator|.
 name|getJSONObject
 argument_list|(
-literal|"attempts"
+literal|"jobAttempts"
 argument_list|)
 decl_stmt|;
 name|verifyHsJobAttempts
@@ -5280,7 +5280,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"attempts"
+literal|"jobattempts"
 argument_list|)
 operator|.
 name|accept
@@ -5372,7 +5372,7 @@ name|dom
 operator|.
 name|getElementsByTagName
 argument_list|(
-literal|"attempts"
+literal|"jobAttempts"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -5394,7 +5394,7 @@ name|dom
 operator|.
 name|getElementsByTagName
 argument_list|(
-literal|"attempt"
+literal|"jobAttempt"
 argument_list|)
 decl_stmt|;
 name|verifyHsJobAttemptsXML
@@ -5432,7 +5432,7 @@ name|info
 operator|.
 name|getJSONArray
 argument_list|(
-literal|"attempt"
+literal|"jobAttempt"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -5709,11 +5709,19 @@ name|getNodeManagerHost
 argument_list|()
 decl_stmt|;
 name|int
-name|nmPort
+name|nmHttpPort
 init|=
 name|amInfo
 operator|.
 name|getNodeManagerHttpPort
+argument_list|()
+decl_stmt|;
+name|int
+name|nmPort
+init|=
+name|amInfo
+operator|.
+name|getNodeManagerPort
 argument_list|()
 decl_stmt|;
 name|WebServicesTestUtils
@@ -5726,7 +5734,7 @@ name|nmHost
 operator|+
 literal|":"
 operator|+
-name|nmPort
+name|nmHttpPort
 argument_list|,
 name|nodeHttpAddress
 argument_list|)

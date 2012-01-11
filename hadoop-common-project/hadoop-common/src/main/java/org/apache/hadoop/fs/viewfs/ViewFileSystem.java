@@ -2800,6 +2800,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|serviceName
+operator|==
+literal|null
+operator|||
 name|seenServiceNames
 operator|.
 name|contains

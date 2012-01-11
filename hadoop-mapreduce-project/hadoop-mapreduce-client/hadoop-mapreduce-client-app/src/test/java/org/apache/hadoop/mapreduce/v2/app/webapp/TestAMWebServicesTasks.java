@@ -6200,7 +6200,7 @@ name|counters
 operator|.
 name|getJSONObject
 argument_list|(
-name|i
+name|j
 argument_list|)
 decl_stmt|;
 name|String

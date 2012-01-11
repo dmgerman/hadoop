@@ -1169,10 +1169,10 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|getUser ()
+DECL|method|getUserName ()
 specifier|public
 name|String
-name|getUser
+name|getUserName
 parameter_list|()
 block|{
 return|return

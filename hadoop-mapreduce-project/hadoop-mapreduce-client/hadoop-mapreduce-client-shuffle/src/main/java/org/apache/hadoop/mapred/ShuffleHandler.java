@@ -1536,6 +1536,7 @@ expr_stmt|;
 block|}
 comment|/**    * Serialize the shuffle port into a ByteBuffer for use later on.    * @param port the port to be sent to the ApplciationMaster    * @return the serialized form of the port.    */
 DECL|method|serializeMetaData (int port)
+specifier|public
 specifier|static
 name|ByteBuffer
 name|serializeMetaData

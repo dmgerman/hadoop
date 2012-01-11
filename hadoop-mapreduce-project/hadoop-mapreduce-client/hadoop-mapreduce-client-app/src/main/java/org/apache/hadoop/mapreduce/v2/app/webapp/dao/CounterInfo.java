@@ -76,12 +76,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Counter
 import|;
 end_import
@@ -126,12 +120,12 @@ specifier|public
 name|CounterInfo
 parameter_list|()
 block|{   }
-DECL|method|CounterInfo (Counter counter, Counter mc, Counter rc)
+DECL|method|CounterInfo (Counter c, Counter mc, Counter rc)
 specifier|public
 name|CounterInfo
 parameter_list|(
 name|Counter
-name|counter
+name|c
 parameter_list|,
 name|Counter
 name|mc
@@ -144,7 +138,7 @@ name|this
 operator|.
 name|name
 operator|=
-name|counter
+name|c
 operator|.
 name|getName
 argument_list|()
@@ -153,7 +147,7 @@ name|this
 operator|.
 name|totalCounterValue
 operator|=
-name|counter
+name|c
 operator|.
 name|getValue
 argument_list|()

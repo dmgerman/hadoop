@@ -64,6 +64,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|Counters
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|JobACL
 import|;
 end_import
@@ -85,26 +99,6 @@ operator|.
 name|records
 operator|.
 name|AMInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Counters
 import|;
 end_import
 
@@ -569,10 +563,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCounters ()
+DECL|method|getAllCounters ()
 specifier|public
 name|Counters
-name|getCounters
+name|getAllCounters
 parameter_list|()
 block|{
 return|return

@@ -66,6 +66,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|Counters
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|JobACL
 import|;
 end_import
@@ -87,26 +101,6 @@ operator|.
 name|records
 operator|.
 name|AMInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Counters
 import|;
 end_import
 
@@ -290,9 +284,10 @@ name|JobReport
 name|getReport
 parameter_list|()
 function_decl|;
-DECL|method|getCounters ()
+comment|/**    * Get all the counters of this job. This includes job-counters aggregated    * together with the counters of each task. This creates a clone of the    * Counters, so use this judiciously.      * @return job-counters and aggregate task-counters    */
+DECL|method|getAllCounters ()
 name|Counters
-name|getCounters
+name|getAllCounters
 parameter_list|()
 function_decl|;
 DECL|method|getTasks ()

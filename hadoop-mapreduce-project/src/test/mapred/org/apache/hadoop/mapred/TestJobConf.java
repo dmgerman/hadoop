@@ -146,7 +146,7 @@ specifier|final
 name|String
 name|CLASSNAME
 init|=
-literal|"ClassWithNoPackage"
+literal|"testjar.ClassWordCount"
 decl_stmt|;
 DECL|field|TEST_DIR_WITH_SPECIAL_CHARS
 specifier|private
