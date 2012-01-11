@@ -1463,7 +1463,7 @@ name|StartupOption
 operator|.
 name|ROLLBACK
 argument_list|,
-literal|"No non-corrupt logs for txid "
+literal|"Gap in transactions. Expected to be able to read up until at least txid "
 argument_list|)
 expr_stmt|;
 name|UpgradeUtilities
