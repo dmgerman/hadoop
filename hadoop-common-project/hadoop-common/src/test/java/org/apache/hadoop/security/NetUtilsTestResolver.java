@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.net
+DECL|package|org.apache.hadoop.security
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
+name|security
 package|;
 end_package
 
@@ -84,9 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
+name|security
 operator|.
-name|NetUtils
+name|SecurityUtil
 operator|.
 name|QualifiedHostResolver
 import|;
@@ -188,12 +188,11 @@ argument_list|,
 literal|"3.3.3.3"
 argument_list|)
 expr_stmt|;
-name|NetUtils
+name|SecurityUtil
 operator|.
-name|setHostResolver
-argument_list|(
+name|hostResolver
+operator|=
 name|resolver
-argument_list|)
 expr_stmt|;
 return|return
 name|resolver
@@ -266,7 +265,10 @@ name|addr
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getInetAddressByName (String host)
+specifier|public
 name|InetAddress
 name|getInetAddressByName
 parameter_list|(
@@ -311,7 +313,48 @@ name|host
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getByExactName (String host)
+specifier|public
+name|InetAddress
+name|getByExactName
+parameter_list|(
+name|String
+name|host
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|getByExactName
+argument_list|(
+name|host
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getByNameWithSearch (String host)
+specifier|public
+name|InetAddress
+name|getByNameWithSearch
+parameter_list|(
+name|String
+name|host
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|getByNameWithSearch
+argument_list|(
+name|host
+argument_list|)
+return|;
+block|}
 DECL|method|getHostSearches ()
+specifier|public
 name|String
 index|[]
 name|getHostSearches
@@ -331,6 +374,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|reset ()
+specifier|public
 name|void
 name|reset
 parameter_list|()

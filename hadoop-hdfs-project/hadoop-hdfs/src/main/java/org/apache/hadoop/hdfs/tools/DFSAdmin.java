@@ -837,9 +837,11 @@ literal|"\t\tFor each directory, attempt to set the quota. An error will be repo
 operator|+
 literal|"\t\t1. N is not a positive integer, or\n"
 operator|+
-literal|"\t\t2. user is not an administrator, or\n"
+literal|"\t\t2. User is not an administrator, or\n"
 operator|+
-literal|"\t\t3. the directory does not exist or is a file, or\n"
+literal|"\t\t3. The directory does not exist or is a file.\n"
+operator|+
+literal|"\t\tNote: A quota of 1 would force the directory to remain empty.\n"
 decl_stmt|;
 DECL|field|quota
 specifier|private
@@ -4542,6 +4544,15 @@ operator|.
 name|println
 argument_list|(
 literal|"Usage: java DFSAdmin"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Note: Administrative commands can only be run as the HDFS superuser."
 argument_list|)
 expr_stmt|;
 name|System

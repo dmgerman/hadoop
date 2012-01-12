@@ -246,6 +246,22 @@ name|NodeInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|RemoteExceptionData
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Singleton
@@ -301,6 +317,10 @@ operator|.
 name|class
 block|,
 name|NodeInfo
+operator|.
+name|class
+block|,
+name|RemoteExceptionData
 operator|.
 name|class
 block|}

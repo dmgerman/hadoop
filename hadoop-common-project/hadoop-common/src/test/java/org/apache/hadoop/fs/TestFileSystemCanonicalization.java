@@ -84,7 +84,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
+name|security
 operator|.
 name|NetUtilsTestResolver
 import|;

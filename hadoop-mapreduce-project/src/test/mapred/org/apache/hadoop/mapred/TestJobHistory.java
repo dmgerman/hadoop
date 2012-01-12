@@ -528,6 +528,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|Node
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -2876,8 +2890,8 @@ literal|"SUCCEEDED"
 argument_list|)
 condition|)
 block|{
-name|String
-name|ttHostname
+name|Node
+name|node
 init|=
 name|jt
 operator|.
@@ -2888,20 +2902,34 @@ operator|.
 name|getHost
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|String
+name|ttHostname
+init|=
+name|node
 operator|.
-name|toString
+name|getName
 argument_list|()
 decl_stmt|;
 comment|// check if hostname is valid
 name|assertTrue
 argument_list|(
-literal|"Host name of task attempt "
+literal|"Host name : "
+operator|+
+name|attempt
+operator|.
+name|getHostname
+argument_list|()
+operator|+
+literal|" of task attempt "
 operator|+
 name|attemptId
 operator|+
 literal|" obtained from"
 operator|+
-literal|" history file did not match the expected value"
+literal|" history file did not match the expected value "
+operator|+
+name|ttHostname
 argument_list|,
 name|ttHostname
 operator|.

@@ -1281,8 +1281,7 @@ condition|(
 operator|!
 name|SecurityUtil
 operator|.
-name|getTokenServiceUseIp
-argument_list|()
+name|useIpForTokenService
 condition|)
 block|{
 name|assertEquals
