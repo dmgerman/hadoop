@@ -114,6 +114,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|QueueState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -214,7 +232,7 @@ name|queueName
 decl_stmt|;
 DECL|field|state
 specifier|protected
-name|String
+name|QueueState
 name|state
 decl_stmt|;
 DECL|field|subQueues
@@ -358,9 +376,6 @@ name|q
 operator|.
 name|getState
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getCapacity ()
@@ -471,6 +486,9 @@ return|return
 name|this
 operator|.
 name|state
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|method|getQueuePath ()
