@@ -2516,27 +2516,6 @@ throw|throw
 name|e
 throw|;
 block|}
-catch|catch
-parameter_list|(
-name|ServiceFailedException
-name|e
-parameter_list|)
-block|{
-name|this
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Service failed to start"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 DECL|method|createHAContext ()
 specifier|protected

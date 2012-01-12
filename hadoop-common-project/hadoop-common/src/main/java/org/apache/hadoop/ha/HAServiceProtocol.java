@@ -58,6 +58,16 @@ name|VersionedProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Protocol interface that provides High Availability related primitives to  * monitor and fail-over the service.  *   * This interface could be used by HA frameworks to manage the service.  */
 end_comment
@@ -142,7 +152,7 @@ name|name
 return|;
 block|}
 block|}
-comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    */
+comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    * @throws IOException    *           if other errors happen    */
 DECL|method|monitorHealth ()
 specifier|public
 name|void
@@ -150,8 +160,10 @@ name|monitorHealth
 parameter_list|()
 throws|throws
 name|HealthCheckFailedException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    */
+comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    * @throws IOException    *           if other errors happen    */
 DECL|method|transitionToActive ()
 specifier|public
 name|void
@@ -159,8 +171,10 @@ name|transitionToActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    */
+comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    * @throws IOException    *           if other errors happen    */
 DECL|method|transitionToStandby ()
 specifier|public
 name|void
@@ -168,13 +182,17 @@ name|transitionToStandby
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Return the current state of the service.    */
+comment|/**    * Return the current state of the service.    *     * @throws IOException    *           if other errors happen    */
 DECL|method|getServiceState ()
 specifier|public
 name|HAServiceState
 name|getServiceState
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

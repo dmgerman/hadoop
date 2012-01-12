@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -153,7 +163,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -225,6 +235,22 @@ argument_list|(
 literal|"Can't failover to an unhealthy service"
 argument_list|,
 name|hce
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|FailoverFailedException
+argument_list|(
+literal|"Got an io exception"
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
