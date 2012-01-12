@@ -232,11 +232,29 @@ name|Sets
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages a collection of Journals. None of the methods are synchronized, it is  * assumed that FSEditLog methods, that use this class, use proper  * synchronization.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|JournalSet
 specifier|public
 class|class
