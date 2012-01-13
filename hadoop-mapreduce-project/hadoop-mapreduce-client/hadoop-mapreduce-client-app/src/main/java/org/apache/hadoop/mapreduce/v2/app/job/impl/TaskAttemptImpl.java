@@ -6919,6 +6919,10 @@ argument_list|(
 name|taskAttempt
 operator|.
 name|attemptId
+argument_list|,
+name|taskAttempt
+operator|.
+name|jvmID
 argument_list|)
 expr_stmt|;
 comment|//TODO Resolve to host / IP in case of a local address.

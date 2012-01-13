@@ -105,13 +105,16 @@ name|WrappedJvmID
 name|jvmID
 parameter_list|)
 function_decl|;
-comment|/**    * Register task attempt. This should be called when the JVM has been    * launched.    *     * @param attemptID    *          the id of the attempt for this JVM.    */
-DECL|method|registerLaunchedTask (TaskAttemptId attemptID)
+comment|/**    * Register task attempt. This should be called when the JVM has been    * launched.    *     * @param attemptID    *          the id of the attempt for this JVM.    * @param jvmID the ID of the JVM.    */
+DECL|method|registerLaunchedTask (TaskAttemptId attemptID, WrappedJvmID jvmID)
 name|void
 name|registerLaunchedTask
 parameter_list|(
 name|TaskAttemptId
 name|attemptID
+parameter_list|,
+name|WrappedJvmID
+name|jvmID
 parameter_list|)
 function_decl|;
 comment|/**    * Unregister the JVM and the attempt associated with it.  This should be     * called when the attempt/JVM has finished executing and is being cleaned up.    * @param attemptID the ID of the attempt.    * @param jvmID the ID of the JVM for that attempt.    */

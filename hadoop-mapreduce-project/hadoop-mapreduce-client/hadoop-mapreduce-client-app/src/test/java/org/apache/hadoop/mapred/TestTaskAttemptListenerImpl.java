@@ -48,6 +48,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -405,7 +417,8 @@ operator|.
 name|shouldDie
 argument_list|)
 expr_stmt|;
-comment|// Verify ask after registration but before launch
+comment|// Verify ask after registration but before launch.
+comment|// Don't kill, should be null.
 name|TaskAttemptId
 name|attemptID
 init|=
@@ -445,16 +458,9 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-name|assertNotNull
+name|assertNull
 argument_list|(
 name|result
-argument_list|)
-expr_stmt|;
-name|assertFalse
-argument_list|(
-name|result
-operator|.
-name|shouldDie
 argument_list|)
 expr_stmt|;
 comment|// Unregister for more testing.
@@ -483,6 +489,8 @@ operator|.
 name|registerLaunchedTask
 argument_list|(
 name|attemptID
+argument_list|,
+name|wid
 argument_list|)
 expr_stmt|;
 name|verify

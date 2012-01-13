@@ -2614,8 +2614,11 @@ name|registerLaunchedTask
 parameter_list|(
 name|TaskAttemptId
 name|attemptID
+parameter_list|,
+name|WrappedJvmID
+name|jvmID
 parameter_list|)
-block|{}
+block|{       }
 annotation|@
 name|Override
 specifier|public
@@ -3244,6 +3247,11 @@ return|return
 name|localStateMachine
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|method|TestJob (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, OutputCommitter committer, boolean newApiCommitter, String user)
 specifier|public
 name|TestJob
