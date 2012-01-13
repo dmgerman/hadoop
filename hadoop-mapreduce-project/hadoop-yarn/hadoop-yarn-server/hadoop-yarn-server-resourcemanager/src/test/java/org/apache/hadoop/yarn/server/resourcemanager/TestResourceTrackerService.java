@@ -1080,15 +1080,6 @@ argument_list|>
 argument_list|()
 argument_list|,
 literal|true
-argument_list|,
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
-name|NodeId
-operator|.
-name|class
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Assert

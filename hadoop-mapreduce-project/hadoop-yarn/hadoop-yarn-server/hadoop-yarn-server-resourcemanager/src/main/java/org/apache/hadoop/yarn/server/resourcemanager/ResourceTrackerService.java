@@ -1683,7 +1683,7 @@ name|addAllContainersToCleanup
 argument_list|(
 name|rmNode
 operator|.
-name|pullContainersToCleanUp
+name|getContainersToCleanUp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1693,7 +1693,7 @@ name|addAllApplicationsToCleanup
 argument_list|(
 name|rmNode
 operator|.
-name|pullAppsToCleanup
+name|getAppsToCleanup
 argument_list|()
 argument_list|)
 expr_stmt|;
