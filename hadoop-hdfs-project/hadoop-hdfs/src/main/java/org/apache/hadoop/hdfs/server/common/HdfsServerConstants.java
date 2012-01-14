@@ -309,16 +309,6 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|//for write pipeline
-DECL|field|DN_KEEPALIVE_TIMEOUT
-specifier|public
-specifier|static
-name|int
-name|DN_KEEPALIVE_TIMEOUT
-init|=
-literal|5
-operator|*
-literal|1000
-decl_stmt|;
 comment|/**    * Defines the NameNode role.    */
 DECL|enum|NamenodeRole
 specifier|static
