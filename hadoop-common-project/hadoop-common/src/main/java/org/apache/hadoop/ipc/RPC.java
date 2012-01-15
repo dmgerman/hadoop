@@ -3166,11 +3166,17 @@ name|highest
 init|=
 literal|null
 decl_stmt|;
-name|System
+if|if
+condition|(
+name|LOG
 operator|.
-name|out
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
 operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Size of protoMap for "
 operator|+
@@ -3187,6 +3193,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|Map
