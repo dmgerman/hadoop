@@ -17300,12 +17300,29 @@ block|{
 comment|// Ensure that any concurrent operations have been fully synced
 comment|// before entering safe mode. This ensures that the FSImage
 comment|// is entirely stable on disk as soon as we're in safe mode.
+name|boolean
+name|isEditlogOpenForWrite
+init|=
+name|getEditLog
+argument_list|()
+operator|.
+name|isOpenForWrite
+argument_list|()
+decl_stmt|;
+comment|// Before Editlog is in OpenForWrite mode, editLogStream will be null. So,
+comment|// logSyncAll call can be called only when Edlitlog is in OpenForWrite mode
+if|if
+condition|(
+name|isEditlogOpenForWrite
+condition|)
+block|{
 name|getEditLog
 argument_list|()
 operator|.
 name|logSyncAll
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -17339,12 +17356,18 @@ operator|.
 name|setManual
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|isEditlogOpenForWrite
+condition|)
+block|{
 name|getEditLog
 argument_list|()
 operator|.
 name|logSyncAll
 argument_list|()
 expr_stmt|;
+block|}
 name|NameNode
 operator|.
 name|stateChangeLog
