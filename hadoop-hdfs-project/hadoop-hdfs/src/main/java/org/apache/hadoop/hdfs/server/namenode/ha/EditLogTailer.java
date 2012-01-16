@@ -647,15 +647,6 @@ name|EditLogInputException
 name|elie
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Error while reading edits from disk. Will try again."
-argument_list|,
-name|elie
-argument_list|)
-expr_stmt|;
 name|editsLoaded
 operator|=
 name|elie
@@ -663,24 +654,36 @@ operator|.
 name|getNumEditsLoaded
 argument_list|()
 expr_stmt|;
+throw|throw
+name|elie
+throw|;
 block|}
+finally|finally
+block|{
 if|if
 condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
+name|editsLoaded
+operator|>
+literal|0
 condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"editsLoaded: "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Loaded %d edits starting from txid %d "
+argument_list|,
 name|editsLoaded
+argument_list|,
+name|lastTxnId
+argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally
@@ -781,6 +784,22 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|EditLogInputException
+name|elie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error while reading edits from disk. Will try again."
+argument_list|,
+name|elie
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
@@ -798,9 +817,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error encountered while tailing edits. Shutting down "
+literal|"Unknown error encountered while tailing edits. "
 operator|+
-literal|"standby NN."
+literal|"Shutting down standby NN."
 argument_list|,
 name|t
 argument_list|)
