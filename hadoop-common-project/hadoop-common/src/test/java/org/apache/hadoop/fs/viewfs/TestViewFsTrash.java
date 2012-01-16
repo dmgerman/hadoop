@@ -344,11 +344,14 @@ comment|// set up viewfs's home dir root to point to home dir root on target
 comment|// But home dir is different on linux, mac etc.
 comment|// Figure it out by calling home dir on target
 name|String
-name|homeDir
+name|homeDirRoot
 init|=
 name|fsTarget
 operator|.
 name|getHomeDirectory
+argument_list|()
+operator|.
+name|getParent
 argument_list|()
 operator|.
 name|toUri
@@ -356,30 +359,6 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-decl_stmt|;
-name|int
-name|indexOf2ndSlash
-init|=
-name|homeDir
-operator|.
-name|indexOf
-argument_list|(
-literal|'/'
-argument_list|,
-literal|1
-argument_list|)
-decl_stmt|;
-name|String
-name|homeDirRoot
-init|=
-name|homeDir
-operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-name|indexOf2ndSlash
-argument_list|)
 decl_stmt|;
 name|ConfigUtil
 operator|.

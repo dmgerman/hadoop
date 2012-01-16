@@ -1477,62 +1477,42 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|pullAppsToCleanup ()
+DECL|method|getAppsToCleanup ()
 specifier|public
 name|List
 argument_list|<
 name|ApplicationId
 argument_list|>
-name|pullAppsToCleanup
+name|getAppsToCleanup
 parameter_list|()
 block|{
 name|this
 operator|.
-name|writeLock
+name|readLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|List
-argument_list|<
-name|ApplicationId
-argument_list|>
-name|lastfinishedApplications
-init|=
+return|return
 operator|new
 name|ArrayList
 argument_list|<
 name|ApplicationId
 argument_list|>
-argument_list|()
-decl_stmt|;
-name|lastfinishedApplications
-operator|.
-name|addAll
 argument_list|(
 name|this
 operator|.
 name|finishedApplications
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|finishedApplications
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-return|return
-name|lastfinishedApplications
 return|;
 block|}
 finally|finally
 block|{
 name|this
 operator|.
-name|writeLock
+name|readLock
 operator|.
 name|unlock
 argument_list|()
@@ -1540,7 +1520,7 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|Private
+name|Override
 DECL|method|getContainersToCleanUp ()
 specifier|public
 name|List
@@ -1566,6 +1546,8 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|(
+name|this
+operator|.
 name|containersToClean
 argument_list|)
 return|;
@@ -1575,70 +1557,6 @@ block|{
 name|this
 operator|.
 name|readLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-annotation|@
-name|Override
-DECL|method|pullContainersToCleanUp ()
-specifier|public
-name|List
-argument_list|<
-name|ContainerId
-argument_list|>
-name|pullContainersToCleanUp
-parameter_list|()
-block|{
-name|this
-operator|.
-name|writeLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|List
-argument_list|<
-name|ContainerId
-argument_list|>
-name|containersToCleanUp
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|ContainerId
-argument_list|>
-argument_list|()
-decl_stmt|;
-name|containersToCleanUp
-operator|.
-name|addAll
-argument_list|(
-name|this
-operator|.
-name|containersToClean
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|containersToClean
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-return|return
-name|containersToCleanUp
-return|;
-block|}
-finally|finally
-block|{
-name|this
-operator|.
-name|writeLock
 operator|.
 name|unlock
 argument_list|()
@@ -1656,7 +1574,7 @@ parameter_list|()
 block|{
 name|this
 operator|.
-name|writeLock
+name|readLock
 operator|.
 name|lock
 argument_list|()
@@ -1673,7 +1591,7 @@ finally|finally
 block|{
 name|this
 operator|.
-name|writeLock
+name|readLock
 operator|.
 name|unlock
 argument_list|()
@@ -2210,8 +2128,9 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
-comment|// Don't bother with containers already scheduled for cleanup,
-comment|// the scheduler doens't need to know any more about this container
+comment|// Don't bother with containers already scheduled for cleanup, or for
+comment|// applications already killed. The scheduler doens't need to know any
+comment|// more about this container
 if|if
 condition|(
 name|rmNode
@@ -2235,6 +2154,39 @@ operator|+
 literal|" already scheduled for "
 operator|+
 literal|"cleanup, no further processing"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+name|rmNode
+operator|.
+name|finishedApplications
+operator|.
+name|contains
+argument_list|(
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" belongs to an application that is already killed,"
+operator|+
+literal|" no further processing"
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -2344,6 +2296,22 @@ operator|.
 name|getKeepAliveAppIds
 argument_list|()
 argument_list|)
+expr_stmt|;
+comment|// HeartBeat processing from our end is done, as node pulls the following
+comment|// lists before sending status-updates. Clear data-structures
+name|rmNode
+operator|.
+name|containersToClean
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|rmNode
+operator|.
+name|finishedApplications
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 return|return
 name|RMNodeState

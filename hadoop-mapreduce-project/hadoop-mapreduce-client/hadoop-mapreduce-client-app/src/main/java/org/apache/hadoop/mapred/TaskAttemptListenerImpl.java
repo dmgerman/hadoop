@@ -62,7 +62,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -668,6 +688,28 @@ operator|.
 name|Task
 argument_list|>
 argument_list|()
+decl_stmt|;
+DECL|field|launchedJVMs
+specifier|private
+name|Set
+argument_list|<
+name|WrappedJvmID
+argument_list|>
+name|launchedJVMs
+init|=
+name|Collections
+operator|.
+name|newSetFromMap
+argument_list|(
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|WrappedJvmID
+argument_list|,
+name|Boolean
+argument_list|>
+argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|field|jobTokenSecretManager
 specifier|private
@@ -2222,6 +2264,67 @@ argument_list|)
 decl_stmt|;
 comment|// Try to look up the task. We remove it directly as we don't give
 comment|// multiple tasks to a JVM
+if|if
+condition|(
+operator|!
+name|jvmIDToActiveAttemptMap
+operator|.
+name|containsKey
+argument_list|(
+name|wJvmID
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"JVM with ID: "
+operator|+
+name|jvmId
+operator|+
+literal|" is invalid and will be killed."
+argument_list|)
+expr_stmt|;
+name|jvmTask
+operator|=
+name|TASK_FOR_INVALID_JVM
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+operator|!
+name|launchedJVMs
+operator|.
+name|contains
+argument_list|(
+name|wJvmID
+argument_list|)
+condition|)
+block|{
+name|jvmTask
+operator|=
+literal|null
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"JVM with ID: "
+operator|+
+name|jvmId
+operator|+
+literal|" asking for task before AM launch registered. Given null task"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// remove the task as it is no more needed and free up the memory.
+comment|// Also we have already told the JVM to process a task, so it is no
+comment|// longer pending, and further request should ask it to exit.
 name|org
 operator|.
 name|apache
@@ -2240,13 +2343,13 @@ argument_list|(
 name|wJvmID
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|task
-operator|!=
-literal|null
-condition|)
-block|{
+name|launchedJVMs
+operator|.
+name|remove
+argument_list|(
+name|wJvmID
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2273,27 +2376,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// remove the task as it is no more needed and free up the memory
-comment|// Also we have already told the JVM to process a task, so it is no
-comment|// longer pending, and further request should ask it to exit.
 block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"JVM with ID: "
-operator|+
-name|jvmId
-operator|+
-literal|" is invalid and will be killed."
-argument_list|)
-expr_stmt|;
-name|jvmTask
-operator|=
-name|TASK_FOR_INVALID_JVM
-expr_stmt|;
 block|}
 return|return
 name|jvmTask
@@ -2336,7 +2419,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|registerLaunchedTask ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID)
+DECL|method|registerLaunchedTask ( org.apache.hadoop.mapreduce.v2.api.records.TaskAttemptId attemptID, WrappedJvmID jvmId)
 specifier|public
 name|void
 name|registerLaunchedTask
@@ -2357,12 +2440,20 @@ name|records
 operator|.
 name|TaskAttemptId
 name|attemptID
+parameter_list|,
+name|WrappedJvmID
+name|jvmId
 parameter_list|)
 block|{
-comment|// The task is launched. Register this for expiry-tracking.
-comment|// Timing can cause this to happen after the real JVM launches and gets a
-comment|// task which is still fine as we will only be tracking for expiry a little
-comment|// late than usual.
+comment|// The AM considers the task to be launched (Has asked the NM to launch it)
+comment|// The JVM will only be given a task after this registartion.
+name|launchedJVMs
+operator|.
+name|add
+argument_list|(
+name|jvmId
+argument_list|)
+expr_stmt|;
 name|taskHeartbeatHandler
 operator|.
 name|register
@@ -2402,7 +2493,17 @@ block|{
 comment|// Unregistration also comes from the same TaskAttempt which does the
 comment|// registration. Events are ordered at TaskAttempt, so unregistration will
 comment|// always come after registration.
-comment|// remove the mapping if not already removed
+comment|// Remove from launchedJVMs before jvmIDToActiveAttemptMap to avoid
+comment|// synchronization issue with getTask(). getTask should be checking
+comment|// jvmIDToActiveAttemptMap before it checks launchedJVMs.
+comment|// remove the mappings if not already removed
+name|launchedJVMs
+operator|.
+name|remove
+argument_list|(
+name|jvmID
+argument_list|)
+expr_stmt|;
 name|jvmIDToActiveAttemptMap
 operator|.
 name|remove

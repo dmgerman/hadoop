@@ -835,7 +835,7 @@ name|List
 argument_list|<
 name|ApplicationId
 argument_list|>
-name|pullAppsToCleanup
+name|getAppsToCleanup
 parameter_list|()
 block|{
 comment|// TODO Auto-generated method stub
@@ -850,7 +850,7 @@ name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|pullContainersToCleanUp
+name|getContainersToCleanUp
 parameter_list|()
 block|{
 comment|// TODO Auto-generated method stub

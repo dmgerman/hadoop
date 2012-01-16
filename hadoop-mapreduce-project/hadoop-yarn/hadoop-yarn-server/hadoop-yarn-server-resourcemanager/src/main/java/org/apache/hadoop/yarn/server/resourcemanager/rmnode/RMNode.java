@@ -263,22 +263,22 @@ name|RMNodeState
 name|getState
 parameter_list|()
 function_decl|;
-DECL|method|pullContainersToCleanUp ()
+DECL|method|getContainersToCleanUp ()
 specifier|public
 name|List
 argument_list|<
 name|ContainerId
 argument_list|>
-name|pullContainersToCleanUp
+name|getContainersToCleanUp
 parameter_list|()
 function_decl|;
-DECL|method|pullAppsToCleanup ()
+DECL|method|getAppsToCleanup ()
 specifier|public
 name|List
 argument_list|<
 name|ApplicationId
 argument_list|>
-name|pullAppsToCleanup
+name|getAppsToCleanup
 parameter_list|()
 function_decl|;
 DECL|method|getLastHeartBeatResponse ()

@@ -7005,7 +7005,11 @@ name|IOException
 argument_list|(
 literal|"Access time for hdfs is not configured. "
 operator|+
-literal|" Please set dfs.support.accessTime configuration parameter."
+literal|" Please set "
+operator|+
+name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
+operator|+
+literal|" configuration parameter."
 argument_list|)
 throw|;
 block|}
