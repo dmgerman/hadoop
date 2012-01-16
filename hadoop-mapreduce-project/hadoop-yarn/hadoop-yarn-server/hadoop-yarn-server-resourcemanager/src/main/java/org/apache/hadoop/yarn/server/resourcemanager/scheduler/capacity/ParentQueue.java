@@ -464,6 +464,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|NodeType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|QueueMetrics
 import|;
 end_import
@@ -2596,7 +2616,7 @@ name|Override
 DECL|method|assignContainers ( Resource clusterResource, SchedulerNode node)
 specifier|public
 specifier|synchronized
-name|Resource
+name|CSAssignment
 name|assignContainers
 parameter_list|(
 name|Resource
@@ -2606,15 +2626,28 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
-name|Resource
-name|assigned
+name|CSAssignment
+name|assignment
 init|=
+operator|new
+name|CSAssignment
+argument_list|(
 name|Resources
 operator|.
 name|createResource
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
+decl_stmt|;
+name|boolean
+name|assignedOffSwitch
+init|=
+literal|false
 decl_stmt|;
 while|while
 condition|(
@@ -2656,7 +2689,7 @@ block|{
 break|break;
 block|}
 comment|// Schedule
-name|Resource
+name|CSAssignment
 name|assignedToChild
 init|=
 name|assignContainersToChildQueues
@@ -2666,6 +2699,19 @@ argument_list|,
 name|node
 argument_list|)
 decl_stmt|;
+name|assignedOffSwitch
+operator|=
+operator|(
+name|assignedToChild
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|NodeType
+operator|.
+name|OFF_SWITCH
+operator|)
+expr_stmt|;
 comment|// Done if no child-queue assigned anything
 if|if
 condition|(
@@ -2674,6 +2720,9 @@ operator|.
 name|greaterThan
 argument_list|(
 name|assignedToChild
+operator|.
+name|getResource
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
@@ -2688,6 +2737,9 @@ argument_list|(
 name|clusterResource
 argument_list|,
 name|assignedToChild
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Track resource utilization in this pass of the scheduler
@@ -2695,9 +2747,15 @@ name|Resources
 operator|.
 name|addTo
 argument_list|(
-name|assigned
+name|assignment
+operator|.
+name|getResource
+argument_list|()
 argument_list|,
 name|assignedToChild
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2749,7 +2807,10 @@ argument_list|()
 operator|+
 literal|" assignedSoFarInThisIteration="
 operator|+
-name|assigned
+name|assignment
+operator|.
+name|getResource
+argument_list|()
 operator|+
 literal|" utilization="
 operator|+
@@ -2759,17 +2820,47 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Do not assign more than one container if this isn't the root queue
+comment|// or if we've already assigned an off-switch container
 if|if
 condition|(
-operator|!
 name|rootQueue
 condition|)
+block|{
+if|if
+condition|(
+name|assignedOffSwitch
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Not assigning more than one off-switch container,"
+operator|+
+literal|" assignments so far: "
+operator|+
+name|assignment
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+block|}
+block|}
+else|else
 block|{
 break|break;
 block|}
 block|}
 return|return
-name|assigned
+name|assignment
 return|;
 block|}
 DECL|method|assignToQueue (Resource clusterResource)
@@ -2877,7 +2968,7 @@ return|;
 block|}
 DECL|method|assignContainersToChildQueues (Resource cluster, SchedulerNode node)
 specifier|synchronized
-name|Resource
+name|CSAssignment
 name|assignContainersToChildQueues
 parameter_list|(
 name|Resource
@@ -2887,14 +2978,22 @@ name|SchedulerNode
 name|node
 parameter_list|)
 block|{
-name|Resource
-name|assigned
+name|CSAssignment
+name|assignment
 init|=
+operator|new
+name|CSAssignment
+argument_list|(
 name|Resources
 operator|.
 name|createResource
 argument_list|(
 literal|0
+argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
 argument_list|)
 decl_stmt|;
 name|printChildQueues
@@ -2954,7 +3053,7 @@ name|childQueue
 argument_list|)
 expr_stmt|;
 block|}
-name|assigned
+name|assignment
 operator|=
 name|childQueue
 operator|.
@@ -2977,7 +3076,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Assignedto queue: "
+literal|"Assigned to queue: "
 operator|+
 name|childQueue
 operator|.
@@ -2990,9 +3089,19 @@ name|childQueue
 operator|+
 literal|" --> "
 operator|+
-name|assigned
+name|assignment
+operator|.
+name|getResource
+argument_list|()
 operator|.
 name|getMemory
+argument_list|()
+operator|+
+literal|", "
+operator|+
+name|assignment
+operator|.
+name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3004,7 +3113,10 @@ name|Resources
 operator|.
 name|greaterThan
 argument_list|(
-name|assigned
+name|assignment
+operator|.
+name|getResource
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
@@ -3042,14 +3154,23 @@ argument_list|(
 name|childQueue
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|printChildQueues
 argument_list|()
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}
 return|return
-name|assigned
+name|assignment
 return|;
 block|}
 DECL|method|getChildQueuesToPrint ()
