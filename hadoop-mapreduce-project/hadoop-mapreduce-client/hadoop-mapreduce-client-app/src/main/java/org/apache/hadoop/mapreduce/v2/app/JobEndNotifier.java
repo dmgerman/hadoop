@@ -34,9 +34,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|net
 operator|.
-name|InputStream
+name|HttpURLConnection
 import|;
 end_import
 
@@ -66,27 +66,17 @@ name|java
 operator|.
 name|net
 operator|.
-name|URL
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URLConnection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|Proxy
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
 import|;
 end_import
 
@@ -165,7 +155,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This class handles job end notification. Submitters of jobs can choose to  * be notified of the end of a job by supplying a URL to which a connection  * will be established.  *<ul><li> The URL connection is fire and forget by default.</li><li>  * User can specify number of retry attempts and a time interval at which to  * attempt retries</li><li>  * Cluster administrators can set final parameters to set maximum number of  * tries (0 would disable job end notification) and max time interval</li><li>  * The URL may contain sentinels which will be replaced by jobId and jobStatus   * (eg. SUCCEEDED/KILLED/FAILED)</li></ul>  *</p>  */
+comment|/**  *<p>This class handles job end notification. Submitters of jobs can choose to  * be notified of the end of a job by supplying a URL to which a connection  * will be established.  *<ul><li> The URL connection is fire and forget by default.</li><li>  * User can specify number of retry attempts and a time interval at which to  * attempt retries</li><li>  * Cluster administrators can set final parameters to set maximum number of  * tries (0 would disable job end notification) and max time interval and a  * proxy if needed</li><li>  * The URL may contain sentinels which will be replaced by jobId and jobStatus   * (eg. SUCCEEDED/KILLED/FAILED)</li></ul>  *</p>  */
 end_comment
 
 begin_class
@@ -237,7 +227,7 @@ operator|.
 name|NO_PROXY
 decl_stmt|;
 comment|//Proxy to use for notification
-comment|/**    * Parse the URL that needs to be notified of the end of the job, along    * with the number of retries in case of failure and the amount of time to    * wait between retries    * @param conf the configuration     */
+comment|/**    * Parse the URL that needs to be notified of the end of the job, along    * with the number of retries in case of failure, the amount of time to    * wait between retries and proxy settings    * @param conf the configuration     */
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -565,15 +555,16 @@ operator|+
 name|urlToNotify
 argument_list|)
 expr_stmt|;
-name|URLConnection
+name|HttpURLConnection
 name|conn
 init|=
+operator|(
+name|HttpURLConnection
+operator|)
 name|urlToNotify
 operator|.
 name|openConnection
-argument_list|(
-name|proxyToUse
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|conn
 operator|.
@@ -600,24 +591,46 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|InputStream
-name|is
-init|=
+if|if
+condition|(
 name|conn
 operator|.
-name|getInputStream
+name|getResponseCode
 argument_list|()
-decl_stmt|;
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+condition|)
+block|{
+name|Log
+operator|.
+name|warn
+argument_list|(
+literal|"Job end notification to "
+operator|+
+name|urlToNotify
+operator|+
+literal|" failed with code: "
+operator|+
 name|conn
 operator|.
-name|getContent
+name|getResponseCode
 argument_list|()
-expr_stmt|;
-name|is
+operator|+
+literal|" and message \""
+operator|+
+name|conn
 operator|.
-name|close
+name|getResponseMessage
 argument_list|()
+operator|+
+literal|"\""
+argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
 name|success
 operator|=
 literal|true
@@ -633,6 +646,7 @@ operator|+
 literal|" succeeded"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -658,7 +672,7 @@ return|return
 name|success
 return|;
 block|}
-comment|/**    * Notify a server of the completion of a submitted job. The server must have    * configured MRConfig.JOB_END_NOTIFICATION_URLS    * @param jobReport JobReport used to read JobId and JobStatus    * @throws InterruptedException    */
+comment|/**    * Notify a server of the completion of a submitted job. The user must have    * configured MRJobConfig.MR_JOB_END_NOTIFICATION_URL    * @param jobReport JobReport used to read JobId and JobStatus    * @throws InterruptedException    */
 DECL|method|notify (JobReport jobReport)
 specifier|public
 name|void
