@@ -2706,6 +2706,15 @@ name|size
 argument_list|)
 throw|;
 block|}
+name|namesystem
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
 return|return
 name|namesystem
 operator|.

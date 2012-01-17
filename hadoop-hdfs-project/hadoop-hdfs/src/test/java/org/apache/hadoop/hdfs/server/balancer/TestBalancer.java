@@ -328,9 +328,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|DatanodeReportType
+name|LocatedBlock
 import|;
 end_import
 
@@ -346,7 +344,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
 import|;
 end_import
 
@@ -365,24 +365,6 @@ operator|.
 name|datanode
 operator|.
 name|SimulatedFSDataset
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
 import|;
 end_import
 
@@ -409,12 +391,11 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-literal|"org.apache.hadoop.hdfs.TestReplication"
+literal|"org.apache.hadoop.hdfs.TestBalancer"
 argument_list|)
 decl_stmt|;
 DECL|field|CAPACITY
 specifier|final
-specifier|private
 specifier|static
 name|long
 name|CAPACITY
@@ -423,7 +404,6 @@ literal|500L
 decl_stmt|;
 DECL|field|RACK0
 specifier|final
-specifier|private
 specifier|static
 name|String
 name|RACK0
@@ -432,7 +412,6 @@ literal|"/rack0"
 decl_stmt|;
 DECL|field|RACK1
 specifier|final
-specifier|private
 specifier|static
 name|String
 name|RACK1
@@ -441,7 +420,6 @@ literal|"/rack1"
 decl_stmt|;
 DECL|field|RACK2
 specifier|final
-specifier|private
 specifier|static
 name|String
 name|RACK2
@@ -450,8 +428,8 @@ literal|"/rack2"
 decl_stmt|;
 DECL|field|fileName
 specifier|final
-specifier|static
 specifier|private
+specifier|static
 name|String
 name|fileName
 init|=
@@ -460,7 +438,6 @@ decl_stmt|;
 DECL|field|filePath
 specifier|final
 specifier|static
-specifier|private
 name|Path
 name|filePath
 init|=
@@ -601,16 +578,25 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* create a file with a length of<code>fileLen</code> */
-DECL|method|createFile (long fileLen, short replicationFactor)
-specifier|private
+DECL|method|createFile (MiniDFSCluster cluster, Path filePath, long fileLen, short replicationFactor, int nnIndex)
+specifier|static
 name|void
 name|createFile
 parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|Path
+name|filePath
+parameter_list|,
 name|long
 name|fileLen
 parameter_list|,
 name|short
 name|replicationFactor
+parameter_list|,
+name|int
+name|nnIndex
 parameter_list|)
 throws|throws
 name|IOException
@@ -621,7 +607,9 @@ init|=
 name|cluster
 operator|.
 name|getFileSystem
-argument_list|()
+argument_list|(
+name|nnIndex
+argument_list|)
 decl_stmt|;
 name|DFSTestUtil
 operator|.
@@ -727,9 +715,15 @@ name|replicationFactor
 decl_stmt|;
 name|createFile
 argument_list|(
+name|cluster
+argument_list|,
+name|filePath
+argument_list|,
 name|fileLen
 argument_list|,
 name|replicationFactor
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|List
@@ -1368,8 +1362,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Wait until heartbeat gives expected results, within CAPACITY_ALLOWED_VARIANCE,     * summed over all nodes.  Times out after TIMEOUT msec.    * @param expectedUsedSpace    * @param expectedTotalSpace    * @throws IOException - if getStats() fails    * @throws TimeoutException    */
-DECL|method|waitForHeartBeat (long expectedUsedSpace, long expectedTotalSpace)
-specifier|private
+DECL|method|waitForHeartBeat (long expectedUsedSpace, long expectedTotalSpace, ClientProtocol client, MiniDFSCluster cluster)
+specifier|static
 name|void
 name|waitForHeartBeat
 parameter_list|(
@@ -1378,6 +1372,12 @@ name|expectedUsedSpace
 parameter_list|,
 name|long
 name|expectedTotalSpace
+parameter_list|,
+name|ClientProtocol
+name|client
+parameter_list|,
+name|MiniDFSCluster
+name|cluster
 parameter_list|)
 throws|throws
 name|IOException
@@ -1540,8 +1540,8 @@ block|{       }
 block|}
 block|}
 comment|/**    * Wait until balanced: each datanode gives utilization within     * BALANCE_ALLOWED_VARIANCE of average    * @throws IOException    * @throws TimeoutException    */
-DECL|method|waitForBalancer (long totalUsedSpace, long totalCapacity)
-specifier|private
+DECL|method|waitForBalancer (long totalUsedSpace, long totalCapacity, ClientProtocol client, MiniDFSCluster cluster)
+specifier|static
 name|void
 name|waitForBalancer
 parameter_list|(
@@ -1550,6 +1550,12 @@ name|totalUsedSpace
 parameter_list|,
 name|long
 name|totalCapacity
+parameter_list|,
+name|ClientProtocol
+name|client
+parameter_list|,
+name|MiniDFSCluster
+name|cluster
 parameter_list|)
 throws|throws
 name|IOException
@@ -1846,6 +1852,10 @@ literal|10
 decl_stmt|;
 name|createFile
 argument_list|(
+name|cluster
+argument_list|,
+name|filePath
+argument_list|,
 name|totalUsedSpace
 operator|/
 name|numOfDatanodes
@@ -1854,6 +1864,8 @@ operator|(
 name|short
 operator|)
 name|numOfDatanodes
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// start up an empty node with the same capacity and on the same rack
@@ -1930,6 +1942,10 @@ argument_list|(
 name|totalUsedSpace
 argument_list|,
 name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
 argument_list|)
 expr_stmt|;
 comment|// start rebalancing
@@ -1990,6 +2006,10 @@ argument_list|(
 name|totalUsedSpace
 argument_list|,
 name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2004,6 +2024,10 @@ argument_list|(
 name|totalUsedSpace
 argument_list|,
 name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
 argument_list|)
 expr_stmt|;
 block|}
@@ -2358,6 +2382,10 @@ literal|10
 decl_stmt|;
 name|createFile
 argument_list|(
+name|cluster
+argument_list|,
+name|filePath
+argument_list|,
 name|totalUsedSpace
 operator|/
 name|numOfDatanodes
@@ -2366,6 +2394,8 @@ operator|(
 name|short
 operator|)
 name|numOfDatanodes
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// start up an empty node with the same capacity and on the same rack
