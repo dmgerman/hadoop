@@ -16950,6 +16950,11 @@ parameter_list|()
 block|{
 if|if
 condition|(
+name|haContext
+operator|!=
+literal|null
+operator|&&
+comment|// null during startup!
 operator|!
 name|haContext
 operator|.
