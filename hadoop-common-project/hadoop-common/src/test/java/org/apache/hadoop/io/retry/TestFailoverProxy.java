@@ -127,6 +127,11 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|TestFailoverProxy
 specifier|public
 class|class
@@ -137,30 +142,36 @@ specifier|public
 specifier|static
 class|class
 name|FlipFlopProxyProvider
+parameter_list|<
+name|T
+parameter_list|>
 implements|implements
 name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
 block|{
 DECL|field|iface
 specifier|private
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|iface
 decl_stmt|;
 DECL|field|currentlyActive
 specifier|private
-name|Object
+name|T
 name|currentlyActive
 decl_stmt|;
 DECL|field|impl1
 specifier|private
-name|Object
+name|T
 name|impl1
 decl_stmt|;
 DECL|field|impl2
 specifier|private
-name|Object
+name|T
 name|impl2
 decl_stmt|;
 DECL|field|failoversOccurred
@@ -170,20 +181,20 @@ name|failoversOccurred
 init|=
 literal|0
 decl_stmt|;
-DECL|method|FlipFlopProxyProvider (Class<?> iface, Object activeImpl, Object standbyImpl)
+DECL|method|FlipFlopProxyProvider (Class<T> iface, T activeImpl, T standbyImpl)
 specifier|public
 name|FlipFlopProxyProvider
 parameter_list|(
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|iface
 parameter_list|,
-name|Object
+name|T
 name|activeImpl
 parameter_list|,
-name|Object
+name|T
 name|standbyImpl
 parameter_list|)
 block|{
@@ -214,7 +225,7 @@ annotation|@
 name|Override
 DECL|method|getProxy ()
 specifier|public
-name|Object
+name|T
 name|getProxy
 parameter_list|()
 block|{
@@ -254,7 +265,7 @@ DECL|method|getInterface ()
 specifier|public
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|getInterface
 parameter_list|()

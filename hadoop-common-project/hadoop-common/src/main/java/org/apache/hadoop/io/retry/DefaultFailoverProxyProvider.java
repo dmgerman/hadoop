@@ -69,33 +69,39 @@ DECL|class|DefaultFailoverProxyProvider
 specifier|public
 class|class
 name|DefaultFailoverProxyProvider
+parameter_list|<
+name|T
+parameter_list|>
 implements|implements
 name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
 block|{
 DECL|field|proxy
 specifier|private
-name|Object
+name|T
 name|proxy
 decl_stmt|;
 DECL|field|iface
 specifier|private
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|iface
 decl_stmt|;
-DECL|method|DefaultFailoverProxyProvider (Class<?> iface, Object proxy)
+DECL|method|DefaultFailoverProxyProvider (Class<T> iface, T proxy)
 specifier|public
 name|DefaultFailoverProxyProvider
 parameter_list|(
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|iface
 parameter_list|,
-name|Object
+name|T
 name|proxy
 parameter_list|)
 block|{
@@ -118,7 +124,7 @@ DECL|method|getInterface ()
 specifier|public
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|getInterface
 parameter_list|()
@@ -131,7 +137,7 @@ annotation|@
 name|Override
 DECL|method|getProxy ()
 specifier|public
-name|Object
+name|T
 name|getProxy
 parameter_list|()
 block|{
@@ -141,12 +147,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|performFailover (Object currentProxy)
+DECL|method|performFailover (T currentProxy)
 specifier|public
 name|void
 name|performFailover
 parameter_list|(
-name|Object
+name|T
 name|currentProxy
 parameter_list|)
 block|{
