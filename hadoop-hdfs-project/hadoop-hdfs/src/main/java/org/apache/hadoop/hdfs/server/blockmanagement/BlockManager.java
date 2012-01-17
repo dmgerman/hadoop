@@ -12048,6 +12048,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+operator|!
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|NumberReplicas
 name|repl
 init|=
