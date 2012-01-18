@@ -38,16 +38,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -201,20 +191,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
-name|NetUtils
 import|;
 end_import
 
@@ -3582,11 +3558,33 @@ name|applicationAttemptId
 argument_list|)
 return|;
 block|}
+DECL|field|NULL_ASSIGNMENT
+specifier|private
+specifier|static
+specifier|final
+name|CSAssignment
+name|NULL_ASSIGNMENT
+init|=
+operator|new
+name|CSAssignment
+argument_list|(
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
+decl_stmt|;
 annotation|@
 name|Override
 specifier|public
 specifier|synchronized
-name|Resource
+name|CSAssignment
 DECL|method|assignContainers (Resource clusterResource, SchedulerNode node)
 name|assignContainers
 parameter_list|(
@@ -3653,6 +3651,9 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
+operator|new
+name|CSAssignment
+argument_list|(
 name|assignReservedContainer
 argument_list|(
 name|application
@@ -3663,7 +3664,14 @@ name|reservedContainer
 argument_list|,
 name|clusterResource
 argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
 return|;
+comment|// Don't care about locality constraints
+comment|// for reserved containers
 block|}
 comment|// Try to assign containers to applications in order
 for|for
@@ -3771,10 +3779,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
+name|NULL_ASSIGNMENT
 return|;
 block|}
 comment|// User limits
@@ -3815,8 +3820,8 @@ name|priority
 argument_list|)
 expr_stmt|;
 comment|// Try to schedule
-name|Resource
-name|assigned
+name|CSAssignment
+name|assignment
 init|=
 name|assignContainersOnNode
 argument_list|(
@@ -3830,6 +3835,14 @@ name|priority
 argument_list|,
 literal|null
 argument_list|)
+decl_stmt|;
+name|Resource
+name|assigned
+init|=
+name|assignment
+operator|.
+name|getResource
+argument_list|()
 decl_stmt|;
 comment|// Did we schedule or reserve a container?
 if|if
@@ -3847,23 +3860,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|Resource
-name|assignedResource
-init|=
-name|application
-operator|.
-name|getResourceRequest
-argument_list|(
-name|priority
-argument_list|,
-name|RMNode
-operator|.
-name|ANY
-argument_list|)
-operator|.
-name|getCapability
-argument_list|()
-decl_stmt|;
 comment|// Book-keeping
 name|allocateResource
 argument_list|(
@@ -3871,7 +3867,7 @@ name|clusterResource
 argument_list|,
 name|application
 argument_list|,
-name|assignedResource
+name|assigned
 argument_list|)
 expr_stmt|;
 comment|// Reset scheduling opportunities
@@ -3884,7 +3880,7 @@ argument_list|)
 expr_stmt|;
 comment|// Done
 return|return
-name|assignedResource
+name|assignment
 return|;
 block|}
 else|else
@@ -3922,10 +3918,7 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
+name|NULL_ASSIGNMENT
 return|;
 block|}
 DECL|method|assignReservedContainer (SchedulerApp application, SchedulerNode node, RMContainer rmContainer, Resource clusterResource)
@@ -4012,6 +4005,7 @@ operator|.
 name|getResource
 argument_list|()
 return|;
+comment|// Ugh, return resource to force re-sort
 block|}
 comment|// Try to assign if we have sufficient resources
 name|assignContainersOnNode
@@ -4761,7 +4755,7 @@ return|;
 block|}
 DECL|method|assignContainersOnNode (Resource clusterResource, SchedulerNode node, SchedulerApp application, Priority priority, RMContainer reservedContainer)
 specifier|private
-name|Resource
+name|CSAssignment
 name|assignContainersOnNode
 parameter_list|(
 name|Resource
@@ -4820,7 +4814,15 @@ argument_list|)
 condition|)
 block|{
 return|return
+operator|new
+name|CSAssignment
+argument_list|(
 name|assigned
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
 return|;
 block|}
 comment|// Rack-local
@@ -4855,11 +4857,22 @@ argument_list|)
 condition|)
 block|{
 return|return
+operator|new
+name|CSAssignment
+argument_list|(
 name|assigned
+argument_list|,
+name|NodeType
+operator|.
+name|RACK_LOCAL
+argument_list|)
 return|;
 block|}
 comment|// Off-switch
 return|return
+operator|new
+name|CSAssignment
+argument_list|(
 name|assignOffSwitchContainers
 argument_list|(
 name|clusterResource
@@ -4871,6 +4884,11 @@ argument_list|,
 name|priority
 argument_list|,
 name|reservedContainer
+argument_list|)
+argument_list|,
+name|NodeType
+operator|.
+name|OFF_SWITCH
 argument_list|)
 return|;
 block|}
@@ -6228,7 +6246,7 @@ literal|" user="
 operator|+
 name|userName
 operator|+
-literal|" resources="
+literal|" user-resources="
 operator|+
 name|user
 operator|.
@@ -6325,7 +6343,7 @@ literal|" user="
 operator|+
 name|userName
 operator|+
-literal|" resources="
+literal|" user-resources="
 operator|+
 name|user
 operator|.

@@ -6251,7 +6251,14 @@ name|app_0_requests_0
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
+name|CSAssignment
+name|assignment
+init|=
+literal|null
+decl_stmt|;
 comment|// Start with off switch, shouldn't allocate due to delay scheduling
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6329,7 +6336,22 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// None->NODE_LOCAL
 comment|// Another off switch, shouldn't allocate due to delay scheduling
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6407,7 +6429,22 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// None->NODE_LOCAL
 comment|// Another off switch, shouldn't allocate due to delay scheduling
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6485,8 +6522,23 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// None->NODE_LOCAL
 comment|// Another off switch, now we should allocate
 comment|// since missedOpportunities=3 and reqdContainers=3
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6562,7 +6614,21 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|OFF_SWITCH
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// NODE_LOCAL - node_0
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6638,7 +6704,21 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// NODE_LOCAL - node_1
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6712,6 +6792,18 @@ name|getTotalRequiredResources
 argument_list|(
 name|priority
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add 1 more request to check for RACK_LOCAL
@@ -6832,6 +6924,8 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
+name|assignment
+operator|=
 name|a
 operator|.
 name|assignContainers
@@ -6905,6 +6999,18 @@ name|getTotalRequiredResources
 argument_list|(
 name|priority
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|RACK_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

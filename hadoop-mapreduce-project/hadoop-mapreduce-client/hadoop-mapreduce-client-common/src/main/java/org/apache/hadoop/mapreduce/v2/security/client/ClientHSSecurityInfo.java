@@ -154,7 +154,7 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|MRClientProtocol
+name|HSClientProtocol
 import|;
 end_import
 
@@ -190,9 +190,9 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|MRClientProtocol
+name|HSClientProtocol
 operator|.
-name|MRClientProtocolService
+name|HSClientProtocolService
 operator|.
 name|BlockingInterface
 operator|.
@@ -276,9 +276,9 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|MRClientProtocol
+name|HSClientProtocol
 operator|.
-name|MRClientProtocolService
+name|HSClientProtocolService
 operator|.
 name|BlockingInterface
 operator|.

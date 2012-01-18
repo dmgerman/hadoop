@@ -128,6 +128,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ThreadFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -577,6 +589,22 @@ operator|.
 name|util
 operator|.
 name|ReflectionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
 import|;
 end_import
 
@@ -1743,6 +1771,21 @@ name|numMapTasks
 argument_list|)
 expr_stmt|;
 comment|// Create a new executor service to drain the work queue.
+name|ThreadFactory
+name|tf
+init|=
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"LocalJobRunner Map Task Executor #%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 name|ExecutorService
 name|executor
 init|=
@@ -1751,6 +1794,8 @@ operator|.
 name|newFixedThreadPool
 argument_list|(
 name|maxMapThreads
+argument_list|,
+name|tf
 argument_list|)
 decl_stmt|;
 return|return
