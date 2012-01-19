@@ -1161,6 +1161,31 @@ parameter_list|()
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewer daemon for "
+operator|+
+name|clientsString
+argument_list|()
+operator|+
+literal|" with renew id "
+operator|+
+name|id
+operator|+
+literal|" started"
+argument_list|)
+expr_stmt|;
+block|}
 name|LeaseRenewer
 operator|.
 name|this
@@ -1224,6 +1249,31 @@ argument_list|(
 name|LeaseRenewer
 operator|.
 name|this
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewer daemon for "
+operator|+
+name|clientsString
+argument_list|()
+operator|+
+literal|" with renew id "
+operator|+
+name|id
+operator|+
+literal|" exited"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1682,6 +1732,24 @@ operator|.
 name|getClientName
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewed for client "
+operator|+
+name|previousName
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1744,6 +1812,31 @@ block|{
 name|renew
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewer daemon for "
+operator|+
+name|clientsString
+argument_list|()
+operator|+
+literal|" with renew id "
+operator|+
+name|id
+operator|+
+literal|" executed"
+argument_list|)
+expr_stmt|;
+block|}
 name|lastRenewed
 operator|=
 name|System
@@ -1849,6 +1942,58 @@ name|isRenewerExpired
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|id
+operator|!=
+name|currentId
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewer daemon for "
+operator|+
+name|clientsString
+argument_list|()
+operator|+
+literal|" with renew id "
+operator|+
+name|id
+operator|+
+literal|" is not current"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Lease renewer daemon for "
+operator|+
+name|clientsString
+argument_list|()
+operator|+
+literal|" with renew id "
+operator|+
+name|id
+operator|+
+literal|" expired"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|//no longer the current daemon or expired
 return|return;
 block|}
