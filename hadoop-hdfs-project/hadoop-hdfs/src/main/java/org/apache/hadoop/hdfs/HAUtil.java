@@ -546,7 +546,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createFailoverProxyProvider ( Configuration conf, Class<FailoverProxyProvider<?>> failoverProxyProviderClass, Class xface)
+DECL|method|createFailoverProxyProvider ( Configuration conf, Class<FailoverProxyProvider<?>> failoverProxyProviderClass, Class xface, URI nameNodeUri)
 specifier|public
 specifier|static
 parameter_list|<
@@ -572,6 +572,9 @@ name|failoverProxyProviderClass
 parameter_list|,
 name|Class
 name|xface
+parameter_list|,
+name|URI
+name|nameNodeUri
 parameter_list|)
 throws|throws
 name|IOException
@@ -609,6 +612,14 @@ name|failoverProxyProviderClass
 operator|.
 name|getConstructor
 argument_list|(
+name|Configuration
+operator|.
+name|class
+argument_list|,
+name|URI
+operator|.
+name|class
+argument_list|,
 name|Class
 operator|.
 name|class
@@ -624,18 +635,13 @@ name|ctor
 operator|.
 name|newInstance
 argument_list|(
+name|conf
+argument_list|,
+name|nameNodeUri
+argument_list|,
 name|xface
 argument_list|)
 decl_stmt|;
-name|ReflectionUtils
-operator|.
-name|setConf
-argument_list|(
-name|provider
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
 return|return
 operator|(
 name|FailoverProxyProvider
@@ -953,6 +959,8 @@ argument_list|,
 name|failoverProxyProviderClass
 argument_list|,
 name|xface
+argument_list|,
+name|nameNodeUri
 argument_list|)
 decl_stmt|;
 name|Conf

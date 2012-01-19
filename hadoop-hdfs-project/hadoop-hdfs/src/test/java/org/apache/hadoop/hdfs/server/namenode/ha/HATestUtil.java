@@ -764,11 +764,6 @@ name|getNameNodeAddress
 argument_list|()
 decl_stmt|;
 name|String
-name|nsId
-init|=
-literal|"nameserviceId1"
-decl_stmt|;
-name|String
 name|nameNodeId1
 init|=
 literal|"nn1"
@@ -822,7 +817,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
-name|nsId
+name|logicalName
 argument_list|,
 name|nameNodeId1
 argument_list|)
@@ -840,7 +835,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 argument_list|,
-name|nsId
+name|logicalName
 argument_list|,
 name|nameNodeId2
 argument_list|)
@@ -856,7 +851,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_FEDERATION_NAMESERVICES
 argument_list|,
-name|nsId
+name|logicalName
 argument_list|)
 expr_stmt|;
 name|conf
@@ -869,7 +864,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFS_HA_NAMENODES_KEY
 argument_list|,
-name|nsId
+name|logicalName
 argument_list|)
 argument_list|,
 name|nameNodeId1
