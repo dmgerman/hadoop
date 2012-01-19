@@ -3241,6 +3241,11 @@ specifier|private
 name|HAContext
 name|haContext
 decl_stmt|;
+DECL|field|haEnabled
+specifier|private
+name|boolean
+name|haEnabled
+decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|final
@@ -4067,6 +4072,21 @@ name|startSecretManager
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|haEnabled
+condition|)
+block|{
+comment|// Renew all of the leases before becoming active.
+comment|// This is because, while we were in standby mode,
+comment|// the leases weren't getting renewed on this NN.
+comment|// Give them all a fresh start here.
+name|leaseManager
+operator|.
+name|renewAllLeases
+argument_list|()
+expr_stmt|;
+block|}
 name|leaseManager
 operator|.
 name|startMonitor
@@ -4863,8 +4883,8 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|persistBlocks
-operator||=
+name|haEnabled
+operator|=
 name|HAUtil
 operator|.
 name|isHAEnabled
@@ -4873,6 +4893,12 @@ name|conf
 argument_list|,
 name|nameserviceId
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|persistBlocks
+operator||=
+name|haEnabled
 operator|&&
 name|HAUtil
 operator|.

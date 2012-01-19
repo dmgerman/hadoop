@@ -913,6 +913,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Renew all of the currently open leases.    */
+DECL|method|renewAllLeases ()
+specifier|synchronized
+name|void
+name|renewAllLeases
+parameter_list|()
+block|{
+for|for
+control|(
+name|Lease
+name|l
+range|:
+name|leases
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|renewLease
+argument_list|(
+name|l
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/************************************************************    * A Lease governs all the locks held by a single client.    * For each client there's a corresponding lease, whose    * timestamp is updated when the client periodically    * checks in.  If the client dies and allows its lease to    * expire, all the corresponding locks can be released.    *************************************************************/
 DECL|class|Lease
 class|class
@@ -1323,6 +1348,17 @@ argument_list|(
 name|newpath
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLastUpdate ()
+name|long
+name|getLastUpdate
+parameter_list|()
+block|{
+return|return
+name|lastUpdate
+return|;
 block|}
 block|}
 DECL|method|changeLease (String src, String dst, String overwrite, String replaceBy)
