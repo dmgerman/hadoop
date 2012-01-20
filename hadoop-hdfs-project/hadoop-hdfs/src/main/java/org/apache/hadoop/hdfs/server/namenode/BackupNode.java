@@ -392,6 +392,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RPC
@@ -525,7 +539,7 @@ name|DFS_NAMENODE_BACKUP_SERVICE_RPC_ADDRESS_KEY
 decl_stmt|;
 comment|/** Name-node proxy */
 DECL|field|namenode
-name|NamenodeProtocol
+name|NamenodeProtocolTranslatorPB
 name|namenode
 decl_stmt|;
 comment|/** Name-node RPC address */
@@ -1041,10 +1055,12 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|RPC
+name|IOUtils
 operator|.
-name|stopProxy
+name|cleanup
 argument_list|(
+name|LOG
+argument_list|,
 name|namenode
 argument_list|)
 expr_stmt|;

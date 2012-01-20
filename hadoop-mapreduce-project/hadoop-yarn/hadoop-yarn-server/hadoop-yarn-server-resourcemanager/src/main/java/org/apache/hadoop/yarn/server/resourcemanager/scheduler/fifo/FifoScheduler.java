@@ -3472,7 +3472,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Node heartbeat "
 operator|+
@@ -3496,7 +3496,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Node after allocation "
 operator|+

@@ -1731,25 +1731,11 @@ operator|.
 name|getMethodName
 argument_list|()
 decl_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Call: protocol="
-operator|+
-name|protocol
-operator|+
-literal|", method="
-operator|+
-name|methodName
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|verbose
 condition|)
+block|{
 name|log
 argument_list|(
 literal|"Call: protocol="
@@ -1761,6 +1747,7 @@ operator|+
 name|methodName
 argument_list|)
 expr_stmt|;
+block|}
 name|MethodDescriptor
 name|methodDescriptor
 init|=
