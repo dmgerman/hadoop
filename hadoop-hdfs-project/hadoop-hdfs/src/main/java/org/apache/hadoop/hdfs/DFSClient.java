@@ -2408,9 +2408,9 @@ return|return
 name|clientRunning
 return|;
 block|}
-comment|/** Renew leases */
+comment|/**    * Renew leases.    * @return true if lease was renewed. May return false if this    * client has been closed or has no files open.    **/
 DECL|method|renewLease ()
-name|void
+name|boolean
 name|renewLease
 parameter_list|()
 throws|throws
@@ -2432,7 +2432,13 @@ argument_list|(
 name|clientName
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Close connections the Namenode.    * The namenode variable is either a rpcProxy passed by a test or     * created using the protocolTranslator which is closeable.    * If closeable then call close, else close using RPC.stopProxy().    */
 DECL|method|closeConnectionToNamenode ()
