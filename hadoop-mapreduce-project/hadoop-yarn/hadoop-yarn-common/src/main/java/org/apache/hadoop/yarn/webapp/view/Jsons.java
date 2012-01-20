@@ -199,8 +199,6 @@ argument_list|(
 literal|"%.1f"
 argument_list|,
 name|progress
-operator|*
-literal|100
 argument_list|)
 argument_list|)
 return|;
