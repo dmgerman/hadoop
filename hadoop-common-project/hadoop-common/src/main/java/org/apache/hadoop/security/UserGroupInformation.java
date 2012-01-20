@@ -2097,6 +2097,39 @@ parameter_list|)
 throws|throws
 name|LoginException
 block|{
+comment|// Temporarily switch the thread's ContextClassLoader to match this
+comment|// class's classloader, so that we can properly load HadoopLoginModule
+comment|// from the JAAS libraries.
+name|Thread
+name|t
+init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+decl_stmt|;
+name|ClassLoader
+name|oldCCL
+init|=
+name|t
+operator|.
+name|getContextClassLoader
+argument_list|()
+decl_stmt|;
+name|t
+operator|.
+name|setContextClassLoader
+argument_list|(
+name|HadoopLoginModule
+operator|.
+name|class
+operator|.
+name|getClassLoader
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 return|return
 operator|new
 name|LoginContext
@@ -2112,6 +2145,17 @@ name|HadoopConfiguration
 argument_list|()
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|t
+operator|.
+name|setContextClassLoader
+argument_list|(
+name|oldCCL
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getLogin ()
 specifier|private
