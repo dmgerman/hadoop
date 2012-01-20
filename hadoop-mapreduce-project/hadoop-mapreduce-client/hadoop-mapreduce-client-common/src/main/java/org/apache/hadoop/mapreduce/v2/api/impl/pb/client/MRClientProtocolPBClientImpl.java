@@ -1471,12 +1471,18 @@ implements|implements
 name|MRClientProtocol
 block|{
 DECL|field|proxy
-specifier|private
+specifier|protected
 name|MRClientProtocolService
 operator|.
 name|BlockingInterface
 name|proxy
 decl_stmt|;
+DECL|method|MRClientProtocolPBClientImpl ()
+specifier|public
+name|MRClientProtocolPBClientImpl
+parameter_list|()
+block|{}
+empty_stmt|;
 DECL|method|MRClientProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
 name|MRClientProtocolPBClientImpl
