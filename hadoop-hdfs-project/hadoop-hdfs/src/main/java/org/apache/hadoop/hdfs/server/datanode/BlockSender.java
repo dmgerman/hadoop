@@ -1369,6 +1369,9 @@ operator|!=
 literal|null
 operator|&&
 name|shouldDropCacheBehindRead
+operator|&&
+name|isLongRead
+argument_list|()
 condition|)
 block|{
 comment|// drop the last few MB of the file from cache
