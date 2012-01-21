@@ -4654,7 +4654,7 @@ name|json
 operator|.
 name|getJSONObject
 argument_list|(
-literal|"JobTaskAttemptCounters"
+literal|"jobTaskAttemptCounters"
 argument_list|)
 decl_stmt|;
 name|verifyAMJobTaskAttemptCounters
@@ -4928,7 +4928,7 @@ name|dom
 operator|.
 name|getElementsByTagName
 argument_list|(
-literal|"JobTaskAttemptCounters"
+literal|"jobTaskAttemptCounters"
 argument_list|)
 decl_stmt|;
 name|verifyAMTaskCountersXML

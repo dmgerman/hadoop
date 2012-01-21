@@ -162,7 +162,7 @@ name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"JobTaskAttemptCounters"
+literal|"jobTaskAttemptCounters"
 argument_list|)
 annotation|@
 name|XmlAccessorType
