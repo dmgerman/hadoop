@@ -2576,6 +2576,46 @@ name|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DFS_HA_LOGROLL_PERIOD_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_LOGROLL_PERIOD_KEY
+init|=
+literal|"dfs.ha.log-roll.period"
+decl_stmt|;
+DECL|field|DFS_HA_LOGROLL_PERIOD_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_LOGROLL_PERIOD_DEFAULT
+init|=
+literal|2
+operator|*
+literal|60
+decl_stmt|;
+comment|// 2m
+DECL|field|DFS_HA_TAILEDITS_PERIOD_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_TAILEDITS_PERIOD_KEY
+init|=
+literal|"dfs.ha.tail-edits.period"
+decl_stmt|;
+DECL|field|DFS_HA_TAILEDITS_PERIOD_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_TAILEDITS_PERIOD_DEFAULT
+init|=
+literal|60
+decl_stmt|;
+comment|// 1m
 block|}
 end_class
 

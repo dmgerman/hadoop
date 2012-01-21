@@ -4635,6 +4635,16 @@ name|dirNames
 argument_list|)
 return|;
 block|}
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|readLock ()
@@ -17537,6 +17547,13 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|isInSafeMode

@@ -261,9 +261,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Closes the current edit log and opens a new one. The     * call fails if the file system is in SafeMode.    * @throws IOException    * @return a unique token to identify this transaction.    * @deprecated     *    See {@link org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode}    */
-annotation|@
-name|Deprecated
+comment|/**    * Closes the current edit log and opens a new one. The     * call fails if the file system is in SafeMode.    * @throws IOException    * @return a unique token to identify this transaction.    */
 DECL|method|rollEditLog ()
 specifier|public
 name|CheckpointSignature

@@ -4718,7 +4718,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
