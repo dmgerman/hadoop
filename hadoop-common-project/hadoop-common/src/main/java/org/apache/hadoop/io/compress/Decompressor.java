@@ -91,7 +91,7 @@ name|int
 name|len
 parameter_list|)
 function_decl|;
-comment|/**    * Returns true if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called to    * provide more input.     *     * @return<code>true</code> if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called in    * order to provide more input.    */
+comment|/**    * Returns<code>true</code> if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called to    * provide more input.     *     * @return<code>true</code> if the input data buffer is empty and     * {@link #setInput(byte[], int, int)} should be called in    * order to provide more input.    */
 DECL|method|needsInput ()
 specifier|public
 name|boolean
@@ -122,7 +122,7 @@ name|boolean
 name|needsDictionary
 parameter_list|()
 function_decl|;
-comment|/**    * Returns true if the end of the decompressed     * data output stream has been reached.    * @return<code>true</code> if the end of the decompressed    * data output stream has been reached.    */
+comment|/**    * Returns<code>true</code> if the end of the decompressed     * data output stream has been reached. Indicates a concatenated data stream    * when finished() returns<code>true</code> and {@link #getRemaining()}    * returns a positive value. finished() will be reset with the    * {@link #reset()} method.    * @return<code>true</code> if the end of the decompressed    * data output stream has been reached.    */
 DECL|method|finished ()
 specifier|public
 name|boolean
@@ -148,14 +148,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the number of bytes remaining in the compressed-data buffer;    * typically called after the decompressor has finished decompressing    * the current gzip stream (a.k.a. "member").    */
+comment|/**    * Returns the number of bytes remaining in the compressed data buffer.    * Indicates a concatenated data stream if {@link #finished()} returns    *<code>true</code> and getRemaining() returns a positive value. If    * {@link #finished()} returns<code>true</code> and getRemaining() returns    * a zero value, indicates that the end of data stream has been reached and    * is not a concatenated data stream.     * @return The number of bytes remaining in the compressed data buffer.    */
 DECL|method|getRemaining ()
 specifier|public
 name|int
 name|getRemaining
 parameter_list|()
 function_decl|;
-comment|/**    * Resets decompressor and input and output buffers so that a new set of    * input data can be processed.    */
+comment|/**    * Resets decompressor and input and output buffers so that a new set of    * input data can be processed. If {@link #finished()}} returns    *<code>true</code> and {@link #getRemaining()} returns a positive value,    * reset() is called before processing of the next data stream in the    * concatenated data stream. {@link #finished()} will be reset and will    * return<code>false</code> when reset() is called.    */
 DECL|method|reset ()
 specifier|public
 name|void
