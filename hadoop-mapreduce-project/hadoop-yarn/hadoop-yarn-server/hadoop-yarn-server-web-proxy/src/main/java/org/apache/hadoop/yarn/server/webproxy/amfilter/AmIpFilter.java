@@ -328,7 +328,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getProxyAddresses ()
-specifier|private
+specifier|protected
 name|Set
 argument_list|<
 name|String
@@ -539,6 +539,16 @@ name|user
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|httpReq
+operator|.
+name|getCookies
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Cookie
@@ -573,6 +583,7 @@ name|getValue
 argument_list|()
 expr_stmt|;
 break|break;
+block|}
 block|}
 block|}
 if|if
