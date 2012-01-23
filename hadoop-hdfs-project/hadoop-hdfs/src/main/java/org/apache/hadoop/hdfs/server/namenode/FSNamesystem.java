@@ -2314,6 +2314,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/***************************************************  * FSNamesystem does the actual bookkeeping work for the  * DataNode.  *  * It tracks several important tables.  *  * 1)  valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  ***************************************************/
 end_comment
@@ -13772,7 +13786,6 @@ name|blockTotal
 decl_stmt|;
 comment|/** Number of safe blocks. */
 DECL|field|blockSafe
-specifier|private
 name|int
 name|blockSafe
 decl_stmt|;
@@ -13798,7 +13811,6 @@ literal|0
 decl_stmt|;
 comment|/** flag indicating whether replication queues have been initialized */
 DECL|field|initializedReplQueues
-specifier|private
 name|boolean
 name|initializedReplQueues
 init|=
@@ -14292,20 +14304,13 @@ argument_list|(
 literal|"initializing replication queues"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
+assert|assert
+operator|!
 name|isPopulatingReplQueues
 argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Replication queues already initialized."
-argument_list|)
-expr_stmt|;
-block|}
+operator|:
+literal|"Already initialized repl queues"
+assert|;
 name|long
 name|startTimeMisReplicatedScan
 init|=
@@ -19956,6 +19961,18 @@ argument_list|,
 name|password
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSafeModeInfoForTests ()
+specifier|public
+name|SafeModeInfo
+name|getSafeModeInfoForTests
+parameter_list|()
+block|{
+return|return
+name|safeMode
+return|;
 block|}
 block|}
 end_class
