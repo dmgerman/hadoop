@@ -317,6 +317,16 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_MR_HISTORY_WEBAPP_PORT
 decl_stmt|;
+comment|/*    * HS Service Authorization    */
+DECL|field|MR_HS_SECURITY_SERVICE_AUTHORIZATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_SECURITY_SERVICE_AUTHORIZATION
+init|=
+literal|"security.mrhs.client.protocol.acl"
+decl_stmt|;
 block|}
 end_class
 

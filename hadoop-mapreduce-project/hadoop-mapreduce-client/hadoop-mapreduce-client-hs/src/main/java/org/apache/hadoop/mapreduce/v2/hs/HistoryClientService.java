@@ -852,7 +852,7 @@ name|security
 operator|.
 name|authorize
 operator|.
-name|MRAMPolicyProvider
+name|ClientHSPolicyProvider
 import|;
 end_import
 
@@ -1372,7 +1372,7 @@ argument_list|(
 name|conf
 argument_list|,
 operator|new
-name|MRAMPolicyProvider
+name|ClientHSPolicyProvider
 argument_list|()
 argument_list|)
 expr_stmt|;

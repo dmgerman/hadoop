@@ -494,12 +494,15 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|escapeJavaScript
+argument_list|(
 name|escapeHtml
 argument_list|(
 name|appInfo
 operator|.
 name|getName
 argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
