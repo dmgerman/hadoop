@@ -4917,6 +4917,70 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Sanity check the HA-related config.
+if|if
+condition|(
+name|nameserviceId
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Determined nameservice ID: "
+operator|+
+name|nameserviceId
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"HA Enabled: "
+operator|+
+name|haEnabled
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|haEnabled
+operator|&&
+name|HAUtil
+operator|.
+name|usesSharedEditsDir
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Configured NNs:\n"
+operator|+
+name|DFSUtil
+operator|.
+name|nnAddressesAsString
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid configuration: a shared edits dir "
+operator|+
+literal|"must not be specified if HA is not enabled."
+argument_list|)
+throw|;
+block|}
 name|short
 name|filePermission
 init|=
