@@ -4042,6 +4042,16 @@ name|JobState
 operator|.
 name|RUNNING
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The url to track the job: "
+operator|+
+name|getTrackingURL
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Submit the job to the cluster and wait for it to finish.    * @param verbose print the progress to the user    * @return true if the job succeeded    * @throws IOException thrown if the communication with the     *<code>JobTracker</code> is lost    */
 DECL|method|waitForCompletion (boolean verbose )
