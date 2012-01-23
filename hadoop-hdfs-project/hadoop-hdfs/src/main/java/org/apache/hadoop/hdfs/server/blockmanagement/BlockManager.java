@@ -8511,6 +8511,10 @@ decl_stmt|,
 name|nrUnderReplicated
 init|=
 literal|0
+decl_stmt|,
+name|nrUnderConstruction
+init|=
+literal|0
 decl_stmt|;
 name|neededReplications
 operator|.
@@ -8551,6 +8555,22 @@ name|addToInvalidates
 argument_list|(
 name|block
 argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+operator|!
+name|block
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+comment|// Incomplete blocks are never considered mis-replicated --
+comment|// they'll be reached when they are completed or recovered.
+name|nrUnderConstruction
+operator|++
 expr_stmt|;
 continue|continue;
 block|}
@@ -8677,6 +8697,15 @@ argument_list|(
 literal|"Number of  over-replicated blocks = "
 operator|+
 name|nrOverReplicated
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of blocks being written    = "
+operator|+
+name|nrUnderConstruction
 argument_list|)
 expr_stmt|;
 block|}
