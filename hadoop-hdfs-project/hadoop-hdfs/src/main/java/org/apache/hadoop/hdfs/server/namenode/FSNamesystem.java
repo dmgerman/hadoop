@@ -5306,6 +5306,42 @@ return|return
 name|fsRunning
 return|;
 block|}
+DECL|method|isInStandbyState ()
+specifier|private
+name|boolean
+name|isInStandbyState
+parameter_list|()
+block|{
+if|if
+condition|(
+name|haContext
+operator|==
+literal|null
+operator|||
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// We're still starting up. In this case, if HA is
+comment|// on for the cluster, we always start in standby. Otherwise
+comment|// start in active.
+return|return
+name|haEnabled
+return|;
+block|}
+return|return
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|instanceof
+name|StandbyState
+return|;
+block|}
 comment|/**    * Dump all metadata into specified file    */
 DECL|method|metaSave (String filename)
 name|void
@@ -15722,11 +15758,16 @@ expr_stmt|;
 return|return;
 block|}
 block|}
-comment|// if not done yet, initialize replication queues
+comment|// if not done yet, initialize replication queues.
+comment|// In the standby, do not populate repl queues
 if|if
 condition|(
 operator|!
 name|isPopulatingReplQueues
+argument_list|()
+operator|&&
+operator|!
+name|isInStandbyState
 argument_list|()
 condition|)
 block|{
@@ -15924,6 +15965,10 @@ name|canInitializeReplQueues
 parameter_list|()
 block|{
 return|return
+operator|!
+name|isInStandbyState
+argument_list|()
+operator|&&
 name|blockSafe
 operator|>=
 name|blockReplQueueThreshold
@@ -17050,18 +17095,7 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|haContext
-operator|!=
-literal|null
-operator|&&
-comment|// null during startup!
-operator|!
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|shouldPopulateReplQueues
+name|isInStandbyState
 argument_list|()
 condition|)
 block|{
