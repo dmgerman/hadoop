@@ -274,6 +274,20 @@ name|NodeBase
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/** The class is responsible for choosing the desired number of targets  * for placing block replicas.  * The replica placement strategy is that if the writer is on a datanode,  * the 1st replica is placed on the local machine,   * otherwise a random datanode. The 2nd replica is placed on a datanode  * that is on a different rack. The 3rd replica is placed on a datanode  * which is on a different node of the rack as the second replica.  */
 end_comment
@@ -294,6 +308,13 @@ DECL|field|considerLoad
 specifier|private
 name|boolean
 name|considerLoad
+decl_stmt|;
+DECL|field|preferLocalNode
+specifier|private
+name|boolean
+name|preferLocalNode
+init|=
+literal|true
 decl_stmt|;
 DECL|field|clusterMap
 specifier|private
@@ -1135,6 +1156,11 @@ argument_list|,
 name|results
 argument_list|)
 return|;
+if|if
+condition|(
+name|preferLocalNode
+condition|)
+block|{
 comment|// otherwise try local machine first
 name|Node
 name|oldNode
@@ -1182,6 +1208,7 @@ expr_stmt|;
 return|return
 name|localMachine
 return|;
+block|}
 block|}
 block|}
 comment|// try a node on local rack
@@ -2817,6 +2844,23 @@ block|}
 return|return
 name|cur
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setPreferLocalNode (boolean prefer)
+name|void
+name|setPreferLocalNode
+parameter_list|(
+name|boolean
+name|prefer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|preferLocalNode
+operator|=
+name|prefer
+expr_stmt|;
 block|}
 block|}
 end_class
