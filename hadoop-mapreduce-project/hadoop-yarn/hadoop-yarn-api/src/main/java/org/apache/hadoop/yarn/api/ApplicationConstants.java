@@ -169,34 +169,6 @@ name|STDOUT
 init|=
 literal|"stdout"
 decl_stmt|;
-comment|/**    * Classpath for typical applications.    */
-DECL|field|APPLICATION_CLASSPATH
-specifier|public
-specifier|static
-specifier|final
-name|String
-index|[]
-name|APPLICATION_CLASSPATH
-init|=
-operator|new
-name|String
-index|[]
-block|{
-literal|"$HADOOP_CONF_DIR"
-block|,
-literal|"$HADOOP_COMMON_HOME/share/hadoop/common/*"
-block|,
-literal|"$HADOOP_COMMON_HOME/share/hadoop/common/lib/*"
-block|,
-literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/*"
-block|,
-literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*"
-block|,
-literal|"$YARN_HOME/share/hadoop/mapreduce/*"
-block|,
-literal|"$YARN_HOME/share/hadoop/mapreduce/lib/*"
-block|}
-decl_stmt|;
 comment|/**    * Environment for Applications.    *     * Some of the environment variables for applications are<em>final</em>     * i.e. they cannot be modified by the applications.    */
 DECL|enum|Environment
 specifier|public

@@ -2498,6 +2498,8 @@ operator|.
 name|setClasspath
 argument_list|(
 name|environment
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Parse distributed cache

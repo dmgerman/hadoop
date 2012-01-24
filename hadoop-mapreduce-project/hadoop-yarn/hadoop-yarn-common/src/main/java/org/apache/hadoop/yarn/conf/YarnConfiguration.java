@@ -1892,6 +1892,18 @@ name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
 literal|2000
 decl_stmt|;
+comment|/** Standard Hadoop classes */
+DECL|field|YARN_APPLICATION_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_APPLICATION_CLASSPATH
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"application.classpath"
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

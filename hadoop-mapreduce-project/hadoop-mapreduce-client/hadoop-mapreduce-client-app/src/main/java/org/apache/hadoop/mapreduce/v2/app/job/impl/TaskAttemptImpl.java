@@ -3702,12 +3702,15 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Lock this on initialClasspath so that there is only one fork in the AM for    * getting the initial class-path. TODO: We already construct    * a parent CLC and use it for all the containers, so this should go away    * once the mr-generated-classpath stuff is gone.    */
-DECL|method|getInitialClasspath ()
+DECL|method|getInitialClasspath (Configuration conf)
 specifier|private
 specifier|static
 name|String
 name|getInitialClasspath
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3750,6 +3753,8 @@ operator|.
 name|setClasspath
 argument_list|(
 name|env
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|initialClasspath
@@ -4251,7 +4256,9 @@ name|name
 argument_list|()
 argument_list|,
 name|getInitialClasspath
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
