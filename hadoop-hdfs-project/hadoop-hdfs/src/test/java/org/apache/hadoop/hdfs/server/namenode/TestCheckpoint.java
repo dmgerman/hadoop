@@ -1531,11 +1531,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Simulate namenode crashing after rolling edit log.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryNamenodeError1 ()
 specifier|public
 name|void
@@ -1789,11 +1784,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Simulate a namenode crash after uploading new image    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryNamenodeError2 ()
 specifier|public
 name|void
@@ -2047,11 +2037,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Simulate a secondary namenode crash after rolling the edit log.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryNamenodeError3 ()
 specifier|public
 name|void
@@ -2328,11 +2313,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Simulate a secondary node failure to transfer image    * back to the name-node.    * Used to truncate primary fsimage file.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryFailsToReturnImage ()
 specifier|public
 name|void
@@ -2621,11 +2601,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Run a test where the 2NN runs into some kind of error when    * sending the checkpoint back to the NN.    * @param errorType the ErrorSimulator type to trigger    * @param exceptionSubstring an expected substring of the triggered exception    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|doSendFailTest (int errorType, String exceptionSubstring)
 specifier|private
 name|void
@@ -3084,11 +3059,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that the SecondaryNameNode properly locks its storage directories.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryNameNodeLocking ()
 specifier|public
 name|void
@@ -3426,11 +3396,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test the importCheckpoint startup option. Verifies:    * 1. if the NN already contains an image, it will not be allowed    *   to import a checkpoint.    * 2. if the NN does not contain an image, importing a checkpoint    *    succeeds and re-saves the image    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testImportCheckpoint ()
 specifier|public
 name|void
@@ -3818,13 +3783,6 @@ name|dir
 argument_list|)
 throw|;
 block|}
-comment|// This deprecation suppress warning does not work due to known Java bug:
-comment|// http://bugs.sun.com/view_bug.do?bug_id=6460147
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|startSecondaryNameNode (Configuration conf )
 name|SecondaryNameNode
 name|startSecondaryNameNode
@@ -3854,11 +3812,6 @@ name|conf
 argument_list|)
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|startSecondaryNameNode (Configuration conf, int index)
 name|SecondaryNameNode
 name|startSecondaryNameNode
@@ -3919,11 +3872,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Tests checkpoint in HDFS.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testCheckpoint ()
 specifier|public
 name|void
@@ -5130,11 +5078,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Tests the following sequence of events:    * - secondary successfully makes a checkpoint    * - it then fails while trying to upload it    * - it then fails again for the same reason    * - it then tries to checkpoint a third time    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testCheckpointAfterTwoFailedUploads ()
 specifier|public
 name|void
@@ -5333,11 +5276,6 @@ block|}
 block|}
 block|}
 comment|/**    * Starts two namenodes and two secondary namenodes, verifies that secondary    * namenodes are configured correctly to talk to their respective namenodes    * and can do the checkpoint.    *     * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testMultipleSecondaryNamenodes ()
 specifier|public
 name|void
@@ -5643,11 +5581,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test that the secondary doesn't have to re-download image    * if it hasn't changed.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryImageDownload ()
 specifier|public
 name|void
@@ -5988,11 +5921,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test case where two secondary namenodes are checkpointing the same    * NameNode. This differs from {@link #testMultipleSecondaryNamenodes()}    * since that test runs against two distinct NNs.    *     * This case tests the following interleaving:    * - 2NN A downloads image (up to txid 2)    * - 2NN A about to save its own checkpoint    * - 2NN B downloads image (up to txid 4)    * - 2NN B uploads checkpoint (txid 4)    * - 2NN A uploads checkpoint (txid 2)    *     * It verifies that this works even though the earlier-txid checkpoint gets    * uploaded after the later-txid checkpoint.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testMultipleSecondaryNNsAgainstSameNN ()
 specifier|public
 name|void
@@ -6272,11 +6200,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test case where two secondary namenodes are checkpointing the same    * NameNode. This differs from {@link #testMultipleSecondaryNamenodes()}    * since that test runs against two distinct NNs.    *     * This case tests the following interleaving:    * - 2NN A) calls rollEdits()    * - 2NN B) calls rollEdits()    * - 2NN A) paused at getRemoteEditLogManifest()    * - 2NN B) calls getRemoteEditLogManifest() (returns up to txid 4)    * - 2NN B) uploads checkpoint fsimage_4    * - 2NN A) allowed to proceed, also returns up to txid 4    * - 2NN A) uploads checkpoint fsimage_4 as well, should fail gracefully    *     * It verifies that one of the two gets an error that it's uploading a    * duplicate checkpoint, and the other one succeeds.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testMultipleSecondaryNNsAgainstSameNN2 ()
 specifier|public
 name|void
@@ -6645,11 +6568,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test case where the name node is reformatted while the secondary namenode    * is running. The secondary should shut itself down if if talks to a NN    * with the wrong namespace.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testReformatNNBetweenCheckpoints ()
 specifier|public
 name|void
@@ -7833,11 +7751,6 @@ block|}
 block|}
 block|}
 comment|/**    * Test that the 2NN triggers a checkpoint after the configurable interval    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testCheckpointTriggerOnTxnCount ()
 specifier|public
 name|void
@@ -8088,11 +8001,6 @@ block|}
 block|}
 block|}
 comment|/**    * Test case where the secondary does a checkpoint, then stops for a while.    * In the meantime, the NN saves its image several times, so that the    * logs that connect the 2NN's old checkpoint to the current txid    * get archived. Then, the 2NN tries to checkpoint again.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSecondaryHasVeryOutOfDateImage ()
 specifier|public
 name|void
@@ -8242,11 +8150,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testCommandLineParsing ()
 specifier|public
 name|void
@@ -8428,11 +8331,6 @@ name|e
 parameter_list|)
 block|{}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|cleanup (SecondaryNameNode snn)
 specifier|private
 name|void
@@ -8476,11 +8374,6 @@ block|}
 block|}
 block|}
 comment|/**    * Assert that if any two files have the same name across the 2NNs    * and NN, they should have the same content too.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|assertParallelFilesInvariant (MiniDFSCluster cluster, ImmutableList<SecondaryNameNode> secondaries)
 specifier|private
 name|void
@@ -8555,11 +8448,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|getCheckpointCurrentDirs (SecondaryNameNode secondary)
 specifier|private
 name|List
@@ -8624,11 +8512,6 @@ return|return
 name|ret
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|spyOnSecondaryImage (SecondaryNameNode secondary1)
 specifier|private
 name|CheckpointStorage
@@ -8667,11 +8550,6 @@ name|spy
 return|;
 block|}
 comment|/**    * A utility class to perform a checkpoint in a different thread.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|DoCheckpointThread
 specifier|private
 specifier|static

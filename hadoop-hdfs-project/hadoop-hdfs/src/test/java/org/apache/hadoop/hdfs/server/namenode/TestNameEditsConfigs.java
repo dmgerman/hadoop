@@ -800,13 +800,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// This deprecation suppress warning does not work due to known Java bug:
-comment|// http://bugs.sun.com/view_bug.do?bug_id=6460147
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|startSecondaryNameNode (Configuration conf )
 name|SecondaryNameNode
 name|startSecondaryNameNode
@@ -837,11 +830,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Test various configuration options of dfs.namenode.name.dir and dfs.namenode.edits.dir    * The test creates files and restarts cluster with different configs.    * 1. Starts cluster with shared name and edits dirs    * 2. Restarts cluster by adding additional (different) name and edits dirs    * 3. Restarts cluster by removing shared name and edits dirs by allowing to     *    start using separate name and edits dirs    * 4. Restart cluster by adding shared directory again, but make sure we     *    do not read any stale image or edits.     * All along the test, we create and delete files at reach restart to make    * sure we are reading proper edits and image.    * @throws Exception     */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testNameEditsConfigs ()

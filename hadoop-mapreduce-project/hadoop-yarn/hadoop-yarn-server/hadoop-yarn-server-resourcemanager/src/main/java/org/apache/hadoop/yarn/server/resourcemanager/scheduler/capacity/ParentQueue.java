@@ -1835,42 +1835,63 @@ block|{
 return|return
 name|queueName
 operator|+
-literal|":"
+literal|": "
 operator|+
-name|capacity
-operator|+
-literal|":"
-operator|+
-name|absoluteCapacity
-operator|+
-literal|":"
-operator|+
-name|getUsedCapacity
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|getUtilization
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|getNumApplications
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|getNumContainers
-argument_list|()
-operator|+
-literal|":"
+literal|"numChildQueue= "
 operator|+
 name|childQueues
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|" child-queues"
+literal|", "
+operator|+
+literal|"capacity="
+operator|+
+name|capacity
+operator|+
+literal|", "
+operator|+
+literal|"absoluteCapacity="
+operator|+
+name|absoluteCapacity
+operator|+
+literal|", "
+operator|+
+literal|"usedResources="
+operator|+
+name|usedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|"MB, "
+operator|+
+literal|"usedCapacity="
+operator|+
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"utilization="
+operator|+
+name|getUtilization
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"numApps="
+operator|+
+name|getNumApplications
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"numContainers="
+operator|+
+name|getNumContainers
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -3467,6 +3488,20 @@ argument_list|()
 operator|*
 name|absoluteCapacity
 decl_stmt|;
+name|float
+name|parentAbsoluteCapacity
+init|=
+operator|(
+name|rootQueue
+operator|)
+condition|?
+literal|1.0f
+else|:
+name|parent
+operator|.
+name|getAbsoluteCapacity
+argument_list|()
+decl_stmt|;
 name|setUtilization
 argument_list|(
 name|usedResources
@@ -3490,7 +3525,7 @@ operator|.
 name|getMemory
 argument_list|()
 operator|*
-name|capacity
+name|parentAbsoluteCapacity
 operator|)
 argument_list|)
 expr_stmt|;

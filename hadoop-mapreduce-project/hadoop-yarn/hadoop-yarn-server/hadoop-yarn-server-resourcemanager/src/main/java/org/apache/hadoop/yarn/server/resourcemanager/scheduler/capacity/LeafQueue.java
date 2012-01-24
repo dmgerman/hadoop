@@ -1874,7 +1874,7 @@ literal|"utilization = "
 operator|+
 name|utilization
 operator|+
-literal|" [= usedResourcesMemory / queueLimit ]"
+literal|" [= usedResourcesMemory /  (clusterResourceMemory * absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1882,7 +1882,7 @@ literal|"usedCapacity = "
 operator|+
 name|usedCapacity
 operator|+
-literal|" [= usedResourcesMemory / (clusterResourceMemory * capacity) ]"
+literal|" [= usedResourcesMemory / (clusterResourceMemory * parent.absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -2621,30 +2621,51 @@ block|{
 return|return
 name|queueName
 operator|+
-literal|":"
+literal|": "
+operator|+
+literal|"capacity="
 operator|+
 name|capacity
 operator|+
-literal|":"
+literal|", "
+operator|+
+literal|"absoluteCapacity="
 operator|+
 name|absoluteCapacity
 operator|+
-literal|":"
+literal|", "
+operator|+
+literal|"usedResources="
+operator|+
+name|usedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|"MB, "
+operator|+
+literal|"usedCapacity="
 operator|+
 name|getUsedCapacity
 argument_list|()
 operator|+
-literal|":"
+literal|", "
+operator|+
+literal|"utilization="
 operator|+
 name|getUtilization
 argument_list|()
 operator|+
-literal|":"
+literal|", "
+operator|+
+literal|"numApps="
 operator|+
 name|getNumApplications
 argument_list|()
 operator|+
-literal|":"
+literal|", "
+operator|+
+literal|"numContainers="
 operator|+
 name|getNumContainers
 argument_list|()
@@ -6448,7 +6469,10 @@ operator|.
 name|getMemory
 argument_list|()
 operator|*
-name|capacity
+name|parent
+operator|.
+name|getAbsoluteCapacity
+argument_list|()
 operator|)
 argument_list|)
 expr_stmt|;

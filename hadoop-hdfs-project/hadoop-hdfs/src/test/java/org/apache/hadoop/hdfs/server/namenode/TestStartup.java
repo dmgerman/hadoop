@@ -919,11 +919,6 @@ throw|;
 block|}
 block|}
 comment|/**    * start MiniDFScluster, create a file (to create edits) and do a checkpoint      * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|createCheckPoint ()
 specifier|public
 name|void
@@ -1930,11 +1925,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * secnn-7    * secondary node copies fsimage and edits into correct separate directories.    * @throws IOException    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testSNNStartup ()
 specifier|public
 name|void
