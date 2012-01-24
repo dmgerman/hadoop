@@ -125,6 +125,11 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|EventFetcher
 class|class
 name|EventFetcher
@@ -232,6 +237,14 @@ name|maxMapRuntime
 init|=
 literal|0
 decl_stmt|;
+DECL|field|stopped
+specifier|private
+specifier|volatile
+name|boolean
+name|stopped
+init|=
+literal|false
+decl_stmt|;
 DECL|method|EventFetcher (TaskAttemptID reduce, TaskUmbilicalProtocol umbilical, ShuffleScheduler<K,V> scheduler, ExceptionReporter reporter)
 specifier|public
 name|EventFetcher
@@ -316,7 +329,8 @@ try|try
 block|{
 while|while
 condition|(
-literal|true
+operator|!
+name|stopped
 operator|&&
 operator|!
 name|Thread
@@ -392,6 +406,21 @@ name|SLEEP_TIME
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"EventFetcher is interrupted.. Returning"
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 catch|catch
 parameter_list|(
@@ -473,6 +502,49 @@ name|t
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
+block|}
+DECL|method|shutDown ()
+specifier|public
+name|void
+name|shutDown
+parameter_list|()
+block|{
+name|this
+operator|.
+name|stopped
+operator|=
+literal|true
+expr_stmt|;
+name|interrupt
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|join
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Got interrupted while joining "
+operator|+
+name|getName
+argument_list|()
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**     * Queries the {@link TaskTracker} for a set of map-completion events     * from a given event ID.    * @throws IOException    */
