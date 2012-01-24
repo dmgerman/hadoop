@@ -762,9 +762,6 @@ end_comment
 
 begin_class
 annotation|@
-name|Deprecated
-comment|// use BackupNode with -checkpoint argument instead.
-annotation|@
 name|InterfaceAudience
 operator|.
 name|Private

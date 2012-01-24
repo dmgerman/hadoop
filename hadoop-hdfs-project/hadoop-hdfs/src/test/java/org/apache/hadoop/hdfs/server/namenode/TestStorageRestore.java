@@ -1061,11 +1061,6 @@ expr_stmt|;
 block|}
 comment|/**    * test     * 1. create DFS cluster with 3 storage directories - 2 EDITS_IMAGE, 1 EDITS    * 2. create a cluster and write a file    * 3. corrupt/disable one storage (or two) by removing    * 4. run doCheckpoint - it will fail on removed dirs (which    * will invalidate the storages)    * 5. write another file    * 6. check that edits and fsimage differ     * 7. run doCheckpoint    * 8. verify that all the image and edits files are the same.    */
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-annotation|@
 name|Test
 DECL|method|testStorageRestore ()
 specifier|public
@@ -1968,11 +1963,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test to simulate interleaved checkpointing by 2 2NNs after a storage    * directory has been taken offline. The first will cause the directory to    * come back online, but it won't have any valid contents. The second 2NN will    * then try to perform a checkpoint. The NN should not serve up the image or    * edits from the restored (empty) dir.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testMultipleSecondaryCheckpoint ()
