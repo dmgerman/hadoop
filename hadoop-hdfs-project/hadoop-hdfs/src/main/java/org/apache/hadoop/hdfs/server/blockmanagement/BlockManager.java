@@ -8978,6 +8978,10 @@ decl_stmt|,
 name|nrPostponed
 init|=
 literal|0
+decl_stmt|,
+name|nrUnderConstruction
+init|=
+literal|0
 decl_stmt|;
 name|neededReplications
 operator|.
@@ -9055,6 +9059,13 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
+name|UNDER_CONSTRUCTION
+case|:
+name|nrUnderConstruction
+operator|++
+expr_stmt|;
+break|break;
+case|case
 name|OK
 case|:
 break|break;
@@ -9127,6 +9138,15 @@ literal|""
 operator|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Number of blocks being written    = "
+operator|+
+name|nrUnderConstruction
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Process a single possibly misreplicated block. This adds it to the    * appropriate queues if necessary, and returns a result code indicating    * what happened with it.    */
 DECL|method|processMisReplicatedBlock (BlockInfo block)
@@ -9163,6 +9183,23 @@ return|return
 name|MisReplicationResult
 operator|.
 name|INVALID
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|block
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+comment|// Incomplete blocks are never considered mis-replicated --
+comment|// they'll be reached when they are completed or recovered.
+return|return
+name|MisReplicationResult
+operator|.
+name|UNDER_CONSTRUCTION
 return|;
 block|}
 comment|// calculate current replication
@@ -13177,6 +13214,10 @@ block|,
 comment|/** A decision can't currently be made about this block. */
 DECL|enumConstant|POSTPONE
 name|POSTPONE
+block|,
+comment|/** The block is under construction, so should be ignored */
+DECL|enumConstant|UNDER_CONSTRUCTION
+name|UNDER_CONSTRUCTION
 block|,
 comment|/** The block is properly replicated */
 DECL|enumConstant|OK

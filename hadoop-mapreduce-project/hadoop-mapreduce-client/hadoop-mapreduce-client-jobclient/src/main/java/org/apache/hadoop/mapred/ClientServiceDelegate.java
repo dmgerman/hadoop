@@ -1552,18 +1552,6 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
-argument_list|(
-literal|"The url to track the job: "
-operator|+
-name|application
-operator|.
-name|getTrackingUrl
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
 name|debug
 argument_list|(
 literal|"Connecting to "
