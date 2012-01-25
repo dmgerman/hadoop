@@ -2432,7 +2432,7 @@ block|}
 block|}
 name|application
 operator|.
-name|setAvailableResourceLimit
+name|setHeadroom
 argument_list|(
 name|clusterResource
 argument_list|)

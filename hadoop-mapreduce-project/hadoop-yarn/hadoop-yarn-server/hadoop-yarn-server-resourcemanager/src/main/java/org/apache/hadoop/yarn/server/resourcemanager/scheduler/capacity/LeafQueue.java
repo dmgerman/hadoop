@@ -3612,24 +3612,18 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|application
 operator|.
 name|showRequests
 argument_list|()
 expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|application
 init|)
 block|{
-name|computeAndSetUserResourceLimit
-argument_list|(
-name|application
-argument_list|,
-name|clusterResource
-argument_list|)
-expr_stmt|;
+comment|// Schedule in priority order
 for|for
 control|(
 name|Priority
@@ -3675,8 +3669,24 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// Are we going over limits by allocating to this application?
-comment|// Maximum Capacity of the queue
+comment|// Compute& set headroom
+comment|// Note: We set the headroom with the highest priority request
+comment|//       as the target.
+comment|//       This works since we never assign lower priority requests
+comment|//       before all higher priority ones are serviced.
+name|Resource
+name|userLimit
+init|=
+name|computeAndSetUserResourceLimit
+argument_list|(
+name|application
+argument_list|,
+name|clusterResource
+argument_list|,
+name|required
+argument_list|)
+decl_stmt|;
+comment|// Check queue max-capacity limit
 if|if
 condition|(
 operator|!
@@ -3692,19 +3702,7 @@ return|return
 name|NULL_ASSIGNMENT
 return|;
 block|}
-comment|// User limits
-name|Resource
-name|userLimit
-init|=
-name|computeUserLimit
-argument_list|(
-name|application
-argument_list|,
-name|clusterResource
-argument_list|,
-name|required
-argument_list|)
-decl_stmt|;
+comment|// Check user limit
 if|if
 condition|(
 operator|!
@@ -4063,9 +4061,9 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource)
+DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource, Resource required)
 specifier|private
-name|void
+name|Resource
 name|computeAndSetUserResourceLimit
 parameter_list|(
 name|SchedulerApp
@@ -4073,10 +4071,21 @@ name|application
 parameter_list|,
 name|Resource
 name|clusterResource
+parameter_list|,
+name|Resource
+name|required
 parameter_list|)
 block|{
+name|String
+name|user
+init|=
+name|application
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 name|Resource
-name|userLimit
+name|limit
 init|=
 name|computeUserLimit
 argument_list|(
@@ -4084,34 +4093,46 @@ name|application
 argument_list|,
 name|clusterResource
 argument_list|,
+name|required
+argument_list|)
+decl_stmt|;
+name|Resource
+name|headroom
+init|=
 name|Resources
 operator|.
-name|none
+name|subtract
+argument_list|(
+name|limit
+argument_list|,
+name|getUser
+argument_list|(
+name|user
+argument_list|)
+operator|.
+name|getConsumedResources
 argument_list|()
 argument_list|)
 decl_stmt|;
 name|application
 operator|.
-name|setAvailableResourceLimit
+name|setHeadroom
 argument_list|(
-name|userLimit
+name|headroom
 argument_list|)
 expr_stmt|;
 name|metrics
 operator|.
 name|setAvailableResourcesToUser
 argument_list|(
-name|application
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|,
-name|application
-operator|.
-name|getHeadroom
-argument_list|()
+name|headroom
 argument_list|)
 expr_stmt|;
+return|return
+name|limit
+return|;
 block|}
 DECL|method|roundUp (int memory)
 specifier|private
@@ -4393,7 +4414,7 @@ name|userName
 argument_list|)
 decl_stmt|;
 comment|// Note: We aren't considering the current request since there is a fixed
-comment|// overhead of the AM, but it's a>= check, so...
+comment|// overhead of the AM, but it's a> check, not a>= check, so...
 if|if
 condition|(
 operator|(
@@ -5965,23 +5986,18 @@ operator|.
 name|RESERVED
 condition|)
 block|{
-name|application
-operator|.
 name|unreserve
 argument_list|(
-name|node
+name|application
 argument_list|,
 name|rmContainer
 operator|.
 name|getReservedPriority
 argument_list|()
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|node
-operator|.
-name|unreserveResource
-argument_list|(
-name|application
+argument_list|,
+name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
@@ -6322,6 +6338,11 @@ argument_list|(
 name|application
 argument_list|,
 name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
