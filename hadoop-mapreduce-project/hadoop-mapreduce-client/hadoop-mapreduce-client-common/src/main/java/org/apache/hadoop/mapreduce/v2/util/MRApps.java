@@ -524,6 +524,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factory
 operator|.
 name|providers
@@ -1395,7 +1411,7 @@ name|attemptStateStr
 argument_list|)
 return|;
 block|}
-DECL|method|setMRFrameworkClasspath ( Map<String, String> environment)
+DECL|method|setMRFrameworkClasspath ( Map<String, String> environment, Configuration conf)
 specifier|private
 specifier|static
 name|void
@@ -1408,6 +1424,9 @@ argument_list|,
 name|String
 argument_list|>
 name|environment
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1596,9 +1615,19 @@ control|(
 name|String
 name|c
 range|:
-name|ApplicationConstants
+name|conf
 operator|.
-name|APPLICATION_CLASSPATH
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_APPLICATION_CLASSPATH
+argument_list|)
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
 control|)
 block|{
 name|Apps
@@ -1615,6 +1644,9 @@ name|name
 argument_list|()
 argument_list|,
 name|c
+operator|.
+name|trim
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1650,7 +1682,7 @@ block|}
 block|}
 comment|// TODO: Remove duplicates.
 block|}
-DECL|method|setClasspath (Map<String, String> environment)
+DECL|method|setClasspath (Map<String, String> environment, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -1663,6 +1695,9 @@ argument_list|,
 name|String
 argument_list|>
 name|environment
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1717,6 +1752,8 @@ operator|.
 name|setMRFrameworkClasspath
 argument_list|(
 name|environment
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

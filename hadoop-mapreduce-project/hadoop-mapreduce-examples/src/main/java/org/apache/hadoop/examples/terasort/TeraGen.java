@@ -1284,6 +1284,13 @@ name|Context
 name|context
 parameter_list|)
 block|{
+if|if
+condition|(
+name|checksumCounter
+operator|!=
+literal|null
+condition|)
+block|{
 name|checksumCounter
 operator|.
 name|increment
@@ -1294,6 +1301,7 @@ name|getLow8
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|usage ()
