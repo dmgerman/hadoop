@@ -1710,12 +1710,14 @@ argument_list|,
 name|q
 argument_list|,
 literal|100
+argument_list|,
+literal|100
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|verifySubQueueXML (Element qElem, String q, float parentAbsCapacity)
+DECL|method|verifySubQueueXML (Element qElem, String q, float parentAbsCapacity, float parentAbsMaxCapacity)
 specifier|public
 name|void
 name|verifySubQueueXML
@@ -1728,6 +1730,9 @@ name|q
 parameter_list|,
 name|float
 name|parentAbsCapacity
+parameter_list|,
+name|float
+name|parentAbsMaxCapacity
 parameter_list|)
 throws|throws
 name|Exception
@@ -1896,6 +1901,8 @@ argument_list|,
 name|qi
 argument_list|,
 name|parentAbsCapacity
+argument_list|,
+name|parentAbsMaxCapacity
 argument_list|)
 expr_stmt|;
 if|if
@@ -1966,6 +1973,10 @@ argument_list|,
 name|qi
 operator|.
 name|absoluteCapacity
+argument_list|,
+name|qi
+operator|.
+name|absoluteMaxCapacity
 argument_list|)
 expr_stmt|;
 block|}
@@ -2295,6 +2306,8 @@ argument_list|,
 name|q
 argument_list|,
 literal|100
+argument_list|,
+literal|100
 argument_list|)
 expr_stmt|;
 block|}
@@ -2380,7 +2393,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifySubQueue (JSONObject info, String q, float parentAbsCapacity)
+DECL|method|verifySubQueue (JSONObject info, String q, float parentAbsCapacity, float parentAbsMaxCapacity)
 specifier|private
 name|void
 name|verifySubQueue
@@ -2393,6 +2406,9 @@ name|q
 parameter_list|,
 name|float
 name|parentAbsCapacity
+parameter_list|,
+name|float
+name|parentAbsMaxCapacity
 parameter_list|)
 throws|throws
 name|JSONException
@@ -2589,6 +2605,8 @@ argument_list|,
 name|qi
 argument_list|,
 name|parentAbsCapacity
+argument_list|,
+name|parentAbsMaxCapacity
 argument_list|)
 expr_stmt|;
 if|if
@@ -2658,6 +2676,10 @@ argument_list|,
 name|qi
 operator|.
 name|absoluteCapacity
+argument_list|,
+name|qi
+operator|.
+name|absoluteMaxCapacity
 argument_list|)
 expr_stmt|;
 block|}
@@ -2783,7 +2805,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifySubQueueGeneric (String q, QueueInfo info, float parentAbsCapacity)
+DECL|method|verifySubQueueGeneric (String q, QueueInfo info, float parentAbsCapacity, float parentAbsMaxCapacity)
 specifier|private
 name|void
 name|verifySubQueueGeneric
@@ -2796,6 +2818,9 @@ name|info
 parameter_list|,
 name|float
 name|parentAbsCapacity
+parameter_list|,
+name|float
+name|parentAbsMaxCapacity
 parameter_list|)
 throws|throws
 name|Exception
@@ -2880,7 +2905,7 @@ decl_stmt|;
 name|float
 name|expectAbsMaxCapacity
 init|=
-name|parentAbsCapacity
+name|parentAbsMaxCapacity
 operator|*
 operator|(
 name|info

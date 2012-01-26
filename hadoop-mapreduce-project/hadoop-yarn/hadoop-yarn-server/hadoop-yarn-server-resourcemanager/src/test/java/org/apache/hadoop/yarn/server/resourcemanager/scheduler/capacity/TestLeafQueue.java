@@ -1784,8 +1784,7 @@ name|a
 operator|.
 name|setMaxCapacity
 argument_list|(
-operator|-
-literal|0.01f
+literal|1.0f
 argument_list|)
 expr_stmt|;
 comment|// Users
@@ -2775,8 +2774,7 @@ name|a
 operator|.
 name|setMaxCapacity
 argument_list|(
-operator|-
-literal|0.01f
+literal|1.0f
 argument_list|)
 expr_stmt|;
 comment|// Users
@@ -3603,8 +3601,7 @@ name|a
 operator|.
 name|setMaxCapacity
 argument_list|(
-operator|-
-literal|0.01f
+literal|1.0f
 argument_list|)
 expr_stmt|;
 name|a
@@ -4137,8 +4134,7 @@ name|a
 operator|.
 name|setMaxCapacity
 argument_list|(
-operator|-
-literal|0.01f
+literal|1.0f
 argument_list|)
 expr_stmt|;
 comment|// Users
@@ -4265,7 +4261,7 @@ specifier|final
 name|int
 name|numNodes
 init|=
-literal|1
+literal|2
 decl_stmt|;
 name|Resource
 name|clusterResource
@@ -4964,8 +4960,7 @@ name|a
 operator|.
 name|setMaxCapacity
 argument_list|(
-operator|-
-literal|0.01f
+literal|1.0f
 argument_list|)
 expr_stmt|;
 name|a
@@ -5122,7 +5117,7 @@ specifier|final
 name|int
 name|numNodes
 init|=
-literal|2
+literal|3
 decl_stmt|;
 name|Resource
 name|clusterResource

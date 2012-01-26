@@ -676,7 +676,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"CSConf - setCapacity: queuePrefix="
+literal|"CSConf - getCapacity: queuePrefix="
 operator|+
 name|getQueuePrefix
 argument_list|(
@@ -754,7 +754,7 @@ argument_list|)
 operator|+
 name|MAXIMUM_CAPACITY
 argument_list|,
-name|UNDEFINED
+name|MAXIMUM_CAPACITY_VALUE
 argument_list|)
 decl_stmt|;
 return|return
@@ -773,6 +773,29 @@ name|int
 name|maxCapacity
 parameter_list|)
 block|{
+if|if
+condition|(
+name|maxCapacity
+operator|>
+name|MAXIMUM_CAPACITY_VALUE
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Illegal "
+operator|+
+literal|"maximum-capacity of "
+operator|+
+name|maxCapacity
+operator|+
+literal|" for queue "
+operator|+
+name|queue
+argument_list|)
+throw|;
+block|}
 name|setInt
 argument_list|(
 name|getQueuePrefix

@@ -1194,33 +1194,14 @@ decl_stmt|;
 name|float
 name|absoluteMaxCapacity
 init|=
-operator|(
-name|Math
+name|CSQueueUtils
 operator|.
-name|round
+name|computeAbsoluteMaximumCapacity
 argument_list|(
 name|maximumCapacity
-operator|*
-literal|100
-argument_list|)
-operator|==
-name|CapacitySchedulerConfiguration
-operator|.
-name|UNDEFINED
-operator|)
-condition|?
-name|Float
-operator|.
-name|MAX_VALUE
-else|:
-operator|(
+argument_list|,
 name|parent
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-operator|*
-name|maximumCapacity
-operator|)
+argument_list|)
 decl_stmt|;
 name|int
 name|userLimit
@@ -1306,6 +1287,8 @@ expr_stmt|;
 name|int
 name|maxActiveApplications
 init|=
+name|CSQueueUtils
+operator|.
 name|computeMaxActiveApplications
 argument_list|(
 name|cs
@@ -1321,6 +1304,8 @@ decl_stmt|;
 name|int
 name|maxActiveApplicationsPerUser
 init|=
+name|CSQueueUtils
+operator|.
 name|computeMaxActiveApplicationsPerUser
 argument_list|(
 name|maxActiveApplications
@@ -1477,83 +1462,6 @@ argument_list|(
 name|applicationComparator
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|computeMaxActiveApplications (Resource clusterResource, float maxAMResourcePercent, float absoluteCapacity)
-specifier|private
-name|int
-name|computeMaxActiveApplications
-parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|,
-name|float
-name|maxAMResourcePercent
-parameter_list|,
-name|float
-name|absoluteCapacity
-parameter_list|)
-block|{
-return|return
-name|Math
-operator|.
-name|max
-argument_list|(
-call|(
-name|int
-call|)
-argument_list|(
-operator|(
-name|clusterResource
-operator|.
-name|getMemory
-argument_list|()
-operator|/
-operator|(
-name|float
-operator|)
-name|DEFAULT_AM_RESOURCE
-operator|)
-operator|*
-name|maxAMResourcePercent
-operator|*
-name|absoluteCapacity
-argument_list|)
-argument_list|,
-literal|1
-argument_list|)
-return|;
-block|}
-DECL|method|computeMaxActiveApplicationsPerUser (int maxActiveApplications, int userLimit, float userLimitFactor)
-specifier|private
-name|int
-name|computeMaxActiveApplicationsPerUser
-parameter_list|(
-name|int
-name|maxActiveApplications
-parameter_list|,
-name|int
-name|userLimit
-parameter_list|,
-name|float
-name|userLimitFactor
-parameter_list|)
-block|{
-return|return
-call|(
-name|int
-call|)
-argument_list|(
-name|maxActiveApplications
-operator|*
-operator|(
-name|userLimit
-operator|/
-literal|100.0f
-operator|)
-operator|*
-name|userLimitFactor
-argument_list|)
-return|;
 block|}
 DECL|method|setupQueueConfigs ( float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
 specifier|private
@@ -1810,9 +1718,9 @@ literal|"absoluteMaxCapacity = "
 operator|+
 name|absoluteMaxCapacity
 operator|+
-literal|" [= Float.MAX_VALUE if maximumCapacity undefined, "
+literal|" [= 1.0 maximumCapacity undefined, "
 operator|+
-literal|"(parentAbsoluteCapacity * maximumCapacity) / 100 otherwise ]"
+literal|"(parentAbsoluteMaxCapacity * maximumCapacity) / 100 otherwise ]"
 operator|+
 literal|"\n"
 operator|+
@@ -2225,33 +2133,14 @@ name|this
 operator|.
 name|absoluteMaxCapacity
 operator|=
-operator|(
-name|Math
+name|CSQueueUtils
 operator|.
-name|round
+name|computeAbsoluteMaximumCapacity
 argument_list|(
 name|maximumCapacity
-operator|*
-literal|100
-argument_list|)
-operator|==
-name|CapacitySchedulerConfiguration
-operator|.
-name|UNDEFINED
-operator|)
-condition|?
-name|Float
-operator|.
-name|MAX_VALUE
-else|:
-operator|(
+argument_list|,
 name|parent
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-operator|*
-name|maximumCapacity
-operator|)
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set user limit - used only for testing.    * @param userLimit new user limit    */
@@ -3723,24 +3612,18 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|application
 operator|.
 name|showRequests
 argument_list|()
 expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|application
 init|)
 block|{
-name|computeAndSetUserResourceLimit
-argument_list|(
-name|application
-argument_list|,
-name|clusterResource
-argument_list|)
-expr_stmt|;
+comment|// Schedule in priority order
 for|for
 control|(
 name|Priority
@@ -3786,8 +3669,24 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// Are we going over limits by allocating to this application?
-comment|// Maximum Capacity of the queue
+comment|// Compute& set headroom
+comment|// Note: We set the headroom with the highest priority request
+comment|//       as the target.
+comment|//       This works since we never assign lower priority requests
+comment|//       before all higher priority ones are serviced.
+name|Resource
+name|userLimit
+init|=
+name|computeAndSetUserResourceLimit
+argument_list|(
+name|application
+argument_list|,
+name|clusterResource
+argument_list|,
+name|required
+argument_list|)
+decl_stmt|;
+comment|// Check queue max-capacity limit
 if|if
 condition|(
 operator|!
@@ -3803,19 +3702,7 @@ return|return
 name|NULL_ASSIGNMENT
 return|;
 block|}
-comment|// User limits
-name|Resource
-name|userLimit
-init|=
-name|computeUserLimit
-argument_list|(
-name|application
-argument_list|,
-name|clusterResource
-argument_list|,
-name|required
-argument_list|)
-decl_stmt|;
+comment|// Check user limit
 if|if
 condition|(
 operator|!
@@ -4101,6 +3988,13 @@ operator|.
 name|getMemory
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|potentialNewCapacity
+operator|>
+name|absoluteMaxCapacity
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -4111,6 +4005,13 @@ operator|+
 literal|" usedResources: "
 operator|+
 name|usedResources
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|" clusterResources: "
+operator|+
+name|clusterResource
 operator|.
 name|getMemory
 argument_list|()
@@ -4152,13 +4053,6 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|potentialNewCapacity
-operator|>
-name|absoluteMaxCapacity
-condition|)
-block|{
 return|return
 literal|false
 return|;
@@ -4167,9 +4061,9 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource)
+DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource, Resource required)
 specifier|private
-name|void
+name|Resource
 name|computeAndSetUserResourceLimit
 parameter_list|(
 name|SchedulerApp
@@ -4177,10 +4071,21 @@ name|application
 parameter_list|,
 name|Resource
 name|clusterResource
+parameter_list|,
+name|Resource
+name|required
 parameter_list|)
 block|{
+name|String
+name|user
+init|=
+name|application
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 name|Resource
-name|userLimit
+name|limit
 init|=
 name|computeUserLimit
 argument_list|(
@@ -4188,34 +4093,46 @@ name|application
 argument_list|,
 name|clusterResource
 argument_list|,
+name|required
+argument_list|)
+decl_stmt|;
+name|Resource
+name|headroom
+init|=
 name|Resources
 operator|.
-name|none
+name|subtract
+argument_list|(
+name|limit
+argument_list|,
+name|getUser
+argument_list|(
+name|user
+argument_list|)
+operator|.
+name|getConsumedResources
 argument_list|()
 argument_list|)
 decl_stmt|;
 name|application
 operator|.
-name|setAvailableResourceLimit
+name|setHeadroom
 argument_list|(
-name|userLimit
+name|headroom
 argument_list|)
 expr_stmt|;
 name|metrics
 operator|.
 name|setAvailableResourcesToUser
 argument_list|(
-name|application
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|,
-name|application
-operator|.
-name|getHeadroom
-argument_list|()
+name|headroom
 argument_list|)
 expr_stmt|;
+return|return
+name|limit
+return|;
 block|}
 DECL|method|roundUp (int memory)
 specifier|private
@@ -4497,7 +4414,7 @@ name|userName
 argument_list|)
 decl_stmt|;
 comment|// Note: We aren't considering the current request since there is a fixed
-comment|// overhead of the AM, but it's a>= check, so...
+comment|// overhead of the AM, but it's a> check, not a>= check, so...
 if|if
 condition|(
 operator|(
@@ -6069,23 +5986,18 @@ operator|.
 name|RESERVED
 condition|)
 block|{
-name|application
-operator|.
 name|unreserve
 argument_list|(
-name|node
+name|application
 argument_list|,
 name|rmContainer
 operator|.
 name|getReservedPriority
 argument_list|()
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|node
-operator|.
-name|unreserveResource
-argument_list|(
-name|application
+argument_list|,
+name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
@@ -6388,6 +6300,8 @@ block|{
 comment|// Update queue properties
 name|maxActiveApplications
 operator|=
+name|CSQueueUtils
+operator|.
 name|computeMaxActiveApplications
 argument_list|(
 name|clusterResource
@@ -6399,6 +6313,8 @@ argument_list|)
 expr_stmt|;
 name|maxActiveApplicationsPerUser
 operator|=
+name|CSQueueUtils
+operator|.
 name|computeMaxActiveApplicationsPerUser
 argument_list|(
 name|maxActiveApplications
@@ -6422,6 +6338,11 @@ argument_list|(
 name|application
 argument_list|,
 name|clusterResource
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

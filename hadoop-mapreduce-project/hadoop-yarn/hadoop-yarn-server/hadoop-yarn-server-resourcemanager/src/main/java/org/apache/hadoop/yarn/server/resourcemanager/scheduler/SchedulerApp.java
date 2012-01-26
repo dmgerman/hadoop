@@ -1755,23 +1755,6 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|setAvailableResourceLimit (Resource globalLimit)
-specifier|public
-specifier|synchronized
-name|void
-name|setAvailableResourceLimit
-parameter_list|(
-name|Resource
-name|globalLimit
-parameter_list|)
-block|{
-name|this
-operator|.
-name|resourceLimit
-operator|=
-name|globalLimit
-expr_stmt|;
-block|}
 DECL|method|getRMContainer (ContainerId id)
 specifier|public
 specifier|synchronized
@@ -2488,6 +2471,23 @@ return|return
 name|reservedContainers
 return|;
 block|}
+DECL|method|setHeadroom (Resource globalLimit)
+specifier|public
+specifier|synchronized
+name|void
+name|setHeadroom
+parameter_list|(
+name|Resource
+name|globalLimit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourceLimit
+operator|=
+name|globalLimit
+expr_stmt|;
+block|}
 comment|/**    * Get available headroom in terms of resources for the application's user.    * @return available resource headroom    */
 DECL|method|getHeadroom ()
 specifier|public
@@ -2496,31 +2496,10 @@ name|Resource
 name|getHeadroom
 parameter_list|()
 block|{
-name|Resource
-name|limit
-init|=
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|resourceLimit
-argument_list|,
-name|currentConsumption
-argument_list|)
-decl_stmt|;
-name|Resources
-operator|.
-name|subtractFrom
-argument_list|(
-name|limit
-argument_list|,
-name|currentReservation
-argument_list|)
-expr_stmt|;
 comment|// Corner case to deal with applications being slightly over-limit
 if|if
 condition|(
-name|limit
+name|resourceLimit
 operator|.
 name|getMemory
 argument_list|()
@@ -2528,7 +2507,7 @@ operator|<
 literal|0
 condition|)
 block|{
-name|limit
+name|resourceLimit
 operator|.
 name|setMemory
 argument_list|(
@@ -2537,7 +2516,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|limit
+name|resourceLimit
 return|;
 block|}
 DECL|method|getQueue ()

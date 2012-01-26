@@ -772,6 +772,11 @@ specifier|private
 name|long
 name|usedMemory
 decl_stmt|;
+DECL|field|commitMemory
+specifier|private
+name|long
+name|commitMemory
+decl_stmt|;
 DECL|field|maxSingleShuffleLimit
 specifier|private
 specifier|final
@@ -1212,6 +1217,39 @@ operator|+
 name|memToMemMergeOutputsThreshold
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|maxSingleShuffleLimit
+operator|>=
+name|this
+operator|.
+name|mergeThreshold
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Invlaid configuration: "
+operator|+
+literal|"maxSingleShuffleLimit should be less than mergeThreshold"
+operator|+
+literal|"maxSingleShuffleLimit: "
+operator|+
+name|this
+operator|.
+name|maxSingleShuffleLimit
+operator|+
+literal|"mergeThreshold: "
+operator|+
+name|this
+operator|.
+name|mergeThreshold
+argument_list|)
+throw|;
+block|}
 name|boolean
 name|allowMemToMemMerge
 init|=
@@ -1473,6 +1511,12 @@ literal|") is greater than memoryLimit ("
 operator|+
 name|memoryLimit
 operator|+
+literal|")."
+operator|+
+literal|" CommitMemory is ("
+operator|+
+name|commitMemory
+operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
@@ -1494,6 +1538,12 @@ operator|+
 literal|") is lesser than memoryLimit ("
 operator|+
 name|memoryLimit
+operator|+
+literal|")."
+operator|+
+literal|"CommitMemory is ("
+operator|+
+name|commitMemory
 operator|+
 literal|")"
 argument_list|)
@@ -1566,6 +1616,10 @@ name|long
 name|size
 parameter_list|)
 block|{
+name|commitMemory
+operator|-=
+name|size
+expr_stmt|;
 name|usedMemory
 operator|-=
 name|size
@@ -1610,13 +1664,29 @@ name|inMemoryMapOutputs
 operator|.
 name|size
 argument_list|()
+operator|+
+literal|", commitMemory -> "
+operator|+
+name|commitMemory
+operator|+
+literal|", usedMemory ->"
+operator|+
+name|usedMemory
 argument_list|)
+expr_stmt|;
+name|commitMemory
+operator|+=
+name|mapOutput
+operator|.
+name|getSize
+argument_list|()
 expr_stmt|;
 synchronized|synchronized
 init|(
 name|inMemoryMerger
 init|)
 block|{
+comment|// Can hang if mergeThreshold is really low.
 if|if
 condition|(
 operator|!
@@ -1625,7 +1695,7 @@ operator|.
 name|isInProgress
 argument_list|()
 operator|&&
-name|usedMemory
+name|commitMemory
 operator|>=
 name|mergeThreshold
 condition|)
@@ -1634,13 +1704,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting inMemoryMerger's merge since usedMemory="
+literal|"Starting inMemoryMerger's merge since commitMemory="
 operator|+
-name|usedMemory
+name|commitMemory
 operator|+
 literal|"> mergeThreshold="
 operator|+
 name|mergeThreshold
+operator|+
+literal|". Current usedMemory="
+operator|+
+name|usedMemory
 argument_list|)
 expr_stmt|;
 name|inMemoryMapOutputs
