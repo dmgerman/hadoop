@@ -655,7 +655,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Return a protocol's signature and finger print from cache    *     * @param protocol a protocol class    * @param serverVersion protocol version    * @return its signature and finger print    */
-DECL|method|getSigFingerprint ( Class <? extends VersionedProtocol> protocol, long serverVersion)
+DECL|method|getSigFingerprint ( Class <?> protocol, long serverVersion)
 specifier|private
 specifier|static
 name|ProtocolSigFingerprint
@@ -664,8 +664,6 @@ parameter_list|(
 name|Class
 argument_list|<
 name|?
-extends|extends
-name|VersionedProtocol
 argument_list|>
 name|protocol
 parameter_list|,
@@ -807,6 +805,45 @@ comment|// null indicates a match
 block|}
 return|return
 name|sig
+operator|.
+name|signature
+return|;
+block|}
+DECL|method|getProtocolSignature (String protocolName, long version)
+specifier|public
+specifier|static
+name|ProtocolSignature
+name|getProtocolSignature
+parameter_list|(
+name|String
+name|protocolName
+parameter_list|,
+name|long
+name|version
+parameter_list|)
+throws|throws
+name|ClassNotFoundException
+block|{
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+init|=
+name|Class
+operator|.
+name|forName
+argument_list|(
+name|protocolName
+argument_list|)
+decl_stmt|;
+return|return
+name|getSigFingerprint
+argument_list|(
+name|protocol
+argument_list|,
+name|version
+argument_list|)
 operator|.
 name|signature
 return|;

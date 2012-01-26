@@ -60,18 +60,6 @@ name|lang
 operator|.
 name|reflect
 operator|.
-name|InvocationHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
 name|InvocationTargetException
 import|;
 end_import
@@ -93,16 +81,6 @@ operator|.
 name|io
 operator|.
 name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|Closeable
 import|;
 end_import
 
@@ -141,6 +119,22 @@ operator|.
 name|io
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Client
+operator|.
+name|ConnectionId
 import|;
 end_import
 
@@ -1043,9 +1037,7 @@ specifier|static
 class|class
 name|Invoker
 implements|implements
-name|InvocationHandler
-implements|,
-name|Closeable
+name|RpcInvocationHandler
 block|{
 DECL|field|remoteId
 specifier|private
@@ -1261,6 +1253,18 @@ name|client
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getConnectionId ()
+specifier|public
+name|ConnectionId
+name|getConnectionId
+parameter_list|()
+block|{
+return|return
+name|remoteId
+return|;
 block|}
 block|}
 comment|// for unit testing only
@@ -2638,6 +2642,36 @@ throw|;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getProtocolMetaInfoProxy ( ConnectionId connId, Configuration conf, SocketFactory factory)
+specifier|public
+name|ProtocolProxy
+argument_list|<
+name|ProtocolMetaInfoPB
+argument_list|>
+name|getProtocolMetaInfoProxy
+parameter_list|(
+name|ConnectionId
+name|connId
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|SocketFactory
+name|factory
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"This proxy is not supported"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class
