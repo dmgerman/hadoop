@@ -1683,7 +1683,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_AM_TASK_LISTENER_THREAD_COUNT
 init|=
-literal|10
+literal|30
 decl_stmt|;
 comment|/** How often the AM should send heartbeats to the RM.*/
 DECL|field|MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS

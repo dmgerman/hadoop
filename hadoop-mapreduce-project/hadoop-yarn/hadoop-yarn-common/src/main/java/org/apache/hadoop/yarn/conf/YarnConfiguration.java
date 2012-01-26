@@ -335,7 +335,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_CLIENT_THREAD_COUNT
 init|=
-literal|10
+literal|50
 decl_stmt|;
 comment|/** The Kerberos principal for the resource manager.*/
 DECL|field|RM_PRINCIPAL
@@ -400,7 +400,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_SCHEDULER_CLIENT_THREAD_COUNT
 init|=
-literal|10
+literal|50
 decl_stmt|;
 comment|/** The address of the RM web application.*/
 DECL|field|RM_WEBAPP_ADDRESS
@@ -727,7 +727,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_RESOURCE_TRACKER_CLIENT_THREAD_COUNT
 init|=
-literal|10
+literal|50
 decl_stmt|;
 comment|/** The class to use as the resource scheduler.*/
 DECL|field|RM_SCHEDULER
@@ -1029,7 +1029,7 @@ specifier|final
 name|int
 name|DEFAULT_NM_CONTAINER_MGR_THREAD_COUNT
 init|=
-literal|5
+literal|20
 decl_stmt|;
 comment|/** Number of threads used in cleanup.*/
 DECL|field|NM_DELETE_THREAD_COUNT
