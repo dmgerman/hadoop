@@ -536,6 +536,22 @@ operator|.
 name|nodeHTTPAddress
 return|;
 block|}
+DECL|method|setNodeHTTPAddress (String nodeHTTPAddress)
+specifier|public
+name|void
+name|setNodeHTTPAddress
+parameter_list|(
+name|String
+name|nodeHTTPAddress
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nodeHTTPAddress
+operator|=
+name|nodeHTTPAddress
+expr_stmt|;
+block|}
 DECL|method|getHealthStatus ()
 specifier|public
 name|String

@@ -261,6 +261,16 @@ argument_list|>
 name|getRMApps
 parameter_list|()
 function_decl|;
+DECL|method|getInactiveRMNodes ()
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|RMNode
+argument_list|>
+name|getInactiveRMNodes
+parameter_list|()
+function_decl|;
 DECL|method|getRMNodes ()
 name|ConcurrentMap
 argument_list|<

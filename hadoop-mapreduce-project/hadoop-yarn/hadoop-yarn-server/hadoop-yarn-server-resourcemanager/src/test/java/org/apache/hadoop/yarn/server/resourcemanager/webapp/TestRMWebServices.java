@@ -2725,6 +2725,15 @@ name|element
 argument_list|,
 literal|"rebootedNodes"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
+literal|"activeNodes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2768,7 +2777,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|11
+literal|12
 argument_list|,
 name|clusterinfo
 operator|.
@@ -2854,10 +2863,17 @@ name|getInt
 argument_list|(
 literal|"rebootedNodes"
 argument_list|)
+argument_list|,
+name|clusterinfo
+operator|.
+name|getInt
+argument_list|(
+literal|"activeNodes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterMetrics (int sub, int reservedMB, int availableMB, int allocMB, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes)
+DECL|method|verifyClusterMetrics (int sub, int reservedMB, int availableMB, int allocMB, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes)
 specifier|public
 name|void
 name|verifyClusterMetrics
@@ -2894,6 +2910,9 @@ name|decommissionedNodes
 parameter_list|,
 name|int
 name|rebootedNodes
+parameter_list|,
+name|int
+name|activeNodes
 parameter_list|)
 throws|throws
 name|JSONException
@@ -3038,7 +3057,22 @@ literal|"totalNodes doesn't match"
 argument_list|,
 name|clusterMetrics
 operator|.
-name|getNumNMs
+name|getNumActiveNMs
+argument_list|()
+operator|+
+name|clusterMetrics
+operator|.
+name|getNumLostNMs
+argument_list|()
+operator|+
+name|clusterMetrics
+operator|.
+name|getNumDecommisionedNMs
+argument_list|()
+operator|+
+name|clusterMetrics
+operator|.
+name|getNumRebootedNMs
 argument_list|()
 argument_list|,
 name|totalNodes
@@ -3090,6 +3124,18 @@ name|getNumRebootedNMs
 argument_list|()
 argument_list|,
 name|rebootedNodes
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"activeNodes doesn't match"
+argument_list|,
+name|clusterMetrics
+operator|.
+name|getNumActiveNMs
+argument_list|()
+argument_list|,
+name|activeNodes
 argument_list|)
 expr_stmt|;
 block|}

@@ -244,6 +244,11 @@ specifier|protected
 name|int
 name|rebootedNodes
 decl_stmt|;
+DECL|field|activeNodes
+specifier|protected
+name|int
+name|activeNodes
+decl_stmt|;
 DECL|method|ClusterMetricsInfo ()
 specifier|public
 name|ClusterMetricsInfo
@@ -350,11 +355,11 @@ name|allocatedMB
 expr_stmt|;
 name|this
 operator|.
-name|totalNodes
+name|activeNodes
 operator|=
 name|clusterMetrics
 operator|.
-name|getNumNMs
+name|getNumActiveNMs
 argument_list|()
 expr_stmt|;
 name|this
@@ -392,6 +397,18 @@ name|clusterMetrics
 operator|.
 name|getNumRebootedNMs
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|totalNodes
+operator|=
+name|activeNodes
+operator|+
+name|lostNodes
+operator|+
+name|decommissionedNodes
+operator|+
+name|rebootedNodes
 expr_stmt|;
 block|}
 DECL|method|getAppsSubmitted ()
@@ -476,6 +493,18 @@ return|return
 name|this
 operator|.
 name|totalNodes
+return|;
+block|}
+DECL|method|getActiveNodes ()
+specifier|public
+name|int
+name|getActiveNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|activeNodes
 return|;
 block|}
 DECL|method|getLostNodes ()

@@ -411,7 +411,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Total Nodes"
+literal|"Active Nodes"
 argument_list|)
 operator|.
 name|_
@@ -585,7 +585,7 @@ name|valueOf
 argument_list|(
 name|clusterMetrics
 operator|.
-name|getTotalNodes
+name|getActiveNodes
 argument_list|()
 argument_list|)
 argument_list|)
