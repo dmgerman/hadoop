@@ -1704,7 +1704,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS
 init|=
-literal|2000
+literal|1000
 decl_stmt|;
 comment|/**    * If contact with RM is lost, the AM will wait MR_AM_TO_RM_WAIT_INTERVAL_MS    * milliseconds before aborting. During this interval, AM will still try    * to contact the RM.    */
 DECL|field|MR_AM_TO_RM_WAIT_INTERVAL_MS
