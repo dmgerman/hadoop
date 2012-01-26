@@ -16751,14 +16751,6 @@ operator|!
 name|assertsOn
 condition|)
 return|return;
-name|int
-name|activeBlocks
-init|=
-name|blockManager
-operator|.
-name|getActiveBlockCount
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|blockTotal
@@ -16775,6 +16767,14 @@ block|{
 return|return;
 comment|// manual safe mode
 block|}
+name|int
+name|activeBlocks
+init|=
+name|blockManager
+operator|.
+name|getActiveBlockCount
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|(
