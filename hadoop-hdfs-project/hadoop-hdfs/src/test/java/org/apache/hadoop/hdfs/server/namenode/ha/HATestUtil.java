@@ -673,6 +673,38 @@ name|IOException
 throws|,
 name|URISyntaxException
 block|{
+return|return
+name|configureFailoverFs
+argument_list|(
+name|cluster
+argument_list|,
+name|conf
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**     * Gets the filesystem instance by setting the failover configurations    * @param cluster the single process DFS cluster    * @param conf cluster configuration    * @param nsIndex namespace index starting with zero    * @throws IOException if an error occurs rolling the edit log    */
+DECL|method|configureFailoverFs (MiniDFSCluster cluster, Configuration conf, int nsIndex)
+specifier|public
+specifier|static
+name|FileSystem
+name|configureFailoverFs
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|nsIndex
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|URISyntaxException
+block|{
 name|conf
 operator|=
 operator|new
@@ -696,6 +728,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|logicalName
+argument_list|,
+name|nsIndex
 argument_list|)
 expr_stmt|;
 name|FileSystem
@@ -720,7 +754,7 @@ return|return
 name|fs
 return|;
 block|}
-comment|/** Sets the required configurations for performing failover */
+comment|/** Sets the required configurations for performing failover of default namespace. */
 DECL|method|setFailoverConfigurations (MiniDFSCluster cluster, Configuration conf, String logicalName)
 specifier|public
 specifier|static
@@ -737,6 +771,38 @@ name|String
 name|logicalName
 parameter_list|)
 block|{
+name|setFailoverConfigurations
+argument_list|(
+name|cluster
+argument_list|,
+name|conf
+argument_list|,
+name|logicalName
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Sets the required configurations for performing failover.  */
+DECL|method|setFailoverConfigurations (MiniDFSCluster cluster, Configuration conf, String logicalName, int nsIndex)
+specifier|public
+specifier|static
+name|void
+name|setFailoverConfigurations
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|logicalName
+parameter_list|,
+name|int
+name|nsIndex
+parameter_list|)
+block|{
 name|InetSocketAddress
 name|nnAddr1
 init|=
@@ -744,7 +810,9 @@ name|cluster
 operator|.
 name|getNameNode
 argument_list|(
-literal|0
+literal|2
+operator|*
+name|nsIndex
 argument_list|)
 operator|.
 name|getNameNodeAddress
@@ -757,6 +825,10 @@ name|cluster
 operator|.
 name|getNameNode
 argument_list|(
+literal|2
+operator|*
+name|nsIndex
+operator|+
 literal|1
 argument_list|)
 operator|.
