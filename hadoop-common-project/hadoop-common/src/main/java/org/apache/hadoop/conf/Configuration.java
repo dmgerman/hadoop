@@ -1427,6 +1427,73 @@ return|return
 name|name
 return|;
 block|}
+DECL|method|handleDeprecation ()
+specifier|private
+name|void
+name|handleDeprecation
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Handling deprecation for all properties in config..."
+argument_list|)
+expr_stmt|;
+name|Set
+argument_list|<
+name|Object
+argument_list|>
+name|keys
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|Object
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|keys
+operator|.
+name|addAll
+argument_list|(
+name|getProps
+argument_list|()
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Object
+name|item
+range|:
+name|keys
+control|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Handling deprecation for "
+operator|+
+operator|(
+name|String
+operator|)
+name|item
+argument_list|)
+expr_stmt|;
+name|handleDeprecation
+argument_list|(
+operator|(
+name|String
+operator|)
+name|item
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 static|static
 block|{
 comment|//print deprecation warning if hadoop-site.xml is found in classpath
@@ -6380,10 +6447,10 @@ literal|"\n"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|getProps
+name|handleDeprecation
 argument_list|()
 expr_stmt|;
-comment|// ensure properties is set
+comment|//ensure properties is set and deprecation is handled
 for|for
 control|(
 name|Enumeration
