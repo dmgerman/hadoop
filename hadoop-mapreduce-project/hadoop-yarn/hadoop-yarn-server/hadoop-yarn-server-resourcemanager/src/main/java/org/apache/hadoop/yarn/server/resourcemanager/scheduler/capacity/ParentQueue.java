@@ -464,6 +464,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ActiveUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|NodeType
 import|;
 end_import
@@ -1434,6 +1454,19 @@ parameter_list|()
 block|{
 return|return
 name|maximumCapacity
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getActiveUsersManager ()
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
+block|{
+comment|// Should never be called since all applications are submitted to LeafQueues
+return|return
+literal|null
 return|;
 block|}
 annotation|@

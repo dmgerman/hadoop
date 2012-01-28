@@ -2371,6 +2371,11 @@ name|user
 argument_list|,
 name|queue
 argument_list|,
+name|queue
+operator|.
+name|getActiveUsersManager
+argument_list|()
+argument_list|,
 name|rmContext
 argument_list|,
 literal|null

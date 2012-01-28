@@ -250,6 +250,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ActiveUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerApp
 import|;
 end_import
@@ -504,6 +524,13 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|)
+function_decl|;
+comment|/**    * Get the {@link ActiveUsersManager} for the queue.    * @return the<code>ActiveUsersManager</code> for the queue    */
+DECL|method|getActiveUsersManager ()
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
 function_decl|;
 comment|/**    * Recover the state of the queue    * @param clusterResource the resource of the cluster    * @param application the application for which the container was allocated    * @param container the container that was recovered.    */
 DECL|method|recoverContainer (Resource clusterResource, SchedulerApp application, Container container)

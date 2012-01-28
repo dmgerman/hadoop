@@ -828,7 +828,7 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|method|SchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, RMContext rmContext, ApplicationStore store)
+DECL|method|SchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, ApplicationStore store)
 specifier|public
 name|SchedulerApp
 parameter_list|(
@@ -840,6 +840,9 @@ name|user
 parameter_list|,
 name|Queue
 name|queue
+parameter_list|,
+name|ActiveUsersManager
+name|activeUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -866,6 +869,8 @@ argument_list|,
 name|user
 argument_list|,
 name|queue
+argument_list|,
+name|activeUsersManager
 argument_list|,
 name|store
 argument_list|)

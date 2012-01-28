@@ -274,40 +274,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|factories
-operator|.
-name|RecordFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|factory
-operator|.
-name|providers
-operator|.
-name|RecordFactoryProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -382,6 +348,26 @@ name|RMNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNodeImpl
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class keeps track of all the consumption of an application. This also  * keeps track of current running/completed containers for the application.  */
 end_comment
@@ -450,19 +436,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|field|recordFactory
-specifier|private
-specifier|final
-name|RecordFactory
-name|recordFactory
-init|=
-name|RecordFactoryProvider
-operator|.
-name|getRecordFactory
-argument_list|(
-literal|null
-argument_list|)
-decl_stmt|;
 DECL|field|priorities
 specifier|final
 name|Set
@@ -527,11 +500,12 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|store
+comment|//private final ApplicationStore store;
+DECL|field|activeUsersManager
 specifier|private
 specifier|final
-name|ApplicationStore
-name|store
+name|ActiveUsersManager
+name|activeUsersManager
 decl_stmt|;
 comment|/* Allocated by scheduler */
 DECL|field|pending
@@ -541,7 +515,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|// for app metrics
-DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ApplicationStore store)
+DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, ApplicationStore store)
 specifier|public
 name|AppSchedulingInfo
 parameter_list|(
@@ -553,6 +527,9 @@ name|user
 parameter_list|,
 name|Queue
 name|queue
+parameter_list|,
+name|ActiveUsersManager
+name|activeUsersManager
 parameter_list|,
 name|ApplicationStore
 name|store
@@ -594,11 +571,12 @@ name|user
 operator|=
 name|user
 expr_stmt|;
+comment|//this.store = store;
 name|this
 operator|.
-name|store
+name|activeUsersManager
 operator|=
-name|store
+name|activeUsersManager
 expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
@@ -698,7 +676,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *     * @param requests    *          resources to be acquired    */
-DECL|method|updateResourceRequests (List<ResourceRequest> requests)
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
 specifier|synchronized
 specifier|public
 name|void
@@ -794,6 +772,32 @@ name|updatePendingResources
 operator|=
 literal|true
 expr_stmt|;
+comment|// Premature optimization?
+comment|// Assumes that we won't see more than one priority request updated
+comment|// in one call, reasonable assumption... however, it's totally safe
+comment|// to activate same application more than once.
+comment|// Thus we don't need another loop ala the one in decrementOutstanding()
+comment|// which is needed during deactivate.
+if|if
+condition|(
+name|request
+operator|.
+name|getNumContainers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|activeUsersManager
+operator|.
+name|activateApplication
+argument_list|(
+name|user
+argument_list|,
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|Map
 argument_list|<
@@ -1334,10 +1338,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Do not remove ANY
-name|ResourceRequest
-name|offSwitchRequest
-init|=
+name|decrementOutstanding
+argument_list|(
 name|requests
 operator|.
 name|get
@@ -1351,17 +1353,6 @@ name|RMNode
 operator|.
 name|ANY
 argument_list|)
-decl_stmt|;
-name|offSwitchRequest
-operator|.
-name|setNumContainers
-argument_list|(
-name|offSwitchRequest
-operator|.
-name|getNumContainers
-argument_list|()
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1432,10 +1423,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Do not remove ANY
-name|ResourceRequest
-name|offSwitchRequest
-init|=
+name|decrementOutstanding
+argument_list|(
 name|requests
 operator|.
 name|get
@@ -1449,17 +1438,6 @@ name|RMNode
 operator|.
 name|ANY
 argument_list|)
-decl_stmt|;
-name|offSwitchRequest
-operator|.
-name|setNumContainers
-argument_list|(
-name|offSwitchRequest
-operator|.
-name|getNumContainers
-argument_list|()
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1490,19 +1468,108 @@ name|container
 argument_list|)
 expr_stmt|;
 comment|// Update future requirements
-comment|// Do not remove ANY
-name|offSwitchRequest
-operator|.
-name|setNumContainers
+name|decrementOutstanding
 argument_list|(
+name|offSwitchRequest
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|decrementOutstanding ( ResourceRequest offSwitchRequest)
+specifier|synchronized
+specifier|private
+name|void
+name|decrementOutstanding
+parameter_list|(
+name|ResourceRequest
+name|offSwitchRequest
+parameter_list|)
+block|{
+name|int
+name|numOffSwitchContainers
+init|=
 name|offSwitchRequest
 operator|.
 name|getNumContainers
 argument_list|()
 operator|-
 literal|1
+decl_stmt|;
+comment|// Do not remove ANY
+name|offSwitchRequest
+operator|.
+name|setNumContainers
+argument_list|(
+name|numOffSwitchContainers
 argument_list|)
 expr_stmt|;
+comment|// Do we have any outstanding requests?
+comment|// If there is nothing, we need to deactivate this application
+if|if
+condition|(
+name|numOffSwitchContainers
+operator|==
+literal|0
+condition|)
+block|{
+name|boolean
+name|deactivate
+init|=
+literal|true
+decl_stmt|;
+for|for
+control|(
+name|Priority
+name|priority
+range|:
+name|getPriorities
+argument_list|()
+control|)
+block|{
+name|ResourceRequest
+name|request
+init|=
+name|getResourceRequest
+argument_list|(
+name|priority
+argument_list|,
+name|RMNodeImpl
+operator|.
+name|ANY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|request
+operator|.
+name|getNumContainers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|deactivate
+operator|=
+literal|false
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|deactivate
+condition|)
+block|{
+name|activeUsersManager
+operator|.
+name|deactivateApplication
+argument_list|(
+name|user
+argument_list|,
+name|applicationId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|allocate (Container container)
 specifier|synchronized
