@@ -8083,12 +8083,84 @@ case|:
 case|case
 name|RWR
 case|:
-return|return
+if|if
+condition|(
+operator|!
 name|storedBlock
 operator|.
 name|isComplete
 argument_list|()
+condition|)
+block|{
+return|return
+literal|false
 return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|!=
+name|iblk
+operator|.
+name|getGenerationStamp
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
+comment|// COMPLETE block, same genstamp
+if|if
+condition|(
+name|reportedState
+operator|==
+name|ReplicaState
+operator|.
+name|RBW
+condition|)
+block|{
+comment|// If it's a RBW report for a COMPLETE block, it may just be that
+comment|// the block report got a little bit delayed after the pipeline
+comment|// closed. So, ignore this report, assuming we will get a
+comment|// FINALIZED replica later. See HDFS-2791
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received an RBW replica for block "
+operator|+
+name|storedBlock
+operator|+
+literal|" on "
+operator|+
+name|dn
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": ignoring it, since the block is "
+operator|+
+literal|"complete with the same generation stamp."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
 case|case
 name|RUR
 case|:

@@ -544,6 +544,20 @@ name|common
 operator|.
 name|collect
 operator|.
+name|Lists
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|Sets
 import|;
 end_import
@@ -1757,6 +1771,26 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBPServiceActors ()
+specifier|synchronized
+name|List
+argument_list|<
+name|BPServiceActor
+argument_list|>
+name|getBPServiceActors
+parameter_list|()
+block|{
+return|return
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+name|bpServices
+argument_list|)
+return|;
 block|}
 comment|/**    * Update the BPOS's view of which NN is active, based on a heartbeat    * response from one of the actors.    *     * @param actor the actor which received the heartbeat    * @param nnHaState the HA-related heartbeat contents    */
 DECL|method|updateActorStatesFromHeartbeat ( BPServiceActor actor, NNHAStatusHeartbeat nnHaState)

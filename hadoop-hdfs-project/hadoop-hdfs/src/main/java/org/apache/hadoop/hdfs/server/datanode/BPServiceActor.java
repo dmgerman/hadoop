@@ -705,6 +705,17 @@ operator|=
 name|dnProtocol
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNameNodeProxy ()
+name|DatanodeProtocolClientSideTranslatorPB
+name|getNameNodeProxy
+parameter_list|()
+block|{
+return|return
+name|bpNamenode
+return|;
+block|}
 comment|/**    * Perform the first part of the handshake with the NameNode.    * This calls<code>versionRequest</code> to determine the NN's    * namespace and version info. It automatically retries until    * the NN responds or the DN is shutting down.    *     * @return the NamespaceInfo    */
 annotation|@
 name|VisibleForTesting
