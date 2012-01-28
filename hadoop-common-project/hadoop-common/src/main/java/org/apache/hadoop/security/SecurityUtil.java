@@ -1051,6 +1051,9 @@ operator|+
 literal|"/"
 operator|+
 name|fqdn
+operator|.
+name|toLowerCase
+argument_list|()
 operator|+
 literal|"@"
 operator|+
