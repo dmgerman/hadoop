@@ -665,10 +665,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|preallocate
-argument_list|()
-expr_stmt|;
-comment|// preallocate file if necessary
 name|doubleBuf
 operator|.
 name|flushTo
@@ -683,7 +679,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// metadata updates not needed because of preallocation
+comment|// metadata updates not needed
 name|fc
 operator|.
 name|position
@@ -697,6 +693,10 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// skip back the end-of-file marker
+name|preallocate
+argument_list|()
+expr_stmt|;
+comment|// preallocate file if necessary
 block|}
 comment|/**    * @return true if the number of buffered data exceeds the intial buffer size    */
 annotation|@

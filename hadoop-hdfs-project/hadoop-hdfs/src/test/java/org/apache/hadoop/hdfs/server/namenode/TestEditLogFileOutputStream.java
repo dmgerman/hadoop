@@ -264,6 +264,21 @@ specifier|public
 class|class
 name|TestEditLogFileOutputStream
 block|{
+DECL|field|PREALLOCATION_LENGTH
+specifier|private
+specifier|final
+specifier|static
+name|long
+name|PREALLOCATION_LENGTH
+init|=
+operator|(
+literal|1024
+operator|*
+literal|1024
+operator|)
+operator|+
+literal|4
+decl_stmt|;
 DECL|field|HEADER_LEN
 specifier|private
 specifier|final
@@ -410,11 +425,11 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Edit log should have 1MB of bytes allocated"
+literal|"Edit log should have 1MB pre-allocated, plus 4 bytes "
+operator|+
+literal|"for the version number"
 argument_list|,
-literal|1024
-operator|*
-literal|1024
+name|PREALLOCATION_LENGTH
 argument_list|,
 name|editLog
 operator|.
@@ -499,11 +514,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Edit log should be 1MB long"
+literal|"Edit log should be 1MB long, plus 4 bytes for the version number"
 argument_list|,
-literal|1024
-operator|*
-literal|1024
+name|PREALLOCATION_LENGTH
 argument_list|,
 name|editLog
 operator|.
