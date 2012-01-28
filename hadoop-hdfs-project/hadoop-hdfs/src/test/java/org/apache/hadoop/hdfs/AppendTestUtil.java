@@ -543,6 +543,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|write (OutputStream out, int offset, int length)
+specifier|public
 specifier|static
 name|void
 name|write

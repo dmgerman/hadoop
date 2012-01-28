@@ -3434,6 +3434,34 @@ argument_list|()
 expr_stmt|;
 return|return;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBpNamenode ()
+name|DatanodeProtocolClientSideTranslatorPB
+name|getBpNamenode
+parameter_list|()
+block|{
+return|return
+name|bpNamenode
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setBpNamenode (DatanodeProtocolClientSideTranslatorPB bpNamenode)
+name|void
+name|setBpNamenode
+parameter_list|(
+name|DatanodeProtocolClientSideTranslatorPB
+name|bpNamenode
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bpNamenode
+operator|=
+name|bpNamenode
+expr_stmt|;
+block|}
 block|}
 end_class
 
