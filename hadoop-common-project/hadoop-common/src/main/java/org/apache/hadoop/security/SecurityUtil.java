@@ -1612,9 +1612,17 @@ argument_list|(
 name|service
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Acquired token "
 operator|+
@@ -1622,6 +1630,7 @@ name|token
 argument_list|)
 expr_stmt|;
 comment|// Token#toString() prints service
+block|}
 block|}
 else|else
 block|{
