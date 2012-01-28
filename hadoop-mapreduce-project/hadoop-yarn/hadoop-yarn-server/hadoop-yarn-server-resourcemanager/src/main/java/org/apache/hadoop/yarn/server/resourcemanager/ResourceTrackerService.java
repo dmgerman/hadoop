@@ -1446,16 +1446,6 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Updating the metrics directly as reboot event cannot be
-comment|// triggered on a null rmNode
-name|ClusterMetrics
-operator|.
-name|getMetrics
-argument_list|()
-operator|.
-name|incrNumRebootedNMs
-argument_list|()
-expr_stmt|;
 return|return
 name|reboot
 return|;

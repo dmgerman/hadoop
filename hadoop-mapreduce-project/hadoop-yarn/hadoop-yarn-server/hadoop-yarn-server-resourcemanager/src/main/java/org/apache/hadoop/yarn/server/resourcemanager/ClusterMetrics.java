@@ -170,22 +170,6 @@ name|metrics2
 operator|.
 name|lib
 operator|.
-name|MutableCounterInt
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
 name|MutableGaugeInt
 import|;
 end_import
@@ -243,7 +227,7 @@ DECL|field|numNMs
 annotation|@
 name|Metric
 argument_list|(
-literal|"# of NMs"
+literal|"# of active NMs"
 argument_list|)
 name|MutableGaugeInt
 name|numNMs
@@ -254,7 +238,7 @@ name|Metric
 argument_list|(
 literal|"# of decommissioned NMs"
 argument_list|)
-name|MutableCounterInt
+name|MutableGaugeInt
 name|numDecommissionedNMs
 decl_stmt|;
 DECL|field|numLostNMs
@@ -263,7 +247,7 @@ name|Metric
 argument_list|(
 literal|"# of lost NMs"
 argument_list|)
-name|MutableCounterInt
+name|MutableGaugeInt
 name|numLostNMs
 decl_stmt|;
 DECL|field|numUnhealthyNMs
@@ -418,11 +402,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|//Total Nodemanagers
-DECL|method|getNumNMs ()
+comment|//Active Nodemanagers
+DECL|method|getNumActiveNMs ()
 specifier|public
 name|int
-name|getNumNMs
+name|getNumActiveNMs
 parameter_list|()
 block|{
 return|return
@@ -458,6 +442,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|decrDecommisionedNMs ()
+specifier|public
+name|void
+name|decrDecommisionedNMs
+parameter_list|()
+block|{
+name|numDecommissionedNMs
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+block|}
 comment|//Lost NMs
 DECL|method|getNumLostNMs ()
 specifier|public
@@ -481,6 +477,18 @@ block|{
 name|numLostNMs
 operator|.
 name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decrNumLostNMs ()
+specifier|public
+name|void
+name|decrNumLostNMs
+parameter_list|()
+block|{
+name|numLostNMs
+operator|.
+name|decr
 argument_list|()
 expr_stmt|;
 block|}
@@ -545,6 +553,18 @@ block|{
 name|numRebootedNMs
 operator|.
 name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decrNumRebootedNMs ()
+specifier|public
+name|void
+name|decrNumRebootedNMs
+parameter_list|()
+block|{
+name|numRebootedNMs
+operator|.
+name|decr
 argument_list|()
 expr_stmt|;
 block|}

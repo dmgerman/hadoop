@@ -1453,6 +1453,8 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|verifyChecksum
+condition|?
 operator|new
 name|FSDataInputStream
 argument_list|(
@@ -1465,6 +1467,16 @@ name|f
 argument_list|,
 name|bufferSize
 argument_list|)
+argument_list|)
+else|:
+name|getRawFileSystem
+argument_list|()
+operator|.
+name|open
+argument_list|(
+name|f
+argument_list|,
+name|bufferSize
 argument_list|)
 return|;
 block|}
