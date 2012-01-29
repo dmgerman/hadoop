@@ -453,10 +453,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|refreshNamenode ( RpcController unused, RefreshNamenodesRequestProto request)
+DECL|method|refreshNamenodes ( RpcController unused, RefreshNamenodesRequestProto request)
 specifier|public
 name|RefreshNamenodesResponseProto
-name|refreshNamenode
+name|refreshNamenodes
 parameter_list|(
 name|RpcController
 name|unused
