@@ -32,34 +32,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -90,22 +62,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
-operator|.
-name|HAServiceProtocol
-operator|.
-name|HAServiceState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -113,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helper for making {@link HAServiceProtocol} RPC calls. This helper  * unwraps the {@link RemoteException} to specific exceptions.  *   */
+comment|/**  * Helper for making {@link HAServiceProtocol} RPC calls. This helper  * unwraps the {@link RemoteException} to specific exceptions.  */
 end_comment
 
 begin_class

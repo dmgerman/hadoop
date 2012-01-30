@@ -671,7 +671,8 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setupFencer (String confStr)
-specifier|private
+specifier|public
+specifier|static
 name|NodeFencer
 name|setupFencer
 parameter_list|(

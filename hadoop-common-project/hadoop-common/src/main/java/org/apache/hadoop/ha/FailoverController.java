@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -98,6 +108,20 @@ name|HAServiceState
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * The FailOverController is responsible for electing an active service  * on startup or when the current active is changing (eg due to failure),  * monitoring the health of a service, and performing a fail-over when a  * new active service is either manually selected by a user or elected.  */
 end_comment
@@ -133,7 +157,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * @param toSvc service to make active    * @param toSvcName name of service to make active    * @throws FailoverFailedException if we should avoid failover    */
-DECL|method|preFailoverChecks (HAServiceProtocol toSvc, String toSvcName)
+DECL|method|preFailoverChecks (HAServiceProtocol toSvc, InetSocketAddress toSvcAddr)
 specifier|private
 specifier|static
 name|void
@@ -142,8 +166,8 @@ parameter_list|(
 name|HAServiceProtocol
 name|toSvc
 parameter_list|,
-name|String
-name|toSvcName
+name|InetSocketAddress
+name|toSvcAddr
 parameter_list|)
 throws|throws
 name|FailoverFailedException
@@ -172,7 +196,7 @@ name|msg
 init|=
 literal|"Unable to get service state for "
 operator|+
-name|toSvcName
+name|toSvcAddr
 decl_stmt|;
 name|LOG
 operator|.
@@ -250,7 +274,7 @@ throw|throw
 operator|new
 name|FailoverFailedException
 argument_list|(
-literal|"Got an io exception"
+literal|"Got an IO exception"
 argument_list|,
 name|e
 argument_list|)
@@ -258,8 +282,8 @@ throw|;
 block|}
 comment|// TODO(HA): ask toSvc if it's capable. Eg not in SM.
 block|}
-comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param fromSvcName name of currently active service    * @param toSvc service to make active    * @param toSvcName name of service to make active    * @throws FailoverFailedException if the failover fails    */
-DECL|method|failover (HAServiceProtocol fromSvc, String fromSvcName, HAServiceProtocol toSvc, String toSvcName)
+comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param fromSvcAddr addr of the currently active service    * @param toSvc service to make active    * @param toSvcAddr addr of the service to make active    * @param fencer for fencing fromSvc    * @param forceFence to fence fromSvc even if not strictly necessary    * @throws FailoverFailedException if the failover fails    */
+DECL|method|failover (HAServiceProtocol fromSvc, InetSocketAddress fromSvcAddr, HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, NodeFencer fencer, boolean forceFence)
 specifier|public
 specifier|static
 name|void
@@ -268,26 +292,48 @@ parameter_list|(
 name|HAServiceProtocol
 name|fromSvc
 parameter_list|,
-name|String
-name|fromSvcName
+name|InetSocketAddress
+name|fromSvcAddr
 parameter_list|,
 name|HAServiceProtocol
 name|toSvc
 parameter_list|,
-name|String
-name|toSvcName
+name|InetSocketAddress
+name|toSvcAddr
+parameter_list|,
+name|NodeFencer
+name|fencer
+parameter_list|,
+name|boolean
+name|forceFence
 parameter_list|)
 throws|throws
 name|FailoverFailedException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|fencer
+operator|!=
+literal|null
+argument_list|,
+literal|"failover requires a fencer"
+argument_list|)
+expr_stmt|;
 name|preFailoverChecks
 argument_list|(
 name|toSvc
 argument_list|,
-name|toSvcName
+name|toSvcAddr
 argument_list|)
 expr_stmt|;
 comment|// Try to make fromSvc standby
+name|boolean
+name|tryFence
+init|=
+literal|true
+decl_stmt|;
 try|try
 block|{
 name|HAServiceProtocolHelper
@@ -296,6 +342,15 @@ name|transitionToStandby
 argument_list|(
 name|fromSvc
 argument_list|)
+expr_stmt|;
+comment|// We should try to fence if we failed or it was forced
+name|tryFence
+operator|=
+name|forceFence
+condition|?
+literal|true
+else|:
+literal|false
 expr_stmt|;
 block|}
 catch|catch
@@ -310,7 +365,7 @@ name|warn
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|fromSvcName
+name|fromSvcAddr
 operator|+
 literal|" standby ("
 operator|+
@@ -325,8 +380,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e
+name|IOException
+name|ioe
 parameter_list|)
 block|{
 name|LOG
@@ -335,14 +390,43 @@ name|warn
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|fromSvcName
+name|fromSvcAddr
 operator|+
 literal|" standby (unable to connect)"
 argument_list|,
-name|e
+name|ioe
 argument_list|)
 expr_stmt|;
-comment|// TODO(HA): fence fromSvc and unfence on failback
+block|}
+comment|// Fence fromSvc if it's required or forced by the user
+if|if
+condition|(
+name|tryFence
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|fencer
+operator|.
+name|fence
+argument_list|(
+name|fromSvcAddr
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FailoverFailedException
+argument_list|(
+literal|"Unable to fence "
+operator|+
+name|fromSvcAddr
+operator|+
+literal|". Fencing failed."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|// Try to make toSvc active
 name|boolean
@@ -377,7 +461,7 @@ name|error
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|toSvcName
+name|toSvcAddr
 operator|+
 literal|" active ("
 operator|+
@@ -386,7 +470,7 @@ operator|.
 name|getMessage
 argument_list|()
 operator|+
-literal|"). Failing back"
+literal|"). Failing back."
 argument_list|)
 expr_stmt|;
 name|failed
@@ -400,8 +484,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e
+name|IOException
+name|ioe
 parameter_list|)
 block|{
 name|LOG
@@ -410,11 +494,11 @@ name|error
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|toSvcName
+name|toSvcAddr
 operator|+
-literal|" active (unable to connect). Failing back"
+literal|" active (unable to connect). Failing back."
 argument_list|,
-name|e
+name|ioe
 argument_list|)
 expr_stmt|;
 name|failed
@@ -423,10 +507,10 @@ literal|true
 expr_stmt|;
 name|cause
 operator|=
-name|e
+name|ioe
 expr_stmt|;
 block|}
-comment|// Try to failback if we failed to make toSvc active
+comment|// We failed to make toSvc active
 if|if
 condition|(
 name|failed
@@ -437,33 +521,50 @@ name|msg
 init|=
 literal|"Unable to failover to "
 operator|+
-name|toSvcName
+name|toSvcAddr
 decl_stmt|;
+comment|// Only try to failback if we didn't fence fromSvc
+if|if
+condition|(
+operator|!
+name|tryFence
+condition|)
+block|{
 try|try
 block|{
-name|HAServiceProtocolHelper
-operator|.
-name|transitionToActive
+comment|// Unconditionally fence toSvc in case it is still trying to
+comment|// become active, eg we timed out waiting for its response.
+name|failover
 argument_list|(
+name|toSvc
+argument_list|,
+name|toSvcAddr
+argument_list|,
 name|fromSvc
+argument_list|,
+name|fromSvcAddr
+argument_list|,
+name|fencer
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|ServiceFailedException
-name|sfe
+name|FailoverFailedException
+name|ffe
 parameter_list|)
 block|{
 name|msg
-operator|=
-literal|"Failback to "
+operator|+=
+literal|". Failback to "
 operator|+
-name|fromSvcName
+name|fromSvcAddr
 operator|+
 literal|" failed ("
 operator|+
-name|sfe
+name|ffe
 operator|.
 name|getMessage
 argument_list|()
@@ -478,27 +579,6 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|msg
-operator|=
-literal|"Failback to "
-operator|+
-name|fromSvcName
-operator|+
-literal|" failed (unable to connect)"
-expr_stmt|;
-name|LOG
-operator|.
-name|fatal
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
 block|}
 throw|throw
 operator|new
