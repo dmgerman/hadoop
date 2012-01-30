@@ -1967,6 +1967,8 @@ name|JobStats
 argument_list|(
 name|numMaps
 argument_list|,
+name|numReds
+argument_list|,
 name|fakeJob
 argument_list|)
 return|;
