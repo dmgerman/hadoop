@@ -421,7 +421,11 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Unexpected exception:"
+literal|"Expected to find '"
+operator|+
+name|string
+operator|+
+literal|"' but got unexpected exception:"
 operator|+
 name|StringUtils
 operator|.

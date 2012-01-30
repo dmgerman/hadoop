@@ -1483,6 +1483,20 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%d should have been>= %d"
+argument_list|,
+name|val
+operator|.
+name|getNumTransactions
+argument_list|()
+argument_list|,
+name|prevNumValid
+argument_list|)
+argument_list|,
 name|val
 operator|.
 name|getNumTransactions

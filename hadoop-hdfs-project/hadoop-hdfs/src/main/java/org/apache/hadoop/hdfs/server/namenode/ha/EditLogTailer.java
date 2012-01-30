@@ -1081,6 +1081,11 @@ condition|(
 name|editsLoaded
 operator|>
 literal|0
+operator|||
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|LOG

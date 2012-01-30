@@ -1562,9 +1562,13 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|assertTrue
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
 argument_list|(
-literal|true
+literal|"Gap in transactions, max txnid is 110, 0 txns from 31"
+argument_list|,
+name|ioe
 argument_list|)
 expr_stmt|;
 block|}

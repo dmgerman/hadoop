@@ -593,7 +593,7 @@ name|LogHeaderCorruptException
 name|corrupt
 parameter_list|)
 block|{
-comment|// If it's missing its header, this is equivalent to no transactions
+comment|// If the header is malformed or the wrong value, this indicates a corruption
 name|FSImage
 operator|.
 name|LOG
@@ -624,6 +624,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}

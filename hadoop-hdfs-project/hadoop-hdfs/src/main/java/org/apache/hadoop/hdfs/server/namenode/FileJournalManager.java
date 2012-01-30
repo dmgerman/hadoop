@@ -186,26 +186,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|JournalManager
-operator|.
-name|CorruptionException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|NNStorageRetentionManager
 operator|.
 name|StoragePurger
@@ -416,13 +396,6 @@ name|File
 name|currentInProgress
 init|=
 literal|null
-decl_stmt|;
-DECL|field|maxSeenTransaction
-specifier|private
-name|long
-name|maxSeenTransaction
-init|=
-literal|0L
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -799,7 +772,7 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 operator|||
 name|elf
@@ -1397,7 +1370,7 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 condition|)
 block|{
@@ -1560,13 +1533,6 @@ name|listFiles
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// make sure journal is aware of max seen transaction before moving corrupt
-comment|// files aside
-name|findMaxTransaction
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|EditLogFile
@@ -1598,6 +1564,40 @@ name|isInProgress
 argument_list|()
 condition|)
 block|{
+comment|// If the file is zero-length, we likely just crashed after opening the
+comment|// file, but before writing anything to it. Safe to delete it.
+if|if
+condition|(
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting zero-length edit log file "
+operator|+
+name|elf
+argument_list|)
+expr_stmt|;
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+continue|continue;
+block|}
 name|elf
 operator|.
 name|validateLog
@@ -1607,13 +1607,54 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 condition|)
 block|{
 name|elf
 operator|.
 name|moveAsideCorruptFile
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|CorruptionException
+argument_list|(
+literal|"In-progress edit log file is corrupt: "
+operator|+
+name|elf
+argument_list|)
+throw|;
+block|}
+comment|// If the file has a valid header (isn't corrupt) but contains no
+comment|// transactions, we likely just crashed after opening the file and
+comment|// writing the header, but before syncing any transactions. Safe to
+comment|// delete the file.
+if|if
+condition|(
+name|elf
+operator|.
+name|getNumTransactions
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting edit log file with zero transactions "
+operator|+
+name|elf
+argument_list|)
+expr_stmt|;
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|delete
 argument_list|()
 expr_stmt|;
 continue|continue;
@@ -1730,7 +1771,7 @@ return|return
 name|logFiles
 return|;
 block|}
-comment|/**     * Find the maximum transaction in the journal.    * This gets stored in a member variable, as corrupt edit logs    * will be moved aside, but we still need to remember their first    * tranaction id in the case that it was the maximum transaction in    * the journal.    */
+comment|/**     * Find the maximum transaction in the journal.    */
 DECL|method|findMaxTransaction (boolean inProgressOk)
 specifier|private
 name|long
@@ -1742,6 +1783,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|considerSeenTxId
+init|=
+literal|true
+decl_stmt|;
+name|long
+name|seenTxId
+init|=
+name|NNStorage
+operator|.
+name|readTransactionIdFile
+argument_list|(
+name|sd
+argument_list|)
+decl_stmt|;
+name|long
+name|maxSeenTransaction
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|EditLogFile
@@ -1764,6 +1825,33 @@ operator|!
 name|inProgressOk
 condition|)
 block|{
+if|if
+condition|(
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|&&
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|<=
+name|seenTxId
+condition|)
+block|{
+comment|// don't look at the seen_txid file if in-progress logs are not to be
+comment|// examined, and the value in seen_txid falls within the in-progress
+comment|// segment.
+name|considerSeenTxId
+operator|=
+literal|false
+expr_stmt|;
+block|}
 continue|continue;
 block|}
 if|if
@@ -1809,9 +1897,28 @@ name|maxSeenTransaction
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|considerSeenTxId
+condition|)
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|maxSeenTransaction
+argument_list|,
+name|seenTxId
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 return|return
 name|maxSeenTransaction
 return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1857,10 +1964,18 @@ specifier|private
 name|long
 name|lastTxId
 decl_stmt|;
-DECL|field|isCorrupt
+DECL|field|numTx
+specifier|private
+name|long
+name|numTx
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|hasCorruptHeader
 specifier|private
 name|boolean
-name|isCorrupt
+name|hasCorruptHeader
 init|=
 literal|false
 decl_stmt|;
@@ -2113,22 +2228,15 @@ argument_list|(
 name|file
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|this
+operator|.
+name|numTx
+operator|=
 name|val
 operator|.
 name|getNumTransactions
 argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-name|markCorrupt
-argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
 name|this
 operator|.
 name|lastTxId
@@ -2138,7 +2246,24 @@ operator|.
 name|getEndTxId
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|hasCorruptHeader
+operator|=
+name|val
+operator|.
+name|hasCorruptHeader
+argument_list|()
+expr_stmt|;
 block|}
+DECL|method|getNumTransactions ()
+name|long
+name|getNumTransactions
+parameter_list|()
+block|{
+return|return
+name|numTx
+return|;
 block|}
 DECL|method|isInProgress ()
 name|boolean
@@ -2158,23 +2283,13 @@ return|return
 name|file
 return|;
 block|}
-DECL|method|markCorrupt ()
-name|void
-name|markCorrupt
-parameter_list|()
-block|{
-name|isCorrupt
-operator|=
-literal|true
-expr_stmt|;
-block|}
-DECL|method|isCorrupt ()
+DECL|method|hasCorruptHeader ()
 name|boolean
-name|isCorrupt
+name|hasCorruptHeader
 parameter_list|()
 block|{
 return|return
-name|isCorrupt
+name|hasCorruptHeader
 return|;
 block|}
 DECL|method|moveAsideCorruptFile ()
@@ -2185,7 +2300,7 @@ throws|throws
 name|IOException
 block|{
 assert|assert
-name|isCorrupt
+name|hasCorruptHeader
 assert|;
 name|File
 name|src
@@ -2261,7 +2376,7 @@ name|format
 argument_list|(
 literal|"EditLogFile(file=%s,first=%019d,last=%019d,"
 operator|+
-literal|"inProgress=%b,corrupt=%b)"
+literal|"inProgress=%b,hasCorruptHeader=%b,numTx=%d)"
 argument_list|,
 name|file
 operator|.
@@ -2275,7 +2390,9 @@ argument_list|,
 name|isInProgress
 argument_list|()
 argument_list|,
-name|isCorrupt
+name|hasCorruptHeader
+argument_list|,
+name|numTx
 argument_list|)
 return|;
 block|}

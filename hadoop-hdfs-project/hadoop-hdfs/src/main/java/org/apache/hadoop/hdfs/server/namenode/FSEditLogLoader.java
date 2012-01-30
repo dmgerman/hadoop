@@ -3443,6 +3443,8 @@ argument_list|,
 name|firstTxId
 argument_list|,
 name|lastTxId
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -3453,20 +3455,29 @@ name|EditLogValidation
 block|{
 DECL|field|validLength
 specifier|private
+specifier|final
 name|long
 name|validLength
 decl_stmt|;
 DECL|field|startTxId
 specifier|private
+specifier|final
 name|long
 name|startTxId
 decl_stmt|;
 DECL|field|endTxId
 specifier|private
+specifier|final
 name|long
 name|endTxId
 decl_stmt|;
-DECL|method|EditLogValidation (long validLength, long startTxId, long endTxId)
+DECL|field|corruptionDetected
+specifier|private
+specifier|final
+name|boolean
+name|corruptionDetected
+decl_stmt|;
+DECL|method|EditLogValidation (long validLength, long startTxId, long endTxId, boolean corruptionDetected)
 name|EditLogValidation
 parameter_list|(
 name|long
@@ -3477,6 +3488,9 @@ name|startTxId
 parameter_list|,
 name|long
 name|endTxId
+parameter_list|,
+name|boolean
+name|corruptionDetected
 parameter_list|)
 block|{
 name|this
@@ -3496,6 +3510,12 @@ operator|.
 name|endTxId
 operator|=
 name|endTxId
+expr_stmt|;
+name|this
+operator|.
+name|corruptionDetected
+operator|=
+name|corruptionDetected
 expr_stmt|;
 block|}
 DECL|method|getValidLength ()
@@ -3557,6 +3577,15 @@ name|startTxId
 operator|)
 operator|+
 literal|1
+return|;
+block|}
+DECL|method|hasCorruptHeader ()
+name|boolean
+name|hasCorruptHeader
+parameter_list|()
+block|{
+return|return
+name|corruptionDetected
 return|;
 block|}
 block|}

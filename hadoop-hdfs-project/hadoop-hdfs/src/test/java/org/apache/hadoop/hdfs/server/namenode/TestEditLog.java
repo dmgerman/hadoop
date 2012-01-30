@@ -3276,6 +3276,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// should succeed - only one corrupt log dir
 DECL|method|testCrashRecoveryEmptyLogOneDir ()
 specifier|public
 name|void
@@ -3289,9 +3290,12 @@ argument_list|(
 literal|false
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should fail - seen_txid updated to 3, but no log dir contains txid 3
 DECL|method|testCrashRecoveryEmptyLogBothDirs ()
 specifier|public
 name|void
@@ -3305,9 +3309,12 @@ argument_list|(
 literal|true
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should succeed - only one corrupt log dir
 DECL|method|testCrashRecoveryEmptyLogOneDirNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -3321,9 +3328,12 @@ argument_list|(
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should succeed - both log dirs corrupt, but seen_txid never updated
 DECL|method|testCrashRecoveryEmptyLogBothDirsNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -3337,11 +3347,13 @@ argument_list|(
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that the NN handles the corruption properly    * after it crashes just after creating an edit log    * (ie before writing START_LOG_SEGMENT). In the case    * that all logs have this problem, it should mark them    * as corrupt instead of trying to finalize them.    *     * @param inBothDirs if true, there will be a truncated log in    * both of the edits directories. If false, the truncated log    * will only be in one of the directories. In both cases, the    * NN should fail to start up, because it's aware that txid 3    * was reached, but unable to find a non-corrupt log starting there.    * @param updateTransactionIdFile if true update the seen_txid file.    * If false, the it will not be updated. This will simulate a case     * where the NN crashed between creating the new segment and updating    * seen_txid.     */
-DECL|method|doTestCrashRecoveryEmptyLog (boolean inBothDirs, boolean updateTransactionIdFile)
+comment|/**    * Test that the NN handles the corruption properly    * after it crashes just after creating an edit log    * (ie before writing START_LOG_SEGMENT). In the case    * that all logs have this problem, it should mark them    * as corrupt instead of trying to finalize them.    *     * @param inBothDirs if true, there will be a truncated log in    * both of the edits directories. If false, the truncated log    * will only be in one of the directories. In both cases, the    * NN should fail to start up, because it's aware that txid 3    * was reached, but unable to find a non-corrupt log starting there.    * @param updateTransactionIdFile if true update the seen_txid file.    * If false, it will not be updated. This will simulate a case where    * the NN crashed between creating the new segment and updating the    * seen_txid file.    * @param shouldSucceed true if the test is expected to succeed.    */
+DECL|method|doTestCrashRecoveryEmptyLog (boolean inBothDirs, boolean updateTransactionIdFile, boolean shouldSucceed)
 specifier|private
 name|void
 name|doTestCrashRecoveryEmptyLog
@@ -3351,6 +3363,9 @@ name|inBothDirs
 parameter_list|,
 name|boolean
 name|updateTransactionIdFile
+parameter_list|,
+name|boolean
+name|shouldSucceed
 parameter_list|)
 throws|throws
 name|Exception
@@ -3471,6 +3486,25 @@ literal|3
 argument_list|)
 argument_list|)
 decl_stmt|;
+operator|new
+name|EditLogFileOutputStream
+argument_list|(
+name|log
+argument_list|,
+literal|1024
+argument_list|)
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|inBothDirs
+condition|)
+block|{
+break|break;
+block|}
 name|NNStorage
 name|storage
 init|=
@@ -3513,25 +3547,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-operator|new
-name|EditLogFileOutputStream
-argument_list|(
-name|log
-argument_list|,
-literal|1024
-argument_list|)
-operator|.
-name|create
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|inBothDirs
-condition|)
-block|{
-break|break;
-block|}
 block|}
 try|try
 block|{
@@ -3558,17 +3573,44 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|shouldSucceed
+condition|)
+block|{
 name|fail
 argument_list|(
-literal|"Did not fail to start with all-corrupt logs"
+literal|"Should not have succeeded in startin cluster"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)
+block|{
+if|if
+condition|(
+name|shouldSucceed
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Should have succeeded in starting cluster, but failed"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
+else|else
 block|{
 name|GenericTestUtils
 operator|.
@@ -3580,11 +3622,15 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|class|EditLogByteInputStream
 specifier|private
@@ -5299,12 +5345,6 @@ literal|1
 decl_stmt|;
 try|try
 block|{
-name|Iterable
-argument_list|<
-name|EditLogInputStream
-argument_list|>
-name|editStreams
-init|=
 name|editlog
 operator|.
 name|selectInputStreams
@@ -5315,7 +5355,7 @@ literal|4
 operator|*
 name|TXNS_PER_ROLL
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"Should have thrown exception"
