@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -267,7 +277,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Standard fencing methods included with HDFS.    */
+comment|/**    * Standard fencing methods included with Hadoop.    */
 DECL|field|STANDARD_METHODS
 specifier|private
 specifier|static
@@ -341,11 +351,14 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|fence ()
+DECL|method|fence (InetSocketAddress serviceAddr)
 specifier|public
 name|boolean
 name|fence
-parameter_list|()
+parameter_list|(
+name|InetSocketAddress
+name|serviceAddr
+parameter_list|)
 block|{
 name|LOG
 operator|.
@@ -400,6 +413,8 @@ name|method
 operator|.
 name|tryFence
 argument_list|(
+name|serviceAddr
+argument_list|,
 name|method
 operator|.
 name|arg

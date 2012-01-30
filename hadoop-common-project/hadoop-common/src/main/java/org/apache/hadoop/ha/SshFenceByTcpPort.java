@@ -32,17 +32,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|UnknownHostException
+name|InetSocketAddress
 import|;
 end_import
 
@@ -185,7 +175,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([username@]nnhost[:ssh-port], target-port)</code>  * where the first argument specifies the username, host, and port to ssh  * into, and the second argument specifies the port on which the target  * NN process is listening on.  *<p>  * For example,<code>sshfence(other-nn, 8020)<code> will SSH into  *<code>other-nn<code> as the current user on the standard SSH port,  * then kill whatever process is listening on port 8020.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.namenode.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
+comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([[username][:ssh-port]])</code>  * where the optional argument specifies the username and port to use  * with ssh.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.namenode.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
 end_comment
 
 begin_class
@@ -240,7 +230,7 @@ name|CONF_IDENTITIES_KEY
 init|=
 literal|"dfs.namenode.ha.fencing.ssh.private-key-files"
 decl_stmt|;
-comment|/**    * Verify that the arguments are parseable and that the host    * can be resolved.    */
+comment|/**    * Verify that the argument, if given, in the conf is parseable.    */
 annotation|@
 name|Override
 DECL|method|checkArgs (String argStr)
@@ -254,53 +244,44 @@ parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
 block|{
+if|if
+condition|(
+name|argStr
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Use a dummy service when checking the arguments defined
+comment|// in the configuration are parseable.
 name|Args
 name|args
 init|=
 operator|new
 name|Args
 argument_list|(
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"localhost"
+argument_list|,
+literal|8020
+argument_list|)
+argument_list|,
 name|argStr
 argument_list|)
 decl_stmt|;
-try|try
-block|{
-name|InetAddress
-operator|.
-name|getByName
-argument_list|(
-name|args
-operator|.
-name|host
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|UnknownHostException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|BadFencingConfigurationException
-argument_list|(
-literal|"Unknown host: "
-operator|+
-name|args
-operator|.
-name|host
-argument_list|)
-throw|;
 block|}
 block|}
 annotation|@
 name|Override
-DECL|method|tryFence (String argsStr)
+DECL|method|tryFence (InetSocketAddress serviceAddr, String argsStr)
 specifier|public
 name|boolean
 name|tryFence
 parameter_list|(
+name|InetSocketAddress
+name|serviceAddr
+parameter_list|,
 name|String
 name|argsStr
 parameter_list|)
@@ -313,6 +294,8 @@ init|=
 operator|new
 name|Args
 argument_list|(
+name|serviceAddr
+argument_list|,
 name|argsStr
 argument_list|)
 decl_stmt|;
@@ -626,12 +609,12 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// the NN is still listening - we are unable to fence
+comment|// the service is still listening - we are unable to fence
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to fence NN - it is running but we cannot kill it"
+literal|"Unable to fence - it is running but we cannot kill it"
 argument_list|)
 expr_stmt|;
 return|return
@@ -644,7 +627,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Verified that the NN is down."
+literal|"Verified that the service is down."
 argument_list|)
 expr_stmt|;
 return|return
@@ -950,18 +933,18 @@ specifier|static
 class|class
 name|Args
 block|{
-DECL|field|USER_HOST_PORT_RE
+DECL|field|USER_PORT_RE
 specifier|private
 specifier|static
 specifier|final
 name|Pattern
-name|USER_HOST_PORT_RE
+name|USER_PORT_RE
 init|=
 name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"(?:(.+?)@)?([^:]+?)(?:\\:(\\d+))?"
+literal|"([^:]+?)?(?:\\:(\\d+))?"
 argument_list|)
 decl_stmt|;
 DECL|field|DEFAULT_SSH_PORT
@@ -973,98 +956,86 @@ name|DEFAULT_SSH_PORT
 init|=
 literal|22
 decl_stmt|;
-DECL|field|user
-specifier|final
-name|String
-name|user
-decl_stmt|;
 DECL|field|host
-specifier|final
 name|String
 name|host
 decl_stmt|;
-DECL|field|sshPort
-specifier|final
-name|int
-name|sshPort
-decl_stmt|;
 DECL|field|targetPort
-specifier|final
 name|int
 name|targetPort
 decl_stmt|;
-DECL|method|Args (String args)
+DECL|field|user
+name|String
+name|user
+decl_stmt|;
+DECL|field|sshPort
+name|int
+name|sshPort
+decl_stmt|;
+DECL|method|Args (InetSocketAddress serviceAddr, String arg)
 specifier|public
 name|Args
 parameter_list|(
+name|InetSocketAddress
+name|serviceAddr
+parameter_list|,
 name|String
-name|args
+name|arg
 parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
 block|{
+name|host
+operator|=
+name|serviceAddr
+operator|.
+name|getHostName
+argument_list|()
+expr_stmt|;
+name|targetPort
+operator|=
+name|serviceAddr
+operator|.
+name|getPort
+argument_list|()
+expr_stmt|;
+name|user
+operator|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"user.name"
+argument_list|)
+expr_stmt|;
+name|sshPort
+operator|=
+name|DEFAULT_SSH_PORT
+expr_stmt|;
+comment|// Parse optional user and ssh port
 if|if
 condition|(
-name|args
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|BadFencingConfigurationException
-argument_list|(
-literal|"Must specify args for ssh fencing configuration"
-argument_list|)
-throw|;
-block|}
-name|String
-index|[]
-name|argList
-init|=
-name|args
-operator|.
-name|split
-argument_list|(
-literal|",\\s*"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|argList
-operator|.
-name|length
+name|arg
 operator|!=
-literal|2
+literal|null
+operator|&&
+operator|!
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|arg
+argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|BadFencingConfigurationException
-argument_list|(
-literal|"Incorrect number of arguments: "
-operator|+
-name|args
-argument_list|)
-throw|;
-block|}
-comment|// Parse SSH destination.
-name|String
-name|sshDestArg
-init|=
-name|argList
-index|[
-literal|0
-index|]
-decl_stmt|;
 name|Matcher
 name|m
 init|=
-name|USER_HOST_PORT_RE
+name|USER_PORT_RE
 operator|.
 name|matcher
 argument_list|(
-name|sshDestArg
+name|arg
 argument_list|)
 decl_stmt|;
 if|if
@@ -1080,9 +1051,9 @@ throw|throw
 operator|new
 name|BadFencingConfigurationException
 argument_list|(
-literal|"Unable to parse SSH destination: "
+literal|"Unable to parse user and SSH port: "
 operator|+
-name|sshDestArg
+name|arg
 argument_list|)
 throw|;
 block|}
@@ -1108,34 +1079,13 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|user
-operator|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
-expr_stmt|;
-block|}
-name|host
-operator|=
-name|m
-operator|.
-name|group
-argument_list|(
-literal|2
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|m
 operator|.
 name|group
 argument_list|(
-literal|3
+literal|2
 argument_list|)
 operator|!=
 literal|null
@@ -1149,29 +1099,12 @@ name|m
 operator|.
 name|group
 argument_list|(
-literal|3
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|sshPort
-operator|=
-name|DEFAULT_SSH_PORT
-expr_stmt|;
 block|}
-comment|// Parse target port.
-name|targetPort
-operator|=
-name|parseConfiggedPort
-argument_list|(
-name|argList
-index|[
-literal|1
-index|]
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|parseConfiggedPort (String portStr)
 specifier|private

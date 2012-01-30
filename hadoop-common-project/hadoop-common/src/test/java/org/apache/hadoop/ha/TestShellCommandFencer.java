@@ -30,6 +30,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -211,13 +221,26 @@ name|void
 name|testBasicSuccessFailure
 parameter_list|()
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"host"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fencer
 operator|.
 name|tryFence
 argument_list|(
-literal|"exit 0"
+name|addr
+argument_list|,
+literal|"echo"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -227,6 +250,8 @@ name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"exit 1"
 argument_list|)
 argument_list|)
@@ -238,6 +263,8 @@ name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"xxxxxxxxxxxx"
 argument_list|)
 argument_list|)
@@ -245,10 +272,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCheckArgs ()
+DECL|method|testCheckNoArgs ()
 specifier|public
 name|void
-name|testCheckArgs
+name|testCheckNoArgs
 parameter_list|()
 block|{
 try|try
@@ -313,6 +340,76 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testCheckParensNoArgs ()
+specifier|public
+name|void
+name|testCheckParensNoArgs
+parameter_list|()
+block|{
+try|try
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|NodeFencer
+operator|.
+name|CONF_METHODS_KEY
+argument_list|,
+literal|"shell()"
+argument_list|)
+expr_stmt|;
+operator|new
+name|NodeFencer
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Didn't throw when passing no args to shell"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|BadFencingConfigurationException
+name|confe
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Unexpected exception:"
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|confe
+argument_list|)
+argument_list|,
+name|confe
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Unable to parse line: 'shell()'"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Test that lines on stdout get passed as INFO    * level messages    */
 annotation|@
 name|Test
@@ -322,12 +419,25 @@ name|void
 name|testStdoutLogging
 parameter_list|()
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"host"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"echo hello"
 argument_list|)
 argument_list|)
@@ -347,7 +457,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo hello: hello"
+literal|"echo hello: host:1234 hello"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -361,12 +471,25 @@ name|void
 name|testStderrLogging
 parameter_list|()
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"host"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"echo hello>&2"
 argument_list|)
 argument_list|)
@@ -386,7 +509,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo hello>&2: hello"
+literal|"echo hello>&2: host:1234 hello"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -400,10 +523,23 @@ name|void
 name|testConfAsEnvironment
 parameter_list|()
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"host"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
 name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"echo $in_fencing_tests"
 argument_list|)
 expr_stmt|;
@@ -422,7 +558,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo $in...ing_tests: yessir"
+literal|"echo $in...ing_tests: host:1234 yessir"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -441,12 +577,25 @@ name|void
 name|testSubprocessInputIsClosed
 parameter_list|()
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+literal|"host"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
 name|assertFalse
 argument_list|(
 name|fencer
 operator|.
 name|tryFence
 argument_list|(
+name|addr
+argument_list|,
 literal|"read"
 argument_list|)
 argument_list|)
