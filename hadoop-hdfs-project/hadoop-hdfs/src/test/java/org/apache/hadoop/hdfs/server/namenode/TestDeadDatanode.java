@@ -659,7 +659,13 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|""
+name|ReceivedDeletedBlockInfo
+operator|.
+name|BlockStatus
+operator|.
+name|RECEIVED_BLOCK
+argument_list|,
+literal|null
 argument_list|)
 block|}
 decl_stmt|;

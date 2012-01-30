@@ -1239,9 +1239,9 @@ block|}
 block|}
 block|}
 comment|/*    * Informing the name node could take a long long time! Should we wait    * till namenode is informed before responding with success to the    * client? For now we don't.    */
-DECL|method|notifyNamenodeReceivedBlock (ReceivedDeletedBlockInfo bInfo)
+DECL|method|notifyNamenodeBlockImmediately (ReceivedDeletedBlockInfo bInfo)
 name|void
-name|notifyNamenodeReceivedBlock
+name|notifyNamenodeBlockImmediately
 parameter_list|(
 name|ReceivedDeletedBlockInfo
 name|bInfo
@@ -1480,6 +1480,13 @@ operator|.
 name|blockReportInterval
 condition|)
 block|{
+comment|// Flush any block information that precedes the block report. Otherwise
+comment|// we have a chance that we will miss the delHint information
+comment|// or we will report an RBW replica after the BlockReport already reports
+comment|// a FINALIZED one.
+name|reportReceivedDeletedBlocks
+argument_list|()
+expr_stmt|;
 comment|// Create block report
 name|long
 name|brCreateStartTime

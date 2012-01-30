@@ -10723,6 +10723,40 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+name|processAndHandleReportedBlock
+argument_list|(
+name|node
+argument_list|,
+name|block
+argument_list|,
+name|ReplicaState
+operator|.
+name|FINALIZED
+argument_list|,
+name|delHintNode
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|processAndHandleReportedBlock (DatanodeDescriptor node, Block block, ReplicaState reportedState, DatanodeDescriptor delHintNode)
+specifier|private
+name|void
+name|processAndHandleReportedBlock
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|,
+name|Block
+name|block
+parameter_list|,
+name|ReplicaState
+name|reportedState
+parameter_list|,
+name|DatanodeDescriptor
+name|delHintNode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 comment|// blockReceived reports a finalized block
 name|Collection
 argument_list|<
@@ -10782,9 +10816,7 @@ name|node
 argument_list|,
 name|block
 argument_list|,
-name|ReplicaState
-operator|.
-name|FINALIZED
+name|reportedState
 argument_list|,
 name|toAdd
 argument_list|,
@@ -10924,11 +10956,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** The given node is reporting that it received/deleted certain blocks. */
-DECL|method|blockReceivedAndDeleted (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo receivedAndDeletedBlocks[] )
+comment|/**    * The given node is reporting incremental information about some blocks.    * This includes blocks that are starting to be received, completed being    * received, or deleted.    */
+DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo blockInfos[] )
 specifier|public
 name|void
-name|blockReceivedAndDeleted
+name|processIncrementalBlockReport
 parameter_list|(
 specifier|final
 name|DatanodeID
@@ -10940,7 +10972,7 @@ name|poolId
 parameter_list|,
 specifier|final
 name|ReceivedDeletedBlockInfo
-name|receivedAndDeletedBlocks
+name|blockInfos
 index|[]
 parameter_list|)
 throws|throws
@@ -10958,6 +10990,11 @@ literal|0
 decl_stmt|;
 name|int
 name|deleted
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|receiving
 init|=
 literal|0
 decl_stmt|;
@@ -10992,7 +11029,7 @@ name|stateChangeLog
 operator|.
 name|warn
 argument_list|(
-literal|"BLOCK* blockReceivedDeleted"
+literal|"BLOCK* processIncrementalBlockReport"
 operator|+
 literal|" is received from dead or unregistered node "
 operator|+
@@ -11006,44 +11043,32 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Got blockReceivedDeleted message from unregistered or dead node"
+literal|"Got incremental block report from unregistered or dead node"
 argument_list|)
 throw|;
 block|}
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|receivedAndDeletedBlocks
-operator|.
-name|length
-condition|;
-name|i
-operator|++
+name|ReceivedDeletedBlockInfo
+name|rdbi
+range|:
+name|blockInfos
 control|)
 block|{
-if|if
+switch|switch
 condition|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
-name|isDeletedBlock
+name|getStatus
 argument_list|()
 condition|)
 block|{
+case|case
+name|DELETED_BLOCK
+case|:
 name|removeStoredBlock
 argument_list|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
 name|getBlock
 argument_list|()
@@ -11054,25 +11079,20 @@ expr_stmt|;
 name|deleted
 operator|++
 expr_stmt|;
-block|}
-else|else
-block|{
+break|break;
+case|case
+name|RECEIVED_BLOCK
+case|:
 name|addBlock
 argument_list|(
 name|node
 argument_list|,
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
 name|getBlock
 argument_list|()
 argument_list|,
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
 name|getDelHints
 argument_list|()
@@ -11081,6 +11101,61 @@ expr_stmt|;
 name|received
 operator|++
 expr_stmt|;
+break|break;
+case|case
+name|RECEIVING_BLOCK
+case|:
+name|receiving
+operator|++
+expr_stmt|;
+name|processAndHandleReportedBlock
+argument_list|(
+name|node
+argument_list|,
+name|rdbi
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|ReplicaState
+operator|.
+name|RBW
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+name|String
+name|msg
+init|=
+literal|"Unknown block status code reported by "
+operator|+
+name|nodeID
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|rdbi
+decl_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+assert|assert
+literal|false
+operator|:
+name|msg
+assert|;
+comment|// if assertions are enabled, throw.
+break|break;
 block|}
 if|if
 condition|(
@@ -11098,28 +11173,18 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* block"
+literal|"BLOCK* block "
 operator|+
 operator|(
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
-name|isDeletedBlock
+name|getStatus
 argument_list|()
-condition|?
-literal|"Deleted"
-else|:
-literal|"Received"
 operator|)
 operator|+
 literal|": "
 operator|+
-name|receivedAndDeletedBlocks
-index|[
-name|i
-index|]
+name|rdbi
 operator|.
 name|getBlock
 argument_list|()
@@ -11148,7 +11213,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"*BLOCK* NameNode.blockReceivedAndDeleted: "
+literal|"*BLOCK* NameNode.processIncrementalBlockReport: "
 operator|+
 literal|"from "
 operator|+
@@ -11156,6 +11221,12 @@ name|nodeID
 operator|.
 name|getName
 argument_list|()
+operator|+
+literal|" receiving: "
+operator|+
+name|receiving
+operator|+
+literal|", "
 operator|+
 literal|" received: "
 operator|+

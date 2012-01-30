@@ -3899,9 +3899,63 @@ else|else
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Cannot find BPOfferService for reporting block received for bpid="
+operator|+
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// calls specific to BP
+DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block)
+specifier|protected
+name|void
+name|notifyNamenodeReceivingBlock
+parameter_list|(
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+name|BPOfferService
+name|bpos
+init|=
+name|blockPoolManager
+operator|.
+name|get
+argument_list|(
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|bpos
+operator|!=
+literal|null
+condition|)
+block|{
+name|bpos
+operator|.
+name|notifyNamenodeReceivingBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot find BPOfferService for reporting block receiving for bpid="
 operator|+
 name|block
 operator|.
@@ -3953,7 +4007,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Cannot find BPOfferService for reporting block deleted for bpid="
 operator|+

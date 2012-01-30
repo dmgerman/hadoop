@@ -22012,7 +22012,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|blockReceivedAndDeleted
+name|processIncrementalBlockReport
 argument_list|(
 name|m
 operator|.
