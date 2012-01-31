@@ -3240,7 +3240,9 @@ literal|"Unable to start log segment "
 operator|+
 name|segmentTxId
 operator|+
-literal|": no journals successfully started."
+literal|": too few journals successfully started."
+argument_list|,
+name|ex
 argument_list|)
 throw|;
 block|}

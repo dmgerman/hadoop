@@ -3969,7 +3969,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"no journals successfully started"
+literal|"too few journals successfully started"
 argument_list|,
 name|ioe
 argument_list|)

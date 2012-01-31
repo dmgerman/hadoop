@@ -310,8 +310,8 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|assertFalse
+argument_list|(
 name|testResourceScenario
 argument_list|(
 literal|1
@@ -324,35 +324,8 @@ literal|0
 argument_list|,
 literal|2
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Should fail if there are more minimum redundant resources than "
-operator|+
-literal|"total redundant resources"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|RuntimeException
-name|rte
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|rte
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-literal|"Need a minimum"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
