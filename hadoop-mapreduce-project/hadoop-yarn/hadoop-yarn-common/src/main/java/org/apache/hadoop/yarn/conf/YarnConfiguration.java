@@ -1904,6 +1904,16 @@ name|YARN_PREFIX
 operator|+
 literal|"application.classpath"
 decl_stmt|;
+comment|/** Container temp directory */
+DECL|field|DEFAULT_CONTAINER_TEMP_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_CONTAINER_TEMP_DIR
+init|=
+literal|"./tmp"
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration
