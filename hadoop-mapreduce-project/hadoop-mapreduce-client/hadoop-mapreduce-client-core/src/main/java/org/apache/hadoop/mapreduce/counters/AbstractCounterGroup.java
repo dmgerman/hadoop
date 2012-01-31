@@ -78,6 +78,20 @@ name|common
 operator|.
 name|collect
 operator|.
+name|ImmutableSet
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|Iterators
 import|;
 end_import
@@ -263,7 +277,6 @@ annotation|@
 name|Override
 DECL|method|getName ()
 specifier|public
-specifier|synchronized
 name|String
 name|getName
 parameter_list|()
@@ -441,6 +454,7 @@ annotation|@
 name|Override
 DECL|method|findCounter (String counterName, String displayName)
 specifier|public
+specifier|synchronized
 name|T
 name|findCounter
 parameter_list|(
@@ -524,6 +538,7 @@ return|;
 block|}
 DECL|method|findCounterImpl (String counterName, boolean create)
 specifier|private
+specifier|synchronized
 name|T
 name|findCounterImpl
 parameter_list|(
@@ -641,10 +656,15 @@ name|iterator
 parameter_list|()
 block|{
 return|return
+name|ImmutableSet
+operator|.
+name|copyOf
+argument_list|(
 name|counters
 operator|.
 name|values
 argument_list|()
+argument_list|)
 operator|.
 name|iterator
 argument_list|()
