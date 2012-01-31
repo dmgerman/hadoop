@@ -2600,7 +2600,7 @@ index|[]
 block|{
 name|MRJobConfig
 operator|.
-name|SHUFFLE_MERGE_EPRCENT
+name|SHUFFLE_MERGE_PERCENT
 block|}
 argument_list|)
 expr_stmt|;
