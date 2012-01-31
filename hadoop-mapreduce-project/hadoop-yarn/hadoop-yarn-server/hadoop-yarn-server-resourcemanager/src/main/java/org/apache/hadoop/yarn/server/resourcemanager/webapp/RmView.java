@@ -186,7 +186,6 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
-comment|//html.meta_http("refresh", "20");
 name|set
 argument_list|(
 name|ACCORDION_ID
