@@ -1681,6 +1681,22 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+comment|/* check if we have a hsproxy, if not, no need */
+name|MRClientProtocol
+name|hsProxy
+init|=
+name|clientCache
+operator|.
+name|getInitializedHSProxy
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|hsProxy
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// JobClient will set this flag if getDelegationToken is called, if so, get
 comment|// the delegation tokens for the HistoryServer also.
 if|if
@@ -1702,10 +1718,7 @@ name|hsDT
 init|=
 name|getDelegationTokenFromHS
 argument_list|(
-name|clientCache
-operator|.
-name|getInitializedHSProxy
-argument_list|()
+name|hsProxy
 argument_list|,
 operator|new
 name|Text
@@ -1733,6 +1746,7 @@ argument_list|,
 name|hsDT
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Upload only in security mode: TODO
 name|Path

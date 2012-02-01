@@ -245,7 +245,7 @@ argument_list|,
 operator|new
 name|FsPermission
 argument_list|(
-literal|"700"
+literal|"744"
 argument_list|)
 argument_list|)
 expr_stmt|;

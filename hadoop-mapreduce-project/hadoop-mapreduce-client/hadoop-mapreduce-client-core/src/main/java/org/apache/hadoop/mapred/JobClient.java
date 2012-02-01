@@ -503,7 +503,7 @@ decl_stmt|;
 comment|/* notes the renewer that will renew the delegation token */
 DECL|field|dtRenewer
 specifier|private
-name|Text
+name|String
 name|dtRenewer
 init|=
 literal|null
@@ -1900,9 +1900,6 @@ argument_list|(
 name|HS_DELEGATION_TOKEN_RENEWER
 argument_list|,
 name|dtRenewer
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dtRenewer
@@ -4273,6 +4270,9 @@ expr_stmt|;
 name|dtRenewer
 operator|=
 name|renewer
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 return|return
 name|clientUgi
