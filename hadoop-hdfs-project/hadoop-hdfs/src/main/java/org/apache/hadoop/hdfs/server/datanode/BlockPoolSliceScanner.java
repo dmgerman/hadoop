@@ -2146,35 +2146,22 @@ expr_stmt|;
 comment|// If the block does not exists anymore, then its not an error
 if|if
 condition|(
+operator|!
 name|dataset
 operator|.
-name|getFile
+name|contains
 argument_list|(
 name|block
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|,
-name|block
-operator|.
-name|getLocalBlock
-argument_list|()
 argument_list|)
-operator|==
-literal|null
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Verification failed for "
-operator|+
 name|block
 operator|+
-literal|". Its ok since "
-operator|+
-literal|"it not in datanode dataset anymore."
+literal|" is no longer in the dataset."
 argument_list|)
 expr_stmt|;
 name|deleteBlock

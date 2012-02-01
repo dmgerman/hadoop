@@ -913,9 +913,9 @@ if|if
 condition|(
 name|version
 operator|!=
-name|FSDataset
+name|BlockMetadataHeader
 operator|.
-name|METADATA_VERSION
+name|VERSION
 condition|)
 block|{
 name|LOG

@@ -2571,9 +2571,9 @@ if|if
 condition|(
 name|version
 operator|!=
-name|FSDataset
+name|BlockMetadataHeader
 operator|.
-name|METADATA_VERSION
+name|VERSION
 condition|)
 block|{
 name|DataNode
@@ -4842,22 +4842,12 @@ comment|//
 comment|//////////////////////////////////////////////////////
 comment|//Find better place?
 DECL|field|METADATA_EXTENSION
-specifier|public
 specifier|static
 specifier|final
 name|String
 name|METADATA_EXTENSION
 init|=
 literal|".meta"
-decl_stmt|;
-DECL|field|METADATA_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|short
-name|METADATA_VERSION
-init|=
-literal|1
 decl_stmt|;
 DECL|field|UNLINK_BLOCK_SUFFIX
 specifier|static
@@ -5383,28 +5373,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Return the block file for the given ID */
-DECL|method|findBlockFile (String bpid, long blockId)
-specifier|public
-name|File
-name|findBlockFile
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|long
-name|blockId
-parameter_list|)
-block|{
-return|return
-name|getFile
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Override
 comment|// FSDatasetInterface
@@ -5426,7 +5394,7 @@ block|{
 name|File
 name|blockfile
 init|=
-name|findBlockFile
+name|getFile
 argument_list|(
 name|bpid
 argument_list|,
@@ -6395,7 +6363,6 @@ return|;
 block|}
 comment|/**    * Get File name for a given block.    */
 DECL|method|getBlockFile (String bpid, Block b)
-specifier|public
 name|File
 name|getBlockFile
 parameter_list|(
@@ -6536,9 +6503,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|File
 name|f
-init|=
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|f
+operator|=
 name|getFile
 argument_list|(
 name|b
@@ -6550,8 +6525,12 @@ name|b
 operator|.
 name|getLocalBlock
 argument_list|()
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|f
@@ -10163,16 +10142,28 @@ name|b
 parameter_list|)
 block|{
 comment|//Should we check for metadata file too?
+specifier|final
 name|File
 name|f
-init|=
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|f
+operator|=
 name|getFile
 argument_list|(
 name|bpid
 argument_list|,
 name|b
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|f
@@ -10434,6 +10425,9 @@ name|invalidBlks
 index|[
 name|i
 index|]
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|ReplicaInfo
@@ -10750,41 +10744,56 @@ name|block
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Turn the block identifier into a filename; ignore generation stamp!!!    */
-DECL|method|getFile (String bpid, Block b)
+annotation|@
+name|Override
+comment|// {@link FSDatasetInterface}
+DECL|method|contains (final ExtendedBlock block)
 specifier|public
 specifier|synchronized
-name|File
-name|getFile
+name|boolean
+name|contains
 parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|Block
-name|b
+specifier|final
+name|ExtendedBlock
+name|block
 parameter_list|)
 block|{
-return|return
-name|getFile
-argument_list|(
-name|bpid
-argument_list|,
-name|b
+specifier|final
+name|long
+name|blockId
+init|=
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
 operator|.
 name|getBlockId
 argument_list|()
+decl_stmt|;
+return|return
+name|getFile
+argument_list|(
+name|block
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|blockId
 argument_list|)
+operator|!=
+literal|null
 return|;
 block|}
 comment|/**    * Turn the block identifier into a filename    * @param bpid Block pool Id    * @param blockId a block's id    * @return on disk data file path; null if the replica does not exist    */
-DECL|method|getFile (String bpid, long blockId)
-specifier|private
+DECL|method|getFile (final String bpid, final long blockId)
 name|File
 name|getFile
 parameter_list|(
+specifier|final
 name|String
 name|bpid
 parameter_list|,
+specifier|final
 name|long
 name|blockId
 parameter_list|)

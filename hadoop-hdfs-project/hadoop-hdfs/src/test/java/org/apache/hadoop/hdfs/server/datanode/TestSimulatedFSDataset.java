@@ -632,9 +632,9 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|FSDataset
+name|BlockMetadataHeader
 operator|.
-name|METADATA_VERSION
+name|VERSION
 argument_list|,
 name|version
 argument_list|)

@@ -174,15 +174,14 @@ specifier|public
 class|class
 name|BlockMetadataHeader
 block|{
-DECL|field|METADATA_VERSION
+DECL|field|VERSION
+specifier|public
 specifier|static
 specifier|final
 name|short
-name|METADATA_VERSION
+name|VERSION
 init|=
-name|FSDataset
-operator|.
-name|METADATA_VERSION
+literal|1
 decl_stmt|;
 comment|/**    * Header includes everything except the checksum(s) themselves.    * Version is two bytes. Following it is the DataChecksum    * that occupies 5 bytes.     */
 DECL|field|version
@@ -473,7 +472,7 @@ argument_list|,
 operator|new
 name|BlockMetadataHeader
 argument_list|(
-name|METADATA_VERSION
+name|VERSION
 argument_list|,
 name|checksum
 argument_list|)
