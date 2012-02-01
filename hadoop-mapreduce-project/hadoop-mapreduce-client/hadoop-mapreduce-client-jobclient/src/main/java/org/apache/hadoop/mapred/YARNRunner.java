@@ -2489,7 +2489,7 @@ name|mergedCommand
 argument_list|)
 expr_stmt|;
 comment|// Setup the CLASSPATH in environment
-comment|// i.e. add { job jar, CWD, Hadoop jars} to classpath.
+comment|// i.e. add { Hadoop jars, job jar, CWD } to classpath.
 name|Map
 argument_list|<
 name|String

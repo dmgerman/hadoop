@@ -476,6 +476,15 @@ name|USER_LOG_RETAIN_HOURS
 init|=
 literal|"mapreduce.job.userlog.retain.hours"
 decl_stmt|;
+DECL|field|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
+init|=
+literal|"mapreduce.job.user.classpath.first"
+decl_stmt|;
 DECL|field|IO_SORT_FACTOR
 specifier|public
 specifier|static
