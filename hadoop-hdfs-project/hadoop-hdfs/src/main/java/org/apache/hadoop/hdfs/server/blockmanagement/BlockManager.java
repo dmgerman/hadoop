@@ -44,6 +44,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|StringWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -127,6 +137,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Queue
 import|;
 end_import
 
@@ -466,6 +486,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|PendingDataNodeMessages
+operator|.
+name|ReportedBlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -634,24 +674,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|BlocksWithLocations
 import|;
 end_import
@@ -796,20 +818,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
-operator|.
-name|Joiner
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|collect
 operator|.
 name|Sets
@@ -855,6 +863,24 @@ name|DEFAULT_MAP_LOAD_FACTOR
 init|=
 literal|0.75f
 decl_stmt|;
+DECL|field|QUEUE_REASON_CORRUPT_STATE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|QUEUE_REASON_CORRUPT_STATE
+init|=
+literal|"it has the wrong state or generation stamp"
+decl_stmt|;
+DECL|field|QUEUE_REASON_FUTURE_GENSTAMP
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|QUEUE_REASON_FUTURE_GENSTAMP
+init|=
+literal|"generation stamp is in the future"
+decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
@@ -878,6 +904,16 @@ specifier|private
 specifier|final
 name|BlockTokenSecretManager
 name|blockTokenSecretManager
+decl_stmt|;
+DECL|field|pendingDNMessages
+specifier|private
+specifier|final
+name|PendingDataNodeMessages
+name|pendingDNMessages
+init|=
+operator|new
+name|PendingDataNodeMessages
+argument_list|()
 decl_stmt|;
 DECL|field|pendingReplicationBlocksCount
 specifier|private
@@ -1005,6 +1041,20 @@ parameter_list|()
 block|{
 return|return
 name|postponedMisreplicatedBlocksCount
+return|;
+block|}
+comment|/** Used by metrics */
+DECL|method|getPendingDataNodeMessageCount ()
+specifier|public
+name|int
+name|getPendingDataNodeMessageCount
+parameter_list|()
+block|{
+return|return
+name|pendingDNMessages
+operator|.
+name|count
+argument_list|()
 return|;
 block|}
 comment|/**replicationRecheckInterval is how often namenode checks for new replication work*/
@@ -2560,15 +2610,20 @@ name|BlockInfoUnderConstruction
 operator|)
 name|curBlock
 decl_stmt|;
+name|int
+name|numNodes
+init|=
+name|ucBlock
+operator|.
+name|numNodes
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
 name|force
 operator|&&
-name|ucBlock
-operator|.
 name|numNodes
-argument_list|()
 operator|<
 name|minReplication
 condition|)
@@ -2597,6 +2652,35 @@ argument_list|(
 name|blkIndex
 argument_list|,
 name|completeBlock
+argument_list|)
+expr_stmt|;
+comment|// Since safe-mode only counts complete blocks, and we now have
+comment|// one more complete block, we need to adjust the total up, and
+comment|// also count it as safe, if we have at least the minimum replica
+comment|// count. (We may not have the minimum replica count yet if this is
+comment|// a "forced" completion when a file is getting closed by an
+comment|// OP_CLOSE edit on the standby).
+name|namesystem
+operator|.
+name|adjustSafeModeBlockTotals
+argument_list|(
+literal|0
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|namesystem
+operator|.
+name|incrementSafeBlockCount
+argument_list|(
+name|Math
+operator|.
+name|min
+argument_list|(
+name|numNodes
+argument_list|,
+name|minReplication
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// replace block in the blocksMap
@@ -2827,6 +2911,29 @@ name|oldBlock
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Adjust safe-mode totals, since under-construction blocks don't
+comment|// count in safe-mode.
+name|namesystem
+operator|.
+name|adjustSafeModeBlockTotals
+argument_list|(
+comment|// decrement safe if we had enough
+name|targets
+operator|.
+name|length
+operator|>=
+name|minReplication
+condition|?
+operator|-
+literal|1
+else|:
+literal|0
+argument_list|,
+comment|// always decrement total blocks
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 specifier|final
 name|long
 name|fileLength
@@ -7388,6 +7495,14 @@ operator|.
 name|getBlockReportIterator
 argument_list|()
 decl_stmt|;
+name|boolean
+name|isStandby
+init|=
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 name|itBR
@@ -7412,6 +7527,34 @@ operator|.
 name|getCurrentReplicaState
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|isStandby
+operator|&&
+name|namesystem
+operator|.
+name|isGenStampInFuture
+argument_list|(
+name|iblk
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|queueReportedBlock
+argument_list|(
+name|node
+argument_list|,
+name|iblk
+argument_list|,
+name|reportedState
+argument_list|,
+name|QUEUE_REASON_FUTURE_GENSTAMP
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|BlockInfo
 name|storedBlock
 init|=
@@ -7455,6 +7598,30 @@ name|node
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+condition|)
+block|{
+comment|// In the Standby, we may receive a block report for a file that we
+comment|// just have an out-of-date gen-stamp or state for, for example.
+name|queueReportedBlock
+argument_list|(
+name|node
+argument_list|,
+name|iblk
+argument_list|,
+name|reportedState
+argument_list|,
+name|QUEUE_REASON_CORRUPT_STATE
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|markBlockAsCorrupt
 argument_list|(
 name|storedBlock
@@ -7462,6 +7629,7 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 continue|continue;
 block|}
 comment|// If block is under construction, add this replica to its list
@@ -7752,7 +7920,7 @@ name|delimiter
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param dn descriptor for the datanode that made the report    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return    */
+comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param dn descriptor for the datanode that made the report    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
 DECL|method|processReportedBlock (final DatanodeDescriptor dn, final Block block, final ReplicaState reportedState, final Collection<BlockInfo> toAdd, final Collection<Block> toInvalidate, final Collection<BlockInfo> toCorrupt, final Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|BlockInfo
@@ -7834,6 +8002,39 @@ operator|+
 name|reportedState
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+operator|&&
+name|namesystem
+operator|.
+name|isGenStampInFuture
+argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|queueReportedBlock
+argument_list|(
+name|dn
+argument_list|,
+name|block
+argument_list|,
+name|reportedState
+argument_list|,
+name|QUEUE_REASON_FUTURE_GENSTAMP
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 comment|// find block by blockId
 name|BlockInfo
@@ -7934,6 +8135,31 @@ name|dn
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+condition|)
+block|{
+comment|// If the block is an out-of-date generation stamp or state,
+comment|// but we're the standby, we shouldn't treat it as corrupt,
+comment|// but instead just queue it for later processing.
+name|queueReportedBlock
+argument_list|(
+name|dn
+argument_list|,
+name|storedBlock
+argument_list|,
+name|reportedState
+argument_list|,
+name|QUEUE_REASON_CORRUPT_STATE
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|toCorrupt
 operator|.
 name|add
@@ -7941,6 +8167,7 @@ argument_list|(
 name|storedBlock
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|storedBlock
 return|;
@@ -8007,6 +8234,246 @@ block|}
 return|return
 name|storedBlock
 return|;
+block|}
+comment|/**    * Queue the given reported block for later processing in the    * standby node. {@see PendingDataNodeMessages}.    * @param reason a textual reason to report in the debug logs    */
+DECL|method|queueReportedBlock (DatanodeDescriptor dn, Block block, ReplicaState reportedState, String reason)
+specifier|private
+name|void
+name|queueReportedBlock
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|,
+name|Block
+name|block
+parameter_list|,
+name|ReplicaState
+name|reportedState
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+assert|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Queueing reported block "
+operator|+
+name|block
+operator|+
+literal|" in state "
+operator|+
+name|reportedState
+operator|+
+literal|" from datanode "
+operator|+
+name|dn
+operator|+
+literal|" for later processing "
+operator|+
+literal|"because "
+operator|+
+name|reason
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
+name|pendingDNMessages
+operator|.
+name|enqueueReportedBlock
+argument_list|(
+name|dn
+argument_list|,
+name|block
+argument_list|,
+name|reportedState
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Try to process any messages that were previously queued for the given    * block. This is called from FSEditLogLoader whenever a block's state    * in the namespace has changed or a new block has been created.    */
+DECL|method|processQueuedMessagesForBlock (Block b)
+specifier|public
+name|void
+name|processQueuedMessagesForBlock
+parameter_list|(
+name|Block
+name|b
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Queue
+argument_list|<
+name|ReportedBlockInfo
+argument_list|>
+name|queue
+init|=
+name|pendingDNMessages
+operator|.
+name|takeBlockQueue
+argument_list|(
+name|b
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Nothing to re-process
+return|return;
+block|}
+name|processQueuedMessages
+argument_list|(
+name|queue
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|processQueuedMessages (Iterable<ReportedBlockInfo> rbis)
+specifier|private
+name|void
+name|processQueuedMessages
+parameter_list|(
+name|Iterable
+argument_list|<
+name|ReportedBlockInfo
+argument_list|>
+name|rbis
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|ReportedBlockInfo
+name|rbi
+range|:
+name|rbis
+control|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Processing previouly queued message "
+operator|+
+name|rbi
+argument_list|)
+expr_stmt|;
+block|}
+name|processAndHandleReportedBlock
+argument_list|(
+name|rbi
+operator|.
+name|getNode
+argument_list|()
+argument_list|,
+name|rbi
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|rbi
+operator|.
+name|getReportedState
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Process any remaining queued datanode messages after entering    * active state. At this point they will not be re-queued since    * we are the definitive master node and thus should be up-to-date    * with the namespace information.    */
+DECL|method|processAllPendingDNMessages ()
+specifier|public
+name|void
+name|processAllPendingDNMessages
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+assert|assert
+operator|!
+name|namesystem
+operator|.
+name|isInStandbyState
+argument_list|()
+operator|:
+literal|"processAllPendingDNMessages() should be called after exiting "
+operator|+
+literal|"standby state!"
+assert|;
+name|int
+name|count
+init|=
+name|pendingDNMessages
+operator|.
+name|count
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|count
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processing "
+operator|+
+name|count
+operator|+
+literal|" messages from DataNodes "
+operator|+
+literal|"that were previously queued during standby state."
+argument_list|)
+expr_stmt|;
+block|}
+name|processQueuedMessages
+argument_list|(
+name|pendingDNMessages
+operator|.
+name|takeAll
+argument_list|()
+argument_list|)
+expr_stmt|;
+assert|assert
+name|pendingDNMessages
+operator|.
+name|count
+argument_list|()
+operator|==
+literal|0
+assert|;
 block|}
 comment|/*    * The next two methods test the various cases under which we must conclude    * the replica is corrupt, or under construction.  These are laid out    * as switch statements, on the theory that it is easier to understand    * the combinatorics of reportedState and ucState that way.  It should be    * at least as efficient as boolean expressions.    */
 DECL|method|isReplicaCorrupt (Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)
@@ -8417,6 +8884,7 @@ name|numCurrentReplica
 operator|>=
 name|minReplication
 condition|)
+block|{
 name|storedBlock
 operator|=
 name|completeBlock
@@ -8431,8 +8899,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// check whether safe replication is reached for the block
-comment|// only complete blocks are counted towards that
+block|}
+elseif|else
 if|if
 condition|(
 name|storedBlock
@@ -8440,6 +8908,11 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
+comment|// check whether safe replication is reached for the block
+comment|// only complete blocks are counted towards that.
+comment|// In the case that the block just became complete above, completeBlock()
+comment|// handles the safe block count maintenance.
 name|namesystem
 operator|.
 name|incrementSafeBlockCount
@@ -8447,6 +8920,7 @@ argument_list|(
 name|numCurrentReplica
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blockMap.    */
 DECL|method|addStoredBlock (final BlockInfo block, DatanodeDescriptor node, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
@@ -8713,6 +9187,7 @@ name|numLiveReplicas
 operator|>=
 name|minReplication
 condition|)
+block|{
 name|storedBlock
 operator|=
 name|completeBlock
@@ -8724,9 +9199,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// check whether safe replication is reached for the block
-comment|// only complete blocks are counted towards that
-comment|// Is no-op if not in safe mode.
+block|}
+elseif|else
 if|if
 condition|(
 name|storedBlock
@@ -8734,6 +9208,12 @@ operator|.
 name|isComplete
 argument_list|()
 condition|)
+block|{
+comment|// check whether safe replication is reached for the block
+comment|// only complete blocks are counted towards that
+comment|// Is no-op if not in safe mode.
+comment|// In the case that the block just became complete above, completeBlock()
+comment|// handles the safe block count maintenance.
 name|namesystem
 operator|.
 name|incrementSafeBlockCount
@@ -8741,6 +9221,7 @@ argument_list|(
 name|numCurrentReplica
 argument_list|)
 expr_stmt|;
+block|}
 comment|// if file is under construction, then done for now
 if|if
 condition|(
@@ -12037,14 +12518,6 @@ return|return
 name|blocksMap
 operator|.
 name|size
-argument_list|()
-operator|-
-operator|(
-name|int
-operator|)
-name|invalidateBlocks
-operator|.
-name|numBlocks
 argument_list|()
 return|;
 block|}

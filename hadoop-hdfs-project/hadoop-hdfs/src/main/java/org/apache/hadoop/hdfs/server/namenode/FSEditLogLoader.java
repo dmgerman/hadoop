@@ -754,13 +754,6 @@ specifier|final
 name|FSNamesystem
 name|fsNamesys
 decl_stmt|;
-DECL|field|maxGenStamp
-specifier|private
-name|long
-name|maxGenStamp
-init|=
-literal|0
-decl_stmt|;
 DECL|method|FSEditLogLoader (FSNamesystem fsNamesys)
 specifier|public
 name|FSEditLogLoader
@@ -870,23 +863,6 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fsNamesys
-operator|.
-name|setBlockTotal
-argument_list|()
-expr_stmt|;
-comment|// Delay the notification of genstamp updates until after
-comment|// setBlockTotal() above. Otherwise, we will mark blocks
-comment|// as "safe" before they've been incorporated in the expected
-comment|// totalBlocks and threshold for SafeMode -- triggering an
-comment|// assertion failure and/or exiting safemode too early!
-name|fsNamesys
-operator|.
-name|notifyGenStampUpdate
-argument_list|(
-name|maxGenStamp
-argument_list|)
-expr_stmt|;
 name|edits
 operator|.
 name|close
@@ -1303,6 +1279,54 @@ name|AddCloseOp
 operator|)
 name|op
 decl_stmt|;
+if|if
+condition|(
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|op
+operator|.
+name|opCode
+operator|+
+literal|": "
+operator|+
+name|addCloseOp
+operator|.
+name|path
+operator|+
+literal|" numblocks : "
+operator|+
+name|addCloseOp
+operator|.
+name|blocks
+operator|.
+name|length
+operator|+
+literal|" clientHolder "
+operator|+
+name|addCloseOp
+operator|.
+name|clientName
+operator|+
+literal|" clientMachine "
+operator|+
+name|addCloseOp
+operator|.
+name|clientMachine
+argument_list|)
+expr_stmt|;
+block|}
 comment|// See if the file already exists (persistBlocks call)
 name|INodeFile
 name|oldFile
@@ -1373,54 +1397,6 @@ name|addCloseOp
 operator|.
 name|blockSize
 decl_stmt|;
-if|if
-condition|(
-name|FSNamesystem
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|FSNamesystem
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|op
-operator|.
-name|opCode
-operator|+
-literal|": "
-operator|+
-name|addCloseOp
-operator|.
-name|path
-operator|+
-literal|" numblocks : "
-operator|+
-name|addCloseOp
-operator|.
-name|blocks
-operator|.
-name|length
-operator|+
-literal|" clientHolder "
-operator|+
-name|addCloseOp
-operator|.
-name|clientName
-operator|+
-literal|" clientMachine "
-operator|+
-name|addCloseOp
-operator|.
-name|clientMachine
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Older versions of HDFS does not store the block size in inode.
 comment|// If the file has more than one block, use the size of the
 comment|// first block as the blocksize. Otherwise use the default
@@ -1556,6 +1532,8 @@ operator|.
 name|clientMachine
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1572,6 +1550,28 @@ argument_list|()
 condition|)
 block|{
 comment|// This is a call to append() on an already-closed file.
+if|if
+condition|(
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reopening an already-closed file "
+operator|+
+literal|"for append"
+argument_list|)
+expr_stmt|;
+block|}
 name|fsNamesys
 operator|.
 name|prepareFileForWrite
@@ -1591,6 +1591,8 @@ operator|.
 name|clientMachine
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|oldFile
@@ -1629,6 +1631,54 @@ name|AddCloseOp
 operator|)
 name|op
 decl_stmt|;
+if|if
+condition|(
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|op
+operator|.
+name|opCode
+operator|+
+literal|": "
+operator|+
+name|addCloseOp
+operator|.
+name|path
+operator|+
+literal|" numblocks : "
+operator|+
+name|addCloseOp
+operator|.
+name|blocks
+operator|.
+name|length
+operator|+
+literal|" clientHolder "
+operator|+
+name|addCloseOp
+operator|.
+name|clientName
+operator|+
+literal|" clientMachine "
+operator|+
+name|addCloseOp
+operator|.
+name|clientMachine
+argument_list|)
+expr_stmt|;
+block|}
 name|INodeFile
 name|oldFile
 init|=
@@ -2789,6 +2839,19 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|boolean
+name|changeMade
+init|=
+name|oldBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|!=
+name|newBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
 name|oldBlock
 operator|.
 name|setGenerationStamp
@@ -2819,6 +2882,10 @@ name|OP_CLOSE
 operator|)
 condition|)
 block|{
+name|changeMade
+operator|=
+literal|true
+expr_stmt|;
 name|fsNamesys
 operator|.
 name|getBlockManager
@@ -2835,6 +2902,25 @@ operator|(
 name|BlockInfoUnderConstruction
 operator|)
 name|oldBlock
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|changeMade
+condition|)
+block|{
+comment|// The state or gen-stamp of the block has changed. So, we may be
+comment|// able to process some messages from datanodes that we previously
+comment|// were unable to process.
+name|fsNamesys
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|processQueuedMessagesForBlock
+argument_list|(
+name|newBlock
 argument_list|)
 expr_stmt|;
 block|}
@@ -3040,33 +3126,17 @@ argument_list|(
 name|newBI
 argument_list|)
 expr_stmt|;
-block|}
-block|}
-comment|// Record the max genstamp seen
-for|for
-control|(
-name|Block
-name|b
-range|:
-name|addCloseOp
+name|fsNamesys
 operator|.
-name|blocks
-control|)
-block|{
-name|maxGenStamp
-operator|=
-name|Math
-operator|.
-name|max
-argument_list|(
-name|maxGenStamp
-argument_list|,
-name|b
-operator|.
-name|getGenerationStamp
+name|getBlockManager
 argument_list|()
+operator|.
+name|processQueuedMessagesForBlock
+argument_list|(
+name|newBlock
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|dumpOpCounts ( EnumMap<FSEditLogOpCodes, Holder<Integer>> opCounts)

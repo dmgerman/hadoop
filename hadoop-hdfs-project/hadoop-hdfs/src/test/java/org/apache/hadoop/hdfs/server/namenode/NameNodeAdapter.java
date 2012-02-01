@@ -224,9 +224,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|LeaseManager
+name|FSNamesystem
 operator|.
-name|Lease
+name|SafeModeInfo
 import|;
 end_import
 
@@ -244,9 +244,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSNamesystem
+name|LeaseManager
 operator|.
-name|SafeModeInfo
+name|Lease
 import|;
 end_import
 

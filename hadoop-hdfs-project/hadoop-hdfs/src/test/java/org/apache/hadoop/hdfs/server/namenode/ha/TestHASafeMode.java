@@ -106,6 +106,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -138,11 +148,41 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|impl
+operator|.
+name|Log4JLogger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSDataOutputStream
 import|;
 end_import
 
@@ -294,6 +334,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSImage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSNamesystem
 import|;
 end_import
@@ -342,9 +400,35 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
 import|;
 end_import
 
@@ -389,6 +473,20 @@ operator|.
 name|base
 operator|.
 name|Supplier
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
 import|;
 end_import
 
@@ -459,6 +557,76 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+static|static
+block|{
+operator|(
+operator|(
+name|Log4JLogger
+operator|)
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FSImage
+operator|.
+name|class
+argument_list|)
+operator|)
+operator|.
+name|getLogger
+argument_list|()
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|ALL
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|Log4JLogger
+operator|)
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FSNamesystem
+operator|.
+name|class
+argument_list|)
+operator|)
+operator|.
+name|getLogger
+argument_list|()
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|ALL
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|Log4JLogger
+operator|)
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|)
+operator|.
+name|getLogger
+argument_list|()
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|ALL
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Before
 DECL|method|setupCluster ()
@@ -718,7 +886,39 @@ argument_list|(
 literal|"Restarting active"
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|3
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
 name|restartActive
+argument_list|()
+expr_stmt|;
+name|nn0
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|transitionToActive
 argument_list|()
 expr_stmt|;
 name|FSNamesystem
@@ -1106,36 +1306,16 @@ expr_stmt|;
 name|restartStandby
 argument_list|()
 expr_stmt|;
-comment|// We expect it to be stuck in safemode (not the extension) because
-comment|// the block reports are delayed (since they include blocks
-comment|// from /test2 which are too-high genstamps.
-name|String
-name|status
-init|=
+comment|// We expect it not to be stuck in safemode, since those blocks
+comment|// that are already visible to the SBN should be processed
+comment|// in the initial block reports.
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 0 needs additional 3 blocks to reach"
-argument_list|)
+literal|3
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 name|banner
@@ -1152,34 +1332,13 @@ argument_list|,
 name|nn1
 argument_list|)
 expr_stmt|;
-name|status
-operator|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 8 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 8. Safe mode will be turned off automatically"
-argument_list|)
+literal|8
+argument_list|,
+literal|8
 argument_list|)
 expr_stmt|;
 block|}
@@ -1241,35 +1400,13 @@ expr_stmt|;
 name|restartStandby
 argument_list|()
 expr_stmt|;
-name|String
-name|status
-init|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 3 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 3. Safe mode will be turned off automatically"
-argument_list|)
+literal|3
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 comment|// Create a few blocks which will send blockReceived calls to the
@@ -1317,34 +1454,13 @@ argument_list|,
 name|nn1
 argument_list|)
 expr_stmt|;
-name|status
-operator|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 8 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 8. Safe mode will be turned off automatically"
-argument_list|)
+literal|8
+argument_list|,
+literal|8
 argument_list|)
 expr_stmt|;
 block|}
@@ -1444,33 +1560,13 @@ expr_stmt|;
 name|restartStandby
 argument_list|()
 expr_stmt|;
-name|String
-name|status
-init|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 0 needs additional 5 blocks to reach"
-argument_list|)
+literal|0
+argument_list|,
+literal|5
 argument_list|)
 expr_stmt|;
 name|banner
@@ -1487,34 +1583,13 @@ argument_list|,
 name|nn1
 argument_list|)
 expr_stmt|;
-name|status
-operator|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 0 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 0. Safe mode will be turned off automatically"
-argument_list|)
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1577,35 +1652,13 @@ name|restartStandby
 argument_list|()
 expr_stmt|;
 comment|// It will initially have all of the blocks necessary.
-name|String
-name|status
-init|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 10 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 10. Safe mode will be turned off automatically"
-argument_list|)
+literal|10
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// Delete those blocks while the SBN is in safe mode - this
@@ -1663,32 +1716,13 @@ operator|.
 name|triggerDeletionReports
 argument_list|()
 expr_stmt|;
-name|status
-operator|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 0 needs additional 10 blocks"
-argument_list|)
+literal|0
+argument_list|,
+literal|10
 argument_list|)
 expr_stmt|;
 name|banner
@@ -1705,8 +1739,365 @@ argument_list|,
 name|nn1
 argument_list|)
 expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Tests that the standby node properly tracks the number of total    * and safe blocks while it is in safe mode. Since safe-mode only    * counts completed blocks, append needs to decrement the total    * number of blocks and then re-increment when the file is closed    * again.    */
+annotation|@
+name|Test
+DECL|method|testAppendWhileInSafeMode ()
+specifier|public
+name|void
+name|testAppendWhileInSafeMode
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|banner
+argument_list|(
+literal|"Starting with NN0 active and NN1 standby, creating some blocks"
+argument_list|)
+expr_stmt|;
+comment|// Make 4.5 blocks so that append() will re-open an existing block
+comment|// instead of just adding a new one
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|4
+operator|*
+name|BLOCK_SIZE
+operator|+
+name|BLOCK_SIZE
+operator|/
+literal|2
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+comment|// Roll edit log so that, when the SBN restarts, it will load
+comment|// the namespace during startup.
+name|nn0
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Restarting standby"
+argument_list|)
+expr_stmt|;
+name|restartStandby
+argument_list|()
+expr_stmt|;
+comment|// It will initially have all of the blocks necessary.
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|5
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+comment|// Append to a block while SBN is in safe mode. This should
+comment|// not affect safemode initially, since the DN message
+comment|// will get queued.
+name|FSDataOutputStream
+name|stm
+init|=
+name|fs
+operator|.
+name|append
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|5
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+comment|// if we roll edits now, the SBN should see that it's under construction
+comment|// and change its total count and safe count down by one, since UC
+comment|// blocks are not counted by safe mode.
+name|HATestUtil
+operator|.
+name|waitForStandbyToCatchUp
+argument_list|(
+name|nn0
+argument_list|,
+name|nn1
+argument_list|)
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|4
+argument_list|,
+literal|4
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|stm
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Delete those blocks while the SBN is in safe mode - this
+comment|// should reduce it back below the threshold
+name|banner
+argument_list|(
+literal|"Removing the blocks without rolling the edit log"
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|delete
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|computeAllPendingWork
+argument_list|(
+name|nn0
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Triggering deletions on DNs and Deletion Reports"
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerHeartbeats
+argument_list|()
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForDNDeletions
+argument_list|(
+name|cluster
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerDeletionReports
+argument_list|()
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|0
+argument_list|,
+literal|4
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Waiting for standby to catch up to active namespace"
+argument_list|)
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForStandbyToCatchUp
+argument_list|(
+name|nn0
+argument_list|,
+name|nn1
+argument_list|)
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Regression test for a bug experienced while developing    * HDFS-2742. The scenario here is:    * - image contains some blocks    * - edits log contains at least one block addition, followed    *   by deletion of more blocks than were added.    * - When node starts up, some incorrect accounting of block    *   totals caused an assertion failure.    */
+annotation|@
+name|Test
+DECL|method|testBlocksDeletedInEditLog ()
+specifier|public
+name|void
+name|testBlocksDeletedInEditLog
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|banner
+argument_list|(
+literal|"Starting with NN0 active and NN1 standby, creating some blocks"
+argument_list|)
+expr_stmt|;
+comment|// Make 4 blocks persisted in the image.
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|4
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|NameNodeAdapter
+operator|.
+name|enterSafeMode
+argument_list|(
+name|nn0
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|NameNodeAdapter
+operator|.
+name|saveNamespace
+argument_list|(
+name|nn0
+argument_list|)
+expr_stmt|;
+name|NameNodeAdapter
+operator|.
+name|leaveSafeMode
+argument_list|(
+name|nn0
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// OP_ADD for 2 blocks
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test2"
+argument_list|)
+argument_list|,
+literal|2
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+comment|// OP_DELETE for 4 blocks
+name|fs
+operator|.
+name|delete
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|restartActive
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|assertSafeMode (NameNode nn, int safe, int total)
+specifier|private
+name|void
+name|assertSafeMode
+parameter_list|(
+name|NameNode
+name|nn
+parameter_list|,
+name|int
+name|safe
+parameter_list|,
+name|int
+name|total
+parameter_list|)
+block|{
+name|String
 name|status
-operator|=
+init|=
 name|nn1
 operator|.
 name|getNamesystem
@@ -1714,7 +2105,14 @@ argument_list|()
 operator|.
 name|getSafemode
 argument_list|()
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|safe
+operator|==
+name|total
+condition|)
+block|{
 name|assertTrue
 argument_list|(
 literal|"Bad safemode status: '"
@@ -1729,12 +2127,59 @@ name|startsWith
 argument_list|(
 literal|"Safe mode is ON."
 operator|+
-literal|"The reported blocks 0 has reached the threshold 0.9990 of "
+literal|"The reported blocks "
 operator|+
-literal|"total blocks 0. Safe mode will be turned off automatically"
+name|safe
+operator|+
+literal|" has reached the threshold "
+operator|+
+literal|"0.9990 of total blocks "
+operator|+
+name|total
+operator|+
+literal|". Safe mode will be "
+operator|+
+literal|"turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|int
+name|additional
+init|=
+name|total
+operator|-
+name|safe
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Bad safemode status: '"
+operator|+
+name|status
+operator|+
+literal|"'"
+argument_list|,
+name|status
+operator|.
+name|startsWith
+argument_list|(
+literal|"Safe mode is ON."
+operator|+
+literal|"The reported blocks "
+operator|+
+name|safe
+operator|+
+literal|" needs additional "
+operator|+
+name|additional
+operator|+
+literal|" blocks"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Set up a namesystem with several edits, both deletions and    * additions, and failover to a new NN while that NN is in    * safemode. Ensure that it will exit safemode.    */
 annotation|@
@@ -1841,9 +2286,106 @@ expr_stmt|;
 name|restartStandby
 argument_list|()
 expr_stmt|;
-comment|// We expect it to be stuck in safemode (not the extension) because
-comment|// the block reports are delayed (since they include blocks
-comment|// from /test2 which are too-high genstamps.
+comment|// We expect it to be on its way out of safemode, since all of the blocks
+comment|// from the edit log have been reported.
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|3
+argument_list|,
+literal|3
+argument_list|)
+expr_stmt|;
+comment|// Initiate a failover into it while it's in safemode
+name|banner
+argument_list|(
+literal|"Initiating a failover into NN1 in safemode"
+argument_list|)
+expr_stmt|;
+name|NameNodeAdapter
+operator|.
+name|abortEditLogs
+argument_list|(
+name|nn0
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|transitionToActive
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|5
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Similar to {@link #testBlocksRemovedWhileInSafeMode()} except that    * the OP_DELETE edits arrive at the SBN before the block deletion reports.    * The tracking of safe blocks needs to properly account for the removal    * of the blocks as well as the safe count. This is a regression test for    * HDFS-2742.    */
+annotation|@
+name|Test
+DECL|method|testBlocksRemovedWhileInSafeModeEditsArriveFirst ()
+specifier|public
+name|void
+name|testBlocksRemovedWhileInSafeModeEditsArriveFirst
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|banner
+argument_list|(
+literal|"Starting with NN0 active and NN1 standby, creating some blocks"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|10
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+comment|// Roll edit log so that, when the SBN restarts, it will load
+comment|// the namespace during startup.
+name|nn0
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Restarting standby"
+argument_list|)
+expr_stmt|;
+name|restartStandby
+argument_list|()
+expr_stmt|;
+comment|// It will initially have all of the blocks necessary.
 name|String
 name|status
 init|=
@@ -1869,58 +2411,274 @@ name|startsWith
 argument_list|(
 literal|"Safe mode is ON."
 operator|+
-literal|"The reported blocks 0 needs additional 3 blocks to reach"
+literal|"The reported blocks 10 has reached the threshold 0.9990 of "
+operator|+
+literal|"total blocks 10. Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Initiate a failover into it while it's in safemode
+comment|// Delete those blocks while the SBN is in safe mode.
+comment|// Immediately roll the edit log before the actual deletions are sent
+comment|// to the DNs.
 name|banner
 argument_list|(
-literal|"Initiating a failover into NN1 in safemode"
+literal|"Removing the blocks without rolling the edit log"
 argument_list|)
 expr_stmt|;
-name|NameNodeAdapter
+name|fs
 operator|.
-name|abortEditLogs
+name|delete
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForStandbyToCatchUp
 argument_list|(
 name|nn0
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|transitionToActive
-argument_list|(
-literal|1
-argument_list|)
-expr_stmt|;
-name|status
-operator|=
+argument_list|,
 name|nn1
+argument_list|)
+expr_stmt|;
+comment|// Should see removal of the blocks as well as their contribution to safe block count.
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Triggering sending deletions to DNs and Deletion Reports"
+argument_list|)
+expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|computeAllPendingWork
+argument_list|(
+name|nn0
 operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|getSafemode
+name|getBlockManager
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
-argument_list|,
-name|status
+name|HATestUtil
 operator|.
-name|startsWith
+name|waitForDNDeletions
 argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 5 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 5. Safe mode will be turned off automatically"
+name|cluster
 argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|triggerDeletionReports
+argument_list|()
+expr_stmt|;
+comment|// No change in assertion status here, but some of the consistency checks
+comment|// in safemode will fire here if we accidentally decrement safe block count
+comment|// below 0.
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test that the number of safe blocks is accounted correctly even when    * blocks move between under-construction state and completed state.    * If a FINALIZED report arrives at the SBN before the block is marked    * COMPLETE, then when we get the OP_CLOSE we need to count it as "safe"    * at that point. This is a regression test for HDFS-2742.    */
+annotation|@
+name|Test
+DECL|method|testSafeBlockTracking ()
+specifier|public
+name|void
+name|testSafeBlockTracking
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|banner
+argument_list|(
+literal|"Starting with NN0 active and NN1 standby, creating some "
+operator|+
+literal|"UC blocks plus some other blocks to force safemode"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/other-blocks"
+argument_list|)
+argument_list|,
+literal|10
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|FSDataOutputStream
+argument_list|>
+name|stms
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+literal|5
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|FSDataOutputStream
+name|stm
+init|=
+name|fs
+operator|.
+name|create
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/test-uc-"
+operator|+
+name|i
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|stms
+operator|.
+name|add
+argument_list|(
+name|stm
+argument_list|)
+expr_stmt|;
+name|stm
+operator|.
+name|write
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|stm
+operator|.
+name|hflush
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Roll edit log so that, when the SBN restarts, it will load
+comment|// the namespace during startup and enter safemode.
+name|nn0
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|rollEditLog
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+for|for
+control|(
+name|FSDataOutputStream
+name|stm
+range|:
+name|stms
+control|)
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|stm
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|banner
+argument_list|(
+literal|"Restarting SBN"
+argument_list|)
+expr_stmt|;
+name|restartStandby
+argument_list|()
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|10
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+name|banner
+argument_list|(
+literal|"Allowing SBN to catch up"
+argument_list|)
+expr_stmt|;
+name|HATestUtil
+operator|.
+name|waitForStandbyToCatchUp
+argument_list|(
+name|nn0
+argument_list|,
+name|nn1
+argument_list|)
+expr_stmt|;
+name|assertSafeMode
+argument_list|(
+name|nn1
+argument_list|,
+literal|15
+argument_list|,
+literal|15
 argument_list|)
 expr_stmt|;
 block|}
@@ -2011,35 +2769,13 @@ expr_stmt|;
 name|restartStandby
 argument_list|()
 expr_stmt|;
-name|String
-name|status
-init|=
+name|assertSafeMode
+argument_list|(
 name|nn1
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getSafemode
-argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Bad safemode status: '"
-operator|+
-name|status
-operator|+
-literal|"'"
 argument_list|,
-name|status
-operator|.
-name|startsWith
-argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks 6 has reached the threshold 0.9990 of "
-operator|+
-literal|"total blocks 6. Safe mode will be turned off automatically"
-argument_list|)
+literal|6
+argument_list|,
+literal|6
 argument_list|)
 expr_stmt|;
 block|}
