@@ -1647,6 +1647,35 @@ operator|.
 name|parse
 argument_list|()
 expr_stmt|;
+name|Exception
+name|parseException
+init|=
+name|parser
+operator|.
+name|getParseException
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parseException
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got an error parsing job-history file "
+operator|+
+name|historyFile
+operator|+
+literal|", ignoring incomplete events."
+argument_list|,
+name|parseException
+argument_list|)
+expr_stmt|;
+block|}
 name|Map
 argument_list|<
 name|org
