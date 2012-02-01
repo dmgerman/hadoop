@@ -9560,9 +9560,17 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
 argument_list|(
 literal|"block "
 operator|+
@@ -9573,6 +9581,7 @@ operator|+
 name|res
 argument_list|)
 expr_stmt|;
+block|}
 switch|switch
 condition|(
 name|res
