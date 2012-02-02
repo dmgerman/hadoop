@@ -3769,15 +3769,15 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// Compute& set headroom
-comment|// Note: We set the headroom with the highest priority request
-comment|//       as the target.
+comment|// Compute user-limit& set headroom
+comment|// Note: We compute both user-limit& headroom with the highest
+comment|//       priority request as the target.
 comment|//       This works since we never assign lower priority requests
 comment|//       before all higher priority ones are serviced.
 name|Resource
 name|userLimit
 init|=
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 argument_list|(
 name|application
 argument_list|,
@@ -3844,6 +3844,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|// Did we schedule or reserve a container?
 name|Resource
 name|assigned
 init|=
@@ -3852,7 +3853,6 @@ operator|.
 name|getResource
 argument_list|()
 decl_stmt|;
-comment|// Did we schedule or reserve a container?
 if|if
 condition|(
 name|Resources
@@ -3869,6 +3869,7 @@ argument_list|)
 condition|)
 block|{
 comment|// Book-keeping
+comment|// Note: Update headroom to account for current allocation too...
 name|allocateResource
 argument_list|(
 name|clusterResource
@@ -4174,10 +4175,10 @@ operator|.
 name|class
 block|}
 argument_list|)
-DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource, Resource required)
+DECL|method|computeUserLimitAndSetHeadroom ( SchedulerApp application, Resource clusterResource, Resource required)
 specifier|private
 name|Resource
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 parameter_list|(
 name|SchedulerApp
 name|application
@@ -4197,9 +4198,11 @@ operator|.
 name|getUser
 argument_list|()
 decl_stmt|;
+comment|/**       * Headroom is min((userLimit, queue-max-cap) - consumed)      */
 name|Resource
-name|limit
+name|userLimit
 init|=
+comment|// User limit
 name|computeUserLimit
 argument_list|(
 name|application
@@ -4210,14 +4213,32 @@ name|required
 argument_list|)
 decl_stmt|;
 name|Resource
-name|headroom
+name|queueMaxCap
 init|=
+comment|// Queue Max-Capacity
 name|Resources
 operator|.
-name|subtract
+name|createResource
 argument_list|(
-name|limit
-argument_list|,
+name|roundDown
+argument_list|(
+call|(
+name|int
+call|)
+argument_list|(
+name|absoluteMaxCapacity
+operator|*
+name|clusterResource
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|Resource
+name|userConsumed
+init|=
 name|getUser
 argument_list|(
 name|user
@@ -4225,8 +4246,62 @@ argument_list|)
 operator|.
 name|getConsumedResources
 argument_list|()
+decl_stmt|;
+name|Resource
+name|headroom
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|userLimit
+argument_list|,
+name|queueMaxCap
+argument_list|)
+argument_list|,
+name|userConsumed
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Headroom calculation for user "
+operator|+
+name|user
+operator|+
+literal|": "
+operator|+
+literal|" userLimit="
+operator|+
+name|userLimit
+operator|+
+literal|" queueMaxCap="
+operator|+
+name|queueMaxCap
+operator|+
+literal|" consumed="
+operator|+
+name|userConsumed
+operator|+
+literal|" headroom="
+operator|+
+name|headroom
+argument_list|)
+expr_stmt|;
+block|}
 name|application
 operator|.
 name|setHeadroom
@@ -4244,7 +4319,7 @@ name|headroom
 argument_list|)
 expr_stmt|;
 return|return
-name|limit
+name|userLimit
 return|;
 block|}
 DECL|method|roundUp (int memory)
@@ -4256,21 +4331,50 @@ name|int
 name|memory
 parameter_list|)
 block|{
+name|int
+name|minMemory
+init|=
+name|minimumAllocation
+operator|.
+name|getMemory
+argument_list|()
+decl_stmt|;
 return|return
 name|divideAndCeil
 argument_list|(
 name|memory
 argument_list|,
-name|minimumAllocation
-operator|.
-name|getMemory
-argument_list|()
+name|minMemory
 argument_list|)
 operator|*
+name|minMemory
+return|;
+block|}
+DECL|method|roundDown (int memory)
+specifier|private
+name|int
+name|roundDown
+parameter_list|(
+name|int
+name|memory
+parameter_list|)
+block|{
+name|int
+name|minMemory
+init|=
 name|minimumAllocation
 operator|.
 name|getMemory
 argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|memory
+operator|/
+name|minMemory
+operator|)
+operator|*
+name|minMemory
 return|;
 block|}
 annotation|@
@@ -6263,6 +6367,19 @@ argument_list|(
 name|resource
 argument_list|)
 expr_stmt|;
+name|Resources
+operator|.
+name|subtractFrom
+argument_list|(
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|,
+name|resource
+argument_list|)
+expr_stmt|;
+comment|// headroom
 name|metrics
 operator|.
 name|setAvailableResourcesToUser
@@ -6275,12 +6392,24 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
 name|getQueueName
 argument_list|()
+operator|+
+literal|" user="
+operator|+
+name|userName
 operator|+
 literal|" used="
 operator|+
@@ -6290,9 +6419,12 @@ literal|" numContainers="
 operator|+
 name|numContainers
 operator|+
-literal|" user="
+literal|" headroom = "
 operator|+
-name|userName
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
 operator|+
 literal|" user-resources="
 operator|+
@@ -6302,6 +6434,7 @@ name|getConsumedResources
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|releaseResource (Resource clusterResource, SchedulerApp application, Resource resource)
 specifier|synchronized
@@ -6453,7 +6586,7 @@ init|(
 name|application
 init|)
 block|{
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 argument_list|(
 name|application
 argument_list|,

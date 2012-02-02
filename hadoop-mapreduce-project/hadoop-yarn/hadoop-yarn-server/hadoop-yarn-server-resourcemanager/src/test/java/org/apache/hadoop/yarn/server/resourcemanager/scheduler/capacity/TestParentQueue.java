@@ -576,7 +576,12 @@ argument_list|()
 expr_stmt|;
 name|doReturn
 argument_list|(
-literal|null
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|)
 argument_list|)
 operator|.
 name|when

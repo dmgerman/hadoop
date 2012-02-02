@@ -885,6 +885,28 @@ condition|(
 name|updatePendingResources
 condition|)
 block|{
+comment|// Similarly, deactivate application?
+if|if
+condition|(
+name|request
+operator|.
+name|getNumContainers
+argument_list|()
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"checking for deactivate... "
+argument_list|)
+expr_stmt|;
+name|checkForDeactivation
+argument_list|()
+expr_stmt|;
+block|}
 name|int
 name|lastRequestContainers
 init|=
@@ -1511,6 +1533,18 @@ operator|==
 literal|0
 condition|)
 block|{
+name|checkForDeactivation
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|checkForDeactivation ()
+specifier|synchronized
+specifier|private
+name|void
+name|checkForDeactivation
+parameter_list|()
+block|{
 name|boolean
 name|deactivate
 init|=
@@ -1568,7 +1602,6 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|allocate (Container container)
