@@ -3259,9 +3259,6 @@ name|application
 operator|.
 name|getApplicationId
 argument_list|()
-operator|.
-name|getId
-argument_list|()
 operator|+
 literal|" from user: "
 operator|+
@@ -3429,13 +3426,30 @@ name|User
 name|user
 parameter_list|)
 block|{
+name|boolean
+name|wasActive
+init|=
 name|activeApplications
 operator|.
 name|remove
 argument_list|(
 name|application
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|wasActive
+condition|)
+block|{
+name|pendingApplications
+operator|.
+name|remove
+argument_list|(
+name|application
+argument_list|)
 expr_stmt|;
+block|}
 name|applicationsMap
 operator|.
 name|remove
@@ -3449,7 +3463,9 @@ expr_stmt|;
 name|user
 operator|.
 name|finishApplication
-argument_list|()
+argument_list|(
+name|wasActive
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -6791,16 +6807,31 @@ operator|++
 name|activeApplications
 expr_stmt|;
 block|}
-DECL|method|finishApplication ()
+DECL|method|finishApplication (boolean wasActive)
 specifier|public
 specifier|synchronized
 name|void
 name|finishApplication
-parameter_list|()
+parameter_list|(
+name|boolean
+name|wasActive
+parameter_list|)
+block|{
+if|if
+condition|(
+name|wasActive
+condition|)
 block|{
 operator|--
 name|activeApplications
 expr_stmt|;
+block|}
+else|else
+block|{
+operator|--
+name|pendingApplications
+expr_stmt|;
+block|}
 block|}
 DECL|method|assignContainer (Resource resource)
 specifier|public
