@@ -748,14 +748,21 @@ name|blockSize
 init|=
 literal|64
 decl_stmt|;
-DECL|method|Transactions (FSNamesystem ns, int num)
+DECL|field|startIndex
+name|int
+name|startIndex
+decl_stmt|;
+DECL|method|Transactions (FSNamesystem ns, int numTx, int startIdx)
 name|Transactions
 parameter_list|(
 name|FSNamesystem
 name|ns
 parameter_list|,
 name|int
-name|num
+name|numTx
+parameter_list|,
+name|int
+name|startIdx
 parameter_list|)
 block|{
 name|namesystem
@@ -764,7 +771,11 @@ name|ns
 expr_stmt|;
 name|numTransactions
 operator|=
-name|num
+name|numTx
+expr_stmt|;
+name|startIndex
+operator|=
+name|startIdx
 expr_stmt|;
 block|}
 comment|// add a bunch of transactions.
@@ -841,6 +852,8 @@ name|logOpenFile
 argument_list|(
 literal|"/filename"
 operator|+
+name|startIndex
+operator|+
 name|i
 argument_list|,
 name|inode
@@ -851,6 +864,8 @@ operator|.
 name|logCloseFile
 argument_list|(
 literal|"/filename"
+operator|+
+name|startIndex
 operator|+
 name|i
 argument_list|,
@@ -1571,6 +1586,10 @@ argument_list|(
 name|namesystem
 argument_list|,
 name|NUM_TRANSACTIONS
+argument_list|,
+name|i
+operator|*
+name|NUM_TRANSACTIONS
 argument_list|)
 decl_stmt|;
 name|threadId
@@ -1636,6 +1655,27 @@ expr_stmt|;
 comment|// retry
 block|}
 block|}
+comment|// Reopen some files as for append
+name|Transactions
+name|trans
+init|=
+operator|new
+name|Transactions
+argument_list|(
+name|namesystem
+argument_list|,
+name|NUM_TRANSACTIONS
+argument_list|,
+name|NUM_TRANSACTIONS
+operator|/
+literal|2
+argument_list|)
+decl_stmt|;
+name|trans
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
 comment|// Roll another time to finalize edits_inprogress_3
 name|fsimage
 operator|.
@@ -1646,7 +1686,11 @@ name|long
 name|expectedTxns
 init|=
 operator|(
+operator|(
 name|NUM_THREADS
+operator|+
+literal|1
+operator|)
 operator|*
 literal|2
 operator|*

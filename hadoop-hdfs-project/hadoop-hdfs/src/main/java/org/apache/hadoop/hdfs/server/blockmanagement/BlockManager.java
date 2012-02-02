@@ -2387,6 +2387,37 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|completeBlock
+argument_list|(
+name|fileINode
+argument_list|,
+name|blkIndex
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|method|completeBlock (final INodeFile fileINode, final int blkIndex, final boolean force)
+specifier|public
+name|BlockInfo
+name|completeBlock
+parameter_list|(
+specifier|final
+name|INodeFile
+name|fileINode
+parameter_list|,
+specifier|final
+name|int
+name|blkIndex
+parameter_list|,
+specifier|final
+name|boolean
+name|force
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 name|blkIndex
@@ -2427,6 +2458,9 @@ name|curBlock
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|force
+operator|&&
 name|ucBlock
 operator|.
 name|numNodes
@@ -2441,6 +2475,27 @@ argument_list|(
 literal|"Cannot complete block: "
 operator|+
 literal|"block does not satisfy minimal replication requirement."
+argument_list|)
+throw|;
+if|if
+condition|(
+operator|!
+name|force
+operator|&&
+name|ucBlock
+operator|.
+name|getBlockUCState
+argument_list|()
+operator|!=
+name|BlockUCState
+operator|.
+name|COMMITTED
+condition|)
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot complete block: block has not been COMMITTED by the client"
 argument_list|)
 throw|;
 name|BlockInfo
