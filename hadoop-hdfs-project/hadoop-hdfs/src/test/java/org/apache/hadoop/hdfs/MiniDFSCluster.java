@@ -3952,6 +3952,8 @@ name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|)
 argument_list|)
 throw|;
+comment|//NOTE: the following is true if and only if:
+comment|//      hadoop.security.token.service.use_ip=true
 comment|//since the HDFS does things based on IP:port, we need to add the mapping
 comment|//for IP:port to rackId
 name|String
