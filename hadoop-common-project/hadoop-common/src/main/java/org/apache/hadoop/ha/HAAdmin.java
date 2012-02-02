@@ -266,6 +266,15 @@ name|FORCEFENCE
 init|=
 literal|"forcefence"
 decl_stmt|;
+DECL|field|FORCEACTIVE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|FORCEACTIVE
+init|=
+literal|"forceactive"
+decl_stmt|;
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -324,6 +333,10 @@ literal|"[--"
 operator|+
 name|FORCEFENCE
 operator|+
+literal|"] [--"
+operator|+
+name|FORCEACTIVE
+operator|+
 literal|"]<host:port><host:port>"
 argument_list|,
 literal|"Failover from the first daemon to the second.\n"
@@ -331,6 +344,12 @@ operator|+
 literal|"Unconditionally fence services if the "
 operator|+
 name|FORCEFENCE
+operator|+
+literal|" option is used.\n"
+operator|+
+literal|"Try to failover to the target service even if it is not ready if the "
+operator|+
+name|FORCEACTIVE
 operator|+
 literal|" option is used."
 argument_list|)
@@ -695,6 +714,11 @@ name|forceFence
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|forceActive
+init|=
+literal|false
+decl_stmt|;
 name|Options
 name|failoverOpts
 init|=
@@ -724,6 +748,17 @@ argument_list|,
 literal|false
 argument_list|,
 literal|"force fencing"
+argument_list|)
+expr_stmt|;
+name|failoverOpts
+operator|.
+name|addOption
+argument_list|(
+name|FORCEACTIVE
+argument_list|,
+literal|false
+argument_list|,
+literal|"force failover"
 argument_list|)
 expr_stmt|;
 name|CommandLineParser
@@ -756,6 +791,15 @@ operator|.
 name|hasOption
 argument_list|(
 name|FORCEFENCE
+argument_list|)
+expr_stmt|;
+name|forceActive
+operator|=
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|FORCEACTIVE
 argument_list|)
 expr_stmt|;
 block|}
@@ -967,6 +1011,8 @@ argument_list|,
 name|fencer
 argument_list|,
 name|forceFence
+argument_list|,
+name|forceActive
 argument_list|)
 expr_stmt|;
 name|out

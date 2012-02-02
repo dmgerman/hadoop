@@ -231,6 +231,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Return true if the service is capable and ready to transition    * from the standby state to the active state.    *     * @return true if the service is ready to become active, false otherwise.    * @throws IOException    *           if other errors happen    */
+DECL|method|readyToBecomeActive ()
+specifier|public
+name|boolean
+name|readyToBecomeActive
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_interface
 

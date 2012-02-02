@@ -6006,6 +6006,25 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// HAServiceProtocol
+DECL|method|readyToBecomeActive ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|readyToBecomeActive
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+block|{
+return|return
+name|nn
+operator|.
+name|readyToBecomeActive
+argument_list|()
+return|;
+block|}
 comment|/**    * Verify version.    *     * @param version    * @throws IOException    */
 DECL|method|verifyVersion (int version)
 name|void

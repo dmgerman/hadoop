@@ -4265,6 +4265,34 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
+DECL|method|readyToBecomeActive ()
+specifier|synchronized
+name|boolean
+name|readyToBecomeActive
+parameter_list|()
+throws|throws
+name|ServiceFailedException
+block|{
+if|if
+condition|(
+operator|!
+name|haEnabled
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"HA for namenode is not enabled"
+argument_list|)
+throw|;
+block|}
+return|return
+operator|!
+name|isInSafeMode
+argument_list|()
+return|;
+block|}
 comment|/**    * Class used as expose {@link NameNode} as context to {@link HAState}    *     * TODO:HA    * When entering and exiting state, on failing to start services,    * appropriate action is needed todo either shutdown the node or recover    * from failure.    */
 DECL|class|NameNodeHAContext
 specifier|protected

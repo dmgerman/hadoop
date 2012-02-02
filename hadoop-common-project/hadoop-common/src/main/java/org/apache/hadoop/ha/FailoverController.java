@@ -156,8 +156,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * @param toSvc service to make active    * @param toSvcName name of service to make active    * @throws FailoverFailedException if we should avoid failover    */
-DECL|method|preFailoverChecks (HAServiceProtocol toSvc, InetSocketAddress toSvcAddr)
+comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param toSvc service to make active    * @param toSvcName name of service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
+DECL|method|preFailoverChecks (HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, boolean forceActive)
 specifier|private
 specifier|static
 name|void
@@ -168,6 +168,9 @@ name|toSvc
 parameter_list|,
 name|InetSocketAddress
 name|toSvcAddr
+parameter_list|,
+name|boolean
+name|forceActive
 parameter_list|)
 throws|throws
 name|FailoverFailedException
@@ -280,10 +283,54 @@ name|e
 argument_list|)
 throw|;
 block|}
-comment|// TODO(HA): ask toSvc if it's capable. Eg not in SM.
+try|try
+block|{
+if|if
+condition|(
+operator|!
+name|toSvc
+operator|.
+name|readyToBecomeActive
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|forceActive
+condition|)
+block|{
+throw|throw
+operator|new
+name|FailoverFailedException
+argument_list|(
+name|toSvcAddr
+operator|+
+literal|" is not ready to become active"
+argument_list|)
+throw|;
 block|}
-comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param fromSvcAddr addr of the currently active service    * @param toSvc service to make active    * @param toSvcAddr addr of the service to make active    * @param fencer for fencing fromSvc    * @param forceFence to fence fromSvc even if not strictly necessary    * @throws FailoverFailedException if the failover fails    */
-DECL|method|failover (HAServiceProtocol fromSvc, InetSocketAddress fromSvcAddr, HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, NodeFencer fencer, boolean forceFence)
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|FailoverFailedException
+argument_list|(
+literal|"Got an IO exception"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param fromSvcAddr addr of the currently active service    * @param toSvc service to make active    * @param toSvcAddr addr of the service to make active    * @param fencer for fencing fromSvc    * @param forceFence to fence fromSvc even if not strictly necessary    * @param forceActive try to make toSvc active even if it is not ready    * @throws FailoverFailedException if the failover fails    */
+DECL|method|failover (HAServiceProtocol fromSvc, InetSocketAddress fromSvcAddr, HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, NodeFencer fencer, boolean forceFence, boolean forceActive)
 specifier|public
 specifier|static
 name|void
@@ -306,6 +353,9 @@ name|fencer
 parameter_list|,
 name|boolean
 name|forceFence
+parameter_list|,
+name|boolean
+name|forceActive
 parameter_list|)
 throws|throws
 name|FailoverFailedException
@@ -326,6 +376,8 @@ argument_list|(
 name|toSvc
 argument_list|,
 name|toSvcAddr
+argument_list|,
+name|forceActive
 argument_list|)
 expr_stmt|;
 comment|// Try to make fromSvc standby
@@ -534,6 +586,8 @@ try|try
 block|{
 comment|// Unconditionally fence toSvc in case it is still trying to
 comment|// become active, eg we timed out waiting for its response.
+comment|// Unconditionally force fromSvc to become active since it
+comment|// was previously active when we initiated failover.
 name|failover
 argument_list|(
 name|toSvc
@@ -545,6 +599,8 @@ argument_list|,
 name|fromSvcAddr
 argument_list|,
 name|fencer
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|)
