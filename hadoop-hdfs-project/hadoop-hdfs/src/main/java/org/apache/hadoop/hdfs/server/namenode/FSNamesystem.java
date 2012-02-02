@@ -19215,6 +19215,13 @@ name|VersionInfo
 operator|.
 name|getVersion
 argument_list|()
+operator|+
+literal|", r"
+operator|+
+name|VersionInfo
+operator|.
+name|getRevision
+argument_list|()
 return|;
 block|}
 annotation|@
