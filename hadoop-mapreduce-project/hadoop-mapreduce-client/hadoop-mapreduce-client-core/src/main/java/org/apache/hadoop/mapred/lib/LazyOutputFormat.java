@@ -155,12 +155,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A Convenience class that creates output lazily.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat} instead.  */
+comment|/**  * A Convenience class that creates output lazily.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

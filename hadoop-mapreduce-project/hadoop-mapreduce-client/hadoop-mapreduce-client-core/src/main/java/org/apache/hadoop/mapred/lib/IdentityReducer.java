@@ -123,12 +123,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** Performs no reduction, writing all input values directly to the output.   * @deprecated Use {@link org.apache.hadoop.mapreduce.Reducer} instead.  */
+comment|/**   * Performs no reduction, writing all input values directly to the output.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

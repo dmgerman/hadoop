@@ -153,12 +153,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This abstract class implements some common functionalities of the  * the generic mapper, reducer and combiner classes of Aggregate.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorJobBase}  * instead  */
+comment|/**  * This abstract class implements some common functionalities of the  * the generic mapper, reducer and combiner classes of Aggregate.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -199,12 +199,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A RecordReader that can effect joins of RecordReaders sharing a common key  * type and partitioning.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.CompositeRecordReader} instead  */
+comment|/**  * A RecordReader that can effect joins of RecordReaders sharing a common key  * type and partitioning.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

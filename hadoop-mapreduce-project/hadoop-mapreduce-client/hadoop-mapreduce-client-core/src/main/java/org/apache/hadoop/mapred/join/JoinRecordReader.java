@@ -137,12 +137,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Base class for Composite joins returning Tuples of arbitrary Writables.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.JoinRecordReader} instead  */
+comment|/**  * Base class for Composite joins returning Tuples of arbitrary Writables.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

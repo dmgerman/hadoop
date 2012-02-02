@@ -89,12 +89,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * This class implements the common functionalities of   * the subclasses of ValueAggregatorDescriptor class.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorBaseDescriptor}  * instead  */
+comment|/**   * This class implements the common functionalities of   * the subclasses of ValueAggregatorDescriptor class.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

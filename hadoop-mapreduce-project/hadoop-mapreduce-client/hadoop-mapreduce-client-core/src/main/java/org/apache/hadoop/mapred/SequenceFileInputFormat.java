@@ -125,12 +125,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** An {@link InputFormat} for {@link SequenceFile}s.   * @deprecated Use   *  {@link org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat}   *  instead.  */
+comment|/**   * An {@link InputFormat} for {@link SequenceFile}s.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

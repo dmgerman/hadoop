@@ -145,12 +145,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An {@link InputFormat} for plain text files. Files are broken into lines.  * Either linefeed or carriage-return are used to signal end of line. Each line  * is divided into key and value parts by a separator byte. If no such a byte  * exists, the key will be the entire line and value will be empty.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat}   * instead  */
+comment|/**  * An {@link InputFormat} for plain text files. Files are broken into lines.  * Either linefeed or carriage-return are used to signal end of line. Each line  * is divided into key and value parts by a separator byte. If no such a byte  * exists, the key will be the entire line and value will be empty.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

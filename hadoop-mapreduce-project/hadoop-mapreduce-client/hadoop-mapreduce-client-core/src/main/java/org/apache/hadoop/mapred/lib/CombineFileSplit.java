@@ -98,13 +98,7 @@ name|JobConf
 import|;
 end_import
 
-begin_comment
-comment|/**  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.CombineFileSplit}  */
-end_comment
-
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

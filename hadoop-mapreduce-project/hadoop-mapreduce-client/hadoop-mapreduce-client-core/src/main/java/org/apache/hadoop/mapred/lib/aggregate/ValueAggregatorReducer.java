@@ -139,12 +139,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the generic reducer of Aggregate.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorReducer}  * instead  */
+comment|/**  * This class implements the generic reducer of Aggregate.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

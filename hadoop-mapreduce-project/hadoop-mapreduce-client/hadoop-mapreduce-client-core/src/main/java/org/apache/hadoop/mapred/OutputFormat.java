@@ -83,12 +83,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**   *<code>OutputFormat</code> describes the output-specification for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputFormat</code> of the  * job to:<p>  *<ol>  *<li>  *   Validate the output-specification of the job. For e.g. check that the   *   output directory doesn't already exist.   *<li>  *   Provide the {@link RecordWriter} implementation to be used to write out  *   the output files of the job. Output files are stored in a   *   {@link FileSystem}.  *</li>  *</ol>  *   * @see RecordWriter  * @see JobConf  * @deprecated Use {@link org.apache.hadoop.mapreduce.OutputFormat} instead.  */
+comment|/**   *<code>OutputFormat</code> describes the output-specification for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputFormat</code> of the  * job to:<p>  *<ol>  *<li>  *   Validate the output-specification of the job. For e.g. check that the   *   output directory doesn't already exist.   *<li>  *   Provide the {@link RecordWriter} implementation to be used to write out  *   the output files of the job. Output files are stored in a   *   {@link FileSystem}.  *</li>  *</ol>  *   * @see RecordWriter  * @see JobConf  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

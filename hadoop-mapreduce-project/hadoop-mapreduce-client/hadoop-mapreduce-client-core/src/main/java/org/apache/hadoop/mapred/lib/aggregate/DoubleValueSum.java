@@ -49,12 +49,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a value aggregator that sums up a sequence of double  * values.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.DoubleValueSum} instead   */
+comment|/**  * This class implements a value aggregator that sums up a sequence of double  * values.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

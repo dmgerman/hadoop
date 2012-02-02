@@ -77,12 +77,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This interface defines the contract a value aggregator descriptor must  * support. Such a descriptor can be configured with a JobConf object. Its main  * function is to generate a list of aggregation-id/value pairs. An aggregation  * id encodes an aggregation type which is used to guide the way to aggregate  * the value in the reduce/combiner phrase of an Aggregate based job.The mapper in  * an Aggregate based map/reduce job may create one or more of  * ValueAggregatorDescriptor objects at configuration time. For each input  * key/value pair, the mapper will use those objects to create aggregation  * id/value pairs.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorDescriptor}  * instead   */
+comment|/**  * This interface defines the contract a value aggregator descriptor must  * support. Such a descriptor can be configured with a JobConf object. Its main  * function is to generate a list of aggregation-id/value pairs. An aggregation  * id encodes an aggregation type which is used to guide the way to aggregate  * the value in the reduce/combiner phrase of an Aggregate based job.The mapper in  * an Aggregate based map/reduce job may create one or more of  * ValueAggregatorDescriptor objects at configuration time. For each input  * key/value pair, the mapper will use those objects to create aggregation  * id/value pairs.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

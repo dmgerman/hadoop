@@ -89,12 +89,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Partition {@link BinaryComparable} keys using a configurable part of   * the bytes array returned by {@link BinaryComparable#getBytes()}.   *   * @see org.apache.hadoop.mapreduce.lib.partition.BinaryPartitioner  * @deprecated Use  *   {@link org.apache.hadoop.mapreduce.lib.partition.BinaryPartitioner}  *   instead.  */
+comment|/**  * Partition {@link BinaryComparable} keys using a configurable part of   * the bytes array returned by {@link BinaryComparable#getBytes()}.   *   * @see org.apache.hadoop.mapreduce.lib.partition.BinaryPartitioner  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

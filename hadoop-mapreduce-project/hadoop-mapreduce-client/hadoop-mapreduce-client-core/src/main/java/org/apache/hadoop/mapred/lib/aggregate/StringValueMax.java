@@ -49,12 +49,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a value aggregator that maintain the biggest of   * a sequence of strings.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.StringValueMax} instead  */
+comment|/**  * This class implements a value aggregator that maintain the biggest of   * a sequence of strings.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

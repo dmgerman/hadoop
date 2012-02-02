@@ -137,12 +137,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A {@link Reducer} that sums long values.   * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.reduce.LongSumReducer}  *    instead.  */
+comment|/**   * A {@link Reducer} that sums long values.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

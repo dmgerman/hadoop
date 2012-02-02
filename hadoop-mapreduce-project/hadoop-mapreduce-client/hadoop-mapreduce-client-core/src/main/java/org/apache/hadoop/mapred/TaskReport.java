@@ -75,12 +75,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A report on the state of a task.   * @deprecated Use {@link org.apache.hadoop.mapreduce.TaskReport} instead  **/
+comment|/**   * A report on the state of a task.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -49,12 +49,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a value aggregator that dedupes a sequence of objects.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.UniqValueCount} instead   */
+comment|/**  * This class implements a value aggregator that dedupes a sequence of objects.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

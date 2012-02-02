@@ -293,12 +293,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Very simple shift-reduce parser for join expressions.  *  * This should be sufficient for the user extension permitted now, but ought to  * be replaced with a parser generator if more complex grammars are supported.  * In particular, this&quot;shift-reduce&quot; parser has no states. Each set  * of formals requires a different internal node type, which is responsible for  * interpreting the list of tokens it receives. This is sufficient for the  * current grammar, but it has several annoying properties that might inhibit  * extension. In particular, parenthesis are always function calls; an  * algebraic or filter grammar would not only require a node type, but must  * also work around the internals of this parser.  *  * For most other cases, adding classes to the hierarchy- particularly by  * extending JoinRecordReader and MultiFilterRecordReader- is fairly  * straightforward. One need only override the relevant method(s) (usually only  * {@link CompositeRecordReader#combine}) and include a property to map its  * value to an identifier in the parser.  * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.join.Parser} instead  */
+comment|/**  * Very simple shift-reduce parser for join expressions.  *  * This should be sufficient for the user extension permitted now, but ought to  * be replaced with a parser generator if more complex grammars are supported.  * In particular, this&quot;shift-reduce&quot; parser has no states. Each set  * of formals requires a different internal node type, which is responsible for  * interpreting the list of tokens it receives. This is sufficient for the  * current grammar, but it has several annoying properties that might inhibit  * extension. In particular, parenthesis are always function calls; an  * algebraic or filter grammar would not only require a node type, but must  * also work around the internals of this parser.  *  * For most other cases, adding classes to the hierarchy- particularly by  * extending JoinRecordReader and MultiFilterRecordReader- is fairly  * straightforward. One need only override the relevant method(s) (usually only  * {@link CompositeRecordReader#combine}) and include a property to map its  * value to an identifier in the parser.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

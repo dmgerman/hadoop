@@ -151,12 +151,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A {@link Mapper} that maps text values into<token,freq> pairs.  Uses  * {@link StringTokenizer} to break text into tokens.   * @deprecated Use   *    {@link org.apache.hadoop.mapreduce.lib.map.TokenCounterMapper} instead.  */
+comment|/**   * A {@link Mapper} that maps text values into<token,freq> pairs.  Uses  * {@link StringTokenizer} to break text into tokens.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

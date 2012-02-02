@@ -221,12 +221,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * NLineInputFormat which splits N lines of input as one split.  *  * In many "pleasantly" parallel applications, each process/mapper   * processes the same input file (s), but with computations are   * controlled by different parameters.(Referred to as "parameter sweeps").  * One way to achieve this, is to specify a set of parameters   * (one set per line) as input in a control file   * (which is the input path to the map-reduce application,  * where as the input dataset is specified   * via a config variable in JobConf.).  *   * The NLineInputFormat can be used in such applications, that splits   * the input file such that by default, one line is fed as  * a value to one map task, and key is the offset.  * i.e. (k,v) is (LongWritable, Text).  * The location hints will span the whole mapred cluster.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.NLineInputFormat} instead  */
+comment|/**  * NLineInputFormat which splits N lines of input as one split.  *  * In many "pleasantly" parallel applications, each process/mapper   * processes the same input file (s), but with computations are   * controlled by different parameters.(Referred to as "parameter sweeps").  * One way to achieve this, is to specify a set of parameters   * (one set per line) as input in a control file   * (which is the input path to the map-reduce application,  * where as the input dataset is specified   * via a config variable in JobConf.).  *   * The NLineInputFormat can be used in such applications, that splits   * the input file such that by default, one line is fed as  * a value to one map task, and key is the offset.  * i.e. (k,v) is (LongWritable, Text).  * The location hints will span the whole mapred cluster.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

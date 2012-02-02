@@ -49,12 +49,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a value aggregator that maintain the maximum of   * a sequence of long values.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.LongValueMax} instead  */
+comment|/**  * This class implements a value aggregator that maintain the maximum of   * a sequence of long values.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

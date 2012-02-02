@@ -90,35 +90,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|PathFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|FileInputFormat
 import|;
 end_import
 
@@ -174,7 +146,7 @@ name|hadoop
 operator|.
 name|mapred
 operator|.
-name|Reporter
+name|RecordReader
 import|;
 end_import
 
@@ -188,7 +160,7 @@ name|hadoop
 operator|.
 name|mapred
 operator|.
-name|RecordReader
+name|Reporter
 import|;
 end_import
 
@@ -221,12 +193,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An abstract {@link org.apache.hadoop.mapred.InputFormat} that returns {@link CombineFileSplit}'s  * in {@link org.apache.hadoop.mapred.InputFormat#getSplits(JobConf, int)} method.   * Splits are constructed from the files under the input paths.   * A split cannot have files from different pools.  * Each split returned may contain blocks from different files.  * If a maxSplitSize is specified, then blocks on the same node are  * combined to form a single split. Blocks that are left over are  * then combined with other blocks in the same rack.   * If maxSplitSize is not specified, then blocks from the same rack  * are combined in a single split; no attempt is made to create  * node-local splits.  * If the maxSplitSize is equal to the block size, then this class  * is similar to the default spliting behaviour in Hadoop: each  * block is a locally processed split.  * Subclasses implement {@link org.apache.hadoop.mapred.InputFormat#getRecordReader(InputSplit, JobConf, Reporter)}  * to construct<code>RecordReader</code>'s for<code>CombineFileSplit</code>'s.  * @see CombineFileSplit  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.CombineFileInputFormat}  */
+comment|/**  * An abstract {@link org.apache.hadoop.mapred.InputFormat} that returns {@link CombineFileSplit}'s  * in {@link org.apache.hadoop.mapred.InputFormat#getSplits(JobConf, int)} method.   * Splits are constructed from the files under the input paths.   * A split cannot have files from different pools.  * Each split returned may contain blocks from different files.  * If a maxSplitSize is specified, then blocks on the same node are  * combined to form a single split. Blocks that are left over are  * then combined with other blocks in the same rack.   * If maxSplitSize is not specified, then blocks from the same rack  * are combined in a single split; no attempt is made to create  * node-local splits.  * If the maxSplitSize is equal to the block size, then this class  * is similar to the default spliting behaviour in Hadoop: each  * block is a locally processed split.  * Subclasses implement {@link org.apache.hadoop.mapred.InputFormat#getRecordReader(InputSplit, JobConf, Reporter)}  * to construct<code>RecordReader</code>'s for<code>CombineFileSplit</code>'s.  * @see CombineFileSplit  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

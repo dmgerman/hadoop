@@ -44,6 +44,48 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileSystem
@@ -60,7 +102,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|FileUtil
 import|;
 end_import
 
@@ -74,7 +116,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
+name|Path
 import|;
 end_import
 
@@ -148,37 +190,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|util
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|Progressable
 import|;
 end_import
 
@@ -192,17 +206,15 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|*
+name|ReflectionUtils
 import|;
 end_import
 
 begin_comment
-comment|/** An {@link OutputFormat} that writes {@link SequenceFile}s.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat}   *   instead.  */
+comment|/**   * An {@link OutputFormat} that writes {@link SequenceFile}s.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

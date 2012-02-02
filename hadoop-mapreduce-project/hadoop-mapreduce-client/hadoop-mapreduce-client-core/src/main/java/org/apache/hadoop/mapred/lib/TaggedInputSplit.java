@@ -147,12 +147,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An {@link InputSplit} that tags another InputSplit with extra data for use  * by {@link DelegatingInputFormat}s and {@link DelegatingMapper}s.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.TaggedInputSplit} instead  */
+comment|/**  * An {@link InputSplit} that tags another InputSplit with extra data for use  * by {@link DelegatingInputFormat}s and {@link DelegatingMapper}s.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 DECL|class|TaggedInputSplit
 class|class
 name|TaggedInputSplit

@@ -89,12 +89,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Partitioner effecting a total order by reading split points from  * an externally generated source.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner}  */
+comment|/**  * Partitioner effecting a total order by reading split points from  * an externally generated source.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

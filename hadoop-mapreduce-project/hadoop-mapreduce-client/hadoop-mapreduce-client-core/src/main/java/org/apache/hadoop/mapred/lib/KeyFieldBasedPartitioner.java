@@ -75,12 +75,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**      *  Defines a way to partition keys based on certain key fields (also see   *  {@link KeyFieldBasedComparator}.   *  The key specification supported is of the form -k pos1[,pos2], where,   *  pos is of the form f[.c][opts], where f is the number   *  of the key field to use, and c is the number of the first character from   *  the beginning of the field. Fields and character posns are numbered    *  starting with 1; a character position of zero in pos2 indicates the   *  field's last character. If '.c' is omitted from pos1, it defaults to 1   *  (the beginning of the field); if omitted from pos2, it defaults to 0    *  (the end of the field).   *  @deprecated Use    *  {@link org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedPartitioner}    *  instead   */
+comment|/**      *  Defines a way to partition keys based on certain key fields (also see   *  {@link KeyFieldBasedComparator}.   *  The key specification supported is of the form -k pos1[,pos2], where,   *  pos is of the form f[.c][opts], where f is the number   *  of the key field to use, and c is the number of the first character from   *  the beginning of the field. Fields and character posns are numbered    *  starting with 1; a character position of zero in pos2 indicates the   *  field's last character. If '.c' is omitted from pos1, it defaults to 1   *  (the beginning of the field); if omitted from pos2, it defaults to 0    *  (the end of the field).   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

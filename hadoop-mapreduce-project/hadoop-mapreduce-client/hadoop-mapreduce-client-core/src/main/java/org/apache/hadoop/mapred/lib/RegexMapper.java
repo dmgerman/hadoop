@@ -179,12 +179,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A {@link Mapper} that extracts text matching a regular expression.  * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.map.RegexMapper}  */
+comment|/**   * A {@link Mapper} that extracts text matching a regular expression.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -95,12 +95,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A class that allows a map/red job to work on a sample of sequence files.  * The sample is decided by the filter class set by the job.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFilter}  * instead  */
+comment|/**  * A class that allows a map/red job to work on a sample of sequence files.  * The sample is decided by the filter class set by the job.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

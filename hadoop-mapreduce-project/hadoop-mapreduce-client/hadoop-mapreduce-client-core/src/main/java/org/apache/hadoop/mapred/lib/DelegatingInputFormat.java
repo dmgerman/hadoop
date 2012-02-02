@@ -245,12 +245,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An {@link InputFormat} that delegates behaviour of paths to multiple other  * InputFormats.  *   * @see MultipleInputs#addInputPath(JobConf, Path, Class, Class)  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.DelegatingInputFormat} instead  */
+comment|/**  * An {@link InputFormat} that delegates behaviour of paths to multiple other  * InputFormats.  *   * @see MultipleInputs#addInputPath(JobConf, Path, Class, Class)  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

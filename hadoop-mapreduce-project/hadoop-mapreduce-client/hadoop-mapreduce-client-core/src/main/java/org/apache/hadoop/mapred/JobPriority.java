@@ -45,12 +45,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used to describe the priority of the running job.   * @deprecated Use {@link org.apache.hadoop.mapreduce.JobPriority} instead  */
+comment|/**  * Used to describe the priority of the running job.   */
 end_comment
 
 begin_enum
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

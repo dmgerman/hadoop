@@ -147,12 +147,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class supports MapReduce jobs that have multiple input paths with  * a different {@link InputFormat} and {@link Mapper} for each path   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.MultipleInputs} instead  */
+comment|/**  * This class supports MapReduce jobs that have multiple input paths with  * a different {@link InputFormat} and {@link Mapper} for each path   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

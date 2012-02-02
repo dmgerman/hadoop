@@ -287,12 +287,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Treats keys as offset in file and value as line.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.input.LineRecordReader} instead.  */
+comment|/**  * Treats keys as offset in file and value as line.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -75,12 +75,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** Partition keys by their {@link Object#hashCode()}.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.partition.HashPartitioner} instead.  */
+comment|/**   * Partition keys by their {@link Object#hashCode()}.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

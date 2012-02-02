@@ -141,12 +141,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Refinement of InputFormat requiring implementors to provide  * ComposableRecordReader instead of RecordReader.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.ComposableInputFormat} instead  */
+comment|/**  * Refinement of InputFormat requiring implementors to provide  * ComposableRecordReader instead of RecordReader.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

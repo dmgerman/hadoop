@@ -18,11 +18,33 @@ end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|List
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -31,6 +53,10 @@ comment|/*  * This object gathers the [currently four] PeriodStatset's that we  
 end_comment
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|ProgressSplitsBlock
 specifier|public
 class|class

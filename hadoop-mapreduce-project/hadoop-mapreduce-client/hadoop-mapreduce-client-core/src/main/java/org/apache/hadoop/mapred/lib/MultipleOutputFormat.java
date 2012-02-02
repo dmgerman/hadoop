@@ -203,12 +203,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This abstract class extends the FileOutputFormat, allowing to write the  * output data to different output files. There are three basic use cases for  * this class.  *   * Case one: This class is used for a map reduce job with at least one reducer.  * The reducer wants to write data to different files depending on the actual  * keys. It is assumed that a key (or value) encodes the actual key (value)  * and the desired location for the actual key (value).  *   * Case two: This class is used for a map only job. The job wants to use an  * output file name that is either a part of the input file name of the input  * data, or some derivation of it.  *   * Case three: This class is used for a map only job. The job wants to use an  * output file name that depends on both the keys and the input file name,  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.output.MultipleOutputs} instead  */
+comment|/**  * This abstract class extends the FileOutputFormat, allowing to write the  * output data to different output files. There are three basic use cases for  * this class.  *   * Case one: This class is used for a map reduce job with at least one reducer.  * The reducer wants to write data to different files depending on the actual  * keys. It is assumed that a key (or value) encodes the actual key (value)  * and the desired location for the actual key (value).  *   * Case two: This class is used for a map only job. The job wants to use an  * output file name that is either a part of the input file name of the input  * data, or some derivation of it.  *   * Case three: This class is used for a map only job. The job wants to use an  * output file name that depends on both the keys and the input file name,  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.
