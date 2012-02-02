@@ -212,6 +212,17 @@ operator|.
 name|statistics
 expr_stmt|;
 block|}
+comment|/**    * Get the raw file system     * @return FileSystem being filtered    */
+DECL|method|getRawFileSystem ()
+specifier|public
+name|FileSystem
+name|getRawFileSystem
+parameter_list|()
+block|{
+return|return
+name|fs
+return|;
+block|}
 comment|/** Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
