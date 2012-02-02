@@ -2607,13 +2607,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// If we have more than one nameservice, need to enumerate them in the
-comment|// config.
-if|if
-condition|(
-name|federation
-condition|)
-block|{
 name|List
 argument_list|<
 name|String
@@ -2638,6 +2631,16 @@ name|getNameservices
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|nameservice
+operator|.
+name|getId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|allNsIds
 operator|.
 name|add
@@ -2649,6 +2652,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+operator|!
+name|allNsIds
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|conf
 operator|.
 name|set

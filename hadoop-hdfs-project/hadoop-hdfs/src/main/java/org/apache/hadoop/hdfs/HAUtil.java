@@ -594,6 +594,25 @@ argument_list|(
 name|myConf
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|nsId
+operator|!=
+literal|null
+argument_list|,
+literal|"Could not determine namespace id. Please ensure that this "
+operator|+
+literal|"machine is one of the machines listed as a NN RPC address, "
+operator|+
+literal|"or configure "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_FEDERATION_NAMESERVICE_ID
+argument_list|)
+expr_stmt|;
 name|Collection
 argument_list|<
 name|String
@@ -629,7 +648,20 @@ name|nnIds
 operator|!=
 literal|null
 argument_list|,
-literal|"Could not determine namenode ids in namespace '%s'"
+literal|"Could not determine namenode ids in namespace '%s'. "
+operator|+
+literal|"Please configure "
+operator|+
+name|DFSUtil
+operator|.
+name|addKeySuffixes
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_NAMENODES_KEY
+argument_list|,
+name|nsId
+argument_list|)
 argument_list|,
 name|nsId
 argument_list|)
@@ -645,7 +677,16 @@ argument_list|()
 operator|==
 literal|2
 argument_list|,
-literal|"Expected exactly 2 NameNodes in this namespace. Instead, got: '%s'"
+literal|"Expected exactly 2 NameNodes in namespace '%s'. "
+operator|+
+literal|"Instead, got only %s (NN ids were '%s'"
+argument_list|,
+name|nsId
+argument_list|,
+name|nnIds
+operator|.
+name|size
+argument_list|()
 argument_list|,
 name|Joiner
 operator|.
@@ -674,7 +715,17 @@ operator|.
 name|isEmpty
 argument_list|()
 argument_list|,
-literal|"Could not determine own NN ID"
+literal|"Could not determine own NN ID in namespace '%s'. Please "
+operator|+
+literal|"ensure that this node is one of the machines listed as an "
+operator|+
+literal|"NN RPC address, or configure "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_NAMENODE_ID_KEY
+argument_list|,
+name|nsId
 argument_list|)
 expr_stmt|;
 name|ArrayList

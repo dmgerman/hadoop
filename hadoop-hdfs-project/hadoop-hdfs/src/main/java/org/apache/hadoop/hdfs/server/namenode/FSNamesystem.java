@@ -4065,6 +4065,30 @@ name|stopMonitor
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|dir
+operator|!=
+literal|null
+operator|&&
+name|dir
+operator|.
+name|fsImage
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|dir
+operator|.
+name|fsImage
+operator|.
+name|editLog
+operator|!=
+literal|null
+condition|)
+block|{
 name|dir
 operator|.
 name|fsImage
@@ -4074,6 +4098,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 comment|// Update the fsimage with the last txid that we wrote
 comment|// so that the tailer starts from the right spot.
 name|dir
@@ -4083,6 +4108,7 @@ operator|.
 name|updateLastAppliedTxIdFromWritten
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -4226,6 +4252,27 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|dir
+operator|!=
+literal|null
+operator|&&
+name|dir
+operator|.
+name|fsImage
+operator|!=
+literal|null
+operator|&&
+name|dir
+operator|.
+name|fsImage
+operator|.
+name|editLog
+operator|!=
+literal|null
+condition|)
+block|{
 name|dir
 operator|.
 name|fsImage
@@ -4235,6 +4282,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|checkOperation (OperationCategory op)
 name|void

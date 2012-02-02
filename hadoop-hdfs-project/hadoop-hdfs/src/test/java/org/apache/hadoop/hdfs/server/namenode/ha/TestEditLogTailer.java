@@ -830,7 +830,7 @@ name|MiniDFSNNTopology
 operator|.
 name|NSConf
 argument_list|(
-literal|null
+literal|"ns1"
 argument_list|)
 operator|.
 name|addNN

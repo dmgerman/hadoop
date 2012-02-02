@@ -209,7 +209,7 @@ name|MiniDFSNNTopology
 operator|.
 name|NSConf
 argument_list|(
-literal|null
+literal|"minidfs-ns"
 argument_list|)
 operator|.
 name|addNN
