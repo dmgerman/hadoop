@@ -267,9 +267,12 @@ operator|=
 operator|new
 name|ChRootedFileSystem
 argument_list|(
-name|fSysTarget
-argument_list|,
 name|chrootedTo
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

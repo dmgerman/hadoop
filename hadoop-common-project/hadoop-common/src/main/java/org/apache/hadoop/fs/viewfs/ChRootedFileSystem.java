@@ -50,16 +50,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -381,44 +371,39 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructor    * @param fs base file system    * @param theRoot chRoot for this file system    * @throws URISyntaxException    */
-DECL|method|ChRootedFileSystem (final FileSystem fs, final Path theRoot)
+comment|/**    * Constructor    * @param uri base file system    * @param conf configuration    * @throws IOException     */
+DECL|method|ChRootedFileSystem (final URI uri, Configuration conf)
 specifier|public
 name|ChRootedFileSystem
 parameter_list|(
 specifier|final
-name|FileSystem
-name|fs
+name|URI
+name|uri
 parameter_list|,
-specifier|final
-name|Path
-name|theRoot
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
-name|URISyntaxException
+name|IOException
 block|{
 name|super
 argument_list|(
-name|fs
-argument_list|)
-expr_stmt|;
-name|makeQualified
+name|FileSystem
+operator|.
+name|get
 argument_list|(
-name|theRoot
+name|uri
+argument_list|,
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//check that root is a valid path for fs
-comment|// Would like to call myFs.checkPath(theRoot);
-comment|// but not public
 name|chRootPathPart
 operator|=
 operator|new
 name|Path
 argument_list|(
-name|theRoot
-operator|.
-name|toUri
-argument_list|()
+name|uri
 operator|.
 name|getPath
 argument_list|()
@@ -434,81 +419,9 @@ operator|.
 name|getPath
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|initialize
-argument_list|(
-name|fs
-operator|.
-name|getUri
-argument_list|()
-argument_list|,
-name|fs
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// This exception should not be thrown
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"This should not occur"
-argument_list|)
-throw|;
-block|}
-comment|/*      * We are making URI include the chrootedPath: e.g. file:///chrootedPath.      * This is questionable since Path#makeQualified(uri, path) ignores      * the pathPart of a uri. Since this class is internal we can ignore      * this issue but if we were to make it external then this needs      * to be resolved.      */
-comment|// Handle the two cases:
-comment|//              scheme:/// and scheme://authority/
 name|myUri
 operator|=
-operator|new
-name|URI
-argument_list|(
-name|fs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-operator|(
-name|fs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
-operator|==
-literal|null
-condition|?
-literal|""
-else|:
-name|Path
-operator|.
-name|SEPARATOR
-operator|)
-operator|+
-name|chRootPathPart
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
+name|uri
 expr_stmt|;
 name|workingDir
 operator|=
