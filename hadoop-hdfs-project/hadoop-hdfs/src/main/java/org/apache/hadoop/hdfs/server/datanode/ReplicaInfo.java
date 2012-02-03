@@ -461,7 +461,7 @@ block|{
 name|File
 name|tmpFile
 init|=
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|createTmpFile
 argument_list|(

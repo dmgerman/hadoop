@@ -668,7 +668,6 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|FSDataset
-specifier|public
 class|class
 name|FSDataset
 implements|implements
@@ -2099,7 +2098,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|createTmpFile
 argument_list|(
@@ -2135,7 +2134,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|createTmpFile
 argument_list|(
@@ -2969,7 +2968,6 @@ expr_stmt|;
 block|}
 comment|/** Return storage directory corresponding to the volume */
 DECL|method|getDir ()
-specifier|public
 name|File
 name|getDir
 parameter_list|()
@@ -2982,7 +2980,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|getCurrentDir ()
-specifier|public
 name|File
 name|getCurrentDir
 parameter_list|()
@@ -2992,7 +2989,6 @@ name|currentDir
 return|;
 block|}
 DECL|method|getRbwDir (String bpid)
-specifier|public
 name|File
 name|getRbwDir
 parameter_list|(
@@ -5643,111 +5639,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|createTmpFile (Block b, File f)
-specifier|static
-name|File
-name|createTmpFile
-parameter_list|(
-name|Block
-name|b
-parameter_list|,
-name|File
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|f
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unexpected problem in creating temporary file for "
-operator|+
-name|b
-operator|+
-literal|".  File "
-operator|+
-name|f
-operator|+
-literal|" should not be present, but is."
-argument_list|)
-throw|;
-block|}
-comment|// Create the zero-length temp file
-comment|//
-name|boolean
-name|fileCreated
-init|=
-literal|false
-decl_stmt|;
-try|try
-block|{
-name|fileCreated
-operator|=
-name|f
-operator|.
-name|createNewFile
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-throw|throw
-operator|(
-name|IOException
-operator|)
-operator|new
-name|IOException
-argument_list|(
-name|DISK_ERROR
-operator|+
-name|f
-argument_list|)
-operator|.
-name|initCause
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|fileCreated
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unexpected problem in creating temporary file for "
-operator|+
-name|b
-operator|+
-literal|".  File "
-operator|+
-name|f
-operator|+
-literal|" should be creatable, but is already present."
-argument_list|)
-throw|;
-block|}
-return|return
-name|f
-return|;
-block|}
 DECL|field|datanode
 specifier|private
 specifier|final
@@ -6336,7 +6227,7 @@ return|;
 block|}
 comment|/**    * Get File name for a given block.    */
 DECL|method|getBlockFile (ExtendedBlock b)
-specifier|public
+specifier|private
 name|File
 name|getBlockFile
 parameter_list|(
@@ -6647,7 +6538,6 @@ return|;
 block|}
 comment|/**    * Get the meta info of a block stored in volumeMap. To find a block,    * block pool Id, block Id and generation stamp must match.    * @param b extended block    * @return the meta replica information; null if block was not found    * @throws ReplicaNotFoundException if no entry is in the map or     *                        there is a generation stamp mismatch    */
 DECL|method|getReplicaInfo (ExtendedBlock b)
-specifier|private
 name|ReplicaInfo
 name|getReplicaInfo
 parameter_list|(
@@ -7364,62 +7254,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-DECL|field|DISK_ERROR
-specifier|private
-specifier|final
-specifier|static
-name|String
-name|DISK_ERROR
-init|=
-literal|"Possible disk error on file creation: "
-decl_stmt|;
-comment|/** Get the cause of an I/O exception if caused by a possible disk error    * @param ioe an I/O exception    * @return cause if the I/O exception is caused by a possible disk error;    *         null otherwise.    */
-DECL|method|getCauseIfDiskError (IOException ioe)
-specifier|static
-name|IOException
-name|getCauseIfDiskError
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-if|if
-condition|(
-name|ioe
-operator|.
-name|getMessage
-argument_list|()
-operator|!=
-literal|null
-operator|&&
-name|ioe
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-name|DISK_ERROR
-argument_list|)
-condition|)
-block|{
-return|return
-operator|(
-name|IOException
-operator|)
-name|ioe
-operator|.
-name|getCause
-argument_list|()
-return|;
-block|}
-else|else
-block|{
-return|return
-literal|null
-return|;
 block|}
 block|}
 annotation|@
