@@ -1065,16 +1065,6 @@ specifier|final
 name|ActiveUsersManager
 name|activeUsersManager
 decl_stmt|;
-DECL|field|DEFAULT_AM_RESOURCE
-specifier|final
-specifier|static
-name|int
-name|DEFAULT_AM_RESOURCE
-init|=
-literal|2
-operator|*
-literal|1024
-decl_stmt|;
 DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, Comparator<SchedulerApp> applicationComparator, CSQueue old)
 specifier|public
 name|LeafQueue
@@ -1362,9 +1352,13 @@ operator|.
 name|getClusterResources
 argument_list|()
 argument_list|,
+name|this
+operator|.
+name|minimumAllocation
+argument_list|,
 name|maxAMResourcePercent
 argument_list|,
-name|absoluteCapacity
+name|absoluteMaxCapacity
 argument_list|)
 decl_stmt|;
 name|int
@@ -1818,7 +1812,9 @@ literal|"maxApplicationsPerUser = "
 operator|+
 name|maxApplicationsPerUser
 operator|+
-literal|" [= (int)(maxApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+literal|" [= (int)(maxApplications * (userLimit / 100.0f) * "
+operator|+
+literal|"userLimitFactor) ]"
 operator|+
 literal|"\n"
 operator|+
@@ -1828,9 +1824,9 @@ name|maxActiveApplications
 operator|+
 literal|" [= max("
 operator|+
-literal|"(int)((clusterResourceMemory / (float)DEFAULT_AM_RESOURCE) *"
+literal|"(int)ceil((clusterResourceMemory / minimumAllocation) *"
 operator|+
-literal|"maxAMResourcePercent * absoluteCapacity),"
+literal|"maxAMResourcePercent * absoluteMaxCapacity),"
 operator|+
 literal|"1) ]"
 operator|+
@@ -1840,7 +1836,13 @@ literal|"maxActiveApplicationsPerUser = "
 operator|+
 name|maxActiveApplicationsPerUser
 operator|+
-literal|" [= (int)(maxActiveApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+literal|" [= max("
+operator|+
+literal|"(int)(maxActiveApplications * (userLimit / 100.0f) * "
+operator|+
+literal|"userLimitFactor),"
+operator|+
+literal|"1) ]"
 operator|+
 literal|"\n"
 operator|+
@@ -1848,7 +1850,9 @@ literal|"utilization = "
 operator|+
 name|utilization
 operator|+
-literal|" [= usedResourcesMemory /  (clusterResourceMemory * absoluteCapacity)]"
+literal|" [= usedResourcesMemory / "
+operator|+
+literal|"(clusterResourceMemory * absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1856,7 +1860,9 @@ literal|"usedCapacity = "
 operator|+
 name|usedCapacity
 operator|+
-literal|" [= usedResourcesMemory / (clusterResourceMemory * parent.absoluteCapacity)]"
+literal|" [= usedResourcesMemory / "
+operator|+
+literal|"(clusterResourceMemory * parent.absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1872,7 +1878,9 @@ literal|"minimumAllocationFactor = "
 operator|+
 name|minimumAllocationFactor
 operator|+
-literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / maximumAllocationMemory ]"
+literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / "
+operator|+
+literal|"maximumAllocationMemory ]"
 operator|+
 literal|"\n"
 operator|+
@@ -6589,9 +6597,11 @@ name|computeMaxActiveApplications
 argument_list|(
 name|clusterResource
 argument_list|,
+name|minimumAllocation
+argument_list|,
 name|maxAMResourcePercent
 argument_list|,
-name|absoluteCapacity
+name|absoluteMaxCapacity
 argument_list|)
 expr_stmt|;
 name|maxActiveApplicationsPerUser
