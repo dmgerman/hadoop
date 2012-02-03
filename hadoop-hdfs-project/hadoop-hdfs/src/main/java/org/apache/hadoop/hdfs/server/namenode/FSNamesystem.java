@@ -4333,6 +4333,7 @@ name|DFS_NAMENODE_NAME_DIR_KEY
 argument_list|)
 return|;
 block|}
+comment|/**    * Get all edits dirs which are required. If any shared edits dirs are    * configured, these are also included in the set of required dirs.    *     * @param conf the HDFS configuration.    * @return all required dirs.    */
 DECL|method|getRequiredNamespaceEditsDirs (Configuration conf)
 specifier|public
 specifier|static
@@ -4346,13 +4347,43 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-return|return
+name|Set
+argument_list|<
+name|URI
+argument_list|>
+name|ret
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|URI
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|ret
+operator|.
+name|addAll
+argument_list|(
 name|getStorageDirs
 argument_list|(
 name|conf
 argument_list|,
 name|DFS_NAMENODE_EDITS_DIR_REQUIRED_KEY
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|ret
+operator|.
+name|addAll
+argument_list|(
+name|getSharedEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|ret
 return|;
 block|}
 DECL|method|getStorageDirs (Configuration conf, String propertyName)
