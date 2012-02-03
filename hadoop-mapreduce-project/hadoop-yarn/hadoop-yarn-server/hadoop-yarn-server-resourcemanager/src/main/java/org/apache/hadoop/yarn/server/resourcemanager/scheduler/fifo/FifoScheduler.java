@@ -2189,6 +2189,16 @@ argument_list|,
 name|schedulerApp
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|appAttemptId
+operator|.
+name|getAttemptId
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
 name|metrics
 operator|.
 name|submitApp
@@ -2196,6 +2206,7 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
