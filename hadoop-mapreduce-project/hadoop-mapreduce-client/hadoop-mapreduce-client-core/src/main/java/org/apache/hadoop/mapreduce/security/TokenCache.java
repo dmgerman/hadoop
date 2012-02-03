@@ -398,6 +398,27 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Remove jobtoken referrals which don't make sense in the context    * of the task execution.    *    * @param conf    */
+DECL|method|cleanUpTokenReferral (Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|cleanUpTokenReferral
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|obtainTokensForNamenodesInternal (Credentials credentials, Path[] ps, Configuration conf)
 specifier|static
 name|void

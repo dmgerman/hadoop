@@ -34,6 +34,30 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -173,6 +197,20 @@ operator|.
 name|mapred
 operator|.
 name|Master
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|MRJobConfig
 import|;
 end_import
 
@@ -1153,6 +1191,57 @@ name|mockFs
 return|;
 end_return
 
-unit|} }
+begin_function
+unit|}    @
+name|Test
+DECL|method|testCleanUpTokenReferral ()
+specifier|public
+name|void
+name|testCleanUpTokenReferral
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
+argument_list|,
+literal|"foo"
+argument_list|)
+expr_stmt|;
+name|TokenCache
+operator|.
+name|cleanUpTokenReferral
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_CREDENTIALS_BINARY
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+unit|}
 end_unit
 
