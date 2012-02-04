@@ -7043,6 +7043,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the number of replicas of current block. This can be different    * from the designated replication factor of the file because the NameNode    * does not replicate the block to which a client is currently writing to.    * The client continues to write to a block even if a few datanodes in the    * write pipeline have failed.     * @return the number of valid replicas of the current block    */
 DECL|method|getNumCurrentReplicas ()
+specifier|public
 specifier|synchronized
 name|int
 name|getNumCurrentReplicas
