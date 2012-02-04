@@ -418,7 +418,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|BlockMetadataHeader
 import|;
 end_import
 
@@ -3327,9 +3327,9 @@ name|mdOut
 operator|.
 name|writeShort
 argument_list|(
-name|FSDataset
+name|BlockMetadataHeader
 operator|.
-name|METADATA_VERSION
+name|VERSION
 argument_list|)
 expr_stmt|;
 comment|// Create a summer and write out its header.
