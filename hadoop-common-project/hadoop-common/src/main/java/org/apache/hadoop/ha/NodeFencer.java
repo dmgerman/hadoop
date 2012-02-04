@@ -201,6 +201,7 @@ class|class
 name|NodeFencer
 block|{
 DECL|field|CONF_METHODS_KEY
+specifier|public
 specifier|static
 specifier|final
 name|String

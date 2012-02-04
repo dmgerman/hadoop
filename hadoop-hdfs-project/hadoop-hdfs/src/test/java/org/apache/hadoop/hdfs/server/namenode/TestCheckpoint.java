@@ -4275,7 +4275,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Tests save namepsace.    */
+comment|/**    * Tests save namespace.    */
 DECL|method|testSaveNamespace ()
 specifier|public
 name|void

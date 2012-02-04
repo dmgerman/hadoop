@@ -360,7 +360,7 @@ name|token
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests save namepsace.    */
+comment|/**    * Tests save namespace.    */
 annotation|@
 name|Test
 DECL|method|testSaveNamespace ()

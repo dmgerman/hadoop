@@ -239,7 +239,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A command-line tool for making calls in the HAServiceProtocol.  * For example,. this can be used to force a daemon to standby or active  * mode, or to trigger a health-check.  */
+comment|/**  * A command-line tool for making calls in the HAServiceProtocol.  * For example,. this can be used to force a service to standby or active  * mode, or to trigger a health-check.  */
 end_comment
 
 begin_class
@@ -303,9 +303,9 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"<host:port>"
+literal|"<serviceId>"
 argument_list|,
-literal|"Transitions the daemon into Active state"
+literal|"Transitions the service into Active state"
 argument_list|)
 argument_list|)
 decl|.
@@ -316,9 +316,9 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"<host:port>"
+literal|"<serviceId>"
 argument_list|,
-literal|"Transitions the daemon into Standby state"
+literal|"Transitions the service into Standby state"
 argument_list|)
 argument_list|)
 decl|.
@@ -337,9 +337,9 @@ literal|"] [--"
 operator|+
 name|FORCEACTIVE
 operator|+
-literal|"]<host:port><host:port>"
+literal|"]<serviceId><serviceId>"
 argument_list|,
-literal|"Failover from the first daemon to the second.\n"
+literal|"Failover from the first service to the second.\n"
 operator|+
 literal|"Unconditionally fence services if the "
 operator|+
@@ -362,9 +362,9 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"<host:port>"
+literal|"<serviceId>"
 argument_list|,
-literal|"Returns the state of the daemon"
+literal|"Returns the state of the service"
 argument_list|)
 argument_list|)
 decl|.
@@ -375,9 +375,9 @@ argument_list|,
 operator|new
 name|UsageInfo
 argument_list|(
-literal|"<host:port>"
+literal|"<serviceId>"
 argument_list|,
-literal|"Requests that the daemon perform a health check.\n"
+literal|"Requests that the service perform a health check.\n"
 operator|+
 literal|"The HAAdmin tool will exit with a non-zero exit code\n"
 operator|+
@@ -403,6 +403,7 @@ argument_list|()
 decl_stmt|;
 comment|/** Output stream for errors, for use in tests */
 DECL|field|errOut
+specifier|protected
 name|PrintStream
 name|errOut
 init|=
@@ -418,9 +419,18 @@ name|System
 operator|.
 name|out
 decl_stmt|;
+DECL|method|getUsageString ()
+specifier|protected
+name|String
+name|getUsageString
+parameter_list|()
+block|{
+return|return
+literal|"Usage: HAAdmin"
+return|;
+block|}
 DECL|method|printUsage (PrintStream errOut)
-specifier|private
-specifier|static
+specifier|protected
 name|void
 name|printUsage
 parameter_list|(
@@ -432,7 +442,8 @@ name|errOut
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java HAAdmin"
+name|getUsageString
+argument_list|()
 argument_list|)
 expr_stmt|;
 for|for
@@ -544,7 +555,7 @@ name|errOut
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java HAAdmin ["
+literal|"Usage: HAAdmin ["
 operator|+
 name|cmd
 operator|+
@@ -953,10 +964,13 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
+name|getServiceAddr
+argument_list|(
 name|args
 index|[
 literal|0
 index|]
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
@@ -966,10 +980,13 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
+name|getServiceAddr
+argument_list|(
 name|args
 index|[
 literal|1
 index|]
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|HAServiceProtocol
@@ -1223,18 +1240,40 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Return a proxy to the specified target host:port.    */
-DECL|method|getProtocol (String target)
+comment|/**    * Return the serviceId as is, we are assuming it was    * given as a service address of form<host:ipcport>.    */
+DECL|method|getServiceAddr (String serviceId)
+specifier|protected
+name|String
+name|getServiceAddr
+parameter_list|(
+name|String
+name|serviceId
+parameter_list|)
+block|{
+return|return
+name|serviceId
+return|;
+block|}
+comment|/**    * Return a proxy to the specified target service.    */
+DECL|method|getProtocol (String serviceId)
 specifier|protected
 name|HAServiceProtocol
 name|getProtocol
 parameter_list|(
 name|String
-name|target
+name|serviceId
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|serviceAddr
+init|=
+name|getServiceAddr
+argument_list|(
+name|serviceId
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
@@ -1242,7 +1281,7 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|target
+name|serviceAddr
 argument_list|)
 decl_stmt|;
 return|return
@@ -1274,6 +1313,51 @@ DECL|method|run (String[] argv)
 specifier|public
 name|int
 name|run
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+return|return
+name|runCmd
+argument_list|(
+name|argv
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+name|errOut
+operator|.
+name|println
+argument_list|(
+literal|"Illegal argument: "
+operator|+
+name|iae
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+block|}
+DECL|method|runCmd (String[] argv)
+specifier|protected
+name|int
+name|runCmd
 parameter_list|(
 name|String
 index|[]
