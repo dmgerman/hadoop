@@ -3213,6 +3213,21 @@ name|TaskEventType
 name|type
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Invalid event "
+operator|+
+name|type
+operator|+
+literal|" on Task "
+operator|+
+name|this
+operator|.
+name|taskId
+argument_list|)
+expr_stmt|;
 name|eventHandler
 operator|.
 name|handle

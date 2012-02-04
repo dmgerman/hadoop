@@ -2477,7 +2477,7 @@ operator|)
 name|committer
 operator|)
 operator|.
-name|getTempTaskOutputPath
+name|getTaskAttemptPath
 argument_list|(
 name|taskContext
 argument_list|)
