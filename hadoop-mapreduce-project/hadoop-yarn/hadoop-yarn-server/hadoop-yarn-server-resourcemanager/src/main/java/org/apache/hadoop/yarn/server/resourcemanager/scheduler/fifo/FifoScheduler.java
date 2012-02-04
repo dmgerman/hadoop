@@ -1902,7 +1902,10 @@ name|normalizeRequests
 argument_list|(
 name|ask
 argument_list|,
-name|MINIMUM_MEMORY
+name|minimumAllocation
+operator|.
+name|getMemory
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Release containers
