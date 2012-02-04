@@ -988,6 +988,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -2618,20 +2628,6 @@ name|common
 operator|.
 name|base
 operator|.
-name|Joiner
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
 name|Preconditions
 import|;
 end_import
@@ -2644,9 +2640,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
+name|collect
 operator|.
-name|VisibleForTesting
+name|Lists
 import|;
 end_import
 
@@ -3217,7 +3213,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -4561,10 +4557,11 @@ name|dirNames
 argument_list|)
 return|;
 block|}
+comment|/**    * Return an ordered list of edits directories to write to.    * The list is ordered such that all shared edits directories    * are ordered before non-shared directories, and any duplicates    * are removed. The order they are specified in the configuration    * is retained.    */
 DECL|method|getNamespaceEditsDirs (Configuration conf)
 specifier|public
 specifier|static
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -4574,105 +4571,109 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|Collection
+comment|// Use a LinkedHashSet so that order is maintained while we de-dup
+comment|// the entries.
+name|LinkedHashSet
 argument_list|<
 name|URI
 argument_list|>
 name|editsDirs
 init|=
+operator|new
+name|LinkedHashSet
+argument_list|<
+name|URI
+argument_list|>
+argument_list|()
+decl_stmt|;
+comment|// First add the shared edits dirs. It's critical that the shared dirs
+comment|// are added first, since JournalSet syncs them in the order they are listed,
+comment|// and we need to make sure all edits are in place in the shared storage
+comment|// before they are replicated locally. See HDFS-2874.
+for|for
+control|(
+name|URI
+name|dir
+range|:
+name|getSharedEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|editsDirs
+operator|.
+name|add
+argument_list|(
+name|dir
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Edits URI "
+operator|+
+name|dir
+operator|+
+literal|" listed multiple times in "
+operator|+
+name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+operator|+
+literal|". Ignoring duplicates."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Now add the non-shared dirs.
+for|for
+control|(
+name|URI
+name|dir
+range|:
 name|getStorageDirs
 argument_list|(
 name|conf
 argument_list|,
 name|DFS_NAMENODE_EDITS_DIR_KEY
 argument_list|)
-decl_stmt|;
-name|editsDirs
-operator|.
-name|addAll
-argument_list|(
-name|getSharedEditsDirs
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Set
-argument_list|<
-name|URI
-argument_list|>
-name|uniqueEditsDirs
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|URI
-argument_list|>
-argument_list|()
-decl_stmt|;
-name|uniqueEditsDirs
-operator|.
-name|addAll
-argument_list|(
-name|editsDirs
-argument_list|)
-expr_stmt|;
+control|)
+block|{
 if|if
 condition|(
-name|uniqueEditsDirs
-operator|.
-name|size
-argument_list|()
-operator|!=
+operator|!
 name|editsDirs
 operator|.
-name|size
-argument_list|()
+name|add
+argument_list|(
+name|dir
+argument_list|)
 condition|)
 block|{
-comment|// clearing and re-initializing editsDirs to preserve Collection semantics
-comment|// assigning finalEditsDirs to editsDirs would leak Set semantics in the
-comment|// return value and cause unexpected results downstream. eg future addAll
-comment|// calls. Perf is not an issue since these are small lists.
-name|editsDirs
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-name|editsDirs
-operator|.
-name|addAll
-argument_list|(
-name|uniqueEditsDirs
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Overlapping entries in "
+literal|"Edits URI "
 operator|+
-name|DFS_NAMENODE_EDITS_DIR_KEY
+name|dir
 operator|+
-literal|" and/or "
+literal|" listed multiple times in "
 operator|+
 name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
 operator|+
-literal|". Using the following entries: "
+literal|" and "
 operator|+
-name|Joiner
-operator|.
-name|on
-argument_list|(
-literal|','
-argument_list|)
-operator|.
-name|join
-argument_list|(
-name|editsDirs
-argument_list|)
+name|DFS_NAMENODE_EDITS_DIR_KEY
+operator|+
+literal|". Ignoring duplicates."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -4685,16 +4686,26 @@ block|{
 comment|// If this is the case, no edit dirs have been explicitly configured.
 comment|// Image dirs are to be used for edits too.
 return|return
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
 name|getNamespaceDirs
 argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 return|;
 block|}
 else|else
 block|{
 return|return
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
 name|editsDirs
+argument_list|)
 return|;
 block|}
 block|}
@@ -4702,7 +4713,7 @@ comment|/**    * Returns edit directories that are shared between primary and se
 DECL|method|getSharedEditsDirs (Configuration conf)
 specifier|public
 specifier|static
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>

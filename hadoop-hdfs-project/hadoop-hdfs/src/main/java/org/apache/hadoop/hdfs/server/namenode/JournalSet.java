@@ -1176,6 +1176,52 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isRequired
+argument_list|()
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Error: "
+operator|+
+name|status
+operator|+
+literal|" failed for required journal ("
+operator|+
+name|jas
+operator|+
+literal|")"
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|msg
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+comment|// If we fail on *any* of the required journals, then we must not
+comment|// continue on any of the other journals. Abort them to ensure that
+comment|// retry behavior doesn't allow them to keep going in any way.
+name|abortAllJournals
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|error
@@ -1200,6 +1246,7 @@ argument_list|(
 name|jas
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|disableAndReportErrorOnJournals
@@ -1243,6 +1290,37 @@ argument_list|(
 name|message
 argument_list|)
 throw|;
+block|}
+block|}
+comment|/**    * Abort all of the underlying streams.    */
+DECL|method|abortAllJournals ()
+specifier|private
+name|void
+name|abortAllJournals
+parameter_list|()
+block|{
+for|for
+control|(
+name|JournalAndStream
+name|jas
+range|:
+name|journals
+control|)
+block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isActive
+argument_list|()
+condition|)
+block|{
+name|jas
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * An implementation of EditLogOutputStream that applies a requested method on    * all the journals that are currently active.    */

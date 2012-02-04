@@ -126,6 +126,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Properties
 import|;
 end_import
@@ -325,7 +335,7 @@ argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>

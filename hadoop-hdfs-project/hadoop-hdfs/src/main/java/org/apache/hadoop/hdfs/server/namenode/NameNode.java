@@ -2803,7 +2803,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>

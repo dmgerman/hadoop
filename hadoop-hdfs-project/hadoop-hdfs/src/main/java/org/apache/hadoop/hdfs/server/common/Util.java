@@ -82,6 +82,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -353,7 +363,7 @@ comment|/**    * Converts a collection of strings into a collection of URIs.    
 DECL|method|stringCollectionAsURIs ( Collection<String> names)
 specifier|public
 specifier|static
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -366,7 +376,7 @@ argument_list|>
 name|names
 parameter_list|)
 block|{
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>

@@ -907,7 +907,7 @@ name|checkpointDirs
 decl_stmt|;
 DECL|field|checkpointEditsDirs
 specifier|private
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -3571,7 +3571,7 @@ extends|extends
 name|FSImage
 block|{
 comment|/**      * Construct a checkpoint image.      * @param conf Node configuration.      * @param imageDirs URIs of storage for image.      * @param editDirs URIs of storage for edit logs.      * @throws IOException If storage cannot be access.      */
-DECL|method|CheckpointStorage (Configuration conf, Collection<URI> imageDirs, Collection<URI> editsDirs)
+DECL|method|CheckpointStorage (Configuration conf, Collection<URI> imageDirs, List<URI> editsDirs)
 name|CheckpointStorage
 parameter_list|(
 name|Configuration
@@ -3583,7 +3583,7 @@ name|URI
 argument_list|>
 name|imageDirs
 parameter_list|,
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>

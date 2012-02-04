@@ -747,7 +747,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Construct the FSImage. Set the default checkpoint directories.    *    * Setup storage and initialize the edit log.    *    * @param conf Configuration    * @param imageDirs Directories the image can be stored in.    * @param editsDirs Directories the editlog can be stored in.    * @throws IOException if directories are invalid.    */
-DECL|method|FSImage (Configuration conf, Collection<URI> imageDirs, Collection<URI> editsDirs)
+DECL|method|FSImage (Configuration conf, Collection<URI> imageDirs, List<URI> editsDirs)
 specifier|protected
 name|FSImage
 parameter_list|(
@@ -760,7 +760,7 @@ name|URI
 argument_list|>
 name|imageDirs
 parameter_list|,
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -2602,7 +2602,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -5203,7 +5203,7 @@ return|;
 block|}
 DECL|method|getCheckpointEditsDirs (Configuration conf, String defaultName)
 specifier|static
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
