@@ -651,7 +651,7 @@ class|class
 name|DFSUtil
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Log

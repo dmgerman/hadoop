@@ -182,13 +182,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
+name|Path
 import|;
 end_import
 
@@ -202,11 +198,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NamenodeFsck
+name|DFSClient
 import|;
 end_import
 
@@ -249,6 +241,38 @@ operator|.
 name|hdfs
 operator|.
 name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NamenodeFsck
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RPC
 import|;
 end_import
 
@@ -985,12 +1009,14 @@ return|return
 name|errCode
 return|;
 block|}
-comment|/**    * Derive the namenode http address from the current file system,    * either default or as set by "-fs" in the generic options.    * @return Returns http address or null if failure.    */
+comment|/**    * Derive the namenode http address from the current file system,    * either default or as set by "-fs" in the generic options.    * @return Returns http address or null if failure.    * @throws IOException if we can't determine the active NN address    */
 DECL|method|getCurrentNamenodeAddress ()
 specifier|private
 name|String
 name|getCurrentNamenodeAddress
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|//String nnAddress = null;
 name|Configuration
@@ -1069,6 +1095,24 @@ return|return
 literal|null
 return|;
 block|}
+comment|// force client address resolution.
+name|fs
+operator|.
+name|exists
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Derive the nameservice ID from the filesystem connection. The URI may
+comment|// have been provided by a human, the server name may be aliased, or there
+comment|// may be multiple possible actual addresses (e.g. in an HA setup) so
+comment|// compare InetSocketAddresses instead of URI strings, and test against both
+comment|// possible configurations of RPC address (DFS_NAMENODE_RPC_ADDRESS_KEY and
+comment|// DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY).
 name|DistributedFileSystem
 name|dfs
 init|=
@@ -1077,23 +1121,24 @@ name|DistributedFileSystem
 operator|)
 name|fs
 decl_stmt|;
-comment|// Derive the nameservice ID from the filesystem URI.
-comment|// The URI may have been provided by a human, and the server name may be
-comment|// aliased, so compare InetSocketAddresses instead of URI strings, and
-comment|// test against both possible variants of RPC address.
-name|InetSocketAddress
-name|namenode
+name|DFSClient
+name|dfsClient
 init|=
-name|NameNode
-operator|.
-name|getAddress
-argument_list|(
 name|dfs
 operator|.
-name|getUri
+name|getClient
 argument_list|()
+decl_stmt|;
+name|InetSocketAddress
+name|addr
+init|=
+name|RPC
 operator|.
-name|getAuthority
+name|getServerAddress
+argument_list|(
+name|dfsClient
+operator|.
+name|getNamenode
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1102,7 +1147,7 @@ name|DFSUtil
 operator|.
 name|getInfoServer
 argument_list|(
-name|namenode
+name|addr
 argument_list|,
 name|conf
 argument_list|,

@@ -964,6 +964,17 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"fs.defaultFS"
+argument_list|,
+literal|"hdfs://"
+operator|+
+name|logicalName
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getLogicalHostname (MiniDFSCluster cluster)
 specifier|public
