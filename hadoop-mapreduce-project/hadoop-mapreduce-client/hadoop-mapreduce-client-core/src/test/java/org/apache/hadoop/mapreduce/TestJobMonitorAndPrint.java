@@ -46,9 +46,33 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Matchers
+operator|.
+name|isA
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
 name|Mockito
 operator|.
 name|doAnswer
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doReturn
 import|;
 end_import
 
@@ -149,6 +173,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|TaskReport
 import|;
 end_import
 
@@ -568,6 +606,30 @@ name|anyInt
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|doReturn
+argument_list|(
+operator|new
+name|TaskReport
+index|[
+literal|5
+index|]
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|job
+argument_list|)
+operator|.
+name|getTaskReports
+argument_list|(
+name|isA
+argument_list|(
+name|TaskType
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|when
 argument_list|(
 name|clientProtocol
@@ -700,17 +762,17 @@ init|=
 literal|false
 decl_stmt|;
 name|String
-name|match_1
+name|uberModeMatch
 init|=
 literal|"uber mode : true"
 decl_stmt|;
 name|String
-name|match_2
+name|progressMatch
 init|=
 literal|"map 100% reduce 100%"
 decl_stmt|;
 name|String
-name|match_3
+name|completionMatch
 init|=
 literal|"completed successfully"
 decl_stmt|;
@@ -734,7 +796,7 @@ name|line
 operator|.
 name|contains
 argument_list|(
-name|match_1
+name|uberModeMatch
 argument_list|)
 condition|)
 block|{
@@ -749,7 +811,7 @@ name|line
 operator|.
 name|contains
 argument_list|(
-name|match_2
+name|progressMatch
 argument_list|)
 expr_stmt|;
 if|if
@@ -771,7 +833,7 @@ name|line
 operator|.
 name|contains
 argument_list|(
-name|match_3
+name|completionMatch
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -787,6 +849,46 @@ expr_stmt|;
 name|assertTrue
 argument_list|(
 name|foundComplete
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"The output of job.toString() is : \n"
+operator|+
+name|job
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|job
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Number of maps: 5\n"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|job
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Number of reduces: 5\n"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
