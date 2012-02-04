@@ -255,6 +255,11 @@ specifier|static
 name|MiniMRClientCluster
 name|mrCluster
 decl_stmt|;
+DECL|class|InternalClass
+specifier|private
+class|class
+name|InternalClass
+block|{   }
 annotation|@
 name|BeforeClass
 DECL|method|setup ()
@@ -432,7 +437,7 @@ name|MiniMRClientClusterFactory
 operator|.
 name|create
 argument_list|(
-name|TestMiniMRClientCluster
+name|InternalClass
 operator|.
 name|class
 argument_list|,
