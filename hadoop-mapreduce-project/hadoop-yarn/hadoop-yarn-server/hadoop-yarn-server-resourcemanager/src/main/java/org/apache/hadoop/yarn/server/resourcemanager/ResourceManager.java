@@ -1177,7 +1177,7 @@ name|WebApp
 name|webApp
 decl_stmt|;
 DECL|field|rmContext
-specifier|private
+specifier|protected
 name|RMContext
 name|rmContext
 decl_stmt|;
