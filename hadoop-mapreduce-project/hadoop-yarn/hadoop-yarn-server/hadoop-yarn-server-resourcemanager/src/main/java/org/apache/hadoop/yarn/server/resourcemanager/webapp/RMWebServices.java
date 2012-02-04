@@ -1367,6 +1367,25 @@ block|{
 continue|continue;
 block|}
 block|}
+else|else
+block|{
+comment|// No filter. User is asking for all nodes. Make sure you skip the
+comment|// unhealthy nodes.
+if|if
+condition|(
+name|ni
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|RMNodeState
+operator|.
+name|UNHEALTHY
+condition|)
+block|{
+continue|continue;
+block|}
+block|}
 if|if
 condition|(
 operator|(
