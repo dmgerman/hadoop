@@ -3160,11 +3160,6 @@ name|boolean
 name|httpsAddress
 parameter_list|)
 block|{
-name|String
-name|httpAddress
-init|=
-literal|null
-decl_stmt|;
 name|boolean
 name|securityOn
 init|=
@@ -4284,6 +4279,33 @@ control|)
 block|{
 if|if
 condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"addressKey: %s nsId: %s nnId: %s"
+argument_list|,
+name|addressKey
+argument_list|,
+name|nsId
+argument_list|,
+name|nnId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|knownNNId
 operator|!=
 literal|null
@@ -4321,6 +4343,15 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|addr
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|InetSocketAddress
 name|s
 init|=
@@ -4348,7 +4379,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception in creating socket address"
+literal|"Exception in creating socket address "
+operator|+
+name|addr
 argument_list|,
 name|e
 argument_list|)
