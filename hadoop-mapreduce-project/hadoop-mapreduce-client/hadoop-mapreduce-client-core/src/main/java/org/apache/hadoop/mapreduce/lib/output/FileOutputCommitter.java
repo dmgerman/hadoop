@@ -1936,6 +1936,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|hasOutputPath
+argument_list|()
+condition|)
+block|{
 name|context
 operator|.
 name|progress
@@ -2128,6 +2134,17 @@ argument_list|(
 name|attemptId
 operator|+
 literal|" had no output to recover."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Output Path is null in recoverTask()"
 argument_list|)
 expr_stmt|;
 block|}
