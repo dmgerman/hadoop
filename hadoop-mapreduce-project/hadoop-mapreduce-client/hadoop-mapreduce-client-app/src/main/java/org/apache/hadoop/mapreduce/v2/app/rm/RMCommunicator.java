@@ -186,26 +186,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|JobReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|JobState
 import|;
 end_import
@@ -460,6 +440,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -479,24 +477,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAccessType
 import|;
 end_import
 
@@ -1095,7 +1075,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Exception while registering"
 argument_list|,
@@ -1323,7 +1303,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Exception while unregistering "
 argument_list|,
@@ -1394,7 +1374,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"InterruptedException while stopping"
 argument_list|,
@@ -1514,7 +1494,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Allocated thread interrupted. Returning."
 argument_list|)
@@ -1631,6 +1611,14 @@ operator|.
 name|APPLICATION_MASTER_TOKEN_ENV_NAME
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1640,6 +1628,7 @@ operator|+
 name|tokenURLEncodedStr
 argument_list|)
 expr_stmt|;
+block|}
 name|Token
 argument_list|<
 name|?

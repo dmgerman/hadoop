@@ -302,6 +302,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|JobId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|TaskAttemptId
 import|;
 end_import
@@ -1538,18 +1558,6 @@ name|ContainerAllocatorEvent
 name|event
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Processing the event "
-operator|+
-name|event
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|recalculateReduceSchedule
 operator|=
 literal|true
@@ -1575,6 +1583,24 @@ operator|(
 name|ContainerRequestEvent
 operator|)
 name|event
+decl_stmt|;
+name|JobId
+name|jobId
+init|=
+name|getJob
+argument_list|()
+operator|.
+name|getID
+argument_list|()
+decl_stmt|;
+name|int
+name|supportedMaxContainerCapability
+init|=
+name|getMaxContainerCapability
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1649,11 +1675,7 @@ argument_list|(
 operator|new
 name|JobHistoryEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 operator|new
 name|NormalizedResourceEvent
@@ -1688,11 +1710,7 @@ if|if
 condition|(
 name|mapResourceReqt
 operator|>
-name|getMaxContainerCapability
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|supportedMaxContainerCapability
 condition|)
 block|{
 name|String
@@ -1706,11 +1724,7 @@ name|mapResourceReqt
 operator|+
 literal|" maxContainerCapability:"
 operator|+
-name|getMaxContainerCapability
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|supportedMaxContainerCapability
 decl_stmt|;
 name|LOG
 operator|.
@@ -1726,11 +1740,7 @@ argument_list|(
 operator|new
 name|JobDiagnosticsUpdateEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 name|diagMsg
 argument_list|)
@@ -1743,11 +1753,7 @@ argument_list|(
 operator|new
 name|JobEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 name|JobEventType
 operator|.
@@ -1832,11 +1838,7 @@ argument_list|(
 operator|new
 name|JobHistoryEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 operator|new
 name|NormalizedResourceEvent
@@ -1871,11 +1873,7 @@ if|if
 condition|(
 name|reduceResourceReqt
 operator|>
-name|getMaxContainerCapability
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|supportedMaxContainerCapability
 condition|)
 block|{
 name|String
@@ -1891,11 +1889,7 @@ name|reduceResourceReqt
 operator|+
 literal|" maxContainerCapability:"
 operator|+
-name|getMaxContainerCapability
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|supportedMaxContainerCapability
 decl_stmt|;
 name|LOG
 operator|.
@@ -1911,11 +1905,7 @@ argument_list|(
 operator|new
 name|JobDiagnosticsUpdateEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 name|diagMsg
 argument_list|)
@@ -1928,11 +1918,7 @@ argument_list|(
 operator|new
 name|JobEvent
 argument_list|(
-name|getJob
-argument_list|()
-operator|.
-name|getID
-argument_list|()
+name|jobId
 argument_list|,
 name|JobEventType
 operator|.
@@ -2010,6 +1996,18 @@ operator|.
 name|CONTAINER_DEALLOCATE
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processing the event "
+operator|+
+name|event
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|TaskAttemptId
 name|aId
 init|=
@@ -3272,6 +3270,9 @@ argument_list|(
 literal|"Received completed container "
 operator|+
 name|cont
+operator|.
+name|getContainerId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|TaskAttemptId
@@ -3783,15 +3784,24 @@ name|getAttemptID
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Added attempt req to host "
 operator|+
 name|host
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 for|for
 control|(
@@ -3853,15 +3863,24 @@ name|getAttemptID
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Added attempt req to rack "
 operator|+
 name|rack
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|request
 operator|=
@@ -3980,9 +3999,17 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigning container "
 operator|+
@@ -4006,6 +4033,7 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// check if allocated container meets memory requirements
 comment|// and whether we have any scheduled tasks that need
 comment|// a container to be assigned
@@ -4020,6 +4048,17 @@ init|=
 name|allocated
 operator|.
 name|getPriority
+argument_list|()
+decl_stmt|;
+name|int
+name|allocatedMemory
+init|=
+name|allocated
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getMemory
 argument_list|()
 decl_stmt|;
 if|if
@@ -4041,13 +4080,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|allocated
-operator|.
-name|getResource
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|allocatedMemory
 operator|<
 name|mapResourceReqt
 operator|||
@@ -4098,13 +4131,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|allocated
-operator|.
-name|getResource
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
+name|allocatedMemory
 operator|<
 name|reduceResourceReqt
 operator|||
@@ -4152,6 +4179,14 @@ name|assigned
 init|=
 literal|null
 decl_stmt|;
+name|ContainerId
+name|allocatedContainerId
+init|=
+name|allocated
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|isAssignable
@@ -4159,10 +4194,9 @@ condition|)
 block|{
 comment|// do not assign if allocated container is on a
 comment|// blacklisted host
-name|blackListed
-operator|=
-name|isNodeBlacklisted
-argument_list|(
+name|String
+name|allocatedHost
+init|=
 name|allocated
 operator|.
 name|getNodeId
@@ -4170,6 +4204,12 @@ argument_list|()
 operator|.
 name|getHost
 argument_list|()
+decl_stmt|;
+name|blackListed
+operator|=
+name|isNodeBlacklisted
+argument_list|(
+name|allocatedHost
 argument_list|)
 expr_stmt|;
 if|if
@@ -4187,13 +4227,7 @@ literal|"Got allocated container on a blacklisted "
 operator|+
 literal|" host "
 operator|+
-name|allocated
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
+name|allocatedHost
 operator|+
 literal|". Releasing container "
 operator|+
@@ -4349,16 +4383,21 @@ name|assignedRequests
 operator|.
 name|add
 argument_list|(
-name|allocated
-operator|.
-name|getId
-argument_list|()
+name|allocatedContainerId
 argument_list|,
 name|assigned
 operator|.
 name|attemptID
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -4386,6 +4425,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -4422,10 +4462,7 @@ operator|++
 expr_stmt|;
 name|release
 argument_list|(
-name|allocated
-operator|.
-name|getId
-argument_list|()
+name|allocatedContainerId
 argument_list|)
 expr_stmt|;
 block|}
@@ -4493,9 +4530,17 @@ name|priority
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigning container "
 operator|+
@@ -4504,6 +4549,7 @@ operator|+
 literal|" to reduce"
 argument_list|)
 expr_stmt|;
+block|}
 name|assigned
 operator|=
 name|assignToReduce
@@ -4523,9 +4569,17 @@ name|priority
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigning container "
 operator|+
@@ -4534,6 +4588,7 @@ operator|+
 literal|" to map"
 argument_list|)
 expr_stmt|;
+block|}
 name|assigned
 operator|=
 name|assignToMap
@@ -5075,15 +5130,24 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Host matched to the request list "
 operator|+
 name|host
 argument_list|)
 expr_stmt|;
+block|}
 name|TaskAttemptId
 name|tId
 init|=
@@ -5149,15 +5213,24 @@ expr_stmt|;
 name|hostLocalAssigned
 operator|++
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigned based on host match "
 operator|+
 name|host
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}
@@ -5269,15 +5342,24 @@ expr_stmt|;
 name|rackLocalAssigned
 operator|++
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigned based on rack match "
 operator|+
 name|rack
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}
@@ -5353,13 +5435,22 @@ argument_list|(
 name|jce
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Assigned based on * match"
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}
@@ -5527,6 +5618,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|preemptReduce (int toPreempt)
 name|void
 name|preemptReduce
