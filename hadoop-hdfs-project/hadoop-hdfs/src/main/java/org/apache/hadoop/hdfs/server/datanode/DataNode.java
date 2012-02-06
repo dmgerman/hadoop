@@ -7058,7 +7058,11 @@ literal|false
 expr_stmt|;
 block|}
 comment|/** Number of concurrent xceivers per node. */
+annotation|@
+name|Override
+comment|// DataNodeMXBean
 DECL|method|getXceiverCount ()
+specifier|public
 name|int
 name|getXceiverCount
 parameter_list|()

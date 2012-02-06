@@ -108,6 +108,13 @@ name|String
 name|getClusterId
 parameter_list|()
 function_decl|;
+comment|/**    * Returns an estimate of the number of Datanode threads    * actively transferring blocks.    */
+DECL|method|getXceiverCount ()
+specifier|public
+name|int
+name|getXceiverCount
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
