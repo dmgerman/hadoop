@@ -54,6 +54,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -436,6 +446,8 @@ specifier|public
 name|void
 name|testHAUniqueEditDirs
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Configuration
 name|config

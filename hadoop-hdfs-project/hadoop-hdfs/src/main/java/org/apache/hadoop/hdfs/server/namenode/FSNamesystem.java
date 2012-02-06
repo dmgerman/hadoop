@@ -4557,7 +4557,7 @@ name|dirNames
 argument_list|)
 return|;
 block|}
-comment|/**    * Return an ordered list of edits directories to write to.    * The list is ordered such that all shared edits directories    * are ordered before non-shared directories, and any duplicates    * are removed. The order they are specified in the configuration    * is retained.    */
+comment|/**    * Return an ordered list of edits directories to write to.    * The list is ordered such that all shared edits directories    * are ordered before non-shared directories, and any duplicates    * are removed. The order they are specified in the configuration    * is retained.    * @return Collection of shared edits directories.    * @throws IOException if multiple shared edits directories are configured    */
 DECL|method|getNamespaceEditsDirs (Configuration conf)
 specifier|public
 specifier|static
@@ -4570,6 +4570,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Use a LinkedHashSet so that order is maintained while we de-dup
 comment|// the entries.
@@ -4586,6 +4588,36 @@ name|URI
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|sharedDirs
+init|=
+name|getSharedEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// Fail until multiple shared edits directories are supported (HDFS-2782)
+if|if
+condition|(
+name|sharedDirs
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Multiple shared edits directories are not yet supported"
+argument_list|)
+throw|;
+block|}
 comment|// First add the shared edits dirs. It's critical that the shared dirs
 comment|// are added first, since JournalSet syncs them in the order they are listed,
 comment|// and we need to make sure all edits are in place in the shared storage
@@ -4595,10 +4627,7 @@ control|(
 name|URI
 name|dir
 range|:
-name|getSharedEditsDirs
-argument_list|(
-name|conf
-argument_list|)
+name|sharedDirs
 control|)
 block|{
 if|if

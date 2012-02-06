@@ -6786,6 +6786,8 @@ parameter_list|(
 name|int
 name|nnIndex
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 return|return
 name|FSNamesystem
