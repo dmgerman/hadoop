@@ -339,7 +339,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// id, user, name, queue, state, progress, ui, note
+comment|// id, user, name, queue, starttime, finishtime, state, progress, ui
 name|StringBuilder
 name|init
 init|=
@@ -348,12 +348,17 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|", aoColumns:[{sType:'title-numeric'}, null, null, null, null,"
+literal|", aoColumns:[{sType:'title-numeric'}, null, null, null, "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,{sType:'title-numeric', bSearchable:false}, null, null]"
+literal|"null, null , null, "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"null,{sType:'title-numeric', bSearchable:false}, null]"
 argument_list|)
 decl_stmt|;
 comment|// Sort by id upon page load

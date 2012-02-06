@@ -251,7 +251,7 @@ specifier|final
 name|int
 name|numberOfThInMetricsTable
 init|=
-literal|10
+literal|13
 decl_stmt|;
 DECL|field|numberOfActualTableHeaders
 specifier|final

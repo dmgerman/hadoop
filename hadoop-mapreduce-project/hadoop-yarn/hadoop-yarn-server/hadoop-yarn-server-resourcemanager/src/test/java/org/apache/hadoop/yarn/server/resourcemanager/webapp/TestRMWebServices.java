@@ -2642,6 +2642,15 @@ name|getXmlInt
 argument_list|(
 name|element
 argument_list|,
+literal|"appsCompleted"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
 literal|"reservedMB"
 argument_list|)
 argument_list|,
@@ -2777,7 +2786,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|12
+literal|19
 argument_list|,
 name|clusterinfo
 operator|.
@@ -2792,6 +2801,13 @@ operator|.
 name|getInt
 argument_list|(
 literal|"appsSubmitted"
+argument_list|)
+argument_list|,
+name|clusterinfo
+operator|.
+name|getInt
+argument_list|(
+literal|"appsCompleted"
 argument_list|)
 argument_list|,
 name|clusterinfo
@@ -2873,13 +2889,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterMetrics (int sub, int reservedMB, int availableMB, int allocMB, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes)
+DECL|method|verifyClusterMetrics (int submittedApps, int completedApps, int reservedMB, int availableMB, int allocMB, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes)
 specifier|public
 name|void
 name|verifyClusterMetrics
 parameter_list|(
 name|int
-name|sub
+name|submittedApps
+parameter_list|,
+name|int
+name|completedApps
 parameter_list|,
 name|int
 name|reservedMB
@@ -2970,7 +2989,19 @@ operator|.
 name|getAppsSubmitted
 argument_list|()
 argument_list|,
-name|sub
+name|submittedApps
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"appsCompleted doesn't match"
+argument_list|,
+name|metrics
+operator|.
+name|getAppsCompleted
+argument_list|()
+argument_list|,
+name|completedApps
 argument_list|)
 expr_stmt|;
 name|assertEquals
