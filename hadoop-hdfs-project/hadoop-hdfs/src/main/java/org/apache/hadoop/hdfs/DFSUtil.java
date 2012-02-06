@@ -4110,7 +4110,7 @@ name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the nameservice Id by matching the {@code addressKey} with the    * the address of the local node.     *     * If {@link DFSConfigKeys#DFS_FEDERATION_NAMESERVICE_ID} is not specifically    * configured, this method determines the nameservice Id by matching the local    * node's address with the configured addresses. When a match is found, it    * returns the nameservice Id from the corresponding configuration key.    *     * @param conf Configuration    * @param addressKey configuration key to get the address.    * @return nameservice Id on success, null if federation is not configured.    * @throws HadoopIllegalArgumentException on error    */
+comment|/**    * Get the nameservice Id by matching the {@code addressKey} with the    * the address of the local node.     *     * If {@link DFSConfigKeys#DFS_FEDERATION_NAMESERVICE_ID} is not specifically    * configured, and more than one nameservice Id is configured, this method     * determines the nameservice Id by matching the local node's address with the    * configured addresses. When a match is found, it returns the nameservice Id    * from the corresponding configuration key.    *     * @param conf Configuration    * @param addressKey configuration key to get the address.    * @return nameservice Id on success, null if federation is not configured.    * @throws HadoopIllegalArgumentException on error    */
 DECL|method|getNameServiceId (Configuration conf, String addressKey)
 specifier|private
 specifier|static
@@ -4143,6 +4143,43 @@ condition|)
 block|{
 return|return
 name|nameserviceId
+return|;
+block|}
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|nsIds
+init|=
+name|getNameServiceIds
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|1
+operator|==
+name|nsIds
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+return|return
+name|nsIds
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|String
+index|[
+literal|1
+index|]
+argument_list|)
+index|[
+literal|0
+index|]
 return|;
 block|}
 name|String
@@ -4728,20 +4765,13 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+literal|1
+operator|==
 name|nsIds
 operator|.
 name|size
 argument_list|()
-operator|!=
-literal|1
 condition|)
-block|{
-comment|// No nameservice ID was given and more than one is configured
-return|return
-literal|null
-return|;
-block|}
-else|else
 block|{
 name|nsId
 operator|=
@@ -4759,6 +4789,13 @@ index|[
 literal|0
 index|]
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// No nameservice ID was given and more than one is configured
+return|return
+literal|null
+return|;
 block|}
 block|}
 name|String
