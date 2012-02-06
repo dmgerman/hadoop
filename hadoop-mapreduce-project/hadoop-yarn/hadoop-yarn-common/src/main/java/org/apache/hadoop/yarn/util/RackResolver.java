@@ -116,6 +116,20 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|CachedDNSToSwitchMapping
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|DNSToSwitchMapping
 import|;
 end_import
@@ -263,12 +277,34 @@ operator|.
 name|getConstructor
 argument_list|()
 decl_stmt|;
-name|dnsToSwitchMapping
-operator|=
+name|DNSToSwitchMapping
+name|newInstance
+init|=
 name|dnsToSwitchMappingConstructor
 operator|.
 name|newInstance
 argument_list|()
+decl_stmt|;
+comment|// Wrap around the configured class with the Cached implementation so as
+comment|// to save on repetitive lookups.
+comment|// Check if the impl is already caching, to avoid double caching.
+name|dnsToSwitchMapping
+operator|=
+operator|(
+operator|(
+name|newInstance
+operator|instanceof
+name|CachedDNSToSwitchMapping
+operator|)
+condition|?
+name|newInstance
+else|:
+operator|new
+name|CachedDNSToSwitchMapping
+argument_list|(
+name|newInstance
+argument_list|)
+operator|)
 expr_stmt|;
 block|}
 catch|catch
