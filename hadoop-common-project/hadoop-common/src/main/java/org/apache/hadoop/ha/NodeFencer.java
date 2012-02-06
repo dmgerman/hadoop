@@ -207,7 +207,7 @@ specifier|final
 name|String
 name|CONF_METHODS_KEY
 init|=
-literal|"dfs.namenode.ha.fencing.methods"
+literal|"dfs.ha.fencing.methods"
 decl_stmt|;
 DECL|field|CLASS_RE
 specifier|private
@@ -406,7 +406,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"====== Beginning NameNode Fencing Process... ======"
+literal|"====== Beginning Service Fencing Process... ======"
 argument_list|)
 expr_stmt|;
 name|int
@@ -537,7 +537,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to fence NameNode by any configured method."
+literal|"Unable to fence service by any configured method."
 argument_list|)
 expr_stmt|;
 return|return

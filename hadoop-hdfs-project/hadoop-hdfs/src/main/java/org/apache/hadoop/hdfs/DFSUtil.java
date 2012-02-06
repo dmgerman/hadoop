@@ -1929,7 +1929,7 @@ name|key
 init|=
 name|addSuffix
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 name|nsId
 argument_list|)

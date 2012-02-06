@@ -2791,7 +2791,7 @@ name|DFSUtil
 operator|.
 name|addKeySuffixes
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 name|nameservice
 operator|.

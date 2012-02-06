@@ -228,6 +228,7 @@ name|DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT
 init|=
 literal|16
 decl_stmt|;
+comment|// HA related configuration
 DECL|field|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
 specifier|public
 specifier|static
@@ -2540,12 +2541,12 @@ init|=
 literal|"dfs.block.local-path-access.user"
 decl_stmt|;
 comment|// HA related configuration
-DECL|field|DFS_HA_NAMENODES_KEY
+DECL|field|DFS_HA_NAMENODES_KEY_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 init|=
 literal|"dfs.ha.namenodes"
 decl_stmt|;

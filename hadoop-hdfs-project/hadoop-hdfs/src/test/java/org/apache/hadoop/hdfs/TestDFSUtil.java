@@ -1513,7 +1513,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 operator|+
 literal|"."
 operator|+
@@ -1870,7 +1870,7 @@ name|DFSUtil
 operator|.
 name|addKeySuffixes
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 literal|"ns1"
 argument_list|)
@@ -1886,7 +1886,7 @@ name|DFSUtil
 operator|.
 name|addKeySuffixes
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 literal|"ns2"
 argument_list|)
@@ -2208,7 +2208,7 @@ name|DFSUtil
 operator|.
 name|addKeySuffixes
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 literal|"ns1"
 argument_list|)

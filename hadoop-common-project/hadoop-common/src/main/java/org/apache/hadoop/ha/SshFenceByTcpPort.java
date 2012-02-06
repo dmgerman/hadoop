@@ -175,7 +175,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([[username][:ssh-port]])</code>  * where the optional argument specifies the username and port to use  * with ssh.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.namenode.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
+comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([[username][:ssh-port]])</code>  * where the optional argument specifies the username and port to use  * with ssh.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
 end_comment
 
 begin_class
@@ -209,7 +209,7 @@ specifier|final
 name|String
 name|CONF_CONNECT_TIMEOUT_KEY
 init|=
-literal|"dfs.namenode.ha.fencing.ssh.connect-timeout"
+literal|"dfs.ha.fencing.ssh.connect-timeout"
 decl_stmt|;
 DECL|field|CONF_CONNECT_TIMEOUT_DEFAULT
 specifier|private
@@ -228,7 +228,7 @@ specifier|final
 name|String
 name|CONF_IDENTITIES_KEY
 init|=
-literal|"dfs.namenode.ha.fencing.ssh.private-key-files"
+literal|"dfs.ha.fencing.ssh.private-key-files"
 decl_stmt|;
 comment|/**    * Verify that the argument, if given, in the conf is parseable.    */
 annotation|@

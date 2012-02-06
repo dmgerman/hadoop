@@ -50,7 +50,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 import|;
 end_import
 
@@ -934,7 +934,7 @@ name|DFSUtil
 operator|.
 name|addKeySuffixes
 argument_list|(
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 name|logicalName
 argument_list|)

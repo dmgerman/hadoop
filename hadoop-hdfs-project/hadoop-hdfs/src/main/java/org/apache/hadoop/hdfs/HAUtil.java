@@ -658,7 +658,7 @@ name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_HA_NAMENODES_KEY
+name|DFS_HA_NAMENODES_KEY_PREFIX
 argument_list|,
 name|nsId
 argument_list|)
