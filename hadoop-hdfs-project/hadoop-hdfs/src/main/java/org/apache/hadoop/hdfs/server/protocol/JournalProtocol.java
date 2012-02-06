@@ -66,38 +66,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocolR23Compatible
-operator|.
-name|ClientNamenodeWireProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocolR23Compatible
-operator|.
-name|JournalWireProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|VersionedProtocol
@@ -149,7 +117,7 @@ name|JournalProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**    *     * This class is used by both the Namenode (client) and BackupNode (server)     * to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO    * {@link JournalWireProtocol}.    * These changes need to be done in a compatible fashion as described in     * {@link ClientNamenodeWireProtocol}    */
+comment|/**    *     * This class is used by both the Namenode (client) and BackupNode (server)     * to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in JournalProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    */
 DECL|field|versionID
 specifier|public
 specifier|static
