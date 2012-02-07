@@ -310,20 +310,24 @@ init|=
 literal|101
 decl_stmt|;
 comment|// start upgrade
-comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    *     * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
-DECL|method|registerDatanode (DatanodeRegistration registration )
+comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @param storages list of storages on the datanode``    * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
+DECL|method|registerDatanode ( DatanodeRegistration registration, DatanodeStorage[] storages)
 specifier|public
 name|DatanodeRegistration
 name|registerDatanode
 parameter_list|(
 name|DatanodeRegistration
 name|registration
+parameter_list|,
+name|DatanodeStorage
+index|[]
+name|storages
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param capacity total storage capacity available at the datanode    * @param dfsUsed storage used by HDFS    * @param remaining remaining storage available for HDFS    * @param blockPoolUsed storage used by the block pool    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
-DECL|method|sendHeartbeat (DatanodeRegistration registration, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
+comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeCommand
 index|[]
@@ -332,17 +336,9 @@ parameter_list|(
 name|DatanodeRegistration
 name|registration
 parameter_list|,
-name|long
-name|capacity
-parameter_list|,
-name|long
-name|dfsUsed
-parameter_list|,
-name|long
-name|remaining
-parameter_list|,
-name|long
-name|blockPoolUsed
+name|StorageReport
+index|[]
+name|reports
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -356,8 +352,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param blocks - the block list as an array of longs.    *     Each block is represented as 2 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
-DECL|method|blockReport (DatanodeRegistration registration, String poolId, long[] blocks)
+comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param reports - report of blocks per storage    *     Each block is represented as 2 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
+DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports)
 specifier|public
 name|DatanodeCommand
 name|blockReport
@@ -368,15 +364,15 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|long
+name|StorageBlockReport
 index|[]
-name|blocks
+name|reports
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * blockReceivedAndDeleted() allows the DataNode to tell the NameNode about    * recently-received and -deleted block data.     *     * For the case of received blocks, a hint for preferred replica to be     * deleted when there is any excessive blocks is provided.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
-DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, ReceivedDeletedBlockInfo[] receivedAndDeletedBlocks)
+DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, StorageReceivedDeletedBlocks[] rcvdAndDeletedBlocks)
 specifier|public
 name|void
 name|blockReceivedAndDeleted
@@ -387,9 +383,9 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|ReceivedDeletedBlockInfo
+name|StorageReceivedDeletedBlocks
 index|[]
-name|receivedAndDeletedBlocks
+name|rcvdAndDeletedBlocks
 parameter_list|)
 throws|throws
 name|IOException
