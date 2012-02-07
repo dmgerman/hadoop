@@ -3073,43 +3073,37 @@ literal|true
 decl_stmt|;
 comment|// whether TT knows about this task
 comment|// sleep for a bit
-try|try
+synchronized|synchronized
+init|(
+name|lock
+init|)
 block|{
-name|Thread
+if|if
+condition|(
+name|taskDone
 operator|.
-name|sleep
+name|get
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
+name|lock
+operator|.
+name|wait
 argument_list|(
 name|PROGRESS_INTERVAL
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
 if|if
 condition|(
-name|LOG
+name|taskDone
 operator|.
-name|isDebugEnabled
+name|get
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|getTaskID
-argument_list|()
-operator|+
-literal|" Progress/ping thread exiting "
-operator|+
-literal|"since it got interrupted"
-argument_list|)
-expr_stmt|;
-block|}
 break|break;
 block|}
 if|if
@@ -3348,6 +3342,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// Intent of the lock is to not send an interupt in the middle of an
+comment|// umbilical.ping or umbilical.statusUpdate
+synchronized|synchronized
+init|(
+name|lock
+init|)
+block|{
+comment|//Interrupt if sleeping. Otherwise wait for the RPC call to return.
+name|lock
+operator|.
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|lock
