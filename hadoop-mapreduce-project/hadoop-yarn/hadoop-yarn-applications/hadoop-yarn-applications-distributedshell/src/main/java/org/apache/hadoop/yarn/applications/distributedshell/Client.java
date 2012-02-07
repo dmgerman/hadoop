@@ -3138,6 +3138,18 @@ operator|+
 literal|"/bin/java"
 argument_list|)
 expr_stmt|;
+comment|// Set Xmx based on am memory size
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"-Xmx"
+operator|+
+name|amMemory
+operator|+
+literal|"m"
+argument_list|)
+expr_stmt|;
 comment|// Set class name
 name|vargs
 operator|.
