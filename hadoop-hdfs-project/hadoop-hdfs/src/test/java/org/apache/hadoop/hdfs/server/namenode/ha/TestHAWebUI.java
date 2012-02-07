@@ -134,13 +134,13 @@ specifier|public
 class|class
 name|TestHAWebUI
 block|{
-comment|/**    * Tests that the web UI of the name node provides a link to browse the file    * system only in active state    *     */
+comment|/**    * Tests that the web UI of the name node provides a link to browse the file    * system and summary of under-replicated blocks only in active state    *     */
 annotation|@
 name|Test
-DECL|method|testLinkToBrowseFilesystem ()
+DECL|method|testLinkAndClusterSummary ()
 specifier|public
 name|void
-name|testLinkToBrowseFilesystem
+name|testLinkAndClusterSummary
 parameter_list|()
 throws|throws
 name|Exception
@@ -234,6 +234,16 @@ literal|"Browse the filesystem"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|pageContents
+operator|.
+name|contains
+argument_list|(
+literal|"Number of Under-Replicated Blocks"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|transitionToStandby
@@ -281,6 +291,16 @@ literal|"Browse the filesystem"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertFalse
+argument_list|(
+name|pageContents
+operator|.
+name|contains
+argument_list|(
+literal|"Number of Under-Replicated Blocks"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|transitionToActive
@@ -325,6 +345,16 @@ operator|.
 name|contains
 argument_list|(
 literal|"Browse the filesystem"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|pageContents
+operator|.
+name|contains
+argument_list|(
+literal|"Number of Under-Replicated Blocks"
 argument_list|)
 argument_list|)
 expr_stmt|;
