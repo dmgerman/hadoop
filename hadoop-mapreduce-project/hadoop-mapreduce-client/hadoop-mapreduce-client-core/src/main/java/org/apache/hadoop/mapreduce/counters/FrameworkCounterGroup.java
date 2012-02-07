@@ -19,6 +19,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -69,46 +85,30 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|com
+import|import
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|commons
 operator|.
-name|base
+name|logging
 operator|.
-name|Preconditions
-operator|.
-name|*
+name|Log
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|commons
 operator|.
-name|collect
+name|logging
 operator|.
-name|AbstractIterator
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Iterators
+name|LogFactory
 import|;
 end_import
 
@@ -170,6 +170,34 @@ name|ResourceBundles
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|AbstractIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Iterators
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract class to provide common implementation for the framework  * counter group in both mapred and mapreduce packages.  *  * @param<T> type of the counter enum class  * @param<C> type of the counter  */
 end_comment
@@ -202,6 +230,22 @@ argument_list|<
 name|C
 argument_list|>
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|FrameworkCounterGroup
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|enumClass
 specifier|private
 specifier|final
@@ -376,6 +420,18 @@ literal|false
 operator|:
 literal|"shouldn't be called"
 assert|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingCounter ()
+specifier|public
+name|Counter
+name|getUnderlyingCounter
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
 block|}
 block|}
 annotation|@

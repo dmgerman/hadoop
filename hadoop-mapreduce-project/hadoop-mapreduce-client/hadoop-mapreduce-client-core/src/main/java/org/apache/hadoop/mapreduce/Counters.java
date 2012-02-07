@@ -256,6 +256,21 @@ name|key
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingGroup ()
+specifier|public
+name|CounterGroupBase
+argument_list|<
+name|Counter
+argument_list|>
+name|getUnderlyingGroup
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
 block|}
 comment|// Mix generic group implementation into CounterGroup interface
 comment|// and provide some mandatory group factory methods.
@@ -338,6 +353,21 @@ name|GenericCounter
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingGroup ()
+specifier|public
+name|CounterGroupBase
+argument_list|<
+name|Counter
+argument_list|>
+name|getUnderlyingGroup
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
 block|}
 comment|// Mix file system group implementation into the CounterGroup interface
 DECL|class|FileSystemGroup
@@ -375,6 +405,21 @@ name|scheme
 argument_list|,
 name|key
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingGroup ()
+specifier|public
+name|CounterGroupBase
+argument_list|<
+name|Counter
+argument_list|>
+name|getUnderlyingGroup
+parameter_list|()
+block|{
+return|return
+name|this
 return|;
 block|}
 block|}

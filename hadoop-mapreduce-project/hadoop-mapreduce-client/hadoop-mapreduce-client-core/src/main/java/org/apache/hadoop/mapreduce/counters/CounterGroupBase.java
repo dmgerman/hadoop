@@ -200,6 +200,15 @@ argument_list|>
 name|rightGroup
 parameter_list|)
 function_decl|;
+comment|/**    * Exposes the underlying group type if a facade.    * @return the underlying object that this object is wrapping up.    */
+DECL|method|getUnderlyingGroup ()
+name|CounterGroupBase
+argument_list|<
+name|T
+argument_list|>
+name|getUnderlyingGroup
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

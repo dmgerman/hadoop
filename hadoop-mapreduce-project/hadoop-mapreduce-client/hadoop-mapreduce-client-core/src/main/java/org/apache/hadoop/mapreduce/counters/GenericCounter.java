@@ -90,6 +90,20 @@ name|WritableUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|Counter
+import|;
+end_import
+
 begin_comment
 comment|/**  * A generic counter implementation  */
 end_comment
@@ -398,6 +412,18 @@ name|value
 operator|+=
 name|incr
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingCounter ()
+specifier|public
+name|Counter
+name|getUnderlyingCounter
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
 block|}
 block|}
 end_class

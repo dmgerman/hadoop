@@ -125,6 +125,12 @@ name|long
 name|incr
 parameter_list|)
 function_decl|;
+comment|/**    * Return the underlying object if this is a facade.    * @return the undelying object.    */
+DECL|method|getUnderlyingCounter ()
+name|Counter
+name|getUnderlyingCounter
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -880,6 +880,9 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+operator|.
+name|getUnderlyingGroup
+argument_list|()
 operator|)
 operator|.
 name|findCounter
@@ -1222,6 +1225,9 @@ block|{
 if|if
 condition|(
 name|group
+operator|.
+name|getUnderlyingGroup
+argument_list|()
 operator|instanceof
 name|FrameworkCounterGroup
 argument_list|<
@@ -1272,6 +1278,9 @@ elseif|else
 if|if
 condition|(
 name|group
+operator|.
+name|getUnderlyingGroup
+argument_list|()
 operator|instanceof
 name|FileSystemCounterGroup
 argument_list|<

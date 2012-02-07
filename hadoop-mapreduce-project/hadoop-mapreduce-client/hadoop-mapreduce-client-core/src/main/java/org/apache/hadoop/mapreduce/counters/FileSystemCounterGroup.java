@@ -552,6 +552,18 @@ operator|:
 literal|"shouldn't be called"
 assert|;
 block|}
+annotation|@
+name|Override
+DECL|method|getUnderlyingCounter ()
+specifier|public
+name|Counter
+name|getUnderlyingCounter
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1170,6 +1182,9 @@ condition|(
 name|checkNotNull
 argument_list|(
 name|other
+operator|.
+name|getUnderlyingGroup
+argument_list|()
 argument_list|,
 literal|"other group"
 argument_list|)
@@ -1191,10 +1206,18 @@ block|{
 name|FSCounter
 name|c
 init|=
-operator|(
+call|(
 name|FSCounter
+call|)
+argument_list|(
+operator|(
+name|Counter
 operator|)
 name|counter
+argument_list|)
+operator|.
+name|getUnderlyingCounter
+argument_list|()
 decl_stmt|;
 name|findCounter
 argument_list|(
@@ -1325,10 +1348,18 @@ argument_list|)
 name|FSCounter
 name|c
 init|=
-operator|(
+call|(
 name|FSCounter
+call|)
+argument_list|(
+operator|(
+name|Counter
 operator|)
 name|counter
+argument_list|)
+operator|.
+name|getUnderlyingCounter
+argument_list|()
 decl_stmt|;
 name|WritableUtils
 operator|.
