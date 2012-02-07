@@ -643,7 +643,7 @@ argument_list|()
 operator|.
 name|$title
 argument_list|(
-name|startTime
+name|finishTime
 argument_list|)
 operator|.
 name|_
