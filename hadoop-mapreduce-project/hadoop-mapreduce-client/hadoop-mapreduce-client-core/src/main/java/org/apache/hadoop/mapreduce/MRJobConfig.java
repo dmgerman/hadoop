@@ -1379,6 +1379,27 @@ name|MR_PREFIX
 operator|+
 literal|"am."
 decl_stmt|;
+comment|/** The number of client retires to the AM - before reconnecting to the RM    * to fetch Application State.     */
+DECL|field|MR_CLIENT_TO_AM_IPC_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_CLIENT_TO_AM_IPC_MAX_RETRIES
+init|=
+name|MR_PREFIX
+operator|+
+literal|"client-am.ipc.max-retries"
+decl_stmt|;
+DECL|field|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
 comment|/** The staging directory for map reduce.*/
 DECL|field|MR_AM_STAGING_DIR
 specifier|public
