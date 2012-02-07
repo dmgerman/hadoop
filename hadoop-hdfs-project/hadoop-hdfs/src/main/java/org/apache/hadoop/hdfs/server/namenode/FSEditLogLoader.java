@@ -1454,11 +1454,7 @@ name|addCloseOp
 operator|.
 name|path
 argument_list|,
-name|permissions
-argument_list|,
 name|blocks
-argument_list|,
-name|replication
 argument_list|,
 name|addCloseOp
 operator|.
@@ -1467,8 +1463,6 @@ argument_list|,
 name|addCloseOp
 operator|.
 name|atime
-argument_list|,
-name|blockSize
 argument_list|)
 expr_stmt|;
 if|if

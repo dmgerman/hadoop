@@ -1601,7 +1601,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Update files in-memory data structures with new block information.    * @throws IOException     */
-DECL|method|updateFile (INodeFile file, String path, PermissionStatus permissions, BlockInfo[] blocks, short replication, long mtime, long atime, long preferredBlockSize)
+DECL|method|updateFile (INodeFile file, String path, BlockInfo[] blocks, long mtime, long atime)
 name|void
 name|updateFile
 parameter_list|(
@@ -1611,24 +1611,15 @@ parameter_list|,
 name|String
 name|path
 parameter_list|,
-name|PermissionStatus
-name|permissions
-parameter_list|,
 name|BlockInfo
 index|[]
 name|blocks
-parameter_list|,
-name|short
-name|replication
 parameter_list|,
 name|long
 name|mtime
 parameter_list|,
 name|long
 name|atime
-parameter_list|,
-name|long
-name|preferredBlockSize
 parameter_list|)
 throws|throws
 name|IOException

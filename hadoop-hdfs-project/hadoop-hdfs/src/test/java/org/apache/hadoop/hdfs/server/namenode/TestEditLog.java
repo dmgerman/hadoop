@@ -852,9 +852,11 @@ name|logOpenFile
 argument_list|(
 literal|"/filename"
 operator|+
+operator|(
 name|startIndex
 operator|+
 name|i
+operator|)
 argument_list|,
 name|inode
 argument_list|)
@@ -865,9 +867,11 @@ name|logCloseFile
 argument_list|(
 literal|"/filename"
 operator|+
+operator|(
 name|startIndex
 operator|+
 name|i
+operator|)
 argument_list|,
 name|inode
 argument_list|)
