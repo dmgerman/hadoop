@@ -736,12 +736,7 @@ name|allLogFiles
 init|=
 name|matchEditLogs
 argument_list|(
-name|FileUtil
-operator|.
-name|listFiles
-argument_list|(
 name|currentDir
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|List
@@ -851,6 +846,33 @@ block|}
 block|}
 return|return
 name|ret
+return|;
+block|}
+comment|/**    * returns matching edit logs via the log directory. Simple helper function    * that lists the files in the logDir and calls matchEditLogs(File[])    *     * @param logDir    *          directory to match edit logs in    * @return matched edit logs    * @throws IOException    *           IOException thrown for invalid logDir    */
+DECL|method|matchEditLogs (File logDir)
+specifier|static
+name|List
+argument_list|<
+name|EditLogFile
+argument_list|>
+name|matchEditLogs
+parameter_list|(
+name|File
+name|logDir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|matchEditLogs
+argument_list|(
+name|FileUtil
+operator|.
+name|listFiles
+argument_list|(
+name|logDir
+argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|matchEditLogs (File[] filesInStorage)
@@ -1528,9 +1550,6 @@ init|=
 name|matchEditLogs
 argument_list|(
 name|currentDir
-operator|.
-name|listFiles
-argument_list|()
 argument_list|)
 decl_stmt|;
 for|for
@@ -1706,9 +1725,6 @@ init|=
 name|matchEditLogs
 argument_list|(
 name|currentDir
-operator|.
-name|listFiles
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|List

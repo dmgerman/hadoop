@@ -2454,9 +2454,6 @@ operator|.
 name|matchEditLogs
 argument_list|(
 name|currentDir
-operator|.
-name|listFiles
-argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;

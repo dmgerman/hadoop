@@ -1911,6 +1911,41 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * tests that passing an invalid dir to matchEditLogs throws IOException     */
+annotation|@
+name|Test
+argument_list|(
+name|expected
+operator|=
+name|IOException
+operator|.
+name|class
+argument_list|)
+DECL|method|testMatchEditLogInvalidDirThrowsIOException ()
+specifier|public
+name|void
+name|testMatchEditLogInvalidDirThrowsIOException
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|File
+name|badDir
+init|=
+operator|new
+name|File
+argument_list|(
+literal|"does not exist"
+argument_list|)
+decl_stmt|;
+name|FileJournalManager
+operator|.
+name|matchEditLogs
+argument_list|(
+name|badDir
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Make sure that we starting reading the correct op when we request a stream    * with a txid in the middle of an edit log file.    */
 annotation|@
 name|Test
