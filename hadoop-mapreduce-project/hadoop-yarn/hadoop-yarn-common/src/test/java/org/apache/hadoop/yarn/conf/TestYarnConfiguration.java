@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * "License"); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -91,7 +91,7 @@ comment|// shouldn't have a "/" on the end of the url as all the other uri routi
 comment|// specifically add slashes and Jetty doesn't handle double slashes.
 name|Assert
 operator|.
-name|assertEquals
+name|assertNotSame
 argument_list|(
 literal|"RM Web Url is not correct"
 argument_list|,
@@ -118,7 +118,8 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-comment|// seems a bit odd but right now we are forcing webapp for RM to be RM_ADDRESS
+comment|// seems a bit odd but right now we are forcing webapp for RM to be
+comment|// RM_ADDRESS
 comment|// for host and use the port from the RM_WEBAPP_ADDRESS
 name|conf
 operator|.
@@ -128,7 +129,7 @@ name|YarnConfiguration
 operator|.
 name|RM_WEBAPP_ADDRESS
 argument_list|,
-literal|"footesting:99110"
+literal|"fortesting:24543"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -152,13 +153,50 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|String
+index|[]
+name|parts
+init|=
+name|rmWebUrl
+operator|.
+name|split
+argument_list|(
+literal|":"
+argument_list|)
+decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"RM Web Url is not correct"
+literal|"RM Web URL Port is incrrect"
 argument_list|,
-literal|"http://rmtesting:99110"
+literal|24543
+argument_list|,
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
+name|parts
+index|[
+name|parts
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+argument_list|)
+operator|.
+name|intValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNotSame
+argument_list|(
+literal|"RM Web Url not resolved correctly. Should not be rmtesting"
+argument_list|,
+literal|"http://rmtesting:24543"
 argument_list|,
 name|rmWebUrl
 argument_list|)
