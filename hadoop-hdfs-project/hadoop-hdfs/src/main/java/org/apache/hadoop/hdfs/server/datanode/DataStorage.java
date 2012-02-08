@@ -3629,7 +3629,7 @@ condition|)
 block|{
 comment|//return the current metadata file name
 return|return
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|getMetaFileName
 argument_list|(

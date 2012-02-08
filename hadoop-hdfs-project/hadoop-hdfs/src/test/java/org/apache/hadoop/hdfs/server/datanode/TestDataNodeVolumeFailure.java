@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -152,7 +176,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockReader
+name|BlockReaderFactory
 import|;
 end_import
 
@@ -166,7 +190,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockReaderFactory
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -376,20 +400,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|net
 operator|.
 name|NetUtils
@@ -423,18 +433,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -1484,9 +1482,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|BlockReader
-name|blockReader
-init|=
 name|BlockReaderFactory
 operator|.
 name|newBlockReader
@@ -1509,7 +1504,7 @@ argument_list|,
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// nothing - if it fails - it will throw and exception
 block|}
 comment|/**    * Count datanodes that have copies of the blocks for a file    * put it into the map    * @param map    * @param path    * @param size    * @return    * @throws IOException    */
@@ -1944,7 +1939,7 @@ name|name
 operator|.
 name|endsWith
 argument_list|(
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|METADATA_EXTENSION
 argument_list|)

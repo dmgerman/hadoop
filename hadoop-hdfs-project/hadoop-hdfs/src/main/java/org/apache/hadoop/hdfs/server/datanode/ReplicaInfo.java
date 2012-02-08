@@ -132,9 +132,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -171,20 +171,20 @@ name|Block
 implements|implements
 name|Replica
 block|{
+comment|/** volume where the replica belongs */
 DECL|field|volume
 specifier|private
-name|FSVolume
+name|FSVolumeInterface
 name|volume
 decl_stmt|;
-comment|// volume where the replica belongs
+comment|/** directory where block& meta files belong */
 DECL|field|dir
 specifier|private
 name|File
 name|dir
 decl_stmt|;
-comment|// directory where block& meta files belong
 comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
-DECL|method|ReplicaInfo (long blockId, long genStamp, FSVolume vol, File dir)
+DECL|method|ReplicaInfo (long blockId, long genStamp, FSVolumeInterface vol, File dir)
 name|ReplicaInfo
 parameter_list|(
 name|long
@@ -193,7 +193,7 @@ parameter_list|,
 name|long
 name|genStamp
 parameter_list|,
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|,
 name|File
@@ -215,13 +215,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
-DECL|method|ReplicaInfo (Block block, FSVolume vol, File dir)
+DECL|method|ReplicaInfo (Block block, FSVolumeInterface vol, File dir)
 name|ReplicaInfo
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|,
 name|File
@@ -252,7 +252,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
-DECL|method|ReplicaInfo (long blockId, long len, long genStamp, FSVolume vol, File dir)
+DECL|method|ReplicaInfo (long blockId, long len, long genStamp, FSVolumeInterface vol, File dir)
 name|ReplicaInfo
 parameter_list|(
 name|long
@@ -264,7 +264,7 @@ parameter_list|,
 name|long
 name|genStamp
 parameter_list|,
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|,
 name|File
@@ -374,7 +374,7 @@ return|;
 block|}
 comment|/**    * Get the volume where this replica is located on disk    * @return the volume where this replica is located on disk    */
 DECL|method|getVolume ()
-name|FSVolume
+name|FSVolumeInterface
 name|getVolume
 parameter_list|()
 block|{
@@ -383,11 +383,11 @@ name|volume
 return|;
 block|}
 comment|/**    * Set the volume where this replica is located on disk    */
-DECL|method|setVolume (FSVolume vol)
+DECL|method|setVolume (FSVolumeInterface vol)
 name|void
 name|setVolume
 parameter_list|(
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|)
 block|{
@@ -467,7 +467,7 @@ name|createTmpFile
 argument_list|(
 name|b
 argument_list|,
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|getUnlinkTmpFile
 argument_list|(

@@ -348,9 +348,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -385,7 +385,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Performs two types of scanning:  *<li> Gets block files from the data directories and reconciles the  * difference between the blocks on the disk and in memory in  * {@link FSDataset}</li>  *<li> Scans the data directories for block files under a block pool  * and verifies that the files are not corrupt</li>  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
+comment|/**  * Performs two types of scanning:  *<li> Gets block files from the data directories and reconciles the  * difference between the blocks on the disk and in memory.</li>  *<li> Scans the data directories for block files under a block pool  * and verifies that the files are not corrupt</li>  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
 end_comment
 
 begin_class
@@ -498,7 +498,8 @@ name|datanode
 decl_stmt|;
 DECL|field|dataset
 specifier|private
-name|FSDataset
+specifier|final
+name|FSDatasetInterface
 name|dataset
 decl_stmt|;
 comment|// sorted set
@@ -768,13 +769,13 @@ operator|)
 return|;
 block|}
 block|}
-DECL|method|BlockPoolSliceScanner (DataNode datanode, FSDataset dataset, Configuration conf, String bpid)
+DECL|method|BlockPoolSliceScanner (DataNode datanode, FSDatasetInterface dataset, Configuration conf, String bpid)
 name|BlockPoolSliceScanner
 parameter_list|(
 name|DataNode
 name|datanode
 parameter_list|,
-name|FSDataset
+name|FSDatasetInterface
 name|dataset
 parameter_list|,
 name|Configuration
@@ -1178,30 +1179,21 @@ literal|null
 decl_stmt|;
 name|List
 argument_list|<
-name|FSVolume
+name|FSVolumeInterface
 argument_list|>
 name|volumes
 init|=
 name|dataset
-operator|.
-name|volumes
 operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FSDataset
-operator|.
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 range|:
-name|dataset
-operator|.
 name|volumes
-operator|.
-name|getVolumes
-argument_list|()
 control|)
 block|{
 name|File
@@ -1209,13 +1201,10 @@ name|bpDir
 init|=
 name|vol
 operator|.
-name|getBlockPoolSlice
+name|getDirectory
 argument_list|(
 name|blockPoolId
 argument_list|)
-operator|.
-name|getDirectory
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1252,13 +1241,10 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getBlockPoolSlice
+name|getDirectory
 argument_list|(
 name|blockPoolId
 argument_list|)
-operator|.
-name|getDirectory
-argument_list|()
 expr_stmt|;
 block|}
 try|try
@@ -2843,12 +2829,12 @@ operator|+=
 name|len
 expr_stmt|;
 block|}
-DECL|method|getCurrentFile (FSVolume vol, String bpid)
+DECL|method|getCurrentFile (FSVolumeInterface vol, String bpid)
 specifier|static
 name|File
 name|getCurrentFile
 parameter_list|(
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|,
 name|String
@@ -2864,13 +2850,10 @@ name|getCurrentFile
 argument_list|(
 name|vol
 operator|.
-name|getBlockPoolSlice
+name|getDirectory
 argument_list|(
 name|bpid
 argument_list|)
-operator|.
-name|getDirectory
-argument_list|()
 argument_list|,
 name|BlockPoolSliceScanner
 operator|.

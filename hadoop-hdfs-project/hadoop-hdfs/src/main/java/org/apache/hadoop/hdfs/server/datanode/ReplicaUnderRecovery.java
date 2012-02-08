@@ -64,9 +64,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -496,11 +496,11 @@ block|}
 annotation|@
 name|Override
 comment|//ReplicaInfo
-DECL|method|setVolume (FSVolume vol)
+DECL|method|setVolume (FSVolumeInterface vol)
 name|void
 name|setVolume
 parameter_list|(
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|)
 block|{

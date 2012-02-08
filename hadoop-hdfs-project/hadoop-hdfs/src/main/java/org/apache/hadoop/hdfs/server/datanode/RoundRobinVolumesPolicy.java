@@ -54,9 +54,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -93,15 +93,15 @@ literal|0
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseVolume (List<FSVolume> volumes, long blockSize)
+DECL|method|chooseVolume ( List<FSVolumeInterface> volumes, long blockSize)
 specifier|public
 specifier|synchronized
-name|FSVolume
+name|FSVolumeInterface
 name|chooseVolume
 parameter_list|(
 name|List
 argument_list|<
-name|FSVolume
+name|FSVolumeInterface
 argument_list|>
 name|volumes
 parameter_list|,
@@ -161,7 +161,7 @@ condition|(
 literal|true
 condition|)
 block|{
-name|FSVolume
+name|FSVolumeInterface
 name|volume
 init|=
 name|volumes

@@ -82,9 +82,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -107,14 +107,14 @@ interface|interface
 name|BlockVolumeChoosingPolicy
 block|{
 comment|/**    * Returns a specific FSVolume after applying a suitable choice algorithm    * to place a given block, given a list of FSVolumes and the block    * size sought for storage.    *     * (Policies that maintain state must be thread-safe.)    *     * @param volumes - the array of FSVolumes that are available.    * @param blockSize - the size of the block for which a volume is sought.    * @return the chosen volume to store the block.    * @throws IOException when disks are unavailable or are full.    */
-DECL|method|chooseVolume (List<FSVolume> volumes, long blockSize)
+DECL|method|chooseVolume (List<FSVolumeInterface> volumes, long blockSize)
 specifier|public
-name|FSVolume
+name|FSVolumeInterface
 name|chooseVolume
 parameter_list|(
 name|List
 argument_list|<
-name|FSVolume
+name|FSVolumeInterface
 argument_list|>
 name|volumes
 parameter_list|,
