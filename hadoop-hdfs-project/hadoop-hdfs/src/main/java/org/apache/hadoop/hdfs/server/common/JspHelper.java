@@ -3256,9 +3256,9 @@ condition|)
 block|{
 name|namenodeAddress
 operator|=
-name|DFSUtil
+name|NetUtils
 operator|.
-name|getSocketAddress
+name|createSocketAddr
 argument_list|(
 name|namenodeAddressInUrl
 argument_list|)

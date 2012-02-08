@@ -5949,9 +5949,9 @@ block|{
 name|InetSocketAddress
 name|datanodeAddr
 init|=
-name|DFSUtil
+name|NetUtils
 operator|.
-name|getSocketAddress
+name|createSocketAddr
 argument_list|(
 name|datanode
 argument_list|)
