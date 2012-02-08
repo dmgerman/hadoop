@@ -42,6 +42,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -200,6 +216,8 @@ argument_list|>
 name|rightGroup
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
 comment|/**    * Exposes the underlying group type if a facade.    * @return the underlying object that this object is wrapping up.    */
 DECL|method|getUnderlyingGroup ()
 name|CounterGroupBase
