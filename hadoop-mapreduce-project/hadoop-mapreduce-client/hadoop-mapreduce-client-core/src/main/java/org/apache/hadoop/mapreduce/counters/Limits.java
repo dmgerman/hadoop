@@ -193,6 +193,7 @@ return|;
 block|}
 DECL|method|filterCounterName (String name)
 specifier|public
+specifier|static
 name|String
 name|filterCounterName
 parameter_list|(
@@ -211,6 +212,7 @@ return|;
 block|}
 DECL|method|filterGroupName (String name)
 specifier|public
+specifier|static
 name|String
 name|filterGroupName
 parameter_list|(
