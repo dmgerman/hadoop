@@ -1254,6 +1254,13 @@ condition|(
 name|jobName
 operator|==
 literal|null
+operator|||
+name|jobName
+operator|.
+name|getValue
+argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
 return|return
