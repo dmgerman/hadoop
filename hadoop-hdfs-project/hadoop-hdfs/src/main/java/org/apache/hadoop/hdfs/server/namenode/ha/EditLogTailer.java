@@ -1136,6 +1136,17 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * @return timestamp (in msec) of when we last loaded a non-zero number of edits.    */
+DECL|method|getLastLoadTimestamp ()
+specifier|public
+name|long
+name|getLastLoadTimestamp
+parameter_list|()
+block|{
+return|return
+name|lastLoadTimestamp
+return|;
+block|}
 comment|/**    * @return true if the configured log roll period has elapsed.    */
 DECL|method|tooLongSinceLastLoad ()
 specifier|private

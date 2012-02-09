@@ -1390,6 +1390,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSUtil
@@ -18998,6 +19014,7 @@ name|getExcessBlocksCount
 argument_list|()
 return|;
 block|}
+comment|// HA-only metric
 annotation|@
 name|Metric
 DECL|method|getPostponedMisreplicatedBlocks ()
@@ -19013,6 +19030,7 @@ name|getPostponedMisreplicatedBlocksCount
 argument_list|()
 return|;
 block|}
+comment|// HA-only metric
 annotation|@
 name|Metric
 DECL|method|getPendingDataNodeMessageCount ()
@@ -19027,6 +19045,61 @@ operator|.
 name|getPendingDataNodeMessageCount
 argument_list|()
 return|;
+block|}
+comment|// HA-only metric
+annotation|@
+name|Metric
+DECL|method|getHAState ()
+specifier|public
+name|String
+name|getHAState
+parameter_list|()
+block|{
+return|return
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|// HA-only metric
+annotation|@
+name|Metric
+DECL|method|getMillisSinceLastLoadedEdits ()
+specifier|public
+name|long
+name|getMillisSinceLastLoadedEdits
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isInStandbyState
+argument_list|()
+operator|&&
+name|editLogTailer
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|now
+argument_list|()
+operator|-
+name|editLogTailer
+operator|.
+name|getLastLoadTimestamp
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 annotation|@
 name|Metric
