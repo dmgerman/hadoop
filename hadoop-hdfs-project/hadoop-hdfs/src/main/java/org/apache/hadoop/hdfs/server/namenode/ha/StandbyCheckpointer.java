@@ -282,6 +282,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -1016,61 +1030,9 @@ parameter_list|()
 block|{
 comment|// We have to make sure we're logged in as far as JAAS
 comment|// is concerned, in order to use kerberized SSL properly.
-comment|// This code copied from SecondaryNameNode - TODO: refactor
-comment|// to a utility function.
-if|if
-condition|(
-name|UserGroupInformation
+name|SecurityUtil
 operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|UserGroupInformation
-name|ugi
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|ugi
-operator|=
-name|UserGroupInformation
-operator|.
-name|getLoginUser
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception while getting login user"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-operator|.
-name|exit
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
-name|ugi
-operator|.
-name|doAs
+name|doAsLoginUserOrFatal
 argument_list|(
 operator|new
 name|PrivilegedAction
@@ -1096,13 +1058,6 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|doWork
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**      * Prevent checkpoints from occurring for some time period      * in the future. This is used when preparing to enter active      * mode. We need to not only cancel any concurrent checkpoint,      * but also prevent any checkpoints from racing to start just      * after the cancel call.      *       * @param delayMs the number of MS for which checkpoints will be      * prevented      */
 DECL|method|preventCheckpointsFor (long delayMs)
