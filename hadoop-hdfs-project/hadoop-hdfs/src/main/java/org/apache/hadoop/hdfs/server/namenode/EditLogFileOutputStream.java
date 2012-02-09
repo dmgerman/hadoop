@@ -884,6 +884,22 @@ return|return
 name|file
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"EditLogFileOutputStream("
+operator|+
+name|file
+operator|+
+literal|")"
+return|;
+block|}
 comment|/**    * @return true if this stream is currently open.    */
 DECL|method|isOpen ()
 specifier|public

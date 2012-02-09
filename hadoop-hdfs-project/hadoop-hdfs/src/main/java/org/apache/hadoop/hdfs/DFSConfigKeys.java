@@ -1220,6 +1220,25 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY
+init|=
+literal|"dfs.namenode.delegation.token.always-use"
+decl_stmt|;
+comment|// for tests
+DECL|field|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|//Filesystem limit keys
 DECL|field|DFS_NAMENODE_MAX_COMPONENT_LENGTH_KEY
 specifier|public

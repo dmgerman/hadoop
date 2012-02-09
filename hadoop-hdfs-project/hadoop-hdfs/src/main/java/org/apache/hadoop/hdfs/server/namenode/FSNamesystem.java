@@ -272,6 +272,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_NAMENODE_EDITS_DIR_KEY
 import|;
 end_import
@@ -3014,6 +3046,11 @@ specifier|private
 name|DelegationTokenSecretManager
 name|dtSecretManager
 decl_stmt|;
+DECL|field|alwaysUseDelegationTokensForTests
+specifier|private
+name|boolean
+name|alwaysUseDelegationTokensForTests
+decl_stmt|;
 comment|//
 comment|// Stores the correct file name hierarchy
 comment|//
@@ -3666,11 +3703,10 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|startSecretManager ()
+specifier|private
 name|void
 name|startSecretManager
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -3679,14 +3715,77 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|dtSecretManager
 operator|.
 name|startThreads
 argument_list|()
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Inability to start secret manager
+comment|// can't be recovered from.
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+DECL|method|startSecretManagerIfNecessary ()
+specifier|private
+name|void
+name|startSecretManagerIfNecessary
+parameter_list|()
+block|{
+name|boolean
+name|shouldRun
+init|=
+name|shouldUseDelegationTokens
+argument_list|()
+operator|&&
+operator|!
+name|isInSafeMode
+argument_list|()
+operator|&&
+name|getEditLog
+argument_list|()
+operator|.
+name|isOpenForWrite
+argument_list|()
+decl_stmt|;
+name|boolean
+name|running
+init|=
+name|dtSecretManager
+operator|.
+name|isRunning
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|shouldRun
+operator|&&
+operator|!
+name|running
+condition|)
+block|{
+name|startSecretManager
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|stopSecretManager ()
+specifier|private
 name|void
 name|stopSecretManager
 parameter_list|()
@@ -4003,18 +4102,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|startSecretManager
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
 name|haEnabled
 condition|)
 block|{
@@ -4033,6 +4120,9 @@ operator|.
 name|startMonitor
 argument_list|()
 expr_stmt|;
+name|startSecretManagerIfNecessary
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -4040,6 +4130,21 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|shouldUseDelegationTokens ()
+specifier|private
+name|boolean
+name|shouldUseDelegationTokens
+parameter_list|()
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+operator|||
+name|alwaysUseDelegationTokensForTests
+return|;
 block|}
 comment|/**     * Stop services required in active state    * @throws InterruptedException    */
 DECL|method|stopActiveServices ()
@@ -5276,6 +5381,19 @@ argument_list|(
 name|DFS_HA_STANDBY_CHECKPOINTS_KEY
 argument_list|,
 name|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|// For testing purposes, allow the DT secret manager to be started regardless
+comment|// of whether security is enabled.
+name|alwaysUseDelegationTokensForTests
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_KEY
+argument_list|,
+name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -16165,6 +16283,9 @@ operator|+
 literal|" blocks"
 argument_list|)
 expr_stmt|;
+name|startSecretManagerIfNecessary
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**      * Initialize replication queues.      */
 DECL|method|initializeReplQueues ()
@@ -17901,6 +18022,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// Stop the secret manager, since rolling the master key would
+comment|// try to write to the edit log
+name|stopSecretManager
+argument_list|()
+expr_stmt|;
 comment|// Ensure that any concurrent operations have been fully synced
 comment|// before entering safe mode. This ensures that the FSImage
 comment|// is entirely stable on disk as soon as we're in safe mode.
@@ -21258,27 +21384,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-if|if
-condition|(
+assert|assert
+operator|!
 name|isInSafeMode
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|SafeModeException
-argument_list|(
-literal|"Cannot log master key update in safe mode"
-argument_list|,
-name|safeMode
-argument_list|)
-throw|;
-block|}
+operator|:
+literal|"this should never be called while in safemode, since we stop "
+operator|+
+literal|"the DT manager before entering safemode!"
+assert|;
+comment|// No need to hold FSN lock since we don't access any internal
+comment|// structures, and this is stopped before the FSN shuts itself
+comment|// down, etc.
 name|getEditLog
 argument_list|()
 operator|.
@@ -21287,13 +21404,6 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|getEditLog
 argument_list|()
 operator|.

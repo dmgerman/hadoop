@@ -7814,6 +7814,22 @@ name|hard
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setWaitSafeMode (boolean wait)
+specifier|public
+name|void
+name|setWaitSafeMode
+parameter_list|(
+name|boolean
+name|wait
+parameter_list|)
+block|{
+name|this
+operator|.
+name|waitSafeMode
+operator|=
+name|wait
+expr_stmt|;
+block|}
 comment|/**    * Returns the current set of datanodes    */
 DECL|method|listDataNodes ()
 name|DataNode
