@@ -1748,9 +1748,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFS_DATANODE_HANDLER_COUNT_KEY
+name|DFS_NAMENODE_HANDLER_COUNT_KEY
 argument_list|,
-name|DFS_DATANODE_HANDLER_COUNT_DEFAULT
+name|DFS_NAMENODE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
