@@ -3022,6 +3022,19 @@ name|getAllJournalStreams
 argument_list|()
 return|;
 block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getJournalSet ()
+specifier|public
+name|JournalSet
+name|getJournalSet
+parameter_list|()
+block|{
+return|return
+name|journalSet
+return|;
+block|}
 comment|/**    * Used only by unit tests.    */
 annotation|@
 name|VisibleForTesting

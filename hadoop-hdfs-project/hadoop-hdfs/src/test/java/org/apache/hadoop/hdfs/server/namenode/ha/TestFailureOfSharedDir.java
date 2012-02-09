@@ -300,6 +300,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -761,12 +771,6 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-name|int
-name|chmodSucceeded
-init|=
-operator|-
-literal|1
-decl_stmt|;
 name|File
 name|sharedEditsDir
 init|=
@@ -839,6 +843,18 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Blow away the shared edits dir.
+name|Runtime
+name|mockRuntime
+init|=
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|Runtime
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|URI
 name|sharedEditsUri
 init|=
@@ -859,8 +875,10 @@ argument_list|(
 name|sharedEditsUri
 argument_list|)
 expr_stmt|;
-name|chmodSucceeded
-operator|=
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|FileUtil
 operator|.
 name|chmod
@@ -874,27 +892,8 @@ literal|"-w"
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|chmodSucceeded
-operator|!=
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Failed to remove write permissions on shared edits dir:"
-operator|+
-name|sharedEditsDir
-operator|.
-name|getAbsolutePath
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|NameNode
 name|nn0
 init|=
@@ -905,6 +904,25 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|nn0
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|getJournalSet
+argument_list|()
+operator|.
+name|setRuntimeForTesting
+argument_list|(
+name|mockRuntime
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 comment|// Make sure that subsequent operations on the NN fail.
@@ -935,6 +953,30 @@ argument_list|(
 literal|"Unable to start log segment 4: too few journals successfully started"
 argument_list|,
 name|ioe
+argument_list|)
+expr_stmt|;
+comment|// By current policy the NN should exit upon this error.
+comment|// exit() should be called once, but since it is mocked, exit gets
+comment|// called once during FSEditsLog.endCurrentLogSegment() and then after
+comment|// that during FSEditsLog.startLogSegment(). So the check is atLeast(1)
+name|Mockito
+operator|.
+name|verify
+argument_list|(
+name|mockRuntime
+argument_list|,
+name|Mockito
+operator|.
+name|atLeastOnce
+argument_list|()
+argument_list|)
+operator|.
+name|exit
+argument_list|(
+name|Mockito
+operator|.
+name|anyInt
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1019,9 +1061,9 @@ finally|finally
 block|{
 if|if
 condition|(
-name|chmodSucceeded
-operator|==
-literal|0
+name|sharedEditsDir
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// without this test cleanup will fail

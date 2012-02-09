@@ -106,6 +106,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -229,20 +243,6 @@ operator|.
 name|collect
 operator|.
 name|Sets
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
 import|;
 end_import
 
@@ -595,6 +595,17 @@ specifier|final
 name|int
 name|minimumRedundantJournals
 decl_stmt|;
+DECL|field|runtime
+specifier|private
+specifier|volatile
+name|Runtime
+name|runtime
+init|=
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+decl_stmt|;
 DECL|method|JournalSet (int minimumRedundantResources)
 name|JournalSet
 parameter_list|(
@@ -607,6 +618,24 @@ operator|.
 name|minimumRedundantJournals
 operator|=
 name|minimumRedundantResources
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setRuntimeForTesting (Runtime runtime)
+specifier|public
+name|void
+name|setRuntimeForTesting
+parameter_list|(
+name|Runtime
+name|runtime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runtime
+operator|=
+name|runtime
 expr_stmt|;
 block|}
 annotation|@
@@ -1211,6 +1240,18 @@ comment|// continue on any of the other journals. Abort them to ensure that
 comment|// retry behavior doesn't allow them to keep going in any way.
 name|abortAllJournals
 argument_list|()
+expr_stmt|;
+comment|// the current policy is to shutdown the NN on errors to shared edits
+comment|// dir. There are many code paths to shared edits failures - syncs,
+comment|// roll of edits etc. All of them go through this common function
+comment|// where the isRequired() check is made. Applying exit policy here
+comment|// to catch all code paths.
+name|runtime
+operator|.
+name|exit
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
