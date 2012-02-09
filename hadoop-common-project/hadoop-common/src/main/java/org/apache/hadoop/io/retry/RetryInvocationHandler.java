@@ -212,6 +212,14 @@ name|proxyProviderFailoverCount
 init|=
 literal|0
 decl_stmt|;
+DECL|field|hasMadeASuccessfulCall
+specifier|private
+specifier|volatile
+name|boolean
+name|hasMadeASuccessfulCall
+init|=
+literal|false
+decl_stmt|;
 DECL|field|defaultPolicy
 specifier|private
 name|RetryPolicy
@@ -397,13 +405,22 @@ expr_stmt|;
 block|}
 try|try
 block|{
-return|return
+name|Object
+name|ret
+init|=
 name|invokeMethod
 argument_list|(
 name|method
 argument_list|,
 name|args
 argument_list|)
+decl_stmt|;
+name|hasMadeASuccessfulCall
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|ret
 return|;
 block|}
 catch|catch
@@ -521,6 +538,29 @@ block|}
 else|else
 block|{
 comment|// retry or failover
+comment|// avoid logging the failover if this is the first call on this
+comment|// proxy object, and we successfully achieve the failover without
+comment|// any flip-flopping
+name|boolean
+name|worthLogging
+init|=
+operator|!
+operator|(
+name|invocationFailoverCount
+operator|==
+literal|0
+operator|&&
+operator|!
+name|hasMadeASuccessfulCall
+operator|)
+decl_stmt|;
+name|worthLogging
+operator||=
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|action
@@ -532,6 +572,8 @@ operator|.
 name|RetryDecision
 operator|.
 name|FAILOVER_AND_RETRY
+operator|&&
+name|worthLogging
 condition|)
 block|{
 name|String
@@ -544,20 +586,35 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" of "
+literal|" of class "
 operator|+
 name|currentProxy
 operator|.
 name|getClass
 argument_list|()
-operator|+
+operator|.
+name|getSimpleName
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|invocationFailoverCount
+operator|>
+literal|0
+condition|)
+block|{
+name|msg
+operator|+=
 literal|" after "
 operator|+
 name|invocationFailoverCount
 operator|+
-literal|" fail over attempts."
-operator|+
-literal|" Trying to fail over "
+literal|" fail over attempts"
+expr_stmt|;
+block|}
+name|msg
+operator|+=
+literal|". Trying to fail over "
 operator|+
 name|formatSleepMessage
 argument_list|(
@@ -565,7 +622,7 @@ name|action
 operator|.
 name|delayMillis
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -616,11 +673,14 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" of "
+literal|" of class "
 operator|+
 name|currentProxy
 operator|.
 name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
 argument_list|()
 operator|+
 literal|". Retrying "
