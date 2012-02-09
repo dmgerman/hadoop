@@ -6073,6 +6073,18 @@ parameter_list|)
 block|{
 comment|//doesn't do anything
 block|}
+comment|/**    * Set the write checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param writeChecksum    */
+DECL|method|setWriteChecksum (boolean writeChecksum)
+specifier|public
+name|void
+name|setWriteChecksum
+parameter_list|(
+name|boolean
+name|writeChecksum
+parameter_list|)
+block|{
+comment|//doesn't do anything
+block|}
 comment|/**    * Return a list of file status objects that corresponds to the list of paths    * excluding those non-existent paths.    *     * @param paths    *          the list of paths we want information from    * @return a list of FileStatus objects    * @throws IOException    *           see specific implementation    */
 DECL|method|getFileStatus (Path[] paths)
 specifier|private

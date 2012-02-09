@@ -1149,6 +1149,25 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|setWriteChecksum (boolean writeChecksum)
+specifier|public
+name|void
+name|setWriteChecksum
+parameter_list|(
+name|boolean
+name|writeChecksum
+parameter_list|)
+block|{
+name|fs
+operator|.
+name|setVerifyChecksum
+argument_list|(
+name|writeChecksum
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
