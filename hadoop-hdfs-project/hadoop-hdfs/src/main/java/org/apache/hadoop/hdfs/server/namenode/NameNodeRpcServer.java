@@ -4616,15 +4616,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
+comment|// TODO(HA): decide on OperationCategory for this
 name|DatanodeInfo
 name|results
 index|[]
@@ -4669,7 +4661,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -4693,7 +4685,7 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -4714,7 +4706,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|saveNamespace
@@ -4732,7 +4724,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|getBlockManager
@@ -4757,18 +4749,8 @@ specifier|public
 name|long
 name|getTransactionID
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -4811,15 +4793,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -4843,15 +4817,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|finalizeUpgrade
@@ -4872,15 +4838,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
+comment|// TODO:HA decide on OperationCategory for this
 return|return
 name|namesystem
 operator|.
@@ -4904,7 +4862,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|metaSave
@@ -5010,7 +4968,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    * @param bandwidth Balancer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
+comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    * @param bandwidth Blanacer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
 annotation|@
 name|Override
 comment|// ClientProtocol
@@ -5025,7 +4983,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// NB: not checking OperationCategory so this works on a standby
+comment|// TODO:HA decide on OperationCategory for this
 name|namesystem
 operator|.
 name|getBlockManager

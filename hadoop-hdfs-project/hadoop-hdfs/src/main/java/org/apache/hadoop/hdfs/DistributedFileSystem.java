@@ -3206,7 +3206,7 @@ name|action
 argument_list|)
 return|;
 block|}
-comment|/*    * Requests the namenode to dump data structures into specified     * file.    */
+comment|/*    * Requests the namenode to dump data strcutures into specified     * file.    */
 DECL|method|metaSave (String pathname)
 specifier|public
 name|void
@@ -3245,7 +3245,7 @@ return|;
 block|}
 comment|/**    * We need to find the blocks that didn't match.  Likely only one     * is corrupt but we will report both to the namenode.  In the future,    * we can consider figuring out exactly which block is corrupt.    */
 comment|// We do not see a need for user to report block checksum errors and do not
-comment|// want to rely on user to report block corruption.
+comment|// want to rely on user to report block corruptions.
 annotation|@
 name|Deprecated
 DECL|method|reportChecksumFailure (Path f, FSDataInputStream in, long inPos, FSDataInputStream sums, long sumsPos)
