@@ -632,6 +632,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|RefreshUserMappingsProtocol
 import|;
 end_import
@@ -4162,7 +4176,14 @@ name|monitorHealth
 parameter_list|()
 throws|throws
 name|HealthCheckFailedException
+throws|,
+name|AccessControlException
 block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -4170,7 +4191,7 @@ name|haEnabled
 condition|)
 block|{
 return|return;
-comment|// no-op, if HA is not eanbled
+comment|// no-op, if HA is not enabled
 block|}
 comment|// TODO:HA implement health check
 return|return;
@@ -4182,7 +4203,14 @@ name|transitionToActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -4214,7 +4242,14 @@ name|transitionToStandby
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -4244,7 +4279,14 @@ specifier|synchronized
 name|HAServiceState
 name|getServiceState
 parameter_list|()
+throws|throws
+name|AccessControlException
 block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|state
@@ -4272,7 +4314,14 @@ name|readyToBecomeActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!

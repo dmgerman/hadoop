@@ -5988,6 +5988,8 @@ name|monitorHealth
 parameter_list|()
 throws|throws
 name|HealthCheckFailedException
+throws|,
+name|AccessControlException
 block|{
 name|nn
 operator|.
@@ -6006,6 +6008,8 @@ name|transitionToActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
 name|nn
 operator|.
@@ -6024,6 +6028,8 @@ name|transitionToStandby
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
 name|nn
 operator|.
@@ -6040,6 +6046,8 @@ specifier|synchronized
 name|HAServiceState
 name|getServiceState
 parameter_list|()
+throws|throws
+name|AccessControlException
 block|{
 return|return
 name|nn
@@ -6059,6 +6067,8 @@ name|readyToBecomeActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 block|{
 return|return
 name|nn

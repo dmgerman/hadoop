@@ -82,6 +82,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|KerberosInfo
 import|;
 end_import
@@ -189,7 +203,7 @@ name|name
 return|;
 block|}
 block|}
-comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    * @throws IOException    *           if other errors happen    */
+comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|monitorHealth ()
 specifier|public
 name|void
@@ -198,9 +212,11 @@ parameter_list|()
 throws|throws
 name|HealthCheckFailedException
 throws|,
+name|AccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    * @throws IOException    *           if other errors happen    */
+comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|transitionToActive ()
 specifier|public
 name|void
@@ -209,9 +225,11 @@ parameter_list|()
 throws|throws
 name|ServiceFailedException
 throws|,
+name|AccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    * @throws IOException    *           if other errors happen    */
+comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|transitionToStandby ()
 specifier|public
 name|void
@@ -220,18 +238,22 @@ parameter_list|()
 throws|throws
 name|ServiceFailedException
 throws|,
+name|AccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Return the current state of the service.    *     * @throws IOException    *           if other errors happen    */
+comment|/**    * Return the current state of the service.    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|getServiceState ()
 specifier|public
 name|HAServiceState
 name|getServiceState
 parameter_list|()
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Return true if the service is capable and ready to transition    * from the standby state to the active state.    *     * @return true if the service is ready to become active, false otherwise.    * @throws IOException    *           if other errors happen    */
+comment|/**    * Return true if the service is capable and ready to transition    * from the standby state to the active state.    *     * @return true if the service is ready to become active, false otherwise.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|readyToBecomeActive ()
 specifier|public
 name|boolean
@@ -239,6 +261,8 @@ name|readyToBecomeActive
 parameter_list|()
 throws|throws
 name|ServiceFailedException
+throws|,
+name|AccessControlException
 throws|,
 name|IOException
 function_decl|;
