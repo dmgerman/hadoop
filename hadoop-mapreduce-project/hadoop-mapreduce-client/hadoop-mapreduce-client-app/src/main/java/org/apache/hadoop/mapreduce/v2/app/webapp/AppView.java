@@ -147,15 +147,6 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
-name|html
-operator|.
-name|meta_http
-argument_list|(
-literal|"refresh"
-argument_list|,
-literal|"10"
-argument_list|)
-expr_stmt|;
 name|set
 argument_list|(
 name|ACCORDION_ID

@@ -1365,7 +1365,7 @@ comment|// check if there is a disk error
 name|IOException
 name|cause
 init|=
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|getCauseIfDiskError
 argument_list|(

@@ -2322,6 +2322,8 @@ name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|exitCode
+operator|=
 name|logDumper
 operator|.
 name|dumpAContainersLogs

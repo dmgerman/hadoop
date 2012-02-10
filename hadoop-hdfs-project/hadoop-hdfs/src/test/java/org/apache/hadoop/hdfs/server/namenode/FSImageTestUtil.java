@@ -569,9 +569,6 @@ argument_list|(
 name|FSImageTestUtil
 operator|.
 name|class
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|/**    * The position in the fsimage header where the txid is    * written.    */
@@ -2292,6 +2289,28 @@ name|nnIdx
 argument_list|)
 control|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"examining name dir with files: "
+operator|+
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|","
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|nameDir
+operator|.
+name|listFiles
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Should have fsimage_N for the three checkpoints
 name|LOG
 operator|.

@@ -380,6 +380,16 @@ name|float
 name|getUsedCapacity
 parameter_list|()
 function_decl|;
+comment|/**    * Set used capacity of the queue.    * @param usedCapacity used capacity of the queue    */
+DECL|method|setUsedCapacity (float usedCapacity)
+specifier|public
+name|void
+name|setUsedCapacity
+parameter_list|(
+name|float
+name|usedCapacity
+parameter_list|)
+function_decl|;
 comment|/**    * Get the currently utilized resources in the cluster     * by the queue and children (if any).    * @return used resources by the queue and it's children     */
 DECL|method|getUsedResources ()
 specifier|public
@@ -393,6 +403,16 @@ specifier|public
 name|float
 name|getUtilization
 parameter_list|()
+function_decl|;
+comment|/**    * Get the current<em>utilization</em> of the queue.    * @param utilization queue utilization    */
+DECL|method|setUtilization (float utilization)
+specifier|public
+name|void
+name|setUtilization
+parameter_list|(
+name|float
+name|utilization
+parameter_list|)
 function_decl|;
 comment|/**    * Get the current run-state of the queue    * @return current run-state    */
 DECL|method|getState ()

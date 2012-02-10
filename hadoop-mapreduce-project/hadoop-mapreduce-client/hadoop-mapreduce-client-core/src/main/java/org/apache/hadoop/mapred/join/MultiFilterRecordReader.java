@@ -165,12 +165,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Base class for Composite join returning values derived from multiple  * sources, but generally not tuples.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.MultiFilterRecordReader} instead  */
+comment|/**  * Base class for Composite join returning values derived from multiple  * sources, but generally not tuples.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

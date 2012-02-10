@@ -2117,6 +2117,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|deletionHookAdded
+init|=
+literal|false
+decl_stmt|;
 name|File
 name|lockF
 init|=
@@ -2128,11 +2133,25 @@ argument_list|,
 name|STORAGE_FILE_LOCK
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|lockF
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
 name|lockF
 operator|.
 name|deleteOnExit
 argument_list|()
 expr_stmt|;
+name|deletionHookAdded
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|RandomAccessFile
 name|file
 init|=
@@ -2202,6 +2221,25 @@ expr_stmt|;
 throw|throw
 name|e
 throw|;
+block|}
+if|if
+condition|(
+name|res
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|deletionHookAdded
+condition|)
+block|{
+comment|// If the file existed prior to our startup, we didn't
+comment|// call deleteOnExit above. But since we successfully locked
+comment|// the dir, we can take care of cleaning it up.
+name|lockF
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 name|res

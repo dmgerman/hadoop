@@ -111,12 +111,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A generic RecordReader that can hand out different recordReaders  * for each chunk in a {@link CombineFileSplit}.  * A CombineFileSplit can combine data chunks from multiple files.   * This class allows using different RecordReaders for processing  * these data chunks from different files.  * @see CombineFileSplit  * @deprecated Use  * {@link org.apache.hadoop.mapreduce.lib.input.CombineFileRecordReader}  */
+comment|/**  * A generic RecordReader that can hand out different recordReaders  * for each chunk in a {@link CombineFileSplit}.  * A CombineFileSplit can combine data chunks from multiple files.   * This class allows using different RecordReaders for processing  * these data chunks from different files.  * @see CombineFileSplit  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

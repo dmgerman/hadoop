@@ -125,7 +125,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** An {@link RecordReader} for {@link SequenceFile}s. */
+comment|/**   * An {@link RecordReader} for {@link SequenceFile}s.   */
 end_comment
 
 begin_class

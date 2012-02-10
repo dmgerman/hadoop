@@ -1077,6 +1077,23 @@ operator|.
 name|getNumClusterNodes
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|ask
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+operator|||
+name|release
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -1130,6 +1147,7 @@ operator|+
 name|clusterNmCount
 argument_list|)
 expr_stmt|;
+block|}
 name|ask
 operator|.
 name|clear
@@ -1153,6 +1171,14 @@ name|void
 name|computeIgnoreBlacklisting
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|nodeBlacklistingEnabled
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|blacklistDisablePercent
@@ -1321,9 +1347,17 @@ name|hostName
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Host "
 operator|+
@@ -1332,6 +1366,7 @@ operator|+
 literal|" is already blacklisted."
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 comment|//already blacklisted
 block|}
@@ -1776,15 +1811,24 @@ argument_list|,
 name|remoteRequests
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Added priority="
 operator|+
 name|priority
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|Map
 argument_list|<
@@ -1915,9 +1959,17 @@ argument_list|(
 name|remoteRequest
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"addResourceRequest:"
 operator|+
@@ -1954,6 +2006,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|decResourceRequest (Priority priority, String resourceName, Resource capability)
 specifier|private
@@ -2017,6 +2070,14 @@ block|{
 comment|// as we modify the resource requests by filtering out blacklisted hosts
 comment|// when they are added, this value may be null when being
 comment|// decremented
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2028,6 +2089,7 @@ operator|+
 literal|" is not present in request table"
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|ResourceRequest
@@ -2040,9 +2102,17 @@ argument_list|(
 name|capability
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"BEFORE decResourceRequest:"
 operator|+
@@ -2079,6 +2149,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|remoteRequest
 operator|.
 name|setNumContainers
@@ -2165,6 +2236,14 @@ expr_stmt|;
 comment|//this will override the request if ask doesn't
 comment|//already have it.
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -2204,6 +2283,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|release (ContainerId containerId)
 specifier|protected

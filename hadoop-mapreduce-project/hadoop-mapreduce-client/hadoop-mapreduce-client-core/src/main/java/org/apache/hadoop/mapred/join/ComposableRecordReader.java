@@ -99,12 +99,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Additional operations required of a RecordReader to participate in a join.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.ComposableRecordReader} instead  */
+comment|/**  * Additional operations required of a RecordReader to participate in a join.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

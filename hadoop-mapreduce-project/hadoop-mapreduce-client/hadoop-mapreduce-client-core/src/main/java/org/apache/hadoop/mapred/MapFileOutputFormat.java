@@ -215,12 +215,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** An {@link OutputFormat} that writes {@link MapFile}s.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.output.MapFileOutputFormat} instead  */
+comment|/** An {@link OutputFormat} that writes {@link MapFile}s.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

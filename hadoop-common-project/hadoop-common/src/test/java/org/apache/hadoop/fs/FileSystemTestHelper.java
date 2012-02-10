@@ -327,13 +327,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|absTestRootDir
-operator|==
-literal|null
-condition|)
-block|{
+comment|// NOTE: can't cache because of different filesystems!
+comment|//if (absTestRootDir == null)
 if|if
 condition|(
 name|TEST_ROOT_DIR
@@ -366,7 +361,7 @@ operator|+
 name|TEST_ROOT_DIR
 expr_stmt|;
 block|}
-block|}
+comment|//}
 return|return
 name|absTestRootDir
 return|;

@@ -456,22 +456,6 @@ name|COMPLETE
 operator|:
 literal|"Trying to convert a COMPLETE block"
 assert|;
-if|if
-condition|(
-name|getBlockUCState
-argument_list|()
-operator|!=
-name|BlockUCState
-operator|.
-name|COMMITTED
-condition|)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot complete block: block has not been COMMITTED by the client"
-argument_list|)
-throw|;
 return|return
 operator|new
 name|BlockInfo

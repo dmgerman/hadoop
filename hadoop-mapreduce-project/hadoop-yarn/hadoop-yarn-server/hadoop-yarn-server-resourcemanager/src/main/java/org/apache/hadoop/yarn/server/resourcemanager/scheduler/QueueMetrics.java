@@ -381,14 +381,14 @@ argument_list|)
 name|MutableCounterInt
 name|appsFailed
 decl_stmt|;
-DECL|field|allocatedGB
+DECL|field|allocatedMB
 annotation|@
 name|Metric
 argument_list|(
-literal|"Allocated memory in GiB"
+literal|"Allocated memory in MB"
 argument_list|)
 name|MutableGaugeInt
-name|allocatedGB
+name|allocatedMB
 decl_stmt|;
 DECL|field|allocatedContainers
 annotation|@
@@ -417,23 +417,23 @@ argument_list|)
 name|MutableCounterLong
 name|aggregateContainersReleased
 decl_stmt|;
-DECL|field|availableGB
+DECL|field|availableMB
 annotation|@
 name|Metric
 argument_list|(
-literal|"Available memory in GiB"
+literal|"Available memory in MB"
 argument_list|)
 name|MutableGaugeInt
-name|availableGB
+name|availableMB
 decl_stmt|;
-DECL|field|pendingGB
+DECL|field|pendingMB
 annotation|@
 name|Metric
 argument_list|(
-literal|"Pending memory allocation in GiB"
+literal|"Pending memory allocation in MB"
 argument_list|)
 name|MutableGaugeInt
-name|pendingGB
+name|pendingMB
 decl_stmt|;
 DECL|field|pendingContainers
 annotation|@
@@ -444,14 +444,14 @@ argument_list|)
 name|MutableGaugeInt
 name|pendingContainers
 decl_stmt|;
-DECL|field|reservedGB
+DECL|field|reservedMB
 annotation|@
 name|Metric
 argument_list|(
-literal|"# of reserved memory in GiB"
+literal|"# of reserved memory in MB"
 argument_list|)
 name|MutableGaugeInt
-name|reservedGB
+name|reservedMB
 decl_stmt|;
 DECL|field|reservedContainers
 annotation|@
@@ -495,15 +495,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|GB
-specifier|static
-specifier|final
-name|int
-name|GB
-init|=
-literal|1024
-decl_stmt|;
-comment|// resource.memory is in MB
 DECL|field|RECORD_INFO
 specifier|static
 specifier|final
@@ -1204,7 +1195,7 @@ name|Resource
 name|limit
 parameter_list|)
 block|{
-name|availableGB
+name|availableMB
 operator|.
 name|set
 argument_list|(
@@ -1212,8 +1203,6 @@ name|limit
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 argument_list|)
 expr_stmt|;
 block|}
@@ -1343,7 +1332,7 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
-name|pendingGB
+name|pendingMB
 operator|.
 name|incr
 argument_list|(
@@ -1351,8 +1340,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 argument_list|)
 expr_stmt|;
 block|}
@@ -1444,7 +1431,7 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
-name|pendingGB
+name|pendingMB
 operator|.
 name|decr
 argument_list|(
@@ -1452,8 +1439,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 argument_list|)
 expr_stmt|;
 block|}
@@ -1486,7 +1471,7 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
-name|allocatedGB
+name|allocatedMB
 operator|.
 name|incr
 argument_list|(
@@ -1494,8 +1479,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 operator|*
 name|containers
 argument_list|)
@@ -1588,7 +1571,7 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
-name|allocatedGB
+name|allocatedMB
 operator|.
 name|decr
 argument_list|(
@@ -1596,8 +1579,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 operator|*
 name|containers
 argument_list|)
@@ -1666,7 +1647,7 @@ operator|.
 name|incr
 argument_list|()
 expr_stmt|;
-name|reservedGB
+name|reservedMB
 operator|.
 name|incr
 argument_list|(
@@ -1674,8 +1655,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 argument_list|)
 expr_stmt|;
 name|QueueMetrics
@@ -1738,7 +1717,7 @@ operator|.
 name|decr
 argument_list|()
 expr_stmt|;
-name|reservedGB
+name|reservedMB
 operator|.
 name|decr
 argument_list|(
@@ -1746,8 +1725,6 @@ name|res
 operator|.
 name|getMemory
 argument_list|()
-operator|/
-name|GB
 argument_list|)
 expr_stmt|;
 name|QueueMetrics
@@ -2001,14 +1978,14 @@ name|value
 argument_list|()
 return|;
 block|}
-DECL|method|getAllocatedGB ()
+DECL|method|getAllocatedMB ()
 specifier|public
 name|int
-name|getAllocatedGB
+name|getAllocatedMB
 parameter_list|()
 block|{
 return|return
-name|allocatedGB
+name|allocatedMB
 operator|.
 name|value
 argument_list|()
@@ -2027,27 +2004,27 @@ name|value
 argument_list|()
 return|;
 block|}
-DECL|method|getAvailableGB ()
+DECL|method|getAvailableMB ()
 specifier|public
 name|int
-name|getAvailableGB
+name|getAvailableMB
 parameter_list|()
 block|{
 return|return
-name|availableGB
+name|availableMB
 operator|.
 name|value
 argument_list|()
 return|;
 block|}
-DECL|method|getPendingGB ()
+DECL|method|getPendingMB ()
 specifier|public
 name|int
-name|getPendingGB
+name|getPendingMB
 parameter_list|()
 block|{
 return|return
-name|pendingGB
+name|pendingMB
 operator|.
 name|value
 argument_list|()
@@ -2066,14 +2043,14 @@ name|value
 argument_list|()
 return|;
 block|}
-DECL|method|getReservedGB ()
+DECL|method|getReservedMB ()
 specifier|public
 name|int
-name|getReservedGB
+name|getReservedMB
 parameter_list|()
 block|{
 return|return
-name|reservedGB
+name|reservedMB
 operator|.
 name|value
 argument_list|()

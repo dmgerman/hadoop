@@ -329,12 +329,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A base class for file-based {@link InputFormat}.  *   *<p><code>FileInputFormat</code> is the base class for all file-based   *<code>InputFormat</code>s. This provides a generic implementation of  * {@link #getSplits(JobConf, int)}.  * Subclasses of<code>FileInputFormat</code> can also override the   * {@link #isSplitable(FileSystem, Path)} method to ensure input-files are  * not split-up and are processed as a whole by {@link Mapper}s.  * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.input.FileInputFormat}  *  instead.  */
+comment|/**   * A base class for file-based {@link InputFormat}.  *   *<p><code>FileInputFormat</code> is the base class for all file-based   *<code>InputFormat</code>s. This provides a generic implementation of  * {@link #getSplits(JobConf, int)}.  * Subclasses of<code>FileInputFormat</code> can also override the   * {@link #isSplitable(FileSystem, Path)} method to ensure input-files are  * not split-up and are processed as a whole by {@link Mapper}s.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

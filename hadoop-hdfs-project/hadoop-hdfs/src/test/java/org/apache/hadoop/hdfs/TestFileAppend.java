@@ -24,7 +24,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
@@ -44,7 +44,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|FileNotFoundException
 import|;
 end_import
 
@@ -54,7 +54,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
+name|IOException
 import|;
 end_import
 
@@ -75,16 +75,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
 import|;
 end_import
 
@@ -154,7 +144,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|HardLink
 import|;
 end_import
 
@@ -168,7 +158,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|HardLink
+name|Path
 import|;
 end_import
 
@@ -252,7 +242,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -271,6 +261,16 @@ operator|.
 name|datanode
 operator|.
 name|SimulatedFSDataset
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -762,19 +762,6 @@ operator|.
 name|getLocatedBlocks
 argument_list|()
 decl_stmt|;
-name|FSDataset
-name|dataset
-init|=
-operator|(
-name|FSDataset
-operator|)
-name|dn
-index|[
-literal|0
-index|]
-operator|.
-name|data
-decl_stmt|;
 comment|//
 comment|// Create hard links for a few of the blocks
 comment|//
@@ -812,13 +799,19 @@ operator|.
 name|getBlock
 argument_list|()
 decl_stmt|;
+specifier|final
 name|File
 name|f
 init|=
-name|dataset
+name|DataNodeTestUtils
 operator|.
 name|getFile
 argument_list|(
+name|dn
+index|[
+literal|0
+index|]
+argument_list|,
 name|b
 operator|.
 name|getBlockPoolId
@@ -827,6 +820,9 @@ argument_list|,
 name|b
 operator|.
 name|getLocalBlock
+argument_list|()
+operator|.
+name|getBlockId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -922,10 +918,15 @@ name|b
 operator|+
 literal|" should have returned true"
 argument_list|,
-name|dataset
+name|DataNodeTestUtils
 operator|.
 name|unlinkBlock
 argument_list|(
+name|dn
+index|[
+literal|0
+index|]
+argument_list|,
 name|b
 argument_list|,
 literal|1
@@ -987,10 +988,15 @@ operator|+
 literal|" should have returned false"
 argument_list|,
 operator|!
-name|dataset
+name|DataNodeTestUtils
 operator|.
 name|unlinkBlock
 argument_list|(
+name|dn
+index|[
+literal|0
+index|]
+argument_list|,
 name|b
 argument_list|,
 literal|1

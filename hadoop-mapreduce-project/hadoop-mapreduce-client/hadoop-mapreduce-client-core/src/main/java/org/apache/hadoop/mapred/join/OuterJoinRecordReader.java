@@ -99,12 +99,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Full outer join.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.OuterJoinRecordReader} instead  */
+comment|/**  * Full outer join.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

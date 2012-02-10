@@ -48,13 +48,7 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_comment
-comment|/**  * @deprecated   * Use {@link org.apache.hadoop.mapreduce.lib.db.DBWritable} instead  */
-end_comment
-
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

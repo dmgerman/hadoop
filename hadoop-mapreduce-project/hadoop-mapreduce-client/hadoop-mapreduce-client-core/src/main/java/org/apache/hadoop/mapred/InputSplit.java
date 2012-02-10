@@ -69,12 +69,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>InputSplit</code> represents the data to be processed by an   * individual {@link Mapper}.   *  *<p>Typically, it presents a byte-oriented view on the input and is the   * responsibility of {@link RecordReader} of the job to process this and present  * a record-oriented view.  *   * @see InputFormat  * @see RecordReader  * @deprecated Use {@link org.apache.hadoop.mapreduce.InputSplit} instead.  */
+comment|/**  *<code>InputSplit</code> represents the data to be processed by an   * individual {@link Mapper}.   *  *<p>Typically, it presents a byte-oriented view on the input and is the   * responsibility of {@link RecordReader} of the job to process this and present  * a record-oriented view.  *   * @see InputFormat  * @see RecordReader  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

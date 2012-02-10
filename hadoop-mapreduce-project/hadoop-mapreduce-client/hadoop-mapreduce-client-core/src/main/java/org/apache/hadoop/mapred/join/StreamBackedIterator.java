@@ -61,12 +61,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides an implementation of ResetableIterator. This  * implementation uses a byte array to store elements added to it.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.StreamBackedIterator} instead  */
+comment|/**  * This class provides an implementation of ResetableIterator. This  * implementation uses a byte array to store elements added to it.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

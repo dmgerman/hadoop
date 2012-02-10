@@ -3134,7 +3134,12 @@ name|getBindAddress
 parameter_list|()
 block|{
 return|return
-literal|null
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+literal|"localhost:9876"
+argument_list|)
 return|;
 block|}
 annotation|@

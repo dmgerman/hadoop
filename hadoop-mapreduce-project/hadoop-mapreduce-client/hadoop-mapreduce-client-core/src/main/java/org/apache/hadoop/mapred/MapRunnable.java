@@ -55,12 +55,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Expert: Generic interface for {@link Mapper}s.  *   *<p>Custom implementations of<code>MapRunnable</code> can exert greater   * control on map processing e.g. multi-threaded, asynchronous mappers etc.</p>  *   * @see Mapper  * @deprecated Use {@link org.apache.hadoop.mapreduce.Mapper} instead.  */
+comment|/**  * Expert: Generic interface for {@link Mapper}s.  *   *<p>Custom implementations of<code>MapRunnable</code> can exert greater   * control on map processing e.g. multi-threaded, asynchronous mappers etc.</p>  *   * @see Mapper  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

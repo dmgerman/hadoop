@@ -113,12 +113,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** Implements the identity function, mapping inputs directly to outputs.   * @deprecated Use {@link org.apache.hadoop.mapreduce.Mapper} instead.  */
+comment|/**   * Implements the identity function, mapping inputs directly to outputs.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

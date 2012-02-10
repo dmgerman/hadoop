@@ -85,12 +85,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**************************************************  * Describes the current status of a job.  This is  * not intended to be a comprehensive piece of data.  * For that, look at JobProfile.  *************************************************  *@deprecated Use {@link org.apache.hadoop.mapreduce.JobStatus} instead  **/
+comment|/**************************************************  * Describes the current status of a job.  This is  * not intended to be a comprehensive piece of data.  * For that, look at JobProfile.  *************************************************  **/
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

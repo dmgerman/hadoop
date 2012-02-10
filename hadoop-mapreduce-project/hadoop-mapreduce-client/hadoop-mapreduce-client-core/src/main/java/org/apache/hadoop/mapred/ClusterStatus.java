@@ -181,12 +181,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Status information on the current state of the Map-Reduce cluster.  *   *<p><code>ClusterStatus</code> provides clients with information such as:  *<ol>  *<li>  *   Size of the cluster.   *</li>  *<li>  *   Name of the trackers.   *</li>  *<li>  *   Task capacity of the cluster.   *</li>  *<li>  *   The number of currently running map& reduce tasks.  *</li>  *<li>  *   State of the<code>JobTracker</code>.  *</li>  *<li>  *   Details regarding black listed trackers.  *</li>  *</ol></p>  *   *<p>Clients can query for the latest<code>ClusterStatus</code>, via   * {@link JobClient#getClusterStatus()}.</p>  *   * @see JobClient  * @deprecated  Use {@link ClusterMetrics} or {@link TaskTrackerInfo} instead  */
+comment|/**  * Status information on the current state of the Map-Reduce cluster.  *   *<p><code>ClusterStatus</code> provides clients with information such as:  *<ol>  *<li>  *   Size of the cluster.   *</li>  *<li>  *   Name of the trackers.   *</li>  *<li>  *   Task capacity of the cluster.   *</li>  *<li>  *   The number of currently running map& reduce tasks.  *</li>  *<li>  *   State of the<code>JobTracker</code>.  *</li>  *<li>  *   Details regarding black listed trackers.  *</li>  *</ol></p>  *   *<p>Clients can query for the latest<code>ClusterStatus</code>, via   * {@link JobClient#getClusterStatus()}.</p>  *   * @see JobClient  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

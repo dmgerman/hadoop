@@ -20159,12 +20159,35 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|overwrite
-operator|=
+name|Path
+name|parent
+init|=
 name|spath
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|isRoot
+argument_list|(
+name|parent
+argument_list|)
+condition|)
+block|{
+name|overwrite
+operator|=
+name|parent
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|overwrite
+operator|=
+name|parent
 operator|.
 name|toString
 argument_list|()
@@ -20173,6 +20196,7 @@ name|Path
 operator|.
 name|SEPARATOR
 expr_stmt|;
+block|}
 name|replaceBy
 operator|=
 name|dst
@@ -20206,6 +20230,24 @@ argument_list|,
 name|replaceBy
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isRoot (Path path)
+specifier|private
+name|boolean
+name|isRoot
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+name|path
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+return|;
 block|}
 comment|/**    * Serializes leases.     */
 DECL|method|saveFilesUnderConstruction (DataOutputStream out)
@@ -21725,6 +21767,13 @@ return|return
 name|VersionInfo
 operator|.
 name|getVersion
+argument_list|()
+operator|+
+literal|", r"
+operator|+
+name|VersionInfo
+operator|.
+name|getRevision
 argument_list|()
 return|;
 block|}

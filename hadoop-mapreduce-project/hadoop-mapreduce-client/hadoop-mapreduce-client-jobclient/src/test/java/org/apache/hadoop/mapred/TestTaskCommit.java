@@ -184,7 +184,7 @@ block|{
 name|Path
 name|taskOutputPath
 init|=
-name|getTempTaskOutputPath
+name|getTaskAttemptPath
 argument_list|(
 name|context
 argument_list|)

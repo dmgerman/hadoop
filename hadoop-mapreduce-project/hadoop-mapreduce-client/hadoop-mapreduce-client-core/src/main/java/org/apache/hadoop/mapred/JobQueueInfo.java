@@ -103,12 +103,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class that contains the information regarding the Job Queues which are   * maintained by the Hadoop Map/Reduce framework.  * @deprecated Use {@link QueueInfo} instead  */
+comment|/**  * Class that contains the information regarding the Job Queues which are   * maintained by the Hadoop Map/Reduce framework.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

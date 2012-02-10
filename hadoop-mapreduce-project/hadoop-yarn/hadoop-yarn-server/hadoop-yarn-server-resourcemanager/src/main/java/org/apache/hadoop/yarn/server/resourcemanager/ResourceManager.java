@@ -1177,7 +1177,7 @@ name|WebApp
 name|webApp
 decl_stmt|;
 DECL|field|rmContext
-specifier|private
+specifier|protected
 name|RMContext
 name|rmContext
 decl_stmt|;
@@ -1617,6 +1617,18 @@ expr_stmt|;
 name|addService
 argument_list|(
 name|applicationMasterLauncher
+argument_list|)
+expr_stmt|;
+operator|new
+name|RMNMInfo
+argument_list|(
+name|this
+operator|.
+name|rmContext
+argument_list|,
+name|this
+operator|.
+name|scheduler
 argument_list|)
 expr_stmt|;
 name|super

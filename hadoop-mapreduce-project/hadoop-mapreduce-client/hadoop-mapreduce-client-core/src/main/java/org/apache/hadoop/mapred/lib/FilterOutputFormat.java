@@ -141,12 +141,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * FilterOutputFormat is a convenience class that wraps OutputFormat.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.output.FilterOutputFormat} instead.  */
+comment|/**  * FilterOutputFormat is a convenience class that wraps OutputFormat.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

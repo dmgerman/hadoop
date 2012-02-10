@@ -133,12 +133,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Prefer the&quot;rightmost&quot; data source for this key.  * For example,<tt>override(S1,S2,S3)</tt> will prefer values  * from S3 over S2, and values from S2 over S1 for all keys  * emitted from all sources.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.OverrideRecordReader} instead  */
+comment|/**  * Prefer the&quot;rightmost&quot; data source for this key.  * For example,<tt>override(S1,S2,S3)</tt> will prefer values  * from S3 over S2, and values from S2 over S1 for all keys  * emitted from all sources.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

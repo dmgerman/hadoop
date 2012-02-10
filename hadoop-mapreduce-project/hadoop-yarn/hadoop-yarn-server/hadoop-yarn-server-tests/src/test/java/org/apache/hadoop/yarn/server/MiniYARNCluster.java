@@ -639,6 +639,13 @@ block|{
 name|super
 argument_list|(
 name|testName
+operator|.
+name|replace
+argument_list|(
+literal|"$"
+argument_list|,
+literal|""
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -663,6 +670,13 @@ argument_list|(
 literal|"target"
 argument_list|,
 name|testName
+operator|.
+name|replace
+argument_list|(
+literal|"$"
+argument_list|,
+literal|""
+argument_list|)
 argument_list|)
 expr_stmt|;
 try|try

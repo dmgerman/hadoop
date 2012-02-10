@@ -113,12 +113,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A {@link Mapper} that swaps keys and values.   * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.map.InverseMapper}   *   instead.  */
+comment|/**   * A {@link Mapper} that swaps keys and values.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

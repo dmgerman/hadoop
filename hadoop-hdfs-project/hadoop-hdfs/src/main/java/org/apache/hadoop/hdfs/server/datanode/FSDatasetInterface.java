@@ -82,6 +82,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -105,64 +125,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|metrics
-operator|.
-name|FSDatasetMBean
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|ReplicaRecoveryInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlockRecoveryCommand
-operator|.
-name|RecoveringBlock
 import|;
 end_import
 
@@ -238,6 +200,64 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|FSDatasetMBean
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlockRecoveryCommand
+operator|.
+name|RecoveringBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|ReplicaRecoveryInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -290,6 +310,118 @@ name|FSDatasetInterface
 extends|extends
 name|FSDatasetMBean
 block|{
+comment|/**    * This is an interface for the underlying volume.    * @see org.apache.hadoop.hdfs.server.datanode.FSDataset.FSVolume    */
+DECL|interface|FSVolumeInterface
+interface|interface
+name|FSVolumeInterface
+block|{
+comment|/** @return a list of block pools. */
+DECL|method|getBlockPoolList ()
+specifier|public
+name|String
+index|[]
+name|getBlockPoolList
+parameter_list|()
+function_decl|;
+comment|/** @return the available storage space in bytes. */
+DECL|method|getAvailable ()
+specifier|public
+name|long
+name|getAvailable
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/** @return the directory for the block pool. */
+DECL|method|getDirectory (String bpid)
+specifier|public
+name|File
+name|getDirectory
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/** @return the directory for the finalized blocks in the block pool. */
+DECL|method|getFinalizedDir (String bpid)
+specifier|public
+name|File
+name|getFinalizedDir
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+block|}
+comment|/** @return a list of volumes. */
+DECL|method|getVolumes ()
+specifier|public
+name|List
+argument_list|<
+name|FSVolumeInterface
+argument_list|>
+name|getVolumes
+parameter_list|()
+function_decl|;
+comment|/** @return a volume information map (name => info). */
+DECL|method|getVolumeInfoMap ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Object
+argument_list|>
+name|getVolumeInfoMap
+parameter_list|()
+function_decl|;
+comment|/** @return a list of block pools. */
+DECL|method|getBlockPoolList ()
+specifier|public
+name|String
+index|[]
+name|getBlockPoolList
+parameter_list|()
+function_decl|;
+comment|/** @return a list of finalized blocks for the given block pool. */
+DECL|method|getFinalizedBlocks (String bpid)
+specifier|public
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|getFinalizedBlocks
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+function_decl|;
+comment|/**    * Check whether the in-memory block record matches the block on the disk,    * and, in case that they are not matched, update the record or mark it    * as corrupted.    */
+DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FSVolumeInterface vol)
+specifier|public
+name|void
+name|checkAndUpdate
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+name|blockId
+parameter_list|,
+name|File
+name|diskFile
+parameter_list|,
+name|File
+name|diskMetaFile
+parameter_list|,
+name|FSVolumeInterface
+name|vol
+parameter_list|)
+function_decl|;
 comment|/**    * Returns the length of the metadata file of the specified block    * @param b - the block for which the metadata length is desired    * @return the length of the metadata file for the specified block.    * @throws IOException    */
 DECL|method|getMetaDataLength (ExtendedBlock b)
 specifier|public
@@ -756,6 +888,16 @@ name|getBlockReport
 parameter_list|(
 name|String
 name|bpid
+parameter_list|)
+function_decl|;
+comment|/** Does the dataset contain the block? */
+DECL|method|contains (ExtendedBlock block)
+specifier|public
+name|boolean
+name|contains
+parameter_list|(
+name|ExtendedBlock
+name|block
 parameter_list|)
 function_decl|;
 comment|/**    * Is the block valid?    * @param b    * @return - true if the specified block is valid    */

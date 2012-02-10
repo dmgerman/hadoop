@@ -176,6 +176,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -271,27 +281,6 @@ name|memLimit
 parameter_list|)
 block|{
 name|String
-name|strJobtracker
-init|=
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-operator|+
-literal|"=localhost:"
-operator|+
-name|mr
-operator|.
-name|createJobConf
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-argument_list|)
-decl_stmt|;
-name|String
 name|strNamenode
 init|=
 literal|"fs.default.name="
@@ -361,10 +350,6 @@ name|strNamenode
 block|,
 literal|"-jobconf"
 block|,
-name|strJobtracker
-block|,
-literal|"-jobconf"
-block|,
 literal|"stream.tmpdir="
 operator|+
 name|System
@@ -393,6 +378,8 @@ block|}
 comment|/**    * This tests the setting of memory limit for streaming processes.    * This will launch a streaming app which will allocate 10MB memory.    * First, program is launched with sufficient memory. And test expects    * it to succeed. Then program is launched with insufficient memory and     * is expected to be a failure.      */
 annotation|@
 name|Test
+annotation|@
+name|Ignore
 DECL|method|testCommandLine ()
 specifier|public
 name|void

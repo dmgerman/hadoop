@@ -55,12 +55,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>OutputCommitter</code> describes the commit of task output for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputCommitter</code> of   * the job to:<p>  *<ol>  *<li>  *   Setup the job during initialization. For example, create the temporary   *   output directory for the job during the initialization of the job.  *</li>  *<li>  *   Cleanup the job after the job completion. For example, remove the  *   temporary output directory after the job completion.   *</li>  *<li>  *   Setup the task temporary output.  *</li>   *<li>  *   Check whether a task needs a commit. This is to avoid the commit  *   procedure if a task does not need commit.  *</li>  *<li>  *   Commit of the task output.  *</li>    *<li>  *   Discard the task commit.  *</li>  *</ol>  *   * @see FileOutputCommitter   * @see JobContext  * @see TaskAttemptContext   * @deprecated Use {@link org.apache.hadoop.mapreduce.OutputCommitter} instead.  */
+comment|/**  *<code>OutputCommitter</code> describes the commit of task output for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputCommitter</code> of   * the job to:<p>  *<ol>  *<li>  *   Setup the job during initialization. For example, create the temporary   *   output directory for the job during the initialization of the job.  *</li>  *<li>  *   Cleanup the job after the job completion. For example, remove the  *   temporary output directory after the job completion.   *</li>  *<li>  *   Setup the task temporary output.  *</li>   *<li>  *   Check whether a task needs a commit. This is to avoid the commit  *   procedure if a task does not need commit.  *</li>  *<li>  *   Commit of the task output.  *</li>    *<li>  *   Discard the task commit.  *</li>  *</ol>  *   * @see FileOutputCommitter   * @see JobContext  * @see TaskAttemptContext   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

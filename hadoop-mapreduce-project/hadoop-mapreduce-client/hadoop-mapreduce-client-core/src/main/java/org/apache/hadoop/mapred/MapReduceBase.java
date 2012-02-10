@@ -68,27 +68,11 @@ name|Closeable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|JobConfigurable
-import|;
-end_import
-
 begin_comment
 comment|/**   * Base class for {@link Mapper} and {@link Reducer} implementations.  *   *<p>Provides default no-op implementations for a few methods, most non-trivial  * applications need to override some of them.</p>  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

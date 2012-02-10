@@ -207,6 +207,15 @@ argument_list|(
 literal|"Starting up YARN cluster"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+literal|"yarn.scheduler.fifo.minimum-allocation-mb"
+argument_list|,
+literal|128
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|yarnCluster
@@ -334,11 +343,11 @@ literal|"ls"
 block|,
 literal|"--master_memory"
 block|,
-literal|"1536"
+literal|"512"
 block|,
 literal|"--container_memory"
 block|,
-literal|"1536"
+literal|"128"
 block|}
 decl_stmt|;
 name|LOG

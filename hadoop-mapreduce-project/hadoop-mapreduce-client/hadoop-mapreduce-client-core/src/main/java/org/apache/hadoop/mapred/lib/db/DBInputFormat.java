@@ -96,20 +96,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|LongWritable
@@ -228,13 +214,7 @@ name|Job
 import|;
 end_import
 
-begin_comment
-comment|/**  * @deprecated   * Use {@link org.apache.hadoop.mapreduce.lib.db.DBInputFormat} instead.  */
-end_comment
-
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

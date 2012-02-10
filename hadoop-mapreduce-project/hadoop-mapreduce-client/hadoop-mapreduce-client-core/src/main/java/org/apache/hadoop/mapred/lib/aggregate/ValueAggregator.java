@@ -49,12 +49,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This interface defines the minimal protocol for value aggregators.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregator} instead  */
+comment|/**  * This interface defines the minimal protocol for value aggregators.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

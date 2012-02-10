@@ -1182,6 +1182,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|FinalizeCommand
 import|;
 end_import
@@ -1326,7 +1344,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|ReceivedDeletedBlockInfo
+name|RemoteEditLogManifest
 import|;
 end_import
 
@@ -1344,7 +1362,43 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|RemoteEditLogManifest
+name|StorageBlockReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageReceivedDeletedBlocks
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageReport
 import|;
 end_import
 
@@ -1790,9 +1844,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFS_DATANODE_HANDLER_COUNT_KEY
+name|DFS_NAMENODE_HANDLER_COUNT_KEY
 argument_list|,
-name|DFS_DATANODE_HANDLER_COUNT_DEFAULT
+name|DFS_NAMENODE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
@@ -5289,13 +5343,17 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|registerDatanode (DatanodeRegistration nodeReg)
+DECL|method|registerDatanode (DatanodeRegistration nodeReg, DatanodeStorage[] storages)
 specifier|public
 name|DatanodeRegistration
 name|registerDatanode
 parameter_list|(
 name|DatanodeRegistration
 name|nodeReg
+parameter_list|,
+name|DatanodeStorage
+index|[]
+name|storages
 parameter_list|)
 throws|throws
 name|IOException
@@ -5322,7 +5380,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -5330,17 +5388,9 @@ parameter_list|(
 name|DatanodeRegistration
 name|nodeReg
 parameter_list|,
-name|long
-name|capacity
-parameter_list|,
-name|long
-name|dfsUsed
-parameter_list|,
-name|long
-name|remaining
-parameter_list|,
-name|long
-name|blockPoolUsed
+name|StorageReport
+index|[]
+name|report
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -5366,13 +5416,37 @@ name|handleHeartbeat
 argument_list|(
 name|nodeReg
 argument_list|,
-name|capacity
+name|report
+index|[
+literal|0
+index|]
+operator|.
+name|getCapacity
+argument_list|()
 argument_list|,
-name|dfsUsed
+name|report
+index|[
+literal|0
+index|]
+operator|.
+name|getDfsUsed
+argument_list|()
 argument_list|,
-name|remaining
+name|report
+index|[
+literal|0
+index|]
+operator|.
+name|getRemaining
+argument_list|()
 argument_list|,
-name|blockPoolUsed
+name|report
+index|[
+literal|0
+index|]
+operator|.
+name|getBlockPoolUsed
+argument_list|()
 argument_list|,
 name|xceiverCount
 argument_list|,
@@ -5385,7 +5459,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|blockReport (DatanodeRegistration nodeReg, String poolId, long[] blocks)
+DECL|method|blockReport (DatanodeRegistration nodeReg, String poolId, StorageBlockReport[] reports)
 specifier|public
 name|DatanodeCommand
 name|blockReport
@@ -5396,9 +5470,9 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|long
+name|StorageBlockReport
 index|[]
-name|blocks
+name|reports
 parameter_list|)
 throws|throws
 name|IOException
@@ -5414,7 +5488,13 @@ init|=
 operator|new
 name|BlockListAsLongs
 argument_list|(
-name|blocks
+name|reports
+index|[
+literal|0
+index|]
+operator|.
+name|getBlocks
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -5493,7 +5573,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|blockReceivedAndDeleted (DatanodeRegistration nodeReg, String poolId, ReceivedDeletedBlockInfo[] receivedAndDeletedBlocks)
+DECL|method|blockReceivedAndDeleted (DatanodeRegistration nodeReg, String poolId, StorageReceivedDeletedBlocks[] receivedAndDeletedBlocks)
 specifier|public
 name|void
 name|blockReceivedAndDeleted
@@ -5504,7 +5584,7 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|ReceivedDeletedBlockInfo
+name|StorageReceivedDeletedBlocks
 index|[]
 name|receivedAndDeletedBlocks
 parameter_list|)
@@ -5559,6 +5639,12 @@ argument_list|,
 name|poolId
 argument_list|,
 name|receivedAndDeletedBlocks
+index|[
+literal|0
+index|]
+operator|.
+name|getBlocks
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

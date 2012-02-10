@@ -2636,6 +2636,27 @@ operator|+
 literal|"block does not satisfy minimal replication requirement."
 argument_list|)
 throw|;
+if|if
+condition|(
+operator|!
+name|force
+operator|&&
+name|ucBlock
+operator|.
+name|getBlockUCState
+argument_list|()
+operator|!=
+name|BlockUCState
+operator|.
+name|COMMITTED
+condition|)
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot complete block: block has not been COMMITTED by the client"
+argument_list|)
+throw|;
 name|BlockInfo
 name|completeBlock
 init|=

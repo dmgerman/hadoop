@@ -1633,6 +1633,11 @@ name|append
 argument_list|(
 name|numMaps
 argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
 expr_stmt|;
 name|sb
 operator|.
@@ -1644,6 +1649,11 @@ operator|.
 name|append
 argument_list|(
 name|numReduces
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|sb

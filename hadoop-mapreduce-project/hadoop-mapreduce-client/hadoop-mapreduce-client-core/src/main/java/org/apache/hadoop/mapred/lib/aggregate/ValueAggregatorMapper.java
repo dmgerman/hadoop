@@ -151,12 +151,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements the generic mapper of Aggregate.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.aggregate.ValueAggregatorMapper}  * instead  */
+comment|/**  * This class implements the generic mapper of Aggregate.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

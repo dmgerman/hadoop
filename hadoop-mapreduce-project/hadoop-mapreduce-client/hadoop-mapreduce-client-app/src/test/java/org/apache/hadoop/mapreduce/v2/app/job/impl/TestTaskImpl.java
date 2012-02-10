@@ -632,11 +632,7 @@ begin_class
 annotation|@
 name|SuppressWarnings
 argument_list|(
-block|{
 literal|"rawtypes"
-block|,
-literal|"deprecation"
-block|}
 argument_list|)
 DECL|class|TestTaskImpl
 specifier|public

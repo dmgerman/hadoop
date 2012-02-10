@@ -45,12 +45,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is used to track task completion events on   * job tracker.   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.TaskCompletionEvent} instead  */
+comment|/**  * This is used to track task completion events on   * job tracker.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -3142,9 +3142,17 @@ argument_list|>
 name|completedContainers
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"nodeUpdate: "
 operator|+
@@ -3155,6 +3163,7 @@ operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
+block|}
 name|SchedulerNode
 name|node
 init|=

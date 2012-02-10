@@ -117,12 +117,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An abstract {@link InputFormat} that returns {@link MultiFileSplit}'s  * in {@link #getSplits(JobConf, int)} method. Splits are constructed from   * the files under the input paths. Each split returned contains<i>nearly</i>  * equal content length.<br>    * Subclasses implement {@link #getRecordReader(InputSplit, JobConf, Reporter)}  * to construct<code>RecordReader</code>'s for<code>MultiFileSplit</code>'s.  * @see MultiFileSplit  * @deprecated Use {@link org.apache.hadoop.mapred.lib.CombineFileInputFormat} instead  */
+comment|/**  * An abstract {@link InputFormat} that returns {@link MultiFileSplit}'s  * in {@link #getSplits(JobConf, int)} method. Splits are constructed from   * the files under the input paths. Each split returned contains<i>nearly</i>  * equal content length.<br>    * Subclasses implement {@link #getRecordReader(InputSplit, JobConf, Reporter)}  * to construct<code>RecordReader</code>'s for<code>MultiFileSplit</code>'s.  * @see MultiFileSplit  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

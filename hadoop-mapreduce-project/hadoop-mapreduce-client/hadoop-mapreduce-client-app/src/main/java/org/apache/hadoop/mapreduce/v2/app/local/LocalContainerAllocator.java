@@ -791,6 +791,17 @@ operator|>=
 name|retryInterval
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not contact RM after "
+operator|+
+name|retryInterval
+operator|+
+literal|" milliseconds."
+argument_list|)
+expr_stmt|;
 name|eventHandler
 operator|.
 name|handle

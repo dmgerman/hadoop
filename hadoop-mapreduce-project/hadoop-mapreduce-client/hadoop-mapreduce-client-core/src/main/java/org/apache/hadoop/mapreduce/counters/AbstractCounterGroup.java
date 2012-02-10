@@ -64,35 +64,21 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
+name|concurrent
 operator|.
-name|collect
-operator|.
-name|Iterators
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Maps
+name|ConcurrentSkipListMap
 import|;
 end_import
 
@@ -168,6 +154,20 @@ name|ResourceBundles
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Iterators
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract class to provide common implementation of the  * generic counter group in both mapred and mapreduce package.  *  * @param<T> type of the counter for the group  */
 end_comment
@@ -207,7 +207,7 @@ decl_stmt|;
 DECL|field|counters
 specifier|private
 specifier|final
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|String
 argument_list|,
@@ -215,9 +215,13 @@ name|T
 argument_list|>
 name|counters
 init|=
-name|Maps
-operator|.
-name|newTreeMap
+operator|new
+name|ConcurrentSkipListMap
+argument_list|<
+name|String
+argument_list|,
+name|T
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|limits
@@ -263,7 +267,6 @@ annotation|@
 name|Override
 DECL|method|getName ()
 specifier|public
-specifier|synchronized
 name|String
 name|getName
 parameter_list|()
@@ -355,7 +358,7 @@ block|{
 name|String
 name|saveName
 init|=
-name|limits
+name|Limits
 operator|.
 name|filterCounterName
 argument_list|(
@@ -441,6 +444,7 @@ annotation|@
 name|Override
 DECL|method|findCounter (String counterName, String displayName)
 specifier|public
+specifier|synchronized
 name|T
 name|findCounter
 parameter_list|(
@@ -451,10 +455,12 @@ name|String
 name|displayName
 parameter_list|)
 block|{
+comment|// Take lock to avoid two threads not finding a counter and trying to add
+comment|// the same counter.
 name|String
 name|saveName
 init|=
-name|limits
+name|Limits
 operator|.
 name|filterCounterName
 argument_list|(
@@ -497,7 +503,6 @@ annotation|@
 name|Override
 DECL|method|findCounter (String counterName, boolean create)
 specifier|public
-specifier|synchronized
 name|T
 name|findCounter
 parameter_list|(
@@ -511,7 +516,7 @@ block|{
 return|return
 name|findCounterImpl
 argument_list|(
-name|limits
+name|Limits
 operator|.
 name|filterCounterName
 argument_list|(
@@ -522,8 +527,11 @@ name|create
 argument_list|)
 return|;
 block|}
+comment|// Lock the object. Cannot simply use concurrent constructs on the counters
+comment|// data-structure (like putIfAbsent) because of localization, limits etc.
 DECL|method|findCounterImpl (String counterName, boolean create)
 specifier|private
+specifier|synchronized
 name|T
 name|findCounterImpl
 parameter_list|(
@@ -632,7 +640,6 @@ annotation|@
 name|Override
 DECL|method|iterator ()
 specifier|public
-specifier|synchronized
 name|Iterator
 argument_list|<
 name|T

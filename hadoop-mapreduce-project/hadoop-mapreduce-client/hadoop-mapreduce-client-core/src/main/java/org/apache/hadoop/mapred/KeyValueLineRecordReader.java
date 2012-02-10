@@ -97,12 +97,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class treats a line in the input as a key/value pair separated by a   * separator character. The separator can be specified in config file   * under the attribute name mapreduce.input.keyvaluelinerecordreader.key.value.separator. The default  * separator is the tab character ('\t').  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.KeyValueLineRecordReader}   * instead  */
+comment|/**  * This class treats a line in the input as a key/value pair separated by a   * separator character. The separator can be specified in config file   * under the attribute name mapreduce.input.keyvaluelinerecordreader.key.value.separator. The default  * separator is the tab character ('\t').  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

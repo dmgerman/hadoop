@@ -131,12 +131,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Consume all outputs and put them in /dev/null.   * @deprecated Use   *   {@link org.apache.hadoop.mapreduce.lib.output.NullOutputFormat} instead.  */
+comment|/**  * Consume all outputs and put them in /dev/null.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

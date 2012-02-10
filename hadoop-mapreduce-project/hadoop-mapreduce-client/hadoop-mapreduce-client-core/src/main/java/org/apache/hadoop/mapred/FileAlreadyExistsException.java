@@ -60,9 +60,6 @@ end_comment
 
 begin_class
 annotation|@
-name|Deprecated
-comment|// may be removed after 0.23
-annotation|@
 name|InterfaceAudience
 operator|.
 name|Public

@@ -1364,7 +1364,7 @@ name|newNode
 return|;
 block|}
 comment|/**    */
-DECL|method|unprotectedAddFile ( String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize)
+DECL|method|unprotectedAddFile ( String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
 name|INode
 name|unprotectedAddFile
 parameter_list|(
@@ -1385,6 +1385,15 @@ name|atime
 parameter_list|,
 name|long
 name|preferredBlockSize
+parameter_list|,
+name|boolean
+name|underConstruction
+parameter_list|,
+name|String
+name|clientName
+parameter_list|,
+name|String
+name|clientMachine
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
@@ -1396,6 +1405,34 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+if|if
+condition|(
+name|underConstruction
+condition|)
+block|{
+name|newNode
+operator|=
+operator|new
+name|INodeFileUnderConstruction
+argument_list|(
+name|permissions
+argument_list|,
+name|replication
+argument_list|,
+name|preferredBlockSize
+argument_list|,
+name|modificationTime
+argument_list|,
+name|clientName
+argument_list|,
+name|clientMachine
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|newNode
 operator|=
 operator|new
@@ -1403,11 +1440,7 @@ name|INodeFile
 argument_list|(
 name|permissions
 argument_list|,
-operator|new
-name|BlockInfo
-index|[
 literal|0
-index|]
 argument_list|,
 name|replication
 argument_list|,
@@ -1418,9 +1451,11 @@ argument_list|,
 name|preferredBlockSize
 argument_list|)
 expr_stmt|;
+block|}
 name|writeLock
 argument_list|()
 expr_stmt|;
+comment|// TODO: this is silly, considering the assert above!
 try|try
 block|{
 try|try
@@ -1433,7 +1468,7 @@ name|path
 argument_list|,
 name|newNode
 argument_list|,
-literal|0
+name|UNKNOWN_DISK_SPACE
 argument_list|)
 expr_stmt|;
 block|}

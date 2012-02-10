@@ -60,6 +60,24 @@ name|APP_OWNER
 init|=
 literal|"app.owner"
 decl_stmt|;
+DECL|field|APP_STATE
+name|String
+name|APP_STATE
+init|=
+literal|"app.state"
+decl_stmt|;
+DECL|field|QUEUE_NAME
+name|String
+name|QUEUE_NAME
+init|=
+literal|"queue.name"
+decl_stmt|;
+DECL|field|NODE_STATE
+name|String
+name|NODE_STATE
+init|=
+literal|"node.state"
+decl_stmt|;
 block|}
 end_interface
 

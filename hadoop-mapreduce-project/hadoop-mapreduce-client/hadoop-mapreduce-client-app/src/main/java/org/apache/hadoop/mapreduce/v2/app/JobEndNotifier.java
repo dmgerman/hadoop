@@ -564,7 +564,9 @@ operator|)
 name|urlToNotify
 operator|.
 name|openConnection
-argument_list|()
+argument_list|(
+name|proxyToUse
+argument_list|)
 decl_stmt|;
 name|conn
 operator|.

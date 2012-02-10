@@ -305,6 +305,11 @@ argument_list|)
 decl_stmt|;
 name|div
 operator|.
+name|h3
+argument_list|(
+literal|"Cluster Metrics"
+argument_list|)
+operator|.
 name|table
 argument_list|(
 literal|"#metricsoverview"
@@ -332,6 +337,54 @@ operator|.
 name|_
 argument_list|(
 literal|"Apps Submitted"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Apps Pending"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Apps Running"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Apps Completed"
 argument_list|)
 operator|.
 name|_
@@ -507,6 +560,55 @@ argument_list|(
 name|clusterMetrics
 operator|.
 name|getAppsSubmitted
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|clusterMetrics
+operator|.
+name|getAppsPending
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|clusterMetrics
+operator|.
+name|getAppsRunning
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|clusterMetrics
+operator|.
+name|getAppsCompleted
+argument_list|()
+operator|+
+name|clusterMetrics
+operator|.
+name|getAppsFailed
+argument_list|()
+operator|+
+name|clusterMetrics
+operator|.
+name|getAppsKilled
 argument_list|()
 argument_list|)
 argument_list|)
@@ -741,6 +843,13 @@ condition|)
 block|{
 name|div
 operator|.
+name|h3
+argument_list|(
+literal|"User Metrics for "
+operator|+
+name|user
+argument_list|)
+operator|.
 name|table
 argument_list|(
 literal|"#usermetricsoverview"
@@ -767,11 +876,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Apps Submitted ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Apps Submitted"
 argument_list|)
 operator|.
 name|_
@@ -787,11 +892,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Containers Running ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Apps Pending"
 argument_list|)
 operator|.
 name|_
@@ -807,11 +908,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Containers Pending ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Apps Running"
 argument_list|)
 operator|.
 name|_
@@ -827,11 +924,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Containers Reserved ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Apps Completed"
 argument_list|)
 operator|.
 name|_
@@ -847,11 +940,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Memory Used ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Containers Running"
 argument_list|)
 operator|.
 name|_
@@ -867,11 +956,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Memory Pending ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Containers Pending"
 argument_list|)
 operator|.
 name|_
@@ -887,11 +972,55 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Memory Reserved ("
-operator|+
-name|user
-operator|+
-literal|")"
+literal|"Containers Reserved"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Memory Used"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Memory Pending"
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|th
+argument_list|()
+operator|.
+name|$class
+argument_list|(
+literal|"ui-state-default"
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Memory Reserved"
 argument_list|)
 operator|.
 name|_
@@ -924,6 +1053,57 @@ name|userMetrics
 operator|.
 name|getAppsSubmitted
 argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|userMetrics
+operator|.
+name|getAppsPending
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|userMetrics
+operator|.
+name|getAppsRunning
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|td
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+operator|(
+name|userMetrics
+operator|.
+name|getAppsCompleted
+argument_list|()
+operator|+
+name|userMetrics
+operator|.
+name|getAppsFailed
+argument_list|()
+operator|+
+name|userMetrics
+operator|.
+name|getAppsKilled
+argument_list|()
+operator|)
 argument_list|)
 argument_list|)
 operator|.

@@ -127,12 +127,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class extends the MultipleOutputFormat, allowing to write the output  * data to different output files in Text output format.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.output.MultipleOutputs} instead  */
+comment|/**  * This class extends the MultipleOutputFormat, allowing to write the output  * data to different output files in Text output format.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

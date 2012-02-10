@@ -377,6 +377,35 @@ name|volumeInfo
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Ensure mxbean's XceiverCount is same as the DataNode's
+comment|// live value.
+name|int
+name|xceiverCount
+init|=
+operator|(
+name|Integer
+operator|)
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanName
+argument_list|,
+literal|"XceiverCount"
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|datanode
+operator|.
+name|getXceiverCount
+argument_list|()
+argument_list|,
+name|xceiverCount
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{

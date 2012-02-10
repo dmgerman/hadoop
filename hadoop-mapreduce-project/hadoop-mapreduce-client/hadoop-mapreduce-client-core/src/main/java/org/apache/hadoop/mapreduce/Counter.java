@@ -52,6 +52,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -124,6 +140,14 @@ parameter_list|(
 name|long
 name|incr
 parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+comment|/**    * Return the underlying object if this is a facade.    * @return the undelying object.    */
+DECL|method|getUnderlyingCounter ()
+name|Counter
+name|getUnderlyingCounter
+parameter_list|()
 function_decl|;
 block|}
 end_interface

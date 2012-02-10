@@ -40,28 +40,6 @@ name|webapp
 operator|.
 name|RMWebApp
 operator|.
-name|APP_ID
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|webapp
-operator|.
-name|RMWebApp
-operator|.
 name|QUEUE_NAME
 import|;
 end_import
@@ -81,6 +59,24 @@ operator|.
 name|StringHelper
 operator|.
 name|join
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|YarnWebParams
+operator|.
+name|APPLICATION_ID
 import|;
 end_import
 
@@ -463,7 +459,7 @@ name|aid
 init|=
 name|$
 argument_list|(
-name|APP_ID
+name|APPLICATION_ID
 argument_list|)
 decl_stmt|;
 if|if

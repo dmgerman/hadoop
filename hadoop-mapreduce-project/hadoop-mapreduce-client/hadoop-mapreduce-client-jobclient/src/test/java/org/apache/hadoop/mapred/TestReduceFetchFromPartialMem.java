@@ -582,7 +582,7 @@ name|set
 argument_list|(
 name|JobContext
 operator|.
-name|SHUFFLE_MERGE_EPRCENT
+name|SHUFFLE_MERGE_PERCENT
 argument_list|,
 literal|"1.0"
 argument_list|)

@@ -342,9 +342,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDataset
+name|FSDatasetInterface
 operator|.
-name|FSVolume
+name|FSVolumeInterface
 import|;
 end_import
 
@@ -363,7 +363,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Periodically scans the data directories for block and block metadata files.  * Reconciles the differences with block information maintained in  * {@link FSDataset}  */
+comment|/**  * Periodically scans the data directories for block and block metadata files.  * Reconciles the differences with block information maintained in the dataset.  */
 end_comment
 
 begin_class
@@ -403,7 +403,7 @@ decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
-name|FSDataset
+name|FSDatasetInterface
 name|dataset
 decl_stmt|;
 DECL|field|reportCompileThreadPool
@@ -855,7 +855,7 @@ decl_stmt|;
 DECL|field|volume
 specifier|private
 specifier|final
-name|FSVolume
+name|FSVolumeInterface
 name|volume
 decl_stmt|;
 DECL|method|ScanInfo (long blockId)
@@ -877,7 +877,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FSVolume vol)
+DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FSVolumeInterface vol)
 name|ScanInfo
 parameter_list|(
 name|long
@@ -889,7 +889,7 @@ parameter_list|,
 name|File
 name|metaFile
 parameter_list|,
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|)
 block|{
@@ -946,7 +946,7 @@ name|blockId
 return|;
 block|}
 DECL|method|getVolume ()
-name|FSVolume
+name|FSVolumeInterface
 name|getVolume
 parameter_list|()
 block|{
@@ -1102,13 +1102,13 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (DataNode dn, FSDataset dataset, Configuration conf)
+DECL|method|DirectoryScanner (DataNode dn, FSDatasetInterface dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
 name|DataNode
 name|dn
 parameter_list|,
-name|FSDataset
+name|FSDatasetInterface
 name|dataset
 parameter_list|,
 name|Configuration
@@ -1327,7 +1327,7 @@ name|bpids
 init|=
 name|dataset
 operator|.
-name|getBPIdlist
+name|getBlockPoolList
 argument_list|()
 decl_stmt|;
 for|for
@@ -2090,6 +2090,49 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Is the given volume still valid in the dataset? */
+DECL|method|isValid (final FSDatasetInterface dataset, final FSVolumeInterface volume)
+specifier|private
+specifier|static
+name|boolean
+name|isValid
+parameter_list|(
+specifier|final
+name|FSDatasetInterface
+name|dataset
+parameter_list|,
+specifier|final
+name|FSVolumeInterface
+name|volume
+parameter_list|)
+block|{
+for|for
+control|(
+name|FSVolumeInterface
+name|vol
+range|:
+name|dataset
+operator|.
+name|getVolumes
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|vol
+operator|==
+name|volume
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|/** Get lists of blocks on the disk sorted by blockId, per blockpool */
 DECL|method|getDiskReport ()
 specifier|private
@@ -2104,15 +2147,14 @@ name|getDiskReport
 parameter_list|()
 block|{
 comment|// First get list of data directories
+specifier|final
 name|List
 argument_list|<
-name|FSVolume
+name|FSVolumeInterface
 argument_list|>
 name|volumes
 init|=
 name|dataset
-operator|.
-name|volumes
 operator|.
 name|getVolumes
 argument_list|()
@@ -2179,12 +2221,10 @@ block|{
 if|if
 condition|(
 operator|!
-name|dataset
-operator|.
-name|volumes
-operator|.
 name|isValid
 argument_list|(
+name|dataset
+argument_list|,
 name|volumes
 operator|.
 name|get
@@ -2194,7 +2234,7 @@ argument_list|)
 argument_list|)
 condition|)
 block|{
-comment|// volume is still valid
+comment|// volume is invalid
 name|dirReports
 operator|.
 name|add
@@ -2338,12 +2378,10 @@ control|)
 block|{
 if|if
 condition|(
-name|dataset
-operator|.
-name|volumes
-operator|.
 name|isValid
 argument_list|(
+name|dataset
+argument_list|,
 name|volumes
 operator|.
 name|get
@@ -2419,14 +2457,14 @@ argument_list|>
 block|{
 DECL|field|volume
 specifier|private
-name|FSVolume
+name|FSVolumeInterface
 name|volume
 decl_stmt|;
-DECL|method|ReportCompiler (FSVolume volume)
+DECL|method|ReportCompiler (FSVolumeInterface volume)
 specifier|public
 name|ReportCompiler
 parameter_list|(
-name|FSVolume
+name|FSVolumeInterface
 name|volume
 parameter_list|)
 block|{
@@ -2493,13 +2531,10 @@ name|bpFinalizedDir
 init|=
 name|volume
 operator|.
-name|getBlockPoolSlice
+name|getFinalizedDir
 argument_list|(
 name|bpid
 argument_list|)
-operator|.
-name|getFinalizedDir
-argument_list|()
 decl_stmt|;
 name|result
 operator|.
@@ -2523,7 +2558,7 @@ name|result
 return|;
 block|}
 comment|/** Compile list {@link ScanInfo} for the blocks in the directory<dir> */
-DECL|method|compileReport (FSVolume vol, File dir, LinkedList<ScanInfo> report)
+DECL|method|compileReport (FSVolumeInterface vol, File dir, LinkedList<ScanInfo> report)
 specifier|private
 name|LinkedList
 argument_list|<
@@ -2531,7 +2566,7 @@ name|ScanInfo
 argument_list|>
 name|compileReport
 parameter_list|(
-name|FSVolume
+name|FSVolumeInterface
 name|vol
 parameter_list|,
 name|File

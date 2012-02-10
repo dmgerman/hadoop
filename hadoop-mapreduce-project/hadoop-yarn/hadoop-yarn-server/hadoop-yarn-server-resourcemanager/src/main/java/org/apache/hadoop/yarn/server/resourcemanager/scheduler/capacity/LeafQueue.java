@@ -1065,16 +1065,6 @@ specifier|final
 name|ActiveUsersManager
 name|activeUsersManager
 decl_stmt|;
-DECL|field|DEFAULT_AM_RESOURCE
-specifier|final
-specifier|static
-name|int
-name|DEFAULT_AM_RESOURCE
-init|=
-literal|2
-operator|*
-literal|1024
-decl_stmt|;
 DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, Comparator<SchedulerApp> applicationComparator, CSQueue old)
 specifier|public
 name|LeafQueue
@@ -1362,9 +1352,13 @@ operator|.
 name|getClusterResources
 argument_list|()
 argument_list|,
+name|this
+operator|.
+name|minimumAllocation
+argument_list|,
 name|maxAMResourcePercent
 argument_list|,
-name|absoluteCapacity
+name|absoluteMaxCapacity
 argument_list|)
 decl_stmt|;
 name|int
@@ -1452,6 +1446,11 @@ argument_list|)
 decl_stmt|;
 name|setupQueueConfigs
 argument_list|(
+name|cs
+operator|.
+name|getClusterResources
+argument_list|()
+argument_list|,
 name|capacity
 argument_list|,
 name|absoluteCapacity
@@ -1529,12 +1528,15 @@ name|applicationComparator
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs ( float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
 specifier|private
 specifier|synchronized
 name|void
 name|setupQueueConfigs
 parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
 name|float
 name|capacity
 parameter_list|,
@@ -1746,6 +1748,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update metrics
+name|CSQueueUtils
+operator|.
+name|updateQueueStatistics
+argument_list|(
+name|this
+argument_list|,
+name|parent
+argument_list|,
+name|clusterResource
+argument_list|,
+name|minimumAllocation
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1818,7 +1834,9 @@ literal|"maxApplicationsPerUser = "
 operator|+
 name|maxApplicationsPerUser
 operator|+
-literal|" [= (int)(maxApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+literal|" [= (int)(maxApplications * (userLimit / 100.0f) * "
+operator|+
+literal|"userLimitFactor) ]"
 operator|+
 literal|"\n"
 operator|+
@@ -1828,9 +1846,9 @@ name|maxActiveApplications
 operator|+
 literal|" [= max("
 operator|+
-literal|"(int)((clusterResourceMemory / (float)DEFAULT_AM_RESOURCE) *"
+literal|"(int)ceil((clusterResourceMemory / minimumAllocation) *"
 operator|+
-literal|"maxAMResourcePercent * absoluteCapacity),"
+literal|"maxAMResourcePercent * absoluteMaxCapacity),"
 operator|+
 literal|"1) ]"
 operator|+
@@ -1840,7 +1858,13 @@ literal|"maxActiveApplicationsPerUser = "
 operator|+
 name|maxActiveApplicationsPerUser
 operator|+
-literal|" [= (int)(maxActiveApplications * (userLimit / 100.0f) * userLimitFactor) ]"
+literal|" [= max("
+operator|+
+literal|"(int)(maxActiveApplications * (userLimit / 100.0f) * "
+operator|+
+literal|"userLimitFactor),"
+operator|+
+literal|"1) ]"
 operator|+
 literal|"\n"
 operator|+
@@ -1848,7 +1872,9 @@ literal|"utilization = "
 operator|+
 name|utilization
 operator|+
-literal|" [= usedResourcesMemory /  (clusterResourceMemory * absoluteCapacity)]"
+literal|" [= usedResourcesMemory / "
+operator|+
+literal|"(clusterResourceMemory * absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1856,7 +1882,9 @@ literal|"usedCapacity = "
 operator|+
 name|usedCapacity
 operator|+
-literal|" [= usedResourcesMemory / (clusterResourceMemory * parent.absoluteCapacity)]"
+literal|" [= usedResourcesMemory / "
+operator|+
+literal|"(clusterResourceMemory * parent.absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1872,7 +1900,9 @@ literal|"minimumAllocationFactor = "
 operator|+
 name|minimumAllocationFactor
 operator|+
-literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / maximumAllocationMemory ]"
+literal|" [= (float)(maximumAllocationMemory - minimumAllocationMemory) / "
+operator|+
+literal|"maximumAllocationMemory ]"
 operator|+
 literal|"\n"
 operator|+
@@ -2147,6 +2177,7 @@ literal|null
 return|;
 block|}
 DECL|method|setUtilization (float utilization)
+specifier|public
 specifier|synchronized
 name|void
 name|setUtilization
@@ -2163,6 +2194,7 @@ name|utilization
 expr_stmt|;
 block|}
 DECL|method|setUsedCapacity (float usedCapacity)
+specifier|public
 specifier|synchronized
 name|void
 name|setUsedCapacity
@@ -2753,6 +2785,8 @@ name|queue
 decl_stmt|;
 name|setupQueueConfigs
 argument_list|(
+name|clusterResource
+argument_list|,
 name|leafQueue
 operator|.
 name|capacity
@@ -2803,11 +2837,6 @@ argument_list|,
 name|leafQueue
 operator|.
 name|acls
-argument_list|)
-expr_stmt|;
-name|updateResource
-argument_list|(
-name|clusterResource
 argument_list|)
 expr_stmt|;
 block|}
@@ -3108,6 +3137,24 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+name|int
+name|attemptId
+init|=
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getAttemptId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|attemptId
+operator|==
+literal|1
+condition|)
+block|{
 name|metrics
 operator|.
 name|submitApp
@@ -3115,6 +3162,7 @@ argument_list|(
 name|userName
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Inform the parent queue
 try|try
 block|{
@@ -3258,9 +3306,6 @@ operator|+
 name|application
 operator|.
 name|getApplicationId
-argument_list|()
-operator|.
-name|getId
 argument_list|()
 operator|+
 literal|" from user: "
@@ -3429,13 +3474,30 @@ name|User
 name|user
 parameter_list|)
 block|{
+name|boolean
+name|wasActive
+init|=
 name|activeApplications
 operator|.
 name|remove
 argument_list|(
 name|application
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|wasActive
+condition|)
+block|{
+name|pendingApplications
+operator|.
+name|remove
+argument_list|(
+name|application
+argument_list|)
 expr_stmt|;
+block|}
 name|applicationsMap
 operator|.
 name|remove
@@ -3449,7 +3511,9 @@ expr_stmt|;
 name|user
 operator|.
 name|finishApplication
-argument_list|()
+argument_list|(
+name|wasActive
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -3769,15 +3833,15 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// Compute& set headroom
-comment|// Note: We set the headroom with the highest priority request
-comment|//       as the target.
+comment|// Compute user-limit& set headroom
+comment|// Note: We compute both user-limit& headroom with the highest
+comment|//       priority request as the target.
 comment|//       This works since we never assign lower priority requests
 comment|//       before all higher priority ones are serviced.
 name|Resource
 name|userLimit
 init|=
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 argument_list|(
 name|application
 argument_list|,
@@ -3844,6 +3908,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|// Did we schedule or reserve a container?
 name|Resource
 name|assigned
 init|=
@@ -3852,7 +3917,6 @@ operator|.
 name|getResource
 argument_list|()
 decl_stmt|;
-comment|// Did we schedule or reserve a container?
 if|if
 condition|(
 name|Resources
@@ -3869,6 +3933,7 @@ argument_list|)
 condition|)
 block|{
 comment|// Book-keeping
+comment|// Note: Update headroom to account for current allocation too...
 name|allocateResource
 argument_list|(
 name|clusterResource
@@ -4174,10 +4239,10 @@ operator|.
 name|class
 block|}
 argument_list|)
-DECL|method|computeAndSetUserResourceLimit (SchedulerApp application, Resource clusterResource, Resource required)
+DECL|method|computeUserLimitAndSetHeadroom ( SchedulerApp application, Resource clusterResource, Resource required)
 specifier|private
 name|Resource
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 parameter_list|(
 name|SchedulerApp
 name|application
@@ -4197,9 +4262,11 @@ operator|.
 name|getUser
 argument_list|()
 decl_stmt|;
+comment|/**       * Headroom is min((userLimit, queue-max-cap) - consumed)      */
 name|Resource
-name|limit
+name|userLimit
 init|=
+comment|// User limit
 name|computeUserLimit
 argument_list|(
 name|application
@@ -4210,14 +4277,36 @@ name|required
 argument_list|)
 decl_stmt|;
 name|Resource
-name|headroom
+name|queueMaxCap
 init|=
+comment|// Queue Max-Capacity
 name|Resources
 operator|.
-name|subtract
+name|createResource
 argument_list|(
-name|limit
+name|CSQueueUtils
+operator|.
+name|roundDown
+argument_list|(
+name|minimumAllocation
 argument_list|,
+call|(
+name|int
+call|)
+argument_list|(
+name|absoluteMaxCapacity
+operator|*
+name|clusterResource
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|Resource
+name|userConsumed
+init|=
 name|getUser
 argument_list|(
 name|user
@@ -4225,8 +4314,62 @@ argument_list|)
 operator|.
 name|getConsumedResources
 argument_list|()
+decl_stmt|;
+name|Resource
+name|headroom
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|userLimit
+argument_list|,
+name|queueMaxCap
+argument_list|)
+argument_list|,
+name|userConsumed
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Headroom calculation for user "
+operator|+
+name|user
+operator|+
+literal|": "
+operator|+
+literal|" userLimit="
+operator|+
+name|userLimit
+operator|+
+literal|" queueMaxCap="
+operator|+
+name|queueMaxCap
+operator|+
+literal|" consumed="
+operator|+
+name|userConsumed
+operator|+
+literal|" headroom="
+operator|+
+name|headroom
+argument_list|)
+expr_stmt|;
+block|}
 name|application
 operator|.
 name|setHeadroom
@@ -4244,33 +4387,7 @@ name|headroom
 argument_list|)
 expr_stmt|;
 return|return
-name|limit
-return|;
-block|}
-DECL|method|roundUp (int memory)
-specifier|private
-name|int
-name|roundUp
-parameter_list|(
-name|int
-name|memory
-parameter_list|)
-block|{
-return|return
-name|divideAndCeil
-argument_list|(
-name|memory
-argument_list|,
-name|minimumAllocation
-operator|.
-name|getMemory
-argument_list|()
-argument_list|)
-operator|*
-name|minimumAllocation
-operator|.
-name|getMemory
-argument_list|()
+name|userLimit
 return|;
 block|}
 annotation|@
@@ -4310,8 +4427,12 @@ name|Math
 operator|.
 name|max
 argument_list|(
+name|CSQueueUtils
+operator|.
 name|roundUp
 argument_list|(
+name|minimumAllocation
+argument_list|,
 call|(
 name|int
 call|)
@@ -4377,8 +4498,12 @@ decl_stmt|;
 name|int
 name|limit
 init|=
+name|CSQueueUtils
+operator|.
 name|roundUp
 argument_list|(
+name|minimumAllocation
+argument_list|,
 name|Math
 operator|.
 name|min
@@ -4593,7 +4718,6 @@ literal|true
 return|;
 block|}
 DECL|method|divideAndCeil (int a, int b)
-specifier|private
 specifier|static
 name|int
 name|divideAndCeil
@@ -6231,9 +6355,17 @@ argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-name|updateResource
+name|CSQueueUtils
+operator|.
+name|updateQueueStatistics
 argument_list|(
+name|this
+argument_list|,
+name|parent
+argument_list|,
 name|clusterResource
+argument_list|,
+name|minimumAllocation
 argument_list|)
 expr_stmt|;
 operator|++
@@ -6263,6 +6395,19 @@ argument_list|(
 name|resource
 argument_list|)
 expr_stmt|;
+name|Resources
+operator|.
+name|subtractFrom
+argument_list|(
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
+argument_list|,
+name|resource
+argument_list|)
+expr_stmt|;
+comment|// headroom
 name|metrics
 operator|.
 name|setAvailableResourcesToUser
@@ -6275,12 +6420,24 @@ name|getHeadroom
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
 name|getQueueName
 argument_list|()
+operator|+
+literal|" user="
+operator|+
+name|userName
 operator|+
 literal|" used="
 operator|+
@@ -6290,9 +6447,12 @@ literal|" numContainers="
 operator|+
 name|numContainers
 operator|+
-literal|" user="
+literal|" headroom = "
 operator|+
-name|userName
+name|application
+operator|.
+name|getHeadroom
+argument_list|()
 operator|+
 literal|" user-resources="
 operator|+
@@ -6302,6 +6462,7 @@ name|getConsumedResources
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|releaseResource (Resource clusterResource, SchedulerApp application, Resource resource)
 specifier|synchronized
@@ -6328,9 +6489,17 @@ argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-name|updateResource
+name|CSQueueUtils
+operator|.
+name|updateQueueStatistics
 argument_list|(
+name|this
+argument_list|,
+name|parent
+argument_list|,
 name|clusterResource
+argument_list|,
+name|minimumAllocation
 argument_list|)
 expr_stmt|;
 operator|--
@@ -6421,9 +6590,11 @@ name|computeMaxActiveApplications
 argument_list|(
 name|clusterResource
 argument_list|,
+name|minimumAllocation
+argument_list|,
 name|maxAMResourcePercent
 argument_list|,
-name|absoluteCapacity
+name|absoluteMaxCapacity
 argument_list|)
 expr_stmt|;
 name|maxActiveApplicationsPerUser
@@ -6437,6 +6608,20 @@ argument_list|,
 name|userLimit
 argument_list|,
 name|userLimitFactor
+argument_list|)
+expr_stmt|;
+comment|// Update metrics
+name|CSQueueUtils
+operator|.
+name|updateQueueStatistics
+argument_list|(
+name|this
+argument_list|,
+name|parent
+argument_list|,
+name|clusterResource
+argument_list|,
+name|minimumAllocation
 argument_list|)
 expr_stmt|;
 comment|// Update application properties
@@ -6453,7 +6638,7 @@ init|(
 name|application
 init|)
 block|{
-name|computeAndSetUserResourceLimit
+name|computeUserLimitAndSetHeadroom
 argument_list|(
 name|application
 argument_list|,
@@ -6467,87 +6652,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-DECL|method|updateResource (Resource clusterResource)
-specifier|private
-specifier|synchronized
-name|void
-name|updateResource
-parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|)
-block|{
-name|float
-name|queueLimit
-init|=
-name|clusterResource
-operator|.
-name|getMemory
-argument_list|()
-operator|*
-name|absoluteCapacity
-decl_stmt|;
-name|setUtilization
-argument_list|(
-name|usedResources
-operator|.
-name|getMemory
-argument_list|()
-operator|/
-name|queueLimit
-argument_list|)
-expr_stmt|;
-name|setUsedCapacity
-argument_list|(
-name|usedResources
-operator|.
-name|getMemory
-argument_list|()
-operator|/
-operator|(
-name|clusterResource
-operator|.
-name|getMemory
-argument_list|()
-operator|*
-name|parent
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-operator|)
-argument_list|)
-expr_stmt|;
-name|Resource
-name|resourceLimit
-init|=
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-name|roundUp
-argument_list|(
-operator|(
-name|int
-operator|)
-name|queueLimit
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|metrics
-operator|.
-name|setAvailableResourcesToQueue
-argument_list|(
-name|Resources
-operator|.
-name|subtractFrom
-argument_list|(
-name|resourceLimit
-argument_list|,
-name|usedResources
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -6658,16 +6762,31 @@ operator|++
 name|activeApplications
 expr_stmt|;
 block|}
-DECL|method|finishApplication ()
+DECL|method|finishApplication (boolean wasActive)
 specifier|public
 specifier|synchronized
 name|void
 name|finishApplication
-parameter_list|()
+parameter_list|(
+name|boolean
+name|wasActive
+parameter_list|)
+block|{
+if|if
+condition|(
+name|wasActive
+condition|)
 block|{
 operator|--
 name|activeApplications
 expr_stmt|;
+block|}
+else|else
+block|{
+operator|--
+name|pendingApplications
+expr_stmt|;
+block|}
 block|}
 DECL|method|assignContainer (Resource resource)
 specifier|public

@@ -73,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class filters log files from directory given  * It doesnt accept paths having _logs.  * This can be used to list paths of output directory as follows:  *   Path[] fileList = FileUtil.stat2Paths(fs.listStatus(outDir,  *                                   new OutputLogFilter()));  * @deprecated Use   *   {@link org.apache.hadoop.mapred.Utils.OutputFileUtils.OutputLogFilter}   *   instead.  */
+comment|/**  * This class filters log files from directory given  * It doesnt accept paths having _logs.  * This can be used to list paths of output directory as follows:  *   Path[] fileList = FileUtil.stat2Paths(fs.listStatus(outDir,  *                                   new OutputLogFilter()));  */
 end_comment
 
 begin_class

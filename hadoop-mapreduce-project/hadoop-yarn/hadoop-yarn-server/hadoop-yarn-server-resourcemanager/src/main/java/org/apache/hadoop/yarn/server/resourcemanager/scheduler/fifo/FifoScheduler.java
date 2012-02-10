@@ -1902,7 +1902,10 @@ name|normalizeRequests
 argument_list|(
 name|ask
 argument_list|,
-name|MINIMUM_MEMORY
+name|minimumAllocation
+operator|.
+name|getMemory
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Release containers
@@ -2189,6 +2192,16 @@ argument_list|,
 name|schedulerApp
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|appAttemptId
+operator|.
+name|getAttemptId
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
 name|metrics
 operator|.
 name|submitApp
@@ -2196,6 +2209,7 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info

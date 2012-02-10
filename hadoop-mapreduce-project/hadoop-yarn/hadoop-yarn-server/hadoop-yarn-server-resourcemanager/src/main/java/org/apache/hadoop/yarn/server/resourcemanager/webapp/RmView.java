@@ -66,6 +66,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|sjoin
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|YarnWebParams
+operator|.
+name|APP_STATE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|view
@@ -171,6 +207,42 @@ argument_list|,
 literal|".ui {width:8em}"
 argument_list|)
 expr_stmt|;
+comment|// Set the correct title.
+name|String
+name|reqState
+init|=
+name|$
+argument_list|(
+name|APP_STATE
+argument_list|)
+decl_stmt|;
+name|reqState
+operator|=
+operator|(
+name|reqState
+operator|==
+literal|null
+operator|||
+name|reqState
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|"All"
+else|:
+name|reqState
+operator|)
+expr_stmt|;
+name|setTitle
+argument_list|(
+name|sjoin
+argument_list|(
+name|reqState
+argument_list|,
+literal|"Applications"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|commonPreHead (Page.HTML<_> html)
 specifier|protected
@@ -186,7 +258,6 @@ argument_list|>
 name|html
 parameter_list|)
 block|{
-comment|//html.meta_http("refresh", "20");
 name|set
 argument_list|(
 name|ACCORDION_ID
@@ -268,7 +339,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// id, user, name, queue, state, progress, ui, note
+comment|// id, user, name, queue, starttime, finishtime, state, progress, ui
 name|StringBuilder
 name|init
 init|=
@@ -277,12 +348,17 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|", aoColumns:[{sType:'title-numeric'}, null, null, null, null,"
+literal|", aoColumns:[{sType:'title-numeric'}, null, null, null, "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,{sType:'title-numeric', bSearchable:false}, null, null]"
+literal|"null, null , null, "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"null,{sType:'title-numeric', bSearchable:false}, null]"
 argument_list|)
 decl_stmt|;
 comment|// Sort by id upon page load

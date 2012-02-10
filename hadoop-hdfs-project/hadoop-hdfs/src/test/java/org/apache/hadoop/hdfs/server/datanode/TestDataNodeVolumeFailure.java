@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -152,7 +176,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockReader
+name|BlockReaderFactory
 import|;
 end_import
 
@@ -166,7 +190,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockReaderFactory
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -360,7 +384,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageBlockReport
 import|;
 end_import
 
@@ -405,18 +433,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -887,10 +903,19 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
-name|long
+name|StorageBlockReport
 index|[]
-name|bReport
+name|report
 init|=
+block|{
+operator|new
+name|StorageBlockReport
+argument_list|(
+name|dnR
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
 name|dn
 operator|.
 name|getFSDataset
@@ -903,6 +928,8 @@ argument_list|)
 operator|.
 name|getBlockListAsLongs
 argument_list|()
+argument_list|)
+block|}
 decl_stmt|;
 name|cluster
 operator|.
@@ -915,7 +942,7 @@ name|dnR
 argument_list|,
 name|bpid
 argument_list|,
-name|bReport
+name|report
 argument_list|)
 expr_stmt|;
 comment|// verify number of blocks and files...
@@ -1455,9 +1482,6 @@ name|getBlockId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|BlockReader
-name|blockReader
-init|=
 name|BlockReaderFactory
 operator|.
 name|newBlockReader
@@ -1480,7 +1504,7 @@ argument_list|,
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// nothing - if it fails - it will throw and exception
 block|}
 comment|/**    * Count datanodes that have copies of the blocks for a file    * put it into the map    * @param map    * @param path    * @param size    * @return    * @throws IOException    */
@@ -1915,7 +1939,7 @@ name|name
 operator|.
 name|endsWith
 argument_list|(
-name|FSDataset
+name|DatanodeUtil
 operator|.
 name|METADATA_EXTENSION
 argument_list|)

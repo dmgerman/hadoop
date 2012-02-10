@@ -1327,6 +1327,10 @@ name|clientMachine
 argument_list|)
 expr_stmt|;
 block|}
+comment|// There three cases here:
+comment|// 1. OP_ADD to create a new file
+comment|// 2. OP_ADD to update file blocks
+comment|// 3. OP_ADD to open file for append
 comment|// See if the file already exists (persistBlocks call)
 name|INodeFile
 name|oldFile
@@ -1340,6 +1344,11 @@ operator|.
 name|path
 argument_list|)
 decl_stmt|;
+name|INodeFile
+name|newFile
+init|=
+name|oldFile
+decl_stmt|;
 if|if
 condition|(
 name|oldFile
@@ -1347,7 +1356,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// this is OP_ADD on a new file
+comment|// this is OP_ADD on a new file (case 1)
 comment|// versions> 0 support per file replication
 comment|// get name and replication
 specifier|final
@@ -1397,6 +1406,11 @@ name|addCloseOp
 operator|.
 name|blockSize
 decl_stmt|;
+comment|// Versions of HDFS prior to 0.17 may log an OP_ADD transaction
+comment|// which includes blocks in it. When we update the minimum
+comment|// upgrade version to something more recent than 0.17, we can
+comment|// simplify this code by asserting that OP_ADD transactions
+comment|// don't have any blocks.
 comment|// Older versions of HDFS does not store the block size in inode.
 comment|// If the file has more than one block, use the size of the
 comment|// first block as the blocksize. Otherwise use the default
@@ -1482,11 +1496,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// TODO: We should do away with this add-then-replace dance.
 comment|// add to the file tree
-name|INodeFile
-name|node
-init|=
+name|newFile
+operator|=
 operator|(
 name|INodeFile
 operator|)
@@ -1511,17 +1523,8 @@ operator|.
 name|atime
 argument_list|,
 name|blockSize
-argument_list|)
-decl_stmt|;
-name|fsNamesys
-operator|.
-name|prepareFileForWrite
-argument_list|(
-name|addCloseOp
-operator|.
-name|path
 argument_list|,
-name|node
+literal|true
 argument_list|,
 name|addCloseOp
 operator|.
@@ -1530,10 +1533,21 @@ argument_list|,
 name|addCloseOp
 operator|.
 name|clientMachine
+argument_list|)
+expr_stmt|;
+name|fsNamesys
+operator|.
+name|leaseManager
+operator|.
+name|addLease
+argument_list|(
+name|addCloseOp
+operator|.
+name|clientName
 argument_list|,
-literal|null
-argument_list|,
-literal|false
+name|addCloseOp
+operator|.
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -1549,7 +1563,7 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 block|{
-comment|// This is a call to append() on an already-closed file.
+comment|// This is case 3: a call to append() on an already-closed file.
 if|if
 condition|(
 name|FSNamesystem
@@ -1595,7 +1609,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|oldFile
+name|newFile
 operator|=
 name|getINodeFile
 argument_list|(
@@ -1607,16 +1621,19 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// Fall-through for case 2.
+comment|// Regardless of whether it's a new file or an updated file,
+comment|// update the block list.
 name|updateBlocks
 argument_list|(
 name|fsDir
 argument_list|,
 name|addCloseOp
 argument_list|,
-name|oldFile
+name|newFile
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 case|case

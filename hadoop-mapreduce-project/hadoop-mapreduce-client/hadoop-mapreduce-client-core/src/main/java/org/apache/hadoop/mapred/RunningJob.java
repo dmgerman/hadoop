@@ -69,12 +69,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**   *<code>RunningJob</code> is the user-interface to query for details on a   * running Map-Reduce job.  *   *<p>Clients can get hold of<code>RunningJob</code> via the {@link JobClient}  * and then query the running-job for details such as name, configuration,   * progress etc.</p>   *   * @see JobClient  * @deprecated Use {@link org.apache.hadoop.mapreduce.Job} instead  */
+comment|/**   *<code>RunningJob</code> is the user-interface to query for details on a   * running Map-Reduce job.  *   *<p>Clients can get hold of<code>RunningJob</code> via the {@link JobClient}  * and then query the running-job for details such as name, configuration,   * progress etc.</p>   *   * @see JobClient  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

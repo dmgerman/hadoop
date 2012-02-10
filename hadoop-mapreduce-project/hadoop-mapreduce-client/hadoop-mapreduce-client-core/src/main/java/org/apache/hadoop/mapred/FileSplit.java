@@ -89,12 +89,10 @@ import|;
 end_import
 
 begin_comment
-comment|/** A section of an input file.  Returned by {@link  * InputFormat#getSplits(JobConf, int)} and passed to  * {@link InputFormat#getRecordReader(InputSplit,JobConf,Reporter)}.   * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.input.FileSplit}  *  instead.  */
+comment|/** A section of an input file.  Returned by {@link  * InputFormat#getSplits(JobConf, int)} and passed to  * {@link InputFormat#getRecordReader(InputSplit,JobConf,Reporter)}.   */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -143,12 +143,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This InputSplit contains a set of child InputSplits. Any InputSplit inserted  * into this collection must have a public default constructor.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.CompositeInputSplit} instead  */
+comment|/**  * This InputSplit contains a set of child InputSplits. Any InputSplit inserted  * into this collection must have a public default constructor.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

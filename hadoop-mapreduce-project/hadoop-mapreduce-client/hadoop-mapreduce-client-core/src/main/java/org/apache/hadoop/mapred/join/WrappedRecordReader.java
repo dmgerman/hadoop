@@ -127,12 +127,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Proxy class for a RecordReader participating in the join framework.  * This class keeps track of the&quot;head&quot; key-value pair for the  * provided RecordReader and keeps a store of values matching a key when  * this source is participating in a join.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.WrappedRecordReader} instead  */
+comment|/**  * Proxy class for a RecordReader participating in the join framework.  * This class keeps track of the&quot;head&quot; key-value pair for the  * provided RecordReader and keeps a store of values matching a key when  * this source is participating in a join.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -22,6 +22,30 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -91,10 +115,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Internal class for block metadata.  */
+comment|/**  * BlockInfo class maintains for a given block  * the {@link INodeFile} it is part of and datanodes where the replicas of   * the block are stored.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockInfo
 specifier|public
 class|class
@@ -119,7 +147,7 @@ operator|.
 name|LinkedElement
 name|nextLinkedElement
 decl_stmt|;
-comment|/**    * This array contains triplets of references.    * For each i-th datanode the block belongs to    * triplets[3*i] is the reference to the DatanodeDescriptor    * and triplets[3*i+1] and triplets[3*i+2] are references     * to the previous and the next blocks, respectively, in the     * list of blocks belonging to this data-node.    */
+comment|/**    * This array contains triplets of references. For each i-th datanode the    * block belongs to triplets[3*i] is the reference to the DatanodeDescriptor    * and triplets[3*i+1] and triplets[3*i+2] are references to the previous and    * the next blocks, respectively, in the list of blocks belonging to this    * data-node.    *     * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
 DECL|field|triplets
 specifier|private
 name|Object
@@ -324,6 +352,7 @@ name|node
 return|;
 block|}
 DECL|method|getPrevious (int index)
+specifier|private
 name|BlockInfo
 name|getPrevious
 parameter_list|(
@@ -487,7 +516,8 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|setDatanode (int index, DatanodeDescriptor node)
+DECL|method|setDatanode (int index, DatanodeDescriptor node, BlockInfo previous, BlockInfo next)
+specifier|private
 name|void
 name|setDatanode
 parameter_list|(
@@ -496,6 +526,12 @@ name|index
 parameter_list|,
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|BlockInfo
+name|previous
+parameter_list|,
+name|BlockInfo
+name|next
 parameter_list|)
 block|{
 assert|assert
@@ -507,14 +543,21 @@ literal|null
 operator|:
 literal|"BlockInfo is not initialized"
 assert|;
+name|int
+name|i
+init|=
+name|index
+operator|*
+literal|3
+decl_stmt|;
 assert|assert
 name|index
 operator|>=
 literal|0
 operator|&&
-name|index
-operator|*
-literal|3
+name|i
+operator|+
+literal|2
 operator|<
 name|triplets
 operator|.
@@ -524,116 +567,35 @@ literal|"Index is out of bound"
 assert|;
 name|triplets
 index|[
-name|index
-operator|*
-literal|3
+name|i
 index|]
 operator|=
 name|node
 expr_stmt|;
-block|}
-DECL|method|setPrevious (int index, BlockInfo to)
-name|void
-name|setPrevious
-parameter_list|(
-name|int
-name|index
-parameter_list|,
-name|BlockInfo
-name|to
-parameter_list|)
-block|{
-assert|assert
-name|this
-operator|.
-name|triplets
-operator|!=
-literal|null
-operator|:
-literal|"BlockInfo is not initialized"
-assert|;
-assert|assert
-name|index
-operator|>=
-literal|0
-operator|&&
-name|index
-operator|*
-literal|3
-operator|+
-literal|1
-operator|<
-name|triplets
-operator|.
-name|length
-operator|:
-literal|"Index is out of bound"
-assert|;
 name|triplets
 index|[
-name|index
-operator|*
-literal|3
+name|i
 operator|+
 literal|1
 index|]
 operator|=
-name|to
+name|previous
 expr_stmt|;
-block|}
-DECL|method|setNext (int index, BlockInfo to)
-name|void
-name|setNext
-parameter_list|(
-name|int
-name|index
-parameter_list|,
-name|BlockInfo
-name|to
-parameter_list|)
-block|{
-assert|assert
-name|this
-operator|.
-name|triplets
-operator|!=
-literal|null
-operator|:
-literal|"BlockInfo is not initialized"
-assert|;
-assert|assert
-name|index
-operator|>=
-literal|0
-operator|&&
-name|index
-operator|*
-literal|3
-operator|+
-literal|2
-operator|<
-name|triplets
-operator|.
-name|length
-operator|:
-literal|"Index is out of bound"
-assert|;
 name|triplets
 index|[
-name|index
-operator|*
-literal|3
+name|i
 operator|+
 literal|2
 index|]
 operator|=
-name|to
+name|next
 expr_stmt|;
 block|}
 comment|/**    * Return the previous block on the block list for the datanode at    * position index. Set the previous block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to previous on the list of blocks    * @return current previous block on the list of blocks    */
-DECL|method|getSetPrevious (int index, BlockInfo to)
+DECL|method|setPrevious (int index, BlockInfo to)
+specifier|private
 name|BlockInfo
-name|getSetPrevious
+name|setPrevious
 parameter_list|(
 name|int
 name|index
@@ -699,9 +661,10 @@ name|info
 return|;
 block|}
 comment|/**    * Return the next block on the block list for the datanode at    * position index. Set the next block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to next on the list of blocks    *    * @return current next block on the list of blocks    */
-DECL|method|getSetNext (int index, BlockInfo to)
+DECL|method|setNext (int index, BlockInfo to)
+specifier|private
 name|BlockInfo
-name|getSetNext
+name|setNext
 parameter_list|(
 name|int
 name|index
@@ -984,18 +947,8 @@ argument_list|(
 name|lastNode
 argument_list|,
 name|node
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|lastNode
 argument_list|,
 literal|null
 argument_list|)
@@ -1067,23 +1020,13 @@ name|getDatanode
 argument_list|(
 name|lastNode
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|dnIndex
 argument_list|,
-name|getNext
+name|getPrevious
 argument_list|(
 name|lastNode
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|dnIndex
 argument_list|,
-name|getPrevious
+name|getNext
 argument_list|(
 name|lastNode
 argument_list|)
@@ -1095,18 +1038,8 @@ argument_list|(
 name|lastNode
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-name|setNext
-argument_list|(
-name|lastNode
 argument_list|,
 literal|null
-argument_list|)
-expr_stmt|;
-name|setPrevious
-argument_list|(
-name|lastNode
 argument_list|,
 literal|null
 argument_list|)
@@ -1434,7 +1367,7 @@ name|next
 init|=
 name|this
 operator|.
-name|getSetNext
+name|setNext
 argument_list|(
 name|curIndex
 argument_list|,
@@ -1446,7 +1379,7 @@ name|prev
 init|=
 name|this
 operator|.
-name|getSetPrevious
+name|setPrevious
 argument_list|(
 name|curIndex
 argument_list|,
@@ -1532,7 +1465,7 @@ name|COMPLETE
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert a complete block to an under construction block.    *     * @return BlockInfoUnderConstruction -  an under construction block.    */
+comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
 DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeDescriptor[] targets)
 specifier|public
 name|BlockInfoUnderConstruction

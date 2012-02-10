@@ -179,12 +179,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The Chain class provides all the common functionality for the  * {@link ChainMapper} and the {@link ChainReducer} classes.  * @deprecated Use {@link org.apache.hadoop.mapreduce.lib.chain.Chain} instead  */
+comment|/**  * The Chain class provides all the common functionality for the  * {@link ChainMapper} and the {@link ChainReducer} classes.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 DECL|class|Chain
 class|class
 name|Chain

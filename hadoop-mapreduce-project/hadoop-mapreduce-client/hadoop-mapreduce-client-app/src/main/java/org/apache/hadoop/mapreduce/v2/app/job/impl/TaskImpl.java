@@ -1024,8 +1024,6 @@ block|{
 literal|"rawtypes"
 block|,
 literal|"unchecked"
-block|,
-literal|"deprecation"
 block|}
 argument_list|)
 DECL|class|TaskImpl
@@ -2929,9 +2927,17 @@ init|=
 name|createAttempt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Created attempt "
 operator|+
@@ -2941,6 +2947,7 @@ name|getID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 switch|switch
 condition|(
 name|attempts
@@ -3094,6 +3101,14 @@ name|TaskEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3113,6 +3128,7 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|writeLock
@@ -3213,6 +3229,21 @@ name|TaskEventType
 name|type
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Invalid event "
+operator|+
+name|type
+operator|+
+literal|" on Task "
+operator|+
+name|this
+operator|.
+name|taskId
+argument_list|)
+expr_stmt|;
 name|eventHandler
 operator|.
 name|handle

@@ -71,12 +71,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides an implementation of ResetableIterator. The  * implementation uses an {@link java.util.ArrayList} to store elements  * added to it, replaying them as requested.  * Prefer {@link StreamBackedIterator}.  * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.ArrayListBackedIterator} instead  */
+comment|/**  * This class provides an implementation of ResetableIterator. The  * implementation uses an {@link java.util.ArrayList} to store elements  * added to it, replaying them as requested.  * Prefer {@link StreamBackedIterator}.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

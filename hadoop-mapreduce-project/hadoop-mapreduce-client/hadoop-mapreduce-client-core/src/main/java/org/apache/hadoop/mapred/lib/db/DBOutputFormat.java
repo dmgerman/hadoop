@@ -182,20 +182,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|TaskAttemptContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|TaskAttemptID
 import|;
 end_import
@@ -230,13 +216,7 @@ name|Progressable
 import|;
 end_import
 
-begin_comment
-comment|/**  * @deprecated Use org.apache.hadoop.mapreduce.lib.db.DBOutputFormat instead  */
-end_comment
-
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

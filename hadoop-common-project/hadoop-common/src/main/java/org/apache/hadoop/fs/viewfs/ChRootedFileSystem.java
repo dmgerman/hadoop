@@ -50,26 +50,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -204,6 +184,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FilterFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FsServerDefaults
 import|;
 end_import
@@ -260,22 +254,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Progressable
@@ -300,15 +278,8 @@ DECL|class|ChRootedFileSystem
 class|class
 name|ChRootedFileSystem
 extends|extends
-name|FileSystem
+name|FilterFileSystem
 block|{
-DECL|field|myFs
-specifier|private
-specifier|final
-name|FileSystem
-name|myFs
-decl_stmt|;
-comment|// the base file system whose root is changed
 DECL|field|myUri
 specifier|private
 specifier|final
@@ -341,7 +312,8 @@ name|getMyFs
 parameter_list|()
 block|{
 return|return
-name|myFs
+name|getRawFileSystem
+argument_list|()
 return|;
 block|}
 comment|/**    * @param path    * @return  full path including the chroot     */
@@ -399,45 +371,39 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructor    * @param fs base file system    * @param theRoot chRoot for this file system    * @throws URISyntaxException    */
-DECL|method|ChRootedFileSystem (final FileSystem fs, final Path theRoot)
+comment|/**    * Constructor    * @param uri base file system    * @param conf configuration    * @throws IOException     */
+DECL|method|ChRootedFileSystem (final URI uri, Configuration conf)
 specifier|public
 name|ChRootedFileSystem
 parameter_list|(
 specifier|final
-name|FileSystem
-name|fs
+name|URI
+name|uri
 parameter_list|,
-specifier|final
-name|Path
-name|theRoot
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
-name|URISyntaxException
+name|IOException
 block|{
-name|myFs
-operator|=
-name|fs
-expr_stmt|;
-name|myFs
-operator|.
-name|makeQualified
+name|super
 argument_list|(
-name|theRoot
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//check that root is a valid path for fs
-comment|// Would like to call myFs.checkPath(theRoot);
-comment|// but not public
 name|chRootPathPart
 operator|=
 operator|new
 name|Path
 argument_list|(
-name|theRoot
-operator|.
-name|toUri
-argument_list|()
+name|uri
 operator|.
 name|getPath
 argument_list|()
@@ -453,81 +419,9 @@ operator|.
 name|getPath
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|initialize
-argument_list|(
-name|fs
-operator|.
-name|getUri
-argument_list|()
-argument_list|,
-name|fs
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// This exception should not be thrown
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"This should not occur"
-argument_list|)
-throw|;
-block|}
-comment|/*      * We are making URI include the chrootedPath: e.g. file:///chrootedPath.      * This is questionable since Path#makeQualified(uri, path) ignores      * the pathPart of a uri. Since this class is internal we can ignore      * this issue but if we were to make it external then this needs      * to be resolved.      */
-comment|// Handle the two cases:
-comment|//              scheme:/// and scheme://authority/
 name|myUri
 operator|=
-operator|new
-name|URI
-argument_list|(
-name|myFs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-operator|(
-name|myFs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
-operator|==
-literal|null
-condition|?
-literal|""
-else|:
-name|Path
-operator|.
-name|SEPARATOR
-operator|)
-operator|+
-name|chRootPathPart
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|substring
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
+name|uri
 expr_stmt|;
 name|workingDir
 operator|=
@@ -553,15 +447,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|myFs
-operator|.
-name|initialize
-argument_list|(
-name|name
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|initialize
@@ -588,28 +473,6 @@ block|{
 return|return
 name|myUri
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|makeQualified (final Path path)
-specifier|public
-name|Path
-name|makeQualified
-parameter_list|(
-specifier|final
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-name|myFs
-operator|.
-name|makeQualified
-argument_list|(
-name|path
-argument_list|)
-return|;
-comment|// NOT myFs.makeQualified(fullPath(path));
 block|}
 comment|/**    * Strip out the root from the path.    * @param p - fully qualified path p    * @return -  the remaining path  without the begining /    * @throws IOException if the p is not prefixed with root    */
 DECL|method|stripOutRoot (final Path p)
@@ -716,8 +579,6 @@ throws|throws
 name|FileNotFoundException
 block|{
 return|return
-name|myFs
-operator|.
 name|makeQualified
 argument_list|(
 operator|new
@@ -848,7 +709,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|create
 argument_list|(
@@ -890,7 +751,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|delete
 argument_list|(
@@ -954,7 +815,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|getFileBlockLocations
 argument_list|(
@@ -993,7 +854,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|getFileChecksum
 argument_list|(
@@ -1019,7 +880,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1044,7 +905,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|getStatus
 argument_list|(
@@ -1066,7 +927,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|getServerDefaults
 argument_list|()
@@ -1088,7 +949,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|listStatus
 argument_list|(
@@ -1118,7 +979,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|mkdirs
 argument_list|(
@@ -1150,7 +1011,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|open
 argument_list|(
@@ -1186,7 +1047,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|append
 argument_list|(
@@ -1222,7 +1083,7 @@ block|{
 comment|// note fullPath will check that paths are relative to this FileSystem.
 comment|// Hence both are in same file system and a rename is valid
 return|return
-name|myFs
+name|super
 operator|.
 name|rename
 argument_list|(
@@ -1260,7 +1121,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|myFs
+name|super
 operator|.
 name|setOwner
 argument_list|(
@@ -1293,7 +1154,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|myFs
+name|super
 operator|.
 name|setPermission
 argument_list|(
@@ -1325,7 +1186,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
 name|setReplication
 argument_list|(
@@ -1360,7 +1221,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|myFs
+name|super
 operator|.
 name|setTimes
 argument_list|(
@@ -1377,49 +1238,27 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setVerifyChecksum (final boolean verifyChecksum)
+DECL|method|resolvePath (final Path p)
 specifier|public
-name|void
-name|setVerifyChecksum
+name|Path
+name|resolvePath
 parameter_list|(
 specifier|final
-name|boolean
-name|verifyChecksum
-parameter_list|)
-block|{
-name|myFs
-operator|.
-name|setVerifyChecksum
-argument_list|(
-name|verifyChecksum
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getDelegationTokens (String renewer)
-specifier|public
-name|List
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
-name|getDelegationTokens
-parameter_list|(
-name|String
-name|renewer
+name|Path
+name|p
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|myFs
+name|super
 operator|.
-name|getDelegationTokens
+name|resolvePath
 argument_list|(
-name|renewer
+name|fullPath
+argument_list|(
+name|p
+argument_list|)
 argument_list|)
 return|;
 block|}

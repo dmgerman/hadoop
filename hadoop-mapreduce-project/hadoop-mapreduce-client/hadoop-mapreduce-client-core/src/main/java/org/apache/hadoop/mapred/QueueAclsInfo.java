@@ -17,12 +17,10 @@ package|;
 end_package
 
 begin_comment
-comment|/**  *  Class to encapsulate Queue ACLs for a particular  *  user.  * @deprecated Use {@link org.apache.hadoop.mapreduce.QueueAclsInfo} instead  */
+comment|/**  *  Class to encapsulate Queue ACLs for a particular  *  user.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 DECL|class|QueueAclsInfo
 class|class
 name|QueueAclsInfo

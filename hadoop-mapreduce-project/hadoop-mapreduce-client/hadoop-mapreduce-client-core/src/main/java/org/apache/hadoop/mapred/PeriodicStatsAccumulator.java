@@ -16,11 +16,47 @@ name|mapred
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
 begin_comment
 comment|/**  *  * This abstract class that represents a bucketed series of  *  measurements of a quantity being measured in a running task  *  attempt.   *  *<p>The sole constructor is called with a count, which is the  *  number of buckets into which we evenly divide the spectrum of  *  progress from 0.0D to 1.0D .  In the future we may provide for  *  custom split points that don't have to be uniform.  *  *<p>A subclass determines how we fold readings for portions of a  *  bucket and how we interpret the readings by overriding  *  {@code extendInternal(...)} and {@code initializeInterval()}  */
 end_comment
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|PeriodicStatsAccumulator
 specifier|public
 specifier|abstract

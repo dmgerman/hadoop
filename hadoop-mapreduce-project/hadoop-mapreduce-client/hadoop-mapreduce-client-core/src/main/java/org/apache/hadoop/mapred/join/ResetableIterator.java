@@ -61,12 +61,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This defines an interface to a stateful Iterator that can replay elements  * added to it directly.  * Note that this does not extend {@link java.util.Iterator}.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.join.ResetableIterator} instead  */
+comment|/**  * This defines an interface to a stateful Iterator that can replay elements  * added to it directly.  * Note that this does not extend {@link java.util.Iterator}.  */
 end_comment
 
 begin_interface
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

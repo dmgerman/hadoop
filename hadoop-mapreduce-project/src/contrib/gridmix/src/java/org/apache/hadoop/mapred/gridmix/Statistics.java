@@ -607,6 +607,11 @@ name|maps
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|reds
+init|=
+literal|0
+decl_stmt|;
 if|if
 condition|(
 name|jobdesc
@@ -636,6 +641,13 @@ operator|.
 name|getNumberMaps
 argument_list|()
 expr_stmt|;
+name|reds
+operator|=
+name|jobdesc
+operator|.
+name|getNumberReduces
+argument_list|()
+expr_stmt|;
 block|}
 name|JobStats
 name|stats
@@ -644,6 +656,8 @@ operator|new
 name|JobStats
 argument_list|(
 name|maps
+argument_list|,
+name|reds
 argument_list|,
 name|job
 argument_list|)
@@ -1155,17 +1169,25 @@ specifier|private
 name|int
 name|noOfMaps
 decl_stmt|;
+DECL|field|noOfReds
+specifier|private
+name|int
+name|noOfReds
+decl_stmt|;
 DECL|field|job
 specifier|private
 name|Job
 name|job
 decl_stmt|;
-DECL|method|JobStats (int noOfMaps,Job job)
+DECL|method|JobStats (int noOfMaps,int numOfReds, Job job)
 specifier|public
 name|JobStats
 parameter_list|(
 name|int
 name|noOfMaps
+parameter_list|,
+name|int
+name|numOfReds
 parameter_list|,
 name|Job
 name|job
@@ -1183,6 +1205,12 @@ name|noOfMaps
 operator|=
 name|noOfMaps
 expr_stmt|;
+name|this
+operator|.
+name|noOfReds
+operator|=
+name|numOfReds
+expr_stmt|;
 block|}
 DECL|method|getNoOfMaps ()
 specifier|public
@@ -1192,6 +1220,16 @@ parameter_list|()
 block|{
 return|return
 name|noOfMaps
+return|;
+block|}
+DECL|method|getNoOfReds ()
+specifier|public
+name|int
+name|getNoOfReds
+parameter_list|()
+block|{
+return|return
+name|noOfReds
 return|;
 block|}
 comment|/**      * Returns the job ,      * We should not use job.getJobID it returns null in 20.1xx.      * Use (GridmixJob.getJobSeqId(job)) instead      * @return job      */

@@ -21,6 +21,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -67,16 +79,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -342,6 +344,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -401,8 +423,6 @@ DECL|class|TestBackupNode
 specifier|public
 class|class
 name|TestBackupNode
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|public
@@ -472,19 +492,16 @@ operator|.
 name|getBaseDirectory
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|File
 name|baseDir
 init|=
@@ -708,15 +725,12 @@ name|c
 argument_list|)
 return|;
 block|}
-DECL|method|waitCheckpointDone ( MiniDFSCluster cluster, BackupNode backup, long txid)
+DECL|method|waitCheckpointDone (MiniDFSCluster cluster, long txid)
 name|void
 name|waitCheckpointDone
 parameter_list|(
 name|MiniDFSCluster
 name|cluster
-parameter_list|,
-name|BackupNode
-name|backup
 parameter_list|,
 name|long
 name|txid
@@ -754,9 +768,13 @@ name|Exception
 name|e
 parameter_list|)
 block|{}
+comment|// The checkpoint is not done until the nn has received it from the bn
 name|thisCheckpointTxId
 operator|=
-name|backup
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
 operator|.
 name|getFSImage
 argument_list|()
@@ -794,6 +812,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCheckpointNode ()
 specifier|public
 name|void
@@ -811,6 +831,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Ensure that the backupnode will tail edits from the NN    * and keep in sync, even while the NN rolls, checkpoints    * occur, etc.    */
+annotation|@
+name|Test
 DECL|method|testBackupNodeTailsEdits ()
 specifier|public
 name|void
@@ -1475,6 +1497,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBackupNode ()
 specifier|public
 name|void
@@ -1715,8 +1739,6 @@ name|waitCheckpointDone
 argument_list|(
 name|cluster
 argument_list|,
-name|backup
-argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -1926,8 +1948,6 @@ name|waitCheckpointDone
 argument_list|(
 name|cluster
 argument_list|,
-name|backup
-argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -1979,8 +1999,6 @@ name|waitCheckpointDone
 argument_list|(
 name|cluster
 argument_list|,
-name|backup
-argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
@@ -2002,8 +2020,6 @@ expr_stmt|;
 name|waitCheckpointDone
 argument_list|(
 name|cluster
-argument_list|,
-name|backup
 argument_list|,
 name|txid
 argument_list|)

@@ -69,12 +69,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is similar to SequenceFileInputFormat,   * except it generates SequenceFileAsTextRecordReader   * which converts the input keys and values to their   * String forms by calling toString() method.  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.input.SequenceFileAsTextInputFormat}  * instead  */
+comment|/**  * This class is similar to SequenceFileInputFormat,   * except it generates SequenceFileAsTextRecordReader   * which converts the input keys and values to their   * String forms by calling toString() method.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

@@ -92,34 +92,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|WritableComparable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|BytesWritable
 import|;
 end_import
@@ -151,6 +123,34 @@ operator|.
 name|SequenceFile
 operator|.
 name|CompressionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Writable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableComparable
 import|;
 end_import
 
@@ -196,7 +196,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|ReflectionUtils
+name|Progressable
 import|;
 end_import
 
@@ -210,17 +210,15 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Progressable
+name|ReflectionUtils
 import|;
 end_import
 
 begin_comment
-comment|/**   * An {@link OutputFormat} that writes keys, values to   * {@link SequenceFile}s in binary(raw) format  *   * @deprecated Use   * {@link org.apache.hadoop.mapreduce.lib.output.SequenceFileAsBinaryOutputFormat}  * instead  */
+comment|/**   * An {@link OutputFormat} that writes keys, values to   * {@link SequenceFile}s in binary(raw) format  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

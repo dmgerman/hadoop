@@ -2098,6 +2098,17 @@ name|getAclString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// removing jobtoken referrals before copying the jobconf to HDFS
+comment|// as the tasks don't need this setting, actually they may break
+comment|// because of it if present as the referral will point to a
+comment|// different job.
+name|TokenCache
+operator|.
+name|cleanUpTokenReferral
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 comment|// Write job file to submit dir
 name|writeConf
 argument_list|(
