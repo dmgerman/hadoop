@@ -3959,9 +3959,7 @@ name|assertEquals
 argument_list|(
 literal|"usedCapacity doesn't match"
 argument_list|,
-name|Float
-operator|.
-name|NaN
+literal|0.0
 argument_list|,
 name|usedCapacity
 argument_list|,
