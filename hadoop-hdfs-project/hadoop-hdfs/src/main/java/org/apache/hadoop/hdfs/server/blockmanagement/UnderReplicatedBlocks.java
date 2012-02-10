@@ -609,10 +609,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|priLevel
-operator|!=
-name|LEVEL
-operator|&&
 name|priorityQueues
 operator|.
 name|get
@@ -968,10 +964,6 @@ if|if
 condition|(
 name|oldPri
 operator|!=
-name|LEVEL
-operator|&&
-name|oldPri
-operator|!=
 name|curPri
 condition|)
 block|{
@@ -985,10 +977,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|curPri
-operator|!=
-name|LEVEL
-operator|&&
 name|priorityQueues
 operator|.
 name|get
