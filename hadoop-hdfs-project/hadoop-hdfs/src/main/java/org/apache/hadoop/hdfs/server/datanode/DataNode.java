@@ -5835,6 +5835,27 @@ name|Socket
 argument_list|()
 return|;
 block|}
+comment|/**    * Connect to the NN. This is separated out for easier testing.    */
+DECL|method|connectToNN ( InetSocketAddress nnAddr)
+name|DatanodeProtocolClientSideTranslatorPB
+name|connectToNN
+parameter_list|(
+name|InetSocketAddress
+name|nnAddr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|DatanodeProtocolClientSideTranslatorPB
+argument_list|(
+name|nnAddr
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
 DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout)
 specifier|public
 specifier|static
@@ -9977,7 +9998,21 @@ condition|(
 name|bpos
 operator|==
 literal|null
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No block pool offer service for bpid="
+operator|+
+name|bpid
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
 name|bpos
 operator|.
 name|bpNamenode
@@ -9989,7 +10024,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"cannot find a namnode proxy for bpid="
+literal|"cannot find a namenode proxy for bpid="
 operator|+
 name|bpid
 argument_list|)

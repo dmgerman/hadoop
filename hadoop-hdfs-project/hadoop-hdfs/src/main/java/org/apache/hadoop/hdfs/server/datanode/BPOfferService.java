@@ -1247,15 +1247,11 @@ block|{
 comment|// get NN proxy
 name|bpNamenode
 operator|=
-operator|new
-name|DatanodeProtocolClientSideTranslatorPB
-argument_list|(
-name|nnAddr
-argument_list|,
 name|dn
 operator|.
-name|getConf
-argument_list|()
+name|connectToNN
+argument_list|(
+name|nnAddr
 argument_list|)
 expr_stmt|;
 comment|// First phase of the handshake with NN - get the namespace
