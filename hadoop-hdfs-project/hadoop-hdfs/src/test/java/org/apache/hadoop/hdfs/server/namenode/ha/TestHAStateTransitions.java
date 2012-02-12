@@ -2338,6 +2338,11 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * The secret manager needs to start/stop - the invariant should be that    * the secret manager runs if and only if the NN is active and not in    * safe mode. As a state diagram, we need to test all of the following    * transitions to make sure the secret manager is started when we transition    * into state 4, but none of the others.    *<pre>    *         SafeMode     Not SafeMode     * Standby   1<------> 2    *           ^          ^    *           |          |    *           v          v    * Active    3<------> 4    *</pre>    */
