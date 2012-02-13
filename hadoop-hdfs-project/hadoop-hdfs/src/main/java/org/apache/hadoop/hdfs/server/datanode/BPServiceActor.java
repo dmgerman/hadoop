@@ -1026,7 +1026,7 @@ block|{
 comment|// get NN proxy
 name|bpNamenode
 operator|=
-name|bpos
+name|dn
 operator|.
 name|connectToNN
 argument_list|(

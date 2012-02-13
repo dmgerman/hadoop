@@ -89,18 +89,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**************************************************  * BlockVolumeChoosingPolicy allows a DataNode to  * specify what policy is to be used while choosing  * a volume for a block request.  *   ***************************************************/
+comment|/**************************************************  * BlockVolumeChoosingPolicy allows a DataNode to  * specify what policy is to be used while choosing  * a volume for a block request.  *  * Note: This is an evolving i/f and is only for  * advanced use.  *  ***************************************************/
 end_comment
 
 begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
+name|Private
 DECL|interface|BlockVolumeChoosingPolicy
 specifier|public
 interface|interface

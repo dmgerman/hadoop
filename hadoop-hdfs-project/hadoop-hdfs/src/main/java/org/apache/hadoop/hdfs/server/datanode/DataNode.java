@@ -5324,6 +5324,27 @@ name|Socket
 argument_list|()
 return|;
 block|}
+comment|/**    * Connect to the NN. This is separated out for easier testing.    */
+DECL|method|connectToNN ( InetSocketAddress nnAddr)
+name|DatanodeProtocolClientSideTranslatorPB
+name|connectToNN
+parameter_list|(
+name|InetSocketAddress
+name|nnAddr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|DatanodeProtocolClientSideTranslatorPB
+argument_list|(
+name|nnAddr
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
 DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout)
 specifier|public
 specifier|static
@@ -9431,17 +9452,41 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"cannot find a namnode proxy for bpid="
+literal|"No block pool offer service for bpid="
 operator|+
 name|bpid
 argument_list|)
 throw|;
 block|}
-return|return
+name|DatanodeProtocolClientSideTranslatorPB
+name|activeNN
+init|=
 name|bpos
 operator|.
 name|getActiveNN
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|activeNN
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block pool "
+operator|+
+name|bpid
+operator|+
+literal|" has not recognized an active NN"
+argument_list|)
+throw|;
+block|}
+return|return
+name|activeNN
 return|;
 block|}
 comment|/** Block synchronization */
@@ -9480,6 +9525,11 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 decl_stmt|;
+assert|assert
+name|nn
+operator|!=
+literal|null
+assert|;
 name|long
 name|recoveryId
 init|=

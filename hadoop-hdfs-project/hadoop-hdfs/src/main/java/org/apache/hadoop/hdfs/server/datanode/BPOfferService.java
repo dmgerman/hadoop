@@ -2914,30 +2914,6 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Connect to the NN at the given address. This is separated out for ease    * of testing.    */
-DECL|method|connectToNN (InetSocketAddress nnAddr)
-name|DatanodeProtocolClientSideTranslatorPB
-name|connectToNN
-parameter_list|(
-name|InetSocketAddress
-name|nnAddr
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-operator|new
-name|DatanodeProtocolClientSideTranslatorPB
-argument_list|(
-name|nnAddr
-argument_list|,
-name|dn
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 

@@ -534,7 +534,6 @@ operator|.
 name|OFF
 argument_list|)
 expr_stmt|;
-comment|//    ((Log4JLogger)DataNode.LOG).getLogger().setLevel(Level.OFF);
 block|}
 DECL|field|CAPACITY
 specifier|private
@@ -562,15 +561,6 @@ name|String
 name|RACK1
 init|=
 literal|"/rack1"
-decl_stmt|;
-DECL|field|RACK2
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|RACK2
-init|=
-literal|"/rack2"
 decl_stmt|;
 DECL|field|FILE_NAME
 specifier|private

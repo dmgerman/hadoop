@@ -417,23 +417,44 @@ specifier|static
 class|class
 name|MinMax
 block|{
+comment|// Float.MAX_VALUE is used rather than Double.MAX_VALUE, even though the
+comment|// min and max variables are of type double.
+comment|// Float.MAX_VALUE is big enough, and using Double.MAX_VALUE makes
+comment|// Ganglia core due to buffer overflow.
+comment|// The same reasoning applies to the MIN_VALUE counterparts.
+DECL|field|DEFAULT_MIN_VALUE
+specifier|static
+specifier|final
+name|double
+name|DEFAULT_MIN_VALUE
+init|=
+name|Float
+operator|.
+name|MAX_VALUE
+decl_stmt|;
+DECL|field|DEFAULT_MAX_VALUE
+specifier|static
+specifier|final
+name|double
+name|DEFAULT_MAX_VALUE
+init|=
+name|Float
+operator|.
+name|MIN_VALUE
+decl_stmt|;
 DECL|field|min
 specifier|private
 name|double
 name|min
 init|=
-name|Double
-operator|.
-name|MAX_VALUE
+name|DEFAULT_MIN_VALUE
 decl_stmt|;
 DECL|field|max
 specifier|private
 name|double
 name|max
 init|=
-name|Double
-operator|.
-name|MIN_VALUE
+name|DEFAULT_MAX_VALUE
 decl_stmt|;
 DECL|method|add (double value)
 specifier|public
@@ -493,15 +514,11 @@ parameter_list|()
 block|{
 name|min
 operator|=
-name|Double
-operator|.
-name|MAX_VALUE
+name|DEFAULT_MIN_VALUE
 expr_stmt|;
 name|max
 operator|=
-name|Double
-operator|.
-name|MIN_VALUE
+name|DEFAULT_MAX_VALUE
 expr_stmt|;
 block|}
 DECL|method|reset (MinMax other)
