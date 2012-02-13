@@ -914,6 +914,20 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+operator|!
+name|shouldRun
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can not get access token. BlockKeyUpdater is not running"
+argument_list|)
+throw|;
+block|}
 return|return
 name|blockTokenSecretManager
 operator|.
@@ -1336,6 +1350,8 @@ name|void
 name|run
 parameter_list|()
 block|{
+try|try
+block|{
 while|while
 condition|(
 name|shouldRun
@@ -1356,7 +1372,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1370,8 +1386,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
 name|Thread
 operator|.
 name|sleep
@@ -1380,12 +1394,42 @@ name|keyUpdaterInterval
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ie
+name|e
 parameter_list|)
-block|{         }
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"InterruptedException in block key updater thread"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception in block key updater thread"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|shouldRun
+operator|=
+literal|false
+expr_stmt|;
 block|}
 block|}
 block|}
