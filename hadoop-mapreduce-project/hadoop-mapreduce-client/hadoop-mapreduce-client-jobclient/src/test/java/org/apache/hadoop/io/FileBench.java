@@ -295,7 +295,7 @@ literal|"Note that CompressionType params only apply to SequenceFiles\n\n"
 operator|+
 literal|"Useful options to set:\n"
 operator|+
-literal|"-D fs.default.name=\"file:///\" \\\n"
+literal|"-D fs.defaultFS=\"file:///\" \\\n"
 operator|+
 literal|"-D fs.file.impl=org.apache.hadoop.fs.RawLocalFileSystem \\\n"
 operator|+

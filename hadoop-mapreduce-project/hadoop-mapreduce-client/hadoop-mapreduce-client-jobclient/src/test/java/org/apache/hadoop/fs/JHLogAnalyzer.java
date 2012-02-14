@@ -5744,7 +5744,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 literal|"file:///"
 argument_list|)

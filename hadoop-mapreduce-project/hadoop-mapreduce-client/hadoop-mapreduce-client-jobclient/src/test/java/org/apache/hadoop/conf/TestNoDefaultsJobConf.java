@@ -300,14 +300,14 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 name|createJobConf
 argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|)
 argument_list|)
 expr_stmt|;
