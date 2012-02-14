@@ -280,6 +280,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -927,6 +937,20 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -1786,6 +1810,27 @@ parameter_list|()
 block|{
 return|return
 name|rpcMetrics
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getHandlers ()
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|Thread
+argument_list|>
+name|getHandlers
+parameter_list|()
+block|{
+return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|handlers
+argument_list|)
 return|;
 block|}
 comment|/**    * Refresh the service authorization ACL for the service handled by this server.    */

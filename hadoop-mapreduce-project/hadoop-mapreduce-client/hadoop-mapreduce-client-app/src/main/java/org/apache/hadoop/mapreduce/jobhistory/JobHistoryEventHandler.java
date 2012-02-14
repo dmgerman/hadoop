@@ -1355,6 +1355,10 @@ comment|// Log the size of the history-event-queue every so often.
 if|if
 condition|(
 name|eventCounter
+operator|!=
+literal|0
+operator|&&
+name|eventCounter
 operator|%
 literal|1000
 operator|==
@@ -2299,9 +2303,17 @@ name|getJobID
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"In HistoryEventHandler "
 operator|+
@@ -2314,6 +2326,7 @@ name|getEventType
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
