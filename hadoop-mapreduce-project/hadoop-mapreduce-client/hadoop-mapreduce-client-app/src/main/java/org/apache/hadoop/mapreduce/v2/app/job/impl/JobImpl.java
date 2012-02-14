@@ -432,6 +432,24 @@ name|mapreduce
 operator|.
 name|jobhistory
 operator|.
+name|JobHistoryParser
+operator|.
+name|TaskInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
 name|JobInfoChangeEvent
 import|;
 end_import
@@ -1559,9 +1577,11 @@ decl_stmt|;
 DECL|field|completedTasksFromPreviousRun
 specifier|private
 specifier|final
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|completedTasksFromPreviousRun
 decl_stmt|;
@@ -2865,7 +2885,7 @@ specifier|private
 name|JobTokenSecretManager
 name|jobTokenSecretManager
 decl_stmt|;
-DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, Set<TaskId> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos)
+DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos)
 specifier|public
 name|JobImpl
 parameter_list|(
@@ -2893,9 +2913,11 @@ parameter_list|,
 name|Clock
 name|clock
 parameter_list|,
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|completedTasksFromPreviousRun
 parameter_list|,

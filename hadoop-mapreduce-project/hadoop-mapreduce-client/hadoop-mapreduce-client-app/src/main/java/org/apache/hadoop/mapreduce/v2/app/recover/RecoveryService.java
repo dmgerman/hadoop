@@ -84,16 +84,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -215,6 +205,20 @@ operator|.
 name|mapreduce
 operator|.
 name|TaskAttemptContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TaskAttemptID
 import|;
 end_import
 
@@ -1408,18 +1412,17 @@ annotation|@
 name|Override
 DECL|method|getCompletedTasks ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|getCompletedTasks
 parameter_list|()
 block|{
 return|return
 name|completedTasks
-operator|.
-name|keySet
-argument_list|()
 return|;
 block|}
 annotation|@
@@ -1648,6 +1651,15 @@ operator|-
 literal|1
 operator|)
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"History file is at "
+operator|+
+name|historyFile
 argument_list|)
 expr_stmt|;
 name|in
@@ -1946,7 +1958,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Attempt start time "
+literal|"Recovered Attempt start time "
 operator|+
 name|attInfo
 operator|.
@@ -2016,7 +2028,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Attempt finish time "
+literal|"Recovered Attempt finish time "
 operator|+
 name|attInfo
 operator|.
@@ -2766,7 +2778,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sending done event to "
+literal|"Sending done event to recovered attempt "
 operator|+
 name|aId
 argument_list|)
@@ -2794,7 +2806,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sending kill event to "
+literal|"Sending kill event to recovered attempt "
 operator|+
 name|aId
 argument_list|)
@@ -2820,7 +2832,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sending fail event to "
+literal|"Sending fail event to recovered attempt "
 operator|+
 name|aId
 argument_list|)

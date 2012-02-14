@@ -38,7 +38,25 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
+name|JobHistoryParser
+operator|.
+name|TaskInfo
 import|;
 end_import
 
@@ -129,9 +147,11 @@ name|getClock
 parameter_list|()
 function_decl|;
 DECL|method|getCompletedTasks ()
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|getCompletedTasks
 parameter_list|()

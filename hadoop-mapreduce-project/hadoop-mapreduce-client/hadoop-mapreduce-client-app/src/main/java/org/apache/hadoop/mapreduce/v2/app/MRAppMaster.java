@@ -110,16 +110,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -395,6 +385,24 @@ operator|.
 name|jobhistory
 operator|.
 name|JobHistoryEventHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
+name|JobHistoryParser
+operator|.
+name|TaskInfo
 import|;
 end_import
 
@@ -1444,7 +1452,7 @@ begin_class
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"deprecation"
+literal|"rawtypes"
 argument_list|)
 DECL|class|MRAppMaster
 specifier|public
@@ -1529,9 +1537,11 @@ name|metrics
 decl_stmt|;
 DECL|field|completedTasksFromPreviousRun
 specifier|private
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|completedTasksFromPreviousRun
 decl_stmt|;
@@ -3654,9 +3664,11 @@ return|;
 block|}
 DECL|method|getCompletedTaskFromPreviousRun ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|getCompletedTaskFromPreviousRun
 parameter_list|()
@@ -4214,11 +4226,6 @@ return|return
 name|jobs
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 annotation|@
 name|Override
 DECL|method|getEventHandler ()

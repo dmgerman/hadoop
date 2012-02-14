@@ -40,7 +40,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -111,6 +111,24 @@ operator|.
 name|mapreduce
 operator|.
 name|OutputCommitter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|jobhistory
+operator|.
+name|JobHistoryParser
+operator|.
+name|TaskInfo
 import|;
 end_import
 
@@ -298,8 +316,6 @@ name|SuppressWarnings
 argument_list|(
 block|{
 literal|"rawtypes"
-block|,
-literal|"deprecation"
 block|}
 argument_list|)
 DECL|class|ReduceTaskImpl
@@ -315,7 +331,7 @@ specifier|final
 name|int
 name|numMapTasks
 decl_stmt|;
-DECL|method|ReduceTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path jobFile, JobConf conf, int numMapTasks, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Set<TaskId> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
+DECL|method|ReduceTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path jobFile, JobConf conf, int numMapTasks, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
 specifier|public
 name|ReduceTaskImpl
 parameter_list|(
@@ -363,9 +379,11 @@ parameter_list|,
 name|Clock
 name|clock
 parameter_list|,
-name|Set
+name|Map
 argument_list|<
 name|TaskId
+argument_list|,
+name|TaskInfo
 argument_list|>
 name|completedTasksFromPreviousRun
 parameter_list|,
