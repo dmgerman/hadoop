@@ -1273,12 +1273,12 @@ argument_list|,
 literal|"append"
 argument_list|)
 expr_stmt|;
-comment|// check if X=/tmp works for an already existing parameter
+comment|// check if X=y works for an already existing parameter
 name|checkEnv
 argument_list|(
-literal|"HOME"
+literal|"LANG"
 argument_list|,
-literal|"/tmp"
+literal|"en_us_8859_1"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -1517,12 +1517,12 @@ argument_list|,
 literal|"append"
 argument_list|)
 expr_stmt|;
-comment|// check if X=/tmp works for an already existing parameter
+comment|// check if X=y works for an already existing parameter
 name|checkEnv
 argument_list|(
-literal|"HOME"
+literal|"LANG"
 argument_list|,
-literal|"/tmp"
+literal|"en_us_8859_1"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -1885,6 +1885,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test to test if the user set env variables reflect in the child    * processes. Mainly    *   - x=y (x can be a already existing env variable or a new variable)    *   - x=$x:y (replace $x with the current value of x)    */
+annotation|@
+name|Test
 DECL|method|testTaskEnv ()
 specifier|public
 name|void
@@ -1977,6 +1979,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test to test if the user set *old* env variables reflect in the child    * processes. Mainly    *   - x=y (x can be a already existing env variable or a new variable)    *   - x=$x:y (replace $x with the current value of x)    */
+annotation|@
+name|Test
 DECL|method|testTaskOldEnv ()
 specifier|public
 name|void
@@ -2117,7 +2121,7 @@ argument_list|)
 expr_stmt|;
 comment|// test
 comment|//  - new SET of new var (MY_PATH)
-comment|//  - set of old var (HOME)
+comment|//  - set of old var (LANG)
 comment|//  - append to an old var from modified env (LD_LIBRARY_PATH)
 comment|//  - append to an old var from tt's env (PATH)
 comment|//  - append to a new var (NEW_PATH)
@@ -2202,7 +2206,7 @@ name|set
 argument_list|(
 name|mapTaskEnvKey
 argument_list|,
-literal|"MY_PATH=/tmp,HOME=/tmp,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
+literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
 operator|+
 literal|"PATH=$PATH:/tmp,NEW_PATH=$NEW_PATH:/tmp"
 argument_list|)
@@ -2213,7 +2217,7 @@ name|set
 argument_list|(
 name|reduceTaskEnvKey
 argument_list|,
-literal|"MY_PATH=/tmp,HOME=/tmp,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
+literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
 operator|+
 literal|"PATH=$PATH:/tmp,NEW_PATH=$NEW_PATH:/tmp"
 argument_list|)
