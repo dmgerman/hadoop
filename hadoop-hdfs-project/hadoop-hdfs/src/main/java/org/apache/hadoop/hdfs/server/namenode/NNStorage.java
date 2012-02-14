@@ -782,6 +782,14 @@ name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
+comment|/**    * Time of the last checkpoint, in milliseconds since the epoch.    */
+DECL|field|mostRecentCheckpointTime
+specifier|private
+name|long
+name|mostRecentCheckpointTime
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * list of failed (and thus removed) storages    */
 DECL|field|removedStorageDirs
 specifier|final
@@ -1958,13 +1966,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set the transaction ID of the last checkpoint    */
-DECL|method|setMostRecentCheckpointTxId (long txid)
+comment|/**    * Set the transaction ID and time of the last checkpoint    *     * @param txid transaction id of the last checkpoint    * @param time time of the last checkpoint, in millis since the epoch    */
+DECL|method|setMostRecentCheckpointInfo (long txid, long time)
 name|void
-name|setMostRecentCheckpointTxId
+name|setMostRecentCheckpointInfo
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|long
+name|time
 parameter_list|)
 block|{
 name|this
@@ -1973,8 +1984,14 @@ name|mostRecentCheckpointTxId
 operator|=
 name|txid
 expr_stmt|;
+name|this
+operator|.
+name|mostRecentCheckpointTime
+operator|=
+name|time
+expr_stmt|;
 block|}
-comment|/**    * Return the transaction ID of the last checkpoint.    */
+comment|/**    * @return the transaction ID of the last checkpoint.    */
 DECL|method|getMostRecentCheckpointTxId ()
 name|long
 name|getMostRecentCheckpointTxId
@@ -1982,6 +1999,16 @@ parameter_list|()
 block|{
 return|return
 name|mostRecentCheckpointTxId
+return|;
+block|}
+comment|/**    * @return the time of the most recent checkpoint in millis since the epoch.    */
+DECL|method|getMostRecentCheckpointTime ()
+name|long
+name|getMostRecentCheckpointTime
+parameter_list|()
+block|{
+return|return
+name|mostRecentCheckpointTime
 return|;
 block|}
 comment|/**    * Write a small file in all available storage directories that    * indicates that the namespace has reached some given transaction ID.    *     * This is used when the image is loaded to avoid accidental rollbacks    * in the case where an edit log is fully deleted but there is no    * checkpoint. See TestNameEditsConfigs.testNameEditsConfigsFailure()    * @param txid the txid that has been reached    */
