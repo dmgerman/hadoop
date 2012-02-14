@@ -389,6 +389,21 @@ name|checkException
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getTestThreads ()
+specifier|public
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|Thread
+argument_list|>
+name|getTestThreads
+parameter_list|()
+block|{
+return|return
+name|testThreads
+return|;
+block|}
 block|}
 comment|/**    * A thread that can be added to a test context, and properly    * passes exceptions through.    */
 DECL|class|TestingThread
