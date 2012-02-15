@@ -241,18 +241,6 @@ operator|new
 name|TryOnceThenFail
 argument_list|()
 decl_stmt|;
-comment|/**    *<p>    * Try once, and fail silently for<code>void</code> methods, or by    * re-throwing the exception for non-<code>void</code> methods.    *</p>    */
-DECL|field|TRY_ONCE_DONT_FAIL
-specifier|public
-specifier|static
-specifier|final
-name|RetryPolicy
-name|TRY_ONCE_DONT_FAIL
-init|=
-operator|new
-name|TryOnceDontFail
-argument_list|()
-decl_stmt|;
 comment|/**    *<p>    * Keep trying forever.    *</p>    */
 DECL|field|RETRY_FOREVER
 specifier|public
@@ -563,38 +551,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-throw|throw
-name|e
-throw|;
-block|}
-block|}
-DECL|class|TryOnceDontFail
-specifier|static
-class|class
-name|TryOnceDontFail
-implements|implements
-name|RetryPolicy
-block|{
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
-specifier|public
-name|RetryAction
-name|shouldRetry
-parameter_list|(
-name|Exception
-name|e
-parameter_list|,
-name|int
-name|retries
-parameter_list|,
-name|int
-name|failovers
-parameter_list|,
-name|boolean
-name|isMethodIdempotent
-parameter_list|)
-throws|throws
-name|Exception
-block|{
 return|return
 name|RetryAction
 operator|.
@@ -716,9 +672,11 @@ operator|>=
 name|maxRetries
 condition|)
 block|{
-throw|throw
-name|e
-throw|;
+return|return
+name|RetryAction
+operator|.
+name|FAIL
+return|;
 block|}
 return|return
 operator|new
@@ -1367,11 +1325,19 @@ operator|>=
 name|maxFailovers
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
+return|return
+operator|new
+name|RetryAction
 argument_list|(
-literal|"Failovers ("
+name|RetryAction
+operator|.
+name|RetryDecision
+operator|.
+name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+literal|"failovers ("
 operator|+
 name|failovers
 operator|+
@@ -1381,11 +1347,6 @@ name|maxFailovers
 operator|+
 literal|")"
 argument_list|)
-expr_stmt|;
-return|return
-name|RetryAction
-operator|.
-name|FAIL
 return|;
 block|}
 if|if
@@ -1475,9 +1436,21 @@ block|}
 else|else
 block|{
 return|return
+operator|new
+name|RetryAction
+argument_list|(
 name|RetryAction
 operator|.
+name|RetryDecision
+operator|.
 name|FAIL
+argument_list|,
+literal|0
+argument_list|,
+literal|"the invoked method is not idempotent, and unable to determine "
+operator|+
+literal|"whether it was invoked"
+argument_list|)
 return|;
 block|}
 block|}

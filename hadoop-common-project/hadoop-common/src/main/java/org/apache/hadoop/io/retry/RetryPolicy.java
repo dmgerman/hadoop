@@ -115,6 +115,12 @@ specifier|final
 name|long
 name|delayMillis
 decl_stmt|;
+DECL|field|reason
+specifier|public
+specifier|final
+name|String
+name|reason
+decl_stmt|;
 DECL|method|RetryAction (RetryDecision action)
 specifier|public
 name|RetryAction
@@ -128,6 +134,8 @@ argument_list|(
 name|action
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -143,6 +151,30 @@ name|delayTime
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|action
+argument_list|,
+name|delayTime
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RetryAction (RetryDecision action, long delayTime, String reason)
+specifier|public
+name|RetryAction
+parameter_list|(
+name|RetryDecision
+name|action
+parameter_list|,
+name|long
+name|delayTime
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+name|this
 operator|.
 name|action
 operator|=
@@ -153,6 +185,12 @@ operator|.
 name|delayMillis
 operator|=
 name|delayTime
+expr_stmt|;
+name|this
+operator|.
+name|reason
+operator|=
+name|reason
 expr_stmt|;
 block|}
 DECL|enum|RetryDecision

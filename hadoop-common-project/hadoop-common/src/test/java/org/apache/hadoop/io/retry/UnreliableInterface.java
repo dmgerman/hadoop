@@ -217,6 +217,20 @@ name|StandbyException
 throws|,
 name|IOException
 function_decl|;
+DECL|method|nonIdempotentVoidFailsIfIdentifierDoesntMatch (String identifier)
+name|void
+name|nonIdempotentVoidFailsIfIdentifierDoesntMatch
+parameter_list|(
+name|String
+name|identifier
+parameter_list|)
+throws|throws
+name|UnreliableException
+throws|,
+name|StandbyException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_interface
 
