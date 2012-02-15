@@ -1080,6 +1080,8 @@ operator|new
 name|FileJournalManager
 argument_list|(
 name|sd
+argument_list|,
+name|storage
 argument_list|)
 argument_list|,
 name|required

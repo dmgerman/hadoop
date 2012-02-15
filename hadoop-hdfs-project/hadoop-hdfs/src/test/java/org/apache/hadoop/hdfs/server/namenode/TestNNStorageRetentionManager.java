@@ -2077,6 +2077,7 @@ name|EDITS
 argument_list|)
 condition|)
 continue|continue;
+comment|// passing null NNStorage for unit test because it does not use it
 name|FileJournalManager
 name|fjm
 init|=
@@ -2087,6 +2088,8 @@ name|root
 operator|.
 name|mockStorageDir
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|fjm
