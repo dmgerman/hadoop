@@ -385,7 +385,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Performs two types of scanning:  *<li> Gets block files from the data directories and reconciles the  * difference between the blocks on the disk and in memory.</li>  *<li> Scans the data directories for block files under a block pool  * and verifies that the files are not corrupt</li>  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
+comment|/**  * Scans the block files under a block pool and verifies that the  * files are not corrupt.  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
 end_comment
 
 begin_class
@@ -2148,6 +2148,40 @@ argument_list|(
 name|block
 operator|+
 literal|" is no longer in the dataset."
+argument_list|)
+expr_stmt|;
+name|deleteBlock
+argument_list|(
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+comment|// If the block exists, the exception may due to a race with write:
+comment|// The BlockSender got an old block path in rbw. BlockReceiver removed
+comment|// the rbw block from rbw to finalized but BlockSender tried to open the
+comment|// file before BlockReceiver updated the VolumeMap. The state of the
+comment|// block can be changed again now, so ignore this error here. If there
+comment|// is a block really deleted by mistake, DirectoryScan should catch it.
+if|if
+condition|(
+name|e
+operator|instanceof
+name|FileNotFoundException
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Verification failed for "
+operator|+
+name|block
+operator|+
+literal|". It may be due to race with write."
 argument_list|)
 expr_stmt|;
 name|deleteBlock

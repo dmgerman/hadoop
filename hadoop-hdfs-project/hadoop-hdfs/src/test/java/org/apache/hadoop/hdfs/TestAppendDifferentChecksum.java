@@ -216,21 +216,6 @@ argument_list|,
 literal|4096
 argument_list|)
 expr_stmt|;
-comment|// disable block scanner, since otherwise this test can trigger
-comment|// HDFS-2525, which is a different bug than we're trying to unit test
-comment|// here! When HDFS-2525 is fixed, this can be removed.
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
 name|conf
 operator|.
 name|set
