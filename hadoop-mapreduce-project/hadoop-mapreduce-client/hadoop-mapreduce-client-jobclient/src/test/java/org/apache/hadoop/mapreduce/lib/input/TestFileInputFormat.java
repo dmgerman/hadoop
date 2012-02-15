@@ -278,7 +278,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 literal|"s3://abc:xyz@hostname/"
 argument_list|)
@@ -301,7 +301,7 @@ argument_list|()
 operator|.
 name|set
 argument_list|(
-literal|"fs.default.name"
+literal|"fs.defaultFS"
 argument_list|,
 literal|"s3://abc:xyz@hostname/"
 argument_list|)

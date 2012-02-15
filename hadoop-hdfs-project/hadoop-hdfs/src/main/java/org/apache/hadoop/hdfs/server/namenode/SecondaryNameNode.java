@@ -1547,9 +1547,9 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"dfs.secondary.https.port"
+name|DFS_NAMENODE_SECONDARY_HTTPS_PORT_KEY
 argument_list|,
-literal|443
+name|DFS_NAMENODE_SECONDARY_HTTPS_PORT_DEFAULT
 argument_list|)
 argument_list|)
 decl_stmt|;
