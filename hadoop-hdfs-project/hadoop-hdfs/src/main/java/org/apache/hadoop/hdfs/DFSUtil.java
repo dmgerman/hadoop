@@ -3443,7 +3443,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Sets the node specific setting into generic configuration key. Looks up    * value of "key.nameserviceId.namenodeId" and if found sets that value into     * generic key in the conf. Note that this only modifies the runtime conf.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified.    * @param nameserviceId    *          nameservice Id to construct the node specific key. Pass null if    *          federation is not configuration.    * @param nnId    *          namenode Id to construct the node specific key. Pass null if    *          HA is not configured.    * @param keys    *          The key for which node specific value is looked up    */
+comment|/**    * Sets the node specific setting into generic configuration key. Looks up    * value of "key.nameserviceId.namenodeId" and if found sets that value into     * generic key in the conf. If this is not found, falls back to    * "key.nameserviceId" and then the unmodified key.    *    * Note that this only modifies the runtime conf.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified.    * @param nameserviceId    *          nameservice Id to construct the node specific key. Pass null if    *          federation is not configuration.    * @param nnId    *          namenode Id to construct the node specific key. Pass null if    *          HA is not configured.    * @param keys    *          The key for which node specific value is looked up    */
 DECL|method|setGenericConf (Configuration conf, String nameserviceId, String nnId, String... keys)
 specifier|public
 specifier|static
@@ -3489,6 +3489,38 @@ name|nnId
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|value
+operator|!=
+literal|null
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+name|value
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|addKeySuffixes
+argument_list|(
+name|key
+argument_list|,
+name|nameserviceId
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|value
