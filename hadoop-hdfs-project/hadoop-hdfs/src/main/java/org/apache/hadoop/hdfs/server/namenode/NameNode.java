@@ -4473,11 +4473,19 @@ throws|throws
 name|IOException
 block|{
 comment|// TODO(HA): Are we guaranteed to be the only active here?
+if|if
+condition|(
+name|namesystem
+operator|!=
+literal|null
+condition|)
+block|{
 name|namesystem
 operator|.
 name|stopStandbyServices
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
