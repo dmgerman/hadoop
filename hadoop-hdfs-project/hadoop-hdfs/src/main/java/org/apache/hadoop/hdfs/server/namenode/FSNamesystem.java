@@ -12158,24 +12158,12 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|removeBlocks
 argument_list|(
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
 comment|// Incremental deletion of blocks
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|collectedBlocks
 operator|.
 name|clear
@@ -12209,7 +12197,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** From the given list, incrementally remove the blocks from blockManager */
+comment|/**     * From the given list, incrementally remove the blocks from blockManager    * Writelock is dropped and reacquired every BLOCK_DELETION_INCREMENT to    * ensure that other waiters on the lock can get in. See HDFS-2938    */
 DECL|method|removeBlocks (List<Block> blocks)
 specifier|private
 name|void
@@ -12222,10 +12210,6 @@ argument_list|>
 name|blocks
 parameter_list|)
 block|{
-assert|assert
-name|hasWriteLock
-argument_list|()
-assert|;
 name|int
 name|start
 init|=
@@ -12268,6 +12252,11 @@ argument_list|()
 else|:
 name|end
 expr_stmt|;
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|int
@@ -12294,6 +12283,13 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
 expr_stmt|;
 block|}
 name|start
