@@ -869,6 +869,19 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|nn1
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getTransactionsSinceLastLogRoll
+argument_list|()
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Test case for enter safemode in active namenode, when it is already in startup safemode.    * It is a regression test for HDFS-2747.    */
 annotation|@
