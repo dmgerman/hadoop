@@ -130,20 +130,6 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|Configurable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
 name|Configuration
 import|;
 end_import
@@ -688,6 +674,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -704,15 +692,13 @@ name|xface
 argument_list|)
 condition|)
 block|{
-comment|// TODO(HA): This will create a NN proxy with an underlying retry
-comment|// proxy. We don't want this.
 name|current
 operator|.
 name|namenode
 operator|=
 name|DFSUtil
 operator|.
-name|createNamenode
+name|createNNProxyWithClientProtocol
 argument_list|(
 name|current
 operator|.
@@ -721,6 +707,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
