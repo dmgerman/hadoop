@@ -169,43 +169,6 @@ name|rawLocalFileSystem
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|initialize (URI uri, Configuration conf)
-specifier|public
-name|void
-name|initialize
-parameter_list|(
-name|URI
-name|uri
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-operator|.
-name|initialize
-argument_list|(
-name|uri
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
-comment|// ctor didn't initialize the filtered fs
-name|getRawFileSystem
-argument_list|()
-operator|.
-name|initialize
-argument_list|(
-name|uri
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Convert a path to a File. */
 DECL|method|pathToFile (Path path)
 specifier|public
