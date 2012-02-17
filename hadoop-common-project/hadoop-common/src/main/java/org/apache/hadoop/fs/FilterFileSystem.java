@@ -262,6 +262,28 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// this is less than ideal, but existing filesystems sometimes neglect
+comment|// to initialize the embedded filesystem
+if|if
+condition|(
+name|fs
+operator|.
+name|getConf
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|fs
+operator|.
+name|initialize
+argument_list|(
+name|name
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 name|String
 name|scheme
 init|=
