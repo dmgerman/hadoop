@@ -1270,6 +1270,23 @@ name|finishTime
 operator|+=
 name|adjustment
 expr_stmt|;
+comment|// For reduce attempts, adjust the different phases' finish times also
+if|if
+condition|(
+name|sortFinished
+operator|>=
+literal|0
+condition|)
+block|{
+name|shuffleFinished
+operator|+=
+name|adjustment
+expr_stmt|;
+name|sortFinished
+operator|+=
+name|adjustment
+expr_stmt|;
+block|}
 block|}
 DECL|method|getShuffleFinished ()
 specifier|public
