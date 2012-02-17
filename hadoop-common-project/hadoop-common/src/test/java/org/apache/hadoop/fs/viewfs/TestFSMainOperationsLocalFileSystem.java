@@ -181,11 +181,11 @@ name|fSys
 operator|=
 name|ViewFileSystemTestSetup
 operator|.
-name|setupForViewFs
+name|setupForViewFileSystem
 argument_list|(
 name|ViewFileSystemTestSetup
 operator|.
-name|configWithViewfsScheme
+name|createConfig
 argument_list|()
 argument_list|,
 name|fcTarget
@@ -214,7 +214,7 @@ argument_list|()
 expr_stmt|;
 name|ViewFileSystemTestSetup
 operator|.
-name|tearDownForViewFs
+name|tearDown
 argument_list|(
 name|fcTarget
 argument_list|)
