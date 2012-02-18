@@ -173,7 +173,7 @@ index|[]
 name|linkCountCmdTemplate
 init|=
 block|{
-literal|"stat"
+literal|"/usr/bin/stat"
 block|,
 literal|"-f%l"
 block|,
