@@ -671,7 +671,7 @@ name|equals
 argument_list|(
 name|block
 argument_list|)
-operator|||
+operator|&&
 name|b
 operator|.
 name|poolId
