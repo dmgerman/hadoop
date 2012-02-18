@@ -2674,12 +2674,7 @@ name|ProcfsBasedProcessTree
 operator|.
 name|checkPidPgrpidForMatch
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|pid
-argument_list|)
 argument_list|,
 name|procfsRootDir
 operator|.
@@ -3490,7 +3485,7 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|Integer
+name|String
 name|pId
 range|:
 name|processTree
@@ -3504,9 +3499,6 @@ condition|(
 name|isAlive
 argument_list|(
 name|pId
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 condition|)
 block|{
