@@ -188,6 +188,20 @@ name|WritableFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockRecoveryCommand is an instruction to a data-node to recover  * the specified blocks.  *  * The data-node that receives this command treats itself as a primary  * data-node in the recover process.  *  * Block recovery is identified by a recoveryId, which is also the new  * generation stamp, which the block will have after the recovery succeeds.  */
 end_comment
@@ -473,6 +487,56 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"BlockRecoveryCommand(\n  "
+argument_list|)
+expr_stmt|;
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|"\n  "
+argument_list|)
+operator|.
+name|appendTo
+argument_list|(
+name|sb
+argument_list|,
+name|recoveringBlocks
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"\n)"
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 comment|///////////////////////////////////////////
 comment|// Writable
