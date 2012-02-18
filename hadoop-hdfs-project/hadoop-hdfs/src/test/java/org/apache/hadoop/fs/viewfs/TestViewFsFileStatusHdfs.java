@@ -393,7 +393,7 @@ name|conf
 init|=
 name|ViewFileSystemTestSetup
 operator|.
-name|configWithViewfsScheme
+name|createConfig
 argument_list|()
 decl_stmt|;
 name|ConfigUtil

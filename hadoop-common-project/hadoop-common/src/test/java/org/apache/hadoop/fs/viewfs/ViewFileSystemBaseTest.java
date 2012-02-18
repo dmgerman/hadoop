@@ -436,7 +436,7 @@ name|conf
 operator|=
 name|ViewFileSystemTestSetup
 operator|.
-name|configWithViewfsScheme
+name|createConfig
 argument_list|()
 expr_stmt|;
 name|setupMountPoints
