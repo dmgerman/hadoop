@@ -5310,6 +5310,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Restart all namenodes.    */
+DECL|method|restartNameNodes ()
+specifier|public
+specifier|synchronized
+name|void
+name|restartNameNodes
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|nameNodes
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|restartNameNode
+argument_list|(
+name|i
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Restart the namenode.    */
 DECL|method|restartNameNode ()
 specifier|public

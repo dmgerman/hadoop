@@ -1822,7 +1822,7 @@ operator|.
 name|exists
 argument_list|()
 operator|:
-literal|"prvious directory must not exist."
+literal|"previous directory must not exist."
 assert|;
 assert|assert
 operator|!
@@ -1831,7 +1831,7 @@ operator|.
 name|exists
 argument_list|()
 operator|:
-literal|"prvious.tmp directory must not exist."
+literal|"previous.tmp directory must not exist."
 assert|;
 assert|assert
 operator|!
