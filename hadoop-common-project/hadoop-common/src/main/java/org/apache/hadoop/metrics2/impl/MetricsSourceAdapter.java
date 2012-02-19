@@ -608,7 +608,6 @@ annotation|@
 name|Override
 DECL|method|getAttribute (String attribute)
 specifier|public
-specifier|synchronized
 name|Object
 name|getAttribute
 parameter_list|(
@@ -625,6 +624,11 @@ block|{
 name|updateJmxCache
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|Attribute
 name|a
 init|=
@@ -679,6 +683,7 @@ name|getValue
 argument_list|()
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 DECL|method|setAttribute (Attribute attribute)
@@ -710,7 +715,6 @@ annotation|@
 name|Override
 DECL|method|getAttributes (String[] attributes)
 specifier|public
-specifier|synchronized
 name|AttributeList
 name|getAttributes
 parameter_list|(
@@ -722,6 +726,11 @@ block|{
 name|updateJmxCache
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|AttributeList
 name|ret
 init|=
@@ -779,6 +788,7 @@ return|return
 name|ret
 return|;
 block|}
+block|}
 annotation|@
 name|Override
 DECL|method|setAttributes (AttributeList attributes)
@@ -833,7 +843,6 @@ annotation|@
 name|Override
 DECL|method|getMBeanInfo ()
 specifier|public
-specifier|synchronized
 name|MBeanInfo
 name|getMBeanInfo
 parameter_list|()
@@ -847,10 +856,19 @@ return|;
 block|}
 DECL|method|updateJmxCache ()
 specifier|private
-specifier|synchronized
 name|void
 name|updateJmxCache
 parameter_list|()
+block|{
+name|boolean
+name|getAllMetrics
+init|=
+literal|false
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 if|if
 condition|(
@@ -864,11 +882,37 @@ operator|>=
 name|jmxCacheTTL
 condition|)
 block|{
+comment|// temporarilly advance the expiry while updating the cache
+name|jmxCacheTS
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+name|jmxCacheTTL
+expr_stmt|;
 if|if
 condition|(
 name|lastRecs
 operator|==
 literal|null
+condition|)
+block|{
+name|getAllMetrics
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+return|return;
+block|}
+block|}
+if|if
+condition|(
+name|getAllMetrics
 condition|)
 block|{
 name|MetricsCollectorImpl
@@ -886,6 +930,11 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|int
 name|oldCacheSize
 init|=
