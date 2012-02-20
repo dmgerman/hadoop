@@ -20,6 +20,34 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -58,6 +86,7 @@ name|TestSwitchMapping
 extends|extends
 name|Assert
 block|{
+comment|/**    * Verify the switch mapping query handles arbitrary DNSToSwitchMapping    * implementations    *    * @throws Throwable on any problem    */
 annotation|@
 name|Test
 DECL|method|testStandaloneClassesAssumedMultiswitch ()
@@ -77,7 +106,9 @@ argument_list|()
 decl_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Expected to be multi switch"
+literal|"Expected to be multi switch "
+operator|+
+name|mapping
 argument_list|,
 name|AbstractDNSToSwitchMapping
 operator|.
@@ -88,6 +119,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Verify the cached mapper delegates the switch mapping query to the inner    * mapping, which again handles arbitrary DNSToSwitchMapping implementations    *    * @throws Throwable on any problem    */
 annotation|@
 name|Test
 DECL|method|testCachingRelays ()
@@ -111,7 +143,9 @@ argument_list|)
 decl_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Expected to be multi switch"
+literal|"Expected to be multi switch "
+operator|+
+name|mapping
 argument_list|,
 name|mapping
 operator|.
@@ -120,6 +154,208 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Verify the cached mapper delegates the switch mapping query to the inner    * mapping, which again handles arbitrary DNSToSwitchMapping implementations    *    * @throws Throwable on any problem    */
+annotation|@
+name|Test
+DECL|method|testCachingRelaysStringOperations ()
+specifier|public
+name|void
+name|testCachingRelaysStringOperations
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|String
+name|scriptname
+init|=
+literal|"mappingscript.sh"
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
+argument_list|,
+name|scriptname
+argument_list|)
+expr_stmt|;
+name|ScriptBasedMapping
+name|scriptMapping
+init|=
+operator|new
+name|ScriptBasedMapping
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Did not find "
+operator|+
+name|scriptname
+operator|+
+literal|" in "
+operator|+
+name|scriptMapping
+argument_list|,
+name|scriptMapping
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|scriptname
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|CachedDNSToSwitchMapping
+name|mapping
+init|=
+operator|new
+name|CachedDNSToSwitchMapping
+argument_list|(
+name|scriptMapping
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Did not find "
+operator|+
+name|scriptname
+operator|+
+literal|" in "
+operator|+
+name|mapping
+argument_list|,
+name|mapping
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|scriptname
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Verify the cached mapper delegates the switch mapping query to the inner    * mapping, which again handles arbitrary DNSToSwitchMapping implementations    *    * @throws Throwable on any problem    */
+annotation|@
+name|Test
+DECL|method|testCachingRelaysStringOperationsToNullScript ()
+specifier|public
+name|void
+name|testCachingRelaysStringOperationsToNullScript
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|ScriptBasedMapping
+name|scriptMapping
+init|=
+operator|new
+name|ScriptBasedMapping
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Did not find "
+operator|+
+name|ScriptBasedMapping
+operator|.
+name|NO_SCRIPT
+operator|+
+literal|" in "
+operator|+
+name|scriptMapping
+argument_list|,
+name|scriptMapping
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|ScriptBasedMapping
+operator|.
+name|NO_SCRIPT
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|CachedDNSToSwitchMapping
+name|mapping
+init|=
+operator|new
+name|CachedDNSToSwitchMapping
+argument_list|(
+name|scriptMapping
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Did not find "
+operator|+
+name|ScriptBasedMapping
+operator|.
+name|NO_SCRIPT
+operator|+
+literal|" in "
+operator|+
+name|mapping
+argument_list|,
+name|mapping
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|ScriptBasedMapping
+operator|.
+name|NO_SCRIPT
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testNullMapping ()
+specifier|public
+name|void
+name|testNullMapping
+parameter_list|()
+block|{
+name|assertFalse
+argument_list|(
+name|AbstractDNSToSwitchMapping
+operator|.
+name|isMappingSingleSwitch
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This class does not extend the abstract switch mapping, and verifies that    * the switch mapping logic assumes that this is multi switch    */
 DECL|class|StandaloneSwitchMapping
 specifier|private
 specifier|static

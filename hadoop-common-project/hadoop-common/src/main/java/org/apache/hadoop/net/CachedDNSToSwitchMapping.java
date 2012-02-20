@@ -32,6 +32,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -458,6 +468,57 @@ name|getCachedHosts
 argument_list|(
 name|names
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the (host x switch) map.    * @return a copy of the cached map of hosts to rack    */
+annotation|@
+name|Override
+DECL|method|getSwitchMap ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getSwitchMap
+parameter_list|()
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|switchMap
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|(
+name|cache
+argument_list|)
+decl_stmt|;
+return|return
+name|switchMap
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"cached switch mapping relaying to "
+operator|+
+name|rawMapping
 return|;
 block|}
 comment|/**    * Delegate the switch topology query to the raw mapping, via    * {@link AbstractDNSToSwitchMapping#isMappingSingleSwitch(DNSToSwitchMapping)}    * @return true iff the raw mapper is considered single-switch.    */

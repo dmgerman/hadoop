@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -70,8 +80,18 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
-comment|/**  * Implements the {@link DNSToSwitchMapping} via static mappings. Used  * in testcases that simulate racks, and in the  * {@link org.apache.hadoop.hdfs.MiniDFSCluster}  *  * A shared, static mapping is used; to reset it call {@link #resetMap()}.  *  * When an instance of the class has its {@link #setConf(Configuration)}  * method called, nodes listed in the configuration will be added to the map.  * These do not get removed when the instance is garbage collected.  */
+comment|/**  * Implements the {@link DNSToSwitchMapping} via static mappings. Used  * in testcases that simulate racks, and in the  * {@link org.apache.hadoop.hdfs.MiniDFSCluster}  *  * A shared, static mapping is used; to reset it call {@link #resetMap()}.  *  * When an instance of the class has its {@link #setConf(Configuration)}  * method called, nodes listed in the configuration will be added to the map.  * These do not get removed when the instance is garbage collected.  *  * The switch mapping policy of this class is the same as for the  * {@link ScriptBasedMapping} -the presence of a non-empty topology script.  * The script itself is not used.  */
 end_comment
 
 begin_class
@@ -345,7 +365,7 @@ name|m
 return|;
 block|}
 block|}
-comment|/**    * Declare that this mapping is always multi-switch    * @return false, always    */
+comment|/**    * The switch policy of this mapping is driven by the same policy    * as the Scripted mapping: the presence of the script name in    * the configuration file    * @return false, always    */
 annotation|@
 name|Override
 DECL|method|isSingleSwitch ()
@@ -355,7 +375,56 @@ name|isSingleSwitch
 parameter_list|()
 block|{
 return|return
-literal|false
+name|isSingleSwitchByScriptPolicy
+argument_list|()
+return|;
+block|}
+comment|/**    * Get a copy of the map (for diagnostics)    * @return a clone of the map or null for none known    */
+annotation|@
+name|Override
+DECL|method|getSwitchMap ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getSwitchMap
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|nameToRackMap
+init|)
+block|{
+return|return
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|(
+name|nameToRackMap
+argument_list|)
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"static mapping with single switch = "
+operator|+
+name|isSingleSwitch
+argument_list|()
 return|;
 block|}
 comment|/**    * Clear the map    */

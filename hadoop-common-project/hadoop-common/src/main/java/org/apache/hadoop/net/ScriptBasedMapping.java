@@ -202,7 +202,7 @@ name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 decl_stmt|;
-comment|/**    * key to the argument count that the script supports    */
+comment|/**    * key to the argument count that the script supports    * {@value}    */
 DECL|field|SCRIPT_ARG_COUNT_KEY
 specifier|static
 specifier|final
@@ -212,6 +212,16 @@ init|=
 name|CommonConfigurationKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_NUMBER_ARGS_KEY
+decl_stmt|;
+comment|/**    * Text used in the {@link #toString()} method if there is no string    * {@value}    */
+DECL|field|NO_SCRIPT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NO_SCRIPT
+init|=
+literal|"no script"
 decl_stmt|;
 comment|/**    * Create an instance with the default configuration.    *</p>    * Calling {@link #setConf(Configuration)} will trigger a    * re-evaluation of the configuration settings and so be used to    * set up the mapping script.    *    */
 DECL|method|ScriptBasedMapping ()
@@ -272,6 +282,24 @@ name|getRawMapping
 argument_list|()
 operator|.
 name|getConf
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"script-based mapping with "
+operator|+
+name|getRawMapping
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 return|;
 block|}
@@ -841,7 +869,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception: "
+literal|"Exception running "
+operator|+
+name|s
 argument_list|,
 name|e
 argument_list|)
@@ -874,6 +904,28 @@ return|return
 name|scriptName
 operator|==
 literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|scriptName
+operator|!=
+literal|null
+condition|?
+operator|(
+literal|"script "
+operator|+
+name|scriptName
+operator|)
+else|:
+name|NO_SCRIPT
 return|;
 block|}
 block|}
