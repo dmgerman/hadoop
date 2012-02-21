@@ -1821,6 +1821,17 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|Dispatcher
+operator|.
+name|DISPATCHER_EXIT_ON_ERROR_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|downloadTokensAndSetupUGI
 argument_list|(
 name|conf
@@ -2756,6 +2767,7 @@ comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
 comment|// note in a workflow scenario, this may lead to creation of a new
 comment|// job (FIXME?)
+comment|// Send job-end notification
 if|if
 condition|(
 name|getConfig
@@ -2877,7 +2889,6 @@ expr_stmt|;
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// Send job-end notification
 block|}
 catch|catch
 parameter_list|(
