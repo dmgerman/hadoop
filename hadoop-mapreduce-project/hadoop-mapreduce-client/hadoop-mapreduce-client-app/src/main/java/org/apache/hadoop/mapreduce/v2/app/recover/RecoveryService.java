@@ -1827,23 +1827,6 @@ name|RecoveryDispatcher
 argument_list|()
 return|;
 block|}
-DECL|method|createRecoveryDispatcher (boolean exitOnException)
-specifier|protected
-name|Dispatcher
-name|createRecoveryDispatcher
-parameter_list|(
-name|boolean
-name|exitOnException
-parameter_list|)
-block|{
-return|return
-operator|new
-name|RecoveryDispatcher
-argument_list|(
-name|exitOnException
-argument_list|)
-return|;
-block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1867,17 +1850,12 @@ specifier|final
 name|EventHandler
 name|handler
 decl_stmt|;
-DECL|method|RecoveryDispatcher (boolean exitOnException)
+DECL|method|RecoveryDispatcher ()
 name|RecoveryDispatcher
-parameter_list|(
-name|boolean
-name|exitOnException
-parameter_list|)
+parameter_list|()
 block|{
 name|super
-argument_list|(
-name|exitOnException
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|actualHandler
 operator|=
@@ -1892,16 +1870,6 @@ operator|new
 name|InterceptingEventHandler
 argument_list|(
 name|actualHandler
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|RecoveryDispatcher ()
-name|RecoveryDispatcher
-parameter_list|()
-block|{
-name|this
-argument_list|(
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

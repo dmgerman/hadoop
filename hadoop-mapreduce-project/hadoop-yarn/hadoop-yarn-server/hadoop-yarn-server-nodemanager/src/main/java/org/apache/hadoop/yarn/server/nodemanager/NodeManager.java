@@ -772,6 +772,17 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|Dispatcher
+operator|.
+name|DISPATCHER_EXIT_ON_ERROR_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|Context
 name|context
 init|=

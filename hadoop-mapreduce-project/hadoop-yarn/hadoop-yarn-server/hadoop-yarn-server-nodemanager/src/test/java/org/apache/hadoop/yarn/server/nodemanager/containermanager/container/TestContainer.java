@@ -3422,7 +3422,9 @@ name|dispatcher
 operator|.
 name|init
 argument_list|(
-literal|null
+operator|new
+name|Configuration
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|localizerBus
