@@ -2767,6 +2767,7 @@ comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
 comment|// note in a workflow scenario, this may lead to creation of a new
 comment|// job (FIXME?)
+comment|// Send job-end notification
 if|if
 condition|(
 name|getConfig
@@ -2888,7 +2889,6 @@ expr_stmt|;
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// Send job-end notification
 block|}
 catch|catch
 parameter_list|(
