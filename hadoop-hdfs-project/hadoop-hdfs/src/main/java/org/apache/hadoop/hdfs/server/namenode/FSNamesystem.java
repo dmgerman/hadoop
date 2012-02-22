@@ -13985,25 +13985,8 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|haContext
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|NameNode
-operator|.
-name|STANDBY_STATE
-argument_list|)
-condition|)
-block|{
-comment|// TODO(HA) we'll never get here, since we check for WRITE operation above!
-comment|// Need to implement tests, etc, for this - block recovery spanning
-comment|// failover.
-block|}
+comment|// If a DN tries to commit to the standby, the recovery will
+comment|// fail, and the next retry will succeed on the new NN.
 if|if
 condition|(
 name|isInSafeMode

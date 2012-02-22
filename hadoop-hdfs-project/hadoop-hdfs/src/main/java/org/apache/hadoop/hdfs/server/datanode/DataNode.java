@@ -8949,6 +8949,39 @@ argument_list|,
 name|newLength
 argument_list|)
 decl_stmt|;
+comment|// Notify the namenode of the updated block info. This is important
+comment|// for HA, since otherwise the standby node may lose track of the
+comment|// block locations until the next block report.
+name|ExtendedBlock
+name|newBlock
+init|=
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|oldBlock
+argument_list|)
+decl_stmt|;
+name|newBlock
+operator|.
+name|setGenerationStamp
+argument_list|(
+name|recoveryId
+argument_list|)
+expr_stmt|;
+name|newBlock
+operator|.
+name|setNumBytes
+argument_list|(
+name|newLength
+argument_list|)
+expr_stmt|;
+name|notifyNamenodeReceivedBlock
+argument_list|(
+name|newBlock
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ExtendedBlock
@@ -9578,7 +9611,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-comment|// TODO: how does this work in HA??
 name|nn
 operator|.
 name|commitBlockSynchronization
