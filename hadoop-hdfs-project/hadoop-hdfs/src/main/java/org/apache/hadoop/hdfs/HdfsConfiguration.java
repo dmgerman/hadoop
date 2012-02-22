@@ -352,15 +352,6 @@ argument_list|)
 expr_stmt|;
 name|deprecate
 argument_list|(
-literal|"StorageId"
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_STORAGEID_KEY
-argument_list|)
-expr_stmt|;
-name|deprecate
-argument_list|(
 literal|"dfs.https.client.keystore.resource"
 argument_list|,
 name|DFSConfigKeys
