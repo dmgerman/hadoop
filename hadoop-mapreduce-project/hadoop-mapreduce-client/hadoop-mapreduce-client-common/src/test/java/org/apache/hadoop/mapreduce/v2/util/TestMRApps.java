@@ -1072,7 +1072,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"$HADOOP_CONF_DIR:"
+literal|"$PWD:$HADOOP_CONF_DIR:"
 operator|+
 literal|"$HADOOP_COMMON_HOME/share/hadoop/common/*:"
 operator|+
@@ -1182,7 +1182,7 @@ name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"job.jar"
+literal|"$PWD:job.jar"
 argument_list|)
 argument_list|,
 literal|0
@@ -1274,7 +1274,7 @@ name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"job.jar"
+literal|"$PWD:job.jar"
 argument_list|)
 argument_list|,
 literal|0
