@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -261,6 +275,26 @@ operator|.
 name|io
 operator|.
 name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
 import|;
 end_import
 
@@ -1054,6 +1088,11 @@ init|=
 name|getNextJobFromTrace
 argument_list|()
 decl_stmt|;
+comment|// filter out the following jobs
+comment|//    - unsuccessful jobs
+comment|//    - jobs with missing submit-time
+comment|//    - reduce only jobs
+comment|// These jobs are not yet supported in Gridmix
 while|while
 condition|(
 name|job
@@ -1078,6 +1117,13 @@ name|getSubmissionTime
 argument_list|()
 operator|<
 literal|0
+operator|||
+name|job
+operator|.
+name|getNumberMaps
+argument_list|()
+operator|==
+literal|0
 operator|)
 condition|)
 block|{
@@ -1089,10 +1135,18 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+name|List
+argument_list|<
 name|String
+argument_list|>
 name|reason
 init|=
-literal|null
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -1109,7 +1163,9 @@ name|SUCCESS
 condition|)
 block|{
 name|reason
-operator|=
+operator|.
+name|add
+argument_list|(
 literal|"STATE ("
 operator|+
 name|job
@@ -1120,7 +1176,8 @@ operator|.
 name|name
 argument_list|()
 operator|+
-literal|") "
+literal|")"
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1134,7 +1191,9 @@ literal|0
 condition|)
 block|{
 name|reason
-operator|+=
+operator|.
+name|add
+argument_list|(
 literal|"SUBMISSION-TIME ("
 operator|+
 name|job
@@ -1143,6 +1202,44 @@ name|getSubmissionTime
 argument_list|()
 operator|+
 literal|")"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|job
+operator|.
+name|getNumberMaps
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|reason
+operator|.
+name|add
+argument_list|(
+literal|"ZERO-MAPS-JOB"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// TODO This should never happen. Probably we missed something!
+if|if
+condition|(
+name|reason
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|reason
+operator|.
+name|add
+argument_list|(
+literal|"N/A"
+argument_list|)
 expr_stmt|;
 block|}
 name|LOG
@@ -1160,13 +1257,14 @@ literal|" from the input trace."
 operator|+
 literal|" Reason: "
 operator|+
+name|StringUtils
+operator|.
+name|join
+argument_list|(
 name|reason
-operator|==
-literal|null
-condition|?
-literal|"N/A"
-else|:
-name|reason
+argument_list|,
+literal|","
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -142,6 +142,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|JobStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -291,7 +305,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Component collecting the stats required by other components  * to make decisions.  * Single thread Collector tries to collec the stats.  * Each of thread poll updates certain datastructure(Currently ClusterStats).  * Components interested in these datastructure, need to register.  * StatsCollector notifies each of the listeners.  */
+comment|/**  * Component collecting the stats required by other components  * to make decisions.  * Single thread collector tries to collect the stats (currently cluster stats)  * and caches it internally.  * Components interested in these stats need to register themselves and will get  * notified either on every job completion event or some fixed time interval.  */
 end_comment
 
 begin_class
@@ -302,7 +316,9 @@ name|Statistics
 implements|implements
 name|Component
 argument_list|<
-name|Job
+name|Statistics
+operator|.
+name|JobStats
 argument_list|>
 block|{
 DECL|field|LOG
@@ -382,8 +398,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|//List of jobids and noofMaps for each job
-DECL|field|jobMaps
+comment|// A map of job-sequence-id to job-stats of submitted jobs
+DECL|field|submittedJobsMap
 specifier|private
 specifier|static
 specifier|final
@@ -393,7 +409,7 @@ name|Integer
 argument_list|,
 name|JobStats
 argument_list|>
-name|jobMaps
+name|submittedJobsMap
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -403,6 +419,26 @@ argument_list|,
 name|JobStats
 argument_list|>
 argument_list|()
+decl_stmt|;
+comment|// total number of map tasks submitted
+DECL|field|numMapsSubmitted
+specifier|private
+specifier|static
+specifier|volatile
+name|int
+name|numMapsSubmitted
+init|=
+literal|0
+decl_stmt|;
+comment|// total number of reduce tasks submitted
+DECL|field|numReducesSubmitted
+specifier|private
+specifier|static
+specifier|volatile
+name|int
+name|numReducesSubmitted
+init|=
+literal|0
 decl_stmt|;
 DECL|field|completedJobsInCurrentInterval
 specifier|private
@@ -555,10 +591,12 @@ operator|=
 name|startFlag
 expr_stmt|;
 block|}
-DECL|method|addJobStats (Job job, JobStory jobdesc)
+comment|/**    * Generates a job stats.    */
+DECL|method|generateJobStats (Job job, JobStory jobdesc)
 specifier|public
-name|void
-name|addJobStats
+specifier|static
+name|JobStats
+name|generateJobStats
 parameter_list|(
 name|Job
 name|job
@@ -577,43 +615,13 @@ argument_list|(
 name|job
 argument_list|)
 decl_stmt|;
+comment|// bail out if job description is missing for a job to be simulated
 if|if
 condition|(
 name|seq
-operator|<
+operator|>=
 literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Not tracking job "
-operator|+
-name|job
-operator|.
-name|getJobName
-argument_list|()
-operator|+
-literal|" as seq id is less than zero: "
-operator|+
-name|seq
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|int
-name|maps
-init|=
-literal|0
-decl_stmt|;
-name|int
-name|reds
-init|=
-literal|0
-decl_stmt|;
-if|if
-condition|(
+operator|&&
 name|jobdesc
 operator|==
 literal|null
@@ -623,17 +631,35 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|" JobStory not available for job "
+literal|"JobStory not available for job "
 operator|+
 name|job
 operator|.
-name|getJobName
+name|getJobID
 argument_list|()
 argument_list|)
 throw|;
 block|}
-else|else
+name|int
+name|maps
+init|=
+operator|-
+literal|1
+decl_stmt|;
+name|int
+name|reds
+init|=
+operator|-
+literal|1
+decl_stmt|;
+if|if
+condition|(
+name|jobdesc
+operator|!=
+literal|null
+condition|)
 block|{
+comment|// Note that the ZombieJob will return a>= 0 value
 name|maps
 operator|=
 name|jobdesc
@@ -649,9 +675,7 @@ name|getNumberReduces
 argument_list|()
 expr_stmt|;
 block|}
-name|JobStats
-name|stats
-init|=
+return|return
 operator|new
 name|JobStats
 argument_list|(
@@ -661,8 +685,60 @@ name|reds
 argument_list|,
 name|job
 argument_list|)
+return|;
+block|}
+comment|/**    * Add a submitted job for monitoring.    */
+DECL|method|addJobStats (JobStats stats)
+specifier|public
+name|void
+name|addJobStats
+parameter_list|(
+name|JobStats
+name|stats
+parameter_list|)
+block|{
+name|int
+name|seq
+init|=
+name|GridmixJob
+operator|.
+name|getJobSeqId
+argument_list|(
+name|stats
+operator|.
+name|getJob
+argument_list|()
+argument_list|)
 decl_stmt|;
-name|jobMaps
+if|if
+condition|(
+name|seq
+operator|<
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not tracking job "
+operator|+
+name|stats
+operator|.
+name|getJob
+argument_list|()
+operator|.
+name|getJobName
+argument_list|()
+operator|+
+literal|" as seq id is less than zero: "
+operator|+
+name|seq
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|submittedJobsMap
 operator|.
 name|put
 argument_list|(
@@ -671,20 +747,36 @@ argument_list|,
 name|stats
 argument_list|)
 expr_stmt|;
+name|numMapsSubmitted
+operator|+=
+name|stats
+operator|.
+name|getNoOfMaps
+argument_list|()
+expr_stmt|;
+name|numReducesSubmitted
+operator|+=
+name|stats
+operator|.
+name|getNoOfReds
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Used by JobMonitor to add the completed job.    */
 annotation|@
 name|Override
-DECL|method|add (Job job)
+DECL|method|add (Statistics.JobStats job)
 specifier|public
 name|void
 name|add
 parameter_list|(
-name|Job
+name|Statistics
+operator|.
+name|JobStats
 name|job
 parameter_list|)
 block|{
-comment|//This thread will be notified initially by jobmonitor incase of
+comment|//This thread will be notified initially by job-monitor incase of
 comment|//data generation. Ignore that as we are getting once the input is
 comment|//generated.
 if|if
@@ -701,7 +793,7 @@ block|}
 name|JobStats
 name|stat
 init|=
-name|jobMaps
+name|submittedJobsMap
 operator|.
 name|remove
 argument_list|(
@@ -710,16 +802,52 @@ operator|.
 name|getJobSeqId
 argument_list|(
 name|job
+operator|.
+name|getJob
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// stat cannot be null
 if|if
 condition|(
 name|stat
 operator|==
 literal|null
 condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"[Statistics] Missing entry for job "
+operator|+
+name|job
+operator|.
+name|getJob
+argument_list|()
+operator|.
+name|getJobID
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return;
+block|}
+comment|// update the total number of submitted map/reduce task count
+name|numMapsSubmitted
+operator|-=
+name|stat
+operator|.
+name|getNoOfMaps
+argument_list|()
+expr_stmt|;
+name|numReducesSubmitted
+operator|-=
+name|stat
+operator|.
+name|getNoOfReds
+argument_list|()
+expr_stmt|;
 name|completedJobsInCurrentInterval
 operator|++
 expr_stmt|;
@@ -1104,7 +1232,7 @@ name|shutdown
 operator|=
 literal|true
 expr_stmt|;
-name|jobMaps
+name|submittedJobsMap
 operator|.
 name|clear
 argument_list|()
@@ -1137,7 +1265,7 @@ name|shutdown
 operator|=
 literal|true
 expr_stmt|;
-name|jobMaps
+name|submittedJobsMap
 operator|.
 name|clear
 argument_list|()
@@ -1166,16 +1294,24 @@ name|JobStats
 block|{
 DECL|field|noOfMaps
 specifier|private
+specifier|final
 name|int
 name|noOfMaps
 decl_stmt|;
 DECL|field|noOfReds
 specifier|private
+specifier|final
 name|int
 name|noOfReds
 decl_stmt|;
+DECL|field|currentStatus
+specifier|private
+name|JobStatus
+name|currentStatus
+decl_stmt|;
 DECL|field|job
 specifier|private
+specifier|final
 name|Job
 name|job
 decl_stmt|;
@@ -1241,6 +1377,36 @@ parameter_list|()
 block|{
 return|return
 name|job
+return|;
+block|}
+comment|/**      * Update the job statistics.      */
+DECL|method|updateJobStatus (JobStatus status)
+specifier|public
+specifier|synchronized
+name|void
+name|updateJobStatus
+parameter_list|(
+name|JobStatus
+name|status
+parameter_list|)
+block|{
+name|this
+operator|.
+name|currentStatus
+operator|=
+name|status
+expr_stmt|;
+block|}
+comment|/**      * Get the current job status.      */
+DECL|method|getJobStatus ()
+specifier|public
+specifier|synchronized
+name|JobStatus
+name|getJobStatus
+parameter_list|()
+block|{
+return|return
+name|currentStatus
 return|;
 block|}
 block|}
@@ -1315,7 +1481,7 @@ name|getNumRunningJob
 parameter_list|()
 block|{
 return|return
-name|jobMaps
+name|submittedJobsMap
 operator|.
 name|size
 argument_list|()
@@ -1332,10 +1498,32 @@ name|getRunningJobStats
 parameter_list|()
 block|{
 return|return
-name|jobMaps
+name|submittedJobsMap
 operator|.
 name|values
 argument_list|()
+return|;
+block|}
+comment|/**      * Returns the total number of submitted map tasks      */
+DECL|method|getSubmittedMapTasks ()
+specifier|static
+name|int
+name|getSubmittedMapTasks
+parameter_list|()
+block|{
+return|return
+name|numMapsSubmitted
+return|;
+block|}
+comment|/**      * Returns the total number of submitted reduce tasks      */
+DECL|method|getSubmittedReduceTasks ()
+specifier|static
+name|int
+name|getSubmittedReduceTasks
+parameter_list|()
+block|{
+return|return
+name|numReducesSubmitted
 return|;
 block|}
 block|}

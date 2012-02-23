@@ -329,6 +329,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -483,7 +495,15 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+literal|5
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|,
 name|stats
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|this
@@ -598,13 +618,16 @@ name|monitor
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|createJobMonitor (Statistics stats)
+DECL|method|createJobMonitor (Statistics stats, Configuration c)
 specifier|protected
 name|JobMonitor
 name|createJobMonitor
 parameter_list|(
 name|Statistics
 name|stats
+parameter_list|,
+name|Configuration
+name|c
 parameter_list|)
 block|{
 name|monitor

@@ -551,6 +551,11 @@ return|;
 block|}
 block|}
 decl_stmt|;
+DECL|field|submitted
+specifier|private
+name|boolean
+name|submitted
+decl_stmt|;
 DECL|field|seq
 specifier|protected
 specifier|final
@@ -2116,6 +2121,25 @@ parameter_list|()
 block|{
 return|return
 name|jobdesc
+return|;
+block|}
+DECL|method|setSubmitted ()
+name|void
+name|setSubmitted
+parameter_list|()
+block|{
+name|submitted
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|isSubmitted ()
+name|boolean
+name|isSubmitted
+parameter_list|()
+block|{
+return|return
+name|submitted
 return|;
 block|}
 DECL|method|pushDescription (int seq, List<InputSplit> splits)
