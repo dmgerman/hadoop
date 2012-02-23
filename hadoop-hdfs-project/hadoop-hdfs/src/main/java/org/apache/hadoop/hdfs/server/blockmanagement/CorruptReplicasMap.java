@@ -131,8 +131,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    */
-DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn)
+comment|/**    * Mark the block belonging to datanode as corrupt.    *    * @param blk Block to be added to CorruptReplicasMap    * @param dn DatanodeDescriptor which holds the corrupt replica    * @param reason a textual reason (for logging purposes)    */
+DECL|method|addToCorruptReplicasMap (Block blk, DatanodeDescriptor dn, String reason)
 specifier|public
 name|void
 name|addToCorruptReplicasMap
@@ -142,6 +142,9 @@ name|blk
 parameter_list|,
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+name|String
+name|reason
 parameter_list|)
 block|{
 name|Collection
@@ -179,6 +182,30 @@ name|blk
 argument_list|,
 name|nodes
 argument_list|)
+expr_stmt|;
+block|}
+name|String
+name|reasonText
+decl_stmt|;
+if|if
+condition|(
+name|reason
+operator|!=
+literal|null
+condition|)
+block|{
+name|reasonText
+operator|=
+literal|" because "
+operator|+
+name|reason
+expr_stmt|;
+block|}
+else|else
+block|{
+name|reasonText
+operator|=
+literal|""
 expr_stmt|;
 block|}
 if|if
@@ -225,6 +252,8 @@ name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
+operator|+
+name|reasonText
 argument_list|)
 expr_stmt|;
 block|}
@@ -260,6 +289,8 @@ name|Server
 operator|.
 name|getRemoteIp
 argument_list|()
+operator|+
+name|reasonText
 argument_list|)
 expr_stmt|;
 block|}

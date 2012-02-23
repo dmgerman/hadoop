@@ -1095,6 +1095,8 @@ name|DatanodeInfo
 argument_list|(
 name|dnR
 argument_list|)
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 comment|// open the file
