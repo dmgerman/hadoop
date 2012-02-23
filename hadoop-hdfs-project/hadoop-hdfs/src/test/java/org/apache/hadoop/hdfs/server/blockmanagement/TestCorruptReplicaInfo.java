@@ -409,6 +409,8 @@ literal|0
 argument_list|)
 argument_list|,
 name|dn1
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -433,6 +435,8 @@ literal|1
 argument_list|)
 argument_list|,
 name|dn1
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -457,6 +461,8 @@ literal|1
 argument_list|)
 argument_list|,
 name|dn2
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -533,6 +539,8 @@ name|block_id
 argument_list|)
 argument_list|,
 name|dn1
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 block|}

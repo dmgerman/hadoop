@@ -1131,6 +1131,8 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 name|es
 argument_list|)
 expr_stmt|;
@@ -1187,6 +1189,8 @@ argument_list|,
 literal|10
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|es
@@ -1210,6 +1214,8 @@ literal|1
 argument_list|,
 literal|0
 argument_list|,
+literal|0
+argument_list|,
 name|es
 argument_list|)
 expr_stmt|;
@@ -1221,6 +1227,8 @@ argument_list|(
 literal|5
 argument_list|,
 literal|1
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -1245,6 +1253,88 @@ argument_list|,
 literal|1
 argument_list|,
 literal|1
+argument_list|,
+literal|0
+argument_list|,
+name|es
+argument_list|)
+expr_stmt|;
+comment|// test with successful but lost job
+name|stats
+operator|=
+name|generateFakeJobStats
+argument_list|(
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|true
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|es
+operator|.
+name|update
+argument_list|(
+name|stats
+argument_list|)
+expr_stmt|;
+name|testExecutionSummarizer
+argument_list|(
+literal|7
+argument_list|,
+literal|12
+argument_list|,
+literal|0
+argument_list|,
+literal|3
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+name|es
+argument_list|)
+expr_stmt|;
+comment|// test with failed but lost job
+name|stats
+operator|=
+name|generateFakeJobStats
+argument_list|(
+literal|2
+argument_list|,
+literal|2
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|es
+operator|.
+name|update
+argument_list|(
+name|stats
+argument_list|)
+expr_stmt|;
+name|testExecutionSummarizer
+argument_list|(
+literal|9
+argument_list|,
+literal|14
+argument_list|,
+literal|0
+argument_list|,
+literal|4
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|2
 argument_list|,
 name|es
 argument_list|)
@@ -1795,7 +1885,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// test the ExecutionSummarizer
-DECL|method|testExecutionSummarizer (int numMaps, int numReds, int totalJobsInTrace, int totalJobSubmitted, int numSuccessfulJob, int numFailedJobs, ExecutionSummarizer es)
+DECL|method|testExecutionSummarizer (int numMaps, int numReds, int totalJobsInTrace, int totalJobSubmitted, int numSuccessfulJob, int numFailedJobs, int numLostJobs, ExecutionSummarizer es)
 specifier|private
 specifier|static
 name|void
@@ -1818,6 +1908,9 @@ name|numSuccessfulJob
 parameter_list|,
 name|int
 name|numFailedJobs
+parameter_list|,
+name|int
+name|numLostJobs
 parameter_list|,
 name|ExecutionSummarizer
 name|es
@@ -1895,6 +1988,18 @@ name|getNumFailedJobs
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"ExecutionSummarizer test failed [num-lost jobs]"
+argument_list|,
+name|numLostJobs
+argument_list|,
+name|es
+operator|.
+name|getNumLostJobs
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// generate fake job stats
 annotation|@
@@ -1902,7 +2007,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|generateFakeJobStats (final int numMaps, final int numReds, final boolean isSuccessful)
+DECL|method|generateFakeJobStats (final int numMaps, final int numReds, final boolean isSuccessful, final boolean lost)
 specifier|private
 specifier|static
 name|JobStats
@@ -1919,6 +2024,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|isSuccessful
+parameter_list|,
+specifier|final
+name|boolean
+name|lost
 parameter_list|)
 throws|throws
 name|IOException
@@ -1954,6 +2063,19 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|lost
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Test failure!"
+argument_list|)
+throw|;
+block|}
 return|return
 name|isSuccessful
 return|;

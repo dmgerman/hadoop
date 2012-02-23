@@ -663,6 +663,48 @@ name|FSDataset
 implements|implements
 name|FSDatasetInterface
 block|{
+comment|/**    * A factory for creating FSDataset objects.    */
+DECL|class|Factory
+specifier|static
+class|class
+name|Factory
+extends|extends
+name|FSDatasetInterface
+operator|.
+name|Factory
+block|{
+annotation|@
+name|Override
+DECL|method|createFSDatasetInterface (DataNode datanode, DataStorage storage, Configuration conf)
+specifier|public
+name|FSDatasetInterface
+name|createFSDatasetInterface
+parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
+name|DataStorage
+name|storage
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|FSDataset
+argument_list|(
+name|datanode
+argument_list|,
+name|storage
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+block|}
 comment|/**    * A node type that can be built into a tree reflecting the    * hierarchy of blocks on the local disk.    */
 DECL|class|FSDir
 specifier|private
@@ -5493,7 +5535,8 @@ name|boolean
 name|supportAppends
 decl_stmt|;
 comment|/**    * An FSDataset has a directory where it loads its data files.    */
-DECL|method|FSDataset (DataNode datanode, DataStorage storage, Configuration conf)
+DECL|method|FSDataset (DataNode datanode, DataStorage storage, Configuration conf )
+specifier|private
 name|FSDataset
 parameter_list|(
 name|DataNode

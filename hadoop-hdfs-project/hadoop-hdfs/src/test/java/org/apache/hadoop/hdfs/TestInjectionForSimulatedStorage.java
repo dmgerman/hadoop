@@ -772,15 +772,11 @@ argument_list|,
 name|checksumSize
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
 name|SimulatedFSDataset
 operator|.
-name|CONFIG_PROPERTY_SIMULATED
-argument_list|,
-literal|true
+name|setFactory
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 comment|//first time format
@@ -901,15 +897,11 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
 name|SimulatedFSDataset
 operator|.
-name|CONFIG_PROPERTY_SIMULATED
-argument_list|,
-literal|true
+name|setFactory
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|conf

@@ -1139,6 +1139,8 @@ argument_list|()
 index|[
 literal|0
 index|]
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1407,6 +1409,8 @@ argument_list|()
 index|[
 literal|0
 index|]
+argument_list|,
+literal|"TEST"
 argument_list|)
 expr_stmt|;
 block|}

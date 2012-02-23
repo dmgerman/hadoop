@@ -262,6 +262,11 @@ specifier|private
 name|int
 name|totalFailedJobs
 decl_stmt|;
+DECL|field|totalLostJobs
+specifier|private
+name|int
+name|totalLostJobs
+decl_stmt|;
 DECL|field|totalMapTasksLaunched
 specifier|private
 name|int
@@ -413,8 +418,6 @@ parameter_list|(
 name|JobStats
 name|stats
 parameter_list|)
-throws|throws
-name|Exception
 block|{
 name|Job
 name|job
@@ -424,6 +427,8 @@ operator|.
 name|getJob
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|job
@@ -443,6 +448,19 @@ name|totalFailedJobs
 expr_stmt|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// this behavior is consistent with job-monitor which marks the job as
+comment|// complete (lost) if the status polling bails out
+operator|++
+name|totalLostJobs
+expr_stmt|;
+block|}
+block|}
 DECL|method|processJobTasks (JobStats stats)
 specifier|private
 name|void
@@ -451,8 +469,6 @@ parameter_list|(
 name|JobStats
 name|stats
 parameter_list|)
-throws|throws
-name|Exception
 block|{
 name|totalMapTasksLaunched
 operator|+=
@@ -461,19 +477,11 @@ operator|.
 name|getNoOfMaps
 argument_list|()
 expr_stmt|;
-name|Job
-name|job
-init|=
-name|stats
-operator|.
-name|getJob
-argument_list|()
-decl_stmt|;
 name|totalReduceTasksLaunched
 operator|+=
-name|job
+name|stats
 operator|.
-name|getNumReduceTasks
+name|getNoOfReds
 argument_list|()
 expr_stmt|;
 block|}
@@ -485,8 +493,6 @@ parameter_list|(
 name|JobStats
 name|stats
 parameter_list|)
-block|{
-try|try
 block|{
 comment|// process the job run state
 name|processJobState
@@ -500,31 +506,6 @@ argument_list|(
 name|stats
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error in processing job "
-operator|+
-name|stats
-operator|.
-name|getJob
-argument_list|()
-operator|.
-name|getJobID
-argument_list|()
-operator|+
-literal|"."
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -959,6 +940,19 @@ name|builder
 operator|.
 name|append
 argument_list|(
+literal|"\nTotal number of lost jobs: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getNumLostJobs
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
 literal|"\nTotal number of map tasks launched: "
 argument_list|)
 operator|.
@@ -1327,6 +1321,16 @@ return|return
 name|totalFailedJobs
 return|;
 block|}
+DECL|method|getNumLostJobs ()
+specifier|protected
+name|int
+name|getNumLostJobs
+parameter_list|()
+block|{
+return|return
+name|totalLostJobs
+return|;
+block|}
 DECL|method|getNumSubmittedJobs ()
 specifier|protected
 name|int
@@ -1337,6 +1341,8 @@ return|return
 name|totalSuccessfulJobs
 operator|+
 name|totalFailedJobs
+operator|+
+name|totalLostJobs
 return|;
 block|}
 DECL|method|getNumMapTasksLaunched ()
