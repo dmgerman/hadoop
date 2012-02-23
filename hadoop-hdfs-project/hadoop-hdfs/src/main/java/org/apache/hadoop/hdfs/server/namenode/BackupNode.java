@@ -2015,6 +2015,17 @@ name|StandbyException
 block|{
 if|if
 condition|(
+name|op
+operator|==
+name|OperationCategory
+operator|.
+name|UNCHECKED
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
 name|OperationCategory
 operator|.
 name|JOURNAL

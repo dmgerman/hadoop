@@ -765,6 +765,10 @@ specifier|static
 enum|enum
 name|OperationCategory
 block|{
+comment|/** Operations that are state agnostic */
+DECL|enumConstant|UNCHECKED
+name|UNCHECKED
+block|,
 comment|/** Read operation that does not change the namespace state */
 DECL|enumConstant|READ
 name|READ
