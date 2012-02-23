@@ -2020,6 +2020,12 @@ operator|==
 name|OperationCategory
 operator|.
 name|UNCHECKED
+operator|||
+name|op
+operator|==
+name|OperationCategory
+operator|.
+name|CHECKPOINT
 condition|)
 block|{
 return|return;
