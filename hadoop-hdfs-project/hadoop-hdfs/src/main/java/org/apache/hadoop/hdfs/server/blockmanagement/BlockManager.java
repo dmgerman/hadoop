@@ -674,6 +674,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlockCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|BlocksWithLocations
 import|;
 end_import
@@ -12650,10 +12668,18 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-comment|// TODO(HA): the following causes some problems for HA:
-comment|// the SBN doesn't get block deletions until the next
-comment|// BR...
-comment|// block.setNumBytes(BlockCommand.NO_ACK);
+comment|// No need to ACK blocks that are being removed entirely
+comment|// from the namespace, since the removal of the associated
+comment|// file already removes them from the block map below.
+name|block
+operator|.
+name|setNumBytes
+argument_list|(
+name|BlockCommand
+operator|.
+name|NO_ACK
+argument_list|)
+expr_stmt|;
 name|addToInvalidates
 argument_list|(
 name|block

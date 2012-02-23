@@ -1674,8 +1674,9 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
-comment|// Delete those blocks while the SBN is in safe mode - this
-comment|// should reduce it back below the threshold
+comment|// Delete those blocks while the SBN is in safe mode.
+comment|// This doesn't affect the SBN, since deletions are not
+comment|// ACKed when due to block removals.
 name|banner
 argument_list|(
 literal|"Removing the blocks without rolling the edit log"
@@ -1733,11 +1734,13 @@ name|assertSafeMode
 argument_list|(
 name|nn1
 argument_list|,
-literal|0
+literal|10
 argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
+comment|// When we catch up to active namespace, it will restore back
+comment|// to 0 blocks.
 name|banner
 argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
@@ -1896,8 +1899,9 @@ name|stm
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Delete those blocks while the SBN is in safe mode - this
-comment|// should reduce it back below the threshold
+comment|// Delete those blocks while the SBN is in safe mode.
+comment|// This will not ACK the deletions to the SBN, so it won't
+comment|// notice until we roll the edit log.
 name|banner
 argument_list|(
 literal|"Removing the blocks without rolling the edit log"
@@ -1955,11 +1959,12 @@ name|assertSafeMode
 argument_list|(
 name|nn1
 argument_list|,
-literal|0
+literal|4
 argument_list|,
 literal|4
 argument_list|)
 expr_stmt|;
+comment|// When we roll the edit log, the deletions will go through.
 name|banner
 argument_list|(
 literal|"Waiting for standby to catch up to active namespace"
