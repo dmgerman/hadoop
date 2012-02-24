@@ -535,7 +535,7 @@ block|}
 name|String
 name|addr
 init|=
-name|NameNode
+name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
