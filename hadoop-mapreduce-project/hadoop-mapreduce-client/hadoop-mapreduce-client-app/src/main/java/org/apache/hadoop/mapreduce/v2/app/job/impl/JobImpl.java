@@ -3234,6 +3234,17 @@ argument_list|(
 name|jobOperation
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|jobACL
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 return|return
 name|aclsManager
 operator|.
