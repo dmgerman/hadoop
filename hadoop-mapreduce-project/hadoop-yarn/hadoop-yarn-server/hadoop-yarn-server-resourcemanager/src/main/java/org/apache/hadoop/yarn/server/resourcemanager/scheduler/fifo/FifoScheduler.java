@@ -4177,6 +4177,15 @@ name|getNodeID
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|node
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 comment|// Kill running containers
 for|for
 control|(
@@ -4233,7 +4242,10 @@ name|subtractFrom
 argument_list|(
 name|clusterResource
 argument_list|,
-name|nodeInfo
+name|node
+operator|.
+name|getRMNode
+argument_list|()
 operator|.
 name|getTotalCapability
 argument_list|()
