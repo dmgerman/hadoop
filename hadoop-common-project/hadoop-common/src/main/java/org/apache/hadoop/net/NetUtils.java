@@ -2071,6 +2071,31 @@ name|uhe
 return|;
 block|}
 block|}
+comment|/**    * Compose a "host:port" string from the address.    */
+DECL|method|getHostPortString (InetSocketAddress addr)
+specifier|public
+specifier|static
+name|String
+name|getHostPortString
+parameter_list|(
+name|InetSocketAddress
+name|addr
+parameter_list|)
+block|{
+return|return
+name|addr
+operator|.
+name|getHostName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|addr
+operator|.
+name|getPort
+argument_list|()
+return|;
+block|}
 comment|/**    * Checks if {@code host} is a local host name and return {@link InetAddress}    * corresponding to that address.    *     * @param host the specified host    * @return a valid local {@link InetAddress} or null    * @throws SocketException if an I/O error occurs    */
 DECL|method|getLocalInetAddress (String host)
 specifier|public
