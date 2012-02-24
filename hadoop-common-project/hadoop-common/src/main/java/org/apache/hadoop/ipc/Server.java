@@ -1802,6 +1802,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Returns a handle to the rpcMetrics (required in tests)    * @return rpc metrics    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getRpcMetrics ()
 specifier|public
 name|RpcMetrics
@@ -1810,6 +1812,18 @@ parameter_list|()
 block|{
 return|return
 name|rpcMetrics
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRpcDetailedMetrics ()
+specifier|public
+name|RpcDetailedMetrics
+name|getRpcDetailedMetrics
+parameter_list|()
+block|{
+return|return
+name|rpcDetailedMetrics
 return|;
 block|}
 annotation|@
