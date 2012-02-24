@@ -3051,8 +3051,6 @@ condition|(
 name|cached
 operator|!=
 literal|null
-operator|&&
-name|cached
 condition|)
 block|{
 if|if
@@ -3071,12 +3069,18 @@ literal|"Address "
 operator|+
 name|targetAddr
 operator|+
+operator|(
+name|cached
+condition|?
 literal|" is local"
+else|:
+literal|" is not local"
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|true
+name|cached
 return|;
 block|}
 name|boolean
@@ -3105,7 +3109,13 @@ literal|"Address "
 operator|+
 name|targetAddr
 operator|+
+operator|(
+name|local
+condition|?
 literal|" is local"
+else|:
+literal|" is not local"
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
