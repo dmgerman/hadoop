@@ -3465,7 +3465,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: Error parsing task ID: bogustaskid"
+literal|"java.lang.Exception: TaskId string : "
+operator|+
+literal|"bogustaskid is not properly formed"
 argument_list|,
 name|message
 argument_list|)
@@ -3550,7 +3552,7 @@ decl_stmt|;
 name|String
 name|tid
 init|=
-literal|"task_1234_0_0_m_0"
+literal|"task_0_0000_m_000000"
 decl_stmt|;
 try|try
 block|{
@@ -3717,7 +3719,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: task not found with id task_1234_0_0_m_0"
+literal|"java.lang.Exception: task not found with id task_0_0000_m_000000"
 argument_list|,
 name|message
 argument_list|)
@@ -3802,7 +3804,7 @@ decl_stmt|;
 name|String
 name|tid
 init|=
-literal|"task_1234_0_0_d_0"
+literal|"task_0_0000_d_000000"
 decl_stmt|;
 try|try
 block|{
@@ -3969,7 +3971,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: Unknown task symbol: d"
+literal|"java.lang.Exception: Bad TaskType identifier. TaskId string : "
+operator|+
+literal|"task_0_0000_d_000000 is not properly formed."
 argument_list|,
 name|message
 argument_list|)
@@ -4054,7 +4058,7 @@ decl_stmt|;
 name|String
 name|tid
 init|=
-literal|"task_1234_0_m_0"
+literal|"task_0000_m_000000"
 decl_stmt|;
 try|try
 block|{
@@ -4221,7 +4225,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: For input string: \"m\""
+literal|"java.lang.Exception: TaskId string : "
+operator|+
+literal|"task_0000_m_000000 is not properly formed"
 argument_list|,
 name|message
 argument_list|)
@@ -4306,7 +4312,7 @@ decl_stmt|;
 name|String
 name|tid
 init|=
-literal|"task_1234_0_0_m"
+literal|"task_0_0000_m"
 decl_stmt|;
 try|try
 block|{
@@ -4473,7 +4479,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: Error parsing task ID: task_1234_0_0_m"
+literal|"java.lang.Exception: TaskId string : "
+operator|+
+literal|"task_0_0000_m is not properly formed"
 argument_list|,
 name|message
 argument_list|)

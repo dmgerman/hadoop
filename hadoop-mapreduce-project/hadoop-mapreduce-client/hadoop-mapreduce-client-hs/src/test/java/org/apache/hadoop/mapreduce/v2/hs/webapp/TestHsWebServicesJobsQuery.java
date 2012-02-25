@@ -593,16 +593,6 @@ name|TestAppContext
 implements|implements
 name|AppContext
 block|{
-DECL|field|appAttemptID
-specifier|final
-name|ApplicationAttemptId
-name|appAttemptID
-decl_stmt|;
-DECL|field|appID
-specifier|final
-name|ApplicationId
-name|appID
-decl_stmt|;
 DECL|field|user
 specifier|final
 name|String
@@ -633,12 +623,9 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-DECL|method|TestAppContext (int appid, int numJobs, int numTasks, int numAttempts)
+DECL|method|TestAppContext (int numJobs, int numTasks, int numAttempts)
 name|TestAppContext
 parameter_list|(
-name|int
-name|appid
-parameter_list|,
 name|int
 name|numJobs
 parameter_list|,
@@ -649,34 +636,12 @@ name|int
 name|numAttempts
 parameter_list|)
 block|{
-name|appID
-operator|=
-name|MockJobs
-operator|.
-name|newAppID
-argument_list|(
-name|appid
-argument_list|)
-expr_stmt|;
-name|appAttemptID
-operator|=
-name|MockJobs
-operator|.
-name|newAppAttemptID
-argument_list|(
-name|appID
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
 name|jobs
 operator|=
 name|MockJobs
 operator|.
 name|newJobs
 argument_list|(
-name|appID
-argument_list|,
 name|numJobs
 argument_list|,
 name|numTasks
@@ -691,8 +656,6 @@ parameter_list|()
 block|{
 name|this
 argument_list|(
-literal|0
-argument_list|,
 literal|3
 argument_list|,
 literal|2
@@ -710,7 +673,7 @@ name|getApplicationAttemptId
 parameter_list|()
 block|{
 return|return
-name|appAttemptID
+literal|null
 return|;
 block|}
 annotation|@
@@ -722,7 +685,7 @@ name|getApplicationID
 parameter_list|()
 block|{
 return|return
-name|appID
+literal|null
 return|;
 block|}
 annotation|@
@@ -1040,8 +1003,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryUserNone ()
 specifier|public
 name|void
@@ -1174,6 +1136,15 @@ name|JSONException
 throws|,
 name|Exception
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"###test start"
+argument_list|)
+expr_stmt|;
 name|WebResource
 name|r
 init|=
@@ -1340,8 +1311,7 @@ name|job
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryLimit ()
 specifier|public
 name|void
@@ -1479,8 +1449,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryLimitInvalid ()
 specifier|public
 name|void
@@ -1670,8 +1639,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryQueue ()
 specifier|public
 name|void
@@ -1808,8 +1776,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryQueueNonExist ()
 specifier|public
 name|void
@@ -1930,8 +1897,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeEnd ()
 specifier|public
 name|void
@@ -2082,8 +2048,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeBegin ()
 specifier|public
 name|void
@@ -2218,8 +2183,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeBeginEnd ()
 specifier|public
 name|void
@@ -2475,8 +2439,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeBeginEndInvalid ()
 specifier|public
 name|void
@@ -2691,8 +2654,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeInvalidformat ()
 specifier|public
 name|void
@@ -2882,8 +2844,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeEndInvalidformat ()
 specifier|public
 name|void
@@ -3073,8 +3034,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeNegative ()
 specifier|public
 name|void
@@ -3270,8 +3230,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryStartTimeEndNegative ()
 specifier|public
 name|void
@@ -3467,8 +3426,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeEndNegative ()
 specifier|public
 name|void
@@ -3664,8 +3622,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeBeginNegative ()
 specifier|public
 name|void
@@ -3861,8 +3818,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeBeginEndInvalid ()
 specifier|public
 name|void
@@ -4077,8 +4033,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeInvalidformat ()
 specifier|public
 name|void
@@ -4268,8 +4223,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeEndInvalidformat ()
 specifier|public
 name|void
@@ -4459,8 +4413,7 @@ name|classname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeBegin ()
 specifier|public
 name|void
@@ -4611,8 +4564,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeEnd ()
 specifier|public
 name|void
@@ -4747,8 +4699,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJobsQueryFinishTimeBeginEnd ()
 specifier|public
 name|void

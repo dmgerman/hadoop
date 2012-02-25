@@ -510,6 +510,11 @@ condition|)
 return|return
 literal|null
 return|;
+name|String
+name|exceptionMsg
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|String
@@ -632,11 +637,14 @@ argument_list|)
 return|;
 block|}
 else|else
-throw|throw
-operator|new
-name|Exception
-argument_list|()
-throw|;
+name|exceptionMsg
+operator|=
+literal|"Bad TaskType identifier. TaskAttemptId string : "
+operator|+
+name|str
+operator|+
+literal|" is not properly formed."
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -648,15 +656,27 @@ parameter_list|)
 block|{
 comment|//fall below
 block|}
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
+if|if
+condition|(
+name|exceptionMsg
+operator|==
+literal|null
+condition|)
+block|{
+name|exceptionMsg
+operator|=
 literal|"TaskAttemptId string : "
 operator|+
 name|str
 operator|+
 literal|" is not properly formed"
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|exceptionMsg
 argument_list|)
 throw|;
 block|}

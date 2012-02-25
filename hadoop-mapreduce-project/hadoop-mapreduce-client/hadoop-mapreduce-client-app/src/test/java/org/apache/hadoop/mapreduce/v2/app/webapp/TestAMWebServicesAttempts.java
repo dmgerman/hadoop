@@ -2988,7 +2988,7 @@ name|testTaskAttemptIdErrorGeneric
 argument_list|(
 literal|"bogusid"
 argument_list|,
-literal|"java.lang.Exception: Error parsing attempt ID: bogusid"
+literal|"java.lang.Exception: TaskAttemptId string : bogusid is not properly formed"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3006,9 +3006,9 @@ name|Exception
 block|{
 name|testTaskAttemptIdErrorGeneric
 argument_list|(
-literal|"attempt_12345_0_0_r_1_0"
+literal|"attempt_0_12345_m_000000_0"
 argument_list|,
-literal|"java.lang.Exception: Error getting info on task attempt id attempt_12345_0_0_r_1_0"
+literal|"java.lang.Exception: Error getting info on task attempt id attempt_0_12345_m_000000_0"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3026,9 +3026,9 @@ name|Exception
 block|{
 name|testTaskAttemptIdErrorGeneric
 argument_list|(
-literal|"attempt_12345_0_0_d_1_0"
+literal|"attempt_0_12345_d_000000_0"
 argument_list|,
-literal|"java.lang.Exception: Unknown task symbol: d"
+literal|"java.lang.Exception: Bad TaskType identifier. TaskAttemptId string : attempt_0_12345_d_000000_0 is not properly formed."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3046,9 +3046,9 @@ name|Exception
 block|{
 name|testTaskAttemptIdErrorGeneric
 argument_list|(
-literal|"attempt_12345_0_r_1_0"
+literal|"attempt_12345_m_000000_0"
 argument_list|,
-literal|"java.lang.Exception: For input string: \"r\""
+literal|"java.lang.Exception: TaskAttemptId string : attempt_12345_m_000000_0 is not properly formed"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3066,9 +3066,9 @@ name|Exception
 block|{
 name|testTaskAttemptIdErrorGeneric
 argument_list|(
-literal|"attempt_12345_0_0_r_1"
+literal|"attempt_0_12345_m_000000"
 argument_list|,
-literal|"java.lang.Exception: Error parsing attempt ID: attempt_12345_0_0_r_1"
+literal|"java.lang.Exception: TaskAttemptId string : attempt_0_12345_m_000000 is not properly formed"
 argument_list|)
 expr_stmt|;
 block|}

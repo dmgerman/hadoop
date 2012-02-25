@@ -939,6 +939,29 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// anymore but keeping it for now just in case other stuff starts failing.
+comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
+comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
+comment|// top of which AMWebServices is built seems to automatically do that for
+comment|// unhandled exceptions
+throw|throw
+operator|new
+name|NotFoundException
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
 throw|throw
 operator|new
 name|NotFoundException
@@ -1041,6 +1064,12 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// anymore but keeping it for now just in case other stuff starts failing.
+comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
+comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
+comment|// top of which AMWebServices is built seems to automatically do that for
+comment|// unhandled exceptions
 throw|throw
 operator|new
 name|NotFoundException
@@ -1063,6 +1092,23 @@ operator|new
 name|NotFoundException
 argument_list|(
 name|ne
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|NotFoundException
+argument_list|(
+name|e
 operator|.
 name|getMessage
 argument_list|()
@@ -1158,6 +1204,12 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// anymore but keeping it for now just in case other stuff starts failing.
+comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
+comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
+comment|// top of which AMWebServices is built seems to automatically do that for
+comment|// unhandled exceptions
 throw|throw
 operator|new
 name|NotFoundException
@@ -1180,6 +1232,23 @@ operator|new
 name|NotFoundException
 argument_list|(
 name|ne
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|NotFoundException
+argument_list|(
+name|e
 operator|.
 name|getMessage
 argument_list|()
