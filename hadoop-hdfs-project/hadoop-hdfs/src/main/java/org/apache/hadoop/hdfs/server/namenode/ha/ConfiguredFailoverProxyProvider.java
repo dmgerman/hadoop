@@ -186,6 +186,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -577,6 +591,20 @@ argument_list|>
 argument_list|(
 name|address
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// The client may have a delegation token set for the logical
+comment|// URI of the cluster. Clone this token to apply to each of the
+comment|// underlying IPC addresses so that the IPC code can find it.
+name|HAUtil
+operator|.
+name|cloneDelegationTokenForLogicalUri
+argument_list|(
+name|ugi
+argument_list|,
+name|uri
+argument_list|,
+name|address
 argument_list|)
 expr_stmt|;
 block|}
