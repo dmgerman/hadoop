@@ -328,7 +328,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"job_0_0_0"
+literal|"job_0_0000"
 argument_list|,
 name|MRApps
 operator|.
@@ -354,7 +354,7 @@ name|MRApps
 operator|.
 name|toJobID
 argument_list|(
-literal|"job_1_1_1"
+literal|"job_1_1"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -393,6 +393,7 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// tests against some proto.id and not a job.id field
 block|}
 DECL|method|testJobIDShort ()
 annotation|@
@@ -400,7 +401,7 @@ name|Test
 argument_list|(
 name|expected
 operator|=
-name|YarnException
+name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
@@ -413,7 +414,7 @@ name|MRApps
 operator|.
 name|toJobID
 argument_list|(
-literal|"job_0_0"
+literal|"job_0_0_0"
 argument_list|)
 expr_stmt|;
 block|}
@@ -539,7 +540,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_0_0_0_m_0"
+literal|"task_0_0000_m_000000"
 argument_list|,
 name|MRApps
 operator|.
@@ -560,7 +561,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"task_0_0_0_r_0"
+literal|"task_0_0000_r_000000"
 argument_list|,
 name|MRApps
 operator|.
@@ -586,7 +587,7 @@ name|MRApps
 operator|.
 name|toTaskID
 argument_list|(
-literal|"task_1_2_3_r_4"
+literal|"task_1_2_r_3"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -623,7 +624,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|tid
 operator|.
@@ -648,7 +649,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|tid
 operator|.
@@ -662,7 +663,7 @@ name|MRApps
 operator|.
 name|toTaskID
 argument_list|(
-literal|"task_1_2_3_m_4"
+literal|"task_1_2_m_3"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -684,7 +685,7 @@ name|Test
 argument_list|(
 name|expected
 operator|=
-name|YarnException
+name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
@@ -697,7 +698,7 @@ name|MRApps
 operator|.
 name|toTaskID
 argument_list|(
-literal|"task_0_0_0_m"
+literal|"task_0_0000_m"
 argument_list|)
 expr_stmt|;
 block|}
@@ -707,7 +708,7 @@ name|Test
 argument_list|(
 name|expected
 operator|=
-name|YarnException
+name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
@@ -720,7 +721,7 @@ name|MRApps
 operator|.
 name|toTaskID
 argument_list|(
-literal|"task_0_0_0_x_0"
+literal|"task_0_0000_x_000000"
 argument_list|)
 expr_stmt|;
 block|}
@@ -830,7 +831,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"attempt_0_0_0_m_0_0"
+literal|"attempt_0_0000_m_000000_0"
 argument_list|,
 name|MRApps
 operator|.
@@ -856,7 +857,7 @@ name|MRApps
 operator|.
 name|toTaskAttemptID
 argument_list|(
-literal|"attempt_0_1_2_m_3_4"
+literal|"attempt_0_1_m_2_3"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -899,7 +900,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|taid
 operator|.
@@ -915,7 +916,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|taid
 operator|.
@@ -928,7 +929,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|taid
 operator|.
@@ -943,7 +944,7 @@ name|Test
 argument_list|(
 name|expected
 operator|=
-name|YarnException
+name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)

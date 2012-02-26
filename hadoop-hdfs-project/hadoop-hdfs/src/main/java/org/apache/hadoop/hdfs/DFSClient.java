@@ -3184,8 +3184,6 @@ condition|(
 name|cached
 operator|!=
 literal|null
-operator|&&
-name|cached
 condition|)
 block|{
 if|if
@@ -3204,61 +3202,30 @@ literal|"Address "
 operator|+
 name|targetAddr
 operator|+
+operator|(
+name|cached
+condition|?
 literal|" is local"
+else|:
+literal|" is not local"
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|true
+name|cached
 return|;
 block|}
-comment|// Check if the address is any local or loop back
 name|boolean
 name|local
 init|=
-name|addr
+name|NetUtils
 operator|.
-name|isAnyLocalAddress
-argument_list|()
-operator|||
-name|addr
-operator|.
-name|isLoopbackAddress
-argument_list|()
-decl_stmt|;
-comment|// Check if the address is defined on any interface
-if|if
-condition|(
-operator|!
-name|local
-condition|)
-block|{
-try|try
-block|{
-name|local
-operator|=
-name|NetworkInterface
-operator|.
-name|getByInetAddress
+name|isLocalAddress
 argument_list|(
 name|addr
 argument_list|)
-operator|!=
-literal|null
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|SocketException
-name|e
-parameter_list|)
-block|{
-name|local
-operator|=
-literal|false
-expr_stmt|;
-block|}
-block|}
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -3275,7 +3242,13 @@ literal|"Address "
 operator|+
 name|targetAddr
 operator|+
+operator|(
+name|local
+condition|?
 literal|" is local"
+else|:
+literal|" is not local"
+operator|)
 argument_list|)
 expr_stmt|;
 block|}

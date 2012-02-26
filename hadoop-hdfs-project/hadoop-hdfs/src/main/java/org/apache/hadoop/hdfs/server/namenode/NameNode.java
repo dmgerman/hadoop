@@ -1494,31 +1494,6 @@ name|portString
 argument_list|)
 return|;
 block|}
-comment|/**    * Compose a "host:port" string from the address.    */
-DECL|method|getHostPortString (InetSocketAddress addr)
-specifier|public
-specifier|static
-name|String
-name|getHostPortString
-parameter_list|(
-name|InetSocketAddress
-name|addr
-parameter_list|)
-block|{
-return|return
-name|addr
-operator|.
-name|getHostName
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|addr
-operator|.
-name|getPort
-argument_list|()
-return|;
-block|}
 comment|//
 comment|// Common NameNode methods implementation for the active name-node role.
 comment|//
@@ -1603,6 +1578,8 @@ name|setServiceAddress
 argument_list|(
 name|conf
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|serviceRPCAddress
@@ -1693,6 +1670,8 @@ name|set
 argument_list|(
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|getHttpAddress
@@ -1743,6 +1722,8 @@ operator|=
 operator|new
 name|NamenodeRegistration
 argument_list|(
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|rpcServer
@@ -1751,6 +1732,8 @@ name|getRpcAddress
 argument_list|()
 argument_list|)
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|getHttpAddress

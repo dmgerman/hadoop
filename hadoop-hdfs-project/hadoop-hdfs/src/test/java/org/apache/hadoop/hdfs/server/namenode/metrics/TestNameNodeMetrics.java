@@ -730,24 +730,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateMetrics ()
-specifier|private
-name|void
-name|updateMetrics
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// Wait for metrics update (corresponds to dfs.namenode.replication.interval
-comment|// for some block related metrics to get updated)
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|readFile (FileSystem fileSys,Path name)
 specifier|private
 name|void
@@ -847,9 +829,6 @@ operator|.
 name|getBlockCapacity
 argument_list|()
 decl_stmt|;
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 name|assertGauge
 argument_list|(
 literal|"BlockCapacity"
@@ -924,9 +903,6 @@ operator|<<=
 literal|1
 expr_stmt|;
 block|}
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 name|long
 name|filesTotal
 init|=
@@ -986,9 +962,6 @@ operator|--
 expr_stmt|;
 comment|// reduce the filecount for deleted file
 name|waitForDeletion
-argument_list|()
-expr_stmt|;
-name|updateMetrics
 argument_list|()
 expr_stmt|;
 name|rb
@@ -1155,9 +1128,14 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|updateMetrics
-argument_list|()
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
 expr_stmt|;
+comment|// Wait for block to be marked corrupt
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1293,9 +1271,6 @@ operator|)
 literal|1
 argument_list|)
 expr_stmt|;
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1425,9 +1400,14 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|updateMetrics
-argument_list|()
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
 expr_stmt|;
+comment|// Wait for block to be marked corrupt
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1568,9 +1548,6 @@ operator|.
 name|OVERWRITE
 argument_list|)
 expr_stmt|;
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1647,9 +1624,6 @@ operator|)
 literal|2
 argument_list|)
 expr_stmt|;
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 comment|//Create file does not change numGetBlockLocations metric
 comment|//expect numGetBlockLocations = 0 for previous and current interval
 name|assertCounter
@@ -1672,9 +1646,6 @@ name|fs
 argument_list|,
 name|file1_Path
 argument_list|)
-expr_stmt|;
-name|updateMetrics
-argument_list|()
 expr_stmt|;
 comment|// Verify read file operation has incremented numGetBlockLocations by 1
 name|assertCounter
@@ -1703,9 +1674,6 @@ name|fs
 argument_list|,
 name|file1_Path
 argument_list|)
-expr_stmt|;
-name|updateMetrics
-argument_list|()
 expr_stmt|;
 name|assertCounter
 argument_list|(
@@ -1807,9 +1775,6 @@ literal|"/tmp"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|updateMetrics
-argument_list|()
-expr_stmt|;
 name|assertGauge
 argument_list|(
 literal|"LastCheckpointTime"
@@ -1864,9 +1829,6 @@ name|getNameNodeRpc
 argument_list|()
 operator|.
 name|rollEditLog
-argument_list|()
-expr_stmt|;
-name|updateMetrics
 argument_list|()
 expr_stmt|;
 name|assertGauge
@@ -1948,9 +1910,6 @@ name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
 argument_list|)
-expr_stmt|;
-name|updateMetrics
-argument_list|()
 expr_stmt|;
 name|long
 name|newLastCkptTime

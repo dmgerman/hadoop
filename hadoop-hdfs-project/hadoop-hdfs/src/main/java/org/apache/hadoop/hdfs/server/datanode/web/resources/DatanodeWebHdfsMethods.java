@@ -1108,6 +1108,10 @@ argument_list|(
 block|{
 name|MediaType
 operator|.
+name|APPLICATION_OCTET_STREAM
+block|,
+name|MediaType
+operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
@@ -1327,6 +1331,10 @@ annotation|@
 name|Produces
 argument_list|(
 block|{
+name|MediaType
+operator|.
+name|APPLICATION_OCTET_STREAM
+block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
@@ -1819,7 +1827,7 @@ name|type
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON
+name|APPLICATION_OCTET_STREAM
 argument_list|)
 operator|.
 name|build
@@ -1861,6 +1869,10 @@ annotation|@
 name|Produces
 argument_list|(
 block|{
+name|MediaType
+operator|.
+name|APPLICATION_OCTET_STREAM
+block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
@@ -2002,6 +2014,10 @@ annotation|@
 name|Produces
 argument_list|(
 block|{
+name|MediaType
+operator|.
+name|APPLICATION_OCTET_STREAM
+block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
@@ -2308,7 +2324,7 @@ name|type
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON
+name|APPLICATION_OCTET_STREAM
 argument_list|)
 operator|.
 name|build

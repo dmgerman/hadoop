@@ -2738,7 +2738,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"job_1234_1_2"
+literal|"job_0_1234"
 argument_list|)
 operator|.
 name|get
@@ -2862,7 +2862,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: job, job_1234_1_2, is not found"
+literal|"java.lang.Exception: job, job_0_1234, is not found"
 argument_list|,
 name|message
 argument_list|)
@@ -2981,7 +2981,7 @@ name|assertEquals
 argument_list|(
 name|Status
 operator|.
-name|BAD_REQUEST
+name|NOT_FOUND
 argument_list|,
 name|response
 operator|.
@@ -3160,7 +3160,7 @@ name|assertEquals
 argument_list|(
 name|Status
 operator|.
-name|BAD_REQUEST
+name|NOT_FOUND
 argument_list|,
 name|response
 operator|.
@@ -3346,7 +3346,7 @@ name|assertEquals
 argument_list|(
 name|Status
 operator|.
-name|BAD_REQUEST
+name|NOT_FOUND
 argument_list|,
 name|response
 operator|.
@@ -3522,7 +3522,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"For input string: \"foo\""
+literal|"java.lang.Exception: JobId string : job_foo is not properly formed"
 argument_list|,
 name|message
 argument_list|)
@@ -3533,7 +3533,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception type"
 argument_list|,
-literal|"NumberFormatException"
+literal|"NotFoundException"
 argument_list|,
 name|type
 argument_list|)
@@ -3544,7 +3544,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception classname"
 argument_list|,
-literal|"java.lang.NumberFormatException"
+literal|"org.apache.hadoop.yarn.webapp.NotFoundException"
 argument_list|,
 name|classname
 argument_list|)
@@ -3723,7 +3723,9 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"java.lang.Exception: Error parsing job ID: bogusfoo"
+literal|"java.lang.Exception: JobId string : "
+operator|+
+literal|"bogusfoo is not properly formed"
 argument_list|,
 name|message
 argument_list|)

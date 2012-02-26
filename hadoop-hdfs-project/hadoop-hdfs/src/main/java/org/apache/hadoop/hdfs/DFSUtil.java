@@ -2658,7 +2658,7 @@ try|try
 block|{
 name|defaultAddress
 operator|=
-name|NameNode
+name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(

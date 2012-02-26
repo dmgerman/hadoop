@@ -3527,7 +3527,7 @@ argument_list|,
 name|nnId
 argument_list|)
 argument_list|,
-name|NameNode
+name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
@@ -3553,7 +3553,7 @@ argument_list|,
 name|nnId
 argument_list|)
 argument_list|,
-name|NameNode
+name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(
@@ -3638,7 +3638,7 @@ decl_stmt|;
 name|String
 name|hostPort
 init|=
-name|NameNode
+name|NetUtils
 operator|.
 name|getHostPortString
 argument_list|(

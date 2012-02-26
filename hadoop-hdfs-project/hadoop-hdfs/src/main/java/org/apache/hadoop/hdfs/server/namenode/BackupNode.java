@@ -690,6 +690,8 @@ name|set
 argument_list|(
 name|BN_ADDRESS_NAME_KEY
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|addr
@@ -718,6 +720,8 @@ name|set
 argument_list|(
 name|BN_SERVICE_RPC_ADDRESS_KEY
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|addr
@@ -784,6 +788,8 @@ name|set
 argument_list|(
 name|BN_HTTP_ADDRESS_NAME_KEY
 argument_list|,
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|getHttpAddress
@@ -1492,6 +1498,8 @@ name|this
 operator|.
 name|nnRpcAddress
 operator|=
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|nnAddress
@@ -1501,6 +1509,8 @@ name|this
 operator|.
 name|nnHttpAddress
 operator|=
+name|NetUtils
+operator|.
 name|getHostPortString
 argument_list|(
 name|super
