@@ -105,6 +105,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Service state: initially {@link STATE#NOTINITED}.    */
 DECL|field|state
 specifier|private
 name|STATE
@@ -114,22 +115,26 @@ name|STATE
 operator|.
 name|NOTINITED
 decl_stmt|;
+comment|/**    * Service name.    */
 DECL|field|name
 specifier|private
 specifier|final
 name|String
 name|name
 decl_stmt|;
+comment|/**    * Service start time. Will be zero until the service is started.    */
 DECL|field|startTime
 specifier|private
 name|long
 name|startTime
 decl_stmt|;
+comment|/**    * The configuration. Will be null until the service is initialized.    */
 DECL|field|config
 specifier|private
 name|Configuration
 name|config
 decl_stmt|;
+comment|/**    * List of state change listeners; it is final to ensure    * that it will never be null.    */
 DECL|field|listeners
 specifier|private
 name|List
@@ -145,6 +150,7 @@ name|ServiceStateChangeListener
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Construct the service.    * @param name service name    */
 DECL|method|AbstractService (String name)
 specifier|public
 name|AbstractService
@@ -173,6 +179,7 @@ return|return
 name|state
 return|;
 block|}
+comment|/**    * {@inheritDoc}    * @throws IllegalStateException if the current service state does not permit    * this action    */
 annotation|@
 name|Override
 DECL|method|init (Configuration conf)
@@ -218,6 +225,7 @@ literal|" is inited."
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * {@inheritDoc}    * @throws IllegalStateException if the current service state does not permit    * this action    */
 annotation|@
 name|Override
 DECL|method|start ()
@@ -261,6 +269,7 @@ literal|" is started."
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * {@inheritDoc}    * @throws IllegalStateException if the current service state does not permit    * this action    */
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -399,6 +408,7 @@ return|return
 name|startTime
 return|;
 block|}
+comment|/**    * Verify that that a service is in a given state.    * @param currentState the desired state    * @throws IllegalStateException if the service state is different from    * the desired state    */
 DECL|method|ensureCurrentState (STATE currentState)
 specifier|private
 name|void
@@ -432,6 +442,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Change to a new state and notify all listeners.    * This is a private method that is only invoked from synchronized methods,    * which avoid having to clone the listener list. It does imply that    * the state change listener methods should be short lived, as they    * will delay the state transition.    * @param newState new service state    */
 DECL|method|changeState (STATE newState)
 specifier|private
 name|void
