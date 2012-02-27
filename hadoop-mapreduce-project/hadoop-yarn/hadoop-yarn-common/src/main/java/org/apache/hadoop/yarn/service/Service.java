@@ -42,23 +42,29 @@ specifier|public
 interface|interface
 name|Service
 block|{
+comment|/**    * Service states    */
 DECL|enum|STATE
 specifier|public
 enum|enum
 name|STATE
 block|{
+comment|/** Constructed but not initialized */
 DECL|enumConstant|NOTINITED
 name|NOTINITED
 block|,
+comment|/** Initialized but not started or stopped */
 DECL|enumConstant|INITED
 name|INITED
 block|,
+comment|/** started and not stopped */
 DECL|enumConstant|STARTED
 name|STARTED
 block|,
+comment|/** stopped. No further state transitions are permitted */
 DECL|enumConstant|STOPPED
 name|STOPPED
-block|;   }
+block|}
+comment|/**    * Initialize the service.    *    * The transition must be from {@link STATE#NOTINITED} to {@link STATE#INITED}    * unless the operation failed and an exception was raised.    * @param config the configuration of the service    */
 DECL|method|init (Configuration config)
 name|void
 name|init
@@ -67,16 +73,19 @@ name|Configuration
 name|config
 parameter_list|)
 function_decl|;
+comment|/**    * Start the service.    *    * The transition should be from {@link STATE#INITED} to {@link STATE#STARTED}    * unless the operation failed and an exception was raised.    */
 DECL|method|start ()
 name|void
 name|start
 parameter_list|()
 function_decl|;
+comment|/**    * Stop the service.    *    * This operation must be designed to complete regardless of the initial state    * of the service, including the state of all its internal fields.    */
 DECL|method|stop ()
 name|void
 name|stop
 parameter_list|()
 function_decl|;
+comment|/**    * Register an instance of the service state change events.    * @param listener a new listener    */
 DECL|method|register (ServiceStateChangeListener listener)
 name|void
 name|register
@@ -85,6 +94,7 @@ name|ServiceStateChangeListener
 name|listener
 parameter_list|)
 function_decl|;
+comment|/**    * Unregister a previously instance of the service state change events.    * @param listener the listener to unregister.    */
 DECL|method|unregister (ServiceStateChangeListener listener)
 name|void
 name|unregister
@@ -93,21 +103,25 @@ name|ServiceStateChangeListener
 name|listener
 parameter_list|)
 function_decl|;
+comment|/**    * Get the name of this service.    * @return the service name    */
 DECL|method|getName ()
 name|String
 name|getName
 parameter_list|()
 function_decl|;
+comment|/**    * Get the configuration of this service.    * This is normally not a clone and may be manipulated, though there are no    * guarantees as to what the consequences of such actions may be    * @return the current configuration, unless a specific implentation chooses    * otherwise.    */
 DECL|method|getConfig ()
 name|Configuration
 name|getConfig
 parameter_list|()
 function_decl|;
+comment|/**    * Get the current service state    * @return the state of the service    */
 DECL|method|getServiceState ()
 name|STATE
 name|getServiceState
 parameter_list|()
 function_decl|;
+comment|/**    * Get the service start time    * @return the start time of the service. This will be zero if the service    * has not yet been started.    */
 DECL|method|getStartTime ()
 name|long
 name|getStartTime
