@@ -3055,6 +3055,15 @@ name|runtime
 operator|=
 name|runtime
 expr_stmt|;
+name|this
+operator|.
+name|journalSet
+operator|.
+name|setRuntimeForTesting
+argument_list|(
+name|runtime
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Return a manifest of what finalized edit logs are available    */
 DECL|method|getEditLogManifest (long fromTxId)
