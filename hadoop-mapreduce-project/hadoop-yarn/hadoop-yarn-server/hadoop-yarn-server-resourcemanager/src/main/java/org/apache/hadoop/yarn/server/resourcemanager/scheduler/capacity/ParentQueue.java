@@ -608,17 +608,17 @@ specifier|private
 name|float
 name|absoluteMaxCapacity
 decl_stmt|;
+DECL|field|absoluteUsedCapacity
+specifier|private
+name|float
+name|absoluteUsedCapacity
+init|=
+literal|0.0f
+decl_stmt|;
 DECL|field|usedCapacity
 specifier|private
 name|float
 name|usedCapacity
-init|=
-literal|0.0f
-decl_stmt|;
-DECL|field|utilization
-specifier|private
-name|float
-name|utilization
 init|=
 literal|0.0f
 decl_stmt|;
@@ -1092,6 +1092,18 @@ argument_list|,
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
+name|CSQueueUtils
+operator|.
+name|checkAbsoluteCapacities
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|absoluteCapacity
+argument_list|,
+name|absoluteMaxCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capacity
@@ -1468,6 +1480,19 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getAbsoluteUsedCapacity ()
+specifier|public
+specifier|synchronized
+name|float
+name|getAbsoluteUsedCapacity
+parameter_list|()
+block|{
+return|return
+name|absoluteUsedCapacity
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getMaximumCapacity ()
 specifier|public
 name|float
@@ -1515,19 +1540,6 @@ parameter_list|()
 block|{
 return|return
 name|usedResources
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getUtilization ()
-specifier|public
-specifier|synchronized
-name|float
-name|getUtilization
-parameter_list|()
-block|{
-return|return
-name|utilization
 return|;
 block|}
 annotation|@
@@ -1907,13 +1919,6 @@ operator|+
 literal|"usedCapacity="
 operator|+
 name|getUsedCapacity
-argument_list|()
-operator|+
-literal|", "
-operator|+
-literal|"utilization="
-operator|+
-name|getUtilization
 argument_list|()
 operator|+
 literal|", "
@@ -2567,6 +2572,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setUsedCapacity (float usedCapacity)
 specifier|public
 specifier|synchronized
@@ -2584,21 +2591,23 @@ operator|=
 name|usedCapacity
 expr_stmt|;
 block|}
-DECL|method|setUtilization (float utilization)
+annotation|@
+name|Override
+DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
 specifier|public
 specifier|synchronized
 name|void
-name|setUtilization
+name|setAbsoluteUsedCapacity
 parameter_list|(
 name|float
-name|utilization
+name|absUsedCapacity
 parameter_list|)
 block|{
 name|this
 operator|.
-name|utilization
+name|absoluteUsedCapacity
 operator|=
-name|utilization
+name|absUsedCapacity
 expr_stmt|;
 block|}
 comment|/**    * Set maximum capacity - used only for testing.    * @param maximumCapacity new max capacity    */
@@ -2624,6 +2633,30 @@ argument_list|,
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
+name|float
+name|absMaxCapacity
+init|=
+name|CSQueueUtils
+operator|.
+name|computeAbsoluteMaximumCapacity
+argument_list|(
+name|maximumCapacity
+argument_list|,
+name|parent
+argument_list|)
+decl_stmt|;
+name|CSQueueUtils
+operator|.
+name|checkAbsoluteCapacities
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|absoluteCapacity
+argument_list|,
+name|absMaxCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|maximumCapacity
@@ -2634,14 +2667,7 @@ name|this
 operator|.
 name|absoluteMaxCapacity
 operator|=
-name|CSQueueUtils
-operator|.
-name|computeAbsoluteMaximumCapacity
-argument_list|(
-name|maximumCapacity
-argument_list|,
-name|parent
-argument_list|)
+name|absMaxCapacity
 expr_stmt|;
 block|}
 annotation|@
@@ -2802,9 +2828,14 @@ operator|+
 name|getQueueName
 argument_list|()
 operator|+
-literal|" util="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|" used="
@@ -2845,9 +2876,14 @@ operator|.
 name|getResource
 argument_list|()
 operator|+
-literal|" utilization="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3239,7 +3275,7 @@ literal|"("
 operator|+
 name|q
 operator|.
-name|getUtilization
+name|getUsedCapacity
 argument_list|()
 operator|+
 literal|"), "
@@ -3347,9 +3383,14 @@ operator|+
 name|getQueueName
 argument_list|()
 operator|+
-literal|" util="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|" used="

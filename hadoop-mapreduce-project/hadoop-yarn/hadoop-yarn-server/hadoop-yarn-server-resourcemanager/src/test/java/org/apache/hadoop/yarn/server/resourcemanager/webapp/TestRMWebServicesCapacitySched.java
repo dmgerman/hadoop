@@ -568,9 +568,9 @@ DECL|field|absoluteMaxCapacity
 name|float
 name|absoluteMaxCapacity
 decl_stmt|;
-DECL|field|utilization
+DECL|field|absoluteUsedCapacity
 name|float
-name|utilization
+name|absoluteUsedCapacity
 decl_stmt|;
 DECL|field|numApplications
 name|int
@@ -1831,7 +1831,7 @@ argument_list|)
 expr_stmt|;
 name|qi
 operator|.
-name|utilization
+name|absoluteUsedCapacity
 operator|=
 name|WebServicesTestUtils
 operator|.
@@ -1839,7 +1839,7 @@ name|getXmlFloat
 argument_list|(
 name|qElem
 argument_list|,
-literal|"utilization"
+literal|"absoluteUsedCapacity"
 argument_list|)
 expr_stmt|;
 name|qi
@@ -2542,7 +2542,7 @@ argument_list|)
 expr_stmt|;
 name|qi
 operator|.
-name|utilization
+name|absoluteUsedCapacity
 operator|=
 operator|(
 name|float
@@ -2551,7 +2551,7 @@ name|info
 operator|.
 name|getDouble
 argument_list|(
-literal|"utilization"
+literal|"absoluteUsedCapacity"
 argument_list|)
 expr_stmt|;
 name|qi
@@ -2982,13 +2982,13 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"utilization doesn't match"
+literal|"absoluteUsedCapacity doesn't match"
 argument_list|,
 literal|0
 argument_list|,
 name|info
 operator|.
-name|utilization
+name|absoluteUsedCapacity
 argument_list|,
 literal|1e-3f
 argument_list|)
