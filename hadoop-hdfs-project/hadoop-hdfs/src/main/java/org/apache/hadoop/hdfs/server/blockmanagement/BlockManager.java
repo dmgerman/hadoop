@@ -8393,31 +8393,11 @@ condition|(
 name|logEveryBlock
 condition|)
 block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|info
+name|logAddStoredBlock
 argument_list|(
-literal|"BLOCK* addStoredBlock: "
-operator|+
-literal|"blockMap updated: "
-operator|+
+name|storedBlock
+argument_list|,
 name|node
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" is added to "
-operator|+
-name|storedBlock
-operator|+
-literal|" size "
-operator|+
-name|storedBlock
-operator|.
-name|getNumBytes
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -8690,6 +8670,92 @@ expr_stmt|;
 return|return
 name|storedBlock
 return|;
+block|}
+DECL|method|logAddStoredBlock (BlockInfo storedBlock, DatanodeDescriptor node)
+specifier|private
+name|void
+name|logAddStoredBlock
+parameter_list|(
+name|BlockInfo
+name|storedBlock
+parameter_list|,
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|isInfoEnabled
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|500
+argument_list|)
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"BLOCK* addStoredBlock: blockMap updated: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|node
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" is added to "
+argument_list|)
+expr_stmt|;
+name|storedBlock
+operator|.
+name|appendStringTo
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" size "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|storedBlock
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
 DECL|method|invalidateCorruptReplicas (Block blk)
