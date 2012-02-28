@@ -754,6 +754,32 @@ return|return
 name|fs
 return|;
 block|}
+DECL|method|setFailoverConfigurations (MiniDFSCluster cluster, Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|setFailoverConfigurations
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|setFailoverConfigurations
+argument_list|(
+name|cluster
+argument_list|,
+name|conf
+argument_list|,
+name|getLogicalHostname
+argument_list|(
+name|cluster
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Sets the required configurations for performing failover of default namespace. */
 DECL|method|setFailoverConfigurations (MiniDFSCluster cluster, Configuration conf, String logicalName)
 specifier|public

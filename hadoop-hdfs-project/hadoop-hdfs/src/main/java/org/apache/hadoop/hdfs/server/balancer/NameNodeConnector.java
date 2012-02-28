@@ -180,7 +180,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HAUtil
+name|NameNodeProxies
 import|;
 end_import
 
@@ -559,7 +559,7 @@ name|this
 operator|.
 name|namenode
 operator|=
-name|HAUtil
+name|NameNodeProxies
 operator|.
 name|createProxy
 argument_list|(
@@ -579,7 +579,7 @@ name|this
 operator|.
 name|client
 operator|=
-name|HAUtil
+name|NameNodeProxies
 operator|.
 name|createProxy
 argument_list|(

@@ -126,7 +126,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -140,7 +140,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HdfsConfiguration
+name|NameNodeProxies
 import|;
 end_import
 
@@ -473,14 +473,26 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
-name|DFSUtil
+name|NameNodeProxies
 operator|.
-name|createNamenode
+name|createProxy
+argument_list|(
+name|conf
+argument_list|,
+name|NameNode
+operator|.
+name|getUri
 argument_list|(
 name|nnAddr
-argument_list|,
-name|conf
 argument_list|)
+argument_list|,
+name|ClientProtocol
+operator|.
+name|class
+argument_list|)
+operator|.
+name|getProxy
+argument_list|()
 return|;
 block|}
 DECL|method|getUGI (HttpServletRequest request, Configuration conf)
