@@ -1910,7 +1910,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"drwho@APACHE.ORG"
+literal|"drwho@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
@@ -1927,7 +1927,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"drwho2@APACHE.ORG"
+literal|"drwho2@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
@@ -2057,7 +2057,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"drwho@APACHE.ORG"
+literal|"drwho@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
@@ -2078,7 +2078,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"susan@APACHE.ORG"
+literal|"susan@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
@@ -2099,7 +2099,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"barbara@APACHE.ORG"
+literal|"barbara@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
@@ -2118,7 +2118,7 @@ name|UserGroupInformation
 operator|.
 name|createUserForTesting
 argument_list|(
-literal|"ian@APACHE.ORG"
+literal|"ian@EXAMPLE.COM"
 argument_list|,
 operator|new
 name|String
