@@ -329,6 +329,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -427,6 +430,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -507,6 +513,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|()
 operator|.
 name|elements
@@ -810,6 +819,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -967,6 +979,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1102,6 +1117,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1225,6 +1243,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1324,6 +1345,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1446,6 +1470,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1622,6 +1649,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -1864,6 +1894,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -2112,6 +2145,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -2341,6 +2377,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -2424,6 +2463,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -2615,6 +2657,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -2695,6 +2740,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -2838,6 +2886,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -2907,6 +2958,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -3307,6 +3361,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -3473,6 +3530,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -3649,6 +3709,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -3817,6 +3880,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -3882,6 +3948,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -4089,6 +4158,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|Vector
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -4255,6 +4327,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@
@@ -4320,6 +4395,9 @@ name|doAnswer
 argument_list|(
 operator|new
 name|Answer
+argument_list|<
+name|Object
+argument_list|>
 argument_list|()
 block|{
 annotation|@

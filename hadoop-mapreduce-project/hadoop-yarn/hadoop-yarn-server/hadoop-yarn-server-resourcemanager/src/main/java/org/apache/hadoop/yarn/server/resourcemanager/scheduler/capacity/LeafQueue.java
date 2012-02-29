@@ -865,6 +865,13 @@ specifier|private
 name|float
 name|absoluteMaxCapacity
 decl_stmt|;
+DECL|field|absoluteUsedCapacity
+specifier|private
+name|float
+name|absoluteUsedCapacity
+init|=
+literal|0.0f
+decl_stmt|;
 DECL|field|userLimit
 specifier|private
 name|int
@@ -911,13 +918,6 @@ name|createResource
 argument_list|(
 literal|0
 argument_list|)
-decl_stmt|;
-DECL|field|utilization
-specifier|private
-name|float
-name|utilization
-init|=
-literal|0.0f
 decl_stmt|;
 DECL|field|usedCapacity
 specifier|private
@@ -1592,6 +1592,28 @@ argument_list|,
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
+name|float
+name|absCapacity
+init|=
+name|parent
+operator|.
+name|getAbsoluteCapacity
+argument_list|()
+operator|*
+name|capacity
+decl_stmt|;
+name|CSQueueUtils
+operator|.
+name|checkAbsoluteCapacities
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|absCapacity
+argument_list|,
+name|absoluteMaxCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capacity
@@ -1602,12 +1624,7 @@ name|this
 operator|.
 name|absoluteCapacity
 operator|=
-name|parent
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
-operator|*
-name|capacity
+name|absCapacity
 expr_stmt|;
 name|this
 operator|.
@@ -1868,9 +1885,9 @@ literal|"1) ]"
 operator|+
 literal|"\n"
 operator|+
-literal|"utilization = "
+literal|"usedCapacity = "
 operator|+
-name|utilization
+name|usedCapacity
 operator|+
 literal|" [= usedResourcesMemory / "
 operator|+
@@ -1878,13 +1895,11 @@ literal|"(clusterResourceMemory * absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
-literal|"usedCapacity = "
+literal|"absoluteUsedCapacity = "
 operator|+
-name|usedCapacity
+name|absoluteUsedCapacity
 operator|+
-literal|" [= usedResourcesMemory / "
-operator|+
-literal|"(clusterResourceMemory * parent.absoluteCapacity)]"
+literal|" [= usedResourcesMemory / clusterResourceMemory]"
 operator|+
 literal|"\n"
 operator|+
@@ -1982,6 +1997,19 @@ parameter_list|()
 block|{
 return|return
 name|absoluteMaxCapacity
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAbsoluteUsedCapacity ()
+specifier|public
+specifier|synchronized
+name|float
+name|getAbsoluteUsedCapacity
+parameter_list|()
+block|{
+return|return
+name|absoluteUsedCapacity
 return|;
 block|}
 annotation|@
@@ -2150,19 +2178,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getUtilization ()
-specifier|public
-specifier|synchronized
-name|float
-name|getUtilization
-parameter_list|()
-block|{
-return|return
-name|utilization
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getChildQueues ()
 specifier|public
 name|List
@@ -2176,23 +2191,8 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|setUtilization (float utilization)
-specifier|public
-specifier|synchronized
-name|void
-name|setUtilization
-parameter_list|(
-name|float
-name|utilization
-parameter_list|)
-block|{
-name|this
-operator|.
-name|utilization
-operator|=
-name|utilization
-expr_stmt|;
-block|}
+annotation|@
+name|Override
 DECL|method|setUsedCapacity (float usedCapacity)
 specifier|public
 specifier|synchronized
@@ -2208,6 +2208,25 @@ operator|.
 name|usedCapacity
 operator|=
 name|usedCapacity
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
+specifier|public
+specifier|synchronized
+name|void
+name|setAbsoluteUsedCapacity
+parameter_list|(
+name|float
+name|absUsedCapacity
+parameter_list|)
+block|{
+name|this
+operator|.
+name|absoluteUsedCapacity
+operator|=
+name|absUsedCapacity
 expr_stmt|;
 block|}
 comment|/**    * Set maximum capacity - used only for testing.    * @param maximumCapacity new max capacity    */
@@ -2233,6 +2252,30 @@ argument_list|,
 name|maximumCapacity
 argument_list|)
 expr_stmt|;
+name|float
+name|absMaxCapacity
+init|=
+name|CSQueueUtils
+operator|.
+name|computeAbsoluteMaximumCapacity
+argument_list|(
+name|maximumCapacity
+argument_list|,
+name|parent
+argument_list|)
+decl_stmt|;
+name|CSQueueUtils
+operator|.
+name|checkAbsoluteCapacities
+argument_list|(
+name|getQueueName
+argument_list|()
+argument_list|,
+name|absoluteCapacity
+argument_list|,
+name|absMaxCapacity
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|maximumCapacity
@@ -2243,14 +2286,7 @@ name|this
 operator|.
 name|absoluteMaxCapacity
 operator|=
-name|CSQueueUtils
-operator|.
-name|computeAbsoluteMaximumCapacity
-argument_list|(
-name|maximumCapacity
-argument_list|,
-name|parent
-argument_list|)
+name|absMaxCapacity
 expr_stmt|;
 block|}
 comment|/**    * Set user limit - used only for testing.    * @param userLimit new user limit    */
@@ -2650,9 +2686,9 @@ argument_list|()
 operator|+
 literal|", "
 operator|+
-literal|"utilization="
+literal|"absoluteUsedCapacity="
 operator|+
-name|getUtilization
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|", "
@@ -5928,9 +5964,14 @@ literal|" queue="
 operator|+
 name|this
 operator|+
-literal|" util="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|" used="
@@ -5992,9 +6033,14 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|" util="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|" used="
@@ -6278,9 +6324,14 @@ literal|" queue="
 operator|+
 name|this
 operator|+
-literal|" util="
+literal|" usedCapacity="
 operator|+
-name|getUtilization
+name|getUsedCapacity
+argument_list|()
+operator|+
+literal|" absoluteUsedCapacity="
+operator|+
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|+
 literal|" used="

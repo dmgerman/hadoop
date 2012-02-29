@@ -129,8 +129,6 @@ DECL|interface|RefreshUserMappingsProtocol
 specifier|public
 interface|interface
 name|RefreshUserMappingsProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    * Version 1: Initial version.    */
 DECL|field|versionID

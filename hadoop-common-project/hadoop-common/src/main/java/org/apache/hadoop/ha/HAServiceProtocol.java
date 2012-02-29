@@ -66,20 +66,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
-operator|.
-name|VersionedProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -136,8 +122,6 @@ DECL|interface|HAServiceProtocol
 specifier|public
 interface|interface
 name|HAServiceProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    * Initial version of the protocol    */
 DECL|field|versionID

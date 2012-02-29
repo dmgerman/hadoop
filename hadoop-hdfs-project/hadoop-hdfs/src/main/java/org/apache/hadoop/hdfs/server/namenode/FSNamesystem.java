@@ -8852,6 +8852,17 @@ argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
+comment|// record file record in log, record new generation stamp
+name|getEditLog
+argument_list|()
+operator|.
+name|logOpenFile
+argument_list|(
+name|src
+argument_list|,
+name|newNode
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|NameNode
@@ -9013,6 +9024,16 @@ argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
+name|LocatedBlock
+name|ret
+init|=
+name|blockManager
+operator|.
+name|convertLastBlockToUnderConstruction
+argument_list|(
+name|cons
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|writeToEditLog
@@ -9030,12 +9051,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|blockManager
-operator|.
-name|convertLastBlockToUnderConstruction
-argument_list|(
-name|cons
-argument_list|)
+name|ret
 return|;
 block|}
 comment|/**    * Recover lease;    * Immediately revoke the lease of the current lease holder and start lease    * recovery so that the file can be forced to be closed.    *     * @param src the path of the file to start lease recovery    * @param holder the lease holder's name    * @param clientMachine the client machine's name    * @return true if the file is already closed    * @throws IOException    */

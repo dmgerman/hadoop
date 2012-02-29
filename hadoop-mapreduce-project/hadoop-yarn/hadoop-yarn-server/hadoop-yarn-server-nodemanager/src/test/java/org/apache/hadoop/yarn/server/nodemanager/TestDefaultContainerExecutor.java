@@ -552,7 +552,7 @@ comment|//    final String user = "yak";
 comment|//    final String appId = "app_RM_0";
 comment|//    final Path logDir = new Path(basedir, "logs");
 comment|//    final Path nmLocal = new Path(basedir, "nmPrivate/" + user + "/" + appId);
-comment|//    final InetSocketAddress nmAddr = new InetSocketAddress("foobar", 4344);
+comment|//    final InetSocketAddress nmAddr = new InetSocketAddress("foobar", 8040);
 comment|//    System.out.println("NMLOCAL: " + nmLocal);
 comment|//    Random r = new Random();
 comment|//

@@ -178,8 +178,6 @@ DECL|interface|InterDatanodeProtocol
 specifier|public
 interface|interface
 name|InterDatanodeProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 DECL|field|LOG
 specifier|public

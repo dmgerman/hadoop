@@ -968,8 +968,6 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|long
 name|txId
 init|=
@@ -977,6 +975,8 @@ name|expectedStartingTxId
 operator|-
 literal|1
 decl_stmt|;
+try|try
+block|{
 try|try
 block|{
 while|while
@@ -1012,6 +1012,14 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|long
+name|badTxId
+init|=
+name|txId
+operator|+
+literal|1
+decl_stmt|;
+comment|// because txId hasn't been incremented yet
 name|String
 name|errorMessage
 init|=
@@ -1020,6 +1028,8 @@ argument_list|(
 name|in
 argument_list|,
 name|recentOpcodeOffsets
+argument_list|,
+name|badTxId
 argument_list|)
 decl_stmt|;
 name|FSImage
@@ -1077,19 +1087,23 @@ argument_list|)
 condition|)
 block|{
 name|long
-name|thisTxId
+name|expectedTxId
 init|=
-name|op
-operator|.
-name|txid
-decl_stmt|;
-if|if
-condition|(
-name|thisTxId
-operator|!=
 name|txId
 operator|+
 literal|1
+decl_stmt|;
+name|txId
+operator|=
+name|op
+operator|.
+name|txid
+expr_stmt|;
+if|if
+condition|(
+name|txId
+operator|!=
+name|expectedTxId
 condition|)
 block|{
 throw|throw
@@ -1098,22 +1112,14 @@ name|IOException
 argument_list|(
 literal|"Expected transaction ID "
 operator|+
-operator|(
-name|txId
-operator|+
-literal|1
-operator|)
+name|expectedTxId
 operator|+
 literal|" but got "
 operator|+
-name|thisTxId
+name|txId
 argument_list|)
 throw|;
 block|}
-name|txId
-operator|=
-name|thisTxId
-expr_stmt|;
 block|}
 name|incrOpCount
 argument_list|(
@@ -1152,6 +1158,8 @@ argument_list|(
 name|in
 argument_list|,
 name|recentOpcodeOffsets
+argument_list|,
+name|txId
 argument_list|)
 decl_stmt|;
 name|FSImage
@@ -1738,6 +1746,46 @@ name|oldFile
 argument_list|)
 expr_stmt|;
 comment|// Now close the file
+if|if
+condition|(
+operator|!
+name|oldFile
+operator|.
+name|isUnderConstruction
+argument_list|()
+operator|&&
+name|logVersion
+operator|<=
+name|LayoutVersion
+operator|.
+name|BUGFIX_HDFS_2991_VERSION
+condition|)
+block|{
+comment|// There was a bug (HDFS-2991) in hadoop< 0.23.1 where OP_CLOSE
+comment|// could show up twice in a row. But after that version, this
+comment|// should be fixed, so we should treat it as an error.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"File is not under construction: "
+operator|+
+name|addCloseOp
+operator|.
+name|path
+argument_list|)
+throw|;
+block|}
+comment|// One might expect that you could use removeLease(holder, path) here,
+comment|// but OP_CLOSE doesn't serialize the holder. So, remove by path.
+if|if
+condition|(
+name|oldFile
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
 name|INodeFileUnderConstruction
 name|ucFile
 init|=
@@ -1746,8 +1794,6 @@ name|INodeFileUnderConstruction
 operator|)
 name|oldFile
 decl_stmt|;
-comment|// One might expect that you could use removeLease(holder, path) here,
-comment|// but OP_CLOSE doesn't serialize the holder. So, remove by path.
 name|fsNamesys
 operator|.
 name|leaseManager
@@ -1780,6 +1826,7 @@ argument_list|,
 name|newFile
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 case|case
@@ -2506,7 +2553,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|formatEditLogReplayError (EditLogInputStream in, long recentOpcodeOffsets[])
+DECL|method|formatEditLogReplayError (EditLogInputStream in, long recentOpcodeOffsets[], long txid)
 specifier|private
 specifier|static
 name|String
@@ -2518,6 +2565,9 @@ parameter_list|,
 name|long
 name|recentOpcodeOffsets
 index|[]
+parameter_list|,
+name|long
+name|txid
 parameter_list|)
 block|{
 name|StringBuilder
@@ -2537,6 +2587,18 @@ name|in
 operator|.
 name|getPosition
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" on transaction ID "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|txid
 argument_list|)
 expr_stmt|;
 if|if

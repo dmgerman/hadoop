@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -98,39 +88,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocolR23Compatible
-operator|.
-name|ProtocolSignatureWritable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|ProtocolInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|VersionedProtocol
 import|;
 end_import
 
@@ -192,28 +152,7 @@ extends|extends
 name|RefreshUserMappingsProtocolService
 operator|.
 name|BlockingInterface
-extends|,
-name|VersionedProtocol
-block|{
-comment|/**    * This method is defined to get the protocol signature using     * the R23 protocol - hence we have added the suffix of 2 the method name    * to avoid conflict.    */
-DECL|method|getProtocolSignature2 (String protocol, long clientVersion, int clientMethodsHash)
-specifier|public
-name|ProtocolSignatureWritable
-name|getProtocolSignature2
-parameter_list|(
-name|String
-name|protocol
-parameter_list|,
-name|long
-name|clientVersion
-parameter_list|,
-name|int
-name|clientMethodsHash
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-block|}
+block|{ }
 end_interface
 
 end_unit

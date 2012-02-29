@@ -456,7 +456,7 @@ name|InetSocketAddress
 argument_list|(
 literal|"0.0.0.0"
 argument_list|,
-literal|4344
+literal|8040
 argument_list|)
 decl_stmt|;
 name|LocalizerService

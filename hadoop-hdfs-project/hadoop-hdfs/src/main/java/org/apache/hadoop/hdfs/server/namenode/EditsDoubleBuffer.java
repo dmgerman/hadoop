@@ -345,7 +345,7 @@ name|shouldForceSync
 parameter_list|()
 block|{
 return|return
-name|bufReady
+name|bufCurrent
 operator|.
 name|size
 argument_list|()

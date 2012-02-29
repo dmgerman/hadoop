@@ -168,8 +168,6 @@ DECL|interface|NamenodeProtocol
 specifier|public
 interface|interface
 name|NamenodeProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    * Until version 6L, this class served as both    * the client interface to the NN AND the RPC protocol used to     * communicate with the NN.    *     * Post version 70 (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/ClientNamenodeWireProtocol}    *     * This class is used by both the DFSClient and the     * NN server side to insulate from the protocol serialization.    *     * If you are adding/changing NN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in NamenodeProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    *     * 6: Switch to txid-based file naming for image and edits    */
 DECL|field|versionID

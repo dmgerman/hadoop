@@ -884,10 +884,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|computeQueueUsedCapacity (CSQueue queue, int expectedMemory, Resource clusterResource)
+DECL|method|computeQueueAbsoluteUsedCapacity (CSQueue queue, int expectedMemory, Resource clusterResource)
 specifier|private
 name|float
-name|computeQueueUsedCapacity
+name|computeQueueAbsoluteUsedCapacity
 parameter_list|(
 name|CSQueue
 name|queue
@@ -907,26 +907,21 @@ name|float
 operator|)
 name|expectedMemory
 operator|/
+operator|(
+name|float
+operator|)
 name|clusterResource
 operator|.
 name|getMemory
 argument_list|()
 operator|)
-operator|*
-name|queue
-operator|.
-name|getParent
-argument_list|()
-operator|.
-name|getAbsoluteCapacity
-argument_list|()
 operator|)
 return|;
 block|}
-DECL|method|computeQueueUtilization (CSQueue queue, int expectedMemory, Resource clusterResource)
+DECL|method|computeQueueUsedCapacity (CSQueue queue, int expectedMemory, Resource clusterResource)
 specifier|private
 name|float
-name|computeQueueUtilization
+name|computeQueueUsedCapacity
 parameter_list|(
 name|CSQueue
 name|queue
@@ -981,7 +976,7 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-name|computeQueueUtilization
+name|computeQueueAbsoluteUsedCapacity
 argument_list|(
 name|queue
 argument_list|,
@@ -992,7 +987,7 @@ argument_list|)
 argument_list|,
 name|queue
 operator|.
-name|getUtilization
+name|getAbsoluteUsedCapacity
 argument_list|()
 argument_list|,
 name|DELTA

@@ -877,7 +877,7 @@ comment|//      Container container = recordFactory.newRecordInstance(Container.
 comment|//      container.setContainerToken(recordFactory.newRecordInstance(ContainerToken.class));
 comment|//      container.setNodeId(recordFactory.newRecordInstance(NodeId.class));
 comment|//      container.setContainerManagerAddress("localhost");
-comment|//      container.setNodeHttpAddress("localhost:9999");
+comment|//      container.setNodeHttpAddress("localhost:8042");
 comment|//      container.setId(recordFactory.newRecordInstance(ContainerId.class));
 comment|//      container.getId().setAppId(appID);
 comment|//      container.getId().setId(count);

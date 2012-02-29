@@ -131,8 +131,6 @@ DECL|interface|RefreshAuthorizationPolicyProtocol
 specifier|public
 interface|interface
 name|RefreshAuthorizationPolicyProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    * Version 1: Initial version    */
 DECL|field|versionID

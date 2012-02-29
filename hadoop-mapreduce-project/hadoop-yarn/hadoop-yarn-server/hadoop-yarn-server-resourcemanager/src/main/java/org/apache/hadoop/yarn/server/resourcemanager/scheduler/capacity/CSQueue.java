@@ -373,7 +373,14 @@ name|float
 name|getAbsoluteMaximumCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Get the currently utilized capacity of the queue     * relative to it's parent queue.    * @return the currently utilized capacity of the queue     *         relative to it's parent queue    */
+comment|/**    * Get the current absolute used capacity of the queue    * relative to the entire cluster.    * @return queue absolute used capacity    */
+DECL|method|getAbsoluteUsedCapacity ()
+specifier|public
+name|float
+name|getAbsoluteUsedCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Get the current used capacity of the queue    * and it's children (if any).    * @return queue used capacity    */
 DECL|method|getUsedCapacity ()
 specifier|public
 name|float
@@ -390,29 +397,22 @@ name|float
 name|usedCapacity
 parameter_list|)
 function_decl|;
+comment|/**    * Set absolute used capacity of the queue.    * @param absUsedCapacity absolute used capacity of the queue    */
+DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
+specifier|public
+name|void
+name|setAbsoluteUsedCapacity
+parameter_list|(
+name|float
+name|absUsedCapacity
+parameter_list|)
+function_decl|;
 comment|/**    * Get the currently utilized resources in the cluster     * by the queue and children (if any).    * @return used resources by the queue and it's children     */
 DECL|method|getUsedResources ()
 specifier|public
 name|Resource
 name|getUsedResources
 parameter_list|()
-function_decl|;
-comment|/**    * Get the current<em>utilization</em> of the queue     * and it's children (if any).    * Utilization is defined as the ratio of     *<em>used-capacity over configured-capacity</em> of the queue.    * @return queue utilization    */
-DECL|method|getUtilization ()
-specifier|public
-name|float
-name|getUtilization
-parameter_list|()
-function_decl|;
-comment|/**    * Get the current<em>utilization</em> of the queue.    * @param utilization queue utilization    */
-DECL|method|setUtilization (float utilization)
-specifier|public
-name|void
-name|setUtilization
-parameter_list|(
-name|float
-name|utilization
-parameter_list|)
 function_decl|;
 comment|/**    * Get the current run-state of the queue    * @return current run-state    */
 DECL|method|getState ()

@@ -93,7 +93,7 @@ name|createNodeId
 argument_list|(
 literal|"10.18.52.124"
 argument_list|,
-literal|45454
+literal|8041
 argument_list|)
 decl_stmt|;
 name|NodeId
@@ -103,7 +103,7 @@ name|createNodeId
 argument_list|(
 literal|"10.18.52.125"
 argument_list|,
-literal|45452
+literal|8038
 argument_list|)
 decl_stmt|;
 name|NodeId
@@ -113,7 +113,7 @@ name|createNodeId
 argument_list|(
 literal|"10.18.52.124"
 argument_list|,
-literal|45454
+literal|8041
 argument_list|)
 decl_stmt|;
 name|NodeId
@@ -123,7 +123,7 @@ name|createNodeId
 argument_list|(
 literal|"10.18.52.124"
 argument_list|,
-literal|45453
+literal|8039
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -253,7 +253,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"10.18.52.124:45454"
+literal|"10.18.52.124:8041"
 argument_list|,
 name|nodeId1
 operator|.

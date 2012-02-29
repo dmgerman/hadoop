@@ -513,36 +513,6 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Capacity:"
-argument_list|,
-name|percent
-argument_list|(
-name|lqinfo
-operator|.
-name|getCapacity
-argument_list|()
-operator|/
-literal|100
-argument_list|)
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"Max Capacity:"
-argument_list|,
-name|percent
-argument_list|(
-name|lqinfo
-operator|.
-name|getMaxCapacity
-argument_list|()
-operator|/
-literal|100
-argument_list|)
-argument_list|)
-operator|.
-name|_
-argument_list|(
 literal|"Used Capacity:"
 argument_list|,
 name|percent
@@ -580,21 +550,6 @@ argument_list|(
 name|lqinfo
 operator|.
 name|getAbsoluteMaxCapacity
-argument_list|()
-operator|/
-literal|100
-argument_list|)
-argument_list|)
-operator|.
-name|_
-argument_list|(
-literal|"Utilization:"
-argument_list|,
-name|percent
-argument_list|(
-name|lqinfo
-operator|.
-name|getUtilization
 argument_list|()
 operator|/
 literal|100
@@ -721,7 +676,37 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"User Limit:"
+literal|"Configured Capacity:"
+argument_list|,
+name|percent
+argument_list|(
+name|lqinfo
+operator|.
+name|getCapacity
+argument_list|()
+operator|/
+literal|100
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Configured Max Capacity:"
+argument_list|,
+name|percent
+argument_list|(
+name|lqinfo
+operator|.
+name|getMaxCapacity
+argument_list|()
+operator|/
+literal|100
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Configured Minimum User Limit Percent:"
 argument_list|,
 name|Integer
 operator|.
@@ -738,7 +723,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"User Limit Factor:"
+literal|"Configured User Limit Factor:"
 argument_list|,
 name|String
 operator|.
@@ -845,7 +830,9 @@ init|=
 name|html
 operator|.
 name|ul
-argument_list|()
+argument_list|(
+literal|"#pq"
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -866,21 +853,31 @@ operator|/
 literal|100
 decl_stmt|;
 name|float
-name|set
+name|absCap
 init|=
 name|info
 operator|.
-name|getCapacity
+name|getAbsoluteCapacity
 argument_list|()
 operator|/
 literal|100
 decl_stmt|;
 name|float
-name|max
+name|absMaxCap
 init|=
 name|info
 operator|.
-name|getMaxCapacity
+name|getAbsoluteMaxCapacity
+argument_list|()
+operator|/
+literal|100
+decl_stmt|;
+name|float
+name|absUsedCap
+init|=
+name|info
+operator|.
+name|getAbsoluteUsedCapacity
 argument_list|()
 operator|/
 literal|100
@@ -908,7 +905,7 @@ name|$style
 argument_list|(
 name|width
 argument_list|(
-name|max
+name|absMaxCap
 operator|*
 name|Q_MAX_WIDTH
 argument_list|)
@@ -918,25 +915,11 @@ name|$title
 argument_list|(
 name|join
 argument_list|(
-literal|"capacity:"
+literal|"Absolute Capacity:"
 argument_list|,
 name|percent
 argument_list|(
-name|set
-argument_list|)
-argument_list|,
-literal|" used:"
-argument_list|,
-name|percent
-argument_list|(
-name|used
-argument_list|)
-argument_list|,
-literal|" max capacity:"
-argument_list|,
-name|percent
-argument_list|(
-name|max
+name|absCap
 argument_list|)
 argument_list|)
 argument_list|)
@@ -954,9 +937,9 @@ literal|";font-size:1px;"
 argument_list|,
 name|width
 argument_list|(
-name|set
+name|absCap
 operator|/
-name|max
+name|absMaxCap
 argument_list|)
 argument_list|)
 argument_list|)
@@ -978,18 +961,16 @@ name|join
 argument_list|(
 name|width
 argument_list|(
-name|used
-operator|*
-name|set
+name|absUsedCap
 operator|/
-name|max
+name|absMaxCap
 argument_list|)
 argument_list|,
 literal|";font-size:1px;left:0%;"
 argument_list|,
-name|used
+name|absUsedCap
 operator|>
-literal|1
+name|absCap
 condition|?
 name|Q_OVER
 else|:
@@ -1444,19 +1425,6 @@ name|Q_MAX_WIDTH
 argument_list|)
 argument_list|)
 operator|.
-name|$title
-argument_list|(
-name|join
-argument_list|(
-literal|"used:"
-argument_list|,
-name|percent
-argument_list|(
-name|used
-argument_list|)
-argument_list|)
-argument_list|)
-operator|.
 name|span
 argument_list|()
 operator|.
@@ -1648,9 +1616,7 @@ literal|"  $('#cs a span').addClass('ui-corner-all').css('position', 'absolute')
 argument_list|,
 literal|"  $('#cs').bind('loaded.jstree', function (e, data) {"
 argument_list|,
-literal|"    data.inst.open_all();"
-argument_list|,
-literal|"    data.inst.close_node('#lq', true);"
+literal|"    data.inst.open_node('#pq', true);"
 argument_list|,
 literal|"   })."
 argument_list|,

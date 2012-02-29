@@ -354,6 +354,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|IpcConnectionContextProtos
+operator|.
+name|IpcConnectionContextProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -563,6 +581,20 @@ operator|.
 name|token
 operator|.
 name|TokenInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ProtoUtil
 import|;
 end_import
 
@@ -980,12 +1012,12 @@ name|String
 name|serverPrincipal
 decl_stmt|;
 comment|// server's krb5 principal name
-DECL|field|header
+DECL|field|connectionContext
 specifier|private
-name|ConnectionHeader
-name|header
+name|IpcConnectionContextProto
+name|connectionContext
 decl_stmt|;
-comment|// connection header
+comment|// connection context
 DECL|field|remoteId
 specifier|private
 specifier|final
@@ -1517,10 +1549,11 @@ operator|.
 name|KERBEROS
 expr_stmt|;
 block|}
-name|header
+name|connectionContext
 operator|=
-operator|new
-name|ConnectionHeader
+name|ProtoUtil
+operator|.
+name|makeIpcConnectionContext
 argument_list|(
 name|RPC
 operator|.
@@ -2597,7 +2630,7 @@ argument_list|(
 name|socket
 argument_list|)
 decl_stmt|;
-name|writeRpcHeader
+name|writeConnectionHeader
 argument_list|(
 name|outStream
 argument_list|)
@@ -2767,20 +2800,27 @@ name|AuthMethod
 operator|.
 name|SIMPLE
 expr_stmt|;
-name|header
+comment|// remake the connectionContext
+name|connectionContext
 operator|=
-operator|new
-name|ConnectionHeader
+name|ProtoUtil
+operator|.
+name|makeIpcConnectionContext
 argument_list|(
-name|header
+name|connectionContext
 operator|.
 name|getProtocol
 argument_list|()
 argument_list|,
-name|header
+name|ProtoUtil
 operator|.
 name|getUgi
+argument_list|(
+name|connectionContext
+operator|.
+name|getUserInfo
 argument_list|()
+argument_list|)
 argument_list|,
 name|authMethod
 argument_list|)
@@ -3015,11 +3055,11 @@ literal|" time(s)."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* Write the RPC header */
-DECL|method|writeRpcHeader (OutputStream outStream)
+comment|/**      * Write the connection header - this is sent when connection is established      * +----------------------------------+      * |  "hrpc" 4 bytes                  |            * +----------------------------------+      * |  Version (1 bytes)               |            * +----------------------------------+      * |  Authmethod (1 byte)             |            * +----------------------------------+      * |  IpcSerializationType (1 byte)   |            * +----------------------------------+      */
+DECL|method|writeConnectionHeader (OutputStream outStream)
 specifier|private
 name|void
-name|writeRpcHeader
+name|writeConnectionHeader
 parameter_list|(
 name|OutputStream
 name|outStream
@@ -3069,6 +3109,17 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|Server
+operator|.
+name|IpcSerializationType
+operator|.
+name|PROTOBUF
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 name|out
 operator|.
 name|flush
@@ -3092,9 +3143,9 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
-name|header
+name|connectionContext
 operator|.
-name|write
+name|writeTo
 argument_list|(
 name|buf
 argument_list|)
@@ -5463,6 +5514,7 @@ name|UserGroupInformation
 name|ticket
 decl_stmt|;
 DECL|field|protocol
+specifier|final
 name|Class
 argument_list|<
 name|?
@@ -5480,16 +5532,19 @@ literal|16777619
 decl_stmt|;
 DECL|field|rpcTimeout
 specifier|private
+specifier|final
 name|int
 name|rpcTimeout
 decl_stmt|;
 DECL|field|serverPrincipal
 specifier|private
+specifier|final
 name|String
 name|serverPrincipal
 decl_stmt|;
 DECL|field|maxIdleTime
 specifier|private
+specifier|final
 name|int
 name|maxIdleTime
 decl_stmt|;
@@ -5497,6 +5552,7 @@ comment|//connections will be culled if it was idle for
 comment|//maxIdleTime msecs
 DECL|field|maxRetries
 specifier|private
+specifier|final
 name|int
 name|maxRetries
 decl_stmt|;
@@ -5504,23 +5560,27 @@ comment|//the max. no. of retries for socket connections
 comment|// the max. no. of retries for socket connections on time out exceptions
 DECL|field|maxRetriesOnSocketTimeouts
 specifier|private
+specifier|final
 name|int
 name|maxRetriesOnSocketTimeouts
 decl_stmt|;
 DECL|field|tcpNoDelay
 specifier|private
+specifier|final
 name|boolean
 name|tcpNoDelay
 decl_stmt|;
 comment|// if T then disable Nagle's Algorithm
 DECL|field|doPing
 specifier|private
+specifier|final
 name|boolean
 name|doPing
 decl_stmt|;
 comment|//do we need to send ping message
 DECL|field|pingInterval
 specifier|private
+specifier|final
 name|int
 name|pingInterval
 decl_stmt|;

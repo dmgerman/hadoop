@@ -208,7 +208,7 @@ name|MRConfig
 operator|.
 name|MASTER_ADDRESS
 argument_list|,
-literal|"bar.com:9999"
+literal|"bar.com:8042"
 argument_list|)
 expr_stmt|;
 name|masterHostname

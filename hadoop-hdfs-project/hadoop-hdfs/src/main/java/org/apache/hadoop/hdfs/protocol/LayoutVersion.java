@@ -76,6 +76,17 @@ specifier|public
 class|class
 name|LayoutVersion
 block|{
+comment|/**    * Version in which HDFS-2991 was fixed. This bug caused OP_ADD to    * sometimes be skipped for append() calls. If we see such a case when    * loading the edits, but the version is known to have that bug, we    * workaround the issue. Otherwise we should consider it a corruption    * and bail.    */
+DECL|field|BUGFIX_HDFS_2991_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|BUGFIX_HDFS_2991_VERSION
+init|=
+operator|-
+literal|40
+decl_stmt|;
 comment|/**    * Enums for features that change the layout version.    *<br><br>    * To add a new layout version:    *<ul>    *<li>Define a new enum constant with a short enum name, the new layout version     * and description of the added feature.</li>    *<li>When adding a layout version with an ancestor that is not same as    * its immediate predecessor, use the constructor where a spacific ancestor    * can be passed.    *</li>    *</ul>    */
 DECL|enum|Feature
 specifier|public

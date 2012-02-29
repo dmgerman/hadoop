@@ -392,7 +392,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RPC
+name|StandbyException
 import|;
 end_import
 
@@ -406,7 +406,7 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|StandbyException
+name|RPC
 import|;
 end_import
 
@@ -1191,54 +1191,6 @@ name|nn
 operator|.
 name|nnRpcAddress
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getProtocolVersion (String protocol, long clientVersion)
-specifier|public
-name|long
-name|getProtocolVersion
-parameter_list|(
-name|String
-name|protocol
-parameter_list|,
-name|long
-name|clientVersion
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|protocol
-operator|.
-name|equals
-argument_list|(
-name|JournalProtocol
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-name|JournalProtocol
-operator|.
-name|versionID
-return|;
-block|}
-return|return
-name|super
-operator|.
-name|getProtocolVersion
-argument_list|(
-name|protocol
-argument_list|,
-name|clientVersion
-argument_list|)
-return|;
 block|}
 comment|/////////////////////////////////////////////////////
 comment|// BackupNodeProtocol implementation for backup node.

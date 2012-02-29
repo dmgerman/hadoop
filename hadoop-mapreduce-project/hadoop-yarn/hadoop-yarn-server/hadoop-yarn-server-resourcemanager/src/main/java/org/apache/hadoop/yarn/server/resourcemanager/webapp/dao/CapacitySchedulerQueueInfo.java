@@ -210,10 +210,10 @@ specifier|protected
 name|float
 name|absoluteMaxCapacity
 decl_stmt|;
-DECL|field|utilization
+DECL|field|absoluteUsedCapacity
 specifier|protected
 name|float
-name|utilization
+name|absoluteUsedCapacity
 decl_stmt|;
 DECL|field|numApplications
 specifier|protected
@@ -337,12 +337,19 @@ argument_list|)
 operator|*
 literal|100
 expr_stmt|;
-name|utilization
+name|absoluteUsedCapacity
 operator|=
+name|cap
+argument_list|(
 name|q
 operator|.
-name|getUtilization
+name|getAbsoluteUsedCapacity
 argument_list|()
+argument_list|,
+literal|0f
+argument_list|,
+literal|1f
+argument_list|)
 operator|*
 literal|100
 expr_stmt|;
@@ -434,14 +441,14 @@ return|return
 name|absoluteMaxCapacity
 return|;
 block|}
-DECL|method|getUtilization ()
+DECL|method|getAbsoluteUsedCapacity ()
 specifier|public
 name|float
-name|getUtilization
+name|getAbsoluteUsedCapacity
 parameter_list|()
 block|{
 return|return
-name|utilization
+name|absoluteUsedCapacity
 return|;
 block|}
 DECL|method|getNumApplications ()
