@@ -52,6 +52,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|DataOutputStream
 import|;
 end_import
@@ -670,6 +680,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|IpcConnectionContextProtos
+operator|.
+name|IpcConnectionContextProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -922,6 +950,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ProtoUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ReflectionUtils
 import|;
 end_import
@@ -994,6 +1036,57 @@ name|getBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|/**    * Serialization type for ConnectionContext and RpcPayloadHeader    */
+DECL|enum|IpcSerializationType
+specifier|public
+enum|enum
+name|IpcSerializationType
+block|{
+comment|// Add new serialization type to the end without affecting the enum order
+DECL|enumConstant|PROTOBUF
+name|PROTOBUF
+block|;
+DECL|method|write (DataOutput out)
+name|void
+name|write
+parameter_list|(
+name|DataOutput
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|writeByte
+argument_list|(
+name|this
+operator|.
+name|ordinal
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|fromByte (byte b)
+specifier|static
+name|IpcSerializationType
+name|fromByte
+parameter_list|(
+name|byte
+name|b
+parameter_list|)
+block|{
+return|return
+name|IpcSerializationType
+operator|.
+name|values
+argument_list|()
+index|[
+name|b
+index|]
+return|;
+block|}
+block|}
 comment|/**    * If the user accidentally sends an HTTP GET to an IPC port, we detect this    * and send back a nicer response.    */
 DECL|field|HTTP_GET_BYTES
 specifier|private
@@ -1033,6 +1126,7 @@ comment|// 4 : Introduced SASL security layer
 comment|// 5 : Introduced use of {@link ArrayPrimitiveWritable$Internal}
 comment|//     in ObjectWritable to efficiently transmit arrays of primitives
 comment|// 6 : Made RPC payload header explicit
+comment|// 7 : Changed Ipc Connection Header to use Protocol buffers
 DECL|field|CURRENT_VERSION
 specifier|public
 specifier|static
@@ -1040,7 +1134,7 @@ specifier|final
 name|byte
 name|CURRENT_VERSION
 init|=
-literal|6
+literal|7
 decl_stmt|;
 comment|/**    * Initial and max size of response buffer    */
 DECL|field|INITIAL_RESP_BUF_SIZE
@@ -4823,23 +4917,23 @@ specifier|public
 class|class
 name|Connection
 block|{
-DECL|field|rpcHeaderRead
+DECL|field|connectionHeaderRead
 specifier|private
 name|boolean
-name|rpcHeaderRead
+name|connectionHeaderRead
 init|=
 literal|false
 decl_stmt|;
-comment|// if initial rpc header is read
-DECL|field|headerRead
+comment|// connection  header is read?
+DECL|field|connectionContextRead
 specifier|private
 name|boolean
-name|headerRead
+name|connectionContextRead
 init|=
 literal|false
 decl_stmt|;
-comment|//if the connection header that
-comment|//follows version is read.
+comment|//if connection context that
+comment|//follows connection header is read
 DECL|field|channel
 specifier|private
 name|SocketChannel
@@ -4904,13 +4998,9 @@ specifier|private
 name|InetAddress
 name|addr
 decl_stmt|;
-DECL|field|header
-name|ConnectionHeader
-name|header
-init|=
-operator|new
-name|ConnectionHeader
-argument_list|()
+DECL|field|connectionContext
+name|IpcConnectionContextProto
+name|connectionContext
 decl_stmt|;
 DECL|field|protocolName
 name|String
@@ -4939,10 +5029,12 @@ specifier|private
 name|boolean
 name|skipInitialSaslHandshake
 decl_stmt|;
-DECL|field|rpcHeaderBuffer
+DECL|field|connectionHeaderBuf
 specifier|private
 name|ByteBuffer
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
+init|=
+literal|null
 decl_stmt|;
 DECL|field|unwrappedData
 specifier|private
@@ -6209,24 +6301,24 @@ block|}
 if|if
 condition|(
 operator|!
-name|rpcHeaderRead
+name|connectionHeaderRead
 condition|)
 block|{
 comment|//Every connection is expected to send the header.
 if|if
 condition|(
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|==
 literal|null
 condition|)
 block|{
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|=
 name|ByteBuffer
 operator|.
 name|allocate
 argument_list|(
-literal|2
+literal|3
 argument_list|)
 expr_stmt|;
 block|}
@@ -6236,7 +6328,7 @@ name|channelRead
 argument_list|(
 name|channel
 argument_list|,
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 argument_list|)
 expr_stmt|;
 if|if
@@ -6245,7 +6337,7 @@ name|count
 argument_list|<
 literal|0
 operator|||
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|.
 name|remaining
 operator|(
@@ -6261,7 +6353,7 @@ block|}
 name|int
 name|version
 init|=
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|.
 name|get
 argument_list|(
@@ -6276,7 +6368,7 @@ operator|new
 name|byte
 index|[]
 block|{
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|.
 name|get
 argument_list|(
@@ -6367,6 +6459,40 @@ expr_stmt|;
 name|setupBadVersionResponse
 argument_list|(
 name|version
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+name|IpcSerializationType
+name|serializationType
+init|=
+name|IpcSerializationType
+operator|.
+name|fromByte
+argument_list|(
+name|connectionHeaderBuf
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|serializationType
+operator|!=
+name|IpcSerializationType
+operator|.
+name|PROTOBUF
+condition|)
+block|{
+name|respondUnsupportedSerialization
+argument_list|(
+name|serializationType
 argument_list|)
 expr_stmt|;
 return|return
@@ -6524,11 +6650,11 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-name|rpcHeaderBuffer
+name|connectionHeaderBuf
 operator|=
 literal|null
 expr_stmt|;
-name|rpcHeaderRead
+name|connectionHeaderRead
 operator|=
 literal|true
 expr_stmt|;
@@ -6659,7 +6785,7 @@ block|}
 name|boolean
 name|isHeaderRead
 init|=
-name|headerRead
+name|connectionContextRead
 decl_stmt|;
 if|if
 condition|(
@@ -6881,6 +7007,82 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|respondUnsupportedSerialization (IpcSerializationType st)
+specifier|private
+name|void
+name|respondUnsupportedSerialization
+parameter_list|(
+name|IpcSerializationType
+name|st
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|errMsg
+init|=
+literal|"Server IPC version "
+operator|+
+name|CURRENT_VERSION
+operator|+
+literal|" do not support serilization "
+operator|+
+name|st
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|ByteArrayOutputStream
+name|buffer
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|Call
+name|fakeCall
+init|=
+operator|new
+name|Call
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+literal|null
+argument_list|,
+name|this
+argument_list|)
+decl_stmt|;
+name|setupResponse
+argument_list|(
+name|buffer
+argument_list|,
+name|fakeCall
+argument_list|,
+name|Status
+operator|.
+name|FATAL
+argument_list|,
+literal|null
+argument_list|,
+name|IpcException
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|errMsg
+argument_list|)
+expr_stmt|;
+name|responder
+operator|.
+name|doRespond
+argument_list|(
+name|fakeCall
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|setupHttpRequestOnIpcPortResponse ()
 specifier|private
 name|void
@@ -6925,11 +7127,11 @@ name|fakeCall
 argument_list|)
 expr_stmt|;
 block|}
-comment|/// Reads the connection header following version
-DECL|method|processHeader (byte[] buf)
+comment|/** Reads the connection context following the connection header */
+DECL|method|processConnectionContext (byte[] buf)
 specifier|private
 name|void
-name|processHeader
+name|processConnectionContext
 parameter_list|(
 name|byte
 index|[]
@@ -6951,27 +7153,38 @@ name|buf
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|header
+name|connectionContext
+operator|=
+name|IpcConnectionContextProto
 operator|.
-name|readFields
+name|parseFrom
 argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
 name|protocolName
 operator|=
-name|header
+name|connectionContext
+operator|.
+name|hasProtocol
+argument_list|()
+condition|?
+name|connectionContext
 operator|.
 name|getProtocol
 argument_list|()
+else|:
+literal|null
 expr_stmt|;
 name|UserGroupInformation
 name|protocolUser
 init|=
-name|header
+name|ProtoUtil
 operator|.
 name|getUgi
-argument_list|()
+argument_list|(
+name|connectionContext
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -7316,7 +7529,7 @@ name|InterruptedException
 block|{
 if|if
 condition|(
-name|headerRead
+name|connectionContextRead
 condition|)
 block|{
 name|processData
@@ -7327,12 +7540,12 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|processHeader
+name|processConnectionContext
 argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
-name|headerRead
+name|connectionContextRead
 operator|=
 literal|true
 expr_stmt|;
@@ -7353,7 +7566,7 @@ name|this
 operator|+
 literal|" for protocol "
 operator|+
-name|header
+name|connectionContext
 operator|.
 name|getProtocol
 argument_list|()
@@ -7761,7 +7974,7 @@ name|authorize
 argument_list|(
 name|user
 argument_list|,
-name|header
+name|protocolName
 argument_list|,
 name|getHostInetAddress
 argument_list|()
@@ -7781,7 +7994,7 @@ name|debug
 argument_list|(
 literal|"Successfully authorized "
 operator|+
-name|header
+name|connectionContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -8030,6 +8243,7 @@ operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -8056,6 +8270,7 @@ operator|.
 name|connection
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|errorClass
 init|=
@@ -9517,17 +9732,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param connection incoming connection    * @param addr InetAddress of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
-DECL|method|authorize (UserGroupInformation user, ConnectionHeader connection, InetAddress addr )
-specifier|public
+comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param protocolName - the protocol    * @param addr InetAddress of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
+DECL|method|authorize (UserGroupInformation user, String protocolName, InetAddress addr)
+specifier|private
 name|void
 name|authorize
 parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|ConnectionHeader
-name|connection
+name|String
+name|protocolName
 parameter_list|,
 name|InetAddress
 name|addr
@@ -9540,6 +9755,21 @@ condition|(
 name|authorize
 condition|)
 block|{
+if|if
+condition|(
+name|protocolName
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|AuthorizationException
+argument_list|(
+literal|"Null protocol not authorized"
+argument_list|)
+throw|;
+block|}
 name|Class
 argument_list|<
 name|?
@@ -9554,10 +9784,7 @@ name|protocol
 operator|=
 name|getProtocolClass
 argument_list|(
-name|connection
-operator|.
-name|getProtocol
-argument_list|()
+name|protocolName
 argument_list|,
 name|getConf
 argument_list|()
@@ -9576,10 +9803,7 @@ name|AuthorizationException
 argument_list|(
 literal|"Unknown protocol: "
 operator|+
-name|connection
-operator|.
-name|getProtocol
-argument_list|()
+name|protocolName
 argument_list|)
 throw|;
 block|}
