@@ -1477,18 +1477,36 @@ name|OP_CLOSE
 condition|)
 block|{
 comment|// OP_CLOSE
-assert|assert
+if|if
+condition|(
+operator|!
 name|oldFile
 operator|.
 name|isUnderConstruction
 argument_list|()
-operator|:
+operator|&&
+name|logVersion
+operator|<=
+name|LayoutVersion
+operator|.
+name|BUGFIX_HDFS_2991_VERSION
+condition|)
+block|{
+comment|// There was a bug (HDFS-2991) in hadoop< 0.23.1 where OP_CLOSE
+comment|// could show up twice in a row. But after that version, this
+comment|// should be fixed, so we should treat it as an error.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
 literal|"File is not under construction: "
 operator|+
 name|addCloseOp
 operator|.
 name|path
-assert|;
+argument_list|)
+throw|;
+block|}
 name|fsNamesys
 operator|.
 name|getBlockManager
@@ -1507,6 +1525,14 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|oldFile
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
 name|INodeFile
 name|newFile
 init|=
@@ -1533,6 +1559,7 @@ argument_list|,
 name|newFile
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1638,6 +1665,14 @@ block|}
 else|else
 block|{
 comment|// Ops.OP_CLOSE
+if|if
+condition|(
+name|oldFile
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
 name|fsNamesys
 operator|.
 name|leaseManager
@@ -1659,6 +1694,7 @@ operator|.
 name|path
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 break|break;
 block|}

@@ -1322,19 +1322,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|// add create file record to log, record new generation stamp
-name|fsImage
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|logOpenFile
-argument_list|(
-name|path
-argument_list|,
-name|newNode
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|NameNode

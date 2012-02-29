@@ -7317,13 +7317,29 @@ name|src
 argument_list|)
 expr_stmt|;
 comment|// convert last block to under-construction
-return|return
+name|LocatedBlock
+name|ret
+init|=
 name|blockManager
 operator|.
 name|convertLastBlockToUnderConstruction
 argument_list|(
 name|cons
 argument_list|)
+decl_stmt|;
+comment|// add append file record to log, record lease, etc.
+name|getEditLog
+argument_list|()
+operator|.
+name|logOpenFile
+argument_list|(
+name|src
+argument_list|,
+name|cons
+argument_list|)
+expr_stmt|;
+return|return
+name|ret
 return|;
 block|}
 else|else
@@ -7392,6 +7408,17 @@ name|getClientName
 argument_list|()
 argument_list|,
 name|src
+argument_list|)
+expr_stmt|;
+comment|// record file record in log, record new generation stamp
+name|getEditLog
+argument_list|()
+operator|.
+name|logOpenFile
+argument_list|(
+name|src
+argument_list|,
+name|newNode
 argument_list|)
 expr_stmt|;
 if|if
