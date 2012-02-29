@@ -1143,7 +1143,7 @@ name|container
 operator|.
 name|setNodeHttpAddress
 argument_list|(
-literal|"localhost:9999"
+literal|"localhost:8042"
 argument_list|)
 expr_stmt|;
 name|getContext

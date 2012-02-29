@@ -1039,7 +1039,7 @@ specifier|final
 name|int
 name|NM_HTTP_PORT
 init|=
-literal|9999
+literal|8042
 decl_stmt|;
 DECL|field|DT
 specifier|static
@@ -2215,7 +2215,7 @@ name|getNodeHttpAddress
 parameter_list|()
 block|{
 return|return
-literal|"localhost:9999"
+literal|"localhost:8042"
 return|;
 block|}
 annotation|@

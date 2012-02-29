@@ -1221,7 +1221,7 @@ specifier|static
 name|int
 name|NM_HTTP_PORT
 init|=
-literal|9999
+literal|8042
 decl_stmt|;
 DECL|field|recordFactory
 specifier|private

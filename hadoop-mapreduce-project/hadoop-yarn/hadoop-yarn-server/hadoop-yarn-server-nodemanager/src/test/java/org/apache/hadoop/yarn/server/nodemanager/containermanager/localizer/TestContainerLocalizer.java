@@ -846,7 +846,7 @@ name|InetSocketAddress
 argument_list|(
 literal|"foobar"
 argument_list|,
-literal|4344
+literal|8040
 argument_list|)
 decl_stmt|;
 specifier|final

@@ -772,7 +772,7 @@ argument_list|()
 operator|.
 name|setPort
 argument_list|(
-literal|9999
+literal|8042
 argument_list|)
 expr_stmt|;
 name|resourceView
@@ -2418,7 +2418,7 @@ name|checkStringMatch
 argument_list|(
 literal|"id"
 argument_list|,
-literal|"testhost.foo.com:9999"
+literal|"testhost.foo.com:8042"
 argument_list|,
 name|id
 argument_list|)

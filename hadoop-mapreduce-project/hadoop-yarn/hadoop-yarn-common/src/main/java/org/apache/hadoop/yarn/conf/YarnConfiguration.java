@@ -347,7 +347,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_PORT
 init|=
-literal|8040
+literal|8032
 decl_stmt|;
 DECL|field|DEFAULT_RM_ADDRESS
 specifier|public
@@ -496,7 +496,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_RESOURCE_TRACKER_PORT
 init|=
-literal|8025
+literal|8031
 decl_stmt|;
 DECL|field|DEFAULT_RM_RESOURCE_TRACKER_ADDRESS
 specifier|public
@@ -622,7 +622,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_ADMIN_PORT
 init|=
-literal|8141
+literal|8033
 decl_stmt|;
 DECL|field|DEFAULT_RM_ADMIN_ADDRESS
 specifier|public
@@ -1170,7 +1170,7 @@ specifier|final
 name|int
 name|DEFAULT_NM_LOCALIZER_PORT
 init|=
-literal|4344
+literal|8040
 decl_stmt|;
 DECL|field|DEFAULT_NM_LOCALIZER_ADDRESS
 specifier|public
@@ -1484,7 +1484,7 @@ specifier|final
 name|int
 name|DEFAULT_NM_WEBAPP_PORT
 init|=
-literal|9999
+literal|8042
 decl_stmt|;
 DECL|field|DEFAULT_NM_WEBAPP_ADDRESS
 specifier|public
