@@ -297,11 +297,12 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
+specifier|synchronized
 name|LocalResourceProto
 name|getProto
 parameter_list|()
 block|{
-name|mergeLocalToProto
+name|mergeLocalToBuilder
 argument_list|()
 expr_stmt|;
 name|proto
@@ -325,10 +326,20 @@ return|;
 block|}
 DECL|method|mergeLocalToBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|mergeLocalToBuilder
 parameter_list|()
 block|{
+name|LocalResourceProtoOrBuilder
+name|l
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
 if|if
 condition|(
 name|this
@@ -336,8 +347,36 @@ operator|.
 name|url
 operator|!=
 literal|null
+operator|&&
+operator|!
+operator|(
+name|l
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+operator|(
+operator|(
+name|URLPBImpl
+operator|)
+name|url
+operator|)
+operator|.
+name|getProto
+argument_list|()
+argument_list|)
+operator|)
 condition|)
 block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|l
+operator|=
+name|builder
+expr_stmt|;
 name|builder
 operator|.
 name|setResource
@@ -352,36 +391,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|mergeLocalToProto ()
-specifier|private
-name|void
-name|mergeLocalToProto
-parameter_list|()
-block|{
-if|if
-condition|(
-name|viaProto
-condition|)
-name|maybeInitBuilder
-argument_list|()
-expr_stmt|;
-name|mergeLocalToBuilder
-argument_list|()
-expr_stmt|;
-name|proto
-operator|=
-name|builder
-operator|.
-name|build
-argument_list|()
-expr_stmt|;
-name|viaProto
-operator|=
-literal|true
-expr_stmt|;
-block|}
 DECL|method|maybeInitBuilder ()
 specifier|private
+specifier|synchronized
 name|void
 name|maybeInitBuilder
 parameter_list|()
@@ -414,6 +426,7 @@ annotation|@
 name|Override
 DECL|method|getSize ()
 specifier|public
+specifier|synchronized
 name|long
 name|getSize
 parameter_list|()
@@ -440,6 +453,7 @@ annotation|@
 name|Override
 DECL|method|setSize (long size)
 specifier|public
+specifier|synchronized
 name|void
 name|setSize
 parameter_list|(
@@ -464,6 +478,7 @@ annotation|@
 name|Override
 DECL|method|getTimestamp ()
 specifier|public
+specifier|synchronized
 name|long
 name|getTimestamp
 parameter_list|()
@@ -490,6 +505,7 @@ annotation|@
 name|Override
 DECL|method|setTimestamp (long timestamp)
 specifier|public
+specifier|synchronized
 name|void
 name|setTimestamp
 parameter_list|(
@@ -514,6 +530,7 @@ annotation|@
 name|Override
 DECL|method|getType ()
 specifier|public
+specifier|synchronized
 name|LocalResourceType
 name|getType
 parameter_list|()
@@ -554,6 +571,7 @@ annotation|@
 name|Override
 DECL|method|setType (LocalResourceType type)
 specifier|public
+specifier|synchronized
 name|void
 name|setType
 parameter_list|(
@@ -593,6 +611,7 @@ annotation|@
 name|Override
 DECL|method|getResource ()
 specifier|public
+specifier|synchronized
 name|URL
 name|getResource
 parameter_list|()
@@ -656,6 +675,7 @@ annotation|@
 name|Override
 DECL|method|setResource (URL resource)
 specifier|public
+specifier|synchronized
 name|void
 name|setResource
 parameter_list|(
@@ -688,6 +708,7 @@ annotation|@
 name|Override
 DECL|method|getVisibility ()
 specifier|public
+specifier|synchronized
 name|LocalResourceVisibility
 name|getVisibility
 parameter_list|()
@@ -728,6 +749,7 @@ annotation|@
 name|Override
 DECL|method|setVisibility (LocalResourceVisibility visibility)
 specifier|public
+specifier|synchronized
 name|void
 name|setVisibility
 parameter_list|(
