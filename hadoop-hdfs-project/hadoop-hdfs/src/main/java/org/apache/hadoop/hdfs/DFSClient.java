@@ -3273,6 +3273,16 @@ name|Renewer
 extends|extends
 name|TokenRenewer
 block|{
+static|static
+block|{
+comment|//Ensure that HDFS Configuration files are loaded before trying to use
+comment|// the renewer.
+name|HdfsConfiguration
+operator|.
+name|init
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|handleKind (Text kind)
