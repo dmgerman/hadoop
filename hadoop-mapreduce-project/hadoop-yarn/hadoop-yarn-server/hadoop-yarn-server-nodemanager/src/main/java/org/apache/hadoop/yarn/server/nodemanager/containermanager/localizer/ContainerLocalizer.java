@@ -2458,24 +2458,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// $x/usercache/$user/appcache/$appId/output
-name|lfs
-operator|.
-name|mkdir
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|appBase
-argument_list|,
-name|OUTPUTDIR
-argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 name|conf
 operator|.
