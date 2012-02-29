@@ -1669,7 +1669,6 @@ name|JobACL
 operator|.
 name|VIEW_JOB
 decl_stmt|;
-comment|//TODO disable check access for now.
 name|checkAccess
 argument_list|(
 name|job
@@ -2434,17 +2433,6 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 name|UserGroupInformation
 name|callerUGI
 decl_stmt|;

@@ -570,7 +570,7 @@ specifier|final
 name|boolean
 name|DEFAULT_YARN_ACL_ENABLE
 init|=
-literal|true
+literal|false
 decl_stmt|;
 comment|/** ACL of who can be admin of YARN cluster.*/
 DECL|field|YARN_ADMIN_ACL
