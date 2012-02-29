@@ -2551,50 +2551,11 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Close connections the Namenode.    * The namenode variable is either a rpcProxy passed by a test or     * created using the protocolTranslator which is closeable.    * If closeable then call close, else close using RPC.stopProxy().    */
+comment|/**    * Close connections the Namenode.    */
 DECL|method|closeConnectionToNamenode ()
 name|void
 name|closeConnectionToNamenode
 parameter_list|()
-block|{
-if|if
-condition|(
-name|namenode
-operator|instanceof
-name|Closeable
-condition|)
-block|{
-try|try
-block|{
-operator|(
-operator|(
-name|Closeable
-operator|)
-name|namenode
-operator|)
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// fall through - lets try the stopProxy
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Exception closing namenode, stopping the proxy"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
 block|{
 name|RPC
 operator|.
@@ -2603,7 +2564,6 @@ argument_list|(
 name|namenode
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/** Abort and release resources held.  Ignore all errors. */
 DECL|method|abort ()

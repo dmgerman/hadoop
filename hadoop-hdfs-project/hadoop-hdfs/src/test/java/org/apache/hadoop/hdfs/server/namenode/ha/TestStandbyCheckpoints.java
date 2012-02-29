@@ -772,9 +772,6 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// TODO: this failed once because it caught a ckpt file -- maybe
-comment|// this is possible if one of the NNs is really fast and the other is slow?
-comment|// need to loop this to suss out the race.
 name|FSImageTestUtil
 operator|.
 name|assertParallelFilesAreIdentical

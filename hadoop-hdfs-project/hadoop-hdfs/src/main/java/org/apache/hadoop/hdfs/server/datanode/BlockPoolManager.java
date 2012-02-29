@@ -459,43 +459,6 @@ name|bpid
 argument_list|)
 return|;
 block|}
-comment|// TODO(HA) would be good to kill this
-DECL|method|get (InetSocketAddress addr)
-specifier|synchronized
-name|BPOfferService
-name|get
-parameter_list|(
-name|InetSocketAddress
-name|addr
-parameter_list|)
-block|{
-for|for
-control|(
-name|BPOfferService
-name|bpos
-range|:
-name|offerServices
-control|)
-block|{
-if|if
-condition|(
-name|bpos
-operator|.
-name|containsNN
-argument_list|(
-name|addr
-argument_list|)
-condition|)
-block|{
-return|return
-name|bpos
-return|;
-block|}
-block|}
-return|return
-literal|null
-return|;
-block|}
 DECL|method|remove (BPOfferService t)
 specifier|synchronized
 name|void

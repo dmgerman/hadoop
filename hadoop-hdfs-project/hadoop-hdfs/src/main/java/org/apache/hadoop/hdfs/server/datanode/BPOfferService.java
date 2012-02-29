@@ -1811,7 +1811,6 @@ argument_list|(
 name|actor
 argument_list|)
 expr_stmt|;
-comment|// TODO: synchronization should be a little better here
 if|if
 condition|(
 name|bpServices
@@ -1839,22 +1838,6 @@ name|shutdownUpgrade
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Deprecated
-DECL|method|getNNSocketAddress ()
-specifier|synchronized
-name|InetSocketAddress
-name|getNNSocketAddress
-parameter_list|()
-block|{
-comment|// TODO(HA) this doesn't make sense anymore
-return|return
-name|bpServiceToActive
-operator|.
-name|getNNSocketAddress
-argument_list|()
-return|;
 block|}
 comment|/**    * Called by the DN to report an error to the NNs.    */
 DECL|method|trySendErrorReport (int errCode, String errMsg)
@@ -1969,9 +1952,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * TODO: this is still used in a few places where we need to sort out    * what to do in HA!    * @return a proxy to the active NN    */
-annotation|@
-name|Deprecated
+comment|/**    * @return a proxy to the active NN, or null if the BPOS has not    * acknowledged any NN as active yet.    */
 DECL|method|getActiveNN ()
 specifier|synchronized
 name|DatanodeProtocolClientSideTranslatorPB
@@ -2576,6 +2557,7 @@ operator|.
 name|DNA_SHUTDOWN
 case|:
 comment|// TODO: DNA_SHUTDOWN appears to be unused - the NN never sends this command
+comment|// See HDFS-2987.
 throw|throw
 operator|new
 name|UnsupportedOperationException

@@ -4013,6 +4013,58 @@ name|block
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Try to send an error report to the NNs associated with the given    * block pool.    * @param bpid the block pool ID    * @param errCode error code to send    * @param errMsg textual message to send    */
+DECL|method|trySendErrorReport (String bpid, int errCode, String errMsg)
+name|void
+name|trySendErrorReport
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|int
+name|errCode
+parameter_list|,
+name|String
+name|errMsg
+parameter_list|)
+block|{
+name|BPOfferService
+name|bpos
+init|=
+name|blockPoolManager
+operator|.
+name|get
+argument_list|(
+name|bpid
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|bpos
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Bad block pool: "
+operator|+
+name|bpid
+argument_list|)
+throw|;
+block|}
+name|bpos
+operator|.
+name|trySendErrorReport
+argument_list|(
+name|errCode
+argument_list|,
+name|errMsg
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Return the BPOfferService instance corresponding to the given block.    * @param block    * @return the BPOS    * @throws IOException if no such BPOS can be found    */
 DECL|method|getBPOSForBlock (ExtendedBlock block)
 specifier|private
@@ -5101,7 +5153,7 @@ block|{
 comment|// TODO: all the BPs should have the same name as each other, they all come
 comment|// from getName() here! and the use cases only are in tests where they just
 comment|// call with getName(). So we could probably just make this method return
-comment|// the first BPOS's registration
+comment|// the first BPOS's registration. See HDFS-2609.
 name|BPOfferService
 index|[]
 name|bposArray
@@ -5330,55 +5382,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-block|}
-comment|/**    * get the name node address based on the block pool id    * @param bpid block pool ID    * @return namenode address corresponding to the bpid    */
-DECL|method|getNameNodeAddr (String bpid)
-specifier|public
-name|InetSocketAddress
-name|getNameNodeAddr
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-block|{
-comment|// TODO(HA) this function doesn't make sense! used by upgrade code
-comment|// Should it return just the active one or simply return the BPService.
-name|BPOfferService
-name|bp
-init|=
-name|blockPoolManager
-operator|.
-name|get
-argument_list|(
-name|bpid
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|bp
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|bp
-operator|.
-name|getNNSocketAddress
-argument_list|()
-return|;
-block|}
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"No name node address found for block pool ID "
-operator|+
-name|bpid
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
 block|}
 DECL|method|getSelfAddr ()
 specifier|public
@@ -9303,10 +9306,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get namenode corresponding to a block pool    * @param bpid Block pool Id    * @return Namenode corresponding to the bpid    * @throws IOException    */
-DECL|method|getBPNamenode (String bpid)
+DECL|method|getActiveNamenodeForBP (String bpid)
 specifier|public
 name|DatanodeProtocolClientSideTranslatorPB
-name|getBPNamenode
+name|getActiveNamenodeForBP
 parameter_list|(
 name|String
 name|bpid
@@ -9400,7 +9403,7 @@ decl_stmt|;
 name|DatanodeProtocolClientSideTranslatorPB
 name|nn
 init|=
-name|getBPNamenode
+name|getActiveNamenodeForBP
 argument_list|(
 name|block
 operator|.
@@ -9408,11 +9411,27 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 decl_stmt|;
-assert|assert
+if|if
+condition|(
 name|nn
-operator|!=
+operator|==
 literal|null
-assert|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to synchronize block "
+operator|+
+name|rBlock
+operator|+
+literal|", since this DN "
+operator|+
+literal|" has not acknowledged any NN as active."
+argument_list|)
+throw|;
+block|}
 name|long
 name|recoveryId
 init|=
@@ -10584,7 +10603,7 @@ name|getPort
 argument_list|()
 return|;
 block|}
-comment|/**    * Returned information is a JSON representation of a map with     * name node host name as the key and block pool Id as the value    */
+comment|/**    * Returned information is a JSON representation of a map with     * name node host name as the key and block pool Id as the value.    * Note that, if there are multiple NNs in an NA nameservice,    * a given block pool may be represented twice.    */
 annotation|@
 name|Override
 comment|// DataNodeMXBean
@@ -10630,11 +10649,22 @@ operator|!=
 literal|null
 condition|)
 block|{
+for|for
+control|(
+name|BPServiceActor
+name|actor
+range|:
+name|bpos
+operator|.
+name|getBPServiceActors
+argument_list|()
+control|)
+block|{
 name|info
 operator|.
 name|put
 argument_list|(
-name|bpos
+name|actor
 operator|.
 name|getNNSocketAddress
 argument_list|()
@@ -10648,6 +10678,7 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -10810,36 +10841,59 @@ name|force
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param addr rpc address of the namenode    * @return true - if BPOfferService corresponding to the namenode is alive    */
-DECL|method|isBPServiceAlive (InetSocketAddress addr)
+comment|/**    * @param addr rpc address of the namenode    * @return true if the datanode is connected to a NameNode at the    * given address    */
+DECL|method|isConnectedToNN (InetSocketAddress addr)
 specifier|public
 name|boolean
-name|isBPServiceAlive
+name|isConnectedToNN
 parameter_list|(
 name|InetSocketAddress
 name|addr
 parameter_list|)
 block|{
+for|for
+control|(
 name|BPOfferService
-name|bp
-init|=
-name|blockPoolManager
+name|bpos
+range|:
+name|getAllBpOs
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|BPServiceActor
+name|bpsa
+range|:
+name|bpos
 operator|.
-name|get
-argument_list|(
+name|getBPServiceActors
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
 name|addr
+operator|.
+name|equals
+argument_list|(
+name|bpsa
+operator|.
+name|getNNSocketAddress
+argument_list|()
 argument_list|)
-decl_stmt|;
+condition|)
+block|{
 return|return
-name|bp
-operator|!=
-literal|null
-condition|?
-name|bp
+name|bpsa
 operator|.
 name|isAlive
 argument_list|()
-else|:
+return|;
+block|}
+block|}
+block|}
+return|return
 literal|false
 return|;
 block|}

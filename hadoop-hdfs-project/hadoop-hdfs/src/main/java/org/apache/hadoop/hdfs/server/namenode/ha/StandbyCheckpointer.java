@@ -901,7 +901,7 @@ argument_list|(
 name|PREVENT_AFTER_CANCEL_MS
 argument_list|)
 expr_stmt|;
-comment|// TODO: there is a really narrow race here if we are just
+comment|// TODO(HA): there is a really narrow race here if we are just
 comment|// about to start a checkpoint - this won't cancel it!
 name|namesystem
 operator|.

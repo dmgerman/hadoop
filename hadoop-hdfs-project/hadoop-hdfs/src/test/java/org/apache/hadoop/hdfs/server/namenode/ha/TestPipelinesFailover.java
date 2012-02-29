@@ -1235,7 +1235,6 @@ operator|.
 name|hflush
 argument_list|()
 expr_stmt|;
-comment|// TODO: see above
 name|LOG
 operator|.
 name|info
@@ -1282,7 +1281,6 @@ operator|.
 name|hflush
 argument_list|()
 expr_stmt|;
-comment|// TODO: see above
 name|stm
 operator|.
 name|close

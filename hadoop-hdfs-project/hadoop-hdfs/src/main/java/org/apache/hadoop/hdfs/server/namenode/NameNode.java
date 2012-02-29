@@ -4292,7 +4292,7 @@ block|{
 return|return;
 comment|// no-op, if HA is not enabled
 block|}
-comment|// TODO:HA implement health check
+comment|// TODO(HA): implement health check
 return|return;
 block|}
 DECL|method|transitionToActive ()
@@ -4441,7 +4441,7 @@ name|isInSafeMode
 argument_list|()
 return|;
 block|}
-comment|/**    * Class used as expose {@link NameNode} as context to {@link HAState}    *     * TODO:HA    * When entering and exiting state, on failing to start services,    * appropriate action is needed todo either shutdown the node or recover    * from failure.    */
+comment|/**    * Class used as expose {@link NameNode} as context to {@link HAState}    *     * TODO(HA):    * When entering and exiting state, on failing to start services,    * appropriate action is needed todo either shutdown the node or recover    * from failure.    */
 DECL|class|NameNodeHAContext
 specifier|protected
 class|class
@@ -4567,7 +4567,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO(HA): Are we guaranteed to be the only active here?
 if|if
 condition|(
 name|namesystem

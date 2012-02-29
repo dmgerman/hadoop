@@ -1169,7 +1169,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Finalize previous upgrade.    * Remove file system state saved during the upgrade.    * The upgrade will become irreversible.    *     * @throws IOException    */
-comment|//TODO(HA): Should this be @Idempotent?
 DECL|method|finalizeUpgrade ()
 specifier|public
 name|void
@@ -1179,7 +1178,6 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
-comment|//TODO(HA): Should this be @Idempotent?
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
 specifier|public
 name|UpgradeStatusReport
@@ -1221,7 +1219,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.balance.bandwidthPerSec.    *    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    * @throws IOException    */
-comment|//TODO(HA): Should this be @Idempotent?
+annotation|@
+name|Idempotent
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void

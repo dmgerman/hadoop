@@ -1283,7 +1283,6 @@ default|default:
 break|break;
 block|}
 block|}
-comment|// TODO(HA): Have to figure out a story for the first 3 of these.
 comment|// 3. Do transitions
 switch|switch
 condition|(
@@ -1402,7 +1401,6 @@ argument_list|,
 name|storage
 argument_list|)
 expr_stmt|;
-comment|// TODO(HA): Fix this.
 name|String
 name|nameserviceId
 init|=
@@ -3267,8 +3265,6 @@ operator|+
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// TODO(HA): This should probably always return false when HA is enabled and
-comment|// we're coming up in standby state.
 return|return
 name|needToSave
 return|;
@@ -3503,8 +3499,6 @@ name|editStreams
 argument_list|)
 expr_stmt|;
 comment|// update the counts
-comment|// TODO(HA): this may be very slow -- we probably want to
-comment|// update them as we go for HA.
 name|target
 operator|.
 name|dir

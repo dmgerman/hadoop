@@ -70,6 +70,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -677,10 +697,10 @@ decl_stmt|;
 comment|// The order of bpos is not guaranteed, so fix the order
 if|if
 condition|(
-name|bpos1
-operator|.
 name|getNNSocketAddress
-argument_list|()
+argument_list|(
+name|bpos1
+argument_list|)
 operator|.
 name|equals
 argument_list|(
@@ -709,10 +729,10 @@ name|assertEquals
 argument_list|(
 literal|"wrong nn address"
 argument_list|,
-name|bpos1
-operator|.
 name|getNNSocketAddress
-argument_list|()
+argument_list|(
+name|bpos1
+argument_list|)
 argument_list|,
 name|nn1
 operator|.
@@ -724,10 +744,10 @@ name|assertEquals
 argument_list|(
 literal|"wrong nn address"
 argument_list|,
-name|bpos2
-operator|.
 name|getNNSocketAddress
-argument_list|()
+argument_list|(
+name|bpos2
+argument_list|)
 argument_list|,
 name|nn2
 operator|.
@@ -815,6 +835,49 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getNNSocketAddress (BPOfferService bpos)
+specifier|private
+specifier|static
+name|InetSocketAddress
+name|getNNSocketAddress
+parameter_list|(
+name|BPOfferService
+name|bpos
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|BPServiceActor
+argument_list|>
+name|actors
+init|=
+name|bpos
+operator|.
+name|getBPServiceActors
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|actors
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|actors
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getNNSocketAddress
+argument_list|()
+return|;
 block|}
 comment|/**    * starts single nn and single dn and verifies registration and handshake    *     * @throws IOException    */
 annotation|@
@@ -1066,10 +1129,10 @@ name|storageID
 operator|+
 literal|"; nna="
 operator|+
-name|bpos
-operator|.
 name|getNNSocketAddress
-argument_list|()
+argument_list|(
+name|bpos
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1094,10 +1157,10 @@ name|assertEquals
 argument_list|(
 literal|"wrong nn address"
 argument_list|,
-name|bpos1
-operator|.
 name|getNNSocketAddress
-argument_list|()
+argument_list|(
+name|bpos1
+argument_list|)
 argument_list|,
 name|nn1
 operator|.

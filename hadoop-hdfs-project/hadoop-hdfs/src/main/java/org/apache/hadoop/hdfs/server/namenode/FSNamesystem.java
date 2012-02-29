@@ -4041,7 +4041,6 @@ argument_list|()
 condition|)
 block|{
 comment|// During startup, we're already open for write during initialization.
-comment|// TODO(HA): consider adding a startup state?
 name|editLog
 operator|.
 name|initJournalsForWrite
@@ -5561,7 +5560,6 @@ block|{
 comment|// using finally to ensure we also wait for lease daemon
 try|try
 block|{
-comment|// TODO: these lines spew lots of warnings about "already stopped" logs, etc
 name|stopActiveServices
 argument_list|()
 expr_stmt|;

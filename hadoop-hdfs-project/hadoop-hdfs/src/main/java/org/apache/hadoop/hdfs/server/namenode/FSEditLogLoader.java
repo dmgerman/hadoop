@@ -1746,8 +1746,8 @@ name|INodeFileUnderConstruction
 operator|)
 name|oldFile
 decl_stmt|;
-comment|// TODO: we could use removeLease(holder, path) here, but OP_CLOSE
-comment|// doesn't seem to serialize the holder... unclear why!
+comment|// One might expect that you could use removeLease(holder, path) here,
+comment|// but OP_CLOSE doesn't serialize the holder. So, remove by path.
 name|fsNamesys
 operator|.
 name|leaseManager

@@ -3145,7 +3145,7 @@ name|dnP
 init|=
 name|dn
 operator|.
-name|getBPNamenode
+name|getActiveNamenodeForBP
 argument_list|(
 name|POOL_ID
 argument_list|)
@@ -3466,7 +3466,7 @@ name|namenode
 init|=
 name|dn
 operator|.
-name|getBPNamenode
+name|getActiveNamenodeForBP
 argument_list|(
 name|POOL_ID
 argument_list|)
@@ -3651,7 +3651,7 @@ name|namenode
 init|=
 name|dn
 operator|.
-name|getBPNamenode
+name|getActiveNamenodeForBP
 argument_list|(
 name|POOL_ID
 argument_list|)

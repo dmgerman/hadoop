@@ -2364,8 +2364,8 @@ name|cmd
 block|}
 argument_list|)
 expr_stmt|;
-comment|// Now safe to start scanning the block pool
-comment|// TODO(HA): this doesn't seem quite right
+comment|// Now safe to start scanning the block pool.
+comment|// If it has already been started, this is a no-op.
 if|if
 condition|(
 name|dn

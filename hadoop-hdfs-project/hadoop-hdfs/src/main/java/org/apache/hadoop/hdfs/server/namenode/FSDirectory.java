@@ -1452,12 +1452,6 @@ name|preferredBlockSize
 argument_list|)
 expr_stmt|;
 block|}
-name|writeLock
-argument_list|()
-expr_stmt|;
-comment|// TODO: this is silly, considering the assert above!
-try|try
-block|{
 try|try
 block|{
 name|newNode
@@ -1485,13 +1479,6 @@ block|}
 return|return
 name|newNode
 return|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|addToParent (byte[] src, INodeDirectory parentINode, INode newNode, boolean propagateModTime)
 name|INodeDirectory

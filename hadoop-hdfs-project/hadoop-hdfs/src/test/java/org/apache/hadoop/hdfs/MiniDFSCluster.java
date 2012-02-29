@@ -7127,7 +7127,7 @@ name|dn
 operator|.
 name|datanode
 operator|.
-name|isBPServiceAlive
+name|isConnectedToNN
 argument_list|(
 name|addr
 argument_list|)
@@ -7137,13 +7137,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"BPOfferService failed to start in datanode "
+literal|"BPOfferService in datanode "
 operator|+
 name|dn
 operator|.
 name|datanode
 operator|+
-literal|" for namenode at "
+literal|" failed to connect to namenode at "
 operator|+
 name|addr
 argument_list|)
