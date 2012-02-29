@@ -2821,6 +2821,24 @@ operator|=
 name|runtime
 expr_stmt|;
 block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setMetricsForTests (NameNodeMetrics metrics)
+name|void
+name|setMetricsForTests
+parameter_list|(
+name|NameNodeMetrics
+name|metrics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|metrics
+operator|=
+name|metrics
+expr_stmt|;
+block|}
 comment|/**    * Return a manifest of what finalized edit logs are available    */
 DECL|method|getEditLogManifest (long fromTxId)
 specifier|public
