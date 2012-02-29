@@ -114,8 +114,6 @@ DECL|interface|JournalProtocol
 specifier|public
 interface|interface
 name|JournalProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    *     * This class is used by both the Namenode (client) and BackupNode (server)     * to insulate from the protocol serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in JournalProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    */
 DECL|field|versionID
