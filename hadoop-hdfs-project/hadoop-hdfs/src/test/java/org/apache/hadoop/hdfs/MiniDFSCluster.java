@@ -4911,9 +4911,26 @@ name|checkSingleNameNode
 argument_list|()
 expr_stmt|;
 return|return
-name|getNameNode
+name|getNameNodeRpc
 argument_list|(
 literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Get an instance of the NameNode's RPC handler.    */
+DECL|method|getNameNodeRpc (int nnIndex)
+specifier|public
+name|NamenodeProtocols
+name|getNameNodeRpc
+parameter_list|(
+name|int
+name|nnIndex
+parameter_list|)
+block|{
+return|return
+name|getNameNode
+argument_list|(
+name|nnIndex
 argument_list|)
 operator|.
 name|getRpcServer

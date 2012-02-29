@@ -14942,7 +14942,6 @@ return|;
 block|}
 comment|/**    * Returns whether or not there were available resources at the last check of    * resources.    *    * @return true if there were sufficient resources available, false otherwise.    */
 DECL|method|nameNodeHasResourcesAvailable ()
-specifier|private
 name|boolean
 name|nameNodeHasResourcesAvailable
 parameter_list|()
@@ -14953,12 +14952,9 @@ return|;
 block|}
 comment|/**    * Perform resource checks and cache the results.    * @throws IOException    */
 DECL|method|checkAvailableResources ()
-specifier|private
 name|void
 name|checkAvailableResources
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|Preconditions
 operator|.
@@ -22930,6 +22926,24 @@ block|{
 return|return
 name|safeMode
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setNNResourceChecker (NameNodeResourceChecker nnResourceChecker)
+specifier|public
+name|void
+name|setNNResourceChecker
+parameter_list|(
+name|NameNodeResourceChecker
+name|nnResourceChecker
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nnResourceChecker
+operator|=
+name|nnResourceChecker
+expr_stmt|;
 block|}
 block|}
 end_class

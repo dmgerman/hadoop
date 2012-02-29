@@ -4292,8 +4292,30 @@ block|{
 return|return;
 comment|// no-op, if HA is not enabled
 block|}
-comment|// TODO(HA): implement health check
-return|return;
+name|getNamesystem
+argument_list|()
+operator|.
+name|checkAvailableResources
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|getNamesystem
+argument_list|()
+operator|.
+name|nameNodeHasResourcesAvailable
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HealthCheckFailedException
+argument_list|(
+literal|"The NameNode has no resources available"
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|transitionToActive ()
 specifier|synchronized
