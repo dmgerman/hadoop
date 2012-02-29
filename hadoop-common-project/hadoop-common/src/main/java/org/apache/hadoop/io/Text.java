@@ -965,6 +965,10 @@ name|length
 operator|=
 literal|0
 expr_stmt|;
+name|bytes
+operator|=
+name|EMPTY_BYTES
+expr_stmt|;
 block|}
 comment|/*    * Sets the capacity of this Text object to<em>at least</em>    *<code>len</code> bytes. If the current buffer is longer,    * then the capacity and existing content of the buffer are    * unchanged. If<code>len</code> is larger    * than the current capacity, the Text object's capacity is    * increased to match.    * @param len the number of bytes we need    * @param keepData should the old data be kept    */
 DECL|method|setCapacity (int len, boolean keepData)
