@@ -92,8 +92,6 @@ DECL|interface|GetUserMappingsProtocol
 specifier|public
 interface|interface
 name|GetUserMappingsProtocol
-extends|extends
-name|VersionedProtocol
 block|{
 comment|/**    * Version 1: Initial version.    */
 DECL|field|versionID
