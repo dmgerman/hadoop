@@ -36,6 +36,16 @@ name|javax
 operator|.
 name|management
 operator|.
+name|InstanceAlreadyExistsException
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|management
+operator|.
 name|MBeanServer
 import|;
 end_import
@@ -218,6 +228,49 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|InstanceAlreadyExistsException
+name|iaee
+parameter_list|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Failed to register MBean \""
+operator|+
+name|name
+operator|+
+literal|"\""
+argument_list|,
+name|iaee
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to register MBean \""
+operator|+
+name|name
+operator|+
+literal|"\": Instance already exists."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)
@@ -226,9 +279,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error registering "
+literal|"Failed to register MBean \""
 operator|+
 name|name
+operator|+
+literal|"\""
 argument_list|,
 name|e
 argument_list|)
