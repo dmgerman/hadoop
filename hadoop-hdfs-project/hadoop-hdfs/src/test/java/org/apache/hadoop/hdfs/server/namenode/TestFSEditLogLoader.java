@@ -637,14 +637,33 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|String
-name|expectedErrorMessage
+name|StringBuilder
+name|bld
 init|=
-literal|"^Error replaying edit log at offset \\d+\n"
+operator|new
+name|StringBuilder
+argument_list|()
 decl_stmt|;
-name|expectedErrorMessage
-operator|+=
+name|bld
+operator|.
+name|append
+argument_list|(
+literal|"^Error replaying edit log at offset \\d+"
+argument_list|)
+expr_stmt|;
+name|bld
+operator|.
+name|append
+argument_list|(
+literal|"On transaction ID \\d+\n"
+argument_list|)
+expr_stmt|;
+name|bld
+operator|.
+name|append
+argument_list|(
 literal|"Recent opcode offsets: (\\d+\\s*){4}$"
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -694,7 +713,10 @@ argument_list|()
 operator|.
 name|matches
 argument_list|(
-name|expectedErrorMessage
+name|bld
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
