@@ -601,14 +601,14 @@ name|editLog
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD to create file
-comment|// OP_ADD for first block
+comment|// OP_UPDATE_BLOCKS for first block
 comment|// OP_CLOSE to close file
 comment|// OP_ADD to reopen file
-comment|// OP_ADD for second block
+comment|// OP_UPDATE_BLOCKS for second block
 comment|// OP_CLOSE to close file
 name|assertEquals
 argument_list|(
-literal|4
+literal|2
 argument_list|,
 operator|(
 name|int
@@ -620,6 +620,25 @@ argument_list|(
 name|FSEditLogOpCodes
 operator|.
 name|OP_ADD
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_UPDATE_BLOCKS
 argument_list|)
 operator|.
 name|held
@@ -676,16 +695,19 @@ name|editLog
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD to create file
-comment|// OP_ADD for first block
+comment|// OP_UPDATE_BLOCKS for first block
 comment|// OP_CLOSE to close file
 comment|// OP_ADD to re-establish the lease
-comment|// OP_ADD from the updatePipeline call (increments genstamp of last block)
-comment|// OP_ADD at the start of the second block
+comment|// OP_UPDATE_BLOCKS from the updatePipeline call (increments genstamp of last block)
+comment|// OP_UPDATE_BLOCKS at the start of the second block
 comment|// OP_CLOSE to close file
-comment|// Total: 5 OP_ADDs and 2 OP_CLOSEs in addition to the ones above
+comment|// Total: 2 OP_ADDs, 3 OP_UPDATE_BLOCKS, and 2 OP_CLOSEs in addition
+comment|//        to the ones above
 name|assertEquals
 argument_list|(
-literal|9
+literal|2
+operator|+
+literal|2
 argument_list|,
 operator|(
 name|int
@@ -704,7 +726,30 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|2
+operator|+
+literal|3
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_UPDATE_BLOCKS
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+operator|+
+literal|2
 argument_list|,
 operator|(
 name|int
