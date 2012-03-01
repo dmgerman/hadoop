@@ -1813,7 +1813,7 @@ operator|.
 name|getEditLog
 argument_list|()
 operator|.
-name|logOpenFile
+name|logUpdateBlocks
 argument_list|(
 name|path
 argument_list|,

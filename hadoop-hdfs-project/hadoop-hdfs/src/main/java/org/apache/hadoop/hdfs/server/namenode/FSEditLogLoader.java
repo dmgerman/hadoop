@@ -306,6 +306,26 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
+name|BlockListUpdatingOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
 name|CancelDelegationTokenOp
 import|;
 end_import
@@ -647,6 +667,26 @@ operator|.
 name|FSEditLogOp
 operator|.
 name|TimesOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
+name|UpdateBlocksOp
 import|;
 end_import
 
@@ -1633,6 +1673,25 @@ block|}
 comment|// Fall-through for case 2.
 comment|// Regardless of whether it's a new file or an updated file,
 comment|// update the block list.
+comment|// Update the salient file attributes.
+name|newFile
+operator|.
+name|setAccessTime
+argument_list|(
+name|addCloseOp
+operator|.
+name|atime
+argument_list|)
+expr_stmt|;
+name|newFile
+operator|.
+name|setModificationTimeForce
+argument_list|(
+name|addCloseOp
+operator|.
+name|mtime
+argument_list|)
+expr_stmt|;
 name|updateBlocks
 argument_list|(
 name|fsDir
@@ -1827,6 +1886,97 @@ name|newFile
 argument_list|)
 expr_stmt|;
 block|}
+break|break;
+block|}
+case|case
+name|OP_UPDATE_BLOCKS
+case|:
+block|{
+name|UpdateBlocksOp
+name|updateOp
+init|=
+operator|(
+name|UpdateBlocksOp
+operator|)
+name|op
+decl_stmt|;
+if|if
+condition|(
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|op
+operator|.
+name|opCode
+operator|+
+literal|": "
+operator|+
+name|updateOp
+operator|.
+name|path
+operator|+
+literal|" numblocks : "
+operator|+
+name|updateOp
+operator|.
+name|blocks
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+name|INodeFile
+name|oldFile
+init|=
+name|getINodeFile
+argument_list|(
+name|fsDir
+argument_list|,
+name|updateOp
+operator|.
+name|path
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|oldFile
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Operation trying to update blocks in non-existent file "
+operator|+
+name|updateOp
+operator|.
+name|path
+argument_list|)
+throw|;
+block|}
+comment|// Update in-memory data structures
+name|updateBlocks
+argument_list|(
+name|fsDir
+argument_list|,
+name|updateOp
+argument_list|,
+name|oldFile
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 case|case
@@ -2725,7 +2875,7 @@ name|inode
 return|;
 block|}
 comment|/**    * Update in-memory data structures with new block information.    * @throws IOException    */
-DECL|method|updateBlocks (FSDirectory fsDir, AddCloseOp addCloseOp, INodeFile file)
+DECL|method|updateBlocks (FSDirectory fsDir, BlockListUpdatingOp op, INodeFile file)
 specifier|private
 name|void
 name|updateBlocks
@@ -2733,8 +2883,8 @@ parameter_list|(
 name|FSDirectory
 name|fsDir
 parameter_list|,
-name|AddCloseOp
-name|addCloseOp
+name|BlockListUpdatingOp
+name|op
 parameter_list|,
 name|INodeFile
 name|file
@@ -2742,25 +2892,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Update the salient file attributes.
-name|file
-operator|.
-name|setAccessTime
-argument_list|(
-name|addCloseOp
-operator|.
-name|atime
-argument_list|)
-expr_stmt|;
-name|file
-operator|.
-name|setModificationTimeForce
-argument_list|(
-name|addCloseOp
-operator|.
-name|mtime
-argument_list|)
-expr_stmt|;
 comment|// Update its block list
 name|BlockInfo
 index|[]
@@ -2771,6 +2902,23 @@ operator|.
 name|getBlocks
 argument_list|()
 decl_stmt|;
+name|Block
+index|[]
+name|newBlocks
+init|=
+name|op
+operator|.
+name|getBlocks
+argument_list|()
+decl_stmt|;
+name|String
+name|path
+init|=
+name|op
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
 comment|// Are we only updating the last block's gen stamp.
 name|boolean
 name|isGenStampUpdate
@@ -2779,9 +2927,7 @@ name|oldBlocks
 operator|.
 name|length
 operator|==
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 decl_stmt|;
@@ -2801,9 +2947,7 @@ name|length
 operator|&&
 name|i
 operator|<
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 condition|;
@@ -2822,9 +2966,7 @@ decl_stmt|;
 name|Block
 name|newBlock
 init|=
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 index|[
 name|i
 index|]
@@ -2834,9 +2976,7 @@ name|isLastBlock
 init|=
 name|i
 operator|==
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 operator|-
@@ -2894,16 +3034,12 @@ name|i
 operator|+
 literal|"/"
 operator|+
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 operator|+
 literal|" of "
 operator|+
-name|addCloseOp
-operator|.
 name|path
 argument_list|)
 throw|;
@@ -2951,13 +3087,10 @@ operator|(
 operator|!
 name|isLastBlock
 operator|||
-name|addCloseOp
+name|op
 operator|.
-name|opCode
-operator|==
-name|FSEditLogOpCodes
-operator|.
-name|OP_CLOSE
+name|shouldCompleteLastBlock
+argument_list|()
 operator|)
 condition|)
 block|{
@@ -3006,9 +3139,7 @@ block|}
 block|}
 if|if
 condition|(
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 operator|<
@@ -3033,8 +3164,6 @@ name|IOException
 argument_list|(
 literal|"Trying to remove a block from file "
 operator|+
-name|addCloseOp
-operator|.
 name|path
 operator|+
 literal|" which is not under construction."
@@ -3043,9 +3172,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 operator|!=
@@ -3062,8 +3189,6 @@ name|IOException
 argument_list|(
 literal|"Trying to remove more than one block from file "
 operator|+
-name|addCloseOp
-operator|.
 name|path
 argument_list|)
 throw|;
@@ -3072,8 +3197,6 @@ name|fsDir
 operator|.
 name|unprotectedRemoveBlock
 argument_list|(
-name|addCloseOp
-operator|.
 name|path
 argument_list|,
 operator|(
@@ -3095,9 +3218,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 operator|>
@@ -3118,9 +3239,7 @@ name|length
 init|;
 name|i
 operator|<
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 operator|.
 name|length
 condition|;
@@ -3131,9 +3250,7 @@ block|{
 name|Block
 name|newBlock
 init|=
-name|addCloseOp
-operator|.
-name|blocks
+name|newBlocks
 index|[
 name|i
 index|]
@@ -3143,15 +3260,16 @@ name|newBI
 decl_stmt|;
 if|if
 condition|(
-name|addCloseOp
+operator|!
+name|op
 operator|.
-name|opCode
-operator|==
-name|FSEditLogOpCodes
-operator|.
-name|OP_ADD
+name|shouldCompleteLastBlock
+argument_list|()
 condition|)
 block|{
+comment|// TODO: shouldn't this only be true for the last block?
+comment|// what about an old-version fsync() where fsync isn't called
+comment|// until several blocks in?
 name|newBI
 operator|=
 operator|new

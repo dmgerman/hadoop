@@ -2315,6 +2315,45 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|logUpdateBlocks (String path, INodeFileUnderConstruction file)
+specifier|public
+name|void
+name|logUpdateBlocks
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INodeFileUnderConstruction
+name|file
+parameter_list|)
+block|{
+name|UpdateBlocksOp
+name|op
+init|=
+name|UpdateBlocksOp
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|setPath
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|setBlocks
+argument_list|(
+name|file
+operator|.
+name|getBlocks
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|logEdit
+argument_list|(
+name|op
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**     * Add create directory record to edit log    */
 DECL|method|logMkDir (String path, INode newNode)
 specifier|public
