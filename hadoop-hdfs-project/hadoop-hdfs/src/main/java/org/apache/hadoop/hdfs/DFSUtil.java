@@ -2133,7 +2133,7 @@ return|return
 name|addressList
 return|;
 block|}
-comment|/**    * Given the InetSocketAddress for any configured communication with a     * namenode, this method returns the corresponding nameservice ID,    * by doing a reverse lookup on the list of nameservices until it    * finds a match.    * If null is returned, client should try {@link #isDefaultNamenodeAddress}    * to check pre-Federated configurations.    * Since the process of resolving URIs to Addresses is slightly expensive,    * this utility method should not be used in performance-critical routines.    *     * @param conf - configuration    * @param address - InetSocketAddress for configured communication with NN.    *     Configured addresses are typically given as URIs, but we may have to    *     compare against a URI typed in by a human, or the server name may be    *     aliased, so we compare unambiguous InetSocketAddresses instead of just    *     comparing URI substrings.    * @param keys - list of configured communication parameters that should    *     be checked for matches.  For example, to compare against RPC addresses,    *     provide the list DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY,    *     DFS_NAMENODE_RPC_ADDRESS_KEY.  Use the generic parameter keys,    *     not the NameServiceId-suffixed keys.    * @return nameserviceId, or null if no match found    */
+comment|/**    * Given the InetSocketAddress for any configured communication with a     * namenode, this method returns the corresponding nameservice ID,    * by doing a reverse lookup on the list of nameservices until it    * finds a match.    *     * Since the process of resolving URIs to Addresses is slightly expensive,    * this utility method should not be used in performance-critical routines.    *     * @param conf - configuration    * @param address - InetSocketAddress for configured communication with NN.    *     Configured addresses are typically given as URIs, but we may have to    *     compare against a URI typed in by a human, or the server name may be    *     aliased, so we compare unambiguous InetSocketAddresses instead of just    *     comparing URI substrings.    * @param keys - list of configured communication parameters that should    *     be checked for matches.  For example, to compare against RPC addresses,    *     provide the list DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY,    *     DFS_NAMENODE_RPC_ADDRESS_KEY.  Use the generic parameter keys,    *     not the NameServiceId-suffixed keys.    * @return nameserviceId, or null if no match found    */
 DECL|method|getNameServiceIdFromAddress (Configuration conf, InetSocketAddress address, String... keys)
 specifier|public
 specifier|static
@@ -2175,7 +2175,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-comment|// client should try {@link isDefaultNamenodeAddress} instead
 return|return
 literal|null
 return|;
@@ -2236,7 +2235,6 @@ return|;
 block|}
 block|}
 comment|// didn't find a match
-comment|// client should try {@link isDefaultNamenodeAddress} instead
 return|return
 literal|null
 return|;
@@ -2379,68 +2377,6 @@ expr_stmt|;
 block|}
 return|return
 name|httpAddress
-return|;
-block|}
-comment|/**    * Given the InetSocketAddress for any configured communication with a     * namenode, this method determines whether it is the configured    * communication channel for the "default" namenode.    * It does a reverse lookup on the list of default communication parameters    * to see if the given address matches any of them.    * Since the process of resolving URIs to Addresses is slightly expensive,    * this utility method should not be used in performance-critical routines.    *     * @param conf - configuration    * @param address - InetSocketAddress for configured communication with NN.    *     Configured addresses are typically given as URIs, but we may have to    *     compare against a URI typed in by a human, or the server name may be    *     aliased, so we compare unambiguous InetSocketAddresses instead of just    *     comparing URI substrings.    * @param keys - list of configured communication parameters that should    *     be checked for matches.  For example, to compare against RPC addresses,    *     provide the list DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY,    *     DFS_NAMENODE_RPC_ADDRESS_KEY    * @return - boolean confirmation if matched generic parameter    */
-DECL|method|isDefaultNamenodeAddress (Configuration conf, InetSocketAddress address, String... keys)
-specifier|public
-specifier|static
-name|boolean
-name|isDefaultNamenodeAddress
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|InetSocketAddress
-name|address
-parameter_list|,
-name|String
-modifier|...
-name|keys
-parameter_list|)
-block|{
-for|for
-control|(
-name|String
-name|key
-range|:
-name|keys
-control|)
-block|{
-name|String
-name|candidateAddress
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|candidateAddress
-operator|!=
-literal|null
-operator|&&
-name|address
-operator|.
-name|equals
-argument_list|(
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
-name|candidateAddress
-argument_list|)
-argument_list|)
-condition|)
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 comment|/**    * @return key specific to a nameserviceId from a generic key    */
