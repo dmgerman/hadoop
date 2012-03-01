@@ -335,6 +335,13 @@ DECL|interface|FSDatasetInterface
 specifier|public
 interface|interface
 name|FSDatasetInterface
+parameter_list|<
+name|V
+extends|extends
+name|FSDatasetInterface
+operator|.
+name|FSVolumeInterface
+parameter_list|>
 extends|extends
 name|FSDatasetMBean
 block|{
@@ -344,18 +351,34 @@ specifier|public
 specifier|abstract
 class|class
 name|Factory
+parameter_list|<
+name|D
+extends|extends
+name|FSDatasetInterface
+parameter_list|<
+name|?
+parameter_list|>
+parameter_list|>
 block|{
 comment|/** @return the configured factory. */
 DECL|method|getFactory (Configuration conf)
 specifier|public
 specifier|static
 name|Factory
+argument_list|<
+name|?
+argument_list|>
 name|getFactory
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 specifier|final
 name|Class
 argument_list|<
@@ -399,7 +422,7 @@ comment|/** Create a FSDatasetInterface object. */
 DECL|method|createFSDatasetInterface ( DataNode datanode, DataStorage storage, Configuration conf )
 specifier|public
 specifier|abstract
-name|FSDatasetInterface
+name|D
 name|createFSDatasetInterface
 parameter_list|(
 name|DataNode
@@ -478,7 +501,7 @@ DECL|method|getVolumes ()
 specifier|public
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|V
 argument_list|>
 name|getVolumes
 parameter_list|()
@@ -768,8 +791,6 @@ DECL|method|close ()
 name|void
 name|close
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|IOUtils
 operator|.

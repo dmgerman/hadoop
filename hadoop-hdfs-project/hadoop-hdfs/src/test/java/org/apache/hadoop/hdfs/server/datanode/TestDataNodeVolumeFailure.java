@@ -903,6 +903,7 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
+specifier|final
 name|StorageBlockReport
 index|[]
 name|report
@@ -916,10 +917,12 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|,
-name|dn
+name|DataNodeTestUtils
 operator|.
 name|getFSDataset
-argument_list|()
+argument_list|(
+name|dn
+argument_list|)
 operator|.
 name|getBlockReport
 argument_list|(

@@ -1578,6 +1578,26 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|FSDatasetInterface
+operator|.
+name|FSVolumeInterface
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|SecureDataNodeStarter
 operator|.
 name|SecureResources
@@ -1845,20 +1865,6 @@ operator|.
 name|ipc
 operator|.
 name|ProtobufRpcEngine
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|ProtocolSignature
 import|;
 end_import
 
@@ -2999,6 +3005,11 @@ DECL|field|data
 specifier|public
 specifier|volatile
 name|FSDatasetInterface
+argument_list|<
+name|?
+extends|extends
+name|FSVolumeInterface
+argument_list|>
 name|data
 init|=
 literal|null
@@ -5319,6 +5330,14 @@ specifier|final
 name|FSDatasetInterface
 operator|.
 name|Factory
+argument_list|<
+name|?
+extends|extends
+name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
 name|factory
 init|=
 name|FSDatasetInterface
@@ -9030,10 +9049,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is similated.    *     * @return the fsdataset that stores the blocks    */
+comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
 DECL|method|getFSDataset ()
-specifier|public
 name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
 name|getFSDataset
 parameter_list|()
 block|{

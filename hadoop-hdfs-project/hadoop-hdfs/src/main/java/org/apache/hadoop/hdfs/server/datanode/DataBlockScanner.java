@@ -184,6 +184,26 @@ name|ExtendedBlock
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|FSDatasetInterface
+operator|.
+name|FSVolumeInterface
+import|;
+end_import
+
 begin_comment
 comment|/**  * DataBlockScanner manages block scanning for all the block pools. For each  * block pool a {@link BlockPoolSliceScanner} is created which runs in a separate  * thread to scan the blocks for that block pool. When a {@link BPOfferService}  * becomes alive or dies, blockPoolScannerMap in this class is updated.  */
 end_comment
@@ -226,6 +246,11 @@ DECL|field|dataset
 specifier|private
 specifier|final
 name|FSDatasetInterface
+argument_list|<
+name|?
+extends|extends
+name|FSVolumeInterface
+argument_list|>
 name|dataset
 decl_stmt|;
 DECL|field|conf
@@ -261,13 +286,18 @@ name|blockScannerThread
 init|=
 literal|null
 decl_stmt|;
-DECL|method|DataBlockScanner (DataNode datanode, FSDatasetInterface dataset, Configuration conf)
+DECL|method|DataBlockScanner (DataNode datanode, FSDatasetInterface<? extends FSVolumeInterface> dataset, Configuration conf)
 name|DataBlockScanner
 parameter_list|(
 name|DataNode
 name|datanode
 parameter_list|,
 name|FSDatasetInterface
+argument_list|<
+name|?
+extends|extends
+name|FSVolumeInterface
+argument_list|>
 name|dataset
 parameter_list|,
 name|Configuration

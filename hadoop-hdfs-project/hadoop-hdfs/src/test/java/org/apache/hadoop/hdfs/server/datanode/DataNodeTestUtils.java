@@ -146,6 +146,27 @@ name|bpid
 argument_list|)
 return|;
 block|}
+comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
+DECL|method|getFSDataset (DataNode dn)
+specifier|public
+specifier|static
+name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
+name|getFSDataset
+parameter_list|(
+name|DataNode
+name|dn
+parameter_list|)
+block|{
+return|return
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+return|;
+block|}
 DECL|method|getFile (DataNode dn, String bpid, long bid)
 specifier|public
 specifier|static

@@ -404,6 +404,9 @@ DECL|field|dataset
 specifier|private
 specifier|final
 name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
 name|dataset
 decl_stmt|;
 DECL|field|reportCompileThreadPool
@@ -1102,13 +1105,16 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (DataNode dn, FSDatasetInterface dataset, Configuration conf)
+DECL|method|DirectoryScanner (DataNode dn, FSDatasetInterface<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
 name|DataNode
 name|dn
 parameter_list|,
 name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
 name|dataset
 parameter_list|,
 name|Configuration
@@ -2091,7 +2097,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Is the given volume still valid in the dataset? */
-DECL|method|isValid (final FSDatasetInterface dataset, final FSVolumeInterface volume)
+DECL|method|isValid (final FSDatasetInterface<?> dataset, final FSVolumeInterface volume)
 specifier|private
 specifier|static
 name|boolean
@@ -2099,6 +2105,9 @@ name|isValid
 parameter_list|(
 specifier|final
 name|FSDatasetInterface
+argument_list|<
+name|?
+argument_list|>
 name|dataset
 parameter_list|,
 specifier|final
@@ -2150,6 +2159,8 @@ comment|// First get list of data directories
 specifier|final
 name|List
 argument_list|<
+name|?
+extends|extends
 name|FSVolumeInterface
 argument_list|>
 name|volumes
