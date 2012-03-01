@@ -2382,11 +2382,7 @@ name|this
 operator|.
 name|conf
 operator|=
-operator|new
-name|Configuration
-argument_list|(
 name|conf
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -2399,8 +2395,6 @@ name|nsId
 init|=
 name|getNameServiceId
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|)
 decl_stmt|;
@@ -2411,8 +2405,6 @@ name|HAUtil
 operator|.
 name|getNameNodeId
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|,
 name|nsId
@@ -2426,8 +2418,6 @@ name|HAUtil
 operator|.
 name|isHAEnabled
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|,
 name|nsId
@@ -2459,8 +2449,6 @@ name|HAUtil
 operator|.
 name|shouldAllowStandbyReads
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2475,8 +2463,6 @@ try|try
 block|{
 name|initializeGenericKeys
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|,
 name|nsId
@@ -2486,8 +2472,6 @@ argument_list|)
 expr_stmt|;
 name|initialize
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2799,14 +2783,6 @@ argument_list|,
 name|nsId
 argument_list|)
 decl_stmt|;
-name|conf
-operator|=
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|initializeGenericKeys
 argument_list|(
 name|conf
@@ -3071,14 +3047,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|conf
-operator|=
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|String
 name|nsId
 init|=
