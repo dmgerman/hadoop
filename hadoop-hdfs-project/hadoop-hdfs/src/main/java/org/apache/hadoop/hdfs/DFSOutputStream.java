@@ -6727,23 +6727,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|Override
-annotation|@
-name|Deprecated
-DECL|method|sync ()
-specifier|public
-specifier|synchronized
-name|void
-name|sync
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|hflush
-argument_list|()
-expr_stmt|;
-block|}
 comment|/**    * Flushes out to all replicas of the block. The data is in the buffers    * of the DNs but not necessarily in the DN's OS buffers.    *    * It is a synchronous operation. When it returns,    * it guarantees that flushed data become visible to new readers.     * It is not guaranteed that data has been flushed to     * persistent store on the datanode.     * Block allocations are persisted on namenode.    */
 annotation|@
 name|Override
