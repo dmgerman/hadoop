@@ -36,7 +36,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetSocketAddress
+name|URI
 import|;
 end_import
 
@@ -66,7 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Collection
 import|;
 end_import
 
@@ -76,7 +76,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -2010,22 +2010,15 @@ name|cluster
 argument_list|)
 expr_stmt|;
 comment|// start rebalancing
-name|Map
+name|Collection
 argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|InetSocketAddress
-argument_list|>
+name|URI
 argument_list|>
 name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNsServiceRpcUris
 argument_list|(
 name|conf
 argument_list|)

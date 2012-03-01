@@ -36,7 +36,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetSocketAddress
+name|URI
 import|;
 end_import
 
@@ -56,7 +56,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Collection
 import|;
 end_import
 
@@ -66,7 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -326,9 +326,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|DatanodeReportType
+name|LocatedBlock
 import|;
 end_import
 
@@ -344,7 +342,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
 import|;
 end_import
 
@@ -1187,22 +1187,15 @@ argument_list|)
 expr_stmt|;
 comment|// start rebalancing
 specifier|final
-name|Map
+name|Collection
 argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|InetSocketAddress
-argument_list|>
+name|URI
 argument_list|>
 name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNsServiceRpcUris
 argument_list|(
 name|s
 operator|.
@@ -1802,7 +1795,11 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 operator|.
 name|nnTopology
@@ -1846,6 +1843,15 @@ name|cluster
 operator|.
 name|waitActive
 argument_list|()
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|setFederatedConfiguration
+argument_list|(
+name|cluster
+argument_list|,
+name|conf
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -2218,7 +2224,11 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
+operator|new
+name|Configuration
+argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 operator|.
 name|nnTopology
@@ -2254,6 +2264,15 @@ operator|.
 name|info
 argument_list|(
 literal|"RUN_TEST 0"
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|setFederatedConfiguration
+argument_list|(
+name|cluster
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 try|try

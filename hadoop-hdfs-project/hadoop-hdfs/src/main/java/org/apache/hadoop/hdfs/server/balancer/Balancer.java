@@ -94,7 +94,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetSocketAddress
+name|Socket
 import|;
 end_import
 
@@ -104,7 +104,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|Socket
+name|URI
 import|;
 end_import
 
@@ -235,18 +235,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-operator|.
-name|Entry
 import|;
 end_import
 
@@ -5988,21 +5976,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Balance all namenodes.    * For each iteration,    * for each namenode,    * execute a {@link Balancer} to work through all datanodes once.      */
-DECL|method|run (Map<String, Map<String, InetSocketAddress>> namenodes, final Parameters p, Configuration conf)
+DECL|method|run (Collection<URI> namenodes, final Parameters p, Configuration conf)
 specifier|static
 name|int
 name|run
 parameter_list|(
-name|Map
+name|Collection
 argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|InetSocketAddress
-argument_list|>
+name|URI
 argument_list|>
 name|namenodes
 parameter_list|,
@@ -6099,23 +6080,10 @@ try|try
 block|{
 for|for
 control|(
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|InetSocketAddress
-argument_list|>
-argument_list|>
-name|entry
+name|URI
+name|uri
 range|:
 name|namenodes
-operator|.
-name|entrySet
-argument_list|()
 control|)
 block|{
 name|connectors
@@ -6125,13 +6093,7 @@ argument_list|(
 operator|new
 name|NameNodeConnector
 argument_list|(
-name|entry
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|values
-argument_list|()
+name|uri
 argument_list|,
 name|conf
 argument_list|)
@@ -6531,22 +6493,15 @@ name|conf
 argument_list|)
 expr_stmt|;
 specifier|final
-name|Map
+name|Collection
 argument_list|<
-name|String
-argument_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|InetSocketAddress
-argument_list|>
+name|URI
 argument_list|>
 name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNsServiceRpcUris
 argument_list|(
 name|conf
 argument_list|)
