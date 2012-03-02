@@ -66,6 +66,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -541,6 +557,20 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Private
+DECL|method|getClientService ()
+specifier|public
+name|HistoryClientService
+name|getClientService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clientService
+return|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
