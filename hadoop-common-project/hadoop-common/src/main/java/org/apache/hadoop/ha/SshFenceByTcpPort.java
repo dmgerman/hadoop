@@ -253,9 +253,6 @@ condition|)
 block|{
 comment|// Use a dummy service when checking the arguments defined
 comment|// in the configuration are parseable.
-name|Args
-name|args
-init|=
 operator|new
 name|Args
 argument_list|(
@@ -269,7 +266,7 @@ argument_list|)
 argument_list|,
 name|argStr
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 block|}
 annotation|@

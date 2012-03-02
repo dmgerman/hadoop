@@ -718,7 +718,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Wrapper for a client proxy as well as its associated service ID.    * This is simply used as a tuple-like return type for    * {@link createProxy} and {@link createNonHaProxy}.    */
+comment|/**    * Wrapper for a client proxy as well as its associated service ID.    * This is simply used as a tuple-like return type for    * {@link NameNodeProxies#createProxy} and    * {@link NameNodeProxies#createNonHAProxy}.    */
 DECL|class|ProxyAndInfo
 specifier|public
 specifier|static
@@ -958,7 +958,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Creates an explicitly non-HA-enabled proxy object. Most of the time you    * don't want to use this, and should instead use {@link createProxy}.    *     * @param conf the configuration object    * @param nnAddr address of the remote NN to connect to    * @param xface the IPC interface which should be created    * @param ugi the user who is making the calls on the proxy object    * @param withRetries certain interfaces have a non-standard retry policy    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException    */
+comment|/**    * Creates an explicitly non-HA-enabled proxy object. Most of the time you    * don't want to use this, and should instead use {@link NameNodeProxies#createProxy}.    *     * @param conf the configuration object    * @param nnAddr address of the remote NN to connect to    * @param xface the IPC interface which should be created    * @param ugi the user who is making the calls on the proxy object    * @param withRetries certain interfaces have a non-standard retry policy    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1170,7 +1170,7 @@ name|message
 init|=
 literal|"Upsupported protocol found when creating the proxy "
 operator|+
-literal|"conection to NameNode: "
+literal|"connection to NameNode: "
 operator|+
 operator|(
 operator|(
@@ -1187,7 +1187,7 @@ operator|.
 name|getName
 argument_list|()
 else|:
-name|xface
+literal|"null"
 operator|)
 decl_stmt|;
 name|LOG

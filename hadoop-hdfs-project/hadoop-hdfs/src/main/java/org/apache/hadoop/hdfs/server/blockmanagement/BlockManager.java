@@ -9107,8 +9107,6 @@ operator|>=
 name|minReplication
 condition|)
 block|{
-name|storedBlock
-operator|=
 name|completeBlock
 argument_list|(
 name|storedBlock

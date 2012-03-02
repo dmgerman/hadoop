@@ -625,6 +625,7 @@ block|}
 comment|/**    * Exception thrown when there is no active leader    */
 DECL|class|ActiveNotFoundException
 specifier|public
+specifier|static
 class|class
 name|ActiveNotFoundException
 extends|extends

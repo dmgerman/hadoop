@@ -540,11 +540,9 @@ literal|"Configuration "
 operator|+
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 operator|+
-literal|" must be suffixed with"
+literal|" must be suffixed with nameservice and namenode ID for HA "
 operator|+
-name|namenodeId
-operator|+
-literal|" for HA configuration."
+literal|"configuration."
 decl_stmt|;
 throw|throw
 operator|new

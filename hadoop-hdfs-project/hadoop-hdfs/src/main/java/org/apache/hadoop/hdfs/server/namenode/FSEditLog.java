@@ -883,6 +883,7 @@ expr_stmt|;
 block|}
 DECL|method|initJournalsForWrite ()
 specifier|public
+specifier|synchronized
 name|void
 name|initJournalsForWrite
 parameter_list|()
@@ -924,6 +925,7 @@ expr_stmt|;
 block|}
 DECL|method|initSharedJournalsForRead ()
 specifier|public
+specifier|synchronized
 name|void
 name|initSharedJournalsForRead
 parameter_list|()
@@ -983,6 +985,7 @@ expr_stmt|;
 block|}
 DECL|method|initJournals (List<URI> dirs)
 specifier|private
+specifier|synchronized
 name|void
 name|initJournals
 parameter_list|(
@@ -3049,6 +3052,7 @@ comment|/**    * Used only by unit tests.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getJournals ()
+specifier|synchronized
 name|List
 argument_list|<
 name|JournalAndStream
@@ -3067,6 +3071,7 @@ comment|/**    * Used only by tests.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getJournalSet ()
+specifier|synchronized
 specifier|public
 name|JournalSet
 name|getJournalSet
@@ -3508,6 +3513,7 @@ block|}
 comment|/**    * Archive any log files that are older than the given txid.    */
 DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
 specifier|public
+specifier|synchronized
 name|void
 name|purgeLogsOlderThan
 parameter_list|(
@@ -3516,14 +3522,6 @@ name|long
 name|minTxIdToKeep
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-comment|// synchronized to prevent findbugs warning about inconsistent
-comment|// synchronization. This will be JIT-ed out if asserts are
-comment|// off.
 assert|assert
 name|curSegmentTxId
 operator|==
@@ -3544,7 +3542,8 @@ literal|" when current segment starts at "
 operator|+
 name|curSegmentTxId
 assert|;
-block|}
+comment|// This could be improved to not need synchronization. But currently,
+comment|// journalSet is not threadsafe, so we need to synchronize this method.
 try|try
 block|{
 name|journalSet
@@ -3605,7 +3604,7 @@ return|;
 block|}
 comment|// sets the initial capacity of the flush buffer.
 DECL|method|setOutputBufferCapacity (int size)
-specifier|public
+specifier|synchronized
 name|void
 name|setOutputBufferCapacity
 parameter_list|(
@@ -3863,6 +3862,7 @@ expr_stmt|;
 block|}
 comment|/**    * Run recovery on all journals to recover any unclosed segments    */
 DECL|method|recoverUnclosedStreams ()
+specifier|synchronized
 name|void
 name|recoverUnclosedStreams
 parameter_list|()
@@ -3929,6 +3929,7 @@ block|}
 comment|/**    * Select a list of input streams to load.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    * @param inProgessOk set to true if in-progress streams are OK    */
 DECL|method|selectInputStreams (long fromTxId, long toAtLeastTxId, boolean inProgressOk)
 specifier|public
+specifier|synchronized
 name|Collection
 argument_list|<
 name|EditLogInputStream

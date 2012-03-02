@@ -2065,9 +2065,6 @@ condition|)
 block|{
 name|underReplicatedBlocks
 operator|=
-operator|new
-name|String
-argument_list|(
 name|rowTxt
 argument_list|()
 operator|+
@@ -2093,7 +2090,6 @@ argument_list|()
 operator|.
 name|getUnderReplicatedNotMissingBlocks
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 name|out

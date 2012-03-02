@@ -1034,6 +1034,7 @@ return|;
 block|}
 block|}
 DECL|method|getNamespaceInfo ()
+specifier|synchronized
 name|NamespaceInfo
 name|getNamespaceInfo
 parameter_list|()
@@ -1758,6 +1759,7 @@ throw|;
 block|}
 block|}
 DECL|method|createRegistration ()
+specifier|synchronized
 name|DatanodeRegistration
 name|createRegistration
 parameter_list|()

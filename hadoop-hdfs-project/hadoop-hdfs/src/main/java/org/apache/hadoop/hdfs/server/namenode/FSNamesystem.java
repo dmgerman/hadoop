@@ -3910,7 +3910,8 @@ operator|&&
 operator|!
 name|safeMode
 operator|.
-name|initializedReplQueues
+name|isPopulatingReplQueues
+argument_list|()
 assert|;
 name|setBlockTotal
 argument_list|()
@@ -17370,6 +17371,7 @@ block|}
 block|}
 DECL|method|adjustBlockTotals (int deltaSafe, int deltaTotal)
 specifier|private
+specifier|synchronized
 name|void
 name|adjustBlockTotals
 parameter_list|(

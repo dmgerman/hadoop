@@ -1649,6 +1649,9 @@ operator|+
 name|elf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
 name|elf
 operator|.
 name|getFile
@@ -1656,7 +1659,21 @@ argument_list|()
 operator|.
 name|delete
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete file "
+operator|+
+name|elf
+operator|.
+name|getFile
+argument_list|()
+argument_list|)
+throw|;
+block|}
 continue|continue;
 block|}
 name|elf
@@ -1710,6 +1727,9 @@ operator|+
 name|elf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
 name|elf
 operator|.
 name|getFile
@@ -1717,7 +1737,21 @@ argument_list|()
 operator|.
 name|delete
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete "
+operator|+
+name|elf
+operator|.
+name|getFile
+argument_list|()
+argument_list|)
+throw|;
+block|}
 continue|continue;
 block|}
 name|finalizeLogSegment

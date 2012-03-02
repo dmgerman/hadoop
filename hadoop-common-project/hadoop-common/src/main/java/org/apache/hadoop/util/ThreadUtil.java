@@ -84,7 +84,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Cause the current thread to sleep as close as possible to the provided    * number of milliseconds. This method will log and ignore any    * {@link InterrupedException} encountered.    *     * @param millis the number of milliseconds for the current thread to sleep    */
+comment|/**    * Cause the current thread to sleep as close as possible to the provided    * number of milliseconds. This method will log and ignore any    * {@link InterruptedException} encountered.    *     * @param millis the number of milliseconds for the current thread to sleep    */
 DECL|method|sleepAtLeastIgnoreInterrupts (long millis)
 specifier|public
 specifier|static
