@@ -72,17 +72,6 @@ specifier|public
 interface|interface
 name|Syncable
 block|{
-comment|/**    * @deprecated As of HADOOP 0.21.0, replaced by hflush    * @see #hflush()    */
-DECL|method|sync ()
-annotation|@
-name|Deprecated
-specifier|public
-name|void
-name|sync
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 comment|/** Flush out the data in client's user buffer. After the return of    * this call, new readers will see the data.    * @throws IOException if any error occurs    */
 DECL|method|hflush ()
 specifier|public

@@ -4936,7 +4936,7 @@ condition|)
 block|{
 name|out
 operator|.
-name|sync
+name|hflush
 argument_list|()
 expr_stmt|;
 comment|// flush contents to file system

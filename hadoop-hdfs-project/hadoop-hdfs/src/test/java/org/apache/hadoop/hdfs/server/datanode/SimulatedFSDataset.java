@@ -387,6 +387,11 @@ class|class
 name|SimulatedFSDataset
 implements|implements
 name|FSDatasetInterface
+argument_list|<
+name|FSDatasetInterface
+operator|.
+name|FSVolumeInterface
+argument_list|>
 block|{
 DECL|class|Factory
 specifier|static
@@ -396,12 +401,15 @@ extends|extends
 name|FSDatasetInterface
 operator|.
 name|Factory
+argument_list|<
+name|SimulatedFSDataset
+argument_list|>
 block|{
 annotation|@
 name|Override
 DECL|method|createFSDatasetInterface (DataNode datanode, DataStorage storage, Configuration conf)
 specifier|public
-name|FSDatasetInterface
+name|SimulatedFSDataset
 name|createFSDatasetInterface
 parameter_list|(
 name|DataNode

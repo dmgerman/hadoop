@@ -161,42 +161,6 @@ operator|.
 name|datanode
 operator|.
 name|FSDatasetInterface
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|SimulatedFSDataset
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|FSDatasetInterface
 operator|.
 name|BlockWriteStreams
 import|;
@@ -313,11 +277,11 @@ operator|*
 name|BLOCK_LENGTH_MULTIPLIER
 return|;
 block|}
-DECL|method|addSomeBlocks (FSDatasetInterface fsdataset, int startingBlockId)
+DECL|method|addSomeBlocks (SimulatedFSDataset fsdataset, int startingBlockId)
 name|int
 name|addSomeBlocks
 parameter_list|(
-name|FSDatasetInterface
+name|SimulatedFSDataset
 name|fsdataset
 parameter_list|,
 name|int
@@ -503,11 +467,11 @@ return|return
 name|bytesAdded
 return|;
 block|}
-DECL|method|addSomeBlocks (FSDatasetInterface fsdataset )
+DECL|method|addSomeBlocks (SimulatedFSDataset fsdataset )
 name|int
 name|addSomeBlocks
 parameter_list|(
-name|FSDatasetInterface
+name|SimulatedFSDataset
 name|fsdataset
 parameter_list|)
 throws|throws
@@ -539,6 +503,9 @@ decl_stmt|;
 name|FSDatasetInterface
 operator|.
 name|Factory
+argument_list|<
+name|?
+argument_list|>
 name|f
 init|=
 name|FSDatasetInterface
@@ -582,6 +549,9 @@ expr_stmt|;
 name|FSDatasetInterface
 operator|.
 name|Factory
+argument_list|<
+name|?
+argument_list|>
 name|s
 init|=
 name|FSDatasetInterface
@@ -624,7 +594,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset
@@ -770,7 +741,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset
@@ -833,11 +805,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkBlockDataAndSize (FSDatasetInterface fsdataset, ExtendedBlock b, long expectedLen)
+DECL|method|checkBlockDataAndSize (SimulatedFSDataset fsdataset, ExtendedBlock b, long expectedLen)
 name|void
 name|checkBlockDataAndSize
 parameter_list|(
-name|FSDatasetInterface
+name|SimulatedFSDataset
 name|fsdataset
 parameter_list|,
 name|ExtendedBlock
@@ -911,7 +883,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset
@@ -1611,7 +1584,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset
@@ -1711,7 +1685,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset
@@ -1773,7 +1748,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FSDatasetInterface
+specifier|final
+name|SimulatedFSDataset
 name|fsdataset
 init|=
 name|getSimulatedFSDataset

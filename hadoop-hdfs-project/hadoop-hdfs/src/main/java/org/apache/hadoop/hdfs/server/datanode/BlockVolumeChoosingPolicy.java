@@ -62,20 +62,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|server
@@ -101,16 +87,21 @@ DECL|interface|BlockVolumeChoosingPolicy
 specifier|public
 interface|interface
 name|BlockVolumeChoosingPolicy
+parameter_list|<
+name|V
+extends|extends
+name|FSVolumeInterface
+parameter_list|>
 block|{
 comment|/**    * Returns a specific FSVolume after applying a suitable choice algorithm    * to place a given block, given a list of FSVolumes and the block    * size sought for storage.    *     * (Policies that maintain state must be thread-safe.)    *     * @param volumes - the array of FSVolumes that are available.    * @param blockSize - the size of the block for which a volume is sought.    * @return the chosen volume to store the block.    * @throws IOException when disks are unavailable or are full.    */
-DECL|method|chooseVolume (List<FSVolumeInterface> volumes, long blockSize)
+DECL|method|chooseVolume (List<V> volumes, long blockSize)
 specifier|public
-name|FSVolumeInterface
+name|V
 name|chooseVolume
 parameter_list|(
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|V
 argument_list|>
 name|volumes
 parameter_list|,

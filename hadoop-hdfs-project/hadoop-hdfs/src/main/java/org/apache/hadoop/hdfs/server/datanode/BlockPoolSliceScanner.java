@@ -500,6 +500,11 @@ DECL|field|dataset
 specifier|private
 specifier|final
 name|FSDatasetInterface
+argument_list|<
+name|?
+extends|extends
+name|FSVolumeInterface
+argument_list|>
 name|dataset
 decl_stmt|;
 comment|// sorted set
@@ -769,13 +774,18 @@ operator|)
 return|;
 block|}
 block|}
-DECL|method|BlockPoolSliceScanner (DataNode datanode, FSDatasetInterface dataset, Configuration conf, String bpid)
+DECL|method|BlockPoolSliceScanner (DataNode datanode, FSDatasetInterface<? extends FSVolumeInterface> dataset, Configuration conf, String bpid)
 name|BlockPoolSliceScanner
 parameter_list|(
 name|DataNode
 name|datanode
 parameter_list|,
 name|FSDatasetInterface
+argument_list|<
+name|?
+extends|extends
+name|FSVolumeInterface
+argument_list|>
 name|dataset
 parameter_list|,
 name|Configuration
@@ -1177,8 +1187,11 @@ name|dir
 init|=
 literal|null
 decl_stmt|;
+specifier|final
 name|List
 argument_list|<
+name|?
+extends|extends
 name|FSVolumeInterface
 argument_list|>
 name|volumes

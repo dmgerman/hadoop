@@ -81,8 +81,16 @@ DECL|class|RoundRobinVolumesPolicy
 specifier|public
 class|class
 name|RoundRobinVolumesPolicy
+parameter_list|<
+name|V
+extends|extends
+name|FSVolumeInterface
+parameter_list|>
 implements|implements
 name|BlockVolumeChoosingPolicy
+argument_list|<
+name|V
+argument_list|>
 block|{
 DECL|field|curVolume
 specifier|private
@@ -93,18 +101,20 @@ literal|0
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseVolume ( List<FSVolumeInterface> volumes, long blockSize)
+DECL|method|chooseVolume (final List<V> volumes, final long blockSize )
 specifier|public
 specifier|synchronized
-name|FSVolumeInterface
+name|V
 name|chooseVolume
 parameter_list|(
+specifier|final
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|V
 argument_list|>
 name|volumes
 parameter_list|,
+specifier|final
 name|long
 name|blockSize
 parameter_list|)
@@ -161,7 +171,8 @@ condition|(
 literal|true
 condition|)
 block|{
-name|FSVolumeInterface
+specifier|final
+name|V
 name|volume
 init|=
 name|volumes

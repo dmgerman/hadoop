@@ -390,7 +390,7 @@ condition|)
 block|{
 name|out
 operator|.
-name|sync
+name|hsync
 argument_list|()
 expr_stmt|;
 block|}

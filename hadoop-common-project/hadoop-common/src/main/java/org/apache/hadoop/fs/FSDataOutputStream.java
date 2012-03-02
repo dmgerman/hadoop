@@ -22,7 +22,47 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|BufferedOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FilterOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
 import|;
 end_import
 
@@ -78,6 +118,7 @@ name|Syncable
 block|{
 DECL|field|wrappedStream
 specifier|private
+specifier|final
 name|OutputStream
 name|wrappedStream
 decl_stmt|;
@@ -91,17 +132,18 @@ name|FilterOutputStream
 block|{
 DECL|field|statistics
 specifier|private
+specifier|final
 name|FileSystem
 operator|.
 name|Statistics
 name|statistics
 decl_stmt|;
 DECL|field|position
+specifier|private
 name|long
 name|position
 decl_stmt|;
 DECL|method|PositionCache (OutputStream out, FileSystem.Statistics stats, long pos)
-specifier|public
 name|PositionCache
 parameter_list|(
 name|OutputStream
@@ -115,8 +157,6 @@ parameter_list|,
 name|long
 name|pos
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -132,6 +172,8 @@ operator|=
 name|pos
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -169,6 +211,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte b[], int off, int len)
 specifier|public
 name|void
@@ -220,18 +264,17 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getPos ()
-specifier|public
 name|long
 name|getPos
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|position
 return|;
 comment|// return cached position
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -247,26 +290,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Deprecated
-DECL|method|FSDataOutputStream (OutputStream out)
-specifier|public
-name|FSDataOutputStream
-parameter_list|(
-name|OutputStream
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|this
-argument_list|(
-name|out
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|FSDataOutputStream (OutputStream out, FileSystem.Statistics stats)
 specifier|public
 name|FSDataOutputStream
@@ -279,8 +302,6 @@ operator|.
 name|Statistics
 name|stats
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 argument_list|(
@@ -307,8 +328,6 @@ parameter_list|,
 name|long
 name|startPosition
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|super
 argument_list|(
@@ -334,8 +353,6 @@ specifier|public
 name|long
 name|getPos
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 operator|(
@@ -350,6 +367,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Close the underlying output stream.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -384,38 +403,6 @@ block|{
 return|return
 name|wrappedStream
 return|;
-block|}
-annotation|@
-name|Override
-comment|// Syncable
-annotation|@
-name|Deprecated
-DECL|method|sync ()
-specifier|public
-name|void
-name|sync
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|wrappedStream
-operator|instanceof
-name|Syncable
-condition|)
-block|{
-operator|(
-operator|(
-name|Syncable
-operator|)
-name|wrappedStream
-operator|)
-operator|.
-name|sync
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override

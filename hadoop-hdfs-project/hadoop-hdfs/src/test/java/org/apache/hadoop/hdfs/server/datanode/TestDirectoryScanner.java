@@ -276,9 +276,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|FSDataset
 operator|.
-name|FSVolumeInterface
+name|FSVolume
 import|;
 end_import
 
@@ -839,7 +839,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|FSVolume
 argument_list|>
 name|volumes
 init|=
@@ -934,7 +934,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|FSVolume
 argument_list|>
 name|volumes
 init|=
@@ -1029,7 +1029,7 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|FSVolume
 argument_list|>
 name|volumes
 init|=
@@ -1439,6 +1439,10 @@ operator|=
 operator|(
 name|FSDataset
 operator|)
+name|DataNodeTestUtils
+operator|.
+name|getFSDataset
+argument_list|(
 name|cluster
 operator|.
 name|getDataNodes
@@ -1448,9 +1452,7 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getFSDataset
-argument_list|()
+argument_list|)
 expr_stmt|;
 name|CONF
 operator|.
