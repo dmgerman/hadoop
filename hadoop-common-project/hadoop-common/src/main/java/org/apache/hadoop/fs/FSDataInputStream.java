@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -79,6 +89,8 @@ implements|,
 name|PositionedReadable
 implements|,
 name|Closeable
+implements|,
+name|ByteBufferReadable
 block|{
 DECL|method|FSDataInputStream (InputStream in)
 specifier|public
@@ -333,6 +345,46 @@ block|{
 return|return
 name|in
 return|;
+block|}
+DECL|method|read (ByteBuffer buf)
+specifier|public
+name|int
+name|read
+parameter_list|(
+name|ByteBuffer
+name|buf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|instanceof
+name|ByteBufferReadable
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|ByteBufferReadable
+operator|)
+name|in
+operator|)
+operator|.
+name|read
+argument_list|(
+name|buf
+argument_list|)
+return|;
+block|}
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Byte-buffer read unsupported by input stream"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class
