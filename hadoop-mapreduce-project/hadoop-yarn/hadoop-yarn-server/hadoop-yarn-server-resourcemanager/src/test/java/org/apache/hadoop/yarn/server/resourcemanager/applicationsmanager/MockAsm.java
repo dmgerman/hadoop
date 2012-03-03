@@ -965,11 +965,14 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAndGetApplicationReport ()
+DECL|method|createAndGetApplicationReport (boolean allowAccess)
 specifier|public
 name|ApplicationReport
 name|createAndGetApplicationReport
-parameter_list|()
+parameter_list|(
+name|boolean
+name|allowAccess
+parameter_list|)
 block|{
 throw|throw
 operator|new

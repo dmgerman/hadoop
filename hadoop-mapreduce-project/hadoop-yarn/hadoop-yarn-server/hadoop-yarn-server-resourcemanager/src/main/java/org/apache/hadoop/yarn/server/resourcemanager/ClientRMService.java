@@ -1706,9 +1706,9 @@ name|applicationId
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-operator|!
+name|boolean
+name|allowAccess
+init|=
 name|checkAccess
 argument_list|(
 name|callerUGI
@@ -1724,46 +1724,16 @@ name|VIEW_APP
 argument_list|,
 name|applicationId
 argument_list|)
-condition|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"User "
-operator|+
-name|callerUGI
-operator|.
-name|getShortUserName
-argument_list|()
-operator|+
-literal|" cannot perform operation "
-operator|+
-name|ApplicationAccessType
-operator|.
-name|VIEW_APP
-operator|.
-name|name
-argument_list|()
-operator|+
-literal|" on "
-operator|+
-name|applicationId
-argument_list|)
-argument_list|)
-throw|;
-block|}
+decl_stmt|;
 name|ApplicationReport
 name|report
 init|=
 name|application
 operator|.
 name|createAndGetApplicationReport
-argument_list|()
+argument_list|(
+name|allowAccess
+argument_list|)
 decl_stmt|;
 name|GetApplicationReportResponse
 name|response
@@ -2407,12 +2377,9 @@ name|values
 argument_list|()
 control|)
 block|{
-comment|// Only give out the applications viewable by the user as
-comment|// ApplicationReport has confidential information like client-token, ACLs
-comment|// etc. Web UI displays all applications though as we filter and print
-comment|// only public information there.
-if|if
-condition|(
+name|boolean
+name|allowAccess
+init|=
 name|checkAccess
 argument_list|(
 name|callerUGI
@@ -2431,8 +2398,7 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|)
-condition|)
-block|{
+decl_stmt|;
 name|reports
 operator|.
 name|add
@@ -2440,10 +2406,11 @@ argument_list|(
 name|application
 operator|.
 name|createAndGetApplicationReport
-argument_list|()
+argument_list|(
+name|allowAccess
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|GetAllApplicationsResponse
 name|response
@@ -2668,7 +2635,9 @@ argument_list|(
 name|app
 operator|.
 name|createAndGetApplicationReport
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

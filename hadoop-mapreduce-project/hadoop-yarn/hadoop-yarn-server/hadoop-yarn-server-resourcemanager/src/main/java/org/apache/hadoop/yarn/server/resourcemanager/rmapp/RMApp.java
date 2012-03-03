@@ -256,13 +256,16 @@ name|RMAppAttempt
 name|getCurrentAppAttempt
 parameter_list|()
 function_decl|;
-comment|/**    * To get the status of an application in the RM, this method can be used.    * @return the {@link ApplicationReport} detailing the status of the application.    */
-DECL|method|createAndGetApplicationReport ()
+comment|/**    * To get the status of an application in the RM, this method can be used.    * If full access is not allowed then the following fields in the report    * will be stubbed:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *    * @param allowAccess whether to allow full access to the report    * @return the {@link ApplicationReport} detailing the status of the application.    */
+DECL|method|createAndGetApplicationReport (boolean allowAccess)
 name|ApplicationReport
 name|createAndGetApplicationReport
-parameter_list|()
+parameter_list|(
+name|boolean
+name|allowAccess
+parameter_list|)
 function_decl|;
-comment|/**    * Application level metadata is stored in {@link ApplicationStore} whicn    * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */
+comment|/**    * Application level metadata is stored in {@link ApplicationStore} which    * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */
 DECL|method|getApplicationStore ()
 name|ApplicationStore
 name|getApplicationStore

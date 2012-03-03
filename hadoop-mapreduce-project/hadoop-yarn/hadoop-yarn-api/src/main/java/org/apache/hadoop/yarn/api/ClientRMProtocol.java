@@ -602,7 +602,7 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to get a report of an Application from    * the<code>ResourceManager</code>.</p>    *     *<p>The client, via {@link GetApplicationReportRequest} provides the    * {@link ApplicationId} of the application.</p>    *    *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before accepting the request.</p>     *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetApplicationReportResponse} which includes the     * {@link ApplicationReport} for the application.</p>    *     * @param request request for an application report    * @return application report     * @throws YarnRemoteException    */
+comment|/**    *<p>The interface used by clients to get a report of an Application from    * the<code>ResourceManager</code>.</p>    *     *<p>The client, via {@link GetApplicationReportRequest} provides the    * {@link ApplicationId} of the application.</p>    *    *<p> In secure mode,the<code>ResourceManager</code> verifies access to the    * application, queue etc. before accepting the request.</p>     *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetApplicationReportResponse} which includes the     * {@link ApplicationReport} for the application.</p>    *     *<p>If the user does not have<code>VIEW_APP</code> access then the    * following fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul></p>    *    * @param request request for an application report    * @return application report     * @throws YarnRemoteException    */
 DECL|method|getApplicationReport ( GetApplicationReportRequest request)
 specifier|public
 name|GetApplicationReportResponse
@@ -626,7 +626,7 @@ parameter_list|)
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>The interface used by clients to get a report of all Applications    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetAllApplicationsResponse} which includes the     * {@link ApplicationReport} for all the applications.</p>    *     * @param request request for report on all running applications    * @return report on all running applications    * @throws YarnRemoteException    */
+comment|/**    *<p>The interface used by clients to get a report of all Applications    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetAllApplicationsResponse} which includes the     * {@link ApplicationReport} for all the applications.</p>    *     *<p>If the user does not have<code>VIEW_APP</code> access for an    * application then the corresponding report will be filtered as    * described in {@link #getApplicationReport(GetApplicationReportRequest)}.    *</p>    *    * @param request request for report on all running applications    * @return report on all running applications    * @throws YarnRemoteException    */
 DECL|method|getAllApplications ( GetAllApplicationsRequest request)
 specifier|public
 name|GetAllApplicationsResponse
