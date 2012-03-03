@@ -362,6 +362,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|BlockPlacementPolicyDefault ()
+specifier|protected
 name|BlockPlacementPolicyDefault
 parameter_list|()
 block|{   }

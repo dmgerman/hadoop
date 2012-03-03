@@ -56,6 +56,14 @@ name|void
 name|writeLock
 parameter_list|()
 function_decl|;
+comment|/** Acquire write lock, unless interrupted while waiting  */
+DECL|method|writeLockInterruptibly ()
+name|void
+name|writeLockInterruptibly
+parameter_list|()
+throws|throws
+name|InterruptedException
+function_decl|;
 comment|/** Release write lock. */
 DECL|method|writeUnlock ()
 specifier|public

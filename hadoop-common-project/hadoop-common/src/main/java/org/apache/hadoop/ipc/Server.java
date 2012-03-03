@@ -8433,6 +8433,24 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
+name|StandbyException
+condition|)
+block|{
+comment|// Don't log the whole stack trace of these exceptions.
+comment|// Way too noisy!
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|logMsg
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|LOG

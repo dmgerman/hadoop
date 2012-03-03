@@ -171,13 +171,16 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId)
+DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -192,13 +195,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxnId)
+DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|EditLogInputStream
 name|getInputStream
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException

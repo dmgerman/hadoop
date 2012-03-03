@@ -938,7 +938,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|testLoad
@@ -1017,7 +1017,7 @@ operator|.
 name|getNamesystem
 argument_list|()
 decl_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|testLoad
@@ -1087,7 +1087,7 @@ block|}
 block|}
 DECL|method|testLoad (byte[] data, FSNamesystem namesys)
 specifier|private
-name|int
+name|long
 name|testLoad
 parameter_list|(
 name|byte
@@ -1810,7 +1810,7 @@ operator|+
 name|editFile
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|numEdits
 init|=
 name|loader
@@ -3321,6 +3321,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// should succeed - only one corrupt log dir
 DECL|method|testCrashRecoveryEmptyLogOneDir ()
 specifier|public
 name|void
@@ -3334,9 +3335,12 @@ argument_list|(
 literal|false
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should fail - seen_txid updated to 3, but no log dir contains txid 3
 DECL|method|testCrashRecoveryEmptyLogBothDirs ()
 specifier|public
 name|void
@@ -3350,9 +3354,12 @@ argument_list|(
 literal|true
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should succeed - only one corrupt log dir
 DECL|method|testCrashRecoveryEmptyLogOneDirNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -3366,9 +3373,12 @@ argument_list|(
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|// should succeed - both log dirs corrupt, but seen_txid never updated
 DECL|method|testCrashRecoveryEmptyLogBothDirsNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -3382,11 +3392,13 @@ argument_list|(
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test that the NN handles the corruption properly    * after it crashes just after creating an edit log    * (ie before writing START_LOG_SEGMENT). In the case    * that all logs have this problem, it should mark them    * as corrupt instead of trying to finalize them.    *     * @param inBothDirs if true, there will be a truncated log in    * both of the edits directories. If false, the truncated log    * will only be in one of the directories. In both cases, the    * NN should fail to start up, because it's aware that txid 3    * was reached, but unable to find a non-corrupt log starting there.    * @param updateTransactionIdFile if true update the seen_txid file.    * If false, the it will not be updated. This will simulate a case     * where the NN crashed between creating the new segment and updating    * seen_txid.     */
-DECL|method|doTestCrashRecoveryEmptyLog (boolean inBothDirs, boolean updateTransactionIdFile)
+comment|/**    * Test that the NN handles the corruption properly    * after it crashes just after creating an edit log    * (ie before writing START_LOG_SEGMENT). In the case    * that all logs have this problem, it should mark them    * as corrupt instead of trying to finalize them.    *     * @param inBothDirs if true, there will be a truncated log in    * both of the edits directories. If false, the truncated log    * will only be in one of the directories. In both cases, the    * NN should fail to start up, because it's aware that txid 3    * was reached, but unable to find a non-corrupt log starting there.    * @param updateTransactionIdFile if true update the seen_txid file.    * If false, it will not be updated. This will simulate a case where    * the NN crashed between creating the new segment and updating the    * seen_txid file.    * @param shouldSucceed true if the test is expected to succeed.    */
+DECL|method|doTestCrashRecoveryEmptyLog (boolean inBothDirs, boolean updateTransactionIdFile, boolean shouldSucceed)
 specifier|private
 name|void
 name|doTestCrashRecoveryEmptyLog
@@ -3396,6 +3408,9 @@ name|inBothDirs
 parameter_list|,
 name|boolean
 name|updateTransactionIdFile
+parameter_list|,
+name|boolean
+name|shouldSucceed
 parameter_list|)
 throws|throws
 name|Exception
@@ -3516,6 +3531,25 @@ literal|3
 argument_list|)
 argument_list|)
 decl_stmt|;
+operator|new
+name|EditLogFileOutputStream
+argument_list|(
+name|log
+argument_list|,
+literal|1024
+argument_list|)
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|inBothDirs
+condition|)
+block|{
+break|break;
+block|}
 name|NNStorage
 name|storage
 init|=
@@ -3558,25 +3592,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-operator|new
-name|EditLogFileOutputStream
-argument_list|(
-name|log
-argument_list|,
-literal|1024
-argument_list|)
-operator|.
-name|create
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|inBothDirs
-condition|)
-block|{
-break|break;
-block|}
 block|}
 try|try
 block|{
@@ -3603,17 +3618,44 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|shouldSucceed
+condition|)
+block|{
 name|fail
 argument_list|(
-literal|"Did not fail to start with all-corrupt logs"
+literal|"Should not have succeeded in startin cluster"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)
+block|{
+if|if
+condition|(
+name|shouldSucceed
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Should have succeeded in starting cluster, but failed"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
+else|else
 block|{
 name|GenericTestUtils
 operator|.
@@ -3625,11 +3667,15 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|class|EditLogByteInputStream
 specifier|private
@@ -3891,6 +3937,18 @@ operator|.
 name|FILE
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isInProgress ()
+specifier|public
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 DECL|method|testFailedOpen ()
 specifier|public
@@ -3937,7 +3995,7 @@ argument_list|)
 expr_stmt|;
 name|log
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|fail
@@ -3956,7 +4014,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"no journals successfully started"
+literal|"too few journals successfully started"
 argument_list|,
 name|ioe
 argument_list|)
@@ -4031,7 +4089,7 @@ try|try
 block|{
 name|log
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|NameNodeMetrics
@@ -4195,6 +4253,11 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"[[1,100], [101,200]]"
@@ -4245,6 +4308,11 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"[[1,100], [101,200], [201,300], [301,400]]"
@@ -4279,6 +4347,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4315,6 +4388,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4365,6 +4443,11 @@ name|FSEditLog
 argument_list|(
 name|storage
 argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|initJournalsForWrite
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -4749,8 +4832,8 @@ name|TXNS_PER_FAIL
 init|=
 literal|2
 decl_stmt|;
-comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
-DECL|method|setupEdits (List<URI> editUris, int numrolls, AbortSpec... abortAtRolls)
+comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param closeOnFinish whether to close the edit log after setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
+DECL|method|setupEdits (List<URI> editUris, int numrolls, boolean closeOnFinish, AbortSpec... abortAtRolls)
 specifier|public
 specifier|static
 name|NNStorage
@@ -4764,6 +4847,9 @@ name|editUris
 parameter_list|,
 name|int
 name|numrolls
+parameter_list|,
+name|boolean
+name|closeOnFinish
 parameter_list|,
 name|AbortSpec
 modifier|...
@@ -4834,7 +4920,12 @@ comment|// logGenerationStamp is used, simply because it doesn't
 comment|// require complex arguments.
 name|editlog
 operator|.
-name|open
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+name|editlog
+operator|.
+name|openForWrite
 argument_list|()
 expr_stmt|;
 for|for
@@ -4991,11 +5082,17 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|closeOnFinish
+condition|)
+block|{
 name|editlog
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|FSImageTestUtil
 operator|.
 name|logStorageContents
@@ -5009,7 +5106,43 @@ return|return
 name|storage
 return|;
 block|}
-comment|/**     * Test loading an editlog which has had both its storage fail    * on alternating rolls. Two edit log directories are created.    * The first on fails on odd rolls, the second on even. Test    * that we are able to load the entire editlog regardless.    */
+comment|/**    * Set up directories for tests.     *    * Each rolled file is 10 txns long.     * A failed file is 2 txns long.    *     * @param editUris directories to create edit logs in    * @param numrolls number of times to roll the edit log during setup    * @param abortAtRolls Specifications for when to fail, see AbortSpec    */
+DECL|method|setupEdits (List<URI> editUris, int numrolls, AbortSpec... abortAtRolls)
+specifier|public
+specifier|static
+name|NNStorage
+name|setupEdits
+parameter_list|(
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|editUris
+parameter_list|,
+name|int
+name|numrolls
+parameter_list|,
+name|AbortSpec
+modifier|...
+name|abortAtRolls
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|setupEdits
+argument_list|(
+name|editUris
+argument_list|,
+name|numrolls
+argument_list|,
+literal|true
+argument_list|,
+name|abortAtRolls
+argument_list|)
+return|;
+block|}
+comment|/**     * Test loading an editlog which has had both its storage fail    * on alternating rolls. Two edit log directories are created.    * The first one fails on odd rolls, the second on even. Test    * that we are able to load the entire editlog regardless.    */
 annotation|@
 name|Test
 DECL|method|testAlternatingJournalFailure ()
@@ -5167,6 +5300,11 @@ argument_list|(
 name|storage
 argument_list|)
 decl_stmt|;
+name|editlog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|long
 name|startTxId
 init|=
@@ -5421,6 +5559,11 @@ argument_list|(
 name|storage
 argument_list|)
 decl_stmt|;
+name|editlog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
 name|long
 name|startTxId
 init|=
@@ -5428,12 +5571,6 @@ literal|1
 decl_stmt|;
 try|try
 block|{
-name|Iterable
-argument_list|<
-name|EditLogInputStream
-argument_list|>
-name|editStreams
-init|=
 name|editlog
 operator|.
 name|selectInputStreams
@@ -5444,7 +5581,7 @@ literal|4
 operator|*
 name|TXNS_PER_ROLL
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"Should have thrown exception"

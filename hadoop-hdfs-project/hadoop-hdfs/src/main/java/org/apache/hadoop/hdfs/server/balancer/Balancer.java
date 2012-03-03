@@ -94,7 +94,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetSocketAddress
+name|Socket
 import|;
 end_import
 
@@ -104,7 +104,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|Socket
+name|URI
 import|;
 end_import
 
@@ -5976,14 +5976,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Balance all namenodes.    * For each iteration,    * for each namenode,    * execute a {@link Balancer} to work through all datanodes once.      */
-DECL|method|run (List<InetSocketAddress> namenodes, final Parameters p, Configuration conf)
+DECL|method|run (Collection<URI> namenodes, final Parameters p, Configuration conf)
 specifier|static
 name|int
 name|run
 parameter_list|(
-name|List
+name|Collection
 argument_list|<
-name|InetSocketAddress
+name|URI
 argument_list|>
 name|namenodes
 parameter_list|,
@@ -6080,8 +6080,8 @@ try|try
 block|{
 for|for
 control|(
-name|InetSocketAddress
-name|isa
+name|URI
+name|uri
 range|:
 name|namenodes
 control|)
@@ -6093,7 +6093,7 @@ argument_list|(
 operator|new
 name|NameNodeConnector
 argument_list|(
-name|isa
+name|uri
 argument_list|,
 name|conf
 argument_list|)
@@ -6493,15 +6493,15 @@ name|conf
 argument_list|)
 expr_stmt|;
 specifier|final
-name|List
+name|Collection
 argument_list|<
-name|InetSocketAddress
+name|URI
 argument_list|>
 name|namenodes
 init|=
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNsServiceRpcUris
 argument_list|(
 name|conf
 argument_list|)

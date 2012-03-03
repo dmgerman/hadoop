@@ -333,6 +333,15 @@ name|byte
 operator|)
 literal|24
 argument_list|)
+block|,
+DECL|enumConstant|OP_UPDATE_BLOCKS
+name|OP_UPDATE_BLOCKS
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|25
+argument_list|)
 block|;
 DECL|field|opCode
 specifier|private

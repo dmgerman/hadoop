@@ -105,6 +105,33 @@ name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
+DECL|method|isInStandbyState ()
+specifier|public
+name|boolean
+name|isInStandbyState
+parameter_list|()
+function_decl|;
+DECL|method|isGenStampInFuture (long generationStamp)
+specifier|public
+name|boolean
+name|isGenStampInFuture
+parameter_list|(
+name|long
+name|generationStamp
+parameter_list|)
+function_decl|;
+DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
+specifier|public
+name|void
+name|adjustSafeModeBlockTotals
+parameter_list|(
+name|int
+name|deltaSafe
+parameter_list|,
+name|int
+name|deltaTotal
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

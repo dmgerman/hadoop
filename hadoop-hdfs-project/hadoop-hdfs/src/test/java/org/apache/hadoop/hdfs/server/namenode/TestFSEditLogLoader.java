@@ -655,7 +655,7 @@ name|bld
 operator|.
 name|append
 argument_list|(
-literal|"On transaction ID \\d+\n"
+literal|" on transaction ID \\d+\n"
 argument_list|)
 expr_stmt|;
 name|bld
@@ -1012,7 +1012,7 @@ argument_list|)
 expr_stmt|;
 name|fsel
 operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|assertTrue
@@ -1505,6 +1505,20 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%d should have been>= %d"
+argument_list|,
+name|val
+operator|.
+name|getNumTransactions
+argument_list|()
+argument_list|,
+name|prevNumValid
+argument_list|)
+argument_list|,
 name|val
 operator|.
 name|getNumTransactions

@@ -190,6 +190,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Lists
@@ -225,6 +239,12 @@ specifier|private
 specifier|final
 name|int
 name|numCheckpointsToRetain
+decl_stmt|;
+DECL|field|numExtraEditsToRetain
+specifier|private
+specifier|final
+name|long
+name|numExtraEditsToRetain
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -292,6 +312,49 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_NUM_CHECKPOINTS_RETAINED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|numExtraEditsToRetain
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NUM_EXTRA_EDITS_RETAINED_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NUM_EXTRA_EDITS_RETAINED_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|numCheckpointsToRetain
+operator|>
+literal|0
+argument_list|,
+literal|"Must retain at least one checkpoint"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|numExtraEditsToRetain
+operator|>=
+literal|0
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NUM_EXTRA_EDITS_RETAINED_KEY
+operator|+
+literal|" must not be negative"
 argument_list|)
 expr_stmt|;
 name|this
@@ -380,14 +443,31 @@ argument_list|)
 expr_stmt|;
 comment|// If fsimage_N is the image we want to keep, then we need to keep
 comment|// all txns> N. We can remove anything< N+1, since fsimage_N
-comment|// reflects the state up to and including N.
+comment|// reflects the state up to and including N. However, we also
+comment|// provide a "cushion" of older txns that we keep, which is
+comment|// handy for HA, where a remote node may not have as many
+comment|// new images.
+name|long
+name|purgeLogsFrom
+init|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|0
+argument_list|,
+name|minImageTxId
+operator|+
+literal|1
+operator|-
+name|numExtraEditsToRetain
+argument_list|)
+decl_stmt|;
 name|editLog
 operator|.
 name|purgeLogsOlderThan
 argument_list|(
-name|minImageTxId
-operator|+
-literal|1
+name|purgeLogsFrom
 argument_list|)
 expr_stmt|;
 block|}

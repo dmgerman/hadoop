@@ -321,6 +321,36 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|selectHdfsDelegationToken ( Text serviceName, UserGroupInformation ugi)
+specifier|public
+specifier|static
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+name|selectHdfsDelegationToken
+parameter_list|(
+name|Text
+name|serviceName
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+return|return
+name|INSTANCE
+operator|.
+name|selectToken
+argument_list|(
+name|serviceName
+argument_list|,
+name|ugi
+operator|.
+name|getTokens
+argument_list|()
+argument_list|)
+return|;
+block|}
 DECL|method|DelegationTokenSelector ()
 specifier|public
 name|DelegationTokenSelector

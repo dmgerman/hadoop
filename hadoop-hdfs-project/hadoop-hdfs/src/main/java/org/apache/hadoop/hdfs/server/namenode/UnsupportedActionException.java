@@ -88,21 +88,17 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|UnsupportedActionException (String action)
+DECL|method|UnsupportedActionException (String msg)
 specifier|public
 name|UnsupportedActionException
 parameter_list|(
 name|String
-name|action
+name|msg
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"Action "
-operator|+
-name|action
-operator|+
-literal|"() is not supported."
+name|msg
 argument_list|)
 expr_stmt|;
 block|}

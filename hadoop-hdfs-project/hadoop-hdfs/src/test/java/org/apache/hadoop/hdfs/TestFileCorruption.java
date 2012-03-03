@@ -1078,6 +1078,21 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|FSNamesystem
+name|ns
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+decl_stmt|;
+name|ns
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|cluster
 operator|.
 name|getNamesystem
@@ -1099,6 +1114,15 @@ argument_list|,
 literal|"TEST"
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|ns
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 comment|// open the file
 name|fs
 operator|.

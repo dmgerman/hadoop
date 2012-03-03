@@ -543,6 +543,8 @@ operator|.
 name|getNameNodeCurrentDirs
 argument_list|(
 name|cluster
+argument_list|,
+literal|0
 argument_list|)
 operator|.
 name|get
@@ -598,6 +600,12 @@ argument_list|(
 name|editLog
 argument_list|)
 expr_stmt|;
+comment|// OP_ADD to create file
+comment|// OP_UPDATE_BLOCKS for first block
+comment|// OP_CLOSE to close file
+comment|// OP_ADD to reopen file
+comment|// OP_UPDATE_BLOCKS for second block
+comment|// OP_CLOSE to close file
 name|assertEquals
 argument_list|(
 literal|2
@@ -612,6 +620,25 @@ argument_list|(
 name|FSEditLogOpCodes
 operator|.
 name|OP_ADD
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_UPDATE_BLOCKS
 argument_list|)
 operator|.
 name|held
@@ -667,13 +694,20 @@ argument_list|(
 name|editLog
 argument_list|)
 expr_stmt|;
-comment|// We get *3* OP_ADDS from this test rather than two. The first
-comment|// OP_ADD comes from re-opening the file to establish the lease,
-comment|// the second comes from the updatePipeline call when the block
-comment|// itself has its generation stamp incremented
+comment|// OP_ADD to create file
+comment|// OP_UPDATE_BLOCKS for first block
+comment|// OP_CLOSE to close file
+comment|// OP_ADD to re-establish the lease
+comment|// OP_UPDATE_BLOCKS from the updatePipeline call (increments genstamp of last block)
+comment|// OP_UPDATE_BLOCKS at the start of the second block
+comment|// OP_CLOSE to close file
+comment|// Total: 2 OP_ADDs, 3 OP_UPDATE_BLOCKS, and 2 OP_CLOSEs in addition
+comment|//        to the ones above
 name|assertEquals
 argument_list|(
-literal|5
+literal|2
+operator|+
+literal|2
 argument_list|,
 operator|(
 name|int
@@ -692,7 +726,30 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|2
+operator|+
+literal|3
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_UPDATE_BLOCKS
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+operator|+
+literal|2
 argument_list|,
 operator|(
 name|int

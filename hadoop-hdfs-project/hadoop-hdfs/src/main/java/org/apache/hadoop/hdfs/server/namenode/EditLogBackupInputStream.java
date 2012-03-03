@@ -468,6 +468,18 @@ operator|.
 name|INVALID_TXID
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isInProgress ()
+specifier|public
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

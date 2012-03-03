@@ -199,6 +199,12 @@ operator|.
 name|PositionTrackingInputStream
 name|tracker
 decl_stmt|;
+DECL|field|isInProgress
+specifier|private
+specifier|final
+name|boolean
+name|isInProgress
+decl_stmt|;
 comment|/**    * Open an EditLogInputStream for the given file.    * The file is pretransactional, so has no txids    * @param name filename to open    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
 DECL|method|EditLogFileInputStream (File name)
 name|EditLogFileInputStream
@@ -222,11 +228,13 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Open an EditLogInputStream for the given file.    * @param name filename to open    * @param firstTxId first transaction found in file    * @param lastTxId last transaction id found in file    * @throws LogHeaderCorruptException if the header is either missing or    *         appears to be corrupt/truncated    * @throws IOException if an actual IO error occurs while reading the    *         header    */
-DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId)
+DECL|method|EditLogFileInputStream (File name, long firstTxId, long lastTxId, boolean isInProgress)
 name|EditLogFileInputStream
 parameter_list|(
 name|File
@@ -237,6 +245,9 @@ name|firstTxId
 parameter_list|,
 name|long
 name|lastTxId
+parameter_list|,
+name|boolean
+name|isInProgress
 parameter_list|)
 throws|throws
 name|LogHeaderCorruptException
@@ -331,6 +342,59 @@ name|lastTxId
 operator|=
 name|lastTxId
 expr_stmt|;
+name|this
+operator|.
+name|isInProgress
+operator|=
+name|isInProgress
+expr_stmt|;
+block|}
+comment|/**    * Skip over a number of transactions. Subsequent calls to    * {@link EditLogFileInputStream#readOp()} will begin after these skipped    * transactions. If more transactions are requested to be skipped than remain    * in the edit log, all edit log ops in the log will be skipped and subsequent    * calls to {@link EditLogInputStream#readOp} will return null.    *     * @param transactionsToSkip number of transactions to skip over.    * @throws IOException if there's an error while reading an operation    */
+DECL|method|skipTransactions (long transactionsToSkip)
+specifier|public
+name|void
+name|skipTransactions
+parameter_list|(
+name|long
+name|transactionsToSkip
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|firstTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|&&
+name|lastTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+assert|;
+for|for
+control|(
+name|long
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|transactionsToSkip
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|reader
+operator|.
+name|readOp
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -473,6 +537,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isInProgress ()
+specifier|public
+name|boolean
+name|isInProgress
+parameter_list|()
+block|{
+return|return
+name|isInProgress
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -517,7 +593,7 @@ name|LogHeaderCorruptException
 name|corrupt
 parameter_list|)
 block|{
-comment|// If it's missing its header, this is equivalent to no transactions
+comment|// If the header is malformed or the wrong value, this indicates a corruption
 name|FSImage
 operator|.
 name|LOG
@@ -548,6 +624,8 @@ argument_list|,
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -619,13 +697,20 @@ block|}
 if|if
 condition|(
 name|logVersion
-operator|<
+argument_list|<
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
+operator|||
+comment|// future version
+name|logVersion
+argument_list|>
+name|Storage
+operator|.
+name|LAST_UPGRADABLE_LAYOUT_VERSION
 condition|)
 block|{
-comment|// future version
+comment|// unsupported
 throw|throw
 operator|new
 name|LogHeaderCorruptException
@@ -644,17 +729,6 @@ literal|"."
 argument_list|)
 throw|;
 block|}
-assert|assert
-name|logVersion
-operator|<=
-name|Storage
-operator|.
-name|LAST_UPGRADABLE_LAYOUT_VERSION
-operator|:
-literal|"Unsupported version "
-operator|+
-name|logVersion
-assert|;
 return|return
 name|logVersion
 return|;

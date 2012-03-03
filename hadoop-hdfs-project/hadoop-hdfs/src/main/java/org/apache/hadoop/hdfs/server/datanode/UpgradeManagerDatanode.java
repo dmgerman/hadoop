@@ -396,7 +396,7 @@ name|nn
 init|=
 name|dataNode
 operator|.
-name|getBPNamenode
+name|getActiveNamenodeForBP
 argument_list|(
 name|bpid
 argument_list|)

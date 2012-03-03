@@ -808,17 +808,24 @@ name|txid
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|response
+operator|.
+name|sendError
 argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_CONFLICT
+argument_list|,
 literal|"Another checkpointer is already in the process of uploading a"
 operator|+
 literal|" checkpoint made at transaction ID "
 operator|+
 name|txid
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 try|try
 block|{
@@ -837,17 +844,24 @@ operator|!=
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|response
+operator|.
+name|sendError
 argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_CONFLICT
+argument_list|,
 literal|"Another checkpointer already uploaded an checkpoint "
 operator|+
 literal|"for txid "
 operator|+
 name|txid
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 comment|// issue a HTTP get request to download the new fsimage
 name|MD5Hash

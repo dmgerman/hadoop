@@ -318,6 +318,17 @@ literal|39
 argument_list|,
 literal|"Use LongWritable and ShortWritable directly instead of ArrayWritable of UTF8"
 argument_list|)
+block|,
+DECL|enumConstant|OPTIMIZE_PERSIST_BLOCKS
+name|OPTIMIZE_PERSIST_BLOCKS
+argument_list|(
+operator|-
+literal|40
+argument_list|,
+literal|"Serialize block lists with delta-encoded variable length ints, "
+operator|+
+literal|"add OP_UPDATE_BLOCKS"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

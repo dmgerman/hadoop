@@ -840,6 +840,22 @@ return|return
 name|toInvalidate
 return|;
 block|}
+DECL|method|clear ()
+specifier|synchronized
+name|void
+name|clear
+parameter_list|()
+block|{
+name|node2blocks
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|numBlocks
+operator|=
+literal|0
+expr_stmt|;
+block|}
 block|}
 end_class
 

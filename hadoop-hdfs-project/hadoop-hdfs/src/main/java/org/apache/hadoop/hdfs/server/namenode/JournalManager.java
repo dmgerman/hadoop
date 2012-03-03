@@ -113,24 +113,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the input stream starting with fromTxnId from this journal manager    * @param fromTxnId the first transaction id we want to read    * @return the stream starting with transaction fromTxnId    * @throws IOException if a stream cannot be found.    */
-DECL|method|getInputStream (long fromTxnId)
+comment|/**    * Get the input stream starting with fromTxnId from this journal manager    * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    * @return the stream starting with transaction fromTxnId    * @throws IOException if a stream cannot be found.    */
+DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
 name|EditLogInputStream
 name|getInputStream
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the number of transaction contiguously available from fromTxnId.    *    * @param fromTxnId Transaction id to count from    * @return The number of transactions available from fromTxnId    * @throws IOException if the journal cannot be read.    * @throws CorruptionException if there is a gap in the journal at fromTxnId.    */
-DECL|method|getNumberOfTransactions (long fromTxnId)
+comment|/**    * Get the number of transaction contiguously available from fromTxnId.    *    * @param fromTxnId Transaction id to count from    * @param inProgressOk whether or not in-progress streams should be counted    * @return The number of transactions available from fromTxnId    * @throws IOException if the journal cannot be read.    * @throws CorruptionException if there is a gap in the journal at fromTxnId.    */
+DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException

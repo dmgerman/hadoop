@@ -123,6 +123,14 @@ block|,
 DECL|enumConstant|BLOCK_GENERATION_STAMP
 name|BLOCK_GENERATION_STAMP
 block|,
+DECL|enumConstant|BLOCK_DELTA_NUM_BYTES
+name|BLOCK_DELTA_NUM_BYTES
+block|,
+comment|// delta-encoded relative to previous block
+DECL|enumConstant|BLOCK_DELTA_GEN_STAMP
+name|BLOCK_DELTA_GEN_STAMP
+block|,
+comment|// delta-encoded relative to previous block
 DECL|enumConstant|PERMISSION_STATUS
 name|PERMISSION_STATUS
 block|,

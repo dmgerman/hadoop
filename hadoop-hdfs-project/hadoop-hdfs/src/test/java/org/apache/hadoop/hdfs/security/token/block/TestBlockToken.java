@@ -2568,11 +2568,6 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
-name|numNameNodes
-argument_list|(
-literal|1
-argument_list|)
-operator|.
 name|numDataNodes
 argument_list|(
 literal|1

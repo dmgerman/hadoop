@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -44,7 +54,7 @@ specifier|public
 class|class
 name|StandbyException
 extends|extends
-name|Exception
+name|IOException
 block|{
 DECL|field|serialVersionUID
 specifier|static

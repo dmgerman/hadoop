@@ -305,6 +305,17 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NUM_EXTRA_EDITS_RETAINED_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|File
 name|sd0
 init|=

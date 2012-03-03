@@ -509,7 +509,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * State machine for edit log.    * The log starts in UNITIALIZED state upon construction. Once it's    * initialized, it is usually in IN_SEGMENT state, indicating that edits    * may be written. In the middle of a roll, or while saving the namespace,    * it briefly enters the BETWEEN_LOG_SEGMENTS state, indicating that the    * previous segment has been closed, but the new one has not yet been opened.    */
+comment|/**    * State machine for edit log.    *     * In a non-HA setup:    *     * The log starts in UNITIALIZED state upon construction. Once it's    * initialized, it is usually in IN_SEGMENT state, indicating that edits may    * be written. In the middle of a roll, or while saving the namespace, it    * briefly enters the BETWEEN_LOG_SEGMENTS state, indicating that the previous    * segment has been closed, but the new one has not yet been opened.    *     * In an HA setup:    *     * The log starts in UNINITIALIZED state upon construction. Once it's    * initialized, it sits in the OPEN_FOR_READING state the entire time that the    * NN is in standby. Upon the NN transition to active, the log will be CLOSED,    * and then move to being BETWEEN_LOG_SEGMENTS, much as if the NN had just    * started up, and then will move to IN_SEGMENT so it can begin writing to the    * log. The log states will then revert to behaving as they do in a non-HA    * setup.    */
 DECL|enum|State
 specifier|private
 enum|enum
@@ -523,6 +523,9 @@ name|BETWEEN_LOG_SEGMENTS
 block|,
 DECL|enumConstant|IN_SEGMENT
 name|IN_SEGMENT
+block|,
+DECL|enumConstant|OPEN_FOR_READING
+name|OPEN_FOR_READING
 block|,
 DECL|enumConstant|CLOSED
 name|CLOSED
@@ -541,6 +544,8 @@ DECL|field|journalSet
 specifier|private
 name|JournalSet
 name|journalSet
+init|=
+literal|null
 decl_stmt|;
 DECL|field|editLogStream
 specifier|private
@@ -645,11 +650,20 @@ name|conf
 decl_stmt|;
 DECL|field|editsDirs
 specifier|private
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
 name|editsDirs
+decl_stmt|;
+comment|/**    * The edit directories that are shared between primary and secondary.    */
+DECL|field|sharedEditsDirs
+specifier|private
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|sharedEditsDirs
 decl_stmt|;
 DECL|class|TransactionId
 specifier|private
@@ -770,7 +784,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor for FSEditLog. Underlying journals are constructed, but     * no streams are opened until open() is called.    *     * @param conf The namenode configuration    * @param storage Storage object used by namenode    * @param editsDirs List of journals to use    */
-DECL|method|FSEditLog (Configuration conf, NNStorage storage, Collection<URI> editsDirs)
+DECL|method|FSEditLog (Configuration conf, NNStorage storage, List<URI> editsDirs)
 name|FSEditLog
 parameter_list|(
 name|Configuration
@@ -779,7 +793,7 @@ parameter_list|,
 name|NNStorage
 name|storage
 parameter_list|,
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -796,7 +810,7 @@ name|editsDirs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|init (Configuration conf, NNStorage storage, Collection<URI> editsDirs)
+DECL|method|init (Configuration conf, NNStorage storage, List<URI> editsDirs)
 specifier|private
 name|void
 name|init
@@ -807,7 +821,7 @@ parameter_list|,
 name|NNStorage
 name|storage
 parameter_list|,
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -855,6 +869,133 @@ argument_list|(
 name|editsDirs
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|sharedEditsDirs
+operator|=
+name|FSNamesystem
+operator|.
+name|getSharedEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|initJournalsForWrite ()
+specifier|public
+specifier|synchronized
+name|void
+name|initJournalsForWrite
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|UNINITIALIZED
+operator|||
+name|state
+operator|==
+name|State
+operator|.
+name|CLOSED
+argument_list|,
+literal|"Unexpected state: %s"
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
+name|initJournals
+argument_list|(
+name|this
+operator|.
+name|editsDirs
+argument_list|)
+expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+expr_stmt|;
+block|}
+DECL|method|initSharedJournalsForRead ()
+specifier|public
+specifier|synchronized
+name|void
+name|initSharedJournalsForRead
+parameter_list|()
+block|{
+if|if
+condition|(
+name|state
+operator|==
+name|State
+operator|.
+name|OPEN_FOR_READING
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Initializing shared journals for READ, already open for READ"
+argument_list|,
+operator|new
+name|Exception
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|UNINITIALIZED
+operator|||
+name|state
+operator|==
+name|State
+operator|.
+name|CLOSED
+argument_list|)
+expr_stmt|;
+name|initJournals
+argument_list|(
+name|this
+operator|.
+name|sharedEditsDirs
+argument_list|)
+expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|OPEN_FOR_READING
+expr_stmt|;
+block|}
+DECL|method|initJournals (List<URI> dirs)
+specifier|private
+specifier|synchronized
+name|void
+name|initJournals
+parameter_list|(
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|dirs
+parameter_list|)
+block|{
 name|int
 name|minimumRedundantJournals
 init|=
@@ -884,9 +1025,7 @@ control|(
 name|URI
 name|u
 range|:
-name|this
-operator|.
-name|editsDirs
+name|dirs
 control|)
 block|{
 name|boolean
@@ -944,6 +1083,8 @@ operator|new
 name|FileJournalManager
 argument_list|(
 name|sd
+argument_list|,
+name|storage
 argument_list|)
 argument_list|,
 name|required
@@ -983,12 +1124,6 @@ literal|"No edits directories configured!"
 argument_list|)
 expr_stmt|;
 block|}
-name|state
-operator|=
-name|State
-operator|.
-name|BETWEEN_LOG_SEGMENTS
-expr_stmt|;
 block|}
 comment|/**    * Get the list of URIs the editlog is using for storage    * @return collection of URIs in use by the edit log    */
 DECL|method|getEditURIs ()
@@ -1004,10 +1139,10 @@ name|editsDirs
 return|;
 block|}
 comment|/**    * Initialize the output stream for logging, opening the first    * log segment.    */
-DECL|method|open ()
+DECL|method|openForWrite ()
 specifier|synchronized
 name|void
-name|open
+name|openForWrite
 parameter_list|()
 throws|throws
 name|IOException
@@ -1021,14 +1156,67 @@ operator|==
 name|State
 operator|.
 name|BETWEEN_LOG_SEGMENTS
+argument_list|,
+literal|"Bad state: %s"
+argument_list|,
+name|state
 argument_list|)
 expr_stmt|;
-name|startLogSegment
-argument_list|(
+name|long
+name|segmentTxId
+init|=
 name|getLastWrittenTxId
 argument_list|()
 operator|+
 literal|1
+decl_stmt|;
+comment|// Safety check: we should never start a segment if there are
+comment|// newer txids readable.
+name|EditLogInputStream
+name|s
+init|=
+name|journalSet
+operator|.
+name|getInputStream
+argument_list|(
+name|segmentTxId
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|s
+operator|==
+literal|null
+argument_list|,
+literal|"Cannot start writing at txid %s when there is a stream "
+operator|+
+literal|"available for read: %s"
+argument_list|,
+name|segmentTxId
+argument_list|,
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+name|startLogSegment
+argument_list|(
+name|segmentTxId
 argument_list|,
 literal|true
 argument_list|)
@@ -1045,10 +1233,11 @@ operator|+
 name|state
 assert|;
 block|}
-DECL|method|isOpen ()
+comment|/**    * @return true if the log is currently open in write mode, regardless    * of whether it actually has an open segment.    */
+DECL|method|isOpenForWrite ()
 specifier|synchronized
 name|boolean
-name|isOpen
+name|isOpenForWrite
 parameter_list|()
 block|{
 return|return
@@ -1057,6 +1246,43 @@ operator|==
 name|State
 operator|.
 name|IN_SEGMENT
+operator|||
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+return|;
+block|}
+comment|/**    * @return true if the log is open in write mode and has a segment open    * ready to take edits.    */
+DECL|method|isSegmentOpen ()
+specifier|synchronized
+name|boolean
+name|isSegmentOpen
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|State
+operator|.
+name|IN_SEGMENT
+return|;
+block|}
+comment|/**    * @return true if the log is open in read mode.    */
+DECL|method|isOpenForRead ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isOpenForRead
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|State
+operator|.
+name|OPEN_FOR_READING
 return|;
 block|}
 comment|/**    * Shutdown the file store.    */
@@ -1154,11 +1380,12 @@ name|this
 init|)
 block|{
 assert|assert
+name|isOpenForWrite
+argument_list|()
+operator|:
+literal|"bad state: "
+operator|+
 name|state
-operator|!=
-name|State
-operator|.
-name|CLOSED
 assert|;
 comment|// wait if an automatic sync is scheduled
 name|waitIfAutoSyncScheduled
@@ -1379,6 +1606,7 @@ expr_stmt|;
 block|}
 comment|/**    * Return the transaction ID of the last transaction written to the log.    */
 DECL|method|getLastWrittenTxId ()
+specifier|public
 specifier|synchronized
 name|long
 name|getLastWrittenTxId
@@ -1399,11 +1627,8 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|state
-operator|==
-name|State
-operator|.
-name|IN_SEGMENT
+name|isSegmentOpen
+argument_list|()
 argument_list|,
 literal|"Bad state: %s"
 argument_list|,
@@ -2084,6 +2309,45 @@ argument_list|(
 name|newNode
 operator|.
 name|getPermissionStatus
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|logEdit
+argument_list|(
+name|op
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|logUpdateBlocks (String path, INodeFileUnderConstruction file)
+specifier|public
+name|void
+name|logUpdateBlocks
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INodeFileUnderConstruction
+name|file
+parameter_list|)
+block|{
+name|UpdateBlocksOp
+name|op
+init|=
+name|UpdateBlocksOp
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|setPath
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|setBlocks
+argument_list|(
+name|file
+operator|.
+name|getBlocks
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2788,6 +3052,7 @@ comment|/**    * Used only by unit tests.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getJournals ()
+specifier|synchronized
 name|List
 argument_list|<
 name|JournalAndStream
@@ -2800,6 +3065,20 @@ name|journalSet
 operator|.
 name|getAllJournalStreams
 argument_list|()
+return|;
+block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getJournalSet ()
+specifier|synchronized
+specifier|public
+name|JournalSet
+name|getJournalSet
+parameter_list|()
+block|{
+return|return
+name|journalSet
 return|;
 block|}
 comment|/**    * Used only by unit tests.    */
@@ -2819,6 +3098,15 @@ operator|.
 name|runtime
 operator|=
 name|runtime
+expr_stmt|;
+name|this
+operator|.
+name|journalSet
+operator|.
+name|setRuntimeForTesting
+argument_list|(
+name|runtime
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Used only by tests.    */
@@ -3038,7 +3326,9 @@ literal|"Unable to start log segment "
 operator|+
 name|segmentTxId
 operator|+
-literal|": no journals successfully started."
+literal|": too few journals successfully started."
+argument_list|,
+name|ex
 argument_list|)
 throw|;
 block|}
@@ -3097,11 +3387,8 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|state
-operator|==
-name|State
-operator|.
-name|IN_SEGMENT
+name|isSegmentOpen
+argument_list|()
 argument_list|,
 literal|"Bad state: %s"
 argument_list|,
@@ -3198,6 +3485,12 @@ name|editLogStream
 operator|=
 literal|null
 expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+expr_stmt|;
 block|}
 block|}
 catch|catch
@@ -3220,6 +3513,7 @@ block|}
 comment|/**    * Archive any log files that are older than the given txid.    */
 DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
 specifier|public
+specifier|synchronized
 name|void
 name|purgeLogsOlderThan
 parameter_list|(
@@ -3228,14 +3522,6 @@ name|long
 name|minTxIdToKeep
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-comment|// synchronized to prevent findbugs warning about inconsistent
-comment|// synchronization. This will be JIT-ed out if asserts are
-comment|// off.
 assert|assert
 name|curSegmentTxId
 operator|==
@@ -3256,7 +3542,8 @@ literal|" when current segment starts at "
 operator|+
 name|curSegmentTxId
 assert|;
-block|}
+comment|// This could be improved to not need synchronization. But currently,
+comment|// journalSet is not threadsafe, so we need to synchronize this method.
 try|try
 block|{
 name|journalSet
@@ -3317,7 +3604,7 @@ return|;
 block|}
 comment|// sets the initial capacity of the flush buffer.
 DECL|method|setOutputBufferCapacity (int size)
-specifier|public
+specifier|synchronized
 name|void
 name|setOutputBufferCapacity
 parameter_list|(
@@ -3575,10 +3862,26 @@ expr_stmt|;
 block|}
 comment|/**    * Run recovery on all journals to recover any unclosed segments    */
 DECL|method|recoverUnclosedStreams ()
+specifier|synchronized
 name|void
 name|recoverUnclosedStreams
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+argument_list|,
+literal|"May not recover segments - wrong state: %s"
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|journalSet
@@ -3596,7 +3899,6 @@ block|{
 comment|// All journals have failed, it is handled in logSync.
 block|}
 block|}
-comment|/**    * Select a list of input streams to load.    * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    */
 DECL|method|selectInputStreams (long fromTxId, long toAtLeastTxId)
 name|Collection
 argument_list|<
@@ -3609,6 +3911,39 @@ name|fromTxId
 parameter_list|,
 name|long
 name|toAtLeastTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|selectInputStreams
+argument_list|(
+name|fromTxId
+argument_list|,
+name|toAtLeastTxId
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+comment|/**    * Select a list of input streams to load.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    * @param inProgessOk set to true if in-progress streams are OK    */
+DECL|method|selectInputStreams (long fromTxId, long toAtLeastTxId, boolean inProgressOk)
+specifier|public
+specifier|synchronized
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|selectInputStreams
+parameter_list|(
+name|long
+name|fromTxId
+parameter_list|,
+name|long
+name|toAtLeastTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -3634,6 +3969,8 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxId
+argument_list|,
+name|inProgressOk
 argument_list|)
 decl_stmt|;
 while|while
@@ -3643,6 +3980,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|streams
+operator|.
+name|add
+argument_list|(
+name|stream
+argument_list|)
+expr_stmt|;
+comment|// We're now looking for a higher range, so reset the fromTxId
 name|fromTxId
 operator|=
 name|stream
@@ -3652,13 +3997,6 @@ argument_list|()
 operator|+
 literal|1
 expr_stmt|;
-name|streams
-operator|.
-name|add
-argument_list|(
-name|stream
-argument_list|)
-expr_stmt|;
 name|stream
 operator|=
 name|journalSet
@@ -3666,6 +4004,8 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxId
+argument_list|,
+name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
@@ -3685,9 +4025,20 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"No non-corrupt logs for txid "
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Gap in transactions. Expected to "
 operator|+
+literal|"be able to read up until at least txid %d but unable to find any "
+operator|+
+literal|"edit logs containing txid %d"
+argument_list|,
+name|toAtLeastTxId
+argument_list|,
 name|fromTxId
+argument_list|)
 argument_list|)
 throw|;
 block|}

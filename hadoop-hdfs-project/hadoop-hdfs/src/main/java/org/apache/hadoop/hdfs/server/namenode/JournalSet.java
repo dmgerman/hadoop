@@ -106,6 +106,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -229,20 +243,6 @@ operator|.
 name|collect
 operator|.
 name|Sets
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
 import|;
 end_import
 
@@ -595,6 +595,17 @@ specifier|final
 name|int
 name|minimumRedundantJournals
 decl_stmt|;
+DECL|field|runtime
+specifier|private
+specifier|volatile
+name|Runtime
+name|runtime
+init|=
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+decl_stmt|;
 DECL|method|JournalSet (int minimumRedundantResources)
 name|JournalSet
 parameter_list|(
@@ -607,6 +618,24 @@ operator|.
 name|minimumRedundantJournals
 operator|=
 name|minimumRedundantResources
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setRuntimeForTesting (Runtime runtime)
+specifier|public
+name|void
+name|setRuntimeForTesting
+parameter_list|(
+name|Runtime
+name|runtime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runtime
+operator|=
+name|runtime
 expr_stmt|;
 block|}
 annotation|@
@@ -780,13 +809,16 @@ block|}
 comment|/**    * Find the best editlog input stream to read from txid.    * If a journal throws an CorruptionException while reading from a txn id,    * it means that it has more transactions, but can't find any from fromTxId.     * If this is the case and no other journal has transactions, we should throw    * an exception as it means more transactions exist, we just can't load them.    *    * @param fromTxnId Transaction id to start from.    * @return A edit log input stream with tranactions fromTxId     *         or null if no more exist    */
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxnId)
+DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|EditLogInputStream
 name|getInputStream
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -814,6 +846,14 @@ range|:
 name|journals
 control|)
 block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isDisabled
+argument_list|()
+condition|)
+continue|continue;
 name|JournalManager
 name|candidate
 init|=
@@ -836,6 +876,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
@@ -856,6 +898,17 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to read input streams from JournalManager "
+operator|+
+name|candidate
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 continue|continue;
 comment|// error reading disk, just skip
 block|}
@@ -915,18 +968,23 @@ operator|.
 name|getInputStream
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId)
+DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -948,9 +1006,24 @@ if|if
 condition|(
 name|jas
 operator|.
-name|isActive
+name|isDisabled
 argument_list|()
 condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping jas "
+operator|+
+name|jas
+operator|+
+literal|" since it's disabled"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+else|else
 block|{
 name|long
 name|newNum
@@ -963,6 +1036,8 @@ operator|.
 name|getNumberOfTransactions
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|inProgressOk
 argument_list|)
 decl_stmt|;
 if|if
@@ -1130,6 +1205,64 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isRequired
+argument_list|()
+condition|)
+block|{
+name|String
+name|msg
+init|=
+literal|"Error: "
+operator|+
+name|status
+operator|+
+literal|" failed for required journal ("
+operator|+
+name|jas
+operator|+
+literal|")"
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|msg
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+comment|// If we fail on *any* of the required journals, then we must not
+comment|// continue on any of the other journals. Abort them to ensure that
+comment|// retry behavior doesn't allow them to keep going in any way.
+name|abortAllJournals
+argument_list|()
+expr_stmt|;
+comment|// the current policy is to shutdown the NN on errors to shared edits
+comment|// dir. There are many code paths to shared edits failures - syncs,
+comment|// roll of edits etc. All of them go through this common function
+comment|// where the isRequired() check is made. Applying exit policy here
+comment|// to catch all code paths.
+name|runtime
+operator|.
+name|exit
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|error
@@ -1154,6 +1287,7 @@ argument_list|(
 name|jas
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|disableAndReportErrorOnJournals
@@ -1197,6 +1331,37 @@ argument_list|(
 name|message
 argument_list|)
 throw|;
+block|}
+block|}
+comment|/**    * Abort all of the underlying streams.    */
+DECL|method|abortAllJournals ()
+specifier|private
+name|void
+name|abortAllJournals
+parameter_list|()
+block|{
+for|for
+control|(
+name|JournalAndStream
+name|jas
+range|:
+name|journals
+control|)
+block|{
+if|if
+condition|(
+name|jas
+operator|.
+name|isActive
+argument_list|()
+condition|)
+block|{
+name|jas
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * An implementation of EditLogOutputStream that applies a requested method on    * all the journals that are currently active.    */

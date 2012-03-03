@@ -562,6 +562,34 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -623,7 +651,7 @@ implements|implements
 name|Closeable
 block|{
 DECL|field|LOG
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|Log
@@ -719,7 +747,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Construct the FSImage. Set the default checkpoint directories.    *    * Setup storage and initialize the edit log.    *    * @param conf Configuration    * @param imageDirs Directories the image can be stored in.    * @param editsDirs Directories the editlog can be stored in.    * @throws IOException if directories are invalid.    */
-DECL|method|FSImage (Configuration conf, Collection<URI> imageDirs, Collection<URI> editsDirs)
+DECL|method|FSImage (Configuration conf, Collection<URI> imageDirs, List<URI> editsDirs)
 specifier|protected
 name|FSImage
 parameter_list|(
@@ -732,7 +760,7 @@ name|URI
 argument_list|>
 name|imageDirs
 parameter_list|,
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -797,6 +825,43 @@ argument_list|,
 name|editsDirs
 argument_list|)
 expr_stmt|;
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|editLog
+operator|.
+name|initSharedJournalsForRead
+argument_list|()
+expr_stmt|;
+block|}
 name|archivalManager
 operator|=
 operator|new
@@ -1336,6 +1401,50 @@ argument_list|,
 name|storage
 argument_list|)
 expr_stmt|;
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|curState
+operator|!=
+name|StorageState
+operator|.
+name|NORMAL
+operator|&&
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot start an HA namenode with name dirs "
+operator|+
+literal|"that need recovery. Dir: "
+operator|+
+name|sd
+operator|+
+literal|" state: "
+operator|+
+name|curState
+argument_list|)
+throw|;
+block|}
 comment|// sd is locked but not opened
 switch|switch
 condition|(
@@ -1711,7 +1820,7 @@ operator|.
 name|exists
 argument_list|()
 operator|:
-literal|"prvious directory must not exist."
+literal|"previous directory must not exist."
 assert|;
 assert|assert
 operator|!
@@ -1720,13 +1829,13 @@ operator|.
 name|exists
 argument_list|()
 operator|:
-literal|"prvious.tmp directory must not exist."
+literal|"previous.tmp directory must not exist."
 assert|;
 assert|assert
 operator|!
 name|editLog
 operator|.
-name|isOpen
+name|isSegmentOpen
 argument_list|()
 operator|:
 literal|"Edits log must not be open."
@@ -2491,7 +2600,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -2729,9 +2838,9 @@ return|return
 name|editLog
 return|;
 block|}
-DECL|method|openEditLog ()
+DECL|method|openEditLogForWrite ()
 name|void
-name|openEditLog
+name|openEditLogForWrite
 parameter_list|()
 throws|throws
 name|IOException
@@ -2743,22 +2852,9 @@ literal|null
 operator|:
 literal|"editLog must be initialized"
 assert|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
 name|editLog
 operator|.
-name|isOpen
-argument_list|()
-argument_list|,
-literal|"edit log should not yet be open"
-argument_list|)
-expr_stmt|;
-name|editLog
-operator|.
-name|open
+name|openForWrite
 argument_list|()
 expr_stmt|;
 name|storage
@@ -2863,11 +2959,21 @@ name|editStreams
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|editLog
+operator|.
+name|isOpenForWrite
+argument_list|()
+condition|)
+block|{
+comment|// We only want to recover streams if we're going into Active mode.
 name|editLog
 operator|.
 name|recoverUnclosedStreams
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|LayoutVersion
@@ -2883,6 +2989,24 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|// If we're open for write, we're either non-HA or we're the active NN, so
+comment|// we better be able to load all the edits. If we're the standby NN, it's
+comment|// OK to not be able to read all of edits right now.
+name|long
+name|toAtLeastTxId
+init|=
+name|editLog
+operator|.
+name|isOpenForWrite
+argument_list|()
+condition|?
+name|inspector
+operator|.
+name|getMaxSeenTxId
+argument_list|()
+else|:
+literal|0
+decl_stmt|;
 name|editStreams
 operator|=
 name|editLog
@@ -2896,10 +3020,9 @@ argument_list|()
 operator|+
 literal|1
 argument_list|,
-name|inspector
-operator|.
-name|getMaxSeenTxId
-argument_list|()
+name|toAtLeastTxId
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3224,7 +3347,7 @@ return|;
 block|}
 comment|/**    * Load the specified list of edit files into the image.    * @return the number of transactions loaded    */
 DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
-specifier|protected
+specifier|public
 name|long
 name|loadEdits
 parameter_list|(
@@ -3239,6 +3362,8 @@ name|target
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|EditLogInputException
 block|{
 name|LOG
 operator|.
@@ -3267,7 +3392,7 @@ argument_list|()
 operator|+
 literal|1
 decl_stmt|;
-name|int
+name|long
 name|numLoaded
 init|=
 literal|0
@@ -3305,9 +3430,15 @@ operator|+
 name|startingTxId
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|thisNumLoaded
 init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|thisNumLoaded
+operator|=
 name|loader
 operator|.
 name|loadFSEdits
@@ -3316,7 +3447,37 @@ name|editIn
 argument_list|,
 name|startingTxId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|EditLogInputException
+name|elie
+parameter_list|)
+block|{
+name|thisNumLoaded
+operator|=
+name|elie
+operator|.
+name|getNumEditsLoaded
+argument_list|()
+expr_stmt|;
+throw|throw
+name|elie
+throw|;
+block|}
+finally|finally
+block|{
+comment|// Update lastAppliedTxId even in case of error, since some ops may
+comment|// have been successfully applied before the error.
+name|lastAppliedTxId
+operator|=
+name|startingTxId
+operator|+
+name|thisNumLoaded
+operator|-
+literal|1
+expr_stmt|;
 name|startingTxId
 operator|+=
 name|thisNumLoaded
@@ -3325,10 +3486,7 @@ name|numLoaded
 operator|+=
 name|thisNumLoaded
 expr_stmt|;
-name|lastAppliedTxId
-operator|+=
-name|thisNumLoaded
-expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally
@@ -3340,7 +3498,6 @@ argument_list|(
 name|editStreams
 argument_list|)
 expr_stmt|;
-block|}
 comment|// update the counts
 name|target
 operator|.
@@ -3349,6 +3506,7 @@ operator|.
 name|updateCountForINodeWithQuota
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|numLoaded
 return|;
@@ -3405,7 +3563,7 @@ name|target
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.  Return whether we should    * "re-save" and consolidate the edit-logs    */
+comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.    */
 DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target)
 specifier|private
 name|void
@@ -3847,6 +4005,7 @@ block|}
 block|}
 comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    */
 DECL|method|saveNamespace (FSNamesystem source)
+specifier|public
 specifier|synchronized
 name|void
 name|saveNamespace
@@ -3874,7 +4033,7 @@ name|editLogWasOpen
 init|=
 name|editLog
 operator|.
-name|isOpen
+name|isSegmentOpen
 argument_list|()
 decl_stmt|;
 if|if
@@ -3893,9 +4052,7 @@ block|}
 name|long
 name|imageTxId
 init|=
-name|editLog
-operator|.
-name|getLastWrittenTxId
+name|getLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 try|try
@@ -3948,6 +4105,7 @@ block|}
 block|}
 block|}
 DECL|method|cancelSaveNamespace (String reason)
+specifier|public
 name|void
 name|cancelSaveNamespace
 parameter_list|(
@@ -5054,7 +5212,7 @@ return|;
 block|}
 DECL|method|getCheckpointEditsDirs (Configuration conf, String defaultName)
 specifier|static
-name|Collection
+name|List
 argument_list|<
 name|URI
 argument_list|>
@@ -5184,6 +5342,62 @@ parameter_list|()
 block|{
 return|return
 name|lastAppliedTxId
+return|;
+block|}
+DECL|method|getLastAppliedOrWrittenTxId ()
+specifier|public
+name|long
+name|getLastAppliedOrWrittenTxId
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|lastAppliedTxId
+argument_list|,
+name|editLog
+operator|!=
+literal|null
+condition|?
+name|editLog
+operator|.
+name|getLastWrittenTxId
+argument_list|()
+else|:
+literal|0
+argument_list|)
+return|;
+block|}
+DECL|method|updateLastAppliedTxIdFromWritten ()
+specifier|public
+name|void
+name|updateLastAppliedTxIdFromWritten
+parameter_list|()
+block|{
+name|this
+operator|.
+name|lastAppliedTxId
+operator|=
+name|editLog
+operator|.
+name|getLastWrittenTxId
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getMostRecentCheckpointTxId ()
+specifier|public
+specifier|synchronized
+name|long
+name|getMostRecentCheckpointTxId
+parameter_list|()
+block|{
+return|return
+name|storage
+operator|.
+name|getMostRecentCheckpointTxId
+argument_list|()
 return|;
 block|}
 block|}

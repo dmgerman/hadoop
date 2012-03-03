@@ -314,6 +314,16 @@ name|org
 operator|.
 name|mockito
 operator|.
+name|Mockito
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
 name|verification
 operator|.
 name|VerificationMode
@@ -770,7 +780,7 @@ name|DFS_NAMENODE_EDITS_DIR_REQUIRED_KEY
 argument_list|,
 name|editsDirs
 index|[
-literal|1
+literal|0
 index|]
 argument_list|)
 expr_stmt|;
@@ -812,23 +822,75 @@ expr_stmt|;
 comment|// Invalidated the one required edits journal.
 name|invalidateEditsDirAtIndex
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 literal|false
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|JournalAndStream
+name|nonRequiredJas
+init|=
+name|getJournalAndStream
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
+name|EditLogFileOutputStream
+name|nonRequiredSpy
+init|=
+name|spyOnStream
+argument_list|(
+name|nonRequiredJas
+argument_list|)
+decl_stmt|;
 comment|// Make sure runtime.exit(...) hasn't been called at all yet.
 name|assertExitInvocations
 argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// ..and that the other stream is active.
+name|assertTrue
+argument_list|(
+name|nonRequiredJas
+operator|.
+name|isActive
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// This will actually return true in the tests, since the NN will not in
 comment|// fact call Runtime.exit();
 name|doAnEdit
 argument_list|()
+expr_stmt|;
+comment|// Since the required directory failed setReadyToFlush, and that
+comment|// directory was listed prior to the non-required directory,
+comment|// we should not call setReadyToFlush on the non-required
+comment|// directory. Regression test for HDFS-2874.
+name|Mockito
+operator|.
+name|verify
+argument_list|(
+name|nonRequiredSpy
+argument_list|,
+name|Mockito
+operator|.
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|setReadyToFlush
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|nonRequiredJas
+operator|.
+name|isActive
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// A single failure of a required journal should result in a call to
 comment|// runtime.exit(...).
@@ -1043,7 +1105,7 @@ block|}
 comment|/**    * Replace the journal at index<code>index</code> with one that throws an    * exception on flush.    *     * @param index the index of the journal to take offline.    * @return the original<code>EditLogOutputStream</code> of the journal.    */
 DECL|method|invalidateEditsDirAtIndex (int index, boolean failOnFlush, boolean failOnWrite)
 specifier|private
-name|EditLogOutputStream
+name|void
 name|invalidateEditsDirAtIndex
 parameter_list|(
 name|int
@@ -1058,55 +1120,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FSImage
-name|fsimage
-init|=
-name|cluster
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getFSImage
-argument_list|()
-decl_stmt|;
-name|FSEditLog
-name|editLog
-init|=
-name|fsimage
-operator|.
-name|getEditLog
-argument_list|()
-decl_stmt|;
 name|JournalAndStream
 name|jas
 init|=
-name|editLog
-operator|.
-name|getJournals
-argument_list|()
-operator|.
-name|get
+name|getJournalAndStream
 argument_list|(
 name|index
 argument_list|)
 decl_stmt|;
 name|EditLogFileOutputStream
-name|elos
-init|=
-operator|(
-name|EditLogFileOutputStream
-operator|)
-name|jas
-operator|.
-name|getCurrentStream
-argument_list|()
-decl_stmt|;
-name|EditLogFileOutputStream
 name|spyElos
 init|=
-name|spy
+name|spyOnStream
 argument_list|(
-name|elos
+name|jas
 argument_list|)
 decl_stmt|;
 if|if
@@ -1192,6 +1219,35 @@ operator|.
 name|abort
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|spyOnStream (JournalAndStream jas)
+specifier|private
+name|EditLogFileOutputStream
+name|spyOnStream
+parameter_list|(
+name|JournalAndStream
+name|jas
+parameter_list|)
+block|{
+name|EditLogFileOutputStream
+name|elos
+init|=
+operator|(
+name|EditLogFileOutputStream
+operator|)
+name|jas
+operator|.
+name|getCurrentStream
+argument_list|()
+decl_stmt|;
+name|EditLogFileOutputStream
+name|spyElos
+init|=
+name|spy
+argument_list|(
+name|elos
+argument_list|)
+decl_stmt|;
 name|jas
 operator|.
 name|setCurrentStreamForTests
@@ -1200,20 +1256,17 @@ name|spyElos
 argument_list|)
 expr_stmt|;
 return|return
-name|elos
+name|spyElos
 return|;
 block|}
-comment|/**    * Restore the journal at index<code>index</code> with the passed    * {@link EditLogOutputStream}.    *     * @param index index of the journal to restore.    * @param elos the {@link EditLogOutputStream} to put at that index.    */
-DECL|method|restoreEditsDirAtIndex (int index, EditLogOutputStream elos)
+comment|/**    * Pull out one of the JournalAndStream objects from the edit log.    */
+DECL|method|getJournalAndStream (int index)
 specifier|private
-name|void
-name|restoreEditsDirAtIndex
+name|JournalAndStream
+name|getJournalAndStream
 parameter_list|(
 name|int
 name|index
-parameter_list|,
-name|EditLogOutputStream
-name|elos
 parameter_list|)
 block|{
 name|FSImage
@@ -1235,9 +1288,7 @@ operator|.
 name|getEditLog
 argument_list|()
 decl_stmt|;
-name|JournalAndStream
-name|jas
-init|=
+return|return
 name|editLog
 operator|.
 name|getJournals
@@ -1247,14 +1298,7 @@ name|get
 argument_list|(
 name|index
 argument_list|)
-decl_stmt|;
-name|jas
-operator|.
-name|setCurrentStreamForTests
-argument_list|(
-name|elos
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Do a mutative metadata operation on the file system.    *     * @return true if the operation was successful, false otherwise.    */
 DECL|method|doAnEdit ()

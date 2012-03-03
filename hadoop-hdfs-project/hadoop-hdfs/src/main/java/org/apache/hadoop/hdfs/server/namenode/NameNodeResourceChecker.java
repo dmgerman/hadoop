@@ -244,6 +244,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|NameNodeResourceChecker
+specifier|public
 class|class
 name|NameNodeResourceChecker
 block|{
@@ -762,11 +763,10 @@ block|}
 block|}
 comment|/**    * Return true if disk space is available on at least one of the configured    * redundant volumes, and all of the configured required volumes.    *     * @return True if the configured amount of disk space is available on at    *         least one redundant volume and all of the required volumes, false    *         otherwise.    */
 DECL|method|hasAvailableDiskSpace ()
+specifier|public
 name|boolean
 name|hasAvailableDiskSpace
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|NameNodeResourcePolicy

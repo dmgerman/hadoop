@@ -244,6 +244,20 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -387,6 +401,16 @@ specifier|volatile
 name|boolean
 name|running
 decl_stmt|;
+comment|/**    * If the delegation token update thread holds this lock, it will    * not get interrupted.    */
+DECL|field|noInterruptsLock
+specifier|protected
+name|Object
+name|noInterruptsLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|method|AbstractDelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval)
 specifier|public
 name|AbstractDelegationTokenSecretManager
@@ -438,6 +462,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|running
+argument_list|)
+expr_stmt|;
 name|updateCurrentKey
 argument_list|()
 expr_stmt|;
@@ -1695,7 +1727,6 @@ block|}
 block|}
 DECL|method|stopThreads ()
 specifier|public
-specifier|synchronized
 name|void
 name|stopThreads
 parameter_list|()
@@ -1725,11 +1756,41 @@ operator|!=
 literal|null
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|noInterruptsLock
+init|)
+block|{
 name|tokenRemoverThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+try|try
+block|{
+name|tokenRemoverThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Unable to join on token removal thread"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 comment|/**    * is secretMgr running    * @return true if secret mgr is running    */
@@ -1860,7 +1921,14 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
+name|Math
+operator|.
+name|min
+argument_list|(
 literal|5000
+argument_list|,
+name|keyUpdateInterval
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// 5 seconds

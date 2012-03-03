@@ -848,6 +848,7 @@ return|;
 block|}
 comment|/**    * Count the number of data-nodes the block belongs to.    */
 DECL|method|numNodes ()
+specifier|public
 name|int
 name|numNodes
 parameter_list|()

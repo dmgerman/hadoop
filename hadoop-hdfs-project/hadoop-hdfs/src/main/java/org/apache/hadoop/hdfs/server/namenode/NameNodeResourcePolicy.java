@@ -58,7 +58,7 @@ specifier|final
 class|class
 name|NameNodeResourcePolicy
 block|{
-comment|/**    * Return true if and only if there are sufficient NN    * resources to continue logging edits.    *     * @param resources the collection of resources to check.    * @param minimumRedundantResources the minimum number of redundant resources    *        required to continue operation.    * @return true if and only if there are sufficient NN resources to    *         continue logging edits.    * @throws RuntimeException if the number of<bold>configured</bold>    *         redundant resources is fewer than the minimum number of available    *         redundant resources.    */
+comment|/**    * Return true if and only if there are sufficient NN    * resources to continue logging edits.    *     * @param resources the collection of resources to check.    * @param minimumRedundantResources the minimum number of redundant resources    *        required to continue operation.    * @return true if and only if there are sufficient NN resources to    *         continue logging edits.    */
 DECL|method|areResourcesAvailable ( Collection<? extends CheckableNameNodeResource> resources, int minimumRedundantResources)
 specifier|static
 name|boolean
@@ -145,29 +145,6 @@ literal|false
 return|;
 block|}
 block|}
-block|}
-if|if
-condition|(
-name|redundantResourceCount
-operator|<
-name|minimumRedundantResources
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"Need a minimum of "
-operator|+
-name|minimumRedundantResources
-operator|+
-literal|" for NN to operate but only "
-operator|+
-name|redundantResourceCount
-operator|+
-literal|" are configured."
-argument_list|)
-throw|;
 block|}
 if|if
 condition|(

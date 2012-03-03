@@ -396,6 +396,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|MiniDFSNNTopology
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|HdfsConstants
@@ -3339,6 +3353,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|format
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|manageNameDfsDirs
 argument_list|(
 literal|false
@@ -4275,7 +4294,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Tests save namepsace.    */
+comment|/**    * Tests save namespace.    */
 DECL|method|testSaveNamespace ()
 specifier|public
 name|void
@@ -4585,10 +4604,16 @@ name|e
 argument_list|)
 throw|;
 block|}
+specifier|final
+name|int
+name|EXPECTED_TXNS_FIRST_SEG
+init|=
+literal|12
+decl_stmt|;
 comment|// the following steps should have happened:
-comment|//   edits_inprogress_1 -> edits_1-8  (finalized)
-comment|//   fsimage_8 created
-comment|//   edits_inprogress_9 created
+comment|//   edits_inprogress_1 -> edits_1-12  (finalized)
+comment|//   fsimage_12 created
+comment|//   edits_inprogress_13 created
 comment|//
 for|for
 control|(
@@ -4686,16 +4711,15 @@ name|getFinalizedEditsFileName
 argument_list|(
 literal|1
 argument_list|,
-literal|8
+name|EXPECTED_TXNS_FIRST_SEG
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|GenericTestUtils
+operator|.
+name|assertExists
 argument_list|(
 name|finalizedEdits
-operator|.
-name|exists
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -4714,7 +4738,9 @@ operator|.
 name|SIZE
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|GenericTestUtils
+operator|.
+name|assertExists
 argument_list|(
 operator|new
 name|File
@@ -4727,12 +4753,11 @@ name|NNStorage
 operator|.
 name|getInProgressEditsFileName
 argument_list|(
-literal|9
+name|EXPECTED_TXNS_FIRST_SEG
+operator|+
+literal|1
 argument_list|)
 argument_list|)
-operator|.
-name|exists
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4783,7 +4808,7 @@ name|NNStorage
 operator|.
 name|getImageFileName
 argument_list|(
-literal|8
+name|EXPECTED_TXNS_FIRST_SEG
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -5321,14 +5346,14 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
-name|numNameNodes
+name|nnTopology
+argument_list|(
+name|MiniDFSNNTopology
+operator|.
+name|simpleFederatedTopology
 argument_list|(
 literal|2
 argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-literal|9928
 argument_list|)
 operator|.
 name|build
@@ -5449,7 +5474,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -5467,7 +5492,7 @@ name|set
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNameServiceIdKey
+name|addKeySuffixes
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -6421,63 +6446,19 @@ operator|.
 name|proceed
 argument_list|()
 expr_stmt|;
-comment|// Letting the first node continue should catch an exception
+comment|// Letting the first node continue, it should try to upload the
+comment|// same image, and gracefully ignore it, while logging an
+comment|// error message.
 name|checkpointThread
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|checkpointThread
 operator|.
 name|propagateExceptions
 argument_list|()
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Didn't throw!"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ioe
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-literal|"Unexpected exception: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|ioe
-argument_list|)
-argument_list|,
-name|ioe
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Another checkpointer already uploaded"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Caught expected exception"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
 comment|// primary should still consider fsimage_4 the latest
 name|assertEquals
 argument_list|(
@@ -8447,6 +8428,8 @@ argument_list|(
 name|getNameNodeCurrentDirs
 argument_list|(
 name|cluster
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

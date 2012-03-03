@@ -1087,6 +1087,12 @@ name|int
 name|maxRetries
 decl_stmt|;
 comment|//the max. no. of retries for socket connections
+comment|// the max. no. of retries for socket connections on time out exceptions
+DECL|field|maxRetriesOnSocketTimeouts
+specifier|private
+name|int
+name|maxRetriesOnSocketTimeouts
+decl_stmt|;
 DECL|field|tcpNoDelay
 specifier|private
 name|boolean
@@ -1240,6 +1246,15 @@ operator|=
 name|remoteId
 operator|.
 name|getMaxRetries
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|maxRetriesOnSocketTimeouts
+operator|=
+name|remoteId
+operator|.
+name|getMaxRetriesOnSocketTimeouts
 argument_list|()
 expr_stmt|;
 name|this
@@ -2253,13 +2268,12 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/*            * The max number of retries is 45, which amounts to 20s*45 = 15            * minutes retries.            */
 name|handleConnectionFailure
 argument_list|(
 name|timeoutFailures
 operator|++
 argument_list|,
-literal|45
+name|maxRetriesOnSocketTimeouts
 argument_list|,
 name|toe
 argument_list|)
@@ -5543,6 +5557,13 @@ name|int
 name|maxRetries
 decl_stmt|;
 comment|//the max. no. of retries for socket connections
+comment|// the max. no. of retries for socket connections on time out exceptions
+DECL|field|maxRetriesOnSocketTimeouts
+specifier|private
+specifier|final
+name|int
+name|maxRetriesOnSocketTimeouts
+decl_stmt|;
 DECL|field|tcpNoDelay
 specifier|private
 specifier|final
@@ -5564,7 +5585,7 @@ name|int
 name|pingInterval
 decl_stmt|;
 comment|// how often sends ping to the server in msecs
-DECL|method|ConnectionId (InetSocketAddress address, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, String serverPrincipal, int maxIdleTime, int maxRetries, boolean tcpNoDelay, boolean doPing, int pingInterval)
+DECL|method|ConnectionId (InetSocketAddress address, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, String serverPrincipal, int maxIdleTime, int maxRetries, int maxRetriesOnSocketTimeouts, boolean tcpNoDelay, boolean doPing, int pingInterval)
 name|ConnectionId
 parameter_list|(
 name|InetSocketAddress
@@ -5590,6 +5611,9 @@ name|maxIdleTime
 parameter_list|,
 name|int
 name|maxRetries
+parameter_list|,
+name|int
+name|maxRetriesOnSocketTimeouts
 parameter_list|,
 name|boolean
 name|tcpNoDelay
@@ -5642,6 +5666,12 @@ operator|.
 name|maxRetries
 operator|=
 name|maxRetries
+expr_stmt|;
+name|this
+operator|.
+name|maxRetriesOnSocketTimeouts
+operator|=
+name|maxRetriesOnSocketTimeouts
 expr_stmt|;
 name|this
 operator|.
@@ -5727,6 +5757,17 @@ parameter_list|()
 block|{
 return|return
 name|maxRetries
+return|;
+block|}
+comment|/** max connection retries on socket time outs */
+DECL|method|getMaxRetriesOnSocketTimeouts ()
+specifier|public
+name|int
+name|getMaxRetriesOnSocketTimeouts
+parameter_list|()
+block|{
+return|return
+name|maxRetriesOnSocketTimeouts
 return|;
 block|}
 DECL|method|getTcpNoDelay ()
@@ -5848,6 +5889,19 @@ argument_list|,
 name|CommonConfigurationKeysPublic
 operator|.
 name|IPC_CLIENT_CONNECT_MAX_RETRIES_DEFAULT
+argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY
+argument_list|,
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
 argument_list|)
 argument_list|,
 name|conf

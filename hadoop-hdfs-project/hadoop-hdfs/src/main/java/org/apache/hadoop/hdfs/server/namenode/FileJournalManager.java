@@ -339,6 +339,12 @@ specifier|final
 name|StorageDirectory
 name|sd
 decl_stmt|;
+DECL|field|storage
+specifier|private
+specifier|final
+name|NNStorage
+name|storage
+decl_stmt|;
 DECL|field|outputBufferCapacity
 specifier|private
 name|int
@@ -397,13 +403,6 @@ name|currentInProgress
 init|=
 literal|null
 decl_stmt|;
-DECL|field|maxSeenTransaction
-specifier|private
-name|long
-name|maxSeenTransaction
-init|=
-literal|0L
-decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|field|purger
@@ -416,12 +415,15 @@ operator|.
 name|DeletionStoragePurger
 argument_list|()
 decl_stmt|;
-DECL|method|FileJournalManager (StorageDirectory sd)
+DECL|method|FileJournalManager (StorageDirectory sd, NNStorage storage)
 specifier|public
 name|FileJournalManager
 parameter_list|(
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NNStorage
+name|storage
 parameter_list|)
 block|{
 name|this
@@ -429,6 +431,12 @@ operator|.
 name|sd
 operator|=
 name|sd
+expr_stmt|;
+name|this
+operator|.
+name|storage
+operator|=
+name|storage
 expr_stmt|;
 block|}
 annotation|@
@@ -454,6 +462,8 @@ name|txid
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 name|currentInProgress
 operator|=
@@ -485,6 +495,24 @@ expr_stmt|;
 return|return
 name|stm
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|storage
+operator|.
+name|reportErrorsOnDirectory
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -531,7 +559,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Finalizing edits file "
 operator|+
@@ -572,9 +600,16 @@ name|dstFile
 argument_list|)
 condition|)
 block|{
+name|storage
+operator|.
+name|reportErrorsOnDirectory
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|IllegalStateException
 argument_list|(
 literal|"Unable to finalize edits file "
 operator|+
@@ -642,6 +677,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Purging logs older than "
+operator|+
+name|minTxIdToKeep
+argument_list|)
+expr_stmt|;
 name|File
 index|[]
 name|files
@@ -734,12 +778,7 @@ name|allLogFiles
 init|=
 name|matchEditLogs
 argument_list|(
-name|FileUtil
-operator|.
-name|listFiles
-argument_list|(
 name|currentDir
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|List
@@ -770,7 +809,7 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 operator|||
 name|elf
@@ -829,9 +868,10 @@ argument_list|()
 operator|)
 condition|)
 block|{
+comment|// Note that this behavior is different from getLogFiles below.
 throw|throw
 operator|new
-name|IOException
+name|IllegalStateException
 argument_list|(
 literal|"Asked for firstTxId "
 operator|+
@@ -848,6 +888,33 @@ block|}
 block|}
 return|return
 name|ret
+return|;
+block|}
+comment|/**    * returns matching edit logs via the log directory. Simple helper function    * that lists the files in the logDir and calls matchEditLogs(File[])    *     * @param logDir    *          directory to match edit logs in    * @return matched edit logs    * @throws IOException    *           IOException thrown for invalid logDir    */
+DECL|method|matchEditLogs (File logDir)
+specifier|static
+name|List
+argument_list|<
+name|EditLogFile
+argument_list|>
+name|matchEditLogs
+parameter_list|(
+name|File
+name|logDir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|matchEditLogs
+argument_list|(
+name|FileUtil
+operator|.
+name|listFiles
+argument_list|(
+name|logDir
+argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|matchEditLogs (File[] filesInStorage)
@@ -1062,7 +1129,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxId)
+DECL|method|getInputStream (long fromTxId, boolean inProgressOk)
 specifier|synchronized
 specifier|public
 name|EditLogInputStream
@@ -1070,6 +1137,9 @@ name|getInputStream
 parameter_list|(
 name|long
 name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -1089,12 +1159,25 @@ if|if
 condition|(
 name|elf
 operator|.
-name|getFirstTxId
-argument_list|()
-operator|==
+name|containsTxId
+argument_list|(
 name|fromTxId
+argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|inProgressOk
+operator|&&
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 name|elf
@@ -1127,7 +1210,9 @@ name|elf
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+name|EditLogFileInputStream
+name|elfis
+init|=
 operator|new
 name|EditLogFileInputStream
 argument_list|(
@@ -1145,7 +1230,63 @@ name|elf
 operator|.
 name|getLastTxId
 argument_list|()
+argument_list|,
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
 argument_list|)
+decl_stmt|;
+name|long
+name|transactionsToSkip
+init|=
+name|fromTxId
+operator|-
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|transactionsToSkip
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Log begins at txid %d, but requested start "
+operator|+
+literal|"txid is %d. Skipping %d edits."
+argument_list|,
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+argument_list|,
+name|fromTxId
+argument_list|,
+name|transactionsToSkip
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|elfis
+operator|.
+name|skipTransactions
+argument_list|(
+name|transactionsToSkip
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|elfis
 return|;
 block|}
 block|}
@@ -1153,23 +1294,24 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot find editlog file with "
+literal|"Cannot find editlog file containing "
 operator|+
 name|fromTxId
-operator|+
-literal|" as first first txid"
 argument_list|)
 throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxId)
+DECL|method|getNumberOfTransactions (long fromTxId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -1253,14 +1395,27 @@ block|}
 elseif|else
 if|if
 condition|(
-name|fromTxId
-operator|==
 name|elf
 operator|.
-name|getFirstTxId
+name|containsTxId
+argument_list|(
+name|fromTxId
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|inProgressOk
+operator|&&
+name|elf
+operator|.
+name|isInProgress
 argument_list|()
 condition|)
 block|{
+break|break;
+block|}
 if|if
 condition|(
 name|elf
@@ -1279,12 +1434,23 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 condition|)
 block|{
 break|break;
 block|}
+name|numTxns
+operator|+=
+name|elf
+operator|.
+name|getLastTxId
+argument_list|()
+operator|+
+literal|1
+operator|-
+name|fromTxId
+expr_stmt|;
 name|fromTxId
 operator|=
 name|elf
@@ -1293,15 +1459,6 @@ name|getLastTxId
 argument_list|()
 operator|+
 literal|1
-expr_stmt|;
-name|numTxns
-operator|+=
-name|fromTxId
-operator|-
-name|elf
-operator|.
-name|getFirstTxId
-argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1314,7 +1471,6 @@ block|{
 break|break;
 block|}
 block|}
-comment|// else skip
 block|}
 if|if
 condition|(
@@ -1346,7 +1502,9 @@ name|long
 name|max
 init|=
 name|findMaxTransaction
-argument_list|()
+argument_list|(
+name|inProgressOk
+argument_list|)
 decl_stmt|;
 comment|// fromTxId should be greater than max, as it points to the next
 comment|// transaction we should expect to find. If it is less than or equal
@@ -1416,6 +1574,15 @@ operator|.
 name|getCurrentDir
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recovering unfinalized segments in "
+operator|+
+name|currentDir
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|EditLogFile
@@ -1425,16 +1592,8 @@ init|=
 name|matchEditLogs
 argument_list|(
 name|currentDir
-operator|.
-name|listFiles
-argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// make sure journal is aware of max seen transaction before moving corrupt
-comment|// files aside
-name|findMaxTransaction
-argument_list|()
-expr_stmt|;
 for|for
 control|(
 name|EditLogFile
@@ -1466,6 +1625,57 @@ name|isInProgress
 argument_list|()
 condition|)
 block|{
+comment|// If the file is zero-length, we likely just crashed after opening the
+comment|// file, but before writing anything to it. Safe to delete it.
+if|if
+condition|(
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting zero-length edit log file "
+operator|+
+name|elf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|delete
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete file "
+operator|+
+name|elf
+operator|.
+name|getFile
+argument_list|()
+argument_list|)
+throw|;
+block|}
+continue|continue;
+block|}
 name|elf
 operator|.
 name|validateLog
@@ -1475,7 +1685,7 @@ if|if
 condition|(
 name|elf
 operator|.
-name|isCorrupt
+name|hasCorruptHeader
 argument_list|()
 condition|)
 block|{
@@ -1484,6 +1694,64 @@ operator|.
 name|moveAsideCorruptFile
 argument_list|()
 expr_stmt|;
+throw|throw
+operator|new
+name|CorruptionException
+argument_list|(
+literal|"In-progress edit log file is corrupt: "
+operator|+
+name|elf
+argument_list|)
+throw|;
+block|}
+comment|// If the file has a valid header (isn't corrupt) but contains no
+comment|// transactions, we likely just crashed after opening the file and
+comment|// writing the header, but before syncing any transactions. Safe to
+comment|// delete the file.
+if|if
+condition|(
+name|elf
+operator|.
+name|getNumTransactions
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting edit log file with zero transactions "
+operator|+
+name|elf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|delete
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to delete "
+operator|+
+name|elf
+operator|.
+name|getFile
+argument_list|()
+argument_list|)
+throw|;
+block|}
 continue|continue;
 block|}
 name|finalizeLogSegment
@@ -1533,9 +1801,6 @@ init|=
 name|matchEditLogs
 argument_list|(
 name|currentDir
-operator|.
-name|listFiles
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|List
@@ -1560,44 +1825,18 @@ block|{
 if|if
 condition|(
 name|fromTxId
-operator|>
+operator|<=
 name|elf
 operator|.
 name|getFirstTxId
 argument_list|()
-operator|&&
-name|fromTxId
-operator|<=
+operator|||
 name|elf
 operator|.
-name|getLastTxId
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
+name|containsTxId
 argument_list|(
-literal|"Asked for fromTxId "
-operator|+
 name|fromTxId
-operator|+
-literal|" which is in middle of file "
-operator|+
-name|elf
-operator|.
-name|file
 argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|fromTxId
-operator|<=
-name|elf
-operator|.
-name|getFirstTxId
-argument_list|()
 condition|)
 block|{
 name|logFiles
@@ -1624,15 +1863,38 @@ return|return
 name|logFiles
 return|;
 block|}
-comment|/**     * Find the maximum transaction in the journal.    * This gets stored in a member variable, as corrupt edit logs    * will be moved aside, but we still need to remember their first    * tranaction id in the case that it was the maximum transaction in    * the journal.    */
-DECL|method|findMaxTransaction ()
+comment|/**     * Find the maximum transaction in the journal.    */
+DECL|method|findMaxTransaction (boolean inProgressOk)
 specifier|private
 name|long
 name|findMaxTransaction
-parameter_list|()
+parameter_list|(
+name|boolean
+name|inProgressOk
+parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|considerSeenTxId
+init|=
+literal|true
+decl_stmt|;
+name|long
+name|seenTxId
+init|=
+name|NNStorage
+operator|.
+name|readTransactionIdFile
+argument_list|(
+name|sd
+argument_list|)
+decl_stmt|;
+name|long
+name|maxSeenTransaction
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|EditLogFile
@@ -1644,6 +1906,46 @@ literal|0
 argument_list|)
 control|)
 block|{
+if|if
+condition|(
+name|elf
+operator|.
+name|isInProgress
+argument_list|()
+operator|&&
+operator|!
+name|inProgressOk
+condition|)
+block|{
+if|if
+condition|(
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|&&
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|<=
+name|seenTxId
+condition|)
+block|{
+comment|// don't look at the seen_txid file if in-progress logs are not to be
+comment|// examined, and the value in seen_txid falls within the in-progress
+comment|// segment.
+name|considerSeenTxId
+operator|=
+literal|false
+expr_stmt|;
+block|}
+continue|continue;
+block|}
 if|if
 condition|(
 name|elf
@@ -1687,9 +1989,28 @@ name|maxSeenTransaction
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|considerSeenTxId
+condition|)
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|maxSeenTransaction
+argument_list|,
+name|seenTxId
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 return|return
 name|maxSeenTransaction
 return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1735,10 +2056,18 @@ specifier|private
 name|long
 name|lastTxId
 decl_stmt|;
-DECL|field|isCorrupt
+DECL|field|numTx
+specifier|private
+name|long
+name|numTx
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|hasCorruptHeader
 specifier|private
 name|boolean
-name|isCorrupt
+name|hasCorruptHeader
 init|=
 literal|false
 decl_stmt|;
@@ -1955,6 +2284,24 @@ return|return
 name|lastTxId
 return|;
 block|}
+DECL|method|containsTxId (long txId)
+name|boolean
+name|containsTxId
+parameter_list|(
+name|long
+name|txId
+parameter_list|)
+block|{
+return|return
+name|firstTxId
+operator|<=
+name|txId
+operator|&&
+name|txId
+operator|<=
+name|lastTxId
+return|;
+block|}
 comment|/**       * Count the number of valid transactions in a log.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      */
 DECL|method|validateLog ()
 name|void
@@ -1973,22 +2320,15 @@ argument_list|(
 name|file
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|this
+operator|.
+name|numTx
+operator|=
 name|val
 operator|.
 name|getNumTransactions
 argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-name|markCorrupt
-argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
 name|this
 operator|.
 name|lastTxId
@@ -1998,7 +2338,24 @@ operator|.
 name|getEndTxId
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|hasCorruptHeader
+operator|=
+name|val
+operator|.
+name|hasCorruptHeader
+argument_list|()
+expr_stmt|;
 block|}
+DECL|method|getNumTransactions ()
+name|long
+name|getNumTransactions
+parameter_list|()
+block|{
+return|return
+name|numTx
+return|;
 block|}
 DECL|method|isInProgress ()
 name|boolean
@@ -2018,23 +2375,13 @@ return|return
 name|file
 return|;
 block|}
-DECL|method|markCorrupt ()
-name|void
-name|markCorrupt
-parameter_list|()
-block|{
-name|isCorrupt
-operator|=
-literal|true
-expr_stmt|;
-block|}
-DECL|method|isCorrupt ()
+DECL|method|hasCorruptHeader ()
 name|boolean
-name|isCorrupt
+name|hasCorruptHeader
 parameter_list|()
 block|{
 return|return
-name|isCorrupt
+name|hasCorruptHeader
 return|;
 block|}
 DECL|method|moveAsideCorruptFile ()
@@ -2045,7 +2392,7 @@ throws|throws
 name|IOException
 block|{
 assert|assert
-name|isCorrupt
+name|hasCorruptHeader
 assert|;
 name|File
 name|src
@@ -2121,7 +2468,7 @@ name|format
 argument_list|(
 literal|"EditLogFile(file=%s,first=%019d,last=%019d,"
 operator|+
-literal|"inProgress=%b,corrupt=%b)"
+literal|"inProgress=%b,hasCorruptHeader=%b,numTx=%d)"
 argument_list|,
 name|file
 operator|.
@@ -2135,7 +2482,9 @@ argument_list|,
 name|isInProgress
 argument_list|()
 argument_list|,
-name|isCorrupt
+name|hasCorruptHeader
+argument_list|,
+name|numTx
 argument_list|)
 return|;
 block|}

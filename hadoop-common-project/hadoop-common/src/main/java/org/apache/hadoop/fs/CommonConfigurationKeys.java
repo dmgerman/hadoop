@@ -321,6 +321,15 @@ name|HADOOP_SECURITY_SERVICE_AUTHORIZATION_REFRESH_USER_MAPPINGS
 init|=
 literal|"security.refresh.user.mappings.protocol.acl"
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|SECURITY_HA_SERVICE_PROTOCOL_ACL
+name|SECURITY_HA_SERVICE_PROTOCOL_ACL
+init|=
+literal|"security.ha.service.protocol.acl"
+decl_stmt|;
 DECL|field|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP
 specifier|public
 specifier|static

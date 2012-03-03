@@ -1465,15 +1465,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|// TODO(HA): Handle inProgressOk
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxnId)
+DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|EditLogInputStream
 name|getInputStream
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
@@ -1565,15 +1569,19 @@ literal|" found."
 argument_list|)
 throw|;
 block|}
+comment|// TODO(HA): Handle inProgressOk
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId)
+DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
 specifier|public
 name|long
 name|getNumberOfTransactions
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException

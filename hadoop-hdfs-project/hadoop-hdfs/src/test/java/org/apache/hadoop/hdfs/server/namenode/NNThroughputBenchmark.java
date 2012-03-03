@@ -649,7 +649,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Main class for a series of name-node benchmarks.  *   * Each benchmark measures throughput and average execution time   * of a specific name-node operation, e.g. file creation or block reports.  *   * The benchmark does not involve any other hadoop components  * except for the name-node. Each operation is executed  * by calling directly the respective name-node method.  * The name-node here is real all other components are simulated.  *   * Command line arguments for the benchmark include:  *<ol>  *<li>total number of operations to be performed,</li>  *<li>number of threads to run these operations,</li>  *<li>followed by operation specific input parameters.</li>  *<li>-logLevel L specifies the logging level when the benchmark runs.  * The default logging level is {@link Level#ERROR}.</li>  *<li>-UGCacheRefreshCount G will cause the benchmark to call  * {@link NameNode#refreshUserToGroupsMappings()} after  * every G operations, which purges the name-node's user group cache.  * By default the refresh is never called.</li>  *<li>-keepResults do not clean up the name-space after execution.</li>  *<li>-useExisting do not recreate the name-space, use existing data.</li>  *</ol>  *   * The benchmark first generates inputs for each thread so that the  * input generation overhead does not effect the resulting statistics.  * The number of operations performed by threads is practically the same.   * Precisely, the difference between the number of operations   * performed by any two threads does not exceed 1.  *   * Then the benchmark executes the specified number of operations using   * the specified number of threads and outputs the resulting stats.  */
+comment|/**  * Main class for a series of name-node benchmarks.  *   * Each benchmark measures throughput and average execution time   * of a specific name-node operation, e.g. file creation or block reports.  *   * The benchmark does not involve any other hadoop components  * except for the name-node. Each operation is executed  * by calling directly the respective name-node method.  * The name-node here is real all other components are simulated.  *   * Command line arguments for the benchmark include:  *<ol>  *<li>total number of operations to be performed,</li>  *<li>number of threads to run these operations,</li>  *<li>followed by operation specific input parameters.</li>  *<li>-logLevel L specifies the logging level when the benchmark runs.  * The default logging level is {@link Level#ERROR}.</li>  *<li>-UGCacheRefreshCount G will cause the benchmark to call  * {@link NameNodeRpcServer#refreshUserToGroupsMappings} after  * every G operations, which purges the name-node's user group cache.  * By default the refresh is never called.</li>  *<li>-keepResults do not clean up the name-space after execution.</li>  *<li>-useExisting do not recreate the name-space, use existing data.</li>  *</ol>  *   * The benchmark first generates inputs for each thread so that the  * input generation overhead does not effect the resulting statistics.  * The number of operations performed by threads is practically the same.   * Precisely, the difference between the number of operations   * performed by any two threads does not exceed 1.  *   * Then the benchmark executes the specified number of operations using   * the specified number of threads and outputs the resulting stats.  */
 end_comment
 
 begin_class
@@ -4129,6 +4129,9 @@ literal|0
 argument_list|,
 literal|0
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -4378,6 +4381,9 @@ literal|0
 argument_list|,
 literal|0
 argument_list|)
+operator|.
+name|getCommands
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -4558,9 +4564,13 @@ index|[
 name|i
 index|]
 argument_list|,
-name|DataNode
+name|ReceivedDeletedBlockInfo
 operator|.
-name|EMPTY_DEL_HINT
+name|BlockStatus
+operator|.
+name|RECEIVED_BLOCK
+argument_list|,
+literal|null
 argument_list|)
 block|}
 decl_stmt|;
@@ -5383,7 +5393,13 @@ operator|.
 name|getLocalBlock
 argument_list|()
 argument_list|,
-literal|""
+name|ReceivedDeletedBlockInfo
+operator|.
+name|BlockStatus
+operator|.
+name|RECEIVED_BLOCK
+argument_list|,
+literal|null
 argument_list|)
 block|}
 decl_stmt|;

@@ -1243,7 +1243,7 @@ argument_list|(
 name|namesystem
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|numEditsThisLog
 init|=
 name|loader
@@ -1893,6 +1893,15 @@ name|Throwable
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Got exception"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 name|deferredException
 operator|.
 name|set
@@ -2376,6 +2385,15 @@ name|Throwable
 name|ioe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Got exception"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 name|deferredException
 operator|.
 name|set

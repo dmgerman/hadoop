@@ -3540,6 +3540,10 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+comment|// We want to make sure the underlying cause of the exception is
+comment|// due to permissions error. The exception we're interested in is
+comment|// wrapped twice - once in RetriableCommand and again in CopyMapper
+comment|// itself.
 if|if
 condition|(
 name|e
@@ -3549,9 +3553,22 @@ argument_list|()
 operator|==
 literal|null
 operator|||
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|.
+name|getCause
+argument_list|()
+operator|==
+literal|null
+operator|||
 operator|!
 operator|(
 name|e
+operator|.
+name|getCause
+argument_list|()
 operator|.
 name|getCause
 argument_list|()

@@ -55,23 +55,26 @@ DECL|interface|FailoverProxyProvider
 specifier|public
 interface|interface
 name|FailoverProxyProvider
+parameter_list|<
+name|T
+parameter_list|>
 extends|extends
 name|Closeable
 block|{
 comment|/**    * Get the proxy object which should be used until the next failover event    * occurs.    *     * @return the proxy object to invoke methods upon    */
 DECL|method|getProxy ()
 specifier|public
-name|Object
+name|T
 name|getProxy
 parameter_list|()
 function_decl|;
 comment|/**    * Called whenever the associated {@link RetryPolicy} determines that an error    * warrants failing over.    *     * @param currentProxy the proxy object which was being used before this    *        failover event    */
-DECL|method|performFailover (Object currentProxy)
+DECL|method|performFailover (T currentProxy)
 specifier|public
 name|void
 name|performFailover
 parameter_list|(
-name|Object
+name|T
 name|currentProxy
 parameter_list|)
 function_decl|;
@@ -80,7 +83,7 @@ DECL|method|getInterface ()
 specifier|public
 name|Class
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|getInterface
 parameter_list|()

@@ -70,7 +70,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ExtendedBlock
+name|DatanodeID
 import|;
 end_import
 
@@ -86,7 +86,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|ExtendedBlock
 import|;
 end_import
 
@@ -310,11 +310,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
+comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
 DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
-name|DatanodeCommand
-index|[]
+name|HeartbeatResponse
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeRegistration
@@ -336,7 +335,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param reports - report of blocks per storage    *     Each block is represented as 2 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
+comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param reports - report of blocks per storage    *     Each finalized block is represented as 3 longs. Each under-    *     construction replica is represented as 4 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
 DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports)
 specifier|public
 name|DatanodeCommand

@@ -56,6 +56,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -1093,6 +1103,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+synchronized|synchronized
+init|(
+name|noInterruptsLock
+init|)
+block|{
+comment|// The edit logging code will fail catastrophically if it
+comment|// is interrupted during a logSync, since the interrupt
+comment|// closes the edit log files. Doing this inside the
+comment|// above lock and then checking interruption status
+comment|// prevents this bug.
+if|if
+condition|(
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted before updating master key"
+argument_list|)
+throw|;
+block|}
 name|namesystem
 operator|.
 name|logUpdateMasterKey
@@ -1100,6 +1136,7 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/** A utility method for creating credentials. */
 DECL|method|createCredentials (final NameNode namenode, final UserGroupInformation ugi, final String renewer)
