@@ -524,6 +524,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * A counter record, comprising its name and value.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|Counter
 specifier|public
 specifier|static
@@ -894,6 +902,14 @@ return|;
 block|}
 block|}
 comment|/**    *<code>Group</code> of counters, comprising of counters from a particular    *  counter {@link Enum} class.    *    *<p><code>Group</code>handles localization of the class name and the    *  counter names.</p>    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Stable
 DECL|class|Group
 specifier|public
 specifier|static
