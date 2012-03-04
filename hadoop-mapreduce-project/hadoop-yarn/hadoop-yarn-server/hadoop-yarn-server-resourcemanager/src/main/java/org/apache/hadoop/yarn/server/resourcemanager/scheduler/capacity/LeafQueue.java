@@ -902,6 +902,13 @@ specifier|private
 name|int
 name|maxActiveApplications
 decl_stmt|;
+comment|// Based on absolute max capacity
+DECL|field|maxActiveAppsUsingAbsCap
+specifier|private
+name|int
+name|maxActiveAppsUsingAbsCap
+decl_stmt|;
+comment|// Based on absolute capacity
 DECL|field|maxActiveApplicationsPerUser
 specifier|private
 name|int
@@ -1361,6 +1368,28 @@ argument_list|,
 name|absoluteMaxCapacity
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|maxActiveAppsUsingAbsCap
+operator|=
+name|CSQueueUtils
+operator|.
+name|computeMaxActiveApplications
+argument_list|(
+name|cs
+operator|.
+name|getClusterResources
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|minimumAllocation
+argument_list|,
+name|maxAMResourcePercent
+argument_list|,
+name|absoluteCapacity
+argument_list|)
+expr_stmt|;
 name|int
 name|maxActiveApplicationsPerUser
 init|=
@@ -1368,7 +1397,7 @@ name|CSQueueUtils
 operator|.
 name|computeMaxActiveApplicationsPerUser
 argument_list|(
-name|maxActiveApplications
+name|maxActiveAppsUsingAbsCap
 argument_list|,
 name|userLimit
 argument_list|,
@@ -1866,6 +1895,20 @@ operator|+
 literal|"(int)ceil((clusterResourceMemory / minimumAllocation) *"
 operator|+
 literal|"maxAMResourcePercent * absoluteMaxCapacity),"
+operator|+
+literal|"1) ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"maxActiveAppsUsingAbsCap = "
+operator|+
+name|maxActiveAppsUsingAbsCap
+operator|+
+literal|" [= max("
+operator|+
+literal|"(int)ceil((clusterResourceMemory / minimumAllocation) *"
+operator|+
+literal|"maxAMResourcePercent * absoluteCapacity),"
 operator|+
 literal|"1) ]"
 operator|+
@@ -6631,13 +6674,28 @@ argument_list|,
 name|absoluteMaxCapacity
 argument_list|)
 expr_stmt|;
+name|maxActiveAppsUsingAbsCap
+operator|=
+name|CSQueueUtils
+operator|.
+name|computeMaxActiveApplications
+argument_list|(
+name|clusterResource
+argument_list|,
+name|minimumAllocation
+argument_list|,
+name|maxAMResourcePercent
+argument_list|,
+name|absoluteCapacity
+argument_list|)
+expr_stmt|;
 name|maxActiveApplicationsPerUser
 operator|=
 name|CSQueueUtils
 operator|.
 name|computeMaxActiveApplicationsPerUser
 argument_list|(
-name|maxActiveApplications
+name|maxActiveAppsUsingAbsCap
 argument_list|,
 name|userLimit
 argument_list|,
