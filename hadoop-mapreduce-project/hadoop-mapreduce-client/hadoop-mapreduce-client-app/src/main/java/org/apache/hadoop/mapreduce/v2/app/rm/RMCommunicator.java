@@ -739,6 +739,15 @@ specifier|private
 name|Job
 name|job
 decl_stmt|;
+comment|// Has a signal (SIGTERM etc) been issued?
+DECL|field|isSignalled
+specifier|protected
+specifier|volatile
+name|boolean
+name|isSignalled
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RMCommunicator (ClientService clientService, AppContext context)
 specifier|public
 name|RMCommunicator
@@ -1136,6 +1145,19 @@ operator|==
 name|JobState
 operator|.
 name|KILLED
+operator|||
+operator|(
+name|job
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|JobState
+operator|.
+name|RUNNING
+operator|&&
+name|isSignalled
+operator|)
 condition|)
 block|{
 name|finishState
@@ -1731,6 +1753,31 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+DECL|method|setSignalled (boolean isSignalled)
+specifier|public
+name|void
+name|setSignalled
+parameter_list|(
+name|boolean
+name|isSignalled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isSignalled
+operator|=
+name|isSignalled
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RMCommunicator notified that iSignalled was : "
+operator|+
+name|isSignalled
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
