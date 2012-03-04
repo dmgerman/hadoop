@@ -66,6 +66,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URI
 import|;
 end_import
@@ -217,6 +227,20 @@ operator|.
 name|httpclient
 operator|.
 name|HttpMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|httpclient
+operator|.
+name|HostConfiguration
 import|;
 end_import
 
@@ -717,7 +741,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Download link and have it be the response.    * @param req the http request    * @param resp the http response    * @param link the link to download    * @param c the cookie to set if any    * @throws IOException on any error.    */
-DECL|method|proxyLink (HttpServletRequest req, HttpServletResponse resp, URI link,Cookie c)
+DECL|method|proxyLink (HttpServletRequest req, HttpServletResponse resp, URI link, Cookie c, String proxyHost)
 specifier|private
 specifier|static
 name|void
@@ -734,6 +758,9 @@ name|link
 parameter_list|,
 name|Cookie
 name|c
+parameter_list|,
+name|String
+name|proxyHost
 parameter_list|)
 throws|throws
 name|IOException
@@ -804,6 +831,54 @@ argument_list|(
 name|params
 argument_list|)
 decl_stmt|;
+comment|// Make sure we send the request from the proxy address in the config
+comment|// since that is what the AM filter checks against. IP aliasing or
+comment|// similar could cause issues otherwise.
+name|HostConfiguration
+name|config
+init|=
+operator|new
+name|HostConfiguration
+argument_list|()
+decl_stmt|;
+name|InetAddress
+name|localAddress
+init|=
+name|InetAddress
+operator|.
+name|getByName
+argument_list|(
+name|proxyHost
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"local InetAddress for proxy host: "
+operator|+
+name|localAddress
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|config
+operator|.
+name|setLocalAddress
+argument_list|(
+name|localAddress
+argument_list|)
+expr_stmt|;
 name|HttpMethod
 name|method
 init|=
@@ -952,6 +1027,8 @@ name|client
 operator|.
 name|executeMethod
 argument_list|(
+name|config
+argument_list|,
 name|method
 argument_list|)
 argument_list|)
@@ -1179,6 +1256,31 @@ name|getApplicationReport
 argument_list|(
 name|id
 argument_list|)
+return|;
+block|}
+DECL|method|getProxyHost ()
+specifier|private
+name|String
+name|getProxyHost
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|(
+operator|(
+name|String
+operator|)
+name|getServletContext
+argument_list|()
+operator|.
+name|getAttribute
+argument_list|(
+name|WebAppProxy
+operator|.
+name|PROXY_HOST_ATTRIBUTE
+argument_list|)
+operator|)
 return|;
 block|}
 annotation|@
@@ -1710,6 +1812,9 @@ argument_list|,
 name|toFetch
 argument_list|,
 name|c
+argument_list|,
+name|getProxyHost
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
