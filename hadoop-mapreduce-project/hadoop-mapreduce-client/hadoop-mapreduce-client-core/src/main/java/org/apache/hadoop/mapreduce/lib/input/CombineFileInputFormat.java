@@ -2475,12 +2475,7 @@ name|myLength
 init|=
 literal|0
 decl_stmt|;
-while|while
-condition|(
-name|left
-operator|>
-literal|0
-condition|)
+do|do
 block|{
 if|if
 condition|(
@@ -2581,6 +2576,13 @@ name|oneblock
 argument_list|)
 expr_stmt|;
 block|}
+do|while
+condition|(
+name|left
+operator|>
+literal|0
+condition|)
+do|;
 block|}
 name|blocks
 operator|=
