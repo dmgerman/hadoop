@@ -1099,12 +1099,9 @@ name|a
 argument_list|(
 literal|".nodelink"
 argument_list|,
-name|url
-argument_list|(
 literal|"http://"
-argument_list|,
+operator|+
 name|nodeHttpAddr
-argument_list|)
 argument_list|,
 name|nodeRackName
 operator|+
