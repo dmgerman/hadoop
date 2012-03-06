@@ -1978,7 +1978,7 @@ block|}
 block|}
 comment|//History data is leisurely loaded when task level data is requested
 DECL|method|loadFullHistoryData (boolean loadTasks, Path historyFileAbsolute)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|loadFullHistoryData
