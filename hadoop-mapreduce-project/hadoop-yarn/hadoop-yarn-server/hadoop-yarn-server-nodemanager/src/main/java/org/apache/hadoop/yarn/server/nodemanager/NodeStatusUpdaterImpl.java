@@ -809,6 +809,11 @@ specifier|final
 name|NodeManagerMetrics
 name|metrics
 decl_stmt|;
+DECL|field|hasToRebootNode
+specifier|private
+name|boolean
+name|hasToRebootNode
+decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
 specifier|public
 name|NodeStatusUpdaterImpl
@@ -1123,6 +1128,40 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|reboot ()
+specifier|private
+specifier|synchronized
+name|void
+name|reboot
+parameter_list|()
+block|{
+name|this
+operator|.
+name|hasToRebootNode
+operator|=
+literal|true
+expr_stmt|;
+comment|// Stop the status-updater. This will trigger a sub-service state change in
+comment|// the NodeManager which will then decide to reboot or not based on
+comment|// isRebooted.
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|hasToRebootNode ()
+specifier|synchronized
+name|boolean
+name|hasToRebootNode
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|hasToRebootNode
+return|;
 block|}
 DECL|method|isSecurityEnabled ()
 specifier|protected
@@ -2101,14 +2140,14 @@ name|info
 argument_list|(
 literal|"Node is out of sync with ResourceManager,"
 operator|+
-literal|" hence shutting down."
+literal|" hence rebooting."
 argument_list|)
 expr_stmt|;
 name|NodeStatusUpdaterImpl
 operator|.
 name|this
 operator|.
-name|stop
+name|reboot
 argument_list|()
 expr_stmt|;
 break|break;
