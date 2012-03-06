@@ -326,13 +326,11 @@ parameter_list|)
 block|{
 name|JvmMetrics
 operator|.
-name|create
+name|initSingleton
 argument_list|(
 literal|"MRAppMaster"
 argument_list|,
 literal|null
-argument_list|,
-name|ms
 argument_list|)
 expr_stmt|;
 return|return
