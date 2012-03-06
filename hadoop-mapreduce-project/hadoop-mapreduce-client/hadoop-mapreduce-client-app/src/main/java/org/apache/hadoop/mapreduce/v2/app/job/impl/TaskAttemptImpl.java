@@ -790,6 +790,24 @@ name|v2
 operator|.
 name|app
 operator|.
+name|AppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|TaskAttemptListener
 import|;
 end_import
@@ -1849,24 +1867,6 @@ init|=
 literal|1024
 decl_stmt|;
 comment|//TODO Make configurable?
-DECL|field|MAP_MEMORY_MB_DEFAULT
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|MAP_MEMORY_MB_DEFAULT
-init|=
-literal|1024
-decl_stmt|;
-DECL|field|REDUCE_MEMORY_MB_DEFAULT
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|REDUCE_MEMORY_MB_DEFAULT
-init|=
-literal|1024
-decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -1982,6 +1982,12 @@ specifier|private
 specifier|final
 name|Lock
 name|writeLock
+decl_stmt|;
+DECL|field|appContext
+specifier|private
+specifier|final
+name|AppContext
+name|appContext
 decl_stmt|;
 DECL|field|fsTokens
 specifier|private
@@ -3366,7 +3372,7 @@ argument_list|(
 literal|"line.separator"
 argument_list|)
 decl_stmt|;
-DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, AppContext appContext)
 specifier|public
 name|TaskAttemptImpl
 parameter_list|(
@@ -3417,6 +3423,9 @@ name|fsTokens
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|oldJobId
@@ -3473,6 +3482,12 @@ operator|.
 name|taskAttemptListener
 operator|=
 name|taskAttemptListener
+expr_stmt|;
+name|this
+operator|.
+name|appContext
+operator|=
+name|appContext
 expr_stmt|;
 comment|// Initialize reportedStatus
 name|reportedStatus
@@ -3635,7 +3650,9 @@ name|MRJobConfig
 operator|.
 name|MAP_MEMORY_MB
 argument_list|,
-name|MAP_MEMORY_MB_DEFAULT
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAP_MEMORY_MB
 argument_list|)
 expr_stmt|;
 block|}
@@ -3659,7 +3676,9 @@ name|MRJobConfig
 operator|.
 name|REDUCE_MEMORY_MB
 argument_list|,
-name|REDUCE_MEMORY_MB_DEFAULT
+name|MRJobConfig
+operator|.
+name|DEFAULT_REDUCE_MEMORY_MB
 argument_list|)
 expr_stmt|;
 block|}
@@ -5632,27 +5651,45 @@ name|taskType
 argument_list|)
 decl_stmt|;
 name|int
+name|minSlotMemSize
+init|=
+name|taskAttempt
+operator|.
+name|appContext
+operator|.
+name|getClusterInfo
+argument_list|()
+operator|.
+name|getMinContainerCapability
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+decl_stmt|;
+name|int
 name|simSlotsRequired
 init|=
+name|minSlotMemSize
+operator|==
+literal|0
+condition|?
+literal|0
+else|:
+operator|(
+name|int
+operator|)
+name|Math
+operator|.
+name|ceil
+argument_list|(
+operator|(
+name|float
+operator|)
 name|slotMemoryReq
 operator|/
-operator|(
-name|taskType
-operator|==
-name|TaskType
-operator|.
-name|MAP
-condition|?
-name|MAP_MEMORY_MB_DEFAULT
-else|:
-name|REDUCE_MEMORY_MB_DEFAULT
-operator|)
+name|minSlotMemSize
+argument_list|)
 decl_stmt|;
-comment|// Simulating MRv1 slots for counters by assuming *_MEMORY_MB_DEFAULT
-comment|// corresponds to a MrV1 slot.
-comment|// Fallow slot millis is not applicable in MRv2 - since a container is
-comment|// either assigned with the required memory or is not. No partial
-comment|// reserveations
 name|long
 name|slotMillisIncrement
 init|=
@@ -7087,7 +7124,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not generating HistoryFinish event since start event not generated for taskAttempt: "
+literal|"Not generating HistoryFinish event since start event not "
+operator|+
+literal|"generated for taskAttempt: "
 operator|+
 name|taskAttempt
 operator|.
@@ -7803,7 +7842,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not generating HistoryFinish event since start event not generated for taskAttempt: "
+literal|"Not generating HistoryFinish event since start event not "
+operator|+
+literal|"generated for taskAttempt: "
 operator|+
 name|taskAttempt
 operator|.
@@ -8228,7 +8269,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not generating HistoryFinish event since start event not generated for taskAttempt: "
+literal|"Not generating HistoryFinish event since start event not "
+operator|+
+literal|"generated for taskAttempt: "
 operator|+
 name|taskAttempt
 operator|.
@@ -8360,7 +8403,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not generating HistoryFinish event since start event not generated for taskAttempt: "
+literal|"Not generating HistoryFinish event since start event not "
+operator|+
+literal|"generated for taskAttempt: "
 operator|+
 name|taskAttempt
 operator|.

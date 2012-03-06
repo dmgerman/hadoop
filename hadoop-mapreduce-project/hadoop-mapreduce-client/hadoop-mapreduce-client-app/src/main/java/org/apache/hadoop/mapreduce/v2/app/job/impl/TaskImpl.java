@@ -570,6 +570,24 @@ name|v2
 operator|.
 name|app
 operator|.
+name|AppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|TaskAttemptListener
 import|;
 end_import
@@ -1214,6 +1232,12 @@ specifier|private
 specifier|final
 name|MRAppMetrics
 name|metrics
+decl_stmt|;
+DECL|field|appContext
+specifier|protected
+specifier|final
+name|AppContext
+name|appContext
 decl_stmt|;
 DECL|field|scheduledTime
 specifier|private
@@ -1925,7 +1949,7 @@ name|getCurrentState
 argument_list|()
 return|;
 block|}
-DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
+DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|TaskImpl
 parameter_list|(
@@ -1986,6 +2010,9 @@ name|startCount
 parameter_list|,
 name|MRAppMetrics
 name|metrics
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|this
@@ -2098,6 +2125,12 @@ operator|.
 name|metrics
 operator|=
 name|metrics
+expr_stmt|;
+name|this
+operator|.
+name|appContext
+operator|=
+name|appContext
 expr_stmt|;
 comment|// See if this is from a previous generation.
 if|if

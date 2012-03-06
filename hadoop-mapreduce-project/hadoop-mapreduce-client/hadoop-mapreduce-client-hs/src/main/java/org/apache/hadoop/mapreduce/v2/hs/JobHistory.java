@@ -602,6 +602,20 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|ClusterInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|YarnException
 import|;
 end_import
@@ -5804,13 +5818,26 @@ return|return
 name|userName
 return|;
 block|}
-comment|//TODO AppContext - Not Required
+comment|// TODO AppContext - Not Required
 annotation|@
 name|Override
 DECL|method|getClock ()
 specifier|public
 name|Clock
 name|getClock
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|// TODO AppContext - Not Required
+annotation|@
+name|Override
+DECL|method|getClusterInfo ()
+specifier|public
+name|ClusterInfo
+name|getClusterInfo
 parameter_list|()
 block|{
 return|return

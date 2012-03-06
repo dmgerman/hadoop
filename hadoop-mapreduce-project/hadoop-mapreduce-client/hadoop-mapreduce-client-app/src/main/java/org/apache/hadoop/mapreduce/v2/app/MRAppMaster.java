@@ -1248,6 +1248,20 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|ClusterInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|SystemClock
 import|;
 end_import
@@ -3063,6 +3077,8 @@ argument_list|,
 name|appSubmitTime
 argument_list|,
 name|amInfos
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 operator|(
@@ -4184,6 +4200,16 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|clusterInfo
+specifier|private
+specifier|final
+name|ClusterInfo
+name|clusterInfo
+init|=
+operator|new
+name|ClusterInfo
+argument_list|()
+decl_stmt|;
 DECL|method|RunningAppContext (Configuration config)
 specifier|public
 name|RunningAppContext
@@ -4333,6 +4359,20 @@ parameter_list|()
 block|{
 return|return
 name|clock
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getClusterInfo ()
+specifier|public
+name|ClusterInfo
+name|getClusterInfo
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clusterInfo
 return|;
 block|}
 block|}

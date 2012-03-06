@@ -3229,6 +3229,8 @@ name|slotMillisMapCounter
 operator|.
 name|getValue
 argument_list|()
+operator|/
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}
@@ -3253,12 +3255,14 @@ condition|)
 block|{
 name|summary
 operator|.
-name|setMapSlotSeconds
+name|setReduceSlotSeconds
 argument_list|(
 name|slotMillisReduceCounter
 operator|.
 name|getValue
 argument_list|()
+operator|/
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}

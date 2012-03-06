@@ -108,6 +108,20 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|ClusterInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|api
 operator|.
 name|records
@@ -207,6 +221,11 @@ argument_list|>
 name|getAllJobs
 parameter_list|()
 function_decl|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|method|getEventHandler ()
 name|EventHandler
 name|getEventHandler
@@ -215,6 +234,11 @@ function_decl|;
 DECL|method|getClock ()
 name|Clock
 name|getClock
+parameter_list|()
+function_decl|;
+DECL|method|getClusterInfo ()
+name|ClusterInfo
+name|getClusterInfo
 parameter_list|()
 function_decl|;
 block|}

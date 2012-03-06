@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.recover
+DECL|package|org.apache.hadoop.mapreduce.v2.app
 package|package
 name|org
 operator|.
@@ -17,8 +17,6 @@ operator|.
 name|v2
 operator|.
 name|app
-operator|.
-name|recover
 package|;
 end_package
 
@@ -38,6 +36,7 @@ end_import
 
 begin_class
 DECL|class|ControlledClock
+specifier|public
 class|class
 name|ControlledClock
 implements|implements
@@ -58,6 +57,7 @@ name|Clock
 name|actualClock
 decl_stmt|;
 DECL|method|ControlledClock (Clock actualClock)
+specifier|public
 name|ControlledClock
 parameter_list|(
 name|Clock
@@ -72,6 +72,7 @@ name|actualClock
 expr_stmt|;
 block|}
 DECL|method|setTime (long time)
+specifier|public
 specifier|synchronized
 name|void
 name|setTime
@@ -88,6 +89,7 @@ name|time
 expr_stmt|;
 block|}
 DECL|method|reset ()
+specifier|public
 specifier|synchronized
 name|void
 name|reset

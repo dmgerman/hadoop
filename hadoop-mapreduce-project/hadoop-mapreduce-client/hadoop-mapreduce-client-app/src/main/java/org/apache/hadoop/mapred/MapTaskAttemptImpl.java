@@ -152,6 +152,24 @@ name|v2
 operator|.
 name|app
 operator|.
+name|AppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|TaskAttemptListener
 import|;
 end_import
@@ -244,11 +262,7 @@ begin_class
 annotation|@
 name|SuppressWarnings
 argument_list|(
-block|{
 literal|"rawtypes"
-block|,
-literal|"deprecation"
-block|}
 argument_list|)
 DECL|class|MapTaskAttemptImpl
 specifier|public
@@ -263,7 +277,7 @@ specifier|final
 name|TaskSplitMetaInfo
 name|splitInfo
 decl_stmt|;
-DECL|method|MapTaskAttemptImpl (TaskId taskId, int attempt, EventHandler eventHandler, Path jobFile, int partition, TaskSplitMetaInfo splitInfo, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|MapTaskAttemptImpl (TaskId taskId, int attempt, EventHandler eventHandler, Path jobFile, int partition, TaskSplitMetaInfo splitInfo, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, AppContext appContext)
 specifier|public
 name|MapTaskAttemptImpl
 parameter_list|(
@@ -313,6 +327,9 @@ name|fsTokens
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|super
@@ -343,6 +360,8 @@ argument_list|,
 name|fsTokens
 argument_list|,
 name|clock
+argument_list|,
+name|appContext
 argument_list|)
 expr_stmt|;
 name|this

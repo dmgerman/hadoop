@@ -854,6 +854,24 @@ name|v2
 operator|.
 name|app
 operator|.
+name|AppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|TaskAttemptListener
 import|;
 end_import
@@ -1715,6 +1733,12 @@ specifier|private
 specifier|final
 name|long
 name|appSubmitTime
+decl_stmt|;
+DECL|field|appContext
+specifier|private
+specifier|final
+name|AppContext
+name|appContext
 decl_stmt|;
 DECL|field|lazyTasksCopyNeeded
 specifier|private
@@ -2885,7 +2909,7 @@ specifier|private
 name|JobTokenSecretManager
 name|jobTokenSecretManager
 decl_stmt|;
-DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos)
+DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos, AppContext appContext)
 specifier|public
 name|JobImpl
 parameter_list|(
@@ -2941,6 +2965,9 @@ argument_list|<
 name|AMInfo
 argument_list|>
 name|amInfos
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|this
@@ -3003,6 +3030,12 @@ operator|.
 name|amInfos
 operator|=
 name|amInfos
+expr_stmt|;
+name|this
+operator|.
+name|appContext
+operator|=
+name|appContext
 expr_stmt|;
 name|this
 operator|.
@@ -6158,6 +6191,10 @@ argument_list|,
 name|job
 operator|.
 name|metrics
+argument_list|,
+name|job
+operator|.
+name|appContext
 argument_list|)
 decl_stmt|;
 name|job
@@ -6281,6 +6318,10 @@ argument_list|,
 name|job
 operator|.
 name|metrics
+argument_list|,
+name|job
+operator|.
+name|appContext
 argument_list|)
 decl_stmt|;
 name|job

@@ -420,6 +420,24 @@ name|v2
 operator|.
 name|app
 operator|.
+name|AppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|TaskAttemptListener
 import|;
 end_import
@@ -800,6 +818,11 @@ name|TaskType
 operator|.
 name|MAP
 decl_stmt|;
+DECL|field|appContext
+specifier|private
+name|AppContext
+name|appContext
+decl_stmt|;
 DECL|field|startCount
 specifier|private
 name|int
@@ -849,7 +872,7 @@ name|taskAttemptCounter
 init|=
 literal|0
 decl_stmt|;
-DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics)
+DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|MockTaskImpl
 parameter_list|(
@@ -907,6 +930,9 @@ name|startCount
 parameter_list|,
 name|MRAppMetrics
 name|metrics
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|super
@@ -938,6 +964,8 @@ argument_list|,
 name|startCount
 argument_list|,
 name|metrics
+argument_list|,
+name|appContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -990,6 +1018,8 @@ argument_list|,
 name|fsTokens
 argument_list|,
 name|clock
+argument_list|,
+name|appContext
 argument_list|)
 decl_stmt|;
 name|taskAttempts
@@ -1044,7 +1074,7 @@ specifier|private
 name|TaskAttemptId
 name|attemptId
 decl_stmt|;
-DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock)
+DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, AppContext appContext)
 specifier|public
 name|MockTaskAttemptImpl
 parameter_list|(
@@ -1091,6 +1121,9 @@ name|fsTokens
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|super
@@ -1118,6 +1151,8 @@ argument_list|,
 name|fsTokens
 argument_list|,
 name|clock
+argument_list|,
+name|appContext
 argument_list|)
 expr_stmt|;
 name|attemptId
@@ -1415,6 +1450,15 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
+name|appContext
+operator|=
+name|mock
+argument_list|(
+name|AppContext
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 name|taskSplitMetaInfo
 operator|=
 name|mock
@@ -1479,6 +1523,8 @@ argument_list|,
 name|startCount
 argument_list|,
 name|metrics
+argument_list|,
+name|appContext
 argument_list|)
 expr_stmt|;
 block|}
