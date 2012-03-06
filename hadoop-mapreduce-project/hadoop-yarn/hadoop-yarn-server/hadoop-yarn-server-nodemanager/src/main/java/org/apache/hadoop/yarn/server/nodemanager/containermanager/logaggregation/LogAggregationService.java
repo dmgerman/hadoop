@@ -138,6 +138,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -1682,6 +1698,7 @@ name|userUgi
 argument_list|)
 expr_stmt|;
 comment|// New application
+specifier|final
 name|AppLogAggregator
 name|appLogAggregator
 init|=
@@ -1746,15 +1763,65 @@ block|}
 comment|// TODO Get the user configuration for the list of containers that need log
 comment|// aggregation.
 comment|// Schedule the aggregator.
+name|Runnable
+name|aggregatorWrapper
+init|=
+operator|new
+name|Runnable
+argument_list|()
+block|{
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+name|appLogAggregator
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|appLogAggregators
+operator|.
+name|remove
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+decl_stmt|;
 name|this
 operator|.
 name|threadPool
 operator|.
 name|execute
 argument_list|(
-name|appLogAggregator
+name|aggregatorWrapper
 argument_list|)
 expr_stmt|;
+block|}
+comment|// for testing only
+annotation|@
+name|Private
+DECL|method|getNumAggregators ()
+name|int
+name|getNumAggregators
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appLogAggregators
+operator|.
+name|size
+argument_list|()
+return|;
 block|}
 DECL|method|stopContainer (ContainerId containerId, int exitCode)
 specifier|private
