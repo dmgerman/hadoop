@@ -1817,14 +1817,20 @@ argument_list|()
 argument_list|)
 control|)
 block|{
-if|if
-condition|(
+specifier|final
+name|long
+name|elapsed
+init|=
 name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
 operator|-
 name|lastRenewed
+decl_stmt|;
+if|if
+condition|(
+name|elapsed
 operator|>=
 name|getRenewalTime
 argument_list|()
@@ -1886,8 +1892,7 @@ operator|+
 literal|" for "
 operator|+
 operator|(
-name|getRenewalTime
-argument_list|()
+name|elapsed
 operator|/
 literal|1000
 operator|)
@@ -1937,8 +1942,7 @@ operator|+
 literal|" for "
 operator|+
 operator|(
-name|getRenewalTime
-argument_list|()
+name|elapsed
 operator|/
 literal|1000
 operator|)
