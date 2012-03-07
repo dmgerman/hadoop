@@ -518,8 +518,9 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|120000
+literal|300000
 argument_list|)
+comment|// 5 min timeout
 DECL|method|testDistributedUpgrade ()
 specifier|public
 name|void
