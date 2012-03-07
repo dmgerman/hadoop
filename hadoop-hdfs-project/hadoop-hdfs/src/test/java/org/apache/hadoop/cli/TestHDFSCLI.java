@@ -168,6 +168,16 @@ name|Before
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestHDFSCLI
 specifier|public
@@ -491,7 +501,8 @@ return|;
 block|}
 comment|//TODO: The test is failing due to the change in HADOOP-7360.
 comment|//      HDFS-2038 is going to fix it.  Disable the test for the moment.
-comment|//@Test
+annotation|@
+name|Test
 annotation|@
 name|Override
 DECL|method|testAll ()
