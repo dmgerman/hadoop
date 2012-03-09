@@ -1613,6 +1613,7 @@ return|return
 name|response
 return|;
 block|}
+comment|/**    * It gives response which includes application report if the application    * present otherwise gives response with application report as null.    */
 annotation|@
 name|Override
 DECL|method|getApplicationReport ( GetApplicationReportRequest request)
@@ -1693,18 +1694,18 @@ operator|==
 literal|null
 condition|)
 block|{
-throw|throw
-name|RPCUtil
+comment|// If the RM doesn't have the application, provide the response with
+comment|// application report as null and let the clients to handle.
+return|return
+name|recordFactory
 operator|.
-name|getRemoteException
+name|newRecordInstance
 argument_list|(
-literal|"Trying to get information for an "
-operator|+
-literal|"absent application "
-operator|+
-name|applicationId
+name|GetApplicationReportResponse
+operator|.
+name|class
 argument_list|)
-throw|;
+return|;
 block|}
 name|boolean
 name|allowAccess

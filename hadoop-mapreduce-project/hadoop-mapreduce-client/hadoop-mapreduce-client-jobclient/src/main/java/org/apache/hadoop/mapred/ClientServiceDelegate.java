@@ -1362,7 +1362,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Could not get Job info from RM for job "
 operator|+
@@ -1780,7 +1780,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Could not get Job info from RM for job "
 operator|+
