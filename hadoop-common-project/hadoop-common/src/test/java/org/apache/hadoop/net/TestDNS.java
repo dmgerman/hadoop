@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|net
@@ -43,6 +33,16 @@ operator|.
 name|net
 operator|.
 name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|naming
+operator|.
+name|NameNotFoundException
 import|;
 end_import
 
@@ -76,16 +76,28 @@ end_import
 
 begin_import
 import|import
-name|javax
+name|org
 operator|.
-name|naming
+name|junit
 operator|.
-name|NameNotFoundException
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
 begin_comment
-comment|/**  *  */
+comment|/**  * Test host name and IP resolution and caching.  */
 end_comment
 
 begin_class
@@ -93,8 +105,6 @@ DECL|class|TestDNS
 specifier|public
 class|class
 name|TestDNS
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -121,22 +131,9 @@ name|DEFAULT
 init|=
 literal|"default"
 decl_stmt|;
-comment|/**    * Constructs a test case with the given name.    *    * @param name test name    */
-DECL|method|TestDNS (String name)
-specifier|public
-name|TestDNS
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Test that asking for the default hostname works    * @throws Exception if hostname lookups fail   */
+comment|/**    * Test that asking for the default hostname works    * @throws Exception if hostname lookups fail    */
+annotation|@
+name|Test
 DECL|method|testGetLocalHost ()
 specifier|public
 name|void
@@ -162,6 +159,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that repeated calls to getting the local host are fairly fast, and    * hence that caching is being used    * @throws Exception if hostname lookups fail    */
+annotation|@
+name|Test
 DECL|method|testGetLocalHostIsFast ()
 specifier|public
 name|void
@@ -171,7 +170,7 @@ throws|throws
 name|Exception
 block|{
 name|String
-name|hostname
+name|hostname1
 init|=
 name|DNS
 operator|.
@@ -182,9 +181,19 @@ argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|hostname
+name|hostname1
 argument_list|)
 expr_stmt|;
+name|String
+name|hostname2
+init|=
+name|DNS
+operator|.
+name|getDefaultHost
+argument_list|(
+name|DEFAULT
+argument_list|)
+decl_stmt|;
 name|long
 name|t1
 init|=
@@ -194,7 +203,7 @@ name|currentTimeMillis
 argument_list|()
 decl_stmt|;
 name|String
-name|hostname2
+name|hostname3
 init|=
 name|DNS
 operator|.
@@ -211,24 +220,6 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|String
-name|hostname3
-init|=
-name|DNS
-operator|.
-name|getDefaultHost
-argument_list|(
-name|DEFAULT
-argument_list|)
-decl_stmt|;
-name|long
-name|t3
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-decl_stmt|;
 name|assertEquals
 argument_list|(
 name|hostname3
@@ -240,27 +231,29 @@ name|assertEquals
 argument_list|(
 name|hostname2
 argument_list|,
-name|hostname
+name|hostname1
 argument_list|)
 expr_stmt|;
 name|long
-name|interval2
+name|interval
 init|=
-name|t3
+name|t2
 operator|-
-name|t2
+name|t1
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"It is taking to long to determine the local host -caching is not working"
+literal|"Took too long to determine local host - caching is not working"
 argument_list|,
-name|interval2
+name|interval
 operator|<
 literal|20000
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that our local IP address is not null    * @throws Exception if something went wrong    */
+annotation|@
+name|Test
 DECL|method|testLocalHostHasAnAddress ()
 specifier|public
 name|void
@@ -308,7 +301,9 @@ return|return
 name|localhost
 return|;
 block|}
-comment|/**    * Test that passing a null pointer is as the interface    * fails with a NullPointerException    * @throws Exception if something went wrong    */
+comment|/**    * Test null interface name    */
+annotation|@
+name|Test
 DECL|method|testNullInterface ()
 specifier|public
 name|void
@@ -340,17 +335,91 @@ block|}
 catch|catch
 parameter_list|(
 name|NullPointerException
-name|expected
+name|npe
 parameter_list|)
 block|{
-comment|//this is expected
+comment|// Expected
+block|}
+try|try
+block|{
+name|String
+name|ip
+init|=
+name|DNS
+operator|.
+name|getDefaultIP
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
+name|fail
+argument_list|(
+literal|"Expected a NullPointerException, got "
+operator|+
+name|ip
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NullPointerException
+name|npe
+parameter_list|)
+block|{
+comment|// Expected
 block|}
 block|}
-comment|/**    * Get the IP addresses of an unknown interface, expect to get something    * back    * @throws Exception if something went wrong    */
+comment|/**    * Get the IP addresses of an unknown interface    */
+annotation|@
+name|Test
 DECL|method|testIPsOfUnknownInterface ()
 specifier|public
 name|void
 name|testIPsOfUnknownInterface
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+name|DNS
+operator|.
+name|getIPs
+argument_list|(
+literal|"name-of-an-unknown-interface"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Got an IP for a bogus interface"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"No such interface name-of-an-unknown-interface"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Test the "default" IP addresses is the local IP addr    */
+annotation|@
+name|Test
+DECL|method|testGetIPWithDefault ()
+specifier|public
+name|void
+name|testGetIPWithDefault
 parameter_list|()
 throws|throws
 name|Exception
@@ -363,25 +432,64 @@ name|DNS
 operator|.
 name|getIPs
 argument_list|(
-literal|"name-of-an-unknown-interface"
+name|DEFAULT
 argument_list|)
 decl_stmt|;
-name|assertNotNull
+name|assertEquals
 argument_list|(
-name|ips
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
+literal|"Should only return 1 default IP"
+argument_list|,
+literal|1
+argument_list|,
 name|ips
 operator|.
 name|length
-operator|>
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|getLocalIPAddr
+argument_list|()
+operator|.
+name|getHostAddress
+argument_list|()
+argument_list|,
+name|ips
+index|[
 literal|0
+index|]
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|String
+name|ip
+init|=
+name|DNS
+operator|.
+name|getDefaultIP
+argument_list|(
+name|DEFAULT
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|ip
+argument_list|,
+name|ips
+index|[
+literal|0
+index|]
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * TestCase: get our local address and reverse look it up    * @throws Exception if that fails    */
+comment|/**    * TestCase: get our local address and reverse look it up    */
+annotation|@
+name|Test
 DECL|method|testRDNS ()
 specifier|public
 name|void
@@ -477,7 +585,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test that the name "localhost" resolves to something.    *    * If this fails, your machine's network is in a mess, go edit /etc/hosts    * @throws Exception for any problems    */
+comment|/**    * Test that the name "localhost" resolves to something.    *    * If this fails, your machine's network is in a mess, go edit /etc/hosts    */
+annotation|@
+name|Test
 DECL|method|testLocalhostResolves ()
 specifier|public
 name|void

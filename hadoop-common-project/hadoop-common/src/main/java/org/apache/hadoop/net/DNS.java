@@ -384,7 +384,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns all the IPs associated with the provided interface, if any, in    * textual form.    *     * @param strInterface    *            The name of the network interface to query (e.g. eth0)    * @return A string vector of all the IPs associated with the provided    *         interface    * @throws UnknownHostException    *             If an UnknownHostException is encountered in querying the    *             default interface    *     */
+comment|/**    * Returns all the IPs associated with the provided interface, if any, in    * textual form.    *     * @param strInterface    *            The name of the network interface to query (e.g. eth0)    *            or the string "default"    * @return A string vector of all the IPs associated with the provided    *         interface. The local host IP is returned if the interface    *         name "default" is specified or there is an I/O error looking    *         for the given interface.    * @throws UnknownHostException    *             If the given interface is invalid    *     */
 DECL|method|getIPs (String strInterface)
 specifier|public
 specifier|static
@@ -398,23 +398,14 @@ parameter_list|)
 throws|throws
 name|UnknownHostException
 block|{
-try|try
-block|{
-name|NetworkInterface
-name|netIF
-init|=
-name|NetworkInterface
+if|if
+condition|(
+literal|"default"
 operator|.
-name|getByName
+name|equals
 argument_list|(
 name|strInterface
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|netIF
-operator|==
-literal|null
 condition|)
 block|{
 return|return
@@ -426,8 +417,69 @@ name|cachedHostAddress
 block|}
 return|;
 block|}
-else|else
+name|NetworkInterface
+name|netIF
+decl_stmt|;
+try|try
 block|{
+name|netIF
+operator|=
+name|NetworkInterface
+operator|.
+name|getByName
+argument_list|(
+name|strInterface
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SocketException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"I/O error finding interface "
+operator|+
+name|strInterface
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|String
+index|[]
+block|{
+name|cachedHostAddress
+block|}
+return|;
+block|}
+if|if
+condition|(
+name|netIF
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnknownHostException
+argument_list|(
+literal|"No such interface "
+operator|+
+name|strInterface
+argument_list|)
+throw|;
+block|}
 name|Vector
 argument_list|<
 name|String
@@ -442,6 +494,9 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 name|Enumeration
+argument_list|<
+name|InetAddress
+argument_list|>
 name|e
 init|=
 name|netIF
@@ -461,15 +516,10 @@ name|ips
 operator|.
 name|add
 argument_list|(
-operator|(
-operator|(
-name|InetAddress
-operator|)
 name|e
 operator|.
 name|nextElement
 argument_list|()
-operator|)
 operator|.
 name|getHostAddress
 argument_list|()
@@ -488,24 +538,7 @@ block|{}
 argument_list|)
 return|;
 block|}
-block|}
-catch|catch
-parameter_list|(
-name|SocketException
-name|e
-parameter_list|)
-block|{
-return|return
-operator|new
-name|String
-index|[]
-block|{
-name|cachedHostAddress
-block|}
-return|;
-block|}
-block|}
-comment|/**    * Returns the first available IP address associated with the provided    * network interface    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    * @return The IP address in text form    * @throws UnknownHostException    *             If one is encountered in querying the default interface    */
+comment|/**    * Returns the first available IP address associated with the provided    * network interface or the local host IP if "default" is given.    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    *            or the string "default"    * @return The IP address in text form, the local host IP is returned    *         if the interface name "default" is specified    * @throws UnknownHostException    *             If the given interface is invalid    */
 DECL|method|getDefaultIP (String strInterface)
 specifier|public
 specifier|static
@@ -534,7 +567,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Returns all the host names associated by the provided nameserver with the    * address bound to the specified network interface    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    * @param nameserver    *            The DNS host name    * @return A string vector of all host names associated with the IPs tied to    *         the specified interface    * @throws UnknownHostException if the hostname cannot be determined    */
+comment|/**    * Returns all the host names associated by the provided nameserver with the    * address bound to the specified network interface    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    * @param nameserver    *            The DNS host name    * @return A string vector of all host names associated with the IPs tied to    *         the specified interface    * @throws UnknownHostException if the given interface is invalid    */
 DECL|method|getHosts (String strInterface, String nameserver)
 specifier|public
 specifier|static
@@ -589,6 +622,7 @@ condition|;
 name|ctr
 operator|++
 control|)
+block|{
 try|try
 block|{
 name|hosts
@@ -624,6 +658,7 @@ name|NamingException
 name|ignored
 parameter_list|)
 block|{       }
+block|}
 if|if
 condition|(
 name|hosts
@@ -632,6 +667,15 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to determine hostname for interface "
+operator|+
+name|strInterface
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|String
@@ -692,7 +736,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Unable to determine local hostname "
 operator|+
@@ -746,7 +790,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Unable to determine address of the host"
 operator|+
