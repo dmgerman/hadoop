@@ -957,15 +957,17 @@ argument_list|()
 condition|)
 block|{
 name|Path
-name|pendingJobAttemptsPath
+name|jobAttemptPath
 init|=
-name|getPendingJobAttemptsPath
-argument_list|()
+name|getJobAttemptPath
+argument_list|(
+name|context
+argument_list|)
 decl_stmt|;
 name|FileSystem
 name|fs
 init|=
-name|pendingJobAttemptsPath
+name|jobAttemptPath
 operator|.
 name|getFileSystem
 argument_list|(
@@ -982,7 +984,7 @@ name|fs
 operator|.
 name|mkdirs
 argument_list|(
-name|pendingJobAttemptsPath
+name|jobAttemptPath
 argument_list|)
 condition|)
 block|{
@@ -992,7 +994,7 @@ name|error
 argument_list|(
 literal|"Mkdirs failed to create "
 operator|+
-name|pendingJobAttemptsPath
+name|jobAttemptPath
 argument_list|)
 expr_stmt|;
 block|}
