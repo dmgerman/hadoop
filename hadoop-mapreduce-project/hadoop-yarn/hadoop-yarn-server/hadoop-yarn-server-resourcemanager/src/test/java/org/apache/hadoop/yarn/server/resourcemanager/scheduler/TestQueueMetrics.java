@@ -146,6 +146,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|MetricsRecordBuilder
@@ -283,6 +297,17 @@ init|=
 literal|1024
 decl_stmt|;
 comment|// MB
+DECL|field|conf
+specifier|private
+specifier|static
+specifier|final
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
 DECL|field|ms
 specifier|final
 name|MetricsSystem
@@ -324,6 +349,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|MetricsSource
@@ -445,6 +472,8 @@ name|metrics
 operator|.
 name|incrAppsRunning
 argument_list|(
+name|app
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
@@ -625,6 +654,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|MetricsSource
@@ -806,6 +837,8 @@ name|metrics
 operator|.
 name|incrAppsRunning
 argument_list|(
+name|app
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
@@ -1078,6 +1111,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|Queue
@@ -1117,6 +1152,8 @@ argument_list|,
 name|parentQueue
 argument_list|,
 literal|true
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|MetricsSource
@@ -1436,6 +1473,8 @@ name|metrics
 operator|.
 name|incrAppsRunning
 argument_list|(
+name|app
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;

@@ -1143,6 +1143,11 @@ argument_list|()
 operator|.
 name|getEnableUserMetrics
 argument_list|()
+argument_list|,
+name|cs
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

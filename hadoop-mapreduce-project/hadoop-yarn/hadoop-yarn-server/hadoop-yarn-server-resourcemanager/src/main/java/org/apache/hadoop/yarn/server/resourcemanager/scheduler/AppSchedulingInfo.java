@@ -1200,6 +1200,8 @@ name|metrics
 operator|.
 name|incrAppsRunning
 argument_list|(
+name|this
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;

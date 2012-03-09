@@ -955,6 +955,28 @@ name|DEFAULT_QUEUE_NAME
 init|=
 literal|"default"
 decl_stmt|;
+comment|/**    * Buckets (in minutes) for the number of apps running in each queue.    */
+DECL|field|RM_METRICS_RUNTIME_BUCKETS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_METRICS_RUNTIME_BUCKETS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"metrics.runtime.buckets"
+decl_stmt|;
+comment|/**    * Default sizes of the runtime metric buckets in minutes.    */
+DECL|field|DEFAULT_RM_METRICS_RUNTIME_BUCKETS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_RM_METRICS_RUNTIME_BUCKETS
+init|=
+literal|"60,300,1440"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Node Manager Configs
 comment|////////////////////////////////

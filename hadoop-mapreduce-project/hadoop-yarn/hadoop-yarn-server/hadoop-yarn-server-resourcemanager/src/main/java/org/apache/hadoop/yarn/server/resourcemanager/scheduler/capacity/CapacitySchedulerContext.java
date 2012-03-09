@@ -32,6 +32,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -121,6 +135,12 @@ function_decl|;
 DECL|method|getClusterResources ()
 name|Resource
 name|getClusterResources
+parameter_list|()
+function_decl|;
+comment|/**    * Get the yarn configuration.    */
+DECL|method|getConf ()
+name|Configuration
+name|getConf
 parameter_list|()
 function_decl|;
 block|}
