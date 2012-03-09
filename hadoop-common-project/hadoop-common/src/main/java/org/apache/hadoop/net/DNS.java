@@ -384,7 +384,92 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns all the IPs associated with the provided interface, if any, in    * textual form.    *     * @param strInterface    *            The name of the network interface to query (e.g. eth0)    *            or the string "default"    * @return A string vector of all the IPs associated with the provided    *         interface. The local host IP is returned if the interface    *         name "default" is specified or there is an I/O error looking    *         for the given interface.    * @throws UnknownHostException    *             If the given interface is invalid    *     */
+comment|/**    * @return NetworkInterface for the given subinterface name (eg eth0:0)    *    or null if no interface with the given name can be found      */
+DECL|method|getSubinterface (String strInterface)
+specifier|private
+specifier|static
+name|NetworkInterface
+name|getSubinterface
+parameter_list|(
+name|String
+name|strInterface
+parameter_list|)
+throws|throws
+name|SocketException
+block|{
+name|Enumeration
+argument_list|<
+name|NetworkInterface
+argument_list|>
+name|nifs
+init|=
+name|NetworkInterface
+operator|.
+name|getNetworkInterfaces
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|nifs
+operator|.
+name|hasMoreElements
+argument_list|()
+condition|)
+block|{
+name|Enumeration
+argument_list|<
+name|NetworkInterface
+argument_list|>
+name|subNifs
+init|=
+name|nifs
+operator|.
+name|nextElement
+argument_list|()
+operator|.
+name|getSubInterfaces
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|subNifs
+operator|.
+name|hasMoreElements
+argument_list|()
+condition|)
+block|{
+name|NetworkInterface
+name|nif
+init|=
+name|subNifs
+operator|.
+name|nextElement
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nif
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|strInterface
+argument_list|)
+condition|)
+block|{
+return|return
+name|nif
+return|;
+block|}
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Returns all the IPs associated with the provided interface, if any, in    * textual form.    *     * @param strInterface    *            The name of the network interface or sub-interface to query    *            (eg eth0 or eth0:0) or the string "default"    * @return A string vector of all the IPs associated with the provided    *         interface. The local host IP is returned if the interface    *         name "default" is specified or there is an I/O error looking    *         for the given interface.    * @throws UnknownHostException    *             If the given interface is invalid    *     */
 DECL|method|getIPs (String strInterface)
 specifier|public
 specifier|static
@@ -418,11 +503,11 @@ block|}
 return|;
 block|}
 name|NetworkInterface
-name|netIF
+name|netIf
 decl_stmt|;
 try|try
 block|{
-name|netIF
+name|netIf
 operator|=
 name|NetworkInterface
 operator|.
@@ -431,6 +516,21 @@ argument_list|(
 name|strInterface
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|netIf
+operator|==
+literal|null
+condition|)
+block|{
+name|netIf
+operator|=
+name|getSubinterface
+argument_list|(
+name|strInterface
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -465,7 +565,7 @@ return|;
 block|}
 if|if
 condition|(
-name|netIF
+name|netIf
 operator|==
 literal|null
 condition|)
@@ -497,16 +597,16 @@ name|Enumeration
 argument_list|<
 name|InetAddress
 argument_list|>
-name|e
+name|addrs
 init|=
-name|netIF
+name|netIf
 operator|.
 name|getInetAddresses
 argument_list|()
 decl_stmt|;
 while|while
 condition|(
-name|e
+name|addrs
 operator|.
 name|hasMoreElements
 argument_list|()
@@ -516,7 +616,7 @@ name|ips
 operator|.
 name|add
 argument_list|(
-name|e
+name|addrs
 operator|.
 name|nextElement
 argument_list|()
@@ -538,7 +638,7 @@ block|{}
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the first available IP address associated with the provided    * network interface or the local host IP if "default" is given.    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    *            or the string "default"    * @return The IP address in text form, the local host IP is returned    *         if the interface name "default" is specified    * @throws UnknownHostException    *             If the given interface is invalid    */
+comment|/**    * Returns the first available IP address associated with the provided    * network interface or the local host IP if "default" is given.    *    * @param strInterface    *            The name of the network interface or subinterface to query    *             (e.g. eth0 or eth0:0) or the string "default"    * @return The IP address in text form, the local host IP is returned    *         if the interface name "default" is specified    * @throws UnknownHostException    *             If the given interface is invalid    */
 DECL|method|getDefaultIP (String strInterface)
 specifier|public
 specifier|static
@@ -567,7 +667,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Returns all the host names associated by the provided nameserver with the    * address bound to the specified network interface    *    * @param strInterface    *            The name of the network interface to query (e.g. eth0)    * @param nameserver    *            The DNS host name    * @return A string vector of all host names associated with the IPs tied to    *         the specified interface    * @throws UnknownHostException if the given interface is invalid    */
+comment|/**    * Returns all the host names associated by the provided nameserver with the    * address bound to the specified network interface    *    * @param strInterface    *            The name of the network interface or subinterface to query    *            (e.g. eth0 or eth0:0)    * @param nameserver    *            The DNS host name    * @return A string vector of all host names associated with the IPs tied to    *         the specified interface    * @throws UnknownHostException if the given interface is invalid    */
 DECL|method|getHosts (String strInterface, String nameserver)
 specifier|public
 specifier|static
