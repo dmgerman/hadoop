@@ -2135,8 +2135,6 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -2256,8 +2254,6 @@ specifier|public
 name|long
 name|getCapacity
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|storage
@@ -2274,8 +2270,6 @@ specifier|public
 name|long
 name|getDfsUsed
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|storage
@@ -2315,8 +2309,6 @@ specifier|public
 name|long
 name|getRemaining
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|storage
@@ -4500,8 +4492,6 @@ parameter_list|,
 name|long
 name|newlength
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 operator|new
@@ -4533,8 +4523,6 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|block
@@ -4853,6 +4841,26 @@ name|Object
 argument_list|>
 name|getVolumeInfoMap
 parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|createRollingLogs (String bpid, String prefix)
+specifier|public
+name|RollingLogs
+name|createRollingLogs
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|String
+name|prefix
+parameter_list|)
 block|{
 throw|throw
 operator|new

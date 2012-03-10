@@ -471,11 +471,11 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/** @return the directory for the block pool. */
-DECL|method|getDirectory (String bpid)
+comment|/** @return the path to the volume */
+DECL|method|getPath (String bpid)
 specifier|public
-name|File
-name|getDirectory
+name|String
+name|getPath
 parameter_list|(
 name|String
 name|bpid
@@ -496,6 +496,21 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
+comment|/**    * Create rolling logs.    *     * @param prefix the prefix of the log names.    * @return rolling logs    */
+DECL|method|createRollingLogs (String bpid, String prefix)
+specifier|public
+name|RollingLogs
+name|createRollingLogs
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|String
+name|prefix
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/** @return a list of volumes. */
 DECL|method|getVolumes ()
 specifier|public
