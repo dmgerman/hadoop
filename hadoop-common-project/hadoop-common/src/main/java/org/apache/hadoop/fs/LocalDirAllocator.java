@@ -698,11 +698,11 @@ condition|)
 block|{
 name|localDirs
 operator|=
-name|conf
+name|StringUtils
 operator|.
 name|getTrimmedStrings
 argument_list|(
-name|contextCfgItemName
+name|newLocalDirs
 argument_list|)
 expr_stmt|;
 name|localFS
