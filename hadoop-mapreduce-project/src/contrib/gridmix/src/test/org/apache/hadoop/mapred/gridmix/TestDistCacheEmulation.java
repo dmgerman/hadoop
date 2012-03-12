@@ -1170,7 +1170,7 @@ name|generate
 condition|?
 literal|0
 else|:
-name|dce
+name|Gridmix
 operator|.
 name|MISSING_DIST_CACHE_FILES_ERROR
 decl_stmt|;

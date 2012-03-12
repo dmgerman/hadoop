@@ -564,6 +564,33 @@ operator|new
 name|Shutdown
 argument_list|()
 decl_stmt|;
+comment|/** Error while parsing/analyzing the arguments to Gridmix */
+DECL|field|ARGS_ERROR
+specifier|static
+specifier|final
+name|int
+name|ARGS_ERROR
+init|=
+literal|1
+decl_stmt|;
+comment|/** Error while trying to start/setup the Gridmix run */
+DECL|field|STARTUP_FAILED_ERROR
+specifier|static
+specifier|final
+name|int
+name|STARTUP_FAILED_ERROR
+init|=
+literal|2
+decl_stmt|;
+comment|/**    * If at least 1 distributed cache file is missing in the expected    * distributed cache dir, Gridmix cannot proceed with emulation of    * distributed cache load.    */
+DECL|field|MISSING_DIST_CACHE_FILES_ERROR
+specifier|static
+specifier|final
+name|int
+name|MISSING_DIST_CACHE_FILES_ERROR
+init|=
+literal|3
+decl_stmt|;
 DECL|method|Gridmix (String[] args)
 name|Gridmix
 parameter_list|(
@@ -614,10 +641,10 @@ literal|"input"
 argument_list|)
 return|;
 block|}
-comment|/**    * Write random bytes at the path&lt;inputDir&gt;.    * @see org.apache.hadoop.mapred.gridmix.GenerateData    */
+comment|/**    * Write random bytes at the path&lt;inputDir&gt; if needed.    * @see org.apache.hadoop.mapred.gridmix.GenerateData    * @return exit status    */
 DECL|method|writeInputData (long genbytes, Path inputDir)
 specifier|protected
-name|void
+name|int
 name|writeInputData
 parameter_list|(
 name|long
@@ -631,6 +658,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|genbytes
+operator|>
+literal|0
+condition|)
+block|{
 specifier|final
 name|Configuration
 name|conf
@@ -638,6 +672,36 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|inputDir
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|exists
+argument_list|(
+name|inputDir
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Gridmix input data directory "
+operator|+
+name|inputDir
+operator|+
+literal|" already exists when -generate option is used.\n"
+argument_list|)
+expr_stmt|;
+return|return
+name|STARTUP_FAILED_ERROR
+return|;
+block|}
 comment|// configure the compression ratio if needed
 name|CompressionEmulationUtil
 operator|.
@@ -756,6 +820,10 @@ argument_list|(
 literal|"Input data generation successful."
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+literal|0
+return|;
 block|}
 comment|/**    * Write random bytes in the distributed cache files that will be used by all    * simulated jobs of current gridmix run, if files are to be generated.    * Do this as part of the MapReduce job {@link GenerateDistCacheData#JOB_NAME}    * @see org.apache.hadoop.mapred.gridmix.GenerateDistCacheData    */
 DECL|method|writeDistCacheData (Configuration conf)
@@ -1591,6 +1659,13 @@ operator|<
 literal|2
 condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Too few arguments to Gridmix.\n"
+argument_list|)
+expr_stmt|;
 name|printUsage
 argument_list|(
 name|System
@@ -1599,15 +1674,9 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-literal|1
+name|ARGS_ERROR
 return|;
 block|}
-comment|// Should gridmix generate distributed cache data ?
-name|boolean
-name|generate
-init|=
-literal|false
-decl_stmt|;
 name|long
 name|genbytes
 init|=
@@ -1629,6 +1698,8 @@ name|userRsrc
 init|=
 literal|null
 decl_stmt|;
+try|try
+block|{
 name|userResolver
 operator|=
 name|ReflectionUtils
@@ -1653,8 +1724,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 for|for
 control|(
 name|int
@@ -1702,10 +1771,26 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
-name|generate
-operator|=
-literal|true
+if|if
+condition|(
+name|genbytes
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"size of input data to be generated specified using "
+operator|+
+literal|"-generate option should be nonnegative.\n"
+argument_list|)
 expr_stmt|;
+return|return
+name|ARGS_ERROR
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1736,6 +1821,20 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unknown option "
+operator|+
+name|argv
+index|[
+name|i
+index|]
+operator|+
+literal|" specified.\n"
+argument_list|)
+expr_stmt|;
 name|printUsage
 argument_list|(
 name|System
@@ -1744,7 +1843,7 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-literal|1
+name|ARGS_ERROR
 return|;
 block|}
 block|}
@@ -1791,22 +1890,16 @@ block|}
 block|}
 else|else
 block|{
-name|System
+name|LOG
 operator|.
-name|err
-operator|.
-name|println
+name|error
 argument_list|(
-literal|"\n\n"
-operator|+
 name|userResolver
 operator|.
 name|getClass
 argument_list|()
 operator|+
-literal|" needs target user list. Use -users option."
-operator|+
-literal|"\n\n"
+literal|" needs target user list. Use -users option.\n"
 argument_list|)
 expr_stmt|;
 name|printUsage
@@ -1817,7 +1910,7 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-literal|1
+name|ARGS_ERROR
 return|;
 block|}
 block|}
@@ -1874,11 +1967,32 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|e
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|e
 operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+block|}
 name|printUsage
 argument_list|(
 name|System
@@ -1887,8 +2001,89 @@ name|err
 argument_list|)
 expr_stmt|;
 return|return
-literal|1
+name|ARGS_ERROR
 return|;
+block|}
+comment|// Create<ioPath> with 777 permissions
+specifier|final
+name|FileSystem
+name|inputFs
+init|=
+name|ioPath
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|ioPath
+operator|=
+name|ioPath
+operator|.
+name|makeQualified
+argument_list|(
+name|inputFs
+argument_list|)
+expr_stmt|;
+name|boolean
+name|succeeded
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|succeeded
+operator|=
+name|FileSystem
+operator|.
+name|mkdirs
+argument_list|(
+name|inputFs
+argument_list|,
+name|ioPath
+argument_list|,
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0777
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// No need to emit this exception message
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|succeeded
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed creation of<ioPath> directory "
+operator|+
+name|ioPath
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+return|return
+name|STARTUP_FAILED_ERROR
+return|;
+block|}
 block|}
 return|return
 name|start
@@ -1902,13 +2097,11 @@ argument_list|,
 name|genbytes
 argument_list|,
 name|userResolver
-argument_list|,
-name|generate
 argument_list|)
 return|;
 block|}
-comment|/**    *     * @param conf gridmix configuration    * @param traceIn trace file path(if it is '-', then trace comes from the    *                stream stdin)    * @param ioPath Working directory for gridmix. GenerateData job    *               will generate data in the directory&lt;ioPath&gt;/input/ and    *               distributed cache data is generated in the directory    *&lt;ioPath&gt;/distributedCache/, if -generate option is    *               specified.    * @param genbytes size of input data to be generated under the directory    *&lt;ioPath&gt;/input/    * @param userResolver gridmix user resolver    * @param generate true if -generate option was specified    * @return exit code    * @throws IOException    * @throws InterruptedException    */
-DECL|method|start (Configuration conf, String traceIn, Path ioPath, long genbytes, UserResolver userResolver, boolean generate)
+comment|/**    *     * @param conf gridmix configuration    * @param traceIn trace file path(if it is '-', then trace comes from the    *                stream stdin)    * @param ioPath Working directory for gridmix. GenerateData job    *               will generate data in the directory&lt;ioPath&gt;/input/ and    *               distributed cache data is generated in the directory    *&lt;ioPath&gt;/distributedCache/, if -generate option is    *               specified.    * @param genbytes size of input data to be generated under the directory    *&lt;ioPath&gt;/input/    * @param userResolver gridmix user resolver    * @return exit code    * @throws IOException    * @throws InterruptedException    */
+DECL|method|start (Configuration conf, String traceIn, Path ioPath, long genbytes, UserResolver userResolver)
 name|int
 name|start
 parameter_list|(
@@ -1926,9 +2119,6 @@ name|genbytes
 parameter_list|,
 name|UserResolver
 name|userResolver
-parameter_list|,
-name|boolean
-name|generate
 parameter_list|)
 throws|throws
 name|IOException
@@ -1945,20 +2135,11 @@ name|trace
 init|=
 literal|null
 decl_stmt|;
-name|ioPath
-operator|=
-name|ioPath
-operator|.
-name|makeQualified
-argument_list|(
-name|ioPath
-operator|.
-name|getFileSystem
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-expr_stmt|;
+name|int
+name|exitCode
+init|=
+literal|0
+decl_stmt|;
 try|try
 block|{
 name|Path
@@ -2026,13 +2207,8 @@ name|ioPath
 argument_list|)
 decl_stmt|;
 comment|// Write input data if specified
-if|if
-condition|(
-name|genbytes
-operator|>
-literal|0
-condition|)
-block|{
+name|exitCode
+operator|=
 name|writeInputData
 argument_list|(
 name|genbytes
@@ -2040,6 +2216,16 @@ argument_list|,
 name|inputDir
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|exitCode
+operator|!=
+literal|0
+condition|)
+block|{
+return|return
+name|exitCode
+return|;
 block|}
 comment|// publish the data statistics
 name|stats
@@ -2061,10 +2247,18 @@ operator|.
 name|refreshFilePool
 argument_list|()
 expr_stmt|;
-comment|// set up the needed things for emulation of various loads
-name|int
-name|exitCode
+name|boolean
+name|shouldGenerate
 init|=
+operator|(
+name|genbytes
+operator|>
+literal|0
+operator|)
+decl_stmt|;
+comment|// set up the needed things for emulation of various loads
+name|exitCode
+operator|=
 name|setupEmulation
 argument_list|(
 name|conf
@@ -2075,9 +2269,9 @@ name|scratchDir
 argument_list|,
 name|ioPath
 argument_list|,
-name|generate
+name|shouldGenerate
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|exitCode
@@ -2118,11 +2312,30 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Startup failed"
-argument_list|,
+literal|"Startup failed. "
+operator|+
 name|e
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"\n"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|factory
@@ -2135,6 +2348,10 @@ name|abort
 argument_list|()
 expr_stmt|;
 comment|// abort pipeline
+name|exitCode
+operator|=
+name|STARTUP_FAILED_ERROR
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -2281,7 +2498,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|0
+name|exitCode
 return|;
 block|}
 comment|/**    * Create gridmix output directory. Setup things for emulation of    * various loads, if needed.    * @param conf gridmix configuration    * @param traceIn trace file path(if it is '-', then trace comes from the    *                stream stdin)    * @param scratchDir gridmix output directory    * @param ioPath Working directory for gridmix.    * @param generate true if -generate option was specified    * @return exit code    * @throws IOException    * @throws InterruptedException     */
