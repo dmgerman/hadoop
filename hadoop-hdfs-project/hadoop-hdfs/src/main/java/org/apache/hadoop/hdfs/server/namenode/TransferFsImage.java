@@ -325,6 +325,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|method|downloadImageToStorage ( String fsName, long imageTxId, NNStorage dstStorage, boolean needDigest)
+specifier|public
 specifier|static
 name|MD5Hash
 name|downloadImageToStorage

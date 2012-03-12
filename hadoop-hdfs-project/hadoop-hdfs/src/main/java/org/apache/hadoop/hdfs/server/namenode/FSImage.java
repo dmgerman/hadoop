@@ -526,6 +526,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|MD5FileUtils
@@ -717,7 +735,7 @@ literal|null
 decl_stmt|;
 comment|/**    * Construct an FSImage    * @param conf Configuration    * @see #FSImage(Configuration conf,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
-specifier|protected
+specifier|public
 name|FSImage
 parameter_list|(
 name|Configuration
@@ -912,11 +930,25 @@ operator|+
 literal|" files"
 argument_list|)
 expr_stmt|;
+name|NamespaceInfo
+name|ns
+init|=
+name|NNStorage
+operator|.
+name|newNamespaceInfo
+argument_list|()
+decl_stmt|;
+name|ns
+operator|.
+name|clusterID
+operator|=
+name|clusterId
+expr_stmt|;
 name|storage
 operator|.
 name|format
 argument_list|(
-name|clusterId
+name|ns
 argument_list|)
 expr_stmt|;
 name|saveFSImageInAllDirs
@@ -5001,6 +5033,7 @@ expr_stmt|;
 block|}
 comment|/**    * This is called by the 2NN after having downloaded an image, and by    * the NN after having received a new image from the 2NN. It    * renames the image from fsimage_N.ckpt to fsimage_N and also    * saves the related .md5 file into place.    */
 DECL|method|saveDigestAndRenameCheckpointImage ( long txid, MD5Hash digest)
+specifier|public
 specifier|synchronized
 name|void
 name|saveDigestAndRenameCheckpointImage

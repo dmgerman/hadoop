@@ -4734,6 +4734,33 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|getNamespaceEditsDirs
+argument_list|(
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|getNamespaceEditsDirs (Configuration conf, boolean includeShared)
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|URI
+argument_list|>
+name|getNamespaceEditsDirs
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|includeShared
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 comment|// Use a LinkedHashSet so that order is maintained while we de-dup
 comment|// the entries.
 name|LinkedHashSet
@@ -4749,6 +4776,11 @@ name|URI
 argument_list|>
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|includeShared
+condition|)
+block|{
 name|List
 argument_list|<
 name|URI
@@ -4817,6 +4849,7 @@ operator|+
 literal|". Ignoring duplicates."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// Now add the non-shared dirs.

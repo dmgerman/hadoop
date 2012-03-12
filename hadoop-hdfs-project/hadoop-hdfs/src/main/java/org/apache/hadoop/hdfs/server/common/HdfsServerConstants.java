@@ -164,6 +164,12 @@ name|IMPORT
 argument_list|(
 literal|"-importCheckpoint"
 argument_list|)
+block|,
+DECL|enumConstant|BOOTSTRAPSTANDBY
+name|BOOTSTRAPSTANDBY
+argument_list|(
+literal|"-bootstrapStandby"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private
