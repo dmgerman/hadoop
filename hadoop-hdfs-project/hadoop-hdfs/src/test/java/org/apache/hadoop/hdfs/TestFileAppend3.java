@@ -1765,9 +1765,12 @@ specifier|final
 name|Block
 name|metainfo
 init|=
-name|dn
+name|DataNodeTestUtils
 operator|.
-name|data
+name|getFSDataset
+argument_list|(
+name|dn
+argument_list|)
 operator|.
 name|getStoredBlock
 argument_list|(

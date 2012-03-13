@@ -3470,11 +3470,7 @@ return|return
 name|binfo
 return|;
 block|}
-annotation|@
-name|Override
-comment|// FSDatasetInterface
-DECL|method|getBlockInputStream (ExtendedBlock b)
-specifier|public
+DECL|method|getBlockInputStream (ExtendedBlock b )
 specifier|synchronized
 name|InputStream
 name|getBlockInputStream
@@ -3605,12 +3601,14 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Returns metaData of block b as an input stream    * @param b - the block for which the metadata is desired    * @return metaData of block b as an input stream    * @throws IOException - block does not exist or problems accessing    *  the meta file    */
-DECL|method|getMetaDataInStream (ExtendedBlock b)
-specifier|private
+annotation|@
+name|Override
+comment|// FSDatasetInterface
+DECL|method|getMetaDataInputStream (ExtendedBlock b )
+specifier|public
 specifier|synchronized
-name|InputStream
-name|getMetaDataInStream
+name|MetaDataInputStream
+name|getMetaDataInputStream
 parameter_list|(
 name|ExtendedBlock
 name|b
@@ -3685,176 +3683,30 @@ literal|" is being written, its meta cannot be read"
 argument_list|)
 throw|;
 block|}
-return|return
-name|binfo
-operator|.
-name|getMetaIStream
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FSDatasetInterface
-DECL|method|getMetaDataLength (ExtendedBlock b)
-specifier|public
-specifier|synchronized
-name|long
-name|getMetaDataLength
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-block|{
 specifier|final
-name|Map
-argument_list|<
-name|Block
-argument_list|,
-name|BInfo
-argument_list|>
-name|map
+name|SimulatedInputStream
+name|sin
 init|=
-name|getMap
-argument_list|(
-name|b
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|BInfo
-name|binfo
-init|=
-name|map
-operator|.
-name|get
-argument_list|(
-name|b
-operator|.
-name|getLocalBlock
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|binfo
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"No such Block "
-operator|+
-name|b
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|binfo
-operator|.
-name|finalized
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Block "
-operator|+
-name|b
-operator|+
-literal|" is being written, its metalength cannot be read"
-argument_list|)
-throw|;
-block|}
-return|return
 name|binfo
 operator|.
 name|getMetaIStream
 argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|MetaDataInputStream
+argument_list|(
+name|sin
+argument_list|,
+name|sin
 operator|.
 name|getLength
 argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FSDatasetInterface
-DECL|method|getMetaDataInputStream (ExtendedBlock b)
-specifier|public
-name|MetaDataInputStream
-name|getMetaDataInputStream
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-operator|new
-name|MetaDataInputStream
-argument_list|(
-name|getMetaDataInStream
-argument_list|(
-name|b
-argument_list|)
-argument_list|,
-name|getMetaDataLength
-argument_list|(
-name|b
-argument_list|)
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
-DECL|method|metaFileExists (ExtendedBlock b)
-specifier|public
-specifier|synchronized
-name|boolean
-name|metaFileExists
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|isValidBlock
-argument_list|(
-name|b
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Block "
-operator|+
-name|b
-operator|+
-literal|" is valid, and cannot be written to."
-argument_list|)
-throw|;
-block|}
-return|return
-literal|true
-return|;
-comment|// crc exists for all valid blocks
-block|}
 DECL|method|checkDataDir ()
 specifier|public
 name|void

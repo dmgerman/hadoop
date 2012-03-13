@@ -5073,9 +5073,12 @@ decl_stmt|;
 name|Block
 name|b
 init|=
-name|datanode
+name|DataNodeTestUtils
 operator|.
-name|data
+name|getFSDataset
+argument_list|(
+name|datanode
+argument_list|)
 operator|.
 name|getStoredBlock
 argument_list|(

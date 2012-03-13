@@ -7318,11 +7318,14 @@ control|)
 block|{
 if|if
 condition|(
+name|DataNodeTestUtils
+operator|.
+name|getFSDataset
+argument_list|(
 name|dn
 operator|.
 name|datanode
-operator|.
-name|data
+argument_list|)
 operator|==
 literal|null
 condition|)

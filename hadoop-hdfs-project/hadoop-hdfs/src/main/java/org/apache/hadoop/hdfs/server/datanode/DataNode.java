@@ -2335,7 +2335,6 @@ name|BlockPoolManager
 name|blockPoolManager
 decl_stmt|;
 DECL|field|data
-specifier|public
 specifier|volatile
 name|FSDatasetInterface
 argument_list|<

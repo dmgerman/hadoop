@@ -302,7 +302,9 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|ReflectionUtils
+name|DiskChecker
+operator|.
+name|DiskErrorException
 import|;
 end_import
 
@@ -316,9 +318,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|DiskChecker
-operator|.
-name|DiskErrorException
+name|ReflectionUtils
 import|;
 end_import
 
@@ -576,18 +576,6 @@ name|FSVolumeInterface
 name|vol
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the length of the metadata file of the specified block    * @param b - the block for which the metadata length is desired    * @return the length of the metadata file for the specified block.    * @throws IOException    */
-DECL|method|getMetaDataLength (ExtendedBlock b)
-specifier|public
-name|long
-name|getMetaDataLength
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * This class provides the input stream and length of the metadata    * of a block    *    */
 DECL|class|MetaDataInputStream
 specifier|static
@@ -632,23 +620,11 @@ name|length
 return|;
 block|}
 block|}
-comment|/**    * Returns metaData of block b as an input stream (and its length)    * @param b - the block    * @return the metadata input stream;     * @throws IOException    */
-DECL|method|getMetaDataInputStream (ExtendedBlock b)
+comment|/**    * @param b - the block    * @return a stream if the meta-data of the block exists;    *         otherwise, return null.    * @throws IOException    */
+DECL|method|getMetaDataInputStream (ExtendedBlock b )
 specifier|public
 name|MetaDataInputStream
 name|getMetaDataInputStream
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Does the meta file exist for this block?    * @param b - the block    * @return true of the metafile for specified block exits    * @throws IOException    */
-DECL|method|metaFileExists (ExtendedBlock b)
-specifier|public
-name|boolean
-name|metaFileExists
 parameter_list|(
 name|ExtendedBlock
 name|b
@@ -707,18 +683,6 @@ name|bpid
 parameter_list|,
 name|long
 name|blkid
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Returns an input stream to read the contents of the specified block    * @param b    * @return an input stream to read the contents of the specified block    * @throws IOException    */
-DECL|method|getBlockInputStream (ExtendedBlock b)
-specifier|public
-name|InputStream
-name|getBlockInputStream
-parameter_list|(
-name|ExtendedBlock
-name|b
 parameter_list|)
 throws|throws
 name|IOException
@@ -1096,13 +1060,6 @@ name|checkDataDir
 parameter_list|()
 throws|throws
 name|DiskErrorException
-function_decl|;
-comment|/**      * Stringifies the name of the storage      */
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
 function_decl|;
 comment|/**    * Shutdown the FSDataset    */
 DECL|method|shutdown ()
