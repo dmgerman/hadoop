@@ -783,6 +783,13 @@ argument_list|,
 literal|"/"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|Path
+operator|.
+name|WINDOWS
+condition|)
+block|{
 name|path
 operator|=
 name|StringUtils
@@ -796,6 +803,7 @@ argument_list|,
 literal|"/"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// trim trailing slash from non-root path (ignoring windows drive)
 name|int
 name|minLength

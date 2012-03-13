@@ -4683,6 +4683,22 @@ block|}
 else|else
 block|{
 comment|// last component does not have a pattern
+comment|// remove the quoting of metachars in a non-regexp expansion
+name|String
+name|name
+init|=
+name|unquotePathComponent
+argument_list|(
+name|components
+index|[
+name|components
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+argument_list|)
+decl_stmt|;
 comment|// get all the path names
 name|ArrayList
 argument_list|<
@@ -4731,14 +4747,7 @@ index|[
 name|i
 index|]
 argument_list|,
-name|components
-index|[
-name|components
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|name
 argument_list|)
 expr_stmt|;
 if|if
@@ -4954,6 +4963,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// the component does not have a pattern
+comment|// remove the quoting of metachars in a non-regexp expansion
+name|String
+name|name
+init|=
+name|unquotePathComponent
+argument_list|(
+name|filePattern
+index|[
+name|level
+index|]
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -4984,10 +5006,7 @@ index|[
 name|i
 index|]
 argument_list|,
-name|filePattern
-index|[
-name|level
-index|]
+name|name
 argument_list|)
 expr_stmt|;
 block|}
@@ -5004,6 +5023,27 @@ operator|+
 literal|1
 argument_list|,
 name|hasGlob
+argument_list|)
+return|;
+block|}
+comment|/**    * The glob filter builds a regexp per path component.  If the component    * does not contain a shell metachar, then it falls back to appending the    * raw string to the list of built up paths.  This raw path needs to have    * the quoting removed.  Ie. convert all occurances of "\X" to "X"    * @param name of the path component    * @return the unquoted path component    */
+DECL|method|unquotePathComponent (String name)
+specifier|private
+name|String
+name|unquotePathComponent
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|name
+operator|.
+name|replaceAll
+argument_list|(
+literal|"\\\\(.)"
+argument_list|,
+literal|"$1"
 argument_list|)
 return|;
 block|}
