@@ -2753,6 +2753,18 @@ operator|.
 name|getJobReport
 argument_list|()
 decl_stmt|;
+name|JobStatus
+name|jobStatus
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|report
+operator|!=
+literal|null
+condition|)
+block|{
 if|if
 condition|(
 name|StringUtils
@@ -2831,7 +2843,8 @@ operator|+
 name|url
 expr_stmt|;
 block|}
-return|return
+name|jobStatus
+operator|=
 name|TypeConverter
 operator|.
 name|fromYarn
@@ -2840,6 +2853,10 @@ name|report
 argument_list|,
 name|url
 argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|jobStatus
 return|;
 block|}
 DECL|method|getTaskReports (JobID oldJobID, TaskType taskType)
