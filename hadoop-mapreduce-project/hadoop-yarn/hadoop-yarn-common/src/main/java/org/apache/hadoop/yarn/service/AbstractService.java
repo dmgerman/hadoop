@@ -418,29 +418,15 @@ name|STATE
 name|currentState
 parameter_list|)
 block|{
-if|if
-condition|(
-name|state
-operator|!=
-name|currentState
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalStateException
+name|ServiceOperations
+operator|.
+name|ensureCurrentState
 argument_list|(
-literal|"For this operation, current State must "
-operator|+
-literal|"be "
-operator|+
-name|currentState
-operator|+
-literal|" instead of "
-operator|+
 name|state
+argument_list|,
+name|currentState
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 comment|/**    * Change to a new state and notify all listeners.    * This is a private method that is only invoked from synchronized methods,    * which avoid having to clone the listener list. It does imply that    * the state change listener methods should be short lived, as they    * will delay the state transition.    * @param newState new service state    */
 DECL|method|changeState (STATE newState)

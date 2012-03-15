@@ -165,6 +165,104 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Assert that the breakable service has entered a state exactly the number    * of time asserted.    * @param service service -if null an assertion is raised.    * @param state state to check.    * @param expected expected count.    */
+DECL|method|assertStateCount (BreakableService service, Service.STATE state, int expected)
+specifier|public
+specifier|static
+name|void
+name|assertStateCount
+parameter_list|(
+name|BreakableService
+name|service
+parameter_list|,
+name|Service
+operator|.
+name|STATE
+name|state
+parameter_list|,
+name|int
+name|expected
+parameter_list|)
+block|{
+name|assertNotNull
+argument_list|(
+literal|"Null service"
+argument_list|,
+name|service
+argument_list|)
+expr_stmt|;
+name|int
+name|actual
+init|=
+name|service
+operator|.
+name|getCount
+argument_list|(
+name|state
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|expected
+operator|!=
+name|actual
+condition|)
+block|{
+name|fail
+argument_list|(
+literal|"Expected entry count for state ["
+operator|+
+name|state
+operator|+
+literal|"] of "
+operator|+
+name|service
+operator|+
+literal|" to be "
+operator|+
+name|expected
+operator|+
+literal|" but was "
+operator|+
+name|actual
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Assert that a service configuration contains a specific key; the value    * is ignored.    * @param service service to check    * @param key key to look for    */
+DECL|method|assertServiceConfigurationContains (Service service, String key)
+specifier|public
+specifier|static
+name|void
+name|assertServiceConfigurationContains
+parameter_list|(
+name|Service
+name|service
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+block|{
+name|assertNotNull
+argument_list|(
+literal|"No option "
+operator|+
+name|key
+operator|+
+literal|" in service configuration"
+argument_list|,
+name|service
+operator|.
+name|getConfig
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

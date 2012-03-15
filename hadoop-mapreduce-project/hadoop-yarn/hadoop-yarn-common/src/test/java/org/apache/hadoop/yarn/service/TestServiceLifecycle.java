@@ -50,60 +50,7 @@ name|TestServiceLifecycle
 extends|extends
 name|ServiceAssert
 block|{
-DECL|method|assertStateCount (BreakableService service, Service.STATE state, int expected)
-name|void
-name|assertStateCount
-parameter_list|(
-name|BreakableService
-name|service
-parameter_list|,
-name|Service
-operator|.
-name|STATE
-name|state
-parameter_list|,
-name|int
-name|expected
-parameter_list|)
-block|{
-name|int
-name|actual
-init|=
-name|service
-operator|.
-name|getCount
-argument_list|(
-name|state
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|expected
-operator|!=
-name|actual
-condition|)
-block|{
-name|fail
-argument_list|(
-literal|"Expected entry count for state ["
-operator|+
-name|state
-operator|+
-literal|"] of "
-operator|+
-name|service
-operator|+
-literal|" to be "
-operator|+
-name|expected
-operator|+
-literal|" but was "
-operator|+
-name|actual
-argument_list|)
-expr_stmt|;
-block|}
-block|}
+comment|/**    * Walk the {@link BreakableService} through it's lifecycle,     * more to verify that service's counters work than anything else    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testWalkthrough ()
@@ -252,7 +199,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * call init twice    * @throws Throwable    */
+comment|/**    * call init twice    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testInitTwice ()
@@ -270,13 +217,27 @@ operator|new
 name|BreakableService
 argument_list|()
 decl_stmt|;
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"test.init"
+argument_list|,
+literal|"t"
+argument_list|)
+expr_stmt|;
 name|svc
 operator|.
 name|init
 argument_list|(
-operator|new
-name|Configuration
-argument_list|()
+name|conf
 argument_list|)
 expr_stmt|;
 try|try
@@ -319,8 +280,15 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
+name|assertServiceConfigurationContains
+argument_list|(
+name|svc
+argument_list|,
+literal|"test.init"
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * call start twice    * @throws Throwable    */
+comment|/**    * Call start twice    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testStartTwice ()
@@ -389,7 +357,7 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * verify that when a service is stopped more than once, no exception    * is thrown, and the counter is incremented    * this is because the state change operations happen after the counter in    * the subclass is incremented, even though stop is meant to be a no-op    * @throws Throwable    */
+comment|/**    * Verify that when a service is stopped more than once, no exception    * is thrown, and the counter is incremented.    * This is because the state change operations happen after the counter in    * the subclass is incremented, even though stop is meant to be a no-op    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testStopTwice ()
@@ -458,7 +426,7 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Show that if the service failed during an init    * operation, it stays in the created state, even after stopping it    * @throws Throwable    */
+comment|/**    * Show that if the service failed during an init    * operation, it stays in the created state, even after stopping it    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testStopFailedInit ()
@@ -548,7 +516,7 @@ name|svc
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Show that if the service failed during an init    * operation, it stays in the created state, even after stopping it    * @throws Throwable    */
+comment|/**    * Show that if the service failed during an init    * operation, it stays in the created state, even after stopping it    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testStopFailedStart ()
@@ -643,7 +611,7 @@ name|svc
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * verify that when a service is stopped more than once, no exception    * is thrown, and the counter is incremented    * this is because the state change operations happen after the counter in    * the subclass is incremented, even though stop is meant to be a no-op    * @throws Throwable    */
+comment|/**    * verify that when a service fails during its stop operation,    * its state does not change, and the subclass invocation counter    * increments.    * @throws Throwable if necessary    */
 annotation|@
 name|Test
 DECL|method|testFailingStop ()
@@ -719,6 +687,11 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|assertServiceStateStarted
+argument_list|(
+name|svc
+argument_list|)
+expr_stmt|;
 comment|//now try again, and expect it to happen again
 try|try
 block|{
@@ -756,6 +729,113 @@ operator|.
 name|STOPPED
 argument_list|,
 literal|2
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * verify that when a service that is not started is stopped, its counter    * of stop calls is still incremented-and the service remains in its    * original state..    * @throws Throwable on a failure    */
+annotation|@
+name|Test
+DECL|method|testStopUnstarted ()
+specifier|public
+name|void
+name|testStopUnstarted
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|BreakableService
+name|svc
+init|=
+operator|new
+name|BreakableService
+argument_list|()
+decl_stmt|;
+name|svc
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|assertServiceStateCreated
+argument_list|(
+name|svc
+argument_list|)
+expr_stmt|;
+name|assertStateCount
+argument_list|(
+name|svc
+argument_list|,
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|//stop failed, now it can be initialised
+name|svc
+operator|.
+name|init
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//and try to stop again, with no state change but an increment
+name|svc
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|assertServiceStateInited
+argument_list|(
+name|svc
+argument_list|)
+expr_stmt|;
+name|assertStateCount
+argument_list|(
+name|svc
+argument_list|,
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+comment|//once started, the service can be stopped reliably
+name|svc
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|ServiceOperations
+operator|.
+name|stop
+argument_list|(
+name|svc
+argument_list|)
+expr_stmt|;
+name|assertServiceStateStopped
+argument_list|(
+name|svc
+argument_list|)
+expr_stmt|;
+name|assertStateCount
+argument_list|(
+name|svc
+argument_list|,
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 block|}
