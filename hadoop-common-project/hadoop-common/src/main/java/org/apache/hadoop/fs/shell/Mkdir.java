@@ -188,6 +188,11 @@ name|DESCRIPTION
 init|=
 literal|"Create a directory in specified location."
 decl_stmt|;
+DECL|field|createParents
+specifier|private
+name|boolean
+name|createParents
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|processOptions (LinkedList<String> args)
@@ -213,6 +218,8 @@ argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
+argument_list|,
+literal|"p"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -220,6 +227,15 @@ operator|.
 name|parse
 argument_list|(
 name|args
+argument_list|)
+expr_stmt|;
+name|createParents
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"p"
 argument_list|)
 expr_stmt|;
 block|}
@@ -246,6 +262,12 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|createParents
+condition|)
+block|{
 throw|throw
 operator|new
 name|PathExistsException
@@ -256,6 +278,7 @@ name|toString
 argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 else|else
 block|{
@@ -284,6 +307,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// TODO: should use createParents to control intermediate dir creation
 if|if
 condition|(
 operator|!
