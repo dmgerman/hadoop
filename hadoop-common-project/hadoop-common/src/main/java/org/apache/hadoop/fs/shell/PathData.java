@@ -248,20 +248,6 @@ name|PathNotFoundException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
 begin_comment
 comment|/**  * Encapsulates a Path (path), its FileStatus (stat), and its FileSystem (fs).  * The stat field will be null if the path does not exist.  */
 end_comment
@@ -1075,6 +1061,18 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// remove any quoting in the glob pattern
+name|pattern
+operator|=
+name|pattern
+operator|.
+name|replaceAll
+argument_list|(
+literal|"\\\\(.)"
+argument_list|,
+literal|"$1"
+argument_list|)
+expr_stmt|;
 comment|// not a glob& file not found, so add the path with a null stat
 name|items
 operator|=
