@@ -1268,6 +1268,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// initiate Java VM metrics
+name|DefaultMetricsSystem
+operator|.
+name|initialize
+argument_list|(
+literal|"SecondaryNameNode"
+argument_list|)
+expr_stmt|;
 name|JvmMetrics
 operator|.
 name|create
