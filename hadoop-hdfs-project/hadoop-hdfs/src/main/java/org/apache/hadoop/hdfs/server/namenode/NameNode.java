@@ -1174,7 +1174,7 @@ name|format
 argument_list|(
 name|conf
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2775,8 +2775,8 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf    * @param isConfirmationNeeded    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
-DECL|method|format (Configuration conf, boolean isConfirmationNeeded)
+comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf    * @param force    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
+DECL|method|format (Configuration conf, boolean force)
 specifier|private
 specifier|static
 name|boolean
@@ -2786,7 +2786,7 @@ name|Configuration
 name|conf
 parameter_list|,
 name|boolean
-name|isConfirmationNeeded
+name|force
 parameter_list|)
 throws|throws
 name|IOException
@@ -2860,7 +2860,7 @@ name|confirmFormat
 argument_list|(
 name|dirsToFormat
 argument_list|,
-name|isConfirmationNeeded
+name|force
 argument_list|,
 literal|true
 argument_list|)
@@ -4067,7 +4067,7 @@ name|format
 argument_list|(
 name|conf
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 decl_stmt|;
 name|System
