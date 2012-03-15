@@ -2501,11 +2501,17 @@ condition|)
 block|{
 try|try
 block|{
+comment|// currentNode can be left as null if previous read had a checksum
+comment|// error on the same block. See HDFS-3067
 if|if
 condition|(
 name|pos
 operator|>
 name|blockEnd
+operator|||
+name|currentNode
+operator|==
+literal|null
 condition|)
 block|{
 name|currentNode
