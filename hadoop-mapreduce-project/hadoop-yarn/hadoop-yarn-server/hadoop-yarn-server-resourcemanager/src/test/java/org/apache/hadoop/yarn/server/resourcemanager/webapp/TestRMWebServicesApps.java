@@ -5954,6 +5954,23 @@ literal|"http://"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"amContainerLogs doesn't contain user info"
+argument_list|,
+name|amContainerLogs
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+operator|+
+name|app
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

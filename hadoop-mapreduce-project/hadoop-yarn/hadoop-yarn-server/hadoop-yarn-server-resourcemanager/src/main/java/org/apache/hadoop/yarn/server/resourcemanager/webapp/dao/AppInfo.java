@@ -795,6 +795,13 @@ operator|.
 name|getId
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"/"
+argument_list|,
+name|app
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|this
