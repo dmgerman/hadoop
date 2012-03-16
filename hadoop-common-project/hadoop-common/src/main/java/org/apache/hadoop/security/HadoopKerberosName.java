@@ -88,25 +88,19 @@ end_import
 
 begin_import
 import|import
-name|sun
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
 operator|.
 name|security
 operator|.
-name|krb5
+name|authentication
 operator|.
-name|Config
-import|;
-end_import
-
-begin_import
-import|import
-name|sun
+name|util
 operator|.
-name|security
-operator|.
-name|krb5
-operator|.
-name|KrbException
+name|KerberosUtil
 import|;
 end_import
 
@@ -146,10 +140,7 @@ static|static
 block|{
 try|try
 block|{
-name|Config
-operator|.
-name|getInstance
-argument_list|()
+name|KerberosUtil
 operator|.
 name|getDefaultRealm
 argument_list|()
@@ -157,7 +148,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|KrbException
+name|Exception
 name|ke
 parameter_list|)
 block|{
