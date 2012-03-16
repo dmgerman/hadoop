@@ -1024,6 +1024,26 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|dst
+operator|.
+name|representsDirectory
+argument_list|()
+condition|)
+block|{
+comment|// see if path looks like a dir
+name|target
+operator|=
+name|dst
+operator|.
+name|getPathDataForChild
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|target
