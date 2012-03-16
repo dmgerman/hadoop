@@ -2172,6 +2172,10 @@ operator|.
 name|write
 argument_list|(
 name|cbuf
+argument_list|,
+literal|0
+argument_list|,
+name|currentRead
 argument_list|)
 expr_stmt|;
 name|totalRead
