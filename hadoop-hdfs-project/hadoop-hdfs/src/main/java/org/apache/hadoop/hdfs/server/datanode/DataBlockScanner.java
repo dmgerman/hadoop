@@ -178,9 +178,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -229,7 +229,7 @@ name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|dataset
 decl_stmt|;
@@ -266,7 +266,7 @@ name|blockScannerThread
 init|=
 literal|null
 decl_stmt|;
-DECL|method|DataBlockScanner (DataNode datanode, FSDatasetInterface<? extends FSVolumeInterface> dataset, Configuration conf)
+DECL|method|DataBlockScanner (DataNode datanode, FSDatasetInterface<? extends FsVolumeSpi> dataset, Configuration conf)
 name|DataBlockScanner
 parameter_list|(
 name|DataNode
@@ -276,7 +276,7 @@ name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|dataset
 parameter_list|,

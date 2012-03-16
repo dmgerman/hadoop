@@ -110,9 +110,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|BlockWriteStreams
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -130,9 +130,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|ReplicaOutputStreams
 import|;
 end_import
 
@@ -199,7 +199,7 @@ name|Thread
 name|writer
 decl_stmt|;
 comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param state replica state    */
-DECL|method|ReplicaInPipeline (long blockId, long genStamp, FSVolumeInterface vol, File dir)
+DECL|method|ReplicaInPipeline (long blockId, long genStamp, FsVolumeSpi vol, File dir)
 name|ReplicaInPipeline
 parameter_list|(
 name|long
@@ -208,7 +208,7 @@ parameter_list|,
 name|long
 name|genStamp
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|,
 name|File
@@ -235,13 +235,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
-DECL|method|ReplicaInPipeline (Block block, FSVolumeInterface vol, File dir, Thread writer)
+DECL|method|ReplicaInPipeline (Block block, FsVolumeSpi vol, File dir, Thread writer)
 name|ReplicaInPipeline
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|,
 name|File
@@ -277,7 +277,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
-DECL|method|ReplicaInPipeline (long blockId, long len, long genStamp, FSVolumeInterface vol, File dir, Thread writer )
+DECL|method|ReplicaInPipeline (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir, Thread writer )
 name|ReplicaInPipeline
 parameter_list|(
 name|long
@@ -289,7 +289,7 @@ parameter_list|,
 name|long
 name|genStamp
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|,
 name|File
@@ -610,7 +610,7 @@ name|Override
 comment|// ReplicaInPipelineInterface
 DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|public
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|createStreams
 parameter_list|(
 name|boolean
@@ -941,7 +941,7 @@ expr_stmt|;
 block|}
 return|return
 operator|new
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 argument_list|(
 name|blockOut
 argument_list|,

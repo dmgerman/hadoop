@@ -598,9 +598,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|MetaDataInputStream
+name|LengthInputStream
 import|;
 end_import
 
@@ -3078,7 +3078,7 @@ name|block
 argument_list|)
 expr_stmt|;
 specifier|final
-name|MetaDataInputStream
+name|LengthInputStream
 name|metadataIn
 init|=
 name|datanode

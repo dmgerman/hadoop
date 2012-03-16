@@ -286,6 +286,86 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|fsdataset
+operator|.
+name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaInputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaOutputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|metrics
 operator|.
 name|FSDatasetMBean
@@ -388,9 +468,7 @@ name|SimulatedFSDataset
 implements|implements
 name|FSDatasetInterface
 argument_list|<
-name|FSDatasetInterface
-operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 block|{
 DECL|class|Factory
@@ -1132,7 +1210,7 @@ name|Override
 DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|synchronized
 specifier|public
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|createStreams
 parameter_list|(
 name|boolean
@@ -1170,7 +1248,7 @@ argument_list|()
 decl_stmt|;
 return|return
 operator|new
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 argument_list|(
 name|oStream
 argument_list|,
@@ -3578,7 +3656,7 @@ name|Override
 comment|// FSDatasetInterface
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkoff, long ckoff)
 specifier|public
-name|BlockInputStreams
+name|ReplicaInputStreams
 name|getTmpInputStreams
 parameter_list|(
 name|ExtendedBlock
@@ -3607,7 +3685,7 @@ comment|// FSDatasetInterface
 DECL|method|getMetaDataInputStream (ExtendedBlock b )
 specifier|public
 specifier|synchronized
-name|MetaDataInputStream
+name|LengthInputStream
 name|getMetaDataInputStream
 parameter_list|(
 name|ExtendedBlock
@@ -3694,7 +3772,7 @@ argument_list|()
 decl_stmt|;
 return|return
 operator|new
-name|MetaDataInputStream
+name|LengthInputStream
 argument_list|(
 name|sin
 argument_list|,
@@ -3720,7 +3798,7 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetInterface
-DECL|method|adjustCrcChannelPosition (ExtendedBlock b, BlockWriteStreams stream, int checksumSize)
+DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams stream, int checksumSize)
 specifier|public
 specifier|synchronized
 name|void
@@ -3729,7 +3807,7 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|,
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|stream
 parameter_list|,
 name|int
@@ -4617,7 +4695,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FSVolumeInterface vol)
+DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void
 name|checkAndUpdate
@@ -4634,7 +4712,7 @@ parameter_list|,
 name|File
 name|diskMetaFile
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|)
 block|{
@@ -4650,7 +4728,7 @@ DECL|method|getVolumes ()
 specifier|public
 name|List
 argument_list|<
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|getVolumes
 parameter_list|()

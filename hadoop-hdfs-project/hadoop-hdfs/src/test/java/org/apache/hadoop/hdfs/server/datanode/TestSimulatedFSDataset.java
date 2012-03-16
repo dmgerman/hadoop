@@ -160,9 +160,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 import|;
 end_import
 
@@ -339,7 +339,7 @@ argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|out
 init|=
 name|bInfo
@@ -367,7 +367,8 @@ name|dataOut
 init|=
 name|out
 operator|.
-name|dataOut
+name|getDataOut
+argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(

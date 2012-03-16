@@ -44,9 +44,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 import|;
 end_import
 
@@ -123,7 +123,7 @@ function_decl|;
 comment|/**    * Create output streams for writing to this replica,     * one for block file and one for CRC file    *     * @param isCreate if it is for creation    * @param requestedChecksum the checksum the writer would prefer to use    * @return output streams for writing    * @throws IOException if any error occurs    */
 DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|public
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|createStreams
 parameter_list|(
 name|boolean

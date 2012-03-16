@@ -282,9 +282,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -697,7 +697,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|v
 range|:
 name|dn

@@ -26,27 +26,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|Closeable
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FilterInputStream
 import|;
 end_import
 
@@ -67,16 +47,6 @@ operator|.
 name|io
 operator|.
 name|InputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|OutputStream
 import|;
 end_import
 
@@ -220,6 +190,86 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|fsdataset
+operator|.
+name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaInputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaOutputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|metrics
 operator|.
 name|FSDatasetMBean
@@ -272,34 +322,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|DataChecksum
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -338,9 +360,7 @@ name|FSDatasetInterface
 parameter_list|<
 name|V
 extends|extends
-name|FSDatasetInterface
-operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 parameter_list|>
 extends|extends
 name|FSDatasetMBean
@@ -449,53 +469,6 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * This is an interface for the underlying volume.    * @see org.apache.hadoop.hdfs.server.datanode.FSDataset.FSVolume    */
-DECL|interface|FSVolumeInterface
-interface|interface
-name|FSVolumeInterface
-block|{
-comment|/** @return a list of block pools. */
-DECL|method|getBlockPoolList ()
-specifier|public
-name|String
-index|[]
-name|getBlockPoolList
-parameter_list|()
-function_decl|;
-comment|/** @return the available storage space in bytes. */
-DECL|method|getAvailable ()
-specifier|public
-name|long
-name|getAvailable
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/** @return the path to the volume */
-DECL|method|getPath (String bpid)
-specifier|public
-name|String
-name|getPath
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/** @return the directory for the finalized blocks in the block pool. */
-DECL|method|getFinalizedDir (String bpid)
-specifier|public
-name|File
-name|getFinalizedDir
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-block|}
 comment|/**    * Create rolling logs.    *     * @param prefix the prefix of the log names.    * @return rolling logs    */
 DECL|method|createRollingLogs (String bpid, String prefix)
 specifier|public
@@ -555,7 +528,7 @@ name|bpid
 parameter_list|)
 function_decl|;
 comment|/**    * Check whether the in-memory block record matches the block on the disk,    * and, in case that they are not matched, update the record or mark it    * as corrupted.    */
-DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FSVolumeInterface vol)
+DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void
 name|checkAndUpdate
@@ -572,58 +545,14 @@ parameter_list|,
 name|File
 name|diskMetaFile
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|)
 function_decl|;
-comment|/**    * This class provides the input stream and length of the metadata    * of a block    *    */
-DECL|class|MetaDataInputStream
-specifier|static
-class|class
-name|MetaDataInputStream
-extends|extends
-name|FilterInputStream
-block|{
-DECL|method|MetaDataInputStream (InputStream stream, long len)
-name|MetaDataInputStream
-parameter_list|(
-name|InputStream
-name|stream
-parameter_list|,
-name|long
-name|len
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|stream
-argument_list|)
-expr_stmt|;
-name|length
-operator|=
-name|len
-expr_stmt|;
-block|}
-DECL|field|length
-specifier|private
-name|long
-name|length
-decl_stmt|;
-DECL|method|getLength ()
-specifier|public
-name|long
-name|getLength
-parameter_list|()
-block|{
-return|return
-name|length
-return|;
-block|}
-block|}
 comment|/**    * @param b - the block    * @return a stream if the meta-data of the block exists;    *         otherwise, return null.    * @throws IOException    */
 DECL|method|getMetaDataInputStream (ExtendedBlock b )
 specifier|public
-name|MetaDataInputStream
+name|LengthInputStream
 name|getMetaDataInputStream
 parameter_list|(
 name|ExtendedBlock
@@ -705,7 +634,7 @@ function_decl|;
 comment|/**    * Returns an input stream at specified offset of the specified block    * The block is still in the tmp directory and is not finalized    * @param b    * @param blkoff    * @param ckoff    * @return an input stream to read the contents of the specified block,    *  starting at the offset    * @throws IOException    */
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkoff, long ckoff)
 specifier|public
-name|BlockInputStreams
+name|ReplicaInputStreams
 name|getTmpInputStreams
 parameter_list|(
 name|ExtendedBlock
@@ -720,147 +649,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**       *        * This class contains the output streams for the data and checksum       * of a block       *       */
-DECL|class|BlockWriteStreams
-specifier|static
-class|class
-name|BlockWriteStreams
-block|{
-DECL|field|dataOut
-name|OutputStream
-name|dataOut
-decl_stmt|;
-DECL|field|checksumOut
-name|OutputStream
-name|checksumOut
-decl_stmt|;
-DECL|field|checksum
-name|DataChecksum
-name|checksum
-decl_stmt|;
-DECL|method|BlockWriteStreams (OutputStream dOut, OutputStream cOut, DataChecksum checksum)
-name|BlockWriteStreams
-parameter_list|(
-name|OutputStream
-name|dOut
-parameter_list|,
-name|OutputStream
-name|cOut
-parameter_list|,
-name|DataChecksum
-name|checksum
-parameter_list|)
-block|{
-name|dataOut
-operator|=
-name|dOut
-expr_stmt|;
-name|checksumOut
-operator|=
-name|cOut
-expr_stmt|;
-name|this
-operator|.
-name|checksum
-operator|=
-name|checksum
-expr_stmt|;
-block|}
-DECL|method|close ()
-name|void
-name|close
-parameter_list|()
-block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|dataOut
-argument_list|)
-expr_stmt|;
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|checksumOut
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getChecksum ()
-name|DataChecksum
-name|getChecksum
-parameter_list|()
-block|{
-return|return
-name|checksum
-return|;
-block|}
-block|}
-comment|/**    * This class contains the input streams for the data and checksum    * of a block    */
-DECL|class|BlockInputStreams
-specifier|static
-class|class
-name|BlockInputStreams
-implements|implements
-name|Closeable
-block|{
-DECL|field|dataIn
-specifier|final
-name|InputStream
-name|dataIn
-decl_stmt|;
-DECL|field|checksumIn
-specifier|final
-name|InputStream
-name|checksumIn
-decl_stmt|;
-DECL|method|BlockInputStreams (InputStream dataIn, InputStream checksumIn)
-name|BlockInputStreams
-parameter_list|(
-name|InputStream
-name|dataIn
-parameter_list|,
-name|InputStream
-name|checksumIn
-parameter_list|)
-block|{
-name|this
-operator|.
-name|dataIn
-operator|=
-name|dataIn
-expr_stmt|;
-name|this
-operator|.
-name|checksumIn
-operator|=
-name|checksumIn
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|close ()
-specifier|public
-name|void
-name|close
-parameter_list|()
-block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|dataIn
-argument_list|)
-expr_stmt|;
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|checksumIn
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
 DECL|method|createTemporary (ExtendedBlock b)
 specifier|public
@@ -1069,7 +857,7 @@ name|shutdown
 parameter_list|()
 function_decl|;
 comment|/**    * Sets the file pointer of the checksum stream so that the last checksum    * will be overwritten    * @param b block    * @param stream The stream for the data file and checksum file    * @param checksumSize number of bytes each checksum has    * @throws IOException    */
-DECL|method|adjustCrcChannelPosition (ExtendedBlock b, BlockWriteStreams stream, int checksumSize)
+DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams stream, int checksumSize)
 specifier|public
 name|void
 name|adjustCrcChannelPosition
@@ -1077,7 +865,7 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|,
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|stream
 parameter_list|,
 name|int

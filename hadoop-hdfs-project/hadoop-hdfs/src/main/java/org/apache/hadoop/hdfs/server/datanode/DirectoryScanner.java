@@ -342,9 +342,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -858,7 +858,7 @@ decl_stmt|;
 DECL|field|volume
 specifier|private
 specifier|final
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|volume
 decl_stmt|;
 DECL|method|ScanInfo (long blockId)
@@ -880,7 +880,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FSVolumeInterface vol)
+DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FsVolumeSpi vol)
 name|ScanInfo
 parameter_list|(
 name|long
@@ -892,7 +892,7 @@ parameter_list|,
 name|File
 name|metaFile
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|)
 block|{
@@ -949,7 +949,7 @@ name|blockId
 return|;
 block|}
 DECL|method|getVolume ()
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|getVolume
 parameter_list|()
 block|{
@@ -2097,7 +2097,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Is the given volume still valid in the dataset? */
-DECL|method|isValid (final FSDatasetInterface<?> dataset, final FSVolumeInterface volume)
+DECL|method|isValid (final FSDatasetInterface<?> dataset, final FsVolumeSpi volume)
 specifier|private
 specifier|static
 name|boolean
@@ -2111,13 +2111,13 @@ argument_list|>
 name|dataset
 parameter_list|,
 specifier|final
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|volume
 parameter_list|)
 block|{
 for|for
 control|(
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 range|:
 name|dataset
@@ -2161,7 +2161,7 @@ name|List
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|volumes
 init|=
@@ -2468,14 +2468,14 @@ argument_list|>
 block|{
 DECL|field|volume
 specifier|private
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|volume
 decl_stmt|;
-DECL|method|ReportCompiler (FSVolumeInterface volume)
+DECL|method|ReportCompiler (FsVolumeSpi volume)
 specifier|public
 name|ReportCompiler
 parameter_list|(
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|volume
 parameter_list|)
 block|{
@@ -2569,7 +2569,7 @@ name|result
 return|;
 block|}
 comment|/** Compile list {@link ScanInfo} for the blocks in the directory<dir> */
-DECL|method|compileReport (FSVolumeInterface vol, File dir, LinkedList<ScanInfo> report)
+DECL|method|compileReport (FsVolumeSpi vol, File dir, LinkedList<ScanInfo> report)
 specifier|private
 name|LinkedList
 argument_list|<
@@ -2577,7 +2577,7 @@ name|ScanInfo
 argument_list|>
 name|compileReport
 parameter_list|(
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|,
 name|File

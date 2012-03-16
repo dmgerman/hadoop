@@ -314,9 +314,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 import|;
 end_import
 
@@ -3554,7 +3554,7 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|streams
 init|=
 literal|null
@@ -3583,7 +3583,8 @@ argument_list|)
 expr_stmt|;
 name|streams
 operator|.
-name|checksumOut
+name|getChecksumOut
+argument_list|()
 operator|.
 name|write
 argument_list|(

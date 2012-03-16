@@ -336,9 +336,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -490,7 +490,7 @@ name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|dataset
 decl_stmt|;
@@ -790,7 +790,7 @@ operator|)
 return|;
 block|}
 block|}
-DECL|method|BlockPoolSliceScanner (String bpid, DataNode datanode, FSDatasetInterface<? extends FSVolumeInterface> dataset, Configuration conf)
+DECL|method|BlockPoolSliceScanner (String bpid, DataNode datanode, FSDatasetInterface<? extends FsVolumeSpi> dataset, Configuration conf)
 name|BlockPoolSliceScanner
 parameter_list|(
 name|String
@@ -803,7 +803,7 @@ name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|dataset
 parameter_list|,

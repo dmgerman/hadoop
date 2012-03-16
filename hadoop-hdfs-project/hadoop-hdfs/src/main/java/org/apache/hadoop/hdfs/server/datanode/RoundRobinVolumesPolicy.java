@@ -54,9 +54,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -84,7 +84,7 @@ name|RoundRobinVolumesPolicy
 parameter_list|<
 name|V
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 parameter_list|>
 implements|implements
 name|BlockVolumeChoosingPolicy

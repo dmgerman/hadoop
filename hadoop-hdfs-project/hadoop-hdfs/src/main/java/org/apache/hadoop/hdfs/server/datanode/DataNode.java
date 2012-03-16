@@ -1546,9 +1546,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|SecureDataNodeStarter
 operator|.
-name|FSVolumeInterface
+name|SecureResources
 import|;
 end_import
 
@@ -1566,9 +1566,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|SecureDataNodeStarter
+name|fsdataset
 operator|.
-name|SecureResources
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -2340,7 +2340,7 @@ name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 argument_list|>
 name|data
 init|=

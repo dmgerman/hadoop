@@ -68,9 +68,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -90,7 +90,7 @@ name|BlockVolumeChoosingPolicy
 parameter_list|<
 name|V
 extends|extends
-name|FSVolumeInterface
+name|FsVolumeSpi
 parameter_list|>
 block|{
 comment|/**    * Returns a specific FSVolume after applying a suitable choice algorithm    * to place a given block, given a list of FSVolumes and the block    * size sought for storage.    *     * (Policies that maintain state must be thread-safe.)    *     * @param volumes - the array of FSVolumes that are available.    * @param blockSize - the size of the block for which a volume is sought.    * @return the chosen volume to store the block.    * @throws IOException when disks are unavailable or are full.    */

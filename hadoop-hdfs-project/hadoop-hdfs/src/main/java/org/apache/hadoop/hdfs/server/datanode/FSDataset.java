@@ -544,9 +544,69 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|fsdataset
 operator|.
-name|FSVolumeInterface
+name|FsVolumeSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|LengthInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaInputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|ReplicaOutputStreams
 import|;
 end_import
 
@@ -3025,7 +3085,7 @@ specifier|static
 class|class
 name|FSVolume
 implements|implements
-name|FSVolumeInterface
+name|FsVolumeSpi
 block|{
 DECL|field|dataset
 specifier|private
@@ -4536,7 +4596,7 @@ literal|0L
 decl_stmt|;
 for|for
 control|(
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 range|:
 name|volumes
@@ -5420,7 +5480,7 @@ name|Override
 comment|// FSDatasetInterface
 DECL|method|getMetaDataInputStream (ExtendedBlock b)
 specifier|public
-name|MetaDataInputStream
+name|LengthInputStream
 name|getMetaDataInputStream
 parameter_list|(
 name|ExtendedBlock
@@ -5457,7 +5517,7 @@ return|;
 block|}
 return|return
 operator|new
-name|MetaDataInputStream
+name|LengthInputStream
 argument_list|(
 operator|new
 name|FileInputStream
@@ -6393,7 +6453,7 @@ comment|// FSDatasetInterface
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkOffset, long ckoff)
 specifier|public
 specifier|synchronized
-name|BlockInputStreams
+name|ReplicaInputStreams
 name|getTmpInputStreams
 parameter_list|(
 name|ExtendedBlock
@@ -6486,7 +6546,7 @@ expr_stmt|;
 block|}
 return|return
 operator|new
-name|BlockInputStreams
+name|ReplicaInputStreams
 argument_list|(
 operator|new
 name|FileInputStream
@@ -8795,7 +8855,7 @@ comment|/**    * Sets the offset in the meta file so that the    * last checksum
 annotation|@
 name|Override
 comment|// FSDatasetInterface
-DECL|method|adjustCrcChannelPosition (ExtendedBlock b, BlockWriteStreams streams, int checksumSize)
+DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams streams, int checksumSize)
 specifier|public
 name|void
 name|adjustCrcChannelPosition
@@ -8803,7 +8863,7 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|,
-name|BlockWriteStreams
+name|ReplicaOutputStreams
 name|streams
 parameter_list|,
 name|int
@@ -8820,7 +8880,8 @@ name|FileOutputStream
 operator|)
 name|streams
 operator|.
-name|checksumOut
+name|getChecksumOut
+argument_list|()
 decl_stmt|;
 name|FileChannel
 name|channel
@@ -10868,7 +10929,7 @@ block|}
 comment|/**    * Reconcile the difference between blocks on the disk and blocks in    * volumeMap    *    * Check the given block for inconsistencies. Look at the    * current state of the block and reconcile the differences as follows:    *<ul>    *<li>If the block file is missing, delete the block from volumeMap</li>    *<li>If the block file exists and the block is missing in volumeMap,    * add the block to volumeMap<li>    *<li>If generation stamp does not match, then update the block with right    * generation stamp</li>    *<li>If the block length in memory does not match the actual block file length    * then mark the block as corrupt and update the block length in memory</li>    *<li>If the file in {@link ReplicaInfo} does not match the file on    * the disk, update {@link ReplicaInfo} with the correct file</li>    *</ul>    *    * @param blockId Block that differs    * @param diskFile Block file on the disk    * @param diskMetaFile Metadata file from on the disk    * @param vol Volume of the block file    */
 annotation|@
 name|Override
-DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FSVolumeInterface vol)
+DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void
 name|checkAndUpdate
@@ -10885,7 +10946,7 @@ parameter_list|,
 name|File
 name|diskMetaFile
 parameter_list|,
-name|FSVolumeInterface
+name|FsVolumeSpi
 name|vol
 parameter_list|)
 block|{
