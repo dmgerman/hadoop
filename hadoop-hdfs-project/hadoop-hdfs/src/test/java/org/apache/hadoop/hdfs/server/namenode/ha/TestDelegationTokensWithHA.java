@@ -1259,6 +1259,36 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * HDFS-3062: DistributedFileSystem.getCanonicalServiceName() throws an    * exception if the URI is a logical URI. This bug fails the combination of    * ha + mapred + security.    */
+annotation|@
+name|Test
+DECL|method|testDFSGetCanonicalServiceName ()
+specifier|public
+name|void
+name|testDFSGetCanonicalServiceName
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertEquals
+argument_list|(
+name|fs
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+argument_list|,
+name|HATestUtil
+operator|.
+name|getLogicalUri
+argument_list|(
+name|cluster
+argument_list|)
+operator|.
+name|getHost
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|enum|TokenTestAction
 enum|enum
 name|TokenTestAction

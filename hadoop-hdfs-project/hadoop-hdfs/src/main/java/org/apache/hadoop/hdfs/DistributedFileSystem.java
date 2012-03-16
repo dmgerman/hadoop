@@ -3971,6 +3971,47 @@ name|bandwidth
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get a canonical service name for this file system. If the URI is logical,    * the hostname part of the URI will be returned.    * @return a service string that uniquely identifies this file system.    */
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isLogicalUri
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|getUri
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|getUri
+argument_list|()
+operator|.
+name|getHost
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+name|super
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+return|;
+block|}
+block|}
 block|}
 end_class
 
