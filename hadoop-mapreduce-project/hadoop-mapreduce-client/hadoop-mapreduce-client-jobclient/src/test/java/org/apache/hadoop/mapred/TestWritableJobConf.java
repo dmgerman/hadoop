@@ -324,19 +324,9 @@ name|Configuration
 name|conf2
 parameter_list|)
 block|{
-name|assertEquals
-argument_list|(
-name|conf1
-operator|.
-name|size
-argument_list|()
-argument_list|,
-name|conf2
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
+comment|// We ignore deprecated keys because after deserializing, both the
+comment|// deprecated and the non-deprecated versions of a config are set.
+comment|// This is consistent with both the set and the get methods.
 name|Iterator
 argument_list|<
 name|Map
@@ -395,6 +385,20 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Configuration
+operator|.
+name|isDeprecated
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|map1
 operator|.
 name|put
@@ -411,6 +415,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 name|Iterator
 argument_list|<
 name|Map
@@ -424,7 +429,7 @@ argument_list|>
 argument_list|>
 name|iterator2
 init|=
-name|conf1
+name|conf2
 operator|.
 name|iterator
 argument_list|()
@@ -469,6 +474,20 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Configuration
+operator|.
+name|isDeprecated
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|map2
 operator|.
 name|put
@@ -484,6 +503,7 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|assertEquals
 argument_list|(

@@ -1233,7 +1233,7 @@ expr_stmt|;
 block|}
 comment|/**    * checks whether the given<code>key</code> is deprecated.    *     * @param key the parameter which is to be checked for deprecation    * @return<code>true</code> if the key is deprecated and     *<code>false</code> otherwise.    */
 DECL|method|isDeprecated (String key)
-specifier|private
+specifier|public
 specifier|static
 name|boolean
 name|isDeprecated
