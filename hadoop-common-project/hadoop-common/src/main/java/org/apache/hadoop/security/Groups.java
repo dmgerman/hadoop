@@ -401,6 +401,27 @@ name|user
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|groups
+operator|.
+name|getGroups
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No groups found for user "
+operator|+
+name|user
+argument_list|)
+throw|;
+block|}
 name|userToGroupsMap
 operator|.
 name|put
