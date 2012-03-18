@@ -202,6 +202,13 @@ argument_list|,
 name|nameName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|name
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
 name|mbs
@@ -288,6 +295,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 literal|null
