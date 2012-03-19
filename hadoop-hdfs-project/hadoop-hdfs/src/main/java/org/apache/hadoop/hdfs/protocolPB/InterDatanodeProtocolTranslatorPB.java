@@ -609,7 +609,7 @@ annotation|@
 name|Override
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
 specifier|public
-name|ExtendedBlock
+name|String
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock
@@ -658,10 +658,6 @@ decl_stmt|;
 try|try
 block|{
 return|return
-name|PBHelper
-operator|.
-name|convert
-argument_list|(
 name|rpcProxy
 operator|.
 name|updateReplicaUnderRecovery
@@ -671,9 +667,8 @@ argument_list|,
 name|req
 argument_list|)
 operator|.
-name|getBlock
+name|getStorageID
 argument_list|()
-argument_list|)
 return|;
 block|}
 catch|catch

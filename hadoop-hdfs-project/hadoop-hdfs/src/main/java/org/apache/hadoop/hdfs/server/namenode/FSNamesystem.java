@@ -14028,7 +14028,7 @@ name|newFile
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|commitBlockSynchronization (ExtendedBlock lastblock, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets)
+DECL|method|commitBlockSynchronization (ExtendedBlock lastblock, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages)
 name|void
 name|commitBlockSynchronization
 parameter_list|(
@@ -14050,6 +14050,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newtargets
+parameter_list|,
+name|String
+index|[]
+name|newtargetstorages
 parameter_list|)
 throws|throws
 name|IOException

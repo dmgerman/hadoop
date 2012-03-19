@@ -1854,9 +1854,19 @@ name|Mockito
 operator|.
 name|anyObject
 argument_list|()
+argument_list|,
+comment|// new targets
+operator|(
+name|String
+index|[]
+operator|)
+name|Mockito
+operator|.
+name|anyObject
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// new targets
+comment|// new target storages
 name|DistributedFileSystem
 name|fsOtherUser
 init|=

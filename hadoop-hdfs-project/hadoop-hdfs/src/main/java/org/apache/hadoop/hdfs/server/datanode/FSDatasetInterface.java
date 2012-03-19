@@ -494,6 +494,16 @@ argument_list|>
 name|getVolumes
 parameter_list|()
 function_decl|;
+comment|/** @return the volume that contains a replica of the block. */
+DECL|method|getVolume (ExtendedBlock b)
+specifier|public
+name|V
+name|getVolume
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|)
+function_decl|;
 comment|/** @return a volume information map (name => info). */
 DECL|method|getVolumeInfoMap ()
 specifier|public
@@ -905,10 +915,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Update replica's generation stamp and length and finalize it.    */
-DECL|method|updateReplicaUnderRecovery ( ExtendedBlock oldBlock, long recoveryId, long newLength)
+comment|/**    * Update replica's generation stamp and length and finalize it.    * @return the ID of storage that stores the block    */
+DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
 specifier|public
-name|ReplicaInfo
+name|String
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock

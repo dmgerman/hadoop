@@ -4410,7 +4410,7 @@ name|Override
 comment|// FSDatasetInterface
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newlength)
 specifier|public
-name|FinalizedReplica
+name|String
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock
@@ -4424,22 +4424,7 @@ name|newlength
 parameter_list|)
 block|{
 return|return
-operator|new
-name|FinalizedReplica
-argument_list|(
-name|oldBlock
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|,
-name|newlength
-argument_list|,
-name|recoveryId
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+name|storageId
 return|;
 block|}
 annotation|@
@@ -4790,6 +4775,23 @@ name|bpid
 parameter_list|,
 name|String
 name|prefix
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getVolume (ExtendedBlock b)
+specifier|public
+name|FsVolumeSpi
+name|getVolume
+parameter_list|(
+name|ExtendedBlock
+name|b
 parameter_list|)
 block|{
 throw|throw

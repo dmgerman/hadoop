@@ -424,7 +424,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Commit block synchronization in lease recovery    */
-DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets )
+DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages)
 specifier|public
 name|void
 name|commitBlockSynchronization
@@ -447,6 +447,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newtargets
+parameter_list|,
+name|String
+index|[]
+name|newtargetstorages
 parameter_list|)
 throws|throws
 name|IOException

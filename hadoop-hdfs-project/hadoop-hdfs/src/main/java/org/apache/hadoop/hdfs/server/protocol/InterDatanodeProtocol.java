@@ -130,20 +130,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
-operator|.
-name|VersionedProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -195,7 +181,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Until version 9, this class InterDatanodeProtocol served as both    * the interface to the DN AND the RPC protocol used to communicate with the     * DN.    *     * Post version 6L (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/InterDatanodeWireProtocol}    *     * This class is used by both the DN to insulate from the protocol     * serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in InterDatanodeProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    *     * The log of historical changes can be retrieved from the svn).    * 6: Add block pool ID to Block    */
+comment|/**    * Until version 9, this class InterDatanodeProtocol served as both    * the interface to the DN AND the RPC protocol used to communicate with the     * DN.    *     * Post version 6L (release 23 of Hadoop), the protocol is implemented in    * {@literal ../protocolR23Compatible/InterDatanodeWireProtocol}    *     * This class is used by both the DN to insulate from the protocol     * serialization.    *     * If you are adding/changing DN's interface then you need to     * change both this class and ALSO related protocol buffer    * wire protocol definition in InterDatanodeProtocol.proto.    *     * For more details on protocol buffer wire protocol, please see     * .../org/apache/hadoop/hdfs/protocolPB/overview.html    */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -218,7 +204,7 @@ name|IOException
 function_decl|;
 comment|/**    * Update replica with the new generation stamp and length.      */
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newLength)
-name|ExtendedBlock
+name|String
 name|updateReplicaUnderRecovery
 parameter_list|(
 name|ExtendedBlock

@@ -2245,7 +2245,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets)
+DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages )
 specifier|public
 name|void
 name|commitBlockSynchronization
@@ -2268,6 +2268,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newtargets
+parameter_list|,
+name|String
+index|[]
+name|newtargetstorages
 parameter_list|)
 throws|throws
 name|IOException
@@ -2342,6 +2346,16 @@ index|[
 name|i
 index|]
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|addNewTargetStorages
+argument_list|(
+name|newtargetstorages
+index|[
+name|i
+index|]
 argument_list|)
 expr_stmt|;
 block|}
