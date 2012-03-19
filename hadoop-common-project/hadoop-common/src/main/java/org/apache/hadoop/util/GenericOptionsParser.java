@@ -1119,7 +1119,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"mapred.used.genericoptionsparser"
+literal|"mapreduce.client.genericoptionsparser.used"
 argument_list|,
 literal|true
 argument_list|)
