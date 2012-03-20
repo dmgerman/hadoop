@@ -251,19 +251,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Use a dummy service when checking the arguments defined
-comment|// in the configuration are parseable.
 operator|new
 name|Args
 argument_list|(
-operator|new
-name|InetSocketAddress
-argument_list|(
-literal|"localhost"
-argument_list|,
-literal|8020
-argument_list|)
-argument_list|,
 name|argStr
 argument_list|)
 expr_stmt|;
@@ -291,10 +281,16 @@ init|=
 operator|new
 name|Args
 argument_list|(
-name|serviceAddr
-argument_list|,
 name|argsStr
 argument_list|)
+decl_stmt|;
+name|String
+name|host
+init|=
+name|serviceAddr
+operator|.
+name|getHostName
+argument_list|()
 decl_stmt|;
 name|Session
 name|session
@@ -305,6 +301,11 @@ name|session
 operator|=
 name|createSession
 argument_list|(
+name|serviceAddr
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
 name|args
 argument_list|)
 expr_stmt|;
@@ -334,8 +335,6 @@ name|info
 argument_list|(
 literal|"Connecting to "
 operator|+
-name|args
-operator|.
 name|host
 operator|+
 literal|"..."
@@ -364,8 +363,6 @@ name|warn
 argument_list|(
 literal|"Unable to connect to "
 operator|+
-name|args
-operator|.
 name|host
 operator|+
 literal|" as user "
@@ -387,8 +384,6 @@ name|info
 argument_list|(
 literal|"Connected to "
 operator|+
-name|args
-operator|.
 name|host
 argument_list|)
 expr_stmt|;
@@ -399,9 +394,7 @@ name|doFence
 argument_list|(
 name|session
 argument_list|,
-name|args
-operator|.
-name|targetPort
+name|serviceAddr
 argument_list|)
 return|;
 block|}
@@ -433,11 +426,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|createSession (Args args)
+DECL|method|createSession (String host, Args args)
 specifier|private
 name|Session
 name|createSession
 parameter_list|(
+name|String
+name|host
+parameter_list|,
 name|Args
 name|args
 parameter_list|)
@@ -488,8 +484,6 @@ name|args
 operator|.
 name|user
 argument_list|,
-name|args
-operator|.
 name|host
 argument_list|,
 name|args
@@ -510,7 +504,7 @@ return|return
 name|session
 return|;
 block|}
-DECL|method|doFence (Session session, int port)
+DECL|method|doFence (Session session, InetSocketAddress serviceAddr)
 specifier|private
 name|boolean
 name|doFence
@@ -518,12 +512,20 @@ parameter_list|(
 name|Session
 name|session
 parameter_list|,
-name|int
-name|port
+name|InetSocketAddress
+name|serviceAddr
 parameter_list|)
 throws|throws
 name|JSchException
 block|{
+name|int
+name|port
+init|=
+name|serviceAddr
+operator|.
+name|getPort
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|LOG
@@ -596,7 +598,19 @@ name|execCommand
 argument_list|(
 name|session
 argument_list|,
-literal|"nc -z localhost 8020"
+literal|"nc -z "
+operator|+
+name|serviceAddr
+operator|.
+name|getHostName
+argument_list|()
+operator|+
+literal|" "
+operator|+
+name|serviceAddr
+operator|.
+name|getPort
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -953,14 +967,6 @@ name|DEFAULT_SSH_PORT
 init|=
 literal|22
 decl_stmt|;
-DECL|field|host
-name|String
-name|host
-decl_stmt|;
-DECL|field|targetPort
-name|int
-name|targetPort
-decl_stmt|;
 DECL|field|user
 name|String
 name|user
@@ -969,33 +975,16 @@ DECL|field|sshPort
 name|int
 name|sshPort
 decl_stmt|;
-DECL|method|Args (InetSocketAddress serviceAddr, String arg)
+DECL|method|Args (String arg)
 specifier|public
 name|Args
 parameter_list|(
-name|InetSocketAddress
-name|serviceAddr
-parameter_list|,
 name|String
 name|arg
 parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
 block|{
-name|host
-operator|=
-name|serviceAddr
-operator|.
-name|getHostName
-argument_list|()
-expr_stmt|;
-name|targetPort
-operator|=
-name|serviceAddr
-operator|.
-name|getPort
-argument_list|()
-expr_stmt|;
 name|user
 operator|=
 name|System
