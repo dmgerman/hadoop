@@ -86,6 +86,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|HttpURLConnection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URLConnection
 import|;
 end_import
@@ -1184,9 +1194,12 @@ argument_list|,
 name|maps
 argument_list|)
 decl_stmt|;
-name|URLConnection
+name|HttpURLConnection
 name|connection
 init|=
+operator|(
+name|HttpURLConnection
+operator|)
 name|url
 operator|.
 name|openConnection
@@ -1257,6 +1270,45 @@ name|getInputStream
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Validate response code
+name|int
+name|rc
+init|=
+name|connection
+operator|.
+name|getResponseCode
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|rc
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Got invalid response code "
+operator|+
+name|rc
+operator|+
+literal|" from "
+operator|+
+name|url
+operator|+
+literal|": "
+operator|+
+name|connection
+operator|.
+name|getResponseMessage
+argument_list|()
+argument_list|)
+throw|;
+block|}
 comment|// get the replyHash which is HMac of the encHash we sent to the server
 name|String
 name|replyHash
