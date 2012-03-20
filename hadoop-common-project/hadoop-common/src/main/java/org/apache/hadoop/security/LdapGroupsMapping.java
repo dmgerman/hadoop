@@ -1352,7 +1352,7 @@ block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ex
+name|ioe
 parameter_list|)
 block|{
 throw|throw
@@ -1362,6 +1362,8 @@ argument_list|(
 literal|"Could not read password file: "
 operator|+
 name|pwFile
+argument_list|,
+name|ioe
 argument_list|)
 throw|;
 block|}
