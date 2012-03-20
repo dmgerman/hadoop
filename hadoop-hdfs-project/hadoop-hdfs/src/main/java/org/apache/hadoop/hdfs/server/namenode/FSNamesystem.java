@@ -4456,6 +4456,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|checkOperation (OperationCategory op)
+specifier|public
 name|void
 name|checkOperation
 parameter_list|(

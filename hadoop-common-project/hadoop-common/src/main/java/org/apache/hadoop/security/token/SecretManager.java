@@ -118,6 +118,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
 begin_comment
 comment|/**  * The server-side secret manager for each token type.  * @param<T> The type of the token identifier  */
 end_comment
@@ -216,6 +230,17 @@ name|T
 name|createIdentifier
 parameter_list|()
 function_decl|;
+comment|/**    * No-op if the secret manager is available for reading tokens, throw a    * StandbyException otherwise.    *     * @throws StandbyException if the secret manager is not available to read    *         tokens    */
+DECL|method|checkAvailableForRead ()
+specifier|public
+name|void
+name|checkAvailableForRead
+parameter_list|()
+throws|throws
+name|StandbyException
+block|{
+comment|// Default to being available for read.
+block|}
 comment|/**    * The name of the hashing algorithm.    */
 DECL|field|DEFAULT_HMAC_ALGORITHM
 specifier|private

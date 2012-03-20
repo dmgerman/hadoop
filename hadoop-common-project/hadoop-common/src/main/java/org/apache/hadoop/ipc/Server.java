@@ -5562,6 +5562,11 @@ literal|"Server is not configured to do DIGEST authentication."
 argument_list|)
 throw|;
 block|}
+name|secretManager
+operator|.
+name|checkAvailableForRead
+argument_list|()
+expr_stmt|;
 name|saslServer
 operator|=
 name|Sasl
