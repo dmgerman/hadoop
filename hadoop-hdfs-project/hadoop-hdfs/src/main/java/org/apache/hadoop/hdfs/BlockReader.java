@@ -36,6 +36,20 @@ name|Socket
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|ByteBufferReadable
+import|;
+end_import
+
 begin_comment
 comment|/**  * A BlockReader is responsible for reading a single block  * from a single datanode.  */
 end_comment
@@ -45,6 +59,8 @@ DECL|interface|BlockReader
 specifier|public
 interface|interface
 name|BlockReader
+extends|extends
+name|ByteBufferReadable
 block|{
 comment|/* same interface as inputStream java.io.InputStream#read()    * used by DFSInputStream#read()    * This violates one rule when there is a checksum error:    * "Read should not modify user buffer before successful read"    * because it first reads the data to user buffer and then checks    * the checksum.    */
 DECL|method|read (byte[] buf, int off, int len)

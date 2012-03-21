@@ -409,6 +409,7 @@ decl_stmt|;
 comment|//for now just sending the status code (e.g. checksumOk) after the read.
 DECL|field|in
 specifier|private
+specifier|final
 name|DataInputStream
 name|in
 decl_stmt|;
@@ -457,11 +458,13 @@ name|firstChunkOffset
 decl_stmt|;
 DECL|field|bytesPerChecksum
 specifier|private
+specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
 DECL|field|checksumSize
 specifier|private
+specifier|final
 name|int
 name|checksumSize
 decl_stmt|;
@@ -2093,6 +2096,27 @@ literal|":"
 operator|+
 name|blockId
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|read (ByteBuffer buf)
+specifier|public
+name|int
+name|read
+parameter_list|(
+name|ByteBuffer
+name|buf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"readDirect unsupported in RemoteBlockReader"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

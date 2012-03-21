@@ -2235,6 +2235,26 @@ name|DFS_CLIENT_READ_SHORTCIRCUIT_SKIP_CHECKSUM_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_KEY
+init|=
+literal|"dfs.client.read.shortcircuit.buffer.size"
+decl_stmt|;
+DECL|field|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_DEFAULT
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|// property for fsimage compression
 DECL|field|DFS_IMAGE_COMPRESS_KEY
 specifier|public
