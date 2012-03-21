@@ -1250,24 +1250,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|DatanodeStorage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|FinalizeCommand
 import|;
 end_import
@@ -5167,17 +5149,13 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|registerDatanode (DatanodeRegistration nodeReg, DatanodeStorage[] storages)
+DECL|method|registerDatanode (DatanodeRegistration nodeReg )
 specifier|public
 name|DatanodeRegistration
 name|registerDatanode
 parameter_list|(
 name|DatanodeRegistration
 name|nodeReg
-parameter_list|,
-name|DatanodeStorage
-index|[]
-name|storages
 parameter_list|)
 throws|throws
 name|IOException

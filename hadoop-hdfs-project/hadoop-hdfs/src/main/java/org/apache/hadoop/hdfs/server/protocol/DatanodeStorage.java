@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Class capatures information about a storage in Datanode  */
+comment|/**  * Class captures information of a storage in Datanode.  */
 end_comment
 
 begin_class
@@ -30,6 +30,7 @@ specifier|public
 class|class
 name|DatanodeStorage
 block|{
+comment|/** The state of the storage. */
 DECL|enum|State
 specifier|public
 enum|enum
@@ -53,6 +54,25 @@ specifier|final
 name|State
 name|state
 decl_stmt|;
+comment|/**    * Create a storage with {@link State#NORMAL}.    * @param storageID    */
+DECL|method|DatanodeStorage (String storageID)
+specifier|public
+name|DatanodeStorage
+parameter_list|(
+name|String
+name|storageID
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|storageID
+argument_list|,
+name|State
+operator|.
+name|NORMAL
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|DatanodeStorage (String sid, State s)
 specifier|public
 name|DatanodeStorage

@@ -30,11 +30,11 @@ specifier|public
 class|class
 name|StorageBlockReport
 block|{
-DECL|field|storageID
+DECL|field|storage
 specifier|private
 specifier|final
-name|String
-name|storageID
+name|DatanodeStorage
+name|storage
 decl_stmt|;
 DECL|field|blocks
 specifier|private
@@ -43,12 +43,12 @@ name|long
 index|[]
 name|blocks
 decl_stmt|;
-DECL|method|StorageBlockReport (String sid, long[] blocks)
+DECL|method|StorageBlockReport (DatanodeStorage storage, long[] blocks)
 specifier|public
 name|StorageBlockReport
 parameter_list|(
-name|String
-name|sid
+name|DatanodeStorage
+name|storage
 parameter_list|,
 name|long
 index|[]
@@ -57,9 +57,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|storageID
+name|storage
 operator|=
-name|sid
+name|storage
 expr_stmt|;
 name|this
 operator|.
@@ -68,14 +68,14 @@ operator|=
 name|blocks
 expr_stmt|;
 block|}
-DECL|method|getStorageID ()
+DECL|method|getStorage ()
 specifier|public
-name|String
-name|getStorageID
+name|DatanodeStorage
+name|getStorage
 parameter_list|()
 block|{
 return|return
-name|storageID
+name|storage
 return|;
 block|}
 DECL|method|getBlocks ()
