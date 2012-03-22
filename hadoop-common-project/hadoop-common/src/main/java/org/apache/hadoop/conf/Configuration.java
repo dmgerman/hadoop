@@ -888,6 +888,21 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Sentinel value to store negative cache results in {@link #CACHE_CLASSES}.    */
+DECL|field|NEGATIVE_CACHE_SENTINEL
+specifier|private
+specifier|static
+specifier|final
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|NEGATIVE_CACHE_SENTINEL
+init|=
+name|NegativeCacheSentinel
+operator|.
+name|class
+decl_stmt|;
 comment|/**    * Stores the mapping of key to the resource which modifies or loads     * the key most recently    */
 DECL|field|updatingResource
 specifier|private
@@ -4160,17 +4175,18 @@ name|?
 argument_list|>
 name|clazz
 init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-operator|!
 name|map
 operator|.
-name|containsKey
+name|get
 argument_list|(
 name|name
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|clazz
+operator|==
+literal|null
 condition|)
 block|{
 try|try
@@ -4195,16 +4211,16 @@ name|ClassNotFoundException
 name|e
 parameter_list|)
 block|{
+comment|// Leave a marker that the class isn't found
 name|map
 operator|.
 name|put
 argument_list|(
 name|name
 argument_list|,
-literal|null
+name|NEGATIVE_CACHE_SENTINEL
 argument_list|)
 expr_stmt|;
-comment|//cache negative that class is not found
 return|return
 literal|null
 return|;
@@ -4219,35 +4235,30 @@ argument_list|,
 name|clazz
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// check already performed on this class name
+return|return
 name|clazz
-operator|=
-name|map
-operator|.
-name|get
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
+return|;
+block|}
+elseif|else
 if|if
 condition|(
 name|clazz
 operator|==
-literal|null
+name|NEGATIVE_CACHE_SENTINEL
 condition|)
 block|{
-comment|// found the negative
 return|return
 literal|null
 return|;
+comment|// not found
 block|}
-block|}
+else|else
+block|{
+comment|// cache hit
 return|return
 name|clazz
 return|;
+block|}
 block|}
 comment|/**     * Get the value of the<code>name</code> property    * as an array of<code>Class</code>.    * The value of the property specifies a list of comma separated class names.      * If no such property is specified, then<code>defaultValue</code> is     * returned.    *     * @param name the property name.    * @param defaultValue default value.    * @return property value as a<code>Class[]</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getClasses (String name, Class<?> ... defaultValue)
@@ -7659,6 +7670,14 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * A unique class which is used as a sentinel value in the caching    * for getClassByName. {@see Configuration#getClassByNameOrNull(String)}    */
+DECL|class|NegativeCacheSentinel
+specifier|private
+specifier|static
+specifier|abstract
+class|class
+name|NegativeCacheSentinel
+block|{}
 block|}
 end_class
 
