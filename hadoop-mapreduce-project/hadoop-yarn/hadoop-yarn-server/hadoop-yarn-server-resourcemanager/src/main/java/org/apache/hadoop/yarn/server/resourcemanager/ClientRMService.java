@@ -1876,10 +1876,6 @@ operator|+
 literal|" submitted by user "
 operator|+
 name|user
-operator|+
-literal|" with "
-operator|+
-name|submissionContext
 argument_list|)
 expr_stmt|;
 name|RMAuditLogger

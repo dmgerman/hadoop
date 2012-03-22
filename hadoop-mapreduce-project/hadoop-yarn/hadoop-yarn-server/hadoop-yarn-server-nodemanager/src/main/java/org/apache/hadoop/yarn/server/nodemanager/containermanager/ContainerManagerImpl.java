@@ -2621,9 +2621,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|" container is "
+literal|"Start request for "
 operator|+
-name|request
+name|launchContext
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" by user "
+operator|+
+name|launchContext
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// //////////// Parse credentials
