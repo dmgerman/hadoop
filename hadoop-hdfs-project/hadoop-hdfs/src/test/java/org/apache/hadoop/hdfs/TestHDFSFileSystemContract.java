@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -41,6 +51,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystemContractBaseTest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -163,6 +187,28 @@ block|{
 return|return
 name|defaultWorkingDirectory
 return|;
+block|}
+DECL|method|testAppend ()
+specifier|public
+name|void
+name|testAppend
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|AppendTestUtil
+operator|.
+name|testAppend
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/testAppend/f"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

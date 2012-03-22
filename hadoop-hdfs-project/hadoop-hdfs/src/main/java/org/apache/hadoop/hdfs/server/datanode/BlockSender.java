@@ -76,6 +76,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -849,6 +859,7 @@ operator|.
 name|MAX_VALUE
 operator|)
 expr_stmt|;
+comment|/*         * (corruptChecksumOK, meta_file_exist): operation        * True,   True: will verify checksum          * True,  False: No verify, e.g., need to read data from a corrupted file         * False,  True: will verify checksum        * False, False: throws IOException file not found        */
 name|DataChecksum
 name|csum
 decl_stmt|;
@@ -875,6 +886,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|metaIn
+operator|==
+literal|null
+condition|)
+block|{
+comment|//need checksum but meta-data not found
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"Meta-data not found for "
+operator|+
+name|block
+argument_list|)
+throw|;
+block|}
 name|checksumIn
 operator|=
 operator|new
