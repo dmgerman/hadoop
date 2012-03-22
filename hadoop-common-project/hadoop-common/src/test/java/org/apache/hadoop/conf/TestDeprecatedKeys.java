@@ -97,6 +97,15 @@ argument_list|,
 literal|"xyz"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"topology.script.file.name"
+argument_list|,
+literal|"xyz"
+argument_list|)
+expr_stmt|;
 name|String
 name|scriptFile
 init|=
