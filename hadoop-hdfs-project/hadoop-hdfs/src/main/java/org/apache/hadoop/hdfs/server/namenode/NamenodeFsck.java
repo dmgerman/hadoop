@@ -534,36 +534,6 @@ name|FAILURE_STATUS
 init|=
 literal|"FAILED"
 decl_stmt|;
-comment|/** Don't attempt any fixing . */
-DECL|field|FIXING_NONE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|FIXING_NONE
-init|=
-literal|0
-decl_stmt|;
-comment|/** Move corrupted files to /lost+found . */
-DECL|field|FIXING_MOVE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|FIXING_MOVE
-init|=
-literal|1
-decl_stmt|;
-comment|/** Delete corrupted files. */
-DECL|field|FIXING_DELETE
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|FIXING_DELETE
-init|=
-literal|2
-decl_stmt|;
 DECL|field|namenode
 specifier|private
 specifier|final
@@ -657,12 +627,21 @@ name|showCorruptFileBlocks
 init|=
 literal|false
 decl_stmt|;
-DECL|field|fixing
+comment|/**     * True if the user specified the -move option.    *    * Whe this option is in effect, we will copy salvaged blocks into the lost    * and found. */
+DECL|field|doMove
 specifier|private
-name|int
-name|fixing
+name|boolean
+name|doMove
 init|=
-name|FIXING_NONE
+literal|false
+decl_stmt|;
+comment|/**     * True if the user specified the -delete option.    *    * Whe this option is in effect, we will delete corrupted files.    */
+DECL|field|doDelete
+specifier|private
+name|boolean
+name|doDelete
+init|=
+literal|false
 decl_stmt|;
 DECL|field|path
 specifier|private
@@ -845,9 +824,9 @@ condition|)
 block|{
 name|this
 operator|.
-name|fixing
+name|doMove
 operator|=
-name|FIXING_MOVE
+literal|true
 expr_stmt|;
 block|}
 elseif|else
@@ -863,9 +842,9 @@ condition|)
 block|{
 name|this
 operator|.
-name|fixing
+name|doDelete
 operator|=
-name|FIXING_DELETE
+literal|true
 expr_stmt|;
 block|}
 elseif|else
@@ -2376,24 +2355,20 @@ operator|.
 name|corruptFiles
 operator|++
 expr_stmt|;
-switch|switch
+try|try
+block|{
+if|if
 condition|(
-name|fixing
+name|doMove
 condition|)
 block|{
-case|case
-name|FIXING_NONE
-case|:
-break|break;
-case|case
-name|FIXING_MOVE
-case|:
 if|if
 condition|(
 operator|!
 name|isOpen
 condition|)
-name|lostFoundMove
+block|{
+name|copyBlocksToLostFound
 argument_list|(
 name|parent
 argument_list|,
@@ -2402,15 +2377,28 @@ argument_list|,
 name|blocks
 argument_list|)
 expr_stmt|;
-break|break;
-case|case
-name|FIXING_DELETE
-case|:
+block|}
+block|}
+if|if
+condition|(
+name|doDelete
+condition|)
+block|{
 if|if
 condition|(
 operator|!
 name|isOpen
 condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"\n - deleting corrupted file "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
 name|namenode
 operator|.
 name|getRpcServer
@@ -2421,6 +2409,31 @@ argument_list|(
 name|path
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"error processing "
+operator|+
+name|path
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2493,10 +2506,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|lostFoundMove (String parent, HdfsFileStatus file, LocatedBlocks blocks)
+DECL|method|copyBlocksToLostFound (String parent, HdfsFileStatus file, LocatedBlocks blocks)
 specifier|private
 name|void
-name|lostFoundMove
+name|copyBlocksToLostFound
 parameter_list|(
 name|String
 name|parent
@@ -2713,9 +2726,9 @@ operator|++
 expr_stmt|;
 else|else
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
 name|errmsg
 operator|+
@@ -2723,10 +2736,7 @@ literal|": could not store chain "
 operator|+
 name|chain
 argument_list|)
-expr_stmt|;
-comment|// perhaps we should bail out here...
-comment|// return;
-continue|continue;
+throw|;
 block|}
 block|}
 comment|// copy the block. It's a pity it's not abstracted from DFSInputStream ...
@@ -2801,20 +2811,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"\n - moved corrupted file "
+literal|"\n - copied corrupted file "
 operator|+
 name|fullName
 operator|+
 literal|" to /lost+found"
-argument_list|)
-expr_stmt|;
-name|dfs
-operator|.
-name|delete
-argument_list|(
-name|fullName
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
