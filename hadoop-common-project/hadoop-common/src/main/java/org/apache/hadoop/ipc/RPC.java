@@ -409,7 +409,7 @@ name|long
 name|receiveTime
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
 block|}
 DECL|field|LOG
@@ -3615,7 +3615,7 @@ name|long
 name|receiveTime
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 return|return
 name|getRpcInvoker

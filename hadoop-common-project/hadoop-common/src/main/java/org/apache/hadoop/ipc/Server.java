@@ -9716,7 +9716,7 @@ name|long
 name|receiveTime
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 return|return
 name|call
@@ -9753,7 +9753,7 @@ name|long
 name|receiveTime
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
 comment|/**    * Authorize the incoming client connection.    *     * @param user client user    * @param protocolName - the protocol    * @param addr InetAddress of incoming connection    * @throws AuthorizationException when the client isn't authorized to talk the protocol    */
 DECL|method|authorize (UserGroupInformation user, String protocolName, InetAddress addr)
