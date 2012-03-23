@@ -40,16 +40,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -942,9 +932,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|token
-operator|.
-name|Token
+name|Credentials
 import|;
 end_import
 
@@ -960,7 +948,7 @@ name|security
 operator|.
 name|token
 operator|.
-name|TokenIdentifier
+name|Token
 import|;
 end_import
 
@@ -1257,18 +1245,10 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|field|fsTokens
+DECL|field|credentials
 specifier|protected
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 decl_stmt|;
 DECL|field|jobToken
 specifier|protected
@@ -1949,7 +1929,7 @@ name|getCurrentState
 argument_list|()
 return|;
 block|}
-DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|TaskImpl
 parameter_list|(
@@ -1983,16 +1963,8 @@ name|JobTokenIdentifier
 argument_list|>
 name|jobToken
 parameter_list|,
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 parameter_list|,
 name|Clock
 name|clock
@@ -2110,9 +2082,9 @@ name|committer
 expr_stmt|;
 name|this
 operator|.
-name|fsTokens
+name|credentials
 operator|=
-name|fsTokens
+name|credentials
 expr_stmt|;
 name|this
 operator|.

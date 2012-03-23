@@ -6169,9 +6169,6 @@ argument_list|,
 name|job
 operator|.
 name|fsTokens
-operator|.
-name|getAllTokens
-argument_list|()
 argument_list|,
 name|job
 operator|.
@@ -6296,9 +6293,6 @@ argument_list|,
 name|job
 operator|.
 name|fsTokens
-operator|.
-name|getAllTokens
-argument_list|()
 argument_list|,
 name|job
 operator|.

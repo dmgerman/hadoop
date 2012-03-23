@@ -90,16 +90,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|EnumSet
 import|;
 end_import
@@ -1366,22 +1356,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|TokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -1989,18 +1963,10 @@ specifier|final
 name|AppContext
 name|appContext
 decl_stmt|;
-DECL|field|fsTokens
+DECL|field|credentials
 specifier|private
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 decl_stmt|;
 DECL|field|jobToken
 specifier|private
@@ -3372,7 +3338,7 @@ argument_list|(
 literal|"line.separator"
 argument_list|)
 decl_stmt|;
-DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Collection<Token<? extends TokenIdentifier>> fsTokens, Clock clock, AppContext appContext)
+DECL|method|TaskAttemptImpl (TaskId taskId, int i, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, String[] dataLocalHosts, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext)
 specifier|public
 name|TaskAttemptImpl
 parameter_list|(
@@ -3410,16 +3376,8 @@ name|JobTokenIdentifier
 argument_list|>
 name|jobToken
 parameter_list|,
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 parameter_list|,
 name|Clock
 name|clock
@@ -3524,9 +3482,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|fsTokens
+name|credentials
 operator|=
-name|fsTokens
+name|credentials
 expr_stmt|;
 name|this
 operator|.
@@ -3852,7 +3810,7 @@ return|;
 block|}
 block|}
 comment|/**    * Create the common {@link ContainerLaunchContext} for all attempts.    * @param applicationACLs     */
-DECL|method|createCommonContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, Configuration conf, Token<JobTokenIdentifier> jobToken, final org.apache.hadoop.mapred.JobID oldJobId, Collection<Token<? extends TokenIdentifier>> fsTokens)
+DECL|method|createCommonContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, Configuration conf, Token<JobTokenIdentifier> jobToken, final org.apache.hadoop.mapred.JobID oldJobId, Credentials credentials)
 specifier|private
 specifier|static
 name|ContainerLaunchContext
@@ -3887,16 +3845,8 @@ operator|.
 name|JobID
 name|oldJobId
 parameter_list|,
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 parameter_list|)
 block|{
 comment|// Application resources
@@ -3955,7 +3905,7 @@ argument_list|()
 decl_stmt|;
 comment|// Tokens
 name|ByteBuffer
-name|tokens
+name|taskCredentialsBuffer
 init|=
 name|ByteBuffer
 operator|.
@@ -4174,7 +4124,7 @@ argument_list|,
 name|localResources
 argument_list|)
 expr_stmt|;
-comment|// Setup up tokens
+comment|// Setup up task credentials buffer
 name|Credentials
 name|taskCredentials
 init|=
@@ -4190,45 +4140,34 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-comment|// Add file-system tokens
-for|for
-control|(
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-name|token
-range|:
-name|fsTokens
-control|)
-block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Putting fs-token for NM use for launching container : "
+literal|"Adding #"
 operator|+
-name|token
+name|credentials
 operator|.
-name|toString
+name|numberOfTokens
 argument_list|()
+operator|+
+literal|" tokens and #"
+operator|+
+name|credentials
+operator|.
+name|numberOfSecretKeys
+argument_list|()
+operator|+
+literal|" secret keys for NM use for launching container"
 argument_list|)
 expr_stmt|;
 name|taskCredentials
 operator|.
-name|addToken
+name|addAll
 argument_list|(
-name|token
-operator|.
-name|getService
-argument_list|()
-argument_list|,
-name|token
+name|credentials
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// LocalStorageToken is needed irrespective of whether security is enabled
 comment|// or not.
@@ -4267,7 +4206,7 @@ argument_list|(
 name|containerTokens_dob
 argument_list|)
 expr_stmt|;
-name|tokens
+name|taskCredentialsBuffer
 operator|=
 name|ByteBuffer
 operator|.
@@ -4444,7 +4383,7 @@ literal|null
 argument_list|,
 name|serviceData
 argument_list|,
-name|tokens
+name|taskCredentialsBuffer
 argument_list|,
 name|applicationACLs
 argument_list|)
@@ -4453,7 +4392,7 @@ return|return
 name|container
 return|;
 block|}
-DECL|method|createContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, ContainerId containerID, Configuration conf, Token<JobTokenIdentifier> jobToken, Task remoteTask, final org.apache.hadoop.mapred.JobID oldJobId, Resource assignedCapability, WrappedJvmID jvmID, TaskAttemptListener taskAttemptListener, Collection<Token<? extends TokenIdentifier>> fsTokens)
+DECL|method|createContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, ContainerId containerID, Configuration conf, Token<JobTokenIdentifier> jobToken, Task remoteTask, final org.apache.hadoop.mapred.JobID oldJobId, Resource assignedCapability, WrappedJvmID jvmID, TaskAttemptListener taskAttemptListener, Credentials credentials)
 specifier|static
 name|ContainerLaunchContext
 name|createContainerLaunchContext
@@ -4502,16 +4441,8 @@ parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
 parameter_list|,
-name|Collection
-argument_list|<
-name|Token
-argument_list|<
-name|?
-extends|extends
-name|TokenIdentifier
-argument_list|>
-argument_list|>
-name|fsTokens
+name|Credentials
+name|credentials
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -4538,7 +4469,7 @@ name|jobToken
 argument_list|,
 name|oldJobId
 argument_list|,
-name|fsTokens
+name|credentials
 argument_list|)
 expr_stmt|;
 block|}
@@ -6842,7 +6773,7 @@ name|taskAttemptListener
 argument_list|,
 name|taskAttempt
 operator|.
-name|fsTokens
+name|credentials
 argument_list|)
 decl_stmt|;
 name|taskAttempt
