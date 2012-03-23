@@ -226,26 +226,13 @@ name|AccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Return the current state of the service.    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
-DECL|method|getServiceState ()
+comment|/**    * Return the current status of the service. The status indicates    * the current<em>state</em> (e.g ACTIVE/STANDBY) as well as    * some additional information. {@see HAServiceStatus}    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+DECL|method|getServiceStatus ()
 specifier|public
-name|HAServiceState
-name|getServiceState
+name|HAServiceStatus
+name|getServiceStatus
 parameter_list|()
 throws|throws
-name|AccessControlException
-throws|,
-name|IOException
-function_decl|;
-comment|/**    * Return true if the service is capable and ready to transition    * from the standby state to the active state.    *     * @return true if the service is ready to become active, false otherwise.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
-DECL|method|readyToBecomeActive ()
-specifier|public
-name|boolean
-name|readyToBecomeActive
-parameter_list|()
-throws|throws
-name|ServiceFailedException
-throws|,
 name|AccessControlException
 throws|,
 name|IOException

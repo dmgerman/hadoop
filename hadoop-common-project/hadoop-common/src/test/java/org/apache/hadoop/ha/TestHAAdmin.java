@@ -131,18 +131,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
 import|import
 name|com
 operator|.
@@ -235,19 +223,6 @@ argument_list|(
 name|HAServiceProtocol
 operator|.
 name|class
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|mockProtocol
-operator|.
-name|readyToBecomeActive
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-literal|true
 argument_list|)
 expr_stmt|;
 name|tool

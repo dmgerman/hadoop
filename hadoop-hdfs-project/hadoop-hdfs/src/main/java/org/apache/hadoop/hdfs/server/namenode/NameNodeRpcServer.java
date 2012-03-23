@@ -338,6 +338,20 @@ name|hadoop
 operator|.
 name|ha
 operator|.
+name|HAServiceStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
 name|HealthCheckFailedException
 import|;
 end_import
@@ -5928,40 +5942,21 @@ block|}
 annotation|@
 name|Override
 comment|// HAServiceProtocol
-DECL|method|getServiceState ()
+DECL|method|getServiceStatus ()
 specifier|public
 specifier|synchronized
-name|HAServiceState
-name|getServiceState
+name|HAServiceStatus
+name|getServiceStatus
 parameter_list|()
 throws|throws
 name|AccessControlException
-block|{
-return|return
-name|nn
-operator|.
-name|getServiceState
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// HAServiceProtocol
-DECL|method|readyToBecomeActive ()
-specifier|public
-specifier|synchronized
-name|boolean
-name|readyToBecomeActive
-parameter_list|()
-throws|throws
-name|ServiceFailedException
 throws|,
-name|AccessControlException
+name|ServiceFailedException
 block|{
 return|return
 name|nn
 operator|.
-name|readyToBecomeActive
+name|getServiceStatus
 argument_list|()
 return|;
 block|}

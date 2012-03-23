@@ -374,9 +374,13 @@ name|Mockito
 operator|.
 name|doReturn
 argument_list|(
+operator|new
+name|HAServiceStatus
+argument_list|(
 name|HAServiceState
 operator|.
 name|ACTIVE
+argument_list|)
 argument_list|)
 operator|.
 name|when
@@ -384,7 +388,7 @@ argument_list|(
 name|mockProxy
 argument_list|)
 operator|.
-name|getServiceState
+name|getServiceStatus
 argument_list|()
 expr_stmt|;
 name|hm

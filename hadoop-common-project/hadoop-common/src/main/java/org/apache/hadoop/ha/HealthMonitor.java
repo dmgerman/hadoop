@@ -359,12 +359,16 @@ argument_list|)
 decl_stmt|;
 DECL|field|lastServiceState
 specifier|private
-name|HAServiceState
+name|HAServiceStatus
 name|lastServiceState
 init|=
+operator|new
+name|HAServiceStatus
+argument_list|(
 name|HAServiceState
 operator|.
 name|INITIALIZING
+argument_list|)
 decl_stmt|;
 DECL|enum|State
 enum|enum
@@ -689,8 +693,8 @@ condition|(
 name|shouldRun
 condition|)
 block|{
-name|HAServiceState
-name|state
+name|HAServiceStatus
+name|status
 init|=
 literal|null
 decl_stmt|;
@@ -701,11 +705,11 @@ literal|false
 decl_stmt|;
 try|try
 block|{
-name|state
+name|status
 operator|=
 name|proxy
 operator|.
-name|getServiceState
+name|getServiceStatus
 argument_list|()
 expr_stmt|;
 name|proxy
@@ -795,14 +799,14 @@ return|return;
 block|}
 if|if
 condition|(
-name|state
+name|status
 operator|!=
 literal|null
 condition|)
 block|{
-name|setLastServiceState
+name|setLastServiceStatus
 argument_list|(
-name|state
+name|status
 argument_list|)
 expr_stmt|;
 block|}
@@ -828,21 +832,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setLastServiceState (HAServiceState serviceState)
+DECL|method|setLastServiceStatus (HAServiceStatus status)
 specifier|private
 specifier|synchronized
 name|void
-name|setLastServiceState
+name|setLastServiceStatus
 parameter_list|(
-name|HAServiceState
-name|serviceState
+name|HAServiceStatus
+name|status
 parameter_list|)
 block|{
 name|this
 operator|.
 name|lastServiceState
 operator|=
-name|serviceState
+name|status
 expr_stmt|;
 block|}
 DECL|method|enterState (State newState)
@@ -909,10 +913,10 @@ return|return
 name|state
 return|;
 block|}
-DECL|method|getLastServiceState ()
+DECL|method|getLastServiceStatus ()
 specifier|synchronized
-name|HAServiceState
-name|getLastServiceState
+name|HAServiceStatus
+name|getLastServiceStatus
 parameter_list|()
 block|{
 return|return
