@@ -20,16 +20,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|List
@@ -393,13 +383,13 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|fence (InetSocketAddress serviceAddr)
+DECL|method|fence (HAServiceTarget fromSvc)
 specifier|public
 name|boolean
 name|fence
 parameter_list|(
-name|InetSocketAddress
-name|serviceAddr
+name|HAServiceTarget
+name|fromSvc
 parameter_list|)
 block|{
 name|LOG
@@ -455,7 +445,7 @@ name|method
 operator|.
 name|tryFence
 argument_list|(
-name|serviceAddr
+name|fromSvc
 argument_list|,
 name|method
 operator|.

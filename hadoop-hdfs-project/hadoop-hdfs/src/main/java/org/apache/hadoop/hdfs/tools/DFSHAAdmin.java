@@ -116,9 +116,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ha
 operator|.
-name|DFSConfigKeys
+name|HAServiceTarget
 import|;
 end_import
 
@@ -132,7 +132,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -296,10 +296,10 @@ block|}
 comment|/**    * Try to map the given namenode ID to its service address.    */
 annotation|@
 name|Override
-DECL|method|getServiceAddr (String nnId)
+DECL|method|resolveTarget (String nnId)
 specifier|protected
-name|String
-name|getServiceAddr
+name|HAServiceTarget
+name|resolveTarget
 parameter_list|(
 name|String
 name|nnId
@@ -314,12 +314,9 @@ operator|)
 name|getConf
 argument_list|()
 decl_stmt|;
-name|String
-name|serviceAddr
-init|=
-name|DFSUtil
-operator|.
-name|getNamenodeServiceAddr
+return|return
+operator|new
+name|NNHAServiceTarget
 argument_list|(
 name|conf
 argument_list|,
@@ -327,28 +324,6 @@ name|nameserviceId
 argument_list|,
 name|nnId
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|serviceAddr
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Unable to determine service address for namenode '"
-operator|+
-name|nnId
-operator|+
-literal|"'"
-argument_list|)
-throw|;
-block|}
-return|return
-name|serviceAddr
 return|;
 block|}
 annotation|@
