@@ -1112,6 +1112,7 @@ name|role
 decl_stmt|;
 DECL|field|state
 specifier|private
+specifier|volatile
 name|HAState
 name|state
 decl_stmt|;
