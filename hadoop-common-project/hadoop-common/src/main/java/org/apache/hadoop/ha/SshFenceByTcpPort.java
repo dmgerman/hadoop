@@ -261,13 +261,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|tryFence (HAServiceTarget target, String argsStr)
+DECL|method|tryFence (InetSocketAddress serviceAddr, String argsStr)
 specifier|public
 name|boolean
 name|tryFence
 parameter_list|(
-name|HAServiceTarget
-name|target
+name|InetSocketAddress
+name|serviceAddr
 parameter_list|,
 name|String
 name|argsStr
@@ -283,14 +283,6 @@ name|Args
 argument_list|(
 name|argsStr
 argument_list|)
-decl_stmt|;
-name|InetSocketAddress
-name|serviceAddr
-init|=
-name|target
-operator|.
-name|getAddress
-argument_list|()
 decl_stmt|;
 name|String
 name|host

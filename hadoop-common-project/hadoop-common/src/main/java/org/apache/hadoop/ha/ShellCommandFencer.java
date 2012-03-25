@@ -235,26 +235,18 @@ comment|// Nothing else we can really check without actually running the command
 block|}
 annotation|@
 name|Override
-DECL|method|tryFence (HAServiceTarget target, String cmd)
+DECL|method|tryFence (InetSocketAddress serviceAddr, String cmd)
 specifier|public
 name|boolean
 name|tryFence
 parameter_list|(
-name|HAServiceTarget
-name|target
+name|InetSocketAddress
+name|serviceAddr
 parameter_list|,
 name|String
 name|cmd
 parameter_list|)
 block|{
-name|InetSocketAddress
-name|serviceAddr
-init|=
-name|target
-operator|.
-name|getAddress
-argument_list|()
-decl_stmt|;
 name|List
 argument_list|<
 name|String

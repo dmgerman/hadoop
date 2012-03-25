@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -89,13 +99,13 @@ throws|throws
 name|BadFencingConfigurationException
 function_decl|;
 comment|/**    * Attempt to fence the target node.    * @param serviceAddr the address (host:ipcport) of the service to fence    * @param args the configured arguments, which were checked at startup by    *             {@link #checkArgs(String)}    * @return true if fencing was successful, false if unsuccessful or    *              indeterminate    * @throws BadFencingConfigurationException if the configuration was    *         determined to be invalid only at runtime    */
-DECL|method|tryFence (HAServiceTarget target, String args)
+DECL|method|tryFence (InetSocketAddress serviceAddr, String args)
 specifier|public
 name|boolean
 name|tryFence
 parameter_list|(
-name|HAServiceTarget
-name|target
+name|InetSocketAddress
+name|serviceAddr
 parameter_list|,
 name|String
 name|args

@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -146,15 +156,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param target service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
-DECL|method|preFailoverChecks (HAServiceTarget target, boolean forceActive)
+comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param toSvc service to make active    * @param toSvcName name of service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
+DECL|method|preFailoverChecks (HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, boolean forceActive)
 specifier|private
 specifier|static
 name|void
 name|preFailoverChecks
 parameter_list|(
-name|HAServiceTarget
-name|target
+name|HAServiceProtocol
+name|toSvc
+parameter_list|,
+name|InetSocketAddress
+name|toSvcAddr
 parameter_list|,
 name|boolean
 name|forceActive
@@ -165,18 +178,8 @@ block|{
 name|HAServiceStatus
 name|toSvcStatus
 decl_stmt|;
-name|HAServiceProtocol
-name|toSvc
-decl_stmt|;
 try|try
 block|{
-name|toSvc
-operator|=
-name|target
-operator|.
-name|getProxy
-argument_list|()
-expr_stmt|;
 name|toSvcStatus
 operator|=
 name|toSvc
@@ -196,7 +199,7 @@ name|msg
 init|=
 literal|"Unable to get service state for "
 operator|+
-name|target
+name|toSvcAddr
 decl_stmt|;
 name|LOG
 operator|.
@@ -268,7 +271,7 @@ throw|throw
 operator|new
 name|FailoverFailedException
 argument_list|(
-name|target
+name|toSvcAddr
 operator|+
 literal|" is not ready to become active: "
 operator|+
@@ -332,18 +335,27 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param toSvc service to make active    * @param forceFence to fence fromSvc even if not strictly necessary    * @param forceActive try to make toSvc active even if it is not ready    * @throws FailoverFailedException if the failover fails    */
-DECL|method|failover (HAServiceTarget fromSvc, HAServiceTarget toSvc, boolean forceFence, boolean forceActive)
+comment|/**    * Failover from service 1 to service 2. If the failover fails    * then try to failback.    *    * @param fromSvc currently active service    * @param fromSvcAddr addr of the currently active service    * @param toSvc service to make active    * @param toSvcAddr addr of the service to make active    * @param fencer for fencing fromSvc    * @param forceFence to fence fromSvc even if not strictly necessary    * @param forceActive try to make toSvc active even if it is not ready    * @throws FailoverFailedException if the failover fails    */
+DECL|method|failover (HAServiceProtocol fromSvc, InetSocketAddress fromSvcAddr, HAServiceProtocol toSvc, InetSocketAddress toSvcAddr, NodeFencer fencer, boolean forceFence, boolean forceActive)
 specifier|public
 specifier|static
 name|void
 name|failover
 parameter_list|(
-name|HAServiceTarget
+name|HAServiceProtocol
 name|fromSvc
 parameter_list|,
-name|HAServiceTarget
+name|InetSocketAddress
+name|fromSvcAddr
+parameter_list|,
+name|HAServiceProtocol
 name|toSvc
+parameter_list|,
+name|InetSocketAddress
+name|toSvcAddr
+parameter_list|,
+name|NodeFencer
+name|fencer
 parameter_list|,
 name|boolean
 name|forceFence
@@ -358,10 +370,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|fromSvc
-operator|.
-name|getFencer
-argument_list|()
+name|fencer
 operator|!=
 literal|null
 argument_list|,
@@ -371,6 +380,8 @@ expr_stmt|;
 name|preFailoverChecks
 argument_list|(
 name|toSvc
+argument_list|,
+name|toSvcAddr
 argument_list|,
 name|forceActive
 argument_list|)
@@ -388,9 +399,6 @@ operator|.
 name|transitionToStandby
 argument_list|(
 name|fromSvc
-operator|.
-name|getProxy
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// We should try to fence if we failed or it was forced
@@ -415,7 +423,7 @@ name|warn
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|fromSvc
+name|fromSvcAddr
 operator|+
 literal|" standby ("
 operator|+
@@ -440,7 +448,7 @@ name|warn
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|fromSvc
+name|fromSvcAddr
 operator|+
 literal|" standby (unable to connect)"
 argument_list|,
@@ -457,14 +465,11 @@ block|{
 if|if
 condition|(
 operator|!
-name|fromSvc
-operator|.
-name|getFencer
-argument_list|()
+name|fencer
 operator|.
 name|fence
 argument_list|(
-name|fromSvc
+name|fromSvcAddr
 argument_list|)
 condition|)
 block|{
@@ -474,7 +479,7 @@ name|FailoverFailedException
 argument_list|(
 literal|"Unable to fence "
 operator|+
-name|fromSvc
+name|fromSvcAddr
 operator|+
 literal|". Fencing failed."
 argument_list|)
@@ -499,9 +504,6 @@ operator|.
 name|transitionToActive
 argument_list|(
 name|toSvc
-operator|.
-name|getProxy
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -517,7 +519,7 @@ name|error
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|toSvc
+name|toSvcAddr
 operator|+
 literal|" active ("
 operator|+
@@ -550,7 +552,7 @@ name|error
 argument_list|(
 literal|"Unable to make "
 operator|+
-name|toSvc
+name|toSvcAddr
 operator|+
 literal|" active (unable to connect). Failing back."
 argument_list|,
@@ -577,7 +579,7 @@ name|msg
 init|=
 literal|"Unable to failover to "
 operator|+
-name|toSvc
+name|toSvcAddr
 decl_stmt|;
 comment|// Only try to failback if we didn't fence fromSvc
 if|if
@@ -596,7 +598,13 @@ name|failover
 argument_list|(
 name|toSvc
 argument_list|,
+name|toSvcAddr
+argument_list|,
 name|fromSvc
+argument_list|,
+name|fromSvcAddr
+argument_list|,
+name|fencer
 argument_list|,
 literal|true
 argument_list|,
@@ -614,7 +622,7 @@ name|msg
 operator|+=
 literal|". Failback to "
 operator|+
-name|fromSvc
+name|fromSvcAddr
 operator|+
 literal|" failed ("
 operator|+
