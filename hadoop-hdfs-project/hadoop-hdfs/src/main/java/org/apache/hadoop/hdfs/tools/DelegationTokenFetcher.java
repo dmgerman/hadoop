@@ -998,7 +998,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"ERROR: Must specify exacltly one token file"
+literal|"ERROR: Must specify exactly one token file"
 argument_list|)
 expr_stmt|;
 name|printUsage
