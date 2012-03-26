@@ -344,6 +344,26 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -403,7 +423,7 @@ decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 argument_list|>
@@ -1105,13 +1125,13 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (DataNode dn, FSDatasetInterface<?> dataset, Configuration conf)
+DECL|method|DirectoryScanner (DataNode dn, FsDatasetSpi<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
 name|DataNode
 name|dn
 parameter_list|,
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 argument_list|>
@@ -2097,14 +2117,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Is the given volume still valid in the dataset? */
-DECL|method|isValid (final FSDatasetInterface<?> dataset, final FsVolumeSpi volume)
+DECL|method|isValid (final FsDatasetSpi<?> dataset, final FsVolumeSpi volume)
 specifier|private
 specifier|static
 name|boolean
 name|isValid
 parameter_list|(
 specifier|final
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 argument_list|>

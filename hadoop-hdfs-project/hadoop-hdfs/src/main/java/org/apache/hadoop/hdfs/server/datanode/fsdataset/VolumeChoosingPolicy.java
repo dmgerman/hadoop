@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
 package|;
 end_package
 
@@ -54,28 +56,8 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|FsVolumeSpi
-import|;
-end_import
-
 begin_comment
-comment|/**************************************************  * BlockVolumeChoosingPolicy allows a DataNode to  * specify what policy is to be used while choosing  * a volume for a block request.  *  * Note: This is an evolving i/f and is only for  * advanced use.  *  ***************************************************/
+comment|/**  * This interface specifies the policy for choosing volumes to store replicas.  */
 end_comment
 
 begin_interface
@@ -83,18 +65,18 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|BlockVolumeChoosingPolicy
+DECL|interface|VolumeChoosingPolicy
 specifier|public
 interface|interface
-name|BlockVolumeChoosingPolicy
+name|VolumeChoosingPolicy
 parameter_list|<
 name|V
 extends|extends
 name|FsVolumeSpi
 parameter_list|>
 block|{
-comment|/**    * Returns a specific FSVolume after applying a suitable choice algorithm    * to place a given block, given a list of FSVolumes and the block    * size sought for storage.    *     * (Policies that maintain state must be thread-safe.)    *     * @param volumes - the array of FSVolumes that are available.    * @param blockSize - the size of the block for which a volume is sought.    * @return the chosen volume to store the block.    * @throws IOException when disks are unavailable or are full.    */
-DECL|method|chooseVolume (List<V> volumes, long blockSize)
+comment|/**    * Choose a volume to place a replica,    * given a list of volumes and the replica size sought for storage.    *     * The implementations of this interface must be thread-safe.    *     * @param volumes - a list of available volumes.    * @param replicaSize - the size of the replica for which a volume is sought.    * @return the chosen volume.    * @throws IOException when disks are unavailable or are full.    */
+DECL|method|chooseVolume (List<V> volumes, long replicaSize)
 specifier|public
 name|V
 name|chooseVolume
@@ -106,7 +88,7 @@ argument_list|>
 name|volumes
 parameter_list|,
 name|long
-name|blockSize
+name|replicaSize
 parameter_list|)
 throws|throws
 name|IOException

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
 package|;
 end_package
 
@@ -190,9 +192,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
-operator|.
-name|FsVolumeSpi
+name|DataNode
 import|;
 end_import
 
@@ -210,9 +210,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
-operator|.
-name|LengthInputStream
+name|DataStorage
 import|;
 end_import
 
@@ -230,9 +228,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
-operator|.
-name|ReplicaInputStreams
+name|FSDataset
 import|;
 end_import
 
@@ -250,9 +246,25 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
+name|Replica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|ReplicaOutputStreams
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|ReplicaInPipelineInterface
 import|;
 end_import
 
@@ -345,7 +357,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is an interface for the underlying storage that stores blocks for  * a data node.   * Examples are the FSDataset (which stores blocks on dirs)  and   * SimulatedFSDataset (which simulates data).  *  */
+comment|/**  * This is a service provider interface for the underlying storage that  * stores replicas for a data node.  * The default implementation stores replicas on local drives.   */
 end_comment
 
 begin_interface
@@ -353,10 +365,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|FSDatasetInterface
+DECL|interface|FsDatasetSpi
 specifier|public
 interface|interface
-name|FSDatasetInterface
+name|FsDatasetSpi
 parameter_list|<
 name|V
 extends|extends
@@ -365,16 +377,17 @@ parameter_list|>
 extends|extends
 name|FSDatasetMBean
 block|{
-comment|/**    * A factory for creating FSDatasetInterface objects.    */
+comment|/**    * A factory for creating {@link FsDatasetSpi} objects.    */
 DECL|class|Factory
 specifier|public
+specifier|static
 specifier|abstract
 class|class
 name|Factory
 parameter_list|<
 name|D
 extends|extends
-name|FSDatasetInterface
+name|FsDatasetSpi
 parameter_list|<
 name|?
 parameter_list|>
@@ -438,12 +451,12 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Create a FSDatasetInterface object. */
-DECL|method|createFSDatasetInterface ( DataNode datanode, DataStorage storage, Configuration conf )
+comment|/** Create a new object. */
+DECL|method|newInstance (DataNode datanode, DataStorage storage, Configuration conf)
 specifier|public
 specifier|abstract
 name|D
-name|createFSDatasetInterface
+name|newInstance
 parameter_list|(
 name|DataNode
 name|datanode
@@ -470,7 +483,7 @@ return|;
 block|}
 block|}
 comment|/**    * Create rolling logs.    *     * @param prefix the prefix of the log names.    * @return rolling logs    */
-DECL|method|createRollingLogs (String bpid, String prefix)
+DECL|method|createRollingLogs (String bpid, String prefix )
 specifier|public
 name|RollingLogs
 name|createRollingLogs
@@ -660,7 +673,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createTemporary (ExtendedBlock b)
+DECL|method|createTemporary (ExtendedBlock b )
 specifier|public
 name|ReplicaInPipelineInterface
 name|createTemporary
@@ -672,7 +685,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createRbw (ExtendedBlock b)
+DECL|method|createRbw (ExtendedBlock b )
 specifier|public
 name|ReplicaInPipelineInterface
 name|createRbw
@@ -753,7 +766,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @throws IOException    */
-DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
+DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
 specifier|public
 name|void
 name|recoverClose
@@ -866,8 +879,8 @@ name|void
 name|shutdown
 parameter_list|()
 function_decl|;
-comment|/**    * Sets the file pointer of the checksum stream so that the last checksum    * will be overwritten    * @param b block    * @param stream The stream for the data file and checksum file    * @param checksumSize number of bytes each checksum has    * @throws IOException    */
-DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams stream, int checksumSize)
+comment|/**    * Sets the file pointer of the checksum stream so that the last checksum    * will be overwritten    * @param b block    * @param outs The streams for the data file and checksum file    * @param checksumSize number of bytes each checksum has    * @throws IOException    */
+DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams outs, int checksumSize)
 specifier|public
 name|void
 name|adjustCrcChannelPosition
@@ -876,7 +889,7 @@ name|ExtendedBlock
 name|b
 parameter_list|,
 name|ReplicaOutputStreams
-name|stream
+name|outs
 parameter_list|,
 name|int
 name|checksumSize
@@ -904,7 +917,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Initialize a replica recovery.    * @return actual state of the replica on this data-node or     * null if data-node does not have the replica.    */
-DECL|method|initReplicaRecovery (RecoveringBlock rBlock)
+DECL|method|initReplicaRecovery (RecoveringBlock rBlock )
 specifier|public
 name|ReplicaRecoveryInfo
 name|initReplicaRecovery
@@ -973,8 +986,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get {@link BlockLocalPathInfo} for the given block.    **/
-DECL|method|getBlockLocalPathInfo (ExtendedBlock b)
+comment|/**    * Get {@link BlockLocalPathInfo} for the given block.    */
+DECL|method|getBlockLocalPathInfo (ExtendedBlock b )
 specifier|public
 name|BlockLocalPathInfo
 name|getBlockLocalPathInfo

@@ -84,6 +84,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|DatanodeRegistration
@@ -150,7 +170,7 @@ comment|/**    * This method is used for testing.     * Examples are adding and 
 DECL|method|getFSDataset (DataNode dn)
 specifier|public
 specifier|static
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 argument_list|>

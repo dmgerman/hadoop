@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
 package|;
 end_package
 
@@ -47,26 +49,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|FsVolumeSpi
 import|;
 end_import
 
@@ -131,10 +113,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestRoundRobinVolumesPolicy
+DECL|class|TestRoundRobinVolumeChoosingPolicy
 specifier|public
 class|class
-name|TestRoundRobinVolumesPolicy
+name|TestRoundRobinVolumeChoosingPolicy
 block|{
 comment|// Test the Round-Robin block-volume choosing algorithm.
 annotation|@
@@ -237,23 +219,17 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 specifier|final
-name|RoundRobinVolumesPolicy
+name|RoundRobinVolumeChoosingPolicy
 argument_list|<
 name|FsVolumeSpi
 argument_list|>
 name|policy
 init|=
-operator|(
-name|RoundRobinVolumesPolicy
-argument_list|<
-name|FsVolumeSpi
-argument_list|>
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance
 argument_list|(
-name|RoundRobinVolumesPolicy
+name|RoundRobinVolumeChoosingPolicy
 operator|.
 name|class
 argument_list|,
@@ -397,7 +373,8 @@ block|{
 comment|// Passed.
 block|}
 block|}
-comment|// ChooseVolume should throw DiskOutOfSpaceException with volume and block sizes in exception message.
+comment|// ChooseVolume should throw DiskOutOfSpaceException
+comment|// with volume and block sizes in exception message.
 annotation|@
 name|Test
 DECL|method|testRRPolicyExceptionMessage ()
@@ -493,14 +470,14 @@ literal|600L
 argument_list|)
 expr_stmt|;
 specifier|final
-name|RoundRobinVolumesPolicy
+name|RoundRobinVolumeChoosingPolicy
 argument_list|<
 name|FsVolumeSpi
 argument_list|>
 name|policy
 init|=
 operator|new
-name|RoundRobinVolumesPolicy
+name|RoundRobinVolumeChoosingPolicy
 argument_list|<
 name|FsVolumeSpi
 argument_list|>
@@ -542,9 +519,15 @@ name|assertEquals
 argument_list|(
 literal|"Not returnig the expected message"
 argument_list|,
-literal|"Insufficient space for an additional block. Volume with the most available space has 600 bytes free, configured block size is "
+literal|"Out of space: The volume with the most available space (="
+operator|+
+literal|600
+operator|+
+literal|" B) is less than the block size (="
 operator|+
 name|blockSize
+operator|+
+literal|" B)."
 argument_list|,
 name|e
 operator|.

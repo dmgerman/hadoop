@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
 package|;
 end_package
 
@@ -51,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Rolling logs consist of a current log and a previous log.  * When the roll operation is invoked, current is rolled to previous  * and previous is deleted.  * The implementation should support a single appender and multiple readers.  */
+comment|/**  * Rolling logs consist of a current log and a set of previous logs.  *  * The implementation should support a single appender and multiple readers.  */
 end_comment
 
 begin_interface
@@ -110,7 +112,7 @@ name|Appender
 name|appender
 parameter_list|()
 function_decl|;
-comment|/**    * Roll current to previous and delete the previous.    *    * @return true if the rolling succeeded.    *   When it returns false, it is not equivalent to an error.     *   It means that the rolling cannot be performed at the moment,    *   e.g. the logs are being read.    */
+comment|/**    * Roll current to previous.    *    * @return true if the rolling succeeded.    *   When it returns false, it is not equivalent to an error.     *   It means that the rolling cannot be performed at the moment,    *   e.g. the logs are being read.    */
 DECL|method|roll ()
 specifier|public
 name|boolean

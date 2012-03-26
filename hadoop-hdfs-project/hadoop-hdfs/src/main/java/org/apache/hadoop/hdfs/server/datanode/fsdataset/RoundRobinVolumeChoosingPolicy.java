@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
 package|;
 end_package
 
@@ -48,26 +50,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|FsVolumeSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -76,18 +58,22 @@ name|DiskOutOfSpaceException
 import|;
 end_import
 
+begin_comment
+comment|/**  * Choose volumes in round-robin order.  */
+end_comment
+
 begin_class
-DECL|class|RoundRobinVolumesPolicy
+DECL|class|RoundRobinVolumeChoosingPolicy
 specifier|public
 class|class
-name|RoundRobinVolumesPolicy
+name|RoundRobinVolumeChoosingPolicy
 parameter_list|<
 name|V
 extends|extends
 name|FsVolumeSpi
 parameter_list|>
 implements|implements
-name|BlockVolumeChoosingPolicy
+name|VolumeChoosingPolicy
 argument_list|<
 name|V
 argument_list|>
@@ -237,13 +223,17 @@ throw|throw
 operator|new
 name|DiskOutOfSpaceException
 argument_list|(
-literal|"Insufficient space for an additional block. Volume with the most available space has "
+literal|"Out of space: "
+operator|+
+literal|"The volume with the most available space (="
 operator|+
 name|maxAvailable
 operator|+
-literal|" bytes free, configured block size is "
+literal|" B) is less than the block size (="
 operator|+
 name|blockSize
+operator|+
+literal|" B)."
 argument_list|)
 throw|;
 block|}
