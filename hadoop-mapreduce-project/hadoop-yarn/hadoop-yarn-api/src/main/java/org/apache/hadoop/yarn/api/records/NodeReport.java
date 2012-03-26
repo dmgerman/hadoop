@@ -132,6 +132,24 @@ name|NodeId
 name|nodeId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>NodeState</code> of the node.    * @return<code>NodeState</code> of the node    */
+DECL|method|getNodeState ()
+name|NodeState
+name|getNodeState
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeState (NodeState nodeState)
+name|void
+name|setNodeState
+parameter_list|(
+name|NodeState
+name|nodeState
+parameter_list|)
+function_decl|;
 comment|/**    * Get the<em>http address</em> of the node.    * @return<em>http address</em> of the node    */
 annotation|@
 name|Public

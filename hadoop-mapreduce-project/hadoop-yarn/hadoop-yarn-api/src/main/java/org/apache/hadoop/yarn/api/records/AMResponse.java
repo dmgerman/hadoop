@@ -275,6 +275,37 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
+comment|/**    * Get the list of<em>updated<code>NodeReport</code>s</em>. Updates could be    * changes in health, availability etc of the nodes.    * @return The delta of updated nodes since the last response    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getUpdatedNodes ()
+specifier|public
+name|List
+argument_list|<
+name|NodeReport
+argument_list|>
+name|getUpdatedNodes
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setUpdatedNodes (final List<NodeReport> updatedNodes)
+specifier|public
+name|void
+name|setUpdatedNodes
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|NodeReport
+argument_list|>
+name|updatedNodes
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

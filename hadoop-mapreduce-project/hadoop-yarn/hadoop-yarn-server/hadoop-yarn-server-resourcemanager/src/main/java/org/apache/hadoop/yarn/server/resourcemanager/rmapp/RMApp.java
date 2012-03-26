@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -190,6 +200,26 @@ name|RMAppAttempt
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNode
+import|;
+end_import
+
 begin_comment
 comment|/**  * The read interface to an Application in the ResourceManager. Take a  * look at {@link RMAppImpl} for its implementation. This interface  * exposes methods to access various updates in application status/report.  */
 end_comment
@@ -263,6 +293,18 @@ name|createAndGetApplicationReport
 parameter_list|(
 name|boolean
 name|allowAccess
+parameter_list|)
+function_decl|;
+comment|/**    * To receive the collection of all {@link RMNode}s whose updates have been    * received by the RMApp. Updates can be node becoming lost or becoming    * healthy etc. The method clears the information from the {@link RMApp}. So    * each call to this method gives the delta from the previous call.    * @param updatedNodes Collection into which the updates are transferred    * @return the number of nodes added to the {@link Collection}    */
+DECL|method|pullRMNodeUpdates (Collection<RMNode> updatedNodes)
+name|int
+name|pullRMNodeUpdates
+parameter_list|(
+name|Collection
+argument_list|<
+name|RMNode
+argument_list|>
+name|updatedNodes
 parameter_list|)
 function_decl|;
 comment|/**    * Application level metadata is stored in {@link ApplicationStore} which    * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */

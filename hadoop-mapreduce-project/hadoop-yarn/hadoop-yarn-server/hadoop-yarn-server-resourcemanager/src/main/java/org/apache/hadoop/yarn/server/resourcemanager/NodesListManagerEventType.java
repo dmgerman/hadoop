@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager
 package|package
 name|org
 operator|.
@@ -17,46 +17,20 @@ operator|.
 name|server
 operator|.
 name|resourcemanager
-operator|.
-name|rmapp
 package|;
 end_package
 
 begin_enum
-DECL|enum|RMAppEventType
+DECL|enum|NodesListManagerEventType
 specifier|public
 enum|enum
-name|RMAppEventType
+name|NodesListManagerEventType
 block|{
-comment|// Source: ClientRMService
-DECL|enumConstant|START
-name|START
+DECL|enumConstant|NODE_USABLE
+name|NODE_USABLE
 block|,
-DECL|enumConstant|KILL
-name|KILL
-block|,
-comment|// Source: RMAppAttempt
-DECL|enumConstant|APP_REJECTED
-name|APP_REJECTED
-block|,
-DECL|enumConstant|APP_ACCEPTED
-name|APP_ACCEPTED
-block|,
-DECL|enumConstant|ATTEMPT_REGISTERED
-name|ATTEMPT_REGISTERED
-block|,
-DECL|enumConstant|ATTEMPT_FINISHED
-name|ATTEMPT_FINISHED
-block|,
-comment|// Will send the final state
-DECL|enumConstant|ATTEMPT_FAILED
-name|ATTEMPT_FAILED
-block|,
-DECL|enumConstant|ATTEMPT_KILLED
-name|ATTEMPT_KILLED
-block|,
-DECL|enumConstant|NODE_UPDATE
-name|NODE_UPDATE
+DECL|enumConstant|NODE_UNUSABLE
+name|NODE_UNUSABLE
 block|}
 end_enum
 

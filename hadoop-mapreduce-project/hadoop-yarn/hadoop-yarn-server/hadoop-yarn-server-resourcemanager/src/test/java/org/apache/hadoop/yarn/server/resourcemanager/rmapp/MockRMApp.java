@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -149,6 +159,26 @@ operator|.
 name|attempt
 operator|.
 name|RMAppAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNode
 import|;
 end_import
 
@@ -755,6 +785,28 @@ name|FinalApplicationStatus
 operator|.
 name|UNDEFINED
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|pullRMNodeUpdates (Collection<RMNode> updatedNodes)
+specifier|public
+name|int
+name|pullRMNodeUpdates
+parameter_list|(
+name|Collection
+argument_list|<
+name|RMNode
+argument_list|>
+name|updatedNodes
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 empty_stmt|;
 block|}

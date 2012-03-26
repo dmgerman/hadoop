@@ -631,7 +631,9 @@ name|nodesListManager
 init|=
 operator|new
 name|NodesListManager
-argument_list|()
+argument_list|(
+name|context
+argument_list|)
 decl_stmt|;
 name|Configuration
 name|conf

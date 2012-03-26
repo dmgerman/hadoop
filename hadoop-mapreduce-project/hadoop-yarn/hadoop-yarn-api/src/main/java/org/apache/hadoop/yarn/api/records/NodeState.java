@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -14,49 +14,53 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
-operator|.
-name|rmapp
+name|records
 package|;
 end_package
 
+begin_comment
+comment|// TODO NodeState is a clone of RMNodeState made for MR-3353. In a subsequent
+end_comment
+
+begin_comment
+comment|// patch RMNodeState should be replaced with NodeState
+end_comment
+
+begin_comment
+comment|/**  *<p>State of a<code>Node</code>.</p>  */
+end_comment
+
 begin_enum
-DECL|enum|RMAppEventType
+DECL|enum|NodeState
 specifier|public
 enum|enum
-name|RMAppEventType
+name|NodeState
 block|{
-comment|// Source: ClientRMService
-DECL|enumConstant|START
-name|START
+comment|/** New node */
+DECL|enumConstant|NEW
+name|NEW
 block|,
-DECL|enumConstant|KILL
-name|KILL
+comment|/** Running node */
+DECL|enumConstant|RUNNING
+name|RUNNING
 block|,
-comment|// Source: RMAppAttempt
-DECL|enumConstant|APP_REJECTED
-name|APP_REJECTED
+comment|/** Node is unhealthy */
+DECL|enumConstant|UNHEALTHY
+name|UNHEALTHY
 block|,
-DECL|enumConstant|APP_ACCEPTED
-name|APP_ACCEPTED
+comment|/** Node is out of service */
+DECL|enumConstant|DECOMMISSIONED
+name|DECOMMISSIONED
 block|,
-DECL|enumConstant|ATTEMPT_REGISTERED
-name|ATTEMPT_REGISTERED
+comment|/** Node has not sent a heartbeat for some configured time threshold*/
+DECL|enumConstant|LOST
+name|LOST
 block|,
-DECL|enumConstant|ATTEMPT_FINISHED
-name|ATTEMPT_FINISHED
-block|,
-comment|// Will send the final state
-DECL|enumConstant|ATTEMPT_FAILED
-name|ATTEMPT_FAILED
-block|,
-DECL|enumConstant|ATTEMPT_KILLED
-name|ATTEMPT_KILLED
-block|,
-DECL|enumConstant|NODE_UPDATE
-name|NODE_UPDATE
+comment|/** Node has rebooted */
+DECL|enumConstant|REBOOTED
+name|REBOOTED
 block|}
 end_enum
 
