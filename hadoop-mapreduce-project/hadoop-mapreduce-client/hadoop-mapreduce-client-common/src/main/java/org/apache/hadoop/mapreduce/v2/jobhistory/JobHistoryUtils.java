@@ -934,6 +934,10 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|MR_AM_STAGING_DIR
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_STAGING_DIR
 argument_list|)
 operator|+
 literal|"/history/done_intermediate"
@@ -982,6 +986,10 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|MR_AM_STAGING_DIR
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_STAGING_DIR
 argument_list|)
 operator|+
 literal|"/history/done"

@@ -1430,6 +1430,15 @@ name|MR_AM_PREFIX
 operator|+
 literal|"staging-dir"
 decl_stmt|;
+DECL|field|DEFAULT_MR_AM_STAGING_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MR_AM_STAGING_DIR
+init|=
+literal|"/tmp/hadoop-yarn/staging"
+decl_stmt|;
 comment|/** The amount of memory the MR app master needs.*/
 DECL|field|MR_AM_VMEM_MB
 specifier|public
