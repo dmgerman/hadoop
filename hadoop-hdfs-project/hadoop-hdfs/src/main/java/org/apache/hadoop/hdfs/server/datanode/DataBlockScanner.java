@@ -180,6 +180,26 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -225,7 +245,7 @@ decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 extends|extends
@@ -266,13 +286,13 @@ name|blockScannerThread
 init|=
 literal|null
 decl_stmt|;
-DECL|method|DataBlockScanner (DataNode datanode, FSDatasetInterface<? extends FsVolumeSpi> dataset, Configuration conf)
+DECL|method|DataBlockScanner (DataNode datanode, FsDatasetSpi<? extends FsVolumeSpi> dataset, Configuration conf)
 name|DataBlockScanner
 parameter_list|(
 name|DataNode
 name|datanode
 parameter_list|,
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 extends|extends

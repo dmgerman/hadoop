@@ -288,6 +288,26 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsDatasetSpi
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -349,6 +369,26 @@ operator|.
 name|fsdataset
 operator|.
 name|ReplicaOutputStreams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|RollingLogs
 import|;
 end_import
 
@@ -466,7 +506,7 @@ specifier|public
 class|class
 name|SimulatedFSDataset
 implements|implements
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|FsVolumeSpi
 argument_list|>
@@ -476,7 +516,7 @@ specifier|static
 class|class
 name|Factory
 extends|extends
-name|FSDatasetInterface
+name|FsDatasetSpi
 operator|.
 name|Factory
 argument_list|<
@@ -485,10 +525,10 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|createFSDatasetInterface (DataNode datanode, DataStorage storage, Configuration conf)
+DECL|method|newInstance (DataNode datanode, DataStorage storage, Configuration conf)
 specifier|public
 name|SimulatedFSDataset
-name|createFSDatasetInterface
+name|newInstance
 parameter_list|(
 name|DataNode
 name|datanode
@@ -2125,7 +2165,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|finalizeBlock (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -2203,7 +2243,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|unfinalizeBlock (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -2413,7 +2453,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getLength (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -2608,7 +2648,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getStoredBlock (String bpid, long blkid)
 specifier|public
 name|Block
@@ -2695,7 +2735,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|invalidate (String bpid, Block[] invalidBlks)
 specifier|public
 specifier|synchronized
@@ -2872,7 +2912,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// {@link FSDatasetInterface}
+comment|// {@link FsDatasetSpi}
 DECL|method|contains (ExtendedBlock block)
 specifier|public
 name|boolean
@@ -2893,7 +2933,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|isValidBlock (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -2973,7 +3013,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
@@ -3058,7 +3098,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
@@ -3173,7 +3213,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 name|void
@@ -3298,7 +3338,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
 specifier|synchronized
@@ -3422,7 +3462,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|createRbw (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -3444,7 +3484,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|createTemporary (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -3615,7 +3655,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getBlockInputStream (ExtendedBlock b, long seekOffset)
 specifier|public
 specifier|synchronized
@@ -3653,7 +3693,7 @@ block|}
 comment|/** Not supported */
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkoff, long ckoff)
 specifier|public
 name|ReplicaInputStreams
@@ -3681,7 +3721,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getMetaDataInputStream (ExtendedBlock b )
 specifier|public
 specifier|synchronized
@@ -3797,7 +3837,7 @@ comment|// nothing to check for simulated data set
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams stream, int checksumSize)
 specifier|public
 specifier|synchronized
@@ -4407,7 +4447,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|updateReplicaUnderRecovery (ExtendedBlock oldBlock, long recoveryId, long newlength)
 specifier|public
 name|String
@@ -4429,7 +4469,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|getReplicaVisibleLength (ExtendedBlock block)
 specifier|public
 name|long
@@ -4448,7 +4488,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|addBlockPool (String bpid, Configuration conf)
 specifier|public
 name|void
@@ -4497,7 +4537,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|shutdownBlockPool (String bpid)
 specifier|public
 name|void
@@ -4524,7 +4564,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// FSDatasetInterface
+comment|// FsDatasetSpi
 DECL|method|deleteBlockPool (String bpid, boolean force)
 specifier|public
 name|void

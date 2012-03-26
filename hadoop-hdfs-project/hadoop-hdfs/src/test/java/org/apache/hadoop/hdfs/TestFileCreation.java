@@ -628,7 +628,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|FSDatasetInterface
+name|SimulatedFSDataset
 import|;
 end_import
 
@@ -646,7 +646,9 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|SimulatedFSDataset
+name|fsdataset
+operator|.
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -1555,7 +1557,7 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|FSDatasetInterface
+name|FsDatasetSpi
 argument_list|<
 name|?
 argument_list|>
