@@ -313,7 +313,7 @@ operator|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
-literal|1
+literal|10
 argument_list|,
 literal|10
 argument_list|,
