@@ -565,7 +565,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class provides some DFS administrative access.  */
+comment|/**  * This class provides some DFS administrative access shell commands.  */
 end_comment
 
 begin_class
@@ -2190,10 +2190,8 @@ name|inSafeMode
 operator|=
 name|dfs
 operator|.
-name|setSafeMode
-argument_list|(
-name|action
-argument_list|)
+name|isInSafeMode
+argument_list|()
 expr_stmt|;
 block|}
 block|}

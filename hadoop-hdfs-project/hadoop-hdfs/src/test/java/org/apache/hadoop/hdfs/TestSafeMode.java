@@ -1863,6 +1863,66 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * Tests some utility methods that surround the SafeMode's state.    * @throws IOException when there's an issue connecting to the test DFS.    */
+DECL|method|testSafeModeUtils ()
+specifier|public
+name|void
+name|testSafeModeUtils
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|=
+operator|(
+name|DistributedFileSystem
+operator|)
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+expr_stmt|;
+comment|// Enter safemode.
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_ENTER
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"State was expected to be in safemode."
+argument_list|,
+name|dfs
+operator|.
+name|isInSafeMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Exit safemode.
+name|dfs
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_LEAVE
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"State was expected to be out of safemode."
+argument_list|,
+name|dfs
+operator|.
+name|isInSafeMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
