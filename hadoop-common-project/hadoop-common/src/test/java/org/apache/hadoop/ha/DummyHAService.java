@@ -102,6 +102,7 @@ extends|extends
 name|HAServiceTarget
 block|{
 DECL|field|state
+specifier|volatile
 name|HAServiceState
 name|state
 decl_stmt|;
@@ -116,6 +117,18 @@ decl_stmt|;
 DECL|field|address
 name|InetSocketAddress
 name|address
+decl_stmt|;
+DECL|field|isHealthy
+name|boolean
+name|isHealthy
+init|=
+literal|true
+decl_stmt|;
+DECL|field|actUnreachable
+name|boolean
+name|actUnreachable
+init|=
+literal|false
 decl_stmt|;
 DECL|method|DummyHAService (HAServiceState state, InetSocketAddress address)
 name|DummyHAService
@@ -187,7 +200,25 @@ throws|,
 name|AccessControlException
 throws|,
 name|IOException
-block|{       }
+block|{
+name|checkUnreachable
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|isHealthy
+condition|)
+block|{
+throw|throw
+operator|new
+name|HealthCheckFailedException
+argument_list|(
+literal|"not healthy"
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 specifier|public
@@ -201,6 +232,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkUnreachable
+argument_list|()
+expr_stmt|;
 name|state
 operator|=
 name|HAServiceState
@@ -221,6 +255,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkUnreachable
+argument_list|()
+expr_stmt|;
 name|state
 operator|=
 name|HAServiceState
@@ -237,6 +274,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkUnreachable
+argument_list|()
+expr_stmt|;
 name|HAServiceStatus
 name|ret
 init|=
@@ -264,6 +304,27 @@ block|}
 return|return
 name|ret
 return|;
+block|}
+specifier|private
+name|void
+name|checkUnreachable
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|actUnreachable
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Connection refused (fake)"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 argument_list|)
