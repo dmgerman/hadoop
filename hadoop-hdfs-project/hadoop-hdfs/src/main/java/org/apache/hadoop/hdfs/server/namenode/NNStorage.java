@@ -2316,6 +2316,20 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|getHighestFsImageName ()
+specifier|public
+name|File
+name|getHighestFsImageName
+parameter_list|()
+block|{
+return|return
+name|getFsImageName
+argument_list|(
+name|getMostRecentCheckpointTxId
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/** Create new dfs name directory.  Caution: this destroys all files    * in this filesystem. */
 DECL|method|format (StorageDirectory sd)
 specifier|private
