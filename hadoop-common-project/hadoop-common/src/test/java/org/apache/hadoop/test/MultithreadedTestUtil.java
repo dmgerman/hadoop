@@ -270,7 +270,7 @@ expr_stmt|;
 block|}
 comment|/**      * Checks for thread exceptions, and if they've occurred      * throws them as RuntimeExceptions in a deferred manner.      */
 DECL|method|checkException ()
-specifier|private
+specifier|public
 specifier|synchronized
 name|void
 name|checkException

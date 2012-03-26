@@ -48,6 +48,34 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|Lock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantLock
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -186,6 +214,20 @@ name|apache
 operator|.
 name|zookeeper
 operator|.
+name|Watcher
+operator|.
+name|Event
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
 name|ZooKeeper
 import|;
 end_import
@@ -290,11 +332,9 @@ specifier|public
 class|class
 name|ActiveStandbyElector
 implements|implements
-name|Watcher
+name|StatCallback
 implements|,
 name|StringCallback
-implements|,
-name|StatCallback
 block|{
 comment|/**    * Callback interface to interact with the ActiveStandbyElector object.<br/>    * The application will be notified with a callback only on state changes    * (i.e. there will never be successive calls to becomeActive without an    * intermediate call to enterNeutralMode).<br/>    * The callbacks will be running on Zookeeper client library threads. The    * application should return from these callbacks quickly so as not to impede    * Zookeeper client library performance and notifications. The app will    * typically remember the state change and return from the callback. It will    * then proceed with implementing actions around that state change. It is    * possible to be called back again while these actions are in flight and the    * app should handle this scenario.    */
 DECL|interface|ActiveStandbyElectorCallback
@@ -508,6 +548,20 @@ specifier|private
 specifier|final
 name|String
 name|znodeWorkingDir
+decl_stmt|;
+DECL|field|sessionReestablishLockForTests
+specifier|private
+name|Lock
+name|sessionReestablishLockForTests
+init|=
+operator|new
+name|ReentrantLock
+argument_list|()
+decl_stmt|;
+DECL|field|wantToBeInElection
+specifier|private
+name|boolean
+name|wantToBeInElection
 decl_stmt|;
 comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
 DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, ActiveStandbyElectorCallback app)
@@ -892,6 +946,17 @@ throw|;
 block|}
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully created "
+operator|+
+name|znodeWorkingDir
+operator|+
+literal|" in ZK."
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Any service instance can drop out of the election by calling quitElection.     *<br/>    * This will lose any leader status, if held, and stop monitoring of the lock    * node.<br/>    * If the instance wants to participate in election again, then it needs to    * call joinElection().<br/>    * This allows service instances to take themselves out of rotation for known    * impending unavailable states (e.g. long GC pause or software upgrade).    *     * @param needFence true if the underlying daemon may need to be fenced    * if a failover occurs due to dropping out of the election.    */
 DECL|method|quitElection (boolean needFence)
@@ -906,7 +971,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Yielding from election"
 argument_list|)
@@ -931,6 +996,10 @@ expr_stmt|;
 block|}
 name|reset
 argument_list|()
+expr_stmt|;
+name|wantToBeInElection
+operator|=
+literal|false
 expr_stmt|;
 block|}
 comment|/**    * Exception thrown when there is no active leader    */
@@ -1061,6 +1130,14 @@ name|String
 name|name
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isStaleClient
+argument_list|(
+name|ctx
+argument_list|)
+condition|)
+return|return;
 name|LOG
 operator|.
 name|debug
@@ -1078,17 +1155,6 @@ operator|+
 name|zkConnectionState
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|zkClient
-operator|==
-literal|null
-condition|)
-block|{
-comment|// zkClient is nulled before closing the connection
-comment|// this is the callback with session expired after we closed the session
-return|return;
-block|}
 name|Code
 name|code
 init|=
@@ -1206,6 +1272,25 @@ operator|+
 literal|". Not retrying further znode create connection errors."
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isSessionExpired
+argument_list|(
+name|code
+argument_list|)
+condition|)
+block|{
+comment|// This isn't fatal - the client Watcher will re-join the election
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Lock acquisition failed because session was lost"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|fatalError
 argument_list|(
 name|errorMessage
@@ -1234,6 +1319,14 @@ name|Stat
 name|stat
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isStaleClient
+argument_list|(
+name|ctx
+argument_list|)
+condition|)
+return|return;
 name|LOG
 operator|.
 name|debug
@@ -1251,17 +1344,6 @@ operator|+
 name|zkConnectionState
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|zkClient
-operator|==
-literal|null
-condition|)
-block|{
-comment|// zkClient is nulled before closing the connection
-comment|// this is the callback with session expired after we closed the session
-return|return;
-block|}
 name|Code
 name|code
 init|=
@@ -1381,14 +1463,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * interface implementation of Zookeeper watch events (connection and node)    */
-annotation|@
-name|Override
-DECL|method|process (WatchedEvent event)
-specifier|public
+DECL|method|processWatchEvent (ZooKeeper zk, WatchedEvent event)
 specifier|synchronized
 name|void
-name|process
+name|processWatchEvent
 parameter_list|(
+name|ZooKeeper
+name|zk
+parameter_list|,
 name|WatchedEvent
 name|event
 parameter_list|)
@@ -1403,6 +1485,14 @@ operator|.
 name|getType
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|isStaleClient
+argument_list|(
+name|zk
+argument_list|)
+condition|)
+return|return;
 name|LOG
 operator|.
 name|debug
@@ -1432,17 +1522,6 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|zkClient
-operator|==
-literal|null
-condition|)
-block|{
-comment|// zkClient is nulled before closing the connection
-comment|// this is the callback with session expired after we closed the session
-return|return;
-block|}
-if|if
-condition|(
 name|eventType
 operator|==
 name|Event
@@ -1464,6 +1543,13 @@ block|{
 case|case
 name|SyncConnected
 case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Session connected."
+argument_list|)
+expr_stmt|;
 comment|// if the listener was asked to move to safe state then it needs to
 comment|// be undone
 name|ConnectionState
@@ -1494,6 +1580,13 @@ break|break;
 case|case
 name|Disconnected
 case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Session disconnected. Entering neutral mode..."
+argument_list|)
+expr_stmt|;
 comment|// ask the app to move to safe state because zookeeper connection
 comment|// is not active and we dont know our state
 name|zkConnectionState
@@ -1511,6 +1604,13 @@ name|Expired
 case|:
 comment|// the connection got terminated because of session timeout
 comment|// call listener to reconnect
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Session expired. Entering neutral mode and rejoining..."
+argument_list|)
+expr_stmt|;
 name|enterNeutralMode
 argument_list|()
 expr_stmt|;
@@ -1620,7 +1720,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-return|return
+name|ZooKeeper
+name|zk
+init|=
 operator|new
 name|ZooKeeper
 argument_list|(
@@ -1628,8 +1730,22 @@ name|zkHostPort
 argument_list|,
 name|zkSessionTimeout
 argument_list|,
-name|this
+literal|null
 argument_list|)
+decl_stmt|;
+name|zk
+operator|.
+name|register
+argument_list|(
+operator|new
+name|WatcherWithClientRef
+argument_list|(
+name|zk
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|zk
 return|;
 block|}
 DECL|method|fatalError (String errorMessage)
@@ -1705,6 +1821,10 @@ name|createRetryCount
 operator|=
 literal|0
 expr_stmt|;
+name|wantToBeInElection
+operator|=
+literal|true
+expr_stmt|;
 name|createLockNodeAsync
 argument_list|()
 expr_stmt|;
@@ -1717,17 +1837,80 @@ parameter_list|()
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Trying to re-establish ZK session"
 argument_list|)
 expr_stmt|;
+comment|// Some of the test cases rely on expiring the ZK sessions and
+comment|// ensuring that the other node takes over. But, there's a race
+comment|// where the original lease holder could reconnect faster than the other
+comment|// thread manages to take the lock itself. This lock allows the
+comment|// tests to block the reconnection. It's a shame that this leaked
+comment|// into non-test code, but the lock is only acquired here so will never
+comment|// be contended.
+name|sessionReestablishLockForTests
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|terminateConnection
 argument_list|()
 expr_stmt|;
 name|joinElectionInternal
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|sessionReestablishLockForTests
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|preventSessionReestablishmentForTests ()
+name|void
+name|preventSessionReestablishmentForTests
+parameter_list|()
+block|{
+name|sessionReestablishLockForTests
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|allowSessionReestablishmentForTests ()
+name|void
+name|allowSessionReestablishmentForTests
+parameter_list|()
+block|{
+name|sessionReestablishLockForTests
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getZKSessionIdForTests ()
+name|long
+name|getZKSessionIdForTests
+parameter_list|()
+block|{
+return|return
+name|zkClient
+operator|.
+name|getSessionId
+argument_list|()
+return|;
 block|}
 DECL|method|reEstablishSession ()
 specifier|private
@@ -1914,6 +2097,9 @@ name|void
 name|becomeActive
 parameter_list|()
 block|{
+assert|assert
+name|wantToBeInElection
+assert|;
 if|if
 condition|(
 name|state
@@ -2416,7 +2602,7 @@ name|EPHEMERAL
 argument_list|,
 name|this
 argument_list|,
-literal|null
+name|zkClient
 argument_list|)
 expr_stmt|;
 block|}
@@ -2432,11 +2618,15 @@ name|exists
 argument_list|(
 name|zkLockFilePath
 argument_list|,
-name|this
+operator|new
+name|WatcherWithClientRef
+argument_list|(
+name|zkClient
+argument_list|)
 argument_list|,
 name|this
 argument_list|,
-literal|null
+name|zkClient
 argument_list|)
 expr_stmt|;
 block|}
@@ -2707,6 +2897,120 @@ throws|,
 name|InterruptedException
 function_decl|;
 block|}
+comment|/**    * The callbacks and watchers pass a reference to the ZK client    * which made the original call. We don't want to take action    * based on any callbacks from prior clients after we quit    * the election.    * @param ctx the ZK client passed into the watcher    * @return true if it matches the current client    */
+DECL|method|isStaleClient (Object ctx)
+specifier|private
+specifier|synchronized
+name|boolean
+name|isStaleClient
+parameter_list|(
+name|Object
+name|ctx
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ctx
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|zkClient
+operator|!=
+operator|(
+name|ZooKeeper
+operator|)
+name|ctx
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignoring stale result from old client with sessionId "
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"0x%08x"
+argument_list|,
+operator|(
+operator|(
+name|ZooKeeper
+operator|)
+name|ctx
+operator|)
+operator|.
+name|getSessionId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Watcher implementation which keeps a reference around to the    * original ZK connection, and passes it back along with any    * events.    */
+DECL|class|WatcherWithClientRef
+specifier|private
+specifier|final
+class|class
+name|WatcherWithClientRef
+implements|implements
+name|Watcher
+block|{
+DECL|field|zk
+specifier|private
+specifier|final
+name|ZooKeeper
+name|zk
+decl_stmt|;
+DECL|method|WatcherWithClientRef (ZooKeeper zk)
+specifier|private
+name|WatcherWithClientRef
+parameter_list|(
+name|ZooKeeper
+name|zk
+parameter_list|)
+block|{
+name|this
+operator|.
+name|zk
+operator|=
+name|zk
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|process (WatchedEvent event)
+specifier|public
+name|void
+name|process
+parameter_list|(
+name|WatchedEvent
+name|event
+parameter_list|)
+block|{
+name|ActiveStandbyElector
+operator|.
+name|this
+operator|.
+name|processWatchEvent
+argument_list|(
+name|zk
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|isSuccess (Code code)
 specifier|private
 specifier|static
@@ -2764,6 +3068,26 @@ operator|==
 name|Code
 operator|.
 name|NONODE
+operator|)
+return|;
+block|}
+DECL|method|isSessionExpired (Code code)
+specifier|private
+specifier|static
+name|boolean
+name|isSessionExpired
+parameter_list|(
+name|Code
+name|code
+parameter_list|)
+block|{
+return|return
+operator|(
+name|code
+operator|==
+name|Code
+operator|.
+name|SESSIONEXPIRED
 operator|)
 return|;
 block|}

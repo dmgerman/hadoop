@@ -106,6 +106,18 @@ name|apache
 operator|.
 name|zookeeper
 operator|.
+name|Watcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
 name|ZooKeeper
 import|;
 end_import
@@ -611,7 +623,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 block|}
@@ -649,7 +661,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -720,7 +732,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|stat
 argument_list|)
@@ -808,7 +820,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 comment|// no new monitor called
@@ -864,7 +876,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -980,7 +992,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1109,7 +1121,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1166,7 +1178,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1229,7 +1241,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1247,7 +1259,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1265,7 +1277,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1283,7 +1295,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1346,7 +1358,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1364,7 +1376,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1416,7 +1428,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|stat
 argument_list|)
@@ -1473,7 +1485,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 block|}
@@ -1506,7 +1518,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1524,7 +1536,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1576,7 +1588,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|stat
 argument_list|)
@@ -1633,7 +1645,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1651,7 +1663,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1669,7 +1681,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -1692,7 +1704,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -1747,7 +1759,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 block|}
@@ -1773,7 +1785,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -1794,7 +1806,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -1815,7 +1827,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -1836,7 +1848,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -1888,7 +1900,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 operator|(
 name|Stat
@@ -2007,8 +2019,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2079,8 +2093,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2123,8 +2139,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2157,8 +2175,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2222,7 +2242,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 comment|// create znode success. become master and monitor
@@ -2239,7 +2259,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -2288,8 +2308,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2366,7 +2388,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -2442,8 +2464,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2474,8 +2498,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2507,8 +2533,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2561,7 +2589,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 name|elector
@@ -2577,7 +2605,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -2628,8 +2656,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2681,7 +2711,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 name|elector
@@ -2697,7 +2727,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -2742,8 +2772,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2808,13 +2840,34 @@ argument_list|)
 operator|.
 name|exists
 argument_list|(
+name|Mockito
+operator|.
+name|eq
+argument_list|(
 name|ZK_LOCK_NAME
+argument_list|)
 argument_list|,
+name|Mockito
+operator|.
+expr|<
+name|Watcher
+operator|>
+name|any
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|same
+argument_list|(
 name|elector
+argument_list|)
 argument_list|,
-name|elector
-argument_list|,
-literal|null
+name|Mockito
+operator|.
+name|same
+argument_list|(
+name|mockZK
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2848,7 +2901,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -2925,8 +2978,10 @@ argument_list|)
 expr_stmt|;
 name|elector
 operator|.
-name|process
+name|processWatchEvent
 argument_list|(
+name|mockZK
+argument_list|,
 name|mockEvent
 argument_list|)
 expr_stmt|;
@@ -2979,7 +3034,7 @@ name|EPHEMERAL
 argument_list|,
 name|elector
 argument_list|,
-literal|null
+name|mockZK
 argument_list|)
 expr_stmt|;
 comment|// lost election
@@ -2996,7 +3051,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
@@ -3107,7 +3162,7 @@ argument_list|()
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|,
-literal|null
+name|mockZK
 argument_list|,
 name|ZK_LOCK_NAME
 argument_list|)
