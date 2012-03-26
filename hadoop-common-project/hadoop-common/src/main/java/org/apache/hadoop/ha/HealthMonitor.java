@@ -669,7 +669,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Service health check failed: "
+literal|"Service health check failed for "
+operator|+
+name|targetToMonitor
+operator|+
+literal|": "
 operator|+
 name|e
 operator|.

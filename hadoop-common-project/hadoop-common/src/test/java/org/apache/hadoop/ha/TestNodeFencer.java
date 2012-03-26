@@ -806,6 +806,17 @@ name|String
 name|args
 parameter_list|)
 block|{     }
+DECL|method|getLastFencedService ()
+specifier|public
+specifier|static
+name|HAServiceTarget
+name|getLastFencedService
+parameter_list|()
+block|{
+return|return
+name|fencedSvc
+return|;
+block|}
 block|}
 comment|/**    * Identical mock to above, except always returns false    */
 DECL|class|AlwaysFailFencer

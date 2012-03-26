@@ -38,6 +38,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -90,6 +100,20 @@ name|Mockito
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test-only implementation of {@link HAServiceTarget}, which returns  * a mock implementation.  */
 end_comment
@@ -129,6 +153,27 @@ name|boolean
 name|actUnreachable
 init|=
 literal|false
+decl_stmt|;
+DECL|field|failToBecomeActive
+name|boolean
+name|failToBecomeActive
+decl_stmt|;
+DECL|field|instances
+specifier|static
+name|ArrayList
+argument_list|<
+name|DummyHAService
+argument_list|>
+name|instances
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
+DECL|field|index
+name|int
+name|index
 decl_stmt|;
 DECL|method|DummyHAService (HAServiceState state, InetSocketAddress address)
 name|DummyHAService
@@ -172,6 +217,28 @@ name|address
 operator|=
 name|address
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|instances
+init|)
+block|{
+name|instances
+operator|.
+name|add
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|index
+operator|=
+name|instances
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|makeMock ()
 specifier|private
@@ -235,6 +302,19 @@ block|{
 name|checkUnreachable
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|failToBecomeActive
+condition|)
+block|{
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+literal|"injected failure"
+argument_list|)
+throw|;
+block|}
 name|state
 operator|=
 name|HAServiceState
@@ -384,6 +464,41 @@ parameter_list|()
 throws|throws
 name|BadFencingConfigurationException
 block|{   }
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"DummyHAService #"
+operator|+
+name|index
+return|;
+block|}
+DECL|method|getInstance (int serial)
+specifier|public
+specifier|static
+name|HAServiceTarget
+name|getInstance
+parameter_list|(
+name|int
+name|serial
+parameter_list|)
+block|{
+return|return
+name|instances
+operator|.
+name|get
+argument_list|(
+name|serial
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

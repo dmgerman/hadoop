@@ -228,6 +228,18 @@ name|apache
 operator|.
 name|zookeeper
 operator|.
+name|ZKUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
 name|ZooKeeper
 import|;
 end_import
@@ -430,6 +442,7 @@ literal|3
 decl_stmt|;
 DECL|enum|ConnectionState
 specifier|private
+specifier|static
 enum|enum
 name|ConnectionState
 block|{
@@ -444,7 +457,7 @@ name|TERMINATED
 block|}
 empty_stmt|;
 DECL|enum|State
-specifier|private
+specifier|static
 enum|enum
 name|State
 block|{
@@ -955,6 +968,98 @@ operator|+
 name|znodeWorkingDir
 operator|+
 literal|" in ZK."
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Clear all of the state held within the parent ZNode.    * This recursively deletes everything within the znode as well as the    * parent znode itself. It should only be used when it's certain that    * no electors are currently participating in the election.    */
+DECL|method|clearParentZNode ()
+specifier|public
+specifier|synchronized
+name|void
+name|clearParentZNode
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Recursively deleting "
+operator|+
+name|znodeWorkingDir
+operator|+
+literal|" from ZK..."
+argument_list|)
+expr_stmt|;
+name|zkDoWithRetries
+argument_list|(
+operator|new
+name|ZKAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|KeeperException
+throws|,
+name|InterruptedException
+block|{
+name|ZKUtil
+operator|.
+name|deleteRecursive
+argument_list|(
+name|zkClient
+argument_list|,
+name|znodeWorkingDir
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|KeeperException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Couldn't clear parent znode "
+operator|+
+name|znodeWorkingDir
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully deleted "
+operator|+
+name|znodeWorkingDir
+operator|+
+literal|" from ZK."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1910,6 +2015,18 @@ name|zkClient
 operator|.
 name|getSessionId
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStateForTests ()
+specifier|synchronized
+name|State
+name|getStateForTests
+parameter_list|()
+block|{
+return|return
+name|state
 return|;
 block|}
 DECL|method|reEstablishSession ()
