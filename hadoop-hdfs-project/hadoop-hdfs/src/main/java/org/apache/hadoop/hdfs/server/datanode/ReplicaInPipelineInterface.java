@@ -70,7 +70,6 @@ end_comment
 
 begin_interface
 DECL|interface|ReplicaInPipelineInterface
-specifier|public
 interface|interface
 name|ReplicaInPipelineInterface
 extends|extends

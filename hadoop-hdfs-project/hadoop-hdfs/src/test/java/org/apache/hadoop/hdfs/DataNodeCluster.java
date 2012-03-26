@@ -124,7 +124,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|SimulatedFSDataset
+name|FSDatasetInterface
 import|;
 end_import
 
@@ -142,9 +142,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|fsdataset
-operator|.
-name|FsDatasetSpi
+name|SimulatedFSDataset
 import|;
 end_import
 
@@ -603,7 +601,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|FsDatasetSpi
+name|FSDatasetInterface
 operator|.
 name|Factory
 operator|.
@@ -807,7 +805,7 @@ block|}
 name|boolean
 name|simulated
 init|=
-name|FsDatasetSpi
+name|FSDatasetInterface
 operator|.
 name|Factory
 operator|.

@@ -1568,26 +1568,6 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsDatasetSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -2356,7 +2336,7 @@ name|blockPoolManager
 decl_stmt|;
 DECL|field|data
 specifier|volatile
-name|FsDatasetSpi
+name|FSDatasetInterface
 argument_list|<
 name|?
 extends|extends
@@ -4851,20 +4831,20 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|FsDatasetSpi
+name|FSDatasetInterface
 operator|.
 name|Factory
 argument_list|<
 name|?
 extends|extends
-name|FsDatasetSpi
+name|FSDatasetInterface
 argument_list|<
 name|?
 argument_list|>
 argument_list|>
 name|factory
 init|=
-name|FsDatasetSpi
+name|FSDatasetInterface
 operator|.
 name|Factory
 operator|.
@@ -4986,7 +4966,7 @@ name|data
 operator|=
 name|factory
 operator|.
-name|newInstance
+name|createFSDatasetInterface
 argument_list|(
 name|this
 argument_list|,
@@ -8489,7 +8469,7 @@ block|}
 block|}
 comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
 DECL|method|getFSDataset ()
-name|FsDatasetSpi
+name|FSDatasetInterface
 argument_list|<
 name|?
 argument_list|>

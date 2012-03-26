@@ -546,26 +546,6 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsDatasetSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
 name|FsVolumeSpi
 import|;
 end_import
@@ -627,66 +607,6 @@ operator|.
 name|fsdataset
 operator|.
 name|ReplicaOutputStreams
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|RollingLogs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|RoundRobinVolumeChoosingPolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|VolumeChoosingPolicy
 import|;
 end_import
 
@@ -862,11 +782,10 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|FSDataset
-specifier|public
 class|class
 name|FSDataset
 implements|implements
-name|FsDatasetSpi
+name|FSDatasetInterface
 argument_list|<
 name|FSDataset
 operator|.
@@ -875,12 +794,11 @@ argument_list|>
 block|{
 comment|/**    * A factory for creating FSDataset objects.    */
 DECL|class|Factory
-specifier|public
 specifier|static
 class|class
 name|Factory
 extends|extends
-name|FsDatasetSpi
+name|FSDatasetInterface
 operator|.
 name|Factory
 argument_list|<
@@ -889,10 +807,10 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|newInstance (DataNode datanode, DataStorage storage, Configuration conf)
+DECL|method|createFSDatasetInterface (DataNode datanode, DataStorage storage, Configuration conf)
 specifier|public
 name|FSDataset
-name|newInstance
+name|createFSDatasetInterface
 parameter_list|(
 name|DataNode
 name|datanode
@@ -4499,8 +4417,7 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|blockChooser
-specifier|final
-name|VolumeChoosingPolicy
+name|BlockVolumeChoosingPolicy
 argument_list|<
 name|FSVolume
 argument_list|>
@@ -4510,7 +4427,7 @@ DECL|field|numFailedVolumes
 name|int
 name|numFailedVolumes
 decl_stmt|;
-DECL|method|FSVolumeSet (List<FSVolume> volumes, int failedVols, VolumeChoosingPolicy<FSVolume> blockChooser)
+DECL|method|FSVolumeSet (List<FSVolume> volumes, int failedVols, BlockVolumeChoosingPolicy<FSVolume> blockChooser)
 name|FSVolumeSet
 parameter_list|(
 name|List
@@ -4522,7 +4439,7 @@ parameter_list|,
 name|int
 name|failedVols
 parameter_list|,
-name|VolumeChoosingPolicy
+name|BlockVolumeChoosingPolicy
 argument_list|<
 name|FSVolume
 argument_list|>
@@ -5385,7 +5302,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getVolumes ()
 specifier|public
 name|List
@@ -5451,7 +5368,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getStoredBlock (String bpid, long blkid)
 specifier|public
 specifier|synchronized
@@ -5632,7 +5549,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getMetaDataInputStream (ExtendedBlock b)
 specifier|public
 name|LengthInputStream
@@ -5967,7 +5884,7 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 specifier|final
-name|VolumeChoosingPolicy
+name|BlockVolumeChoosingPolicy
 argument_list|<
 name|FSVolume
 argument_list|>
@@ -5983,13 +5900,13 @@ name|getClass
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FSDATASET_VOLUME_CHOOSING_POLICY_KEY
+name|DFS_DATANODE_BLOCKVOLUMECHOICEPOLICY
 argument_list|,
-name|RoundRobinVolumeChoosingPolicy
+name|RoundRobinVolumesPolicy
 operator|.
 name|class
 argument_list|,
-name|VolumeChoosingPolicy
+name|BlockVolumeChoosingPolicy
 operator|.
 name|class
 argument_list|)
@@ -6140,7 +6057,7 @@ block|}
 comment|/**    * Return true - if there are still valid volumes on the DataNode.     */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|hasEnoughResource ()
 specifier|public
 name|boolean
@@ -6224,7 +6141,7 @@ block|}
 comment|/**    * Find the block's on-disk length    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getLength (ExtendedBlock b)
 specifier|public
 name|long
@@ -6411,7 +6328,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getBlockInputStream (ExtendedBlock b, long seekOffset)
 specifier|public
 name|InputStream
@@ -6609,7 +6526,7 @@ block|}
 comment|/**    * Returns handles to the block file and its metadata file    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getTmpInputStreams (ExtendedBlock b, long blkOffset, long ckoff)
 specifier|public
 specifier|synchronized
@@ -7226,7 +7143,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|append (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
@@ -7931,7 +7848,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|recoverAppend (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 specifier|synchronized
@@ -8028,7 +7945,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
 name|void
@@ -8218,7 +8135,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|createRbw (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -8350,7 +8267,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|recoverRbw (ExtendedBlock b, long newGS, long minBytesRcvd, long maxBytesRcvd)
 specifier|public
 specifier|synchronized
@@ -8574,7 +8491,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|convertTemporaryToRbw ( final ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -8882,7 +8799,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|createTemporary (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -9014,7 +8931,7 @@ block|}
 comment|/**    * Sets the offset in the meta file so that the    * last checksum will be overwritten.    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|adjustCrcChannelPosition (ExtendedBlock b, ReplicaOutputStreams streams, int checksumSize)
 specifier|public
 name|void
@@ -9114,7 +9031,7 @@ comment|//
 comment|/**    * Complete the block write!    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|finalizeBlock (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -9312,7 +9229,7 @@ block|}
 comment|/**    * Remove the temporary block file (if any)    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|unfinalizeBlock (ExtendedBlock b)
 specifier|public
 specifier|synchronized
@@ -9514,7 +9431,7 @@ block|}
 comment|/**    * Generates a block report from the in-memory block map.    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getBlockReport (String bpid)
 specifier|public
 name|BlockListAsLongs
@@ -9756,7 +9673,7 @@ block|}
 comment|/**    * Check whether the given block is a valid one.    * valid means finalized    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|isValidBlock (ExtendedBlock b)
 specifier|public
 name|boolean
@@ -9780,7 +9697,7 @@ block|}
 comment|/**    * Check whether the given block is a valid RBW.    */
 annotation|@
 name|Override
-comment|// {@link FsDatasetSpi}
+comment|// {@link FSDatasetInterface}
 DECL|method|isValidRbw (final ExtendedBlock b)
 specifier|public
 name|boolean
@@ -10094,7 +10011,7 @@ block|}
 comment|/**    * We're informed that a block is no longer valid.  We    * could lazily garbage-collect the block, but why bother?    * just get rid of it.    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|invalidate (String bpid, Block invalidBlks[])
 specifier|public
 name|void
@@ -10482,7 +10399,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// {@link FsDatasetSpi}
+comment|// {@link FSDatasetInterface}
 DECL|method|contains (final ExtendedBlock block)
 specifier|public
 specifier|synchronized
@@ -10567,7 +10484,7 @@ block|}
 comment|/**    * check if a data directory is healthy    * if some volumes failed - make sure to remove all the blocks that belong    * to these volumes    * @throws DiskErrorException    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|checkDataDir ()
 specifier|public
 name|void
@@ -10801,7 +10718,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|toString ()
 specifier|public
 name|String
@@ -10935,7 +10852,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|shutdown ()
 specifier|public
 name|void
@@ -11713,7 +11630,7 @@ block|}
 comment|/**    * @deprecated use {@link #fetchReplicaInfo(String, long)} instead.    */
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 annotation|@
 name|Deprecated
 DECL|method|getReplica (String bpid, long blockId)
@@ -11782,7 +11699,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|initReplicaRecovery ( RecoveringBlock rBlock)
 specifier|public
 specifier|synchronized
@@ -12149,7 +12066,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|updateReplicaUnderRecovery ( final ExtendedBlock oldBlock, final long recoveryId, final long newlength)
 specifier|public
 specifier|synchronized
@@ -12529,7 +12446,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getReplicaVisibleLength (final ExtendedBlock block)
 specifier|public
 specifier|synchronized
@@ -12998,7 +12915,7 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|//FsDatasetSpi
+comment|//FSDatasetInterface
 DECL|method|deleteBlockPool (String bpid, boolean force)
 specifier|public
 specifier|synchronized
@@ -13087,7 +13004,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|// FsDatasetSpi
+comment|// FSDatasetInterface
 DECL|method|getBlockLocalPathInfo (ExtendedBlock block)
 specifier|public
 name|BlockLocalPathInfo
