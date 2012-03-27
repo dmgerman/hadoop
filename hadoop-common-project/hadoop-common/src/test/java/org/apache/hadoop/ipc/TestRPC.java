@@ -170,6 +170,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -3195,6 +3207,13 @@ block|}
 comment|/**    * Test stopping a non-registered proxy    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|expected
+operator|=
+name|HadoopIllegalArgumentException
+operator|.
+name|class
+argument_list|)
 DECL|method|testStopNonRegisteredProxy ()
 specifier|public
 name|void
@@ -3213,6 +3232,13 @@ name|TestProtocol
 operator|.
 name|class
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
