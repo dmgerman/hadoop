@@ -2133,6 +2133,9 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If you see this error on a mock object in a unit test you're
+comment|// developing, make sure to use MockitoUtil.mockProtocol() to
+comment|// create your mock.
 throw|throw
 operator|new
 name|HadoopIllegalArgumentException

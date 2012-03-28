@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -185,18 +195,6 @@ operator|.
 name|answers
 operator|.
 name|ThrowsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|stubbing
-operator|.
-name|Answer
 import|;
 end_import
 
@@ -1532,6 +1530,13 @@ name|HAServiceProtocol
 operator|.
 name|class
 argument_list|,
+name|Mockito
+operator|.
+name|withSettings
+argument_list|()
+operator|.
+name|defaultAnswer
+argument_list|(
 operator|new
 name|ThrowsException
 argument_list|(
@@ -1540,6 +1545,14 @@ name|IOException
 argument_list|(
 literal|"Could not connect to host"
 argument_list|)
+argument_list|)
+argument_list|)
+operator|.
+name|extraInterfaces
+argument_list|(
+name|Closeable
+operator|.
+name|class
 argument_list|)
 argument_list|)
 decl_stmt|;
