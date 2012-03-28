@@ -36,7 +36,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertFalse
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
+name|assertTrue
 import|;
 end_import
 
@@ -334,7 +334,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeAdapter
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -2534,7 +2534,7 @@ name|getDataNodes
 argument_list|()
 control|)
 block|{
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|setHeartbeatsDisabledForTests
 argument_list|(
@@ -2627,7 +2627,7 @@ name|getDataNodes
 argument_list|()
 control|)
 block|{
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|setHeartbeatsDisabledForTests
 argument_list|(

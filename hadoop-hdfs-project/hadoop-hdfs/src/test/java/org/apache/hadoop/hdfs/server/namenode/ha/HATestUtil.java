@@ -278,7 +278,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeAdapter
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -551,7 +551,7 @@ control|)
 block|{
 if|if
 condition|(
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|getPendingAsyncDeletions
 argument_list|(

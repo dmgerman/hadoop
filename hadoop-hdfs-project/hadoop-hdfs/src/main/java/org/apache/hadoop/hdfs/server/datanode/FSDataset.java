@@ -9200,7 +9200,10 @@ operator|)
 name|replicaInfo
 operator|)
 operator|.
-name|getOrignalReplicaState
+name|getOriginalReplica
+argument_list|()
+operator|.
+name|getState
 argument_list|()
 operator|==
 name|ReplicaState
@@ -10375,7 +10378,10 @@ operator|)
 name|dinfo
 operator|)
 operator|.
-name|getOrignalReplicaState
+name|getOriginalReplica
+argument_list|()
+operator|.
+name|getState
 argument_list|()
 operator|==
 name|ReplicaState

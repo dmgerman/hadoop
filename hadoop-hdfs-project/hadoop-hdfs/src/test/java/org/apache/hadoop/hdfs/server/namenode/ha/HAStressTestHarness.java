@@ -162,7 +162,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeAdapter
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -410,14 +410,14 @@ name|getDataNodes
 argument_list|()
 control|)
 block|{
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|triggerDeletionReport
 argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|triggerHeartbeat
 argument_list|(

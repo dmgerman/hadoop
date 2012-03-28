@@ -299,19 +299,6 @@ return|return
 name|original
 return|;
 block|}
-comment|/**    * Get the original replica's state    * @return the original replica's state    */
-DECL|method|getOrignalReplicaState ()
-name|ReplicaState
-name|getOrignalReplicaState
-parameter_list|()
-block|{
-return|return
-name|original
-operator|.
-name|getState
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 comment|//ReplicaInfo
@@ -603,7 +590,9 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 argument_list|,
-name|getOrignalReplicaState
+name|original
+operator|.
+name|getState
 argument_list|()
 argument_list|)
 return|;

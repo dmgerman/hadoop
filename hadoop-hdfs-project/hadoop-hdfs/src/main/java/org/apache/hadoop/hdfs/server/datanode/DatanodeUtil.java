@@ -121,12 +121,12 @@ literal|".unlinked"
 decl_stmt|;
 DECL|field|DISK_ERROR
 specifier|private
-specifier|final
 specifier|static
+specifier|final
 name|String
 name|DISK_ERROR
 init|=
-literal|"Possible disk error on file creation: "
+literal|"Possible disk error: "
 decl_stmt|;
 comment|/** Get the cause of an I/O exception if caused by a possible disk error    * @param ioe an I/O exception    * @return cause if the I/O exception is caused by a possible disk error;    *         null otherwise.    */
 DECL|method|getCauseIfDiskError (IOException ioe)
