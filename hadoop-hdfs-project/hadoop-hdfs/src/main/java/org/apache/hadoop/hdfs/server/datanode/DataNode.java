@@ -2837,19 +2837,11 @@ name|getListener
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Datanode listening on "
+literal|"Opened info server at "
 operator|+
 name|infoHost
 operator|+
@@ -2858,7 +2850,6 @@ operator|+
 name|tmpInfoPort
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|conf
@@ -3289,6 +3280,18 @@ argument_list|,
 name|ipcServer
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opened IPC server at "
+operator|+
+name|ipcServer
+operator|.
+name|getListenerAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// set service-level authorization security policy
 if|if
 condition|(
@@ -3621,7 +3624,7 @@ throws|throws
 name|IOException
 block|{
 name|InetSocketAddress
-name|socAddr
+name|streamingAddr
 init|=
 name|DataNode
 operator|.
@@ -3669,7 +3672,7 @@ name|bind
 argument_list|(
 name|ss
 argument_list|,
-name|socAddr
+name|streamingAddr
 argument_list|,
 literal|0
 argument_list|)
@@ -3723,9 +3726,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Opened info server at "
+literal|"Opened streaming server at "
 operator|+
-name|tmpPort
+name|selfAddr
 argument_list|)
 expr_stmt|;
 name|this

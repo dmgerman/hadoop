@@ -241,7 +241,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * DatanodeInfo represents the status of a DataNode.  * This object is used for communication in the  * Datanode Protocol and the Client Protocol.  */
+comment|/**   * This class extends the primary identifier of a Datanode with ephemeral  * state, eg usage information, current administrative state, and the  * network location that is communicated to clients.  */
 end_comment
 
 begin_class
@@ -301,7 +301,7 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 decl_stmt|;
-comment|/** HostName as supplied by the datanode during registration as its     * name. Namenode uses datanode IP address as the name.    */
+comment|// The FQDN of the IP associated with the Datanode's hostname
 DECL|field|hostName
 specifier|protected
 name|String
@@ -309,7 +309,7 @@ name|hostName
 init|=
 literal|null
 decl_stmt|;
-comment|// administrative states of a datanode
+comment|// Datanode administrative states
 DECL|enum|AdminStates
 specifier|public
 enum|enum
@@ -1186,7 +1186,7 @@ name|getRemainingPercent
 argument_list|()
 decl_stmt|;
 name|String
-name|hostName
+name|lookupName
 init|=
 name|NetUtils
 operator|.
@@ -1206,25 +1206,39 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|hostName
+name|lookupName
 operator|!=
 literal|null
 condition|)
+block|{
 name|buffer
 operator|.
 name|append
 argument_list|(
 literal|" ("
 operator|+
-name|hostName
+name|lookupName
 operator|+
 literal|")"
+argument_list|)
+expr_stmt|;
+block|}
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|buffer
 operator|.
 name|append
 argument_list|(
+literal|"Hostname: "
+operator|+
+name|getHostName
+argument_list|()
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;

@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DatanodeID is composed of the data node   * name (hostname:portNumber) and the data storage ID,   * which it currently represents.  *   */
+comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  */
 end_comment
 
 begin_class
@@ -142,25 +142,25 @@ specifier|public
 name|String
 name|name
 decl_stmt|;
-comment|/// hostname:portNumber
+comment|// hostname:port (data transfer port)
 DECL|field|storageID
 specifier|public
 name|String
 name|storageID
 decl_stmt|;
-comment|/// unique per cluster storageID
+comment|// unique per cluster storageID
 DECL|field|infoPort
 specifier|protected
 name|int
 name|infoPort
 decl_stmt|;
-comment|/// the port where the infoserver is running
+comment|// info server port
 DECL|field|ipcPort
 specifier|public
 name|int
 name|ipcPort
 decl_stmt|;
-comment|/// the port where the ipc server is running
+comment|// ipc server port
 comment|/** Equivalent to DatanodeID(""). */
 DECL|method|DatanodeID ()
 specifier|public
