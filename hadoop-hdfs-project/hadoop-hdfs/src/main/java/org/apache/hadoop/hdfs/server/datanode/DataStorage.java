@@ -3651,7 +3651,7 @@ name|oldFileName
 return|;
 block|}
 comment|/**    * Add bpStorage into bpStorageMap    */
-DECL|method|addBlockPoolStorage (String bpID, BlockPoolSliceStorage bpStorage)
+DECL|method|addBlockPoolStorage (String bpID, BlockPoolSliceStorage bpStorage )
 specifier|private
 name|void
 name|addBlockPoolStorage
@@ -3662,8 +3662,6 @@ parameter_list|,
 name|BlockPoolSliceStorage
 name|bpStorage
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(

@@ -244,7 +244,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSNNTopology
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
 import|;
 end_import
 
@@ -258,9 +260,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
-operator|.
-name|DataNodeProperties
+name|MiniDFSNNTopology
 import|;
 end_import
 
@@ -364,7 +364,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeAdapter
+name|DataNodeTestUtils
 import|;
 end_import
 
@@ -1478,7 +1478,7 @@ name|getDataNodes
 argument_list|()
 control|)
 block|{
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|triggerDeletionReport
 argument_list|(

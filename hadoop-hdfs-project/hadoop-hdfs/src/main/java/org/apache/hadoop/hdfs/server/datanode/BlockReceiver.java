@@ -1901,8 +1901,6 @@ parameter_list|,
 name|int
 name|checksumOff
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -3399,8 +3397,6 @@ parameter_list|(
 name|long
 name|offsetInBlock
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 try|try
 block|{

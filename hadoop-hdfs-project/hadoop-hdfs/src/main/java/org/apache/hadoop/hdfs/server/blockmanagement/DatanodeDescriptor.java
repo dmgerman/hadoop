@@ -225,7 +225,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**************************************************  * DatanodeDescriptor tracks stats on a given DataNode, such as  * available storage capacity, last update time, etc., and maintains a  * set of blocks stored on the datanode.  *  * This data structure is internal to the namenode. It is *not* sent  * over-the-wire to the Client or the Datanodes. Neither is it stored  * persistently in the fsImage.  **************************************************/
+comment|/**  * This class extends the DatanodeInfo class with ephemeral information (eg  * health, capacity, what blocks are associated with the Datanode) that is  * private to the Namenode, ie this class is not exposed to clients.  */
 end_comment
 
 begin_class
@@ -233,6 +233,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|DatanodeDescriptor
 specifier|public
 class|class
@@ -2101,7 +2105,7 @@ name|nodeReg
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return Blanacer bandwidth in bytes per second for this datanode.    */
+comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()
 specifier|public
 name|long
@@ -2114,7 +2118,7 @@ operator|.
 name|bandwidth
 return|;
 block|}
-comment|/**    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    */
+comment|/**    * @param bandwidth balancer bandwidth in bytes per second for this datanode    */
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void

@@ -30,7 +30,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
@@ -440,24 +440,6 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeAdapter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
 name|DataNodeTestUtils
 import|;
 end_import
@@ -652,16 +634,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -737,15 +709,6 @@ name|TestDNFencing
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|TEST_FILE_DATA
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|TEST_FILE_DATA
-init|=
-literal|"hello highly available world"
 decl_stmt|;
 DECL|field|TEST_FILE
 specifier|private
@@ -2594,7 +2557,7 @@ decl_stmt|;
 name|DatanodeProtocolClientSideTranslatorPB
 name|spy
 init|=
-name|DataNodeAdapter
+name|DataNodeTestUtils
 operator|.
 name|spyOnBposToNN
 argument_list|(

@@ -256,7 +256,7 @@ name|assertTrue
 argument_list|(
 name|selfSocketAddr
 operator|.
-name|startsWith
+name|contains
 argument_list|(
 literal|"/127.0.0.1:"
 argument_list|)
@@ -387,7 +387,7 @@ name|assertTrue
 argument_list|(
 name|selfSocketAddr
 operator|.
-name|startsWith
+name|contains
 argument_list|(
 literal|"/127.0.0.1:"
 argument_list|)
@@ -524,7 +524,7 @@ name|assertTrue
 argument_list|(
 name|selfSocketAddr
 operator|.
-name|startsWith
+name|contains
 argument_list|(
 literal|"/0.0.0.0:"
 argument_list|)

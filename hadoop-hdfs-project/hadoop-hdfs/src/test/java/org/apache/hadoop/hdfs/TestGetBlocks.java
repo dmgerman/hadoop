@@ -851,12 +851,12 @@ name|assertTrue
 argument_list|(
 name|e
 operator|.
-name|getMessage
+name|getClassName
 argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"IllegalArgumentException"
+literal|"HadoopIllegalArgumentException"
 argument_list|)
 argument_list|)
 expr_stmt|;

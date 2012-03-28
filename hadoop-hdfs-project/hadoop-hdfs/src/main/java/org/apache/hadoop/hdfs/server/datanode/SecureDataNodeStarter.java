@@ -320,7 +320,7 @@ argument_list|()
 expr_stmt|;
 comment|// Obtain secure port for data streaming to datanode
 name|InetSocketAddress
-name|socAddr
+name|streamingAddr
 init|=
 name|DataNode
 operator|.
@@ -370,7 +370,7 @@ name|ss
 operator|.
 name|bind
 argument_list|(
-name|socAddr
+name|streamingAddr
 argument_list|,
 literal|0
 argument_list|)
@@ -383,11 +383,12 @@ operator|.
 name|getLocalPort
 argument_list|()
 operator|!=
-name|socAddr
+name|streamingAddr
 operator|.
 name|getPort
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
 name|RuntimeException
@@ -396,7 +397,7 @@ literal|"Unable to bind on specified streaming port in secure "
 operator|+
 literal|"context. Needed "
 operator|+
-name|socAddr
+name|streamingAddr
 operator|.
 name|getPort
 argument_list|()
@@ -409,6 +410,7 @@ name|getLocalPort
 argument_list|()
 argument_list|)
 throw|;
+block|}
 comment|// Obtain secure listener for web server
 name|SelectChannelConnector
 name|listener
@@ -469,6 +471,7 @@ operator|.
 name|getPort
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
 name|RuntimeException
@@ -477,7 +480,7 @@ literal|"Unable to bind on specified info port in secure "
 operator|+
 literal|"context. Needed "
 operator|+
-name|socAddr
+name|streamingAddr
 operator|.
 name|getPort
 argument_list|()
@@ -490,6 +493,7 @@ name|getLocalPort
 argument_list|()
 argument_list|)
 throw|;
+block|}
 name|System
 operator|.
 name|err
@@ -526,6 +530,7 @@ argument_list|()
 operator|>=
 literal|1023
 condition|)
+block|{
 throw|throw
 operator|new
 name|RuntimeException
@@ -533,6 +538,29 @@ argument_list|(
 literal|"Cannot start secure datanode with unprivileged ports"
 argument_list|)
 throw|;
+block|}
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Opened streaming server at "
+operator|+
+name|streamingAddr
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Opened info server at "
+operator|+
+name|infoSocAddr
+argument_list|)
+expr_stmt|;
 name|resources
 operator|=
 operator|new
