@@ -1561,13 +1561,32 @@ operator|+
 literal|". Not retrying further znode monitoring connection errors."
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isSessionExpired
+argument_list|(
+name|code
+argument_list|)
+condition|)
+block|{
+comment|// This isn't fatal - the client Watcher will re-join the election
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Lock monitoring failed because session was lost"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|fatalError
 argument_list|(
 name|errorMessage
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * interface implementation of Zookeeper watch events (connection and node)    */
+comment|/**    * interface implementation of Zookeeper watch events (connection and node),    * proxied by {@link WatcherWithClientRef}.    */
 DECL|method|processWatchEvent (ZooKeeper zk, WatchedEvent event)
 specifier|synchronized
 name|void
