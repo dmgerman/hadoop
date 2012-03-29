@@ -183,13 +183,16 @@ name|GRACEFUL_FENCE_TIMEOUT
 init|=
 literal|5000
 decl_stmt|;
-comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param target service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
-DECL|method|preFailoverChecks (HAServiceTarget target, boolean forceActive)
+comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param from currently active service    * @param target service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
+DECL|method|preFailoverChecks (HAServiceTarget from, HAServiceTarget target, boolean forceActive)
 specifier|private
 specifier|static
 name|void
 name|preFailoverChecks
 parameter_list|(
+name|HAServiceTarget
+name|from
+parameter_list|,
 name|HAServiceTarget
 name|target
 parameter_list|,
@@ -205,6 +208,30 @@ decl_stmt|;
 name|HAServiceProtocol
 name|toSvc
 decl_stmt|;
+if|if
+condition|(
+name|from
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|target
+operator|.
+name|getAddress
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|FailoverFailedException
+argument_list|(
+literal|"Can't failover a service to itself"
+argument_list|)
+throw|;
+block|}
 try|try
 block|{
 name|toSvc
@@ -514,6 +541,8 @@ argument_list|)
 expr_stmt|;
 name|preFailoverChecks
 argument_list|(
+name|fromSvc
+argument_list|,
 name|toSvc
 argument_list|,
 name|forceActive
