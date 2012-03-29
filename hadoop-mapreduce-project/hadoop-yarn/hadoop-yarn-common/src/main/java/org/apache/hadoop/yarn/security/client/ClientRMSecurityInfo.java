@@ -132,9 +132,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|api
 operator|.
-name|YarnConfiguration
+name|ClientRMProtocolPB
 import|;
 end_import
 
@@ -148,9 +148,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|conf
 operator|.
-name|ClientRMProtocol
+name|YarnConfiguration
 import|;
 end_import
 
@@ -186,11 +186,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ClientRMProtocol
-operator|.
-name|ClientRMProtocolService
-operator|.
-name|BlockingInterface
+name|ClientRMProtocolPB
 operator|.
 name|class
 argument_list|)
@@ -272,11 +268,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ClientRMProtocol
-operator|.
-name|ClientRMProtocolService
-operator|.
-name|BlockingInterface
+name|ClientRMProtocolPB
 operator|.
 name|class
 argument_list|)

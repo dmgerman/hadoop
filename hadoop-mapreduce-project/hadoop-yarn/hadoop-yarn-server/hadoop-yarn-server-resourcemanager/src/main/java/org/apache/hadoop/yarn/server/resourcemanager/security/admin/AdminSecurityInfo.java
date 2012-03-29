@@ -120,9 +120,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
 operator|.
-name|RMAdminProtocol
+name|resourcemanager
+operator|.
+name|api
+operator|.
+name|RMAdminProtocolPB
 import|;
 end_import
 
@@ -158,11 +162,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|RMAdminProtocol
-operator|.
-name|RMAdminProtocolService
-operator|.
-name|BlockingInterface
+name|RMAdminProtocolPB
 operator|.
 name|class
 argument_list|)

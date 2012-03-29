@@ -94,9 +94,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|api
 operator|.
-name|ContainerManager
+name|ContainerManagerPB
 import|;
 end_import
 
@@ -126,9 +126,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
 operator|.
-name|LocalizationProtocol
+name|nodemanager
+operator|.
+name|api
+operator|.
+name|LocalizationProtocolPB
 import|;
 end_import
 
@@ -171,11 +175,7 @@ name|YarnConfiguration
 operator|.
 name|YARN_SECURITY_SERVICE_AUTHORIZATION_CONTAINER_MANAGER
 argument_list|,
-name|ContainerManager
-operator|.
-name|ContainerManagerService
-operator|.
-name|BlockingInterface
+name|ContainerManagerPB
 operator|.
 name|class
 argument_list|)
@@ -187,11 +187,7 @@ name|YarnConfiguration
 operator|.
 name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCE_LOCALIZER
 argument_list|,
-name|LocalizationProtocol
-operator|.
-name|LocalizationProtocolService
-operator|.
-name|BlockingInterface
+name|LocalizationProtocolPB
 operator|.
 name|class
 argument_list|)

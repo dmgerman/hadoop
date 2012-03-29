@@ -1939,22 +1939,22 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"DIGEST-MD5: digest response format violation. "
-operator|+
-literal|"Mismatched response."
-argument_list|,
 name|e
-operator|.
-name|getCause
-argument_list|()
 operator|.
 name|getCause
 argument_list|()
 operator|.
 name|getMessage
 argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"DIGEST-MD5: digest response format violation. "
+operator|+
+literal|"Mismatched response."
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3248,7 +3248,14 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
 argument_list|(
 literal|"Unauthorized request to start container. "
 operator|+
@@ -3265,11 +3272,7 @@ name|newContainerId
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|e
-operator|.
-name|getMessage
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

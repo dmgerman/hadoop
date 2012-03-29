@@ -2013,16 +2013,19 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"User enemy cannot perform operation MODIFY_APP on "
-operator|+
-name|applicationId
-argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"User enemy cannot perform operation MODIFY_APP on "
+operator|+
+name|applicationId
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

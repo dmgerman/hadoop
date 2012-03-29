@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.proto
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.api
 package|package
 name|org
 operator|.
@@ -14,7 +14,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|api
 package|;
 end_package
 
@@ -26,13 +30,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|ipc
 operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|MRClientProtocolPB
+name|ProtocolInfo
 import|;
 end_import
 
@@ -48,71 +48,33 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|MRClientProtocol
+name|RMAdminProtocol
 operator|.
-name|MRClientProtocolService
+name|RMAdminProtocolService
 import|;
 end_import
 
-begin_comment
-comment|/**  * Fake protocol to differentiate the blocking interfaces in the   * security info class loaders.  */
-end_comment
-
 begin_interface
-DECL|interface|HSClientProtocol
-specifier|public
-interface|interface
-name|HSClientProtocol
-block|{
-DECL|class|HSClientProtocolService
-specifier|public
-specifier|abstract
-class|class
-name|HSClientProtocolService
-block|{
-DECL|interface|BlockingInterface
-specifier|public
-interface|interface
-name|BlockingInterface
-extends|extends
-name|MRClientProtocolPB
-block|{     }
-DECL|method|newReflectiveBlockingService ( final HSClientProtocolService.BlockingInterface impl)
-specifier|public
-specifier|static
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|BlockingService
-name|newReflectiveBlockingService
-parameter_list|(
-specifier|final
-name|HSClientProtocolService
-operator|.
-name|BlockingInterface
-name|impl
-parameter_list|)
-block|{
-comment|// The cast is safe
-return|return
-name|MRClientProtocolService
-operator|.
-name|newReflectiveBlockingService
+annotation|@
+name|ProtocolInfo
 argument_list|(
-operator|(
-name|MRClientProtocolService
+name|protocolName
+operator|=
+literal|"org.apache.hadoop.yarn.server.nodemanager.api.RMAdminProtocolPB"
+argument_list|,
+name|protocolVersion
+operator|=
+literal|1
+argument_list|)
+DECL|interface|RMAdminProtocolPB
+specifier|public
+interface|interface
+name|RMAdminProtocolPB
+extends|extends
+name|RMAdminProtocolService
 operator|.
 name|BlockingInterface
-operator|)
-name|impl
-argument_list|)
-return|;
-block|}
-block|}
-block|}
+block|{  }
 end_interface
 
 end_unit

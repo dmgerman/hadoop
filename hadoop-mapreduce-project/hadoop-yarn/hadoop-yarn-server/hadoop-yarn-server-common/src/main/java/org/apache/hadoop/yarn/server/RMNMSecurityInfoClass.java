@@ -114,9 +114,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
 operator|.
-name|ResourceTracker
+name|api
+operator|.
+name|ResourceTrackerPB
 import|;
 end_import
 
@@ -152,11 +154,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ResourceTracker
-operator|.
-name|ResourceTrackerService
-operator|.
-name|BlockingInterface
+name|ResourceTrackerPB
 operator|.
 name|class
 argument_list|)

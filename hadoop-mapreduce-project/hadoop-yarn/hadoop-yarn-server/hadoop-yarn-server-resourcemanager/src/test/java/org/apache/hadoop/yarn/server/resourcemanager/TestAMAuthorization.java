@@ -1490,7 +1490,14 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
 argument_list|(
 literal|"Unauthorized request from ApplicationMaster. "
 operator|+
@@ -1507,11 +1514,7 @@ name|otherAppAttemptId
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|e
-operator|.
-name|getMessage
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

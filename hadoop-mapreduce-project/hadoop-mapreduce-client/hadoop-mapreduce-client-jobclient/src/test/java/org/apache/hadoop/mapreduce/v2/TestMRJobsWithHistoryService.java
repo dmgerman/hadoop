@@ -224,7 +224,7 @@ name|v2
 operator|.
 name|api
 operator|.
-name|MRClientProtocol
+name|HSClientProtocol
 import|;
 end_import
 
@@ -987,7 +987,7 @@ argument_list|,
 name|counterMR
 argument_list|)
 expr_stmt|;
-name|MRClientProtocol
+name|HSClientProtocol
 name|historyClient
 init|=
 name|instantiateHistoryProxy
@@ -1188,7 +1188,7 @@ expr_stmt|;
 block|}
 DECL|method|instantiateHistoryProxy ()
 specifier|private
-name|MRClientProtocol
+name|HSClientProtocol
 name|instantiateHistoryProxy
 parameter_list|()
 block|{
@@ -1219,17 +1219,17 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|MRClientProtocol
+name|HSClientProtocol
 name|historyClient
 init|=
 operator|(
-name|MRClientProtocol
+name|HSClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|MRClientProtocol
+name|HSClientProtocol
 operator|.
 name|class
 argument_list|,

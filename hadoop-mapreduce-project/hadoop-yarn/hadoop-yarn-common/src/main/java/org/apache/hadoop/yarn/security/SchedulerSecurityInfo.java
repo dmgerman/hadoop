@@ -130,9 +130,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|api
 operator|.
-name|AMRMProtocol
+name|AMRMProtocolPB
 import|;
 end_import
 
@@ -189,11 +189,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|AMRMProtocol
-operator|.
-name|AMRMProtocolService
-operator|.
-name|BlockingInterface
+name|AMRMProtocolPB
 operator|.
 name|class
 argument_list|)
