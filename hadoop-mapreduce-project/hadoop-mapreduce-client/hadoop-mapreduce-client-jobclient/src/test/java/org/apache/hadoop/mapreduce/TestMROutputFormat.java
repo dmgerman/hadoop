@@ -159,10 +159,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestConfInCheckSpec
+DECL|class|TestMROutputFormat
 specifier|public
 class|class
-name|TestConfInCheckSpec
+name|TestMROutputFormat
 block|{
 annotation|@
 name|Test
