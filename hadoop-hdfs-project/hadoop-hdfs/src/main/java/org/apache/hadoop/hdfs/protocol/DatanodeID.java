@@ -596,7 +596,6 @@ operator|.
 name|getIpcPort
 argument_list|()
 expr_stmt|;
-comment|// update any more fields added in future.
 block|}
 comment|/** Comparable.    * Basis of compare is the String name (host:portNumber) only.    * @param that    * @return as specified by Comparable.    */
 DECL|method|compareTo (DatanodeID that)
@@ -661,6 +660,13 @@ argument_list|(
 name|infoPort
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeShort
+argument_list|(
+name|ipcPort
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -700,6 +706,17 @@ comment|// setting the field.
 name|this
 operator|.
 name|infoPort
+operator|=
+name|in
+operator|.
+name|readShort
+argument_list|()
+operator|&
+literal|0x0000ffff
+expr_stmt|;
+name|this
+operator|.
+name|ipcPort
 operator|=
 name|in
 operator|.

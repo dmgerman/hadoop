@@ -1909,14 +1909,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-comment|//TODO: move it to DatanodeID once DatanodeID is not stored in FSImage
-name|out
-operator|.
-name|writeShort
-argument_list|(
-name|ipcPort
-argument_list|)
-expr_stmt|;
 name|out
 operator|.
 name|writeLong
@@ -2013,18 +2005,6 @@ name|readFields
 argument_list|(
 name|in
 argument_list|)
-expr_stmt|;
-comment|//TODO: move it to DatanodeID once DatanodeID is not stored in FSImage
-name|this
-operator|.
-name|ipcPort
-operator|=
-name|in
-operator|.
-name|readShort
-argument_list|()
-operator|&
-literal|0x0000ffff
 expr_stmt|;
 name|this
 operator|.
