@@ -155,6 +155,7 @@ operator|)
 literal|5
 argument_list|)
 block|,
+comment|// obsolete
 DECL|enumConstant|Deprecated
 DECL|enumConstant|OP_DATANODE_REMOVE
 annotation|@
@@ -167,6 +168,7 @@ operator|)
 literal|6
 argument_list|)
 block|,
+comment|// obsolete
 DECL|enumConstant|OP_SET_PERMISSIONS
 name|OP_SET_PERMISSIONS
 argument_list|(

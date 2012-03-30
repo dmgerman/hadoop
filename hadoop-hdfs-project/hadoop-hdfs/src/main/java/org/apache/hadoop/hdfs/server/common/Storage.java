@@ -330,7 +330,6 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Constants
 comment|// last layout version that did not support upgrades
 DECL|field|LAST_PRE_UPGRADE_LAYOUT_VERSION
 specifier|public
@@ -342,7 +341,7 @@ init|=
 operator|-
 literal|3
 decl_stmt|;
-comment|// this corresponds to Hadoop-0.14.
+comment|// this corresponds to Hadoop-0.18
 DECL|field|LAST_UPGRADABLE_LAYOUT_VERSION
 specifier|public
 specifier|static
@@ -351,7 +350,7 @@ name|int
 name|LAST_UPGRADABLE_LAYOUT_VERSION
 init|=
 operator|-
-literal|7
+literal|16
 decl_stmt|;
 DECL|field|LAST_UPGRADABLE_HADOOP_VERSION
 specifier|protected
@@ -360,18 +359,7 @@ specifier|final
 name|String
 name|LAST_UPGRADABLE_HADOOP_VERSION
 init|=
-literal|"Hadoop-0.14"
-decl_stmt|;
-comment|/* this should be removed when LAST_UPGRADABLE_LV goes beyond -13.    * any upgrade code that uses this constant should also be removed. */
-DECL|field|PRE_GENERATIONSTAMP_LAYOUT_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|PRE_GENERATIONSTAMP_LAYOUT_VERSION
-init|=
-operator|-
-literal|13
+literal|"Hadoop-0.18"
 decl_stmt|;
 comment|/** Layout versions of 0.20.203 release */
 DECL|field|LAYOUT_VERSIONS_203

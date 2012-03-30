@@ -5487,17 +5487,6 @@ name|DFS_NAMENODE_DELEGATION_TOKEN_ALWAYS_USE_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the default path permission when upgrading from releases with no    * permissions (<=0.15) to releases with permissions (>=0.16)    */
-DECL|method|getUpgradePermission ()
-specifier|protected
-name|PermissionStatus
-name|getUpgradePermission
-parameter_list|()
-block|{
-return|return
-name|defaultPermission
-return|;
-block|}
 DECL|method|getNamespaceInfo ()
 name|NamespaceInfo
 name|getNamespaceInfo
