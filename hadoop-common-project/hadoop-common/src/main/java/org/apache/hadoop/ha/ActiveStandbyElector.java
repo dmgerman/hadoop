@@ -354,11 +354,13 @@ specifier|public
 interface|interface
 name|ActiveStandbyElectorCallback
 block|{
-comment|/**      * This method is called when the app becomes the active leader      */
+comment|/**      * This method is called when the app becomes the active leader.      * If the service fails to become active, it should throw      * ServiceFailedException. This will cause the elector to      * sleep for a short period, then re-join the election.      *       * Callback implementations are expected to manage their own      * timeouts (e.g. when making an RPC to a remote node).      */
 DECL|method|becomeActive ()
 name|void
 name|becomeActive
 parameter_list|()
+throws|throws
+name|ServiceFailedException
 function_decl|;
 comment|/**      * This method is called when the app becomes a standby      */
 DECL|method|becomeStandby ()
@@ -439,6 +441,15 @@ name|int
 name|NUM_RETRIES
 init|=
 literal|3
+decl_stmt|;
+DECL|field|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
+init|=
+literal|1000
 decl_stmt|;
 DECL|enum|ConnectionState
 specifier|private
@@ -1279,12 +1290,22 @@ argument_list|)
 condition|)
 block|{
 comment|// we successfully created the znode. we are the leader. start monitoring
+if|if
+condition|(
 name|becomeActive
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
 name|monitorActiveStatus
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|reJoinElectionAfterFailureToBecomeActive
+argument_list|()
+expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
@@ -1483,9 +1504,17 @@ argument_list|()
 condition|)
 block|{
 comment|// we own the lock znode. so we are the leader
+if|if
+condition|(
+operator|!
 name|becomeActive
 argument_list|()
+condition|)
+block|{
+name|reJoinElectionAfterFailureToBecomeActive
+argument_list|()
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1583,6 +1612,19 @@ block|}
 name|fatalError
 argument_list|(
 name|errorMessage
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * We failed to become active. Re-join the election, but    * sleep for a few seconds after terminating our existing    * session, so that other nodes have a chance to become active.    * The failure to become active is already logged inside    * becomeActive().    */
+DECL|method|reJoinElectionAfterFailureToBecomeActive ()
+specifier|private
+name|void
+name|reJoinElectionAfterFailureToBecomeActive
+parameter_list|()
+block|{
+name|reJoinElection
+argument_list|(
+name|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
 argument_list|)
 expr_stmt|;
 block|}
@@ -1739,7 +1781,9 @@ name|enterNeutralMode
 argument_list|()
 expr_stmt|;
 name|reJoinElection
-argument_list|()
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 break|break;
 default|default:
@@ -1953,11 +1997,14 @@ name|createLockNodeAsync
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|reJoinElection ()
+DECL|method|reJoinElection (int sleepTime)
 specifier|private
 name|void
 name|reJoinElection
-parameter_list|()
+parameter_list|(
+name|int
+name|sleepTime
+parameter_list|)
 block|{
 name|LOG
 operator|.
@@ -1983,6 +2030,11 @@ block|{
 name|terminateConnection
 argument_list|()
 expr_stmt|;
+name|sleepFor
+argument_list|(
+name|sleepTime
+argument_list|)
+expr_stmt|;
 name|joinElectionInternal
 argument_list|()
 expr_stmt|;
@@ -1994,6 +2046,52 @@ operator|.
 name|unlock
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Sleep for the given number of milliseconds.    * This is non-static, and separated out, so that unit tests    * can override the behavior not to sleep.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|sleepFor (int sleepMs)
+specifier|protected
+name|void
+name|sleepFor
+parameter_list|(
+name|int
+name|sleepMs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|sleepMs
+operator|>
+literal|0
+condition|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|sleepMs
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -2104,30 +2202,11 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
+name|sleepFor
 argument_list|(
 literal|5000
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e1
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|e1
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 operator|++
 name|connectionRetryCount
@@ -2229,7 +2308,7 @@ expr_stmt|;
 block|}
 DECL|method|becomeActive ()
 specifier|private
-name|void
+name|boolean
 name|becomeActive
 parameter_list|()
 block|{
@@ -2239,12 +2318,17 @@ assert|;
 if|if
 condition|(
 name|state
-operator|!=
+operator|==
 name|State
 operator|.
 name|ACTIVE
 condition|)
 block|{
+comment|// already active
+return|return
+literal|true
+return|;
+block|}
 try|try
 block|{
 name|Stat
@@ -2258,6 +2342,27 @@ argument_list|(
 name|oldBreadcrumbStat
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Becoming active"
+argument_list|)
+expr_stmt|;
+name|appClient
+operator|.
+name|becomeActive
+argument_list|()
+expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|ACTIVE
+expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -2274,29 +2379,10 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|reJoinElection
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Becoming active"
-argument_list|)
-expr_stmt|;
-name|state
-operator|=
-name|State
-operator|.
-name|ACTIVE
-expr_stmt|;
-name|appClient
-operator|.
-name|becomeActive
-argument_list|()
-expr_stmt|;
+comment|// Caller will handle quitting and rejoining the election.
+return|return
+literal|false
+return|;
 block|}
 block|}
 comment|/**    * Write the "ActiveBreadCrumb" node, indicating that this node may need    * to be fenced on failover.    * @param oldBreadcrumbStat     */

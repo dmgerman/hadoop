@@ -1246,6 +1246,16 @@ argument_list|(
 name|svc2
 operator|.
 name|proxy
+argument_list|,
+name|Mockito
+operator|.
+name|timeout
+argument_list|(
+literal|2000
+argument_list|)
+operator|.
+name|atLeastOnce
+argument_list|()
 argument_list|)
 operator|.
 name|transitionToActive
@@ -1303,6 +1313,28 @@ expr_stmt|;
 name|waitForActiveLockHolder
 argument_list|(
 name|svc1
+argument_list|)
+expr_stmt|;
+comment|// Ensure that we can fail back to thr2 once it it is able
+comment|// to become active (e.g the admin has restarted it)
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Allowing svc2 to become active, expiring svc1"
+argument_list|)
+expr_stmt|;
+name|svc2
+operator|.
+name|failToBecomeActive
+operator|=
+literal|false
+expr_stmt|;
+name|expireAndVerifyFailover
+argument_list|(
+name|thr1
+argument_list|,
+name|thr2
 argument_list|)
 expr_stmt|;
 block|}
