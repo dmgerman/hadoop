@@ -434,9 +434,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|NUM_RETRIES
-specifier|private
 specifier|static
-specifier|final
 name|int
 name|NUM_RETRIES
 init|=
@@ -2123,9 +2121,17 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getZKSessionIdForTests ()
+specifier|synchronized
 name|long
 name|getZKSessionIdForTests
 parameter_list|()
+block|{
+if|if
+condition|(
+name|zkClient
+operator|!=
+literal|null
+condition|)
 block|{
 return|return
 name|zkClient
@@ -2133,6 +2139,14 @@ operator|.
 name|getSessionId
 argument_list|()
 return|;
+block|}
+else|else
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
