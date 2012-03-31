@@ -886,6 +886,11 @@ literal|0755
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|int
+name|size
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|long
@@ -902,10 +907,7 @@ literal|0
 condition|;
 name|bytes
 operator|-=
-name|val
-operator|.
-name|getLength
-argument_list|()
+name|size
 control|)
 block|{
 name|r
@@ -918,10 +920,8 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|val
-operator|.
-name|setSize
-argument_list|(
+name|size
+operator|=
 operator|(
 name|int
 operator|)
@@ -936,7 +936,6 @@ argument_list|()
 argument_list|,
 name|bytes
 argument_list|)
-argument_list|)
 expr_stmt|;
 name|dos
 operator|.
@@ -949,10 +948,7 @@ argument_list|()
 argument_list|,
 literal|0
 argument_list|,
-name|val
-operator|.
-name|getLength
-argument_list|()
+name|size
 argument_list|)
 expr_stmt|;
 comment|// Write to distCache file
