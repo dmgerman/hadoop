@@ -1573,6 +1573,8 @@ literal|"xx"
 argument_list|,
 literal|"yy"
 argument_list|,
+literal|"zz"
+argument_list|,
 literal|44
 argument_list|,
 literal|55
@@ -1595,6 +1597,8 @@ argument_list|(
 literal|"aa"
 argument_list|,
 literal|"bb"
+argument_list|,
+literal|"cc"
 argument_list|,
 literal|11
 argument_list|,
@@ -2820,6 +2824,8 @@ operator|new
 name|DatanodeID
 argument_list|(
 literal|"127.0.0.1"
+argument_list|,
+literal|"localhost"
 argument_list|,
 literal|"storage-1234"
 argument_list|,

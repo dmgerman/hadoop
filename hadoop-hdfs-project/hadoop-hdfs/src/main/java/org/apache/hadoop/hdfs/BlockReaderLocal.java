@@ -1186,7 +1186,8 @@ name|getLocalDatanodeInfo
 argument_list|(
 name|node
 operator|.
-name|ipcPort
+name|getIpcPort
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|BlockLocalPathInfo

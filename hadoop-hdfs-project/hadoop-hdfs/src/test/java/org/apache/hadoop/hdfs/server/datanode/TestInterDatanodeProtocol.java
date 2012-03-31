@@ -2265,6 +2265,8 @@ operator|.
 name|getPort
 argument_list|()
 argument_list|,
+literal|"localhost"
+argument_list|,
 literal|"fake-storage"
 argument_list|,
 literal|0

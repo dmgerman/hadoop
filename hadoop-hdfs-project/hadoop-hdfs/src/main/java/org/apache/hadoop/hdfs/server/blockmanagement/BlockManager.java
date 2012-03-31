@@ -12397,7 +12397,8 @@ name|append
 argument_list|(
 name|node
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|nodeList
@@ -12460,7 +12461,8 @@ literal|", Current Datanode: "
 operator|+
 name|srcNode
 operator|.
-name|name
+name|getName
+argument_list|()
 operator|+
 literal|", Is current datanode decommissioning: "
 operator|+

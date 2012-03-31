@@ -686,33 +686,6 @@ name|nodeID
 argument_list|,
 name|networkLocation
 argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-comment|/** DatanodeDescriptor constructor    *     * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param hostName it could be different from host specified for DatanodeID    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, String hostName)
-specifier|public
-name|DatanodeDescriptor
-parameter_list|(
-name|DatanodeID
-name|nodeID
-parameter_list|,
-name|String
-name|networkLocation
-parameter_list|,
-name|String
-name|hostName
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|nodeID
-argument_list|,
-name|networkLocation
-argument_list|,
-name|hostName
-argument_list|,
 literal|0L
 argument_list|,
 literal|0L
@@ -776,7 +749,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** DatanodeDescriptor constructor    *     * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, String hostName, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
+DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
 parameter_list|(
@@ -785,9 +758,6 @@ name|nodeID
 parameter_list|,
 name|String
 name|networkLocation
-parameter_list|,
-name|String
-name|hostName
 parameter_list|,
 name|long
 name|capacity
@@ -813,8 +783,6 @@ argument_list|(
 name|nodeID
 argument_list|,
 name|networkLocation
-argument_list|,
-name|hostName
 argument_list|)
 expr_stmt|;
 name|updateHeartbeat

@@ -2214,6 +2214,20 @@ name|com
 operator|.
 name|google
 operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|protobuf
 operator|.
 name|BlockingService
@@ -5434,14 +5448,15 @@ argument_list|)
 expr_stmt|;
 name|dnId
 operator|.
-name|storageID
-operator|=
+name|setStorageID
+argument_list|(
 name|createNewStorageId
 argument_list|(
 name|dnId
 operator|.
 name|getPort
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -10945,7 +10960,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** Methods used by fault injection tests */
+annotation|@
+name|VisibleForTesting
 DECL|method|getDatanodeId ()
 specifier|public
 name|DatanodeID
@@ -10958,6 +10974,8 @@ name|DatanodeID
 argument_list|(
 name|getMachineName
 argument_list|()
+argument_list|,
+name|hostName
 argument_list|,
 name|getStorageId
 argument_list|()

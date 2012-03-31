@@ -84,9 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|io
 operator|.
-name|DeprecatedUTF8
+name|Text
 import|;
 end_import
 
@@ -138,13 +138,19 @@ init|=
 block|{}
 decl_stmt|;
 DECL|field|name
-specifier|public
+specifier|protected
 name|String
 name|name
 decl_stmt|;
-comment|// hostname:port (data transfer port)
+comment|// IP:port (data transfer port)
+DECL|field|hostName
+specifier|protected
+name|String
+name|hostName
+decl_stmt|;
+comment|// hostname
 DECL|field|storageID
-specifier|public
+specifier|protected
 name|String
 name|storageID
 decl_stmt|;
@@ -156,11 +162,11 @@ name|infoPort
 decl_stmt|;
 comment|// info server port
 DECL|field|ipcPort
-specifier|public
+specifier|protected
 name|int
 name|ipcPort
 decl_stmt|;
-comment|// ipc server port
+comment|// IPC server port
 comment|/** Equivalent to DatanodeID(""). */
 DECL|method|DatanodeID ()
 specifier|public
@@ -185,6 +191,8 @@ block|{
 name|this
 argument_list|(
 name|nodeName
+argument_list|,
+literal|""
 argument_list|,
 literal|""
 argument_list|,
@@ -214,6 +222,11 @@ argument_list|()
 argument_list|,
 name|from
 operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|from
+operator|.
 name|getStorageID
 argument_list|()
 argument_list|,
@@ -229,13 +242,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create DatanodeID    * @param nodeName (hostname:portNumber)     * @param storageID data storage ID    * @param infoPort info server port     * @param ipcPort ipc server port    */
-DECL|method|DatanodeID (String nodeName, String storageID, int infoPort, int ipcPort)
+comment|/**    * Create DatanodeID    * @param node IP:port    * @param hostName hostname    * @param storageID data storage ID    * @param infoPort info server port     * @param ipcPort ipc server port    */
+DECL|method|DatanodeID (String name, String hostName, String storageID, int infoPort, int ipcPort)
 specifier|public
 name|DatanodeID
 parameter_list|(
 name|String
-name|nodeName
+name|name
+parameter_list|,
+name|String
+name|hostName
 parameter_list|,
 name|String
 name|storageID
@@ -251,7 +267,13 @@ name|this
 operator|.
 name|name
 operator|=
-name|nodeName
+name|name
+expr_stmt|;
+name|this
+operator|.
+name|hostName
+operator|=
+name|hostName
 expr_stmt|;
 name|this
 operator|.
@@ -286,6 +308,22 @@ operator|.
 name|name
 operator|=
 name|name
+expr_stmt|;
+block|}
+DECL|method|setHostName (String hostName)
+specifier|public
+name|void
+name|setHostName
+parameter_list|(
+name|String
+name|hostName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hostName
+operator|=
+name|hostName
 expr_stmt|;
 block|}
 DECL|method|setInfoPort (int infoPort)
@@ -329,6 +367,33 @@ parameter_list|()
 block|{
 return|return
 name|name
+return|;
+block|}
+comment|/**    * @return hostname    */
+DECL|method|getHostName ()
+specifier|public
+name|String
+name|getHostName
+parameter_list|()
+block|{
+return|return
+operator|(
+name|hostName
+operator|==
+literal|null
+operator|||
+name|hostName
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+operator|)
+condition|?
+name|getHost
+argument_list|()
+else|:
+name|hostName
 return|;
 block|}
 comment|/**    * @return data storage ID.    */
@@ -635,7 +700,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DeprecatedUTF8
+name|Text
 operator|.
 name|writeString
 argument_list|(
@@ -644,7 +709,16 @@ argument_list|,
 name|name
 argument_list|)
 expr_stmt|;
-name|DeprecatedUTF8
+name|Text
+operator|.
+name|writeString
+argument_list|(
+name|out
+argument_list|,
+name|hostName
+argument_list|)
+expr_stmt|;
+name|Text
 operator|.
 name|writeString
 argument_list|(
@@ -683,7 +757,16 @@ name|IOException
 block|{
 name|name
 operator|=
-name|DeprecatedUTF8
+name|Text
+operator|.
+name|readString
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+name|hostName
+operator|=
+name|Text
 operator|.
 name|readString
 argument_list|(
@@ -692,14 +775,14 @@ argument_list|)
 expr_stmt|;
 name|storageID
 operator|=
-name|DeprecatedUTF8
+name|Text
 operator|.
 name|readString
 argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-comment|// the infoPort read could be negative, if the port is a large number (more
+comment|// The port read could be negative, if the port is a large number (more
 comment|// than 15 bits in storage size (but less than 16 bits).
 comment|// So chop off the first two bytes (and hence the signed bits) before
 comment|// setting the field.

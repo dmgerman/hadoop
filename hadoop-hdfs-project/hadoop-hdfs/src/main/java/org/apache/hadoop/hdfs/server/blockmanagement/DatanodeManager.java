@@ -2822,6 +2822,8 @@ operator|.
 name|getPort
 argument_list|()
 argument_list|,
+name|hostName
+argument_list|,
 name|nodeReg
 operator|.
 name|getStorageID
@@ -3086,14 +3088,14 @@ block|}
 comment|// this is a new datanode serving a new data storage
 if|if
 condition|(
+literal|""
+operator|.
+name|equals
+argument_list|(
 name|nodeReg
 operator|.
 name|getStorageID
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|""
 argument_list|)
 condition|)
 block|{
@@ -3101,10 +3103,11 @@ comment|// this data storage has never been registered
 comment|// it is either empty or was created by pre-storageID version of DFS
 name|nodeReg
 operator|.
-name|storageID
-operator|=
+name|setStorageID
+argument_list|(
 name|newStorageID
 argument_list|()
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -3148,8 +3151,6 @@ argument_list|,
 name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
-argument_list|,
-name|hostName
 argument_list|)
 decl_stmt|;
 name|resolveNetworkLocation

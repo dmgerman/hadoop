@@ -812,7 +812,8 @@ index|[
 literal|0
 index|]
 operator|.
-name|ipcPort
+name|getIpcPort
+argument_list|()
 decl_stmt|;
 return|return
 name|cluster

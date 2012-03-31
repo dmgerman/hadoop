@@ -1368,6 +1368,8 @@ name|DatanodeID
 argument_list|(
 literal|"node"
 argument_list|,
+literal|"node"
+argument_list|,
 literal|"sid"
 argument_list|,
 literal|1
@@ -1463,6 +1465,19 @@ argument_list|,
 name|dn2
 operator|.
 name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|dn
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|dn2
+operator|.
+name|getHostName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2493,7 +2508,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getDNInfo ()
-specifier|public
+specifier|private
 name|DatanodeInfo
 name|getDNInfo
 parameter_list|()
@@ -2505,6 +2520,8 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
+literal|"node"
+argument_list|,
 literal|"node"
 argument_list|,
 literal|"sid"
@@ -3520,6 +3537,8 @@ name|DatanodeInfo
 argument_list|(
 literal|"host0"
 argument_list|,
+literal|"host0"
+argument_list|,
 literal|"0"
 argument_list|,
 literal|5000
@@ -3540,8 +3559,6 @@ literal|32
 argument_list|,
 literal|"local"
 argument_list|,
-literal|"host0"
-argument_list|,
 name|AdminStates
 operator|.
 name|DECOMMISSION_INPROGRESS
@@ -3555,6 +3572,8 @@ operator|=
 operator|new
 name|DatanodeInfo
 argument_list|(
+literal|"host1"
+argument_list|,
 literal|"host1"
 argument_list|,
 literal|"1"
@@ -3577,8 +3596,6 @@ literal|32
 argument_list|,
 literal|"local"
 argument_list|,
-literal|"host1"
-argument_list|,
 name|AdminStates
 operator|.
 name|DECOMMISSIONED
@@ -3592,6 +3609,8 @@ operator|=
 operator|new
 name|DatanodeInfo
 argument_list|(
+literal|"host2"
+argument_list|,
 literal|"host2"
 argument_list|,
 literal|"2"
@@ -3613,8 +3632,6 @@ argument_list|,
 literal|32
 argument_list|,
 literal|"local"
-argument_list|,
-literal|"host1"
 argument_list|,
 name|AdminStates
 operator|.
@@ -3784,6 +3801,8 @@ init|=
 operator|new
 name|DatanodeID
 argument_list|(
+literal|"host"
+argument_list|,
 literal|"host"
 argument_list|,
 literal|"xyz"
