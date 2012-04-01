@@ -1508,7 +1508,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getSelfAddr
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1566,7 +1566,7 @@ name|i
 index|]
 argument_list|)
 operator|.
-name|getSelfAddr
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1930,7 +1930,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getSelfAddr
+name|getDisplayName
 argument_list|()
 argument_list|)
 throw|;

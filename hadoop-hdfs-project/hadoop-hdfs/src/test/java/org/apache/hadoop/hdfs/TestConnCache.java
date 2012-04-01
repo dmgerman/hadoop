@@ -866,7 +866,7 @@ name|dnAddr
 init|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 decl_stmt|;
 comment|// Make some sockets to the DN

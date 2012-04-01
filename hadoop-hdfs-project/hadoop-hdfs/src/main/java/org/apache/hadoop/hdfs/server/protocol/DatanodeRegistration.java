@@ -247,12 +247,12 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|storageInfo
-specifier|public
+specifier|private
 name|StorageInfo
 name|storageInfo
 decl_stmt|;
 DECL|field|exportedKeys
-specifier|public
+specifier|private
 name|ExportedBlockKeys
 name|exportedKeys
 decl_stmt|;
@@ -374,6 +374,42 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getStorageInfo ()
+specifier|public
+name|StorageInfo
+name|getStorageInfo
+parameter_list|()
+block|{
+return|return
+name|storageInfo
+return|;
+block|}
+DECL|method|setExportedKeys (ExportedBlockKeys keys)
+specifier|public
+name|void
+name|setExportedKeys
+parameter_list|(
+name|ExportedBlockKeys
+name|keys
+parameter_list|)
+block|{
+name|this
+operator|.
+name|exportedKeys
+operator|=
+name|keys
+expr_stmt|;
+block|}
+DECL|method|getExportedKeys ()
+specifier|public
+name|ExportedBlockKeys
+name|getExportedKeys
+parameter_list|()
+block|{
+return|return
+name|exportedKeys
+return|;
 block|}
 annotation|@
 name|Override

@@ -1098,7 +1098,7 @@ name|createStorageID
 argument_list|(
 name|datanode
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 expr_stmt|;

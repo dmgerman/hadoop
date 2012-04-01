@@ -1222,7 +1222,7 @@ name|error
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiver error processing "
@@ -1272,7 +1272,7 @@ name|debug
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":Number of active connections is: "

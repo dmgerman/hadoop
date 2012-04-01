@@ -647,6 +647,13 @@ operator|.
 name|getName
 argument_list|()
 expr_stmt|;
+name|hostName
+operator|=
+name|nodeReg
+operator|.
+name|getHostName
+argument_list|()
+expr_stmt|;
 name|infoPort
 operator|=
 name|nodeReg

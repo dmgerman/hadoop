@@ -235,7 +235,7 @@ name|selfSocketAddr
 init|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 operator|.
 name|toString
@@ -365,7 +365,7 @@ name|selfSocketAddr
 operator|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 operator|.
 name|toString
@@ -502,7 +502,7 @@ name|selfSocketAddr
 operator|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 operator|.
 name|toString

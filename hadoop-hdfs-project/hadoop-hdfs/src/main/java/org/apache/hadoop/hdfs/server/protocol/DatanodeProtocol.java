@@ -294,7 +294,7 @@ init|=
 literal|101
 decl_stmt|;
 comment|// start upgrade
-comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return updated {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration}, which contains     * new storageID if the datanode did not have one and    * registration ID for further communication.    */
+comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public
 name|DatanodeRegistration

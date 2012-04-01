@@ -5250,7 +5250,8 @@ name|convert
 argument_list|(
 name|registration
 operator|.
-name|storageInfo
+name|getStorageInfo
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.
@@ -5262,7 +5263,8 @@ name|convert
 argument_list|(
 name|registration
 operator|.
-name|exportedKeys
+name|getExportedKeys
+argument_list|()
 argument_list|)
 argument_list|)
 operator|.

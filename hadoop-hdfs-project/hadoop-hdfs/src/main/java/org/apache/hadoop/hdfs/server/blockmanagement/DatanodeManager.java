@@ -1867,8 +1867,6 @@ specifier|final
 name|DatanodeID
 name|node
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|String
@@ -2483,8 +2481,6 @@ parameter_list|,
 name|String
 name|ipAddr
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// If the registered node is in exclude list, then decommission it
 if|if
@@ -2569,8 +2565,6 @@ parameter_list|(
 name|DatanodeDescriptor
 name|node
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -2641,8 +2635,6 @@ parameter_list|(
 name|DatanodeDescriptor
 name|node
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -2741,7 +2733,8 @@ return|return
 name|newID
 return|;
 block|}
-DECL|method|registerDatanode (DatanodeRegistration nodeReg )
+comment|/**    * Register the given datanode with the namenode. NB: the given    * registration is mutated and given back to the datanode.    *    * @param nodeReg the datanode registration    * @throws DisallowedDatanodeException if the registration request is    *    denied because the datanode does not match includes/excludes    */
+DECL|method|registerDatanode (DatanodeRegistration nodeReg)
 specifier|public
 name|void
 name|registerDatanode
@@ -2750,7 +2743,7 @@ name|DatanodeRegistration
 name|nodeReg
 parameter_list|)
 throws|throws
-name|IOException
+name|DisallowedDatanodeException
 block|{
 name|String
 name|dnAddress
@@ -2798,20 +2791,11 @@ name|nodeReg
 argument_list|)
 throw|;
 block|}
-name|String
-name|hostName
-init|=
+comment|// Update "name" with the IP address of the RPC request that
+comment|// is registering this datanode.
 name|nodeReg
 operator|.
-name|getHost
-argument_list|()
-decl_stmt|;
-comment|// update the datanode's name with ip:port
-name|DatanodeID
-name|dnReg
-init|=
-operator|new
-name|DatanodeID
+name|setName
 argument_list|(
 name|dnAddress
 operator|+
@@ -2821,40 +2805,17 @@ name|nodeReg
 operator|.
 name|getPort
 argument_list|()
-argument_list|,
-name|hostName
-argument_list|,
-name|nodeReg
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|,
-name|nodeReg
-operator|.
-name|getInfoPort
-argument_list|()
-argument_list|,
-name|nodeReg
-operator|.
-name|getIpcPort
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|nodeReg
-operator|.
-name|updateRegInfo
-argument_list|(
-name|dnReg
 argument_list|)
 expr_stmt|;
 name|nodeReg
 operator|.
-name|exportedKeys
-operator|=
+name|setExportedKeys
+argument_list|(
 name|blockManager
 operator|.
 name|getBlockKeys
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|NameNode
 operator|.
@@ -3037,13 +2998,6 @@ operator|.
 name|updateRegInfo
 argument_list|(
 name|nodeReg
-argument_list|)
-expr_stmt|;
-name|nodeS
-operator|.
-name|setHostName
-argument_list|(
-name|hostName
 argument_list|)
 expr_stmt|;
 name|nodeS
