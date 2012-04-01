@@ -101,6 +101,19 @@ argument_list|,
 literal|"measure hdfs throughput"
 argument_list|)
 expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"minidfscluster"
+argument_list|,
+name|MiniDFSClusterManager
+operator|.
+name|class
+argument_list|,
+literal|"Run a single-process mini DFS cluster"
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
