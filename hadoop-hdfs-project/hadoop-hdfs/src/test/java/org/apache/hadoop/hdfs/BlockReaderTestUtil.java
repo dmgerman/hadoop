@@ -694,7 +694,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -470,7 +470,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|,
 name|dn

@@ -1422,14 +1422,14 @@ condition|(
 operator|!
 name|node
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|nodeID
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 condition|)
@@ -1591,9 +1591,6 @@ argument_list|(
 literal|"remove datanode "
 operator|+
 name|nodeInfo
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1656,9 +1653,6 @@ argument_list|(
 literal|"BLOCK* removeDatanode: "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" does not exist"
 argument_list|)
@@ -1734,9 +1728,6 @@ argument_list|(
 literal|"BLOCK* removeDeadDatanode: lost heartbeat from "
 operator|+
 name|d
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|removeDatanode
@@ -1848,9 +1839,6 @@ operator|+
 literal|"node "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is added to datanodeMap."
 argument_list|)
@@ -1916,9 +1904,6 @@ operator|+
 literal|".wipeDatanode("
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|"): storage "
 operator|+
@@ -1968,7 +1953,7 @@ name|add
 argument_list|(
 name|node
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2088,24 +2073,19 @@ name|networkLocation
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|inHostsList (DatanodeID node, String ipAddr)
+DECL|method|inHostsList (DatanodeID node)
 specifier|private
 name|boolean
 name|inHostsList
 parameter_list|(
 name|DatanodeID
 name|node
-parameter_list|,
-name|String
-name|ipAddr
 parameter_list|)
 block|{
 return|return
 name|checkInList
 argument_list|(
 name|node
-argument_list|,
-name|ipAddr
 argument_list|,
 name|hostsReader
 operator|.
@@ -2116,24 +2096,19 @@ literal|false
 argument_list|)
 return|;
 block|}
-DECL|method|inExcludedHostsList (DatanodeID node, String ipAddr)
+DECL|method|inExcludedHostsList (DatanodeID node)
 specifier|private
 name|boolean
 name|inExcludedHostsList
 parameter_list|(
 name|DatanodeID
 name|node
-parameter_list|,
-name|String
-name|ipAddr
 parameter_list|)
 block|{
 return|return
 name|checkInList
 argument_list|(
 name|node
-argument_list|,
-name|ipAddr
 argument_list|,
 name|hostsReader
 operator|.
@@ -2208,8 +2183,6 @@ operator|!
 name|inHostsList
 argument_list|(
 name|node
-argument_list|,
-literal|null
 argument_list|)
 operator|)
 operator|&&
@@ -2218,8 +2191,6 @@ operator|!
 name|inExcludedHostsList
 argument_list|(
 name|node
-argument_list|,
-literal|null
 argument_list|)
 operator|)
 operator|&&
@@ -2240,8 +2211,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check if the given node (of DatanodeID or ipAddress) is in the (include or    * exclude) list.  If ipAddress in null, check only based upon the given     * DatanodeID.  If ipAddress is not null, the ipAddress should refers to the    * same host that given DatanodeID refers to.    *     * @param node, the host DatanodeID    * @param ipAddress, if not null, should refers to the same host    *                   that DatanodeID refers to    * @param hostsList, the list of hosts in the include/exclude file    * @param isExcludeList, boolean, true if this is the exclude list    * @return boolean, if in the list    */
-DECL|method|checkInList (final DatanodeID node, final String ipAddress, final Set<String> hostsList, final boolean isExcludeList)
+comment|/**    * Check if the given DatanodeID is in the given (include or exclude) list.    *     * @param node the DatanodeID to check    * @param hostsList the list of hosts in the include/exclude file    * @param isExcludeList true if this is the exclude list    * @return true if the node is in the list, false otherwise    */
+DECL|method|checkInList (final DatanodeID node, final Set<String> hostsList, final boolean isExcludeList)
 specifier|private
 specifier|static
 name|boolean
@@ -2250,10 +2221,6 @@ parameter_list|(
 specifier|final
 name|DatanodeID
 name|node
-parameter_list|,
-specifier|final
-name|String
-name|ipAddress
 parameter_list|,
 specifier|final
 name|Set
@@ -2271,49 +2238,6 @@ specifier|final
 name|InetAddress
 name|iaddr
 decl_stmt|;
-if|if
-condition|(
-name|ipAddress
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|iaddr
-operator|=
-name|InetAddress
-operator|.
-name|getByName
-argument_list|(
-name|ipAddress
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|UnknownHostException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unknown ip address: "
-operator|+
-name|ipAddress
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return
-name|isExcludeList
-return|;
-block|}
-block|}
-else|else
-block|{
 try|try
 block|{
 name|iaddr
@@ -2324,7 +2248,7 @@ name|getByName
 argument_list|(
 name|node
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2339,11 +2263,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unknown host: "
+literal|"Unknown IP: "
 operator|+
 name|node
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|,
 name|e
@@ -2352,7 +2276,6 @@ expr_stmt|;
 return|return
 name|isExcludeList
 return|;
-block|}
 block|}
 comment|// if include list is empty, host is in include list
 if|if
@@ -2408,7 +2331,7 @@ literal|":"
 operator|+
 name|node
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 operator|)
@@ -2440,7 +2363,7 @@ literal|":"
 operator|+
 name|node
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 operator|)
@@ -2488,8 +2411,6 @@ condition|(
 name|inExcludedHostsList
 argument_list|(
 name|nodeReg
-argument_list|,
-name|ipAddr
 argument_list|)
 condition|)
 block|{
@@ -2542,9 +2463,6 @@ argument_list|(
 literal|"Decommission complete for node "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2588,9 +2506,6 @@ argument_list|(
 literal|"Start Decommissioning node "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" with "
 operator|+
@@ -2656,9 +2571,6 @@ argument_list|(
 literal|"Stop Decommissioning node "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|heartbeatManager
@@ -2766,45 +2678,17 @@ name|dnAddress
 operator|=
 name|nodeReg
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Checks if the node is not on the hosts list.  If it is not, then
-comment|// it will be disallowed from registering.
-if|if
-condition|(
-operator|!
-name|inHostsList
-argument_list|(
-name|nodeReg
-argument_list|,
-name|dnAddress
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|DisallowedDatanodeException
-argument_list|(
-name|nodeReg
-argument_list|)
-throw|;
-block|}
-comment|// Update "name" with the IP address of the RPC request that
-comment|// is registering this datanode.
+comment|// Update the IP to the address of the RPC request that is
+comment|// registering this datanode.
 name|nodeReg
 operator|.
-name|setName
+name|setIpAddr
 argument_list|(
 name|dnAddress
-operator|+
-literal|":"
-operator|+
-name|nodeReg
-operator|.
-name|getPort
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|nodeReg
@@ -2817,6 +2701,25 @@ name|getBlockKeys
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Checks if the node is not on the hosts list.  If it is not, then
+comment|// it will be disallowed from registering.
+if|if
+condition|(
+operator|!
+name|inHostsList
+argument_list|(
+name|nodeReg
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|DisallowedDatanodeException
+argument_list|(
+name|nodeReg
+argument_list|)
+throw|;
+block|}
 name|NameNode
 operator|.
 name|stateChangeLog
@@ -2828,9 +2731,6 @@ operator|+
 literal|"node registration from "
 operator|+
 name|nodeReg
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" storage "
 operator|+
@@ -2860,7 +2760,7 @@ name|getDatanodeByHost
 argument_list|(
 name|nodeReg
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2886,9 +2786,6 @@ operator|+
 literal|"node from name: "
 operator|+
 name|nodeN
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// nodeN previously served a different data storage,
@@ -2964,16 +2861,10 @@ operator|+
 literal|"node "
 operator|+
 name|nodeS
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is replaced by "
 operator|+
 name|nodeReg
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" with the same storageID "
 operator|+
@@ -3266,8 +3157,6 @@ operator|!
 name|inHostsList
 argument_list|(
 name|node
-argument_list|,
-literal|null
 argument_list|)
 condition|)
 block|{
@@ -3287,8 +3176,6 @@ condition|(
 name|inExcludedHostsList
 argument_list|(
 name|node
-argument_list|,
-literal|null
 argument_list|)
 condition|)
 block|{
@@ -3886,7 +3773,7 @@ name|getByName
 argument_list|(
 name|dn
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3914,7 +3801,7 @@ literal|":"
 operator|+
 name|dn
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3948,7 +3835,7 @@ literal|":"
 operator|+
 name|dn
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3975,7 +3862,7 @@ name|remove
 argument_list|(
 name|dn
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

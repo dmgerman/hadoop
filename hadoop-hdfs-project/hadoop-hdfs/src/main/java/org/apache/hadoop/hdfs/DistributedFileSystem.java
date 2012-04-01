@@ -3403,9 +3403,6 @@ name|dataNode
 index|[
 literal|0
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Find block in checksum stream
@@ -3485,9 +3482,6 @@ name|sumsNode
 index|[
 literal|0
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Ask client to delete blocks.

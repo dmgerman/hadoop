@@ -4312,16 +4312,35 @@ name|NamespaceInfo
 name|nsInfo
 parameter_list|)
 block|{
+specifier|final
+name|String
+name|xferIp
+init|=
+name|streamingAddr
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|getHostAddress
+argument_list|()
+decl_stmt|;
 name|DatanodeRegistration
 name|bpRegistration
 init|=
 operator|new
 name|DatanodeRegistration
 argument_list|(
-name|getXferAddr
-argument_list|()
+name|xferIp
 argument_list|)
 decl_stmt|;
+name|bpRegistration
+operator|.
+name|setXferPort
+argument_list|(
+name|getXferPort
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|bpRegistration
 operator|.
 name|setInfoPort
@@ -4478,9 +4497,6 @@ operator|+
 literal|" is assigned to data-node "
 operator|+
 name|bpRegistration
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5110,28 +5126,6 @@ return|return
 name|streamingAddr
 return|;
 block|}
-comment|/**    * @return the IP:port to report to the NN for data transfer    */
-DECL|method|getXferAddr ()
-specifier|private
-name|String
-name|getXferAddr
-parameter_list|()
-block|{
-return|return
-name|streamingAddr
-operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|getHostAddress
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|getXferPort
-argument_list|()
-return|;
-block|}
 comment|/**    * @return the datanode's IPC port    */
 annotation|@
 name|VisibleForTesting
@@ -5283,14 +5277,7 @@ name|createSocketAddr
 argument_list|(
 name|datanodeid
 operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|datanodeid
-operator|.
-name|getIpcPort
+name|getIpcAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5425,7 +5412,7 @@ name|createNewStorageId
 argument_list|(
 name|dnId
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
 argument_list|)
 argument_list|)
@@ -6622,9 +6609,6 @@ name|xferTargets
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|xfersBuilder
@@ -6963,7 +6947,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7330,9 +7314,6 @@ name|targets
 index|[
 literal|0
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" got "
 argument_list|,
@@ -10032,7 +10013,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -10063,9 +10044,6 @@ name|targets
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

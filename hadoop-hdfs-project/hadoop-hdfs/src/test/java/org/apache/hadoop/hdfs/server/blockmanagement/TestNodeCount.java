@@ -496,7 +496,7 @@ name|stopDataNode
 argument_list|(
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -512,7 +512,7 @@ argument_list|()
 argument_list|,
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -668,7 +668,7 @@ name|stopDataNode
 argument_list|(
 name|nonExcessDN
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -684,7 +684,7 @@ argument_list|()
 argument_list|,
 name|nonExcessDN
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

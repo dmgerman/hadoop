@@ -630,7 +630,7 @@ name|this
 argument_list|(
 name|nodeID
 operator|.
-name|getName
+name|getIpAddr
 argument_list|()
 argument_list|,
 name|nodeID
@@ -641,6 +641,11 @@ argument_list|,
 name|nodeID
 operator|.
 name|getStorageID
+argument_list|()
+argument_list|,
+name|nodeID
+operator|.
+name|getXferPort
 argument_list|()
 argument_list|,
 name|nodeID
@@ -672,7 +677,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String name, final String hostName, final String storageID, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String name, final String hostName, final String storageID, final int xferPort, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -687,6 +692,10 @@ parameter_list|,
 specifier|final
 name|String
 name|storageID
+parameter_list|,
+specifier|final
+name|int
+name|xferPort
 parameter_list|,
 specifier|final
 name|int
@@ -737,6 +746,8 @@ name|hostName
 argument_list|,
 name|storageID
 argument_list|,
+name|xferPort
+argument_list|,
 name|infoPort
 argument_list|,
 name|ipcPort
@@ -790,6 +801,18 @@ name|adminState
 operator|=
 name|adminState
 expr_stmt|;
+block|}
+comment|/** Network location name */
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|getXferAddr
+argument_list|()
+return|;
 block|}
 comment|/** The raw capacity. */
 DECL|method|getCapacity ()
@@ -1131,7 +1154,8 @@ name|NetUtils
 operator|.
 name|getHostNameOfIP
 argument_list|(
-name|name
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|buffer
@@ -1140,7 +1164,8 @@ name|append
 argument_list|(
 literal|"Name: "
 operator|+
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1430,7 +1455,7 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-name|name
+name|ipAddr
 argument_list|)
 expr_stmt|;
 if|if

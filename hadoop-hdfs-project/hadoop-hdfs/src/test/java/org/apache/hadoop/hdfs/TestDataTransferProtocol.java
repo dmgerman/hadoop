@@ -953,9 +953,6 @@ operator|+
 literal|"is expected while reading from "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1498,7 +1495,7 @@ name|createSocketAddr
 argument_list|(
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2342,7 +2339,7 @@ name|createSocketAddr
 argument_list|(
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

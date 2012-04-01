@@ -269,17 +269,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create DatanodeRegistration    */
-DECL|method|DatanodeRegistration (String nodeName)
+DECL|method|DatanodeRegistration (String ipAddr)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
 name|String
-name|nodeName
+name|ipAddr
 parameter_list|)
 block|{
 name|this
 argument_list|(
-name|nodeName
+name|ipAddr
 argument_list|,
 operator|new
 name|StorageInfo
@@ -323,12 +323,12 @@ operator|=
 name|keys
 expr_stmt|;
 block|}
-DECL|method|DatanodeRegistration (String nodeName, StorageInfo info, ExportedBlockKeys keys)
+DECL|method|DatanodeRegistration (String ipAddr, StorageInfo info, ExportedBlockKeys keys)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
 name|String
-name|nodeName
+name|ipAddr
 parameter_list|,
 name|StorageInfo
 name|info
@@ -339,7 +339,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|nodeName
+name|ipAddr
 argument_list|)
 expr_stmt|;
 name|this
@@ -455,7 +455,7 @@ name|getAddress
 parameter_list|()
 block|{
 return|return
-name|getName
+name|getXferAddr
 argument_list|()
 return|;
 block|}
@@ -476,7 +476,7 @@ argument_list|()
 operator|+
 literal|"("
 operator|+
-name|name
+name|ipAddr
 operator|+
 literal|", storageID="
 operator|+

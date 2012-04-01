@@ -1575,9 +1575,11 @@ literal|"yy"
 argument_list|,
 literal|"zz"
 argument_list|,
-literal|44
+literal|1
 argument_list|,
-literal|55
+literal|2
+argument_list|,
+literal|3
 argument_list|)
 argument_list|,
 name|dn1
@@ -1600,9 +1602,11 @@ literal|"bb"
 argument_list|,
 literal|"cc"
 argument_list|,
-literal|11
+literal|1
 argument_list|,
-literal|22
+literal|2
+argument_list|,
+literal|3
 argument_list|)
 argument_list|,
 name|dn2
@@ -2828,6 +2832,8 @@ argument_list|,
 literal|"localhost"
 argument_list|,
 literal|"storage-1234"
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,

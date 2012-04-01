@@ -1374,7 +1374,7 @@ name|target
 operator|.
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2565,9 +2565,6 @@ operator|:
 literal|"Source and target are the same "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 assert|;
 name|incScheduledSize
 argument_list|(
@@ -4346,18 +4343,12 @@ operator|+
 name|source
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -4608,18 +4599,12 @@ operator|+
 name|source
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

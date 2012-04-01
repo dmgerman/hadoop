@@ -688,7 +688,7 @@ if|if
 condition|(
 name|dnd
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|equals

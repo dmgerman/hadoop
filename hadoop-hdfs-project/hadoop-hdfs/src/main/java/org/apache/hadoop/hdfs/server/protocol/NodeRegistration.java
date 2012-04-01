@@ -48,7 +48,7 @@ specifier|public
 interface|interface
 name|NodeRegistration
 block|{
-comment|/**    * Get address of the server node.    * @return hostname:portNumber    */
+comment|/**    * Get address of the server node.    * @return ipAddr:portNumber    */
 DECL|method|getAddress ()
 specifier|public
 name|String

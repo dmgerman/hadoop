@@ -5330,9 +5330,6 @@ operator|+
 literal|"from "
 operator|+
 name|nodeReg
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" "
 operator|+
@@ -5429,9 +5426,6 @@ operator|+
 literal|"from "
 operator|+
 name|nodeReg
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" "
 operator|+
@@ -5491,14 +5485,14 @@ operator|(
 name|nodeReg
 operator|==
 literal|null
+operator|)
 condition|?
-literal|"unknown DataNode"
+literal|"Unknown DataNode"
 else|:
 name|nodeReg
 operator|.
-name|getName
+name|toString
 argument_list|()
-operator|)
 decl_stmt|;
 if|if
 condition|(
@@ -5647,7 +5641,7 @@ name|comm
 argument_list|)
 return|;
 block|}
-comment|/**     * Verify request.    *     * Verifies correctness of the datanode version, registration ID, and     * if the datanode does not need to be shutdown.    *     * @param nodeReg data node registration    * @throws IOException    */
+comment|/**     * Verifies the given registration.    *     * @param nodeReg node registration    * @throws UnregisteredNodeException if the registration is invalid    */
 DECL|method|verifyRequest (NodeRegistration nodeReg)
 name|void
 name|verifyRequest

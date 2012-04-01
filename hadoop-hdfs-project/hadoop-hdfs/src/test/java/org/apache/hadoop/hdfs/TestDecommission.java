@@ -1000,7 +1000,7 @@ index|[
 name|j
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|equals
@@ -1039,9 +1039,6 @@ name|nodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is given as downnode, "
 operator|+
@@ -1074,9 +1071,6 @@ name|nodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" was not last node in list: "
 operator|+
@@ -1110,9 +1104,6 @@ name|nodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is decommissioned."
 argument_list|)
@@ -1146,9 +1137,6 @@ name|nodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is unexpectedly decommissioned"
 return|;
@@ -1374,7 +1362,7 @@ index|[
 name|index
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -1503,9 +1491,6 @@ argument_list|(
 literal|"Recommissioning node: "
 operator|+
 name|decommissionedNode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|writeConfigFile
@@ -2240,7 +2225,7 @@ name|replicas
 argument_list|,
 name|decomNode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|,
 name|numDatanodes
@@ -2492,7 +2477,7 @@ name|replicas
 argument_list|,
 name|decomNode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|,
 name|numDatanodes

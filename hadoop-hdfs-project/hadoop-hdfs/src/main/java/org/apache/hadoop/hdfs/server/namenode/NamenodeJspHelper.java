@@ -1688,7 +1688,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 name|int
@@ -1749,7 +1749,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|endsWith
@@ -2741,7 +2741,7 @@ name|nodeToRedirect
 operator|=
 name|datanode
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 expr_stmt|;
 name|redirectPort
@@ -3092,14 +3092,7 @@ name|name
 init|=
 name|d
 operator|.
-name|getHostName
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|d
-operator|.
-name|getPort
+name|getXferAddrWithHostname
 argument_list|()
 decl_stmt|;
 if|if
@@ -3160,14 +3153,7 @@ literal|"<td class=\"name\"><a title=\""
 operator|+
 name|d
 operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|d
-operator|.
-name|getPort
+name|getXferAddr
 argument_list|()
 operator|+
 literal|"\" href=\""
@@ -3886,7 +3872,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 name|int
@@ -3947,7 +3933,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|endsWith

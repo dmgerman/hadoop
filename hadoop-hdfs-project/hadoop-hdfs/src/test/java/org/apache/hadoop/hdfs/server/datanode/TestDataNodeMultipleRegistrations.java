@@ -1116,9 +1116,6 @@ operator|+
 name|bpos
 operator|.
 name|bpRegistration
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|"; sid="
 operator|+

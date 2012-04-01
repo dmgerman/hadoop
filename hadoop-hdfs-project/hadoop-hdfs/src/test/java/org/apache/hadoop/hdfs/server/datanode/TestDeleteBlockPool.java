@@ -1100,7 +1100,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 operator|+
 literal|":"

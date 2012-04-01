@@ -2948,7 +2948,7 @@ name|createSocketAddr
 argument_list|(
 name|chosenNode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

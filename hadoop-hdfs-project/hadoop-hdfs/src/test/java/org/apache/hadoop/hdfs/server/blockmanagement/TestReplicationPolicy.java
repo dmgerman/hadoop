@@ -387,7 +387,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h1:5020"
+literal|"h1"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d1/r1"
@@ -399,7 +401,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h2:5020"
+literal|"h2"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d1/r1"
@@ -411,7 +415,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h3:5020"
+literal|"h3"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d1/r2"
@@ -423,7 +429,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h4:5020"
+literal|"h4"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d1/r2"
@@ -435,7 +443,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h5:5020"
+literal|"h5"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d2/r3"
@@ -447,7 +457,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h6:5020"
+literal|"h6"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d2/r3"
@@ -467,7 +479,9 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h7:5020"
+literal|"h7"
+argument_list|,
+literal|5020
 argument_list|)
 argument_list|,
 literal|"/d2/r4"

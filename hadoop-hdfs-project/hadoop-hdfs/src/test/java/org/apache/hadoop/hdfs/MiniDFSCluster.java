@@ -6378,7 +6378,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 condition|)

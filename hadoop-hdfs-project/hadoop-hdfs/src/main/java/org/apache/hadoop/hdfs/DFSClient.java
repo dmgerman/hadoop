@@ -6384,7 +6384,7 @@ index|[
 name|j
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 argument_list|,
@@ -6450,9 +6450,6 @@ name|datanodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|": "
 operator|+
@@ -6555,9 +6552,6 @@ name|datanodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|". Will retry the block once."
 argument_list|)
@@ -6602,9 +6596,6 @@ name|datanodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -6758,9 +6749,6 @@ name|datanodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|": md5="
 operator|+
@@ -6787,15 +6775,12 @@ literal|", datanodes["
 operator|+
 name|j
 operator|+
-literal|"].getName()="
+literal|"]="
 operator|+
 name|datanodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|,
 name|ie
 argument_list|)

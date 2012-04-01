@@ -1111,7 +1111,7 @@ operator|.
 name|getDatanodeId
 argument_list|()
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 name|DataNodeProperties

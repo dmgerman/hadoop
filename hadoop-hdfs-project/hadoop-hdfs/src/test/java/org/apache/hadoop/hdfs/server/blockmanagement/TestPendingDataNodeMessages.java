@@ -229,6 +229,8 @@ operator|new
 name|DatanodeID
 argument_list|(
 literal|"fake"
+argument_list|,
+literal|100
 argument_list|)
 argument_list|)
 decl_stmt|;

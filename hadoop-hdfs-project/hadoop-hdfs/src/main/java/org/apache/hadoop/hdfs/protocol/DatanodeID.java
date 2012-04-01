@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  */
+comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  *  * {@link DatanodeInfo#getName()} should be used to get the network  * location (for topology) of a datanode, instead of using  * {@link DatanodeID#getXferAddr()} here. Helpers are defined below  * for each context in which a DatanodeID is used.  */
 end_comment
 
 begin_class
@@ -137,12 +137,12 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|field|name
+DECL|field|ipAddr
 specifier|protected
 name|String
-name|name
+name|ipAddr
 decl_stmt|;
-comment|// IP:port (data transfer port)
+comment|// IP address
 DECL|field|hostName
 specifier|protected
 name|String
@@ -155,6 +155,12 @@ name|String
 name|storageID
 decl_stmt|;
 comment|// unique per cluster storageID
+DECL|field|xferPort
+specifier|protected
+name|int
+name|xferPort
+decl_stmt|;
+comment|// data streaming port
 DECL|field|infoPort
 specifier|protected
 name|int
@@ -179,22 +185,55 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Equivalent to DatanodeID(nodeName, "", -1, -1). */
-DECL|method|DatanodeID (String nodeName)
+comment|/** Equivalent to DatanodeID(ipAddr, "", -1, -1, -1). */
+DECL|method|DatanodeID (String ipAddr)
 specifier|public
 name|DatanodeID
 parameter_list|(
 name|String
-name|nodeName
+name|ipAddr
 parameter_list|)
 block|{
 name|this
 argument_list|(
-name|nodeName
+name|ipAddr
 argument_list|,
 literal|""
 argument_list|,
 literal|""
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Equivalent to DatanodeID(ipAddr, "", xferPort, -1, -1). */
+DECL|method|DatanodeID (String ipAddr, int xferPort)
+specifier|public
+name|DatanodeID
+parameter_list|(
+name|String
+name|ipAddr
+parameter_list|,
+name|int
+name|xferPort
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|ipAddr
+argument_list|,
+literal|""
+argument_list|,
+literal|""
+argument_list|,
+name|xferPort
 argument_list|,
 operator|-
 literal|1
@@ -217,7 +256,7 @@ name|this
 argument_list|(
 name|from
 operator|.
-name|getName
+name|getIpAddr
 argument_list|()
 argument_list|,
 name|from
@@ -232,6 +271,11 @@ argument_list|()
 argument_list|,
 name|from
 operator|.
+name|getXferPort
+argument_list|()
+argument_list|,
+name|from
+operator|.
 name|getInfoPort
 argument_list|()
 argument_list|,
@@ -242,19 +286,22 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create DatanodeID    * @param node IP:port    * @param hostName hostname    * @param storageID data storage ID    * @param infoPort info server port     * @param ipcPort ipc server port    */
-DECL|method|DatanodeID (String name, String hostName, String storageID, int infoPort, int ipcPort)
+comment|/**    * Create DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
+DECL|method|DatanodeID (String ipAddr, String hostName, String storageID, int xferPort, int infoPort, int ipcPort)
 specifier|public
 name|DatanodeID
 parameter_list|(
 name|String
-name|name
+name|ipAddr
 parameter_list|,
 name|String
 name|hostName
 parameter_list|,
 name|String
 name|storageID
+parameter_list|,
+name|int
+name|xferPort
 parameter_list|,
 name|int
 name|infoPort
@@ -265,9 +312,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|name
+name|ipAddr
 operator|=
-name|name
+name|ipAddr
 expr_stmt|;
 name|this
 operator|.
@@ -280,6 +327,12 @@ operator|.
 name|storageID
 operator|=
 name|storageID
+expr_stmt|;
+name|this
+operator|.
+name|xferPort
+operator|=
+name|xferPort
 expr_stmt|;
 name|this
 operator|.
@@ -294,20 +347,20 @@ operator|=
 name|ipcPort
 expr_stmt|;
 block|}
-DECL|method|setName (String name)
+DECL|method|setIpAddr (String ipAddr)
 specifier|public
 name|void
-name|setName
+name|setIpAddr
 parameter_list|(
 name|String
-name|name
+name|ipAddr
 parameter_list|)
 block|{
 name|this
 operator|.
-name|name
+name|ipAddr
 operator|=
-name|name
+name|ipAddr
 expr_stmt|;
 block|}
 DECL|method|setHostName (String hostName)
@@ -324,6 +377,22 @@ operator|.
 name|hostName
 operator|=
 name|hostName
+expr_stmt|;
+block|}
+DECL|method|setXferPort (int xferPort)
+specifier|public
+name|void
+name|setXferPort
+parameter_list|(
+name|int
+name|xferPort
+parameter_list|)
+block|{
+name|this
+operator|.
+name|xferPort
+operator|=
+name|xferPort
 expr_stmt|;
 block|}
 DECL|method|setInfoPort (int infoPort)
@@ -358,15 +427,31 @@ operator|=
 name|ipcPort
 expr_stmt|;
 block|}
-comment|/**    * @return hostname:portNumber.    */
-DECL|method|getName ()
+DECL|method|setStorageID (String storageID)
+specifier|public
+name|void
+name|setStorageID
+parameter_list|(
+name|String
+name|storageID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageID
+operator|=
+name|storageID
+expr_stmt|;
+block|}
+comment|/**    * @return ipAddr;    */
+DECL|method|getIpAddr ()
 specifier|public
 name|String
-name|getName
+name|getIpAddr
 parameter_list|()
 block|{
 return|return
-name|name
+name|ipAddr
 return|;
 block|}
 comment|/**    * @return hostname    */
@@ -377,23 +462,67 @@ name|getHostName
 parameter_list|()
 block|{
 return|return
-operator|(
 name|hostName
-operator|==
-literal|null
-operator|||
+return|;
+block|}
+comment|/**    * @return IP:xferPort string    */
+DECL|method|getXferAddr ()
+specifier|public
+name|String
+name|getXferAddr
+parameter_list|()
+block|{
+return|return
+name|ipAddr
+operator|+
+literal|":"
+operator|+
+name|xferPort
+return|;
+block|}
+comment|/**    * @return IP:ipcPort string    */
+DECL|method|getIpcAddr ()
+specifier|public
+name|String
+name|getIpcAddr
+parameter_list|()
+block|{
+return|return
+name|ipAddr
+operator|+
+literal|":"
+operator|+
+name|ipcPort
+return|;
+block|}
+comment|/**    * @return IP:infoPort string    */
+DECL|method|getInfoAddr ()
+specifier|public
+name|String
+name|getInfoAddr
+parameter_list|()
+block|{
+return|return
+name|ipAddr
+operator|+
+literal|":"
+operator|+
+name|infoPort
+return|;
+block|}
+comment|/**    * @return hostname:xferPort    */
+DECL|method|getXferAddrWithHostname ()
+specifier|public
+name|String
+name|getXferAddrWithHostname
+parameter_list|()
+block|{
+return|return
 name|hostName
-operator|.
-name|length
-argument_list|()
-operator|==
-literal|0
-operator|)
-condition|?
-name|getHost
-argument_list|()
-else|:
-name|hostName
+operator|+
+literal|":"
+operator|+
+name|xferPort
 return|;
 block|}
 comment|/**    * @return data storage ID.    */
@@ -404,9 +533,18 @@ name|getStorageID
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|storageID
+return|;
+block|}
+comment|/**    * @return xferPort (the port for data streaming)    */
+DECL|method|getXferPort ()
+specifier|public
+name|int
+name|getXferPort
+parameter_list|()
+block|{
+return|return
+name|xferPort
 return|;
 block|}
 comment|/**    * @return infoPort (the port at which the HTTP server bound to)    */
@@ -429,109 +567,6 @@ parameter_list|()
 block|{
 return|return
 name|ipcPort
-return|;
-block|}
-comment|/**    * sets the data storage ID.    */
-DECL|method|setStorageID (String storageID)
-specifier|public
-name|void
-name|setStorageID
-parameter_list|(
-name|String
-name|storageID
-parameter_list|)
-block|{
-name|this
-operator|.
-name|storageID
-operator|=
-name|storageID
-expr_stmt|;
-block|}
-comment|/**    * @return hostname and no :portNumber.    */
-DECL|method|getHost ()
-specifier|public
-name|String
-name|getHost
-parameter_list|()
-block|{
-name|int
-name|colon
-init|=
-name|name
-operator|.
-name|indexOf
-argument_list|(
-literal|":"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|colon
-operator|<
-literal|0
-condition|)
-block|{
-return|return
-name|name
-return|;
-block|}
-else|else
-block|{
-return|return
-name|name
-operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-name|colon
-argument_list|)
-return|;
-block|}
-block|}
-DECL|method|getPort ()
-specifier|public
-name|int
-name|getPort
-parameter_list|()
-block|{
-name|int
-name|colon
-init|=
-name|name
-operator|.
-name|indexOf
-argument_list|(
-literal|":"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|colon
-operator|<
-literal|0
-condition|)
-block|{
-return|return
-literal|50010
-return|;
-comment|// default port.
-block|}
-return|return
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
-name|name
-operator|.
-name|substring
-argument_list|(
-name|colon
-operator|+
-literal|1
-argument_list|)
-argument_list|)
 return|;
 block|}
 DECL|method|equals (Object to)
@@ -570,7 +605,8 @@ return|;
 block|}
 return|return
 operator|(
-name|name
+name|getXferAddr
+argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -581,7 +617,7 @@ operator|)
 name|to
 operator|)
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 operator|&&
@@ -609,7 +645,8 @@ name|hashCode
 parameter_list|()
 block|{
 return|return
-name|name
+name|getXferAddr
+argument_list|()
 operator|.
 name|hashCode
 argument_list|()
@@ -627,7 +664,8 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|name
+name|getXferAddr
+argument_list|()
 return|;
 block|}
 comment|/**    * Update fields when a new registration request comes in.    * Note that this does not update storageID.    */
@@ -640,11 +678,11 @@ name|DatanodeID
 name|nodeReg
 parameter_list|)
 block|{
-name|name
+name|ipAddr
 operator|=
 name|nodeReg
 operator|.
-name|getName
+name|getIpAddr
 argument_list|()
 expr_stmt|;
 name|hostName
@@ -652,6 +690,13 @@ operator|=
 name|nodeReg
 operator|.
 name|getHostName
+argument_list|()
+expr_stmt|;
+name|xferPort
+operator|=
+name|nodeReg
+operator|.
+name|getXferPort
 argument_list|()
 expr_stmt|;
 name|infoPort
@@ -669,7 +714,7 @@ name|getIpcPort
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Comparable.    * Basis of compare is the String name (host:portNumber) only.    * @param that    * @return as specified by Comparable.    */
+comment|/**    * Compare based on data transfer address.    *    * @param that    * @return as specified by Comparable    */
 DECL|method|compareTo (DatanodeID that)
 specifier|public
 name|int
@@ -680,20 +725,18 @@ name|that
 parameter_list|)
 block|{
 return|return
-name|name
+name|getXferAddr
+argument_list|()
 operator|.
 name|compareTo
 argument_list|(
 name|that
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/////////////////////////////////////////////////
-comment|// Writable
-comment|/////////////////////////////////////////////////
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)
@@ -713,7 +756,7 @@ name|writeString
 argument_list|(
 name|out
 argument_list|,
-name|name
+name|ipAddr
 argument_list|)
 expr_stmt|;
 name|Text
@@ -732,6 +775,13 @@ argument_list|(
 name|out
 argument_list|,
 name|storageID
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeShort
+argument_list|(
+name|xferPort
 argument_list|)
 expr_stmt|;
 name|out
@@ -762,7 +812,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|name
+name|ipAddr
 operator|=
 name|Text
 operator|.
@@ -793,8 +843,15 @@ comment|// The port read could be negative, if the port is a large number (more
 comment|// than 15 bits in storage size (but less than 16 bits).
 comment|// So chop off the first two bytes (and hence the signed bits) before
 comment|// setting the field.
-name|this
+name|xferPort
+operator|=
+name|in
 operator|.
+name|readShort
+argument_list|()
+operator|&
+literal|0x0000ffff
+expr_stmt|;
 name|infoPort
 operator|=
 name|in
@@ -804,8 +861,6 @@ argument_list|()
 operator|&
 literal|0x0000ffff
 expr_stmt|;
-name|this
-operator|.
 name|ipcPort
 operator|=
 name|in

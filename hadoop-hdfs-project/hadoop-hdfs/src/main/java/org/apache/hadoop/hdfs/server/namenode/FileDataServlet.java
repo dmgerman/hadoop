@@ -405,7 +405,7 @@ name|hostname
 operator|=
 name|host
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 expr_stmt|;
 block|}

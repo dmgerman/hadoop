@@ -1123,9 +1123,6 @@ argument_list|(
 literal|"Testcase 1: Proxy "
 operator|+
 name|newNode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" does not contain the block "
 operator|+
@@ -1164,9 +1161,6 @@ name|get
 argument_list|(
 literal|1
 argument_list|)
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" contains the block "
 operator|+
@@ -1205,9 +1199,6 @@ argument_list|(
 literal|"Testcase 3: Source="
 operator|+
 name|source
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" Proxy="
 operator|+
@@ -1217,16 +1208,10 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" Destination="
 operator|+
 name|newNode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1300,9 +1285,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1562,9 +1544,6 @@ argument_list|(
 literal|"Block is not located at "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1601,9 +1580,6 @@ control|)
 name|expectedNodesList
 operator|+=
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|", "
 expr_stmt|;
@@ -1617,9 +1593,6 @@ control|)
 name|currentNodesList
 operator|+=
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|", "
 expr_stmt|;
@@ -1718,7 +1691,7 @@ name|createSocketAddr
 argument_list|(
 name|destination
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 argument_list|,
