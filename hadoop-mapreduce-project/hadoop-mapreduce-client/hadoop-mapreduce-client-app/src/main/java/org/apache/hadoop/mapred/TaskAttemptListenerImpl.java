@@ -1089,7 +1089,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|attemptID
 argument_list|)
@@ -1192,7 +1192,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|attemptID
 argument_list|)
@@ -1268,7 +1268,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|attemptID
 argument_list|)
@@ -1586,7 +1586,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|attemptID
 argument_list|)
@@ -1708,7 +1708,7 @@ argument_list|)
 expr_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|pinged
 argument_list|(
 name|TypeConverter
 operator|.
@@ -1780,7 +1780,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|attemptID
 argument_list|)
@@ -1863,7 +1863,7 @@ argument_list|)
 decl_stmt|;
 name|taskHeartbeatHandler
 operator|.
-name|receivedPing
+name|progressing
 argument_list|(
 name|yarnAttemptID
 argument_list|)
