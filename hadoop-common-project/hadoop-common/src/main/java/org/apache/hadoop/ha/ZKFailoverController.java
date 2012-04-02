@@ -1386,12 +1386,14 @@ expr_stmt|;
 name|boolean
 name|gracefulWorked
 init|=
+operator|new
 name|FailoverController
+argument_list|(
+name|conf
+argument_list|)
 operator|.
 name|tryGracefulFence
 argument_list|(
-name|conf
-argument_list|,
 name|target
 argument_list|)
 decl_stmt|;
