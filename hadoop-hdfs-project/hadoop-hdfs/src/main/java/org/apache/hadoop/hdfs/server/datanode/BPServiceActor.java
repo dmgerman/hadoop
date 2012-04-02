@@ -2623,7 +2623,7 @@ condition|)
 block|{
 try|try
 block|{
-comment|// Use returned registration from namenode with updated machine name.
+comment|// Use returned registration from namenode with updated fields
 name|bpRegistration
 operator|=
 name|bpNamenode

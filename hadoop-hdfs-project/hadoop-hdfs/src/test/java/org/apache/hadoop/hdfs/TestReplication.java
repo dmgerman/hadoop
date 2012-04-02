@@ -890,9 +890,6 @@ name|datanodes
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|boolean

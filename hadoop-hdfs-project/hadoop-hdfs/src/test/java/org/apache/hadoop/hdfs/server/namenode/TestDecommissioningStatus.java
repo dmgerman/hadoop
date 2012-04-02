@@ -1020,7 +1020,7 @@ index|[
 name|nodeIndex
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 name|System

@@ -809,17 +809,6 @@ DECL|field|frequency
 name|int
 name|frequency
 decl_stmt|;
-DECL|method|NodeRecord ()
-specifier|public
-name|NodeRecord
-parameter_list|()
-block|{
-name|frequency
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-block|}
 DECL|method|NodeRecord (DatanodeInfo info, int count)
 specifier|public
 name|NodeRecord
@@ -1282,14 +1271,7 @@ name|createSocketAddr
 argument_list|(
 name|chosenNode
 operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|chosenNode
-operator|.
-name|getInfoPort
+name|getInfoAddr
 argument_list|()
 argument_list|)
 decl_stmt|;

@@ -2148,9 +2148,6 @@ name|targets
 index|[
 name|victim
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -2162,7 +2159,7 @@ index|[
 name|victim
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

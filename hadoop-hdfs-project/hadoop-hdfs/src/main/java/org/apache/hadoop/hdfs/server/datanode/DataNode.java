@@ -2214,6 +2214,20 @@ name|com
 operator|.
 name|google
 operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|protobuf
 operator|.
 name|BlockingService
@@ -2432,18 +2446,21 @@ DECL|field|metrics
 name|DataNodeMetrics
 name|metrics
 decl_stmt|;
-DECL|field|selfAddr
+DECL|field|streamingAddr
 specifier|private
 name|InetSocketAddress
-name|selfAddr
+name|streamingAddr
 decl_stmt|;
 DECL|field|hostName
 specifier|private
-specifier|volatile
 name|String
 name|hostName
 decl_stmt|;
-comment|// Host name of this datanode
+DECL|field|id
+specifier|private
+name|DatanodeID
+name|id
+decl_stmt|;
 DECL|field|isBlockTokenEnabled
 name|boolean
 name|isBlockTokenEnabled
@@ -2586,6 +2603,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Configured hostname is "
+operator|+
+name|hostName
+argument_list|)
+expr_stmt|;
 name|startDataNode
 argument_list|(
 name|conf
@@ -2666,6 +2692,7 @@ operator|=
 name|nsCid
 expr_stmt|;
 block|}
+comment|/**    * Returns the hostname for this datanode. If the hostname is not    * explicitly configured in the given config, then it is determined    * via the DNS class.    *    * @param config    * @return the hostname (NB: may not be a FQDN)    * @throws UnknownHostException if the dfs.datanode.dns.interface    *    option is used and the hostname can not be determined    */
 DECL|method|getHostName (Configuration config)
 specifier|private
 specifier|static
@@ -2678,7 +2705,6 @@ parameter_list|)
 throws|throws
 name|UnknownHostException
 block|{
-comment|// use configured nameserver& interface to get local hostname
 name|String
 name|name
 init|=
@@ -3623,16 +3649,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|InetSocketAddress
-name|streamingAddr
-init|=
-name|DataNode
-operator|.
-name|getStreamingAddr
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 comment|// find free port or use privileged port provided
 name|ServerSocket
 name|ss
@@ -3644,6 +3660,16 @@ operator|==
 literal|null
 condition|)
 block|{
+name|InetSocketAddress
+name|addr
+init|=
+name|DataNode
+operator|.
+name|getStreamingAddr
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|ss
 operator|=
 operator|(
@@ -3672,7 +3698,7 @@ name|bind
 argument_list|(
 name|ss
 argument_list|,
-name|streamingAddr
+name|addr
 argument_list|,
 literal|0
 argument_list|)
@@ -3697,16 +3723,7 @@ operator|.
 name|DEFAULT_DATA_SOCKET_SIZE
 argument_list|)
 expr_stmt|;
-comment|// adjust machine name with the actual port
-name|int
-name|tmpPort
-init|=
-name|ss
-operator|.
-name|getLocalPort
-argument_list|()
-decl_stmt|;
-name|selfAddr
+name|streamingAddr
 operator|=
 operator|new
 name|InetSocketAddress
@@ -3719,7 +3736,10 @@ operator|.
 name|getHostAddress
 argument_list|()
 argument_list|,
-name|tmpPort
+name|ss
+operator|.
+name|getLocalPort
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3728,7 +3748,7 @@ name|info
 argument_list|(
 literal|"Opened streaming server at "
 operator|+
-name|selfAddr
+name|streamingAddr
 argument_list|)
 expr_stmt|;
 name|this
@@ -4263,7 +4283,7 @@ name|create
 argument_list|(
 name|conf
 argument_list|,
-name|getMachineName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4292,20 +4312,58 @@ name|NamespaceInfo
 name|nsInfo
 parameter_list|)
 block|{
+specifier|final
+name|String
+name|xferIp
+init|=
+name|streamingAddr
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|getHostAddress
+argument_list|()
+decl_stmt|;
 name|DatanodeRegistration
 name|bpRegistration
 init|=
-name|createUnknownBPRegistration
-argument_list|()
+operator|new
+name|DatanodeRegistration
+argument_list|(
+name|xferIp
+argument_list|)
 decl_stmt|;
-name|String
-name|blockPoolId
-init|=
-name|nsInfo
+name|bpRegistration
 operator|.
-name|getBlockPoolID
+name|setXferPort
+argument_list|(
+name|getXferPort
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+name|bpRegistration
+operator|.
+name|setInfoPort
+argument_list|(
+name|getInfoPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|bpRegistration
+operator|.
+name|setIpcPort
+argument_list|(
+name|getIpcPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|bpRegistration
+operator|.
+name|setHostName
+argument_list|(
+name|hostName
+argument_list|)
+expr_stmt|;
 name|bpRegistration
 operator|.
 name|setStorageID
@@ -4321,7 +4379,10 @@ name|storage
 operator|.
 name|getBPStorage
 argument_list|(
-name|blockPoolId
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -4334,7 +4395,8 @@ block|{
 comment|// it's null in the case of SimulatedDataSet
 name|bpRegistration
 operator|.
-name|storageInfo
+name|getStorageInfo
+argument_list|()
 operator|.
 name|layoutVersion
 operator|=
@@ -4379,13 +4441,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|hostName
+comment|// Set the ID if we haven't already
+if|if
+condition|(
+literal|null
+operator|==
+name|id
+condition|)
+block|{
+name|id
 operator|=
 name|bpRegistration
-operator|.
-name|getHost
-argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|storage
@@ -4399,8 +4467,7 @@ literal|""
 argument_list|)
 condition|)
 block|{
-comment|// This is a fresh datanode -- take the storage ID provided by the
-comment|// NN and persist it.
+comment|// This is a fresh datanode, persist the NN-provided storage ID
 name|storage
 operator|.
 name|setStorageID
@@ -4430,9 +4497,6 @@ operator|+
 literal|" is assigned to data-node "
 operator|+
 name|bpRegistration
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4502,7 +4566,8 @@ name|keys
 init|=
 name|bpRegistration
 operator|.
-name|exportedKeys
+name|getExportedKeys
+argument_list|()
 decl_stmt|;
 name|isBlockTokenEnabled
 operator|=
@@ -4609,16 +4674,18 @@ name|blockPoolId
 argument_list|,
 name|bpRegistration
 operator|.
-name|exportedKeys
+name|getExportedKeys
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|bpRegistration
 operator|.
-name|exportedKeys
-operator|=
+name|setExportedKeys
+argument_list|(
 name|ExportedBlockKeys
 operator|.
 name|DUMMY_KEYS
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove the given block pool from the block scanner, dataset, and storage.    */
@@ -4773,45 +4840,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Create a DatanodeRegistration object with no valid StorageInfo.    * This is used when reporting an error during handshake - ie    * before we can load any specific block pool.    */
-DECL|method|createUnknownBPRegistration ()
-specifier|private
-name|DatanodeRegistration
-name|createUnknownBPRegistration
-parameter_list|()
-block|{
-name|DatanodeRegistration
-name|reg
-init|=
-operator|new
-name|DatanodeRegistration
-argument_list|(
-name|getMachineName
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|reg
-operator|.
-name|setInfoPort
-argument_list|(
-name|infoServer
-operator|.
-name|getPort
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|reg
-operator|.
-name|setIpcPort
-argument_list|(
-name|getIpcPort
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-name|reg
-return|;
 block|}
 DECL|method|getAllBpOs ()
 name|BPOfferService
@@ -5046,13 +5074,13 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getPort ()
+DECL|method|getXferPort ()
 name|int
-name|getPort
+name|getXferPort
 parameter_list|()
 block|{
 return|return
-name|selfAddr
+name|streamingAddr
 operator|.
 name|getPort
 argument_list|()
@@ -5070,22 +5098,37 @@ name|getStorageID
 argument_list|()
 return|;
 block|}
-comment|/**     * Get host:port with host set to Datanode host and port set to the    * port {@link DataXceiver} is serving.    * @return host:port string    */
-DECL|method|getMachineName ()
+comment|/**    * @return name useful for logging    */
+DECL|method|getDisplayName ()
 specifier|public
 name|String
-name|getMachineName
+name|getDisplayName
 parameter_list|()
 block|{
+comment|// NB: our DatanodeID may not be set yet
 return|return
 name|hostName
 operator|+
 literal|":"
 operator|+
-name|getPort
+name|getIpcPort
 argument_list|()
 return|;
 block|}
+comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be be a different address.    *     * @return socket address for data transfer    */
+DECL|method|getXferAddress ()
+specifier|public
+name|InetSocketAddress
+name|getXferAddress
+parameter_list|()
+block|{
+return|return
+name|streamingAddr
+return|;
+block|}
+comment|/**    * @return the datanode's IPC port    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getIpcPort ()
 specifier|public
 name|int
@@ -5150,60 +5193,6 @@ return|return
 name|bpos
 operator|.
 name|bpRegistration
-return|;
-block|}
-comment|/**    * get BP registration by machine and port name (host:port)    * @param mName - the name that the NN used    * @return BP registration     * @throws IOException     */
-DECL|method|getDNRegistrationByMachineName (String mName)
-name|DatanodeRegistration
-name|getDNRegistrationByMachineName
-parameter_list|(
-name|String
-name|mName
-parameter_list|)
-block|{
-comment|// TODO: all the BPs should have the same name as each other, they all come
-comment|// from getName() here! and the use cases only are in tests where they just
-comment|// call with getName(). So we could probably just make this method return
-comment|// the first BPOS's registration. See HDFS-2609.
-name|BPOfferService
-index|[]
-name|bposArray
-init|=
-name|blockPoolManager
-operator|.
-name|getAllNamenodeThreads
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|BPOfferService
-name|bpos
-range|:
-name|bposArray
-control|)
-block|{
-if|if
-condition|(
-name|bpos
-operator|.
-name|bpRegistration
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|mName
-argument_list|)
-condition|)
-return|return
-name|bpos
-operator|.
-name|bpRegistration
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/**    * Creates either NIO or regular depending on socketWriteTimeout.    */
@@ -5288,14 +5277,7 @@ name|createSocketAddr
 argument_list|(
 name|datanodeid
 operator|.
-name|getHost
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|datanodeid
-operator|.
-name|getIpcPort
+name|getIpcAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5394,16 +5376,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getSelfAddr ()
-specifier|public
-name|InetSocketAddress
-name|getSelfAddr
-parameter_list|()
-block|{
-return|return
-name|selfAddr
-return|;
-block|}
 DECL|method|getMetrics ()
 name|DataNodeMetrics
 name|getMetrics
@@ -5434,14 +5406,15 @@ argument_list|)
 expr_stmt|;
 name|dnId
 operator|.
-name|storageID
-operator|=
+name|setStorageID
+argument_list|(
 name|createNewStorageId
 argument_list|(
 name|dnId
 operator|.
-name|getPort
+name|getXferPort
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6636,9 +6609,6 @@ name|xferTargets
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|xfersBuilder
@@ -6977,7 +6947,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7344,9 +7314,6 @@ name|targets
 index|[
 literal|0
 index|]
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" got "
 argument_list|,
@@ -8213,7 +8180,7 @@ name|data
 operator|+
 literal|", localName='"
 operator|+
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|"', storageID='"
@@ -10046,7 +10013,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -10077,9 +10044,6 @@ name|targets
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -10101,7 +10065,6 @@ literal|"])"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// ClientDataNodeProtocol implementation
 annotation|@
 name|Override
 comment|// ClientDataNodeProtocol
@@ -10458,9 +10421,7 @@ name|blockPoolId
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Determine a Datanode's streaming address
 DECL|method|getStreamingAddr (Configuration conf)
-specifier|public
 specifier|static
 name|InetSocketAddress
 name|getStreamingAddr
@@ -10561,6 +10522,7 @@ literal|"dfs.datanode.info.port"
 argument_list|)
 return|;
 block|}
+comment|/**    * @return the datanode's http port    */
 DECL|method|getInfoPort ()
 specifier|public
 name|int
@@ -10568,8 +10530,6 @@ name|getInfoPort
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|infoServer
 operator|.
 name|getPort
@@ -10720,7 +10680,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|//ClientDatanodeProtocol
+comment|// ClientDatanodeProtocol
 DECL|method|refreshNamenodes ()
 specifier|public
 name|void
@@ -10945,7 +10905,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** Methods used by fault injection tests */
+annotation|@
+name|VisibleForTesting
 DECL|method|getDatanodeId ()
 specifier|public
 name|DatanodeID
@@ -10953,23 +10914,7 @@ name|getDatanodeId
 parameter_list|()
 block|{
 return|return
-operator|new
-name|DatanodeID
-argument_list|(
-name|getMachineName
-argument_list|()
-argument_list|,
-name|getStorageId
-argument_list|()
-argument_list|,
-name|infoServer
-operator|.
-name|getPort
-argument_list|()
-argument_list|,
-name|getIpcPort
-argument_list|()
-argument_list|)
+name|id
 return|;
 block|}
 comment|/**    * Get current value of the max balancer bandwidth in bytes per second.    *    * @return bandwidth Blanacer bandwidth in bytes per second for this datanode.    */

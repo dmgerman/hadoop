@@ -440,7 +440,7 @@ argument_list|()
 else|:
 name|host
 operator|.
-name|getHost
+name|getIpAddr
 argument_list|()
 decl_stmt|;
 specifier|final

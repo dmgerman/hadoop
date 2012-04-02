@@ -561,7 +561,7 @@ name|warn
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiverServer: "
@@ -590,7 +590,7 @@ name|warn
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiverServer: "
@@ -657,7 +657,7 @@ name|error
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiverServer: Exiting due to: "
@@ -693,7 +693,7 @@ name|warn
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" :DataXceiverServer: close exception"
@@ -739,7 +739,7 @@ name|warn
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiverServer.kill(): "

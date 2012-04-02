@@ -3182,9 +3182,6 @@ name|targets
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -4185,9 +4182,6 @@ name|nodes
 index|[
 name|j
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -4259,9 +4253,6 @@ name|nodes
 index|[
 name|errorIndex
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|failed
@@ -4772,9 +4763,6 @@ name|nodes
 index|[
 name|i
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5064,7 +5052,7 @@ index|[
 name|i
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|equals
@@ -5488,9 +5476,6 @@ argument_list|(
 literal|"Connecting to datanode "
 operator|+
 name|first
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5504,7 +5489,7 @@ name|createSocketAddr
 argument_list|(
 name|first
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;

@@ -18,6 +18,42 @@ name|proto
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|MRClientProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|proto
+operator|.
+name|MRClientProtocol
+operator|.
+name|MRClientProtocolService
+import|;
+end_import
+
 begin_comment
 comment|/**  * Fake protocol to differentiate the blocking interfaces in the   * security info class loaders.  */
 end_comment
@@ -39,12 +75,42 @@ specifier|public
 interface|interface
 name|BlockingInterface
 extends|extends
-name|MRClientProtocol
+name|MRClientProtocolPB
+block|{     }
+DECL|method|newReflectiveBlockingService ( final HSClientProtocolService.BlockingInterface impl)
+specifier|public
+specifier|static
+name|com
 operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|BlockingService
+name|newReflectiveBlockingService
+parameter_list|(
+specifier|final
+name|HSClientProtocolService
+operator|.
+name|BlockingInterface
+name|impl
+parameter_list|)
+block|{
+comment|// The cast is safe
+return|return
+name|MRClientProtocolService
+operator|.
+name|newReflectiveBlockingService
+argument_list|(
+operator|(
 name|MRClientProtocolService
 operator|.
 name|BlockingInterface
-block|{     }
+operator|)
+name|impl
+argument_list|)
+return|;
+block|}
 block|}
 block|}
 end_interface

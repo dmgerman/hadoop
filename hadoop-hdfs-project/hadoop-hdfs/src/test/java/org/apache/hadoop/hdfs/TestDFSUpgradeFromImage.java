@@ -287,15 +287,6 @@ name|getBaseDirectory
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|field|HADOOP14_IMAGE
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|HADOOP14_IMAGE
-init|=
-literal|"hadoop-14-dfs-dir.tgz"
-decl_stmt|;
 DECL|field|HADOOP_DFS_DIR_TXT
 specifier|private
 specifier|static
@@ -363,20 +354,6 @@ name|printChecksum
 init|=
 literal|false
 decl_stmt|;
-DECL|method|unpackStorage ()
-specifier|public
-name|void
-name|unpackStorage
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|unpackStorage
-argument_list|(
-name|HADOOP14_IMAGE
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|unpackStorage (String tarFileName)
 specifier|private
 name|void
@@ -1244,22 +1221,6 @@ name|ioe
 throw|;
 block|}
 block|}
-block|}
-comment|/**    * Test upgrade from an 0.14 image    */
-DECL|method|testUpgradeFromRel14Image ()
-specifier|public
-name|void
-name|testUpgradeFromRel14Image
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|unpackStorage
-argument_list|()
-expr_stmt|;
-name|upgradeAndVerify
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * Test upgrade from 0.22 image    */
 DECL|method|testUpgradeFromRel22Image ()

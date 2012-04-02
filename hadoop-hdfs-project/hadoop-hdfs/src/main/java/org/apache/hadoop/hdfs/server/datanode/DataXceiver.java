@@ -1222,7 +1222,7 @@ name|error
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":DataXceiver error processing "
@@ -1272,7 +1272,7 @@ name|debug
 argument_list|(
 name|datanode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|":Number of active connections is: "
@@ -2248,7 +2248,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 expr_stmt|;
 name|mirrorTarget
@@ -3888,7 +3888,7 @@ name|createSocketAddr
 argument_list|(
 name|proxySource
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4679,7 +4679,7 @@ name|setFirstBadLink
 argument_list|(
 name|dnR
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;

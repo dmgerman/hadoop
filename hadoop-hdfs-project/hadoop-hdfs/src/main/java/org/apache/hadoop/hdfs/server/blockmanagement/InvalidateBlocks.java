@@ -385,9 +385,6 @@ operator|+
 literal|" to "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -601,10 +598,12 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|out
 operator|.
-name|getName
-argument_list|()
-operator|+
+name|println
+argument_list|(
 name|blocks
 argument_list|)
 expr_stmt|;
@@ -724,9 +723,6 @@ operator|+
 literal|": ask "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to delete "
 operator|+

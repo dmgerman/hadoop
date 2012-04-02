@@ -181,28 +181,6 @@ block|{
 specifier|public
 specifier|static
 name|DatanodeRegistration
-DECL|method|getDNRegistrationByMachineName (DataNode dn, String mName)
-name|getDNRegistrationByMachineName
-parameter_list|(
-name|DataNode
-name|dn
-parameter_list|,
-name|String
-name|mName
-parameter_list|)
-block|{
-return|return
-name|dn
-operator|.
-name|getDNRegistrationByMachineName
-argument_list|(
-name|mName
-argument_list|)
-return|;
-block|}
-specifier|public
-specifier|static
-name|DatanodeRegistration
 DECL|method|getDNRegistrationForBP (DataNode dn, String bpid)
 name|getDNRegistrationForBP
 parameter_list|(

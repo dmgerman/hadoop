@@ -3835,6 +3835,16 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+name|int
+name|lastDn
+init|=
+name|datanodes
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|1
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -3848,15 +3858,10 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-name|datanodes
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
+name|lastDn
 argument_list|)
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" has been started"

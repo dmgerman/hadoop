@@ -138,9 +138,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
 operator|.
-name|LocalizationProtocol
+name|nodemanager
+operator|.
+name|api
+operator|.
+name|LocalizationProtocolPB
 import|;
 end_import
 
@@ -197,11 +201,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|LocalizationProtocol
-operator|.
-name|LocalizationProtocolService
-operator|.
-name|BlockingInterface
+name|LocalizationProtocolPB
 operator|.
 name|class
 argument_list|)

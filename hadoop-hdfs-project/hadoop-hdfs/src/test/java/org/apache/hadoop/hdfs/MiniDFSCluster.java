@@ -4907,7 +4907,7 @@ name|ipAddr
 init|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 operator|.
 name|getAddress
@@ -4928,7 +4928,7 @@ name|port
 init|=
 name|dn
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 operator|.
 name|getPort
@@ -6275,7 +6275,7 @@ literal|"MiniDFSCluster Stopping DataNode "
 operator|+
 name|dn
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" from a total of "
@@ -6305,14 +6305,14 @@ name|dnprop
 return|;
 block|}
 comment|/*    * Shutdown a datanode by name.    */
-DECL|method|stopDataNode (String name)
+DECL|method|stopDataNode (String dnName)
 specifier|public
 specifier|synchronized
 name|DataNodeProperties
 name|stopDataNode
 parameter_list|(
 name|String
-name|name
+name|dnName
 parameter_list|)
 block|{
 name|int
@@ -6347,44 +6347,40 @@ argument_list|)
 operator|.
 name|datanode
 decl_stmt|;
-comment|// get BP registration
-name|DatanodeRegistration
-name|dnR
-init|=
-name|DataNodeTestUtils
-operator|.
-name|getDNRegistrationByMachineName
-argument_list|(
-name|dn
-argument_list|,
-name|name
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"for name="
+literal|"DN name="
 operator|+
-name|name
+name|dnName
 operator|+
-literal|" found bp="
+literal|" found DN="
 operator|+
-name|dnR
+name|dn
 operator|+
-literal|"; with dnMn="
+literal|" with name="
 operator|+
 name|dn
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|dnR
-operator|!=
-literal|null
+name|dnName
+operator|.
+name|equals
+argument_list|(
+name|dn
+operator|.
+name|getDatanodeId
+argument_list|()
+operator|.
+name|getXferAddr
+argument_list|()
+argument_list|)
 condition|)
 block|{
 break|break;
@@ -6471,7 +6467,7 @@ name|dnprop
 operator|.
 name|datanode
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 decl_stmt|;
 name|conf

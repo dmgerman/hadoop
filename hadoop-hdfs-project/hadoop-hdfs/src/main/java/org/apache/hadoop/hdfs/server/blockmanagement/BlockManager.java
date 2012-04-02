@@ -4217,9 +4217,6 @@ operator|+
 literal|"Asking for blocks from an unrecorded node "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -4229,9 +4226,6 @@ argument_list|(
 literal|"Datanode "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" not found."
 argument_list|)
@@ -4615,9 +4609,6 @@ operator|.
 name|append
 argument_list|(
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -4786,9 +4777,6 @@ operator|+
 literal|" as corrupt because datanode "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" does not exist. "
 argument_list|)
@@ -4930,9 +4918,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|DatanodeDescriptor
@@ -4964,9 +4949,6 @@ operator|+
 literal|" because datanode "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" does not exist."
 argument_list|)
@@ -5074,9 +5056,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" listed for deletion."
 argument_list|)
@@ -5098,9 +5077,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is the only copy and was not deleted."
 argument_list|)
@@ -6201,9 +6177,6 @@ name|targets
 index|[
 name|k
 index|]
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6218,9 +6191,6 @@ operator|+
 name|rw
 operator|.
 name|srcNode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to replicate "
 operator|+
@@ -6986,9 +6956,6 @@ argument_list|(
 literal|"ProcessReport from dead or unregistered node: "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -7019,9 +6986,6 @@ operator|+
 literal|"discarded non-initial block report from "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" because namenode still in startup phase"
 argument_list|)
@@ -7146,9 +7110,6 @@ argument_list|(
 literal|"BLOCK* processReport: from "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|", blocks: "
 operator|+
@@ -7489,9 +7450,6 @@ operator|+
 literal|" on "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -8088,9 +8046,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -8809,9 +8764,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|": ignoring it, since the block is "
 operator|+
@@ -8860,9 +8812,6 @@ operator|+
 literal|" on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -9230,9 +9179,6 @@ operator|+
 literal|" on "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -9330,9 +9276,6 @@ operator|+
 literal|" on "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -9631,9 +9574,6 @@ operator|.
 name|append
 argument_list|(
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -9764,7 +9704,7 @@ operator|+
 literal|" on "
 operator|+
 name|node
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -10978,9 +10918,6 @@ operator|+
 literal|"("
 operator|+
 name|cur
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|", "
 operator|+
@@ -11088,9 +11025,6 @@ operator|+
 literal|" ("
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|", "
 operator|+
@@ -11138,9 +11072,6 @@ operator|+
 literal|" from "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -11693,9 +11624,6 @@ operator|+
 literal|" on "
 operator|+
 name|node
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" size "
 operator|+
@@ -11816,9 +11744,6 @@ operator|+
 literal|" is received from dead or unregistered node "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -11914,9 +11839,6 @@ init|=
 literal|"Unknown block status code reported by "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|": "
 operator|+
@@ -11974,9 +11896,6 @@ operator|+
 literal|" is received from "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -12000,9 +11919,6 @@ operator|+
 literal|"from "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" receiving: "
 operator|+
@@ -12396,8 +12312,6 @@ operator|.
 name|append
 argument_list|(
 name|node
-operator|.
-name|name
 argument_list|)
 expr_stmt|;
 name|nodeList
@@ -12459,8 +12373,6 @@ operator|+
 literal|", Current Datanode: "
 operator|+
 name|srcNode
-operator|.
-name|name
 operator|+
 literal|", Is current datanode decommissioning: "
 operator|+

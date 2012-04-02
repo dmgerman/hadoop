@@ -242,9 +242,6 @@ operator|+
 literal|" added as corrupt on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" by "
 operator|+
@@ -279,9 +276,6 @@ operator|+
 literal|"on "
 operator|+
 name|dn
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" by "
 operator|+

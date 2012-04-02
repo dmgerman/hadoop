@@ -252,7 +252,7 @@ literal|"\n   Distributed upgrade for DataNode "
 operator|+
 name|dataNode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" version "
@@ -511,7 +511,7 @@ literal|"\n   Distributed upgrade for DataNode "
 operator|+
 name|dataNode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" version "
@@ -580,7 +580,7 @@ literal|"Distributed upgrade for DataNode "
 operator|+
 name|dataNode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" version "
@@ -656,7 +656,7 @@ literal|"\n   Distributed upgrade for DataNode "
 operator|+
 name|dataNode
 operator|.
-name|getMachineName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" version "

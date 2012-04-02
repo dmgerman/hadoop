@@ -229,6 +229,8 @@ operator|new
 name|DatanodeID
 argument_list|(
 literal|"fake"
+argument_list|,
+literal|100
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -312,9 +314,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"ReportedBlockInfo [block=blk_1_1, dn=fake, reportedState=FINALIZED],"
+literal|"ReportedBlockInfo [block=blk_1_1, dn=fake:100, reportedState=FINALIZED],"
 operator|+
-literal|"ReportedBlockInfo [block=blk_1_2, dn=fake, reportedState=FINALIZED]"
+literal|"ReportedBlockInfo [block=blk_1_2, dn=fake:100, reportedState=FINALIZED]"
 argument_list|,
 name|Joiner
 operator|.

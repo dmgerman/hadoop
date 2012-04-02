@@ -394,6 +394,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -1360,7 +1374,7 @@ name|target
 operator|.
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2551,9 +2565,6 @@ operator|:
 literal|"Source and target are the same "
 operator|+
 name|datanode
-operator|.
-name|getName
-argument_list|()
 assert|;
 name|incScheduledSize
 argument_list|(
@@ -4332,18 +4343,12 @@ operator|+
 name|source
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -4594,18 +4599,12 @@ operator|+
 name|source
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
 name|datanode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -6921,7 +6920,9 @@ name|ToolRunner
 operator|.
 name|run
 argument_list|(
-literal|null
+operator|new
+name|HdfsConfiguration
+argument_list|()
 argument_list|,
 operator|new
 name|Cli

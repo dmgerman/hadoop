@@ -2280,7 +2280,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/*    * Wait up to 20s for the given DN (host:port) to be decommissioned.    */
+comment|/*    * Wait up to 20s for the given DN (IP:port) to be decommissioned    */
 DECL|method|waitForDecommission (FileSystem fs, String name)
 specifier|public
 specifier|static
@@ -2352,7 +2352,7 @@ name|equals
 argument_list|(
 name|info
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 condition|)

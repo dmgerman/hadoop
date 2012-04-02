@@ -325,7 +325,7 @@ operator|new
 name|OfflineEditsViewerHelper
 argument_list|()
 decl_stmt|;
-comment|/**    * Initialize obsoleteOpCodes    *    * Reason for suppressing "deprecation" warnings:    *    * These are the opcodes that are not used anymore, some    * are marked deprecated, we need to include them here to make    * sure we exclude them when checking for completness of testing,    * that's why the "deprecation" warnings are suppressed.    */
+comment|/**    * Initialize obsoleteOpCodes    *    * Reason for suppressing "deprecation" warnings:    *    * These are the opcodes that are not used anymore, some    * are marked deprecated, we need to include them here to make    * sure we exclude them when checking for completeness of testing,    * that's why the "deprecation" warnings are suppressed.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -338,7 +338,6 @@ name|void
 name|initializeObsoleteOpCodes
 parameter_list|()
 block|{
-comment|// these are obsolete
 name|obsoleteOpCodes
 operator|.
 name|put

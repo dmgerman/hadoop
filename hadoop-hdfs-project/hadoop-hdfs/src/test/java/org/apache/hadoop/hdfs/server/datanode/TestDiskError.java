@@ -857,7 +857,7 @@ name|target
 init|=
 name|datanode
 operator|.
-name|getSelfAddr
+name|getXferAddress
 argument_list|()
 decl_stmt|;
 name|Socket

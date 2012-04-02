@@ -1097,10 +1097,10 @@ name|dn1Address
 init|=
 name|dn1
 operator|.
-name|getSelfAddr
+name|getDatanodeId
 argument_list|()
 operator|.
-name|getHostName
+name|getIpAddr
 argument_list|()
 operator|+
 literal|":"

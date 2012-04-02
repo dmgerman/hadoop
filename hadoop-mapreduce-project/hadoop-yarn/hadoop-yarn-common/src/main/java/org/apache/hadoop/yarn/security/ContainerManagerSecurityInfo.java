@@ -130,9 +130,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|api
 operator|.
-name|ContainerManager
+name|ContainerManagerPB
 import|;
 end_import
 
@@ -189,11 +189,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ContainerManager
-operator|.
-name|ContainerManagerService
-operator|.
-name|BlockingInterface
+name|ContainerManagerPB
 operator|.
 name|class
 argument_list|)

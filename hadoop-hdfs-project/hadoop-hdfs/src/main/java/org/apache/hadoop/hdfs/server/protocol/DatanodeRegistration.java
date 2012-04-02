@@ -247,12 +247,12 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|storageInfo
-specifier|public
+specifier|private
 name|StorageInfo
 name|storageInfo
 decl_stmt|;
 DECL|field|exportedKeys
-specifier|public
+specifier|private
 name|ExportedBlockKeys
 name|exportedKeys
 decl_stmt|;
@@ -269,17 +269,17 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create DatanodeRegistration    */
-DECL|method|DatanodeRegistration (String nodeName)
+DECL|method|DatanodeRegistration (String ipAddr)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
 name|String
-name|nodeName
+name|ipAddr
 parameter_list|)
 block|{
 name|this
 argument_list|(
-name|nodeName
+name|ipAddr
 argument_list|,
 operator|new
 name|StorageInfo
@@ -323,12 +323,12 @@ operator|=
 name|keys
 expr_stmt|;
 block|}
-DECL|method|DatanodeRegistration (String nodeName, StorageInfo info, ExportedBlockKeys keys)
+DECL|method|DatanodeRegistration (String ipAddr, StorageInfo info, ExportedBlockKeys keys)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
 name|String
-name|nodeName
+name|ipAddr
 parameter_list|,
 name|StorageInfo
 name|info
@@ -339,7 +339,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|nodeName
+name|ipAddr
 argument_list|)
 expr_stmt|;
 name|this
@@ -374,6 +374,42 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getStorageInfo ()
+specifier|public
+name|StorageInfo
+name|getStorageInfo
+parameter_list|()
+block|{
+return|return
+name|storageInfo
+return|;
+block|}
+DECL|method|setExportedKeys (ExportedBlockKeys keys)
+specifier|public
+name|void
+name|setExportedKeys
+parameter_list|(
+name|ExportedBlockKeys
+name|keys
+parameter_list|)
+block|{
+name|this
+operator|.
+name|exportedKeys
+operator|=
+name|keys
+expr_stmt|;
+block|}
+DECL|method|getExportedKeys ()
+specifier|public
+name|ExportedBlockKeys
+name|getExportedKeys
+parameter_list|()
+block|{
+return|return
+name|exportedKeys
+return|;
 block|}
 annotation|@
 name|Override
@@ -419,7 +455,7 @@ name|getAddress
 parameter_list|()
 block|{
 return|return
-name|getName
+name|getXferAddr
 argument_list|()
 return|;
 block|}
@@ -440,7 +476,7 @@ argument_list|()
 operator|+
 literal|"("
 operator|+
-name|name
+name|ipAddr
 operator|+
 literal|", storageID="
 operator|+

@@ -880,7 +880,7 @@ literal|10
 argument_list|)
 decl_stmt|;
 name|String
-name|locationName
+name|xferAddr
 init|=
 name|locations
 index|[
@@ -981,12 +981,12 @@ if|if
 condition|(
 name|dnR
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|locationName
+name|xferAddr
 argument_list|)
 condition|)
 block|{

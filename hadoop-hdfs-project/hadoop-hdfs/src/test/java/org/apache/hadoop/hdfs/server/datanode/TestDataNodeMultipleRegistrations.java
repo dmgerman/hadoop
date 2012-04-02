@@ -1116,8 +1116,6 @@ operator|+
 name|bpos
 operator|.
 name|bpRegistration
-operator|.
-name|name
 operator|+
 literal|"; sid="
 operator|+
@@ -1125,7 +1123,8 @@ name|bpos
 operator|.
 name|bpRegistration
 operator|.
-name|storageID
+name|getStorageID
+argument_list|()
 operator|+
 literal|"; nna="
 operator|+

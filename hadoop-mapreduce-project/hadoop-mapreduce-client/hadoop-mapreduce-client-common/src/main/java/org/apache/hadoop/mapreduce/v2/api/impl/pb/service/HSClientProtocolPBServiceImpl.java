@@ -52,15 +52,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|mapreduce
 operator|.
-name|proto
+name|v2
 operator|.
-name|HSClientProtocol
+name|api
 operator|.
-name|HSClientProtocolService
-operator|.
-name|BlockingInterface
+name|HSClientProtocolPB
 import|;
 end_import
 
@@ -72,7 +70,7 @@ name|HSClientProtocolPBServiceImpl
 extends|extends
 name|MRClientProtocolPBServiceImpl
 implements|implements
-name|BlockingInterface
+name|HSClientProtocolPB
 block|{
 DECL|method|HSClientProtocolPBServiceImpl (HSClientProtocol impl)
 specifier|public

@@ -606,7 +606,7 @@ name|corruptMachineName
 init|=
 name|corruptDataNode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 decl_stmt|;
 for|for
@@ -629,7 +629,7 @@ name|equals
 argument_list|(
 name|datanode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 condition|)

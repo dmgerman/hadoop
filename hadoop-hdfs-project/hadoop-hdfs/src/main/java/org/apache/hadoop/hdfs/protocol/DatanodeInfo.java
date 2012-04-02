@@ -301,14 +301,6 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 decl_stmt|;
-comment|// The FQDN of the IP associated with the Datanode's hostname
-DECL|field|hostName
-specifier|protected
-name|String
-name|hostName
-init|=
-literal|null
-decl_stmt|;
 comment|// Datanode administrative states
 DECL|enum|AdminStates
 specifier|public
@@ -572,7 +564,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|DatanodeInfo (DatanodeID nodeID, String location, String hostName)
+DECL|method|DatanodeInfo (DatanodeID nodeID, String location)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -581,9 +573,6 @@ name|nodeID
 parameter_list|,
 name|String
 name|location
-parameter_list|,
-name|String
-name|hostName
 parameter_list|)
 block|{
 name|this
@@ -597,14 +586,8 @@ name|location
 operator|=
 name|location
 expr_stmt|;
-name|this
-operator|.
-name|hostName
-operator|=
-name|hostName
-expr_stmt|;
 block|}
-DECL|method|DatanodeInfo (DatanodeID nodeID, String location, String hostName, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final AdminStates adminState)
+DECL|method|DatanodeInfo (DatanodeID nodeID, String location, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -613,9 +596,6 @@ name|nodeID
 parameter_list|,
 name|String
 name|location
-parameter_list|,
-name|String
-name|hostName
 parameter_list|,
 specifier|final
 name|long
@@ -650,12 +630,22 @@ name|this
 argument_list|(
 name|nodeID
 operator|.
-name|getName
+name|getIpAddr
+argument_list|()
+argument_list|,
+name|nodeID
+operator|.
+name|getHostName
 argument_list|()
 argument_list|,
 name|nodeID
 operator|.
 name|getStorageID
+argument_list|()
+argument_list|,
+name|nodeID
+operator|.
+name|getXferPort
 argument_list|()
 argument_list|,
 name|nodeID
@@ -682,14 +672,12 @@ name|xceiverCount
 argument_list|,
 name|location
 argument_list|,
-name|hostName
-argument_list|,
 name|adminState
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String name, final String storageID, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final String hostName, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String name, final String hostName, final String storageID, final int xferPort, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -699,7 +687,15 @@ name|name
 parameter_list|,
 specifier|final
 name|String
+name|hostName
+parameter_list|,
+specifier|final
+name|String
 name|storageID
+parameter_list|,
+specifier|final
+name|int
+name|xferPort
 parameter_list|,
 specifier|final
 name|int
@@ -738,10 +734,6 @@ name|String
 name|networkLocation
 parameter_list|,
 specifier|final
-name|String
-name|hostName
-parameter_list|,
-specifier|final
 name|AdminStates
 name|adminState
 parameter_list|)
@@ -750,7 +742,11 @@ name|super
 argument_list|(
 name|name
 argument_list|,
+name|hostName
+argument_list|,
 name|storageID
+argument_list|,
+name|xferPort
 argument_list|,
 name|infoPort
 argument_list|,
@@ -801,16 +797,22 @@ name|networkLocation
 expr_stmt|;
 name|this
 operator|.
-name|hostName
-operator|=
-name|hostName
-expr_stmt|;
-name|this
-operator|.
 name|adminState
 operator|=
 name|adminState
 expr_stmt|;
+block|}
+comment|/** Network location name */
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|getXferAddr
+argument_list|()
+return|;
 block|}
 comment|/** The raw capacity. */
 DECL|method|getCapacity ()
@@ -1095,46 +1097,6 @@ name|location
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getHostName ()
-specifier|public
-name|String
-name|getHostName
-parameter_list|()
-block|{
-return|return
-operator|(
-name|hostName
-operator|==
-literal|null
-operator|||
-name|hostName
-operator|.
-name|length
-argument_list|()
-operator|==
-literal|0
-operator|)
-condition|?
-name|getHost
-argument_list|()
-else|:
-name|hostName
-return|;
-block|}
-DECL|method|setHostName (String host)
-specifier|public
-name|void
-name|setHostName
-parameter_list|(
-name|String
-name|host
-parameter_list|)
-block|{
-name|hostName
-operator|=
-name|host
-expr_stmt|;
-block|}
 comment|/** A formatted string for reporting the status of the DataNode. */
 DECL|method|getDatanodeReport ()
 specifier|public
@@ -1192,7 +1154,8 @@ name|NetUtils
 operator|.
 name|getHostNameOfIP
 argument_list|(
-name|name
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|buffer
@@ -1201,7 +1164,8 @@ name|append
 argument_list|(
 literal|"Name: "
 operator|+
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1491,7 +1455,7 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-name|name
+name|ipAddr
 argument_list|)
 expr_stmt|;
 if|if
@@ -1909,14 +1873,6 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
-comment|//TODO: move it to DatanodeID once DatanodeID is not stored in FSImage
-name|out
-operator|.
-name|writeShort
-argument_list|(
-name|ipcPort
-argument_list|)
-expr_stmt|;
 name|out
 operator|.
 name|writeLong
@@ -1968,21 +1924,6 @@ argument_list|,
 name|location
 argument_list|)
 expr_stmt|;
-name|Text
-operator|.
-name|writeString
-argument_list|(
-name|out
-argument_list|,
-name|hostName
-operator|==
-literal|null
-condition|?
-literal|""
-else|:
-name|hostName
-argument_list|)
-expr_stmt|;
 name|WritableUtils
 operator|.
 name|writeEnum
@@ -2013,18 +1954,6 @@ name|readFields
 argument_list|(
 name|in
 argument_list|)
-expr_stmt|;
-comment|//TODO: move it to DatanodeID once DatanodeID is not stored in FSImage
-name|this
-operator|.
-name|ipcPort
-operator|=
-name|in
-operator|.
-name|readShort
-argument_list|()
-operator|&
-literal|0x0000ffff
 expr_stmt|;
 name|this
 operator|.
@@ -2083,17 +2012,6 @@ expr_stmt|;
 name|this
 operator|.
 name|location
-operator|=
-name|Text
-operator|.
-name|readString
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|hostName
 operator|=
 name|Text
 operator|.

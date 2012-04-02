@@ -1623,7 +1623,7 @@ index|]
 decl_stmt|;
 name|String
 index|[]
-name|names
+name|xferAddrs
 init|=
 operator|new
 name|String
@@ -1675,7 +1675,7 @@ operator|.
 name|getHostName
 argument_list|()
 expr_stmt|;
-name|names
+name|xferAddrs
 index|[
 name|hCnt
 index|]
@@ -1685,7 +1685,7 @@ index|[
 name|hCnt
 index|]
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 expr_stmt|;
 name|NodeBase
@@ -1694,7 +1694,7 @@ init|=
 operator|new
 name|NodeBase
 argument_list|(
-name|names
+name|xferAddrs
 index|[
 name|hCnt
 index|]
@@ -1727,7 +1727,7 @@ operator|=
 operator|new
 name|BlockLocation
 argument_list|(
-name|names
+name|xferAddrs
 argument_list|,
 name|hosts
 argument_list|,

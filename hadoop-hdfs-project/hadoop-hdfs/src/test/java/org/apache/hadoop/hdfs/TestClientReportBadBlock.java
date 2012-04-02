@@ -1178,9 +1178,6 @@ operator|+
 literal|" on data node "
 operator|+
 name|dninfo
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

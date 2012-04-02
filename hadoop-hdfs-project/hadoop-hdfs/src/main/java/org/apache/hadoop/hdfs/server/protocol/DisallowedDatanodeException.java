@@ -117,9 +117,6 @@ argument_list|(
 literal|"Datanode denied communication with namenode: "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

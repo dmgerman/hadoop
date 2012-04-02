@@ -5061,7 +5061,8 @@ name|getDataNode
 argument_list|(
 name|datanodeinfo
 operator|.
-name|ipcPort
+name|getIpcPort
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ExtendedBlock

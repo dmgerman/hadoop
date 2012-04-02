@@ -140,9 +140,6 @@ argument_list|(
 literal|"Data node "
 operator|+
 name|nodeID
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is attempting to report storage ID "
 operator|+
@@ -154,9 +151,6 @@ operator|+
 literal|". Node "
 operator|+
 name|storedNode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" is expected to serve this storage."
 argument_list|)

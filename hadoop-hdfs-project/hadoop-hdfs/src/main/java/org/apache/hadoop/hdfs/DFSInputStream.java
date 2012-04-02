@@ -2530,9 +2530,6 @@ operator|+
 literal|" from "
 operator|+
 name|currentNode
-operator|.
-name|getName
-argument_list|()
 operator|+
 literal|" at "
 operator|+
@@ -3155,7 +3152,7 @@ name|createSocketAddr
 argument_list|(
 name|chosenNode
 operator|.
-name|getName
+name|getXferAddr
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3581,9 +3578,6 @@ operator|+
 literal|" from "
 operator|+
 name|chosenNode
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// we want to remember what we have tried
