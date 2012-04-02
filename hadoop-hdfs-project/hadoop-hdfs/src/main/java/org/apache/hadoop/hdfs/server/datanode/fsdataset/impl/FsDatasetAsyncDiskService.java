@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset.impl
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|impl
 package|;
 end_package
 
@@ -154,6 +158,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|datanode
+operator|.
+name|DataNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlockCommand
@@ -161,19 +183,14 @@ import|;
 end_import
 
 begin_comment
-comment|/*  * This class is a container of multiple thread pools, each for a volume,  * so that we can schedule async disk operations easily.  *   * Examples of async disk operations are deletion of block files in FSDataset.  * We don't want to create a new thread for each of the deletion request, and  * we don't want to do all deletions in the heartbeat thread since deletion  * can be slow, and we don't want to use a single thread pool because that  * is inefficient when we have more than 1 volume.  AsyncDiskService is the  * solution for these.  *   * This class is used inside FSDataset.  *   * In the future, we should extract AsyncDiskService and put it into common.  * The FSDataset-specific logic should reside here.   */
+comment|/**  * This class is a container of multiple thread pools, each for a volume,  * so that we can schedule async disk operations easily.  *   * Examples of async disk operations are deletion of block files.  * We don't want to create a new thread for each of the deletion request, and  * we don't want to do all deletions in the heartbeat thread since deletion  * can be slow, and we don't want to use a single thread pool because that  * is inefficient when we have more than 1 volume.  AsyncDiskService is the  * solution for these.  *   * This class and {@link org.apache.hadoop.util.AsyncDiskService} are similar.  * They should be combined.  */
 end_comment
 
 begin_class
-DECL|class|FSDatasetAsyncDiskService
+DECL|class|FsDatasetAsyncDiskService
 class|class
-name|FSDatasetAsyncDiskService
+name|FsDatasetAsyncDiskService
 block|{
-DECL|field|dataset
-specifier|final
-name|FSDataset
-name|dataset
-decl_stmt|;
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -185,7 +202,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|FSDatasetAsyncDiskService
+name|FsDatasetAsyncDiskService
 operator|.
 name|class
 argument_list|)
@@ -220,21 +237,15 @@ name|THREADS_KEEP_ALIVE_SECONDS
 init|=
 literal|60
 decl_stmt|;
-DECL|field|threadGroup
+DECL|field|datanode
 specifier|private
 specifier|final
-name|ThreadGroup
-name|threadGroup
-init|=
-operator|new
-name|ThreadGroup
-argument_list|(
-literal|"async disk service"
-argument_list|)
+name|DataNode
+name|datanode
 decl_stmt|;
 DECL|field|executors
 specifier|private
-name|HashMap
+name|Map
 argument_list|<
 name|File
 argument_list|,
@@ -252,11 +263,11 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/**    * Create a AsyncDiskServices with a set of volumes (specified by their    * root directories).    *     * The AsyncDiskServices uses one ThreadPool per volume to do the async    * disk operations.    *     * @param volumes The roots of the data volumes.    */
-DECL|method|FSDatasetAsyncDiskService (FSDataset dataset, File[] volumes)
-name|FSDatasetAsyncDiskService
+DECL|method|FsDatasetAsyncDiskService (DataNode datanode, File[] volumes)
+name|FsDatasetAsyncDiskService
 parameter_list|(
-name|FSDataset
-name|dataset
+name|DataNode
+name|datanode
 parameter_list|,
 name|File
 index|[]
@@ -265,10 +276,24 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|dataset
+name|datanode
 operator|=
-name|dataset
+name|datanode
 expr_stmt|;
+specifier|final
+name|ThreadGroup
+name|threadGroup
+init|=
+operator|new
+name|ThreadGroup
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|// Create one ThreadPool per volume
 for|for
 control|(
@@ -589,13 +614,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Delete the block file and meta file from the disk asynchronously, adjust    * dfsUsed statistics accordingly.    */
-DECL|method|deleteAsync (FSDataset.FSVolume volume, File blockFile, File metaFile, ExtendedBlock block)
+DECL|method|deleteAsync (FsVolumeImpl volume, File blockFile, File metaFile, ExtendedBlock block)
 name|void
 name|deleteAsync
 parameter_list|(
-name|FSDataset
-operator|.
-name|FSVolume
+name|FsVolumeImpl
 name|volume
 parameter_list|,
 name|File
@@ -608,8 +631,6 @@ name|ExtendedBlock
 name|block
 parameter_list|)
 block|{
-name|DataNode
-operator|.
 name|LOG
 operator|.
 name|info
@@ -619,9 +640,6 @@ operator|+
 name|block
 operator|.
 name|getLocalBlock
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 operator|+
 literal|" file "
@@ -637,8 +655,6 @@ init|=
 operator|new
 name|ReplicaFileDeleteTask
 argument_list|(
-name|dataset
-argument_list|,
 name|volume
 argument_list|,
 name|blockFile
@@ -661,22 +677,14 @@ expr_stmt|;
 block|}
 comment|/** A task for deleting a block file and its associated meta file, as well    *  as decrement the dfs usage of the volume.     */
 DECL|class|ReplicaFileDeleteTask
-specifier|static
 class|class
 name|ReplicaFileDeleteTask
 implements|implements
 name|Runnable
 block|{
-DECL|field|dataset
-specifier|final
-name|FSDataset
-name|dataset
-decl_stmt|;
 DECL|field|volume
 specifier|final
-name|FSDataset
-operator|.
-name|FSVolume
+name|FsVolumeImpl
 name|volume
 decl_stmt|;
 DECL|field|blockFile
@@ -694,15 +702,10 @@ specifier|final
 name|ExtendedBlock
 name|block
 decl_stmt|;
-DECL|method|ReplicaFileDeleteTask (FSDataset dataset, FSDataset.FSVolume volume, File blockFile, File metaFile, ExtendedBlock block)
+DECL|method|ReplicaFileDeleteTask (FsVolumeImpl volume, File blockFile, File metaFile, ExtendedBlock block)
 name|ReplicaFileDeleteTask
 parameter_list|(
-name|FSDataset
-name|dataset
-parameter_list|,
-name|FSDataset
-operator|.
-name|FSVolume
+name|FsVolumeImpl
 name|volume
 parameter_list|,
 name|File
@@ -717,12 +720,6 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|dataset
-operator|=
-name|dataset
-expr_stmt|;
-name|this
-operator|.
 name|volume
 operator|=
 name|volume
@@ -745,17 +742,6 @@ name|block
 operator|=
 name|block
 expr_stmt|;
-block|}
-DECL|method|getVolume ()
-name|FSDataset
-operator|.
-name|FSVolume
-name|getVolume
-parameter_list|()
-block|{
-return|return
-name|volume
-return|;
 block|}
 annotation|@
 name|Override
@@ -779,9 +765,6 @@ operator|+
 name|block
 operator|.
 name|getLocalBlock
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 operator|+
 literal|" with block file "
@@ -840,8 +823,6 @@ argument_list|()
 operator|)
 condition|)
 block|{
-name|DataNode
-operator|.
 name|LOG
 operator|.
 name|warn
@@ -858,9 +839,6 @@ operator|+
 name|block
 operator|.
 name|getLocalBlock
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 operator|+
 literal|" at file "
@@ -888,7 +866,7 @@ operator|.
 name|NO_ACK
 condition|)
 block|{
-name|dataset
+name|datanode
 operator|.
 name|notifyNamenodeDeletedBlock
 argument_list|(
@@ -908,8 +886,6 @@ argument_list|,
 name|dfsBytes
 argument_list|)
 expr_stmt|;
-name|DataNode
-operator|.
 name|LOG
 operator|.
 name|info
@@ -927,9 +903,6 @@ name|block
 operator|.
 name|getLocalBlock
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" at file "
 operator|+
@@ -939,7 +912,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-empty_stmt|;
 block|}
 end_class
 

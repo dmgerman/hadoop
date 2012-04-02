@@ -68,6 +68,7 @@ init|=
 literal|1L
 decl_stmt|;
 DECL|field|NON_RBW_REPLICA
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -76,6 +77,7 @@ init|=
 literal|"Cannot recover a non-RBW replica "
 decl_stmt|;
 DECL|field|UNFINALIZED_REPLICA
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -84,6 +86,7 @@ init|=
 literal|"Cannot append to an unfinalized replica "
 decl_stmt|;
 DECL|field|UNFINALIZED_AND_NONRBW_REPLICA
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -92,6 +95,7 @@ init|=
 literal|"Cannot recover append/close to a replica that's not FINALIZED and not RBW "
 decl_stmt|;
 DECL|field|NON_EXISTENT_REPLICA
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -100,6 +104,7 @@ init|=
 literal|"Cannot append to a non-existent replica "
 decl_stmt|;
 DECL|field|UNEXPECTED_GS_REPLICA
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -117,6 +122,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|ReplicaNotFoundException (ExtendedBlock b)
+specifier|public
 name|ReplicaNotFoundException
 parameter_list|(
 name|ExtendedBlock

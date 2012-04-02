@@ -3905,9 +3905,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// calls specific to BP
+comment|/** Notify the corresponding namenode to delete the block. */
 DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block)
-specifier|protected
+specifier|public
 name|void
 name|notifyNamenodeDeletedBlock
 parameter_list|(
@@ -6235,12 +6235,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    *  Check if there is a disk failure and if so, handle the error    *    **/
-DECL|method|checkDiskError ( )
-specifier|protected
+comment|/**    *  Check if there is a disk failure and if so, handle the error    */
+DECL|method|checkDiskError ()
+specifier|public
 name|void
 name|checkDiskError
-parameter_list|( )
+parameter_list|()
 block|{
 try|try
 block|{
@@ -8468,6 +8468,17 @@ parameter_list|()
 block|{
 return|return
 name|data
+return|;
+block|}
+comment|/** @return the block scanner. */
+DECL|method|getBlockScanner ()
+specifier|public
+name|DataBlockScanner
+name|getBlockScanner
+parameter_list|()
+block|{
+return|return
+name|blockScanner
 return|;
 block|}
 DECL|method|secureMain (String args[], SecureResources resources)

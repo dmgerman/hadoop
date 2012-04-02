@@ -92,6 +92,7 @@ end_comment
 
 begin_class
 DECL|class|ReplicaBeingWritten
+specifier|public
 class|class
 name|ReplicaBeingWritten
 extends|extends
@@ -99,6 +100,7 @@ name|ReplicaInPipeline
 block|{
 comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|ReplicaBeingWritten (long blockId, long genStamp, FsVolumeSpi vol, File dir)
+specifier|public
 name|ReplicaBeingWritten
 parameter_list|(
 name|long
@@ -128,6 +130,7 @@ expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
 DECL|method|ReplicaBeingWritten (Block block, FsVolumeSpi vol, File dir, Thread writer)
+specifier|public
 name|ReplicaBeingWritten
 parameter_list|(
 name|Block
@@ -157,6 +160,7 @@ expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param writer a thread that is writing to this replica    */
 DECL|method|ReplicaBeingWritten (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir, Thread writer )
+specifier|public
 name|ReplicaBeingWritten
 parameter_list|(
 name|long
@@ -196,6 +200,7 @@ expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from    */
 DECL|method|ReplicaBeingWritten (ReplicaBeingWritten from)
+specifier|public
 name|ReplicaBeingWritten
 parameter_list|(
 name|ReplicaBeingWritten

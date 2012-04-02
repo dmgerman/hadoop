@@ -184,6 +184,10 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|fsdataset
+operator|.
+name|impl
+operator|.
 name|TestInterDatanodeProtocol
 import|;
 end_import

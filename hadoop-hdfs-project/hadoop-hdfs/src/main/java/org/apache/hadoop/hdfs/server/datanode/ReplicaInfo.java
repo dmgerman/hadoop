@@ -317,27 +317,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get this replica's meta file name    * @return this replica's meta file name    */
-DECL|method|getMetaFileName ()
-specifier|private
-name|String
-name|getMetaFileName
-parameter_list|()
-block|{
-return|return
-name|getBlockName
-argument_list|()
-operator|+
-literal|"_"
-operator|+
-name|getGenerationStamp
-argument_list|()
-operator|+
-name|METADATA_EXTENSION
-return|;
-block|}
 comment|/**    * Get the full path of this replica's data file    * @return the full path of this replica's data file    */
 DECL|method|getBlockFile ()
+specifier|public
 name|File
 name|getBlockFile
 parameter_list|()
@@ -356,6 +338,7 @@ return|;
 block|}
 comment|/**    * Get the full path of this replica's meta file    * @return the full path of this replica's meta file    */
 DECL|method|getMetaFile ()
+specifier|public
 name|File
 name|getMetaFile
 parameter_list|()
@@ -367,13 +350,22 @@ argument_list|(
 name|getDir
 argument_list|()
 argument_list|,
-name|getMetaFileName
+name|DatanodeUtil
+operator|.
+name|getMetaName
+argument_list|(
+name|getBlockName
 argument_list|()
+argument_list|,
+name|getGenerationStamp
+argument_list|()
+argument_list|)
 argument_list|)
 return|;
 block|}
 comment|/**    * Get the volume where this replica is located on disk    * @return the volume where this replica is located on disk    */
 DECL|method|getVolume ()
+specifier|public
 name|FsVolumeSpi
 name|getVolume
 parameter_list|()
@@ -410,6 +402,7 @@ return|;
 block|}
 comment|/**    * Set the parent directory where this replica is located    * @param dir the parent directory where the replica is located    */
 DECL|method|setDir (File dir)
+specifier|public
 name|void
 name|setDir
 parameter_list|(
@@ -426,6 +419,7 @@ expr_stmt|;
 block|}
 comment|/**    * check if this replica has already been unlinked.    * @return true if the replica has already been unlinked     *         or no need to be detached; false otherwise    */
 DECL|method|isUnlinked ()
+specifier|public
 name|boolean
 name|isUnlinked
 parameter_list|()
@@ -437,6 +431,7 @@ comment|// no need to be unlinked
 block|}
 comment|/**    * set that this replica is unlinked    */
 DECL|method|setUnlinked ()
+specifier|public
 name|void
 name|setUnlinked
 parameter_list|()
@@ -620,6 +615,7 @@ block|}
 block|}
 comment|/**    * Remove a hard link by copying the block to a temporary place and     * then moving it back    * @param numLinks number of hard links    * @return true if copy is successful;     *         false if it is already detached or no need to be detached    * @throws IOException if there is any copy error    */
 DECL|method|unlinkBlock (int numLinks)
+specifier|public
 name|boolean
 name|unlinkBlock
 parameter_list|(

@@ -268,6 +268,7 @@ return|;
 block|}
 comment|/**    * Reads header at the top of metadata file and returns the header.    *     * @param dataset    * @param block    * @return    * @throws IOException    */
 DECL|method|readHeader (File file)
+specifier|public
 specifier|static
 name|BlockMetadataHeader
 name|readHeader
@@ -481,6 +482,7 @@ expr_stmt|;
 block|}
 comment|/**    * Returns the size of the header    */
 DECL|method|getHeaderSize ()
+specifier|public
 specifier|static
 name|int
 name|getHeaderSize
