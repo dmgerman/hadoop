@@ -307,17 +307,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_SUPPORT_APPEND_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// create cluster
 name|MiniDFSCluster
 name|cluster

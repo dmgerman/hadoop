@@ -3139,13 +3139,10 @@ specifier|private
 name|FsServerDefaults
 name|serverDefaults
 decl_stmt|;
-comment|// allow appending to hdfs files
 DECL|field|supportAppends
 specifier|private
 name|boolean
 name|supportAppends
-init|=
-literal|true
 decl_stmt|;
 DECL|field|dtpReplaceDatanodeOnFailure
 specifier|private
@@ -9553,18 +9550,19 @@ name|IOException
 block|{
 if|if
 condition|(
+operator|!
 name|supportAppends
-operator|==
-literal|false
 condition|)
 block|{
 throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Append to hdfs not supported."
+literal|"Append is not enabled on this NameNode. Use the "
 operator|+
-literal|" Please refer to dfs.support.append configuration parameter."
+name|DFS_SUPPORT_APPEND_KEY
+operator|+
+literal|" configuration option to enable it."
 argument_list|)
 throw|;
 block|}
@@ -14347,14 +14345,9 @@ name|pendingFile
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|supportAppends
-condition|)
+else|else
 block|{
 comment|// If this commit does not want to close the file, persist blocks
-comment|// only if append is supported or we're explicitly told to
 name|dir
 operator|.
 name|persistBlocks
@@ -19893,20 +19886,12 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|supportAppends
-operator|||
-name|persistBlocks
-condition|)
-block|{
 name|getEditLog
 argument_list|()
 operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -20132,7 +20117,6 @@ argument_list|(
 name|descriptors
 argument_list|)
 expr_stmt|;
-comment|// persist blocks only if append is supported
 name|String
 name|src
 init|=
@@ -20143,11 +20127,6 @@ argument_list|(
 name|pendingFile
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|supportAppends
-condition|)
-block|{
 name|dir
 operator|.
 name|persistBlocks
@@ -20157,7 +20136,6 @@ argument_list|,
 name|pendingFile
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// rename was successful. If any part of the renamed subtree had
 comment|// files that were being written to, update with new filename.
