@@ -238,28 +238,6 @@ name|timeoutMs
 argument_list|)
 return|;
 block|}
-comment|/**    * @return a proxy to connect to the target HA Service.    */
-DECL|method|getProxy ()
-specifier|public
-specifier|final
-name|HAServiceProtocol
-name|getProxy
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|getProxy
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|,
-literal|0
-argument_list|)
-return|;
-comment|// default conf, timeout
-block|}
 block|}
 end_class
 

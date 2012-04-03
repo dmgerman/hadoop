@@ -224,6 +224,31 @@ name|this
 operator|.
 name|gracefulFenceTimeout
 operator|=
+name|getGracefulFenceTimeout
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rpcTimeoutToNewActive
+operator|=
+name|getRpcTimeoutToNewActive
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getGracefulFenceTimeout (Configuration conf)
+specifier|static
+name|int
+name|getGracefulFenceTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
 name|conf
 operator|.
 name|getInt
@@ -236,11 +261,18 @@ name|CommonConfigurationKeys
 operator|.
 name|HA_FC_GRACEFUL_FENCE_TIMEOUT_DEFAULT
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rpcTimeoutToNewActive
-operator|=
+return|;
+block|}
+DECL|method|getRpcTimeoutToNewActive (Configuration conf)
+specifier|static
+name|int
+name|getRpcTimeoutToNewActive
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
 name|conf
 operator|.
 name|getInt
@@ -253,7 +285,7 @@ name|CommonConfigurationKeys
 operator|.
 name|HA_FC_NEW_ACTIVE_TIMEOUT_DEFAULT
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Perform pre-failover checks on the given service we plan to    * failover to, eg to prevent failing over to a service (eg due    * to it being inaccessible, already active, not healthy, etc).    *    * An option to ignore toSvc if it claims it is not ready to    * become active is provided in case performing a failover will    * allow it to become active, eg because it triggers a log roll    * so the standby can learn about new blocks and leave safemode.    *    * @param from currently active service    * @param target service to make active    * @param forceActive ignore toSvc if it reports that it is not ready    * @throws FailoverFailedException if we should avoid failover    */
 DECL|method|preFailoverChecks (HAServiceTarget from, HAServiceTarget target, boolean forceActive)
