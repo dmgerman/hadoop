@@ -50,6 +50,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ha
 operator|.
 name|BadFencingConfigurationException
@@ -95,20 +109,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
 import|;
 end_import
 
@@ -176,12 +176,24 @@ specifier|private
 name|BadFencingConfigurationException
 name|fenceConfigError
 decl_stmt|;
-DECL|method|NNHAServiceTarget (HdfsConfiguration conf, String nsId, String nnId)
+DECL|field|nnId
+specifier|private
+specifier|final
+name|String
+name|nnId
+decl_stmt|;
+DECL|field|nsId
+specifier|private
+specifier|final
+name|String
+name|nsId
+decl_stmt|;
+DECL|method|NNHAServiceTarget (Configuration localNNConf, String nsId, String nnId)
 specifier|public
 name|NNHAServiceTarget
 parameter_list|(
-name|HdfsConfiguration
-name|conf
+name|Configuration
+name|localNNConf
 parameter_list|,
 name|String
 name|nsId
@@ -197,7 +209,7 @@ name|DFSUtil
 operator|.
 name|getNamenodeServiceAddr
 argument_list|(
-name|conf
+name|localNNConf
 argument_list|,
 name|nsId
 argument_list|,
@@ -248,7 +260,7 @@ name|NodeFencer
 operator|.
 name|create
 argument_list|(
-name|conf
+name|localNNConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -265,6 +277,18 @@ operator|=
 name|e
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|nnId
+operator|=
+name|nnId
+expr_stmt|;
+name|this
+operator|.
+name|nsId
+operator|=
+name|nsId
+expr_stmt|;
 block|}
 comment|/**    * @return the NN's IPC address.    */
 annotation|@
@@ -300,6 +324,23 @@ throw|throw
 name|fenceConfigError
 throw|;
 block|}
+if|if
+condition|(
+name|fencer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|BadFencingConfigurationException
+argument_list|(
+literal|"No fencer configured for "
+operator|+
+name|this
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -325,6 +366,30 @@ return|return
 literal|"NameNode at "
 operator|+
 name|addr
+return|;
+block|}
+DECL|method|getNameServiceId ()
+specifier|public
+name|String
+name|getNameServiceId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nsId
+return|;
+block|}
+DECL|method|getNameNodeId ()
+specifier|public
+name|String
+name|getNameNodeId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nnId
 return|;
 block|}
 block|}
