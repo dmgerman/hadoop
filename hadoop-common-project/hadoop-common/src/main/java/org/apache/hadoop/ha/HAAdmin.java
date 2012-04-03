@@ -662,7 +662,12 @@ index|]
 argument_list|)
 operator|.
 name|getProxy
+argument_list|(
+name|getConf
 argument_list|()
+argument_list|,
+literal|0
+argument_list|)
 decl_stmt|;
 name|HAServiceProtocolHelper
 operator|.
@@ -730,7 +735,12 @@ index|]
 argument_list|)
 operator|.
 name|getProxy
+argument_list|(
+name|getConf
 argument_list|()
+argument_list|,
+literal|0
+argument_list|)
 decl_stmt|;
 name|HAServiceProtocolHelper
 operator|.

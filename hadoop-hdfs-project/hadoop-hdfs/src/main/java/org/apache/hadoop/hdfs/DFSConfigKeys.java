@@ -1470,6 +1470,15 @@ name|DFS_HOSTS_EXCLUDE
 init|=
 literal|"dfs.hosts.exclude"
 decl_stmt|;
+DECL|field|DFS_CLIENT_LOCAL_INTERFACES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_LOCAL_INTERFACES
+init|=
+literal|"dfs.client.local.interfaces"
+decl_stmt|;
 comment|// Much code in hdfs is not yet updated to use these keys.
 DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 specifier|public

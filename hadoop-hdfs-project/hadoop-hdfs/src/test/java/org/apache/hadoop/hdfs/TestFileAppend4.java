@@ -629,17 +629,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_SUPPORT_APPEND_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// lower heartbeat interval for fast recognition of DN death
 name|conf
 operator|.

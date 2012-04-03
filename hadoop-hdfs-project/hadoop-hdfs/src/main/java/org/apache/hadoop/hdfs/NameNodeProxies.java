@@ -1257,6 +1257,8 @@ argument_list|,
 name|JournalProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|30000
 argument_list|)
 decl_stmt|;
 return|return
@@ -1302,6 +1304,8 @@ argument_list|,
 name|RefreshAuthorizationPolicyProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 return|return
@@ -1347,6 +1351,8 @@ argument_list|,
 name|RefreshUserMappingsProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 return|return
@@ -1392,6 +1398,8 @@ argument_list|,
 name|GetUserMappingsProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 return|return
@@ -1440,6 +1448,8 @@ argument_list|,
 name|NamenodeProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 if|if
@@ -1605,6 +1615,8 @@ argument_list|,
 name|ClientNamenodeProtocolPB
 operator|.
 name|class
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 if|if
@@ -1788,7 +1800,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class xface)
+DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class xface, int rpcTimeout)
 specifier|private
 specifier|static
 name|Object
@@ -1805,6 +1817,9 @@ name|ugi
 parameter_list|,
 name|Class
 name|xface
+parameter_list|,
+name|int
+name|rpcTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -1850,6 +1865,8 @@ name|getDefaultSocketFactory
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|rpcTimeout
 argument_list|)
 decl_stmt|;
 return|return

@@ -212,6 +212,20 @@ name|commons
 operator|.
 name|httpclient
 operator|.
+name|HostConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|httpclient
+operator|.
 name|HttpClient
 import|;
 end_import
@@ -227,20 +241,6 @@ operator|.
 name|httpclient
 operator|.
 name|HttpMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|httpclient
-operator|.
-name|HostConfiguration
 import|;
 end_import
 
@@ -1613,11 +1613,54 @@ literal|"N/A"
 argument_list|)
 condition|)
 block|{
+name|String
+name|message
+decl_stmt|;
+switch|switch
+condition|(
+name|applicationReport
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
+condition|)
+block|{
+case|case
+name|FAILED
+case|:
+case|case
+name|KILLED
+case|:
+case|case
+name|SUCCEEDED
+case|:
+name|message
+operator|=
+literal|"The requested application exited before setting a tracking URL."
+expr_stmt|;
+break|break;
+case|case
+name|UNDEFINED
+case|:
+name|message
+operator|=
+literal|"The requested application does not appear to be running "
+operator|+
+literal|"yet, and has not set a tracking URL."
+expr_stmt|;
+break|break;
+default|default:
+comment|//This should never happen, but just to be safe
+name|message
+operator|=
+literal|"The requested application has not set a tracking URL."
+expr_stmt|;
+break|break;
+block|}
 name|notFound
 argument_list|(
 name|resp
 argument_list|,
-literal|"The MRAppMaster died before writing anything."
+name|message
 argument_list|)
 expr_stmt|;
 return|return;

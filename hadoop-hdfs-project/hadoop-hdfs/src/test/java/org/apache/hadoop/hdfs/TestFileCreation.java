@@ -304,6 +304,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|UnknownHostException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|EnumSet
@@ -711,6 +721,18 @@ operator|.
 name|log4j
 operator|.
 name|Level
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
 import|;
 end_import
 
@@ -1168,12 +1190,90 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test if file creation and disk space consumption works right    */
 DECL|method|testFileCreation ()
 specifier|public
 name|void
 name|testFileCreation
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkFileCreation
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Same test but the client should bind to a local interface */
+DECL|method|testFileCreationSetLocalInterface ()
+specifier|public
+name|void
+name|testFileCreationSetLocalInterface
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assumeTrue
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"os.name"
+argument_list|)
+operator|.
+name|startsWith
+argument_list|(
+literal|"Linux"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// The mini cluster listens on the loopback so we can use it here
+name|checkFileCreation
+argument_list|(
+literal|"lo"
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|checkFileCreation
+argument_list|(
+literal|"bogus-interface"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Able to specify a bogus interface"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"No such interface bogus-interface"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Test if file creation and disk space consumption works right    * @param netIf the local interface, if any, clients should use to access DNs    */
+DECL|method|checkFileCreation (String netIf)
+specifier|public
+name|void
+name|checkFileCreation
+parameter_list|(
+name|String
+name|netIf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1184,6 +1284,25 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|netIf
+operator|!=
+literal|null
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_LOCAL_INTERFACES
+argument_list|,
+name|netIf
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|simulatedStorage

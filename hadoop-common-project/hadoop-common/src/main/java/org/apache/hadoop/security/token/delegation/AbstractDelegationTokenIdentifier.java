@@ -486,6 +486,16 @@ argument_list|)
 return|;
 block|}
 block|}
+DECL|method|getOwner ()
+specifier|public
+name|Text
+name|getOwner
+parameter_list|()
+block|{
+return|return
+name|owner
+return|;
+block|}
 DECL|method|getRenewer ()
 specifier|public
 name|Text
@@ -494,6 +504,16 @@ parameter_list|()
 block|{
 return|return
 name|renewer
+return|;
+block|}
+DECL|method|getRealUser ()
+specifier|public
+name|Text
+name|getRealUser
+parameter_list|()
+block|{
+return|return
+name|realUser
 return|;
 block|}
 DECL|method|setIssueDate (long issueDate)

@@ -5523,6 +5523,11 @@ name|sock
 argument_list|,
 name|isa
 argument_list|,
+name|client
+operator|.
+name|getRandomLocalInterfaceAddr
+argument_list|()
+argument_list|,
 name|timeout
 argument_list|)
 expr_stmt|;

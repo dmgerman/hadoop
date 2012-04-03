@@ -170,6 +170,7 @@ end_comment
 
 begin_class
 DECL|class|ReplicaInPipeline
+specifier|public
 class|class
 name|ReplicaInPipeline
 extends|extends
@@ -198,8 +199,9 @@ specifier|private
 name|Thread
 name|writer
 decl_stmt|;
-comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    * @param state replica state    */
+comment|/**    * Constructor for a zero length replica    * @param blockId block id    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|ReplicaInPipeline (long blockId, long genStamp, FsVolumeSpi vol, File dir)
+specifier|public
 name|ReplicaInPipeline
 parameter_list|(
 name|long
@@ -333,6 +335,7 @@ expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from    */
 DECL|method|ReplicaInPipeline (ReplicaInPipeline from)
+specifier|public
 name|ReplicaInPipeline
 parameter_list|(
 name|ReplicaInPipeline
@@ -535,6 +538,7 @@ return|;
 block|}
 comment|/**    * Interrupt the writing thread and wait until it dies    * @throws IOException the waiting is interrupted    */
 DECL|method|stopWriter ()
+specifier|public
 name|void
 name|stopWriter
 parameter_list|()

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.datanode
+DECL|package|org.apache.hadoop.hdfs.server.datanode.fsdataset.impl
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|server
 operator|.
 name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|impl
 package|;
 end_package
 
@@ -78,14 +82,32 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|ReplicaInfo
+import|;
+end_import
+
 begin_comment
-comment|/**  * Maintains the replicas map.   */
+comment|/**  * Maintains the replica map.   */
 end_comment
 
 begin_class
-DECL|class|ReplicasMap
+DECL|class|ReplicaMap
 class|class
-name|ReplicasMap
+name|ReplicaMap
 block|{
 comment|// Object using which this class is synchronized
 DECL|field|mutex
@@ -124,8 +146,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ReplicasMap (Object mutex)
-name|ReplicasMap
+DECL|method|ReplicaMap (Object mutex)
+name|ReplicaMap
 parameter_list|(
 name|Object
 name|mutex

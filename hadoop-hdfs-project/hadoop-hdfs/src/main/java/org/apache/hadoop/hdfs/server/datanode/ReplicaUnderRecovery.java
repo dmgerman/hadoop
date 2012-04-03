@@ -94,6 +94,7 @@ end_comment
 
 begin_class
 DECL|class|ReplicaUnderRecovery
+specifier|public
 class|class
 name|ReplicaUnderRecovery
 extends|extends
@@ -113,6 +114,7 @@ decl_stmt|;
 comment|// recovery id; it is also the generation stamp
 comment|// that the replica will be bumped to after recovery
 DECL|method|ReplicaUnderRecovery (ReplicaInfo replica, long recoveryId)
+specifier|public
 name|ReplicaUnderRecovery
 parameter_list|(
 name|ReplicaInfo
@@ -205,6 +207,7 @@ expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from    */
 DECL|method|ReplicaUnderRecovery (ReplicaUnderRecovery from)
+specifier|public
 name|ReplicaUnderRecovery
 parameter_list|(
 name|ReplicaUnderRecovery
@@ -237,6 +240,7 @@ expr_stmt|;
 block|}
 comment|/**     * Get the recovery id    * @return the generation stamp that the replica will be bumped to     */
 DECL|method|getRecoveryID ()
+specifier|public
 name|long
 name|getRecoveryID
 parameter_list|()
@@ -247,6 +251,7 @@ return|;
 block|}
 comment|/**     * Set the recovery id    * @param recoveryId the new recoveryId    */
 DECL|method|setRecoveryID (long recoveryId)
+specifier|public
 name|void
 name|setRecoveryID
 parameter_list|(
@@ -291,6 +296,7 @@ block|}
 block|}
 comment|/**    * Get the original replica that's under recovery    * @return the original replica under recovery    */
 DECL|method|getOriginalReplica ()
+specifier|public
 name|ReplicaInfo
 name|getOriginalReplica
 parameter_list|()
@@ -303,6 +309,7 @@ annotation|@
 name|Override
 comment|//ReplicaInfo
 DECL|method|isUnlinked ()
+specifier|public
 name|boolean
 name|isUnlinked
 parameter_list|()
@@ -318,6 +325,7 @@ annotation|@
 name|Override
 comment|//ReplicaInfo
 DECL|method|setUnlinked ()
+specifier|public
 name|void
 name|setUnlinked
 parameter_list|()
@@ -458,6 +466,7 @@ annotation|@
 name|Override
 comment|//ReplicaInfo
 DECL|method|setDir (File dir)
+specifier|public
 name|void
 name|setDir
 parameter_list|(
@@ -567,6 +576,7 @@ name|original
 return|;
 block|}
 DECL|method|createInfo ()
+specifier|public
 name|ReplicaRecoveryInfo
 name|createInfo
 parameter_list|()

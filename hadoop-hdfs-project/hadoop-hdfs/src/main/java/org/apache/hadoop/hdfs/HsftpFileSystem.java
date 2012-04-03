@@ -258,6 +258,22 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|URLUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * An implementation of a protocol for accessing filesystems over HTTPS. The  * following implementation provides a limited, read-only interface to a  * filesystem over HTTPS.  *   * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
 end_comment
@@ -785,14 +801,14 @@ init|=
 operator|(
 name|HttpsURLConnection
 operator|)
-name|url
+name|URLUtils
 operator|.
 name|openConnection
-argument_list|()
+argument_list|(
+name|url
+argument_list|)
 decl_stmt|;
 comment|// bypass hostname verification
-try|try
-block|{
 name|conn
 operator|.
 name|setHostnameVerifier
@@ -814,21 +830,6 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|throwIOExceptionFromConnection
-argument_list|(
-name|conn
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
 comment|// check cert expiration date
 specifier|final
 name|int

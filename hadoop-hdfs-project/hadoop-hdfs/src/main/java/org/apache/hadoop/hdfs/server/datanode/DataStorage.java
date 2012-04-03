@@ -144,30 +144,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Matcher
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Pattern
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -218,21 +194,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|LocalFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
+name|FileUtil
 import|;
 end_import
 
@@ -260,7 +222,21 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
+name|LocalFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -372,7 +348,29 @@ name|server
 operator|.
 name|common
 operator|.
-name|GenerationStamp
+name|HdfsServerConstants
+operator|.
+name|NodeType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|StartupOption
 import|;
 end_import
 
@@ -427,46 +425,6 @@ operator|.
 name|common
 operator|.
 name|StorageInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|NodeType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|StartupOption
 import|;
 end_import
 
@@ -548,6 +506,7 @@ name|Storage
 block|{
 comment|// Constants
 DECL|field|BLOCK_SUBDIR_PREFIX
+specifier|public
 specifier|final
 specifier|static
 name|String
@@ -701,7 +660,9 @@ operator|=
 name|strgID
 expr_stmt|;
 block|}
+comment|/** @return storage ID. */
 DECL|method|getStorageID ()
+specifier|public
 specifier|synchronized
 name|String
 name|getStorageID
@@ -727,7 +688,9 @@ operator|=
 name|newStorageID
 expr_stmt|;
 block|}
+comment|/** Create an ID for this storage. */
 DECL|method|createStorageID (int datanodePort)
+specifier|public
 specifier|synchronized
 name|void
 name|createStorageID

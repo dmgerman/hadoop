@@ -36,6 +36,7 @@ end_comment
 
 begin_class
 DECL|class|ReplicaAlreadyExistsException
+specifier|public
 class|class
 name|ReplicaAlreadyExistsException
 extends|extends

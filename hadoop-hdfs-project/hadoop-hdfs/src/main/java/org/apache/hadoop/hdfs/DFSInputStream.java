@@ -3949,6 +3949,11 @@ name|dnAddr
 argument_list|,
 name|dfsClient
 operator|.
+name|getRandomLocalInterfaceAddr
+argument_list|()
+argument_list|,
+name|dfsClient
+operator|.
 name|getConf
 argument_list|()
 operator|.

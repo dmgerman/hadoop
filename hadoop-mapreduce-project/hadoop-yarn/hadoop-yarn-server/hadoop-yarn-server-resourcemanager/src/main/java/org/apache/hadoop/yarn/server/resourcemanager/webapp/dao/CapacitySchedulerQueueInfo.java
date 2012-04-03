@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|xml
@@ -235,13 +225,10 @@ specifier|protected
 name|QueueState
 name|state
 decl_stmt|;
-DECL|field|subQueues
+DECL|field|queues
 specifier|protected
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
-name|subQueues
+name|CapacitySchedulerQueueInfoList
+name|queues
 decl_stmt|;
 DECL|method|CapacitySchedulerQueueInfo ()
 name|CapacitySchedulerQueueInfo
@@ -510,19 +497,16 @@ operator|.
 name|queuePath
 return|;
 block|}
-DECL|method|getSubQueues ()
+DECL|method|getQueues ()
 specifier|public
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
-name|getSubQueues
+name|CapacitySchedulerQueueInfoList
+name|getQueues
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|subQueues
+name|queues
 return|;
 block|}
 comment|/**    * Limit a value to a specified range.    * @param val the value to be capped    * @param low the lower bound of the range (inclusive)    * @param hi the upper bound of the range (inclusive)    * @return the capped value    */

@@ -73,28 +73,6 @@ block|,
 DECL|enumConstant|CONTAINER_REMOTE_CLEANUP
 name|CONTAINER_REMOTE_CLEANUP
 block|}
-comment|// Not a documented config. Only used for tests
-DECL|field|MR_AM_NM_COMMAND_TIMEOUT
-specifier|static
-specifier|final
-name|String
-name|MR_AM_NM_COMMAND_TIMEOUT
-init|=
-name|MRJobConfig
-operator|.
-name|MR_AM_PREFIX
-operator|+
-literal|"nm-command-timeout"
-decl_stmt|;
-comment|/**    *  Maximum of 1 minute timeout for a Node to react to the command    */
-DECL|field|DEFAULT_NM_COMMAND_TIMEOUT
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_NM_COMMAND_TIMEOUT
-init|=
-literal|60000
-decl_stmt|;
 block|}
 end_interface
 

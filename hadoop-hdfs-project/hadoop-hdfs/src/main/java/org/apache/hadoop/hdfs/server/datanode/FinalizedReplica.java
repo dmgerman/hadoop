@@ -92,6 +92,7 @@ end_comment
 
 begin_class
 DECL|class|FinalizedReplica
+specifier|public
 class|class
 name|FinalizedReplica
 extends|extends
@@ -105,6 +106,7 @@ decl_stmt|;
 comment|// copy-on-write done for block
 comment|/**    * Constructor    * @param blockId block id    * @param len replica length    * @param genStamp replica generation stamp    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|FinalizedReplica (long blockId, long len, long genStamp, FsVolumeSpi vol, File dir)
+specifier|public
 name|FinalizedReplica
 parameter_list|(
 name|long
@@ -139,6 +141,7 @@ expr_stmt|;
 block|}
 comment|/**    * Constructor    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
 DECL|method|FinalizedReplica (Block block, FsVolumeSpi vol, File dir)
+specifier|public
 name|FinalizedReplica
 parameter_list|(
 name|Block
@@ -163,6 +166,7 @@ expr_stmt|;
 block|}
 comment|/**    * Copy constructor.    * @param from    */
 DECL|method|FinalizedReplica (FinalizedReplica from)
+specifier|public
 name|FinalizedReplica
 parameter_list|(
 name|FinalizedReplica
@@ -203,6 +207,7 @@ annotation|@
 name|Override
 comment|// ReplicaInfo
 DECL|method|isUnlinked ()
+specifier|public
 name|boolean
 name|isUnlinked
 parameter_list|()
@@ -215,6 +220,7 @@ annotation|@
 name|Override
 comment|// ReplicaInfo
 DECL|method|setUnlinked ()
+specifier|public
 name|void
 name|setUnlinked
 parameter_list|()
@@ -302,7 +308,7 @@ operator|.
 name|toString
 argument_list|()
 operator|+
-literal|"\n  unlinked="
+literal|"\n  unlinked          ="
 operator|+
 name|unlinked
 return|;

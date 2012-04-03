@@ -2180,22 +2180,6 @@ argument_list|(
 name|r2n3
 argument_list|)
 expr_stmt|;
-name|Node
-name|r2n4
-init|=
-operator|new
-name|NodeBase
-argument_list|(
-literal|"/default/rack2/s1/node4"
-argument_list|)
-decl_stmt|;
-name|nt
-operator|.
-name|add
-argument_list|(
-name|r2n4
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -2221,15 +2205,6 @@ operator|+
 literal|"r2n3 parent: "
 operator|+
 name|r2n3
-operator|.
-name|getParent
-argument_list|()
-operator|+
-literal|"\n"
-operator|+
-literal|"r2n4 parent: "
-operator|+
-name|r2n4
 operator|.
 name|getParent
 argument_list|()
@@ -2281,23 +2256,6 @@ argument_list|(
 name|r1n1
 argument_list|,
 name|r2n3
-argument_list|,
-literal|3
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Different rack at different depth
-name|assertEquals
-argument_list|(
-literal|3
-argument_list|,
-name|JobInProgress
-operator|.
-name|getMatchingLevelForNodes
-argument_list|(
-name|r1n1
-argument_list|,
-name|r2n4
 argument_list|,
 literal|3
 argument_list|)
