@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
 name|javax
 operator|.
 name|xml
@@ -199,10 +189,7 @@ name|queueName
 decl_stmt|;
 DECL|field|queues
 specifier|protected
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
+name|CapacitySchedulerQueueInfoList
 name|queues
 decl_stmt|;
 annotation|@
@@ -346,13 +333,10 @@ operator|.
 name|queueName
 return|;
 block|}
-DECL|method|getSubQueues ()
+DECL|method|getQueues ()
 specifier|public
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
-name|getSubQueues
+name|CapacitySchedulerQueueInfoList
+name|getQueues
 parameter_list|()
 block|{
 return|return
@@ -363,10 +347,7 @@ return|;
 block|}
 DECL|method|getQueues (CSQueue parent)
 specifier|protected
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
+name|CapacitySchedulerQueueInfoList
 name|getQueues
 parameter_list|(
 name|CSQueue
@@ -378,17 +359,11 @@ name|parentQueue
 init|=
 name|parent
 decl_stmt|;
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
+name|CapacitySchedulerQueueInfoList
 name|queuesInfo
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|CapacitySchedulerQueueInfo
-argument_list|>
+name|CapacitySchedulerQueueInfoList
 argument_list|()
 decl_stmt|;
 for|for
@@ -436,7 +411,7 @@ argument_list|)
 expr_stmt|;
 name|info
 operator|.
-name|subQueues
+name|queues
 operator|=
 name|getQueues
 argument_list|(
@@ -446,7 +421,7 @@ expr_stmt|;
 block|}
 name|queuesInfo
 operator|.
-name|add
+name|addToQueueInfoList
 argument_list|(
 name|info
 argument_list|)
