@@ -444,6 +444,20 @@ name|com
 operator|.
 name|google
 operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|protobuf
 operator|.
 name|BlockingService
@@ -970,6 +984,22 @@ name|void
 name|stop
 parameter_list|()
 block|{
+name|stop
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|stop (boolean reportError)
+name|void
+name|stop
+parameter_list|(
+name|boolean
+name|reportError
+parameter_list|)
+block|{
 if|if
 condition|(
 name|checkpointManager
@@ -990,8 +1020,12 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+comment|// reportError is a test hook to simulate backupnode crashing and not
+comment|// doing a clean exit w.r.t active namenode
 if|if
 condition|(
+name|reportError
+operator|&&
 name|namenode
 operator|!=
 literal|null

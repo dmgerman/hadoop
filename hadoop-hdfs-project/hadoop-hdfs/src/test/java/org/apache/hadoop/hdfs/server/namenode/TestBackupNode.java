@@ -1179,6 +1179,32 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Trigger an unclean shutdown of the backup node. Backup node will not
+comment|// unregister from the active when this is done simulating a node crash.
+name|backup
+operator|.
+name|stop
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// do some edits on the active. This should go through without failing.
+comment|// This will verify that active is still up and can add entries to
+comment|// master editlog.
+name|assertTrue
+argument_list|(
+name|fileSys
+operator|.
+name|mkdirs
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/edit-while-bn-down-2"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
