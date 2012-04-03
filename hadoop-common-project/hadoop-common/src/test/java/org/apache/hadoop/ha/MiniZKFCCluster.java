@@ -44,6 +44,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -1266,6 +1276,16 @@ return|return
 name|localTarget
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|loginAsFCUser ()
+specifier|protected
+name|void
+name|loginAsFCUser
+parameter_list|()
+throws|throws
+name|IOException
+block|{     }
 block|}
 block|}
 end_class

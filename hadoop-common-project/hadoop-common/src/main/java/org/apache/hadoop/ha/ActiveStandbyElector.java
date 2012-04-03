@@ -150,6 +150,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAZKUtil
+operator|.
+name|ZKAuthInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -547,6 +563,15 @@ name|ACL
 argument_list|>
 name|zkAcl
 decl_stmt|;
+DECL|field|zkAuthInfo
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|ZKAuthInfo
+argument_list|>
+name|zkAuthInfo
+decl_stmt|;
 DECL|field|appData
 specifier|private
 name|byte
@@ -585,8 +610,8 @@ specifier|private
 name|boolean
 name|wantToBeInElection
 decl_stmt|;
-comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
-DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, ActiveStandbyElectorCallback app)
+comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param authInfo a list of authentication credentials to add to the    *                 ZK connection    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
+DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, List<ZKAuthInfo> authInfo, ActiveStandbyElectorCallback app)
 specifier|public
 name|ActiveStandbyElector
 parameter_list|(
@@ -604,6 +629,12 @@ argument_list|<
 name|ACL
 argument_list|>
 name|acl
+parameter_list|,
+name|List
+argument_list|<
+name|ZKAuthInfo
+argument_list|>
+name|authInfo
 parameter_list|,
 name|ActiveStandbyElectorCallback
 name|app
@@ -655,6 +686,10 @@ expr_stmt|;
 name|zkAcl
 operator|=
 name|acl
+expr_stmt|;
+name|zkAuthInfo
+operator|=
+name|authInfo
 expr_stmt|;
 name|appClient
 operator|=
@@ -1910,6 +1945,30 @@ name|zk
 argument_list|)
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|ZKAuthInfo
+name|auth
+range|:
+name|zkAuthInfo
+control|)
+block|{
+name|zk
+operator|.
+name|addAuthInfo
+argument_list|(
+name|auth
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|auth
+operator|.
+name|getAuth
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|zk
 return|;
