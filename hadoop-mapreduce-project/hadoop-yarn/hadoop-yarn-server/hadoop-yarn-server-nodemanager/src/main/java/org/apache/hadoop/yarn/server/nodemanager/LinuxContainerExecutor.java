@@ -1066,7 +1066,12 @@ literal|"App initialization failed ("
 operator|+
 name|exitCode
 operator|+
-literal|")"
+literal|") with output: "
+operator|+
+name|shExec
+operator|.
+name|getOutput
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
