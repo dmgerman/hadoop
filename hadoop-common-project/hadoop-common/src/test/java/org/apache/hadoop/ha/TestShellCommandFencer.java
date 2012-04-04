@@ -474,7 +474,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo hello: host:1234 hello"
+literal|"echo hello: hello"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -515,7 +515,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo hello>&2: host:1234 hello"
+literal|"echo hello>&2: hello"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -553,7 +553,45 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo $in...ing_tests: host:1234 yessir"
+literal|"echo $in...ing_tests: yessir"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Verify that information about the fencing target gets passed as    * environment variables to the fencer.    */
+annotation|@
+name|Test
+DECL|method|testTargetAsEnvironment ()
+specifier|public
+name|void
+name|testTargetAsEnvironment
+parameter_list|()
+block|{
+name|fencer
+operator|.
+name|tryFence
+argument_list|(
+name|TEST_TARGET
+argument_list|,
+literal|"echo $target_host $target_port $target_address"
+argument_list|)
+expr_stmt|;
+name|Mockito
+operator|.
+name|verify
+argument_list|(
+name|ShellCommandFencer
+operator|.
+name|LOG
+argument_list|)
+operator|.
+name|info
+argument_list|(
+name|Mockito
+operator|.
+name|endsWith
+argument_list|(
+literal|"echo $ta...t_address: host 1234 host:1234"
 argument_list|)
 argument_list|)
 expr_stmt|;
