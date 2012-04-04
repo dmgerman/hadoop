@@ -450,6 +450,12 @@ specifier|final
 name|EditLogTailerThread
 name|tailerThread
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|namesystem
 specifier|private
 specifier|final
@@ -522,12 +528,15 @@ specifier|private
 name|long
 name|sleepTimeMs
 decl_stmt|;
-DECL|method|EditLogTailer (FSNamesystem namesystem)
+DECL|method|EditLogTailer (FSNamesystem namesystem, Configuration conf)
 specifier|public
 name|EditLogTailer
 parameter_list|(
 name|FSNamesystem
 name|namesystem
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -537,6 +546,12 @@ operator|=
 operator|new
 name|EditLogTailerThread
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -553,14 +568,6 @@ operator|.
 name|getEditLog
 argument_list|()
 expr_stmt|;
-name|Configuration
-name|conf
-init|=
-name|namesystem
-operator|.
-name|getConf
-argument_list|()
-decl_stmt|;
 name|lastLoadTimestamp
 operator|=
 name|now
@@ -689,14 +696,6 @@ name|getActiveNodeAddress
 parameter_list|()
 block|{
 name|Configuration
-name|conf
-init|=
-name|namesystem
-operator|.
-name|getConf
-argument_list|()
-decl_stmt|;
-name|Configuration
 name|activeConf
 init|=
 name|HAUtil
@@ -732,14 +731,6 @@ operator|==
 literal|null
 condition|)
 block|{
-name|Configuration
-name|conf
-init|=
-name|namesystem
-operator|.
-name|getConf
-argument_list|()
-decl_stmt|;
 name|NamenodeProtocolPB
 name|proxy
 init|=
