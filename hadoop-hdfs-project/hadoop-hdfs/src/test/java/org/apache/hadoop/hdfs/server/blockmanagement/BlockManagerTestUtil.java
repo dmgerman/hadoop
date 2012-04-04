@@ -80,9 +80,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|Block
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -96,11 +94,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|datanode
-operator|.
-name|DataNode
+name|Block
 import|;
 end_import
 
@@ -588,8 +584,6 @@ parameter_list|(
 name|BlockManager
 name|bm
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|int
 name|work

@@ -1553,7 +1553,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"defaultReplication = "
+literal|"defaultReplication         = "
 operator|+
 name|defaultReplication
 argument_list|)
@@ -1562,7 +1562,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxReplication     = "
+literal|"maxReplication             = "
 operator|+
 name|maxReplication
 argument_list|)
@@ -1571,7 +1571,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"minReplication     = "
+literal|"minReplication             = "
 operator|+
 name|minReplication
 argument_list|)
@@ -5235,8 +5235,6 @@ parameter_list|(
 name|int
 name|blocksToProcess
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|List
 argument_list|<
@@ -10129,8 +10127,6 @@ name|Block
 modifier|...
 name|blocks
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -13702,22 +13698,6 @@ break|break;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"ReplicationMonitor thread received exception. "
-argument_list|,
-name|ie
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
 name|Throwable
 name|t
 parameter_list|)
@@ -13751,14 +13731,7 @@ DECL|method|computeDatanodeWork ()
 name|int
 name|computeDatanodeWork
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-name|int
-name|workFound
-init|=
-literal|0
-decl_stmt|;
 comment|// Blocks should not be replicated or removed if in safe mode.
 comment|// It's OK to check safe mode here w/o holding lock, in the worst
 comment|// case extra replications will be scheduled, and these will get
@@ -13770,9 +13743,11 @@ operator|.
 name|isInSafeMode
 argument_list|()
 condition|)
+block|{
 return|return
-name|workFound
+literal|0
 return|;
+block|}
 specifier|final
 name|int
 name|numlive
@@ -13812,15 +13787,16 @@ operator|/
 literal|100.0
 argument_list|)
 decl_stmt|;
+name|int
 name|workFound
-operator|=
+init|=
 name|this
 operator|.
 name|computeReplicationWork
 argument_list|(
 name|blocksToProcess
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Update counters
 name|namesystem
 operator|.
