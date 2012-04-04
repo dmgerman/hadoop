@@ -2138,7 +2138,7 @@ init|=
 operator|new
 name|URI
 argument_list|(
-literal|"hftp://host:2222/file1"
+literal|"hftp://127.0.0.1:2222/file1"
 argument_list|)
 decl_stmt|;
 specifier|final
