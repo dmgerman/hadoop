@@ -46,6 +46,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -280,6 +290,20 @@ name|Joiner
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|io
+operator|.
+name|Files
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests for HAAdmin command with {@link MiniDFSCluster} set up in HA mode.  */
 end_comment
@@ -362,6 +386,11 @@ specifier|private
 name|String
 name|errOutput
 decl_stmt|;
+DECL|field|nn1Port
+specifier|private
+name|int
+name|nn1Port
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -432,6 +461,15 @@ name|cluster
 operator|.
 name|waitActive
 argument_list|()
+expr_stmt|;
+name|nn1Port
+operator|=
+name|cluster
+operator|.
+name|getNameNodePort
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -758,7 +796,25 @@ literal|"nn2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Test failover with fencer
+comment|// Set up fencer to write info about the fencing target into a
+comment|// tmp file, so we can verify that the args were substituted right
+name|File
+name|tmpFile
+init|=
+name|File
+operator|.
+name|createTempFile
+argument_list|(
+literal|"testFencer"
+argument_list|,
+literal|".txt"
+argument_list|)
+decl_stmt|;
+name|tmpFile
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -767,9 +823,19 @@ name|NodeFencer
 operator|.
 name|CONF_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+literal|"shell(echo -n $target_nameserviceid.$target_namenodeid "
+operator|+
+literal|"$target_port $dfs_ha_namenode_id> "
+operator|+
+name|tmpFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|")"
 argument_list|)
 expr_stmt|;
+comment|// Test failover with fencer
 name|tool
 operator|.
 name|setConf
@@ -822,6 +888,23 @@ literal|"nn1"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Fencer has not run yet, since none of the above required fencing
+name|assertEquals
+argument_list|(
+literal|""
+argument_list|,
+name|Files
+operator|.
+name|toString
+argument_list|(
+name|tmpFile
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Test failover with fencer and forcefence option
 name|assertEquals
 argument_list|(
@@ -839,6 +922,33 @@ literal|"--forcefence"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// The fence script should run with the configuration from the target
+comment|// node, rather than the configuration from the fencing node
+name|assertEquals
+argument_list|(
+literal|"minidfs-ns.nn1 "
+operator|+
+name|nn1Port
+operator|+
+literal|" nn1"
+argument_list|,
+name|Files
+operator|.
+name|toString
+argument_list|(
+name|tmpFile
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|tmpFile
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 comment|// Test failover with forceactive option
 name|assertEquals
 argument_list|(
@@ -854,6 +964,15 @@ literal|"nn1"
 argument_list|,
 literal|"--forceactive"
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Fencing should not occur, since it was graceful
+name|assertFalse
+argument_list|(
+name|tmpFile
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test failover with not fencer and forcefence option
@@ -890,6 +1009,14 @@ literal|"--forcefence"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertFalse
+argument_list|(
+name|tmpFile
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Test failover with bad fencer and forcefence option
 name|conf
 operator|.
@@ -924,6 +1051,14 @@ literal|"nn2"
 argument_list|,
 literal|"--forcefence"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|tmpFile
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test failover with force fence listed before the other arguments
