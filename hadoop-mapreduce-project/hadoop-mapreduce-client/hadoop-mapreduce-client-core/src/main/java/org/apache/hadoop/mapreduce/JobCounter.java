@@ -68,6 +68,12 @@ block|,
 DECL|enumConstant|NUM_FAILED_REDUCES
 name|NUM_FAILED_REDUCES
 block|,
+DECL|enumConstant|NUM_KILLED_MAPS
+name|NUM_KILLED_MAPS
+block|,
+DECL|enumConstant|NUM_KILLED_REDUCES
+name|NUM_KILLED_REDUCES
+block|,
 DECL|enumConstant|TOTAL_LAUNCHED_MAPS
 name|TOTAL_LAUNCHED_MAPS
 block|,
