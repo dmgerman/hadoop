@@ -734,13 +734,6 @@ parameter_list|)
 throws|throws
 name|HadoopIllegalArgumentException
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Attempting active election"
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|data
@@ -781,6 +774,15 @@ argument_list|,
 name|data
 operator|.
 name|length
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Attempting active election for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|joinElectionInternal
@@ -856,6 +858,16 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|wantToBeInElection
+argument_list|,
+literal|"ensureParentZNode() may not be called while in the election"
+argument_list|)
+expr_stmt|;
 name|String
 name|pathParts
 index|[]
@@ -1027,6 +1039,16 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|wantToBeInElection
+argument_list|,
+literal|"clearParentZNode() may not be called while in the election"
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|LOG
@@ -1302,6 +1324,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|"  for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|Code
@@ -1486,6 +1512,11 @@ name|ctx
 argument_list|)
 condition|)
 return|return;
+assert|assert
+name|wantToBeInElection
+operator|:
+literal|"Got a StatNode result after quitting election"
+assert|;
 name|LOG
 operator|.
 name|debug
@@ -1501,6 +1532,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|" for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|Code
@@ -1717,6 +1752,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|" for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 if|if
@@ -1769,6 +1808,8 @@ operator|==
 name|ConnectionState
 operator|.
 name|DISCONNECTED
+operator|&&
+name|wantToBeInElection
 condition|)
 block|{
 name|monitorActiveStatus
@@ -1982,6 +2023,13 @@ name|String
 name|errorMessage
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|errorMessage
+argument_list|)
+expr_stmt|;
 name|reset
 argument_list|()
 expr_stmt|;
@@ -1999,11 +2047,16 @@ name|void
 name|monitorActiveStatus
 parameter_list|()
 block|{
+assert|assert
+name|wantToBeInElection
+assert|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Monitoring active leader"
+literal|"Monitoring active leader for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|statRetryCount
@@ -2249,7 +2302,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Establishing zookeeper connection"
+literal|"Establishing zookeeper connection for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 try|try
@@ -2302,6 +2357,15 @@ operator|=
 name|getNewZooKeeper
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Created new connection for "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|terminateConnection ()
 specifier|private
@@ -2322,7 +2386,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Terminating ZK connection"
+literal|"Terminating ZK connection for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|ZooKeeper
@@ -2419,7 +2485,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Becoming active"
+literal|"Becoming active for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|appClient
@@ -2824,7 +2892,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Becoming standby"
+literal|"Becoming standby for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|state
@@ -2859,7 +2929,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Entering neutral mode"
+literal|"Entering neutral mode for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|state
@@ -3293,6 +3365,8 @@ name|WatchedEvent
 name|event
 parameter_list|)
 block|{
+try|try
+block|{
 name|ActiveStandbyElector
 operator|.
 name|this
@@ -3304,6 +3378,30 @@ argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|fatalError
+argument_list|(
+literal|"Failed to process watcher event "
+operator|+
+name|event
+operator|+
+literal|": "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|isSuccess (Code code)
@@ -3413,6 +3511,48 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"elector id="
+operator|+
+name|System
+operator|.
+name|identityHashCode
+argument_list|(
+name|this
+argument_list|)
+operator|+
+literal|" appData="
+operator|+
+operator|(
+operator|(
+name|appData
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"null"
+else|:
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|appData
+argument_list|)
+operator|)
+operator|+
+literal|" cb="
+operator|+
+name|appClient
 return|;
 block|}
 block|}

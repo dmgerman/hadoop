@@ -809,6 +809,13 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|elector
+operator|.
+name|quitElection
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|healthMonitor
 operator|.
 name|shutdown
@@ -1701,6 +1708,20 @@ name|target
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Elector callbacks for "
+operator|+
+name|localTarget
+return|;
 block|}
 block|}
 comment|/**    * Callbacks from HealthMonitor    */
