@@ -3867,6 +3867,14 @@ argument_list|,
 name|this
 operator|.
 name|context
+argument_list|,
+name|nmHost
+argument_list|,
+name|nmPort
+argument_list|,
+name|nmHttpPort
+argument_list|,
+name|containerID
 argument_list|)
 expr_stmt|;
 block|}
