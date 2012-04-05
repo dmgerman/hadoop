@@ -515,6 +515,24 @@ argument_list|,
 literal|"bar"
 argument_list|)
 expr_stmt|;
+comment|// create a cycle using symlinks. Cycles should be handled
+name|FileUtil
+operator|.
+name|symLink
+argument_list|(
+name|del
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|dir1
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"/cycle"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Creates a new file in the specified directory, with the specified name and    * the specified file contents.  This method will add a newline terminator to    * the end of the contents string in the destination file.    * @param directory File non-null destination directory.    * @param name String non-null file name.    * @param contents String non-null file contents.    * @throws IOException if an I/O error occurs.    */
 DECL|method|createFile (File directory, String name, String contents)
@@ -2132,6 +2150,41 @@ block|}
 return|return
 name|result
 return|;
+block|}
+comment|/**    * Test that getDU is able to handle cycles caused due to symbolic links    * and that directory sizes are not added to the final calculated size    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|testGetDU ()
+specifier|public
+name|void
+name|testGetDU
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupDirs
+argument_list|()
+expr_stmt|;
+name|long
+name|du
+init|=
+name|FileUtil
+operator|.
+name|getDU
+argument_list|(
+name|TEST_DIR
+argument_list|)
+decl_stmt|;
+comment|//Only two files (in partitioned) have 4 bytes each
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|du
+argument_list|,
+literal|8
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
