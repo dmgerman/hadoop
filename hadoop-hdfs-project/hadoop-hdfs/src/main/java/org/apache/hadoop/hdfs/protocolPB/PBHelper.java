@@ -3741,6 +3741,11 @@ name|info
 operator|.
 name|getDistUpgradeVersion
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getBuildVersion
+argument_list|()
 argument_list|)
 return|;
 block|}
