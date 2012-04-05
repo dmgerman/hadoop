@@ -26,36 +26,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -88,11 +58,29 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+import|;
+end_import
+
 begin_comment
-comment|/**  * Tokenizer that reads tokens from a binary file  *  */
+comment|/**  * An implementation of OfflineEditsVisitor can traverse the structure of an  * Hadoop edits log and respond to each of the structures within the file.  */
 end_comment
 
-begin_class
+begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -101,87 +89,50 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|BinaryTokenizer
+DECL|interface|OfflineEditsVisitor
+specifier|abstract
 specifier|public
-class|class
-name|BinaryTokenizer
-implements|implements
-name|Tokenizer
+interface|interface
+name|OfflineEditsVisitor
 block|{
-DECL|field|in
-specifier|private
-name|DataInputStream
-name|in
-decl_stmt|;
-comment|/**    * BinaryTokenizer constructor    *    * @param filename input filename    */
-DECL|method|BinaryTokenizer (String filename)
-specifier|public
-name|BinaryTokenizer
+comment|/**    * Begin visiting the edits log structure.  Opportunity to perform    * any initialization necessary for the implementing visitor.    *     * @param version     Edit log version    */
+DECL|method|start (int version)
+specifier|abstract
+name|void
+name|start
 parameter_list|(
-name|String
-name|filename
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-block|{
-name|in
-operator|=
-operator|new
-name|DataInputStream
-argument_list|(
-operator|new
-name|FileInputStream
-argument_list|(
-name|filename
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * BinaryTokenizer constructor    *    * @param in input stream    */
-DECL|method|BinaryTokenizer (DataInputStream in)
-specifier|public
-name|BinaryTokenizer
-parameter_list|(
-name|DataInputStream
-name|in
+name|int
+name|version
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-name|this
-operator|.
-name|in
-operator|=
-name|in
-expr_stmt|;
-block|}
-comment|/**    * @see org.apache.hadoop.hdfs.tools.offlineEditsViewer.Tokenizer#read    *    * @param t a Token to read    * @return token that was just read    */
-annotation|@
-name|Override
-DECL|method|read (Token t)
-specifier|public
-name|Token
-name|read
+function_decl|;
+comment|/**    * Finish visiting the edits log structure.  Opportunity to perform any    * clean up necessary for the implementing visitor.    *     * @param error        If the visitor was closed because of an     *                     unrecoverable error in the input stream, this     *                     is the exception.    */
+DECL|method|close (Throwable error)
+specifier|abstract
+name|void
+name|close
 parameter_list|(
-name|Token
-name|t
+name|Throwable
+name|error
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-name|t
-operator|.
-name|fromBinary
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-return|return
-name|t
-return|;
+function_decl|;
+comment|/**    * Begin visiting an element that encloses another element, such as    * the beginning of the list of blocks that comprise a file.    *    * @param value Token being visited    */
+DECL|method|visitOp (FSEditLogOp op)
+specifier|abstract
+name|void
+name|visitOp
+parameter_list|(
+name|FSEditLogOp
+name|op
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 
