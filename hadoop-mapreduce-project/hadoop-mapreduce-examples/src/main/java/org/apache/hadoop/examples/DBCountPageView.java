@@ -418,6 +418,8 @@ name|org
 operator|.
 name|hsqldb
 operator|.
+name|server
+operator|.
 name|Server
 import|;
 end_import
@@ -510,7 +512,7 @@ specifier|final
 name|String
 name|DRIVER_CLASS
 init|=
-literal|"org.hsqldb.jdbcDriver"
+literal|"org.hsqldb.jdbc.JDBCDriver"
 decl_stmt|;
 DECL|field|server
 specifier|private
