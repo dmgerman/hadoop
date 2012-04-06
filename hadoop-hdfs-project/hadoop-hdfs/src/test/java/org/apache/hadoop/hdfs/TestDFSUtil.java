@@ -2006,7 +2006,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"0.0.0.0:50470"
+literal|"0.0.0.0:"
+operator|+
+name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
 argument_list|,
 name|httpsport
 argument_list|)
@@ -2027,7 +2029,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"0.0.0.0:50070"
+literal|"0.0.0.0:"
+operator|+
+name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 argument_list|,
 name|httpport
 argument_list|)

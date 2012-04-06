@@ -1043,7 +1043,9 @@ name|infoHost
 operator|+
 literal|":"
 operator|+
-literal|50475
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_DEFAULT_PORT
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1051,7 +1053,9 @@ name|httpServer
 operator|.
 name|setAttribute
 argument_list|(
-literal|"datanode.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_PORT_KEY
 argument_list|,
 name|datanodeSslPort
 operator|.

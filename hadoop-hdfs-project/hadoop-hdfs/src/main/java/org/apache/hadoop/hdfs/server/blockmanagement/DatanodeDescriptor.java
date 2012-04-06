@@ -24,26 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|DataInput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -128,20 +108,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DeprecatedUTF8
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|Block
@@ -193,34 +159,6 @@ operator|.
 name|util
 operator|.
 name|LightWeightHashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableUtils
 import|;
 end_import
 
@@ -635,13 +573,12 @@ name|disallowed
 init|=
 literal|false
 decl_stmt|;
-comment|/** Default constructor */
 DECL|method|DatanodeDescriptor ()
 specifier|public
 name|DatanodeDescriptor
 parameter_list|()
 block|{}
-comment|/** DatanodeDescriptor constructor    * @param nodeID id of the data node    */
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID)
 specifier|public
 name|DatanodeDescriptor
@@ -668,7 +605,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** DatanodeDescriptor constructor    *     * @param nodeID id of the data node    * @param networkLocation location of the data node in network    */
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation)
 specifier|public
 name|DatanodeDescriptor
@@ -700,7 +637,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** DatanodeDescriptor constructor    *     * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
@@ -748,7 +685,7 @@ name|failedVolumes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** DatanodeDescriptor constructor    *     * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor

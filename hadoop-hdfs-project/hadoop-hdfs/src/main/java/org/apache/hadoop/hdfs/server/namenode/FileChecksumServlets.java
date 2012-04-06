@@ -471,7 +471,9 @@ argument_list|()
 operator|.
 name|getAttribute
 argument_list|(
-literal|"datanode.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_PORT_KEY
 argument_list|)
 else|:
 name|host

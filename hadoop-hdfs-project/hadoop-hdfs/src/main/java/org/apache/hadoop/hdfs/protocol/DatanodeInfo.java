@@ -1455,7 +1455,8 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-name|ipAddr
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

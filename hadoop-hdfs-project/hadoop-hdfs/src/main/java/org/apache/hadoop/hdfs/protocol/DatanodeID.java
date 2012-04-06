@@ -84,6 +84,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -173,7 +187,6 @@ name|int
 name|ipcPort
 decl_stmt|;
 comment|// IPC server port
-comment|/** Equivalent to DatanodeID(""). */
 DECL|method|DatanodeID ()
 specifier|public
 name|DatanodeID
@@ -182,38 +195,13 @@ block|{
 name|this
 argument_list|(
 literal|""
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DEFAULT_PORT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Equivalent to DatanodeID(ipAddr, "", -1, -1, -1). */
-DECL|method|DatanodeID (String ipAddr)
-specifier|public
-name|DatanodeID
-parameter_list|(
-name|String
-name|ipAddr
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|ipAddr
-argument_list|,
-literal|""
-argument_list|,
-literal|""
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
-comment|/** Equivalent to DatanodeID(ipAddr, "", xferPort, -1, -1). */
 DECL|method|DatanodeID (String ipAddr, int xferPort)
 specifier|public
 name|DatanodeID
@@ -235,11 +223,47 @@ literal|""
 argument_list|,
 name|xferPort
 argument_list|,
-operator|-
-literal|1
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_DEFAULT_PORT
 argument_list|,
-operator|-
-literal|1
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_DEFAULT_PORT
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DatanodeID (String ipAddr, String hostName, int xferPort)
+specifier|public
+name|DatanodeID
+parameter_list|(
+name|String
+name|ipAddr
+parameter_list|,
+name|String
+name|hostName
+parameter_list|,
+name|int
+name|xferPort
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|ipAddr
+argument_list|,
+name|hostName
+argument_list|,
+literal|""
+argument_list|,
+name|xferPort
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_DEFAULT_PORT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_DEFAULT_PORT
 argument_list|)
 expr_stmt|;
 block|}
