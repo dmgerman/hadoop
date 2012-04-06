@@ -231,7 +231,7 @@ name|convert
 argument_list|(
 name|req
 operator|.
-name|getRegistration
+name|getJournalInfo
 argument_list|()
 argument_list|)
 argument_list|,
@@ -308,7 +308,7 @@ name|convert
 argument_list|(
 name|req
 operator|.
-name|getRegistration
+name|getJournalInfo
 argument_list|()
 argument_list|)
 argument_list|,
