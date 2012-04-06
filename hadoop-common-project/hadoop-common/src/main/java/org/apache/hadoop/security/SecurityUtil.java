@@ -830,7 +830,7 @@ name|Class
 operator|.
 name|forName
 argument_list|(
-literal|"sun.security.jgss.krb5"
+literal|"sun.security.jgss.krb5.Krb5Util"
 argument_list|)
 expr_stmt|;
 block|}
