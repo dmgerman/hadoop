@@ -132,6 +132,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|ContentSummary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -1081,7 +1095,8 @@ name|getUsed
 argument_list|()
 return|;
 block|}
-comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time. */
+annotation|@
+name|Override
 DECL|method|getDefaultBlockSize ()
 specifier|public
 name|long
@@ -1095,7 +1110,8 @@ name|getDefaultBlockSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the default replication.    */
+annotation|@
+name|Override
 DECL|method|getDefaultReplication ()
 specifier|public
 name|short
@@ -1107,6 +1123,108 @@ name|fs
 operator|.
 name|getDefaultReplication
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServerDefaults ()
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getServerDefaults
+argument_list|()
+return|;
+block|}
+comment|// path variants delegate to underlying filesystem
+annotation|@
+name|Override
+DECL|method|getContentSummary (Path f)
+specifier|public
+name|ContentSummary
+name|getContentSummary
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getContentSummary
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultBlockSize (Path f)
+specifier|public
+name|long
+name|getDefaultBlockSize
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultBlockSize
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultReplication (Path f)
+specifier|public
+name|short
+name|getDefaultReplication
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultReplication
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServerDefaults (Path f)
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getServerDefaults
+argument_list|(
+name|f
+argument_list|)
 return|;
 block|}
 comment|/**    * Get file status.    */

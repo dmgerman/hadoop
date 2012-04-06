@@ -140,6 +140,15 @@ name|DEFAULT_NUM_BLOCKS
 init|=
 literal|2
 decl_stmt|;
+DECL|field|DEFAULT_NUM_REPL
+specifier|private
+specifier|static
+specifier|final
+name|short
+name|DEFAULT_NUM_REPL
+init|=
+literal|1
+decl_stmt|;
 DECL|field|absTestRootDir
 specifier|private
 specifier|static
@@ -436,7 +445,7 @@ argument_list|)
 return|;
 block|}
 comment|/*    * Create files with numBlocks blocks each with block size blockSize.    */
-DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize, boolean createParent)
+DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize, short numRepl, boolean createParent)
 specifier|public
 specifier|static
 name|long
@@ -453,6 +462,9 @@ name|numBlocks
 parameter_list|,
 name|int
 name|blockSize
+parameter_list|,
+name|short
+name|numRepl
 parameter_list|,
 name|boolean
 name|createParent
@@ -473,10 +485,7 @@ literal|false
 argument_list|,
 literal|4096
 argument_list|,
-name|fSys
-operator|.
-name|getDefaultReplication
-argument_list|()
+name|numRepl
 argument_list|,
 name|blockSize
 argument_list|)
@@ -514,6 +523,50 @@ return|return
 name|data
 operator|.
 name|length
+return|;
+block|}
+DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize, boolean createParent)
+specifier|public
+specifier|static
+name|long
+name|createFile
+parameter_list|(
+name|FileSystem
+name|fSys
+parameter_list|,
+name|Path
+name|path
+parameter_list|,
+name|int
+name|numBlocks
+parameter_list|,
+name|int
+name|blockSize
+parameter_list|,
+name|boolean
+name|createParent
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createFile
+argument_list|(
+name|fSys
+argument_list|,
+name|path
+argument_list|,
+name|numBlocks
+argument_list|,
+name|blockSize
+argument_list|,
+name|fSys
+operator|.
+name|getDefaultReplication
+argument_list|()
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 DECL|method|createFile (FileSystem fSys, Path path, int numBlocks, int blockSize)
@@ -577,6 +630,8 @@ argument_list|,
 name|DEFAULT_NUM_BLOCKS
 argument_list|,
 name|DEFAULT_BLOCK_SIZE
+argument_list|,
+name|DEFAULT_NUM_REPL
 argument_list|,
 literal|true
 argument_list|)

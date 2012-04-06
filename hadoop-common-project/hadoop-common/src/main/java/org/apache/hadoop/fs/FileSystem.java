@@ -2130,7 +2130,7 @@ argument_list|)
 block|}
 return|;
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param p path of file to get locations for    * @param start offset into the given file    * @param len length for which to get locations for    */
+comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @param start offset into the given file    * @param len length for which to get locations for    */
 DECL|method|getFileBlockLocations (Path p, long start, long len)
 specifier|public
 name|BlockLocation
@@ -2228,6 +2228,23 @@ argument_list|,
 literal|4096
 argument_list|)
 argument_list|)
+return|;
+block|}
+comment|/**    * Return a set of server default configuration values    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @return server default configuration values    * @throws IOException    */
+DECL|method|getServerDefaults (Path p)
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getServerDefaults
+argument_list|()
 return|;
 block|}
 comment|/**    * Return the fully-qualified path of path f resolving the path    * through any symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException    */
@@ -2357,10 +2374,14 @@ literal|4096
 argument_list|)
 argument_list|,
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2397,10 +2418,14 @@ literal|4096
 argument_list|)
 argument_list|,
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|progress
 argument_list|)
@@ -2441,7 +2466,9 @@ argument_list|,
 name|replication
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2483,7 +2510,9 @@ argument_list|,
 name|replication
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|progress
 argument_list|)
@@ -2517,10 +2546,14 @@ argument_list|,
 name|bufferSize
 argument_list|,
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -2555,10 +2588,14 @@ argument_list|,
 name|bufferSize
 argument_list|,
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|progress
 argument_list|)
@@ -6061,6 +6098,21 @@ literal|1024
 argument_list|)
 return|;
 block|}
+comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time.  The given path will be used to    * locate the actual filesystem.  The full path does not have to exist.    * @param f path of file    * @return the default block size for the path's filesystem    */
+DECL|method|getDefaultBlockSize (Path f)
+specifier|public
+name|long
+name|getDefaultBlockSize
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+name|getDefaultBlockSize
+argument_list|()
+return|;
+block|}
 comment|/**    * Get the default replication.    */
 DECL|method|getDefaultReplication ()
 specifier|public
@@ -6070,6 +6122,21 @@ parameter_list|()
 block|{
 return|return
 literal|1
+return|;
+block|}
+comment|/**    * Get the default replication for a path.   The given path will be used to    * locate the actual filesystem.  The full path does not have to exist.    * @param path of the file    * @return default replication for the path's filesystem     */
+DECL|method|getDefaultReplication (Path path)
+specifier|public
+name|short
+name|getDefaultReplication
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+name|getDefaultReplication
+argument_list|()
 return|;
 block|}
 comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
