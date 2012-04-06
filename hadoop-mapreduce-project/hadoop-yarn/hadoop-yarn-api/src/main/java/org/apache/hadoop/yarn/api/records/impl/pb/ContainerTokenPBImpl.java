@@ -680,6 +680,71 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"ContainerToken { "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"kind: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getKind
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"service: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getService
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" }"
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
