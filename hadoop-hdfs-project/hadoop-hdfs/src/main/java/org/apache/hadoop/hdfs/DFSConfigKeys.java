@@ -2681,6 +2681,15 @@ init|=
 literal|60
 decl_stmt|;
 comment|// 1m
+DECL|field|DFS_HA_FENCE_METHODS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_FENCE_METHODS_KEY
+init|=
+literal|"dfs.ha.fencing.methods"
+decl_stmt|;
 block|}
 end_class
 

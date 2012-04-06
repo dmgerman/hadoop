@@ -308,6 +308,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 import|;
 end_import
@@ -916,6 +930,8 @@ block|,
 name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
 block|,
 name|DFS_NAMENODE_BACKUP_SERVICE_RPC_ADDRESS_KEY
+block|,
+name|DFS_HA_FENCE_METHODS_KEY
 block|}
 decl_stmt|;
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
