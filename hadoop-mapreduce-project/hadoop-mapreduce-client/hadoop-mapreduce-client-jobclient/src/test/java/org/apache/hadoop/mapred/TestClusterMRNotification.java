@@ -26,23 +26,11 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Ignore
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests Job end notification in cluster mode.  */
 end_comment
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestClusterMRNotification
 specifier|public
 class|class
