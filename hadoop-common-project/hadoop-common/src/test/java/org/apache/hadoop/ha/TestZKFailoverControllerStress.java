@@ -186,11 +186,6 @@ name|serverFactory
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|cluster
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -230,6 +225,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|cluster
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|long
 name|st
 init|=
@@ -343,6 +343,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|cluster
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|long
 name|st
 init|=
@@ -560,6 +565,14 @@ operator|.
 name|NUM_RETRIES
 operator|=
 literal|100
+expr_stmt|;
+comment|// Don't start until after the above mocking. Otherwise we can get
+comment|// Mockito errors if the HM calls the proxy in the middle of
+comment|// setting up the mock.
+name|cluster
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 name|long
 name|st
