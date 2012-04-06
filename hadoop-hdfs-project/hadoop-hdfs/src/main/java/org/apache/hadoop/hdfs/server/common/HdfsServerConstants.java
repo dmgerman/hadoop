@@ -170,6 +170,12 @@ name|BOOTSTRAPSTANDBY
 argument_list|(
 literal|"-bootstrapStandby"
 argument_list|)
+block|,
+DECL|enumConstant|INITIALIZESHAREDEDITS
+name|INITIALIZESHAREDEDITS
+argument_list|(
+literal|"-initializeSharedEdits"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private

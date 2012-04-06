@@ -190,15 +190,6 @@ specifier|public
 class|class
 name|NodeFencer
 block|{
-DECL|field|CONF_METHODS_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|CONF_METHODS_KEY
-init|=
-literal|"dfs.ha.fencing.methods"
-decl_stmt|;
 DECL|field|CLASS_RE
 specifier|private
 specifier|static
@@ -322,12 +313,14 @@ name|FenceMethodWithArg
 argument_list|>
 name|methods
 decl_stmt|;
-DECL|method|NodeFencer (Configuration conf)
-specifier|public
+DECL|method|NodeFencer (Configuration conf, String spec)
 name|NodeFencer
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|spec
 parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
@@ -339,10 +332,12 @@ operator|=
 name|parseMethods
 argument_list|(
 name|conf
+argument_list|,
+name|spec
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|create (Configuration conf)
+DECL|method|create (Configuration conf, String confKey)
 specifier|public
 specifier|static
 name|NodeFencer
@@ -350,6 +345,9 @@ name|create
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|confKey
 parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
@@ -361,7 +359,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|CONF_METHODS_KEY
+name|confKey
 argument_list|)
 decl_stmt|;
 if|if
@@ -380,6 +378,8 @@ operator|new
 name|NodeFencer
 argument_list|(
 name|conf
+argument_list|,
+name|confStr
 argument_list|)
 return|;
 block|}
@@ -534,7 +534,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|parseMethods (Configuration conf)
+DECL|method|parseMethods (Configuration conf, String spec)
 specifier|private
 specifier|static
 name|List
@@ -545,25 +545,18 @@ name|parseMethods
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|spec
 parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
 block|{
 name|String
-name|confStr
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|CONF_METHODS_KEY
-argument_list|)
-decl_stmt|;
-name|String
 index|[]
 name|lines
 init|=
-name|confStr
+name|spec
 operator|.
 name|split
 argument_list|(

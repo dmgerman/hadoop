@@ -459,11 +459,6 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|FSDataInputStream
-name|in
-init|=
-literal|null
-decl_stmt|;
 for|for
 control|(
 name|PathData
@@ -472,10 +467,9 @@ range|:
 name|srcs
 control|)
 block|{
-try|try
-block|{
+name|FSDataInputStream
 name|in
-operator|=
+init|=
 name|src
 operator|.
 name|fs
@@ -486,7 +480,9 @@ name|src
 operator|.
 name|path
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+try|try
+block|{
 name|IOUtils
 operator|.
 name|copyBytes

@@ -289,6 +289,7 @@ block|}
 block|}
 comment|/**    * Creates output buffers and file object.    *     * @param name    *          File name to store edit log    * @param size    *          Size of flush buffer    * @throws IOException    */
 DECL|method|EditLogFileOutputStream (File name, int size)
+specifier|public
 name|EditLogFileOutputStream
 parameter_list|(
 name|File
@@ -676,7 +677,7 @@ comment|/**    * Flush ready buffer to persistent store. currentBuffer is not fl
 annotation|@
 name|Override
 DECL|method|flushAndSync ()
-specifier|protected
+specifier|public
 name|void
 name|flushAndSync
 parameter_list|()

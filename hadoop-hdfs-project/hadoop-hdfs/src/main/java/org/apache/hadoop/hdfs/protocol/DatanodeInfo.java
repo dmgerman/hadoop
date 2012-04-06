@@ -677,13 +677,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String name, final String hostName, final String storageID, final int xferPort, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String storageID, final int xferPort, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
 specifier|final
 name|String
-name|name
+name|ipAddr
 parameter_list|,
 specifier|final
 name|String
@@ -740,7 +740,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|name
+name|ipAddr
 argument_list|,
 name|hostName
 argument_list|,
@@ -1455,7 +1455,8 @@ name|buffer
 operator|.
 name|append
 argument_list|(
-name|ipAddr
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

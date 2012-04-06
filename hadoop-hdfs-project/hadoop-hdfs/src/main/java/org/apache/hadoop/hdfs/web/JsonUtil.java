@@ -2397,7 +2397,7 @@ name|m
 operator|.
 name|get
 argument_list|(
-literal|"name"
+literal|"ipAddr"
 argument_list|)
 argument_list|,
 operator|(

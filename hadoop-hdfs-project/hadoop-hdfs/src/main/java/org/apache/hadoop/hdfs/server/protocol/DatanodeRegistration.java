@@ -88,6 +88,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeID
@@ -256,7 +270,6 @@ specifier|private
 name|ExportedBlockKeys
 name|exportedKeys
 decl_stmt|;
-comment|/**    * Default constructor.    */
 DECL|method|DatanodeRegistration ()
 specifier|public
 name|DatanodeRegistration
@@ -265,21 +278,10 @@ block|{
 name|this
 argument_list|(
 literal|""
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Create DatanodeRegistration    */
-DECL|method|DatanodeRegistration (String ipAddr)
-specifier|public
-name|DatanodeRegistration
-parameter_list|(
-name|String
-name|ipAddr
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|ipAddr
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_DEFAULT_PORT
 argument_list|,
 operator|new
 name|StorageInfo
@@ -323,12 +325,42 @@ operator|=
 name|keys
 expr_stmt|;
 block|}
-DECL|method|DatanodeRegistration (String ipAddr, StorageInfo info, ExportedBlockKeys keys)
+DECL|method|DatanodeRegistration (String ipAddr, int xferPort)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
 name|String
 name|ipAddr
+parameter_list|,
+name|int
+name|xferPort
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|ipAddr
+argument_list|,
+name|xferPort
+argument_list|,
+operator|new
+name|StorageInfo
+argument_list|()
+argument_list|,
+operator|new
+name|ExportedBlockKeys
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DatanodeRegistration (String ipAddr, int xferPort, StorageInfo info, ExportedBlockKeys keys)
+specifier|public
+name|DatanodeRegistration
+parameter_list|(
+name|String
+name|ipAddr
+parameter_list|,
+name|int
+name|xferPort
 parameter_list|,
 name|StorageInfo
 name|info
@@ -340,6 +372,8 @@ block|{
 name|super
 argument_list|(
 name|ipAddr
+argument_list|,
+name|xferPort
 argument_list|)
 expr_stmt|;
 name|this
@@ -476,7 +510,8 @@ argument_list|()
 operator|+
 literal|"("
 operator|+
-name|ipAddr
+name|getIpAddr
+argument_list|()
 operator|+
 literal|", storageID="
 operator|+

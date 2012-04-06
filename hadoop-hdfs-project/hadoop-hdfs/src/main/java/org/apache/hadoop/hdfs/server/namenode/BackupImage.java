@@ -1250,12 +1250,6 @@ operator|+
 literal|" -> "
 operator|+
 name|newState
-argument_list|,
-operator|new
-name|Exception
-argument_list|(
-literal|"trace"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

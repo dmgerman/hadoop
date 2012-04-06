@@ -942,6 +942,8 @@ operator|new
 name|DatanodeRegistration
 argument_list|(
 literal|"fake-node"
+argument_list|,
+literal|100
 argument_list|)
 argument_list|)
 operator|.

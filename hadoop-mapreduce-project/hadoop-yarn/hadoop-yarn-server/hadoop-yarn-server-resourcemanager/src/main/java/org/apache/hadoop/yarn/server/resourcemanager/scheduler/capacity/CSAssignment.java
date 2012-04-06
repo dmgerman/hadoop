@@ -111,7 +111,6 @@ name|Resource
 name|resource
 decl_stmt|;
 DECL|field|type
-specifier|final
 specifier|private
 name|NodeType
 name|type
@@ -159,6 +158,22 @@ block|{
 return|return
 name|type
 return|;
+block|}
+DECL|method|setType (NodeType type)
+specifier|public
+name|void
+name|setType
+parameter_list|(
+name|NodeType
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
 block|}
 annotation|@
 name|Override
