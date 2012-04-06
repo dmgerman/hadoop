@@ -366,6 +366,8 @@ operator|new
 name|Configuration
 argument_list|()
 expr_stmt|;
+comment|// Specify the quorum per-nameservice, to ensure that these configs
+comment|// can be nameservice-scoped.
 name|conf
 operator|.
 name|set
@@ -373,6 +375,8 @@ argument_list|(
 name|ZKFailoverController
 operator|.
 name|ZK_QUORUM_KEY
+operator|+
+literal|".ns1"
 argument_list|,
 name|hostPort
 argument_list|)

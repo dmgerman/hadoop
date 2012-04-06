@@ -301,7 +301,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// TODO: this should be namespace-scoped
 DECL|field|ZK_QUORUM_KEY
 specifier|public
 specifier|static
@@ -374,6 +373,30 @@ name|String
 name|ZK_PARENT_ZNODE_DEFAULT
 init|=
 literal|"/hadoop-ha"
+decl_stmt|;
+comment|/**    * All of the conf keys used by the ZKFC. This is used in order to allow    * them to be overridden on a per-nameservice or per-namenode basis.    */
+DECL|field|ZKFC_CONF_KEYS
+specifier|protected
+specifier|static
+specifier|final
+name|String
+index|[]
+name|ZKFC_CONF_KEYS
+init|=
+operator|new
+name|String
+index|[]
+block|{
+name|ZK_QUORUM_KEY
+block|,
+name|ZK_SESSION_TIMEOUT_KEY
+block|,
+name|ZK_PARENT_ZNODE_KEY
+block|,
+name|ZK_ACL_KEY
+block|,
+name|ZK_AUTH_KEY
+block|}
 decl_stmt|;
 comment|/** Unable to format the parent znode in ZK */
 DECL|field|ERR_CODE_FORMAT_DENIED
