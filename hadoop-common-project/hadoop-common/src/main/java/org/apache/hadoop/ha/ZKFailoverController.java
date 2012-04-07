@@ -445,11 +445,6 @@ specifier|private
 name|HAServiceTarget
 name|localTarget
 decl_stmt|;
-DECL|field|parentZnode
-specifier|private
-name|String
-name|parentZnode
-decl_stmt|;
 DECL|field|lastHealthState
 specifier|private
 name|State
@@ -527,6 +522,14 @@ name|loginAsFCUser
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Return the name of a znode inside the configured parent znode in which    * the ZKFC will do all of its work. This is so that multiple federated    * nameservices can run on the same ZK quorum without having to manually    * configure them to separate subdirectories.    */
+DECL|method|getScopeInsideParentNode ()
+specifier|protected
+specifier|abstract
+name|String
+name|getScopeInsideParentNode
+parameter_list|()
 function_decl|;
 annotation|@
 name|Override
@@ -988,6 +991,12 @@ name|boolean
 name|confirmFormat
 parameter_list|()
 block|{
+name|String
+name|parentZnode
+init|=
+name|getParentZnode
+argument_list|()
+decl_stmt|;
 name|System
 operator|.
 name|err
@@ -1114,17 +1123,6 @@ argument_list|,
 name|ZK_SESSION_TIMEOUT_DEFAULT
 argument_list|)
 decl_stmt|;
-name|parentZnode
-operator|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|ZK_PARENT_ZNODE_KEY
-argument_list|,
-name|ZK_PARENT_ZNODE_DEFAULT
-argument_list|)
-expr_stmt|;
 comment|// Parse ACLs from configuration.
 name|String
 name|zkAclConf
@@ -1264,7 +1262,8 @@ name|zkQuorum
 argument_list|,
 name|zkTimeout
 argument_list|,
-name|parentZnode
+name|getParentZnode
+argument_list|()
 argument_list|,
 name|zkAcls
 argument_list|,
@@ -1275,6 +1274,47 @@ name|ElectorCallbacks
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getParentZnode ()
+specifier|private
+name|String
+name|getParentZnode
+parameter_list|()
+block|{
+name|String
+name|znode
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|ZK_PARENT_ZNODE_KEY
+argument_list|,
+name|ZK_PARENT_ZNODE_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|znode
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+name|znode
+operator|+=
+literal|"/"
+expr_stmt|;
+block|}
+return|return
+name|znode
+operator|+
+name|getScopeInsideParentNode
+argument_list|()
+return|;
 block|}
 DECL|method|mainLoop ()
 specifier|private

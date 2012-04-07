@@ -714,6 +714,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getScopeInsideParentNode ()
+specifier|protected
+name|String
+name|getScopeInsideParentNode
+parameter_list|()
+block|{
+return|return
+name|localTarget
+operator|.
+name|getNameServiceId
+argument_list|()
+return|;
+block|}
 DECL|method|main (String args[])
 specifier|public
 specifier|static
