@@ -64,6 +64,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -85,6 +95,18 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|HadoopIllegalArgumentException
 import|;
 end_import
 
@@ -282,6 +304,14 @@ literal|"-nnRpcAddresses"
 argument_list|,
 literal|"gets the namenode rpc addresses"
 argument_list|)
+block|,
+DECL|enumConstant|CONFKEY
+name|CONFKEY
+argument_list|(
+literal|"-confKey [key]"
+argument_list|,
+literal|"gets a specific key from the configuration"
+argument_list|)
 block|;
 DECL|field|map
 specifier|private
@@ -413,6 +443,23 @@ name|NNRpcAddressesCommandHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
+name|CONFKEY
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|()
+argument_list|,
+operator|new
+name|PrintConfKeyCommandHandler
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|field|cmd
 specifier|private
@@ -457,6 +504,24 @@ parameter_list|()
 block|{
 return|return
 name|cmd
+operator|.
+name|split
+argument_list|(
+literal|" "
+argument_list|)
+index|[
+literal|0
+index|]
+return|;
+block|}
+DECL|method|getUsage ()
+specifier|public
+name|String
+name|getUsage
+parameter_list|()
+block|{
+return|return
+name|cmd
 return|;
 block|}
 DECL|method|getDescription ()
@@ -469,14 +534,14 @@ return|return
 name|description
 return|;
 block|}
-DECL|method|getHandler (String name)
+DECL|method|getHandler (String cmd)
 specifier|public
 specifier|static
 name|CommandHandler
 name|getHandler
 parameter_list|(
 name|String
-name|name
+name|cmd
 parameter_list|)
 block|{
 return|return
@@ -484,7 +549,7 @@ name|map
 operator|.
 name|get
 argument_list|(
-name|name
+name|cmd
 operator|.
 name|toLowerCase
 argument_list|()
@@ -541,7 +606,7 @@ literal|"\t["
 operator|+
 name|cmd
 operator|.
-name|getName
+name|getUsage
 argument_list|()
 operator|+
 literal|"]\t\t\t"
@@ -570,7 +635,6 @@ class|class
 name|CommandHandler
 block|{
 DECL|field|key
-specifier|final
 name|String
 name|key
 decl_stmt|;
@@ -599,21 +663,32 @@ operator|=
 name|key
 expr_stmt|;
 block|}
-DECL|method|doWork (GetConf tool)
+DECL|method|doWork (GetConf tool, String[] args)
 specifier|final
 name|int
 name|doWork
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 block|{
 try|try
 block|{
+name|checkArgs
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
 return|return
 name|doWorkInternal
 argument_list|(
 name|tool
+argument_list|,
+name|args
 argument_list|)
 return|;
 block|}
@@ -639,13 +714,50 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/** Method to be overridden by sub classes for specific behavior */
-DECL|method|doWorkInternal (GetConf tool)
+DECL|method|checkArgs (String args[])
+specifier|protected
+name|void
+name|checkArgs
+parameter_list|(
+name|String
+name|args
+index|[]
+parameter_list|)
+block|{
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Did not expect argument: "
+operator|+
+name|args
+index|[
+literal|0
+index|]
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/** Method to be overridden by sub classes for specific behavior       * @param args */
+DECL|method|doWorkInternal (GetConf tool, String[] args)
 name|int
 name|doWorkInternal
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 throws|throws
 name|Exception
@@ -658,7 +770,7 @@ operator|.
 name|getConf
 argument_list|()
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|key
 argument_list|)
@@ -708,12 +820,16 @@ name|CommandHandler
 block|{
 annotation|@
 name|Override
-DECL|method|doWorkInternal (GetConf tool)
+DECL|method|doWorkInternal (GetConf tool, String []args)
 name|int
 name|doWorkInternal
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -748,13 +864,17 @@ name|CommandHandler
 block|{
 annotation|@
 name|Override
-DECL|method|doWorkInternal (GetConf tool)
+DECL|method|doWorkInternal (GetConf tool, String []args)
 specifier|public
 name|int
 name|doWorkInternal
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -789,13 +909,17 @@ name|CommandHandler
 block|{
 annotation|@
 name|Override
-DECL|method|doWorkInternal (GetConf tool)
+DECL|method|doWorkInternal (GetConf tool, String []args)
 specifier|public
 name|int
 name|doWorkInternal
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -830,13 +954,17 @@ name|CommandHandler
 block|{
 annotation|@
 name|Override
-DECL|method|doWorkInternal (GetConf tool)
+DECL|method|doWorkInternal (GetConf tool, String []args)
 specifier|public
 name|int
 name|doWorkInternal
 parameter_list|(
 name|GetConf
 name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -924,6 +1052,98 @@ expr_stmt|;
 return|return
 operator|-
 literal|1
+return|;
+block|}
+block|}
+DECL|class|PrintConfKeyCommandHandler
+specifier|static
+class|class
+name|PrintConfKeyCommandHandler
+extends|extends
+name|CommandHandler
+block|{
+annotation|@
+name|Override
+DECL|method|checkArgs (String[] args)
+specifier|protected
+name|void
+name|checkArgs
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+block|{
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|!=
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"usage: "
+operator|+
+name|Command
+operator|.
+name|CONFKEY
+operator|.
+name|getUsage
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|doWorkInternal (GetConf tool, String[] args)
+name|int
+name|doWorkInternal
+parameter_list|(
+name|GetConf
+name|tool
+parameter_list|,
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|this
+operator|.
+name|key
+operator|=
+name|args
+index|[
+literal|0
+index|]
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"key: "
+operator|+
+name|key
+argument_list|)
+expr_stmt|;
+return|return
+name|super
+operator|.
+name|doWorkInternal
+argument_list|(
+name|tool
+argument_list|,
+name|args
+argument_list|)
 return|;
 block|}
 block|}
@@ -1145,7 +1365,7 @@ condition|(
 name|args
 operator|.
 name|length
-operator|==
+operator|>=
 literal|1
 condition|)
 block|{
@@ -1175,6 +1395,19 @@ operator|.
 name|doWork
 argument_list|(
 name|this
+argument_list|,
+name|Arrays
+operator|.
+name|copyOfRange
+argument_list|(
+name|args
+argument_list|,
+literal|1
+argument_list|,
+name|args
+operator|.
+name|length
+argument_list|)
 argument_list|)
 return|;
 block|}
