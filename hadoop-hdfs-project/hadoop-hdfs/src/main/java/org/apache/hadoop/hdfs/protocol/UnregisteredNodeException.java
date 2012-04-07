@@ -70,6 +70,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|JournalInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NodeRegistration
 import|;
 end_import
@@ -104,6 +122,25 @@ init|=
 operator|-
 literal|5620209396945970810L
 decl_stmt|;
+DECL|method|UnregisteredNodeException (JournalInfo info)
+specifier|public
+name|UnregisteredNodeException
+parameter_list|(
+name|JournalInfo
+name|info
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|"Unregistered server: "
+operator|+
+name|info
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|UnregisteredNodeException (NodeRegistration nodeReg)
 specifier|public
 name|UnregisteredNodeException

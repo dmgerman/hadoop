@@ -66,20 +66,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
-operator|.
-name|VersionedProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -125,14 +111,17 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Journal edit records.    * This message is sent by the active name-node to the backup node    * via {@code EditLogBackupOutputStream} in order to synchronize meta-data    * changes with the backup namespace image.    *     * @param registration active node registration    * @param firstTxnId the first transaction of this batch    * @param numTxns number of transactions    * @param records byte array containing serialized journal records    */
-DECL|method|journal (NamenodeRegistration registration, long firstTxnId, int numTxns, byte[] records)
+comment|/**    * Journal edit records.    * This message is sent by the active name-node to the backup node    * via {@code EditLogBackupOutputStream} in order to synchronize meta-data    * changes with the backup namespace image.    *     * @param journalInfo journal information    * @param epoch marks beginning a new journal writer    * @param firstTxnId the first transaction of this batch    * @param numTxns number of transactions    * @param records byte array containing serialized journal records    * @throws FencedException if the resource has been fenced    */
+DECL|method|journal (JournalInfo journalInfo, long epoch, long firstTxnId, int numTxns, byte[] records)
 specifier|public
 name|void
 name|journal
 parameter_list|(
-name|NamenodeRegistration
-name|registration
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
 parameter_list|,
 name|long
 name|firstTxnId
@@ -147,17 +136,38 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Notify the BackupNode that the NameNode has rolled its edit logs    * and is now writing a new log segment.    * @param registration the registration of the active NameNode    * @param txid the first txid in the new log    */
-DECL|method|startLogSegment (NamenodeRegistration registration, long txid)
+comment|/**    * Notify the BackupNode that the NameNode has rolled its edit logs    * and is now writing a new log segment.    * @param journalInfo journal information    * @param epoch marks beginning a new journal writer    * @param txid the first txid in the new log    * @throws FencedException if the resource has been fenced    */
+DECL|method|startLogSegment (JournalInfo journalInfo, long epoch, long txid)
 specifier|public
 name|void
 name|startLogSegment
 parameter_list|(
-name|NamenodeRegistration
-name|registration
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
 parameter_list|,
 name|long
 name|txid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Request to fence any other journal writers.    * Older writers with at previous epoch will be fenced and can no longer    * perform journal operations.    *     * @param journalInfo journal information    * @param epoch marks beginning a new journal writer    * @param fencerInfo info about fencer for debugging purposes    * @throws FencedException if the resource has been fenced    */
+DECL|method|fence (JournalInfo journalInfo, long epoch, String fencerInfo)
+specifier|public
+name|FenceResponse
+name|fence
+parameter_list|(
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
+parameter_list|,
+name|String
+name|fencerInfo
 parameter_list|)
 throws|throws
 name|IOException
