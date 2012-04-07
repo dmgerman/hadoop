@@ -76,18 +76,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Method
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -111,6 +99,26 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -144,6 +152,22 @@ specifier|public
 class|class
 name|KerberosName
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|KerberosName
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/** The first component of the name */
 DECL|field|serviceName
 specifier|private
@@ -260,6 +284,13 @@ name|Exception
 name|ke
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Kerberos krb5 configuration not found, setting default realm to empty"
+argument_list|)
+expr_stmt|;
 name|defaultRealm
 operator|=
 literal|""

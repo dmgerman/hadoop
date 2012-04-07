@@ -288,6 +288,42 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|FenceResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|JournalInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|JournalProtocol
 import|;
 end_import
@@ -1093,11 +1129,16 @@ expr_stmt|;
 block|}
 comment|/* @Override */
 comment|// NameNode
-DECL|method|setSafeMode (SafeModeAction action)
+DECL|method|setSafeMode (@uppressWarningsR) SafeModeAction action)
 specifier|public
 name|boolean
 name|setSafeMode
 parameter_list|(
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unused"
+argument_list|)
 name|SafeModeAction
 name|action
 parameter_list|)
@@ -1178,20 +1219,21 @@ name|clientRpcServer
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**       * Verifies a journal request      * @param nodeReg node registration      * @throws UnregisteredNodeException if the registration is invalid      */
-DECL|method|verifyJournalRequest (NamenodeRegistration reg)
+comment|/**       * Verifies a journal request      */
+DECL|method|verifyJournalRequest (JournalInfo journalInfo)
+specifier|private
 name|void
 name|verifyJournalRequest
 parameter_list|(
-name|NamenodeRegistration
-name|reg
+name|JournalInfo
+name|journalInfo
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|verifyVersion
 argument_list|(
-name|reg
+name|journalInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
@@ -1215,9 +1257,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|reg
+name|journalInfo
 operator|.
-name|getNamespaceID
+name|getNamespaceId
 argument_list|()
 operator|!=
 name|expectedNamespaceID
@@ -1231,9 +1273,9 @@ name|expectedNamespaceID
 operator|+
 literal|" actual "
 operator|+
-name|reg
+name|journalInfo
 operator|.
-name|getNamespaceID
+name|getNamespaceId
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1247,16 +1289,16 @@ throw|throw
 operator|new
 name|UnregisteredNodeException
 argument_list|(
-name|reg
+name|journalInfo
 argument_list|)
 throw|;
 block|}
 if|if
 condition|(
 operator|!
-name|reg
+name|journalInfo
 operator|.
-name|getClusterID
+name|getClusterId
 argument_list|()
 operator|.
 name|equals
@@ -1272,9 +1314,9 @@ name|errorMsg
 operator|=
 literal|"Invalid clusterId in journal request - expected "
 operator|+
-name|reg
+name|journalInfo
 operator|.
-name|getClusterID
+name|getClusterId
 argument_list|()
 operator|+
 literal|" actual "
@@ -1295,7 +1337,7 @@ throw|throw
 operator|new
 name|UnregisteredNodeException
 argument_list|(
-name|reg
+name|journalInfo
 argument_list|)
 throw|;
 block|}
@@ -1305,13 +1347,16 @@ comment|// BackupNodeProtocol implementation for backup node.
 comment|/////////////////////////////////////////////////////
 annotation|@
 name|Override
-DECL|method|startLogSegment (NamenodeRegistration registration, long txid)
+DECL|method|startLogSegment (JournalInfo journalInfo, long epoch, long txid)
 specifier|public
 name|void
 name|startLogSegment
 parameter_list|(
-name|NamenodeRegistration
-name|registration
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
 parameter_list|,
 name|long
 name|txid
@@ -1330,7 +1375,7 @@ argument_list|)
 expr_stmt|;
 name|verifyJournalRequest
 argument_list|(
-name|registration
+name|journalInfo
 argument_list|)
 expr_stmt|;
 name|getBNImage
@@ -1344,13 +1389,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|journal (NamenodeRegistration nnReg, long firstTxId, int numTxns, byte[] records)
+DECL|method|journal (JournalInfo journalInfo, long epoch, long firstTxId, int numTxns, byte[] records)
 specifier|public
 name|void
 name|journal
 parameter_list|(
-name|NamenodeRegistration
-name|nnReg
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
 parameter_list|,
 name|long
 name|firstTxId
@@ -1376,7 +1424,7 @@ argument_list|)
 expr_stmt|;
 name|verifyJournalRequest
 argument_list|(
-name|nnReg
+name|journalInfo
 argument_list|)
 expr_stmt|;
 name|getBNImage
@@ -1407,6 +1455,46 @@ operator|.
 name|getFSImage
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|fence (JournalInfo journalInfo, long epoch, String fencerInfo)
+specifier|public
+name|FenceResponse
+name|fence
+parameter_list|(
+name|JournalInfo
+name|journalInfo
+parameter_list|,
+name|long
+name|epoch
+parameter_list|,
+name|String
+name|fencerInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Fenced by "
+operator|+
+name|fencerInfo
+operator|+
+literal|" with epoch "
+operator|+
+name|epoch
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"BackupNode does not support fence"
+argument_list|)
+throw|;
 block|}
 block|}
 comment|//////////////////////////////////////////////////////

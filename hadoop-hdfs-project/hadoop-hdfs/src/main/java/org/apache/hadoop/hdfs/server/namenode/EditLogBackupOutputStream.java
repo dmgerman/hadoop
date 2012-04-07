@@ -110,6 +110,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|JournalInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|JournalProtocol
 import|;
 end_import
@@ -208,42 +226,46 @@ literal|256
 decl_stmt|;
 DECL|field|backupNode
 specifier|private
+specifier|final
 name|JournalProtocol
 name|backupNode
 decl_stmt|;
 comment|// RPC proxy to backup node
 DECL|field|bnRegistration
 specifier|private
+specifier|final
 name|NamenodeRegistration
 name|bnRegistration
 decl_stmt|;
 comment|// backup node registration
-DECL|field|nnRegistration
+DECL|field|journalInfo
 specifier|private
-name|NamenodeRegistration
-name|nnRegistration
+specifier|final
+name|JournalInfo
+name|journalInfo
 decl_stmt|;
 comment|// active node registration
+DECL|field|out
+specifier|private
+specifier|final
+name|DataOutputBuffer
+name|out
+decl_stmt|;
+comment|// serialized output sent to backup node
 DECL|field|doubleBuf
 specifier|private
 name|EditsDoubleBuffer
 name|doubleBuf
 decl_stmt|;
-DECL|field|out
-specifier|private
-name|DataOutputBuffer
-name|out
-decl_stmt|;
-comment|// serialized output sent to backup node
-DECL|method|EditLogBackupOutputStream (NamenodeRegistration bnReg, NamenodeRegistration nnReg)
+DECL|method|EditLogBackupOutputStream (NamenodeRegistration bnReg, JournalInfo journalInfo)
 name|EditLogBackupOutputStream
 parameter_list|(
 name|NamenodeRegistration
 name|bnReg
 parameter_list|,
 comment|// backup node
-name|NamenodeRegistration
-name|nnReg
+name|JournalInfo
+name|journalInfo
 parameter_list|)
 comment|// active name-node
 throws|throws
@@ -260,9 +282,9 @@ name|bnReg
 expr_stmt|;
 name|this
 operator|.
-name|nnRegistration
+name|journalInfo
 operator|=
-name|nnReg
+name|journalInfo
 expr_stmt|;
 name|InetSocketAddress
 name|bnAddress
@@ -628,7 +650,9 @@ name|backupNode
 operator|.
 name|journal
 argument_list|(
-name|nnRegistration
+name|journalInfo
+argument_list|,
+literal|0
 argument_list|,
 name|firstTxToFlush
 argument_list|,
@@ -663,7 +687,9 @@ name|backupNode
 operator|.
 name|startLogSegment
 argument_list|(
-name|nnRegistration
+name|journalInfo
+argument_list|,
+literal|0
 argument_list|,
 name|txId
 argument_list|)

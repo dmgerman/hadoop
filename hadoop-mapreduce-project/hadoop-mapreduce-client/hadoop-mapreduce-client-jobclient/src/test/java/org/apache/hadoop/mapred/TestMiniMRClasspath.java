@@ -22,7 +22,37 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|BufferedReader
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStreamReader
 import|;
 end_import
 
@@ -68,20 +98,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|MiniDFSCluster
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|FileSystem
@@ -113,6 +129,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -168,7 +198,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -177,25 +217,18 @@ comment|/**  * A JUnit test to test Mini Map-Reduce Cluster with multiple direct
 end_comment
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestMiniMRClasspath
 specifier|public
 class|class
 name|TestMiniMRClasspath
-extends|extends
-name|TestCase
 block|{
-DECL|method|configureWordCount (FileSystem fs, String jobTracker, JobConf conf, String input, int numMaps, int numReduces, Path inDir, Path outDir)
+DECL|method|configureWordCount (FileSystem fs, JobConf conf, String input, int numMaps, int numReduces, Path inDir, Path outDir)
 specifier|static
 name|void
 name|configureWordCount
 parameter_list|(
 name|FileSystem
 name|fs
-parameter_list|,
-name|String
-name|jobTracker
 parameter_list|,
 name|JobConf
 name|conf
@@ -251,7 +284,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-block|{
 name|DataOutputStream
 name|file
 init|=
@@ -280,7 +312,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
 name|FileSystem
 operator|.
 name|setDefaultUri
@@ -303,18 +334,7 @@ name|FRAMEWORK_NAME
 argument_list|,
 name|JTConfig
 operator|.
-name|CLASSIC_FRAMEWORK_NAME
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-argument_list|,
-name|jobTracker
+name|YARN_FRAMEWORK_NAME
 argument_list|)
 expr_stmt|;
 name|conf
@@ -412,25 +432,24 @@ argument_list|(
 name|numReduces
 argument_list|)
 expr_stmt|;
-comment|//pass a job.jar already included in the hadoop build
+comment|//set the tests jar file
 name|conf
 operator|.
-name|setJar
+name|setJarByClass
 argument_list|(
-literal|"build/test/mapred/testjar/testjob.jar"
+name|TestMiniMRClasspath
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|launchWordCount (URI fileSys, String jobTracker, JobConf conf, String input, int numMaps, int numReduces)
+DECL|method|launchWordCount (URI fileSys, JobConf conf, String input, int numMaps, int numReduces)
 specifier|static
 name|String
 name|launchWordCount
 parameter_list|(
 name|URI
 name|fileSys
-parameter_list|,
-name|String
-name|jobTracker
 parameter_list|,
 name|JobConf
 name|conf
@@ -482,8 +501,6 @@ decl_stmt|;
 name|configureWordCount
 argument_list|(
 name|fs
-argument_list|,
-name|jobTracker
 argument_list|,
 name|conf
 argument_list|,
@@ -645,16 +662,13 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|launchExternal (URI uri, String jobTracker, JobConf conf, String input, int numMaps, int numReduces)
+DECL|method|launchExternal (URI uri, JobConf conf, String input, int numMaps, int numReduces)
 specifier|static
 name|String
 name|launchExternal
 parameter_list|(
 name|URI
 name|uri
-parameter_list|,
-name|String
-name|jobTracker
 parameter_list|,
 name|JobConf
 name|conf
@@ -785,18 +799,7 @@ name|FRAMEWORK_NAME
 argument_list|,
 name|JTConfig
 operator|.
-name|CLASSIC_FRAMEWORK_NAME
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-argument_list|,
-name|jobTracker
+name|YARN_FRAMEWORK_NAME
 argument_list|)
 expr_stmt|;
 name|conf
@@ -887,12 +890,14 @@ argument_list|,
 literal|"testjar.ExternalMapperReducer"
 argument_list|)
 expr_stmt|;
-comment|//pass a job.jar already included in the hadoop build
+comment|// set the tests jar file
 name|conf
 operator|.
-name|setJar
+name|setJarByClass
 argument_list|(
-literal|"build/test/mapred/testjar/testjob.jar"
+name|TestMiniMRClasspath
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 name|JobClient
@@ -1021,6 +1026,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testClassPath ()
 specifier|public
 name|void
@@ -1123,17 +1130,6 @@ decl_stmt|;
 name|String
 name|result
 decl_stmt|;
-specifier|final
-name|String
-name|jobTrackerName
-init|=
-literal|"localhost:"
-operator|+
-name|mr
-operator|.
-name|getJobTrackerPort
-argument_list|()
-decl_stmt|;
 name|result
 operator|=
 name|launchWordCount
@@ -1142,8 +1138,6 @@ name|fileSys
 operator|.
 name|getUri
 argument_list|()
-argument_list|,
-name|jobTrackerName
 argument_list|,
 name|jobConf
 argument_list|,
@@ -1156,6 +1150,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"The\t1\nbrown\t1\nfox\t2\nhas\t1\nmany\t1\n"
@@ -1196,6 +1192,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testExternalWritable ()
 specifier|public
 name|void
@@ -1292,17 +1290,6 @@ decl_stmt|;
 name|String
 name|result
 decl_stmt|;
-specifier|final
-name|String
-name|jobTrackerName
-init|=
-literal|"localhost:"
-operator|+
-name|mr
-operator|.
-name|getJobTrackerPort
-argument_list|()
-decl_stmt|;
 name|result
 operator|=
 name|launchExternal
@@ -1311,8 +1298,6 @@ name|fileSys
 operator|.
 name|getUri
 argument_list|()
-argument_list|,
-name|jobTrackerName
 argument_list|,
 name|jobConf
 argument_list|,
@@ -1323,6 +1308,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"Dennis again!\t1\nDennis was here!\t1\n"

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapred
+DECL|package|org.apache.hadoop.hdfs.server.protocol
 package|package
 name|org
 operator|.
@@ -12,7 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
 package|;
 end_package
 
@@ -27,29 +31,37 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests Job end notification in cluster mode.  */
+comment|/**  * If a previous user of a resource tries to use a shared resource, after  * fenced by another user, this exception is thrown.  */
 end_comment
 
 begin_class
-DECL|class|TestClusterMRNotification
+DECL|class|FencedException
 specifier|public
 class|class
-name|TestClusterMRNotification
+name|FencedException
 extends|extends
-name|NotificationTestCase
-block|{
-DECL|method|TestClusterMRNotification ()
-specifier|public
-name|TestClusterMRNotification
-parameter_list|()
-throws|throws
 name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|FencedException (String errorMsg)
+specifier|public
+name|FencedException
+parameter_list|(
+name|String
+name|errorMsg
+parameter_list|)
 block|{
 name|super
 argument_list|(
-name|HadoopTestCase
-operator|.
-name|CLUSTER_MR
+name|errorMsg
 argument_list|)
 expr_stmt|;
 block|}

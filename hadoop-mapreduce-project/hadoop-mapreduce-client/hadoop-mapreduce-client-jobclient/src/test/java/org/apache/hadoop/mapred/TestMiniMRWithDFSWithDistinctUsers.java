@@ -22,7 +22,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
 import|;
 end_import
 
@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -57,20 +47,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|MiniDFSCluster
 import|;
 end_import
 
@@ -126,6 +102,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|MRJobConfig
@@ -160,7 +150,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|*
+name|UserGroupInformation
 import|;
 end_import
 
@@ -170,7 +160,37 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -179,14 +199,10 @@ comment|/**  * A JUnit test to test Mini Map-Reduce Cluster with Mini-DFS.  */
 end_comment
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestMiniMRWithDFSWithDistinctUsers
 specifier|public
 class|class
 name|TestMiniMRWithDFSWithDistinctUsers
-extends|extends
-name|TestCase
 block|{
 DECL|field|DFS_UGI
 specifier|static
@@ -252,10 +268,6 @@ init|=
 operator|new
 name|Configuration
 argument_list|()
-decl_stmt|;
-DECL|field|jobTrackerName
-name|String
-name|jobTrackerName
 decl_stmt|;
 DECL|method|createUGI (String name, boolean issuper)
 specifier|static
@@ -411,6 +423,8 @@ operator|.
 name|waitForCompletion
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"SUCCEEDED"
@@ -427,6 +441,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -607,16 +623,9 @@ argument_list|,
 name|mrConf
 argument_list|)
 expr_stmt|;
-name|jobTrackerName
-operator|=
-literal|"localhost:"
-operator|+
-name|mr
-operator|.
-name|getJobTrackerPort
-argument_list|()
-expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -652,6 +661,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDistinctUsers ()
 specifier|public
 name|void
@@ -698,8 +709,6 @@ operator|.
 name|configureWordCount
 argument_list|(
 name|fs
-argument_list|,
-name|jobTrackerName
 argument_list|,
 name|job1
 argument_list|,
@@ -753,8 +762,6 @@ name|configureWordCount
 argument_list|(
 name|fs
 argument_list|,
-name|jobTrackerName
-argument_list|,
 name|job2
 argument_list|,
 name|input
@@ -777,6 +784,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Regression test for MAPREDUCE-2327. Verifies that, even if a map    * task makes lots of spills (more than fit in the spill index cache)    * that it will succeed.    */
+annotation|@
+name|Test
 DECL|method|testMultipleSpills ()
 specifier|public
 name|void
@@ -858,8 +867,6 @@ operator|.
 name|configureWordCount
 argument_list|(
 name|fs
-argument_list|,
-name|jobTrackerName
 argument_list|,
 name|job1
 argument_list|,
