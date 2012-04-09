@@ -11003,7 +11003,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**     * Check all blocks of a file. If any blocks are lower than their intended    * replication factor, then insert them into neededReplication    */
+comment|/**     * Check all blocks of a file. If any blocks are lower than their intended    * replication factor, then insert them into neededReplication and if     * the blocks are more than the intended replication factor then insert     * them into invalidateBlocks.    */
 DECL|method|checkReplicationFactor (INodeFile file)
 specifier|private
 name|void
@@ -11013,7 +11013,7 @@ name|INodeFile
 name|file
 parameter_list|)
 block|{
-name|int
+name|short
 name|numExpectedReplicas
 init|=
 name|file
