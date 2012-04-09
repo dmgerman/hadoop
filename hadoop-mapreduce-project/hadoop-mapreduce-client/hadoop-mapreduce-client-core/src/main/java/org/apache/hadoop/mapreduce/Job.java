@@ -1865,6 +1865,21 @@ name|event
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|lastEvent
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|"There are no failed tasks for the job. "
+operator|+
+literal|"Job is failed due to some other reason and reason "
+operator|+
+literal|"can be found in the logs."
+return|;
+block|}
 name|String
 index|[]
 name|taskAttemptID
