@@ -409,10 +409,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|readOp ()
-specifier|public
+DECL|method|nextOp ()
+specifier|protected
 name|FSEditLogOp
-name|readOp
+name|nextOp
 parameter_list|()
 throws|throws
 name|IOException
@@ -421,7 +421,9 @@ return|return
 name|reader
 operator|.
 name|readOp
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -515,23 +517,6 @@ name|firstTxId
 argument_list|,
 name|lastTxId
 argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getType ()
-specifier|public
-name|JournalType
-name|getType
-parameter_list|()
-block|{
-assert|assert
-operator|(
-literal|false
-operator|)
-assert|;
-return|return
-literal|null
 return|;
 block|}
 comment|// TODO(HA): Test this.

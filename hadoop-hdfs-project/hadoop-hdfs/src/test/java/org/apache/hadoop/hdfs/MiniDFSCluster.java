@@ -2738,6 +2738,17 @@ argument_list|)
 throw|;
 block|}
 block|}
+if|if
+condition|(
+name|operation
+operator|==
+name|StartupOption
+operator|.
+name|RECOVER
+condition|)
+block|{
+return|return;
+block|}
 comment|// Start the DataNodes
 name|startDataNodes
 argument_list|(
@@ -3887,6 +3898,17 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|operation
+operator|==
+name|StartupOption
+operator|.
+name|RECOVER
+condition|)
+block|{
+return|return;
+block|}
 comment|// After the NN has started, set back the bound ports into
 comment|// the conf
 name|conf
@@ -4343,6 +4365,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|operation
+operator|==
+name|StartupOption
+operator|.
+name|RECOVER
+condition|)
+block|{
+return|return;
+block|}
 name|conf
 operator|.
 name|set

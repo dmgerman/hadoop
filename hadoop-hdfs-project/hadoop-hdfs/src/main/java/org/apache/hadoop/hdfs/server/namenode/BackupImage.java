@@ -735,6 +735,8 @@ operator|new
 name|FSEditLogLoader
 argument_list|(
 name|namesystem
+argument_list|,
+name|lastAppliedTxId
 argument_list|)
 decl_stmt|;
 name|int
@@ -755,7 +757,7 @@ name|logVersion
 argument_list|)
 expr_stmt|;
 name|long
-name|numLoaded
+name|numTxnsAdvanced
 init|=
 name|logLoader
 operator|.
@@ -770,11 +772,13 @@ argument_list|,
 name|lastAppliedTxId
 operator|+
 literal|1
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|numLoaded
+name|numTxnsAdvanced
 operator|!=
 name|numTxns
 condition|)
@@ -791,15 +795,18 @@ literal|" was supposed to contain "
 operator|+
 name|numTxns
 operator|+
-literal|" transactions but only was able to apply "
+literal|" transactions, but we were only able to advance by "
 operator|+
-name|numLoaded
+name|numTxnsAdvanced
 argument_list|)
 throw|;
 block|}
 name|lastAppliedTxId
-operator|+=
-name|numTxns
+operator|=
+name|logLoader
+operator|.
+name|getLastAppliedTxId
+argument_list|()
 expr_stmt|;
 name|namesystem
 operator|.
@@ -1002,6 +1009,8 @@ argument_list|(
 name|editStreams
 argument_list|,
 name|namesystem
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1151,11 +1160,10 @@ operator|new
 name|FSEditLogLoader
 argument_list|(
 name|namesystem
+argument_list|,
+name|lastAppliedTxId
 argument_list|)
 decl_stmt|;
-name|long
-name|numLoaded
-init|=
 name|loader
 operator|.
 name|loadFSEdits
@@ -1165,28 +1173,25 @@ argument_list|,
 name|lastAppliedTxId
 operator|+
 literal|1
+argument_list|,
+literal|null
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|lastAppliedTxId
-operator|+=
-name|numLoaded
+operator|=
+name|loader
+operator|.
+name|getLastAppliedTxId
+argument_list|()
 expr_stmt|;
 assert|assert
-name|numLoaded
+name|lastAppliedTxId
 operator|==
-name|remainingTxns
-operator|:
-literal|"expected to load "
-operator|+
-name|remainingTxns
-operator|+
-literal|" but loaded "
-operator|+
-name|numLoaded
-operator|+
-literal|" from "
-operator|+
-name|stream
+name|getEditLog
+argument_list|()
+operator|.
+name|getLastWrittenTxId
+argument_list|()
 assert|;
 block|}
 finally|finally

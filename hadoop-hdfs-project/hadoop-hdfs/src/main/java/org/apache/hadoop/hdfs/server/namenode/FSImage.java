@@ -960,7 +960,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.     *     * @throws IOException    * @return true if the image needs to be saved or false otherwise    */
-DECL|method|recoverTransitionRead (StartupOption startOpt, FSNamesystem target)
+DECL|method|recoverTransitionRead (StartupOption startOpt, FSNamesystem target, MetaRecoveryContext recovery)
 name|boolean
 name|recoverTransitionRead
 parameter_list|(
@@ -969,6 +969,9 @@ name|startOpt
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
@@ -1361,6 +1364,8 @@ return|return
 name|loadFSImage
 argument_list|(
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 return|;
 block|}
@@ -1626,6 +1631,8 @@ operator|.
 name|loadFSImage
 argument_list|(
 name|target
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|storage
@@ -1696,6 +1703,8 @@ operator|.
 name|loadFSImage
 argument_list|(
 name|target
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Do upgrade for each directory
@@ -2732,6 +2741,8 @@ operator|.
 name|REGULAR
 argument_list|,
 name|target
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -2936,16 +2947,21 @@ argument_list|(
 name|file
 argument_list|,
 name|target
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits from that directory.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
-DECL|method|loadFSImage (FSNamesystem target)
+DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery)
 name|boolean
 name|loadFSImage
 parameter_list|(
 name|FSNamesystem
 name|target
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
@@ -3138,6 +3154,8 @@ name|getFile
 argument_list|()
 argument_list|,
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 expr_stmt|;
 block|}
@@ -3215,6 +3233,8 @@ name|md5
 argument_list|)
 argument_list|,
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 expr_stmt|;
 block|}
@@ -3231,6 +3251,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 expr_stmt|;
 block|}
@@ -3261,13 +3283,15 @@ argument_list|)
 throw|;
 block|}
 name|long
-name|numLoaded
+name|txnsAdvanced
 init|=
 name|loadEdits
 argument_list|(
 name|editStreams
 argument_list|,
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 decl_stmt|;
 name|needToSave
@@ -3279,20 +3303,14 @@ operator|.
 name|getFile
 argument_list|()
 argument_list|,
-name|numLoaded
+name|txnsAdvanced
 argument_list|)
 expr_stmt|;
-comment|// update the txid for the edit log
 name|editLog
 operator|.
 name|setNextTxId
 argument_list|(
-name|storage
-operator|.
-name|getMostRecentCheckpointTxId
-argument_list|()
-operator|+
-name|numLoaded
+name|lastAppliedTxId
 operator|+
 literal|1
 argument_list|)
@@ -3377,8 +3395,8 @@ name|checkpointTxnCount
 operator|)
 return|;
 block|}
-comment|/**    * Load the specified list of edit files into the image.    * @return the number of transactions loaded    */
-DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
+comment|/**    * Load the specified list of edit files into the image.    */
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, MetaRecoveryContext recovery)
 specifier|public
 name|long
 name|loadEdits
@@ -3391,11 +3409,12 @@ name|editStreams
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|EditLogInputException
 block|{
 name|LOG
 operator|.
@@ -3417,17 +3436,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|long
-name|startingTxId
+name|prevLastAppliedTxId
 init|=
-name|getLastAppliedTxId
-argument_list|()
-operator|+
-literal|1
-decl_stmt|;
-name|long
-name|numLoaded
-init|=
-literal|0
+name|lastAppliedTxId
 decl_stmt|;
 try|try
 block|{
@@ -3438,6 +3449,8 @@ operator|new
 name|FSEditLogLoader
 argument_list|(
 name|target
+argument_list|,
+name|lastAppliedTxId
 argument_list|)
 decl_stmt|;
 comment|// Load latest edits
@@ -3459,44 +3472,28 @@ name|editIn
 operator|+
 literal|" expecting start txid #"
 operator|+
-name|startingTxId
+operator|(
+name|lastAppliedTxId
+operator|+
+literal|1
+operator|)
 argument_list|)
 expr_stmt|;
-name|long
-name|thisNumLoaded
-init|=
-literal|0
-decl_stmt|;
 try|try
 block|{
-name|thisNumLoaded
-operator|=
 name|loader
 operator|.
 name|loadFSEdits
 argument_list|(
 name|editIn
 argument_list|,
-name|startingTxId
+name|lastAppliedTxId
+operator|+
+literal|1
+argument_list|,
+name|recovery
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|EditLogInputException
-name|elie
-parameter_list|)
-block|{
-name|thisNumLoaded
-operator|=
-name|elie
-operator|.
-name|getNumEditsLoaded
-argument_list|()
-expr_stmt|;
-throw|throw
-name|elie
-throw|;
 block|}
 finally|finally
 block|{
@@ -3504,19 +3501,31 @@ comment|// Update lastAppliedTxId even in case of error, since some ops may
 comment|// have been successfully applied before the error.
 name|lastAppliedTxId
 operator|=
-name|startingTxId
-operator|+
-name|thisNumLoaded
-operator|-
-literal|1
+name|loader
+operator|.
+name|getLastAppliedTxId
+argument_list|()
 expr_stmt|;
-name|startingTxId
-operator|+=
-name|thisNumLoaded
-expr_stmt|;
-name|numLoaded
-operator|+=
-name|thisNumLoaded
+block|}
+comment|// If we are in recovery mode, we may have skipped over some txids.
+if|if
+condition|(
+name|editIn
+operator|.
+name|getLastTxId
+argument_list|()
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+condition|)
+block|{
+name|lastAppliedTxId
+operator|=
+name|editIn
+operator|.
+name|getLastTxId
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3540,11 +3549,13 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|numLoaded
+name|lastAppliedTxId
+operator|-
+name|prevLastAppliedTxId
 return|;
 block|}
 comment|/**    * Load the image namespace from the given image file, verifying    * it against the MD5 sum stored in its associated .md5 file.    */
-DECL|method|loadFSImage (File imageFile, FSNamesystem target)
+DECL|method|loadFSImage (File imageFile, FSNamesystem target, MetaRecoveryContext recovery)
 specifier|private
 name|void
 name|loadFSImage
@@ -3554,6 +3565,9 @@ name|imageFile
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
@@ -3592,11 +3606,13 @@ argument_list|,
 name|expectedMD5
 argument_list|,
 name|target
+argument_list|,
+name|recovery
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load in the filesystem image from file. It's a big list of    * filenames and blocks.    */
-DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target)
+DECL|method|loadFSImage (File curFile, MD5Hash expectedMd5, FSNamesystem target, MetaRecoveryContext recovery)
 specifier|private
 name|void
 name|loadFSImage
@@ -3609,6 +3625,9 @@ name|expectedMd5
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException

@@ -351,53 +351,6 @@ operator|=
 name|isInProgress
 expr_stmt|;
 block|}
-comment|/**    * Skip over a number of transactions. Subsequent calls to    * {@link EditLogFileInputStream#readOp()} will begin after these skipped    * transactions. If more transactions are requested to be skipped than remain    * in the edit log, all edit log ops in the log will be skipped and subsequent    * calls to {@link EditLogInputStream#readOp} will return null.    *     * @param transactionsToSkip number of transactions to skip over.    * @throws IOException if there's an error while reading an operation    */
-DECL|method|skipTransactions (long transactionsToSkip)
-specifier|public
-name|void
-name|skipTransactions
-parameter_list|(
-name|long
-name|transactionsToSkip
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|firstTxId
-operator|!=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-operator|&&
-name|lastTxId
-operator|!=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-assert|;
-for|for
-control|(
-name|long
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|transactionsToSkip
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|reader
-operator|.
-name|readOp
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|getFirstTxId ()
@@ -428,7 +381,6 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// JournalStream
 DECL|method|getName ()
 specifier|public
 name|String
@@ -444,25 +396,10 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// JournalStream
-DECL|method|getType ()
-specifier|public
-name|JournalType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|JournalType
-operator|.
-name|FILE
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|readOp ()
-specifier|public
+DECL|method|nextOp ()
+specifier|protected
 name|FSEditLogOp
-name|readOp
+name|nextOp
 parameter_list|()
 throws|throws
 name|IOException
@@ -471,8 +408,40 @@ return|return
 name|reader
 operator|.
 name|readOp
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|nextValidOp ()
+specifier|protected
+name|FSEditLogOp
+name|nextValidOp
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+name|reader
+operator|.
+name|readOp
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 annotation|@
 name|Override

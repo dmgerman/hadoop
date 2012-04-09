@@ -30,6 +30,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOp
+operator|.
+name|OpInstanceCache
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utilities for testing edit logs  */
 end_comment
@@ -40,6 +60,16 @@ specifier|public
 class|class
 name|FSEditLogTestUtil
 block|{
+DECL|field|cache
+specifier|private
+specifier|static
+name|OpInstanceCache
+name|cache
+init|=
+operator|new
+name|OpInstanceCache
+argument_list|()
+decl_stmt|;
 DECL|method|getNoOpInstance ()
 specifier|public
 specifier|static
@@ -54,6 +84,8 @@ name|LogSegmentOp
 operator|.
 name|getInstance
 argument_list|(
+name|cache
+argument_list|,
 name|FSEditLogOpCodes
 operator|.
 name|OP_END_LOG_SEGMENT

@@ -834,12 +834,20 @@ specifier|final
 name|FSNamesystem
 name|fsNamesys
 decl_stmt|;
-DECL|method|FSEditLogLoader (FSNamesystem fsNamesys)
+DECL|field|lastAppliedTxId
+specifier|private
+name|long
+name|lastAppliedTxId
+decl_stmt|;
+DECL|method|FSEditLogLoader (FSNamesystem fsNamesys, long lastAppliedTxId)
 specifier|public
 name|FSEditLogLoader
 parameter_list|(
 name|FSNamesystem
 name|fsNamesys
+parameter_list|,
+name|long
+name|lastAppliedTxId
 parameter_list|)
 block|{
 name|this
@@ -848,9 +856,15 @@ name|fsNamesys
 operator|=
 name|fsNamesys
 expr_stmt|;
+name|this
+operator|.
+name|lastAppliedTxId
+operator|=
+name|lastAppliedTxId
+expr_stmt|;
 block|}
 comment|/**    * Load an edit log, and apply the changes to the in-memory structure    * This is where we apply edits that we've been writing to disk all    * along.    */
-DECL|method|loadFSEdits (EditLogInputStream edits, long expectedStartingTxId)
+DECL|method|loadFSEdits (EditLogInputStream edits, long expectedStartingTxId, MetaRecoveryContext recovery)
 name|long
 name|loadFSEdits
 parameter_list|(
@@ -859,15 +873,13 @@ name|edits
 parameter_list|,
 name|long
 name|expectedStartingTxId
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|long
-name|numEdits
-init|=
-literal|0
-decl_stmt|;
 name|int
 name|logVersion
 init|=
@@ -889,8 +901,9 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
+name|long
 name|numEdits
-operator|=
+init|=
 name|loadEditRecords
 argument_list|(
 name|logVersion
@@ -900,8 +913,10 @@ argument_list|,
 literal|false
 argument_list|,
 name|expectedStartingTxId
+argument_list|,
+name|recovery
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|FSImage
 operator|.
 name|LOG
@@ -940,6 +955,9 @@ operator|+
 literal|" seconds."
 argument_list|)
 expr_stmt|;
+return|return
+name|numEdits
+return|;
 block|}
 finally|finally
 block|{
@@ -954,11 +972,8 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-return|return
-name|numEdits
-return|;
 block|}
-DECL|method|loadEditRecords (int logVersion, EditLogInputStream in, boolean closeOnExit, long expectedStartingTxId)
+DECL|method|loadEditRecords (int logVersion, EditLogInputStream in, boolean closeOnExit, long expectedStartingTxId, MetaRecoveryContext recovery)
 name|long
 name|loadEditRecords
 parameter_list|(
@@ -973,11 +988,12 @@ name|closeOnExit
 parameter_list|,
 name|long
 name|expectedStartingTxId
+parameter_list|,
+name|MetaRecoveryContext
+name|recovery
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|EditLogInputException
 block|{
 name|FSDirectory
 name|fsDir
@@ -985,11 +1001,6 @@ init|=
 name|fsNamesys
 operator|.
 name|dir
-decl_stmt|;
-name|long
-name|numEdits
-init|=
-literal|0
 decl_stmt|;
 name|EnumMap
 argument_list|<
@@ -1065,11 +1076,14 @@ literal|1
 argument_list|)
 expr_stmt|;
 name|long
-name|txId
+name|expectedTxId
 init|=
 name|expectedStartingTxId
-operator|-
-literal|1
+decl_stmt|;
+name|long
+name|numEdits
+init|=
+literal|0
 decl_stmt|;
 name|long
 name|lastTxId
@@ -1127,28 +1141,28 @@ expr_stmt|;
 block|}
 try|try
 block|{
-try|try
-block|{
 while|while
 condition|(
 literal|true
 condition|)
+block|{
+try|try
 block|{
 name|FSEditLogOp
 name|op
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-operator|(
 name|op
 operator|=
 name|in
 operator|.
 name|readOp
 argument_list|()
-operator|)
+expr_stmt|;
+if|if
+condition|(
+name|op
 operator|==
 literal|null
 condition|)
@@ -1158,18 +1172,18 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|Throwable
+name|e
 parameter_list|)
 block|{
-name|long
-name|badTxId
-init|=
-name|txId
-operator|+
-literal|1
-decl_stmt|;
-comment|// because txId hasn't been incremented yet
+comment|// Handle a problem with our input
+name|check203UpgradeFailure
+argument_list|(
+name|logVersion
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|String
 name|errorMessage
 init|=
@@ -1179,7 +1193,7 @@ name|in
 argument_list|,
 name|recentOpcodeOffsets
 argument_list|,
-name|badTxId
+name|expectedTxId
 argument_list|)
 decl_stmt|;
 name|FSImage
@@ -1191,17 +1205,46 @@ argument_list|(
 name|errorMessage
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|recovery
+operator|==
+literal|null
+condition|)
+block|{
+comment|// We will only try to skip over problematic opcodes when in
+comment|// recovery mode.
 throw|throw
 operator|new
 name|EditLogInputException
 argument_list|(
 name|errorMessage
 argument_list|,
-name|ioe
+name|e
 argument_list|,
 name|numEdits
 argument_list|)
 throw|;
+block|}
+name|MetaRecoveryContext
+operator|.
+name|editLogLoaderPrompt
+argument_list|(
+literal|"We failed to read txId "
+operator|+
+name|expectedTxId
+argument_list|,
+name|recovery
+argument_list|,
+literal|"skipping the bad section in the log"
+argument_list|)
+expr_stmt|;
+name|in
+operator|.
+name|resync
+argument_list|()
+expr_stmt|;
+continue|continue;
 block|}
 name|recentOpcodeOffsets
 index|[
@@ -1236,50 +1279,83 @@ name|logVersion
 argument_list|)
 condition|)
 block|{
-name|long
-name|expectedTxId
-init|=
-name|txId
-operator|+
-literal|1
-decl_stmt|;
-name|txId
-operator|=
-name|op
-operator|.
-name|txid
-expr_stmt|;
 if|if
 condition|(
-name|txId
-operator|!=
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+operator|>
 name|expectedTxId
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|MetaRecoveryContext
+operator|.
+name|editLogLoaderPrompt
 argument_list|(
-literal|"Expected transaction ID "
+literal|"There appears "
+operator|+
+literal|"to be a gap in the edit log.  We expected txid "
 operator|+
 name|expectedTxId
 operator|+
-literal|" but got "
+literal|", but got txid "
 operator|+
-name|txId
-argument_list|)
-throw|;
-block|}
-block|}
-name|incrOpCount
-argument_list|(
 name|op
 operator|.
-name|opCode
+name|getTransactionId
+argument_list|()
+operator|+
+literal|"."
 argument_list|,
-name|opCounts
+name|recovery
+argument_list|,
+literal|"ignoring missing "
+operator|+
+literal|" transaction IDs"
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+operator|<
+name|expectedTxId
+condition|)
+block|{
+name|MetaRecoveryContext
+operator|.
+name|editLogLoaderPrompt
+argument_list|(
+literal|"There appears "
+operator|+
+literal|"to be an out-of-order edit in the edit log.  We "
+operator|+
+literal|"expected txid "
+operator|+
+name|expectedTxId
+operator|+
+literal|", but got txid "
+operator|+
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+operator|+
+literal|"."
+argument_list|,
+name|recovery
+argument_list|,
+literal|"skipping the out-of-order edit"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+block|}
 try|try
 block|{
 name|applyEditLogOp
@@ -1295,47 +1371,109 @@ block|}
 catch|catch
 parameter_list|(
 name|Throwable
-name|t
+name|e
 parameter_list|)
 block|{
-comment|// Catch Throwable because in the case of a truly corrupt edits log, any
-comment|// sort of error might be thrown (NumberFormat, NullPointer, EOF, etc.)
-name|String
-name|errorMessage
-init|=
-name|formatEditLogReplayError
-argument_list|(
-name|in
-argument_list|,
-name|recentOpcodeOffsets
-argument_list|,
-name|txId
-argument_list|)
-decl_stmt|;
-name|FSImage
-operator|.
 name|LOG
 operator|.
 name|error
 argument_list|(
-name|errorMessage
+literal|"Encountered exception on operation "
+operator|+
+name|op
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|IOException
+name|MetaRecoveryContext
+operator|.
+name|editLogLoaderPrompt
 argument_list|(
-name|errorMessage
+literal|"Failed to "
+operator|+
+literal|"apply edit log operation "
+operator|+
+name|op
+operator|+
+literal|": error "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|,
-name|t
+name|recovery
+argument_list|,
+literal|"applying edits"
 argument_list|)
-throw|;
+expr_stmt|;
+block|}
+comment|// Now that the operation has been successfully decoded and
+comment|// applied, update our bookkeeping.
+name|incrOpCount
+argument_list|(
+name|op
+operator|.
+name|opCode
+argument_list|,
+name|opCounts
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|op
+operator|.
+name|hasTransactionId
+argument_list|()
+condition|)
+block|{
+name|lastAppliedTxId
+operator|=
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+expr_stmt|;
+name|expectedTxId
+operator|=
+name|lastAppliedTxId
+operator|+
+literal|1
+expr_stmt|;
+block|}
+else|else
+block|{
+name|expectedTxId
+operator|=
+name|lastAppliedTxId
+operator|=
+name|expectedStartingTxId
+expr_stmt|;
 block|}
 comment|// log progress
 if|if
 condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|STORED_TXIDS
+argument_list|,
+name|logVersion
+argument_list|)
+condition|)
+block|{
+name|long
+name|now
+init|=
 name|now
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|now
 operator|-
 name|lastLogTime
 operator|>
@@ -1352,7 +1490,7 @@ argument_list|(
 operator|(
 name|float
 operator|)
-name|txId
+name|lastAppliedTxId
 operator|/
 name|numTxns
 operator|*
@@ -1365,7 +1503,7 @@ name|info
 argument_list|(
 literal|"replaying edit log: "
 operator|+
-name|txId
+name|lastAppliedTxId
 operator|+
 literal|"/"
 operator|+
@@ -1381,27 +1519,45 @@ expr_stmt|;
 name|lastLogTime
 operator|=
 name|now
-argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|numEdits
 operator|++
 expr_stmt|;
 block|}
-block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ex
+name|MetaRecoveryContext
+operator|.
+name|RequestStopException
+name|e
 parameter_list|)
 block|{
-name|check203UpgradeFailure
+name|MetaRecoveryContext
+operator|.
+name|LOG
+operator|.
+name|warn
 argument_list|(
-name|logVersion
-argument_list|,
-name|ex
+literal|"Stopped reading edit log at "
+operator|+
+name|in
+operator|.
+name|getPosition
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|in
+operator|.
+name|length
+argument_list|()
 argument_list|)
 expr_stmt|;
+break|break;
+block|}
+block|}
 block|}
 finally|finally
 block|{
@@ -1409,15 +1565,13 @@ if|if
 condition|(
 name|closeOnExit
 condition|)
+block|{
 name|in
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
 name|fsDir
 operator|.
 name|writeUnlock
@@ -2803,7 +2957,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|" on transaction ID "
+literal|".  Expected transaction ID was "
 argument_list|)
 operator|.
 name|append
@@ -3531,7 +3685,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Throw appropriate exception during upgrade from 203, when editlog loading    * could fail due to opcode conflicts.    */
-DECL|method|check203UpgradeFailure (int logVersion, IOException ex)
+DECL|method|check203UpgradeFailure (int logVersion, Throwable e)
 specifier|private
 name|void
 name|check203UpgradeFailure
@@ -3539,8 +3693,8 @@ parameter_list|(
 name|int
 name|logVersion
 parameter_list|,
-name|IOException
-name|ex
+name|Throwable
+name|e
 parameter_list|)
 throws|throws
 name|IOException
@@ -3583,14 +3737,8 @@ name|IOException
 argument_list|(
 name|msg
 argument_list|,
-name|ex
+name|e
 argument_list|)
-throw|;
-block|}
-else|else
-block|{
-throw|throw
-name|ex
 throw|;
 block|}
 block|}
@@ -3676,7 +3824,8 @@ name|firstTxId
 operator|=
 name|op
 operator|.
-name|txid
+name|getTransactionId
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -3689,7 +3838,8 @@ name|INVALID_TXID
 operator|||
 name|op
 operator|.
-name|txid
+name|getTransactionId
+argument_list|()
 operator|==
 name|lastTxId
 operator|+
@@ -3700,7 +3850,8 @@ name|lastTxId
 operator|=
 name|op
 operator|.
-name|txid
+name|getTransactionId
+argument_list|()
 expr_stmt|;
 block|}
 else|else
@@ -3715,7 +3866,8 @@ literal|"Out of order txid found. Found "
 operator|+
 name|op
 operator|.
-name|txid
+name|getTransactionId
+argument_list|()
 operator|+
 literal|", expected "
 operator|+
@@ -4136,6 +4288,16 @@ return|return
 name|curPos
 return|;
 block|}
+block|}
+DECL|method|getLastAppliedTxId ()
+specifier|public
+name|long
+name|getLastAppliedTxId
+parameter_list|()
+block|{
+return|return
+name|lastAppliedTxId
+return|;
 block|}
 block|}
 end_class

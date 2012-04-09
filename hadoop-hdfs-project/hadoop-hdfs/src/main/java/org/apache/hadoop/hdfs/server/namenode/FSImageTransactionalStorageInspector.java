@@ -333,6 +333,10 @@ literal|true
 expr_stmt|;
 return|return;
 block|}
+comment|// Check for a seen_txid file, which marks a minimum transaction ID that
+comment|// must be included in our load plan.
+try|try
+block|{
 name|maxSeenTxId
 operator|=
 name|Math
@@ -349,6 +353,26 @@ name|sd
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to determine the max transaction ID seen by "
+operator|+
+name|sd
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|File
 name|currentDir
 init|=
@@ -523,45 +547,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|// Check for a seen_txid file, which marks a minimum transaction ID that
-comment|// must be included in our load plan.
-try|try
-block|{
-name|maxSeenTxId
-operator|=
-name|Math
-operator|.
-name|max
-argument_list|(
-name|maxSeenTxId
-argument_list|,
-name|NNStorage
-operator|.
-name|readTransactionIdFile
-argument_list|(
-name|sd
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unable to determine the max transaction ID seen by "
-operator|+
-name|sd
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
 block|}
 comment|// set finalized flag
 name|isUpgradeFinalized

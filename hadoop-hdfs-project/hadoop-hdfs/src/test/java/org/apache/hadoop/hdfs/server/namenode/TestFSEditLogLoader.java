@@ -667,14 +667,14 @@ name|bld
 operator|.
 name|append
 argument_list|(
-literal|"^Error replaying edit log at offset \\d+"
+literal|"^Error replaying edit log at offset \\d+.  "
 argument_list|)
 expr_stmt|;
 name|bld
 operator|.
 name|append
 argument_list|(
-literal|" on transaction ID \\d+\n"
+literal|"Expected transaction ID was \\d+\n"
 argument_list|)
 expr_stmt|;
 name|bld

@@ -1241,6 +1241,8 @@ operator|new
 name|FSEditLogLoader
 argument_list|(
 name|namesystem
+argument_list|,
+name|startTxId
 argument_list|)
 decl_stmt|;
 name|long
@@ -1257,6 +1259,8 @@ name|editFile
 argument_list|)
 argument_list|,
 name|startTxId
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|System
