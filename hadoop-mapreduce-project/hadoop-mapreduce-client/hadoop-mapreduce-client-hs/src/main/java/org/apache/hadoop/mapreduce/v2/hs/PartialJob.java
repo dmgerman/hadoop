@@ -424,6 +424,14 @@ name|getFinishTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|jobReport
+operator|.
+name|setJobState
+argument_list|(
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
