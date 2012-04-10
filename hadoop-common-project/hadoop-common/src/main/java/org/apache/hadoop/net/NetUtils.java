@@ -2715,7 +2715,7 @@ name|hostDetails
 operator|.
 name|append
 argument_list|(
-literal|"destination host is: \""
+literal|"destination host is: "
 argument_list|)
 operator|.
 name|append
