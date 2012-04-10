@@ -4,9 +4,15 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|testjar
+DECL|package|org.apache.hadoop.util
 package|package
-name|testjar
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
 package|;
 end_package
 
@@ -31,7 +37,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple Hello class that is called from TestRunJar   *  */
+comment|/**  * A simple Hello class that is called from TestRunJar  *   */
 end_comment
 
 begin_class
@@ -101,7 +107,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|//do nothing
+comment|// do nothing
 block|}
 block|}
 block|}
