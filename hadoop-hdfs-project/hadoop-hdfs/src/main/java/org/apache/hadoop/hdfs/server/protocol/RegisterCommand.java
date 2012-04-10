@@ -22,26 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutput
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -65,48 +45,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableFactories
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableFactory
 import|;
 end_import
 
@@ -130,39 +68,6 @@ name|RegisterCommand
 extends|extends
 name|DatanodeCommand
 block|{
-comment|// /////////////////////////////////////////
-comment|// Writable
-comment|// /////////////////////////////////////////
-static|static
-block|{
-comment|// register a ctor
-name|WritableFactories
-operator|.
-name|setFactory
-argument_list|(
-name|RegisterCommand
-operator|.
-name|class
-argument_list|,
-operator|new
-name|WritableFactory
-argument_list|()
-block|{
-specifier|public
-name|Writable
-name|newInstance
-parameter_list|()
-block|{
-return|return
-operator|new
-name|RegisterCommand
-argument_list|()
-return|;
-block|}
-block|}
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|REGISTER
 specifier|public
 specifier|static
@@ -187,28 +92,6 @@ name|DNA_REGISTER
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|readFields (DataInput in)
-specifier|public
-name|void
-name|readFields
-parameter_list|(
-name|DataInput
-name|in
-parameter_list|)
-block|{ }
-annotation|@
-name|Override
-DECL|method|write (DataOutput out)
-specifier|public
-name|void
-name|write
-parameter_list|(
-name|DataOutput
-name|out
-parameter_list|)
-block|{ }
 block|}
 end_class
 

@@ -69,15 +69,6 @@ name|DatanodeCommand
 extends|extends
 name|ServerCommand
 block|{
-DECL|method|DatanodeCommand ()
-specifier|public
-name|DatanodeCommand
-parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|DatanodeCommand (int action)
 name|DatanodeCommand
 parameter_list|(

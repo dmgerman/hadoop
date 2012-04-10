@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -55,20 +45,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
 import|;
 end_import
 
@@ -90,26 +66,12 @@ specifier|public
 specifier|abstract
 class|class
 name|ServerCommand
-implements|implements
-name|Writable
 block|{
 DECL|field|action
 specifier|private
 name|int
 name|action
 decl_stmt|;
-comment|/**    * Unknown server command constructor.    * Creates a command with action 0.    *     * @see NamenodeProtocol#ACT_UNKNOWN    * @see DatanodeProtocol#DNA_UNKNOWN    */
-DECL|method|ServerCommand ()
-specifier|public
-name|ServerCommand
-parameter_list|()
-block|{
-name|this
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Create a command for the specified action.    * Actions are protocol specific.    *     * @see DatanodeProtocol    * @see NamenodeProtocol    * @param action    */
 DECL|method|ServerCommand (int action)
 specifier|public
@@ -138,51 +100,6 @@ name|this
 operator|.
 name|action
 return|;
-block|}
-comment|///////////////////////////////////////////
-comment|// Writable
-comment|///////////////////////////////////////////
-DECL|method|write (DataOutput out)
-specifier|public
-name|void
-name|write
-parameter_list|(
-name|DataOutput
-name|out
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|out
-operator|.
-name|writeInt
-argument_list|(
-name|this
-operator|.
-name|action
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|readFields (DataInput in)
-specifier|public
-name|void
-name|readFields
-parameter_list|(
-name|DataInput
-name|in
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|this
-operator|.
-name|action
-operator|=
-name|in
-operator|.
-name|readInt
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 end_class
