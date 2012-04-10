@@ -1473,6 +1473,28 @@ name|bytes
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|message
+operator|.
+name|getDeclaringClassProtocolName
+argument_list|()
+operator|+
+literal|"."
+operator|+
+name|message
+operator|.
+name|getMethodName
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Writable Wrapper for Protocol Buffer Responses    */
 DECL|class|RpcResponseWritable
