@@ -3228,13 +3228,15 @@ if|if
 condition|(
 name|chosen
 operator|.
-name|name
+name|getName
+argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|avoid
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -3246,7 +3248,8 @@ literal|"Avoiding "
 operator|+
 name|avoid
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|chosen
@@ -3280,7 +3283,8 @@ literal|"Choosing datanode "
 operator|+
 name|chosen
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -3711,7 +3715,8 @@ name|createSocketAddr
 argument_list|(
 name|datanode
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|Socket
@@ -3996,7 +4001,8 @@ literal|" to "
 operator|+
 name|datanode
 operator|.
-name|name
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

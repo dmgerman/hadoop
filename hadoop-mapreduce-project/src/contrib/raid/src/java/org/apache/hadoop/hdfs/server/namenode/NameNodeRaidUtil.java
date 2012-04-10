@@ -82,6 +82,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -139,7 +153,7 @@ name|resolveLink
 argument_list|)
 return|;
 block|}
-comment|/** Accessing FSNamesystem.getFileInfo(..) */
+comment|/** Accessing FSNamesystem.getFileInfo(..)   * @throws StandbyException */
 DECL|method|getFileInfo (final FSNamesystem namesystem, final String src, final boolean resolveLink )
 specifier|public
 specifier|static
@@ -162,6 +176,8 @@ throws|throws
 name|AccessControlException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|StandbyException
 block|{
 return|return
 name|namesystem
