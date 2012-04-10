@@ -2914,6 +2914,29 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Cleanup staging directory
+try|try
+block|{
+name|cleanupStagingDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|io
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to delete staging dir"
+argument_list|,
+name|io
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 comment|// Stop all services
@@ -2942,27 +2965,6 @@ argument_list|(
 literal|"Graceful stop failed "
 argument_list|,
 name|t
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Cleanup staging directory
-try|try
-block|{
-name|cleanupStagingDir
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|io
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to delete staging dir"
 argument_list|)
 expr_stmt|;
 block|}
