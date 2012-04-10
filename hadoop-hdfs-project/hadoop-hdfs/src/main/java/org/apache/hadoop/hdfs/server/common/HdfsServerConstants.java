@@ -206,6 +206,12 @@ name|FORCE
 argument_list|(
 literal|"-force"
 argument_list|)
+block|,
+DECL|enumConstant|NONINTERACTIVE
+name|NONINTERACTIVE
+argument_list|(
+literal|"-nonInteractive"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private
@@ -221,6 +227,21 @@ name|String
 name|clusterId
 init|=
 literal|null
+decl_stmt|;
+comment|// Used only with format option
+DECL|field|isForceFormat
+specifier|private
+name|boolean
+name|isForceFormat
+init|=
+literal|false
+decl_stmt|;
+DECL|field|isInteractiveFormat
+specifier|private
+name|boolean
+name|isInteractiveFormat
+init|=
+literal|true
 decl_stmt|;
 comment|// Used only with recovery option
 DECL|field|force
@@ -370,6 +391,54 @@ name|this
 operator|.
 name|force
 return|;
+block|}
+DECL|method|getForceFormat ()
+specifier|public
+name|boolean
+name|getForceFormat
+parameter_list|()
+block|{
+return|return
+name|isForceFormat
+return|;
+block|}
+DECL|method|setForceFormat (boolean force)
+specifier|public
+name|void
+name|setForceFormat
+parameter_list|(
+name|boolean
+name|force
+parameter_list|)
+block|{
+name|isForceFormat
+operator|=
+name|force
+expr_stmt|;
+block|}
+DECL|method|getInteractiveFormat ()
+specifier|public
+name|boolean
+name|getInteractiveFormat
+parameter_list|()
+block|{
+return|return
+name|isInteractiveFormat
+return|;
+block|}
+DECL|method|setInteractiveFormat (boolean interactive)
+specifier|public
+name|void
+name|setInteractiveFormat
+parameter_list|(
+name|boolean
+name|interactive
+parameter_list|)
+block|{
+name|isInteractiveFormat
+operator|=
+name|interactive
+expr_stmt|;
 block|}
 block|}
 comment|// Timeouts for communicating with DataNode for streaming writes/reads
