@@ -2117,6 +2117,22 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
+name|assertEquals
+argument_list|(
+literal|"JobName does not match"
+argument_list|,
+literal|"test"
+argument_list|,
+name|jobSummaryElements
+operator|.
+name|get
+argument_list|(
+literal|"jobName"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 literal|"submitTime should not be 0"
