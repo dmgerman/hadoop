@@ -3756,15 +3756,6 @@ literal|"] | ["
 operator|+
 name|StartupOption
 operator|.
-name|BOOTSTRAPSTANDBY
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|"] | ["
-operator|+
-name|StartupOption
-operator|.
 name|INITIALIZESHAREDEDITS
 operator|.
 name|getName
