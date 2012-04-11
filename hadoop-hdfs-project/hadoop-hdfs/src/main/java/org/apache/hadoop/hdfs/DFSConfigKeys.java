@@ -2690,6 +2690,24 @@ name|DFS_HA_FENCE_METHODS_KEY
 init|=
 literal|"dfs.ha.fencing.methods"
 decl_stmt|;
+DECL|field|DFS_HA_AUTO_FAILOVER_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_AUTO_FAILOVER_ENABLED_KEY
+init|=
+literal|"dfs.ha.automatic-failover.enabled"
+decl_stmt|;
+DECL|field|DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

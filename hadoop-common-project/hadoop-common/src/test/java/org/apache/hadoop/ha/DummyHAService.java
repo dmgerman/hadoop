@@ -439,6 +439,18 @@ name|BadFencingConfigurationException
 block|{   }
 annotation|@
 name|Override
+DECL|method|isAutoFailoverEnabled ()
+specifier|public
+name|boolean
+name|isAutoFailoverEnabled
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -515,11 +527,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|transitionToActive ()
+DECL|method|transitionToActive (StateChangeRequestInfo req)
 specifier|public
 name|void
 name|transitionToActive
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,
@@ -569,11 +584,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|transitionToStandby ()
+DECL|method|transitionToStandby (StateChangeRequestInfo req)
 specifier|public
 name|void
 name|transitionToStandby
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,

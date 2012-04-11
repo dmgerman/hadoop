@@ -62,6 +62,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|StateChangeRequestInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -86,7 +102,7 @@ specifier|public
 class|class
 name|HAServiceProtocolHelper
 block|{
-DECL|method|monitorHealth (HAServiceProtocol svc)
+DECL|method|monitorHealth (HAServiceProtocol svc, StateChangeRequestInfo reqInfo)
 specifier|public
 specifier|static
 name|void
@@ -94,6 +110,9 @@ name|monitorHealth
 parameter_list|(
 name|HAServiceProtocol
 name|svc
+parameter_list|,
+name|StateChangeRequestInfo
+name|reqInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -124,7 +143,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|transitionToActive (HAServiceProtocol svc)
+DECL|method|transitionToActive (HAServiceProtocol svc, StateChangeRequestInfo reqInfo)
 specifier|public
 specifier|static
 name|void
@@ -132,6 +151,9 @@ name|transitionToActive
 parameter_list|(
 name|HAServiceProtocol
 name|svc
+parameter_list|,
+name|StateChangeRequestInfo
+name|reqInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -141,7 +163,9 @@ block|{
 name|svc
 operator|.
 name|transitionToActive
-argument_list|()
+argument_list|(
+name|reqInfo
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -162,7 +186,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|transitionToStandby (HAServiceProtocol svc)
+DECL|method|transitionToStandby (HAServiceProtocol svc, StateChangeRequestInfo reqInfo)
 specifier|public
 specifier|static
 name|void
@@ -170,6 +194,9 @@ name|transitionToStandby
 parameter_list|(
 name|HAServiceProtocol
 name|svc
+parameter_list|,
+name|StateChangeRequestInfo
+name|reqInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -179,7 +206,9 @@ block|{
 name|svc
 operator|.
 name|transitionToStandby
-argument_list|()
+argument_list|(
+name|reqInfo
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch

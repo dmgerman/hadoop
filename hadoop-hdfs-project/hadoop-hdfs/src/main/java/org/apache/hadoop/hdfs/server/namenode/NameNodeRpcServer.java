@@ -5896,17 +5896,27 @@ block|}
 annotation|@
 name|Override
 comment|// HAServiceProtocol
-DECL|method|transitionToActive ()
+DECL|method|transitionToActive (StateChangeRequestInfo req)
 specifier|public
 specifier|synchronized
 name|void
 name|transitionToActive
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,
 name|AccessControlException
 block|{
+name|nn
+operator|.
+name|checkHaStateChange
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
 name|nn
 operator|.
 name|transitionToActive
@@ -5916,17 +5926,27 @@ block|}
 annotation|@
 name|Override
 comment|// HAServiceProtocol
-DECL|method|transitionToStandby ()
+DECL|method|transitionToStandby (StateChangeRequestInfo req)
 specifier|public
 specifier|synchronized
 name|void
 name|transitionToStandby
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|req
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,
 name|AccessControlException
 block|{
+name|nn
+operator|.
+name|checkHaStateChange
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
 name|nn
 operator|.
 name|transitionToStandby

@@ -385,6 +385,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return true if auto failover should be considered enabled    */
+DECL|method|isAutoFailoverEnabled ()
+specifier|public
+name|boolean
+name|isAutoFailoverEnabled
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

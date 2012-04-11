@@ -150,6 +150,38 @@ name|hadoop
 operator|.
 name|ha
 operator|.
+name|HAServiceProtocol
+operator|.
+name|StateChangeRequestInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|RequestSource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
 name|HAZKUtil
 operator|.
 name|ZKAuthInfo
@@ -425,6 +457,15 @@ name|ERR_CODE_NO_FENCER
 init|=
 literal|4
 decl_stmt|;
+comment|/** Automatic failover is not enabled */
+DECL|field|ERR_CODE_AUTO_FAILOVER_NOT_ENABLED
+specifier|static
+specifier|final
+name|int
+name|ERR_CODE_AUTO_FAILOVER_NOT_ENABLED
+init|=
+literal|5
+decl_stmt|;
 DECL|field|conf
 specifier|private
 name|Configuration
@@ -558,6 +599,34 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+operator|!
+name|localTarget
+operator|.
+name|isAutoFailoverEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Automatic failover is not enabled for "
+operator|+
+name|localTarget
+operator|+
+literal|"."
+operator|+
+literal|" Please ensure that automatic failover is enabled in the "
+operator|+
+literal|"configuration before running the ZK failover controller."
+argument_list|)
+expr_stmt|;
+return|return
+name|ERR_CODE_AUTO_FAILOVER_NOT_ENABLED
+return|;
+block|}
 name|loginAsFCUser
 argument_list|()
 expr_stmt|;
@@ -1418,6 +1487,9 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|)
+argument_list|,
+name|createReqInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1480,6 +1552,22 @@ block|}
 comment|/* * TODO: * we need to make sure that if we get fenced and then quickly restarted, * none of these calls will retry across the restart boundary * perhaps the solution is that, whenever the nn starts, it gets a unique * ID, and when we start becoming active, we record it, and then any future * calls use the same ID */
 block|}
 block|}
+DECL|method|createReqInfo ()
+specifier|private
+name|StateChangeRequestInfo
+name|createReqInfo
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StateChangeRequestInfo
+argument_list|(
+name|RequestSource
+operator|.
+name|REQUEST_BY_ZKFC
+argument_list|)
+return|;
+block|}
 DECL|method|becomeStandby ()
 specifier|private
 specifier|synchronized
@@ -1520,7 +1608,10 @@ name|timeout
 argument_list|)
 operator|.
 name|transitionToStandby
+argument_list|(
+name|createReqInfo
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -1682,6 +1773,10 @@ operator|new
 name|FailoverController
 argument_list|(
 name|conf
+argument_list|,
+name|RequestSource
+operator|.
+name|REQUEST_BY_ZKFC
 argument_list|)
 operator|.
 name|tryGracefulFence

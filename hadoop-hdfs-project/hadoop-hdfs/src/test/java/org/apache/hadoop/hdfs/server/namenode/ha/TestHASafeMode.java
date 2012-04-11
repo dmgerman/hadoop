@@ -926,13 +926,12 @@ expr_stmt|;
 name|restartActive
 argument_list|()
 expr_stmt|;
-name|nn0
-operator|.
-name|getRpcServer
-argument_list|()
+name|cluster
 operator|.
 name|transitionToActive
-argument_list|()
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 name|FSNamesystem
 name|namesystem

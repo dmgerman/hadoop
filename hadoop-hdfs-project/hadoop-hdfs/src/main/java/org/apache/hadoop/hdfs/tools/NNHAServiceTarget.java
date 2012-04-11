@@ -259,6 +259,12 @@ specifier|final
 name|String
 name|nsId
 decl_stmt|;
+DECL|field|autoFailoverEnabled
+specifier|private
+specifier|final
+name|boolean
+name|autoFailoverEnabled
+decl_stmt|;
 DECL|method|NNHAServiceTarget (Configuration conf, String nsId, String nnId)
 specifier|public
 name|NNHAServiceTarget
@@ -430,6 +436,23 @@ name|nsId
 operator|=
 name|nsId
 expr_stmt|;
+name|this
+operator|.
+name|autoFailoverEnabled
+operator|=
+name|targetConf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_AUTO_FAILOVER_ENABLED_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * @return the NN's IPC address.    */
 annotation|@
@@ -576,6 +599,18 @@ name|getNameNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isAutoFailoverEnabled ()
+specifier|public
+name|boolean
+name|isAutoFailoverEnabled
+parameter_list|()
+block|{
+return|return
+name|autoFailoverEnabled
+return|;
 block|}
 block|}
 end_class
