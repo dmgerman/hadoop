@@ -2359,6 +2359,15 @@ argument_list|,
 name|containerLauncher
 argument_list|)
 expr_stmt|;
+comment|// Add the staging directory cleaner before the history server but after
+comment|// the container allocator so the staging directory is cleaned after
+comment|// the history has been flushed but before unregistering with the RM.
+name|addService
+argument_list|(
+name|createStagingDirCleaningService
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Add the JobHistoryEventHandler last so that it is properly stopped first.
 comment|// This will guarantee that all history-events are flushed before AM goes
 comment|// ahead with shutdown.
@@ -2914,29 +2923,6 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Cleanup staging directory
-try|try
-block|{
-name|cleanupStagingDir
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|io
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to delete staging dir"
-argument_list|,
-name|io
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
 comment|// Stop all services
@@ -3342,6 +3328,18 @@ return|return
 name|this
 operator|.
 name|jobHistoryEventHandler
+return|;
+block|}
+DECL|method|createStagingDirCleaningService ()
+specifier|protected
+name|AbstractService
+name|createStagingDirCleaningService
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StagingDirCleaningService
+argument_list|()
 return|;
 block|}
 DECL|method|createSpeculator (Configuration conf, AppContext context)
@@ -4170,6 +4168,67 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|super
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|class|StagingDirCleaningService
+specifier|private
+specifier|final
+class|class
+name|StagingDirCleaningService
+extends|extends
+name|AbstractService
+block|{
+DECL|method|StagingDirCleaningService ()
+name|StagingDirCleaningService
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|StagingDirCleaningService
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|stop ()
+specifier|public
+specifier|synchronized
+name|void
+name|stop
+parameter_list|()
+block|{
+try|try
+block|{
+name|cleanupStagingDir
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|io
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to cleanup staging dir: "
+argument_list|,
+name|io
+argument_list|)
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|stop
