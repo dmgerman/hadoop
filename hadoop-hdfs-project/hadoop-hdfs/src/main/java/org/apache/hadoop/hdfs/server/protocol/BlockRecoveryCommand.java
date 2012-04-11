@@ -24,36 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|DataInput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Collection
@@ -209,21 +179,6 @@ specifier|private
 name|long
 name|newGenerationStamp
 decl_stmt|;
-comment|/**      * Create empty RecoveringBlock.      */
-DECL|method|RecoveringBlock ()
-specifier|public
-name|RecoveringBlock
-parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-name|newGenerationStamp
-operator|=
-operator|-
-literal|1L
-expr_stmt|;
-block|}
 comment|/**      * Create RecoveringBlock.      */
 DECL|method|RecoveringBlock (ExtendedBlock b, DatanodeInfo[] locs, long newGS)
 specifier|public

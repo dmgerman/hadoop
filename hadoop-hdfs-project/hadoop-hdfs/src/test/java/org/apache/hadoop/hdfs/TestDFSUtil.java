@@ -355,8 +355,9 @@ block|{
 name|DatanodeInfo
 name|d
 init|=
-operator|new
-name|DatanodeInfo
+name|DFSTestUtil
+operator|.
+name|getLocalDatanodeInfo
 argument_list|()
 decl_stmt|;
 name|DatanodeInfo
