@@ -2776,6 +2776,23 @@ operator|.
 name|INTERNAL_ERROR
 argument_list|)
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|JobState
+operator|.
+name|ERROR
+argument_list|,
+name|JobState
+operator|.
+name|ERROR
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_COUNTER_UPDATE
+argument_list|,
+name|COUNTER_UPDATE_TRANSITION
+argument_list|)
 comment|// create the topology tables
 operator|.
 name|installTopology

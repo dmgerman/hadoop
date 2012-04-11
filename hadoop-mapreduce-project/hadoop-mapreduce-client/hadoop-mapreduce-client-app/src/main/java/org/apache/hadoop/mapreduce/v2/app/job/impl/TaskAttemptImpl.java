@@ -2784,9 +2784,14 @@ name|TaskAttemptEventType
 operator|.
 name|TA_COMMIT_PENDING
 argument_list|,
+comment|// Container launch events can arrive late
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
@@ -2873,6 +2878,10 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
@@ -2964,6 +2973,15 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_FAILMSG
+argument_list|,
+comment|// Container launch events can arrive late
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|)
 argument_list|)
 comment|// Transitions from KILL_TASK_CLEANUP
@@ -3042,6 +3060,15 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_FAILMSG
+argument_list|,
+comment|// Container launch events can arrive late
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|)
 argument_list|)
 comment|// Transitions from SUCCEEDED
@@ -3161,9 +3188,14 @@ name|TaskAttemptEventType
 operator|.
 name|TA_UPDATE
 argument_list|,
+comment|// Container launch events can arrive late
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
@@ -3228,9 +3260,14 @@ name|TaskAttemptEventType
 operator|.
 name|TA_UPDATE
 argument_list|,
+comment|// Container launch events can arrive late
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCHED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_LAUNCH_FAILED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
