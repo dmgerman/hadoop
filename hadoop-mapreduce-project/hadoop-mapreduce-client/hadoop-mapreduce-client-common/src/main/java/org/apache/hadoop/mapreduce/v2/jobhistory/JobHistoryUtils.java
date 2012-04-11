@@ -2440,7 +2440,7 @@ operator|.
 name|getLocalHost
 argument_list|()
 operator|.
-name|getHostAddress
+name|getCanonicalHostName
 argument_list|()
 argument_list|)
 expr_stmt|;
