@@ -1124,17 +1124,6 @@ index|[
 literal|0
 index|]
 expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"key: "
-operator|+
-name|key
-argument_list|)
-expr_stmt|;
 return|return
 name|super
 operator|.

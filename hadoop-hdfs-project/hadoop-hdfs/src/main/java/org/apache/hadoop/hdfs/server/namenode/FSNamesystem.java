@@ -3398,12 +3398,6 @@ argument_list|,
 name|fsImage
 argument_list|)
 decl_stmt|;
-name|long
-name|loadStart
-init|=
-name|now
-argument_list|()
-decl_stmt|;
 name|StartupOption
 name|startOpt
 init|=
@@ -3413,6 +3407,31 @@ name|getStartupOption
 argument_list|(
 name|conf
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|RECOVER
+condition|)
+block|{
+name|namesystem
+operator|.
+name|setSafeMode
+argument_list|(
+name|SafeModeAction
+operator|.
+name|SAFEMODE_ENTER
+argument_list|)
+expr_stmt|;
+block|}
+name|long
+name|loadStart
+init|=
+name|now
+argument_list|()
 decl_stmt|;
 name|String
 name|nameserviceId
@@ -3988,6 +4007,14 @@ expr_stmt|;
 try|try
 block|{
 comment|// We shouldn't be calling saveNamespace if we've come up in standby state.
+name|MetaRecoveryContext
+name|recovery
+init|=
+name|startOpt
+operator|.
+name|createRecoveryContext
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|fsImage
@@ -3997,6 +4024,8 @@ argument_list|(
 name|startOpt
 argument_list|,
 name|this
+argument_list|,
+name|recovery
 argument_list|)
 operator|&&
 operator|!
@@ -11003,7 +11032,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**     * Check all blocks of a file. If any blocks are lower than their intended    * replication factor, then insert them into neededReplication    */
+comment|/**     * Check all blocks of a file. If any blocks are lower than their intended    * replication factor, then insert them into neededReplication and if     * the blocks are more than the intended replication factor then insert     * them into invalidateBlocks.    */
 DECL|method|checkReplicationFactor (INodeFile file)
 specifier|private
 name|void
@@ -11013,7 +11042,7 @@ name|INodeFile
 name|file
 parameter_list|)
 block|{
-name|int
+name|short
 name|numExpectedReplicas
 init|=
 name|file

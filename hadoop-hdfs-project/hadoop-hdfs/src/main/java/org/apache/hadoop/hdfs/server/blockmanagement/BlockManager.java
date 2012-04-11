@@ -13030,7 +13030,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkReplication (Block block, int numExpectedReplicas)
+DECL|method|checkReplication (Block block, short numExpectedReplicas)
 specifier|public
 name|void
 name|checkReplication
@@ -13038,7 +13038,7 @@ parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|int
+name|short
 name|numExpectedReplicas
 parameter_list|)
 block|{
@@ -13083,6 +13083,29 @@ name|decommissionedReplicas
 argument_list|()
 argument_list|,
 name|numExpectedReplicas
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+name|number
+operator|.
+name|liveReplicas
+argument_list|()
+operator|>
+name|numExpectedReplicas
+condition|)
+block|{
+name|processOverReplicatedBlock
+argument_list|(
+name|block
+argument_list|,
+name|numExpectedReplicas
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

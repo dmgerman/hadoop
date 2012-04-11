@@ -857,8 +857,6 @@ name|int
 name|N_ITERATIONS
 init|=
 literal|1024
-operator|*
-literal|4
 decl_stmt|;
 DECL|field|PROPORTION_NON_POSITIONAL_READ
 specifier|private

@@ -2859,6 +2859,16 @@ name|getSubmitTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|summary
+operator|.
+name|setJobName
+argument_list|(
+name|jse
+operator|.
+name|getJobName
+argument_list|()
+argument_list|)
+expr_stmt|;
 break|break;
 case|case
 name|NORMALIZED_RESOURCE

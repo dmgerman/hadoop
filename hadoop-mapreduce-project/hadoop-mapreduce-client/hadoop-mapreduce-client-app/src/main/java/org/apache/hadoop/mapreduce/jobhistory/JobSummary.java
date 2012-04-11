@@ -155,6 +155,11 @@ name|reduceSlotSeconds
 decl_stmt|;
 comment|// TODO Not generated yet MRV2
 comment|// private int clusterSlotCapacity;
+DECL|field|jobName
+specifier|private
+name|String
+name|jobName
+decl_stmt|;
 DECL|method|JobSummary ()
 name|JobSummary
 parameter_list|()
@@ -603,6 +608,32 @@ operator|=
 name|reduceSlotSeconds
 expr_stmt|;
 block|}
+DECL|method|getJobName ()
+specifier|public
+name|String
+name|getJobName
+parameter_list|()
+block|{
+return|return
+name|jobName
+return|;
+block|}
+DECL|method|setJobName (String jobName)
+specifier|public
+name|void
+name|setJobName
+parameter_list|(
+name|String
+name|jobName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|jobName
+operator|=
+name|jobName
+expr_stmt|;
+block|}
 DECL|method|getJobSummaryString ()
 specifier|public
 name|String
@@ -723,6 +754,13 @@ argument_list|(
 literal|"reduceSlotSeconds"
 argument_list|,
 name|reduceSlotSeconds
+argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"jobName"
+argument_list|,
+name|jobName
 argument_list|)
 decl_stmt|;
 return|return

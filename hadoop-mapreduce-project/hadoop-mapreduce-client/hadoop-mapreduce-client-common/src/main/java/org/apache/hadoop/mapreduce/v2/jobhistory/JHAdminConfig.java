@@ -132,6 +132,24 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"cleaner.interval-ms"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_MR_HISTORY_CLEANER_INTERVAL_MS
+init|=
+literal|1
+operator|*
+literal|24
+operator|*
+literal|60
+operator|*
+literal|60
+operator|*
+literal|1000l
+decl_stmt|;
+comment|//1 day
 comment|/** The number of threads to handle client API requests.*/
 DECL|field|MR_HISTORY_CLIENT_THREAD_COUNT
 specifier|public
@@ -165,6 +183,16 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"datestring.cache.size"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_DATESTRING_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_DATESTRING_CACHE_SIZE
+init|=
+literal|200000
+decl_stmt|;
+comment|//TODO REMOVE debug-mode
 comment|/** Equivalent to 0.20 mapreduce.jobhistory.debug.mode */
 DECL|field|MR_HISTORY_DEBUG_MODE
 specifier|public
@@ -213,6 +241,15 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"joblist.cache.size"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_JOBLIST_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_JOBLIST_CACHE_SIZE
+init|=
+literal|20000
+decl_stmt|;
 comment|/** The location of the Kerberos keytab file.*/
 DECL|field|MR_HISTORY_KEYTAB
 specifier|public
@@ -237,6 +274,15 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"loadedjobs.cache.size"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_LOADED_JOB_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_LOADED_JOB_CACHE_SIZE
+init|=
+literal|5
+decl_stmt|;
 comment|/**    * The maximum age of a job history file before it is deleted from the history    * server.    */
 DECL|field|MR_HISTORY_MAX_AGE_MS
 specifier|public
@@ -249,6 +295,24 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"max-age-ms"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_MAX_AGE
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_MR_HISTORY_MAX_AGE
+init|=
+literal|7
+operator|*
+literal|24
+operator|*
+literal|60
+operator|*
+literal|60
+operator|*
+literal|1000L
+decl_stmt|;
+comment|//1 week
 comment|/**    * Scan for history files to more from intermediate done dir to done dir    * every X ms.    */
 DECL|field|MR_HISTORY_MOVE_INTERVAL_MS
 specifier|public
@@ -261,6 +325,20 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"move.interval-ms"
 decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_MOVE_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_MR_HISTORY_MOVE_INTERVAL_MS
+init|=
+literal|3
+operator|*
+literal|60
+operator|*
+literal|1000l
+decl_stmt|;
+comment|//3 minutes
 comment|/** The number of threads used to move files.*/
 DECL|field|MR_HISTORY_MOVE_THREAD_COUNT
 specifier|public
@@ -272,6 +350,15 @@ init|=
 name|MR_HISTORY_PREFIX
 operator|+
 literal|"move.thread-count"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_MOVE_THREAD_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_MOVE_THREAD_COUNT
+init|=
+literal|3
 decl_stmt|;
 comment|/** The Kerberos principal for the history server.*/
 DECL|field|MR_HISTORY_PRINCIPAL
@@ -326,6 +413,18 @@ name|String
 name|MR_HS_SECURITY_SERVICE_AUTHORIZATION
 init|=
 literal|"security.mrhs.client.protocol.acl"
+decl_stmt|;
+comment|/**    * The HistoryStorage class to use to cache history data.    */
+DECL|field|MR_HISTORY_STORAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_STORAGE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|".store.class"
 decl_stmt|;
 block|}
 end_class

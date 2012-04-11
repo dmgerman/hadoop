@@ -234,7 +234,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// JournalStream
 DECL|method|getName ()
 specifier|public
 name|String
@@ -247,25 +246,10 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|// JournalStream
-DECL|method|getType ()
-specifier|public
-name|JournalType
-name|getType
-parameter_list|()
-block|{
-return|return
-name|JournalType
-operator|.
-name|BACKUP
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|readOp ()
-specifier|public
+DECL|method|nextOp ()
+specifier|protected
 name|FSEditLogOp
-name|readOp
+name|nextOp
 parameter_list|()
 throws|throws
 name|IOException
@@ -285,8 +269,48 @@ return|return
 name|reader
 operator|.
 name|readOp
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|nextValidOp ()
+specifier|protected
+name|FSEditLogOp
+name|nextValidOp
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+name|reader
+operator|.
+name|readOp
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"got unexpected IOException "
+operator|+
+name|e
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override

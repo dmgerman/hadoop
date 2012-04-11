@@ -1843,15 +1843,24 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"heartbeat: "
+literal|"Sending heartbeat from service actor: "
 operator|+
 name|this
 argument_list|)
 expr_stmt|;
+block|}
 comment|// reports number of failed volumes
 name|StorageReport
 index|[]

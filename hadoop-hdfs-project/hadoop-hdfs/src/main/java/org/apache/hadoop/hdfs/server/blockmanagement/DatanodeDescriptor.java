@@ -573,11 +573,6 @@ name|disallowed
 init|=
 literal|false
 decl_stmt|;
-DECL|method|DatanodeDescriptor ()
-specifier|public
-name|DatanodeDescriptor
-parameter_list|()
-block|{}
 comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID)
 specifier|public

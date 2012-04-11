@@ -566,6 +566,56 @@ name|e
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+operator|!
+name|resp
+operator|.
+name|getReplicaFound
+argument_list|()
+condition|)
+block|{
+comment|// No replica found on the remote node.
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+operator|!
+name|resp
+operator|.
+name|hasBlock
+argument_list|()
+operator|||
+operator|!
+name|resp
+operator|.
+name|hasState
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Replica was found but missing fields. "
+operator|+
+literal|"Req: "
+operator|+
+name|req
+operator|+
+literal|"\n"
+operator|+
+literal|"Resp: "
+operator|+
+name|resp
+argument_list|)
+throw|;
+block|}
+block|}
 name|BlockProto
 name|b
 init|=

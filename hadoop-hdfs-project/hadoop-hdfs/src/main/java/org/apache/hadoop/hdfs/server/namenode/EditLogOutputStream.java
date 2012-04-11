@@ -31,6 +31,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -96,6 +106,8 @@ specifier|public
 specifier|abstract
 class|class
 name|EditLogOutputStream
+implements|implements
+name|Closeable
 block|{
 comment|// these are statistics counters
 DECL|field|numSync
