@@ -206,24 +206,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ResourceCalculatorPlugin
-operator|.
-name|ProcResourceValues
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|tools
 operator|.
 name|rumen
@@ -1998,6 +1980,28 @@ argument_list|,
 name|cpuUsagePre
 argument_list|,
 name|cpuUsagePost
+argument_list|)
+expr_stmt|;
+comment|// test with get progress
+name|float
+name|progress
+init|=
+name|cpuPlugin
+operator|.
+name|getProgress
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Invalid progress of disabled cumulative CPU usage emulation "
+operator|+
+literal|"plugin!"
+argument_list|,
+literal|1.0f
+argument_list|,
+name|progress
+argument_list|,
+literal|0f
 argument_list|)
 expr_stmt|;
 comment|// test with valid resource usage value

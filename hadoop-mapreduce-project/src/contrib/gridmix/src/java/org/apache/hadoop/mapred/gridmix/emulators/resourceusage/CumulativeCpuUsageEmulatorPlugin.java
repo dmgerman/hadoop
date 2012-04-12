@@ -591,6 +591,8 @@ name|getProgress
 parameter_list|()
 block|{
 return|return
+name|enabled
+condition|?
 name|Math
 operator|.
 name|min
@@ -607,6 +609,8 @@ operator|)
 operator|/
 name|targetCpuUsage
 argument_list|)
+else|:
+literal|1.0f
 return|;
 block|}
 annotation|@
@@ -813,6 +817,18 @@ name|Progressive
 name|progress
 parameter_list|)
 block|{
+name|this
+operator|.
+name|monitor
+operator|=
+name|monitor
+expr_stmt|;
+name|this
+operator|.
+name|progress
+operator|=
+name|progress
+expr_stmt|;
 comment|// get the target CPU usage
 name|targetCpuUsage
 operator|=
@@ -841,18 +857,6 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|monitor
-operator|=
-name|monitor
-expr_stmt|;
-name|this
-operator|.
-name|progress
-operator|=
-name|progress
-expr_stmt|;
 name|emulationInterval
 operator|=
 name|conf

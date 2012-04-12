@@ -683,6 +683,28 @@ argument_list|,
 name|heapUsagePost
 argument_list|)
 expr_stmt|;
+comment|// test with get progress
+name|float
+name|progress
+init|=
+name|heapPlugin
+operator|.
+name|getProgress
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Invalid progress of disabled cumulative heap usage emulation "
+operator|+
+literal|"plugin!"
+argument_list|,
+literal|1.0f
+argument_list|,
+name|progress
+argument_list|,
+literal|0f
+argument_list|)
+expr_stmt|;
 comment|// test with wrong/invalid configuration
 name|Boolean
 name|failed
