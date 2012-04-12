@@ -589,7 +589,7 @@ literal|1
 argument_list|,
 name|REPLICATION_FACTOR
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Add a new datanode on a different rack
@@ -962,7 +962,7 @@ literal|1
 argument_list|,
 name|REPLICATION_FACTOR
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Add new datanodes on a different rack and increase the
