@@ -1231,7 +1231,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|verifyVersion
+name|verifyLayoutVersion
 argument_list|(
 name|journalInfo
 operator|.
