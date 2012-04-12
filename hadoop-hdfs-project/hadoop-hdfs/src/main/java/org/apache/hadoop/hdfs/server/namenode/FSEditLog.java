@@ -1363,6 +1363,15 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|journalSet
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 try|try
 block|{
 name|journalSet
@@ -1386,6 +1395,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|state
 operator|=
@@ -3178,9 +3188,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Used only by unit tests.    */
-annotation|@
-name|VisibleForTesting
+comment|/**    * Get all the journals this edit log is currently operating on.    */
 DECL|method|getJournals ()
 specifier|synchronized
 name|List

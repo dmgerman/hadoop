@@ -1786,7 +1786,6 @@ block|}
 block|}
 block|}
 DECL|method|getLogFiles (long fromTxId)
-specifier|private
 name|List
 argument_list|<
 name|EditLogFile
