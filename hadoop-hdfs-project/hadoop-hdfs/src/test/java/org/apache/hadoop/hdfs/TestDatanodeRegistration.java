@@ -539,6 +539,17 @@ argument_list|,
 literal|"3.0.0"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_KEY
+argument_list|,
+literal|"3.0.0"
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
