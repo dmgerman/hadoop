@@ -3771,6 +3771,15 @@ operator|.
 name|taskId
 argument_list|)
 argument_list|,
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|task
+operator|.
+name|successfulAttempt
+argument_list|)
+argument_list|,
 name|task
 operator|.
 name|getFinishTime

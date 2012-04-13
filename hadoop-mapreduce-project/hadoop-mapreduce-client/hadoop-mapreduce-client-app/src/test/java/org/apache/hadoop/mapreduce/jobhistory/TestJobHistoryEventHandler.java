@@ -750,6 +750,8 @@ name|t
 operator|.
 name|taskID
 argument_list|,
+literal|null
+argument_list|,
 literal|0
 argument_list|,
 name|TaskType
@@ -999,6 +1001,8 @@ argument_list|(
 name|t
 operator|.
 name|taskID
+argument_list|,
+literal|null
 argument_list|,
 literal|0
 argument_list|,
@@ -1299,6 +1303,8 @@ name|t
 operator|.
 name|taskID
 argument_list|,
+literal|null
+argument_list|,
 literal|0
 argument_list|,
 name|TaskType
@@ -1582,6 +1588,8 @@ argument_list|(
 name|t
 operator|.
 name|taskID
+argument_list|,
+literal|null
 argument_list|,
 literal|0
 argument_list|,

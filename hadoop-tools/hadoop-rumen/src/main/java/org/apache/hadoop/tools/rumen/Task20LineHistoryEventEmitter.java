@@ -647,6 +647,8 @@ name|TaskFinishedEvent
 argument_list|(
 name|taskID
 argument_list|,
+literal|null
+argument_list|,
 name|Long
 operator|.
 name|parseLong
