@@ -1249,7 +1249,7 @@ argument_list|)
 expr_stmt|;
 name|listener
 operator|.
-name|rollLogs
+name|startLogSegment
 argument_list|(
 name|this
 argument_list|,

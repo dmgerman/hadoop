@@ -574,7 +574,9 @@ argument_list|)
 throw|;
 block|}
 comment|// write to BN's local edit log.
-name|logEditsLocally
+name|editLog
+operator|.
+name|journal
 argument_list|(
 name|firstTxId
 argument_list|,
@@ -582,76 +584,6 @@ name|numTxns
 argument_list|,
 name|data
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Write the batch of edits to the local copy of the edit logs.    */
-DECL|method|logEditsLocally (long firstTxId, int numTxns, byte[] data)
-specifier|private
-name|void
-name|logEditsLocally
-parameter_list|(
-name|long
-name|firstTxId
-parameter_list|,
-name|int
-name|numTxns
-parameter_list|,
-name|byte
-index|[]
-name|data
-parameter_list|)
-block|{
-name|long
-name|expectedTxId
-init|=
-name|editLog
-operator|.
-name|getLastWrittenTxId
-argument_list|()
-operator|+
-literal|1
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|firstTxId
-operator|==
-name|expectedTxId
-argument_list|,
-literal|"received txid batch starting at %s but expected txn %s"
-argument_list|,
-name|firstTxId
-argument_list|,
-name|expectedTxId
-argument_list|)
-expr_stmt|;
-name|editLog
-operator|.
-name|setNextTxId
-argument_list|(
-name|firstTxId
-operator|+
-name|numTxns
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|editLog
-operator|.
-name|logEdit
-argument_list|(
-name|data
-operator|.
-name|length
-argument_list|,
-name|data
-argument_list|)
-expr_stmt|;
-name|editLog
-operator|.
-name|logSync
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Apply the batch of edits to the local namespace.    */
@@ -1275,97 +1207,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"NameNode started a new log segment at txid "
-operator|+
-name|txid
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|editLog
-operator|.
-name|isSegmentOpen
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-name|editLog
-operator|.
-name|getLastWrittenTxId
-argument_list|()
-operator|==
-name|txid
-operator|-
-literal|1
-condition|)
-block|{
-comment|// We are in sync with the NN, so end and finalize the current segment
-name|editLog
-operator|.
-name|endCurrentLogSegment
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// We appear to have missed some transactions -- the NN probably
-comment|// lost contact with us temporarily. So, mark the current segment
-comment|// as aborted.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"NN started new log segment at txid "
-operator|+
-name|txid
-operator|+
-literal|", but BN had only written up to txid "
-operator|+
-name|editLog
-operator|.
-name|getLastWrittenTxId
-argument_list|()
-operator|+
-literal|"in the log segment starting at "
-operator|+
-name|editLog
-operator|.
-name|getCurSegmentTxId
-argument_list|()
-operator|+
-literal|". Aborting this "
-operator|+
-literal|"log segment."
-argument_list|)
-expr_stmt|;
-name|editLog
-operator|.
-name|abortCurrentLogSegment
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-name|editLog
-operator|.
-name|setNextTxId
-argument_list|(
-name|txid
-argument_list|)
-expr_stmt|;
 name|editLog
 operator|.
 name|startLogSegment
 argument_list|(
 name|txid
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 if|if
