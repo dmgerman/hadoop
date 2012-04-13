@@ -5224,7 +5224,7 @@ name|dirNames
 init|=
 name|conf
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -5285,7 +5285,7 @@ name|dirNames
 init|=
 name|conf
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|DFSConfigKeys
 operator|.
