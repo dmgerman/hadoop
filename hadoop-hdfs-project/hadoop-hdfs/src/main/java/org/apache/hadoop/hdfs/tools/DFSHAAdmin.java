@@ -231,6 +231,33 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|conf
+operator|=
+name|addSecurityConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+name|super
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add the requisite security principal settings to the given Configuration,    * returning a copy.    * @param conf the original config    * @return a copy with the security settings added    */
+DECL|method|addSecurityConfiguration (Configuration conf)
+specifier|public
+specifier|static
+name|Configuration
+name|addSecurityConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 comment|// Make a copy so we don't mutate it. Also use an HdfsConfiguration to
 comment|// force loading of hdfs-site.xml.
 name|conf
@@ -284,14 +311,9 @@ argument_list|,
 name|nameNodePrincipal
 argument_list|)
 expr_stmt|;
-block|}
-name|super
-operator|.
-name|setConf
-argument_list|(
+return|return
 name|conf
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Try to map the given namenode ID to its service address.    */
 annotation|@
