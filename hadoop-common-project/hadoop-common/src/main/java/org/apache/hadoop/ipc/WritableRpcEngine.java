@@ -1598,8 +1598,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Construct a server for a protocol implementation instance listening on a    * port and address. */
-DECL|method|getServer (Class<?> protocolClass, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
+comment|/* Construct a server for a protocol implementation instance listening on a    * port and address. */
+annotation|@
+name|Override
+DECL|method|getServer (Class<?> protocolClass, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|RPC
 operator|.
@@ -1643,6 +1645,9 @@ extends|extends
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -1670,6 +1675,8 @@ argument_list|,
 name|verbose
 argument_list|,
 name|secretManager
+argument_list|,
+name|portRangeConfig
 argument_list|)
 return|;
 block|}
@@ -1769,6 +1776,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1835,11 +1844,13 @@ argument_list|,
 name|verbose
 argument_list|,
 name|secretManager
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**       * Construct an RPC server.      * @param protocolClass - the protocol being registered      *     can be null for compatibility with old usage (see below for details)      * @param protocolImpl the protocol impl that will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      */
-DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|Server
 parameter_list|(
@@ -1880,6 +1891,9 @@ extends|extends
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -1912,6 +1926,8 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|secretManager
+argument_list|,
+name|portRangeConfig
 argument_list|)
 expr_stmt|;
 name|this

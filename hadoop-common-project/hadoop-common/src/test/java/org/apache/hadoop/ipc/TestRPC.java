@@ -1474,7 +1474,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|org
 operator|.
@@ -1526,6 +1526,9 @@ extends|extends
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
