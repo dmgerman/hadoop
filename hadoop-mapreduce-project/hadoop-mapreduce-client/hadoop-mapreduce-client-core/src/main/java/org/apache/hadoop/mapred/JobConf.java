@@ -620,7 +620,7 @@ argument_list|(
 literal|"(?:classes/|lib/).*"
 argument_list|)
 decl_stmt|;
-comment|/**    * Configuration key to set the java command line options for the child    * map and reduce tasks.    *     * Java opts for the task tracker child processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_TASK_ULIMIT} can be used to     * control the maximum virtual memory of the child processes.    *     * The configuration variable {@link #MAPRED_TASK_ENV} can be used to pass     * other environment variables to the child processes.    *     * @deprecated Use {@link #MAPRED_MAP_TASK_JAVA_OPTS} or     *                 {@link #MAPRED_REDUCE_TASK_JAVA_OPTS}    */
+comment|/**    * Configuration key to set the java command line options for the child    * map and reduce tasks.    *     * Java opts for the task tracker child processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_TASK_ENV} can be used to pass     * other environment variables to the child processes.    *     * @deprecated Use {@link #MAPRED_MAP_TASK_JAVA_OPTS} or     *                 {@link #MAPRED_REDUCE_TASK_JAVA_OPTS}    */
 annotation|@
 name|Deprecated
 DECL|field|MAPRED_TASK_JAVA_OPTS
@@ -632,7 +632,7 @@ name|MAPRED_TASK_JAVA_OPTS
 init|=
 literal|"mapred.child.java.opts"
 decl_stmt|;
-comment|/**    * Configuration key to set the java command line options for the map tasks.    *     * Java opts for the task tracker child map processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_MAP_TASK_ULIMIT} can be used to     * control the maximum virtual memory of the map processes.    *     * The configuration variable {@link #MAPRED_MAP_TASK_ENV} can be used to pass     * other environment variables to the map processes.    */
+comment|/**    * Configuration key to set the java command line options for the map tasks.    *     * Java opts for the task tracker child map processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_MAP_TASK_ENV} can be used to pass     * other environment variables to the map processes.    */
 DECL|field|MAPRED_MAP_TASK_JAVA_OPTS
 specifier|public
 specifier|static
@@ -644,7 +644,7 @@ name|JobContext
 operator|.
 name|MAP_JAVA_OPTS
 decl_stmt|;
-comment|/**    * Configuration key to set the java command line options for the reduce tasks.    *     * Java opts for the task tracker child reduce processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_REDUCE_TASK_ULIMIT} can be used      * to control the maximum virtual memory of the reduce processes.    *     * The configuration variable {@link #MAPRED_REDUCE_TASK_ENV} can be used to     * pass process environment variables to the reduce processes.    */
+comment|/**    * Configuration key to set the java command line options for the reduce tasks.    *     * Java opts for the task tracker child reduce processes.    * The following symbol, if present, will be interpolated: @taskid@.     * It is replaced by current TaskID. Any other occurrences of '@' will go     * unchanged.    * For example, to enable verbose gc logging to a file named for the taskid in    * /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:    *          -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc    *     * The configuration variable {@link #MAPRED_REDUCE_TASK_ENV} can be used to     * pass process environment variables to the reduce processes.    */
 DECL|field|MAPRED_REDUCE_TASK_JAVA_OPTS
 specifier|public
 specifier|static
@@ -665,7 +665,7 @@ name|DEFAULT_MAPRED_TASK_JAVA_OPTS
 init|=
 literal|"-Xmx200m"
 decl_stmt|;
-comment|/**    * Configuration key to set the maximum virutal memory available to the child    * map and reduce tasks (in kilo-bytes).    *     * Note: This must be greater than or equal to the -Xmx passed to the JavaVM    *       via {@link #MAPRED_TASK_JAVA_OPTS}, else the VM might not start.    *     * @deprecated Use {@link #MAPRED_MAP_TASK_ULIMIT} or     *                 {@link #MAPRED_REDUCE_TASK_ULIMIT}    */
+comment|/**    * @deprecated    * Configuration key to set the maximum virtual memory available to the child    * map and reduce tasks (in kilo-bytes). This has been deprecated and will no    * longer have any effect.    */
 annotation|@
 name|Deprecated
 DECL|field|MAPRED_TASK_ULIMIT
@@ -677,7 +677,9 @@ name|MAPRED_TASK_ULIMIT
 init|=
 literal|"mapred.child.ulimit"
 decl_stmt|;
-comment|/**    * Configuration key to set the maximum virutal memory available to the    * map tasks (in kilo-bytes).    *     * Note: This must be greater than or equal to the -Xmx passed to the JavaVM    *       via {@link #MAPRED_MAP_TASK_JAVA_OPTS}, else the VM might not start.    */
+comment|/**    * @deprecated    * Configuration key to set the maximum virtual memory available to the    * map tasks (in kilo-bytes). This has been deprecated and will no    * longer have any effect.    */
+annotation|@
+name|Deprecated
 DECL|field|MAPRED_MAP_TASK_ULIMIT
 specifier|public
 specifier|static
@@ -685,11 +687,11 @@ specifier|final
 name|String
 name|MAPRED_MAP_TASK_ULIMIT
 init|=
-name|JobContext
-operator|.
-name|MAP_ULIMIT
+literal|"mapreduce.map.ulimit"
 decl_stmt|;
-comment|/**    * Configuration key to set the maximum virutal memory available to the    * reduce tasks (in kilo-bytes).    *     * Note: This must be greater than or equal to the -Xmx passed to the JavaVM    *       via {@link #MAPRED_REDUCE_TASK_JAVA_OPTS}, else the VM might not start.    */
+comment|/**    * @deprecated    * Configuration key to set the maximum virtual memory available to the    * reduce tasks (in kilo-bytes). This has been deprecated and will no    * longer have any effect.    */
+annotation|@
+name|Deprecated
 DECL|field|MAPRED_REDUCE_TASK_ULIMIT
 specifier|public
 specifier|static
@@ -697,9 +699,7 @@ specifier|final
 name|String
 name|MAPRED_REDUCE_TASK_ULIMIT
 init|=
-name|JobContext
-operator|.
-name|REDUCE_ULIMIT
+literal|"mapreduce.reduce.ulimit"
 decl_stmt|;
 comment|/**    * Configuration key to set the environment of the child map/reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code>.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable.</li>    *</ul>    *     * @deprecated Use {@link #MAPRED_MAP_TASK_ENV} or     *                 {@link #MAPRED_REDUCE_TASK_ENV}    */
 annotation|@
@@ -4297,6 +4297,87 @@ operator|+
 name|JobConf
 operator|.
 name|MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|get
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_TASK_ULIMIT
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|JobConf
+operator|.
+name|deprecatedString
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_TASK_ULIMIT
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|get
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_MAP_TASK_ULIMIT
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|JobConf
+operator|.
+name|deprecatedString
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_MAP_TASK_ULIMIT
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|get
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_REDUCE_TASK_ULIMIT
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|JobConf
+operator|.
+name|deprecatedString
+argument_list|(
+name|JobConf
+operator|.
+name|MAPRED_REDUCE_TASK_ULIMIT
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
