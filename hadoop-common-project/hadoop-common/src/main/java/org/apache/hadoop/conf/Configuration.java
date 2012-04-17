@@ -142,6 +142,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URL
 import|;
 end_import
@@ -557,6 +567,20 @@ operator|.
 name|io
 operator|.
 name|WritableUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetUtils
 import|;
 end_import
 
@@ -4016,6 +4040,46 @@ name|values
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get the socket address for<code>name</code> property as a    *<code>InetSocketAddress</code>.    * @param name property name.    * @param defaultAddress the default value    * @param defaultPort the default port    * @return InetSocketAddress    */
+DECL|method|getSocketAddr ( String name, String defaultAddress, int defaultPort)
+specifier|public
+name|InetSocketAddress
+name|getSocketAddr
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|String
+name|defaultAddress
+parameter_list|,
+name|int
+name|defaultPort
+parameter_list|)
+block|{
+specifier|final
+name|String
+name|address
+init|=
+name|get
+argument_list|(
+name|name
+argument_list|,
+name|defaultAddress
+argument_list|)
+decl_stmt|;
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|address
+argument_list|,
+name|defaultPort
+argument_list|,
+name|name
+argument_list|)
+return|;
 block|}
 comment|/**    * Load a class by name.    *     * @param name the class name.    * @return the class object.    * @throws ClassNotFoundException if the class is not found.    */
 DECL|method|getClassByName (String name)
