@@ -525,6 +525,32 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|proxy
+operator|!=
+literal|null
+condition|)
+block|{
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+name|this
+operator|.
+name|proxy
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|allocate (AllocateRequest request)

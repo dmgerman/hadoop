@@ -32,7 +32,43 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -44,7 +80,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|*
+name|any
 import|;
 end_import
 
@@ -56,7 +92,43 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -798,6 +870,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|ApplicationTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -1161,6 +1253,14 @@ argument_list|,
 name|amLivelinessMonitor
 argument_list|,
 literal|null
+argument_list|,
+operator|new
+name|ApplicationTokenSecretManager
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|scheduler

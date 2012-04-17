@@ -32,7 +32,43 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -61,6 +97,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -426,6 +476,26 @@ name|SchedulerNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|ApplicationTokenSecretManager
+import|;
+end_import
+
 begin_class
 DECL|class|TestUtils
 specifier|public
@@ -546,6 +616,14 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+operator|new
+name|ApplicationTokenSecretManager
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return

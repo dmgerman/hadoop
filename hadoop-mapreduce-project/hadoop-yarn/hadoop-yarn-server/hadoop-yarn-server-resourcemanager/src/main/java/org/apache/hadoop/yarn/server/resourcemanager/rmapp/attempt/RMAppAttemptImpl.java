@@ -1019,6 +1019,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
+argument_list|)
 DECL|class|RMAppAttemptImpl
 specifier|public
 class|class
@@ -1101,11 +1110,6 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 DECL|field|eventHandler
 specifier|private
 specifier|final
@@ -3050,11 +3054,6 @@ extends|extends
 name|BaseTransition
 block|{
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|Override
 DECL|method|transition (RMAppAttemptImpl appAttempt, RMAppAttemptEvent event)
 specifier|public
@@ -3462,6 +3461,14 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
+name|ApplicationAttemptId
+name|appAttemptId
+init|=
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+decl_stmt|;
 comment|// Tell the AMS. Unregister from the ApplicationMasterService
 name|appAttempt
 operator|.
@@ -3469,19 +3476,14 @@ name|masterService
 operator|.
 name|unregisterAttempt
 argument_list|(
-name|appAttempt
-operator|.
-name|applicationAttemptId
+name|appAttemptId
 argument_list|)
 expr_stmt|;
 comment|// Tell the application and the scheduler
 name|ApplicationId
 name|applicationId
 init|=
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
+name|appAttemptId
 operator|.
 name|getApplicationId
 argument_list|()
@@ -3587,13 +3589,23 @@ argument_list|(
 operator|new
 name|AppRemovedSchedulerEvent
 argument_list|(
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
+name|appAttemptId
 argument_list|,
 name|finalAttemptState
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Remove the AppAttempt from the ApplicationTokenSecretManager
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getApplicationTokenSecretManager
+argument_list|()
+operator|.
+name|applicationMasterFinished
+argument_list|(
+name|appAttemptId
 argument_list|)
 expr_stmt|;
 block|}

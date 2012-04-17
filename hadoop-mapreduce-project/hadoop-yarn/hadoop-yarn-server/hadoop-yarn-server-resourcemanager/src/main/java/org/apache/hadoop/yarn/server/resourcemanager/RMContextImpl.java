@@ -254,6 +254,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|ApplicationTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|DelegationTokenRenewer
 import|;
 end_import
@@ -354,7 +374,13 @@ specifier|final
 name|DelegationTokenRenewer
 name|tokenRenewer
 decl_stmt|;
-DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, DelegationTokenRenewer tokenRenewer)
+DECL|field|appTokenSecretManager
+specifier|private
+specifier|final
+name|ApplicationTokenSecretManager
+name|appTokenSecretManager
+decl_stmt|;
+DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -372,6 +398,9 @@ name|amLivelinessMonitor
 parameter_list|,
 name|DelegationTokenRenewer
 name|tokenRenewer
+parameter_list|,
+name|ApplicationTokenSecretManager
+name|appTokenSecretManager
 parameter_list|)
 block|{
 name|this
@@ -403,6 +432,12 @@ operator|.
 name|tokenRenewer
 operator|=
 name|tokenRenewer
+expr_stmt|;
+name|this
+operator|.
+name|appTokenSecretManager
+operator|=
+name|appTokenSecretManager
 expr_stmt|;
 block|}
 annotation|@
@@ -538,6 +573,20 @@ parameter_list|()
 block|{
 return|return
 name|tokenRenewer
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationTokenSecretManager ()
+specifier|public
+name|ApplicationTokenSecretManager
+name|getApplicationTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appTokenSecretManager
 return|;
 block|}
 block|}

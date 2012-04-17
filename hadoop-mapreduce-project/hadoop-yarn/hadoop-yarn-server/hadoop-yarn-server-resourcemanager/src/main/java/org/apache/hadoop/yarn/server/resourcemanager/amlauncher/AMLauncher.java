@@ -522,22 +522,6 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
 name|ContainerTokenIdentifier
 import|;
 end_import
@@ -744,12 +728,6 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|field|applicationTokenSecretManager
-specifier|private
-specifier|final
-name|ApplicationTokenSecretManager
-name|applicationTokenSecretManager
-decl_stmt|;
 DECL|field|clientToAMSecretManager
 specifier|private
 specifier|final
@@ -779,7 +757,7 @@ specifier|final
 name|EventHandler
 name|handler
 decl_stmt|;
-DECL|method|AMLauncher (RMContext rmContext, RMAppAttempt application, AMLauncherEventType eventType, ApplicationTokenSecretManager applicationTokenSecretManager, ClientToAMSecretManager clientToAMSecretManager, Configuration conf)
+DECL|method|AMLauncher (RMContext rmContext, RMAppAttempt application, AMLauncherEventType eventType, ClientToAMSecretManager clientToAMSecretManager, Configuration conf)
 specifier|public
 name|AMLauncher
 parameter_list|(
@@ -791,9 +769,6 @@ name|application
 parameter_list|,
 name|AMLauncherEventType
 name|eventType
-parameter_list|,
-name|ApplicationTokenSecretManager
-name|applicationTokenSecretManager
 parameter_list|,
 name|ClientToAMSecretManager
 name|clientToAMSecretManager
@@ -813,12 +788,6 @@ operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|this
-operator|.
-name|applicationTokenSecretManager
-operator|=
-name|applicationTokenSecretManager
 expr_stmt|;
 name|this
 operator|.
@@ -1032,6 +1001,7 @@ name|stopRequest
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Protected. For tests.
 DECL|method|getContainerMgrProxy ( final ContainerId containerId)
 specifier|protected
 name|ContainerManager
@@ -1530,7 +1500,10 @@ name|id
 argument_list|,
 name|this
 operator|.
-name|applicationTokenSecretManager
+name|rmContext
+operator|.
+name|getApplicationTokenSecretManager
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|String

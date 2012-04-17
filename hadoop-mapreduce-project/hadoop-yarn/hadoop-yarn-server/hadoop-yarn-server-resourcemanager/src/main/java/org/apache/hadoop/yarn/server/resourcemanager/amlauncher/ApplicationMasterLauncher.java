@@ -126,22 +126,6 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
 name|client
 operator|.
 name|ClientToAMSecretManager
@@ -260,11 +244,6 @@ name|Runnable
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|applicationTokenSecretManager
-specifier|protected
-name|ApplicationTokenSecretManager
-name|applicationTokenSecretManager
-decl_stmt|;
 DECL|field|clientToAMSecretManager
 specifier|private
 name|ClientToAMSecretManager
@@ -276,13 +255,10 @@ specifier|final
 name|RMContext
 name|context
 decl_stmt|;
-DECL|method|ApplicationMasterLauncher ( ApplicationTokenSecretManager applicationTokenSecretManager, ClientToAMSecretManager clientToAMSecretManager, RMContext context)
+DECL|method|ApplicationMasterLauncher ( ClientToAMSecretManager clientToAMSecretManager, RMContext context)
 specifier|public
 name|ApplicationMasterLauncher
 parameter_list|(
-name|ApplicationTokenSecretManager
-name|applicationTokenSecretManager
-parameter_list|,
 name|ClientToAMSecretManager
 name|clientToAMSecretManager
 parameter_list|,
@@ -341,12 +317,6 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|applicationTokenSecretManager
-operator|=
-name|applicationTokenSecretManager
-expr_stmt|;
-name|this
-operator|.
 name|clientToAMSecretManager
 operator|=
 name|clientToAMSecretManager
@@ -392,8 +362,6 @@ argument_list|,
 name|application
 argument_list|,
 name|event
-argument_list|,
-name|applicationTokenSecretManager
 argument_list|,
 name|clientToAMSecretManager
 argument_list|,
