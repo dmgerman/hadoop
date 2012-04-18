@@ -5425,7 +5425,16 @@ name|RMContainer
 name|reservedContainer
 parameter_list|)
 block|{
-comment|// Reserved...
+comment|// Clearly we need containers for this application...
+if|if
+condition|(
+name|type
+operator|==
+name|NodeType
+operator|.
+name|OFF_SWITCH
+condition|)
+block|{
 if|if
 condition|(
 name|reservedContainer
@@ -5437,16 +5446,6 @@ return|return
 literal|true
 return|;
 block|}
-comment|// Clearly we need containers for this application...
-if|if
-condition|(
-name|type
-operator|==
-name|NodeType
-operator|.
-name|OFF_SWITCH
-condition|)
-block|{
 comment|// 'Delay' off-switch
 name|ResourceRequest
 name|offSwitchRequest

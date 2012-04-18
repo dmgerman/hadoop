@@ -152,7 +152,12 @@ specifier|private
 name|ExportedBlockKeys
 name|exportedKeys
 decl_stmt|;
-DECL|method|DatanodeRegistration (DatanodeID dn, StorageInfo info, ExportedBlockKeys keys)
+DECL|field|softwareVersion
+specifier|private
+name|String
+name|softwareVersion
+decl_stmt|;
+DECL|method|DatanodeRegistration (DatanodeID dn, StorageInfo info, ExportedBlockKeys keys, String softwareVersion)
 specifier|public
 name|DatanodeRegistration
 parameter_list|(
@@ -164,6 +169,9 @@ name|info
 parameter_list|,
 name|ExportedBlockKeys
 name|keys
+parameter_list|,
+name|String
+name|softwareVersion
 parameter_list|)
 block|{
 name|super
@@ -182,6 +190,12 @@ operator|.
 name|exportedKeys
 operator|=
 name|keys
+expr_stmt|;
+name|this
+operator|.
+name|softwareVersion
+operator|=
+name|softwareVersion
 expr_stmt|;
 block|}
 DECL|method|DatanodeRegistration (String ipAddr, int xferPort)
@@ -302,6 +316,32 @@ parameter_list|()
 block|{
 return|return
 name|exportedKeys
+return|;
+block|}
+DECL|method|setSoftwareVersion (String softwareVersion)
+specifier|public
+name|void
+name|setSoftwareVersion
+parameter_list|(
+name|String
+name|softwareVersion
+parameter_list|)
+block|{
+name|this
+operator|.
+name|softwareVersion
+operator|=
+name|softwareVersion
+expr_stmt|;
+block|}
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
+parameter_list|()
+block|{
+return|return
+name|softwareVersion
 return|;
 block|}
 annotation|@

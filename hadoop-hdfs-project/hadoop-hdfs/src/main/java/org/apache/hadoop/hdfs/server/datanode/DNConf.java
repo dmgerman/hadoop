@@ -245,6 +245,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -368,6 +400,11 @@ DECL|field|writePacketSize
 specifier|final
 name|int
 name|writePacketSize
+decl_stmt|;
+DECL|field|minimumNameNodeVersion
+specifier|final
+name|String
+name|minimumNameNodeVersion
 decl_stmt|;
 DECL|method|DNConf (Configuration conf)
 specifier|public
@@ -592,6 +629,31 @@ argument_list|,
 name|DFS_DATANODE_SYNCONCLOSE_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|minimumNameNodeVersion
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_KEY
+argument_list|,
+name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
+DECL|method|getMinimumNameNodeVersion ()
+name|String
+name|getMinimumNameNodeVersion
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|minimumNameNodeVersion
+return|;
 block|}
 block|}
 end_class

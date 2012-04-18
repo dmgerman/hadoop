@@ -552,6 +552,26 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
+name|hs
+operator|.
+name|HistoryFileManager
+operator|.
+name|HistoryFileInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
 name|jobhistory
 operator|.
 name|JobHistoryUtils
@@ -697,11 +717,11 @@ name|String
 name|user
 decl_stmt|;
 comment|//Can be picked up from JobInfo
-DECL|field|confFile
+DECL|field|info
 specifier|private
 specifier|final
-name|Path
-name|confFile
+name|HistoryFileInfo
+name|info
 decl_stmt|;
 DECL|field|jobInfo
 specifier|private
@@ -804,7 +824,7 @@ specifier|private
 name|JobACLsManager
 name|aclsMgr
 decl_stmt|;
-DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName, Path confFile, JobACLsManager aclsMgr)
+DECL|method|CompletedJob (Configuration conf, JobId jobId, Path historyFile, boolean loadTasks, String userName, HistoryFileInfo info, JobACLsManager aclsMgr)
 specifier|public
 name|CompletedJob
 parameter_list|(
@@ -823,8 +843,8 @@ parameter_list|,
 name|String
 name|userName
 parameter_list|,
-name|Path
-name|confFile
+name|HistoryFileInfo
+name|info
 parameter_list|,
 name|JobACLsManager
 name|aclsMgr
@@ -865,9 +885,9 @@ name|userName
 expr_stmt|;
 name|this
 operator|.
-name|confFile
+name|info
 operator|=
-name|confFile
+name|info
 expr_stmt|;
 name|this
 operator|.
@@ -1091,7 +1111,8 @@ name|report
 operator|.
 name|setJobFile
 argument_list|(
-name|confFile
+name|getConfFile
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -2382,7 +2403,28 @@ name|getConfFile
 parameter_list|()
 block|{
 return|return
-name|confFile
+name|info
+operator|.
+name|getConfFile
+argument_list|()
+return|;
+block|}
+comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.app.job.Job#loadConfFile()    */
+annotation|@
+name|Override
+DECL|method|loadConfFile ()
+specifier|public
+name|Configuration
+name|loadConfFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|info
+operator|.
+name|loadConfFile
+argument_list|()
 return|;
 block|}
 annotation|@

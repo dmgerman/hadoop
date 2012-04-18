@@ -72,7 +72,7 @@ block|,
 DECL|enumConstant|H04
 name|H04
 argument_list|(
-literal|"JobClientExecutor error, {0}"
+literal|"Invalid configuration, it has not be created by the FileSystemAccessService"
 argument_list|)
 block|,
 DECL|enumConstant|H05
@@ -96,13 +96,25 @@ block|,
 DECL|enumConstant|H08
 name|H08
 argument_list|(
-literal|""
+literal|"{0}"
 argument_list|)
 block|,
 DECL|enumConstant|H09
 name|H09
 argument_list|(
 literal|"Invalid FileSystemAccess security mode [{0}]"
+argument_list|)
+block|,
+DECL|enumConstant|H10
+name|H10
+argument_list|(
+literal|"Hadoop config directory not found [{0}]"
+argument_list|)
+block|,
+DECL|enumConstant|H11
+name|H11
+argument_list|(
+literal|"Could not load Hadoop config files, {0}"
 argument_list|)
 block|;
 DECL|field|template

@@ -250,7 +250,7 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-comment|/**    * Test calls backs {@link JournalListener#rollLogs(JournalService, long)} and    * {@link JournalListener#journal(JournalService, long, int, byte[])} are    * called.    */
+comment|/**    * Test calls backs {@link JournalListener#startLogSegment(JournalService, long)} and    * {@link JournalListener#journal(JournalService, long, int, byte[])} are    * called.    */
 annotation|@
 name|Test
 DECL|method|testCallBacks ()
@@ -455,7 +455,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|rollLogs
+name|startLogSegment
 argument_list|(
 name|Mockito
 operator|.

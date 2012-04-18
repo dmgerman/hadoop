@@ -3141,15 +3141,25 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ContainerAllocator
+name|MRAppContainerAllocator
 argument_list|()
+return|;
+block|}
+DECL|class|MRAppContainerAllocator
+specifier|protected
+class|class
+name|MRAppContainerAllocator
+implements|implements
+name|ContainerAllocator
 block|{
+DECL|field|containerCount
 specifier|private
 name|int
 name|containerCount
 decl_stmt|;
 annotation|@
 name|Override
+DECL|method|handle (ContainerAllocatorEvent event)
 specifier|public
 name|void
 name|handle
@@ -3334,8 +3344,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-return|;
 block|}
 annotation|@
 name|Override

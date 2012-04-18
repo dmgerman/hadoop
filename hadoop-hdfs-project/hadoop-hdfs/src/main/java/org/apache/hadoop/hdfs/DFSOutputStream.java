@@ -1025,6 +1025,7 @@ name|progress
 decl_stmt|;
 DECL|field|blockReplication
 specifier|private
+specifier|final
 name|short
 name|blockReplication
 decl_stmt|;
@@ -3585,9 +3586,21 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to add a datanode:"
+literal|"Failed to add a datanode.  "
 operator|+
-literal|" nodes.length != original.length + 1, nodes="
+literal|"User may turn off this feature by setting "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_POLICY_KEY
+operator|+
+literal|" in configuration, where the current policy is "
+operator|+
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailure
+operator|+
+literal|".  (Nodes: current="
 operator|+
 name|Arrays
 operator|.
@@ -3604,6 +3617,8 @@ name|asList
 argument_list|(
 name|original
 argument_list|)
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}

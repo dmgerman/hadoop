@@ -922,6 +922,70 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Construct FSEditLog with default configuration, taking editDirs from NNStorage    *     * @param storage Storage object used by namenode    */
+DECL|method|getFSEditLog (NNStorage storage)
+specifier|private
+specifier|static
+name|FSEditLog
+name|getFSEditLog
+parameter_list|(
+name|NNStorage
+name|storage
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+comment|// Make sure the edits dirs are set in the provided configuration object.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_DIR_KEY
+argument_list|,
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|storage
+operator|.
+name|getEditsDirectories
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|FSEditLog
+name|log
+init|=
+operator|new
+name|FSEditLog
+argument_list|(
+name|conf
+argument_list|,
+name|storage
+argument_list|,
+name|FSNamesystem
+operator|.
+name|getNamespaceEditsDirs
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+name|log
+return|;
+block|}
 comment|/**    * Test case for an empty edit log from a prior version of Hadoop.    */
 DECL|method|testPreTxIdEditLogNoEdits ()
 specifier|public
@@ -4259,8 +4323,7 @@ argument_list|)
 expr_stmt|;
 name|log
 operator|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -4314,8 +4377,7 @@ expr_stmt|;
 comment|// nothing starting at 101
 name|log
 operator|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -4354,8 +4416,7 @@ argument_list|)
 expr_stmt|;
 name|log
 operator|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -4395,8 +4456,7 @@ expr_stmt|;
 comment|// short log at 1
 name|log
 operator|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -4450,8 +4510,7 @@ argument_list|)
 expr_stmt|;
 name|log
 operator|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -4923,8 +4982,7 @@ expr_stmt|;
 name|FSEditLog
 name|editlog
 init|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -5308,8 +5366,7 @@ decl_stmt|;
 name|FSEditLog
 name|editlog
 init|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)
@@ -5567,8 +5624,7 @@ expr_stmt|;
 name|FSEditLog
 name|editlog
 init|=
-operator|new
-name|FSEditLog
+name|getFSEditLog
 argument_list|(
 name|storage
 argument_list|)

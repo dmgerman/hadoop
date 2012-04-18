@@ -42,6 +42,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|server
@@ -113,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Bootstrap class that manages the initialization and destruction of the  * HttpFSServer server, it is a<code>javax.servlet.ServletContextListener</code>  * implementation that is wired in HttpFSServer's WAR<code>WEB-INF/web.xml</code>.  *<p/>  * It provides acces to the server context via the singleton {@link #get}.  *<p/>  * All the configuration is loaded from configuration properties prefixed  * with<code>httpfs.</code>.  */
+comment|/**  * Bootstrap class that manages the initialization and destruction of the  * HttpFSServer server, it is a<code>javax.servlet.ServletContextListener  *</code> implementation that is wired in HttpFSServer's WAR  *<code>WEB-INF/web.xml</code>.  *<p/>  * It provides acces to the server context via the singleton {@link #get}.  *<p/>  * All the configuration is loaded from configuration properties prefixed  * with<code>httpfs.</code>.  */
 end_comment
 
 begin_class
@@ -244,7 +258,7 @@ name|config
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initializes the HttpFSServer server, loads configuration and required services.    *    * @throws ServerException thrown if HttpFSServer server could not be initialized.    */
+comment|/**    * Initializes the HttpFSServer server, loads configuration and required    * services.    *    * @throws ServerException thrown if HttpFSServer server could not be    * initialized.    */
 annotation|@
 name|Override
 DECL|method|init ()
@@ -310,12 +324,14 @@ operator|.
 name|class
 argument_list|)
 operator|.
-name|getDefaultConfiguration
+name|getFileSystemConfiguration
 argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|"fs.default.name"
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -339,7 +355,7 @@ name|destroy
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns HttpFSServer server singleton, configuration and services are accessible through it.    *    * @return the HttpFSServer server singleton.    */
+comment|/**    * Returns HttpFSServer server singleton, configuration and services are    * accessible through it.    *    * @return the HttpFSServer server singleton.    */
 DECL|method|get ()
 specifier|public
 specifier|static

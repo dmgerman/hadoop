@@ -520,20 +520,6 @@ end_import
 
 begin_import
 import|import
-name|clover
-operator|.
-name|org
-operator|.
-name|jfree
-operator|.
-name|util
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google

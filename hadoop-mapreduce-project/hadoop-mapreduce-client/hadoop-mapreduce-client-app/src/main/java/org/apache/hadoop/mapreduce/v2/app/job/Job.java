@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -39,6 +49,20 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -374,6 +398,14 @@ DECL|method|getConfFile ()
 name|Path
 name|getConfFile
 parameter_list|()
+function_decl|;
+comment|/**    * @return a parsed version of the config files pointed to by     * {@link #getConfFile()}.    * @throws IOException on any error trying to load the conf file.     */
+DECL|method|loadConfFile ()
+name|Configuration
+name|loadConfFile
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * @return the ACLs for this job for each type of JobACL given.     */
 DECL|method|getJobACLs ()

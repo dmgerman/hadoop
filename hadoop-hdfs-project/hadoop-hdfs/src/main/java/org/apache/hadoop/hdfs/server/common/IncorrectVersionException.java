@@ -103,6 +103,69 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|IncorrectVersionException (String message)
+specifier|public
+name|IncorrectVersionException
+parameter_list|(
+name|String
+name|message
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|IncorrectVersionException (String minimumVersion, String reportedVersion, String remoteDaemon, String thisDaemon)
+specifier|public
+name|IncorrectVersionException
+parameter_list|(
+name|String
+name|minimumVersion
+parameter_list|,
+name|String
+name|reportedVersion
+parameter_list|,
+name|String
+name|remoteDaemon
+parameter_list|,
+name|String
+name|thisDaemon
+parameter_list|)
+block|{
+name|this
+argument_list|(
+literal|"The reported "
+operator|+
+name|remoteDaemon
+operator|+
+literal|" version is too low to communicate"
+operator|+
+literal|" with this "
+operator|+
+name|thisDaemon
+operator|+
+literal|". "
+operator|+
+name|remoteDaemon
+operator|+
+literal|" version: '"
+operator|+
+name|reportedVersion
+operator|+
+literal|"' Minimum "
+operator|+
+name|remoteDaemon
+operator|+
+literal|" version: '"
+operator|+
+name|minimumVersion
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|IncorrectVersionException (int versionReported, String ofWhat)
 specifier|public
 name|IncorrectVersionException
@@ -140,49 +203,7 @@ name|int
 name|versionExpected
 parameter_list|)
 block|{
-name|super
-argument_list|(
-literal|"Unexpected version "
-operator|+
-operator|(
-name|ofWhat
-operator|==
-literal|null
-condition|?
-literal|""
-else|:
-literal|"of "
-operator|+
-name|ofWhat
-operator|)
-operator|+
-literal|". Reported: "
-operator|+
-name|versionReported
-operator|+
-literal|". Expecting = "
-operator|+
-name|versionExpected
-operator|+
-literal|"."
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|IncorrectVersionException (String versionReported, String ofWhat, String versionExpected)
-specifier|public
-name|IncorrectVersionException
-parameter_list|(
-name|String
-name|versionReported
-parameter_list|,
-name|String
-name|ofWhat
-parameter_list|,
-name|String
-name|versionExpected
-parameter_list|)
-block|{
-name|super
+name|this
 argument_list|(
 literal|"Unexpected version "
 operator|+

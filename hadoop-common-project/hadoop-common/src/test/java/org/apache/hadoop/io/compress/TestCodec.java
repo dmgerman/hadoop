@@ -4862,7 +4862,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"hadoop.native.lib"
+name|CommonConfigurationKeys
+operator|.
+name|IO_NATIVE_LIB_AVAILABLE_KEY
 argument_list|,
 literal|false
 argument_list|)

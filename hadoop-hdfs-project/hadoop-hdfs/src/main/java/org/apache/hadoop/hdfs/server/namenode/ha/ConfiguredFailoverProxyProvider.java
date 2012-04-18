@@ -78,6 +78,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -548,15 +558,23 @@ name|uri
 argument_list|)
 throw|;
 block|}
+name|Collection
+argument_list|<
+name|InetSocketAddress
+argument_list|>
+name|addressesOfNns
+init|=
+name|addressesInNN
+operator|.
+name|values
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|InetSocketAddress
 name|address
 range|:
-name|addressesInNN
-operator|.
-name|values
-argument_list|()
+name|addressesOfNns
 control|)
 block|{
 name|proxies
@@ -573,6 +591,7 @@ name|address
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// The client may have a delegation token set for the logical
 comment|// URI of the cluster. Clone this token to apply to each of the
 comment|// underlying IPC addresses so that the IPC code can find it.
@@ -584,10 +603,9 @@ name|ugi
 argument_list|,
 name|uri
 argument_list|,
-name|address
+name|addressesOfNns
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(

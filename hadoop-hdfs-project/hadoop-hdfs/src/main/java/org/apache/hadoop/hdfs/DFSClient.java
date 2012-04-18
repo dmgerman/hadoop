@@ -3763,6 +3763,37 @@ return|return
 name|serverDefaults
 return|;
 block|}
+comment|/**    * Get a canonical token service name for this client's tokens.  Null should    * be returned if the client is not using tokens.    * @return the token service for the client    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|}
+argument_list|)
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+operator|(
+name|dtService
+operator|!=
+literal|null
+operator|)
+condition|?
+name|dtService
+operator|.
+name|toString
+argument_list|()
+else|:
+literal|null
+return|;
+block|}
 comment|/**    * @see ClientProtocol#getDelegationToken(Text)    */
 DECL|method|getDelegationToken (Text renewer)
 specifier|public

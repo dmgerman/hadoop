@@ -141,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Provides an API to query jobs that have finished.   */
+comment|/**  * Provides an API to query jobs that have finished.  *   * For those implementing this API be aware that there is no feedback when  * files are removed from HDFS.  You may rely on HistoryFileManager to help  * you know when that has happened if you have not made a complete backup of  * the data stored on HDFS.  */
 end_comment
 
 begin_interface
@@ -215,15 +215,6 @@ comment|/**    * Get a fully parsed job.    * @param jobId the id of the job    
 DECL|method|getFullJob (JobId jobId)
 name|Job
 name|getFullJob
-parameter_list|(
-name|JobId
-name|jobId
-parameter_list|)
-function_decl|;
-comment|/**    * Informs the Storage that a job has been removed from HDFS    * @param jobId the ID of the job that was removed.    */
-DECL|method|jobRemovedFromHDFS (JobId jobId)
-name|void
-name|jobRemovedFromHDFS
 parameter_list|(
 name|JobId
 name|jobId

@@ -1176,6 +1176,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -4977,22 +4991,22 @@ name|DFS_DATANODE_DATA_DIR_KEY
 argument_list|)
 argument_list|)
 throw|;
-comment|//NOTE: the following is true if and only if:
-comment|//      hadoop.security.token.service.use_ip=true
-comment|//since the HDFS does things based on IP:port, we need to add the mapping
-comment|//for IP:port to rackId
+comment|//since the HDFS does things based on host|ip:port, we need to add the
+comment|//mapping for the service to rackId
 name|String
-name|ipAddr
+name|service
 init|=
+name|SecurityUtil
+operator|.
+name|buildTokenService
+argument_list|(
 name|dn
 operator|.
 name|getXferAddress
 argument_list|()
+argument_list|)
 operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|getHostAddress
+name|toString
 argument_list|()
 decl_stmt|;
 if|if
@@ -5002,28 +5016,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|int
-name|port
-init|=
-name|dn
-operator|.
-name|getXferAddress
-argument_list|()
-operator|.
-name|getPort
-argument_list|()
-decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Adding node with IP:port : "
+literal|"Adding node with service : "
 operator|+
-name|ipAddr
-operator|+
-literal|":"
-operator|+
-name|port
+name|service
 operator|+
 literal|" to rack "
 operator|+
@@ -5039,11 +5038,7 @@ name|StaticMapping
 operator|.
 name|addNodeToRack
 argument_list|(
-name|ipAddr
-operator|+
-literal|":"
-operator|+
-name|port
+name|service
 argument_list|,
 name|racks
 index|[

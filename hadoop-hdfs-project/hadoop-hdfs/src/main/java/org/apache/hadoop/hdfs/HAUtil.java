@@ -412,6 +412,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|tokenSelector
+specifier|private
+specifier|static
+specifier|final
+name|DelegationTokenSelector
+name|tokenSelector
+init|=
+operator|new
+name|DelegationTokenSelector
+argument_list|()
+decl_stmt|;
 DECL|method|HAUtil ()
 specifier|private
 name|HAUtil
@@ -1103,8 +1114,8 @@ name|HA_DT_SERVICE_PREFIX
 argument_list|)
 return|;
 block|}
-comment|/**    * Locate a delegation token associated with the given HA cluster URI, and if    * one is found, clone it to also represent the underlying namenode address.    * @param ugi the UGI to modify    * @param haUri the logical URI for the cluster    * @param singleNNAddr one of the NNs in the cluster to which the token    * applies    */
-DECL|method|cloneDelegationTokenForLogicalUri ( UserGroupInformation ugi, URI haUri, InetSocketAddress singleNNAddr)
+comment|/**    * Locate a delegation token associated with the given HA cluster URI, and if    * one is found, clone it to also represent the underlying namenode address.    * @param ugi the UGI to modify    * @param haUri the logical URI for the cluster    * @param nnAddrs collection of NNs in the cluster to which the token    * applies    */
+DECL|method|cloneDelegationTokenForLogicalUri ( UserGroupInformation ugi, URI haUri, Collection<InetSocketAddress> nnAddrs)
 specifier|public
 specifier|static
 name|void
@@ -1116,13 +1127,18 @@ parameter_list|,
 name|URI
 name|haUri
 parameter_list|,
+name|Collection
+argument_list|<
 name|InetSocketAddress
-name|singleNNAddr
+argument_list|>
+name|nnAddrs
 parameter_list|)
 block|{
 name|Text
 name|haService
 init|=
+name|HAUtil
+operator|.
 name|buildTokenServiceForLogicalUri
 argument_list|(
 name|haUri
@@ -1134,25 +1150,33 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|haToken
 init|=
-name|DelegationTokenSelector
+name|tokenSelector
 operator|.
-name|selectHdfsDelegationToken
+name|selectToken
 argument_list|(
 name|haService
 argument_list|,
 name|ugi
+operator|.
+name|getTokens
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
 name|haToken
-operator|==
+operator|!=
 literal|null
 condition|)
 block|{
-comment|// no token
-return|return;
-block|}
+for|for
+control|(
+name|InetSocketAddress
+name|singleNNAddr
+range|:
+name|nnAddrs
+control|)
+block|{
 name|Token
 argument_list|<
 name|DelegationTokenIdentifier
@@ -1168,16 +1192,13 @@ argument_list|(
 name|haToken
 argument_list|)
 decl_stmt|;
-name|specificToken
-operator|.
-name|setService
-argument_list|(
 name|SecurityUtil
 operator|.
-name|buildTokenService
+name|setTokenService
 argument_list|(
+name|specificToken
+argument_list|,
 name|singleNNAddr
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|ugi
@@ -1200,6 +1221,20 @@ operator|+
 name|singleNNAddr
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No HA service delegation token found for logical URI "
+operator|+
+name|haUri
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the internet address of the currently-active NN. This should rarely be    * used, since callers of this method who connect directly to the NN using the    * resulting InetSocketAddress will not be able to connect to the active NN if    * a failover were to occur after this method has been called.    *     * @param fs the file system to get the active address of.    * @return the internet address of the currently-active NN.    * @throws IOException if an error occurs while resolving the active NN.    */
 annotation|@

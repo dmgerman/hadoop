@@ -82,20 +82,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|Path
@@ -347,32 +333,18 @@ specifier|final
 name|AppContext
 name|appContext
 decl_stmt|;
-DECL|field|conf
-specifier|final
-name|Configuration
-name|conf
-decl_stmt|;
-DECL|method|ConfBlock (AppContext appctx, Configuration conf)
+DECL|method|ConfBlock (AppContext appctx)
 annotation|@
 name|Inject
 name|ConfBlock
 parameter_list|(
 name|AppContext
 name|appctx
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|)
 block|{
 name|appContext
 operator|=
 name|appctx
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
 expr_stmt|;
 block|}
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.HtmlBlock#render(org.apache.hadoop.yarn.webapp.view.HtmlBlock.Block)    */
@@ -481,10 +453,6 @@ operator|new
 name|ConfInfo
 argument_list|(
 name|job
-argument_list|,
-name|this
-operator|.
-name|conf
 argument_list|)
 decl_stmt|;
 name|html

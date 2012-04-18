@@ -4367,6 +4367,16 @@ name|getStorageId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|bpRegistration
+operator|.
+name|setSoftwareVersion
+argument_list|(
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|StorageInfo
 name|storageInfo
 init|=

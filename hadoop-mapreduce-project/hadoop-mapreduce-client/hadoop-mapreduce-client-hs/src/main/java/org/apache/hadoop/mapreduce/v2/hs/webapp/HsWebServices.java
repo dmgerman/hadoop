@@ -748,12 +748,6 @@ specifier|private
 name|WebApp
 name|webapp
 decl_stmt|;
-DECL|field|conf
-specifier|private
-specifier|final
-name|Configuration
-name|conf
-decl_stmt|;
 annotation|@
 name|Context
 DECL|field|uriInfo
@@ -784,12 +778,6 @@ operator|.
 name|ctx
 operator|=
 name|ctx
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -1644,10 +1632,6 @@ operator|new
 name|ConfInfo
 argument_list|(
 name|job
-argument_list|,
-name|this
-operator|.
-name|conf
 argument_list|)
 expr_stmt|;
 block|}

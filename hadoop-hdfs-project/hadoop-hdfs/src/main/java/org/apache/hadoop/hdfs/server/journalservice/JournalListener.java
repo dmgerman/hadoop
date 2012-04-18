@@ -112,10 +112,10 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Roll the editlog    * @param service {@link JournalService} making the callback    * @param txid transaction ID to roll at    *     * Any IOException thrown from the listener is thrown back in     * {@link JournalProtocol#startLogSegment}    */
-DECL|method|rollLogs (JournalService service, long txid)
+DECL|method|startLogSegment (JournalService service, long txid)
 specifier|public
 name|void
-name|rollLogs
+name|startLogSegment
 parameter_list|(
 name|JournalService
 name|service

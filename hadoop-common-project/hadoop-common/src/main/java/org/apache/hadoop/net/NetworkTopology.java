@@ -3018,6 +3018,12 @@ name|tempIndex
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|localRackNode
+init|=
+operator|-
+literal|1
+decl_stmt|;
 if|if
 condition|(
 name|reader
@@ -3025,12 +3031,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|int
-name|localRackNode
-init|=
-operator|-
-literal|1
-decl_stmt|;
 comment|//scan the array to find the local node& local rack node
 for|for
 control|(
@@ -3175,6 +3175,11 @@ condition|(
 name|tempIndex
 operator|==
 literal|0
+operator|&&
+name|localRackNode
+operator|==
+operator|-
+literal|1
 operator|&&
 name|nodes
 operator|.

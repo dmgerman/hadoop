@@ -250,7 +250,7 @@ name|hs
 operator|.
 name|HistoryFileManager
 operator|.
-name|MetaInfo
+name|HistoryFileInfo
 import|;
 end_import
 
@@ -512,13 +512,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadJob (MetaInfo metaInfo)
+DECL|method|loadJob (HistoryFileInfo fileInfo)
 specifier|private
 name|Job
 name|loadJob
 parameter_list|(
-name|MetaInfo
-name|metaInfo
+name|HistoryFileInfo
+name|fileInfo
 parameter_list|)
 block|{
 try|try
@@ -526,12 +526,10 @@ block|{
 name|Job
 name|job
 init|=
-name|hsManager
+name|fileInfo
 operator|.
 name|loadJob
-argument_list|(
-name|metaInfo
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -556,6 +554,9 @@ literal|" to loaded job cache"
 argument_list|)
 expr_stmt|;
 block|}
+comment|// We can clobber results here, but that should be OK, because it only
+comment|// means that we may have two identical copies of the same job floating
+comment|// around for a while.
 name|loadedJobCache
 operator|.
 name|put
@@ -584,7 +585,7 @@ name|YarnException
 argument_list|(
 literal|"Could not find/load job: "
 operator|+
-name|metaInfo
+name|fileInfo
 operator|.
 name|getJobId
 argument_list|()
@@ -598,7 +599,6 @@ annotation|@
 name|Override
 DECL|method|getFullJob (JobId jobId)
 specifier|public
-specifier|synchronized
 name|Job
 name|getFullJob
 parameter_list|(
@@ -626,16 +626,37 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|HistoryFileInfo
+name|fileInfo
+init|=
+name|hsManager
+operator|.
+name|getFileInfo
+argument_list|(
+name|jobId
+argument_list|)
+decl_stmt|;
 name|Job
 name|result
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|fileInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|result
+operator|=
 name|loadedJobCache
 operator|.
 name|get
 argument_list|(
 name|jobId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|result
@@ -643,31 +664,45 @@ operator|==
 literal|null
 condition|)
 block|{
-name|MetaInfo
-name|metaInfo
-init|=
-name|hsManager
-operator|.
-name|getMetaInfo
-argument_list|(
-name|jobId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|metaInfo
-operator|!=
-literal|null
-condition|)
-block|{
 name|result
 operator|=
 name|loadJob
 argument_list|(
-name|metaInfo
+name|fileInfo
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|fileInfo
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+name|loadedJobCache
+operator|.
+name|remove
+argument_list|(
+name|jobId
+argument_list|)
+expr_stmt|;
+name|result
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|loadedJobCache
+operator|.
+name|remove
+argument_list|(
+name|jobId
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|result
@@ -729,12 +764,12 @@ try|try
 block|{
 for|for
 control|(
-name|MetaInfo
+name|HistoryFileInfo
 name|mi
 range|:
 name|hsManager
 operator|.
-name|getAllMetaInfo
+name|getAllFileInfo
 argument_list|()
 control|)
 block|{
@@ -784,7 +819,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error trying to scan for all MetaInfos"
+literal|"Error trying to scan for all FileInfos"
 argument_list|,
 name|e
 argument_list|)
@@ -800,25 +835,6 @@ block|}
 return|return
 name|result
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|jobRemovedFromHDFS (JobId jobId)
-specifier|public
-name|void
-name|jobRemovedFromHDFS
-parameter_list|(
-name|JobId
-name|jobId
-parameter_list|)
-block|{
-name|loadedJobCache
-operator|.
-name|remove
-argument_list|(
-name|jobId
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override

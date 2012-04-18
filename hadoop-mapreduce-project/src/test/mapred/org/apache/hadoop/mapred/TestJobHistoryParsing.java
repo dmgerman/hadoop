@@ -571,6 +571,8 @@ name|TaskFinishedEvent
 argument_list|(
 name|tid
 argument_list|,
+literal|null
+argument_list|,
 literal|0
 argument_list|,
 name|TaskType

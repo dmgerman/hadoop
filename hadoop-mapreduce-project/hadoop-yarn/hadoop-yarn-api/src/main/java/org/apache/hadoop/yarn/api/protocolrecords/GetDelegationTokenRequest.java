@@ -52,26 +52,8 @@ name|Evolving
 import|;
 end_import
 
-begin_import
-import|import
-name|clover
-operator|.
-name|org
-operator|.
-name|apache
-operator|.
-name|velocity
-operator|.
-name|runtime
-operator|.
-name|resource
-operator|.
-name|ResourceManager
-import|;
-end_import
-
 begin_comment
-comment|/**  * The request issued by the client to get a delegation token from  * the {@link ResourceManager}.   * for more information.  */
+comment|/**  * The request issued by the client to get a delegation token from  * the {@code ResourceManager}.  * for more information.  */
 end_comment
 
 begin_interface

@@ -1312,6 +1312,53 @@ operator|.
 name|getFinishTime
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|TaskStatus
+operator|.
+name|State
+operator|.
+name|SUCCEEDED
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|taskInfo
+operator|.
+name|status
+argument_list|)
+condition|)
+block|{
+comment|//this is a successful task
+if|if
+condition|(
+name|attemptInfo
+operator|.
+name|getAttemptId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|taskInfo
+operator|.
+name|getSuccessfulAttemptId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// the failed attempt is the one that made this task successful
+comment|// so its no longer successful
+name|taskInfo
+operator|.
+name|status
+operator|=
+literal|null
+expr_stmt|;
+comment|// not resetting the other fields set in handleTaskFinishedEvent()
+block|}
+block|}
 block|}
 DECL|method|handleTaskAttemptStartedEvent (TaskAttemptStartedEvent event)
 specifier|private
@@ -1480,6 +1527,15 @@ operator|.
 name|SUCCEEDED
 operator|.
 name|toString
+argument_list|()
+expr_stmt|;
+name|taskInfo
+operator|.
+name|successfulAttemptId
+operator|=
+name|event
+operator|.
+name|getSuccessfulTaskAttemptId
 argument_list|()
 expr_stmt|;
 block|}
@@ -2795,6 +2851,10 @@ DECL|field|failedDueToAttemptId
 name|TaskAttemptID
 name|failedDueToAttemptId
 decl_stmt|;
+DECL|field|successfulAttemptId
+name|TaskAttemptID
+name|successfulAttemptId
+decl_stmt|;
 DECL|field|attemptsMap
 name|Map
 argument_list|<
@@ -3013,6 +3073,17 @@ parameter_list|()
 block|{
 return|return
 name|failedDueToAttemptId
+return|;
+block|}
+comment|/** @return the attempt Id that caused this task to succeed */
+DECL|method|getSuccessfulAttemptId ()
+specifier|public
+name|TaskAttemptID
+name|getSuccessfulAttemptId
+parameter_list|()
+block|{
+return|return
+name|successfulAttemptId
 return|;
 block|}
 comment|/** @return the error */

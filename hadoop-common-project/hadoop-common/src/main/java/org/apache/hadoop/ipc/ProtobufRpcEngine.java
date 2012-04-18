@@ -1651,7 +1651,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getServer (Class<?> protocol, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
+DECL|method|getServer (Class<?> protocol, Object protocolImpl, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|RPC
 operator|.
@@ -1695,6 +1695,9 @@ extends|extends
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -1722,6 +1725,8 @@ argument_list|,
 name|verbose
 argument_list|,
 name|secretManager
+argument_list|,
+name|portRangeConfig
 argument_list|)
 return|;
 block|}
@@ -1735,8 +1740,8 @@ name|RPC
 operator|.
 name|Server
 block|{
-comment|/**      * Construct an RPC server.      *       * @param protocolClass the class of protocol      * @param protocolImpl the protocolImpl whose methods will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      */
-DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager)
+comment|/**      * Construct an RPC server.      *       * @param protocolClass the class of protocol      * @param protocolImpl the protocolImpl whose methods will be called      * @param conf the configuration to use      * @param bindAddress the address to bind on to listen for connection      * @param port the port to listen for connections on      * @param numHandlers the number of method handler threads to run      * @param verbose whether each call should be logged      * @param portRangeConfig A config parameter that can be used to restrict      * the range of ports used when port is 0 (an ephemeral port)      */
+DECL|method|Server (Class<?> protocolClass, Object protocolImpl, Configuration conf, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 name|Server
 parameter_list|(
@@ -1777,6 +1782,9 @@ extends|extends
 name|TokenIdentifier
 argument_list|>
 name|secretManager
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -1809,6 +1817,8 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|secretManager
+argument_list|,
+name|portRangeConfig
 argument_list|)
 expr_stmt|;
 name|this

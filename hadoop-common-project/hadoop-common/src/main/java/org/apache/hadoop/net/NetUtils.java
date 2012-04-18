@@ -1441,7 +1441,7 @@ name|l
 return|;
 block|}
 block|}
-comment|/**    * Returns InetSocketAddress that a client can use to     * connect to the server. Server.getListenerAddress() is not correct when    * the server binds to "0.0.0.0". This returns "127.0.0.1:port" when    * the getListenerAddress() returns "0.0.0.0:port".    *     * @param server    * @return socket address that a client can use to connect to the server.    */
+comment|/**    * Returns InetSocketAddress that a client can use to     * connect to the server. Server.getListenerAddress() is not correct when    * the server binds to "0.0.0.0". This returns "hostname:port" of the server,    * or "127.0.0.1:port" when the getListenerAddress() returns "0.0.0.0:port".    *     * @param server    * @return socket address that a client can use to connect to the server.    */
 DECL|method|getConnectAddress (Server server)
 specifier|public
 specifier|static
@@ -1471,6 +1471,32 @@ name|isAnyLocalAddress
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
+name|addr
+operator|=
+operator|new
+name|InetSocketAddress
+argument_list|(
+name|InetAddress
+operator|.
+name|getLocalHost
+argument_list|()
+argument_list|,
+name|addr
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|uhe
+parameter_list|)
+block|{
+comment|// shouldn't get here unless the host doesn't have a loopback iface
 name|addr
 operator|=
 name|createSocketAddrForHost
@@ -1483,6 +1509,7 @@ name|getPort
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|addr
@@ -2275,7 +2302,7 @@ try|try
 block|{
 name|addr
 operator|=
-name|InetAddress
+name|SecurityUtil
 operator|.
 name|getByName
 argument_list|(

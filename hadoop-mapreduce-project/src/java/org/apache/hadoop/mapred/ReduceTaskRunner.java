@@ -149,35 +149,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getChildUlimit (JobConf jobConf)
-specifier|public
-name|int
-name|getChildUlimit
-parameter_list|(
-name|JobConf
-name|jobConf
-parameter_list|)
-block|{
-return|return
-name|jobConf
-operator|.
-name|getInt
-argument_list|(
-name|JobConf
-operator|.
-name|MAPRED_REDUCE_TASK_ULIMIT
-argument_list|,
-name|super
-operator|.
-name|getChildUlimit
-argument_list|(
-name|jobConf
-argument_list|)
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getChildEnv (JobConf jobConf)
 specifier|public
 name|String

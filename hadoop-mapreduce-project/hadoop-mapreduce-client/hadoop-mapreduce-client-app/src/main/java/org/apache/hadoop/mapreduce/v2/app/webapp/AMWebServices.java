@@ -168,20 +168,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -787,15 +773,9 @@ specifier|final
 name|App
 name|app
 decl_stmt|;
-DECL|field|conf
-specifier|private
-specifier|final
-name|Configuration
-name|conf
-decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|AMWebServices (final App app, final AppContext context, final Configuration conf)
+DECL|method|AMWebServices (final App app, final AppContext context)
 specifier|public
 name|AMWebServices
 parameter_list|(
@@ -806,10 +786,6 @@ parameter_list|,
 specifier|final
 name|AppContext
 name|context
-parameter_list|,
-specifier|final
-name|Configuration
-name|conf
 parameter_list|)
 block|{
 name|this
@@ -823,12 +799,6 @@ operator|.
 name|app
 operator|=
 name|app
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
 expr_stmt|;
 block|}
 DECL|method|hasAccess (Job job, HttpServletRequest request)
@@ -1801,10 +1771,6 @@ operator|new
 name|ConfInfo
 argument_list|(
 name|job
-argument_list|,
-name|this
-operator|.
-name|conf
 argument_list|)
 expr_stmt|;
 block|}

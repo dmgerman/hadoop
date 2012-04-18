@@ -128,6 +128,20 @@ name|NNStorage
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * NamespaceInfo is returned by the name-node in reply   * to a data-node handshake.  *   */
 end_comment
@@ -163,6 +177,10 @@ init|=
 literal|""
 decl_stmt|;
 comment|// id of the block pool
+DECL|field|softwareVersion
+name|String
+name|softwareVersion
+decl_stmt|;
 DECL|method|NamespaceInfo ()
 specifier|public
 name|NamespaceInfo
@@ -176,7 +194,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, int duVersion, String buildVersion)
+DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, int duVersion, String buildVersion, String softwareVersion)
 specifier|public
 name|NamespaceInfo
 parameter_list|(
@@ -197,6 +215,9 @@ name|duVersion
 parameter_list|,
 name|String
 name|buildVersion
+parameter_list|,
+name|String
+name|softwareVersion
 parameter_list|)
 block|{
 name|super
@@ -227,6 +248,12 @@ operator|.
 name|distributedUpgradeVersion
 operator|=
 name|duVersion
+expr_stmt|;
+name|this
+operator|.
+name|softwareVersion
+operator|=
+name|softwareVersion
 expr_stmt|;
 block|}
 DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, int duVersion)
@@ -265,6 +292,11 @@ name|Storage
 operator|.
 name|getBuildVersion
 argument_list|()
+argument_list|,
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -296,6 +328,16 @@ parameter_list|()
 block|{
 return|return
 name|blockPoolID
+return|;
+block|}
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
+parameter_list|()
+block|{
+return|return
+name|softwareVersion
 return|;
 block|}
 DECL|method|toString ()

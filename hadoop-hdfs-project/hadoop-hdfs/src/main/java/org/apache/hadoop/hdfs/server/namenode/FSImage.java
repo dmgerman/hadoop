@@ -4130,13 +4130,11 @@ condition|)
 block|{
 name|editLog
 operator|.
-name|startLogSegment
+name|startLogSegmentAndWriteHeaderTxn
 argument_list|(
 name|imageTxId
 operator|+
 literal|1
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 comment|// Take this opportunity to note the current transaction.
@@ -5224,7 +5222,7 @@ name|dirNames
 init|=
 name|conf
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|DFSConfigKeys
 operator|.
@@ -5285,7 +5283,7 @@ name|dirNames
 init|=
 name|conf
 operator|.
-name|getStringCollection
+name|getTrimmedStringCollection
 argument_list|(
 name|DFSConfigKeys
 operator|.

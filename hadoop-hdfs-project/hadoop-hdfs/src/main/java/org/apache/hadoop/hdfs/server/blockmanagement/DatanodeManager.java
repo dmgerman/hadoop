@@ -772,6 +772,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|net
 operator|.
 name|InetAddresses
@@ -897,6 +911,14 @@ DECL|field|blockInvalidateLimit
 specifier|final
 name|int
 name|blockInvalidateLimit
+decl_stmt|;
+comment|/**    * Whether or not this cluster has ever consisted of more than 1 rack,    * according to the NetworkTopology.    */
+DECL|field|hasClusterEverBeenMultiRack
+specifier|private
+name|boolean
+name|hasClusterEverBeenMultiRack
+init|=
+literal|false
 decl_stmt|;
 DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf )
 name|DatanodeManager
@@ -1826,6 +1848,11 @@ expr_stmt|;
 name|networktopology
 operator|.
 name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+name|checkIfClusterIsNowMultiRack
 argument_list|(
 name|node
 argument_list|)
@@ -3505,6 +3532,109 @@ name|removeDecomNodeFromList
 argument_list|(
 name|dead
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * @return true if this cluster has ever consisted of multiple racks, even if    *         it is not now a multi-rack cluster.    */
+DECL|method|hasClusterEverBeenMultiRack ()
+name|boolean
+name|hasClusterEverBeenMultiRack
+parameter_list|()
+block|{
+return|return
+name|hasClusterEverBeenMultiRack
+return|;
+block|}
+comment|/**    * Check if the cluster now consists of multiple racks. If it does, and this    * is the first time it's consisted of multiple racks, then process blocks    * that may now be misreplicated.    *     * @param node DN which caused cluster to become multi-rack. Used for logging.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|checkIfClusterIsNowMultiRack (DatanodeDescriptor node)
+name|void
+name|checkIfClusterIsNowMultiRack
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|hasClusterEverBeenMultiRack
+operator|&&
+name|networktopology
+operator|.
+name|getNumOfRacks
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"DN "
+operator|+
+name|node
+operator|+
+literal|" joining cluster has expanded a formerly "
+operator|+
+literal|"single-rack cluster to be multi-rack. "
+decl_stmt|;
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
+condition|)
+block|{
+name|message
+operator|+=
+literal|"Re-checking all blocks for replication, since they should "
+operator|+
+literal|"now be replicated cross-rack"
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|message
+operator|+=
+literal|"Not checking for mis-replicated blocks because this NN is "
+operator|+
+literal|"not yet processing repl queues."
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+name|hasClusterEverBeenMultiRack
+operator|=
+literal|true
+expr_stmt|;
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isPopulatingReplQueues
+argument_list|()
+condition|)
+block|{
+name|blockManager
+operator|.
+name|processMisReplicatedBlocks
+argument_list|()
 expr_stmt|;
 block|}
 block|}

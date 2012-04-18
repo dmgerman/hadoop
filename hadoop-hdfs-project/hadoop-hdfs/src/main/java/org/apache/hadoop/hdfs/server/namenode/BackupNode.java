@@ -1231,7 +1231,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|verifyVersion
+name|verifyLayoutVersion
 argument_list|(
 name|journalInfo
 operator|.
@@ -1343,7 +1343,7 @@ throw|;
 block|}
 block|}
 comment|/////////////////////////////////////////////////////
-comment|// BackupNodeProtocol implementation for backup node.
+comment|// JournalProtocol implementation for backup node.
 comment|/////////////////////////////////////////////////////
 annotation|@
 name|Override
