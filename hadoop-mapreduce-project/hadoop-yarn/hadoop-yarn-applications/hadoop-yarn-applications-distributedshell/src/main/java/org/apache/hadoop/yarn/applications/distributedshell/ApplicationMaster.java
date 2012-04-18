@@ -3591,13 +3591,9 @@ decl_stmt|;
 name|InetSocketAddress
 name|rmAddress
 init|=
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
 name|yarnConf
 operator|.
-name|get
+name|getSocketAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -3606,7 +3602,10 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_SCHEDULER_ADDRESS
-argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_PORT
 argument_list|)
 decl_stmt|;
 name|LOG
