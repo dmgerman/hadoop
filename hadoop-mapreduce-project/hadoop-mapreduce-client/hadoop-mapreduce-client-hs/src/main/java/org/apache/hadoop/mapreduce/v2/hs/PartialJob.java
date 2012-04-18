@@ -76,6 +76,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -797,6 +811,22 @@ DECL|method|getConfFile ()
 specifier|public
 name|Path
 name|getConfFile
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Not implemented yet"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|loadConfFile ()
+specifier|public
+name|Configuration
+name|loadConfFile
 parameter_list|()
 block|{
 throw|throw
