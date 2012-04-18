@@ -1241,7 +1241,7 @@ operator|.
 name|class
 argument_list|)
 operator|.
-name|getDefaultConfiguration
+name|getFileSystemConfiguration
 argument_list|()
 decl_stmt|;
 return|return
@@ -1314,7 +1314,7 @@ operator|.
 name|class
 argument_list|)
 operator|.
-name|getDefaultConfiguration
+name|getFileSystemConfiguration
 argument_list|()
 decl_stmt|;
 name|FileSystem

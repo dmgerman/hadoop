@@ -132,10 +132,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|getDefaultConfiguration ()
+DECL|method|getFileSystemConfiguration ()
 specifier|public
 name|Configuration
-name|getDefaultConfiguration
+name|getFileSystemConfiguration
 parameter_list|()
 function_decl|;
 block|}
