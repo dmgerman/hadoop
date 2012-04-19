@@ -1272,19 +1272,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    */
-DECL|method|Client ()
+DECL|method|Client (Configuration conf)
 specifier|public
 name|Client
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|Exception
 block|{
 comment|// Set up the configuration and RPC
+name|this
+operator|.
 name|conf
 operator|=
-operator|new
-name|Configuration
-argument_list|()
+name|conf
 expr_stmt|;
 name|rpc
 operator|=
@@ -1293,6 +1296,22 @@ operator|.
 name|create
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    */
+DECL|method|Client ()
+specifier|public
+name|Client
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|this
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -2004,6 +2004,17 @@ name|DEFAULT_CONTAINER_TEMP_DIR
 init|=
 literal|"./tmp"
 decl_stmt|;
+DECL|field|IS_MINI_YARN_CLUSTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IS_MINI_YARN_CLUSTER
+init|=
+name|YARN_PREFIX
+operator|+
+literal|".is.minicluster"
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

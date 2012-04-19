@@ -1123,8 +1123,9 @@ expr_stmt|;
 name|JobConf
 name|jobConf
 init|=
-operator|new
-name|JobConf
+name|mr
+operator|.
+name|createJobConf
 argument_list|()
 decl_stmt|;
 name|String
@@ -1283,8 +1284,9 @@ expr_stmt|;
 name|JobConf
 name|jobConf
 init|=
-operator|new
-name|JobConf
+name|mr
+operator|.
+name|createJobConf
 argument_list|()
 decl_stmt|;
 name|String
