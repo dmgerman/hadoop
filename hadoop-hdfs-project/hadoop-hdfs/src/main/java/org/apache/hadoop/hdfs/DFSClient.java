@@ -818,20 +818,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FSDataOutputStream
 import|;
 end_import
@@ -989,6 +975,22 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataInputStream
 import|;
 end_import
 
@@ -8197,18 +8199,16 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * The Hdfs implementation of {@link FSDataInputStream}    */
+comment|/**    * @deprecated use {@link HdfsDataInputStream} instead.    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|Deprecated
 DECL|class|DFSDataInputStream
 specifier|public
 specifier|static
 class|class
 name|DFSDataInputStream
 extends|extends
-name|FSDataInputStream
+name|HdfsDataInputStream
 block|{
 DECL|method|DFSDataInputStream (DFSInputStream in)
 specifier|public
@@ -8225,89 +8225,6 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**      * Returns the datanode from which the stream is currently reading.      */
-DECL|method|getCurrentDatanode ()
-specifier|public
-name|DatanodeInfo
-name|getCurrentDatanode
-parameter_list|()
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getCurrentDatanode
-argument_list|()
-return|;
-block|}
-comment|/**      * Returns the block containing the target position.       */
-DECL|method|getCurrentBlock ()
-specifier|public
-name|ExtendedBlock
-name|getCurrentBlock
-parameter_list|()
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getCurrentBlock
-argument_list|()
-return|;
-block|}
-comment|/**      * Return collection of blocks that has already been located.      */
-DECL|method|getAllBlocks ()
-specifier|synchronized
-name|List
-argument_list|<
-name|LocatedBlock
-argument_list|>
-name|getAllBlocks
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getAllBlocks
-argument_list|()
-return|;
-block|}
-comment|/**      * @return The visible length of the file.      */
-DECL|method|getVisibleLength ()
-specifier|public
-name|long
-name|getVisibleLength
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getFileLength
-argument_list|()
-return|;
 block|}
 block|}
 DECL|method|shouldTryShortCircuitRead (InetSocketAddress targetAddr)

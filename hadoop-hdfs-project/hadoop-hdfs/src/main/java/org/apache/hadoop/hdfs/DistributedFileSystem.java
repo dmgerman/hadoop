@@ -380,6 +380,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -1213,10 +1229,15 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
-name|FSDataInputStream
+name|HdfsDataInputStream
 name|open
 parameter_list|(
 name|Path
@@ -3129,6 +3150,11 @@ comment|// We do not see a need for user to report block checksum errors and do 
 comment|// want to rely on user to report block corruptions.
 annotation|@
 name|Deprecated
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|reportChecksumFailure (Path f, FSDataInputStream in, long inPos, FSDataInputStream sums, long sumsPos)
 specifier|public
 name|boolean

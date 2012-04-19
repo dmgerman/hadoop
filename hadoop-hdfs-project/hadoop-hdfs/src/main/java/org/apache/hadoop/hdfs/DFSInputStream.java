@@ -1201,6 +1201,7 @@ return|;
 block|}
 comment|/**    * Return collection of blocks that has already been located.    */
 DECL|method|getAllBlocks ()
+specifier|public
 specifier|synchronized
 name|List
 argument_list|<
