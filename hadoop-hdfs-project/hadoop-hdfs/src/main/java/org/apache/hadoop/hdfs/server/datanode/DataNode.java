@@ -7617,36 +7617,6 @@ return|return
 literal|null
 return|;
 block|}
-if|if
-condition|(
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"dfs.network.script"
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"This configuration for rack identification is not supported"
-operator|+
-literal|" anymore. RackID resolution is handled by the NameNode."
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-block|}
 name|Collection
 argument_list|<
 name|URI
