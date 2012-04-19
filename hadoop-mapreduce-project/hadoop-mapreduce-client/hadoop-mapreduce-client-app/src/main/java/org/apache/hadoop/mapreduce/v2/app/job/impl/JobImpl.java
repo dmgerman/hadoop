@@ -4903,12 +4903,34 @@ argument_list|)
 decl_stmt|;
 comment|//FIXME: handling multiple reduces within a single AM does not seem to
 comment|//work.
-comment|// int sysMaxReduces =
-comment|//     job.conf.getInt(MRJobConfig.JOB_UBERTASK_MAXREDUCES, 1);
 name|int
 name|sysMaxReduces
 init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|JOB_UBERTASK_MAXREDUCES
+argument_list|,
 literal|1
+argument_list|)
+decl_stmt|;
+name|boolean
+name|isValidUberMaxReduces
+init|=
+operator|(
+name|sysMaxReduces
+operator|==
+literal|0
+operator|)
+operator|||
+operator|(
+name|sysMaxReduces
+operator|==
+literal|1
+operator|)
 decl_stmt|;
 name|long
 name|sysMaxBytes
@@ -5061,6 +5083,8 @@ operator|&&
 name|smallMemory
 operator|&&
 name|notChainJob
+operator|&&
+name|isValidUberMaxReduces
 expr_stmt|;
 if|if
 condition|(
@@ -5246,7 +5270,19 @@ name|msg
 operator|.
 name|append
 argument_list|(
-literal|" chainjob"
+literal|" chainjob;"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|isValidUberMaxReduces
+condition|)
+name|msg
+operator|.
+name|append
+argument_list|(
+literal|" not supported uber max reduces"
 argument_list|)
 expr_stmt|;
 name|LOG
