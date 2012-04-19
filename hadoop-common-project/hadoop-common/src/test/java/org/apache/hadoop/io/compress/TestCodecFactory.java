@@ -327,6 +327,25 @@ literal|".foo"
 return|;
 block|}
 block|}
+DECL|class|NewGzipCodec
+specifier|private
+specifier|static
+class|class
+name|NewGzipCodec
+extends|extends
+name|BaseCodec
+block|{
+DECL|method|getDefaultExtension ()
+specifier|public
+name|String
+name|getDefaultExtension
+parameter_list|()
+block|{
+return|return
+literal|".gz"
+return|;
+block|}
+block|}
 comment|/**    * Returns a factory for a given set of codecs    * @param classes the codec classes to include    * @return a new factory    */
 DECL|method|setClasses (Class[] classes)
 specifier|private
@@ -862,6 +881,7 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+comment|// gz, bz2, snappy, lz4 are picked up by service loader, but bar isn't
 name|codec
 operator|=
 name|factory
@@ -877,7 +897,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"empty codec bar codec"
+literal|"empty factory bar codec"
 argument_list|,
 literal|null
 argument_list|,
@@ -900,7 +920,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"empty codec bar codec"
+literal|"empty factory bar codec"
 argument_list|,
 literal|null
 argument_list|,
@@ -920,11 +940,13 @@ literal|"/tmp/foo.gz"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
-literal|"empty codec gz codec"
+literal|"empty factory gz codec"
 argument_list|,
-literal|null
+name|GzipCodec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -943,11 +965,13 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
-literal|"empty codec gz codec"
+literal|"empty factory gz codec"
 argument_list|,
-literal|null
+name|GzipCodec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -965,11 +989,13 @@ literal|"/tmp/foo.bz2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"empty factory for .bz2"
 argument_list|,
-literal|null
+name|BZip2Codec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -988,11 +1014,111 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"empty factory for bzip2 codec"
 argument_list|,
-literal|null
+name|BZip2Codec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodec
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/tmp/foo.snappy"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"empty factory snappy codec"
+argument_list|,
+name|SnappyCodec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodecByClassName
+argument_list|(
+name|SnappyCodec
+operator|.
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"empty factory snappy codec"
+argument_list|,
+name|SnappyCodec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodec
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/tmp/foo.lz4"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"empty factory lz4 codec"
+argument_list|,
+name|Lz4Codec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodecByClassName
+argument_list|(
+name|Lz4Codec
+operator|.
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"empty factory lz4 codec"
+argument_list|,
+name|Lz4Codec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -1032,11 +1158,13 @@ literal|"/tmp/.foo.bar.gz"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"full factory gz codec"
 argument_list|,
-literal|null
+name|GzipCodec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -1055,11 +1183,13 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"full codec gz codec"
 argument_list|,
-literal|null
+name|GzipCodec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -1077,11 +1207,13 @@ literal|"/tmp/foo.bz2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"full factory for .bz2"
 argument_list|,
-literal|null
+name|BZip2Codec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -1100,11 +1232,13 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|checkCodec
 argument_list|(
 literal|"full codec bzip2 codec"
 argument_list|,
-literal|null
+name|BZip2Codec
+operator|.
+name|class
 argument_list|,
 name|codec
 argument_list|)
@@ -1370,6 +1504,69 @@ argument_list|(
 literal|"full factory foo codec"
 argument_list|,
 name|FooCodec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|factory
+operator|=
+name|setClasses
+argument_list|(
+operator|new
+name|Class
+index|[]
+block|{
+name|NewGzipCodec
+operator|.
+name|class
+block|}
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodec
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/tmp/foo.gz"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"overridden factory for .gz"
+argument_list|,
+name|NewGzipCodec
+operator|.
+name|class
+argument_list|,
+name|codec
+argument_list|)
+expr_stmt|;
+name|codec
+operator|=
+name|factory
+operator|.
+name|getCodecByClassName
+argument_list|(
+name|NewGzipCodec
+operator|.
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|checkCodec
+argument_list|(
+literal|"overridden factory for gzip codec"
+argument_list|,
+name|NewGzipCodec
 operator|.
 name|class
 argument_list|,

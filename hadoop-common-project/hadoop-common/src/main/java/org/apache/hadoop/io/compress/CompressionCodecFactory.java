@@ -163,6 +163,25 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|CODEC_PROVIDERS
+specifier|private
+specifier|static
+specifier|final
+name|ServiceLoader
+argument_list|<
+name|CompressionCodec
+argument_list|>
+name|CODEC_PROVIDERS
+init|=
+name|ServiceLoader
+operator|.
+name|load
+argument_list|(
+name|CompressionCodec
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * A map from the reversed filename suffixes to the codecs.    * This is probably overkill, because the maps should be small, but it     * automatically supports finding the longest matching suffix.     */
 DECL|field|codecs
 specifier|private
@@ -488,7 +507,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the list of codecs listed in the configuration    * @param conf the configuration to look in    * @return a list of the Configuration classes or null if the attribute    *         was not set    */
+comment|/**    * Get the list of codecs discovered via a Java ServiceLoader, or    * listed in the configuration. Codecs specified in configuration come    * later in the returned list, and are considered to override those    * from the ServiceLoader.    * @param conf the configuration to look in    * @return a list of the {@link CompressionCodec} classes    */
 DECL|method|getCodecClasses (Configuration conf)
 specifier|public
 specifier|static
@@ -506,23 +525,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-block|{
-name|String
-name|codecsString
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"io.compression.codecs"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|codecsString
-operator|!=
-literal|null
-condition|)
 block|{
 name|List
 argument_list|<
@@ -547,6 +549,44 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// Add codec classes discovered via service loading
+for|for
+control|(
+name|CompressionCodec
+name|codec
+range|:
+name|CODEC_PROVIDERS
+control|)
+block|{
+name|result
+operator|.
+name|add
+argument_list|(
+name|codec
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Add codec classes from configuration
+name|String
+name|codecsString
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"io.compression.codecs"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|codecsString
+operator|!=
+literal|null
+condition|)
+block|{
 name|StringTokenizer
 name|codecSplit
 init|=
@@ -661,18 +701,12 @@ throw|;
 block|}
 block|}
 block|}
+block|}
 return|return
 name|result
 return|;
 block|}
-else|else
-block|{
-return|return
-literal|null
-return|;
-block|}
-block|}
-comment|/**    * Sets a list of codec classes in the configuration.    * @param conf the configuration to modify    * @param classes the list of classes to set    */
+comment|/**    * Sets a list of codec classes in the configuration. In addition to any    * classes specified using this method, {@link CompressionCodec} classes on    * the classpath are discovered using a Java ServiceLoader.    * @param conf the configuration to modify    * @param classes the list of classes to set    */
 DECL|method|setCodecClasses (Configuration conf, List<Class> classes)
 specifier|public
 specifier|static
@@ -776,7 +810,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Find the codecs specified in the config value io.compression.codecs     * and register them. Defaults to gzip and zip.    */
+comment|/**    * Find the codecs specified in the config value io.compression.codecs     * and register them. Defaults to gzip and deflate.    */
 DECL|method|CompressionCodecFactory (Configuration conf)
 specifier|public
 name|CompressionCodecFactory
@@ -839,6 +873,11 @@ condition|(
 name|codecClasses
 operator|==
 literal|null
+operator|||
+name|codecClasses
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|addCodec
@@ -858,48 +897,29 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Iterator
-argument_list|<
+for|for
+control|(
 name|Class
 argument_list|<
 name|?
 extends|extends
 name|CompressionCodec
 argument_list|>
-argument_list|>
-name|itr
-init|=
+name|codecClass
+range|:
 name|codecClasses
-operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|itr
-operator|.
-name|hasNext
-argument_list|()
-condition|)
+control|)
 block|{
-name|CompressionCodec
-name|codec
-init|=
+name|addCodec
+argument_list|(
 name|ReflectionUtils
 operator|.
 name|newInstance
 argument_list|(
-name|itr
-operator|.
-name|next
-argument_list|()
+name|codecClass
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-name|addCodec
-argument_list|(
-name|codec
 argument_list|)
 expr_stmt|;
 block|}
