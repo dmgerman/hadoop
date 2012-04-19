@@ -1400,6 +1400,27 @@ name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
 init|=
 literal|3
 decl_stmt|;
+comment|/**    * The number of client retries to the RM/HS/AM before throwing exception.    */
+DECL|field|MR_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_CLIENT_MAX_RETRIES
+init|=
+name|MR_PREFIX
+operator|+
+literal|"client.max-retries"
+decl_stmt|;
+DECL|field|DEFAULT_MR_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_CLIENT_MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
 comment|/** The staging directory for map reduce.*/
 DECL|field|MR_AM_STAGING_DIR
 specifier|public
