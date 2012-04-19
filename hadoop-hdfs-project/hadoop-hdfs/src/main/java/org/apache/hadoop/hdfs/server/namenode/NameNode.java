@@ -1064,6 +1064,8 @@ block|,
 name|DFS_NAMENODE_BACKUP_SERVICE_RPC_ADDRESS_KEY
 block|,
 name|DFS_HA_FENCE_METHODS_KEY
+block|,
+name|DFS_NAMENODE_USER_NAME_KEY
 block|}
 decl_stmt|;
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
