@@ -562,15 +562,15 @@ name|GRIDMIX_MAP_OUTPUT_COMPRESSION_RATIO
 init|=
 literal|"gridmix.compression-emulation.map-output.compression-ratio"
 decl_stmt|;
-comment|/**    * Configuration property for setting the compression ratio of reduce output.    */
-DECL|field|GRIDMIX_REDUCE_OUTPUT_COMPRESSION_RATIO
+comment|/**    * Configuration property for setting the compression ratio of job output.    */
+DECL|field|GRIDMIX_JOB_OUTPUT_COMPRESSION_RATIO
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|GRIDMIX_REDUCE_OUTPUT_COMPRESSION_RATIO
+name|GRIDMIX_JOB_OUTPUT_COMPRESSION_RATIO
 init|=
-literal|"gridmix.compression-emulation.reduce-output.compression-ratio"
+literal|"gridmix.compression-emulation.job-output.compression-ratio"
 decl_stmt|;
 comment|/**    * Default compression ratio.    */
 DECL|field|DEFAULT_COMPRESSION_RATIO
@@ -2071,11 +2071,11 @@ name|DEFAULT_COMPRESSION_RATIO
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the reduce output data compression ratio in the given configuration.    */
-DECL|method|setReduceOutputCompressionEmulationRatio (Configuration conf, float ratio)
+comment|/**    * Set the job output data compression ratio in the given configuration.    */
+DECL|method|setJobOutputCompressionEmulationRatio (Configuration conf, float ratio)
 specifier|static
 name|void
-name|setReduceOutputCompressionEmulationRatio
+name|setJobOutputCompressionEmulationRatio
 parameter_list|(
 name|Configuration
 name|conf
@@ -2088,17 +2088,17 @@ name|conf
 operator|.
 name|setFloat
 argument_list|(
-name|GRIDMIX_REDUCE_OUTPUT_COMPRESSION_RATIO
+name|GRIDMIX_JOB_OUTPUT_COMPRESSION_RATIO
 argument_list|,
 name|ratio
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the reduce output data compression ratio using the given configuration.    * If the compression ratio is not set in the configuration then use the     * default value i.e {@value #DEFAULT_COMPRESSION_RATIO}.    */
-DECL|method|getReduceOutputCompressionEmulationRatio (Configuration conf)
+comment|/**    * Get the job output data compression ratio using the given configuration.    * If the compression ratio is not set in the configuration then use the     * default value i.e {@value #DEFAULT_COMPRESSION_RATIO}.    */
+DECL|method|getJobOutputCompressionEmulationRatio (Configuration conf)
 specifier|static
 name|float
-name|getReduceOutputCompressionEmulationRatio
+name|getJobOutputCompressionEmulationRatio
 parameter_list|(
 name|Configuration
 name|conf
@@ -2109,7 +2109,7 @@ name|conf
 operator|.
 name|getFloat
 argument_list|(
-name|GRIDMIX_REDUCE_OUTPUT_COMPRESSION_RATIO
+name|GRIDMIX_JOB_OUTPUT_COMPRESSION_RATIO
 argument_list|,
 name|DEFAULT_COMPRESSION_RATIO
 argument_list|)
