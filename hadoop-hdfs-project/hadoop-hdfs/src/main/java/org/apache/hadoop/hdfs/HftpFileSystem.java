@@ -1138,7 +1138,9 @@ argument_list|>
 name|token
 init|=
 name|selectDelegationToken
-argument_list|()
+argument_list|(
+name|ugi
+argument_list|)
 decl_stmt|;
 comment|// if we don't already have a token, go get one over https
 name|boolean
@@ -1224,21 +1226,24 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|selectDelegationToken ()
+DECL|method|selectDelegationToken ( UserGroupInformation ugi)
 specifier|protected
 name|Token
 argument_list|<
 name|DelegationTokenIdentifier
 argument_list|>
 name|selectDelegationToken
-parameter_list|()
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
 block|{
 return|return
 name|hftpTokenSelector
 operator|.
 name|selectToken
 argument_list|(
-name|getUri
+name|getCanonicalUri
 argument_list|()
 argument_list|,
 name|ugi

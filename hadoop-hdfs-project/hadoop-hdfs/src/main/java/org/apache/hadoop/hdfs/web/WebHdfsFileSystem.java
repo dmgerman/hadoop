@@ -1622,16 +1622,14 @@ name|nnAddr
 operator|=
 name|NetUtils
 operator|.
-name|createSocketAddrForHost
+name|createSocketAddr
 argument_list|(
 name|uri
 operator|.
-name|getHost
+name|getAuthority
 argument_list|()
 argument_list|,
-name|uri
-operator|.
-name|getPort
+name|getDefaultPort
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1671,7 +1669,9 @@ argument_list|>
 name|token
 init|=
 name|selectDelegationToken
-argument_list|()
+argument_list|(
+name|ugi
+argument_list|)
 decl_stmt|;
 comment|//since we don't already have a token, go get one
 name|boolean
@@ -1755,21 +1755,24 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|selectDelegationToken ()
+DECL|method|selectDelegationToken ( UserGroupInformation ugi)
 specifier|protected
 name|Token
 argument_list|<
 name|DelegationTokenIdentifier
 argument_list|>
 name|selectDelegationToken
-parameter_list|()
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
 block|{
 return|return
 name|DT_SELECTOR
 operator|.
 name|selectToken
 argument_list|(
-name|getUri
+name|getCanonicalUri
 argument_list|()
 argument_list|,
 name|ugi
