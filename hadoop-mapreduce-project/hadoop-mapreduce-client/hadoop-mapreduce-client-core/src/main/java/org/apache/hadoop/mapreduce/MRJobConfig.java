@@ -1461,7 +1461,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_AM_VMEM_MB
 init|=
-literal|2048
+literal|1536
 decl_stmt|;
 comment|/** Command line arguments passed to the MR app master.*/
 DECL|field|MR_AM_COMMAND_OPTS
@@ -1482,7 +1482,7 @@ specifier|final
 name|String
 name|DEFAULT_MR_AM_COMMAND_OPTS
 init|=
-literal|"-Xmx1536m"
+literal|"-Xmx1024m"
 decl_stmt|;
 comment|/** Root Logging level passed to the MR app master.*/
 DECL|field|MR_AM_LOG_LEVEL
