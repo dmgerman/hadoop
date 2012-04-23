@@ -748,6 +748,24 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNamenodeUri (URI uri)
+specifier|protected
+name|URI
+name|getNamenodeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+return|return
+name|getNamenodeSecureUri
+argument_list|(
+name|uri
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|openConnection (String path, String query)
 specifier|protected
 name|HttpURLConnection
@@ -778,12 +796,12 @@ name|URL
 argument_list|(
 literal|"https"
 argument_list|,
-name|nnAddr
+name|nnUri
 operator|.
-name|getHostName
+name|getHost
 argument_list|()
 argument_list|,
-name|nnAddr
+name|nnUri
 operator|.
 name|getPort
 argument_list|()
