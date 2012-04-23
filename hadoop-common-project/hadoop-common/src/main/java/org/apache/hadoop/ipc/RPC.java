@@ -250,22 +250,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|protobuf
 operator|.
 name|ProtocolInfoProtos
@@ -398,6 +382,85 @@ specifier|public
 class|class
 name|RPC
 block|{
+DECL|enum|RpcKind
+specifier|public
+enum|enum
+name|RpcKind
+block|{
+DECL|enumConstant|RPC_BUILTIN
+name|RPC_BUILTIN
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+block|,
+comment|// Used for built in calls by tests
+DECL|enumConstant|RPC_WRITABLE
+name|RPC_WRITABLE
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|)
+block|,
+comment|// Use WritableRpcEngine
+DECL|enumConstant|RPC_PROTOCOL_BUFFER
+name|RPC_PROTOCOL_BUFFER
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|)
+block|;
+comment|// Use ProtobufRpcEngine
+DECL|field|MAX_INDEX
+specifier|final
+specifier|static
+name|short
+name|MAX_INDEX
+init|=
+name|RPC_PROTOCOL_BUFFER
+operator|.
+name|value
+decl_stmt|;
+comment|// used for array size
+DECL|field|FIRST_INDEX
+specifier|private
+specifier|static
+specifier|final
+name|short
+name|FIRST_INDEX
+init|=
+name|RPC_BUILTIN
+operator|.
+name|value
+decl_stmt|;
+DECL|field|value
+specifier|public
+specifier|final
+name|short
+name|value
+decl_stmt|;
+comment|//TODO make it private
+DECL|method|RpcKind (short val)
+name|RpcKind
+parameter_list|(
+name|short
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|value
+operator|=
+name|val
+expr_stmt|;
+block|}
+block|}
 DECL|interface|RpcInvoker
 interface|interface
 name|RpcInvoker
@@ -2990,7 +3053,7 @@ operator|.
 name|MAX_INDEX
 argument_list|)
 decl_stmt|;
-DECL|method|getProtocolImplMap (RpcKind rpcKind)
+DECL|method|getProtocolImplMap (RPC.RpcKind rpcKind)
 name|Map
 argument_list|<
 name|ProtoNameVer
@@ -2999,6 +3062,8 @@ name|ProtoClassProtoImpl
 argument_list|>
 name|getProtocolImplMap
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|)
@@ -3229,11 +3294,13 @@ argument_list|(
 literal|"unused"
 argument_list|)
 comment|// will be useful later.
-DECL|method|getSupportedProtocolVersions (RpcKind rpcKind, String protocolName)
+DECL|method|getSupportedProtocolVersions (RPC.RpcKind rpcKind, String protocolName)
 name|VerProtocolImpl
 index|[]
 name|getSupportedProtocolVersions
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -3678,11 +3745,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|call (RpcKind rpcKind, String protocol, Writable rpcRequest, long receiveTime)
+DECL|method|call (RPC.RpcKind rpcKind, String protocol, Writable rpcRequest, long receiveTime)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

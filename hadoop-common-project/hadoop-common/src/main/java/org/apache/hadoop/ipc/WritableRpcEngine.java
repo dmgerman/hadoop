@@ -164,22 +164,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|VersionedProtocol
 import|;
 end_import
@@ -372,6 +356,8 @@ name|Server
 operator|.
 name|registerProtocolEngine
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1170,6 +1156,8 @@ name|client
 operator|.
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2001,6 +1989,8 @@ block|}
 comment|// register protocol class and its super interfaces
 name|registerProtocolAndImpl
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2046,6 +2036,8 @@ condition|)
 block|{
 name|registerProtocolAndImpl
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2240,6 +2232,8 @@ name|server
 operator|.
 name|getHighestSupportedProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2299,6 +2293,8 @@ name|server
 operator|.
 name|getProtocolImplMap
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2324,6 +2320,8 @@ name|server
 operator|.
 name|getHighestSupportedProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE

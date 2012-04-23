@@ -634,38 +634,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcPayloadOperation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|metrics
 operator|.
 name|RpcDetailedMetrics
@@ -703,6 +671,24 @@ operator|.
 name|IpcConnectionContextProtos
 operator|.
 name|IpcConnectionContextProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcPayloadHeaderProtos
+operator|.
+name|*
 import|;
 end_import
 
@@ -1213,6 +1199,8 @@ DECL|field|rpcKindMap
 specifier|static
 name|Map
 argument_list|<
+name|RPC
+operator|.
 name|RpcKind
 argument_list|,
 name|RpcKindMapValue
@@ -1222,6 +1210,8 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
+name|RPC
+operator|.
 name|RpcKind
 argument_list|,
 name|RpcKindMapValue
@@ -1231,12 +1221,14 @@ literal|4
 argument_list|)
 decl_stmt|;
 comment|/**    * Register a RPC kind and the class to deserialize the rpc request.    *     * Called by static initializers of rpcKind Engines    * @param rpcKind    * @param rpcRequestWrapperClass - this class is used to deserialze the    *  the rpc request.    *  @param rpcInvoker - use to process the calls on SS.    */
-DECL|method|registerProtocolEngine (RpcKind rpcKind, Class<? extends Writable> rpcRequestWrapperClass, RpcInvoker rpcInvoker)
+DECL|method|registerProtocolEngine (RPC.RpcKind rpcKind, Class<? extends Writable> rpcRequestWrapperClass, RpcInvoker rpcInvoker)
 specifier|public
 specifier|static
 name|void
 name|registerProtocolEngine
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -1314,7 +1306,7 @@ name|rpcInvoker
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getRpcRequestWrapper ( RpcKind rpcKind)
+DECL|method|getRpcRequestWrapper ( RpcKindProto rpcKind)
 specifier|public
 name|Class
 argument_list|<
@@ -1324,7 +1316,7 @@ name|Writable
 argument_list|>
 name|getRpcRequestWrapper
 parameter_list|(
-name|RpcKind
+name|RpcKindProto
 name|rpcKind
 parameter_list|)
 block|{
@@ -1344,7 +1336,12 @@ name|rpcKindMap
 operator|.
 name|get
 argument_list|(
+name|ProtoUtil
+operator|.
+name|convert
+argument_list|(
 name|rpcKind
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
@@ -1361,12 +1358,14 @@ operator|.
 name|rpcRequestWrapperClass
 return|;
 block|}
-DECL|method|getRpcInvoker (RpcKind rpcKind)
+DECL|method|getRpcInvoker (RPC.RpcKind rpcKind)
 specifier|public
 specifier|static
 name|RpcInvoker
 name|getRpcInvoker
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|)
@@ -2210,6 +2209,8 @@ comment|// the response for this call
 DECL|field|rpcKind
 specifier|private
 specifier|final
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 decl_stmt|;
@@ -2235,13 +2236,15 @@ name|param
 argument_list|,
 name|connection
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Call (int id, Writable param, Connection connection, RpcKind kind)
+DECL|method|Call (int id, Writable param, Connection connection, RPC.RpcKind kind)
 specifier|public
 name|Call
 parameter_list|(
@@ -2254,6 +2257,8 @@ parameter_list|,
 name|Connection
 name|connection
 parameter_list|,
+name|RPC
+operator|.
 name|RpcKind
 name|kind
 parameter_list|)
@@ -7795,21 +7800,16 @@ name|buf
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|RpcPayloadHeader
+name|RpcPayloadHeaderProto
 name|header
 init|=
-operator|new
-name|RpcPayloadHeader
-argument_list|()
-decl_stmt|;
-name|header
+name|RpcPayloadHeaderProto
 operator|.
-name|readFields
+name|parseDelimitedFrom
 argument_list|(
 name|dis
 argument_list|)
-expr_stmt|;
-comment|// Read the RpcPayload header
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -7831,12 +7831,29 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|header
 operator|.
-name|getOperation
+name|hasRpcOp
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|" IPC Server: No rpc op in rpcPayloadHeader"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|header
+operator|.
+name|getRpcOp
 argument_list|()
 operator|!=
-name|RpcPayloadOperation
+name|RpcPayloadOperationProto
 operator|.
 name|RPC_FINAL_PAYLOAD
 condition|)
@@ -7849,7 +7866,7 @@ literal|"IPC Server does not implement operation"
 operator|+
 name|header
 operator|.
-name|getOperation
+name|getRpcOp
 argument_list|()
 argument_list|)
 throw|;
@@ -7857,6 +7874,23 @@ block|}
 comment|// If we know the rpc kind, get its class so that we can deserialize
 comment|// (Note it would make more sense to have the handler deserialize but
 comment|// we continue with this original design.
+if|if
+condition|(
+operator|!
+name|header
+operator|.
+name|hasRpcKind
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|" IPC Server: No rpc kind in rpcPayloadHeader"
+argument_list|)
+throw|;
+block|}
 name|Class
 argument_list|<
 name|?
@@ -7869,7 +7903,7 @@ name|getRpcRequestWrapper
 argument_list|(
 name|header
 operator|.
-name|getkind
+name|getRpcKind
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7888,7 +7922,7 @@ literal|"Unknown rpc kind "
 operator|+
 name|header
 operator|.
-name|getkind
+name|getRpcKind
 argument_list|()
 operator|+
 literal|" from client "
@@ -7944,7 +7978,7 @@ literal|"Unknown rpc kind "
 operator|+
 name|header
 operator|.
-name|getkind
+name|getRpcKind
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -8007,7 +8041,7 @@ literal|" for rpcKind "
 operator|+
 name|header
 operator|.
-name|getkind
+name|getRpcKind
 argument_list|()
 argument_list|,
 name|t
@@ -8089,10 +8123,15 @@ name|rpcRequest
 argument_list|,
 name|this
 argument_list|,
+name|ProtoUtil
+operator|.
+name|convert
+argument_list|(
 name|header
 operator|.
-name|getkind
+name|getRpcKind
 argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|callQueue
@@ -9984,6 +10023,8 @@ block|{
 return|return
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
@@ -9997,12 +10038,14 @@ argument_list|)
 return|;
 block|}
 comment|/** Called for each call. */
-DECL|method|call (RpcKind rpcKind, String protocol, Writable param, long receiveTime)
+DECL|method|call (RPC.RpcKind rpcKind, String protocol, Writable param, long receiveTime)
 specifier|public
 specifier|abstract
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

@@ -126,22 +126,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|protobuf
 operator|.
 name|ProtocolInfoProtos
@@ -570,7 +554,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns whether the given method is supported or not.    * The protocol signatures are fetched and cached. The connection id for the    * proxy provided is re-used.    * @param rpcProxy Proxy which provides an existing connection id.    * @param protocol Protocol for which the method check is required.    * @param rpcKind The RpcKind for which the method check is required.    * @param version The version at the client.    * @param methodName Name of the method.    * @return true if the method is supported, false otherwise.    * @throws IOException    */
-DECL|method|isMethodSupported (Object rpcProxy, Class<?> protocol, RpcKind rpcKind, long version, String methodName)
+DECL|method|isMethodSupported (Object rpcProxy, Class<?> protocol, RPC.RpcKind rpcKind, long version, String methodName)
 specifier|public
 specifier|static
 name|boolean
@@ -585,6 +569,8 @@ name|?
 argument_list|>
 name|protocol
 parameter_list|,
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

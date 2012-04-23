@@ -522,22 +522,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1347,6 +1331,8 @@ name|NamenodeProtocolPB
 operator|.
 name|class
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER

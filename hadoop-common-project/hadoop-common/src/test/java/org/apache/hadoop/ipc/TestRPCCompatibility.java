@@ -146,22 +146,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|protobuf
 operator|.
 name|ProtocolInfoProtos
@@ -696,6 +680,8 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1076,6 +1062,8 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1193,6 +1181,8 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1769,6 +1759,8 @@ name|TestProtocol2
 operator|.
 name|class
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1804,6 +1796,8 @@ name|TestProtocol2
 operator|.
 name|class
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1875,6 +1869,8 @@ name|server
 operator|.
 name|addProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -1915,6 +1911,8 @@ name|TestProtocol1
 operator|.
 name|class
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1948,6 +1946,8 @@ name|TestProtocol1
 operator|.
 name|class
 argument_list|,
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -2052,7 +2052,7 @@ name|found
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createGetProtocolSigRequestProto ( Class<?> protocol, RpcKind rpcKind)
+DECL|method|createGetProtocolSigRequestProto ( Class<?> protocol, RPC.RpcKind rpcKind)
 specifier|private
 name|GetProtocolSignatureRequestProto
 name|createGetProtocolSigRequestProto
@@ -2063,6 +2063,8 @@ name|?
 argument_list|>
 name|protocol
 parameter_list|,
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|)
