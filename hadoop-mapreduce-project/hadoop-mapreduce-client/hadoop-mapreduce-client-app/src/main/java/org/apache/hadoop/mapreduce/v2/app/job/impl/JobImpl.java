@@ -4946,7 +4946,11 @@ argument_list|,
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|this
+operator|.
+name|remoteJobSubmitDir
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// FIXME: this is wrong; get FS from
