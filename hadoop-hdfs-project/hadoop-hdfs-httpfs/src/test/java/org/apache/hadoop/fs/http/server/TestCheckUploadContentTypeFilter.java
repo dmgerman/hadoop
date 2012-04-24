@@ -290,7 +290,7 @@ name|HttpFSFileSystem
 operator|.
 name|GetOpValues
 operator|.
-name|GETHOMEDIR
+name|GETHOMEDIRECTORY
 operator|.
 name|toString
 argument_list|()

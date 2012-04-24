@@ -1087,7 +1087,7 @@ block|{
 DECL|enumConstant|OPEN
 DECL|enumConstant|GETFILESTATUS
 DECL|enumConstant|LISTSTATUS
-DECL|enumConstant|GETHOMEDIR
+DECL|enumConstant|GETHOMEDIRECTORY
 DECL|enumConstant|GETCONTENTSUMMARY
 DECL|enumConstant|GETFILECHECKSUM
 name|OPEN
@@ -1096,7 +1096,7 @@ name|GETFILESTATUS
 block|,
 name|LISTSTATUS
 block|,
-name|GETHOMEDIR
+name|GETHOMEDIRECTORY
 block|,
 name|GETCONTENTSUMMARY
 block|,
@@ -3434,7 +3434,7 @@ name|OP_PARAM
 argument_list|,
 name|GetOpValues
 operator|.
-name|GETHOMEDIR
+name|GETHOMEDIRECTORY
 operator|.
 name|toString
 argument_list|()
