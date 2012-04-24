@@ -285,6 +285,19 @@ operator|=
 name|fsimpl
 expr_stmt|;
 block|}
+comment|/**      * Return the protocol scheme for the FileSystem.      *<p/>      *      * @return<code>kfs</code>      */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"kfs"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUri ()

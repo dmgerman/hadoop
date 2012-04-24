@@ -1055,6 +1055,19 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>hftp</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"hftp"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (final URI name, final Configuration conf)

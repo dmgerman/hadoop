@@ -317,6 +317,19 @@ name|ExpWarnDays
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>hsftp</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"hsftp"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI name, Configuration conf)

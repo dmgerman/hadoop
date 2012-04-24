@@ -363,6 +363,19 @@ operator|=
 name|store
 expr_stmt|;
 block|}
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>s3</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"s3"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getUri ()

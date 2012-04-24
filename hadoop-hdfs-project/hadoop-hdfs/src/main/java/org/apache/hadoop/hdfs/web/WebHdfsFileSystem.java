@@ -1544,6 +1544,19 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>webhdfs</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"webhdfs"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf )

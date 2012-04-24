@@ -1128,6 +1128,16 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"dontcheck"
+return|;
+block|}
 block|}
 annotation|@
 name|Test

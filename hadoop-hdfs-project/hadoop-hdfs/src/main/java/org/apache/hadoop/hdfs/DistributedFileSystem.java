@@ -745,6 +745,19 @@ specifier|public
 name|DistributedFileSystem
 parameter_list|()
 block|{   }
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>hdfs</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"hdfs"
+return|;
+block|}
 annotation|@
 name|Deprecated
 DECL|method|DistributedFileSystem (InetSocketAddress namenode, Configuration conf)
