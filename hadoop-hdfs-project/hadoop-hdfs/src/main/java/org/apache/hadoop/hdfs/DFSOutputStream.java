@@ -326,6 +326,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -820,6 +836,8 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|DFSOutputStream
+specifier|public
+specifier|final
 class|class
 name|DFSOutputStream
 extends|extends
@@ -7029,12 +7047,29 @@ name|hflush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns the number of replicas of current block. This can be different    * from the designated replication factor of the file because the NameNode    * does not replicate the block to which a client is currently writing to.    * The client continues to write to a block even if a few datanodes in the    * write pipeline have failed.     * @return the number of valid replicas of the current block    */
+comment|/**    * @deprecated use {@link HdfsDataOutputStream#getCurrentBlockReplication()}.    */
+annotation|@
+name|Deprecated
 DECL|method|getNumCurrentReplicas ()
 specifier|public
 specifier|synchronized
 name|int
 name|getNumCurrentReplicas
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|getCurrentBlockReplication
+argument_list|()
+return|;
+block|}
+comment|/**    * Note that this is not a public API;    * use {@link HdfsDataOutputStream#getCurrentBlockReplication()} instead.    *     * @return the number of valid replicas of the current block    */
+DECL|method|getCurrentBlockReplication ()
+specifier|public
+specifier|synchronized
+name|int
+name|getCurrentBlockReplication
 parameter_list|()
 throws|throws
 name|IOException

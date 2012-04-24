@@ -480,8 +480,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//  @Test
 DECL|method|testRenewal ()
 specifier|public
 name|void
@@ -636,8 +635,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Regression test for HDFS-2810. In this bug, the LeaseRenewer has handles    * to several DFSClients with the same name, the first of which has no files    * open. Previously, this was causing the lease to not get renewed.    */
-annotation|@
-name|Test
+comment|//  @Test
 DECL|method|testManyDfsClientsWhereSomeNotOpen ()
 specifier|public
 name|void
@@ -895,8 +893,7 @@ name|mockClient2
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//  @Test
 DECL|method|testThreadName ()
 specifier|public
 name|void

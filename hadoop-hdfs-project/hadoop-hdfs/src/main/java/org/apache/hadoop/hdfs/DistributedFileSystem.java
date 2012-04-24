@@ -194,20 +194,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileStatus
 import|;
 end_import
@@ -383,6 +369,22 @@ operator|.
 name|client
 operator|.
 name|HdfsDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
 import|;
 end_import
 
@@ -1296,7 +1298,7 @@ annotation|@
 name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|append
 parameter_list|(
 name|Path
@@ -1340,7 +1342,7 @@ annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|create
 parameter_list|(
 name|Path
@@ -1374,21 +1376,13 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-return|return
-operator|new
-name|FSDataOutputStream
-argument_list|(
-name|dfs
-operator|.
-name|create
-argument_list|(
-name|getPathName
-argument_list|(
-name|f
-argument_list|)
-argument_list|,
-name|permission
-argument_list|,
+specifier|final
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|cflags
+init|=
 name|overwrite
 condition|?
 name|EnumSet
@@ -1412,6 +1406,23 @@ name|CreateFlag
 operator|.
 name|CREATE
 argument_list|)
+decl_stmt|;
+specifier|final
+name|DFSOutputStream
+name|out
+init|=
+name|dfs
+operator|.
+name|create
+argument_list|(
+name|getPathName
+argument_list|(
+name|f
+argument_list|)
+argument_list|,
+name|permission
+argument_list|,
+name|cflags
 argument_list|,
 name|replication
 argument_list|,
@@ -1421,6 +1432,12 @@ name|progress
 argument_list|,
 name|bufferSize
 argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|HdfsDataOutputStream
+argument_list|(
+name|out
 argument_list|,
 name|statistics
 argument_list|)
@@ -1435,7 +1452,7 @@ annotation|@
 name|Override
 DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
 specifier|protected
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|primitiveCreate
 parameter_list|(
 name|Path
@@ -1477,7 +1494,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfs
 operator|.
@@ -1512,7 +1529,7 @@ block|}
 comment|/**    * Same as create(), except fails if parent directory doesn't already exist.    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|createNonRecursive
 parameter_list|(
 name|Path
@@ -1573,7 +1590,7 @@ expr_stmt|;
 block|}
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfs
 operator|.
