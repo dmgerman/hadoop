@@ -1031,6 +1031,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Convert Kerberos principal name pattern to valid Kerberos principal    * names. It replaces hostname pattern with hostname, which should be    * fully-qualified domain name. If hostname is null or "0.0.0.0", it uses    * dynamically looked-up fqdn of the current host instead.    *     * @param principalConfig    *          the Kerberos principal name conf value to convert    * @param hostname    *          the fully-qualified domain name used for substitution    * @return converted Kerberos principal name    * @throws IOException if the client address cannot be determined    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getServerPrincipal (String principalConfig, String hostname)
 specifier|public
 specifier|static
@@ -1096,6 +1104,14 @@ return|;
 block|}
 block|}
 comment|/**    * Convert Kerberos principal name pattern to valid Kerberos principal names.    * This method is similar to {@link #getServerPrincipal(String, String)},    * except 1) the reverse DNS lookup from addr to hostname is done only when    * necessary, 2) param addr can't be null (no default behavior of using local    * hostname when addr is null).    *     * @param principalConfig    *          Kerberos principal name pattern to convert    * @param addr    *          InetAddress of the host used for substitution    * @return converted Kerberos principal name    * @throws IOException if the client address cannot be determined    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getServerPrincipal (String principalConfig, InetAddress addr)
 specifier|public
 specifier|static
@@ -1299,6 +1315,14 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Login as a principal specified in config. Substitute $host in    * user's Kerberos principal name with a dynamically looked-up fully-qualified    * domain name of the current host.    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @throws IOException if login fails    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|login (final Configuration conf, final String keytabFileKey, final String userNameKey)
 specifier|public
 specifier|static
@@ -1334,6 +1358,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Login as a principal specified in config. Substitute $host in user's Kerberos principal     * name with hostname. If non-secure mode - return. If no keytab available -    * bail out with an exception    *     * @param conf    *          conf to use    * @param keytabFileKey    *          the key to look for keytab file in conf    * @param userNameKey    *          the key to look for user's Kerberos principal name in conf    * @param hostname    *          hostname to use for substitution    * @throws IOException if the config doesn't specify a keytab    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|login (final Configuration conf, final String keytabFileKey, final String userNameKey, String hostname)
 specifier|public
 specifier|static
