@@ -1568,6 +1568,18 @@ name|DEFAULT_MR_AM_JOB_CLIENT_THREAD_COUNT
 init|=
 literal|1
 decl_stmt|;
+comment|/**     * Range of ports that the MapReduce AM can use when binding. Leave blank    * if you want all possible ports.    */
+DECL|field|MR_AM_JOB_CLIENT_PORT_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_JOB_CLIENT_PORT_RANGE
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.client.port-range"
+decl_stmt|;
 comment|/** Enable blacklisting of nodes in the job.*/
 DECL|field|MR_AM_JOB_NODE_BLACKLISTING_ENABLE
 specifier|public

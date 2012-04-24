@@ -414,8 +414,6 @@ specifier|private
 name|RpcServerFactoryPBImpl
 parameter_list|()
 block|{   }
-annotation|@
-name|Override
 DECL|method|getServer (Class<?> protocol, Object instance, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers)
 specifier|public
 name|Server
@@ -446,6 +444,64 @@ name|secretManager
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+return|return
+name|getServer
+argument_list|(
+name|protocol
+argument_list|,
+name|instance
+argument_list|,
+name|addr
+argument_list|,
+name|conf
+argument_list|,
+name|secretManager
+argument_list|,
+name|numHandlers
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServer (Class<?> protocol, Object instance, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers, String portRangeConfig)
+specifier|public
+name|Server
+name|getServer
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|,
+name|Object
+name|instance
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
+parameter_list|,
+name|int
+name|numHandlers
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|YarnException
@@ -793,6 +849,8 @@ literal|null
 argument_list|,
 name|service
 argument_list|)
+argument_list|,
+name|portRangeConfig
 argument_list|)
 return|;
 block|}
@@ -990,7 +1048,7 @@ name|getName
 argument_list|()
 return|;
 block|}
-DECL|method|createServer (Class<?> pbProtocol, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers, BlockingService blockingService)
+DECL|method|createServer (Class<?> pbProtocol, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers, BlockingService blockingService, String portRangeConfig)
 specifier|private
 name|Server
 name|createServer
@@ -1020,6 +1078,9 @@ name|numHandlers
 parameter_list|,
 name|BlockingService
 name|blockingService
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -1067,6 +1128,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|secretManager
+argument_list|,
+name|portRangeConfig
 argument_list|)
 decl_stmt|;
 name|LOG

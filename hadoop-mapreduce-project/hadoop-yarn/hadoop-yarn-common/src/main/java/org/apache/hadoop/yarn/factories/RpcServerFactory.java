@@ -108,7 +108,7 @@ specifier|public
 interface|interface
 name|RpcServerFactory
 block|{
-DECL|method|getServer (Class<?> protocol, Object instance, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers)
+DECL|method|getServer (Class<?> protocol, Object instance, InetSocketAddress addr, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, int numHandlers, String portRangeConfig)
 specifier|public
 name|Server
 name|getServer
@@ -138,6 +138,9 @@ name|secretManager
 parameter_list|,
 name|int
 name|numHandlers
+parameter_list|,
+name|String
+name|portRangeConfig
 parameter_list|)
 throws|throws
 name|YarnException
