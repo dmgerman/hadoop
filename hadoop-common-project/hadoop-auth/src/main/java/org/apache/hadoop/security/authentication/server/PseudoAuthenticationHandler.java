@@ -289,7 +289,8 @@ name|userName
 argument_list|,
 name|userName
 argument_list|,
-name|TYPE
+name|getType
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
