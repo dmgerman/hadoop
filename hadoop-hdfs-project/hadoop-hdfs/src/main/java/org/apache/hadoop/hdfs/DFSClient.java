@@ -5287,8 +5287,9 @@ specifier|final
 name|DFSOutputStream
 name|result
 init|=
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForCreate
 argument_list|(
 name|this
 argument_list|,
@@ -5518,8 +5519,9 @@ argument_list|)
 decl_stmt|;
 name|result
 operator|=
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForCreate
 argument_list|(
 name|this
 argument_list|,
@@ -5775,8 +5777,9 @@ argument_list|)
 throw|;
 block|}
 return|return
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForAppend
 argument_list|(
 name|this
 argument_list|,
