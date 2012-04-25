@@ -177,29 +177,11 @@ specifier|final
 name|String
 name|USAGES
 init|=
-literal|"\nUSAGES:\n"
+literal|"\nUsage: General options are:\n"
 operator|+
-literal|"java "
+literal|"\t[-getlevel<host:httpPort><name>]\n"
 operator|+
-name|LogLevel
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" -getlevel<host:port><name>\n"
-operator|+
-literal|"java "
-operator|+
-name|LogLevel
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" -setlevel<host:port><name><level>\n"
+literal|"\t[-setlevel<host:httpPort><name><level>]\n"
 decl_stmt|;
 comment|/**    * A command line implementation    */
 DECL|method|main (String[] args)
