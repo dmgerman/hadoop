@@ -4089,8 +4089,21 @@ operator|==
 literal|null
 condition|)
 block|{
+name|response
+operator|.
+name|sendError
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_UNAUTHORIZED
+argument_list|,
+literal|"Unauthenticated users are not "
+operator|+
+literal|"authorized to access this page."
+argument_list|)
+expr_stmt|;
 return|return
-literal|true
+literal|false
 return|;
 block|}
 name|AccessControlList
@@ -4146,14 +4159,7 @@ literal|"User "
 operator|+
 name|remoteUser
 operator|+
-literal|" is unauthorized to access this page. "
-operator|+
-literal|"AccessControlList for accessing this page : "
-operator|+
-name|adminsAcl
-operator|.
-name|toString
-argument_list|()
+literal|" is unauthorized to access this page."
 argument_list|)
 expr_stmt|;
 return|return
