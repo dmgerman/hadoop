@@ -70,6 +70,18 @@ begin_import
 import|import
 name|javax
 operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -859,6 +871,13 @@ specifier|final
 name|ApplicationACLsManager
 name|aclsManager
 decl_stmt|;
+DECL|field|response
+specifier|private
+annotation|@
+name|Context
+name|HttpServletResponse
+name|response
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|RMWebServices (final ResourceManager rm, final ApplicationACLsManager aclsManager)
@@ -969,6 +988,21 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|init ()
+specifier|private
+name|void
+name|init
+parameter_list|()
+block|{
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|GET
 annotation|@
@@ -1021,6 +1055,9 @@ name|ClusterInfo
 name|getClusterInfo
 parameter_list|()
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|ClusterInfo
@@ -1057,6 +1094,9 @@ name|ClusterMetricsInfo
 name|getClusterMetricsInfo
 parameter_list|()
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|ClusterMetricsInfo
@@ -1100,6 +1140,9 @@ name|SchedulerTypeInfo
 name|getSchedulerInfo
 parameter_list|()
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|ResourceScheduler
 name|rs
 init|=
@@ -1222,6 +1265,9 @@ name|String
 name|healthState
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|ResourceScheduler
 name|sched
 init|=
@@ -1539,6 +1585,9 @@ name|String
 name|nodeId
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|nodeId
@@ -1853,6 +1902,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 decl_stmt|;
+name|init
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|count
@@ -2451,6 +2503,9 @@ name|String
 name|appId
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|appId
