@@ -1809,7 +1809,7 @@ name|contains
 argument_list|(
 literal|"The number of live datanodes 0 needs an additional "
 operator|+
-literal|"2 live datanodes to reach the minimum number 1. "
+literal|"1 live datanodes to reach the minimum number 1. "
 operator|+
 literal|"Safe mode will be turned off automatically."
 argument_list|)

@@ -17055,8 +17055,6 @@ name|datanodeThreshold
 operator|-
 name|numLive
 operator|)
-operator|+
-literal|1
 argument_list|,
 name|datanodeThreshold
 argument_list|)
