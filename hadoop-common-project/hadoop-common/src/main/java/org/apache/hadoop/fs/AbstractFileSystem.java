@@ -1513,17 +1513,25 @@ name|getScheme
 argument_list|()
 decl_stmt|;
 name|String
-name|thisAuthority
+name|thisHost
 init|=
 name|this
 operator|.
 name|getUri
 argument_list|()
 operator|.
-name|getAuthority
+name|getHost
 argument_list|()
 decl_stmt|;
-comment|// Schemes and authorities must match.
+name|String
+name|thatHost
+init|=
+name|uri
+operator|.
+name|getHost
+argument_list|()
+decl_stmt|;
+comment|// Schemes and hosts must match.
 comment|// Allow for null Authority for file:///
 if|if
 condition|(
@@ -1536,25 +1544,25 @@ name|thatScheme
 argument_list|)
 operator|||
 operator|(
-name|thisAuthority
+name|thisHost
 operator|!=
 literal|null
 operator|&&
 operator|!
-name|thisAuthority
+name|thisHost
 operator|.
 name|equalsIgnoreCase
 argument_list|(
-name|thatAuthority
+name|thatHost
 argument_list|)
 operator|)
 operator|||
 operator|(
-name|thisAuthority
+name|thisHost
 operator|==
 literal|null
 operator|&&
-name|thatAuthority
+name|thatHost
 operator|!=
 literal|null
 operator|)
@@ -1577,6 +1585,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+comment|// Ports must match, unless this FS instance is using the default port, in
+comment|// which case the port may be omitted from the given URI
 name|int
 name|thisPort
 init|=
@@ -1591,10 +1601,7 @@ decl_stmt|;
 name|int
 name|thatPort
 init|=
-name|path
-operator|.
-name|toUri
-argument_list|()
+name|uri
 operator|.
 name|getPort
 argument_list|()
