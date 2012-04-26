@@ -242,6 +242,9 @@ name|Override
 DECL|method|newCounter (T key)
 specifier|protected
 name|FrameworkCounter
+argument_list|<
+name|T
+argument_list|>
 name|newCounter
 parameter_list|(
 name|T
@@ -251,8 +254,14 @@ block|{
 return|return
 operator|new
 name|FrameworkCounter
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|key
+argument_list|,
+name|getName
+argument_list|()
 argument_list|)
 return|;
 block|}

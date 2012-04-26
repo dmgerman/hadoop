@@ -1577,27 +1577,6 @@ argument_list|,
 name|Counter
 argument_list|>
 block|{
-comment|// Mix the framework counter implementation into the Counter interface
-DECL|class|FrameworkCounterImpl
-class|class
-name|FrameworkCounterImpl
-extends|extends
-name|FrameworkCounter
-block|{
-DECL|method|FrameworkCounterImpl (T key)
-name|FrameworkCounterImpl
-parameter_list|(
-name|T
-name|key
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|key
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 DECL|method|FrameworkGroupImpl (Class<T> cls)
 name|FrameworkGroupImpl
 parameter_list|(
@@ -1630,9 +1609,15 @@ operator|new
 name|Counter
 argument_list|(
 operator|new
-name|FrameworkCounterImpl
+name|FrameworkCounter
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|key
+argument_list|,
+name|getName
+argument_list|()
 argument_list|)
 argument_list|)
 return|;
@@ -1665,32 +1650,6 @@ argument_list|<
 name|Counter
 argument_list|>
 block|{
-DECL|class|FSCounterImpl
-specifier|private
-class|class
-name|FSCounterImpl
-extends|extends
-name|FSCounter
-block|{
-DECL|method|FSCounterImpl (String scheme, FileSystemCounter key)
-name|FSCounterImpl
-parameter_list|(
-name|String
-name|scheme
-parameter_list|,
-name|FileSystemCounter
-name|key
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|scheme
-argument_list|,
-name|key
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|newCounter (String scheme, FileSystemCounter key)
@@ -1710,7 +1669,7 @@ operator|new
 name|Counter
 argument_list|(
 operator|new
-name|FSCounterImpl
+name|FSCounter
 argument_list|(
 name|scheme
 argument_list|,
