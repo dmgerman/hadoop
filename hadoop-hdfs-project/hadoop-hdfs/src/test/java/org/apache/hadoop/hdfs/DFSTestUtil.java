@@ -426,9 +426,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|MiniDFSCluster
 operator|.
-name|DFSDataInputStream
+name|NameNodeInfo
 import|;
 end_import
 
@@ -442,9 +442,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
+name|client
 operator|.
-name|NameNodeInfo
+name|HdfsDataInputStream
 import|;
 end_import
 
@@ -3226,11 +3226,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|in
 init|=
 call|(
-name|DFSDataInputStream
+name|HdfsDataInputStream
 call|)
 argument_list|(
 operator|(
@@ -3274,9 +3274,7 @@ block|{
 return|return
 operator|(
 operator|(
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|in
 operator|)

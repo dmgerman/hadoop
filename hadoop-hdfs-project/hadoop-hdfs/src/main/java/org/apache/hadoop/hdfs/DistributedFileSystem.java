@@ -350,22 +350,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
-operator|.
-name|DFSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|client
 operator|.
 name|HdfsDataInputStream
@@ -3180,11 +3164,6 @@ comment|// We do not see a need for user to report block checksum errors and do 
 comment|// want to rely on user to report block corruptions.
 annotation|@
 name|Deprecated
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|reportChecksumFailure (Path f, FSDataInputStream in, long inPos, FSDataInputStream sums, long sumsPos)
 specifier|public
 name|boolean
@@ -3212,20 +3191,18 @@ operator|!
 operator|(
 name|in
 operator|instanceof
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|&&
 name|sums
 operator|instanceof
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 condition|)
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Input streams must be types "
-operator|+
-literal|"of DFSDataInputStream"
+literal|"Input streams must be types of HdfsDataInputStream"
 argument_list|)
 throw|;
 name|LocatedBlock
@@ -3239,15 +3216,11 @@ literal|2
 index|]
 decl_stmt|;
 comment|// Find block in data stream.
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dfsIn
 init|=
 operator|(
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|in
 decl_stmt|;
@@ -3318,15 +3291,11 @@ index|]
 argument_list|)
 expr_stmt|;
 comment|// Find block in checksum stream
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dfsSums
 init|=
 operator|(
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|sums
 decl_stmt|;
