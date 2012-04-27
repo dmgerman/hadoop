@@ -3844,7 +3844,7 @@ name|info
 argument_list|(
 literal|"Append Enabled: "
 operator|+
-name|haEnabled
+name|supportAppends
 argument_list|)
 expr_stmt|;
 name|this
