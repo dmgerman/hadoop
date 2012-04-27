@@ -104,6 +104,20 @@ name|StreamFile
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * To support HTTP byte streams, a new connection to an HTTP server needs to be  * created each time. This class hides the complexity of those multiple   * connections from the client. Whenever seek() is called, a new connection  * is made on the successive read(). The normal input stream functions are   * connected to the currently active input stream.   */
 end_comment
@@ -196,9 +210,12 @@ name|StreamStatus
 block|{
 DECL|enumConstant|NORMAL
 DECL|enumConstant|SEEK
+DECL|enumConstant|CLOSED
 name|NORMAL
 block|,
 name|SEEK
+block|,
+name|CLOSED
 block|}
 DECL|field|in
 specifier|protected
@@ -293,23 +310,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+annotation|@
+name|VisibleForTesting
 DECL|method|getInputStream ()
-specifier|private
+specifier|protected
 name|InputStream
 name|getInputStream
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
+switch|switch
 condition|(
 name|status
-operator|!=
-name|StreamStatus
-operator|.
-name|NORMAL
 condition|)
 block|{
+case|case
+name|NORMAL
+case|:
+break|break;
+case|case
+name|SEEK
+case|:
 if|if
 condition|(
 name|in
@@ -322,11 +344,44 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|in
 operator|=
-literal|null
+name|openInputStream
+argument_list|()
 expr_stmt|;
+name|status
+operator|=
+name|StreamStatus
+operator|.
+name|NORMAL
+expr_stmt|;
+break|break;
+case|case
+name|CLOSED
+case|:
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Stream closed"
+argument_list|)
+throw|;
 block|}
+return|return
+name|in
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|openInputStream ()
+specifier|protected
+name|InputStream
+name|openInputStream
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 comment|// Use the original url if no resolved url exists, eg. if
 comment|// it's the first time a request is made.
 specifier|final
@@ -418,8 +473,9 @@ name|streamlength
 expr_stmt|;
 comment|// Java has a bug with>2GB request streams.  It won't bounds check
 comment|// the reads so the transfer blocks until the server times out
-name|in
-operator|=
+name|InputStream
+name|is
+init|=
 operator|new
 name|BoundedInputStream
 argument_list|(
@@ -430,7 +486,7 @@ argument_list|()
 argument_list|,
 name|streamlength
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|resolvedURL
 operator|.
 name|setURL
@@ -441,15 +497,8 @@ name|connection
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|status
-operator|=
-name|StreamStatus
-operator|.
-name|NORMAL
-expr_stmt|;
-block|}
 return|return
-name|in
+name|is
 return|;
 block|}
 DECL|method|update (final int n)
@@ -580,6 +629,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Seek to the given offset from the start of the file.    * The next read() will be from that location.  Can't    * seek past the end of the file.    */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -606,6 +657,15 @@ name|currentPos
 operator|=
 name|pos
 expr_stmt|;
+if|if
+condition|(
+name|status
+operator|!=
+name|StreamStatus
+operator|.
+name|CLOSED
+condition|)
+block|{
 name|status
 operator|=
 name|StreamStatus
@@ -614,7 +674,10 @@ name|SEEK
 expr_stmt|;
 block|}
 block|}
+block|}
 comment|/**    * Return the current offset from the start of the file    */
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -628,6 +691,8 @@ name|currentPos
 return|;
 block|}
 comment|/**    * Seeks a different copy of the data.  Returns true if    * found a new source, false otherwise.    */
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -642,6 +707,40 @@ block|{
 return|return
 literal|false
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|!=
+literal|null
+condition|)
+block|{
+name|in
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|in
+operator|=
+literal|null
+expr_stmt|;
+block|}
+name|status
+operator|=
+name|StreamStatus
+operator|.
+name|CLOSED
+expr_stmt|;
 block|}
 block|}
 end_class
