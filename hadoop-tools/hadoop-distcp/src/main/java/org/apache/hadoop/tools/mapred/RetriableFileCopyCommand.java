@@ -587,6 +587,8 @@ argument_list|,
 name|sourceFileStatus
 argument_list|,
 name|targetFS
+argument_list|,
+name|tmpTargetPath
 argument_list|)
 argument_list|,
 name|getBlockSize
@@ -596,6 +598,8 @@ argument_list|,
 name|sourceFileStatus
 argument_list|,
 name|targetFS
+argument_list|,
+name|tmpTargetPath
 argument_list|)
 argument_list|,
 name|context
@@ -1282,7 +1286,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getReplicationFactor ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS)
+DECL|method|getReplicationFactor ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS, Path tmpTargetPath)
 specifier|private
 specifier|static
 name|short
@@ -1299,6 +1303,9 @@ name|sourceFile
 parameter_list|,
 name|FileSystem
 name|targetFS
+parameter_list|,
+name|Path
+name|tmpTargetPath
 parameter_list|)
 block|{
 return|return
@@ -1319,10 +1326,12 @@ else|:
 name|targetFS
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|tmpTargetPath
+argument_list|)
 return|;
 block|}
-DECL|method|getBlockSize ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS)
+DECL|method|getBlockSize ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS, Path tmpTargetPath)
 specifier|private
 specifier|static
 name|long
@@ -1339,6 +1348,9 @@ name|sourceFile
 parameter_list|,
 name|FileSystem
 name|targetFS
+parameter_list|,
+name|Path
+name|tmpTargetPath
 parameter_list|)
 block|{
 return|return
@@ -1359,7 +1371,9 @@ else|:
 name|targetFS
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|tmpTargetPath
+argument_list|)
 return|;
 block|}
 comment|/**    * Special subclass of IOException. This is used to distinguish read-operation    * failures from other kinds of IOExceptions.    * The failure to read from source is dealt with specially, in the CopyMapper.    * Such failures may be skipped if the DistCpOptions indicate so.    * Write failures are intolerable, and amount to CopyMapper failure.      */

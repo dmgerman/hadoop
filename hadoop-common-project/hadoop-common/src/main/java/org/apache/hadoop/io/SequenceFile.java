@@ -4068,7 +4068,9 @@ condition|?
 name|fs
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|p
+argument_list|)
 else|:
 operator|(
 name|short
@@ -4088,7 +4090,9 @@ condition|?
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|p
+argument_list|)
 else|:
 name|blockSizeOption
 operator|.
