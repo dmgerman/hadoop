@@ -303,6 +303,16 @@ argument_list|(
 literal|".*"
 argument_list|)
 decl_stmt|;
+comment|/**    * Priority of the RunJar shutdown hook.    */
+DECL|field|SHUTDOWN_HOOK_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SHUTDOWN_HOOK_PRIORITY
+init|=
+literal|10
+decl_stmt|;
 comment|/**    * Unpack a jar file into a directory.    *    * This version unpacks all files inside the jar regardless of filename.    */
 DECL|method|unJar (File jarFile, File toDir)
 specifier|public
@@ -846,17 +856,19 @@ argument_list|(
 name|workDir
 argument_list|)
 expr_stmt|;
-name|Runtime
+name|ShutdownHookManager
 operator|.
-name|getRuntime
+name|get
 argument_list|()
 operator|.
 name|addShutdownHook
 argument_list|(
 operator|new
-name|Thread
+name|Runnable
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -871,6 +883,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+argument_list|,
+name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
 name|unJar

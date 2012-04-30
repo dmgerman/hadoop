@@ -464,6 +464,20 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ShutdownHookManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop file system.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop file system supports a URI name space and URI names.  * It offers a forest of file systems that can be referenced using fully  * qualified URIs.  * Two common Hadoop file systems implementations are  *<ul>  *<li> the local file system: file:///path  *<li> the hdfs file system hdfs://nnAddress:nnPort/path  *</ul>  *   * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  *   * To facilitate this, Hadoop supports a notion of a default file system.  * The user can set his default file system, although this is  * typically set up for you in your environment via your default config.  * A default file system implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI: scheme://authority/path  *<li> slash relative names: /path relative to the default file system  *<li> wd-relative names: path  relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *    *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *  in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *    *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All file system instances  *  (i.e. deployments of file systems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The file system related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> bytesPerChecksum (if used).  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); // configX is not changed,  *                                              // is passed down   *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
 end_comment
@@ -511,6 +525,16 @@ name|FsPermission
 operator|.
 name|getDefault
 argument_list|()
+decl_stmt|;
+comment|/**    * Priority of the FileContext shutdown hook.    */
+DECL|field|SHUTDOWN_HOOK_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SHUTDOWN_HOOK_PRIORITY
+init|=
+literal|20
 decl_stmt|;
 comment|/**    * List of files that should be deleted on JVM shutdown.    */
 DECL|field|DELETE_ON_EXIT
@@ -3558,22 +3582,18 @@ name|DELETE_ON_EXIT
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
-operator|!
-name|FINALIZER
-operator|.
-name|isAlive
-argument_list|()
 condition|)
 block|{
-name|Runtime
+name|ShutdownHookManager
 operator|.
-name|getRuntime
+name|get
 argument_list|()
 operator|.
 name|addShutdownHook
 argument_list|(
 name|FINALIZER
+argument_list|,
+name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
 block|}
@@ -6074,8 +6094,8 @@ DECL|class|FileContextFinalizer
 specifier|static
 class|class
 name|FileContextFinalizer
-extends|extends
-name|Thread
+implements|implements
+name|Runnable
 block|{
 DECL|method|run ()
 specifier|public

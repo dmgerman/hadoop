@@ -464,6 +464,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ShutdownHookManager
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * An abstract base class for a fairly generic filesystem.  It  * may be implemented as a distributed filesystem, or as a "local"  * one that reflects the locally-connected disk.  The local version  * exists for small Hadoop instances and for testing.  *  *<p>  *  * All user code that may potentially use the Hadoop Distributed  * File System should be written to use a FileSystem object.  The  * Hadoop DFS is a multi-machine system that appears as a single  * disk.  It's useful because of its fault tolerance and potentially  * very large capacity.  *   *<p>  * The local implementation is {@link LocalFileSystem} and distributed  * implementation is DistributedFileSystem.  *****************************************************************/
 end_comment
@@ -524,6 +538,16 @@ name|FileSystem
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/**    * Priority of the FileSystem shutdown hook.    */
+DECL|field|SHUTDOWN_HOOK_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SHUTDOWN_HOOK_PRIORITY
+init|=
+literal|10
 decl_stmt|;
 comment|/** FileSystem cache */
 DECL|field|CACHE
@@ -6945,22 +6969,18 @@ name|map
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
-operator|!
-name|clientFinalizer
-operator|.
-name|isAlive
-argument_list|()
 condition|)
 block|{
-name|Runtime
+name|ShutdownHookManager
 operator|.
-name|getRuntime
+name|get
 argument_list|()
 operator|.
 name|addShutdownHook
 argument_list|(
 name|clientFinalizer
+argument_list|,
+name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
 block|}
@@ -7055,38 +7075,18 @@ name|map
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
-operator|!
-name|clientFinalizer
-operator|.
-name|isAlive
-argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-name|Runtime
+name|ShutdownHookManager
 operator|.
-name|getRuntime
+name|get
 argument_list|()
 operator|.
 name|removeShutdownHook
 argument_list|(
 name|clientFinalizer
 argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Could not cancel cleanup thread, though no "
-operator|+
-literal|"FileSystems are open"
-argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -7250,8 +7250,8 @@ DECL|class|ClientFinalizer
 specifier|private
 class|class
 name|ClientFinalizer
-extends|extends
-name|Thread
+implements|implements
+name|Runnable
 block|{
 DECL|method|run ()
 specifier|public
