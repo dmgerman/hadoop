@@ -4313,6 +4313,67 @@ name|name
 argument_list|)
 return|;
 block|}
+comment|/**    * Set the socket address for the<code>name</code> property as    * a<code>host:port</code>.    */
+DECL|method|setSocketAddr (String name, InetSocketAddress addr)
+specifier|public
+name|void
+name|setSocketAddr
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|)
+block|{
+name|set
+argument_list|(
+name|name
+argument_list|,
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|addr
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the socket address a client can use to connect for the    *<code>name</code> property as a<code>host:port</code>.  The wildcard    * address is replaced with the local host's address.    * @param name property name.    * @param addr InetSocketAddress of a listener to store in the given property    * @return InetSocketAddress for clients to connect    */
+DECL|method|updateConnectAddr (String name, InetSocketAddress addr)
+specifier|public
+name|InetSocketAddress
+name|updateConnectAddr
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|)
+block|{
+specifier|final
+name|InetSocketAddress
+name|connectAddr
+init|=
+name|NetUtils
+operator|.
+name|getConnectAddress
+argument_list|(
+name|addr
+argument_list|)
+decl_stmt|;
+name|setSocketAddr
+argument_list|(
+name|name
+argument_list|,
+name|connectAddr
+argument_list|)
+expr_stmt|;
+return|return
+name|connectAddr
+return|;
+block|}
 comment|/**    * Load a class by name.    *     * @param name the class name.    * @return the class object.    * @throws ClassNotFoundException if the class is not found.    */
 DECL|method|getClassByName (String name)
 specifier|public
