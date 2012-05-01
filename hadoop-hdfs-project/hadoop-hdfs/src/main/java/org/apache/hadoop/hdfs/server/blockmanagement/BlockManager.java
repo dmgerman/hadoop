@@ -574,24 +574,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|INodeFile
 import|;
 end_import
@@ -11123,7 +11105,7 @@ comment|// failure. If the block is still valid, check if replication is
 comment|// necessary. In that case, put block on a possibly-will-
 comment|// be-replicated list.
 comment|//
-name|INode
+name|INodeFile
 name|fileINode
 init|=
 name|blocksMap
@@ -12253,7 +12235,7 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
-name|INode
+name|INodeFile
 name|fileINode
 init|=
 name|blocksMap
@@ -12532,7 +12514,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|INode
+name|INodeFile
 name|fileINode
 init|=
 name|blocksMap

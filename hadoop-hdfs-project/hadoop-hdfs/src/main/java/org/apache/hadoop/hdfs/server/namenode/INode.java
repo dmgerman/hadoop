@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|ContentSummary
@@ -167,8 +181,11 @@ comment|/**  * We keep an in-memory representation of the file/block hierarchy. 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|INode
-specifier|public
 specifier|abstract
 class|class
 name|INode
