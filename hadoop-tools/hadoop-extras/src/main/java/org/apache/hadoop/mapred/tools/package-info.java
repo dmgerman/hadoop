@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Command-line tools associated with the {@link org.apache.hadoop.mapred}  * package.  */
+comment|/**  * Command-line tools associated with MapReduce.  */
 end_comment
 
 begin_package

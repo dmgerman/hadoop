@@ -99,7 +99,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@link JobHistoryParser} that parses {@link JobHistory} files produced by  * {@link org.apache.hadoop.mapreduce.jobhistory.JobHistory} in the same source  * code tree as rumen.  */
+comment|/**  * {@link JobHistoryParser} that parses JobHistory files.  */
 end_comment
 
 begin_class

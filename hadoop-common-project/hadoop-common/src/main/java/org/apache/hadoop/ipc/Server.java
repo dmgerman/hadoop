@@ -9022,7 +9022,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Constructs a server listening on the named port and address.  Parameters passed must    * be of the named class.  The<code>handlerCount</handlerCount> determines    * the number of handler threads that will be used to process calls.    * If queueSizePerHandler or numReaders are not -1 they will be used instead of parameters    * from configuration. Otherwise the configuration will be picked up.    *     * If rpcRequestClass is null then the rpcRequestClass must have been     * registered via {@link #registerProtocolEngine(RpcPayloadHeader.RpcKind,    *  Class, RPC.RpcInvoker)}    * This parameter has been retained for compatibility with existing tests    * and usage.    */
+comment|/**     * Constructs a server listening on the named port and address.  Parameters passed must    * be of the named class.  The<code>handlerCount</handlerCount> determines    * the number of handler threads that will be used to process calls.    * If queueSizePerHandler or numReaders are not -1 they will be used instead of parameters    * from configuration. Otherwise the configuration will be picked up.    *     * If rpcRequestClass is null then the rpcRequestClass must have been     * registered via {@link #registerProtocolEngine(RPC.RpcKind,    *  Class, RPC.RpcInvoker)}    * This parameter has been retained for compatibility with existing tests    * and usage.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -10003,7 +10003,7 @@ name|getAddress
 argument_list|()
 return|;
 block|}
-comment|/**     * Called for each call.     * @deprecated Use  {@link #call(RpcPayloadHeader.RpcKind, String,    *  Writable, long)} instead    */
+comment|/**     * Called for each call.     * @deprecated Use  {@link #call(RPC.RpcKind, String,    *  Writable, long)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|call (Writable param, long receiveTime)
