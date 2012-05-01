@@ -104,16 +104,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -382,6 +372,40 @@ name|SimulatedFSDataset
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests if a balancer schedules tasks correctly.  */
 end_comment
@@ -391,8 +415,6 @@ DECL|class|TestBalancer
 specifier|public
 class|class
 name|TestBalancer
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -2187,7 +2209,118 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test parse method in Balancer#Cli class with threshold value out of    * boundaries.    */
+annotation|@
+name|Test
+DECL|method|testBalancerCliParseWithThresholdOutOfBoundaries ()
+specifier|public
+name|void
+name|testBalancerCliParseWithThresholdOutOfBoundaries
+parameter_list|()
+block|{
+name|String
+name|parameters
+index|[]
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"-threshold"
+block|,
+literal|"0"
+block|}
+decl_stmt|;
+name|String
+name|reason
+init|=
+literal|"IllegalArgumentException is expected when threshold value"
+operator|+
+literal|" is out of boundary."
+decl_stmt|;
+try|try
+block|{
+name|Balancer
+operator|.
+name|Cli
+operator|.
+name|parse
+argument_list|(
+name|parameters
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"Number out of range: threshold = 0.0"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|parameters
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"-threshold"
+block|,
+literal|"101"
+block|}
+expr_stmt|;
+try|try
+block|{
+name|Balancer
+operator|.
+name|Cli
+operator|.
+name|parse
+argument_list|(
+name|parameters
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"Number out of range: threshold = 101.0"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** Test a cluster with even distribution,     * then a new empty node is added to the cluster*/
+annotation|@
+name|Test
 DECL|method|testBalancer0 ()
 specifier|public
 name|void
@@ -2220,6 +2353,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test unevenly distributed cluster */
+annotation|@
+name|Test
 DECL|method|testBalancer1 ()
 specifier|public
 name|void
@@ -2281,6 +2416,8 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBalancer2 ()
 specifier|public
 name|void
