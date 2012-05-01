@@ -177,6 +177,17 @@ name|keyBytes
 init|=
 literal|null
 decl_stmt|;
+DECL|field|MAX_KEY_LEN
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MAX_KEY_LEN
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|/** Default constructore required for Writable */
 DECL|method|DelegationKey ()
 specifier|public
@@ -263,6 +274,29 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|encodedKey
+operator|.
+name|length
+operator|>
+name|MAX_KEY_LEN
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"can't create "
+operator|+
+name|encodedKey
+operator|.
+name|length
+operator|+
+literal|" byte long DelegationKey."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|keyBytes
@@ -463,9 +497,14 @@ name|len
 init|=
 name|WritableUtils
 operator|.
-name|readVInt
+name|readVIntInRange
 argument_list|(
 name|in
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|MAX_KEY_LEN
 argument_list|)
 decl_stmt|;
 if|if
