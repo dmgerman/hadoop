@@ -7069,25 +7069,6 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|map
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|ShutdownHookManager
-operator|.
-name|get
-argument_list|()
-operator|.
-name|removeShutdownHook
-argument_list|(
-name|clientFinalizer
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|closeAll ()
