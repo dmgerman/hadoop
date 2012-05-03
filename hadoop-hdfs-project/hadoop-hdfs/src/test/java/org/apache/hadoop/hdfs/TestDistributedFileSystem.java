@@ -492,7 +492,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Tests DFSClient.close throws no ConcurrentModificationException if     * multiple files are open.    */
+comment|/**    * Tests DFSClient.close throws no ConcurrentModificationException if     * multiple files are open.    * Also tests that any cached sockets are closed. (HDFS-3359)    */
 annotation|@
 name|Test
 DECL|method|testDFSClose ()
@@ -542,7 +542,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// create two files
+comment|// create two files, leaving them open
 name|fileSys
 operator|.
 name|create
@@ -565,10 +565,87 @@ literal|"/test/dfsclose/file-1"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// create another file, close it, and read it, so
+comment|// the client gets a socket in its SocketCache
+name|Path
+name|p
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/non-empty-file"
+argument_list|)
+decl_stmt|;
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fileSys
+argument_list|,
+name|p
+argument_list|,
+literal|1L
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|readFile
+argument_list|(
+name|fileSys
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+name|DFSClient
+name|client
+init|=
+operator|(
+operator|(
+name|DistributedFileSystem
+operator|)
+name|fileSys
+operator|)
+operator|.
+name|dfs
+decl_stmt|;
+name|SocketCache
+name|cache
+init|=
+name|client
+operator|.
+name|socketCache
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|cache
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|fileSys
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cache
+operator|.
+name|size
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
