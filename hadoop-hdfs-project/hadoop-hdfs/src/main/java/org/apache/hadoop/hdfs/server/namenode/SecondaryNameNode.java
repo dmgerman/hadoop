@@ -382,22 +382,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
-operator|.
-name|ErrorSimulator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|HdfsConfiguration
 import|;
 end_import
@@ -2482,26 +2466,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// error simulation code for junit test
-if|if
-condition|(
-name|ErrorSimulator
+name|CheckpointFaultInjector
 operator|.
-name|getErrorSimulation
-argument_list|(
-literal|0
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Simulating error0 "
-operator|+
-literal|"after creating edits.new"
-argument_list|)
-throw|;
-block|}
+name|getInstance
+argument_list|()
+operator|.
+name|afterSecondaryCallsRollEditLog
+argument_list|()
+expr_stmt|;
 name|RemoteEditLogManifest
 name|manifest
 init|=
@@ -2571,26 +2543,14 @@ name|txid
 argument_list|)
 expr_stmt|;
 comment|// error simulation code for junit test
-if|if
-condition|(
-name|ErrorSimulator
+name|CheckpointFaultInjector
 operator|.
-name|getErrorSimulation
-argument_list|(
-literal|1
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Simulating error1 "
-operator|+
-literal|"after uploading new image to NameNode"
-argument_list|)
-throw|;
-block|}
+name|getInstance
+argument_list|()
+operator|.
+name|afterSecondaryUploadsNewImage
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|warn

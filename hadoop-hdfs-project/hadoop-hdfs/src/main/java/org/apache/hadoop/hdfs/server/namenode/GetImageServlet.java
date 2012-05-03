@@ -791,6 +791,14 @@ name|errorMessage
 argument_list|)
 throw|;
 block|}
+name|CheckpointFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|beforeGetImageSetsHeaders
+argument_list|()
+expr_stmt|;
 name|setFileNameHeaders
 argument_list|(
 name|response
@@ -1119,8 +1127,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|ie
+name|Throwable
+name|t
 parameter_list|)
 block|{
 name|String
@@ -1132,7 +1140,7 @@ name|StringUtils
 operator|.
 name|stringifyException
 argument_list|(
-name|ie
+name|t
 argument_list|)
 decl_stmt|;
 name|response
