@@ -566,12 +566,10 @@ throws|throws
 name|UnresolvedLinkException
 block|{
 assert|assert
-name|compareBytes
-argument_list|(
 name|this
 operator|.
-name|name
-argument_list|,
+name|compareTo
+argument_list|(
 name|components
 index|[
 literal|0
@@ -587,6 +585,16 @@ argument_list|()
 operator|+
 literal|" expected "
 operator|+
+operator|(
+name|components
+index|[
+literal|0
+index|]
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|DFSUtil
 operator|.
 name|bytes2String
@@ -596,6 +604,7 @@ index|[
 literal|0
 index|]
 argument_list|)
+operator|)
 assert|;
 name|INode
 name|curNode
@@ -1159,8 +1168,6 @@ name|propagateModTime
 parameter_list|)
 throws|throws
 name|FileNotFoundException
-throws|,
-name|UnresolvedLinkException
 block|{
 comment|// insert into the parent children list
 name|newNode
