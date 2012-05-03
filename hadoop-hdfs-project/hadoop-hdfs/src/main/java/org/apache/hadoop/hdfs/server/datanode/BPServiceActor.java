@@ -1195,6 +1195,15 @@ name|ExtendedBlock
 name|block
 parameter_list|)
 block|{
+if|if
+condition|(
+name|bpRegistration
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|DatanodeInfo
 index|[]
 name|dnArr
