@@ -286,14 +286,14 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|field|AUTHZ_SUCCESSFULL_FOR
+DECL|field|AUTHZ_SUCCESSFUL_FOR
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|AUTHZ_SUCCESSFULL_FOR
+name|AUTHZ_SUCCESSFUL_FOR
 init|=
-literal|"Authorization successfull for "
+literal|"Authorization successful for "
 decl_stmt|;
 DECL|field|AUTHZ_FAILED_FOR
 specifier|private
@@ -525,7 +525,7 @@ name|AUDITLOG
 operator|.
 name|info
 argument_list|(
-name|AUTHZ_SUCCESSFULL_FOR
+name|AUTHZ_SUCCESSFUL_FOR
 operator|+
 name|user
 operator|+

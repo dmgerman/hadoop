@@ -1440,14 +1440,14 @@ name|AUTH_FAILED_FOR
 init|=
 literal|"Auth failed for "
 decl_stmt|;
-DECL|field|AUTH_SUCCESSFULL_FOR
+DECL|field|AUTH_SUCCESSFUL_FOR
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|AUTH_SUCCESSFULL_FOR
+name|AUTH_SUCCESSFUL_FOR
 init|=
-literal|"Auth successfull for "
+literal|"Auth successful for "
 decl_stmt|;
 DECL|field|SERVER
 specifier|private
@@ -6227,7 +6227,7 @@ name|AUDITLOG
 operator|.
 name|info
 argument_list|(
-name|AUTH_SUCCESSFULL_FOR
+name|AUTH_SUCCESSFUL_FOR
 operator|+
 name|user
 argument_list|)
