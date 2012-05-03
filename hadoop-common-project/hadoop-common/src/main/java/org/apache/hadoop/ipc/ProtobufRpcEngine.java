@@ -252,22 +252,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|protobuf
 operator|.
 name|HadoopRpcProtos
@@ -447,6 +431,8 @@ name|Server
 operator|.
 name|registerProtocolEngine
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1049,6 +1035,8 @@ name|client
 operator|.
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1829,6 +1817,8 @@ name|verbose
 expr_stmt|;
 name|registerProtocolAndImpl
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1885,6 +1875,8 @@ name|server
 operator|.
 name|getProtocolImplMap
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
@@ -1910,6 +1902,8 @@ name|server
 operator|.
 name|getHighestSupportedProtocol
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER

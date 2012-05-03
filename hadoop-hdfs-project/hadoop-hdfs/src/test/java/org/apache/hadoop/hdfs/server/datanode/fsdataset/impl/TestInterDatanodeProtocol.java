@@ -540,22 +540,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|Server
 import|;
 end_import
@@ -748,11 +732,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|call (RpcKind rpcKind, String protocol, Writable param, long receiveTime)
+DECL|method|call (RPC.RpcKind rpcKind, String protocol, Writable param, long receiveTime)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

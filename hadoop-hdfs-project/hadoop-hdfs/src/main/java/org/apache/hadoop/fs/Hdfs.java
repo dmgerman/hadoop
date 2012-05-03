@@ -220,6 +220,38 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DirectoryListing
@@ -352,7 +384,9 @@ name|security
 operator|.
 name|token
 operator|.
-name|Token
+name|SecretManager
+operator|.
+name|InvalidToken
 import|;
 end_import
 
@@ -368,9 +402,7 @@ name|security
 operator|.
 name|token
 operator|.
-name|SecretManager
-operator|.
-name|InvalidToken
+name|Token
 import|;
 end_import
 
@@ -556,7 +588,7 @@ annotation|@
 name|Override
 DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|createInternal
 parameter_list|(
 name|Path
@@ -594,7 +626,7 @@ name|IOException
 block|{
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfs
 operator|.
@@ -1756,10 +1788,15 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
-name|FSDataInputStream
+name|HdfsDataInputStream
 name|open
 parameter_list|(
 name|Path

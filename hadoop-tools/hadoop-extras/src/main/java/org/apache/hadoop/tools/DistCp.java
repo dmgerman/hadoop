@@ -2314,7 +2314,9 @@ else|:
 name|destFileSys
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 decl_stmt|;
 name|long
 name|blockSize
@@ -2336,7 +2338,9 @@ else|:
 name|destFileSys
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 decl_stmt|;
 return|return
 name|destFileSys

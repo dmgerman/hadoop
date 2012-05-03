@@ -862,6 +862,19 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>viewfs</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"viewfs"
+return|;
+block|}
 comment|/**    * Called after a new FileSystem instance is constructed.    * @param theUri a uri whose authority section names the host, port, etc. for    *          this FileSystem    * @param conf the configuration    */
 DECL|method|initialize (final URI theUri, final Configuration conf)
 specifier|public

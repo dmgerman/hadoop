@@ -1567,7 +1567,7 @@ literal|0.567F
 decl_stmt|;
 name|CompressionEmulationUtil
 operator|.
-name|setReduceOutputCompressionEmulationRatio
+name|setJobOutputCompressionEmulationRatio
 argument_list|(
 name|conf
 argument_list|,
@@ -1580,7 +1580,7 @@ name|ratio
 argument_list|,
 name|CompressionEmulationUtil
 operator|.
-name|getReduceOutputCompressionEmulationRatio
+name|getJobOutputCompressionEmulationRatio
 argument_list|(
 name|conf
 argument_list|)

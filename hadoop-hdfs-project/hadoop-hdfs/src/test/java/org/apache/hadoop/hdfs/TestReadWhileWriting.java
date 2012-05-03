@@ -156,9 +156,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 import|;
 end_import
 
@@ -870,11 +870,11 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|in
 init|=
 operator|(
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|fs
 operator|.

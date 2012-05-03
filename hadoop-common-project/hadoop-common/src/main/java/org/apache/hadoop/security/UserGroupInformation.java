@@ -578,6 +578,12 @@ block|{
 literal|"HDFS"
 block|,
 literal|"MapReduce"
+block|,
+literal|"HBase"
+block|,
+literal|"Hive"
+block|,
+literal|"Oozie"
 block|}
 argument_list|)
 annotation|@
@@ -1348,6 +1354,14 @@ name|conf
 expr_stmt|;
 block|}
 comment|/**    * Set the static configuration for UGI.    * In particular, set the security authentication mechanism and the    * group look up service.    * @param conf the configuration to use    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|setConfiguration (Configuration conf)
 specifier|public
 specifier|static
@@ -2485,6 +2499,14 @@ name|isKrbTkt
 return|;
 block|}
 comment|/**    * Return the current user, including any doAs in the current stack.    * @return the current user    * @throws IOException if login fails    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 specifier|public
 specifier|synchronized
 DECL|method|getCurrentUser ()
@@ -2549,6 +2571,14 @@ return|;
 block|}
 block|}
 comment|/**    * Get the currently logged in user.    * @return the logged in user    * @throws IOException if login fails    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 specifier|public
 specifier|synchronized
 DECL|method|getLoginUser ()
@@ -3164,6 +3194,14 @@ block|}
 block|}
 block|}
 comment|/**    * Log a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user.    * @param user the principal name to load from the keytab    * @param path the path to the keytab file    * @throws IOException if the keytab file can't be read    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 specifier|public
 specifier|synchronized
 DECL|method|loginUserFromKeytab (String user, String path )
@@ -3391,6 +3429,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Re-Login a user in from a keytab file. Loads a user identity from a keytab    * file and logs them in. They become the currently logged-in user. This    * method assumes that {@link #loginUserFromKeytab(String, String)} had     * happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|reloginFromKeytab ()
 specifier|public
 specifier|synchronized
@@ -3628,6 +3674,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Re-Login a user in from the ticket cache.  This    * method assumes that login had happened already.    * The Subject field of this UserGroupInformation object is updated to have    * the new credentials.    * @throws IOException on a failure    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|reloginFromTicketCache ()
 specifier|public
 specifier|synchronized
@@ -4032,6 +4086,14 @@ literal|true
 return|;
 block|}
 comment|/**    * Did the login happen via keytab    * @return true or false    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|isLoginKeytabBased ()
 specifier|public
 specifier|synchronized
@@ -4050,6 +4112,14 @@ name|isKeytab
 return|;
 block|}
 comment|/**    * Create a user from a login name. It is intended to be used for remote    * users in RPC, since it won't have any credentials.    * @param user the full user principal name, must not be empty or null    * @return the UserGroupInformation for the remote user.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|createRemoteUser (String user)
 specifier|public
 specifier|static
@@ -4127,6 +4197,10 @@ return|;
 block|}
 comment|/**    * existing types of authentications' methods    */
 annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
@@ -4155,6 +4229,14 @@ DECL|enumConstant|PROXY
 name|PROXY
 block|;   }
 comment|/**    * Create a proxy user using username of the effective user and the ugi of the    * real user.    * @param user    * @param realUser    * @return proxyUser ugi    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|createProxyUser (String user, UserGroupInformation realUser)
 specifier|public
 specifier|static
@@ -4268,6 +4350,14 @@ name|result
 return|;
 block|}
 comment|/**    * get RealUser (vs. EffectiveUser)    * @return realUser running over proxy user    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getRealUser ()
 specifier|public
 name|UserGroupInformation
@@ -4453,14 +4543,11 @@ comment|/**    * Create a UGI for testing HDFS and MapReduce    * @param user th
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|createUserForTesting (String user, String[] userGroups)
 specifier|public
 specifier|static
@@ -4529,17 +4616,6 @@ name|ugi
 return|;
 block|}
 comment|/**    * Create a proxy user UGI for testing HDFS and MapReduce    *     * @param user    *          the full user principal name for effective user    * @param realUser    *          UGI of the real user    * @param userGroups    *          the names of the groups that the user belongs to    * @return a fake user for running unit tests    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
 DECL|method|createProxyUserForTesting (String user, UserGroupInformation realUser, String[] userGroups)
 specifier|public
 specifier|static
@@ -4646,6 +4722,14 @@ literal|null
 return|;
 block|}
 comment|/**    * Get the user's full principal name.    * @return the user's full principal name.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getUserName ()
 specifier|public
 name|String
@@ -5123,6 +5207,14 @@ name|subject
 return|;
 block|}
 comment|/**    * Run the given action as the user.    * @param<T> the return type of the run method    * @param action the method to execute    * @return the value from the run method    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|doAs (PrivilegedAction<T> action)
 specifier|public
 parameter_list|<
@@ -5157,6 +5249,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Run the given action as the user, potentially throwing an exception.    * @param<T> the return type of the run method    * @param action the method to execute    * @return the value from the run method    * @throws IOException if the action throws an IOException    * @throws Error if the action throws an Error    * @throws RuntimeException if the action throws a RuntimeException    * @throws InterruptedException if the action throws an InterruptedException    * @throws UndeclaredThrowableException if the action throws something else    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|doAs (PrivilegedExceptionAction<T> action )
 specifier|public
 parameter_list|<

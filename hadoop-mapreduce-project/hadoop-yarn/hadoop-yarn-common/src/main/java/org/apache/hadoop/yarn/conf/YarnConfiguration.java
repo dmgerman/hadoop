@@ -425,6 +425,48 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_SCHEDULER_PORT
 decl_stmt|;
+comment|/** Miniumum memory request grant-able by the RM scheduler. */
+DECL|field|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.minimum-allocation-mb"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+init|=
+literal|128
+decl_stmt|;
+comment|/** Maximum memory request grant-able by the RM scheduler. */
+DECL|field|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.maximum-allocation-mb"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+init|=
+literal|10240
+decl_stmt|;
 comment|/** Number of threads to handle scheduler interface.*/
 DECL|field|RM_SCHEDULER_CLIENT_THREAD_COUNT
 specifier|public
@@ -2003,6 +2045,17 @@ name|String
 name|DEFAULT_CONTAINER_TEMP_DIR
 init|=
 literal|"./tmp"
+decl_stmt|;
+DECL|field|IS_MINI_YARN_CLUSTER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IS_MINI_YARN_CLUSTER
+init|=
+name|YARN_PREFIX
+operator|+
+literal|".is.minicluster"
 decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public

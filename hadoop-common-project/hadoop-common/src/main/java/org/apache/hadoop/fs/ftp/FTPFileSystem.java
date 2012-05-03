@@ -371,6 +371,19 @@ specifier|private
 name|URI
 name|uri
 decl_stmt|;
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>ftp</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"ftp"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf)

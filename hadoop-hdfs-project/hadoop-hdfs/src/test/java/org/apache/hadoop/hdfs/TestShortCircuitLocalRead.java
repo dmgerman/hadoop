@@ -148,9 +148,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 import|;
 end_import
 
@@ -856,11 +856,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|stm
 init|=
 operator|(
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|fs
 operator|.

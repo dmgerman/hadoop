@@ -771,7 +771,7 @@ name|NULL_SPLITS_VECTOR
 return|;
 block|}
 block|}
-comment|/**    *    * @returns a list of all splits vectors, ordered in enumeral order    *           within {@link SplitVectorKind} .  Do NOT use hard-coded    *           indices within the return for this with a hard-coded    *           index to get individual values; use    *           {@code SplitVectorKind.get(LoggedTaskAttempt)} instead.    */
+comment|/**    *    * @return a list of all splits vectors, ordered in enumeral order    *           within {@link SplitVectorKind} .  Do NOT use hard-coded    *           indices within the return for this with a hard-coded    *           index to get individual values; use    *           {@code SplitVectorKind.get(LoggedTaskAttempt)} instead.    */
 DECL|method|allSplitVectors ()
 specifier|public
 name|List

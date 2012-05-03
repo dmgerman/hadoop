@@ -818,34 +818,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileAlreadyExistsException
 import|;
 end_import
@@ -989,6 +961,38 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
 import|;
 end_import
 
@@ -5142,7 +5146,7 @@ block|}
 comment|/**    * Call {@link #create(String, FsPermission, EnumSet, boolean, short,     * long, Progressable, int)} with<code>createParent</code> set to true.    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, short replication, long blockSize, Progressable progress, int buffersize)
 specifier|public
-name|OutputStream
+name|DFSOutputStream
 name|create
 parameter_list|(
 name|String
@@ -5196,7 +5200,7 @@ block|}
 comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize)
 specifier|public
-name|OutputStream
+name|DFSOutputStream
 name|create
 parameter_list|(
 name|String
@@ -5283,8 +5287,9 @@ specifier|final
 name|DFSOutputStream
 name|result
 init|=
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForCreate
 argument_list|(
 name|this
 argument_list|,
@@ -5429,7 +5434,7 @@ block|}
 comment|/**    * Same as {{@link #create(String, FsPermission, EnumSet, short, long,    *  Progressable, int)} except that the permission    *  is absolute (ie has already been masked with umask.    */
 DECL|method|primitiveCreate (String src, FsPermission absPermission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, int bytesPerChecksum)
 specifier|public
-name|OutputStream
+name|DFSOutputStream
 name|primitiveCreate
 parameter_list|(
 name|String
@@ -5514,8 +5519,9 @@ argument_list|)
 decl_stmt|;
 name|result
 operator|=
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForCreate
 argument_list|(
 name|this
 argument_list|,
@@ -5771,8 +5777,9 @@ argument_list|)
 throw|;
 block|}
 return|return
-operator|new
 name|DFSOutputStream
+operator|.
+name|newStreamForAppend
 argument_list|(
 name|this
 argument_list|,
@@ -5796,7 +5803,7 @@ block|}
 comment|/**    * Append to an existing HDFS file.      *     * @param src file name    * @param buffersize buffer size    * @param progress for reporting write-progress; null is acceptable.    * @param statistics file system statistics; null is acceptable.    * @return an output stream for writing into the file    *     * @see ClientProtocol#append(String, String)     */
 DECL|method|append (final String src, final int buffersize, final Progressable progress, final FileSystem.Statistics statistics )
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|append
 parameter_list|(
 specifier|final
@@ -5835,7 +5842,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|out
 argument_list|,
@@ -8197,18 +8204,16 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * The Hdfs implementation of {@link FSDataInputStream}    */
+comment|/**    * @deprecated use {@link HdfsDataInputStream} instead.    */
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|Deprecated
 DECL|class|DFSDataInputStream
 specifier|public
 specifier|static
 class|class
 name|DFSDataInputStream
 extends|extends
-name|FSDataInputStream
+name|HdfsDataInputStream
 block|{
 DECL|method|DFSDataInputStream (DFSInputStream in)
 specifier|public
@@ -8225,89 +8230,6 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**      * Returns the datanode from which the stream is currently reading.      */
-DECL|method|getCurrentDatanode ()
-specifier|public
-name|DatanodeInfo
-name|getCurrentDatanode
-parameter_list|()
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getCurrentDatanode
-argument_list|()
-return|;
-block|}
-comment|/**      * Returns the block containing the target position.       */
-DECL|method|getCurrentBlock ()
-specifier|public
-name|ExtendedBlock
-name|getCurrentBlock
-parameter_list|()
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getCurrentBlock
-argument_list|()
-return|;
-block|}
-comment|/**      * Return collection of blocks that has already been located.      */
-DECL|method|getAllBlocks ()
-specifier|synchronized
-name|List
-argument_list|<
-name|LocatedBlock
-argument_list|>
-name|getAllBlocks
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getAllBlocks
-argument_list|()
-return|;
-block|}
-comment|/**      * @return The visible length of the file.      */
-DECL|method|getVisibleLength ()
-specifier|public
-name|long
-name|getVisibleLength
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-operator|(
-operator|(
-name|DFSInputStream
-operator|)
-name|in
-operator|)
-operator|.
-name|getFileLength
-argument_list|()
-return|;
 block|}
 block|}
 DECL|method|shouldTryShortCircuitRead (InetSocketAddress targetAddr)

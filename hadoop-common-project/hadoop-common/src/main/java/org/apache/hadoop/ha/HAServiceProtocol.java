@@ -289,7 +289,7 @@ name|AccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Return the current status of the service. The status indicates    * the current<em>state</em> (e.g ACTIVE/STANDBY) as well as    * some additional information. {@see HAServiceStatus}    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+comment|/**    * Return the current status of the service. The status indicates    * the current<em>state</em> (e.g ACTIVE/STANDBY) as well as    * some additional information.    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    * @see HAServiceStatus    */
 DECL|method|getServiceStatus ()
 specifier|public
 name|HAServiceStatus

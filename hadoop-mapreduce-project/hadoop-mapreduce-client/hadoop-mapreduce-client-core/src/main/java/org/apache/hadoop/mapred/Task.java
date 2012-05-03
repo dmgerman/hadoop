@@ -4423,7 +4423,7 @@ name|taskId
 operator|+
 literal|" is done."
 operator|+
-literal|" And is in the process of commiting"
+literal|" And is in the process of committing"
 argument_list|)
 expr_stmt|;
 name|updateCounters

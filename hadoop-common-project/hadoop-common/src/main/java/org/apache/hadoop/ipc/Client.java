@@ -340,9 +340,11 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
+name|protobuf
 operator|.
-name|*
+name|IpcConnectionContextProtos
+operator|.
+name|IpcConnectionContextProto
 import|;
 end_import
 
@@ -358,9 +360,27 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|IpcConnectionContextProtos
+name|RpcPayloadHeaderProtos
 operator|.
-name|IpcConnectionContextProto
+name|RpcPayloadHeaderProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcPayloadHeaderProtos
+operator|.
+name|RpcPayloadOperationProto
 import|;
 end_import
 
@@ -857,6 +877,8 @@ decl_stmt|;
 comment|// exception, null if success
 DECL|field|rpcKind
 specifier|final
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 decl_stmt|;
@@ -866,10 +888,12 @@ name|boolean
 name|done
 decl_stmt|;
 comment|// true when call is done
-DECL|method|Call (RpcKind rpcKind, Writable param)
+DECL|method|Call (RPC.RpcKind rpcKind, Writable param)
 specifier|protected
 name|Call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -2843,7 +2867,7 @@ name|outStream
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|writeHeader
+name|writeConnectionContext
 argument_list|()
 expr_stmt|;
 comment|// update last activity time
@@ -3083,11 +3107,11 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/* Write the protocol header for each connection      * Out is not synchronized because only the first thread does this.      */
-DECL|method|writeHeader ()
+comment|/* Write the connection context header for each connection      * Out is not synchronized because only the first thread does this.      */
+DECL|method|writeConnectionContext ()
 specifier|private
 name|void
-name|writeHeader
+name|writeConnectionContext
 parameter_list|()
 throws|throws
 name|IOException
@@ -3508,33 +3532,30 @@ operator|.
 name|id
 argument_list|)
 expr_stmt|;
-comment|//for serializing the
-comment|//data to be written
+comment|// Serializing the data to be written.
+comment|// Format:
+comment|// 0) Length of rest below (1 + 2)
+comment|// 1) PayloadHeader  - is serialized Delimited hence contains length
+comment|// 2) the Payload - the RpcRequest
+comment|//
 name|d
 operator|=
 operator|new
 name|DataOutputBuffer
 argument_list|()
 expr_stmt|;
-name|d
-operator|.
-name|writeInt
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// placeholder for data length
-name|RpcPayloadHeader
+name|RpcPayloadHeaderProto
 name|header
 init|=
-operator|new
-name|RpcPayloadHeader
+name|ProtoUtil
+operator|.
+name|makeRpcPayloadHeader
 argument_list|(
 name|call
 operator|.
 name|rpcKind
 argument_list|,
-name|RpcPayloadOperation
+name|RpcPayloadOperationProto
 operator|.
 name|RPC_FINAL_PAYLOAD
 argument_list|,
@@ -3545,7 +3566,7 @@ argument_list|)
 decl_stmt|;
 name|header
 operator|.
-name|write
+name|writeDelimitedTo
 argument_list|(
 name|d
 argument_list|)
@@ -3569,83 +3590,21 @@ name|getData
 argument_list|()
 decl_stmt|;
 name|int
-name|dataLength
+name|totalLength
 init|=
 name|d
 operator|.
 name|getLength
 argument_list|()
-operator|-
-literal|4
 decl_stmt|;
-name|data
-index|[
-literal|0
-index|]
-operator|=
-call|(
-name|byte
-call|)
+name|out
+operator|.
+name|writeInt
 argument_list|(
-operator|(
-name|dataLength
-operator|>>>
-literal|24
-operator|)
-operator|&
-literal|0xff
+name|totalLength
 argument_list|)
 expr_stmt|;
-name|data
-index|[
-literal|1
-index|]
-operator|=
-call|(
-name|byte
-call|)
-argument_list|(
-operator|(
-name|dataLength
-operator|>>>
-literal|16
-operator|)
-operator|&
-literal|0xff
-argument_list|)
-expr_stmt|;
-name|data
-index|[
-literal|2
-index|]
-operator|=
-call|(
-name|byte
-call|)
-argument_list|(
-operator|(
-name|dataLength
-operator|>>>
-literal|8
-operator|)
-operator|&
-literal|0xff
-argument_list|)
-expr_stmt|;
-name|data
-index|[
-literal|3
-index|]
-operator|=
-call|(
-name|byte
-call|)
-argument_list|(
-name|dataLength
-operator|&
-literal|0xff
-argument_list|)
-expr_stmt|;
+comment|// Total Length
 name|out
 operator|.
 name|write
@@ -3654,12 +3613,10 @@ name|data
 argument_list|,
 literal|0
 argument_list|,
-name|dataLength
-operator|+
-literal|4
+name|totalLength
 argument_list|)
 expr_stmt|;
-comment|//write the data
+comment|//PayloadHeader + RpcRequest
 name|out
 operator|.
 name|flush
@@ -4188,6 +4145,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_WRITABLE
@@ -4484,7 +4443,7 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-comment|/**    * Same as {@link #call(RpcPayloadHeader.RpcKind, Writable, ConnectionId)}    *  for RPC_BUILTIN    */
+comment|/**    * Same as {@link #call(RPC.RpcKind, Writable, ConnectionId)}    *  for RPC_BUILTIN    */
 DECL|method|call (Writable param, InetSocketAddress address)
 specifier|public
 name|Writable
@@ -4504,6 +4463,8 @@ block|{
 return|return
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
@@ -4514,14 +4475,16 @@ name|address
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(RpcPayloadHeader.RpcKind, Writable,    *  ConnectionId)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code>, returning the value.  Throws exceptions if there are    * network problems or if the remote code threw an exception.    * @deprecated Use {@link #call(RPC.RpcKind, Writable,    *  ConnectionId)} instead     */
 annotation|@
 name|Deprecated
-DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress address)
+DECL|method|call (RPC.RpcKind rpcKind, Writable param, InetSocketAddress address)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -4549,14 +4512,16 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(RpcPayloadHeader.RpcKind, Writable,     * ConnectionId)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> with the<code>ticket</code> credentials, returning     * the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.    * @deprecated Use {@link #call(RPC.RpcKind, Writable,     * ConnectionId)} instead     */
 annotation|@
 name|Deprecated
-DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, UserGroupInformation ticket)
+DECL|method|call (RPC.RpcKind rpcKind, Writable param, InetSocketAddress addr, UserGroupInformation ticket)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -4603,14 +4568,16 @@ name|remoteId
 argument_list|)
 return|;
 block|}
-comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials and<code>rpcTimeout</code> as     * timeout, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.     * @deprecated Use {@link #call(RpcPayloadHeader.RpcKind, Writable,    *  ConnectionId)} instead     */
+comment|/** Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,     * with the<code>ticket</code> credentials and<code>rpcTimeout</code> as     * timeout, returning the value.      * Throws exceptions if there are network problems or if the remote code     * threw an exception.     * @deprecated Use {@link #call(RPC.RpcKind, Writable,    *  ConnectionId)} instead     */
 annotation|@
 name|Deprecated
-DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
+DECL|method|call (RPC.RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -4666,7 +4633,7 @@ name|remoteId
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as {@link #call(RpcPayloadHeader.RpcKind, Writable, InetSocketAddress,     * Class, UserGroupInformation, int, Configuration)}    * except that rpcKind is writable.    */
+comment|/**    * Same as {@link #call(RPC.RpcKind, Writable, InetSocketAddress,     * Class, UserGroupInformation, int, Configuration)}    * except that rpcKind is writable.    */
 DECL|method|call (Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
 specifier|public
 name|Writable
@@ -4719,6 +4686,8 @@ decl_stmt|;
 return|return
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
@@ -4730,11 +4699,13 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Make a call, passing<code>param</code>, to the IPC server running at    *<code>address</code> which is servicing the<code>protocol</code> protocol,    * with the<code>ticket</code> credentials,<code>rpcTimeout</code> as    * timeout and<code>conf</code> as conf for this connection, returning the    * value. Throws exceptions if there are network problems or if the remote    * code threw an exception.    */
-DECL|method|call (RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
+DECL|method|call (RPC.RpcKind rpcKind, Writable param, InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
@@ -4793,7 +4764,7 @@ name|remoteId
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as {link {@link #call(RpcPayloadHeader.RpcKind, Writable, ConnectionId)}    * except the rpcKind is RPC_BUILTIN    */
+comment|/**    * Same as {link {@link #call(RPC.RpcKind, Writable, ConnectionId)}    * except the rpcKind is RPC_BUILTIN    */
 DECL|method|call (Writable param, ConnectionId remoteId)
 specifier|public
 name|Writable
@@ -4813,6 +4784,8 @@ block|{
 return|return
 name|call
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
@@ -4824,11 +4797,13 @@ argument_list|)
 return|;
 block|}
 comment|/**     * Make a call, passing<code>rpcRequest</code>, to the IPC server defined by    *<code>remoteId</code>, returning the rpc respond.    *     * @param rpcKind    * @param rpcRequest -  contains serialized method and method parameters    * @param remoteId - the target rpc server    * @returns the rpc response    * Throws exceptions if there are network problems or if the remote code     * threw an exception.    */
-DECL|method|call (RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId)
+DECL|method|call (RPC.RpcKind rpcKind, Writable rpcRequest, ConnectionId remoteId)
 specifier|public
 name|Writable
 name|call
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

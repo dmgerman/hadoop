@@ -1713,6 +1713,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+specifier|final
+name|int
+name|MAX_MOVE_TRIES
+init|=
+literal|5
+decl_stmt|;
 name|DFSTestUtil
 name|util
 init|=
@@ -2029,6 +2035,21 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// After a fsck -move, the corrupted file should still exist.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|MAX_MOVE_TRIES
+condition|;
+name|i
+operator|++
+control|)
+block|{
 name|outStr
 operator|=
 name|runFsck
@@ -2102,6 +2123,7 @@ argument_list|(
 name|found
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Fix the filesystem by moving corrupted files to lost+found
 name|outStr
 operator|=

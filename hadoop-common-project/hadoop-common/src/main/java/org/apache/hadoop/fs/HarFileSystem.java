@@ -281,6 +281,19 @@ specifier|public
 name|HarFileSystem
 parameter_list|()
 block|{   }
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>har</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"har"
+return|;
+block|}
 comment|/**    * Constructor to create a HarFileSystem with an    * underlying filesystem.    * @param fs    */
 DECL|method|HarFileSystem (FileSystem fs)
 specifier|public

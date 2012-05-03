@@ -44,22 +44,6 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
-name|RpcPayloadHeader
-operator|.
-name|RpcKind
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
 name|protobuf
 operator|.
 name|ProtocolInfoProtos
@@ -253,9 +237,13 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
+name|RPC
+operator|.
 name|RpcKind
 name|r
 range|:
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|values
@@ -406,6 +394,8 @@ name|versions
 operator|=
 name|getProtocolVersionForRpcKind
 argument_list|(
+name|RPC
+operator|.
 name|RpcKind
 operator|.
 name|valueOf
@@ -536,12 +526,14 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getProtocolVersionForRpcKind (RpcKind rpcKind, String protocol)
+DECL|method|getProtocolVersionForRpcKind (RPC.RpcKind rpcKind, String protocol)
 specifier|private
 name|long
 index|[]
 name|getProtocolVersionForRpcKind
 parameter_list|(
+name|RPC
+operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,

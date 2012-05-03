@@ -1864,7 +1864,7 @@ expr_stmt|;
 break|break;
 block|}
 case|case
-name|GETHOMEDIR
+name|GETHOMEDIRECTORY
 case|:
 block|{
 name|FSOperations

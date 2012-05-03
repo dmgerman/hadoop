@@ -1021,9 +1021,7 @@ name|compile
 argument_list|(
 name|DEFAULT
 operator|+
-literal|"|(-[-r][-w][-x][-r][-w][-x][-r][-w][-x])"
-operator|+
-literal|"|[0-7][0-7][0-7]"
+literal|"|[0-1]?[0-7][0-7][0-7]"
 argument_list|)
 decl_stmt|;
 comment|/**      * Constructor.      *      * @param permission parameter value.      */

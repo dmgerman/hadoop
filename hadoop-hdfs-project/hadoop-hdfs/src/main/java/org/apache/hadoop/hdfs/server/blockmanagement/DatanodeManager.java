@@ -3043,11 +3043,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 name|refreshHostsReader
 argument_list|(
 name|conf

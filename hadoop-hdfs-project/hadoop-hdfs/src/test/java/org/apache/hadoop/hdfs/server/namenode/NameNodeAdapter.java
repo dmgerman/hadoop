@@ -781,7 +781,9 @@ name|String
 name|path
 parameter_list|)
 block|{
-return|return
+name|Lease
+name|l
+init|=
 name|namenode
 operator|.
 name|getNamesystem
@@ -793,6 +795,15 @@ name|getLeaseByPath
 argument_list|(
 name|path
 argument_list|)
+decl_stmt|;
+return|return
+name|l
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|l
 operator|.
 name|getHolder
 argument_list|()

@@ -88,7 +88,7 @@ parameter_list|)
 throws|throws
 name|BadFencingConfigurationException
 function_decl|;
-comment|/**    * Attempt to fence the target node.    * @param serviceAddr the address (host:ipcport) of the service to fence    * @param args the configured arguments, which were checked at startup by    *             {@link #checkArgs(String)}    * @return true if fencing was successful, false if unsuccessful or    *              indeterminate    * @throws BadFencingConfigurationException if the configuration was    *         determined to be invalid only at runtime    */
+comment|/**    * Attempt to fence the target node.    * @param target the target of the service to fence    * @param args the configured arguments, which were checked at startup by    *             {@link #checkArgs(String)}    * @return true if fencing was successful, false if unsuccessful or    *              indeterminate    * @throws BadFencingConfigurationException if the configuration was    *         determined to be invalid only at runtime    */
 DECL|method|tryFence (HAServiceTarget target, String args)
 specifier|public
 name|boolean

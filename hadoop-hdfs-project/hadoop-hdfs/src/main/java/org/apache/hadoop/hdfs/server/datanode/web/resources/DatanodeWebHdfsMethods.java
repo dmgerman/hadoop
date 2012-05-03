@@ -414,9 +414,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 import|;
 end_import
 
@@ -2978,7 +2978,7 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|in
 init|=
 literal|null
@@ -2988,9 +2988,7 @@ block|{
 name|in
 operator|=
 operator|new
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 argument_list|(
 name|dfsclient
 operator|.
@@ -3044,7 +3042,7 @@ name|ioe
 throw|;
 block|}
 specifier|final
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dis
 init|=
 name|in
@@ -3079,7 +3077,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dfsin
 init|=
 name|dis

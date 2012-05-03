@@ -905,7 +905,9 @@ init|=
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|qualifiedPath
+argument_list|)
 operator|*
 literal|2
 decl_stmt|;
@@ -928,7 +930,9 @@ argument_list|(
 name|fs
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|qualifiedPath
+argument_list|)
 operator|*
 literal|2
 argument_list|)

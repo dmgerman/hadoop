@@ -263,6 +263,39 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Create an HttpServer instance on the given address for the given webapp    * @param host to bind    * @param port to bind    * @return the server    * @throws IOException if it could not be created    */
+DECL|method|createServer (String host, int port)
+specifier|public
+specifier|static
+name|HttpServer
+name|createServer
+parameter_list|(
+name|String
+name|host
+parameter_list|,
+name|int
+name|port
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|prepareTestWebapp
+argument_list|()
+expr_stmt|;
+return|return
+operator|new
+name|HttpServer
+argument_list|(
+name|TEST
+argument_list|,
+name|host
+argument_list|,
+name|port
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
 comment|/**    * Create an HttpServer instance for the given webapp    * @param webapp the webapp to work with    * @return the server    * @throws IOException if it could not be created    */
 DECL|method|createServer (String webapp)
 specifier|public

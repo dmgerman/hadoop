@@ -1183,13 +1183,16 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|testMinimumAllocation (YarnConfiguration conf)
+DECL|method|testMinimumAllocation (YarnConfiguration conf, int testAlloc)
 specifier|private
 name|void
 name|testMinimumAllocation
 parameter_list|(
 name|YarnConfiguration
 name|conf
+parameter_list|,
+name|int
+name|testAlloc
 parameter_list|)
 throws|throws
 name|Exception
@@ -1231,7 +1234,7 @@ name|rm
 operator|.
 name|submitApp
 argument_list|(
-literal|256
+name|testAlloc
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling
@@ -1291,9 +1294,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"yarn.scheduler.fifo.minimum-allocation-mb"
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
-name|GB
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1327,11 +1334,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Test with something lesser than default
 name|testMinimumAllocation
 argument_list|(
 operator|new
 name|YarnConfiguration
 argument_list|()
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+operator|/
+literal|2
 argument_list|)
 expr_stmt|;
 block|}
@@ -1345,6 +1359,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Set custom min-alloc to test tweaking it
+name|int
+name|allocMB
+init|=
+literal|512
+decl_stmt|;
 name|YarnConfiguration
 name|conf
 init|=
@@ -1356,14 +1376,21 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"yarn.scheduler.fifo.minimum-allocation-mb"
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
-literal|512
+name|allocMB
 argument_list|)
 expr_stmt|;
+comment|// Test for something lesser than this.
 name|testMinimumAllocation
 argument_list|(
 name|conf
+argument_list|,
+name|allocMB
+operator|/
+literal|2
 argument_list|)
 expr_stmt|;
 block|}

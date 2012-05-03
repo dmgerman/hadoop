@@ -891,6 +891,28 @@ argument_list|()
 argument_list|)
 operator|.
 name|td
+argument_list|()
+operator|.
+name|br
+argument_list|()
+operator|.
+name|$title
+argument_list|(
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|info
+operator|.
+name|getLastHealthUpdate
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|()
+operator|.
+name|_
 argument_list|(
 name|Times
 operator|.
@@ -902,6 +924,9 @@ name|getLastHealthUpdate
 argument_list|()
 argument_list|)
 argument_list|)
+operator|.
+name|_
+argument_list|()
 operator|.
 name|td
 argument_list|(
@@ -1134,23 +1159,37 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumnDefs:["
+literal|", aoColumnDefs: ["
 argument_list|)
 decl_stmt|;
 name|b
 operator|.
 name|append
 argument_list|(
-literal|"{'bSearchable':false, 'aTargets': [7]} ,"
+literal|"{'bSearchable': false, 'aTargets': [ 7 ]}"
 argument_list|)
 expr_stmt|;
 name|b
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'title-numeric', 'bSearchable':false, "
+literal|", {'sType': 'title-numeric', 'bSearchable': false, "
 operator|+
-literal|"'aTargets': [ 8, 9] }]}"
+literal|"'aTargets': [ 8, 9 ] }"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", {'sType': 'title-numeric', 'aTargets': [ 5 ]}"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|"]}"
 argument_list|)
 expr_stmt|;
 return|return

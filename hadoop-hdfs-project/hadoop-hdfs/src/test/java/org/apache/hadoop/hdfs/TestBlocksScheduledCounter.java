@@ -212,17 +212,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// flush to make sure a block is allocated.
-operator|(
-call|(
-name|DFSOutputStream
-call|)
-argument_list|(
 name|out
-operator|.
-name|getWrappedStream
-argument_list|()
-argument_list|)
-operator|)
 operator|.
 name|hflush
 argument_list|()

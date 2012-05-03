@@ -957,7 +957,7 @@ expr_stmt|;
 comment|// get old key
 name|assertEquals
 argument_list|(
-literal|"y"
+literal|"z"
 argument_list|,
 name|conf
 operator|.

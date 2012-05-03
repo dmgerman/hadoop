@@ -48,6 +48,18 @@ begin_import
 import|import
 name|javax
 operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -773,6 +785,13 @@ specifier|final
 name|App
 name|app
 decl_stmt|;
+DECL|field|response
+specifier|private
+annotation|@
+name|Context
+name|HttpServletResponse
+name|response
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|AMWebServices (final App app, final AppContext context)
@@ -868,6 +887,21 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+DECL|method|init ()
+specifier|private
+name|void
+name|init
+parameter_list|()
+block|{
+comment|//clear content type
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * convert a job id string to an actual job and handle all the error checking.    */
 DECL|method|getJobFromJobIdString (String jid, AppContext appCtx)
@@ -1360,6 +1394,9 @@ name|AppInfo
 name|getAppInfo
 parameter_list|()
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|AppInfo
@@ -1407,6 +1444,9 @@ name|HttpServletRequest
 name|hsr
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|JobsInfo
 name|allJobs
 init|=
@@ -1513,6 +1553,9 @@ name|String
 name|jid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -1572,6 +1615,9 @@ name|String
 name|jid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -1675,6 +1721,9 @@ name|String
 name|jid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -1743,6 +1792,9 @@ name|String
 name|jid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -1841,6 +1893,9 @@ name|String
 name|type
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -2003,6 +2058,9 @@ name|String
 name|tid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -2085,6 +2143,9 @@ name|String
 name|tid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -2167,6 +2228,9 @@ name|String
 name|tid
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|TaskAttemptsInfo
 name|attempts
 init|=
@@ -2333,6 +2397,9 @@ name|String
 name|attId
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=
@@ -2468,6 +2535,9 @@ name|String
 name|attId
 parameter_list|)
 block|{
+name|init
+argument_list|()
+expr_stmt|;
 name|Job
 name|job
 init|=

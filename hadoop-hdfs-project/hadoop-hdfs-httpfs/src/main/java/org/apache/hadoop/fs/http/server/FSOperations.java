@@ -266,7 +266,7 @@ specifier|public
 class|class
 name|FSOperations
 block|{
-comment|/**    * Converts a Unix permission octal& symbolic representation    * (i.e. 655 or -rwxr--r--) into a FileSystemAccess permission.    *    * @param str Unix permission symbolic representation.    *    * @return the FileSystemAccess permission. If the given string was    *         'default', it returns<code>FsPermission.getDefault()</code>.    */
+comment|/**    * Converts a Unix permission octal    * (i.e. 655 or 1777) into a FileSystemAccess permission.    *    * @param str Unix permission symbolic representation.    *    * @return the FileSystemAccess permission. If the given string was    *         'default', it returns<code>FsPermission.getDefault()</code>.    */
 DECL|method|getPermission (String str)
 specifier|private
 specifier|static
@@ -300,16 +300,7 @@ name|getDefault
 argument_list|()
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|str
-operator|.
-name|length
-argument_list|()
-operator|==
-literal|3
-condition|)
+else|else
 block|{
 name|permission
 operator|=
@@ -324,18 +315,6 @@ name|str
 argument_list|,
 literal|8
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|permission
-operator|=
-name|FsPermission
-operator|.
-name|valueOf
-argument_list|(
-name|str
 argument_list|)
 expr_stmt|;
 block|}

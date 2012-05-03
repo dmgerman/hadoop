@@ -162,6 +162,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -3970,7 +3986,9 @@ name|assertEquals
 argument_list|(
 literal|"minQueueMemoryCapacity doesn't match"
 argument_list|,
-literal|1024
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
 name|minQueueCapacity
 argument_list|)
@@ -3979,7 +3997,9 @@ name|assertEquals
 argument_list|(
 literal|"maxQueueMemoryCapacity doesn't match"
 argument_list|,
-literal|10240
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
 argument_list|,
 name|maxQueueCapacity
 argument_list|)

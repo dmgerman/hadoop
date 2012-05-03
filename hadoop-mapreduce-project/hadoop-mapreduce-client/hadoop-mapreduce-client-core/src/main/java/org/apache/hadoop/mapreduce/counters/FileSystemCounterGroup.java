@@ -352,6 +352,7 @@ operator|.
 name|Private
 DECL|class|FSCounter
 specifier|public
+specifier|static
 class|class
 name|FSCounter
 extends|extends
@@ -651,18 +652,10 @@ condition|(
 name|counter
 operator|instanceof
 name|FileSystemCounterGroup
-argument_list|<
-name|?
-argument_list|>
 operator|.
 name|FSCounter
 condition|)
 block|{
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 name|FSCounter
 name|c
 init|=

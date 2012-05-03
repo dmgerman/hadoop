@@ -1400,6 +1400,27 @@ name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
 init|=
 literal|3
 decl_stmt|;
+comment|/**    * The number of client retries to the RM/HS/AM before throwing exception.    */
+DECL|field|MR_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_CLIENT_MAX_RETRIES
+init|=
+name|MR_PREFIX
+operator|+
+literal|"client.max-retries"
+decl_stmt|;
+DECL|field|DEFAULT_MR_CLIENT_MAX_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_CLIENT_MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
 comment|/** The staging directory for map reduce.*/
 DECL|field|MR_AM_STAGING_DIR
 specifier|public
@@ -1440,7 +1461,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_AM_VMEM_MB
 init|=
-literal|2048
+literal|1536
 decl_stmt|;
 comment|/** Command line arguments passed to the MR app master.*/
 DECL|field|MR_AM_COMMAND_OPTS
@@ -1461,7 +1482,7 @@ specifier|final
 name|String
 name|DEFAULT_MR_AM_COMMAND_OPTS
 init|=
-literal|"-Xmx1536m"
+literal|"-Xmx1024m"
 decl_stmt|;
 comment|/** Root Logging level passed to the MR app master.*/
 DECL|field|MR_AM_LOG_LEVEL
@@ -1546,6 +1567,18 @@ name|int
 name|DEFAULT_MR_AM_JOB_CLIENT_THREAD_COUNT
 init|=
 literal|1
+decl_stmt|;
+comment|/**     * Range of ports that the MapReduce AM can use when binding. Leave blank    * if you want all possible ports.    */
+DECL|field|MR_AM_JOB_CLIENT_PORT_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_JOB_CLIENT_PORT_RANGE
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.client.port-range"
 decl_stmt|;
 comment|/** Enable blacklisting of nodes in the job.*/
 DECL|field|MR_AM_JOB_NODE_BLACKLISTING_ENABLE

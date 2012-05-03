@@ -3466,7 +3466,9 @@ name|spyFs
 argument_list|)
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|p
+argument_list|)
 expr_stmt|;
 block|}
 DECL|class|TestFSDataInputStream

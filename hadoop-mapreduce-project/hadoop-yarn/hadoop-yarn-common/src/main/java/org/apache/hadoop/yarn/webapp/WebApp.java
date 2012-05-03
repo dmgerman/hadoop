@@ -38,6 +38,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -485,6 +495,25 @@ parameter_list|()
 block|{
 return|return
 name|httpServer
+return|;
+block|}
+comment|/**    * Get the address the http server is bound to    * @return InetSocketAddress    */
+DECL|method|getListenerAddress ()
+specifier|public
+name|InetSocketAddress
+name|getListenerAddress
+parameter_list|()
+block|{
+return|return
+name|checkNotNull
+argument_list|(
+name|httpServer
+argument_list|,
+literal|"httpServer"
+argument_list|)
+operator|.
+name|getListenerAddress
+argument_list|()
 return|;
 block|}
 DECL|method|port ()

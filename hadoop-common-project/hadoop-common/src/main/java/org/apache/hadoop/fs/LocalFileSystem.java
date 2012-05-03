@@ -144,6 +144,19 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>file</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"file"
+return|;
+block|}
 DECL|method|getRaw ()
 specifier|public
 name|FileSystem

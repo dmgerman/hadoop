@@ -1070,24 +1070,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|DatanodeRegistration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|NamenodeProtocols
 import|;
 end_import
@@ -1277,20 +1259,6 @@ operator|.
 name|collect
 operator|.
 name|Lists
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|io
-operator|.
-name|Files
 import|;
 end_import
 
@@ -6923,7 +6891,7 @@ block|}
 comment|/**    * Get a client handle to the DFS cluster with a single namenode.    */
 DECL|method|getFileSystem ()
 specifier|public
-name|FileSystem
+name|DistributedFileSystem
 name|getFileSystem
 parameter_list|()
 throws|throws
@@ -6942,7 +6910,7 @@ block|}
 comment|/**    * Get a client handle to the DFS cluster for the namenode at given index.    */
 DECL|method|getFileSystem (int nnIndex)
 specifier|public
-name|FileSystem
+name|DistributedFileSystem
 name|getFileSystem
 parameter_list|(
 name|int
@@ -6952,6 +6920,9 @@ throws|throws
 name|IOException
 block|{
 return|return
+operator|(
+name|DistributedFileSystem
+operator|)
 name|FileSystem
 operator|.
 name|get

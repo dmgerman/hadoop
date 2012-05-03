@@ -194,20 +194,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileStatus
 import|;
 end_import
@@ -364,9 +350,25 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSClient
+name|client
 operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
 import|;
 end_import
 
@@ -729,6 +731,19 @@ specifier|public
 name|DistributedFileSystem
 parameter_list|()
 block|{   }
+comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>hdfs</code>    */
+annotation|@
+name|Override
+DECL|method|getScheme ()
+specifier|public
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"hdfs"
+return|;
+block|}
 annotation|@
 name|Deprecated
 DECL|method|DistributedFileSystem (InetSocketAddress namenode, Configuration conf)
@@ -1213,10 +1228,15 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
-name|FSDataInputStream
+name|HdfsDataInputStream
 name|open
 parameter_list|(
 name|Path
@@ -1262,7 +1282,7 @@ annotation|@
 name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|append
 parameter_list|(
 name|Path
@@ -1306,7 +1326,7 @@ annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|create
 parameter_list|(
 name|Path
@@ -1340,21 +1360,13 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-return|return
-operator|new
-name|FSDataOutputStream
-argument_list|(
-name|dfs
-operator|.
-name|create
-argument_list|(
-name|getPathName
-argument_list|(
-name|f
-argument_list|)
-argument_list|,
-name|permission
-argument_list|,
+specifier|final
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|cflags
+init|=
 name|overwrite
 condition|?
 name|EnumSet
@@ -1378,6 +1390,23 @@ name|CreateFlag
 operator|.
 name|CREATE
 argument_list|)
+decl_stmt|;
+specifier|final
+name|DFSOutputStream
+name|out
+init|=
+name|dfs
+operator|.
+name|create
+argument_list|(
+name|getPathName
+argument_list|(
+name|f
+argument_list|)
+argument_list|,
+name|permission
+argument_list|,
+name|cflags
 argument_list|,
 name|replication
 argument_list|,
@@ -1387,6 +1416,12 @@ name|progress
 argument_list|,
 name|bufferSize
 argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|HdfsDataOutputStream
+argument_list|(
+name|out
 argument_list|,
 name|statistics
 argument_list|)
@@ -1401,7 +1436,7 @@ annotation|@
 name|Override
 DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
 specifier|protected
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|primitiveCreate
 parameter_list|(
 name|Path
@@ -1443,7 +1478,7 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfs
 operator|.
@@ -1478,7 +1513,7 @@ block|}
 comment|/**    * Same as create(), except fails if parent directory doesn't already exist.    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|createNonRecursive
 parameter_list|(
 name|Path
@@ -1539,7 +1574,7 @@ expr_stmt|;
 block|}
 return|return
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfs
 operator|.
@@ -3156,20 +3191,18 @@ operator|!
 operator|(
 name|in
 operator|instanceof
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|&&
 name|sums
 operator|instanceof
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 condition|)
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Input streams must be types "
-operator|+
-literal|"of DFSDataInputStream"
+literal|"Input streams must be types of HdfsDataInputStream"
 argument_list|)
 throw|;
 name|LocatedBlock
@@ -3183,15 +3216,11 @@ literal|2
 index|]
 decl_stmt|;
 comment|// Find block in data stream.
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dfsIn
 init|=
 operator|(
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|in
 decl_stmt|;
@@ -3262,15 +3291,11 @@ index|]
 argument_list|)
 expr_stmt|;
 comment|// Find block in checksum stream
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 name|dfsSums
 init|=
 operator|(
-name|DFSClient
-operator|.
-name|DFSDataInputStream
+name|HdfsDataInputStream
 operator|)
 name|sums
 decl_stmt|;

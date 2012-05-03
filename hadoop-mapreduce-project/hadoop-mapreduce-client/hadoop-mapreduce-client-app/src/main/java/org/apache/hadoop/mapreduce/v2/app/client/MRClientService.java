@@ -1539,6 +1539,10 @@ name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_JOB_CLIENT_THREAD_COUNT
 argument_list|)
+argument_list|,
+name|MRJobConfig
+operator|.
+name|MR_AM_JOB_CLIENT_PORT_RANGE
 argument_list|)
 expr_stmt|;
 comment|// Enable service authorization?
