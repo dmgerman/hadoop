@@ -264,6 +264,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|ImmutableMap
@@ -1066,24 +1080,74 @@ literal|1
 index|]
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|checkManualStateManagementOK
+comment|// Check that auto-failover is consistently configured for both nodes.
+name|Preconditions
+operator|.
+name|checkState
 argument_list|(
 name|fromNode
-argument_list|)
-operator|||
-operator|!
-name|checkManualStateManagementOK
-argument_list|(
+operator|.
+name|isAutoFailoverEnabled
+argument_list|()
+operator|==
+name|toNode
+operator|.
+name|isAutoFailoverEnabled
+argument_list|()
+argument_list|,
+literal|"Inconsistent auto-failover configs between %s and %s!"
+argument_list|,
+name|fromNode
+argument_list|,
 name|toNode
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|fromNode
+operator|.
+name|isAutoFailoverEnabled
+argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|forceFence
+operator|||
+name|forceActive
+condition|)
+block|{
+comment|// -forceActive doesn't make sense with auto-HA, since, if the node
+comment|// is not healthy, then its ZKFC will immediately quit the election
+comment|// again the next time a health check runs.
+comment|//
+comment|// -forceFence doesn't seem to have any real use cases with auto-HA
+comment|// so it isn't implemented.
+name|errOut
+operator|.
+name|println
+argument_list|(
+name|FORCEFENCE
+operator|+
+literal|" and "
+operator|+
+name|FORCEACTIVE
+operator|+
+literal|" flags not "
+operator|+
+literal|"supported with auto-failover enabled."
+argument_list|)
+expr_stmt|;
 return|return
 operator|-
 literal|1
+return|;
+block|}
+return|return
+name|gracefulFailoverThroughZKFCs
+argument_list|(
+name|toNode
+argument_list|)
 return|;
 block|}
 name|FailoverController
@@ -1148,6 +1212,88 @@ argument_list|(
 literal|"Failover failed: "
 operator|+
 name|ffe
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+return|return
+literal|0
+return|;
+block|}
+comment|/**    * Initiate a graceful failover by talking to the target node's ZKFC.    * This sends an RPC to the ZKFC, which coordinates the failover.    *     * @param toNode the node to fail to    * @return status code (0 for success)    * @throws IOException if failover does not succeed    */
+DECL|method|gracefulFailoverThroughZKFCs (HAServiceTarget toNode)
+specifier|private
+name|int
+name|gracefulFailoverThroughZKFCs
+parameter_list|(
+name|HAServiceTarget
+name|toNode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|timeout
+init|=
+name|FailoverController
+operator|.
+name|getRpcTimeoutToNewActive
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|ZKFCProtocol
+name|proxy
+init|=
+name|toNode
+operator|.
+name|getZKFCProxy
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|timeout
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|proxy
+operator|.
+name|gracefulFailover
+argument_list|()
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Failover to "
+operator|+
+name|toNode
+operator|+
+literal|" successful"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ServiceFailedException
+name|sfe
+parameter_list|)
+block|{
+name|errOut
+operator|.
+name|println
+argument_list|(
+literal|"Failover failed: "
+operator|+
+name|sfe
 operator|.
 name|getLocalizedMessage
 argument_list|()

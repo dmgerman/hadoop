@@ -2744,6 +2744,24 @@ name|DFS_HA_AUTO_FAILOVER_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_HA_ZKFC_PORT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_ZKFC_PORT_KEY
+init|=
+literal|"dfs.ha.zkfc.port"
+decl_stmt|;
+DECL|field|DFS_HA_ZKFC_PORT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_ZKFC_PORT_DEFAULT
+init|=
+literal|8019
+decl_stmt|;
 block|}
 end_class
 
