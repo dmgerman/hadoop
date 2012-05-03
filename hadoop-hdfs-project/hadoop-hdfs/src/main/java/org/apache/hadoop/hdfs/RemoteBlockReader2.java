@@ -430,7 +430,7 @@ name|hadoop
 operator|.
 name|net
 operator|.
-name|SocketInputStream
+name|SocketInputWrapper
 import|;
 end_import
 
@@ -2021,34 +2021,23 @@ expr_stmt|;
 comment|//
 comment|// Get bytes in block, set streams
 comment|//
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|sock
-operator|.
-name|getChannel
-argument_list|()
-operator|!=
-literal|null
-argument_list|,
-literal|"Socket %s does not have an associated Channel."
-argument_list|,
-name|sock
-argument_list|)
-expr_stmt|;
-name|SocketInputStream
+name|SocketInputWrapper
 name|sin
 init|=
-operator|(
-name|SocketInputStream
-operator|)
 name|NetUtils
 operator|.
 name|getInputStream
 argument_list|(
 name|sock
 argument_list|)
+decl_stmt|;
+name|ReadableByteChannel
+name|ch
+init|=
+name|sin
+operator|.
+name|getReadableByteChannel
+argument_list|()
 decl_stmt|;
 name|DataInputStream
 name|in
@@ -2170,7 +2159,7 @@ operator|.
 name|getBlockId
 argument_list|()
 argument_list|,
-name|sin
+name|ch
 argument_list|,
 name|checksum
 argument_list|,

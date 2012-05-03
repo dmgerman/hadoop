@@ -1534,11 +1534,11 @@ return|return
 name|addr
 return|;
 block|}
-comment|/**    * Same as getInputStream(socket, socket.getSoTimeout()).<br><br>    *     * From documentation for {@link #getInputStream(Socket, long)}:<br>    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *    * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see #getInputStream(Socket, long)    *     * @param socket    * @return InputStream for reading from the socket.    * @throws IOException    */
+comment|/**    * Same as<code>getInputStream(socket, socket.getSoTimeout()).</code>    *<br><br>    *     * @see #getInputStream(Socket, long)    */
 DECL|method|getInputStream (Socket socket)
 specifier|public
 specifier|static
-name|InputStream
+name|SocketInputWrapper
 name|getInputStream
 parameter_list|(
 name|Socket
@@ -1559,11 +1559,11 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns InputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketInputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getInputStream()} is returned. In the later    * case, the timeout argument is ignored and the timeout set with     * {@link Socket#setSoTimeout(int)} applies for reads.<br><br>    *     * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *         * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. This may not always apply. zero    *        for waiting as long as necessary.    * @return InputStream for reading from the socket.    * @throws IOException    */
+comment|/**    * Return a {@link SocketInputWrapper} for the socket and set the given    * timeout. If the socket does not have an associated channel, then its socket    * timeout will be set to the specified value. Otherwise, a    * {@link SocketInputStream} will be created which reads with the configured    * timeout.    *     * Any socket created using socket factories returned by {@link #NetUtils},    * must use this interface instead of {@link Socket#getInputStream()}.    *     * In general, this should be called only once on each socket: see the note    * in {@link SocketInputWrapper#setTimeout(long)} for more information.    *    * @see Socket#getChannel()    *     * @param socket    * @param timeout timeout in milliseconds. zero for waiting as    *                long as necessary.    * @return SocketInputWrapper for reading from the socket.    * @throws IOException    */
 DECL|method|getInputStream (Socket socket, long timeout)
 specifier|public
 specifier|static
-name|InputStream
+name|SocketInputWrapper
 name|getInputStream
 parameter_list|(
 name|Socket
@@ -1575,7 +1575,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+name|InputStream
+name|stm
+init|=
 operator|(
 name|socket
 operator|.
@@ -1594,9 +1596,28 @@ operator|new
 name|SocketInputStream
 argument_list|(
 name|socket
+argument_list|)
+decl_stmt|;
+name|SocketInputWrapper
+name|w
+init|=
+operator|new
+name|SocketInputWrapper
+argument_list|(
+name|socket
 argument_list|,
+name|stm
+argument_list|)
+decl_stmt|;
+name|w
+operator|.
+name|setTimeout
+argument_list|(
 name|timeout
 argument_list|)
+expr_stmt|;
+return|return
+name|w
 return|;
 block|}
 comment|/**    * Same as getOutputStream(socket, 0). Timeout of zero implies write will    * wait until data is available.<br><br>    *     * From documentation for {@link #getOutputStream(Socket, long)} :<br>    * Returns OutputStream for the socket. If the socket has an associated    * SocketChannel then it returns a     * {@link SocketOutputStream} with the given timeout. If the socket does not    * have a channel, {@link Socket#getOutputStream()} is returned. In the later    * case, the timeout argument is ignored and the write will wait until     * data is available.<br><br>    *     * Any socket created using socket factories returned by {@link NetUtils},    * must use this interface instead of {@link Socket#getOutputStream()}.    *     * @see #getOutputStream(Socket, long)    *     * @param socket    * @return OutputStream for writing to the socket.    * @throws IOException    */
