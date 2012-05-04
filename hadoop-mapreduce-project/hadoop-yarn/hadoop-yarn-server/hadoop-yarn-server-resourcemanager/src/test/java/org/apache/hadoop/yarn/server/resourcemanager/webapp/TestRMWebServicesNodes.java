@@ -176,6 +176,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -275,26 +293,6 @@ operator|.
 name|rmnode
 operator|.
 name|RMNodeImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNodeState
 import|;
 end_import
 
@@ -1023,7 +1021,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -1037,7 +1035,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -1065,7 +1063,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -1086,7 +1084,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -1171,7 +1169,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|UNHEALTHY
 argument_list|)
@@ -1355,7 +1353,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -1369,7 +1367,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -1403,7 +1401,7 @@ name|queryParam
 argument_list|(
 literal|"state"
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 operator|.
@@ -1588,7 +1586,7 @@ name|queryParam
 argument_list|(
 literal|"state"
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|DECOMMISSIONED
 operator|.
@@ -1858,7 +1856,7 @@ name|checkStringMatch
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"No enum const class org.apache.hadoop.yarn.server.resourcemanager.rmnode.RMNodeState.BOGUSSTATE"
+literal|"No enum const class org.apache.hadoop.yarn.api.records.NodeState.BOGUSSTATE"
 argument_list|,
 name|message
 argument_list|)
@@ -1960,7 +1958,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -1974,7 +1972,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -2022,7 +2020,7 @@ name|queryParam
 argument_list|(
 literal|"state"
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|LOST
 operator|.
@@ -2282,7 +2280,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -2296,7 +2294,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -2528,7 +2526,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -2542,7 +2540,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -2732,7 +2730,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -2746,7 +2744,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -2936,7 +2934,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)
@@ -2950,7 +2948,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -3035,7 +3033,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|UNHEALTHY
 argument_list|)
@@ -3076,7 +3074,7 @@ name|queryParam
 argument_list|(
 literal|"state"
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 operator|.
@@ -3209,7 +3207,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|)
@@ -3223,7 +3221,7 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|NEW
 argument_list|)

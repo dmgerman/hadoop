@@ -144,6 +144,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -205,26 +223,6 @@ operator|.
 name|rmnode
 operator|.
 name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNodeState
 import|;
 end_import
 
@@ -355,7 +353,7 @@ name|i
 argument_list|,
 name|perNode
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|UNHEALTHY
 argument_list|)
@@ -440,11 +438,11 @@ operator|++
 name|j
 control|)
 block|{
-name|RMNodeState
+name|NodeState
 index|[]
 name|allStates
 init|=
-name|RMNodeState
+name|NodeState
 operator|.
 name|values
 argument_list|()
@@ -692,10 +690,10 @@ name|nodeHealthStatus
 decl_stmt|;
 DECL|field|state
 specifier|private
-name|RMNodeState
+name|NodeState
 name|state
 decl_stmt|;
-DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, NodeHealthStatus nodeHealthStatus, int cmdPort, String hostName, RMNodeState state)
+DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, NodeHealthStatus nodeHealthStatus, int cmdPort, String hostName, NodeState state)
 specifier|public
 name|MockRMNodeImpl
 parameter_list|(
@@ -723,7 +721,7 @@ parameter_list|,
 name|String
 name|hostName
 parameter_list|,
-name|RMNodeState
+name|NodeState
 name|state
 parameter_list|)
 block|{
@@ -926,7 +924,7 @@ annotation|@
 name|Override
 DECL|method|getState ()
 specifier|public
-name|RMNodeState
+name|NodeState
 name|getState
 parameter_list|()
 block|{
@@ -980,7 +978,7 @@ return|;
 block|}
 block|}
 empty_stmt|;
-DECL|method|buildRMNode (int rack, final Resource perNode, RMNodeState state, String httpAddr)
+DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr)
 specifier|private
 specifier|static
 name|RMNode
@@ -993,7 +991,7 @@ specifier|final
 name|Resource
 name|perNode
 parameter_list|,
-name|RMNodeState
+name|NodeState
 name|state
 parameter_list|,
 name|String
@@ -1016,7 +1014,7 @@ operator|++
 argument_list|)
 return|;
 block|}
-DECL|method|buildRMNode (int rack, final Resource perNode, RMNodeState state, String httpAddr, int hostnum)
+DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr, int hostnum)
 specifier|private
 specifier|static
 name|RMNode
@@ -1029,7 +1027,7 @@ specifier|final
 name|Resource
 name|perNode
 parameter_list|,
-name|RMNodeState
+name|NodeState
 name|state
 parameter_list|,
 name|String
@@ -1101,7 +1099,7 @@ if|if
 condition|(
 name|state
 operator|!=
-name|RMNodeState
+name|NodeState
 operator|.
 name|UNHEALTHY
 condition|)
@@ -1145,7 +1143,7 @@ name|state
 argument_list|)
 return|;
 block|}
-DECL|method|nodeInfo (int rack, final Resource perNode, RMNodeState state)
+DECL|method|nodeInfo (int rack, final Resource perNode, NodeState state)
 specifier|public
 specifier|static
 name|RMNode
@@ -1158,7 +1156,7 @@ specifier|final
 name|Resource
 name|perNode
 parameter_list|,
-name|RMNodeState
+name|NodeState
 name|state
 parameter_list|)
 block|{
@@ -1196,7 +1194,7 @@ name|rack
 argument_list|,
 name|perNode
 argument_list|,
-name|RMNodeState
+name|NodeState
 operator|.
 name|RUNNING
 argument_list|,

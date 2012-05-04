@@ -126,13 +126,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
+name|records
 operator|.
-name|rmnode
-operator|.
-name|RMNode
+name|NodeState
 import|;
 end_import
 
@@ -152,7 +150,7 @@ name|resourcemanager
 operator|.
 name|rmnode
 operator|.
-name|RMNodeState
+name|RMNode
 import|;
 end_import
 
@@ -223,7 +221,7 @@ name|rack
 decl_stmt|;
 DECL|field|state
 specifier|protected
-name|RMNodeState
+name|NodeState
 name|state
 decl_stmt|;
 DECL|field|id

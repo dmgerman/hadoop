@@ -21,14 +21,6 @@ package|;
 end_package
 
 begin_comment
-comment|// TODO NodeState is a clone of RMNodeState made for MR-3353. In a subsequent
-end_comment
-
-begin_comment
-comment|// patch RMNodeState should be replaced with NodeState
-end_comment
-
-begin_comment
 comment|/**  *<p>State of a<code>Node</code>.</p>  */
 end_comment
 
