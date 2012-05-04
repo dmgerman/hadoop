@@ -774,6 +774,16 @@ init|=
 literal|"hadoop.security.authorization"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN
+init|=
+literal|"hadoop.security.instrumentation.requires.admin"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 specifier|public
 specifier|static

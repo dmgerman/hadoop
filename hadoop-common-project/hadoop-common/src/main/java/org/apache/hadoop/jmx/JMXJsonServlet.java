@@ -436,13 +436,12 @@ parameter_list|)
 block|{
 try|try
 block|{
-comment|// Do the authorization
 if|if
 condition|(
 operator|!
 name|HttpServer
 operator|.
-name|hasAdministratorAccess
+name|isInstrumentationAccessAllowed
 argument_list|(
 name|getServletContext
 argument_list|()

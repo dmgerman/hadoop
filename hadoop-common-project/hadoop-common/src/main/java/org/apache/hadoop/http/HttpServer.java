@@ -3856,6 +3856,78 @@ else|:
 literal|"Inactive HttpServer"
 return|;
 block|}
+comment|/**    * Checks the user has privileges to access to instrumentation servlets.    *<p/>    * If<code>hadoop.security.instrumentation.requires.admin</code> is set to FALSE    * (default value) it always returns TRUE.    *<p/>    * If<code>hadoop.security.instrumentation.requires.admin</code> is set to TRUE    * it will check that if the current user is in the admin ACLS. If the user is    * in the admin ACLs it returns TRUE, otherwise it returns FALSE.    *    * @param servletContext the servlet context.    * @param request the servlet request.    * @param response the servlet response.    * @return TRUE/FALSE based on the logic decribed above.    */
+DECL|method|isInstrumentationAccessAllowed ( ServletContext servletContext, HttpServletRequest request, HttpServletResponse response)
+specifier|public
+specifier|static
+name|boolean
+name|isInstrumentationAccessAllowed
+parameter_list|(
+name|ServletContext
+name|servletContext
+parameter_list|,
+name|HttpServletRequest
+name|request
+parameter_list|,
+name|HttpServletResponse
+name|response
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|conf
+init|=
+operator|(
+name|Configuration
+operator|)
+name|servletContext
+operator|.
+name|getAttribute
+argument_list|(
+name|CONF_CONTEXT_ATTRIBUTE
+argument_list|)
+decl_stmt|;
+name|boolean
+name|access
+init|=
+literal|true
+decl_stmt|;
+name|boolean
+name|adminAccess
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|adminAccess
+condition|)
+block|{
+name|access
+operator|=
+name|hasAdministratorAccess
+argument_list|(
+name|servletContext
+argument_list|,
+name|request
+argument_list|,
+name|response
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|access
+return|;
+block|}
 comment|/**    * Does the user sending the HttpServletRequest has the administrator ACLs? If    * it isn't the case, response will be modified to send an error to the user.    *     * @param servletContext    * @param request    * @param response    * @return true if admin-authorized, false otherwise    * @throws IOException    */
 DECL|method|hasAdministratorAccess ( ServletContext servletContext, HttpServletRequest request, HttpServletResponse response)
 specifier|public
@@ -4042,20 +4114,12 @@ name|ServletException
 throws|,
 name|IOException
 block|{
-name|response
-operator|.
-name|setContentType
-argument_list|(
-literal|"text/plain; charset=UTF-8"
-argument_list|)
-expr_stmt|;
-comment|// Do the authorization
 if|if
 condition|(
 operator|!
 name|HttpServer
 operator|.
-name|hasAdministratorAccess
+name|isInstrumentationAccessAllowed
 argument_list|(
 name|getServletContext
 argument_list|()
@@ -4068,6 +4132,13 @@ condition|)
 block|{
 return|return;
 block|}
+name|response
+operator|.
+name|setContentType
+argument_list|(
+literal|"text/plain; charset=UTF-8"
+argument_list|)
+expr_stmt|;
 name|PrintWriter
 name|out
 init|=
