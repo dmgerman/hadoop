@@ -1232,6 +1232,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|ShutdownHookManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|Clock
@@ -1510,6 +1524,16 @@ name|MRAppMaster
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/**    * Priority of the MRAppMaster shutdown hook.    */
+DECL|field|SHUTDOWN_HOOK_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SHUTDOWN_HOOK_PRIORITY
+init|=
+literal|30
 decl_stmt|;
 DECL|field|clock
 specifier|private
@@ -5365,9 +5389,9 @@ argument_list|,
 name|appSubmitTime
 argument_list|)
 decl_stmt|;
-name|Runtime
+name|ShutdownHookManager
 operator|.
-name|getRuntime
+name|get
 argument_list|()
 operator|.
 name|addShutdownHook
@@ -5377,6 +5401,8 @@ name|MRAppMasterShutdownHook
 argument_list|(
 name|appMaster
 argument_list|)
+argument_list|,
+name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
 name|YarnConfiguration
@@ -5483,8 +5509,8 @@ DECL|class|MRAppMasterShutdownHook
 specifier|static
 class|class
 name|MRAppMasterShutdownHook
-extends|extends
-name|Thread
+implements|implements
+name|Runnable
 block|{
 DECL|field|appMaster
 name|MRAppMaster
@@ -5569,31 +5595,6 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-comment|//Close all the FileSystem objects
-name|FileSystem
-operator|.
-name|closeAll
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to close all FileSystem objects"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|initAndStartAppMaster (final MRAppMaster appMaster, final YarnConfiguration conf, String jobUserName)
