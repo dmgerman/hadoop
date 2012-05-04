@@ -1494,7 +1494,7 @@ throw|throw
 operator|new
 name|InvalidPathException
 argument_list|(
-literal|"Path without scheme with non-null autorhrity:"
+literal|"Path without scheme with non-null authority:"
 operator|+
 name|path
 argument_list|)

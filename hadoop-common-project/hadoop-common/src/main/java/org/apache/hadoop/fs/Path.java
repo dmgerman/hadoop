@@ -1081,6 +1081,20 @@ name|isUriPathAbsolute
 argument_list|()
 return|;
 block|}
+comment|/**    * @return true if and only if this path represents the root of a file system    */
+DECL|method|isRoot ()
+specifier|public
+name|boolean
+name|isRoot
+parameter_list|()
+block|{
+return|return
+name|getParent
+argument_list|()
+operator|==
+literal|null
+return|;
+block|}
 comment|/** Returns the final component of this path.*/
 DECL|method|getName ()
 specifier|public

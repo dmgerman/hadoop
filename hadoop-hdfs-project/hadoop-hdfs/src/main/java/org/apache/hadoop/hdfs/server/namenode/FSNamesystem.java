@@ -20344,10 +20344,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|isRoot
-argument_list|(
 name|parent
-argument_list|)
+operator|.
+name|isRoot
+argument_list|()
 condition|)
 block|{
 name|overwrite
@@ -20405,24 +20405,6 @@ argument_list|,
 name|replaceBy
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|isRoot (Path path)
-specifier|private
-name|boolean
-name|isRoot
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-name|path
-operator|.
-name|getParent
-argument_list|()
-operator|==
-literal|null
-return|;
 block|}
 comment|/**    * Serializes leases.     */
 DECL|method|saveFilesUnderConstruction (DataOutputStream out)
