@@ -611,19 +611,6 @@ name|PRINT
 init|=
 literal|"print"
 decl_stmt|;
-static|static
-block|{
-comment|// Enable Kerberos sockets
-name|System
-operator|.
-name|setProperty
-argument_list|(
-literal|"https.cipherSuites"
-argument_list|,
-literal|"TLS_KRB5_WITH_3DES_EDE_CBC_SHA"
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|printUsage (PrintStream err)
 specifier|private
 specifier|static
@@ -797,7 +784,7 @@ name|WEBSERVICE
 argument_list|,
 literal|true
 argument_list|,
-literal|"HTTPS url to reach the NameNode at"
+literal|"HTTP url to reach the NameNode at"
 argument_list|)
 expr_stmt|;
 name|fetcherOptions
@@ -1592,19 +1579,12 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|SecurityUtil
-operator|.
-name|fetchServiceTicket
-argument_list|(
-name|remoteURL
-argument_list|)
-expr_stmt|;
 name|URLConnection
 name|connection
 init|=
-name|URLUtils
+name|SecurityUtil
 operator|.
-name|openConnection
+name|openSecureHttpConnection
 argument_list|(
 name|remoteURL
 argument_list|)
@@ -1806,9 +1786,14 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|connection
+operator|=
+operator|(
+name|HttpURLConnection
+operator|)
 name|SecurityUtil
 operator|.
-name|fetchServiceTicket
+name|openSecureHttpConnection
 argument_list|(
 name|url
 argument_list|)
@@ -2319,21 +2304,14 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|SecurityUtil
-operator|.
-name|fetchServiceTicket
-argument_list|(
-name|url
-argument_list|)
-expr_stmt|;
 name|connection
 operator|=
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|SecurityUtil
 operator|.
-name|openConnection
+name|openSecureHttpConnection
 argument_list|(
 name|url
 argument_list|)

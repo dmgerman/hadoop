@@ -1024,7 +1024,7 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"https"
+literal|"http"
 argument_list|,
 name|getNamenodeSecureAddr
 argument_list|(
@@ -1472,7 +1472,7 @@ literal|"Couldn't get a delegation token from "
 operator|+
 name|nnHttpUrl
 operator|+
-literal|" using https."
+literal|" using http."
 argument_list|)
 expr_stmt|;
 if|if
@@ -3982,7 +3982,7 @@ operator|.
 name|reloginFromKeytab
 argument_list|()
 expr_stmt|;
-comment|// use https to renew the token
+comment|// use http to renew the token
 name|InetSocketAddress
 name|serviceAddr
 init|=
@@ -4002,7 +4002,7 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"https"
+literal|"http"
 argument_list|,
 name|serviceAddr
 argument_list|)
@@ -4053,7 +4053,7 @@ operator|.
 name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
-comment|// use https to cancel the token
+comment|// use http to cancel the token
 name|InetSocketAddress
 name|serviceAddr
 init|=
@@ -4072,7 +4072,7 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"https"
+literal|"http"
 argument_list|,
 name|serviceAddr
 argument_list|)

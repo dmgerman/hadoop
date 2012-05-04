@@ -571,7 +571,7 @@ literal|null
 argument_list|,
 name|conf
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// Use the hostname from the RPC address as a default, in case
