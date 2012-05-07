@@ -829,6 +829,12 @@ specifier|final
 name|SocketInputWrapper
 name|socketInputWrapper
 decl_stmt|;
+comment|/**    * Client Name used in previous operation. Not available on first request    * on the socket.    */
+DECL|field|previousOpClientName
+specifier|private
+name|String
+name|previousOpClientName
+decl_stmt|;
 DECL|method|create (Socket s, DataNode dn, DataXceiverServer dataXceiverServer)
 specifier|public
 specifier|static
@@ -1022,6 +1028,28 @@ name|append
 argument_list|(
 literal|"DataXceiver for client "
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|previousOpClientName
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+name|previousOpClientName
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" at "
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
 operator|.
 name|append
 argument_list|(
@@ -1419,6 +1447,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|previousOpClientName
+operator|=
+name|clientName
+expr_stmt|;
 name|OutputStream
 name|baseStream
 init|=
@@ -1926,15 +1958,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|previousOpClientName
+operator|=
+name|clientname
+expr_stmt|;
 name|updateCurrentThreadName
 argument_list|(
 literal|"Receiving block "
 operator|+
 name|block
-operator|+
-literal|" client="
-operator|+
-name|clientname
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3014,6 +3046,10 @@ name|AccessMode
 operator|.
 name|COPY
 argument_list|)
+expr_stmt|;
+name|previousOpClientName
+operator|=
+name|clientName
 expr_stmt|;
 name|updateCurrentThreadName
 argument_list|(
