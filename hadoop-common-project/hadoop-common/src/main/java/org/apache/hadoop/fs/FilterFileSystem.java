@@ -208,7 +208,7 @@ name|FileSystem
 name|fs
 decl_stmt|;
 DECL|field|swapScheme
-specifier|private
+specifier|protected
 name|String
 name|swapScheme
 decl_stmt|;
