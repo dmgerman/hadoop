@@ -723,10 +723,10 @@ comment|/**  * A Map-reduce program to recursively copy directories between  * d
 end_comment
 
 begin_class
-DECL|class|DistCp
+DECL|class|DistCpV1
 specifier|public
 class|class
-name|DistCp
+name|DistCpV1
 implements|implements
 name|Tool
 block|{
@@ -741,7 +741,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|DistCp
+name|DistCpV1
 operator|.
 name|class
 argument_list|)
@@ -1489,9 +1489,9 @@ return|return
 name|conf
 return|;
 block|}
-DECL|method|DistCp (Configuration conf)
+DECL|method|DistCpV1 (Configuration conf)
 specifier|public
-name|DistCp
+name|DistCpV1
 parameter_list|(
 name|Configuration
 name|conf
@@ -3273,7 +3273,7 @@ condition|(
 name|preserve_status
 condition|)
 block|{
-name|DistCp
+name|DistCpV1
 operator|.
 name|updateDestStatus
 argument_list|(
@@ -6267,16 +6267,16 @@ init|=
 operator|new
 name|JobConf
 argument_list|(
-name|DistCp
+name|DistCpV1
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|DistCp
+name|DistCpV1
 name|distcp
 init|=
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|job
 argument_list|)
@@ -6637,7 +6637,7 @@ name|JobConf
 argument_list|(
 name|conf
 argument_list|,
-name|DistCp
+name|DistCpV1
 operator|.
 name|class
 argument_list|)

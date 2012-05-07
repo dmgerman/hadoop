@@ -386,7 +386,7 @@ name|hadoop
 operator|.
 name|tools
 operator|.
-name|DistCp
+name|DistCpV1
 import|;
 end_import
 
@@ -510,7 +510,7 @@ operator|(
 operator|(
 name|Log4JLogger
 operator|)
-name|DistCp
+name|DistCpV1
 operator|.
 name|LOG
 operator|)
@@ -1960,7 +1960,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -2114,7 +2114,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -2338,7 +2338,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -2525,7 +2525,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -2740,7 +2740,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -2927,7 +2927,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -3052,7 +3052,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -3126,7 +3126,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -3416,7 +3416,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -3507,7 +3507,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -3664,7 +3664,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -3707,7 +3707,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DistCp
+name|DistCpV1
 operator|.
 name|DuplicationException
 operator|.
@@ -3718,7 +3718,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -3836,7 +3836,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -3925,7 +3925,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -4010,17 +4010,17 @@ name|JobConf
 argument_list|(
 name|conf
 argument_list|,
-name|DistCp
+name|DistCpV1
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|DistCp
+name|DistCpV1
 operator|.
 name|Arguments
 name|distcpArgs
 init|=
-name|DistCp
+name|DistCpV1
 operator|.
 name|Arguments
 operator|.
@@ -4037,7 +4037,7 @@ literal|"Single file update failed to skip copying even though the "
 operator|+
 literal|"file exists at destination."
 argument_list|,
-name|DistCp
+name|DistCpV1
 operator|.
 name|setup
 argument_list|(
@@ -4103,7 +4103,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -4167,7 +4167,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 operator|new
 name|Configuration
@@ -4338,7 +4338,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -4554,7 +4554,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -4727,7 +4727,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -4929,7 +4929,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -5135,7 +5135,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -5431,7 +5431,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|job
 argument_list|)
@@ -5553,7 +5553,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|job
 argument_list|)
@@ -5728,11 +5728,11 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DistCp
+name|DistCpV1
 name|distcp
 init|=
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -6722,7 +6722,7 @@ name|toString
 argument_list|()
 decl_stmt|;
 specifier|final
-name|DistCp
+name|DistCpV1
 name|distcp
 init|=
 name|USER_UGI
@@ -6732,18 +6732,18 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|DistCp
+name|DistCpV1
 argument_list|>
 argument_list|()
 block|{
 specifier|public
-name|DistCp
+name|DistCpV1
 name|run
 parameter_list|()
 block|{
 return|return
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|userConf
 argument_list|)
@@ -6950,11 +6950,11 @@ name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DistCp
+name|DistCpV1
 name|distcp
 init|=
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -7423,7 +7423,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)
@@ -7616,7 +7616,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|DistCp
+name|DistCpV1
 argument_list|(
 name|conf
 argument_list|)

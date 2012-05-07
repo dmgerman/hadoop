@@ -1072,7 +1072,7 @@ argument_list|)
 operator|+
 name|archiveDirectory
 decl_stmt|;
-name|DistCp
+name|DistCpV1
 operator|.
 name|copy
 argument_list|(
