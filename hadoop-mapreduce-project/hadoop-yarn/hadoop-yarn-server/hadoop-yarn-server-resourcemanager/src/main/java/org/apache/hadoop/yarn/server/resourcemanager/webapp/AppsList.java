@@ -629,7 +629,10 @@ name|appendSortable
 argument_list|(
 name|out
 argument_list|,
-name|startTime
+name|appInfo
+operator|.
+name|getStartTime
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -646,7 +649,10 @@ name|appendSortable
 argument_list|(
 name|out
 argument_list|,
-name|finishTime
+name|appInfo
+operator|.
+name|getFinishTime
+argument_list|()
 argument_list|)
 operator|.
 name|append

@@ -330,7 +330,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// id, user, name, queue, starttime, finishtime, state, progress, ui
+comment|// id, user, name, queue, starttime, finishtime, state, status, progress, ui
 name|StringBuilder
 name|init
 init|=
@@ -344,7 +344,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null, null , null, "
+literal|"{sType:'title-numeric'}, {sType:'title-numeric'} , null, "
 argument_list|)
 operator|.
 name|append
