@@ -90,24 +90,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|LightWeightGSet
@@ -115,7 +97,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockInfo class maintains for a given block  * the {@link INodeFile} it is part of and datanodes where the replicas of   * the block are stored.  */
+comment|/**  * BlockInfo class maintains for a given block  * the {@link BlockCollection} it is part of and datanodes where the replicas of   * the block are stored.  */
 end_comment
 
 begin_class
@@ -136,7 +118,7 @@ name|LinkedElement
 block|{
 DECL|field|inode
 specifier|private
-name|INodeFile
+name|BlockCollection
 name|inode
 decl_stmt|;
 comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface */
@@ -249,7 +231,7 @@ expr_stmt|;
 block|}
 DECL|method|getINode ()
 specifier|public
-name|INodeFile
+name|BlockCollection
 name|getINode
 parameter_list|()
 block|{
@@ -257,12 +239,12 @@ return|return
 name|inode
 return|;
 block|}
-DECL|method|setINode (INodeFile inode)
+DECL|method|setINode (BlockCollection inode)
 specifier|public
 name|void
 name|setINode
 parameter_list|(
-name|INodeFile
+name|BlockCollection
 name|inode
 parameter_list|)
 block|{

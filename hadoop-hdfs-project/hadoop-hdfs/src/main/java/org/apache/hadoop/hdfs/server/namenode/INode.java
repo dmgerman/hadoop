@@ -209,8 +209,6 @@ argument_list|<
 name|byte
 index|[]
 argument_list|>
-implements|,
-name|FSInodeInfo
 block|{
 comment|/*    *  The inode name is in java UTF8 encoding;     *  The name in HdfsFileStatus should keep the same encoding as this.    *  if this encoding is changed, implicitly getFileInfo and listStatus in    *  clientProtocol are changed; The decoding at the client    *  side should change accordingly.    */
 DECL|field|name
@@ -1088,8 +1086,6 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|getFullPathName ()
 specifier|public
 name|String

@@ -138,6 +138,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|MutableBlockCollection
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -161,6 +179,8 @@ class|class
 name|INodeFileUnderConstruction
 extends|extends
 name|INodeFile
+implements|implements
+name|MutableBlockCollection
 block|{
 DECL|field|clientName
 specifier|private

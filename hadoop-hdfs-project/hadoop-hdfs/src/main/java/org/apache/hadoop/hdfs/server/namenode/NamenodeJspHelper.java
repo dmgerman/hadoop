@@ -4632,6 +4632,9 @@ name|this
 operator|.
 name|inode
 operator|=
+operator|(
+name|INodeFile
+operator|)
 name|blockManager
 operator|.
 name|getINode

@@ -174,24 +174,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSInodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|net
 operator|.
 name|NetworkTopology
@@ -409,12 +391,12 @@ name|blocksize
 parameter_list|)
 function_decl|;
 comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>    * If not, return as many as we can.    * The base implemenatation extracts the pathname of the file from the    * specified srcInode, but this could be a costly operation depending on the    * file system implementation. Concrete implementations of this class should    * override this method to avoid this overhead.    *     * @param srcInode The inode of the file for which chooseTarget is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target     * and sorted as a pipeline.    */
-DECL|method|chooseTarget (FSInodeInfo srcInode, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (BlockCollection srcInode, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
 name|DatanodeDescriptor
 index|[]
 name|chooseTarget
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|srcInode
 parameter_list|,
 name|int
@@ -446,7 +428,7 @@ name|chooseTarget
 argument_list|(
 name|srcInode
 operator|.
-name|getFullPathName
+name|getName
 argument_list|()
 argument_list|,
 name|numOfReplicas
@@ -479,13 +461,13 @@ name|minRacks
 parameter_list|)
 function_decl|;
 comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcInode The inode of the file to which the block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param existingReplicas The replica locations of this block that are present                   on at least two unique racks.     * @param moreExistingReplicas Replica locations of this block that are not                    listed in the previous parameter.    * @return the replica that is the best candidate for deletion    */
-DECL|method|chooseReplicaToDelete (FSInodeInfo srcInode, Block block, short replicationFactor, Collection<DatanodeDescriptor> existingReplicas, Collection<DatanodeDescriptor> moreExistingReplicas)
+DECL|method|chooseReplicaToDelete (BlockCollection srcInode, Block block, short replicationFactor, Collection<DatanodeDescriptor> existingReplicas, Collection<DatanodeDescriptor> moreExistingReplicas)
 specifier|abstract
 specifier|public
 name|DatanodeDescriptor
 name|chooseReplicaToDelete
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|srcInode
 parameter_list|,
 name|Block

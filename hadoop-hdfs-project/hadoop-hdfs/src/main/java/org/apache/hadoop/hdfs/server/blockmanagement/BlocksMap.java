@@ -56,24 +56,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|GSet
@@ -420,7 +402,7 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|getINode (Block b)
-name|INodeFile
+name|BlockCollection
 name|getINode
 parameter_list|(
 name|Block
@@ -453,14 +435,14 @@ literal|null
 return|;
 block|}
 comment|/**    * Add block b belonging to the specified file inode to the map.    */
-DECL|method|addINode (BlockInfo b, INodeFile iNode)
+DECL|method|addINode (BlockInfo b, BlockCollection iNode)
 name|BlockInfo
 name|addINode
 parameter_list|(
 name|BlockInfo
 name|b
 parameter_list|,
-name|INodeFile
+name|BlockCollection
 name|iNode
 parameter_list|)
 block|{

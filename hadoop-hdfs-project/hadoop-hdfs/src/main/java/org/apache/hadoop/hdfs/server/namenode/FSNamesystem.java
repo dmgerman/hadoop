@@ -14122,6 +14122,9 @@ block|}
 name|INodeFile
 name|iFile
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|storedBlock
 operator|.
 name|getINode
@@ -19614,6 +19617,9 @@ comment|// check file inode
 name|INodeFile
 name|file
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|storedBlock
 operator|.
 name|getINode
@@ -20937,6 +20943,9 @@ decl_stmt|;
 name|INode
 name|inode
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|blockManager
 operator|.
 name|getINode
