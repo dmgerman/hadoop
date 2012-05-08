@@ -34,18 +34,36 @@ name|UnresolvedLinkException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockCollection
+import|;
+end_import
+
 begin_class
 DECL|class|NameNodeRaidTestUtil
 specifier|public
 class|class
 name|NameNodeRaidTestUtil
 block|{
-DECL|method|getFSInodeInfo (final FSNamesystem namesystem, final String... files)
+DECL|method|getBlockCollections (final FSNamesystem namesystem, final String... files)
 specifier|public
 specifier|static
-name|FSInodeInfo
+name|BlockCollection
 index|[]
-name|getFSInodeInfo
+name|getBlockCollections
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -60,12 +78,12 @@ throws|throws
 name|UnresolvedLinkException
 block|{
 specifier|final
-name|FSInodeInfo
+name|BlockCollection
 index|[]
 name|inodes
 init|=
 operator|new
-name|FSInodeInfo
+name|BlockCollection
 index|[
 name|files
 operator|.
@@ -109,6 +127,9 @@ index|[
 name|i
 index|]
 operator|=
+operator|(
+name|BlockCollection
+operator|)
 name|dir
 operator|.
 name|rootDir

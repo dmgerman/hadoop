@@ -904,12 +904,12 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (FSInodeInfo inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
 name|DatanodeDescriptor
 name|chooseReplicaToDelete
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 parameter_list|,
 name|Block
@@ -2503,7 +2503,7 @@ name|file
 argument_list|)
 throw|;
 block|}
-comment|/**    * Cache results for FSInodeInfo.getFullPathName()    */
+comment|/**    * Cache results for getFullPathName()    */
 DECL|class|CachedFullPathNames
 specifier|static
 class|class
@@ -2590,13 +2590,13 @@ class|class
 name|INodeWithHashCode
 block|{
 DECL|field|inode
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 decl_stmt|;
-DECL|method|INodeWithHashCode (FSInodeInfo inode)
+DECL|method|INodeWithHashCode (BlockCollection inode)
 name|INodeWithHashCode
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 parameter_list|)
 block|{
@@ -2649,17 +2649,17 @@ block|{
 return|return
 name|inode
 operator|.
-name|getFullPathName
+name|getName
 argument_list|()
 return|;
 block|}
 block|}
-DECL|method|get (FSInodeInfo inode)
+DECL|method|get (BlockCollection inode)
 specifier|public
 name|String
 name|get
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 parameter_list|)
 throws|throws

@@ -336,24 +336,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSInodeInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|FSNamesystem
 import|;
 end_import
@@ -1810,13 +1792,13 @@ name|namesystem
 argument_list|)
 decl_stmt|;
 specifier|final
-name|FSInodeInfo
+name|BlockCollection
 index|[]
 name|inodes
 init|=
 name|NameNodeRaidTestUtil
 operator|.
-name|getFSInodeInfo
+name|getBlockCollections
 argument_list|(
 name|namesystem
 argument_list|,
@@ -3481,7 +3463,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyCachedFullPathNameResult ( CachedFullPathNames cachedFullPathNames, FSInodeInfo inode)
+DECL|method|verifyCachedFullPathNameResult ( CachedFullPathNames cachedFullPathNames, BlockCollection inode)
 specifier|private
 name|void
 name|verifyCachedFullPathNameResult
@@ -3489,7 +3471,7 @@ parameter_list|(
 name|CachedFullPathNames
 name|cachedFullPathNames
 parameter_list|,
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 parameter_list|)
 throws|throws
@@ -3500,7 +3482,7 @@ name|res1
 init|=
 name|inode
 operator|.
-name|getFullPathName
+name|getName
 argument_list|()
 decl_stmt|;
 name|String
@@ -3544,7 +3526,7 @@ argument_list|)
 argument_list|,
 name|inode
 operator|.
-name|getFullPathName
+name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3724,6 +3706,9 @@ block|{
 name|INodeFile
 name|inode
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|blockManager
 operator|.
 name|blocksMap
