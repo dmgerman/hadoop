@@ -123,6 +123,8 @@ DECL|interface|ContainerToken
 specifier|public
 interface|interface
 name|ContainerToken
+extends|extends
+name|DelegationToken
 block|{
 comment|/**    * Get the token identifier.    * @return token identifier    */
 annotation|@

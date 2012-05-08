@@ -1578,6 +1578,17 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+name|getBindAddress
+argument_list|()
+return|;
+block|}
 DECL|method|verifyAndGetJob (final JobId jobID)
 specifier|private
 name|Job
@@ -2484,19 +2495,12 @@ operator|.
 name|getPassword
 argument_list|()
 argument_list|,
-name|bindAddress
+name|realJHSToken
 operator|.
-name|getAddress
+name|getService
 argument_list|()
 operator|.
-name|getHostAddress
-argument_list|()
-operator|+
-literal|":"
-operator|+
-name|bindAddress
-operator|.
-name|getPort
+name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;

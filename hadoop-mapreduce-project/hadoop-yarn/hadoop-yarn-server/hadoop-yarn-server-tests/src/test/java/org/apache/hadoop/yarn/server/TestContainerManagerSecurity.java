@@ -2850,15 +2850,6 @@ argument_list|(
 name|appToken
 argument_list|)
 expr_stmt|;
-name|SecurityUtil
-operator|.
-name|setTokenService
-argument_list|(
-name|appToken
-argument_list|,
-name|schedulerAddr
-argument_list|)
-expr_stmt|;
 name|AMRMProtocol
 name|scheduler
 init|=

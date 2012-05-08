@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1531,6 +1541,21 @@ throws|throws
 name|YarnRemoteException
 block|{
 comment|/* Should not be invoked by anyone. */
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+comment|/* Should not be invoked by anyone.  Normally used to set token service */
 throw|throw
 operator|new
 name|NotImplementedException

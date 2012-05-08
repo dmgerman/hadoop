@@ -2756,6 +2756,18 @@ name|AMHOSTADDRESS
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+name|bindAddress
+return|;
+block|}
 DECL|method|AMService (String hostAddress)
 specifier|public
 name|AMService

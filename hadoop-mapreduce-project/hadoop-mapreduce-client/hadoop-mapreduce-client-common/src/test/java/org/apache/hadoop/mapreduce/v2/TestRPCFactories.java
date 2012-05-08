@@ -974,6 +974,18 @@ name|MRClientProtocol
 block|{
 annotation|@
 name|Override
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getJobReport (GetJobReportRequest request)
 specifier|public
 name|GetJobReportResponse

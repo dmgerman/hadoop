@@ -1685,6 +1685,19 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+name|getBindAddress
+argument_list|()
+return|;
+block|}
 DECL|method|verifyAndGetJob (JobId jobID, boolean modifyAccess)
 specifier|private
 name|Job
