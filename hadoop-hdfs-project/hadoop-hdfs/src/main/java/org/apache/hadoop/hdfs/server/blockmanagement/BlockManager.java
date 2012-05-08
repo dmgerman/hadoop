@@ -8535,7 +8535,19 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|BlockInfo
+argument_list|(
+name|iblk
+argument_list|,
 name|storedBlock
+operator|.
+name|getINode
+argument_list|()
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
 argument_list|,
 literal|"block is "
 operator|+
@@ -8651,7 +8663,19 @@ return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
+operator|new
+name|BlockInfo
+argument_list|(
+name|iblk
+argument_list|,
 name|storedBlock
+operator|.
+name|getINode
+argument_list|()
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
 argument_list|,
 literal|"reported "
 operator|+
