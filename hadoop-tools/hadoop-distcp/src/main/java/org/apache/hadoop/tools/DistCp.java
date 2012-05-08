@@ -625,6 +625,12 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+comment|//Don't cleanup while we are setting up.
 name|metaFolder
 operator|=
 name|createMetaFolderPath
@@ -645,6 +651,7 @@ operator|=
 name|createJob
 argument_list|()
 expr_stmt|;
+block|}
 name|createInputFileListing
 argument_list|(
 name|job

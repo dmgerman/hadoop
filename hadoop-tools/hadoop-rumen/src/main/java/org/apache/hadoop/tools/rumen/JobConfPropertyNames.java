@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -113,7 +123,16 @@ name|getCandidates
 parameter_list|()
 block|{
 return|return
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
 name|candidates
+argument_list|,
+name|candidates
+operator|.
+name|length
+argument_list|)
 return|;
 block|}
 block|}

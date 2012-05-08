@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collections
@@ -263,6 +273,8 @@ name|Comparator
 argument_list|<
 name|LoggedNetworkTopology
 argument_list|>
+implements|,
+name|Serializable
 block|{
 DECL|method|compare (LoggedNetworkTopology t1, LoggedNetworkTopology t2)
 specifier|public
