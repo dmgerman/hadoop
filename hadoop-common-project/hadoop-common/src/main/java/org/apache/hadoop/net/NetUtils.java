@@ -1713,7 +1713,7 @@ name|timeout
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link NetUtils#connect(Socket, SocketAddress, int)} but    * also takes a local address and port to bind the socket to.     *     * @param socket    * @param address the remote address    * @param localAddr the local address to bind the socket to    * @param timeout timeout in milliseconds    */
+comment|/**    * Like {@link NetUtils#connect(Socket, SocketAddress, int)} but    * also takes a local address and port to bind the socket to.     *     * @param socket    * @param endpoint the remote address    * @param localAddr the local address to bind the socket to    * @param timeout timeout in milliseconds    */
 DECL|method|connect (Socket socket, SocketAddress endpoint, SocketAddress localAddr, int timeout)
 specifier|public
 specifier|static
@@ -1913,47 +1913,15 @@ name|String
 name|name
 parameter_list|)
 block|{
-if|if
-condition|(
-name|Character
-operator|.
-name|digit
-argument_list|(
-name|name
-operator|.
-name|charAt
-argument_list|(
-literal|0
-argument_list|)
-argument_list|,
-literal|10
-argument_list|)
-operator|!=
-operator|-
-literal|1
-condition|)
-block|{
-comment|// it is an IP
-return|return
-name|name
-return|;
-block|}
-else|else
-block|{
 try|try
 block|{
-name|InetAddress
-name|ipAddress
-init|=
+return|return
 name|InetAddress
 operator|.
 name|getByName
 argument_list|(
 name|name
 argument_list|)
-decl_stmt|;
-return|return
-name|ipAddress
 operator|.
 name|getHostAddress
 argument_list|()
@@ -1968,7 +1936,6 @@ block|{
 return|return
 name|name
 return|;
-block|}
 block|}
 block|}
 comment|/**     * Given a collection of string representation of hosts, return a list of    * corresponding IP addresses in the textual representation.    *     * @param names a collection of string representations of hosts    * @return a list of corresponding IP addresses in the string format    * @see #normalizeHostName(String)    */
