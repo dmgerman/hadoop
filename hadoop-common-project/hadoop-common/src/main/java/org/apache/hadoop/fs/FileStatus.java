@@ -802,6 +802,10 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|out
@@ -868,6 +872,10 @@ name|out
 argument_list|,
 name|getOwner
 argument_list|()
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|Text
@@ -878,6 +886,10 @@ name|out
 argument_list|,
 name|getGroup
 argument_list|()
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|out
@@ -905,6 +917,10 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 block|}
@@ -928,6 +944,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 decl_stmt|;
 name|this
@@ -1002,6 +1022,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|group
@@ -1011,6 +1035,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 if|if
@@ -1033,6 +1061,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 argument_list|)
 expr_stmt|;
