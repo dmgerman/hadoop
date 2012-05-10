@@ -52,6 +52,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -216,24 +230,6 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-DECL|field|fakeDN
-specifier|private
-specifier|final
-name|DatanodeDescriptor
-name|fakeDN
-init|=
-operator|new
-name|DatanodeDescriptor
-argument_list|(
-operator|new
-name|DatanodeID
-argument_list|(
-literal|"fake"
-argument_list|,
-literal|100
-argument_list|)
-argument_list|)
-decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testQueues ()
@@ -242,6 +238,14 @@ name|void
 name|testQueues
 parameter_list|()
 block|{
+name|DatanodeDescriptor
+name|fakeDN
+init|=
+name|DFSTestUtil
+operator|.
+name|getLocalDatanodeDescriptor
+argument_list|()
+decl_stmt|;
 name|msgs
 operator|.
 name|enqueueReportedBlock
@@ -314,9 +318,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"ReportedBlockInfo [block=blk_1_1, dn=fake:100, reportedState=FINALIZED],"
+literal|"ReportedBlockInfo [block=blk_1_1, dn=127.0.0.1:50010, reportedState=FINALIZED],"
 operator|+
-literal|"ReportedBlockInfo [block=blk_1_2, dn=fake:100, reportedState=FINALIZED]"
+literal|"ReportedBlockInfo [block=blk_1_2, dn=127.0.0.1:50010, reportedState=FINALIZED]"
 argument_list|,
 name|Joiner
 operator|.

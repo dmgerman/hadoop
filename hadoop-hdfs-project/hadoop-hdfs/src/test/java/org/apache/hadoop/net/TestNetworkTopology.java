@@ -38,16 +38,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -80,13 +70,43 @@ name|DatanodeDescriptor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
 begin_class
 DECL|class|TestNetworkTopology
 specifier|public
 class|class
 name|TestNetworkTopology
-extends|extends
-name|TestCase
 block|{
 DECL|field|cluster
 specifier|private
@@ -101,12 +121,20 @@ argument_list|()
 decl_stmt|;
 DECL|field|dataNodes
 specifier|private
-specifier|final
-specifier|static
 name|DatanodeDescriptor
 name|dataNodes
 index|[]
-init|=
+decl_stmt|;
+annotation|@
+name|Before
+DECL|method|setupDatanodes ()
+specifier|public
+name|void
+name|setupDatanodes
+parameter_list|()
+block|{
+name|dataNodes
+operator|=
 operator|new
 name|DatanodeDescriptor
 index|[]
@@ -117,7 +145,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h1"
+literal|"1.1.1.1"
 argument_list|,
 literal|5020
 argument_list|)
@@ -131,7 +159,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h2"
+literal|"2.2.2.2"
 argument_list|,
 literal|5020
 argument_list|)
@@ -145,7 +173,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h3"
+literal|"3.3.3.3"
 argument_list|,
 literal|5020
 argument_list|)
@@ -159,7 +187,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h4"
+literal|"4.4.4.4"
 argument_list|,
 literal|5020
 argument_list|)
@@ -173,7 +201,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h5"
+literal|"5.5.5.5"
 argument_list|,
 literal|5020
 argument_list|)
@@ -187,7 +215,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h6"
+literal|"6.6.6.6"
 argument_list|,
 literal|5020
 argument_list|)
@@ -201,7 +229,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h7"
+literal|"7.7.7.7"
 argument_list|,
 literal|5020
 argument_list|)
@@ -209,30 +237,7 @@ argument_list|,
 literal|"/d2/r3"
 argument_list|)
 block|}
-decl_stmt|;
-DECL|field|NODE
-specifier|private
-specifier|final
-specifier|static
-name|DatanodeDescriptor
-name|NODE
-init|=
-operator|new
-name|DatanodeDescriptor
-argument_list|(
-operator|new
-name|DatanodeID
-argument_list|(
-literal|"h8"
-argument_list|,
-literal|5020
-argument_list|)
-argument_list|,
-literal|"/d2/r4"
-argument_list|)
-decl_stmt|;
-static|static
-block|{
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -262,6 +267,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testContains ()
 specifier|public
 name|void
@@ -270,6 +277,23 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DatanodeDescriptor
+name|nodeNotInMap
+init|=
+operator|new
+name|DatanodeDescriptor
+argument_list|(
+operator|new
+name|DatanodeID
+argument_list|(
+literal|"8.8.8.8"
+argument_list|,
+literal|5020
+argument_list|)
+argument_list|,
+literal|"/d2/r4"
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -307,11 +331,13 @@ name|cluster
 operator|.
 name|contains
 argument_list|(
-name|NODE
+name|nodeNotInMap
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNumOfChildren ()
 specifier|public
 name|void
@@ -333,6 +359,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCreateInvalidTopology ()
 specifier|public
 name|void
@@ -362,7 +390,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h1"
+literal|"1.1.1.1"
 argument_list|,
 literal|5020
 argument_list|)
@@ -376,7 +404,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h2"
+literal|"2.2.2.2"
 argument_list|,
 literal|5020
 argument_list|)
@@ -390,7 +418,7 @@ argument_list|(
 operator|new
 name|DatanodeID
 argument_list|(
-literal|"h3"
+literal|"3.3.3.3"
 argument_list|,
 literal|5020
 argument_list|)
@@ -461,6 +489,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRacks ()
 specifier|public
 name|void
@@ -588,6 +618,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetDistance ()
 specifier|public
 name|void
@@ -677,6 +709,8 @@ literal|6
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPseudoSortByDistance ()
 specifier|public
 name|void
@@ -1026,6 +1060,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRemove ()
 specifier|public
 name|void
@@ -1232,6 +1268,8 @@ name|frequency
 return|;
 block|}
 comment|/**    * This test checks that chooseRandom works for an excluded node.    */
+annotation|@
+name|Test
 DECL|method|testChooseRandomExcludedNode ()
 specifier|public
 name|void
@@ -1299,6 +1337,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * This test checks that chooseRandom works for an excluded rack.    */
+annotation|@
+name|Test
 DECL|method|testChooseRandomExcludedRack ()
 specifier|public
 name|void
