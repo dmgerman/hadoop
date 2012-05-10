@@ -5116,7 +5116,7 @@ name|hostName
 operator|+
 literal|":"
 operator|+
-name|getIpcPort
+name|getXferPort
 argument_list|()
 return|;
 block|}
@@ -5132,8 +5132,6 @@ name|streamingAddr
 return|;
 block|}
 comment|/**    * @return the datanode's IPC port    */
-annotation|@
-name|VisibleForTesting
 DECL|method|getIpcPort ()
 specifier|public
 name|int
