@@ -1599,7 +1599,7 @@ argument_list|,
 name|getBlockManager
 argument_list|()
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|blocks
 index|[
@@ -1733,7 +1733,7 @@ decl_stmt|;
 name|getBlockManager
 argument_list|()
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|blockInfo
 argument_list|,
@@ -5422,7 +5422,7 @@ init|=
 name|getBlockManager
 argument_list|()
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|b
 argument_list|,

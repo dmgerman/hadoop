@@ -2231,7 +2231,7 @@ name|bm
 operator|.
 name|blocksMap
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|blockInfo
 argument_list|,

@@ -2720,13 +2720,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection bc, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
 name|DatanodeDescriptor
 name|chooseReplicaToDelete
 parameter_list|(
 name|BlockCollection
-name|inode
+name|bc
 parameter_list|,
 name|Block
 name|block

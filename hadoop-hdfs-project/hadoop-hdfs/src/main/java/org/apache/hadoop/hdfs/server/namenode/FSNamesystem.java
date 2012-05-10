@@ -14127,7 +14127,7 @@ name|INodeFile
 operator|)
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
@@ -18657,7 +18657,7 @@ return|return
 operator|(
 name|blockManager
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|b
 argument_list|)
@@ -19622,7 +19622,7 @@ name|INodeFile
 operator|)
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
@@ -20948,7 +20948,7 @@ name|INodeFile
 operator|)
 name|blockManager
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|blk
 argument_list|)

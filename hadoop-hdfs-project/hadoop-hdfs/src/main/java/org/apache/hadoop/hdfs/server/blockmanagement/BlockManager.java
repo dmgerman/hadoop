@@ -1018,7 +1018,7 @@ specifier|final
 name|long
 name|replicationRecheckInterval
 decl_stmt|;
-comment|/**    * Mapping: Block -> { INode, datanodes, self ref }    * Updated only in response to client-sent information.    */
+comment|/**    * Mapping: Block -> { BlockCollection, datanodes, self ref }    * Updated only in response to client-sent information.    */
 DECL|field|blocksMap
 specifier|final
 name|BlocksMap
@@ -1149,7 +1149,7 @@ specifier|final
 name|int
 name|defaultReplication
 decl_stmt|;
-comment|/** The maximum number of entries returned by getCorruptInodes() */
+comment|/** value returned by MAX_CORRUPT_FILES_RETURNED */
 DECL|field|maxCorruptFilesReturned
 specifier|final
 name|int
@@ -2113,7 +2113,7 @@ operator|)
 name|block
 operator|)
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 operator|.
 name|getName
@@ -2404,14 +2404,14 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param fileINode file inode    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitOrCompleteLastBlock (MutableBlockCollection fileINode, Block commitBlock)
+comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|commitOrCompleteLastBlock (MutableBlockCollection bc, Block commitBlock)
 specifier|public
 name|boolean
 name|commitOrCompleteLastBlock
 parameter_list|(
 name|MutableBlockCollection
-name|fileINode
+name|bc
 parameter_list|,
 name|Block
 name|commitBlock
@@ -2432,7 +2432,7 @@ comment|// not committing, this is a block allocation retry
 name|BlockInfo
 name|lastBlock
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getLastBlock
 argument_list|()
@@ -2486,9 +2486,9 @@ name|minReplication
 condition|)
 name|completeBlock
 argument_list|(
-name|fileINode
+name|bc
 argument_list|,
-name|fileINode
+name|bc
 operator|.
 name|numBlocks
 argument_list|()
@@ -2502,15 +2502,15 @@ return|return
 name|b
 return|;
 block|}
-comment|/**    * Convert a specified block of the file to a complete block.    * @param fileINode file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|completeBlock (final MutableBlockCollection fileINode, final int blkIndex, boolean force)
+comment|/**    * Convert a specified block of the file to a complete block.    * @param bc file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
+DECL|method|completeBlock (final MutableBlockCollection bc, final int blkIndex, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
 name|MutableBlockCollection
-name|fileINode
+name|bc
 parameter_list|,
 specifier|final
 name|int
@@ -2534,7 +2534,7 @@ return|;
 name|BlockInfo
 name|curBlock
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getBlocks
 argument_list|()
@@ -2616,7 +2616,7 @@ name|convertToCompleteBlock
 argument_list|()
 decl_stmt|;
 comment|// replace penultimate block in file
-name|fileINode
+name|bc
 operator|.
 name|setBlock
 argument_list|(
@@ -2664,14 +2664,14 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-DECL|method|completeBlock (final MutableBlockCollection fileINode, final BlockInfo block, boolean force)
+DECL|method|completeBlock (final MutableBlockCollection bc, final BlockInfo block, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
 name|MutableBlockCollection
-name|fileINode
+name|bc
 parameter_list|,
 specifier|final
 name|BlockInfo
@@ -2687,7 +2687,7 @@ name|BlockInfo
 index|[]
 name|fileBlocks
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getBlocks
 argument_list|()
@@ -2721,7 +2721,7 @@ block|{
 return|return
 name|completeBlock
 argument_list|(
-name|fileINode
+name|bc
 argument_list|,
 name|idx
 argument_list|,
@@ -2734,14 +2734,14 @@ name|block
 return|;
 block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
-DECL|method|forceCompleteBlock (final MutableBlockCollection fileINode, final BlockInfoUnderConstruction block)
+DECL|method|forceCompleteBlock (final MutableBlockCollection bc, final BlockInfoUnderConstruction block)
 specifier|public
 name|BlockInfo
 name|forceCompleteBlock
 parameter_list|(
 specifier|final
 name|MutableBlockCollection
-name|fileINode
+name|bc
 parameter_list|,
 specifier|final
 name|BlockInfoUnderConstruction
@@ -2760,7 +2760,7 @@ expr_stmt|;
 return|return
 name|completeBlock
 argument_list|(
-name|fileINode
+name|bc
 argument_list|,
 name|block
 argument_list|,
@@ -2768,14 +2768,14 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param fileINode file    * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|convertLastBlockToUnderConstruction ( MutableBlockCollection fileINode)
+comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param bc file    * @return the last block locations if the block is partial or null otherwise    */
+DECL|method|convertLastBlockToUnderConstruction ( MutableBlockCollection bc)
 specifier|public
 name|LocatedBlock
 name|convertLastBlockToUnderConstruction
 parameter_list|(
 name|MutableBlockCollection
-name|fileINode
+name|bc
 parameter_list|)
 throws|throws
 name|IOException
@@ -2783,7 +2783,7 @@ block|{
 name|BlockInfo
 name|oldBlock
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getLastBlock
 argument_list|()
@@ -2794,7 +2794,7 @@ name|oldBlock
 operator|==
 literal|null
 operator|||
-name|fileINode
+name|bc
 operator|.
 name|getPreferredBlockSize
 argument_list|()
@@ -2829,7 +2829,7 @@ decl_stmt|;
 name|BlockInfoUnderConstruction
 name|ucBlock
 init|=
-name|fileINode
+name|bc
 operator|.
 name|setLastBlock
 argument_list|(
@@ -2909,7 +2909,7 @@ specifier|final
 name|long
 name|fileLength
 init|=
-name|fileINode
+name|bc
 operator|.
 name|computeContentSummary
 argument_list|()
@@ -4725,16 +4725,16 @@ argument_list|)
 throw|;
 block|}
 name|BlockCollection
-name|inode
+name|bc
 init|=
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|inode
+name|bc
 operator|==
 literal|null
 condition|)
@@ -4795,7 +4795,7 @@ operator|.
 name|liveReplicas
 argument_list|()
 operator|>=
-name|inode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -5256,7 +5256,7 @@ name|DatanodeDescriptor
 name|srcNode
 decl_stmt|;
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 literal|null
 decl_stmt|;
@@ -5325,11 +5325,11 @@ argument_list|)
 control|)
 block|{
 comment|// block should belong to a file
-name|fileINode
+name|bc
 operator|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
@@ -5337,11 +5337,11 @@ expr_stmt|;
 comment|// abandoned block or block reopened for append
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|==
 literal|null
 operator|||
-name|fileINode
+name|bc
 operator|instanceof
 name|MutableBlockCollection
 condition|)
@@ -5367,7 +5367,7 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -5555,7 +5555,7 @@ name|ReplicationWork
 argument_list|(
 name|block
 argument_list|,
-name|fileINode
+name|bc
 argument_list|,
 name|srcNode
 argument_list|,
@@ -5635,7 +5635,7 @@ expr_stmt|;
 block|}
 comment|// choose replication targets: NOT HOLDING THE GLOBAL LOCK
 comment|// It is costly to extract the filename for which chooseTargets is called,
-comment|// so for now we pass in the Inode itself.
+comment|// so for now we pass in the block collection itself.
 name|rw
 operator|.
 name|targets
@@ -5646,7 +5646,7 @@ name|chooseTarget
 argument_list|(
 name|rw
 operator|.
-name|fileINode
+name|bc
 argument_list|,
 name|rw
 operator|.
@@ -5736,11 +5736,11 @@ name|priority
 decl_stmt|;
 comment|// Recheck since global lock was released
 comment|// block should belong to a file
-name|fileINode
+name|bc
 operator|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
@@ -5748,11 +5748,11 @@ expr_stmt|;
 comment|// abandoned block or block reopened for append
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|==
 literal|null
 operator|||
-name|fileINode
+name|bc
 operator|instanceof
 name|MutableBlockCollection
 condition|)
@@ -5784,7 +5784,7 @@ continue|continue;
 block|}
 name|requiredReplication
 operator|=
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -9001,7 +9001,7 @@ name|MutableBlockCollection
 operator|)
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 argument_list|,
 name|storedBlock
@@ -9100,7 +9100,7 @@ literal|null
 operator|||
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 operator|==
 literal|null
@@ -9145,15 +9145,15 @@ operator|:
 literal|"Block must be stored by now"
 assert|;
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 assert|assert
-name|fileINode
+name|bc
 operator|!=
 literal|null
 operator|:
@@ -9279,7 +9279,7 @@ argument_list|(
 operator|(
 name|MutableBlockCollection
 operator|)
-name|fileINode
+name|bc
 argument_list|,
 name|storedBlock
 argument_list|,
@@ -9312,7 +9312,7 @@ block|}
 comment|// if file is under construction, then done for now
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|instanceof
 name|MutableBlockCollection
 condition|)
@@ -9339,7 +9339,7 @@ comment|// handle underReplication/overReplication
 name|short
 name|fileReplication
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -9890,16 +9890,16 @@ name|block
 parameter_list|)
 block|{
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|block
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|==
 literal|null
 condition|)
@@ -9937,7 +9937,7 @@ comment|// calculate current replication
 name|short
 name|expectedReplication
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -10426,9 +10426,9 @@ argument_list|()
 assert|;
 comment|// first form a rack to datanodes map and
 name|BlockCollection
-name|inode
+name|bc
 init|=
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|b
 argument_list|)
@@ -10700,7 +10700,7 @@ name|replicator
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-name|inode
+name|bc
 argument_list|,
 name|b
 argument_list|,
@@ -11073,18 +11073,18 @@ comment|// necessary. In that case, put block on a possibly-will-
 comment|// be-replicated list.
 comment|//
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|!=
 literal|null
 condition|)
@@ -12203,11 +12203,11 @@ name|block
 argument_list|)
 decl_stmt|;
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
@@ -12303,7 +12303,7 @@ operator|+
 literal|", Is Open File: "
 operator|+
 operator|(
-name|fileINode
+name|bc
 operator|instanceof
 name|MutableBlockCollection
 operator|)
@@ -12367,11 +12367,11 @@ name|next
 argument_list|()
 decl_stmt|;
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
@@ -12379,7 +12379,7 @@ decl_stmt|;
 name|short
 name|expectedReplication
 init|=
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -12483,18 +12483,18 @@ name|next
 argument_list|()
 decl_stmt|;
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|!=
 literal|null
 condition|)
@@ -12590,7 +12590,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|instanceof
 name|MutableBlockCollection
 condition|)
@@ -13066,18 +13066,18 @@ name|block
 parameter_list|)
 block|{
 name|BlockCollection
-name|fileINode
+name|bc
 init|=
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fileINode
+name|bc
 operator|==
 literal|null
 condition|)
@@ -13088,7 +13088,7 @@ literal|0
 return|;
 block|}
 return|return
-name|fileINode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -13396,33 +13396,33 @@ name|getCorruptBlockSize
 argument_list|()
 return|;
 block|}
-DECL|method|addINode (BlockInfo block, BlockCollection iNode)
+DECL|method|addBlockCollection (BlockInfo block, BlockCollection bc)
 specifier|public
 name|BlockInfo
-name|addINode
+name|addBlockCollection
 parameter_list|(
 name|BlockInfo
 name|block
 parameter_list|,
 name|BlockCollection
-name|iNode
+name|bc
 parameter_list|)
 block|{
 return|return
 name|blocksMap
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|block
 argument_list|,
-name|iNode
+name|bc
 argument_list|)
 return|;
 block|}
-DECL|method|getINode (Block b)
+DECL|method|getBlockCollection (Block b)
 specifier|public
 name|BlockCollection
-name|getINode
+name|getBlockCollection
 parameter_list|(
 name|Block
 name|b
@@ -13431,7 +13431,7 @@ block|{
 return|return
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|b
 argument_list|)
@@ -13854,10 +13854,10 @@ specifier|private
 name|Block
 name|block
 decl_stmt|;
-DECL|field|fileINode
+DECL|field|bc
 specifier|private
 name|BlockCollection
-name|fileINode
+name|bc
 decl_stmt|;
 DECL|field|srcNode
 specifier|private
@@ -13896,7 +13896,7 @@ specifier|private
 name|int
 name|priority
 decl_stmt|;
-DECL|method|ReplicationWork (Block block, BlockCollection fileINode, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> liveReplicaNodes, int additionalReplRequired, int priority)
+DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> liveReplicaNodes, int additionalReplRequired, int priority)
 specifier|public
 name|ReplicationWork
 parameter_list|(
@@ -13904,7 +13904,7 @@ name|Block
 name|block
 parameter_list|,
 name|BlockCollection
-name|fileINode
+name|bc
 parameter_list|,
 name|DatanodeDescriptor
 name|srcNode
@@ -13936,9 +13936,9 @@ name|block
 expr_stmt|;
 name|this
 operator|.
-name|fileINode
+name|bc
 operator|=
-name|fileINode
+name|bc
 expr_stmt|;
 name|this
 operator|.

@@ -1794,7 +1794,7 @@ decl_stmt|;
 specifier|final
 name|BlockCollection
 index|[]
-name|inodes
+name|bcs
 init|=
 name|NameNodeRaidTestUtil
 operator|.
@@ -1811,7 +1811,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|0
 index|]
@@ -1821,7 +1821,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|0
 index|]
@@ -1831,7 +1831,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|1
 index|]
@@ -1841,7 +1841,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|1
 index|]
@@ -1867,7 +1867,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|1
 index|]
@@ -1877,7 +1877,7 @@ name|verifyCachedFullPathNameResult
 argument_list|(
 name|cachedFullPathNames
 argument_list|,
-name|inodes
+name|bcs
 index|[
 literal|0
 index|]
@@ -3463,7 +3463,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyCachedFullPathNameResult ( CachedFullPathNames cachedFullPathNames, BlockCollection inode)
+DECL|method|verifyCachedFullPathNameResult ( CachedFullPathNames cachedFullPathNames, BlockCollection bc)
 specifier|private
 name|void
 name|verifyCachedFullPathNameResult
@@ -3472,7 +3472,7 @@ name|CachedFullPathNames
 name|cachedFullPathNames
 parameter_list|,
 name|BlockCollection
-name|inode
+name|bc
 parameter_list|)
 throws|throws
 name|IOException
@@ -3480,7 +3480,7 @@ block|{
 name|String
 name|res1
 init|=
-name|inode
+name|bc
 operator|.
 name|getName
 argument_list|()
@@ -3492,7 +3492,7 @@ name|cachedFullPathNames
 operator|.
 name|get
 argument_list|(
-name|inode
+name|bc
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -3521,10 +3521,10 @@ name|cachedFullPathNames
 operator|.
 name|get
 argument_list|(
-name|inode
+name|bc
 argument_list|)
 argument_list|,
-name|inode
+name|bc
 operator|.
 name|getName
 argument_list|()
@@ -3713,7 +3713,7 @@ name|blockManager
 operator|.
 name|blocksMap
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 operator|.

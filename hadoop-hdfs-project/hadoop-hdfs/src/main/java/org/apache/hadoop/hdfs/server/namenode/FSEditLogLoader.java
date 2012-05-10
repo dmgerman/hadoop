@@ -3523,7 +3523,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|addINode
+name|addBlockCollection
 argument_list|(
 name|newBI
 argument_list|,

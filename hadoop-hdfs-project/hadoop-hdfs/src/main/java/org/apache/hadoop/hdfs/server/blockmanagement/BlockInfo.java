@@ -116,10 +116,10 @@ name|LightWeightGSet
 operator|.
 name|LinkedElement
 block|{
-DECL|field|inode
+DECL|field|bc
 specifier|private
 name|BlockCollection
-name|inode
+name|bc
 decl_stmt|;
 comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface */
 DECL|field|nextLinkedElement
@@ -159,7 +159,7 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 literal|null
 expr_stmt|;
@@ -194,7 +194,7 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 literal|null
 expr_stmt|;
@@ -214,7 +214,7 @@ name|from
 argument_list|,
 name|from
 operator|.
-name|inode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -222,37 +222,37 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 name|from
 operator|.
-name|inode
+name|bc
 expr_stmt|;
 block|}
-DECL|method|getINode ()
+DECL|method|getBlockCollection ()
 specifier|public
 name|BlockCollection
-name|getINode
+name|getBlockCollection
 parameter_list|()
 block|{
 return|return
-name|inode
+name|bc
 return|;
 block|}
-DECL|method|setINode (BlockCollection inode)
+DECL|method|setBlockCollection (BlockCollection bc)
 specifier|public
 name|void
-name|setINode
+name|setBlockCollection
 parameter_list|(
 name|BlockCollection
-name|inode
+name|bc
 parameter_list|)
 block|{
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
-name|inode
+name|bc
 expr_stmt|;
 block|}
 DECL|method|getDatanode (int index)
@@ -1473,7 +1473,7 @@ name|BlockInfoUnderConstruction
 argument_list|(
 name|this
 argument_list|,
-name|getINode
+name|getBlockCollection
 argument_list|()
 operator|.
 name|getReplication

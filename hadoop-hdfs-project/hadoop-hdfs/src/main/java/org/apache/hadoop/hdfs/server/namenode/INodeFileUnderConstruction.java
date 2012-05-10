@@ -625,7 +625,7 @@ argument_list|)
 decl_stmt|;
 name|ucBlock
 operator|.
-name|setINode
+name|setBlockCollection
 argument_list|(
 name|this
 argument_list|)

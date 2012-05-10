@@ -4637,7 +4637,7 @@ name|INodeFile
 operator|)
 name|blockManager
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
