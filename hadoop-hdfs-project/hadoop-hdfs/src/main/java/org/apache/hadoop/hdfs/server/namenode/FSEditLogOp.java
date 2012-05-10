@@ -1363,6 +1363,27 @@ index|[]
 name|blocks
 parameter_list|)
 block|{
+if|if
+condition|(
+name|blocks
+operator|.
+name|length
+operator|>
+name|MAX_BLOCKS
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Can't have more than "
+operator|+
+name|MAX_BLOCKS
+operator|+
+literal|" in an AddCloseOp."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|blocks
@@ -1909,6 +1930,19 @@ literal|""
 expr_stmt|;
 block|}
 block|}
+DECL|field|MAX_BLOCKS
+specifier|static
+specifier|final
+specifier|public
+name|int
+name|MAX_BLOCKS
+init|=
+literal|1024
+operator|*
+literal|1024
+operator|*
+literal|64
+decl_stmt|;
 DECL|method|readBlocks ( DataInputStream in, int logVersion)
 specifier|private
 specifier|static
@@ -1933,6 +1967,43 @@ operator|.
 name|readInt
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|numBlocks
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid negative number of blocks"
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|numBlocks
+operator|>
+name|MAX_BLOCKS
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid number of blocks: "
+operator|+
+name|numBlocks
+operator|+
+literal|".  The maximum number of blocks per file is "
+operator|+
+name|MAX_BLOCKS
+argument_list|)
+throw|;
+block|}
 name|Block
 index|[]
 name|blocks
@@ -3511,6 +3582,17 @@ DECL|field|timestamp
 name|long
 name|timestamp
 decl_stmt|;
+DECL|field|MAX_CONCAT_SRC
+specifier|final
+specifier|static
+specifier|public
+name|int
+name|MAX_CONCAT_SRC
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 DECL|method|ConcatDeleteOp ()
 specifier|private
 name|ConcatDeleteOp
@@ -3570,6 +3652,27 @@ index|[]
 name|srcs
 parameter_list|)
 block|{
+if|if
+condition|(
+name|srcs
+operator|.
+name|length
+operator|>
+name|MAX_CONCAT_SRC
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"ConcatDeleteOp can only have "
+operator|+
+name|MAX_CONCAT_SRC
+operator|+
+literal|" sources at most."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|srcs
@@ -3746,9 +3849,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Incorrect data format. "
+literal|"Incorrect data format "
 operator|+
-literal|"Concat delete operation."
+literal|"for ConcatDeleteOp."
 argument_list|)
 throw|;
 block|}
@@ -3804,6 +3907,55 @@ operator|-
 literal|1
 expr_stmt|;
 comment|// trg and timestamp
+block|}
+if|if
+condition|(
+name|srcSize
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Incorrect data format. "
+operator|+
+literal|"ConcatDeleteOp cannot have a negative number of data "
+operator|+
+literal|" sources."
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|srcSize
+operator|>
+name|MAX_CONCAT_SRC
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Incorrect data format. "
+operator|+
+literal|"ConcatDeleteOp can have at most "
+operator|+
+name|MAX_CONCAT_SRC
+operator|+
+literal|" sources, but we tried to have "
+operator|+
+operator|(
+name|length
+operator|-
+literal|3
+operator|)
+operator|+
+literal|" sources."
+argument_list|)
+throw|;
 block|}
 name|this
 operator|.
