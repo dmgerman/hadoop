@@ -698,7 +698,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Util method to build socket addr from either:    *<host>:<post>    *<fs>://<host>:<port>/<path>    */
+comment|/**    * Util method to build socket addr from either:    *<host>:<port>    *<fs>://<host>:<port>/<path>    */
 DECL|method|createSocketAddr (String target)
 specifier|public
 specifier|static
@@ -719,7 +719,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Util method to build socket addr from either:    *<host>    *<host>:<post>    *<fs>://<host>:<port>/<path>    */
+comment|/**    * Util method to build socket addr from either:    *<host>    *<host>:<port>    *<fs>://<host>:<port>/<path>    */
 DECL|method|createSocketAddr (String target, int defaultPort)
 specifier|public
 specifier|static
