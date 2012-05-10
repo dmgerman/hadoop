@@ -237,16 +237,6 @@ argument_list|<
 name|BinaryComparable
 argument_list|>
 block|{
-DECL|field|SHORT_STRING_MAX
-specifier|static
-specifier|final
-name|int
-name|SHORT_STRING_MAX
-init|=
-literal|1024
-operator|*
-literal|1024
-decl_stmt|;
 DECL|field|ENCODER_FACTORY
 specifier|private
 specifier|static
