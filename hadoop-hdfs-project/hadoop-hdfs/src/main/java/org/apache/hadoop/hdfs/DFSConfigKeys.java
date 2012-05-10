@@ -1050,7 +1050,7 @@ specifier|final
 name|String
 name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT
 init|=
-literal|"3.0.0"
+literal|"3.0.0-SNAPSHOT"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_EDITS_DIR_MINIMUM_KEY
 specifier|public
@@ -2066,7 +2066,7 @@ specifier|final
 name|String
 name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT
 init|=
-literal|"3.0.0"
+literal|"3.0.0-SNAPSHOT"
 decl_stmt|;
 DECL|field|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
 specifier|public
