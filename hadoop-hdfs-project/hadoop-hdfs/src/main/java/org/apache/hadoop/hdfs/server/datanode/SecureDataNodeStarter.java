@@ -160,6 +160,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mortbay
 operator|.
 name|jetty
@@ -279,7 +293,6 @@ argument_list|(
 literal|"Initializing secure datanode resources"
 argument_list|)
 expr_stmt|;
-comment|// We should only start up a secure datanode in a Kerberos-secured cluster
 name|Configuration
 name|conf
 init|=
@@ -287,29 +300,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-comment|// Skip UGI method to not log in
-if|if
-condition|(
-operator|!
-name|conf
-operator|.
-name|get
-argument_list|(
-name|HADOOP_SECURITY_AUTHENTICATION
-argument_list|)
-operator|.
-name|equals
-argument_list|(
-literal|"kerberos"
-argument_list|)
-condition|)
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"Cannot start secure datanode in unsecure cluster"
-argument_list|)
-throw|;
 comment|// Stash command-line arguments for regular datanode
 name|args
 operator|=
@@ -516,6 +506,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|(
 name|ss
 operator|.
 name|getLocalPort
@@ -529,6 +520,12 @@ name|getPort
 argument_list|()
 operator|>=
 literal|1023
+operator|)
+operator|&&
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 condition|)
 block|{
 throw|throw
