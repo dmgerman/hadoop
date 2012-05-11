@@ -164,26 +164,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|Text
@@ -864,11 +844,6 @@ argument_list|)
 decl_stmt|;
 comment|/**    *     * @param namenode    * @return delegation token    */
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -877,7 +852,7 @@ specifier|public
 specifier|static
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
 name|getDelegationToken
 parameter_list|(
@@ -903,7 +878,7 @@ return|return
 operator|(
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
 operator|)
 name|credentials
