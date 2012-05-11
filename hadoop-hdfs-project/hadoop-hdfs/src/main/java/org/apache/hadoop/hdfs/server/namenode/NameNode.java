@@ -1335,6 +1335,16 @@ specifier|protected
 name|boolean
 name|allowStaleStandbyReads
 decl_stmt|;
+DECL|field|runtime
+specifier|private
+name|Runtime
+name|runtime
+init|=
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+decl_stmt|;
 comment|/** httpServer */
 DECL|field|httpServer
 specifier|protected
@@ -2469,7 +2479,35 @@ name|trashInterval
 operator|==
 literal|0
 condition|)
+block|{
 return|return;
+block|}
+elseif|else
+if|if
+condition|(
+name|trashInterval
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot start tresh emptier with negative interval."
+operator|+
+literal|" Set "
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|FS_TRASH_INTERVAL_KEY
+operator|+
+literal|" to a"
+operator|+
+literal|" positive value."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|emptier
@@ -6103,7 +6141,84 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
-comment|/**    * Class used as expose {@link NameNode} as context to {@link HAState}    *     * TODO(HA):    * When entering and exiting state, on failing to start services,    * appropriate action is needed todo either shutdown the node or recover    * from failure.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setRuntimeForTesting (Runtime runtime)
+specifier|public
+specifier|synchronized
+name|void
+name|setRuntimeForTesting
+parameter_list|(
+name|Runtime
+name|runtime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runtime
+operator|=
+name|runtime
+expr_stmt|;
+block|}
+comment|/**    * Shutdown the NN immediately in an ungraceful way. Used when it would be    * unsafe for the NN to continue operating, e.g. during a failed HA state    * transition.    *     * @param t exception which warrants the shutdown. Printed to the NN log    *          before exit.    * @throws ServiceFailedException thrown only for testing.    */
+DECL|method|doImmediateShutdown (Throwable t)
+specifier|private
+specifier|synchronized
+name|void
+name|doImmediateShutdown
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+throws|throws
+name|ServiceFailedException
+block|{
+name|String
+name|message
+init|=
+literal|"Error encountered requiring NN shutdown. "
+operator|+
+literal|"Shutting down immediately."
+decl_stmt|;
+try|try
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|message
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|ignored
+parameter_list|)
+block|{
+comment|// This is unlikely to happen, but there's nothing we can do if it does.
+block|}
+name|runtime
+operator|.
+name|exit
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// This code is only reached during testing, when runtime is stubbed out.
+throw|throw
+operator|new
+name|ServiceFailedException
+argument_list|(
+name|message
+argument_list|,
+name|t
+argument_list|)
+throw|;
+block|}
+comment|/**    * Class used to expose {@link NameNode} as context to {@link HAState}    */
 DECL|class|NameNodeHAContext
 specifier|protected
 class|class
@@ -6149,6 +6264,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|namesystem
 operator|.
 name|startActiveServices
@@ -6160,6 +6277,19 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|doImmediateShutdown
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|stopActiveServices ()
@@ -6169,6 +6299,8 @@ name|stopActiveServices
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 if|if
 condition|(
@@ -6187,6 +6319,19 @@ name|stopTrashEmptier
 argument_list|()
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|doImmediateShutdown
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|startStandbyServices ()
@@ -6197,6 +6342,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|namesystem
 operator|.
 name|startStandbyServices
@@ -6204,6 +6351,19 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|doImmediateShutdown
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -6215,11 +6375,26 @@ parameter_list|()
 throws|throws
 name|ServiceFailedException
 block|{
+try|try
+block|{
 name|namesystem
 operator|.
 name|prepareToStopStandbyServices
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|doImmediateShutdown
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -6230,6 +6405,8 @@ name|stopStandbyServices
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 if|if
 condition|(
@@ -6242,6 +6419,19 @@ name|namesystem
 operator|.
 name|stopStandbyServices
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|doImmediateShutdown
+argument_list|(
+name|t
+argument_list|)
 expr_stmt|;
 block|}
 block|}
