@@ -9493,7 +9493,8 @@ throw|;
 block|}
 else|else
 block|{
-name|BlockInfoUnderConstruction
+specifier|final
+name|BlockInfo
 name|lastBlock
 init|=
 name|pendingFile
