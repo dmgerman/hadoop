@@ -420,6 +420,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|BlockCollection
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|datanode
 operator|.
 name|DataNode
@@ -441,24 +459,6 @@ operator|.
 name|datanode
 operator|.
 name|DataNodeTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSInodeInfo
 import|;
 end_import
 
@@ -2957,12 +2957,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (FSInodeInfo inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
 name|DatanodeDescriptor
 name|chooseReplicaToDelete
 parameter_list|(
-name|FSInodeInfo
+name|BlockCollection
 name|inode
 parameter_list|,
 name|Block

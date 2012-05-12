@@ -898,7 +898,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Not implemented by  the FileSystem implementation"
+literal|"Not implemented by the "
+operator|+
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" FileSystem implementation"
 argument_list|)
 throw|;
 block|}

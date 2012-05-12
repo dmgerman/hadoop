@@ -90,24 +90,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|LightWeightGSet
@@ -115,7 +97,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockInfo class maintains for a given block  * the {@link INodeFile} it is part of and datanodes where the replicas of   * the block are stored.  */
+comment|/**  * BlockInfo class maintains for a given block  * the {@link BlockCollection} it is part of and datanodes where the replicas of   * the block are stored.  */
 end_comment
 
 begin_class
@@ -134,10 +116,10 @@ name|LightWeightGSet
 operator|.
 name|LinkedElement
 block|{
-DECL|field|inode
+DECL|field|bc
 specifier|private
-name|INodeFile
-name|inode
+name|BlockCollection
+name|bc
 decl_stmt|;
 comment|/** For implementing {@link LightWeightGSet.LinkedElement} interface */
 DECL|field|nextLinkedElement
@@ -177,7 +159,7 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 literal|null
 expr_stmt|;
@@ -212,7 +194,7 @@ index|]
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 literal|null
 expr_stmt|;
@@ -232,7 +214,7 @@ name|from
 argument_list|,
 name|from
 operator|.
-name|inode
+name|bc
 operator|.
 name|getReplication
 argument_list|()
@@ -240,37 +222,37 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
 name|from
 operator|.
-name|inode
+name|bc
 expr_stmt|;
 block|}
-DECL|method|getINode ()
+DECL|method|getBlockCollection ()
 specifier|public
-name|INodeFile
-name|getINode
+name|BlockCollection
+name|getBlockCollection
 parameter_list|()
 block|{
 return|return
-name|inode
+name|bc
 return|;
 block|}
-DECL|method|setINode (INodeFile inode)
+DECL|method|setBlockCollection (BlockCollection bc)
 specifier|public
 name|void
-name|setINode
+name|setBlockCollection
 parameter_list|(
-name|INodeFile
-name|inode
+name|BlockCollection
+name|bc
 parameter_list|)
 block|{
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
-name|inode
+name|bc
 expr_stmt|;
 block|}
 DECL|method|getDatanode (int index)
@@ -1491,7 +1473,7 @@ name|BlockInfoUnderConstruction
 argument_list|(
 name|this
 argument_list|,
-name|getINode
+name|getBlockCollection
 argument_list|()
 operator|.
 name|getReplication

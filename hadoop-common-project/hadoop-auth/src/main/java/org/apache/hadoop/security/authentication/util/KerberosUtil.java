@@ -76,18 +76,6 @@ name|ietf
 operator|.
 name|jgss
 operator|.
-name|GSSManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|ietf
-operator|.
-name|jgss
-operator|.
 name|Oid
 import|;
 end_import
@@ -124,17 +112,14 @@ else|:
 literal|"com.sun.security.auth.module.Krb5LoginModule"
 return|;
 block|}
-DECL|method|getOidClassInstance (String servicePrincipal, GSSManager gssManager)
+DECL|method|getOidInstance (String oidName)
 specifier|public
 specifier|static
 name|Oid
-name|getOidClassInstance
+name|getOidInstance
 parameter_list|(
 name|String
-name|servicePrincipal
-parameter_list|,
-name|GSSManager
-name|gssManager
+name|oidName
 parameter_list|)
 throws|throws
 name|ClassNotFoundException
@@ -195,7 +180,7 @@ name|oidClass
 operator|.
 name|getDeclaredField
 argument_list|(
-literal|"GSS_KRB5_MECH_OID"
+name|oidName
 argument_list|)
 decl_stmt|;
 return|return

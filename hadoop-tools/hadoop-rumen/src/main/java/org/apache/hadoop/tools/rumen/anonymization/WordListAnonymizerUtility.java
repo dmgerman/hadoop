@@ -45,7 +45,6 @@ class|class
 name|WordListAnonymizerUtility
 block|{
 DECL|field|KNOWN_WORDS
-specifier|public
 specifier|static
 specifier|final
 name|String

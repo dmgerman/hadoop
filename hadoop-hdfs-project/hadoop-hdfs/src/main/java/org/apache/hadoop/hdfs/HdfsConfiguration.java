@@ -289,15 +289,6 @@ argument_list|)
 expr_stmt|;
 name|deprecate
 argument_list|(
-literal|"dfs.secondary.https.port"
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_SECONDARY_HTTPS_PORT_KEY
-argument_list|)
-expr_stmt|;
-name|deprecate
-argument_list|(
 literal|"dfs.socket.timeout"
 argument_list|,
 name|DFSConfigKeys

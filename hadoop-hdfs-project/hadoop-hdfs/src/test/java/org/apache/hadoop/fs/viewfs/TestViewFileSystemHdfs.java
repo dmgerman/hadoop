@@ -509,7 +509,7 @@ name|getExpectedDirPaths
 parameter_list|()
 block|{
 return|return
-literal|7
+literal|8
 return|;
 block|}
 annotation|@
@@ -520,7 +520,7 @@ name|getExpectedMountPoints
 parameter_list|()
 block|{
 return|return
-literal|8
+literal|9
 return|;
 block|}
 annotation|@
@@ -531,7 +531,7 @@ name|getExpectedDelegationTokenCount
 parameter_list|()
 block|{
 return|return
-literal|8
+literal|9
 return|;
 block|}
 annotation|@

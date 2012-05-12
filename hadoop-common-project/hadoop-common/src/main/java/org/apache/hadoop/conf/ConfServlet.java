@@ -32,16 +32,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|OutputStreamWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|Writer
 import|;
 end_import
@@ -247,13 +237,12 @@ name|ServletException
 throws|,
 name|IOException
 block|{
-comment|// Do the authorization
 if|if
 condition|(
 operator|!
 name|HttpServer
 operator|.
-name|hasAdministratorAccess
+name|isInstrumentationAccessAllowed
 argument_list|(
 name|getServletContext
 argument_list|()

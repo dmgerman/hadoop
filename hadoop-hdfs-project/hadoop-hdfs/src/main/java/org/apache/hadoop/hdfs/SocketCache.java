@@ -201,6 +201,21 @@ name|capacity
 operator|=
 name|capacity
 expr_stmt|;
+if|if
+condition|(
+name|capacity
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"SocketCache disabled in configuration."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get a cached socket to the given address.    * @param remote  Remote address the socket is connected to.    * @return  A socket with unknown state, possibly closed underneath. Or null.    */
 DECL|method|get (SocketAddress remote)
@@ -213,6 +228,18 @@ name|SocketAddress
 name|remote
 parameter_list|)
 block|{
+if|if
+condition|(
+name|capacity
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// disabled
+return|return
+literal|null
+return|;
+block|}
 name|List
 argument_list|<
 name|Socket
@@ -298,6 +325,23 @@ name|Socket
 name|sock
 parameter_list|)
 block|{
+if|if
+condition|(
+name|capacity
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// Cache disabled.
+name|IOUtils
+operator|.
+name|closeSocket
+argument_list|(
+name|sock
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|Preconditions
 operator|.
 name|checkNotNull

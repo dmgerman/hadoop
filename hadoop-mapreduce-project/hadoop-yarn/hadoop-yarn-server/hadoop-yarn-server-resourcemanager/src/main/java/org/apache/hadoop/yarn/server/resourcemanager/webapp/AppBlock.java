@@ -391,13 +391,35 @@ block|}
 name|ApplicationId
 name|appID
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|appID
+operator|=
 name|Apps
 operator|.
 name|toAppID
 argument_list|(
 name|aid
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|puts
+argument_list|(
+literal|"Invalid Application ID: "
+operator|+
+name|aid
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|RMContext
 name|context
 init|=
@@ -514,7 +536,7 @@ literal|"You (User "
 operator|+
 name|remoteUser
 operator|+
-literal|") are not authorized to view the logs for application "
+literal|") are not authorized to view application "
 operator|+
 name|appID
 argument_list|)

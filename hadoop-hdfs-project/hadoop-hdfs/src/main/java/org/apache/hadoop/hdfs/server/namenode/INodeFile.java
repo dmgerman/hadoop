@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|permission
@@ -140,17 +154,41 @@ name|BlockInfoUnderConstruction
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockCollection
+import|;
+end_import
+
 begin_comment
 comment|/** I-node for closed file. */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|INodeFile
 specifier|public
 class|class
 name|INodeFile
 extends|extends
 name|INode
+implements|implements
+name|BlockCollection
 block|{
 DECL|field|UMASK
 specifier|static
@@ -580,7 +618,7 @@ control|)
 block|{
 name|bi
 operator|.
-name|setINode
+name|setBlockCollection
 argument_list|(
 name|this
 argument_list|)
@@ -752,7 +790,7 @@ argument_list|)
 expr_stmt|;
 name|blk
 operator|.
-name|setINode
+name|setBlockCollection
 argument_list|(
 literal|null
 argument_list|)
@@ -765,6 +803,18 @@ literal|null
 expr_stmt|;
 return|return
 literal|1
+return|;
+block|}
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+comment|// Get the full path name of this inode.
+return|return
+name|getFullPathName
+argument_list|()
 return|;
 block|}
 annotation|@

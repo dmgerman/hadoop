@@ -480,6 +480,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Timeouts are set within DataXceiver.run()
 comment|// Make sure the xceiver count is not exceeded
 name|int
 name|curXceiverCount
@@ -517,8 +518,9 @@ name|datanode
 operator|.
 name|threadGroup
 argument_list|,
-operator|new
 name|DataXceiver
+operator|.
+name|create
 argument_list|(
 name|s
 argument_list|,

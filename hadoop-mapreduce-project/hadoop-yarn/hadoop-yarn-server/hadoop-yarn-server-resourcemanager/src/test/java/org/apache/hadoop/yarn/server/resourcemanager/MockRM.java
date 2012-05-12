@@ -278,6 +278,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -535,26 +553,6 @@ operator|.
 name|rmnode
 operator|.
 name|RMNodeImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNodeState
 import|;
 end_import
 
@@ -1204,7 +1202,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NMwaitForState (NodeId nodeid, RMNodeState finalState)
+DECL|method|NMwaitForState (NodeId nodeid, NodeState finalState)
 specifier|public
 name|void
 name|NMwaitForState
@@ -1212,7 +1210,7 @@ parameter_list|(
 name|NodeId
 name|nodeid
 parameter_list|,
-name|RMNodeState
+name|NodeState
 name|finalState
 parameter_list|)
 throws|throws

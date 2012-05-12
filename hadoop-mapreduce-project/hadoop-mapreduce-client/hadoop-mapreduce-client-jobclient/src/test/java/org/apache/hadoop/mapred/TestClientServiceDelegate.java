@@ -114,6 +114,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -1811,7 +1821,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)
@@ -1916,7 +1926,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)
@@ -2083,7 +2093,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)
@@ -2132,7 +2142,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)
@@ -2180,7 +2190,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)
@@ -2266,7 +2276,7 @@ name|instantiateAMProxy
 argument_list|(
 name|any
 argument_list|(
-name|String
+name|InetSocketAddress
 operator|.
 name|class
 argument_list|)

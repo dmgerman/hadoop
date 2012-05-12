@@ -891,12 +891,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-operator|(
-operator|(
-name|JobConf
-operator|)
+name|this
+operator|.
 name|conf
-operator|)
 operator|.
 name|setJar
 argument_list|(

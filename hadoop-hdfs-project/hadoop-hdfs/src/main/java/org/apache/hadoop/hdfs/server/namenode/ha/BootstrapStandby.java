@@ -847,11 +847,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|SecurityUtil
-operator|.
-name|initKrb5CipherSuites
-argument_list|()
-expr_stmt|;
 name|parseArgs
 argument_list|(
 name|args
@@ -1933,7 +1928,7 @@ literal|null
 argument_list|,
 name|otherNode
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 name|otherHttpAddr

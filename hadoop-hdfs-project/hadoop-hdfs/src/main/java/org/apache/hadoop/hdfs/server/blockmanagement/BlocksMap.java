@@ -56,24 +56,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|GSet
@@ -97,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class maintains the map from a block to its metadata.  * block's metadata currently includes INode it belongs to and  * the datanodes that store the block.  */
+comment|/**  * This class maintains the map from a block to its metadata.  * block's metadata currently includes blockCollection it belongs to and  * the datanodes that store the block.  */
 end_comment
 
 begin_class
@@ -419,9 +401,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|getINode (Block b)
-name|INodeFile
-name|getINode
+DECL|method|getBlockCollection (Block b)
+name|BlockCollection
+name|getBlockCollection
 parameter_list|(
 name|Block
 name|b
@@ -446,22 +428,22 @@ operator|)
 condition|?
 name|info
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 else|:
 literal|null
 return|;
 block|}
-comment|/**    * Add block b belonging to the specified file inode to the map.    */
-DECL|method|addINode (BlockInfo b, INodeFile iNode)
+comment|/**    * Add block b belonging to the specified block collection to the map.    */
+DECL|method|addBlockCollection (BlockInfo b, BlockCollection bc)
 name|BlockInfo
-name|addINode
+name|addBlockCollection
 parameter_list|(
 name|BlockInfo
 name|b
 parameter_list|,
-name|INodeFile
-name|iNode
+name|BlockCollection
+name|bc
 parameter_list|)
 block|{
 name|BlockInfo
@@ -495,9 +477,9 @@ expr_stmt|;
 block|}
 name|info
 operator|.
-name|setINode
+name|setBlockCollection
 argument_list|(
-name|iNode
+name|bc
 argument_list|)
 expr_stmt|;
 return|return
@@ -532,7 +514,7 @@ condition|)
 return|return;
 name|blockInfo
 operator|.
-name|setINode
+name|setBlockCollection
 argument_list|(
 literal|null
 argument_list|)
@@ -727,7 +709,7 @@ comment|// no datanodes left
 operator|&&
 name|info
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 operator|==
 literal|null

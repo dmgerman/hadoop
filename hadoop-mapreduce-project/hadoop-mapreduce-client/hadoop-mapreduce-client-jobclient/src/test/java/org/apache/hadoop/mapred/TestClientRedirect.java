@@ -2756,6 +2756,18 @@ name|AMHOSTADDRESS
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+name|bindAddress
+return|;
+block|}
 DECL|method|AMService (String hostAddress)
 specifier|public
 name|AMService
@@ -2878,19 +2890,9 @@ name|bindAddress
 operator|=
 name|NetUtils
 operator|.
-name|createSocketAddr
+name|getConnectAddress
 argument_list|(
-name|hostNameResolved
-operator|.
-name|getHostAddress
-argument_list|()
-operator|+
-literal|":"
-operator|+
 name|server
-operator|.
-name|getPort
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|super

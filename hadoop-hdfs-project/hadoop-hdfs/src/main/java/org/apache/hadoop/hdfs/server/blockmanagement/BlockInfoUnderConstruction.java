@@ -784,7 +784,7 @@ name|warn
 argument_list|(
 literal|"BLOCK*"
 operator|+
-literal|" INodeFileUnderConstruction.initLeaseRecovery:"
+literal|" BlockInfoUnderConstruction.initLeaseRecovery:"
 operator|+
 literal|" No blocks found, lease removed."
 argument_list|)

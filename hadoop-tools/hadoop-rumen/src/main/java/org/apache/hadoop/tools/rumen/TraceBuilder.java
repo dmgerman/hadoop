@@ -52,6 +52,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -625,6 +635,8 @@ name|Comparator
 argument_list|<
 name|FileStatus
 argument_list|>
+implements|,
+name|Serializable
 block|{
 annotation|@
 name|Override

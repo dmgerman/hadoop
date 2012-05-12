@@ -188,7 +188,7 @@ name|write
 argument_list|(
 literal|"a.b.c /rack1\n"
 operator|+
-literal|"1.2.3\t/rack2\n"
+literal|"1.2.3.4\t/rack2\n"
 argument_list|,
 name|mappingFile
 argument_list|,
@@ -270,7 +270,7 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3"
+literal|"1.2.3.4"
 argument_list|)
 expr_stmt|;
 name|List
@@ -391,7 +391,7 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3"
+literal|"1.2.3.4"
 argument_list|)
 expr_stmt|;
 name|List
@@ -528,7 +528,7 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3"
+literal|"1.2.3.4"
 argument_list|)
 expr_stmt|;
 name|List
@@ -648,7 +648,7 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3"
+literal|"1.2.3.4"
 argument_list|)
 expr_stmt|;
 name|List
@@ -786,7 +786,7 @@ name|names
 operator|.
 name|add
 argument_list|(
-literal|"1.2.3"
+literal|"1.2.3.4"
 argument_list|)
 expr_stmt|;
 name|List

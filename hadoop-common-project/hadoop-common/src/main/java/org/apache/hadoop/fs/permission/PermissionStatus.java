@@ -341,6 +341,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|groupname
@@ -350,6 +354,10 @@ operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|permission
@@ -446,6 +454,10 @@ argument_list|(
 name|out
 argument_list|,
 name|username
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|Text
@@ -455,6 +467,10 @@ argument_list|(
 name|out
 argument_list|,
 name|groupname
+argument_list|,
+name|Text
+operator|.
+name|ONE_MEGABYTE
 argument_list|)
 expr_stmt|;
 name|permission

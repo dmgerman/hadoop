@@ -941,7 +941,7 @@ argument_list|(
 operator|new
 name|DatanodeRegistration
 argument_list|(
-literal|"fake-node"
+literal|"1.2.3.4"
 argument_list|,
 literal|100
 argument_list|)

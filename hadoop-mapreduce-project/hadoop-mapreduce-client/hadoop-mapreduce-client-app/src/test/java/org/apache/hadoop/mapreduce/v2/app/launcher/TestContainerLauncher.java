@@ -2477,14 +2477,9 @@ name|class
 argument_list|,
 name|NetUtils
 operator|.
-name|createSocketAddr
+name|getConnectAddress
 argument_list|(
-literal|"localhost:"
-operator|+
 name|server
-operator|.
-name|getPort
-argument_list|()
 argument_list|)
 argument_list|,
 name|conf

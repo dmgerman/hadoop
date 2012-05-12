@@ -796,6 +796,22 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|setTimeout (long timeoutMs)
+specifier|public
+name|void
+name|setTimeout
+parameter_list|(
+name|long
+name|timeoutMs
+parameter_list|)
+block|{
+name|this
+operator|.
+name|timeout
+operator|=
+name|timeoutMs
+expr_stmt|;
+block|}
 DECL|method|timeoutExceptionString (SelectableChannel channel, long timeout, int ops)
 specifier|private
 specifier|static

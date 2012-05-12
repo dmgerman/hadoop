@@ -1154,7 +1154,7 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Adds the deprecated key to the deprecation map.    * It does not override any existing entries in the deprecation map.    * This is to be used only by the developers in order to add deprecation of    * keys, and attempts to call this method after loading resources once,    * would lead to<tt>UnsupportedOperationException</tt>    *     * If a key is deprecated in favor of multiple keys, they are all treated as     * aliases of each other, and setting any one of them resets all the others     * to the new value.    *     * @param key    * @param newKeys    * @param customMessage    * @deprecated use {@link addDeprecation(String key, String newKey,       String customMessage)} instead    */
+comment|/**    * Adds the deprecated key to the deprecation map.    * It does not override any existing entries in the deprecation map.    * This is to be used only by the developers in order to add deprecation of    * keys, and attempts to call this method after loading resources once,    * would lead to<tt>UnsupportedOperationException</tt>    *     * If a key is deprecated in favor of multiple keys, they are all treated as     * aliases of each other, and setting any one of them resets all the others     * to the new value.    *     * @param key    * @param newKeys    * @param customMessage    * @deprecated use {@link #addDeprecation(String key, String newKey,       String customMessage)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|addDeprecation (String key, String[] newKeys, String customMessage)
@@ -1289,7 +1289,7 @@ name|customMessage
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Adds the deprecated key to the deprecation map when no custom message    * is provided.    * It does not override any existing entries in the deprecation map.    * This is to be used only by the developers in order to add deprecation of    * keys, and attempts to call this method after loading resources once,    * would lead to<tt>UnsupportedOperationException</tt>    *     * If a key is deprecated in favor of multiple keys, they are all treated as     * aliases of each other, and setting any one of them resets all the others     * to the new value.    *     * @param key Key that is to be deprecated    * @param newKeys list of keys that take up the values of deprecated key    * @deprecated use {@link addDeprecation(String key, String newKey)} instead    */
+comment|/**    * Adds the deprecated key to the deprecation map when no custom message    * is provided.    * It does not override any existing entries in the deprecation map.    * This is to be used only by the developers in order to add deprecation of    * keys, and attempts to call this method after loading resources once,    * would lead to<tt>UnsupportedOperationException</tt>    *     * If a key is deprecated in favor of multiple keys, they are all treated as     * aliases of each other, and setting any one of them resets all the others     * to the new value.    *     * @param key Key that is to be deprecated    * @param newKeys list of keys that take up the values of deprecated key    * @deprecated use {@link #addDeprecation(String key, String newKey)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|addDeprecation (String key, String[] newKeys)

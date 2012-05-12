@@ -515,11 +515,18 @@ name|getHealthReport
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|report
+operator|!=
+literal|null
+condition|)
+block|{
 name|info
 operator|.
 name|put
 argument_list|(
-literal|"NumContainersMB"
+literal|"NumContainers"
 argument_list|,
 name|report
 operator|.
@@ -557,6 +564,7 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|nodesInfo
 operator|.
 name|add

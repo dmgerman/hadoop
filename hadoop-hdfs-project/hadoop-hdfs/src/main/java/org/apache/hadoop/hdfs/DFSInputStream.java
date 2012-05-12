@@ -4026,13 +4026,28 @@ block|{
 name|Socket
 name|sock
 init|=
+literal|null
+decl_stmt|;
+comment|// Don't use the cache on the last attempt - it's possible that there
+comment|// are arbitrarily many unusable sockets in the cache, but we don't
+comment|// want to fail the read.
+if|if
+condition|(
+name|retries
+operator|<
+name|nCachedConnRetry
+condition|)
+block|{
+name|sock
+operator|=
 name|socketCache
 operator|.
 name|get
 argument_list|(
 name|dnAddr
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|sock

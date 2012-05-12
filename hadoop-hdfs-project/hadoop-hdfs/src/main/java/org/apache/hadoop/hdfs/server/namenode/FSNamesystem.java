@@ -9493,7 +9493,8 @@ throw|;
 block|}
 else|else
 block|{
-name|BlockInfoUnderConstruction
+specifier|final
+name|BlockInfo
 name|lastBlock
 init|=
 name|pendingFile
@@ -14122,9 +14123,12 @@ block|}
 name|INodeFile
 name|iFile
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
@@ -18654,7 +18658,7 @@ return|return
 operator|(
 name|blockManager
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|b
 argument_list|)
@@ -19614,9 +19618,12 @@ comment|// check file inode
 name|INodeFile
 name|file
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|storedBlock
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|()
 decl_stmt|;
 if|if
@@ -20344,10 +20351,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|isRoot
-argument_list|(
 name|parent
-argument_list|)
+operator|.
+name|isRoot
+argument_list|()
 condition|)
 block|{
 name|overwrite
@@ -20405,24 +20412,6 @@ argument_list|,
 name|replaceBy
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|isRoot (Path path)
-specifier|private
-name|boolean
-name|isRoot
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-return|return
-name|path
-operator|.
-name|getParent
-argument_list|()
-operator|==
-literal|null
-return|;
 block|}
 comment|/**    * Serializes leases.     */
 DECL|method|saveFilesUnderConstruction (DataOutputStream out)
@@ -20955,9 +20944,12 @@ decl_stmt|;
 name|INode
 name|inode
 init|=
+operator|(
+name|INodeFile
+operator|)
 name|blockManager
 operator|.
-name|getINode
+name|getBlockCollection
 argument_list|(
 name|blk
 argument_list|)

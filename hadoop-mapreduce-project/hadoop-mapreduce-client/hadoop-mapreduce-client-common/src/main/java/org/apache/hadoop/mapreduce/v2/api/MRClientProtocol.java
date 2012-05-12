@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -522,6 +532,13 @@ specifier|public
 interface|interface
 name|MRClientProtocol
 block|{
+comment|/**    * Address to which the client is connected    * @return InetSocketAddress    */
+DECL|method|getConnectAddress ()
+specifier|public
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+function_decl|;
 DECL|method|getJobReport (GetJobReportRequest request)
 specifier|public
 name|GetJobReportResponse

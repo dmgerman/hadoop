@@ -418,6 +418,7 @@ decl_stmt|;
 DECL|field|SORT_COLUMNS
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|SORT_COLUMNS
 init|=
@@ -426,6 +427,7 @@ decl_stmt|;
 DECL|field|COLUMN_SEPARATOR
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|COLUMN_SEPARATOR
 init|=
@@ -1072,7 +1074,7 @@ argument_list|)
 operator|+
 name|archiveDirectory
 decl_stmt|;
-name|DistCp
+name|DistCpV1
 operator|.
 name|copy
 argument_list|(

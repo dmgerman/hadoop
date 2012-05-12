@@ -904,13 +904,13 @@ block|}
 comment|/** {@inheritDoc} */
 annotation|@
 name|Override
-DECL|method|chooseReplicaToDelete (FSInodeInfo inode, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+DECL|method|chooseReplicaToDelete (BlockCollection bc, Block block, short replicationFactor, Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
 name|DatanodeDescriptor
 name|chooseReplicaToDelete
 parameter_list|(
-name|FSInodeInfo
-name|inode
+name|BlockCollection
+name|bc
 parameter_list|,
 name|Block
 name|block
@@ -945,7 +945,7 @@ name|cachedFullPathNames
 operator|.
 name|get
 argument_list|(
-name|inode
+name|bc
 argument_list|)
 decl_stmt|;
 name|FileType
@@ -970,7 +970,7 @@ name|defaultPolicy
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-name|inode
+name|bc
 argument_list|,
 name|block
 argument_list|,
@@ -1017,7 +1017,7 @@ name|defaultPolicy
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-name|inode
+name|bc
 argument_list|,
 name|block
 argument_list|,
@@ -1083,7 +1083,7 @@ name|defaultPolicy
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-name|inode
+name|bc
 argument_list|,
 name|block
 argument_list|,
@@ -1120,7 +1120,7 @@ name|defaultPolicy
 operator|.
 name|chooseReplicaToDelete
 argument_list|(
-name|inode
+name|bc
 argument_list|,
 name|block
 argument_list|,
@@ -2503,7 +2503,7 @@ name|file
 argument_list|)
 throw|;
 block|}
-comment|/**    * Cache results for FSInodeInfo.getFullPathName()    */
+comment|/**    * Cache results for getFullPathName()    */
 DECL|class|CachedFullPathNames
 specifier|static
 class|class
@@ -2589,22 +2589,22 @@ specifier|private
 class|class
 name|INodeWithHashCode
 block|{
-DECL|field|inode
-name|FSInodeInfo
-name|inode
+DECL|field|bc
+name|BlockCollection
+name|bc
 decl_stmt|;
-DECL|method|INodeWithHashCode (FSInodeInfo inode)
+DECL|method|INodeWithHashCode (BlockCollection bc)
 name|INodeWithHashCode
 parameter_list|(
-name|FSInodeInfo
-name|inode
+name|BlockCollection
+name|bc
 parameter_list|)
 block|{
 name|this
 operator|.
-name|inode
+name|bc
 operator|=
-name|inode
+name|bc
 expr_stmt|;
 block|}
 annotation|@
@@ -2619,7 +2619,7 @@ name|obj
 parameter_list|)
 block|{
 return|return
-name|inode
+name|bc
 operator|==
 name|obj
 return|;
@@ -2637,7 +2637,7 @@ name|System
 operator|.
 name|identityHashCode
 argument_list|(
-name|inode
+name|bc
 argument_list|)
 return|;
 block|}
@@ -2647,20 +2647,20 @@ name|getFullPathName
 parameter_list|()
 block|{
 return|return
-name|inode
+name|bc
 operator|.
-name|getFullPathName
+name|getName
 argument_list|()
 return|;
 block|}
 block|}
-DECL|method|get (FSInodeInfo inode)
+DECL|method|get (BlockCollection bc)
 specifier|public
 name|String
 name|get
 parameter_list|(
-name|FSInodeInfo
-name|inode
+name|BlockCollection
+name|bc
 parameter_list|)
 throws|throws
 name|IOException
@@ -2673,7 +2673,7 @@ argument_list|(
 operator|new
 name|INodeWithHashCode
 argument_list|(
-name|inode
+name|bc
 argument_list|)
 argument_list|)
 return|;

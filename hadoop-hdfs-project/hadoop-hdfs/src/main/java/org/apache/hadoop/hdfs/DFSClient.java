@@ -3505,6 +3505,11 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|socketCache
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 name|closeConnectionToNamenode
 argument_list|()
 expr_stmt|;
@@ -3651,6 +3656,11 @@ name|closeAllFilesBeingWritten
 argument_list|(
 literal|false
 argument_list|)
+expr_stmt|;
+name|socketCache
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 name|clientRunning
 operator|=
