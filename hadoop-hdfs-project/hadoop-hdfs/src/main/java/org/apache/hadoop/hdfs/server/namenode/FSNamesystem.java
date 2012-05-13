@@ -2707,7 +2707,7 @@ import|;
 end_import
 
 begin_comment
-comment|/***************************************************  * FSNamesystem does the actual bookkeeping work for the  * DataNode.  *  * It tracks several important tables.  *  * 1)  valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  ***************************************************/
+comment|/**  * FSNamesystem is a container of both transient  * and persisted name-space state, and does all the book-keeping  * work on a NameNode.  *  * Its roles are briefly described below:  *  * 1) Is the container for BlockManager, DatanodeManager,  *    DelegationTokens, LeaseManager, etc. services.  * 2) RPC calls that modify or inspect the name-space  *    should get delegated here.  * 3) Anything that touches only blocks (eg. block reports),  *    it delegates to BlockManager.  * 4) Anything that touches only file information (eg. permissions, mkdirs),  *    it delegates to FSDirectory.  * 5) Anything that crosses two of the above components should be  *    coordinated here.  * 6) Logs mutations to FSEditLog.  *  * This class and its contents keep:  *  * 1)  Valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  */
 end_comment
 
 begin_class
