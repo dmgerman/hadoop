@@ -646,15 +646,6 @@ name|getPort
 argument_list|()
 operator|!=
 literal|0
-operator|&&
-operator|!
-name|addr
-operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|isAnyLocalAddress
-argument_list|()
 return|;
 block|}
 DECL|method|start ()
