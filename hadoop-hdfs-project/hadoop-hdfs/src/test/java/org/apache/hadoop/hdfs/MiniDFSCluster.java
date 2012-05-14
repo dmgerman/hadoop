@@ -5530,6 +5530,31 @@ name|getPort
 argument_list|()
 return|;
 block|}
+comment|/**    * @return the service rpc port used by the NameNode at the given index.    */
+DECL|method|getNameNodeServicePort (int nnIndex)
+specifier|public
+name|int
+name|getNameNodeServicePort
+parameter_list|(
+name|int
+name|nnIndex
+parameter_list|)
+block|{
+return|return
+name|nameNodes
+index|[
+name|nnIndex
+index|]
+operator|.
+name|nameNode
+operator|.
+name|getServiceRpcAddress
+argument_list|()
+operator|.
+name|getPort
+argument_list|()
+return|;
+block|}
 comment|/**    * Shutdown all the nodes in the cluster.    */
 DECL|method|shutdown ()
 specifier|public
