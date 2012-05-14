@@ -983,6 +983,62 @@ operator|==
 literal|0
 return|;
 block|}
+comment|/**    * @return true if the two blocks have the same block ID and the same    * generation stamp, or if both blocks are null.    */
+DECL|method|matchingIdAndGenStamp (Block a, Block b)
+specifier|public
+specifier|static
+name|boolean
+name|matchingIdAndGenStamp
+parameter_list|(
+name|Block
+name|a
+parameter_list|,
+name|Block
+name|b
+parameter_list|)
+block|{
+if|if
+condition|(
+name|a
+operator|==
+name|b
+condition|)
+return|return
+literal|true
+return|;
+comment|// same block, or both null
+if|if
+condition|(
+name|a
+operator|==
+literal|null
+operator|||
+name|b
+operator|==
+literal|null
+condition|)
+return|return
+literal|false
+return|;
+comment|// only one null
+return|return
+name|a
+operator|.
+name|blockId
+operator|==
+name|b
+operator|.
+name|blockId
+operator|&&
+name|a
+operator|.
+name|generationStamp
+operator|==
+name|b
+operator|.
+name|generationStamp
+return|;
+block|}
 annotation|@
 name|Override
 comment|// Object

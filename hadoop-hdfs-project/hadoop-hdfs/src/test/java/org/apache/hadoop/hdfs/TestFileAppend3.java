@@ -48,36 +48,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|extensions
-operator|.
-name|TestSetup
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestSuite
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -362,6 +332,48 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/** This class implements some of tests posted in HADOOP-2658. */
 end_comment
@@ -371,12 +383,6 @@ DECL|class|TestFileAppend3
 specifier|public
 class|class
 name|TestFileAppend3
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 block|{
 operator|(
@@ -549,27 +555,11 @@ specifier|static
 name|DistributedFileSystem
 name|fs
 decl_stmt|;
-DECL|method|suite ()
+annotation|@
+name|BeforeClass
+DECL|method|setUp ()
 specifier|public
 specifier|static
-name|Test
-name|suite
-parameter_list|()
-block|{
-return|return
-operator|new
-name|TestSetup
-argument_list|(
-operator|new
-name|TestSuite
-argument_list|(
-name|TestFileAppend3
-operator|.
-name|class
-argument_list|)
-argument_list|)
-block|{
-specifier|protected
 name|void
 name|setUp
 parameter_list|()
@@ -648,7 +638,11 @@ name|getFileSystem
 argument_list|()
 expr_stmt|;
 block|}
-specifier|protected
+annotation|@
+name|AfterClass
+DECL|method|tearDown ()
+specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -687,10 +681,9 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-return|;
-block|}
 comment|/**    * TC1: Append on block boundary.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC1 ()
 specifier|public
 name|void
@@ -822,6 +815,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * TC2: Append on non-block boundary.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC2 ()
 specifier|public
 name|void
@@ -970,6 +965,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * TC5: Only one simultaneous append.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC5 ()
 specifier|public
 name|void
@@ -1101,6 +1098,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * TC7: Corrupted replicas are present.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC7 ()
 specifier|public
 name|void
@@ -1430,6 +1429,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * TC11: Racing rename    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC11 ()
 specifier|public
 name|void
@@ -1788,6 +1789,8 @@ block|}
 block|}
 block|}
 comment|/**     * TC12: Append to partial CRC chunk    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testTC12 ()
 specifier|public
 name|void
@@ -1913,6 +1916,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Append to a partial CRC chunk and     * the first write does not fill up the partial CRC trunk    * *    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testAppendToPartialChunk ()
 specifier|public
 name|void

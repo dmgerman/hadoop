@@ -705,6 +705,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * A client that wants to write an additional block to the     * indicated filename (which must currently be open for writing)    * should call addBlock().      *    * addBlock() allocates a new block and datanodes the block data    * should be replicated to.    *     * addBlock() also commits the previous block by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param previous  previous block    * @param excludeNodes a list of nodes that should not be    * allocated for the current block    *    * @return LocatedBlock allocated block information.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws NotReplicatedYetException previous blocks of the file are not    *           replicated yet. Blocks cannot be added until replication    *           completes.    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
 DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes)
 specifier|public
 name|LocatedBlock
@@ -782,6 +784,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * The client is done writing data to the given filename, and would     * like to complete it.      *    * The function returns whether the file has been closed successfully.    * If the function returns false, the caller should try again.    *     * close() also commits the last block of file by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * A call to complete() will not return true until all the file's    * blocks have been replicated the minimum number of times.  Thus,    * DataNode failures may cause a client to call complete() several    * times before succeeding.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink     * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
 DECL|method|complete (String src, String clientName, ExtendedBlock last)
 specifier|public
 name|boolean

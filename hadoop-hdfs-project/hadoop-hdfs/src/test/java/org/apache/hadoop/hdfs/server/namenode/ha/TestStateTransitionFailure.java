@@ -378,6 +378,9 @@ operator|+
 literal|"Shutting down immediately."
 argument_list|,
 name|sfe
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -387,6 +390,9 @@ argument_list|(
 literal|"got expected exception"
 argument_list|,
 name|sfe
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
