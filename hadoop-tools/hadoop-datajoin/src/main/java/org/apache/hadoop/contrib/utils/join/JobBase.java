@@ -206,8 +206,9 @@ name|put
 argument_list|(
 name|name
 argument_list|,
-operator|new
 name|Long
+operator|.
+name|valueOf
 argument_list|(
 name|value
 argument_list|)
@@ -324,8 +325,9 @@ condition|)
 block|{
 name|retv
 operator|=
-operator|new
 name|Long
+operator|.
+name|valueOf
 argument_list|(
 name|inc
 argument_list|)
@@ -335,8 +337,9 @@ else|else
 block|{
 name|retv
 operator|=
-operator|new
 name|Long
+operator|.
+name|valueOf
 argument_list|(
 name|val
 operator|.

@@ -325,6 +325,15 @@ operator|new
 name|JobConf
 argument_list|()
 decl_stmt|;
+name|job
+operator|.
+name|setBoolean
+argument_list|(
+literal|"mapreduce.fileoutputcommitter.marksuccessfuljobs"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|Path
 name|base
 init|=
