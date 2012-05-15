@@ -1188,13 +1188,9 @@ name|this
 operator|.
 name|zkfc
 operator|=
-operator|new
 name|DFSZKFailoverController
-argument_list|()
-expr_stmt|;
-name|zkfc
 operator|.
-name|setConf
+name|create
 argument_list|(
 name|cluster
 operator|.

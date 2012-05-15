@@ -571,6 +571,8 @@ init|=
 operator|new
 name|DummyZKFC
 argument_list|(
+name|conf
+argument_list|,
 name|cluster
 operator|.
 name|getService
@@ -592,13 +594,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-name|zkfcInOtherCluster
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// Run without formatting the base dir,
 comment|// should barf
 name|assertEquals
@@ -2711,16 +2706,11 @@ init|=
 operator|new
 name|DummyZKFC
 argument_list|(
+name|conf
+argument_list|,
 name|target
 argument_list|)
 decl_stmt|;
-name|zkfc
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 return|return
 name|zkfc
 operator|.

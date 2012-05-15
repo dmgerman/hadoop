@@ -1213,14 +1213,9 @@ operator|=
 operator|new
 name|DummyZKFC
 argument_list|(
-name|svc
-argument_list|)
-expr_stmt|;
-name|zkfc
-operator|.
-name|setConf
-argument_list|(
 name|conf
+argument_list|,
+name|svc
 argument_list|)
 expr_stmt|;
 block|}
@@ -1315,14 +1310,24 @@ specifier|final
 name|DummyHAService
 name|localTarget
 decl_stmt|;
-DECL|method|DummyZKFC (DummyHAService localTarget)
+DECL|method|DummyZKFC (Configuration conf, DummyHAService localTarget)
 specifier|public
 name|DummyZKFC
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|DummyHAService
 name|localTarget
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|conf
+argument_list|,
+name|localTarget
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|localTarget
@@ -1387,18 +1392,6 @@ name|getInstance
 argument_list|(
 name|index
 argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getLocalTarget ()
-specifier|protected
-name|HAServiceTarget
-name|getLocalTarget
-parameter_list|()
-block|{
-return|return
-name|localTarget
 return|;
 block|}
 annotation|@

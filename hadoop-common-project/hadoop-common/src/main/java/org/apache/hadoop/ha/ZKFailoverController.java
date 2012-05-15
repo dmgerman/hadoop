@@ -368,20 +368,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Tool
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|zookeeper
 operator|.
 name|KeeperException
@@ -501,8 +487,6 @@ specifier|public
 specifier|abstract
 class|class
 name|ZKFailoverController
-implements|implements
-name|Tool
 block|{
 DECL|field|LOG
 specifier|static
@@ -662,7 +646,7 @@ init|=
 literal|6
 decl_stmt|;
 DECL|field|conf
-specifier|private
+specifier|protected
 name|Configuration
 name|conf
 decl_stmt|;
@@ -670,6 +654,12 @@ DECL|field|zkQuorum
 specifier|private
 name|String
 name|zkQuorum
+decl_stmt|;
+DECL|field|localTarget
+specifier|protected
+specifier|final
+name|HAServiceTarget
+name|localTarget
 decl_stmt|;
 DECL|field|healthMonitor
 specifier|private
@@ -685,11 +675,6 @@ DECL|field|rpcServer
 specifier|protected
 name|ZKFCRpcServer
 name|rpcServer
-decl_stmt|;
-DECL|field|localTarget
-specifier|private
-name|HAServiceTarget
-name|localTarget
 decl_stmt|;
 DECL|field|lastHealthState
 specifier|private
@@ -760,27 +745,28 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
-annotation|@
-name|Override
-DECL|method|setConf (Configuration conf)
-specifier|public
-name|void
-name|setConf
+DECL|method|ZKFailoverController (Configuration conf, HAServiceTarget localTarget)
+specifier|protected
+name|ZKFailoverController
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|HAServiceTarget
+name|localTarget
 parameter_list|)
 block|{
+name|this
+operator|.
+name|localTarget
+operator|=
+name|localTarget
+expr_stmt|;
 name|this
 operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|localTarget
-operator|=
-name|getLocalTarget
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|targetToData (HAServiceTarget target)
@@ -793,13 +779,6 @@ parameter_list|(
 name|HAServiceTarget
 name|target
 parameter_list|)
-function_decl|;
-DECL|method|getLocalTarget ()
-specifier|protected
-specifier|abstract
-name|HAServiceTarget
-name|getLocalTarget
-parameter_list|()
 function_decl|;
 DECL|method|dataToTarget (byte[] data)
 specifier|protected
@@ -854,20 +833,16 @@ name|String
 name|getScopeInsideParentNode
 parameter_list|()
 function_decl|;
-annotation|@
-name|Override
-DECL|method|getConf ()
+DECL|method|getLocalTarget ()
 specifier|public
-name|Configuration
-name|getConf
+name|HAServiceTarget
+name|getLocalTarget
 parameter_list|()
 block|{
 return|return
-name|conf
+name|localTarget
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|run (final String[] args)
 specifier|public
 name|int
@@ -3283,6 +3258,7 @@ comment|/**    * @return the last health state passed to the FC    * by the Heal
 annotation|@
 name|VisibleForTesting
 DECL|method|getLastHealthState ()
+specifier|synchronized
 name|State
 name|getLastHealthState
 parameter_list|()
@@ -3290,6 +3266,36 @@ block|{
 return|return
 name|lastHealthState
 return|;
+block|}
+DECL|method|setLastHealthState (HealthMonitor.State newState)
+specifier|private
+specifier|synchronized
+name|void
+name|setLastHealthState
+parameter_list|(
+name|HealthMonitor
+operator|.
+name|State
+name|newState
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Local service "
+operator|+
+name|localTarget
+operator|+
+literal|" entered state: "
+operator|+
+name|newState
+argument_list|)
+expr_stmt|;
+name|lastHealthState
+operator|=
+name|newState
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3409,11 +3415,19 @@ name|String
 name|toString
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|ZKFailoverController
+operator|.
+name|this
+init|)
+block|{
 return|return
 literal|"Elector callbacks for "
 operator|+
 name|localTarget
 return|;
+block|}
 block|}
 block|}
 comment|/**    * Callbacks from HealthMonitor    */
@@ -3438,22 +3452,10 @@ name|State
 name|newState
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
+name|setLastHealthState
 argument_list|(
-literal|"Local service "
-operator|+
-name|localTarget
-operator|+
-literal|" entered state: "
-operator|+
 name|newState
 argument_list|)
-expr_stmt|;
-name|lastHealthState
-operator|=
-name|newState
 expr_stmt|;
 name|recheckElectability
 argument_list|()
