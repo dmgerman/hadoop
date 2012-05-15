@@ -2860,7 +2860,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|addAllDatanodeIDs
+name|addAllStorageIDs
 argument_list|(
 name|Arrays
 operator|.
@@ -2868,7 +2868,7 @@ name|asList
 argument_list|(
 name|blk
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 argument_list|)
 argument_list|)
@@ -2901,7 +2901,7 @@ argument_list|)
 argument_list|,
 name|b
 operator|.
-name|getDatanodeIDsList
+name|getStorageIDsList
 argument_list|()
 operator|.
 name|toArray

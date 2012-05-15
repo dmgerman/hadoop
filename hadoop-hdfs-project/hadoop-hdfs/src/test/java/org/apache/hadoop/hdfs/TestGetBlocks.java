@@ -645,7 +645,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 operator|.
 name|length
@@ -660,7 +660,7 @@ index|[
 literal|1
 index|]
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 operator|.
 name|length
@@ -702,7 +702,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 operator|.
 name|length
@@ -744,7 +744,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 operator|.
 name|length

@@ -1619,12 +1619,12 @@ name|equals
 argument_list|(
 name|locs1
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 argument_list|,
 name|locs2
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 argument_list|)
 argument_list|)

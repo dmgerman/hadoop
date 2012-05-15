@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** A class to implement an array of BlockLocations  *  It provide efficient customized serialization/deserialization methods  *  in stead of using the default array (de)serialization provided by RPC  */
+comment|/**  * Maintains an array of blocks and their corresponding storage IDs.  */
 end_comment
 
 begin_class
@@ -101,31 +101,35 @@ DECL|field|block
 name|Block
 name|block
 decl_stmt|;
-DECL|field|datanodeIDs
+DECL|field|storageIDs
 name|String
-name|datanodeIDs
+name|storageIDs
 index|[]
 decl_stmt|;
 comment|/** constructor */
-DECL|method|BlockWithLocations (Block b, String[] datanodes)
+DECL|method|BlockWithLocations (Block block, String[] storageIDs)
 specifier|public
 name|BlockWithLocations
 parameter_list|(
 name|Block
-name|b
+name|block
 parameter_list|,
 name|String
 index|[]
-name|datanodes
+name|storageIDs
 parameter_list|)
 block|{
+name|this
+operator|.
 name|block
 operator|=
-name|b
+name|block
 expr_stmt|;
-name|datanodeIDs
+name|this
+operator|.
+name|storageIDs
 operator|=
-name|datanodes
+name|storageIDs
 expr_stmt|;
 block|}
 comment|/** get the block */
@@ -140,15 +144,15 @@ name|block
 return|;
 block|}
 comment|/** get the block's locations */
-DECL|method|getDatanodes ()
+DECL|method|getStorageIDs ()
 specifier|public
 name|String
 index|[]
-name|getDatanodes
+name|getStorageIDs
 parameter_list|()
 block|{
 return|return
-name|datanodeIDs
+name|storageIDs
 return|;
 block|}
 block|}
@@ -159,7 +163,7 @@ index|[]
 name|blocks
 decl_stmt|;
 comment|/** Constructor with one parameter */
-DECL|method|BlocksWithLocations ( BlockWithLocations[] blocks )
+DECL|method|BlocksWithLocations (BlockWithLocations[] blocks)
 specifier|public
 name|BlocksWithLocations
 parameter_list|(

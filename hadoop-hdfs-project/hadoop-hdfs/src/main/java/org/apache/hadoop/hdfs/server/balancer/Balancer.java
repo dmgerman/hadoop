@@ -971,6 +971,7 @@ operator|new
 name|MovedBlocks
 argument_list|()
 decl_stmt|;
+comment|// Map storage IDs to BalancerDatanodes
 DECL|field|datanodes
 specifier|private
 name|Map
@@ -2723,11 +2724,11 @@ comment|// update locations
 for|for
 control|(
 name|String
-name|location
+name|storageID
 range|:
 name|blk
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 control|)
 block|{
@@ -2738,7 +2739,7 @@ name|datanodes
 operator|.
 name|get
 argument_list|(
-name|location
+name|storageID
 argument_list|)
 decl_stmt|;
 if|if
