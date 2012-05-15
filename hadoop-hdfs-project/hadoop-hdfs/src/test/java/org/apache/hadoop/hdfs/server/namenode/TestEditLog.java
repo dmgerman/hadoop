@@ -2881,6 +2881,10 @@ name|assertEquals
 argument_list|(
 literal|"Cause of exception should be ChecksumException"
 argument_list|,
+name|ChecksumException
+operator|.
+name|class
+argument_list|,
 name|e
 operator|.
 name|getCause
@@ -2888,10 +2892,6 @@ argument_list|()
 operator|.
 name|getClass
 argument_list|()
-argument_list|,
-name|ChecksumException
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 block|}

@@ -1203,6 +1203,8 @@ operator|.
 name|error
 argument_list|(
 name|errorMessage
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 if|if
@@ -4106,6 +4108,8 @@ name|is
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -4136,6 +4140,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] data)
 specifier|public
 name|int
@@ -4172,6 +4178,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] data, int offset, int length)
 specifier|public
 name|int
@@ -4218,6 +4226,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mark (int limit)
 specifier|public
 name|void
@@ -4239,6 +4249,8 @@ operator|=
 name|curPos
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void
@@ -4286,6 +4298,37 @@ parameter_list|()
 block|{
 return|return
 name|curPos
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|skip (long amt)
+specifier|public
+name|long
+name|skip
+parameter_list|(
+name|long
+name|amt
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|ret
+init|=
+name|super
+operator|.
+name|skip
+argument_list|(
+name|amt
+argument_list|)
+decl_stmt|;
+name|curPos
+operator|+=
+name|ret
+expr_stmt|;
+return|return
+name|ret
 return|;
 block|}
 block|}

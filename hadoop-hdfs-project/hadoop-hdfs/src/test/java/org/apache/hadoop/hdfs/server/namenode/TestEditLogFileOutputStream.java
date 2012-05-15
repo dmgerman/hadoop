@@ -429,7 +429,11 @@ literal|"Edit log should have 1MB pre-allocated, plus 4 bytes "
 operator|+
 literal|"for the version number"
 argument_list|,
+name|EditLogFileOutputStream
+operator|.
 name|PREALLOCATION_LENGTH
+operator|+
+literal|4
 argument_list|,
 name|editLog
 operator|.
@@ -516,7 +520,11 @@ name|assertEquals
 argument_list|(
 literal|"Edit log should be 1MB long, plus 4 bytes for the version number"
 argument_list|,
+name|EditLogFileOutputStream
+operator|.
 name|PREALLOCATION_LENGTH
+operator|+
+literal|4
 argument_list|,
 name|editLog
 operator|.
