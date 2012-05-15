@@ -265,7 +265,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests that a file need not be closed before its  * data can be read by another client.  */
+comment|/**  * This class tests data node registration.  */
 end_comment
 
 begin_class
