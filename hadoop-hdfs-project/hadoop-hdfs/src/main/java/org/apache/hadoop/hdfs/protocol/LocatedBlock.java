@@ -83,7 +83,7 @@ import|;
 end_import
 
 begin_comment
-comment|/****************************************************  * A LocatedBlock is a pair of Block, DatanodeInfo[]  * objects.  It tells where to find a Block.  *   ****************************************************/
+comment|/**  * Associates a block with the Datanodes that contain its replicas  * and other block metadata (E.g. the file offset associated with this  * block, whether it is corrupt, security token, etc).  */
 end_comment
 
 begin_class
@@ -140,88 +140,6 @@ name|BlockTokenIdentifier
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|LocatedBlock ()
-specifier|public
-name|LocatedBlock
-parameter_list|()
-block|{
-name|this
-argument_list|(
-operator|new
-name|ExtendedBlock
-argument_list|()
-argument_list|,
-operator|new
-name|DatanodeInfo
-index|[
-literal|0
-index|]
-argument_list|,
-literal|0L
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|LocatedBlock (ExtendedBlock eb)
-specifier|public
-name|LocatedBlock
-parameter_list|(
-name|ExtendedBlock
-name|eb
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|eb
-argument_list|,
-operator|new
-name|DatanodeInfo
-index|[
-literal|0
-index|]
-argument_list|,
-literal|0L
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|LocatedBlock (String bpid, Block b, DatanodeInfo[] locs)
-specifier|public
-name|LocatedBlock
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|Block
-name|b
-parameter_list|,
-name|DatanodeInfo
-index|[]
-name|locs
-parameter_list|)
-block|{
-name|this
-argument_list|(
-operator|new
-name|ExtendedBlock
-argument_list|(
-name|bpid
-argument_list|,
-name|b
-argument_list|)
-argument_list|,
-name|locs
-argument_list|,
-operator|-
-literal|1
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-comment|// startOffset is unknown
-block|}
 DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs)
 specifier|public
 name|LocatedBlock
@@ -371,7 +289,6 @@ operator|=
 name|token
 expr_stmt|;
 block|}
-comment|/**    */
 DECL|method|getBlock ()
 specifier|public
 name|ExtendedBlock
@@ -382,7 +299,6 @@ return|return
 name|b
 return|;
 block|}
-comment|/**    */
 DECL|method|getLocations ()
 specifier|public
 name|DatanodeInfo
