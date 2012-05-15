@@ -1214,21 +1214,21 @@ literal|" bytes from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" using proxy source "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1466,21 +1466,21 @@ literal|" from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" through "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" is succeeded."
@@ -1508,21 +1508,21 @@ literal|" from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" through "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|": "
@@ -1800,14 +1800,14 @@ literal|" from "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2135,8 +2135,7 @@ argument_list|()
 operator|+
 literal|"["
 operator|+
-name|getName
-argument_list|()
+name|datanode
 operator|+
 literal|", utilization="
 operator|+
@@ -2291,16 +2290,16 @@ name|datanode
 return|;
 block|}
 comment|/** Get the name of the datanode */
-DECL|method|getName ()
+DECL|method|getDisplayName ()
 specifier|protected
 name|String
-name|getName
+name|getDisplayName
 parameter_list|()
 block|{
 return|return
 name|datanode
 operator|.
-name|getName
+name|toString
 argument_list|()
 return|;
 block|}
@@ -3539,7 +3538,7 @@ operator|)
 operator|:
 name|datanodeS
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|"is not an overUtilized node"
@@ -3628,7 +3627,7 @@ literal|"isUnderUtilized("
 operator|+
 name|datanodeS
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|")="
