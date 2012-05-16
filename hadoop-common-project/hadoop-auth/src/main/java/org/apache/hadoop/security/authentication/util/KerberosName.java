@@ -286,7 +286,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Kerberos krb5 configuration not found, setting default realm to empty"
 argument_list|)
