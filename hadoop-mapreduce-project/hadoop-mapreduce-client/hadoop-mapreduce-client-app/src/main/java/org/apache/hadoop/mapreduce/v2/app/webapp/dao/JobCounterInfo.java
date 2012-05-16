@@ -491,6 +491,15 @@ operator|.
 name|getCounters
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|counters
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|total
 operator|.
 name|incrAllCounters
