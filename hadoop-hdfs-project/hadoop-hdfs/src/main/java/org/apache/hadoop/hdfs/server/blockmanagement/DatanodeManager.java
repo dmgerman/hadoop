@@ -843,7 +843,7 @@ specifier|final
 name|HeartbeatManager
 name|heartbeatManager
 decl_stmt|;
-comment|/**    * Stores the datanode -> block map.      *<p>    * Done by storing a set of {@link DatanodeDescriptor} objects, sorted by     * storage id. In order to keep the storage map consistent it tracks     * all storages ever registered with the namenode.    * A descriptor corresponding to a specific storage id can be    *<ul>     *<li>added to the map if it is a new storage id;</li>    *<li>updated with a new datanode started as a replacement for the old one     * with the same storage id; and</li>    *<li>removed if and only if an existing datanode is restarted to serve a    * different storage id.</li>    *</ul><br>    * The list of the {@link DatanodeDescriptor}s in the map is checkpointed    * in the namespace image file. Only the {@link DatanodeInfo} part is     * persistent, the list of blocks is restored from the datanode block    * reports.     *<p>    * Mapping: StorageID -> DatanodeDescriptor    */
+comment|/**    * Stores the datanode -> block map.      *<p>    * Done by storing a set of {@link DatanodeDescriptor} objects, sorted by     * storage id. In order to keep the storage map consistent it tracks     * all storages ever registered with the namenode.    * A descriptor corresponding to a specific storage id can be    *<ul>     *<li>added to the map if it is a new storage id;</li>    *<li>updated with a new datanode started as a replacement for the old one     * with the same storage id; and</li>    *<li>removed if and only if an existing datanode is restarted to serve a    * different storage id.</li>    *</ul><br>     *<p>    * Mapping: StorageID -> DatanodeDescriptor    */
 DECL|field|datanodeMap
 specifier|private
 specifier|final
@@ -3730,7 +3730,17 @@ name|hostStr
 argument_list|,
 literal|""
 argument_list|,
+literal|""
+argument_list|,
 name|port
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_DEFAULT_PORT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_DEFAULT_PORT
 argument_list|)
 expr_stmt|;
 block|}
@@ -3783,7 +3793,17 @@ name|ipAddr
 argument_list|,
 name|hostStr
 argument_list|,
+literal|""
+argument_list|,
 name|port
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_DEFAULT_PORT
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_IPC_DEFAULT_PORT
 argument_list|)
 expr_stmt|;
 block|}

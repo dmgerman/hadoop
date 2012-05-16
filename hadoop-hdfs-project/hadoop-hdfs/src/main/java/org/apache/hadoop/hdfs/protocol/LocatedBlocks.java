@@ -303,13 +303,27 @@ name|long
 name|offset
 parameter_list|)
 block|{
-comment|// create fake block of size 1 as a key
+comment|// create fake block of size 0 as a key
 name|LocatedBlock
 name|key
 init|=
 operator|new
 name|LocatedBlock
+argument_list|(
+operator|new
+name|ExtendedBlock
 argument_list|()
+argument_list|,
+operator|new
+name|DatanodeInfo
+index|[
+literal|0
+index|]
+argument_list|,
+literal|0L
+argument_list|,
+literal|false
+argument_list|)
 decl_stmt|;
 name|key
 operator|.

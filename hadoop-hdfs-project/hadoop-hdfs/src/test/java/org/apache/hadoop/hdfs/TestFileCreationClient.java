@@ -214,8 +214,30 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_comment
-comment|/**  * This class tests that a file need not be closed before its  * data can be read by another client.  */
+comment|/**  * This class tests client lease recovery.  */
 end_comment
 
 begin_class
@@ -223,12 +245,6 @@ DECL|class|TestFileCreationClient
 specifier|public
 class|class
 name|TestFileCreationClient
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|DIR
 specifier|static
@@ -331,6 +347,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test lease recovery Triggered by DFSClient. */
+annotation|@
+name|Test
 DECL|method|testClientTriggeredLeaseRecovery ()
 specifier|public
 name|void

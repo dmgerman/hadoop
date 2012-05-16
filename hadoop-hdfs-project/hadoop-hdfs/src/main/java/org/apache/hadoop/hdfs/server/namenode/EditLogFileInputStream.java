@@ -404,13 +404,129 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-return|return
+name|FSEditLogOp
+name|op
+init|=
 name|reader
 operator|.
 name|readOp
 argument_list|(
 literal|false
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|op
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|(
+name|op
+operator|.
+name|hasTransactionId
+argument_list|()
+operator|)
+condition|)
+block|{
+name|long
+name|txId
+init|=
+name|op
+operator|.
+name|getTransactionId
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|txId
+operator|>=
+name|lastTxId
+operator|)
+operator|&&
+operator|(
+name|lastTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|)
+condition|)
+block|{
+comment|//
+comment|// Sometimes, the NameNode crashes while it's writing to the
+comment|// edit log.  In that case, you can end up with an unfinalized edit log
+comment|// which has some garbage at the end.
+comment|// JournalManager#recoverUnfinalizedSegments will finalize these
+comment|// unfinished edit logs, giving them a defined final transaction
+comment|// ID.  Then they will be renamed, so that any subsequent
+comment|// readers will have this information.
+comment|//
+comment|// Since there may be garbage at the end of these "cleaned up"
+comment|// logs, we want to be sure to skip it here if we've read everything
+comment|// we were supposed to read out of the stream.
+comment|// So we force an EOF on all subsequent reads.
+comment|//
+name|long
+name|skipAmt
+init|=
+name|file
+operator|.
+name|length
+argument_list|()
+operator|-
+name|tracker
+operator|.
+name|getPos
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|skipAmt
+operator|>
+literal|0
+condition|)
+block|{
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"skipping "
+operator|+
+name|skipAmt
+operator|+
+literal|" bytes at the end "
+operator|+
+literal|"of edit log  '"
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|"': reached txid "
+operator|+
+name|txId
+operator|+
+literal|" out of "
+operator|+
+name|lastTxId
+argument_list|)
+expr_stmt|;
+name|tracker
+operator|.
+name|skip
+argument_list|(
+name|skipAmt
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+return|return
+name|op
 return|;
 block|}
 annotation|@

@@ -2707,7 +2707,7 @@ import|;
 end_import
 
 begin_comment
-comment|/***************************************************  * FSNamesystem does the actual bookkeeping work for the  * DataNode.  *  * It tracks several important tables.  *  * 1)  valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  ***************************************************/
+comment|/**  * FSNamesystem is a container of both transient  * and persisted name-space state, and does all the book-keeping  * work on a NameNode.  *  * Its roles are briefly described below:  *  * 1) Is the container for BlockManager, DatanodeManager,  *    DelegationTokens, LeaseManager, etc. services.  * 2) RPC calls that modify or inspect the name-space  *    should get delegated here.  * 3) Anything that touches only blocks (eg. block reports),  *    it delegates to BlockManager.  * 4) Anything that touches only file information (eg. permissions, mkdirs),  *    it delegates to FSDirectory.  * 5) Anything that crosses two of the above components should be  *    coordinated here.  * 6) Logs mutations to FSEditLog.  *  * This class and its contents keep:  *  * 1)  Valid fsname --> blocklist  (kept on disk, logged)  * 2)  Set of all valid blocks (inverted #1)  * 3)  block --> machinelist (kept in memory, rebuilt dynamically from reports)  * 4)  machine --> blocklist (inverted #2)  * 5)  LRU cache of updated-heartbeat machines  */
 end_comment
 
 begin_class
@@ -9847,6 +9847,16 @@ argument_list|(
 name|previous
 argument_list|)
 expr_stmt|;
+name|Block
+name|previousBlock
+init|=
+name|ExtendedBlock
+operator|.
+name|getLocalBlock
+argument_list|(
+name|previous
+argument_list|)
+decl_stmt|;
 name|long
 name|fileLength
 decl_stmt|,
@@ -9935,17 +9945,222 @@ argument_list|,
 name|clientName
 argument_list|)
 decl_stmt|;
+name|BlockInfo
+name|lastBlockInFile
+init|=
+name|pendingFile
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Block
+operator|.
+name|matchingIdAndGenStamp
+argument_list|(
+name|previousBlock
+argument_list|,
+name|lastBlockInFile
+argument_list|)
+condition|)
+block|{
+comment|// The block that the client claims is the current last block
+comment|// doesn't match up with what we think is the last block. There are
+comment|// three possibilities:
+comment|// 1) This is the first block allocation of an append() pipeline
+comment|//    which started appending exactly at a block boundary.
+comment|//    In this case, the client isn't passed the previous block,
+comment|//    so it makes the allocateBlock() call with previous=null.
+comment|//    We can distinguish this since the last block of the file
+comment|//    will be exactly a full block.
+comment|// 2) This is a retry from a client that missed the response of a
+comment|//    prior getAdditionalBlock() call, perhaps because of a network
+comment|//    timeout, or because of an HA failover. In that case, we know
+comment|//    by the fact that the client is re-issuing the RPC that it
+comment|//    never began to write to the old block. Hence it is safe to
+comment|//    abandon it and allocate a new one.
+comment|// 3) This is an entirely bogus request/bug -- we should error out
+comment|//    rather than potentially appending a new block with an empty
+comment|//    one in the middle, etc
+name|BlockInfo
+name|penultimateBlock
+init|=
+name|pendingFile
+operator|.
+name|getPenultimateBlock
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|previous
+operator|==
+literal|null
+operator|&&
+name|lastBlockInFile
+operator|!=
+literal|null
+operator|&&
+name|lastBlockInFile
+operator|.
+name|getNumBytes
+argument_list|()
+operator|==
+name|pendingFile
+operator|.
+name|getPreferredBlockSize
+argument_list|()
+operator|&&
+name|lastBlockInFile
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+comment|// Case 1
+if|if
+condition|(
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"BLOCK* NameSystem.allocateBlock: handling block allocation"
+operator|+
+literal|" writing to a file with a complete previous block: src="
+operator|+
+name|src
+operator|+
+literal|" lastBlock="
+operator|+
+name|lastBlockInFile
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|Block
+operator|.
+name|matchingIdAndGenStamp
+argument_list|(
+name|penultimateBlock
+argument_list|,
+name|previousBlock
+argument_list|)
+condition|)
+block|{
+comment|// Case 2
+if|if
+condition|(
+name|lastBlockInFile
+operator|.
+name|getNumBytes
+argument_list|()
+operator|!=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Request looked like a retry to allocate block "
+operator|+
+name|lastBlockInFile
+operator|+
+literal|" but it already contains "
+operator|+
+name|lastBlockInFile
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" bytes"
+argument_list|)
+throw|;
+block|}
+comment|// The retry case ("b" above) -- abandon the old block.
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* NameSystem.allocateBlock: "
+operator|+
+literal|"caught retry for allocation of a new block in "
+operator|+
+name|src
+operator|+
+literal|". Abandoning old block "
+operator|+
+name|lastBlockInFile
+argument_list|)
+expr_stmt|;
+name|dir
+operator|.
+name|removeBlock
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|,
+name|lastBlockInFile
+argument_list|)
+expr_stmt|;
+name|dir
+operator|.
+name|persistBlocks
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot allocate block in "
+operator|+
+name|src
+operator|+
+literal|": "
+operator|+
+literal|"passed 'previous' block "
+operator|+
+name|previous
+operator|+
+literal|" does not match actual "
+operator|+
+literal|"last block in file "
+operator|+
+name|lastBlockInFile
+argument_list|)
+throw|;
+block|}
+block|}
 comment|// commit the last block and complete it if it has minimum replicas
 name|commitOrCompleteLastBlock
 argument_list|(
 name|pendingFile
 argument_list|,
-name|ExtendedBlock
-operator|.
-name|getLocalBlock
-argument_list|(
-name|previous
-argument_list|)
+name|previousBlock
 argument_list|)
 expr_stmt|;
 comment|//
@@ -10976,14 +11191,104 @@ throw|;
 block|}
 name|INodeFileUnderConstruction
 name|pendingFile
-init|=
+decl_stmt|;
+try|try
+block|{
+name|pendingFile
+operator|=
 name|checkLease
 argument_list|(
 name|src
 argument_list|,
 name|holder
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|LeaseExpiredException
+name|lee
+parameter_list|)
+block|{
+name|INodeFile
+name|file
+init|=
+name|dir
+operator|.
+name|getFileINode
+argument_list|(
+name|src
+argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|file
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|file
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
+comment|// This could be a retry RPC - i.e the client tried to close
+comment|// the file, but missed the RPC response. Thus, it is trying
+comment|// again to close the file. If the file still exists and
+comment|// the client's view of the last block matches the actual
+comment|// last block, then we'll treat it as a successful close.
+comment|// See HDFS-3031.
+name|Block
+name|realLastBlock
+init|=
+name|file
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|Block
+operator|.
+name|matchingIdAndGenStamp
+argument_list|(
+name|last
+argument_list|,
+name|realLastBlock
+argument_list|)
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"DIR* NameSystem.completeFile: "
+operator|+
+literal|"received request from "
+operator|+
+name|holder
+operator|+
+literal|" to complete file "
+operator|+
+name|src
+operator|+
+literal|" which is already closed. But, it appears to be an RPC "
+operator|+
+literal|"retry. Returning success."
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+block|}
+throw|throw
+name|lee
+throw|;
+block|}
 comment|// commit the last block and complete it if it has minimum replicas
 name|commitOrCompleteLastBlock
 argument_list|(

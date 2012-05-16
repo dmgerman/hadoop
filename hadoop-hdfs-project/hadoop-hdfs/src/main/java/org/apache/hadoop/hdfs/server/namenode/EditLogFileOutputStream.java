@@ -209,6 +209,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|PREALLOCATION_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|PREALLOCATION_LENGTH
+init|=
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 DECL|field|file
 specifier|private
 name|File
@@ -240,12 +251,9 @@ name|ByteBuffer
 operator|.
 name|allocateDirect
 argument_list|(
-literal|1024
-operator|*
-literal|1024
+name|PREALLOCATION_LENGTH
 argument_list|)
 decl_stmt|;
-comment|// preallocation, 1MB
 static|static
 block|{
 name|fill

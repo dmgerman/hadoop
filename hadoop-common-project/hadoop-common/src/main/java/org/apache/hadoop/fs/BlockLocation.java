@@ -22,26 +22,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -74,64 +54,8 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableFactories
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableFactory
-import|;
-end_import
-
 begin_comment
-comment|/*  * A BlockLocation lists hosts, offset and length  * of block.   *   */
+comment|/**  * Represents the network location of a block, information about the hosts  * that contain block replicas, and other block metadata (E.g. the file  * offset associated with the block, length, whether it is corrupt, etc).  */
 end_comment
 
 begin_class
@@ -154,27 +78,27 @@ name|String
 index|[]
 name|hosts
 decl_stmt|;
-comment|//hostnames of datanodes
+comment|// Datanode hostnames
 DECL|field|names
 specifier|private
 name|String
 index|[]
 name|names
 decl_stmt|;
-comment|//hostname:portNumber of datanodes
+comment|// Datanode IP:xferPort for accessing the block
 DECL|field|topologyPaths
 specifier|private
 name|String
 index|[]
 name|topologyPaths
 decl_stmt|;
-comment|// full path name in network topology
+comment|// Full path name in network topology
 DECL|field|offset
 specifier|private
 name|long
 name|offset
 decl_stmt|;
-comment|//offset of the of the block in the file
+comment|// Offset of the block in the file
 DECL|field|length
 specifier|private
 name|long
@@ -471,19 +395,15 @@ name|IOException
 block|{
 if|if
 condition|(
-operator|(
 name|hosts
 operator|==
 literal|null
-operator|)
 operator|||
-operator|(
 name|hosts
 operator|.
 name|length
 operator|==
 literal|0
-operator|)
 condition|)
 block|{
 return|return
@@ -501,7 +421,7 @@ name|hosts
 return|;
 block|}
 block|}
-comment|/**    * Get the list of names (hostname:port) hosting this block    */
+comment|/**    * Get the list of names (IP:xferPort) hosting this block    */
 DECL|method|getNames ()
 specifier|public
 name|String
@@ -513,19 +433,15 @@ name|IOException
 block|{
 if|if
 condition|(
-operator|(
 name|names
 operator|==
 literal|null
-operator|)
 operator|||
-operator|(
 name|names
 operator|.
 name|length
 operator|==
 literal|0
-operator|)
 condition|)
 block|{
 return|return
@@ -539,13 +455,11 @@ block|}
 else|else
 block|{
 return|return
-name|this
-operator|.
 name|names
 return|;
 block|}
 block|}
-comment|/**    * Get the list of network topology paths for each of the hosts.    * The last component of the path is the host.    */
+comment|/**    * Get the list of network topology paths for each of the hosts.    * The last component of the path is the "name" (IP:xferPort).    */
 DECL|method|getTopologyPaths ()
 specifier|public
 name|String
@@ -557,19 +471,15 @@ name|IOException
 block|{
 if|if
 condition|(
-operator|(
 name|topologyPaths
 operator|==
 literal|null
-operator|)
 operator|||
-operator|(
 name|topologyPaths
 operator|.
 name|length
 operator|==
 literal|0
-operator|)
 condition|)
 block|{
 return|return
@@ -583,8 +493,6 @@ block|}
 else|else
 block|{
 return|return
-name|this
-operator|.
 name|topologyPaths
 return|;
 block|}

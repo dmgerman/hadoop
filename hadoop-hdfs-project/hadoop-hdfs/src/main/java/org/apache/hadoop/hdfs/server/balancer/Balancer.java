@@ -971,6 +971,7 @@ operator|new
 name|MovedBlocks
 argument_list|()
 decl_stmt|;
+comment|// Map storage IDs to BalancerDatanodes
 DECL|field|datanodes
 specifier|private
 name|Map
@@ -1214,21 +1215,21 @@ literal|" bytes from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" using proxy source "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1466,21 +1467,21 @@ literal|" from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" through "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" is succeeded."
@@ -1508,21 +1509,21 @@ literal|" from "
 operator|+
 name|source
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" through "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|": "
@@ -1800,14 +1801,14 @@ literal|" from "
 operator|+
 name|proxySource
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|" to "
 operator|+
 name|target
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2135,8 +2136,7 @@ argument_list|()
 operator|+
 literal|"["
 operator|+
-name|getName
-argument_list|()
+name|datanode
 operator|+
 literal|", utilization="
 operator|+
@@ -2291,16 +2291,16 @@ name|datanode
 return|;
 block|}
 comment|/** Get the name of the datanode */
-DECL|method|getName ()
+DECL|method|getDisplayName ()
 specifier|protected
 name|String
-name|getName
+name|getDisplayName
 parameter_list|()
 block|{
 return|return
 name|datanode
 operator|.
-name|getName
+name|toString
 argument_list|()
 return|;
 block|}
@@ -2724,11 +2724,11 @@ comment|// update locations
 for|for
 control|(
 name|String
-name|location
+name|storageID
 range|:
 name|blk
 operator|.
-name|getDatanodes
+name|getStorageIDs
 argument_list|()
 control|)
 block|{
@@ -2739,7 +2739,7 @@ name|datanodes
 operator|.
 name|get
 argument_list|(
-name|location
+name|storageID
 argument_list|)
 decl_stmt|;
 if|if
@@ -3539,7 +3539,7 @@ operator|)
 operator|:
 name|datanodeS
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|"is not an overUtilized node"
@@ -3628,7 +3628,7 @@ literal|"isUnderUtilized("
 operator|+
 name|datanodeS
 operator|.
-name|getName
+name|getDisplayName
 argument_list|()
 operator|+
 literal|")="

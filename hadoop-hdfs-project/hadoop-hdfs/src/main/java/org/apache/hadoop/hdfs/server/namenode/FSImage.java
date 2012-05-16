@@ -614,6 +614,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Joiner
@@ -2880,6 +2894,21 @@ block|{
 return|return
 name|editLog
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setEditLogForTesting (FSEditLog newLog)
+name|void
+name|setEditLogForTesting
+parameter_list|(
+name|FSEditLog
+name|newLog
+parameter_list|)
+block|{
+name|editLog
+operator|=
+name|newLog
+expr_stmt|;
 block|}
 DECL|method|openEditLogForWrite ()
 name|void

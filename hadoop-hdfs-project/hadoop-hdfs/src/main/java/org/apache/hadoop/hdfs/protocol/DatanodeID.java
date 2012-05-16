@@ -46,20 +46,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  *  * {@link DatanodeInfo#getName()} should be used to get the network  * location (for topology) of a datanode, instead of using  * {@link DatanodeID#getXferAddr()} here. Helpers are defined below  * for each context in which a DatanodeID is used.  */
 end_comment
@@ -129,72 +115,6 @@ name|int
 name|ipcPort
 decl_stmt|;
 comment|// IPC server port
-DECL|method|DatanodeID (String ipAddr, int xferPort)
-specifier|public
-name|DatanodeID
-parameter_list|(
-name|String
-name|ipAddr
-parameter_list|,
-name|int
-name|xferPort
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|ipAddr
-argument_list|,
-literal|""
-argument_list|,
-literal|""
-argument_list|,
-name|xferPort
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_HTTP_DEFAULT_PORT
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_IPC_DEFAULT_PORT
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|DatanodeID (String ipAddr, String hostName, int xferPort)
-specifier|public
-name|DatanodeID
-parameter_list|(
-name|String
-name|ipAddr
-parameter_list|,
-name|String
-name|hostName
-parameter_list|,
-name|int
-name|xferPort
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|ipAddr
-argument_list|,
-name|hostName
-argument_list|,
-literal|""
-argument_list|,
-name|xferPort
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_HTTP_DEFAULT_PORT
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_IPC_DEFAULT_PORT
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * DatanodeID copy constructor    *     * @param from    */
 DECL|method|DatanodeID (DatanodeID from)
 specifier|public
 name|DatanodeID
@@ -237,7 +157,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
+comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
 DECL|method|DatanodeID (String ipAddr, String hostName, String storageID, int xferPort, int infoPort, int ipcPort)
 specifier|public
 name|DatanodeID
@@ -312,70 +232,6 @@ operator|.
 name|ipAddr
 operator|=
 name|ipAddr
-expr_stmt|;
-block|}
-DECL|method|setHostName (String hostName)
-specifier|public
-name|void
-name|setHostName
-parameter_list|(
-name|String
-name|hostName
-parameter_list|)
-block|{
-name|this
-operator|.
-name|hostName
-operator|=
-name|hostName
-expr_stmt|;
-block|}
-DECL|method|setXferPort (int xferPort)
-specifier|public
-name|void
-name|setXferPort
-parameter_list|(
-name|int
-name|xferPort
-parameter_list|)
-block|{
-name|this
-operator|.
-name|xferPort
-operator|=
-name|xferPort
-expr_stmt|;
-block|}
-DECL|method|setInfoPort (int infoPort)
-specifier|public
-name|void
-name|setInfoPort
-parameter_list|(
-name|int
-name|infoPort
-parameter_list|)
-block|{
-name|this
-operator|.
-name|infoPort
-operator|=
-name|infoPort
-expr_stmt|;
-block|}
-DECL|method|setIpcPort (int ipcPort)
-specifier|public
-name|void
-name|setIpcPort
-parameter_list|(
-name|int
-name|ipcPort
-parameter_list|)
-block|{
-name|this
-operator|.
-name|ipcPort
-operator|=
-name|ipcPort
 expr_stmt|;
 block|}
 DECL|method|setStorageID (String storageID)
