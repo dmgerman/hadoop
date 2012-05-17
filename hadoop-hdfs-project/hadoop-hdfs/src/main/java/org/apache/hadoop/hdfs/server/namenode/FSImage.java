@@ -546,6 +546,22 @@ name|hdfs
 operator|.
 name|util
 operator|.
+name|Canceler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
 name|MD5FileUtils
 import|;
 end_import
@@ -739,13 +755,6 @@ specifier|private
 specifier|final
 name|NNStorageRetentionManager
 name|archivalManager
-decl_stmt|;
-DECL|field|curSaveNamespaceContext
-specifier|private
-name|SaveNamespaceContext
-name|curSaveNamespaceContext
-init|=
-literal|null
 decl_stmt|;
 comment|/**    * Construct an FSImage    * @param conf Configuration    * @see #FSImage(Configuration conf,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
@@ -4069,7 +4078,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Caught exception while waiting for thread "
+literal|"Caught interrupted exception while waiting for thread "
 operator|+
 name|thread
 operator|.
@@ -4083,7 +4092,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    */
+comment|/**    * @see #saveNamespace(FSNamesystem, Canceler)    */
 DECL|method|saveNamespace (FSNamesystem source)
 specifier|public
 specifier|synchronized
@@ -4092,6 +4101,30 @@ name|saveNamespace
 parameter_list|(
 name|FSNamesystem
 name|source
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|saveNamespace
+argument_list|(
+name|source
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    * @param canceler     */
+DECL|method|saveNamespace (FSNamesystem source, Canceler canceler)
+specifier|public
+specifier|synchronized
+name|void
+name|saveNamespace
+parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|IOException
@@ -4142,6 +4175,8 @@ argument_list|(
 name|source
 argument_list|,
 name|imageTxId
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 name|storage
@@ -4182,39 +4217,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|cancelSaveNamespace (String reason)
-specifier|public
-name|void
-name|cancelSaveNamespace
-parameter_list|(
-name|String
-name|reason
-parameter_list|)
-throws|throws
-name|InterruptedException
-block|{
-name|SaveNamespaceContext
-name|ctx
-init|=
-name|curSaveNamespaceContext
-decl_stmt|;
-if|if
-condition|(
-name|ctx
-operator|!=
-literal|null
-condition|)
-block|{
-name|ctx
-operator|.
-name|cancel
-argument_list|(
-name|reason
-argument_list|)
-expr_stmt|;
-comment|// waits until complete
-block|}
-block|}
+comment|/**    * @see #saveFSImageInAllDirs(FSNamesystem, long, Canceler)    */
 DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid)
 specifier|protected
 specifier|synchronized
@@ -4226,6 +4229,34 @@ name|source
 parameter_list|,
 name|long
 name|txid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|saveFSImageInAllDirs
+argument_list|(
+name|source
+argument_list|,
+name|txid
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid, Canceler canceler)
+specifier|protected
+specifier|synchronized
+name|void
+name|saveFSImageInAllDirs
+parameter_list|(
+name|FSNamesystem
+name|source
+parameter_list|,
+name|long
+name|txid
+parameter_list|,
+name|Canceler
+name|canceler
 parameter_list|)
 throws|throws
 name|IOException
@@ -4252,6 +4283,20 @@ literal|"No image directories available!"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|canceler
+operator|==
+literal|null
+condition|)
+block|{
+name|canceler
+operator|=
+operator|new
+name|Canceler
+argument_list|()
+expr_stmt|;
+block|}
 name|SaveNamespaceContext
 name|ctx
 init|=
@@ -4261,12 +4306,10 @@ argument_list|(
 name|source
 argument_list|,
 name|txid
+argument_list|,
+name|canceler
 argument_list|)
 decl_stmt|;
-name|curSaveNamespaceContext
-operator|=
-name|ctx
-expr_stmt|;
 try|try
 block|{
 name|List
@@ -4397,7 +4440,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|ctx
+name|canceler
 operator|.
 name|isCancelled
 argument_list|()

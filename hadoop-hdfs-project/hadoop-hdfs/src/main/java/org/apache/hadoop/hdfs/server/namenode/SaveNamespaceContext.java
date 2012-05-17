@@ -84,6 +84,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|Canceler
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -138,14 +154,11 @@ argument_list|>
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * If the operation has been canceled, set to the reason why    * it has been canceled (eg standby moving to active)    */
-DECL|field|cancelReason
+DECL|field|canceller
 specifier|private
-specifier|volatile
-name|String
-name|cancelReason
-init|=
-literal|null
+specifier|final
+name|Canceler
+name|canceller
 decl_stmt|;
 DECL|field|completionLatch
 specifier|private
@@ -158,7 +171,7 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-DECL|method|SaveNamespaceContext ( FSNamesystem sourceNamesystem, long txid)
+DECL|method|SaveNamespaceContext ( FSNamesystem sourceNamesystem, long txid, Canceler canceller)
 name|SaveNamespaceContext
 parameter_list|(
 name|FSNamesystem
@@ -166,6 +179,9 @@ name|sourceNamesystem
 parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|Canceler
+name|canceller
 parameter_list|)
 block|{
 name|this
@@ -179,6 +195,12 @@ operator|.
 name|txid
 operator|=
 name|txid
+expr_stmt|;
+name|this
+operator|.
+name|canceller
+operator|=
+name|canceller
 expr_stmt|;
 block|}
 DECL|method|getSourceNamesystem ()
@@ -227,29 +249,6 @@ return|return
 name|errorSDs
 return|;
 block|}
-comment|/**    * Requests that the current saveNamespace operation be    * canceled if it is still running.    * @param reason the reason why cancellation is requested    * @throws InterruptedException     */
-DECL|method|cancel (String reason)
-name|void
-name|cancel
-parameter_list|(
-name|String
-name|reason
-parameter_list|)
-throws|throws
-name|InterruptedException
-block|{
-name|this
-operator|.
-name|cancelReason
-operator|=
-name|reason
-expr_stmt|;
-name|completionLatch
-operator|.
-name|await
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|markComplete ()
 name|void
 name|markComplete
@@ -284,30 +283,23 @@ name|SaveNamespaceCancelledException
 block|{
 if|if
 condition|(
-name|cancelReason
-operator|!=
-literal|null
+name|canceller
+operator|.
+name|isCancelled
+argument_list|()
 condition|)
 block|{
 throw|throw
 operator|new
 name|SaveNamespaceCancelledException
 argument_list|(
-name|cancelReason
+name|canceller
+operator|.
+name|getCancellationReason
+argument_list|()
 argument_list|)
 throw|;
 block|}
-block|}
-DECL|method|isCancelled ()
-name|boolean
-name|isCancelled
-parameter_list|()
-block|{
-return|return
-name|cancelReason
-operator|!=
-literal|null
-return|;
 block|}
 block|}
 end_class
