@@ -712,6 +712,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+name|expected
+argument_list|,
 name|tokenInUgi
 operator|.
 name|getService
@@ -719,8 +721,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|expected
 argument_list|)
 expr_stmt|;
 block|}
