@@ -3797,6 +3797,27 @@ argument_list|)
 expr_stmt|;
 comment|// show only live or only
 comment|// dead nodes
+if|if
+condition|(
+literal|null
+operator|==
+name|whatNodes
+operator|||
+name|whatNodes
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"Invalid input"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|sorterField
 operator|=
 name|request
@@ -4545,6 +4566,16 @@ literal|"</table>\n"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"Invalid input"
+argument_list|)
+expr_stmt|;
 block|}
 name|out
 operator|.
