@@ -572,6 +572,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Override
 DECL|method|contains (final Object key)
 specifier|public
 name|boolean
@@ -579,6 +581,29 @@ name|contains
 parameter_list|(
 specifier|final
 name|Object
+name|key
+parameter_list|)
+block|{
+return|return
+name|getElement
+argument_list|(
+operator|(
+name|T
+operator|)
+name|key
+argument_list|)
+operator|!=
+literal|null
+return|;
+block|}
+comment|/**    * Return the element in this set which is equal to    * the given key, if such an element exists.    * Otherwise returns null.    */
+DECL|method|getElement (final T key)
+specifier|public
+name|T
+name|getElement
+parameter_list|(
+specifier|final
+name|T
 name|key
 parameter_list|)
 block|{
@@ -603,12 +628,7 @@ specifier|final
 name|int
 name|hashCode
 init|=
-operator|(
-operator|(
-name|T
-operator|)
 name|key
-operator|)
 operator|.
 name|hashCode
 argument_list|()
@@ -623,24 +643,21 @@ name|hashCode
 argument_list|)
 decl_stmt|;
 return|return
-name|containsElem
+name|getContainedElem
 argument_list|(
 name|index
 argument_list|,
-operator|(
-name|T
-operator|)
 name|key
 argument_list|,
 name|hashCode
 argument_list|)
 return|;
 block|}
-comment|/**    * Check if the set contains given element at given index.    *    * @return true if element present, false otherwise.    */
-DECL|method|containsElem (int index, final T key, int hashCode)
+comment|/**    * Check if the set contains given element at given index. If it    * does, return that element.    *    * @return the element, or null, if no element matches    */
+DECL|method|getContainedElem (int index, final T key, int hashCode)
 specifier|protected
-name|boolean
-name|containsElem
+name|T
+name|getContainedElem
 parameter_list|(
 name|int
 name|index
@@ -697,13 +714,15 @@ argument_list|)
 condition|)
 block|{
 return|return
-literal|true
+name|e
+operator|.
+name|element
 return|;
 block|}
 block|}
 comment|// element not found
 return|return
-literal|false
+literal|null
 return|;
 block|}
 comment|/**    * All all elements in the collection. Expand if necessary.    *    * @param toAdd - elements to add.    * @return true if the set has changed, false otherwise    */
@@ -824,7 +843,7 @@ decl_stmt|;
 comment|// return false if already present
 if|if
 condition|(
-name|containsElem
+name|getContainedElem
 argument_list|(
 name|index
 argument_list|,
@@ -832,6 +851,8 @@ name|element
 argument_list|,
 name|hashCode
 argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 return|return

@@ -2952,6 +2952,8 @@ name|spyDN
 operator|.
 name|recoverBlocks
 argument_list|(
+literal|"fake NN"
+argument_list|,
 name|initRecoveringBlocks
 argument_list|()
 argument_list|)
@@ -3058,6 +3060,8 @@ name|spyDN
 operator|.
 name|recoverBlocks
 argument_list|(
+literal|"fake NN"
+argument_list|,
 name|initRecoveringBlocks
 argument_list|()
 argument_list|)
@@ -3180,6 +3184,8 @@ name|spyDN
 operator|.
 name|recoverBlocks
 argument_list|(
+literal|"fake NN"
+argument_list|,
 name|initRecoveringBlocks
 argument_list|()
 argument_list|)
