@@ -550,6 +550,13 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|// Add codec classes discovered via service loading
+synchronized|synchronized
+init|(
+name|CODEC_PROVIDERS
+init|)
+block|{
+comment|// CODEC_PROVIDERS is a lazy collection. Synchronize so it is
+comment|// thread-safe. See HADOOP-8406.
 for|for
 control|(
 name|CompressionCodec
@@ -568,6 +575,7 @@ name|getClass
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Add codec classes from configuration
 name|String
