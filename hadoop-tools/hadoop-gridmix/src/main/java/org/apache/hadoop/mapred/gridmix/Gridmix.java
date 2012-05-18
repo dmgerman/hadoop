@@ -3024,19 +3024,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getEnumValues (Enum<? extends T>[] e)
+DECL|method|getEnumValues (Enum<?>[] e)
 specifier|private
-parameter_list|<
-name|T
-parameter_list|>
 name|String
 name|getEnumValues
 parameter_list|(
 name|Enum
 argument_list|<
 name|?
-extends|extends
-name|T
 argument_list|>
 index|[]
 name|e
@@ -3059,8 +3054,6 @@ control|(
 name|Enum
 argument_list|<
 name|?
-extends|extends
-name|T
 argument_list|>
 name|v
 range|:
