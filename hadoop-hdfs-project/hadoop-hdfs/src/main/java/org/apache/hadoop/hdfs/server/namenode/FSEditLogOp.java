@@ -653,18 +653,23 @@ DECL|field|txid
 name|long
 name|txid
 decl_stmt|;
+comment|/**    * Opcode size is limited to 1.5 megabytes    */
 DECL|field|MAX_OP_SIZE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
 name|MAX_OP_SIZE
 init|=
-literal|100
+operator|(
+literal|3
 operator|*
 literal|1024
 operator|*
 literal|1024
+operator|)
+operator|/
+literal|2
 decl_stmt|;
 annotation|@
 name|SuppressWarnings
@@ -12343,6 +12348,12 @@ specifier|final
 name|DataInputStream
 name|in
 decl_stmt|;
+DECL|field|limiter
+specifier|private
+specifier|final
+name|StreamLimiter
+name|limiter
+decl_stmt|;
 DECL|field|logVersion
 specifier|private
 specifier|final
@@ -12367,12 +12378,15 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|Reader (DataInputStream in, int logVersion)
+DECL|method|Reader (DataInputStream in, StreamLimiter limiter, int logVersion)
 specifier|public
 name|Reader
 parameter_list|(
 name|DataInputStream
 name|in
+parameter_list|,
+name|StreamLimiter
+name|limiter
 parameter_list|,
 name|int
 name|logVersion
@@ -12455,6 +12469,12 @@ expr_stmt|;
 block|}
 name|this
 operator|.
+name|limiter
+operator|=
+name|limiter
+expr_stmt|;
+name|this
+operator|.
 name|cache
 operator|=
 operator|new
@@ -12481,6 +12501,13 @@ condition|)
 block|{
 try|try
 block|{
+name|limiter
+operator|.
+name|setLimit
+argument_list|(
+name|MAX_OP_SIZE
+argument_list|)
+expr_stmt|;
 name|in
 operator|.
 name|mark
