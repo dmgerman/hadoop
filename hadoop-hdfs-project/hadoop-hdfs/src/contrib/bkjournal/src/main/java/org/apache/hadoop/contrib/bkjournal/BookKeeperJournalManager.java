@@ -367,7 +367,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BookKeeper Journal Manager  *  * To use, add the following to hdfs-site.xml.  *<pre>  * {@code  *<property>  *<name>dfs.namenode.edits.dir</name>  *<value>bookkeeper://zk1:2181;zk2:2181;zk3:2181/hdfsjournal</value>  *</property>  *  *<property>  *<name>dfs.namenode.edits.journalPlugin.bookkeeper</name>  *<value>org.apache.hadoop.contrib.bkjournal.BookKeeperJournalManager</value>  *</property>  * }  *</pre>  * The URI format for bookkeeper is bookkeeper://[zkEnsemble]/[rootZnode]  * [zookkeeper ensemble] is a list of semi-colon separated, zookeeper host:port  * pairs. In the example above there are 3 servers, in the ensemble,  * zk1, zk2&amp; zk3, each one listening on port 2181.  *  * [root znode] is the path of the zookeeper znode, under which the editlog  * information will be stored.  *  * Other configuration options are:  *<ul>  *<li><b>dfs.namenode.bookkeeperjournal.output-buffer-size</b>  *       Number of bytes a bookkeeper journal stream will buffer before  *       forcing a flush. Default is 1024.</li>  *<li><b>dfs.namenode.bookkeeperjournal.ensemble-size</b>  *       Number of bookkeeper servers in edit log ledger ensembles. This  *       is the number of bookkeeper servers which need to be available  *       for the ledger to be writable. Default is 3.</li>  *<li><b>dfs.namenode.bookkeeperjournal.quorum-size</b>  *       Number of bookkeeper servers in the write quorum. This is the  *       number of bookkeeper servers which must have acknowledged the  *       write of an entry before it is considered written.  *       Default is 2.</li>  *<li><b>dfs.namenode.bookkeeperjournal.digestPw</b>  *       Password to use when creating ledgers.</li>  *</ul>  */
+comment|/**  * BookKeeper Journal Manager  *  * To use, add the following to hdfs-site.xml.  *<pre>  * {@code  *<property>  *<name>dfs.namenode.edits.dir</name>  *<value>bookkeeper://zk1:2181;zk2:2181;zk3:2181/hdfsjournal</value>  *</property>  *  *<property>  *<name>dfs.namenode.edits.journal-plugin.bookkeeper</name>  *<value>org.apache.hadoop.contrib.bkjournal.BookKeeperJournalManager</value>  *</property>  * }  *</pre>  * The URI format for bookkeeper is bookkeeper://[zkEnsemble]/[rootZnode]  * [zookkeeper ensemble] is a list of semi-colon separated, zookeeper host:port  * pairs. In the example above there are 3 servers, in the ensemble,  * zk1, zk2&amp; zk3, each one listening on port 2181.  *  * [root znode] is the path of the zookeeper znode, under which the editlog  * information will be stored.  *  * Other configuration options are:  *<ul>  *<li><b>dfs.namenode.bookkeeperjournal.output-buffer-size</b>  *       Number of bytes a bookkeeper journal stream will buffer before  *       forcing a flush. Default is 1024.</li>  *<li><b>dfs.namenode.bookkeeperjournal.ensemble-size</b>  *       Number of bookkeeper servers in edit log ledger ensembles. This  *       is the number of bookkeeper servers which need to be available  *       for the ledger to be writable. Default is 3.</li>  *<li><b>dfs.namenode.bookkeeperjournal.quorum-size</b>  *       Number of bookkeeper servers in the write quorum. This is the  *       number of bookkeeper servers which must have acknowledged the  *       write of an entry before it is considered written.  *       Default is 2.</li>  *<li><b>dfs.namenode.bookkeeperjournal.digestPw</b>  *       Password to use when creating ledgers.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -1020,6 +1020,8 @@ literal|". A new stream cannot be created with it"
 argument_list|)
 throw|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 name|currentLedger
@@ -1027,21 +1029,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Already writing to a ledger, id="
-operator|+
+comment|// bookkeeper errored on last stream, clean up ledger
 name|currentLedger
 operator|.
-name|getId
+name|close
 argument_list|()
-argument_list|)
-throw|;
+expr_stmt|;
 block|}
-try|try
-block|{
 name|currentLedger
 operator|=
 name|bkc
@@ -1068,7 +1062,9 @@ name|String
 name|znodePath
 init|=
 name|inprogressZNode
-argument_list|()
+argument_list|(
+name|txId
+argument_list|)
 decl_stmt|;
 name|EditLogLedgerMetadata
 name|l
@@ -1183,7 +1179,9 @@ name|String
 name|inprogressPath
 init|=
 name|inprogressZNode
-argument_list|()
+argument_list|(
+name|firstTxId
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -1792,6 +1790,51 @@ init|)
 block|{
 try|try
 block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|children
+init|=
+name|zkc
+operator|.
+name|getChildren
+argument_list|(
+name|ledgerPath
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|String
+name|child
+range|:
+name|children
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|child
+operator|.
+name|startsWith
+argument_list|(
+literal|"inprogress_"
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+name|String
+name|znode
+init|=
+name|ledgerPath
+operator|+
+literal|"/"
+operator|+
+name|child
+decl_stmt|;
 name|EditLogLedgerMetadata
 name|l
 init|=
@@ -1801,8 +1844,7 @@ name|read
 argument_list|(
 name|zkc
 argument_list|,
-name|inprogressZNode
-argument_list|()
+name|znode
 argument_list|)
 decl_stmt|;
 name|long
@@ -1835,8 +1877,7 @@ argument_list|()
 operator|+
 literal|" at path "
 operator|+
-name|inprogressZNode
-argument_list|()
+name|znode
 operator|+
 literal|". Unable to continue recovery."
 argument_list|)
@@ -1845,7 +1886,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unrecoverable corruption, please check logs."
+literal|"Unrecoverable corruption,"
+operator|+
+literal|" please check logs."
 argument_list|)
 throw|;
 block|}
@@ -1860,6 +1903,7 @@ name|endTxId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|KeeperException
@@ -1869,6 +1913,38 @@ name|nne
 parameter_list|)
 block|{
 comment|// nothing to recover, ignore
+block|}
+catch|catch
+parameter_list|(
+name|KeeperException
+name|ke
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Couldn't get list of inprogress segments"
+argument_list|,
+name|ke
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted getting list of inprogress segments"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
 block|}
 finally|finally
 block|{
@@ -2352,15 +2428,27 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the znode path for the inprogressZNode    */
-DECL|method|inprogressZNode ()
+DECL|method|inprogressZNode (long startTxid)
 name|String
 name|inprogressZNode
-parameter_list|()
+parameter_list|(
+name|long
+name|startTxid
+parameter_list|)
 block|{
 return|return
 name|ledgerPath
 operator|+
-literal|"/inprogress"
+literal|"/inprogress_"
+operator|+
+name|Long
+operator|.
+name|toString
+argument_list|(
+name|startTxid
+argument_list|,
+literal|16
+argument_list|)
 return|;
 block|}
 comment|/**    * Simple watcher to notify when zookeeper has connected    */
