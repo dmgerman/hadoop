@@ -1621,7 +1621,7 @@ name|conf
 operator|.
 name|getTrimmedStringCollection
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|)
 return|;
 block|}
@@ -3862,7 +3862,7 @@ name|DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the nameservice Id by matching the {@code addressKey} with the    * the address of the local node.     *     * If {@link DFSConfigKeys#DFS_FEDERATION_NAMESERVICE_ID} is not specifically    * configured, and more than one nameservice Id is configured, this method     * determines the nameservice Id by matching the local node's address with the    * configured addresses. When a match is found, it returns the nameservice Id    * from the corresponding configuration key.    *     * @param conf Configuration    * @param addressKey configuration key to get the address.    * @return nameservice Id on success, null if federation is not configured.    * @throws HadoopIllegalArgumentException on error    */
+comment|/**    * Get the nameservice Id by matching the {@code addressKey} with the    * the address of the local node.     *     * If {@link DFSConfigKeys#DFS_NAMESERVICE_ID} is not specifically    * configured, and more than one nameservice Id is configured, this method     * determines the nameservice Id by matching the local node's address with the    * configured addresses. When a match is found, it returns the nameservice Id    * from the corresponding configuration key.    *     * @param conf Configuration    * @param addressKey configuration key to get the address.    * @return nameservice Id on success, null if federation is not configured.    * @throws HadoopIllegalArgumentException on error    */
 DECL|method|getNameServiceId (Configuration conf, String addressKey)
 specifier|private
 specifier|static
@@ -3883,7 +3883,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -4222,7 +4222,7 @@ literal|"Configuration has multiple addresses that match "
 operator|+
 literal|"local node's address. Please configure the system with "
 operator|+
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 operator|+
 literal|" and "
 operator|+

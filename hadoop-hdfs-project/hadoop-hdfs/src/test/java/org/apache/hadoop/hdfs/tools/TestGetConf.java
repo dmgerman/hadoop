@@ -394,7 +394,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|nsList
 operator|.

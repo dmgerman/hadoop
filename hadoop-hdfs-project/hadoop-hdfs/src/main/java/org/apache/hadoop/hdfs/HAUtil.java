@@ -709,7 +709,7 @@ literal|"or configure "
 operator|+
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|)
 expr_stmt|;
 name|Collection

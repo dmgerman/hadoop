@@ -576,7 +576,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"nn1"
 argument_list|)
@@ -621,7 +621,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 literal|"nn1"
 argument_list|)
@@ -756,7 +756,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"nn1,nn2"
 argument_list|)
@@ -826,7 +826,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"nn1,nn2"
 argument_list|)
@@ -911,7 +911,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"ns1,ns2"
 argument_list|)
@@ -930,7 +930,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|""
 argument_list|)
@@ -949,7 +949,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"ns1"
 argument_list|)
@@ -989,7 +989,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"nn1,nn2"
 argument_list|)
@@ -1419,7 +1419,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|nsId
 argument_list|)
@@ -1428,7 +1428,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 name|nsId
 argument_list|)
@@ -1531,7 +1531,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|nsId
 argument_list|)
@@ -1540,7 +1540,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 name|nsId
 argument_list|)
@@ -2170,7 +2170,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"ns1,ns2"
 argument_list|)
@@ -2606,7 +2606,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"ns1"
 argument_list|)
@@ -2920,7 +2920,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"ns1,ns2"
 argument_list|)

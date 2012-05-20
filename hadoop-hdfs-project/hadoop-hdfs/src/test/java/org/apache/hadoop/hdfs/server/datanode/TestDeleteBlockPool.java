@@ -227,7 +227,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"namesServerId1,namesServerId2"
 argument_list|)
@@ -471,7 +471,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"namesServerId2"
 argument_list|)
@@ -876,7 +876,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"namesServerId1,namesServerId2"
 argument_list|)
@@ -1057,7 +1057,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 literal|"namesServerId1"
 argument_list|)

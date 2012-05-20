@@ -5669,7 +5669,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 name|nameserviceId
 argument_list|)

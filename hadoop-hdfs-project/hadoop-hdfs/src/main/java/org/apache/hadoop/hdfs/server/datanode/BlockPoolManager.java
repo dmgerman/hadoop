@@ -743,7 +743,7 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|)
 argument_list|)
 expr_stmt|;

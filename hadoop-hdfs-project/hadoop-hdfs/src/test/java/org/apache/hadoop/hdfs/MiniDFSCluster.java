@@ -156,7 +156,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 import|;
 end_import
 
@@ -172,7 +172,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 import|;
 end_import
 
@@ -2899,7 +2899,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|Joiner
 operator|.
@@ -3414,7 +3414,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 name|nameserviceId
 argument_list|)
@@ -8913,7 +8913,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|)
 decl_stmt|;
 name|nameserviceIds
@@ -8926,7 +8926,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|nameserviceIds
 argument_list|)

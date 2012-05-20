@@ -706,7 +706,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|namenodesBuilder
 operator|.
@@ -800,7 +800,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|namenodesBuilder
 operator|.

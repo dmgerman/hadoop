@@ -410,7 +410,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICES
+name|DFS_NAMESERVICES
 argument_list|,
 name|NSID
 argument_list|)
@@ -421,7 +421,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_FEDERATION_NAMESERVICE_ID
+name|DFS_NAMESERVICE_ID
 argument_list|,
 name|NSID
 argument_list|)
