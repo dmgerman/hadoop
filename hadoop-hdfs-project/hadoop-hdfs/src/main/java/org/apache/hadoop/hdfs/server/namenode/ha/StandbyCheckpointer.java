@@ -266,6 +266,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|Canceler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -423,6 +439,20 @@ DECL|field|myNNAddress
 specifier|private
 name|InetSocketAddress
 name|myNNAddress
+decl_stmt|;
+DECL|field|cancelLock
+specifier|private
+name|Object
+name|cancelLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
+DECL|field|canceler
+specifier|private
+name|Canceler
+name|canceler
 decl_stmt|;
 comment|// Keep track of how many checkpoints were canceled.
 comment|// This is for use in tests.
@@ -685,6 +715,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|cancelAndPreventCheckpoints
+argument_list|(
+literal|"Stopping checkpointer"
+argument_list|)
+expr_stmt|;
 name|thread
 operator|.
 name|setShouldRun
@@ -737,6 +772,11 @@ name|InterruptedException
 throws|,
 name|IOException
 block|{
+assert|assert
+name|canceler
+operator|!=
+literal|null
+assert|;
 name|long
 name|txid
 decl_stmt|;
@@ -819,6 +859,8 @@ operator|.
 name|saveNamespace
 argument_list|(
 name|namesystem
+argument_list|,
+name|canceler
 argument_list|)
 expr_stmt|;
 name|txid
@@ -875,15 +917,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Cancel any checkpoint that's currently being made,    * and prevent any new checkpoints from starting for the next    * minute or so.    */
-DECL|method|cancelAndPreventCheckpoints ()
+DECL|method|cancelAndPreventCheckpoints (String msg)
 specifier|public
 name|void
 name|cancelAndPreventCheckpoints
-parameter_list|()
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
 throws|throws
 name|ServiceFailedException
-block|{
-try|try
 block|{
 name|thread
 operator|.
@@ -892,32 +935,32 @@ argument_list|(
 name|PREVENT_AFTER_CANCEL_MS
 argument_list|)
 expr_stmt|;
-comment|// TODO(HA): there is a really narrow race here if we are just
-comment|// about to start a checkpoint - this won't cancel it!
-name|namesystem
+synchronized|synchronized
+init|(
+name|cancelLock
+init|)
+block|{
+comment|// Before beginning a checkpoint, the checkpointer thread
+comment|// takes this lock, and creates a canceler object.
+comment|// If the canceler is non-null, then a checkpoint is in
+comment|// progress and we need to cancel it. If it's null, then
+comment|// the operation has not started, meaning that the above
+comment|// time-based prevention will take effect.
+if|if
+condition|(
+name|canceler
+operator|!=
+literal|null
+condition|)
+block|{
+name|canceler
 operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|cancelSaveNamespace
+name|cancel
 argument_list|(
-literal|"About to exit standby state"
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|ServiceFailedException
-argument_list|(
-literal|"Interrupted while trying to cancel checkpoint"
-argument_list|)
-throw|;
 block|}
 block|}
 annotation|@
@@ -1230,10 +1273,13 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|cancelLock
+init|)
+block|{
 if|if
 condition|(
-name|needCheckpoint
-operator|&&
 name|now
 operator|<
 name|preventCheckpointsUntil
@@ -1249,8 +1295,20 @@ expr_stmt|;
 name|canceledCount
 operator|++
 expr_stmt|;
+continue|continue;
 block|}
-elseif|else
+assert|assert
+name|canceler
+operator|==
+literal|null
+assert|;
+name|canceler
+operator|=
+operator|new
+name|Canceler
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|needCheckpoint
@@ -1311,6 +1369,19 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+synchronized|synchronized
+init|(
+name|cancelLock
+init|)
+block|{
+name|canceler
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}

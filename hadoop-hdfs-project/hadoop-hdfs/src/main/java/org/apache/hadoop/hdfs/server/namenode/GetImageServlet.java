@@ -336,6 +336,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|HttpServer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|MD5Hash
@@ -617,6 +631,8 @@ operator|&&
 operator|!
 name|isValidRequestor
 argument_list|(
+name|context
+argument_list|,
 name|request
 operator|.
 name|getUserPrincipal
@@ -637,14 +653,16 @@ name|HttpServletResponse
 operator|.
 name|SC_FORBIDDEN
 argument_list|,
-literal|"Only Namenode and Secondary Namenode may access this servlet"
+literal|"Only Namenode, Secondary Namenode, and administrators may access "
+operator|+
+literal|"this servlet"
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Received non-NN/SNN request for image or edits from "
+literal|"Received non-NN/SNN/administrator request for image or edits from "
 operator|+
 name|request
 operator|.
@@ -1232,11 +1250,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|isValidRequestor (String remoteUser, Configuration conf)
+DECL|method|isValidRequestor (ServletContext context, String remoteUser, Configuration conf)
 specifier|static
 name|boolean
 name|isValidRequestor
 parameter_list|(
+name|ServletContext
+name|context
+parameter_list|,
 name|String
 name|remoteUser
 parameter_list|,
@@ -1415,18 +1436,11 @@ name|remoteUser
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"GetImageServlet allowing: "
+literal|"GetImageServlet allowing checkpointer: "
 operator|+
 name|remoteUser
 argument_list|)
@@ -1438,11 +1452,29 @@ block|}
 block|}
 if|if
 condition|(
+name|HttpServer
+operator|.
+name|userHasAdministratorAccess
+argument_list|(
+name|context
+argument_list|,
+name|remoteUser
+argument_list|)
+condition|)
+block|{
 name|LOG
 operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
+name|info
+argument_list|(
+literal|"GetImageServlet allowing administrator: "
+operator|+
+name|remoteUser
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 name|LOG
 operator|.
 name|info

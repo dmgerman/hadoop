@@ -767,6 +767,7 @@ init|=
 literal|"hadoop.conf"
 decl_stmt|;
 DECL|field|ADMINS_ACL
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -3813,7 +3814,7 @@ return|return
 name|access
 return|;
 block|}
-comment|/**    * Does the user sending the HttpServletRequest has the administrator ACLs? If    * it isn't the case, response will be modified to send an error to the user.    *     * @param servletContext    * @param request    * @param response    * @return true if admin-authorized, false otherwise    * @throws IOException    */
+comment|/**    * Does the user sending the HttpServletRequest has the administrator ACLs? If    * it isn't the case, response will be modified to send an error to the user.    *     * @param servletContext    * @param request    * @param response used to send the error response if user does not have admin access.    * @return true if admin-authorized, false otherwise    * @throws IOException    */
 DECL|method|hasAdministratorAccess ( ServletContext servletContext, HttpServletRequest request, HttpServletResponse response)
 specifier|public
 specifier|static
@@ -3897,6 +3898,63 @@ return|return
 literal|false
 return|;
 block|}
+if|if
+condition|(
+name|servletContext
+operator|.
+name|getAttribute
+argument_list|(
+name|ADMINS_ACL
+argument_list|)
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|userHasAdministratorAccess
+argument_list|(
+name|servletContext
+argument_list|,
+name|remoteUser
+argument_list|)
+condition|)
+block|{
+name|response
+operator|.
+name|sendError
+argument_list|(
+name|HttpServletResponse
+operator|.
+name|SC_UNAUTHORIZED
+argument_list|,
+literal|"User "
+operator|+
+name|remoteUser
+operator|+
+literal|" is unauthorized to access this page."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Get the admin ACLs from the given ServletContext and check if the given    * user is in the ACL.    *     * @param servletContext the context containing the admin ACL.    * @param remoteUser the remote user to check for.    * @return true if the user is present in the ACL, false if no ACL is set or    *         the user is not present    */
+DECL|method|userHasAdministratorAccess (ServletContext servletContext, String remoteUser)
+specifier|public
+specifier|static
+name|boolean
+name|userHasAdministratorAccess
+parameter_list|(
+name|ServletContext
+name|servletContext
+parameter_list|,
+name|String
+name|remoteUser
+parameter_list|)
+block|{
 name|AccessControlList
 name|adminsAcl
 init|=
@@ -3920,46 +3978,17 @@ argument_list|(
 name|remoteUser
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|adminsAcl
 operator|!=
 literal|null
-condition|)
-block|{
-if|if
-condition|(
-operator|!
+operator|&&
 name|adminsAcl
 operator|.
 name|isUserAllowed
 argument_list|(
 name|remoteUserUGI
 argument_list|)
-condition|)
-block|{
-name|response
-operator|.
-name|sendError
-argument_list|(
-name|HttpServletResponse
-operator|.
-name|SC_UNAUTHORIZED
-argument_list|,
-literal|"User "
-operator|+
-name|remoteUser
-operator|+
-literal|" is unauthorized to access this page."
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-block|}
-return|return
-literal|true
 return|;
 block|}
 comment|/**    * A very simple servlet to serve up a text representation of the current    * stack traces. It both returns the stacks to the caller and logs them.    * Currently the stack traces are done sequentially rather than exactly the    * same data.    */

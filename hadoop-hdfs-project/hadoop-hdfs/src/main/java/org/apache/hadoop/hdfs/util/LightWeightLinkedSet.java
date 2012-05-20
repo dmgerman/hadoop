@@ -275,7 +275,7 @@ decl_stmt|;
 comment|// return false if already present
 if|if
 condition|(
-name|containsElem
+name|getContainedElem
 argument_list|(
 name|index
 argument_list|,
@@ -283,6 +283,8 @@ name|element
 argument_list|,
 name|hashCode
 argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 return|return

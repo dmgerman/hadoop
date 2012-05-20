@@ -46,16 +46,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -240,7 +230,7 @@ return|return
 name|numBlocks
 return|;
 block|}
-comment|/** Does this contain the block which is associated with the storage? */
+comment|/**    * @return true if the given storage has the given block listed for    * invalidation. Blocks are compared including their generation stamps:    * if a block is pending invalidation but with a different generation stamp,    * returns false.    * @param storageID the storage to check    * @param the block to look for    *     */
 DECL|method|contains (final String storageID, final Block block)
 specifier|synchronized
 name|boolean
@@ -256,7 +246,7 @@ name|block
 parameter_list|)
 block|{
 specifier|final
-name|Collection
+name|LightWeightHashSet
 argument_list|<
 name|Block
 argument_list|>
@@ -269,17 +259,42 @@ argument_list|(
 name|storageID
 argument_list|)
 decl_stmt|;
-return|return
+if|if
+condition|(
 name|s
-operator|!=
+operator|==
 literal|null
-operator|&&
+condition|)
+block|{
+return|return
+literal|false
+return|;
+comment|// no invalidate blocks for this storage ID
+block|}
+name|Block
+name|blockInSet
+init|=
 name|s
 operator|.
-name|contains
+name|getElement
 argument_list|(
 name|block
 argument_list|)
+decl_stmt|;
+return|return
+name|blockInSet
+operator|!=
+literal|null
+operator|&&
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|==
+name|blockInSet
+operator|.
+name|getGenerationStamp
+argument_list|()
 return|;
 block|}
 comment|/**    * Add a block to the block collection    * which will be invalidated on the specified datanode.    */

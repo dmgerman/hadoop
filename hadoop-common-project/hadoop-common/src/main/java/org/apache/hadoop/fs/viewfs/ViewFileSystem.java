@@ -1158,6 +1158,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+return|return
+name|getUri
+argument_list|()
+operator|.
+name|getHost
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getUri ()
 specifier|public
 name|URI

@@ -236,11 +236,20 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @return The most recent transaction ID that has been synced to    * persistent storage.    * @throws IOException    */
+comment|/**    * @return The most recent transaction ID that has been synced to    * persistent storage, or applied from persistent storage in the    * case of a non-active node.    * @throws IOException    */
 DECL|method|getTransactionID ()
 specifier|public
 name|long
 name|getTransactionID
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the transaction ID of the most recent checkpoint.    */
+DECL|method|getMostRecentCheckpointTxId ()
+specifier|public
+name|long
+name|getMostRecentCheckpointTxId
 parameter_list|()
 throws|throws
 name|IOException

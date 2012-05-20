@@ -2391,10 +2391,22 @@ name|DatanodeProtocol
 operator|.
 name|DNA_RECOVERBLOCK
 case|:
+name|String
+name|who
+init|=
+literal|"NameNode at "
+operator|+
+name|actor
+operator|.
+name|getNNSocketAddress
+argument_list|()
+decl_stmt|;
 name|dn
 operator|.
 name|recoverBlocks
 argument_list|(
+name|who
+argument_list|,
 operator|(
 operator|(
 name|BlockRecoveryCommand

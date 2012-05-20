@@ -4070,7 +4070,7 @@ name|corruptionDetected
 return|;
 block|}
 block|}
-comment|/**    * Stream wrapper that keeps track of the current stream position.    */
+comment|/**    * Stream wrapper that keeps track of the current stream position.    *     * This stream also allows us to set a limit on how many bytes we can read    * without getting an exception.    */
 DECL|class|PositionTrackingInputStream
 specifier|public
 specifier|static
@@ -4078,6 +4078,8 @@ class|class
 name|PositionTrackingInputStream
 extends|extends
 name|FilterInputStream
+implements|implements
+name|StreamLimiter
 block|{
 DECL|field|curPos
 specifier|private
@@ -4094,6 +4096,15 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|limitPos
+specifier|private
+name|long
+name|limitPos
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 DECL|method|PositionTrackingInputStream (InputStream is)
 specifier|public
 name|PositionTrackingInputStream
@@ -4108,6 +4119,52 @@ name|is
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|checkLimit (long amt)
+specifier|private
+name|void
+name|checkLimit
+parameter_list|(
+name|long
+name|amt
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|extra
+init|=
+operator|(
+name|curPos
+operator|+
+name|amt
+operator|)
+operator|-
+name|limitPos
+decl_stmt|;
+if|if
+condition|(
+name|extra
+operator|>
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Tried to read "
+operator|+
+name|amt
+operator|+
+literal|" byte(s) past "
+operator|+
+literal|"the limit at offset "
+operator|+
+name|limitPos
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|read ()
@@ -4118,6 +4175,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkLimit
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|int
 name|ret
 init|=
@@ -4154,6 +4216,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkLimit
+argument_list|(
+name|data
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
 name|int
 name|ret
 init|=
@@ -4198,6 +4267,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkLimit
+argument_list|(
+name|length
+argument_list|)
+expr_stmt|;
 name|int
 name|ret
 init|=
@@ -4225,6 +4299,24 @@ expr_stmt|;
 return|return
 name|ret
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setLimit (long limit)
+specifier|public
+name|void
+name|setLimit
+parameter_list|(
+name|long
+name|limit
+parameter_list|)
+block|{
+name|limitPos
+operator|=
+name|curPos
+operator|+
+name|limit
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -4313,6 +4405,40 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|extra
+init|=
+operator|(
+name|curPos
+operator|+
+name|amt
+operator|)
+operator|-
+name|limitPos
+decl_stmt|;
+if|if
+condition|(
+name|extra
+operator|>
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Tried to skip "
+operator|+
+name|extra
+operator|+
+literal|" bytes past "
+operator|+
+literal|"the limit at offset "
+operator|+
+name|limitPos
+argument_list|)
+throw|;
+block|}
 name|long
 name|ret
 init|=
