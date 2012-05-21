@@ -466,7 +466,7 @@ name|Metric
 argument_list|(
 literal|"# of apps failed"
 argument_list|)
-name|MutableCounterInt
+name|MutableGaugeInt
 name|appsFailed
 decl_stmt|;
 DECL|field|allocatedMB
@@ -1392,20 +1392,39 @@ name|all
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|submitApp (String user)
+DECL|method|submitApp (String user, int attemptId)
 specifier|public
 name|void
 name|submitApp
 parameter_list|(
 name|String
 name|user
+parameter_list|,
+name|int
+name|attemptId
 parameter_list|)
+block|{
+if|if
+condition|(
+name|attemptId
+operator|==
+literal|1
+condition|)
 block|{
 name|appsSubmitted
 operator|.
 name|incr
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|appsFailed
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+block|}
 name|appsPending
 operator|.
 name|incr
@@ -1431,6 +1450,8 @@ operator|.
 name|submitApp
 argument_list|(
 name|user
+argument_list|,
+name|attemptId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1446,6 +1467,8 @@ operator|.
 name|submitApp
 argument_list|(
 name|user
+argument_list|,
+name|attemptId
 argument_list|)
 expr_stmt|;
 block|}

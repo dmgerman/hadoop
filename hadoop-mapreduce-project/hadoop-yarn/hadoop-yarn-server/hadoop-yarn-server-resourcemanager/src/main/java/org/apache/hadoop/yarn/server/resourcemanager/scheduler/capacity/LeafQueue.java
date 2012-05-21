@@ -3215,21 +3215,15 @@ operator|.
 name|getAttemptId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|attemptId
-operator|==
-literal|1
-condition|)
-block|{
 name|metrics
 operator|.
 name|submitApp
 argument_list|(
 name|userName
+argument_list|,
+name|attemptId
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Inform the parent queue
 try|try
 block|{
