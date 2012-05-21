@@ -228,12 +228,11 @@ operator|<<
 name|BLOCKBITS
 decl_stmt|;
 DECL|field|header
-specifier|protected
+specifier|private
 name|long
 name|header
 decl_stmt|;
 DECL|field|blocks
-specifier|protected
 name|BlockInfo
 name|blocks
 index|[]
@@ -282,22 +281,7 @@ name|preferredBlockSize
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeFile ()
-specifier|protected
-name|INodeFile
-parameter_list|()
-block|{
-name|blocks
-operator|=
-literal|null
-expr_stmt|;
-name|header
-operator|=
-literal|0
-expr_stmt|;
-block|}
 DECL|method|INodeFile (PermissionStatus permissions, BlockInfo[] blklist, short replication, long modificationTime, long atime, long preferredBlockSize)
-specifier|protected
 name|INodeFile
 parameter_list|(
 name|PermissionStatus
@@ -350,7 +334,6 @@ expr_stmt|;
 block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 DECL|method|setPermission (FsPermission permission)
-specifier|protected
 name|void
 name|setPermission
 parameter_list|(
@@ -372,7 +355,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isDirectory ()
-specifier|public
 name|boolean
 name|isDirectory
 parameter_list|()
@@ -381,7 +363,9 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Get block replication for the file     * @return block replication value    */
+comment|/** @return the replication factor of the file. */
+annotation|@
+name|Override
 DECL|method|getReplication ()
 specifier|public
 name|short
@@ -404,7 +388,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|setReplication (short replication)
-specifier|public
 name|void
 name|setReplication
 parameter_list|(
@@ -444,7 +427,9 @@ name|HEADERMASK
 operator|)
 expr_stmt|;
 block|}
-comment|/**    * Get preferred block size for the file    * @return preferred block size in bytes    */
+comment|/** @return preferred block size (in bytes) of the file. */
+annotation|@
+name|Override
 DECL|method|getPreferredBlockSize ()
 specifier|public
 name|long
@@ -459,7 +444,7 @@ name|HEADERMASK
 return|;
 block|}
 DECL|method|setPreferredBlockSize (long preferredBlkSize)
-specifier|public
+specifier|private
 name|void
 name|setPreferredBlockSize
 parameter_list|(
@@ -505,7 +490,9 @@ name|HEADERMASK
 operator|)
 expr_stmt|;
 block|}
-comment|/**    * Get file blocks     * @return file blocks    */
+comment|/** @return the blocks of the file. */
+annotation|@
+name|Override
 DECL|method|getBlocks ()
 specifier|public
 name|BlockInfo
@@ -724,7 +711,7 @@ name|newlist
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set file block    */
+comment|/** Set the block of the file at the given index. */
 DECL|method|setBlock (int idx, BlockInfo blk)
 specifier|public
 name|void
@@ -805,6 +792,8 @@ return|return
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
@@ -987,6 +976,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|diskspaceConsumed (Block[] blkArr)
+specifier|private
 name|long
 name|diskspaceConsumed
 parameter_list|(
@@ -1116,22 +1106,17 @@ literal|2
 index|]
 return|;
 block|}
-comment|/**    * Get the last block of the file.    * Make sure it has the right type.    */
+annotation|@
+name|Override
 DECL|method|getLastBlock ()
 specifier|public
-parameter_list|<
-name|T
-extends|extends
 name|BlockInfo
-parameter_list|>
-name|T
 name|getLastBlock
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
+return|return
 name|blocks
 operator|==
 literal|null
@@ -1141,77 +1126,21 @@ operator|.
 name|length
 operator|==
 literal|0
-condition|)
-return|return
+condition|?
 literal|null
+else|:
+name|blocks
+index|[
+name|blocks
+operator|.
+name|length
+operator|-
+literal|1
+index|]
 return|;
-name|T
-name|returnBlock
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
+block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|// ClassCastException is caught below
-name|T
-name|tBlock
-init|=
-operator|(
-name|T
-operator|)
-name|blocks
-index|[
-name|blocks
-operator|.
-name|length
-operator|-
-literal|1
-index|]
-decl_stmt|;
-name|returnBlock
-operator|=
-name|tBlock
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ClassCastException
-name|cce
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unexpected last block type: "
-operator|+
-name|blocks
-index|[
-name|blocks
-operator|.
-name|length
-operator|-
-literal|1
-index|]
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
-argument_list|)
-throw|;
-block|}
-return|return
-name|returnBlock
-return|;
-block|}
-comment|/** @return the number of blocks */
+name|Override
 DECL|method|numBlocks ()
 specifier|public
 name|int

@@ -38,60 +38,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|ContentSummary
@@ -108,15 +54,10 @@ specifier|public
 interface|interface
 name|BlockCollection
 block|{
-comment|/**    * Get the last block of the collection.    * Make sure it has the right type.    */
+comment|/**    * Get the last block of the collection.    */
 DECL|method|getLastBlock ()
 specifier|public
-parameter_list|<
-name|T
-extends|extends
 name|BlockInfo
-parameter_list|>
-name|T
 name|getLastBlock
 parameter_list|()
 throws|throws
@@ -129,13 +70,14 @@ name|ContentSummary
 name|computeContentSummary
 parameter_list|()
 function_decl|;
-comment|/** @return the number of blocks */
+comment|/**    * @return the number of blocks    */
 DECL|method|numBlocks ()
 specifier|public
 name|int
 name|numBlocks
 parameter_list|()
 function_decl|;
+comment|/**    * Get the blocks.    */
 DECL|method|getBlocks ()
 specifier|public
 name|BlockInfo
@@ -157,7 +99,7 @@ name|short
 name|getReplication
 parameter_list|()
 function_decl|;
-comment|/**    *  Get name of collection.    */
+comment|/**    * Get the name of the collection.    */
 DECL|method|getName ()
 specifier|public
 name|String

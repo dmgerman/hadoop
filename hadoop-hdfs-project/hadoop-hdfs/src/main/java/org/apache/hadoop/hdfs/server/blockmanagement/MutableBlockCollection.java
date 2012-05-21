@@ -30,88 +30,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfoUnderConstruction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|ContentSummary
-import|;
-end_import
-
 begin_comment
 comment|/**   * This interface is used by the block manager to expose a  * few characteristics of a collection of Block/BlockUnderConstruction.  */
 end_comment
@@ -124,21 +42,21 @@ name|MutableBlockCollection
 extends|extends
 name|BlockCollection
 block|{
-comment|/**    * Set block     */
-DECL|method|setBlock (int idx, BlockInfo blk)
+comment|/**    * Set the block at the given index.    */
+DECL|method|setBlock (int index, BlockInfo blk)
 specifier|public
 name|void
 name|setBlock
 parameter_list|(
 name|int
-name|idx
+name|index
 parameter_list|,
 name|BlockInfo
 name|blk
 parameter_list|)
 function_decl|;
-comment|/**    * Convert the last block of the collection to an under-construction block.    * Set its locations.    */
-DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] targets)
+comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
+DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] locations)
 specifier|public
 name|BlockInfoUnderConstruction
 name|setLastBlock
@@ -148,7 +66,7 @@ name|lastBlock
 parameter_list|,
 name|DatanodeDescriptor
 index|[]
-name|targets
+name|locations
 parameter_list|)
 throws|throws
 name|IOException

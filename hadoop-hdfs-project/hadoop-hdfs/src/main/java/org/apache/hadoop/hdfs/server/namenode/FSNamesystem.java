@@ -13748,9 +13748,10 @@ name|message
 argument_list|)
 throw|;
 block|}
-comment|// no we know that the last block is not COMPLETE, and
+comment|// The last block is not COMPLETE, and
 comment|// that the penultimate block if exists is either COMPLETE or COMMITTED
-name|BlockInfoUnderConstruction
+specifier|final
+name|BlockInfo
 name|lastBlock
 init|=
 name|pendingFile
@@ -13928,17 +13929,27 @@ case|:
 case|case
 name|UNDER_RECOVERY
 case|:
+specifier|final
+name|BlockInfoUnderConstruction
+name|uc
+init|=
+operator|(
+name|BlockInfoUnderConstruction
+operator|)
+name|lastBlock
+decl_stmt|;
 comment|// setup the last block locations from the blockManager if not known
 if|if
 condition|(
-name|lastBlock
+name|uc
 operator|.
 name|getNumExpectedLocations
 argument_list|()
 operator|==
 literal|0
 condition|)
-name|lastBlock
+block|{
+name|uc
 operator|.
 name|setExpectedLocations
 argument_list|(
@@ -13950,6 +13961,7 @@ name|lastBlock
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// start recovery of the last block for this file
 name|long
 name|blockRecoveryId
@@ -13970,7 +13982,7 @@ argument_list|,
 name|pendingFile
 argument_list|)
 expr_stmt|;
-name|lastBlock
+name|uc
 operator|.
 name|initializeBlockRecovery
 argument_list|(
@@ -20306,7 +20318,7 @@ name|newBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** @see updatePipeline(String, ExtendedBlock, ExtendedBlock, DatanodeID[]) */
+comment|/** @see #updatePipeline(String, ExtendedBlock, ExtendedBlock, DatanodeID[]) */
 DECL|method|updatePipelineInternal (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
 specifier|private
 name|void
@@ -20348,6 +20360,9 @@ specifier|final
 name|BlockInfoUnderConstruction
 name|blockinfo
 init|=
+operator|(
+name|BlockInfoUnderConstruction
+operator|)
 name|pendingFile
 operator|.
 name|getLastBlock

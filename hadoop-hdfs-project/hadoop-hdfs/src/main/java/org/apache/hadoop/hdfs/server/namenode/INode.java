@@ -829,7 +829,6 @@ return|;
 block|}
 comment|/** Set the {@link FsPermission} of this {@link INode} */
 DECL|method|setPermission (FsPermission permission)
-specifier|protected
 name|void
 name|setPermission
 parameter_list|(
@@ -852,7 +851,6 @@ expr_stmt|;
 block|}
 comment|/**    * Check whether it's a directory    */
 DECL|method|isDirectory ()
-specifier|public
 specifier|abstract
 name|boolean
 name|isDirectory

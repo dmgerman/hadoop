@@ -2340,6 +2340,7 @@ block|}
 comment|/**    * Commit a block of a file    *     * @param block block to be committed    * @param commitBlock - contains client reported block length and generation    * @return true if the block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
 DECL|method|commitBlock (final BlockInfoUnderConstruction block, final Block commitBlock)
 specifier|private
+specifier|static
 name|boolean
 name|commitBlock
 parameter_list|(
