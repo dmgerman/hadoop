@@ -1217,7 +1217,7 @@ operator|)
 argument_list|)
 return|;
 block|}
-comment|/**    * We try to use some light-weight mechanism to determine cluster load.    *    * @param stats    * @param clusterStatus Cluster status    * @throws java.io.IOException    */
+comment|/**    * We try to use some light-weight mechanism to determine cluster load.    *    * @throws java.io.IOException    */
 DECL|method|checkLoadAndGetSlotsToBackfill ()
 specifier|protected
 name|void
