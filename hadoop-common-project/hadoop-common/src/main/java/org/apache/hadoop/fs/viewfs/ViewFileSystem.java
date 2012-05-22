@@ -1165,11 +1165,7 @@ name|getCanonicalServiceName
 parameter_list|()
 block|{
 return|return
-name|getUri
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
+literal|null
 return|;
 block|}
 annotation|@

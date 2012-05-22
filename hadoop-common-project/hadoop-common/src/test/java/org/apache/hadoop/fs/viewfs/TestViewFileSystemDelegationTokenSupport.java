@@ -113,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test ViewFileSystem's support for having delegation tokens fetched and cached  * for the file system.  */
+comment|/**  * Test ViewFileSystem's support for having delegation tokens fetched and cached  * for the file system.  *   * Currently this class just ensures that getCanonicalServiceName() always  * returns<code>null</code> for ViewFileSystem instances.  */
 end_comment
 
 begin_class
@@ -131,7 +131,7 @@ name|MOUNT_TABLE_NAME
 init|=
 literal|"vfs-cluster"
 decl_stmt|;
-comment|/**    * Ensure that a canonical service name can be determined for ViewFileSystem    * instances configured with a non-default mount table name.    *     * Regression test for HADOOP-8408.    */
+comment|/**    * Regression test for HADOOP-8408.    */
 annotation|@
 name|Test
 DECL|method|testGetCanonicalServiceNameWithNonDefaultMountTable ()
@@ -198,15 +198,8 @@ operator|.
 name|getCanonicalServiceName
 argument_list|()
 decl_stmt|;
-name|assertNotNull
+name|assertNull
 argument_list|(
-name|serviceName
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|MOUNT_TABLE_NAME
-argument_list|,
 name|serviceName
 argument_list|)
 expr_stmt|;
