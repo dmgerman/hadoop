@@ -1211,7 +1211,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Connected to ResourceManager at "
+literal|"Connecting to ResourceManager at "
 operator|+
 name|this
 operator|.
