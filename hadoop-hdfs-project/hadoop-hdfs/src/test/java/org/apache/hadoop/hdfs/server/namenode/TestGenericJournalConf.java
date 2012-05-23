@@ -26,26 +26,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -118,15 +98,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|net
 operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
+name|URI
 import|;
 end_import
 
@@ -134,9 +110,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
+name|util
 operator|.
-name|URI
+name|Collection
 import|;
 end_import
 
@@ -631,44 +607,24 @@ comment|// noop
 block|}
 annotation|@
 name|Override
-DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
 specifier|public
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
 name|EditLogInputStream
-name|getInputStream
-parameter_list|(
+argument_list|>
+name|streams
+parameter_list|,
 name|long
 name|fromTxnId
 parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
-specifier|public
-name|long
-name|getNumberOfTransactions
-parameter_list|(
-name|long
-name|fromTxnId
-parameter_list|,
-name|boolean
-name|inProgressOk
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|0
-return|;
-block|}
+block|{     }
 annotation|@
 name|Override
 DECL|method|setOutputBufferCapacity (int size)

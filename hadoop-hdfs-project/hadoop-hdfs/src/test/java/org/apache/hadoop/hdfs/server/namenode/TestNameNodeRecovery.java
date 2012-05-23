@@ -1580,10 +1580,10 @@ init|=
 literal|"/test/path/dir"
 decl_stmt|;
 specifier|final
-name|int
-name|NUM_TEST_MKDIRS
+name|String
+name|TEST_PATH2
 init|=
-literal|10
+literal|"/second/dir"
 decl_stmt|;
 specifier|final
 name|boolean
@@ -1721,21 +1721,6 @@ operator|.
 name|getFSImage
 argument_list|()
 decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|NUM_TEST_MKDIRS
-condition|;
-name|i
-operator|++
-control|)
-block|{
 name|fileSys
 operator|.
 name|mkdirs
@@ -1747,7 +1732,17 @@ name|TEST_PATH
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
+name|fileSys
+operator|.
+name|mkdirs
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|TEST_PATH2
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|sd
 operator|=
 name|fsimage
@@ -1808,6 +1803,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Corrupt the edit log
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"corrupting edit log file '"
+operator|+
+name|editFile
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
 name|corruptor
 operator|.
 name|corrupt
@@ -2070,6 +2076,11 @@ argument_list|()
 operator|+
 literal|" corrupted edit log"
 argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
 expr_stmt|;
 name|assertTrue
 argument_list|(

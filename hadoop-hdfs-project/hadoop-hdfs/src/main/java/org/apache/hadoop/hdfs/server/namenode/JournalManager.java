@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -113,35 +123,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the input stream starting with fromTxnId from this journal manager    * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    * @return the stream starting with transaction fromTxnId    * @throws IOException if a stream cannot be found.    */
-DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
+comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    */
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
 name|EditLogInputStream
-name|getInputStream
-parameter_list|(
+argument_list|>
+name|streams
+parameter_list|,
 name|long
 name|fromTxnId
 parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Get the number of transaction contiguously available from fromTxnId.    *    * @param fromTxnId Transaction id to count from    * @param inProgressOk whether or not in-progress streams should be counted    * @return The number of transactions available from fromTxnId    * @throws IOException if the journal cannot be read.    * @throws CorruptionException if there is a gap in the journal at fromTxnId.    */
-DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
-name|long
-name|getNumberOfTransactions
-parameter_list|(
-name|long
-name|fromTxnId
-parameter_list|,
-name|boolean
-name|inProgressOk
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|CorruptionException
 function_decl|;
 comment|/**    * Set the amount of memory that this stream should use to buffer edits    */
 DECL|method|setOutputBufferCapacity (int size)

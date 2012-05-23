@@ -139,8 +139,6 @@ specifier|abstract
 name|long
 name|getFirstTxId
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**     * @return the last transaction which will be found in this stream    */
 DECL|method|getLastTxId ()
@@ -149,8 +147,6 @@ specifier|abstract
 name|long
 name|getLastTxId
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Close the stream.    * @throws IOException if an error occurred while closing    */
 DECL|method|close ()
@@ -204,8 +200,6 @@ specifier|public
 name|void
 name|resync
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -251,7 +245,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Throwable
 name|e
 parameter_list|)
 block|{

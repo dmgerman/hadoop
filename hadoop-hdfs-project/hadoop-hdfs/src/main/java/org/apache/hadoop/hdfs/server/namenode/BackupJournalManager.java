@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -204,53 +214,26 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|getNumberOfTransactions (long fromTxnId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
 specifier|public
-name|long
-name|getNumberOfTransactions
+name|void
+name|selectInputStreams
 parameter_list|(
-name|long
-name|fromTxnId
-parameter_list|,
-name|boolean
-name|inProgressOk
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|CorruptionException
-block|{
-comment|// This JournalManager is never used for input. Therefore it cannot
-comment|// return any transactions
-return|return
-literal|0
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getInputStream (long fromTxnId, boolean inProgressOk)
-specifier|public
+name|Collection
+argument_list|<
 name|EditLogInputStream
-name|getInputStream
-parameter_list|(
+argument_list|>
+name|streams
+parameter_list|,
 name|long
 name|fromTxnId
 parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// This JournalManager is never used for input. Therefore it cannot
 comment|// return any transactions
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unsupported operation"
-argument_list|)
-throw|;
 block|}
 annotation|@
 name|Override

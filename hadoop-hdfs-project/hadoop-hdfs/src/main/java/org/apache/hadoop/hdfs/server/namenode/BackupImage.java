@@ -695,8 +695,6 @@ name|logLoader
 operator|.
 name|loadEditRecords
 argument_list|(
-name|logVersion
-argument_list|,
 name|backupInputStream
 argument_list|,
 literal|true

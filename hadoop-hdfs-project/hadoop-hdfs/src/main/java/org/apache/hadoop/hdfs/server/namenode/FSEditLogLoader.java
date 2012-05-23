@@ -880,14 +880,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|logVersion
-init|=
-name|edits
-operator|.
-name|getVersion
-argument_list|()
-decl_stmt|;
 name|fsNamesys
 operator|.
 name|writeLock
@@ -906,8 +898,6 @@ name|numEdits
 init|=
 name|loadEditRecords
 argument_list|(
-name|logVersion
-argument_list|,
 name|edits
 argument_list|,
 literal|false
@@ -973,13 +963,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|loadEditRecords (int logVersion, EditLogInputStream in, boolean closeOnExit, long expectedStartingTxId, MetaRecoveryContext recovery)
+DECL|method|loadEditRecords (EditLogInputStream in, boolean closeOnExit, long expectedStartingTxId, MetaRecoveryContext recovery)
 name|long
 name|loadEditRecords
 parameter_list|(
-name|int
-name|logVersion
-parameter_list|,
 name|EditLogInputStream
 name|in
 parameter_list|,
@@ -1179,7 +1166,10 @@ block|{
 comment|// Handle a problem with our input
 name|check203UpgradeFailure
 argument_list|(
-name|logVersion
+name|in
+operator|.
+name|getVersion
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -1269,16 +1259,10 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|op
 operator|.
-name|supports
-argument_list|(
-name|Feature
-operator|.
-name|STORED_TXIDS
-argument_list|,
-name|logVersion
-argument_list|)
+name|hasTransactionId
+argument_list|()
 condition|)
 block|{
 if|if
@@ -1366,7 +1350,10 @@ name|op
 argument_list|,
 name|fsDir
 argument_list|,
-name|logVersion
+name|in
+operator|.
+name|getVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1455,16 +1442,10 @@ block|}
 comment|// log progress
 if|if
 condition|(
-name|LayoutVersion
+name|op
 operator|.
-name|supports
-argument_list|(
-name|Feature
-operator|.
-name|STORED_TXIDS
-argument_list|,
-name|logVersion
-argument_list|)
+name|hasTransactionId
+argument_list|()
 condition|)
 block|{
 name|long
@@ -3744,7 +3725,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return the number of valid transactions in the stream. If the stream is    * truncated during the header, returns a value indicating that there are    * 0 valid transactions. This reads through the stream but does not close    * it.    * @throws IOException if the stream cannot be read due to an IO error (eg    *                     if the log does not exist)    */
+comment|/**    * Find the last valid transaction ID in the stream.    * If there are invalid or corrupt transactions in the middle of the stream,    * validateEditLog will skip over them.    * This reads through the stream but does not close it.    *    * @throws IOException if the stream cannot be read due to an IO error (eg    *                     if the log does not exist)    */
 DECL|method|validateEditLog (EditLogInputStream in)
 specifier|static
 name|EditLogValidation
@@ -3760,13 +3741,6 @@ init|=
 literal|0
 decl_stmt|;
 name|long
-name|firstTxId
-init|=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-decl_stmt|;
-name|long
 name|lastTxId
 init|=
 name|HdfsConstants
@@ -3778,8 +3752,6 @@ name|numValid
 init|=
 literal|0
 decl_stmt|;
-try|try
-block|{
 name|FSEditLogOp
 name|op
 init|=
@@ -3797,6 +3769,8 @@ operator|.
 name|getPosition
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|(
@@ -3813,22 +3787,37 @@ condition|)
 block|{
 break|break;
 block|}
-if|if
-condition|(
-name|firstTxId
-operator|==
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-condition|)
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
 block|{
-name|firstTxId
-operator|=
-name|op
+name|FSImage
 operator|.
-name|getTransactionId
-argument_list|()
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception after reading "
+operator|+
+name|numValid
+operator|+
+literal|" ops from "
+operator|+
+name|in
+operator|+
+literal|" while determining its valid length."
+operator|+
+literal|"Position was "
+operator|+
+name|lastPos
+argument_list|,
+name|t
+argument_list|)
 expr_stmt|;
+break|break;
 block|}
 if|if
 condition|(
@@ -3842,10 +3831,8 @@ name|op
 operator|.
 name|getTransactionId
 argument_list|()
-operator|==
+operator|>
 name|lastTxId
-operator|+
-literal|1
 condition|)
 block|{
 name|lastTxId
@@ -3856,63 +3843,8 @@ name|getTransactionId
 argument_list|()
 expr_stmt|;
 block|}
-else|else
-block|{
-name|FSImage
-operator|.
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Out of order txid found. Found "
-operator|+
-name|op
-operator|.
-name|getTransactionId
-argument_list|()
-operator|+
-literal|", expected "
-operator|+
-operator|(
-name|lastTxId
-operator|+
-literal|1
-operator|)
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
 name|numValid
 operator|++
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
-block|{
-comment|// Catch Throwable and not just IOE, since bad edits may generate
-comment|// NumberFormatExceptions, AssertionErrors, OutOfMemoryErrors, etc.
-name|FSImage
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Caught exception after reading "
-operator|+
-name|numValid
-operator|+
-literal|" ops from "
-operator|+
-name|in
-operator|+
-literal|" while determining its valid length."
-argument_list|,
-name|t
-argument_list|)
 expr_stmt|;
 block|}
 return|return
@@ -3920,8 +3852,6 @@ operator|new
 name|EditLogValidation
 argument_list|(
 name|lastPos
-argument_list|,
-name|firstTxId
 argument_list|,
 name|lastTxId
 argument_list|,
@@ -3940,38 +3870,29 @@ specifier|final
 name|long
 name|validLength
 decl_stmt|;
-DECL|field|startTxId
-specifier|private
-specifier|final
-name|long
-name|startTxId
-decl_stmt|;
 DECL|field|endTxId
 specifier|private
 specifier|final
 name|long
 name|endTxId
 decl_stmt|;
-DECL|field|corruptionDetected
+DECL|field|hasCorruptHeader
 specifier|private
 specifier|final
 name|boolean
-name|corruptionDetected
+name|hasCorruptHeader
 decl_stmt|;
-DECL|method|EditLogValidation (long validLength, long startTxId, long endTxId, boolean corruptionDetected)
+DECL|method|EditLogValidation (long validLength, long endTxId, boolean hasCorruptHeader)
 name|EditLogValidation
 parameter_list|(
 name|long
 name|validLength
 parameter_list|,
 name|long
-name|startTxId
-parameter_list|,
-name|long
 name|endTxId
 parameter_list|,
 name|boolean
-name|corruptionDetected
+name|hasCorruptHeader
 parameter_list|)
 block|{
 name|this
@@ -3982,21 +3903,15 @@ name|validLength
 expr_stmt|;
 name|this
 operator|.
-name|startTxId
-operator|=
-name|startTxId
-expr_stmt|;
-name|this
-operator|.
 name|endTxId
 operator|=
 name|endTxId
 expr_stmt|;
 name|this
 operator|.
-name|corruptionDetected
+name|hasCorruptHeader
 operator|=
-name|corruptionDetected
+name|hasCorruptHeader
 expr_stmt|;
 block|}
 DECL|method|getValidLength ()
@@ -4008,15 +3923,6 @@ return|return
 name|validLength
 return|;
 block|}
-DECL|method|getStartTxId ()
-name|long
-name|getStartTxId
-parameter_list|()
-block|{
-return|return
-name|startTxId
-return|;
-block|}
 DECL|method|getEndTxId ()
 name|long
 name|getEndTxId
@@ -4026,47 +3932,13 @@ return|return
 name|endTxId
 return|;
 block|}
-DECL|method|getNumTransactions ()
-name|long
-name|getNumTransactions
-parameter_list|()
-block|{
-if|if
-condition|(
-name|endTxId
-operator|==
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-operator|||
-name|startTxId
-operator|==
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-condition|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-return|return
-operator|(
-name|endTxId
-operator|-
-name|startTxId
-operator|)
-operator|+
-literal|1
-return|;
-block|}
 DECL|method|hasCorruptHeader ()
 name|boolean
 name|hasCorruptHeader
 parameter_list|()
 block|{
 return|return
-name|corruptionDetected
+name|hasCorruptHeader
 return|;
 block|}
 block|}

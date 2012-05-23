@@ -469,8 +469,6 @@ specifier|public
 name|long
 name|getFirstTxId
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|HdfsConstants
@@ -485,8 +483,6 @@ specifier|public
 name|long
 name|getLastTxId
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|HdfsConstants

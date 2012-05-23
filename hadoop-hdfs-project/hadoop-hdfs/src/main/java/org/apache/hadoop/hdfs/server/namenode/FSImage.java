@@ -2990,7 +2990,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits from that directory.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
+comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
 DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery)
 name|boolean
 name|loadFSImage
@@ -3108,6 +3108,8 @@ literal|1
 argument_list|,
 name|toAtLeastTxId
 argument_list|,
+name|recovery
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -3145,9 +3147,29 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"\t Planning to load edit stream: "
+literal|"Planning to load edit log stream: "
 operator|+
 name|l
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|editStreams
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"No edit log streams selected."
 argument_list|)
 expr_stmt|;
 block|}
