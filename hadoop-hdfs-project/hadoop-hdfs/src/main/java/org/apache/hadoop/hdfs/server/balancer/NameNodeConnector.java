@@ -1045,7 +1045,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"InterruptedException in block key updater thread"
 argument_list|,
