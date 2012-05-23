@@ -1952,7 +1952,7 @@ block|}
 annotation|@
 name|Override
 comment|/**        * This is a server side method, which is invoked over RPC. On success        * the return response has protobuf response payload. On failure, the        * exception name and the stack trace are return in the resposne.        * See {@link HadoopRpcResponseProto}        *         * In this method there three types of exceptions possible and they are        * returned in response as follows.        *<ol>        *<li> Exceptions encountered in this method that are returned         * as {@link RpcServerException}</li>        *<li> Exceptions thrown by the service is wrapped in ServiceException.         * In that this method returns in response the exception thrown by the         * service.</li>        *<li> Other exceptions thrown by the service. They are returned as        * it is.</li>        *</ol>        */
-DECL|method|call (RPC.Server server, String protocol, Writable writableRequest, long receiveTime)
+DECL|method|call (RPC.Server server, String connectionProtocolName, Writable writableRequest, long receiveTime)
 specifier|public
 name|Writable
 name|call
@@ -1963,7 +1963,7 @@ name|Server
 name|server
 parameter_list|,
 name|String
-name|protocol
+name|connectionProtocolName
 parameter_list|,
 name|Writable
 name|writableRequest
@@ -1997,8 +1997,9 @@ operator|.
 name|getMethodName
 argument_list|()
 decl_stmt|;
+comment|/**           * RPCs for a particular interface (ie protocol) are done using a          * IPC connection that is setup using rpcProxy.          * The rpcProxy's has a declared protocol name that is           * sent form client to server at connection time.           *           * Each Rpc call also sends a protocol name           * (called declaringClassprotocolName). This name is usually the same          * as the connection protocol name except in some cases.           * For example metaProtocols such ProtocolInfoProto which get info          * about the protocol reuse the connection but need to indicate that          * the actual protocol is different (i.e. the protocol is          * ProtocolInfoProto) since they reuse the connection; in this case          * the declaringClassProtocolName field is set to the ProtocolInfoProto.          */
 name|String
-name|protoName
+name|declaringClassProtoName
 init|=
 name|rpcRequest
 operator|.
@@ -2023,9 +2024,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Call: protocol="
+literal|"Call: connectionProtocolName="
 operator|+
-name|protocol
+name|connectionProtocolName
 operator|+
 literal|", method="
 operator|+
@@ -2039,7 +2040,7 @@ name|getProtocolImpl
 argument_list|(
 name|server
 argument_list|,
-name|protoName
+name|declaringClassProtoName
 argument_list|,
 name|clientVersion
 argument_list|)
@@ -2083,7 +2084,7 @@ name|methodName
 operator|+
 literal|" called on "
 operator|+
-name|protocol
+name|connectionProtocolName
 operator|+
 literal|" protocol."
 decl_stmt|;
