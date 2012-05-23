@@ -374,6 +374,14 @@ name|baseDirs
 parameter_list|)
 block|{
 comment|// TODO if parent owned by NM, rename within parent inline
+if|if
+condition|(
+name|debugDelay
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
 name|sched
 operator|.
 name|schedule
@@ -395,6 +403,7 @@ operator|.
 name|SECONDS
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
