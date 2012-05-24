@@ -2996,9 +2996,9 @@ name|getVersionTable
 parameter_list|()
 block|{
 return|return
-literal|"<div id='dfstable'><table>"
+literal|"<div class='dfstable'><table>"
 operator|+
-literal|"\n<tr><td id='col1'>Version:</td><td>"
+literal|"\n<tr><td class='col1'>Version:</td><td>"
 operator|+
 name|VersionInfo
 operator|.
@@ -3012,7 +3012,9 @@ operator|.
 name|getRevision
 argument_list|()
 operator|+
-literal|"\n<tr><td id='col1'>Compiled:</td><td>"
+literal|"</td></tr>"
+operator|+
+literal|"\n<tr><td class='col1'>Compiled:</td><td>"
 operator|+
 name|VersionInfo
 operator|.
@@ -3032,6 +3034,8 @@ name|VersionInfo
 operator|.
 name|getBranch
 argument_list|()
+operator|+
+literal|"</td></tr>"
 operator|+
 literal|"\n</table></div>"
 return|;

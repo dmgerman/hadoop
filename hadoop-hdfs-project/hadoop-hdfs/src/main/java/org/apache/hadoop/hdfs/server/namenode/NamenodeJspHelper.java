@@ -644,13 +644,13 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|"Security is<em>ON</em><br>"
+literal|"<div class=\"security\">Security is<em>ON</em></div>"
 return|;
 block|}
 else|else
 block|{
 return|return
-literal|"Security is<em>OFF</em><br>"
+literal|"<div class=\"security\">Security is<em>OFF</em></div>"
 return|;
 block|}
 block|}
@@ -786,6 +786,8 @@ decl_stmt|;
 name|String
 name|str
 init|=
+literal|"<div>"
+operator|+
 name|inodes
 operator|+
 literal|" files and directories, "
@@ -839,11 +841,11 @@ expr_stmt|;
 block|}
 name|str
 operator|+=
-literal|".<br>"
+literal|".</div>"
 expr_stmt|;
 name|str
 operator|+=
-literal|"Heap Memory used "
+literal|"<div>Heap Memory used "
 operator|+
 name|StringUtils
 operator|.
@@ -876,11 +878,11 @@ argument_list|(
 name|maxMemory
 argument_list|)
 operator|+
-literal|".<br>"
+literal|".</div>"
 expr_stmt|;
 name|str
 operator|+=
-literal|"Non Heap Memory used "
+literal|"<div>Non Heap Memory used "
 operator|+
 name|StringUtils
 operator|.
@@ -915,7 +917,7 @@ argument_list|(
 name|maxNonHeap
 argument_list|)
 operator|+
-literal|".<br>"
+literal|".</div>"
 expr_stmt|;
 return|return
 name|str
@@ -993,9 +995,9 @@ name|fsn
 parameter_list|)
 block|{
 return|return
-literal|"<div id='dfstable'><table>"
+literal|"<div class='dfstable'><table>"
 operator|+
-literal|"\n<tr><td id='col1'>Started:</td><td>"
+literal|"\n<tr><td class='col1'>Started:</td><td>"
 operator|+
 name|fsn
 operator|.
@@ -1004,7 +1006,7 @@ argument_list|()
 operator|+
 literal|"</td></tr>\n"
 operator|+
-literal|"\n<tr><td id='col1'>Version:</td><td>"
+literal|"\n<tr><td class='col1'>Version:</td><td>"
 operator|+
 name|VersionInfo
 operator|.
@@ -1018,7 +1020,9 @@ operator|.
 name|getRevision
 argument_list|()
 operator|+
-literal|"\n<tr><td id='col1'>Compiled:</td><td>"
+literal|"</td></tr>\n"
+operator|+
+literal|"\n<tr><td class='col1'>Compiled:</td><td>"
 operator|+
 name|VersionInfo
 operator|.
@@ -1039,32 +1043,28 @@ operator|.
 name|getBranch
 argument_list|()
 operator|+
-literal|"\n<tr><td id='col1'>Upgrades:</td><td>"
+literal|"</td></tr>\n<tr><td class='col1'>Upgrades:</td><td>"
 operator|+
 name|getUpgradeStatusText
 argument_list|(
 name|fsn
 argument_list|)
 operator|+
-literal|"\n<tr><td id='col1'>Cluster ID:</td><td>"
+literal|"</td></tr>\n<tr><td class='col1'>Cluster ID:</td><td>"
 operator|+
 name|fsn
 operator|.
 name|getClusterId
 argument_list|()
 operator|+
-literal|"</td></tr>\n"
-operator|+
-literal|"\n<tr><td id='col1'>Block Pool ID:</td><td>"
+literal|"</td></tr>\n<tr><td class='col1'>Block Pool ID:</td><td>"
 operator|+
 name|fsn
 operator|.
 name|getBlockPoolId
 argument_list|()
 operator|+
-literal|"</td></tr>\n"
-operator|+
-literal|"\n</table></div>"
+literal|"</td></tr>\n</table></div>"
 return|;
 block|}
 comment|/**    * Generate warning text if there are corrupt files.    * @return a warning if files are corrupt, otherwise return an empty string.    */
@@ -1099,12 +1099,20 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
-comment|// Warning class is typically displayed in RED
+comment|// Warning class is typically displayed in RED.
 name|result
 operator|.
 name|append
 argument_list|(
-literal|"<br/><a class=\"warning\" href=\"/corrupt_files.jsp\" title=\"List corrupt files\">\n"
+literal|"<div>"
+argument_list|)
+expr_stmt|;
+comment|// opening tag of outer<div>.
+name|result
+operator|.
+name|append
+argument_list|(
+literal|"<a class=\"warning\" href=\"/corrupt_files.jsp\" title=\"List corrupt files\">\n"
 argument_list|)
 expr_stmt|;
 name|result
@@ -1129,16 +1137,17 @@ name|result
 operator|.
 name|append
 argument_list|(
-literal|"<br/><div class=\"small\">See the Hadoop FAQ for common causes and potential solutions."
+literal|"<div class=\"small\">See the Hadoop FAQ for common causes and potential solutions.</div>"
 argument_list|)
 expr_stmt|;
 name|result
 operator|.
 name|append
 argument_list|(
-literal|"<br/><br/>\n"
+literal|"</div>\n"
 argument_list|)
 expr_stmt|;
+comment|// closing tag of outer<div>.
 return|return
 name|result
 operator|.
@@ -1335,7 +1344,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<div id=\"dfstable\"><table border=1 cellpadding=10 cellspacing=0 title=\"NameNode Storage\">\n"
+literal|"<div class=\"dfstable\"><table class=\"storage\" title=\"NameNode Storage\">\n"
 operator|+
 literal|"<thead><tr><td><b>Storage Directory</b></td><td><b>Type</b></td><td><b>State</b></td></tr></thead>"
 argument_list|)
@@ -1475,7 +1484,7 @@ literal|"</td><td>"
 operator|+
 name|type
 operator|+
-literal|"</td><td><font color=red>Failed</font></td></tr>"
+literal|"</td><td><span class=\"failed\">Failed</span></td></tr>"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1483,7 +1492,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"</table></div><br>\n"
+literal|"</table></div>\n"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2096,7 +2105,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<div id=\"dfstable\"><table>\n"
+literal|"<div class=\"dfstable\"><table>\n"
 operator|+
 name|rowTxt
 argument_list|()
@@ -2477,7 +2486,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"There are no datanodes in the cluster"
+literal|"There are no datanodes in the cluster."
 argument_list|)
 expr_stmt|;
 block|}
@@ -4058,7 +4067,7 @@ argument_list|()
 operator|+
 literal|"</a>"
 operator|+
-literal|"<br><br>\n<table border=1 cellspacing=0>\n"
+literal|"<br><br>\n<table class=\"nodes\">\n"
 argument_list|)
 expr_stmt|;
 name|counterReset
