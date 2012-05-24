@@ -134,6 +134,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|StateChangeRequestInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|RequestSource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RPC
@@ -206,12 +238,21 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|FailoverController (Configuration conf)
+DECL|field|requestSource
+specifier|private
+specifier|final
+name|RequestSource
+name|requestSource
+decl_stmt|;
+DECL|method|FailoverController (Configuration conf, RequestSource source)
 specifier|public
 name|FailoverController
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|RequestSource
+name|source
 parameter_list|)
 block|{
 name|this
@@ -219,6 +260,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|requestSource
+operator|=
+name|source
 expr_stmt|;
 name|this
 operator|.
@@ -374,8 +421,13 @@ operator|.
 name|error
 argument_list|(
 name|msg
-argument_list|,
+operator|+
+literal|": "
+operator|+
 name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -467,6 +519,9 @@ operator|.
 name|monitorHealth
 argument_list|(
 name|toSvc
+argument_list|,
+name|createReqInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -503,6 +558,20 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|createReqInfo ()
+specifier|private
+name|StateChangeRequestInfo
+name|createReqInfo
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StateChangeRequestInfo
+argument_list|(
+name|requestSource
+argument_list|)
+return|;
+block|}
 comment|/**    * Try to get the HA state of the node at the given address. This    * function is guaranteed to be "quick" -- ie it has a short timeout    * and no retries. Its only purpose is to avoid fencing a node that    * has already restarted.    */
 DECL|method|tryGracefulFence (HAServiceTarget svc)
 name|boolean
@@ -533,7 +602,10 @@ expr_stmt|;
 name|proxy
 operator|.
 name|transitionToStandby
+argument_list|(
+name|createReqInfo
 argument_list|()
+argument_list|)
 expr_stmt|;
 return|return
 literal|true
@@ -727,6 +799,9 @@ name|conf
 argument_list|,
 name|rpcTimeoutToNewActive
 argument_list|)
+argument_list|,
+name|createReqInfo
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

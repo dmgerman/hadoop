@@ -136,6 +136,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|protocolPB
+operator|.
+name|ZKFCProtocolClientSideTranslatorPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -210,6 +226,14 @@ name|InetSocketAddress
 name|getAddress
 parameter_list|()
 function_decl|;
+comment|/**    * @return the IPC address of the ZKFC on the target node    */
+DECL|method|getZKFCAddress ()
+specifier|public
+specifier|abstract
+name|InetSocketAddress
+name|getZKFCAddress
+parameter_list|()
+function_decl|;
 comment|/**    * @return a Fencer implementation configured for this target node    */
 DECL|method|getFencer ()
 specifier|public
@@ -279,6 +303,67 @@ operator|new
 name|HAServiceProtocolClientSideTranslatorPB
 argument_list|(
 name|getAddress
+argument_list|()
+argument_list|,
+name|confCopy
+argument_list|,
+name|factory
+argument_list|,
+name|timeoutMs
+argument_list|)
+return|;
+block|}
+comment|/**    * @return a proxy to the ZKFC which is associated with this HA service.    */
+DECL|method|getZKFCProxy (Configuration conf, int timeoutMs)
+specifier|public
+name|ZKFCProtocol
+name|getZKFCProxy
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|timeoutMs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Configuration
+name|confCopy
+init|=
+operator|new
+name|Configuration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// Lower the timeout so we quickly fail to connect
+name|confCopy
+operator|.
+name|setInt
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|SocketFactory
+name|factory
+init|=
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|confCopy
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|ZKFCProtocolClientSideTranslatorPB
+argument_list|(
+name|getZKFCAddress
 argument_list|()
 argument_list|,
 name|confCopy
@@ -384,6 +469,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * @return true if auto failover should be considered enabled    */
+DECL|method|isAutoFailoverEnabled ()
+specifier|public
+name|boolean
+name|isAutoFailoverEnabled
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
 block|}
 block|}
 end_class

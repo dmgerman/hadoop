@@ -187,6 +187,63 @@ name|name
 return|;
 block|}
 block|}
+DECL|enum|RequestSource
+specifier|public
+specifier|static
+enum|enum
+name|RequestSource
+block|{
+DECL|enumConstant|REQUEST_BY_USER
+name|REQUEST_BY_USER
+block|,
+DECL|enumConstant|REQUEST_BY_USER_FORCED
+name|REQUEST_BY_USER_FORCED
+block|,
+DECL|enumConstant|REQUEST_BY_ZKFC
+name|REQUEST_BY_ZKFC
+block|;   }
+comment|/**    * Information describing the source for a request to change state.    * This is used to differentiate requests from automatic vs CLI    * failover controllers, and in the future may include epoch    * information.    */
+DECL|class|StateChangeRequestInfo
+specifier|public
+specifier|static
+class|class
+name|StateChangeRequestInfo
+block|{
+DECL|field|source
+specifier|private
+specifier|final
+name|RequestSource
+name|source
+decl_stmt|;
+DECL|method|StateChangeRequestInfo (RequestSource source)
+specifier|public
+name|StateChangeRequestInfo
+parameter_list|(
+name|RequestSource
+name|source
+parameter_list|)
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|source
+operator|=
+name|source
+expr_stmt|;
+block|}
+DECL|method|getSource ()
+specifier|public
+name|RequestSource
+name|getSource
+parameter_list|()
+block|{
+return|return
+name|source
+return|;
+block|}
+block|}
 comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
 DECL|method|monitorHealth ()
 specifier|public
@@ -201,11 +258,14 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
-DECL|method|transitionToActive ()
+DECL|method|transitionToActive (StateChangeRequestInfo reqInfo)
 specifier|public
 name|void
 name|transitionToActive
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|reqInfo
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,
@@ -214,11 +274,14 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
-DECL|method|transitionToStandby ()
+DECL|method|transitionToStandby (StateChangeRequestInfo reqInfo)
 specifier|public
 name|void
 name|transitionToStandby
-parameter_list|()
+parameter_list|(
+name|StateChangeRequestInfo
+name|reqInfo
+parameter_list|)
 throws|throws
 name|ServiceFailedException
 throws|,

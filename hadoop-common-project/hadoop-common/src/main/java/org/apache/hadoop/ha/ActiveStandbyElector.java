@@ -150,6 +150,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAZKUtil
+operator|.
+name|ZKAuthInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -354,11 +370,13 @@ specifier|public
 interface|interface
 name|ActiveStandbyElectorCallback
 block|{
-comment|/**      * This method is called when the app becomes the active leader      */
+comment|/**      * This method is called when the app becomes the active leader.      * If the service fails to become active, it should throw      * ServiceFailedException. This will cause the elector to      * sleep for a short period, then re-join the election.      *       * Callback implementations are expected to manage their own      * timeouts (e.g. when making an RPC to a remote node).      */
 DECL|method|becomeActive ()
 name|void
 name|becomeActive
 parameter_list|()
+throws|throws
+name|ServiceFailedException
 function_decl|;
 comment|/**      * This method is called when the app becomes a standby      */
 DECL|method|becomeStandby ()
@@ -432,13 +450,20 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|NUM_RETRIES
-specifier|private
 specifier|static
-specifier|final
 name|int
 name|NUM_RETRIES
 init|=
 literal|3
+decl_stmt|;
+DECL|field|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
+init|=
+literal|1000
 decl_stmt|;
 DECL|enum|ConnectionState
 specifier|private
@@ -538,6 +563,15 @@ name|ACL
 argument_list|>
 name|zkAcl
 decl_stmt|;
+DECL|field|zkAuthInfo
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|ZKAuthInfo
+argument_list|>
+name|zkAuthInfo
+decl_stmt|;
 DECL|field|appData
 specifier|private
 name|byte
@@ -576,8 +610,8 @@ specifier|private
 name|boolean
 name|wantToBeInElection
 decl_stmt|;
-comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
-DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, ActiveStandbyElectorCallback app)
+comment|/**    * Create a new ActiveStandbyElector object<br/>    * The elector is created by providing to it the Zookeeper configuration, the    * parent znode under which to create the znode and a reference to the    * callback interface.<br/>    * The parent znode name must be the same for all service instances and    * different across services.<br/>    * After the leader has been lost, a new leader will be elected after the    * session timeout expires. Hence, the app must set this parameter based on    * its needs for failure response time. The session timeout must be greater    * than the Zookeeper disconnect timeout and is recommended to be 3X that    * value to enable Zookeeper to retry transient disconnections. Setting a very    * short session timeout may result in frequent transitions between active and    * standby states during issues like network outages/GS pauses.    *     * @param zookeeperHostPorts    *          ZooKeeper hostPort for all ZooKeeper servers    * @param zookeeperSessionTimeout    *          ZooKeeper session timeout    * @param parentZnodeName    *          znode under which to create the lock    * @param acl    *          ZooKeeper ACL's    * @param authInfo a list of authentication credentials to add to the    *                 ZK connection    * @param app    *          reference to callback interface object    * @throws IOException    * @throws HadoopIllegalArgumentException    */
+DECL|method|ActiveStandbyElector (String zookeeperHostPorts, int zookeeperSessionTimeout, String parentZnodeName, List<ACL> acl, List<ZKAuthInfo> authInfo, ActiveStandbyElectorCallback app)
 specifier|public
 name|ActiveStandbyElector
 parameter_list|(
@@ -595,6 +629,12 @@ argument_list|<
 name|ACL
 argument_list|>
 name|acl
+parameter_list|,
+name|List
+argument_list|<
+name|ZKAuthInfo
+argument_list|>
+name|authInfo
 parameter_list|,
 name|ActiveStandbyElectorCallback
 name|app
@@ -647,6 +687,10 @@ name|zkAcl
 operator|=
 name|acl
 expr_stmt|;
+name|zkAuthInfo
+operator|=
+name|authInfo
+expr_stmt|;
 name|appClient
 operator|=
 name|app
@@ -690,13 +734,6 @@ parameter_list|)
 throws|throws
 name|HadoopIllegalArgumentException
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Attempting active election"
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|data
@@ -737,6 +774,15 @@ argument_list|,
 name|data
 operator|.
 name|length
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Attempting active election for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|joinElectionInternal
@@ -812,6 +858,16 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|wantToBeInElection
+argument_list|,
+literal|"ensureParentZNode() may not be called while in the election"
+argument_list|)
+expr_stmt|;
 name|String
 name|pathParts
 index|[]
@@ -983,6 +1039,16 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|wantToBeInElection
+argument_list|,
+literal|"clearParentZNode() may not be called while in the election"
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|LOG
@@ -1164,9 +1230,7 @@ name|Stat
 argument_list|()
 decl_stmt|;
 return|return
-name|zkClient
-operator|.
-name|getData
+name|getDataWithRetries
 argument_list|(
 name|zkLockFilePath
 argument_list|,
@@ -1258,6 +1322,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|"  for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|Code
@@ -1279,12 +1347,22 @@ argument_list|)
 condition|)
 block|{
 comment|// we successfully created the znode. we are the leader. start monitoring
+if|if
+condition|(
 name|becomeActive
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
 name|monitorActiveStatus
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|reJoinElectionAfterFailureToBecomeActive
+argument_list|()
+expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
@@ -1432,6 +1510,11 @@ name|ctx
 argument_list|)
 condition|)
 return|return;
+assert|assert
+name|wantToBeInElection
+operator|:
+literal|"Got a StatNode result after quitting election"
+assert|;
 name|LOG
 operator|.
 name|debug
@@ -1447,6 +1530,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|" for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|Code
@@ -1483,9 +1570,17 @@ argument_list|()
 condition|)
 block|{
 comment|// we own the lock znode. so we are the leader
+if|if
+condition|(
+operator|!
 name|becomeActive
 argument_list|()
+condition|)
+block|{
+name|reJoinElectionAfterFailureToBecomeActive
+argument_list|()
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1561,13 +1656,45 @@ operator|+
 literal|". Not retrying further znode monitoring connection errors."
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isSessionExpired
+argument_list|(
+name|code
+argument_list|)
+condition|)
+block|{
+comment|// This isn't fatal - the client Watcher will re-join the election
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Lock monitoring failed because session was lost"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|fatalError
 argument_list|(
 name|errorMessage
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * interface implementation of Zookeeper watch events (connection and node)    */
+comment|/**    * We failed to become active. Re-join the election, but    * sleep for a few seconds after terminating our existing    * session, so that other nodes have a chance to become active.    * The failure to become active is already logged inside    * becomeActive().    */
+DECL|method|reJoinElectionAfterFailureToBecomeActive ()
+specifier|private
+name|void
+name|reJoinElectionAfterFailureToBecomeActive
+parameter_list|()
+block|{
+name|reJoinElection
+argument_list|(
+name|SLEEP_AFTER_FAILURE_TO_BECOME_ACTIVE
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * interface implementation of Zookeeper watch events (connection and node),    * proxied by {@link WatcherWithClientRef}.    */
 DECL|method|processWatchEvent (ZooKeeper zk, WatchedEvent event)
 specifier|synchronized
 name|void
@@ -1623,6 +1750,10 @@ operator|+
 literal|" connectionState: "
 operator|+
 name|zkConnectionState
+operator|+
+literal|" for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 if|if
@@ -1675,6 +1806,8 @@ operator|==
 name|ConnectionState
 operator|.
 name|DISCONNECTED
+operator|&&
+name|wantToBeInElection
 condition|)
 block|{
 name|monitorActiveStatus
@@ -1720,7 +1853,9 @@ name|enterNeutralMode
 argument_list|()
 expr_stmt|;
 name|reJoinElection
-argument_list|()
+argument_list|(
+literal|0
+argument_list|)
 expr_stmt|;
 break|break;
 default|default:
@@ -1849,6 +1984,30 @@ name|zk
 argument_list|)
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|ZKAuthInfo
+name|auth
+range|:
+name|zkAuthInfo
+control|)
+block|{
+name|zk
+operator|.
+name|addAuthInfo
+argument_list|(
+name|auth
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|auth
+operator|.
+name|getAuth
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|zk
 return|;
@@ -1862,6 +2021,13 @@ name|String
 name|errorMessage
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|errorMessage
+argument_list|)
+expr_stmt|;
 name|reset
 argument_list|()
 expr_stmt|;
@@ -1879,11 +2045,16 @@ name|void
 name|monitorActiveStatus
 parameter_list|()
 block|{
+assert|assert
+name|wantToBeInElection
+assert|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Monitoring active leader"
+literal|"Monitoring active leader for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|statRetryCount
@@ -1934,11 +2105,14 @@ name|createLockNodeAsync
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|reJoinElection ()
+DECL|method|reJoinElection (int sleepTime)
 specifier|private
 name|void
 name|reJoinElection
-parameter_list|()
+parameter_list|(
+name|int
+name|sleepTime
+parameter_list|)
 block|{
 name|LOG
 operator|.
@@ -1964,6 +2138,11 @@ block|{
 name|terminateConnection
 argument_list|()
 expr_stmt|;
+name|sleepFor
+argument_list|(
+name|sleepTime
+argument_list|)
+expr_stmt|;
 name|joinElectionInternal
 argument_list|()
 expr_stmt|;
@@ -1975,6 +2154,52 @@ operator|.
 name|unlock
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Sleep for the given number of milliseconds.    * This is non-static, and separated out, so that unit tests    * can override the behavior not to sleep.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|sleepFor (int sleepMs)
+specifier|protected
+name|void
+name|sleepFor
+parameter_list|(
+name|int
+name|sleepMs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|sleepMs
+operator|>
+literal|0
+condition|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|sleepMs
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -2006,9 +2231,17 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getZKSessionIdForTests ()
+specifier|synchronized
 name|long
 name|getZKSessionIdForTests
 parameter_list|()
+block|{
+if|if
+condition|(
+name|zkClient
+operator|!=
+literal|null
+condition|)
 block|{
 return|return
 name|zkClient
@@ -2016,6 +2249,14 @@ operator|.
 name|getSessionId
 argument_list|()
 return|;
+block|}
+else|else
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -2059,7 +2300,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Establishing zookeeper connection"
+literal|"Establishing zookeeper connection for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 try|try
@@ -2085,30 +2328,11 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
+name|sleepFor
 argument_list|(
 literal|5000
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e1
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|e1
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 operator|++
 name|connectionRetryCount
@@ -2126,14 +2350,58 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|zkClient
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|zkClient
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while closing ZK"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+name|zkClient
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|zkClient
 operator|=
 name|getNewZooKeeper
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Created new connection for "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|terminateConnection ()
-specifier|private
 name|void
 name|terminateConnection
 parameter_list|()
@@ -2151,7 +2419,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Terminating ZK connection"
+literal|"Terminating ZK connection for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|ZooKeeper
@@ -2210,7 +2480,7 @@ expr_stmt|;
 block|}
 DECL|method|becomeActive ()
 specifier|private
-name|void
+name|boolean
 name|becomeActive
 parameter_list|()
 block|{
@@ -2220,12 +2490,17 @@ assert|;
 if|if
 condition|(
 name|state
-operator|!=
+operator|==
 name|State
 operator|.
 name|ACTIVE
 condition|)
 block|{
+comment|// already active
+return|return
+literal|true
+return|;
+block|}
 try|try
 block|{
 name|Stat
@@ -2239,6 +2514,29 @@ argument_list|(
 name|oldBreadcrumbStat
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Becoming active for "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+name|appClient
+operator|.
+name|becomeActive
+argument_list|()
+expr_stmt|;
+name|state
+operator|=
+name|State
+operator|.
+name|ACTIVE
+expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -2255,29 +2553,10 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|reJoinElection
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Becoming active"
-argument_list|)
-expr_stmt|;
-name|state
-operator|=
-name|State
-operator|.
-name|ACTIVE
-expr_stmt|;
-name|appClient
-operator|.
-name|becomeActive
-argument_list|()
-expr_stmt|;
+comment|// Caller will handle quitting and rejoining the election.
+return|return
+literal|false
+return|;
 block|}
 block|}
 comment|/**    * Write the "ActiveBreadCrumb" node, indicating that this node may need    * to be fenced on failover.    * @param oldBreadcrumbStat     */
@@ -2646,7 +2925,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Becoming standby"
+literal|"Becoming standby for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|state
@@ -2681,7 +2962,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Entering neutral mode"
+literal|"Entering neutral mode for "
+operator|+
+name|this
 argument_list|)
 expr_stmt|;
 name|state
@@ -2808,6 +3091,67 @@ argument_list|,
 name|acl
 argument_list|,
 name|mode
+argument_list|)
+return|;
+block|}
+block|}
+argument_list|)
+return|;
+block|}
+DECL|method|getDataWithRetries (final String path, final boolean watch, final Stat stat)
+specifier|private
+name|byte
+index|[]
+name|getDataWithRetries
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|,
+specifier|final
+name|boolean
+name|watch
+parameter_list|,
+specifier|final
+name|Stat
+name|stat
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|KeeperException
+block|{
+return|return
+name|zkDoWithRetries
+argument_list|(
+operator|new
+name|ZKAction
+argument_list|<
+name|byte
+index|[]
+argument_list|>
+argument_list|()
+block|{
+specifier|public
+name|byte
+index|[]
+name|run
+parameter_list|()
+throws|throws
+name|KeeperException
+throws|,
+name|InterruptedException
+block|{
+return|return
+name|zkClient
+operator|.
+name|getData
+argument_list|(
+name|path
+argument_list|,
+name|watch
+argument_list|,
+name|stat
 argument_list|)
 return|;
 block|}
@@ -3115,6 +3459,8 @@ name|WatchedEvent
 name|event
 parameter_list|)
 block|{
+try|try
+block|{
 name|ActiveStandbyElector
 operator|.
 name|this
@@ -3126,6 +3472,30 @@ argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|fatalError
+argument_list|(
+literal|"Failed to process watcher event "
+operator|+
+name|event
+operator|+
+literal|": "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|isSuccess (Code code)
@@ -3235,6 +3605,48 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"elector id="
+operator|+
+name|System
+operator|.
+name|identityHashCode
+argument_list|(
+name|this
+argument_list|)
+operator|+
+literal|" appData="
+operator|+
+operator|(
+operator|(
+name|appData
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"null"
+else|:
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|appData
+argument_list|)
+operator|)
+operator|+
+literal|" cb="
+operator|+
+name|appClient
 return|;
 block|}
 block|}

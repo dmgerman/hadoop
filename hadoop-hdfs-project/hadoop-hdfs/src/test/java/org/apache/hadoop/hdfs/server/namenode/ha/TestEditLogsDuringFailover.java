@@ -442,16 +442,10 @@ comment|// in its own dirs and the shared dir. The standby
 comment|// should still have no edits!
 name|cluster
 operator|.
-name|getNameNode
+name|transitionToActive
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getRpcServer
-argument_list|()
-operator|.
-name|transitionToActive
-argument_list|()
 expr_stmt|;
 name|assertEditFiles
 argument_list|(
@@ -653,16 +647,10 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|getNameNode
+name|transitionToActive
 argument_list|(
 literal|1
 argument_list|)
-operator|.
-name|getRpcServer
-argument_list|()
-operator|.
-name|transitionToActive
-argument_list|()
 expr_stmt|;
 comment|// NN1 should have both the edits that came before its restart, and the edits that
 comment|// came after its restart.
@@ -818,16 +806,10 @@ expr_stmt|;
 comment|// Transition one of the NNs to active
 name|cluster
 operator|.
-name|getNameNode
+name|transitionToActive
 argument_list|(
 literal|0
 argument_list|)
-operator|.
-name|getRpcServer
-argument_list|()
-operator|.
-name|transitionToActive
-argument_list|()
 expr_stmt|;
 comment|// In the transition to active, it should have read the log -- and
 comment|// hence see one of the dirs we made in the fake log.

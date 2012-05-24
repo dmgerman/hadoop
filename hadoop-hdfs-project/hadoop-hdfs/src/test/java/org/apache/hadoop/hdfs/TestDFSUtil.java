@@ -1441,7 +1441,7 @@ name|key
 range|:
 name|NameNode
 operator|.
-name|NAMESERVICE_SPECIFIC_KEYS
+name|NAMENODE_SPECIFIC_KEYS
 control|)
 block|{
 comment|// Note: value is same as the key
@@ -1483,7 +1483,7 @@ name|key
 range|:
 name|NameNode
 operator|.
-name|NAMESERVICE_SPECIFIC_KEYS
+name|NAMENODE_SPECIFIC_KEYS
 control|)
 block|{
 name|assertEquals
@@ -1566,7 +1566,7 @@ name|key
 range|:
 name|NameNode
 operator|.
-name|NAMESERVICE_SPECIFIC_KEYS
+name|NAMENODE_SPECIFIC_KEYS
 control|)
 block|{
 comment|// Note: value is same as the key
@@ -1610,7 +1610,7 @@ name|key
 range|:
 name|NameNode
 operator|.
-name|NAMESERVICE_SPECIFIC_KEYS
+name|NAMENODE_SPECIFIC_KEYS
 control|)
 block|{
 name|assertEquals
