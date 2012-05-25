@@ -1410,17 +1410,6 @@ argument_list|(
 name|minimumRedundantJournals
 argument_list|)
 expr_stmt|;
-comment|// set runtime so we can test starting with a faulty or unavailable
-comment|// shared directory
-name|this
-operator|.
-name|journalSet
-operator|.
-name|setRuntimeForTesting
-argument_list|(
-name|runtime
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|URI
@@ -3631,7 +3620,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|setRuntimeForTesting (Runtime runtime)
 specifier|synchronized
-specifier|public
 name|void
 name|setRuntimeForTesting
 parameter_list|(

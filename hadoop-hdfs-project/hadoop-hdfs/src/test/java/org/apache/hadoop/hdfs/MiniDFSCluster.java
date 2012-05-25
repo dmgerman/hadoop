@@ -1396,13 +1396,6 @@ name|manageNameDfsDirs
 init|=
 literal|true
 decl_stmt|;
-DECL|field|manageNameDfsSharedDirs
-specifier|private
-name|boolean
-name|manageNameDfsSharedDirs
-init|=
-literal|true
-decl_stmt|;
 DECL|field|manageDataDfsDirs
 specifier|private
 name|boolean
@@ -1577,26 +1570,6 @@ block|{
 name|this
 operator|.
 name|manageNameDfsDirs
-operator|=
-name|val
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Default: true      */
-DECL|method|manageNameDfsSharedDirs (boolean val)
-specifier|public
-name|Builder
-name|manageNameDfsSharedDirs
-parameter_list|(
-name|boolean
-name|val
-parameter_list|)
-block|{
-name|this
-operator|.
-name|manageNameDfsSharedDirs
 operator|=
 name|val
 expr_stmt|;
@@ -1890,10 +1863,6 @@ argument_list|,
 name|builder
 operator|.
 name|manageNameDfsDirs
-argument_list|,
-name|builder
-operator|.
-name|manageNameDfsSharedDirs
 argument_list|,
 name|builder
 operator|.
@@ -2476,8 +2445,6 @@ name|format
 argument_list|,
 name|manageNameDfsDirs
 argument_list|,
-literal|true
-argument_list|,
 name|manageDataDfsDirs
 argument_list|,
 name|operation
@@ -2505,7 +2472,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -2521,9 +2488,6 @@ name|format
 parameter_list|,
 name|boolean
 name|manageNameDfsDirs
-parameter_list|,
-name|boolean
-name|manageNameDfsSharedDirs
 parameter_list|,
 name|boolean
 name|manageDataDfsDirs
@@ -2747,8 +2711,6 @@ name|nnTopology
 argument_list|,
 name|manageNameDfsDirs
 argument_list|,
-name|manageNameDfsSharedDirs
-argument_list|,
 name|format
 argument_list|,
 name|operation
@@ -2833,7 +2795,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createNameNodesAndSetConf (MiniDFSNNTopology nnTopology, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean format, StartupOption operation, String clusterId, Configuration conf)
+DECL|method|createNameNodesAndSetConf (MiniDFSNNTopology nnTopology, boolean manageNameDfsDirs, boolean format, StartupOption operation, String clusterId, Configuration conf)
 specifier|private
 name|void
 name|createNameNodesAndSetConf
@@ -2843,9 +2805,6 @@ name|nnTopology
 parameter_list|,
 name|boolean
 name|manageNameDfsDirs
-parameter_list|,
-name|boolean
-name|manageNameDfsSharedDirs
 parameter_list|,
 name|boolean
 name|format
@@ -3120,7 +3079,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|manageNameDfsSharedDirs
+name|manageNameDfsDirs
 condition|)
 block|{
 name|URI
