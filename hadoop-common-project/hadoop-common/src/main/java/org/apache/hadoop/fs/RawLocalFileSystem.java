@@ -1657,6 +1657,7 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}    *    * (<b>Note</b>: Returned list is not sorted in any given order,    * due to reliance on Java's {@link File#list()} API.)    */
 DECL|method|listStatus (Path f)
 specifier|public
 name|FileStatus
