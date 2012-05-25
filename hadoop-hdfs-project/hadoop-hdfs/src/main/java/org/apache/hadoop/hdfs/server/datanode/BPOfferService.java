@@ -2505,6 +2505,28 @@ operator|.
 name|getRunnable
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Updating balance throttler bandwidth from "
+operator|+
+name|dxcs
+operator|.
+name|balanceThrottler
+operator|.
+name|getBandwidth
+argument_list|()
+operator|+
+literal|" bytes/s "
+operator|+
+literal|"to: "
+operator|+
+name|bandwidth
+operator|+
+literal|" bytes/s."
+argument_list|)
+expr_stmt|;
 name|dxcs
 operator|.
 name|balanceThrottler
