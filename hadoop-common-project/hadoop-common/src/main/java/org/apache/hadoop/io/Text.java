@@ -954,7 +954,7 @@ operator|+=
 name|len
 expr_stmt|;
 block|}
-comment|/**    * Clear the string to empty.    */
+comment|/**    * Clear the string to empty.    *    *<em>Note</em>: For performance reasons, this call does not clear the    * underlying byte array that is retrievable via {@link #getBytes()}.    * In order to free the byte-array memory, call {@link #set(byte[])}    * with an empty byte array (For example,<code>new byte[0]</code>).    */
 DECL|method|clear ()
 specifier|public
 name|void
