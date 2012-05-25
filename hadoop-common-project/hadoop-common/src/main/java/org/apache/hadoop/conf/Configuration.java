@@ -3372,6 +3372,71 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**     * Get the value of the<code>name</code> property as a<code>double</code>.      * If no such property exists, the provided default value is returned,    * or if the specified value is not a valid<code>double</code>,    * then an error is thrown.    *    * @param name property name.    * @param defaultValue default value.    * @throws NumberFormatException when the value is invalid    * @return property value as a<code>double</code>,     *         or<code>defaultValue</code>.     */
+DECL|method|getDouble (String name, double defaultValue)
+specifier|public
+name|double
+name|getDouble
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|double
+name|defaultValue
+parameter_list|)
+block|{
+name|String
+name|valueString
+init|=
+name|getTrimmed
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|valueString
+operator|==
+literal|null
+condition|)
+return|return
+name|defaultValue
+return|;
+return|return
+name|Double
+operator|.
+name|parseDouble
+argument_list|(
+name|valueString
+argument_list|)
+return|;
+block|}
+comment|/**    * Set the value of the<code>name</code> property to a<code>double</code>.    *     * @param name property name.    * @param value property value.    */
+DECL|method|setDouble (String name, double value)
+specifier|public
+name|void
+name|setDouble
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|double
+name|value
+parameter_list|)
+block|{
+name|set
+argument_list|(
+name|name
+argument_list|,
+name|Double
+operator|.
+name|toString
+argument_list|(
+name|value
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**     * Get the value of the<code>name</code> property as a<code>boolean</code>.      * If no such property is specified, or if the specified value is not a valid    *<code>boolean</code>, then<code>defaultValue</code> is returned.    *     * @param name property name.    * @param defaultValue default value.    * @return property value as a<code>boolean</code>,     *         or<code>defaultValue</code>.     */
 DECL|method|getBoolean (String name, boolean defaultValue)
 specifier|public
