@@ -1721,7 +1721,9 @@ argument_list|(
 name|localf
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|this
 argument_list|)
@@ -2295,7 +2297,9 @@ name|f
 argument_list|)
 argument_list|,
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 argument_list|,
 name|this
 argument_list|)

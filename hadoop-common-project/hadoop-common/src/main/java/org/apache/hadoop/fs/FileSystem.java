@@ -2238,7 +2238,9 @@ name|len
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of server default configuration values    * @return server default configuration values    * @throws IOException    */
+comment|/**    * Return a set of server default configuration values    * @return server default configuration values    * @throws IOException    * @deprecated use {@link #getServerDefaults(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|getServerDefaults ()
 specifier|public
 name|FsServerDefaults
@@ -6131,7 +6133,9 @@ name|getBlockSize
 argument_list|()
 return|;
 block|}
-comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time. */
+comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time.    * @deprecated use {@link #getDefaultBlockSize(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|getDefaultBlockSize ()
 specifier|public
 name|long
@@ -6170,7 +6174,9 @@ name|getDefaultBlockSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the default replication.    */
+comment|/**    * Get the default replication.    * @deprecated use {@link #getDefaultReplication(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|getDefaultReplication ()
 specifier|public
 name|short

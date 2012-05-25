@@ -1252,7 +1252,9 @@ operator|=
 name|fs
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|path
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -1268,7 +1270,9 @@ operator|=
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|path
+argument_list|)
 expr_stmt|;
 block|}
 name|FsPermission

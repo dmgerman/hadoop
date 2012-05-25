@@ -5343,7 +5343,9 @@ operator|)
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|dir
+argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -5354,7 +5356,9 @@ argument_list|,
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|dir
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5522,7 +5526,9 @@ operator|(
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|dir
+argument_list|)
 operator|-
 name|FILE_SIZE
 operator|)

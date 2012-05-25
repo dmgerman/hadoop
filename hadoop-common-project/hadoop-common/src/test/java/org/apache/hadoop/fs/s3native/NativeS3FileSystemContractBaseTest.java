@@ -792,7 +792,9 @@ argument_list|,
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|file
+argument_list|)
 argument_list|,
 name|fs
 operator|.
@@ -812,7 +814,9 @@ init|=
 name|fs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|file
+argument_list|)
 operator|*
 literal|2
 decl_stmt|;
