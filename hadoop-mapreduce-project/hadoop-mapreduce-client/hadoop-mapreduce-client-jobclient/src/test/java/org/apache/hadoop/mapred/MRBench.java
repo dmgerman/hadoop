@@ -1142,7 +1142,7 @@ name|jarFile
 init|=
 literal|null
 decl_stmt|;
-name|int
+name|long
 name|inputLines
 init|=
 literal|1
@@ -1341,9 +1341,9 @@ condition|)
 block|{
 name|inputLines
 operator|=
-name|Integer
+name|Long
 operator|.
-name|parseInt
+name|parseLong
 argument_list|(
 name|args
 index|[
