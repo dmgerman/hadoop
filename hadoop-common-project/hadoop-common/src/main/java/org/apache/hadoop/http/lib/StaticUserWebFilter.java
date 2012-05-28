@@ -202,6 +202,38 @@ name|Filter
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_HTTP_STATIC_USER
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|DEFAULT_HADOOP_HTTP_STATIC_USER
+import|;
+end_import
+
 begin_comment
 comment|/**  * Provides a servlet filter that pretends to authenticate a fake user (Dr.Who)  * so that the web UI is usable for a secure cluster without authentication.  */
 end_comment
@@ -221,22 +253,6 @@ name|String
 name|DEPRECATED_UGI_KEY
 init|=
 literal|"dfs.web.ugi"
-decl_stmt|;
-DECL|field|USERNAME_KEY
-specifier|static
-specifier|final
-name|String
-name|USERNAME_KEY
-init|=
-literal|"hadoop.http.staticuser.user"
-decl_stmt|;
-DECL|field|USERNAME_DEFAULT
-specifier|static
-specifier|final
-name|String
-name|USERNAME_DEFAULT
-init|=
-literal|"dr.who"
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -525,7 +541,7 @@ name|conf
 operator|.
 name|getInitParameter
 argument_list|(
-name|USERNAME_KEY
+name|HADOOP_HTTP_STATIC_USER
 argument_list|)
 expr_stmt|;
 name|this
@@ -583,7 +599,7 @@ name|options
 operator|.
 name|put
 argument_list|(
-name|USERNAME_KEY
+name|HADOOP_HTTP_STATIC_USER
 argument_list|,
 name|username
 argument_list|)
@@ -642,7 +658,7 @@ name|DEPRECATED_UGI_KEY
 operator|+
 literal|" should not be used. Instead, use "
 operator|+
-name|USERNAME_KEY
+name|HADOOP_HTTP_STATIC_USER
 operator|+
 literal|"."
 argument_list|)
@@ -672,9 +688,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|USERNAME_KEY
+name|HADOOP_HTTP_STATIC_USER
 argument_list|,
-name|USERNAME_DEFAULT
+name|DEFAULT_HADOOP_HTTP_STATIC_USER
 argument_list|)
 return|;
 block|}

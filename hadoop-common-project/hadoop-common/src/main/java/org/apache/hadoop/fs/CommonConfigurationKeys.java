@@ -44,6 +44,22 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|lib
+operator|.
+name|StaticUserWebFilter
+import|;
+end_import
+
 begin_comment
 comment|/**   * This class contains constants for configuration keys used  * in the common code.  *  * It inherits all the publicly documented configuration keys  * and adds unsupported keys.  *  */
 end_comment
@@ -490,6 +506,25 @@ name|int
 name|HA_FC_CLI_CHECK_TIMEOUT_DEFAULT
 init|=
 literal|20000
+decl_stmt|;
+comment|/** Static user web-filter properties.    * See {@link StaticUserWebFilter}.    */
+DECL|field|HADOOP_HTTP_STATIC_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_HTTP_STATIC_USER
+init|=
+literal|"hadoop.http.staticuser.user"
+decl_stmt|;
+DECL|field|DEFAULT_HADOOP_HTTP_STATIC_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_HADOOP_HTTP_STATIC_USER
+init|=
+literal|"dr.who"
 decl_stmt|;
 block|}
 end_class
