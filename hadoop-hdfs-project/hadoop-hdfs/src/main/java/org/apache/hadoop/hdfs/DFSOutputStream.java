@@ -2543,6 +2543,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// write out data to remote datanode
+try|try
+block|{
 name|blockStream
 operator|.
 name|write
@@ -2568,6 +2570,23 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// HDFS-3398 treat primary DN is down since client is unable to
+comment|// write to primary DN
+name|errorIndex
+operator|=
+literal|0
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 name|lastPacket
 operator|=
 name|System
