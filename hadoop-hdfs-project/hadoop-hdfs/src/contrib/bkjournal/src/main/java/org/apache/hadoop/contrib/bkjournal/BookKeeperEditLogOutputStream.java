@@ -293,12 +293,6 @@ operator|.
 name|OK
 argument_list|)
 decl_stmt|;
-DECL|field|wl
-specifier|private
-specifier|final
-name|WriteLock
-name|wl
-decl_stmt|;
 DECL|field|writer
 specifier|private
 specifier|final
@@ -306,7 +300,7 @@ name|Writer
 name|writer
 decl_stmt|;
 comment|/**    * Construct an edit log output stream which writes to a ledger.     */
-DECL|method|BookKeeperEditLogOutputStream (Configuration conf, LedgerHandle lh, WriteLock wl)
+DECL|method|BookKeeperEditLogOutputStream (Configuration conf, LedgerHandle lh)
 specifier|protected
 name|BookKeeperEditLogOutputStream
 parameter_list|(
@@ -315,9 +309,6 @@ name|conf
 parameter_list|,
 name|LedgerHandle
 name|lh
-parameter_list|,
-name|WriteLock
-name|wl
 parameter_list|)
 throws|throws
 name|IOException
@@ -348,19 +339,6 @@ operator|.
 name|lh
 operator|=
 name|lh
-expr_stmt|;
-name|this
-operator|.
-name|wl
-operator|=
-name|wl
-expr_stmt|;
-name|this
-operator|.
-name|wl
-operator|.
-name|acquire
-argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -509,11 +487,6 @@ name|bke
 argument_list|)
 throw|;
 block|}
-name|wl
-operator|.
-name|release
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -557,11 +530,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|wl
-operator|.
-name|checkWriteLock
-argument_list|()
-expr_stmt|;
 name|writer
 operator|.
 name|writeOp
@@ -594,11 +562,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|wl
-operator|.
-name|checkWriteLock
-argument_list|()
-expr_stmt|;
 name|transmit
 argument_list|()
 expr_stmt|;
@@ -630,11 +593,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|wl
-operator|.
-name|checkWriteLock
-argument_list|()
-expr_stmt|;
 assert|assert
 operator|(
 name|syncLatch
@@ -720,11 +678,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|wl
-operator|.
-name|checkWriteLock
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 operator|!

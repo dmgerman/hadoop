@@ -1205,7 +1205,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test that two namenodes can't become primary at the same    * time.    */
+comment|/**    * Test that two namenodes can't continue as primary    */
 annotation|@
 name|Test
 DECL|method|testMultiplePrimariesStarted ()
@@ -1404,8 +1404,6 @@ operator|.
 name|rollEditLog
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|.
 name|transitionToActive
@@ -1413,42 +1411,44 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|fail
+name|fs
+operator|=
+name|cluster
+operator|.
+name|getFileSystem
 argument_list|(
-literal|"Shouldn't have been able to start two primaries"
-operator|+
-literal|" with single shared storage"
+literal|0
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ServiceFailedException
-name|sfe
-parameter_list|)
-block|{
-name|assertTrue
+comment|// get the older active server.
+comment|// This edit log updation on older active should make older active
+comment|// shutdown.
+name|fs
+operator|.
+name|delete
 argument_list|(
-literal|"Wrong exception"
+name|p1
 argument_list|,
-name|sfe
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Failed to start active services"
-argument_list|)
+literal|true
 argument_list|)
 expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
 name|verify
 argument_list|(
 name|mockRuntime1
+argument_list|,
+name|atLeastOnce
+argument_list|()
+argument_list|)
+operator|.
+name|exit
+argument_list|(
+name|anyInt
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|mockRuntime2
 argument_list|,
 name|times
 argument_list|(
@@ -1462,20 +1462,9 @@ name|anyInt
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|verify
-argument_list|(
-name|mockRuntime2
-argument_list|,
-name|atLeastOnce
-argument_list|()
-argument_list|)
-operator|.
-name|exit
-argument_list|(
-name|anyInt
-argument_list|()
-argument_list|)
-expr_stmt|;
+block|}
+finally|finally
+block|{
 if|if
 condition|(
 name|cluster

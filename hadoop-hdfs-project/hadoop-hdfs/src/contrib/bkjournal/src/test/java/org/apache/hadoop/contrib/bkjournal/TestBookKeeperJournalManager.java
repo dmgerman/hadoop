@@ -2097,6 +2097,11 @@ literal|10
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|bkjm
+operator|.
+name|recoverUnfinalizedSegments
+argument_list|()
+expr_stmt|;
 name|out
 operator|=
 name|bkjm
