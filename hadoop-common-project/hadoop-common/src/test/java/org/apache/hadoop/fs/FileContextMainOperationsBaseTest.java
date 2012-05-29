@@ -303,7 +303,7 @@ argument_list|)
 operator|||
 name|file
 operator|.
-name|toString
+name|getName
 argument_list|()
 operator|.
 name|contains
