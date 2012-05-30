@@ -3144,7 +3144,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_MAX_RECEIVER_THREADS_KEY
 argument_list|,
-literal|0
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_RECEIVER_THREADS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|conf
