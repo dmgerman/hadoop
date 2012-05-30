@@ -377,7 +377,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BookKeeper Journal Manager  *  * To use, add the following to hdfs-site.xml.  *<pre>  * {@code  *<property>  *<name>dfs.namenode.edits.dir</name>  *<value>bookkeeper://zk1:2181;zk2:2181;zk3:2181/hdfsjournal</value>  *</property>  *  *<property>  *<name>dfs.namenode.edits.journal-plugin.bookkeeper</name>  *<value>org.apache.hadoop.contrib.bkjournal.BookKeeperJournalManager</value>  *</property>  * }  *</pre>  * The URI format for bookkeeper is bookkeeper://[zkEnsemble]/[rootZnode]  * [zookkeeper ensemble] is a list of semi-colon separated, zookeeper host:port  * pairs. In the example above there are 3 servers, in the ensemble,  * zk1, zk2&amp; zk3, each one listening on port 2181.  *  * [root znode] is the path of the zookeeper znode, under which the editlog  * information will be stored.  *  * Other configuration options are:  *<ul>  *<li><b>dfs.namenode.bookkeeperjournal.output-buffer-size</b>  *       Number of bytes a bookkeeper journal stream will buffer before  *       forcing a flush. Default is 1024.</li>  *<li><b>dfs.namenode.bookkeeperjournal.ensemble-size</b>  *       Number of bookkeeper servers in edit log ledger ensembles. This  *       is the number of bookkeeper servers which need to be available  *       for the ledger to be writable. Default is 3.</li>  *<li><b>dfs.namenode.bookkeeperjournal.quorum-size</b>  *       Number of bookkeeper servers in the write quorum. This is the  *       number of bookkeeper servers which must have acknowledged the  *       write of an entry before it is considered written.  *       Default is 2.</li>  *<li><b>dfs.namenode.bookkeeperjournal.digestPw</b>  *       Password to use when creating ledgers.</li>  *</ul>  */
+comment|/**  * BookKeeper Journal Manager  *  * To use, add the following to hdfs-site.xml.  *<pre>  * {@code  *<property>  *<name>dfs.namenode.edits.dir</name>  *<value>bookkeeper://zk1:2181;zk2:2181;zk3:2181/hdfsjournal</value>  *</property>  *  *<property>  *<name>dfs.namenode.edits.journal-plugin.bookkeeper</name>  *<value>org.apache.hadoop.contrib.bkjournal.BookKeeperJournalManager</value>  *</property>  * }  *</pre>  * The URI format for bookkeeper is bookkeeper://[zkEnsemble]/[rootZnode]  * [zookkeeper ensemble] is a list of semi-colon separated, zookeeper host:port  * pairs. In the example above there are 3 servers, in the ensemble,  * zk1, zk2&amp; zk3, each one listening on port 2181.  *  * [root znode] is the path of the zookeeper znode, under which the editlog  * information will be stored.  *  * Other configuration options are:  *<ul>  *<li><b>dfs.namenode.bookkeeperjournal.output-buffer-size</b>  *       Number of bytes a bookkeeper journal stream will buffer before  *       forcing a flush. Default is 1024.</li>  *<li><b>dfs.namenode.bookkeeperjournal.ensemble-size</b>  *       Number of bookkeeper servers in edit log ledger ensembles. This  *       is the number of bookkeeper servers which need to be available  *       for the ledger to be writable. Default is 3.</li>  *<li><b>dfs.namenode.bookkeeperjournal.quorum-size</b>  *       Number of bookkeeper servers in the write quorum. This is the  *       number of bookkeeper servers which must have acknowledged the  *       write of an entry before it is considered written.  *       Default is 2.</li>  *<li><b>dfs.namenode.bookkeeperjournal.digestPw</b>  *       Password to use when creating ledgers.</li>  *<li><b>dfs.namenode.bookkeeperjournal.zk.session.timeout</b>  *       Session timeout for Zookeeper client from BookKeeper Journal Manager.  *       Hadoop recommends that, this value should be less than the ZKFC   *       session timeout value. Default value is 3000.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -484,6 +484,24 @@ name|BKJM_LAYOUT_VERSION
 init|=
 operator|-
 literal|1
+decl_stmt|;
+DECL|field|BKJM_ZK_SESSION_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|BKJM_ZK_SESSION_TIMEOUT
+init|=
+literal|"dfs.namenode.bookkeeperjournal.zk.session.timeout"
+decl_stmt|;
+DECL|field|BKJM_ZK_SESSION_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|BKJM_ZK_SESSION_TIMEOUT_DEFAULT
+init|=
+literal|3000
 decl_stmt|;
 DECL|field|zkc
 specifier|private
@@ -768,7 +786,14 @@ name|ZooKeeper
 argument_list|(
 name|zkConnect
 argument_list|,
-literal|3000
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|BKJM_ZK_SESSION_TIMEOUT
+argument_list|,
+name|BKJM_ZK_SESSION_TIMEOUT_DEFAULT
+argument_list|)
 argument_list|,
 operator|new
 name|ZkConnectionWatcher
