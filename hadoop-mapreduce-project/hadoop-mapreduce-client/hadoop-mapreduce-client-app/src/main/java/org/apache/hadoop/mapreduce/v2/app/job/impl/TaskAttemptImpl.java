@@ -2504,6 +2504,26 @@ name|TA_TIMED_OUT
 argument_list|,
 name|CLEANUP_CONTAINER_TRANSITION
 argument_list|)
+comment|// if container killed by AM shutting down
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|RUNNING
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|KILLED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
+argument_list|,
+operator|new
+name|KilledTransition
+argument_list|()
+argument_list|)
 comment|// Kill handling
 operator|.
 name|addTransition
@@ -2592,6 +2612,26 @@ operator|.
 name|TA_KILL
 argument_list|,
 name|CLEANUP_CONTAINER_TRANSITION
+argument_list|)
+comment|// if container killed by AM shutting down
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|COMMIT_PENDING
+argument_list|,
+name|TaskAttemptState
+operator|.
+name|KILLED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
+argument_list|,
+operator|new
+name|KilledTransition
+argument_list|()
 argument_list|)
 operator|.
 name|addTransition
@@ -2974,6 +3014,10 @@ name|TaskAttemptEventType
 operator|.
 name|TA_FAILMSG
 argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
+argument_list|,
 comment|// Container launch events can arrive late
 name|TaskAttemptEventType
 operator|.
@@ -3061,6 +3105,10 @@ name|TaskAttemptEventType
 operator|.
 name|TA_FAILMSG
 argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
+argument_list|,
 comment|// Container launch events can arrive late
 name|TaskAttemptEventType
 operator|.
@@ -3135,6 +3183,10 @@ name|TA_FAILMSG
 argument_list|,
 name|TaskAttemptEventType
 operator|.
+name|TA_CONTAINER_CLEANED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
 name|TA_CONTAINER_COMPLETED
 argument_list|)
 argument_list|)
@@ -3196,6 +3248,10 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCH_FAILED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
@@ -3268,6 +3324,10 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_CONTAINER_LAUNCH_FAILED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_CONTAINER_CLEANED
 argument_list|,
 name|TaskAttemptEventType
 operator|.
