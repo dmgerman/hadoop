@@ -2983,6 +2983,8 @@ operator|.
 name|io
 operator|.
 name|Closeable
+implements|,
+name|Syncable
 block|{
 DECL|field|conf
 specifier|private
@@ -4922,7 +4924,9 @@ expr_stmt|;
 comment|// update lastSyncPos
 block|}
 block|}
-comment|/** flush all currently written data to the file system */
+comment|/**      * flush all currently written data to the file system      * @deprecated Use {@link #hsync()} or {@link #hflush()} instead      */
+annotation|@
+name|Deprecated
 DECL|method|syncFs ()
 specifier|public
 name|void
@@ -4944,6 +4948,54 @@ name|hflush
 argument_list|()
 expr_stmt|;
 comment|// flush contents to file system
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|hsync ()
+specifier|public
+name|void
+name|hsync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|out
+operator|!=
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|hsync
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|hflush ()
+specifier|public
+name|void
+name|hflush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|out
+operator|!=
+literal|null
+condition|)
+block|{
+name|out
+operator|.
+name|hflush
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/** Returns the configuration of this file. */

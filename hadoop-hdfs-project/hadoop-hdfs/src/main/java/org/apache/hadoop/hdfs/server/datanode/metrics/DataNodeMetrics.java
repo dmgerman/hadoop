@@ -325,6 +325,12 @@ name|Metric
 name|MutableCounterLong
 name|blocksGetLocalPathInfo
 decl_stmt|;
+DECL|field|fsyncCount
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|fsyncCount
+decl_stmt|;
 DECL|field|volumeFailures
 annotation|@
 name|Metric
@@ -372,6 +378,12 @@ annotation|@
 name|Metric
 name|MutableRate
 name|blockReports
+decl_stmt|;
+DECL|field|fsync
+annotation|@
+name|Metric
+name|MutableRate
+name|fsync
 decl_stmt|;
 DECL|field|registry
 specifier|final
@@ -753,6 +765,35 @@ name|blocksRead
 operator|.
 name|incr
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrFsyncCount ()
+specifier|public
+name|void
+name|incrFsyncCount
+parameter_list|()
+block|{
+name|fsyncCount
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|addFsync (long latency)
+specifier|public
+name|void
+name|addFsync
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|fsync
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|shutdown ()

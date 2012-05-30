@@ -856,6 +856,7 @@ block|}
 block|}
 comment|/**    *  create a buffer that contains the entire test file data.    */
 DECL|method|initBuffer (int size)
+specifier|public
 specifier|static
 name|byte
 index|[]

@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/****************************************************************  * CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  *<p>  *   * Use the CreateFlag as follows:  *<ol>  *<li> CREATE - to create a file if it does not exist,   * else throw FileAlreadyExists.</li>  *<li> APPEND - to append to a file if it exists,   * else throw FileNotFoundException.</li>  *<li> OVERWRITE - to truncate a file if it exists,   * else throw FileNotFoundException.</li>  *<li> CREATE|APPEND - to create a file if it does not exist,   * else append to an existing file.</li>  *<li> CREATE|OVERWRITE - to create a file if it does not exist,   * else overwrite an existing file.</li>  *</ol>  *   * Following combination is not valid and will result in   * {@link HadoopIllegalArgumentException}:  *<ol>  *<li> APPEND|OVERWRITE</li>  *<li> CREATE|APPEND|OVERWRITE</li>  *</ol>  *****************************************************************/
+comment|/****************************************************************  * CreateFlag specifies the file create semantic. Users can combine flags like:<br>  *<code>  * EnumSet.of(CreateFlag.CREATE, CreateFlag.APPEND)  *<code>  *<p>  *   * Use the CreateFlag as follows:  *<ol>  *<li> CREATE - to create a file if it does not exist,   * else throw FileAlreadyExists.</li>  *<li> APPEND - to append to a file if it exists,   * else throw FileNotFoundException.</li>  *<li> OVERWRITE - to truncate a file if it exists,   * else throw FileNotFoundException.</li>  *<li> CREATE|APPEND - to create a file if it does not exist,   * else append to an existing file.</li>  *<li> CREATE|OVERWRITE - to create a file if it does not exist,   * else overwrite an existing file.</li>  *<li> SYNC_BLOCK - to force closed blocks to the disk device.  * In addition {@link Syncable#hsync()} should be called after each write,  * if true synchronous behavior is required.</li>  *</ol>  *   * Following combination is not valid and will result in   * {@link HadoopIllegalArgumentException}:  *<ol>  *<li> APPEND|OVERWRITE</li>  *<li> CREATE|APPEND|OVERWRITE</li>  *</ol>  *****************************************************************/
 end_comment
 
 begin_enum
@@ -132,6 +132,16 @@ operator|(
 name|short
 operator|)
 literal|0x04
+argument_list|)
+block|,
+comment|/**    * Force closed blocks to disk. Similar to POSIX O_SYNC. See javadoc for description.    */
+DECL|enumConstant|SYNC_BLOCK
+name|SYNC_BLOCK
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0x08
 argument_list|)
 block|;
 DECL|field|mode

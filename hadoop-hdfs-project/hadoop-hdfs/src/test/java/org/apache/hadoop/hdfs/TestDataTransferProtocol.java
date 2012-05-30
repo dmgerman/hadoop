@@ -1123,9 +1123,12 @@ literal|true
 argument_list|,
 comment|// lastPacketInBlock
 literal|0
+argument_list|,
+comment|// chunk length
+literal|false
 argument_list|)
 decl_stmt|;
-comment|// chunk length
+comment|// sync block
 name|hdr
 operator|.
 name|write
@@ -2668,9 +2671,11 @@ name|nextInt
 argument_list|(
 name|oneMil
 argument_list|)
+argument_list|,
+comment|// bad datalen
+literal|false
 argument_list|)
 decl_stmt|;
-comment|// bad datalen
 name|hdr
 operator|.
 name|write
@@ -2791,9 +2796,11 @@ literal|true
 argument_list|,
 comment|// lastPacketInBlock
 literal|0
+argument_list|,
+comment|// chunk length
+literal|false
 argument_list|)
 expr_stmt|;
-comment|// chunk length
 name|hdr
 operator|.
 name|write
@@ -3244,9 +3251,11 @@ literal|false
 argument_list|,
 comment|// lastPacketInBlock
 literal|4096
+argument_list|,
+comment|// chunk length
+literal|false
 argument_list|)
 decl_stmt|;
-comment|// chunk length
 name|ByteArrayOutputStream
 name|baos
 init|=

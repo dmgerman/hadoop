@@ -1031,6 +1031,14 @@ name|short
 name|blockReplication
 decl_stmt|;
 comment|// replication factor of file
+DECL|field|shouldSyncBlock
+specifier|private
+name|boolean
+name|shouldSyncBlock
+init|=
+literal|false
+decl_stmt|;
+comment|// force blocks to disk upon close
 DECL|class|Packet
 specifier|private
 class|class
@@ -1047,10 +1055,16 @@ name|offsetInBlock
 decl_stmt|;
 comment|// offset in block
 DECL|field|lastPacketInBlock
+specifier|private
 name|boolean
 name|lastPacketInBlock
 decl_stmt|;
 comment|// is this the last packet in block?
+DECL|field|syncBlock
+name|boolean
+name|syncBlock
+decl_stmt|;
+comment|// this packet forces the current block to disk
 DECL|field|numChunks
 name|int
 name|numChunks
@@ -1473,6 +1487,8 @@ argument_list|,
 name|lastPacketInBlock
 argument_list|,
 name|dataLen
+argument_list|,
+name|syncBlock
 argument_list|)
 decl_stmt|;
 name|header
@@ -5940,6 +5956,19 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|shouldSyncBlock
+operator|=
+name|flag
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|SYNC_BLOCK
+argument_list|)
+expr_stmt|;
 name|computePacketChunkSize
 argument_list|(
 name|dfsClient
@@ -6881,6 +6910,12 @@ name|lastPacketInBlock
 operator|=
 literal|true
 expr_stmt|;
+name|currentPacket
+operator|.
+name|syncBlock
+operator|=
+name|shouldSyncBlock
+expr_stmt|;
 name|waitAndQueueCurrentPacket
 argument_list|()
 expr_stmt|;
@@ -6903,6 +6938,40 @@ specifier|public
 name|void
 name|hflush
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|flushOrSync
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *     * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    */
+annotation|@
+name|Override
+DECL|method|hsync ()
+specifier|public
+name|void
+name|hsync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|flushOrSync
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|flushOrSync (boolean isSync)
+specifier|private
+name|void
+name|flushOrSync
+parameter_list|(
+name|boolean
+name|isSync
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -6990,9 +7059,31 @@ name|lastFlushOffset
 operator|=
 name|bytesCurBlock
 expr_stmt|;
-name|waitAndQueueCurrentPacket
-argument_list|()
+if|if
+condition|(
+name|isSync
+operator|&&
+name|currentPacket
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Nothing to send right now,
+comment|// but sync was requested.
+comment|// Send an empty packet
+name|currentPacket
+operator|=
+operator|new
+name|Packet
+argument_list|(
+name|packetSize
+argument_list|,
+name|chunksPerPacket
+argument_list|,
+name|bytesCurBlock
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -7008,10 +7099,56 @@ literal|null
 operator|:
 literal|"Empty flush should not occur with a currentPacket"
 assert|;
+if|if
+condition|(
+name|isSync
+operator|&&
+name|bytesCurBlock
+operator|>
+literal|0
+condition|)
+block|{
+comment|// Nothing to send right now,
+comment|// and the block was partially written,
+comment|// and sync was requested.
+comment|// So send an empty sync packet.
+name|currentPacket
+operator|=
+operator|new
+name|Packet
+argument_list|(
+name|packetSize
+argument_list|,
+name|chunksPerPacket
+argument_list|,
+name|bytesCurBlock
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// just discard the current packet since it is already been sent.
 name|currentPacket
 operator|=
 literal|null
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|currentPacket
+operator|!=
+literal|null
+condition|)
+block|{
+name|currentPacket
+operator|.
+name|syncBlock
+operator|=
+name|isSync
+expr_stmt|;
+name|waitAndQueueCurrentPacket
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Restore state of stream. Record the last flush offset
@@ -7175,22 +7312,6 @@ throw|throw
 name|e
 throw|;
 block|}
-block|}
-comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *     * Right now by default it is implemented as hflush    */
-annotation|@
-name|Override
-DECL|method|hsync ()
-specifier|public
-specifier|synchronized
-name|void
-name|hsync
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|hflush
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * @deprecated use {@link HdfsDataOutputStream#getCurrentBlockReplication()}.    */
 annotation|@
@@ -7587,6 +7708,12 @@ operator|.
 name|lastPacketInBlock
 operator|=
 literal|true
+expr_stmt|;
+name|currentPacket
+operator|.
+name|syncBlock
+operator|=
+name|shouldSyncBlock
 expr_stmt|;
 block|}
 name|flushInternal

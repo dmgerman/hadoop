@@ -2890,6 +2890,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+comment|// both syncBlock and syncPacket are false
 name|PacketHeader
 name|header
 init|=
@@ -2909,6 +2910,8 @@ literal|0
 operator|)
 argument_list|,
 name|dataLen
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|header

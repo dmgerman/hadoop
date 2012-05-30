@@ -175,6 +175,11 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
+name|setSyncBlock
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 operator|.
@@ -207,7 +212,7 @@ specifier|public
 name|PacketHeader
 parameter_list|()
 block|{   }
-DECL|method|PacketHeader (int packetLen, long offsetInBlock, long seqno, boolean lastPacketInBlock, int dataLen)
+DECL|method|PacketHeader (int packetLen, long offsetInBlock, long seqno, boolean lastPacketInBlock, int dataLen, boolean syncBlock)
 specifier|public
 name|PacketHeader
 parameter_list|(
@@ -225,6 +230,9 @@ name|lastPacketInBlock
 parameter_list|,
 name|int
 name|dataLen
+parameter_list|,
+name|boolean
+name|syncBlock
 parameter_list|)
 block|{
 name|this
@@ -258,6 +266,11 @@ operator|.
 name|setDataLen
 argument_list|(
 name|dataLen
+argument_list|)
+operator|.
+name|setSyncBlock
+argument_list|(
+name|syncBlock
 argument_list|)
 operator|.
 name|build
@@ -324,6 +337,19 @@ parameter_list|()
 block|{
 return|return
 name|packetLen
+return|;
+block|}
+DECL|method|getSyncBlock ()
+specifier|public
+name|boolean
+name|getSyncBlock
+parameter_list|()
+block|{
+return|return
+name|proto
+operator|.
+name|getSyncBlock
+argument_list|()
 return|;
 block|}
 annotation|@
