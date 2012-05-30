@@ -60,6 +60,18 @@ name|apache
 operator|.
 name|zookeeper
 operator|.
+name|KeeperException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
 name|ZooDefs
 operator|.
 name|Ids
@@ -283,7 +295,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -292,6 +304,22 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Error writing max tx id"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while writing max tx id"
 argument_list|,
 name|e
 argument_list|)
@@ -371,7 +399,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -382,6 +410,22 @@ argument_list|(
 literal|"Error reading the max tx id from zk"
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while reading thr max tx id"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}

@@ -674,8 +674,8 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e
+name|KeeperException
+name|ke
 parameter_list|)
 block|{
 throw|throw
@@ -684,7 +684,23 @@ name|IOException
 argument_list|(
 literal|"Error reading from zookeeper"
 argument_list|,
-name|e
+name|ke
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted reading from zookeeper"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -793,7 +809,7 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -802,6 +818,24 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Error creating ledger znode"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted creating ledger znode"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -862,7 +896,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -875,6 +909,27 @@ operator|+
 name|path
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Couldn't verify data in "
+operator|+
+name|path
+argument_list|,
+name|ie
 argument_list|)
 expr_stmt|;
 return|return

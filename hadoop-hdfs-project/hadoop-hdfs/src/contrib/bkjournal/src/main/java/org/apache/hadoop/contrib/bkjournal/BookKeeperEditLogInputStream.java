@@ -156,6 +156,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|bookkeeper
+operator|.
+name|client
+operator|.
+name|BKException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|commons
 operator|.
 name|logging
@@ -459,7 +473,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|BKException
 name|e
 parameter_list|)
 block|{
@@ -468,6 +482,22 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Exception closing ledger"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted closing ledger"
 argument_list|,
 name|e
 argument_list|)
@@ -684,8 +714,6 @@ name|readEntries
 operator|=
 name|firstBookKeeperEntry
 expr_stmt|;
-try|try
-block|{
 name|maxEntry
 operator|=
 name|lh
@@ -693,23 +721,6 @@ operator|.
 name|getLastAddConfirmed
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Error reading last entry id"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/**      * Get input stream representing next entry in the      * ledger.      * @return input stream, or null if no more entries      */
 DECL|method|nextStream ()
@@ -784,7 +795,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|BKException
 name|e
 parameter_list|)
 block|{
@@ -793,6 +804,22 @@ operator|new
 name|IOException
 argument_list|(
 literal|"Error reading entries from bookkeeper"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted reading entries from bookkeeper"
 argument_list|,
 name|e
 argument_list|)

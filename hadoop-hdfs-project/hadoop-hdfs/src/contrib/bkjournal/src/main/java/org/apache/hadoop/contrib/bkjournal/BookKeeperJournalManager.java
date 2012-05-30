@@ -954,7 +954,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -965,6 +965,22 @@ argument_list|(
 literal|"Error initializing zk"
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while initializing bk journal manager"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -1097,6 +1113,57 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|BKException
+name|bke
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Error creating ledger"
+argument_list|,
+name|bke
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|KeeperException
+name|ke
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Error in zookeeper while creating ledger"
+argument_list|,
+name|ke
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted creating ledger"
+argument_list|,
+name|ie
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
 name|String
 name|znodePath
 init|=
@@ -1161,16 +1228,34 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e
+name|KeeperException
+name|ke
 parameter_list|)
 block|{
-if|if
-condition|(
+name|cleanupLedger
+argument_list|(
 name|currentLedger
-operator|!=
-literal|null
-condition|)
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Error storing ledger metadata"
+argument_list|,
+name|ke
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|cleanupLedger (LedgerHandle lh)
+specifier|private
+name|void
+name|cleanupLedger
+parameter_list|(
+name|LedgerHandle
+name|lh
+parameter_list|)
 block|{
 try|try
 block|{
@@ -1197,8 +1282,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e2
+name|BKException
+name|bke
 parameter_list|)
 block|{
 comment|//log& ignore, an IOException will be thrown soon
@@ -1208,20 +1293,25 @@ name|error
 argument_list|(
 literal|"Error closing ledger"
 argument_list|,
-name|e2
+name|bke
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-throw|throw
-operator|new
-name|IOException
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
 argument_list|(
-literal|"Error creating ledger"
+literal|"Interrupted while closing ledger"
 argument_list|,
-name|e
+name|ie
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Finalize a log segment. If the journal manager is currently    * writing to a ledger, ensure that this is the ledger of the log segment    * being finalized.    *    * Otherwise this is the recovery case. In the recovery case, ensure that    * the firstTxId of the ledger matches firstTxId for the segment we are    * trying to finalize.    */
@@ -1698,7 +1788,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|BKException
 name|e
 parameter_list|)
 block|{
@@ -1711,6 +1801,24 @@ operator|+
 name|fromTxId
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted opening ledger for "
+operator|+
+name|fromTxId
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -2351,17 +2459,33 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
-name|e
+name|BKException
+name|bke
 parameter_list|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Couldn't close zookeeper client"
+literal|"Couldn't close bookkeeper client"
 argument_list|,
-name|e
+name|bke
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while closing journal manager"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -2548,7 +2672,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|BKException
 name|e
 parameter_list|)
 block|{
@@ -2561,6 +2685,26 @@ operator|+
 name|l
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while retreiving last tx id "
+operator|+
+literal|"for ledger "
+operator|+
+name|l
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -2637,7 +2781,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -2648,6 +2792,22 @@ argument_list|(
 literal|"Exception reading ledger list from zk"
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted getting list of ledgers from zk"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}

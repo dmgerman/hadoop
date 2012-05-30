@@ -319,7 +319,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|KeeperException
 name|e
 parameter_list|)
 block|{
@@ -330,6 +330,22 @@ argument_list|(
 literal|"Exception accessing Zookeeper"
 argument_list|,
 name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted accessing Zookeeper"
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
