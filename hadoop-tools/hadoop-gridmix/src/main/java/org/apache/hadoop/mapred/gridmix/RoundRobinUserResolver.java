@@ -366,6 +366,25 @@ literal|0
 condition|)
 block|{
 comment|//line is of the form username[,group]*
+if|if
+condition|(
+name|rawUgi
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|""
+argument_list|)
+condition|)
+block|{
+continue|continue;
+comment|//Continue on empty line
+block|}
 comment|// e is end position of user name in this line
 name|int
 name|e
@@ -379,13 +398,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|rawUgi
-operator|.
-name|getLength
-argument_list|()
-operator|==
-literal|0
-operator|||
 name|e
 operator|==
 literal|0
@@ -434,6 +446,9 @@ literal|0
 argument_list|,
 name|e
 argument_list|)
+operator|.
+name|trim
+argument_list|()
 decl_stmt|;
 name|UserGroupInformation
 name|ugi
