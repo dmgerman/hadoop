@@ -186,6 +186,16 @@ name|javax
 operator|.
 name|management
 operator|.
+name|RuntimeErrorException
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|management
+operator|.
 name|RuntimeMBeanException
 import|;
 end_import
@@ -1352,6 +1362,33 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+return|return;
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeErrorException
+name|e
+parameter_list|)
+block|{
+comment|// RuntimeErrorException happens when an unexpected failure occurs in getAttribute
+comment|// for example https://issues.apache.org/jira/browse/DAEMON-120
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getting attribute "
+operator|+
+name|attName
+operator|+
+literal|" of "
+operator|+
+name|oname
+operator|+
+literal|" threw an exception"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 catch|catch
