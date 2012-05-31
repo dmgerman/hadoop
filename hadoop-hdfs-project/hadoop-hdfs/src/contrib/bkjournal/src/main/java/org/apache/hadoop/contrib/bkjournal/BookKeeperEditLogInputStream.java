@@ -347,6 +347,37 @@ operator|.
 name|isInProgress
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|firstBookKeeperEntry
+argument_list|<
+literal|0
+operator|||
+name|firstBookKeeperEntry
+argument_list|>
+name|lh
+operator|.
+name|getLastAddConfirmed
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid first bk entry to read: "
+operator|+
+name|firstBookKeeperEntry
+operator|+
+literal|", LAC: "
+operator|+
+name|lh
+operator|.
+name|getLastAddConfirmed
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|BufferedInputStream
 name|bin
 init|=

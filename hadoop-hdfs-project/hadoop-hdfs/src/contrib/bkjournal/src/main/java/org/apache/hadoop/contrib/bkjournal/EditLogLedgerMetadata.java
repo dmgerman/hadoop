@@ -890,8 +890,11 @@ expr_stmt|;
 block|}
 return|return
 name|other
-operator|==
+operator|.
+name|equals
+argument_list|(
 name|this
+argument_list|)
 return|;
 block|}
 catch|catch
