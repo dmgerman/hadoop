@@ -474,6 +474,8 @@ parameter_list|,
 name|FSNamesystem
 name|ns
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -505,7 +507,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Determine the address of the NN we are checkpointing    * as well as our own HTTP address from the configuration.    */
+comment|/**    * Determine the address of the NN we are checkpointing    * as well as our own HTTP address from the configuration.    * @throws IOException     */
 DECL|method|setNameNodeAddresses (Configuration conf)
 specifier|private
 name|void
@@ -514,6 +516,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Look up our own address.
 name|String
@@ -589,6 +593,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|String
 name|configuredAddr

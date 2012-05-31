@@ -4613,7 +4613,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** Start services required in standby state */
+comment|/**    * Start services required in standby state     *     * @throws IOException    */
 DECL|method|startStandbyServices (final Configuration conf)
 name|void
 name|startStandbyServices
@@ -4622,6 +4622,8 @@ specifier|final
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|LOG
 operator|.

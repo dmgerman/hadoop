@@ -3256,8 +3256,8 @@ else|:
 literal|null
 return|;
 block|}
-comment|/**    * return server http or https address from the configuration for a    * given namenode rpc address.    * @param conf    * @param namenodeAddr - namenode RPC address    * @param httpsAddress -If true, and if security is enabled, returns server     *                      https address. If false, returns server http address.    * @return server http or https address    */
-DECL|method|getInfoServer ( InetSocketAddress namenodeAddr, Configuration conf, boolean httpsAddress)
+comment|/**    * return server http or https address from the configuration for a    * given namenode rpc address.    * @param conf    * @param namenodeAddr - namenode RPC address    * @param httpsAddress -If true, and if security is enabled, returns server     *                      https address. If false, returns server http address.    * @return server http or https address    * @throws IOException     */
+DECL|method|getInfoServer (InetSocketAddress namenodeAddr, Configuration conf, boolean httpsAddress)
 specifier|public
 specifier|static
 name|String
@@ -3272,6 +3272,8 @@ parameter_list|,
 name|boolean
 name|httpsAddress
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|boolean
 name|securityOn
@@ -3349,7 +3351,9 @@ literal|2
 index|]
 expr_stmt|;
 block|}
-return|return
+name|String
+name|configuredInfoAddr
+init|=
 name|getSuffixedConf
 argument_list|(
 name|conf
@@ -3360,7 +3364,32 @@ name|httpAddressDefault
 argument_list|,
 name|suffixes
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|namenodeAddr
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|substituteForWildcardAddress
+argument_list|(
+name|configuredInfoAddr
+argument_list|,
+name|namenodeAddr
+operator|.
+name|getHostName
+argument_list|()
+argument_list|)
 return|;
+block|}
+else|else
+block|{
+return|return
+name|configuredInfoAddr
+return|;
+block|}
 block|}
 comment|/**    * Substitute a default host in the case that an address has been configured    * with a wildcard. This is used, for example, when determining the HTTP    * address of the NN -- if it's configured to bind to 0.0.0.0, we want to    * substitute the hostname from the filesystem URI rather than trying to    * connect to 0.0.0.0.    * @param configuredAddress the address found in the configuration    * @param defaultHost the host to substitute with, if configuredAddress    * is a local/wildcard address.    * @return the substituted address    * @throws IOException if it is a wildcard address and security is enabled    */
 DECL|method|substituteForWildcardAddress (String configuredAddress, String defaultHost)

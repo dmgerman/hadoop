@@ -401,6 +401,8 @@ specifier|public
 name|void
 name|testGetOtherNNHttpAddress
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// Use non-local addresses to avoid host address matching
 name|Configuration
