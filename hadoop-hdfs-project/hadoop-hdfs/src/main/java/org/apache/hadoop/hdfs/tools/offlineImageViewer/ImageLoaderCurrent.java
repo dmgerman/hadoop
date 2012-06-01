@@ -481,6 +481,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|done
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 name|v
@@ -757,27 +762,32 @@ name|leaveEnclosingElement
 argument_list|()
 expr_stmt|;
 comment|// FSImage
+name|done
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|done
+condition|)
+block|{
 name|v
 operator|.
 name|finish
 argument_list|()
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
+else|else
 block|{
-comment|// Tell the visitor to clean up, then re-throw the exception
 name|v
 operator|.
 name|finishAbnormally
 argument_list|()
 expr_stmt|;
-throw|throw
-name|e
-throw|;
+block|}
 block|}
 block|}
 comment|/**    * Process the Delegation Token related section in fsimage.    *     * @param in DataInputStream to process    * @param v Visitor to walk over records    */
