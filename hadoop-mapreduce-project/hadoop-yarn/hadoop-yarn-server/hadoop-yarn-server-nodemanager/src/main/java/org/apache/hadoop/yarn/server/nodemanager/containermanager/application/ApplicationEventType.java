@@ -40,6 +40,7 @@ block|,
 DECL|enumConstant|FINISH_APPLICATION
 name|FINISH_APPLICATION
 block|,
+comment|// Source: LogAggregationService if init fails
 comment|// Source: ResourceLocalizationService
 DECL|enumConstant|APPLICATION_INITED
 name|APPLICATION_INITED
@@ -52,6 +53,9 @@ DECL|enumConstant|APPLICATION_CONTAINER_FINISHED
 name|APPLICATION_CONTAINER_FINISHED
 block|,
 comment|// Source: Log Handler
+DECL|enumConstant|APPLICATION_LOG_HANDLING_INITED
+name|APPLICATION_LOG_HANDLING_INITED
+block|,
 DECL|enumConstant|APPLICATION_LOG_HANDLING_FINISHED
 name|APPLICATION_LOG_HANDLING_FINISHED
 block|}
