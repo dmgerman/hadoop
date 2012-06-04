@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -284,6 +294,17 @@ comment|/**    * {@link RMApp} can have multiple application attempts {@link RMA
 DECL|method|getCurrentAppAttempt ()
 name|RMAppAttempt
 name|getCurrentAppAttempt
+parameter_list|()
+function_decl|;
+comment|/**    * {@link RMApp} can have multiple application attempts {@link RMAppAttempt}.    * This method returns the all {@link RMAppAttempt}s for the RMApp.    * @return all {@link RMAppAttempt}s for the RMApp.    */
+DECL|method|getAppAttempts ()
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|RMAppAttempt
+argument_list|>
+name|getAppAttempts
 parameter_list|()
 function_decl|;
 comment|/**    * To get the status of an application in the RM, this method can be used.    * If full access is not allowed then the following fields in the report    * will be stubbed:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *    * @param allowAccess whether to allow full access to the report    * @return the {@link ApplicationReport} detailing the status of the application.    */

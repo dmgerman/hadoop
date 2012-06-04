@@ -342,10 +342,16 @@ name|ApplicationSubmissionContext
 name|getSubmissionContext
 parameter_list|()
 function_decl|;
-comment|/*    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */
+comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */
 DECL|method|getApplicationResourceUsageReport ()
 name|ApplicationResourceUsageReport
 name|getApplicationResourceUsageReport
+parameter_list|()
+function_decl|;
+comment|/**    * the start time of the application.    * @return the start time of the application.    */
+DECL|method|getStartTime ()
+name|long
+name|getStartTime
 parameter_list|()
 function_decl|;
 block|}

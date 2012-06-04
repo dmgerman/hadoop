@@ -44,6 +44,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -900,6 +910,27 @@ DECL|method|getCurrentAppAttempt ()
 specifier|public
 name|RMAppAttempt
 name|getCurrentAppAttempt
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAppAttempts ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|RMAppAttempt
+argument_list|>
+name|getAppAttempts
 parameter_list|()
 block|{
 throw|throw

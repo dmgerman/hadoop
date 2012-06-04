@@ -1229,6 +1229,13 @@ name|proxiedTrackingUrl
 init|=
 literal|"N/A"
 decl_stmt|;
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+init|=
+literal|0
+decl_stmt|;
 comment|// Set to null initially. Will eventually get set
 comment|// if an RMAppAttemptUnregistrationEvent occurs
 DECL|field|finalStatus
@@ -3067,6 +3074,15 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
+name|appAttempt
+operator|.
+name|startTime
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 comment|// Register with the ApplicationMasterService
 name|appAttempt
 operator|.
@@ -4444,6 +4460,40 @@ name|RMAppAttemptState
 operator|.
 name|RUNNING
 return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|startTime
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
