@@ -2256,6 +2256,8 @@ throws|throws
 name|IOException
 throws|,
 name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|int
 name|count
@@ -2358,6 +2360,13 @@ argument_list|)
 expr_stmt|;
 name|count
 operator|++
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
 expr_stmt|;
 block|}
 if|if
