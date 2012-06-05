@@ -1912,6 +1912,12 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|nnt
 init|=
+operator|(
+name|Token
+argument_list|<
+name|DelegationTokenIdentifier
+argument_list|>
+operator|)
 name|TokenCache
 operator|.
 name|getDelegationToken
