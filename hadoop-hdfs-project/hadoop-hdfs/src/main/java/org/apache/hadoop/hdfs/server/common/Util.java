@@ -162,7 +162,7 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * Current system time.    * @return current time in msec.    */
+comment|/**    * Current system time.  Do not use this to calculate a duration or interval    * to sleep, because it will be broken by settimeofday.  Instead, use    * monotonicNow.    * @return current time in msec.    */
 DECL|method|now ()
 specifier|public
 specifier|static
@@ -175,6 +175,29 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+return|;
+block|}
+comment|/**    * Current time from some arbitrary time base in the past, counting in    * milliseconds, and not affected by settimeofday or similar system clock    * changes.  This is appropriate to use when computing how much longer to    * wait for an interval to expire.    * @return a monotonic clock that counts in milliseconds.    */
+DECL|method|monotonicNow ()
+specifier|public
+specifier|static
+name|long
+name|monotonicNow
+parameter_list|()
+block|{
+specifier|final
+name|long
+name|NANOSECONDS_PER_MILLISECOND
+init|=
+literal|1000000
+decl_stmt|;
+return|return
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+operator|/
+name|NANOSECONDS_PER_MILLISECOND
 return|;
 block|}
 comment|/**    * Interprets the passed string as a URI. In case of error it     * assumes the specified string is a file.    *    * @param s the string to interpret    * @return the resulting URI     * @throws IOException     */

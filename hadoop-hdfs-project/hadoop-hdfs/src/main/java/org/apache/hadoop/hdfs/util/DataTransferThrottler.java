@@ -18,6 +18,26 @@ name|util
 package|;
 end_package
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
+operator|.
+name|monotonicNow
+import|;
+end_import
+
 begin_comment
 comment|/**   * a class to throttle the data transfers.  * This class is thread safe. It can be shared by multiple threads.  * The parameter bandwidthPerSec specifies the total bandwidth shared by  * threads.  */
 end_comment
@@ -97,9 +117,7 @@ name|this
 operator|.
 name|curPeriodStart
 operator|=
-name|System
-operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 name|this
@@ -222,9 +240,7 @@ block|{
 name|long
 name|now
 init|=
-name|System
-operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long

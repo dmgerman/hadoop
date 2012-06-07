@@ -124,16 +124,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -482,6 +472,52 @@ name|NetUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests if block replacement request to data nodes work correctly.  */
 end_comment
@@ -491,8 +527,6 @@ DECL|class|TestBlockReplacement
 specifier|public
 class|class
 name|TestBlockReplacement
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -512,6 +546,8 @@ DECL|field|cluster
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testThrottler ()
 specifier|public
 name|void
@@ -662,6 +698,8 @@ name|bandwidthPerSec
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockReplacement ()
 specifier|public
 name|void
