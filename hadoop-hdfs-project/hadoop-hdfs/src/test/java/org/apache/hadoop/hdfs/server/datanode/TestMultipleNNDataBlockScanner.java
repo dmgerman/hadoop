@@ -195,10 +195,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestMulitipleNNDataBlockScanner
+DECL|class|TestMultipleNNDataBlockScanner
 specifier|public
 class|class
-name|TestMulitipleNNDataBlockScanner
+name|TestMultipleNNDataBlockScanner
 block|{
 DECL|field|LOG
 specifier|private
@@ -211,7 +211,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestMulitipleNNDataBlockScanner
+name|TestMultipleNNDataBlockScanner
 operator|.
 name|class
 argument_list|)
