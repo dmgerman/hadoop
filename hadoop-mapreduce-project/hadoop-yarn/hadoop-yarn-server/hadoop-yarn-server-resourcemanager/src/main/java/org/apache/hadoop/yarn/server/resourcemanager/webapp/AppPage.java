@@ -67,16 +67,6 @@ argument_list|(
 name|html
 argument_list|)
 expr_stmt|;
-comment|// App page is per-app information. Helps to refresh automatically.
-name|html
-operator|.
-name|meta_http
-argument_list|(
-literal|"refresh"
-argument_list|,
-literal|"10"
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|content ()
 annotation|@
