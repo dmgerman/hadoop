@@ -42,6 +42,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Random
 import|;
 end_import
@@ -223,15 +233,15 @@ block|}
 block|}
 comment|/** InnerNode represents a switch/router of a data center or rack.    * Different from a leaf node, it has non-null children.    */
 DECL|class|InnerNode
-specifier|private
+specifier|static
 class|class
 name|InnerNode
 extends|extends
 name|NodeBase
 block|{
 DECL|field|children
-specifier|private
-name|ArrayList
+specifier|protected
+name|List
 argument_list|<
 name|Node
 argument_list|>
@@ -313,7 +323,7 @@ expr_stmt|;
 block|}
 comment|/** @return its children */
 DECL|method|getChildren ()
-name|Collection
+name|List
 argument_list|<
 name|Node
 argument_list|>
@@ -820,6 +830,38 @@ return|;
 block|}
 block|}
 block|}
+comment|/**      * Creates a parent node to be added to the list of children.        * Creates a node using the InnerNode four argument constructor specifying       * the name, location, parent, and level of this node.      *       *<p>To be overridden in subclasses for specific InnerNode implementations,      * as alternative to overriding the full {@link #add(Node)} method.      *       * @param parentName The name of the parent node      * @return A new inner node      * @see InnerNode#InnerNode(String, String, InnerNode, int)      */
+DECL|method|createParentNode (String parentName)
+specifier|protected
+name|InnerNode
+name|createParentNode
+parameter_list|(
+name|String
+name|parentName
+parameter_list|)
+block|{
+return|return
+operator|new
+name|InnerNode
+argument_list|(
+name|parentName
+argument_list|,
+name|getPath
+argument_list|(
+name|this
+argument_list|)
+argument_list|,
+name|this
+argument_list|,
+name|this
+operator|.
+name|getLevel
+argument_list|()
+operator|+
+literal|1
+argument_list|)
+return|;
+block|}
 comment|/** Remove node<i>n</i> from the subtree of this node      * @param n node to be deleted       * @return true if the node is deleted; false otherwise      */
 DECL|method|remove (Node n)
 name|boolean
@@ -1218,7 +1260,6 @@ block|}
 block|}
 comment|/** get<i>leafIndex</i> leaf of this subtree       * if it is not in the<i>excludedNode</i>      *      * @param leafIndex an indexed leaf of the node      * @param excludedNode an excluded node (can be null)      * @return      */
 DECL|method|getLeaf (int leafIndex, Node excludedNode)
-specifier|private
 name|Node
 name|getLeaf
 parameter_list|(
@@ -1466,6 +1507,19 @@ literal|null
 return|;
 block|}
 block|}
+comment|/**       * Determine if children a leaves, default implementation calls {@link #isRack()}       *<p>To be overridden in subclasses for specific InnerNode implementations,       * as alternative to overriding the full {@link #getLeaf(int, Node)} method.       *        * @return true if children are leaves, false otherwise       */
+DECL|method|areChildrenLeaves ()
+specifier|protected
+name|boolean
+name|areChildrenLeaves
+parameter_list|()
+block|{
+return|return
+name|isRack
+argument_list|()
+return|;
+block|}
+comment|/**      * Get number of leaves.      */
 DECL|method|getNumOfLeaves ()
 name|int
 name|getNumOfLeaves
@@ -1481,14 +1535,6 @@ comment|/**    * the root cluster map    */
 DECL|field|clusterMap
 name|InnerNode
 name|clusterMap
-init|=
-operator|new
-name|InnerNode
-argument_list|(
-name|InnerNode
-operator|.
-name|ROOT
-argument_list|)
 decl_stmt|;
 comment|/** Depth of all leaf nodes */
 DECL|field|depthOfAllLeaves
@@ -1501,7 +1547,7 @@ literal|1
 decl_stmt|;
 comment|/** rack counter */
 DECL|field|numOfRacks
-specifier|private
+specifier|protected
 name|int
 name|numOfRacks
 init|=
@@ -1509,20 +1555,28 @@ literal|0
 decl_stmt|;
 comment|/** the lock used to manage access */
 DECL|field|netlock
-specifier|private
+specifier|protected
 name|ReadWriteLock
 name|netlock
+init|=
+operator|new
+name|ReentrantReadWriteLock
+argument_list|()
 decl_stmt|;
 DECL|method|NetworkTopology ()
 specifier|public
 name|NetworkTopology
 parameter_list|()
 block|{
-name|netlock
+name|clusterMap
 operator|=
 operator|new
-name|ReentrantReadWriteLock
-argument_list|()
+name|InnerNode
+argument_list|(
+name|InnerNode
+operator|.
+name|ROOT
+argument_list|)
 expr_stmt|;
 block|}
 comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
@@ -1585,12 +1639,9 @@ block|{
 name|Node
 name|rack
 init|=
-name|getNode
+name|getNodeForNetworkLocation
 argument_list|(
 name|node
-operator|.
-name|getNetworkLocation
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -1759,6 +1810,26 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Return a reference to the node given its string representation.    * Default implementation delegates to {@link #getNode(String)}.    *     *<p>To be overridden in subclasses for specific NetworkTopology     * implementations, as alternative to overriding the full {@link #add(Node)}    *  method.    *     * @param node The string representation of this node's network location is    * used to retrieve a Node object.     * @return a reference to the node; null if the node is not in the tree    *     * @see #add(Node)    * @see #getNode(String)    */
+DECL|method|getNodeForNetworkLocation (Node node)
+specifier|protected
+name|Node
+name|getNodeForNetworkLocation
+parameter_list|(
+name|Node
+name|node
+parameter_list|)
+block|{
+return|return
+name|getNode
+argument_list|(
+name|node
+operator|.
+name|getNetworkLocation
+argument_list|()
+argument_list|)
+return|;
 block|}
 comment|/** Remove a node    * Update node counter and rack counter if necessary    * @param node node to be removed; can be null    */
 DECL|method|remove (Node node)
@@ -2057,6 +2128,20 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/** Given a string representation of a rack for a specific network    *  location    *     * To be overridden in subclasses for specific NetworkTopology     * implementations, as alternative to overriding the full     * {@link #getRack(String)} method.    * @param loc    *          a path-like string representation of a network location    * @return a rack string    */
+DECL|method|getRack (String loc)
+specifier|public
+name|String
+name|getRack
+parameter_list|(
+name|String
+name|loc
+parameter_list|)
+block|{
+return|return
+name|loc
+return|;
 block|}
 comment|/** @return the total number of racks */
 DECL|method|getNumOfRacks ()
@@ -2391,15 +2476,12 @@ expr_stmt|;
 try|try
 block|{
 return|return
+name|isSameParents
+argument_list|(
 name|node1
-operator|.
-name|getParent
-argument_list|()
-operator|==
+argument_list|,
 name|node2
-operator|.
-name|getParent
-argument_list|()
+argument_list|)
 return|;
 block|}
 finally|finally
@@ -2414,9 +2496,62 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Check if network topology is aware of NodeGroup    */
+DECL|method|isNodeGroupAware ()
+specifier|public
+name|boolean
+name|isNodeGroupAware
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**     * Return false directly as not aware of NodeGroup, to be override in sub-class    */
+DECL|method|isOnSameNodeGroup (Node node1, Node node2)
+specifier|public
+name|boolean
+name|isOnSameNodeGroup
+parameter_list|(
+name|Node
+name|node1
+parameter_list|,
+name|Node
+name|node2
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Compare the parents of each node for equality    *     *<p>To be overridden in subclasses for specific NetworkTopology     * implementations, as alternative to overriding the full     * {@link #isOnSameRack(Node, Node)} method.    *     * @param node1 the first node to compare    * @param node2 the second node to compare    * @return true if their parents are equal, false otherwise    *     * @see #isOnSameRack(Node, Node)    */
+DECL|method|isSameParents (Node node1, Node node2)
+specifier|protected
+name|boolean
+name|isSameParents
+parameter_list|(
+name|Node
+name|node1
+parameter_list|,
+name|Node
+name|node2
+parameter_list|)
+block|{
+return|return
+name|node1
+operator|.
+name|getParent
+argument_list|()
+operator|==
+name|node2
+operator|.
+name|getParent
+argument_list|()
+return|;
+block|}
 DECL|field|r
 specifier|final
-specifier|private
+specifier|protected
 specifier|static
 name|Random
 name|r
@@ -2654,6 +2789,106 @@ name|leaveIndex
 argument_list|,
 name|node
 argument_list|)
+return|;
+block|}
+comment|/** return leaves in<i>scope</i>    * @param scope a path string    * @return leaves nodes under specific scope    */
+DECL|method|getLeaves (String scope)
+specifier|public
+name|List
+argument_list|<
+name|Node
+argument_list|>
+name|getLeaves
+parameter_list|(
+name|String
+name|scope
+parameter_list|)
+block|{
+name|Node
+name|node
+init|=
+name|getNode
+argument_list|(
+name|scope
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|Node
+argument_list|>
+name|leafNodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Node
+argument_list|>
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|node
+operator|instanceof
+name|InnerNode
+operator|)
+condition|)
+block|{
+name|leafNodes
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|InnerNode
+name|innerNode
+init|=
+operator|(
+name|InnerNode
+operator|)
+name|node
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|innerNode
+operator|.
+name|getNumOfLeaves
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|leafNodes
+operator|.
+name|add
+argument_list|(
+name|innerNode
+operator|.
+name|getLeaf
+argument_list|(
+name|i
+argument_list|,
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|leafNodes
 return|;
 block|}
 comment|/** return the number of leaves in<i>scope</i> but not in<i>excludedNodes</i>    * if scope starts with ~, return the number of nodes that are not    * in<i>scope</i> and<i>excludedNodes</i>;     * @param scope a path string that may start with ~    * @param excludedNodes a list of nodes    * @return number of available nodes    */
@@ -2953,10 +3188,10 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/* swap two array items */
+comment|/** swap two array items */
 DECL|method|swap (Node[] nodes, int i, int j)
 specifier|static
-specifier|private
+specifier|protected
 name|void
 name|swap
 parameter_list|(

@@ -148,6 +148,16 @@ init|=
 literal|"net.topology.node.switch.mapping.impl"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|NET_TOPOLOGY_IMPL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NET_TOPOLOGY_IMPL_KEY
+init|=
+literal|"net.topology.impl"
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|NET_TOPOLOGY_TABLE_MAPPING_FILE_KEY
 specifier|public
 specifier|static

@@ -949,7 +949,7 @@ operator|=
 name|xceiverCount
 expr_stmt|;
 block|}
-comment|/** rack name */
+comment|/** network location */
 DECL|method|getNetworkLocation ()
 specifier|public
 specifier|synchronized
@@ -961,7 +961,7 @@ return|return
 name|location
 return|;
 block|}
-comment|/** Sets the rack name */
+comment|/** Sets the network location */
 DECL|method|setNetworkLocation (String location)
 specifier|public
 specifier|synchronized
