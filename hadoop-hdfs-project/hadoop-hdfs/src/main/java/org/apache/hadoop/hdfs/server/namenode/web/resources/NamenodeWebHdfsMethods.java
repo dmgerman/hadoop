@@ -1376,8 +1376,6 @@ argument_list|>
 modifier|...
 name|parameters
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -4379,8 +4377,6 @@ name|bufferSize
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|URISyntaxException
 throws|,
 name|InterruptedException
 block|{

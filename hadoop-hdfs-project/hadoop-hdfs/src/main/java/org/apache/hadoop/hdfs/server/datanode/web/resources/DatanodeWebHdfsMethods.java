@@ -1019,6 +1019,25 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|nnRpcAddr
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|NamenodeRpcAddressParam
+operator|.
+name|NAME
+operator|+
+literal|" is not specified."
+argument_list|)
+throw|;
+block|}
 comment|//clear content type
 name|response
 operator|.

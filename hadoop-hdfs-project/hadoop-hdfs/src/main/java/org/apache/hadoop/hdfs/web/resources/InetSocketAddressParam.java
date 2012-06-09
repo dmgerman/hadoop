@@ -143,6 +143,24 @@ name|String
 name|str
 parameter_list|)
 block|{
+if|if
+condition|(
+name|str
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"The input string is null: expect "
+operator|+
+name|getDomain
+argument_list|()
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|int
 name|i

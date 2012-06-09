@@ -274,7 +274,7 @@ literal|"<"
 operator|+
 name|NULL
 operator|+
-literal|" | short in radix "
+literal|" | long in radix "
 operator|+
 name|radix
 operator|+
@@ -339,7 +339,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Convert a Short to a String. */
+comment|/** Convert a Long to a String. */
 DECL|method|toString (final Long n)
 name|String
 name|toString
