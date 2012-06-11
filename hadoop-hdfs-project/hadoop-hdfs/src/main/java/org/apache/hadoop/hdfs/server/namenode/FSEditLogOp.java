@@ -400,6 +400,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|Text
 import|;
 end_import
@@ -12552,17 +12566,23 @@ operator|.
 name|getNumAfterTerminator
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|in
+try|try
+block|{
+name|IOUtils
 operator|.
-name|skip
+name|skipFully
 argument_list|(
+name|in
+argument_list|,
 name|numSkip
 argument_list|)
-operator|<
-name|numSkip
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
 block|{
 name|FSImage
 operator|.
@@ -12576,7 +12596,9 @@ name|numSkip
 operator|+
 literal|" bytes of "
 operator|+
-literal|"garbage after an OP_INVALID.  Unexpected early EOF."
+literal|"garbage after an OP_INVALID."
+argument_list|,
+name|t
 argument_list|)
 expr_stmt|;
 return|return

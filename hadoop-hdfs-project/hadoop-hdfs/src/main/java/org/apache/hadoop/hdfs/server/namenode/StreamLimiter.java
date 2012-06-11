@@ -39,6 +39,13 @@ name|long
 name|limit
 parameter_list|)
 function_decl|;
+comment|/**    * Disable limit.    */
+DECL|method|clearLimit ()
+specifier|public
+name|void
+name|clearLimit
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -760,8 +760,15 @@ argument_list|)
 expr_stmt|;
 name|tracker
 operator|.
-name|skip
+name|clearLimit
+argument_list|()
+expr_stmt|;
+name|IOUtils
+operator|.
+name|skipFully
 argument_list|(
+name|tracker
+argument_list|,
 name|skipAmt
 argument_list|)
 expr_stmt|;

@@ -4192,6 +4192,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|clearLimit ()
+specifier|public
+name|void
+name|clearLimit
+parameter_list|()
+block|{
+name|limitPos
+operator|=
+name|Long
+operator|.
+name|MAX_VALUE
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|mark (int limit)
 specifier|public
 name|void
