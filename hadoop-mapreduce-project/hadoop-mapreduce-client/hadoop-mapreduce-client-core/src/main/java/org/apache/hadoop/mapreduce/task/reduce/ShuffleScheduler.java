@@ -921,6 +921,47 @@ name|totalBytesShuffledTillNow
 operator|+=
 name|bytes
 expr_stmt|;
+name|updateStatus
+argument_list|()
+expr_stmt|;
+name|reduceShuffleBytes
+operator|.
+name|increment
+argument_list|(
+name|bytes
+argument_list|)
+expr_stmt|;
+name|lastProgressTime
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"map "
+operator|+
+name|mapId
+operator|+
+literal|" done "
+operator|+
+name|status
+operator|.
+name|getStateString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateStatus ()
+specifier|private
+name|void
+name|updateStatus
+parameter_list|()
+block|{
 name|float
 name|mbs
 init|=
@@ -1019,34 +1060,6 @@ operator|+
 literal|" MB/s)"
 argument_list|)
 expr_stmt|;
-name|reduceShuffleBytes
-operator|.
-name|increment
-argument_list|(
-name|bytes
-argument_list|)
-expr_stmt|;
-name|lastProgressTime
-operator|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"map "
-operator|+
-name|mapId
-operator|+
-literal|" done "
-operator|+
-name|statusString
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|copyFailed (TaskAttemptID mapId, MapHost host, boolean readError)
 specifier|public
@@ -1550,6 +1563,18 @@ name|TaskID
 name|taskId
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|finishedMaps
+index|[
+name|taskId
+operator|.
+name|getId
+argument_list|()
+index|]
+condition|)
+block|{
 name|finishedMaps
 index|[
 name|taskId
@@ -1560,6 +1585,22 @@ index|]
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+operator|--
+name|remainingMaps
+operator|==
+literal|0
+condition|)
+block|{
+name|notifyAll
+argument_list|()
+expr_stmt|;
+block|}
+name|updateStatus
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|addKnownMapOutput (String hostName, String hostUrl, TaskAttemptID mapId)
 specifier|public
