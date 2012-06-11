@@ -1349,14 +1349,33 @@ argument_list|)
 condition|)
 block|{
 comment|// the failed attempt is the one that made this task successful
-comment|// so its no longer successful
+comment|// so its no longer successful. Reset fields set in
+comment|// handleTaskFinishedEvent()
+name|taskInfo
+operator|.
+name|counters
+operator|=
+literal|null
+expr_stmt|;
+name|taskInfo
+operator|.
+name|finishTime
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 name|taskInfo
 operator|.
 name|status
 operator|=
 literal|null
 expr_stmt|;
-comment|// not resetting the other fields set in handleTaskFinishedEvent()
+name|taskInfo
+operator|.
+name|successfulAttemptId
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 block|}

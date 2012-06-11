@@ -53,6 +53,29 @@ block|,
 comment|/** Node has rebooted */
 DECL|enumConstant|REBOOTED
 name|REBOOTED
+block|;
+DECL|method|isUnusable ()
+specifier|public
+name|boolean
+name|isUnusable
+parameter_list|()
+block|{
+return|return
+operator|(
+name|this
+operator|==
+name|UNHEALTHY
+operator|||
+name|this
+operator|==
+name|DECOMMISSIONED
+operator|||
+name|this
+operator|==
+name|LOST
+operator|)
+return|;
+block|}
 block|}
 end_enum
 

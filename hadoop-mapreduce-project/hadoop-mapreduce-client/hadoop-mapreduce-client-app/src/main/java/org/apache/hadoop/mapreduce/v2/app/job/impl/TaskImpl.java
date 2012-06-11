@@ -1697,6 +1697,35 @@ operator|new
 name|MapRetroactiveFailureTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|TaskState
+operator|.
+name|SUCCEEDED
+argument_list|,
+comment|//only possible for map tasks
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|TaskState
+operator|.
+name|SCHEDULED
+argument_list|,
+name|TaskState
+operator|.
+name|SUCCEEDED
+argument_list|)
+argument_list|,
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_KILLED
+argument_list|,
+operator|new
+name|MapRetroactiveKilledTransition
+argument_list|()
+argument_list|)
 comment|// Ignore-able transitions.
 operator|.
 name|addTransition
@@ -1715,19 +1744,11 @@ name|of
 argument_list|(
 name|TaskEventType
 operator|.
-name|T_KILL
-argument_list|,
-name|TaskEventType
-operator|.
 name|T_ADD_SPEC_ATTEMPT
 argument_list|,
 name|TaskEventType
 operator|.
 name|T_ATTEMPT_LAUNCHED
-argument_list|,
-name|TaskEventType
-operator|.
-name|T_ATTEMPT_KILLED
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED state
@@ -3594,9 +3615,6 @@ name|TaskAttemptCompletionEventStatus
 name|status
 parameter_list|)
 block|{
-name|finishedAttempts
-operator|++
-expr_stmt|;
 name|TaskAttempt
 name|attempt
 init|=
@@ -3935,6 +3953,29 @@ return|return
 name|taskFailedEvent
 return|;
 block|}
+DECL|method|unSucceed (TaskImpl task)
+specifier|private
+specifier|static
+name|void
+name|unSucceed
+parameter_list|(
+name|TaskImpl
+name|task
+parameter_list|)
+block|{
+name|task
+operator|.
+name|commitAttempt
+operator|=
+literal|null
+expr_stmt|;
+name|task
+operator|.
+name|successfulAttempt
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|/**   * @return a String representation of the splits.   *   * Subclasses can override this method to provide their own representations   * of splits (if any).   *   */
 DECL|method|getSplitsAsString ()
 specifier|protected
@@ -4258,6 +4299,11 @@ operator|.
 name|SUCCEEDED
 argument_list|)
 expr_stmt|;
+name|task
+operator|.
+name|finishedAttempts
+operator|++
+expr_stmt|;
 operator|--
 name|task
 operator|.
@@ -4473,6 +4519,11 @@ operator|.
 name|KILLED
 argument_list|)
 expr_stmt|;
+name|task
+operator|.
+name|finishedAttempts
+operator|++
+expr_stmt|;
 operator|--
 name|task
 operator|.
@@ -4551,6 +4602,11 @@ name|TaskAttemptCompletionEventStatus
 operator|.
 name|KILLED
 argument_list|)
+expr_stmt|;
+name|task
+operator|.
+name|finishedAttempts
+operator|++
 expr_stmt|;
 comment|// check whether all attempts are finished
 if|if
@@ -4768,6 +4824,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|task
+operator|.
+name|finishedAttempts
+operator|++
+expr_stmt|;
 if|if
 condition|(
 name|task
@@ -4976,33 +5037,6 @@ name|getState
 argument_list|()
 return|;
 block|}
-DECL|method|unSucceed (TaskImpl task)
-specifier|protected
-name|void
-name|unSucceed
-parameter_list|(
-name|TaskImpl
-name|task
-parameter_list|)
-block|{
-operator|++
-name|task
-operator|.
-name|numberUncompletedAttempts
-expr_stmt|;
-name|task
-operator|.
-name|commitAttempt
-operator|=
-literal|null
-expr_stmt|;
-name|task
-operator|.
-name|successfulAttempt
-operator|=
-literal|null
-expr_stmt|;
-block|}
 block|}
 DECL|class|MapRetroactiveFailureTransition
 specifier|private
@@ -5092,6 +5126,12 @@ argument_list|(
 name|task
 argument_list|)
 expr_stmt|;
+comment|// fake increase in Uncomplete attempts for super.transition
+operator|++
+name|task
+operator|.
+name|numberUncompletedAttempts
+expr_stmt|;
 return|return
 name|super
 operator|.
@@ -5119,6 +5159,164 @@ name|TaskState
 operator|.
 name|SCHEDULED
 return|;
+block|}
+block|}
+DECL|class|MapRetroactiveKilledTransition
+specifier|private
+specifier|static
+class|class
+name|MapRetroactiveKilledTransition
+implements|implements
+name|MultipleArcTransition
+argument_list|<
+name|TaskImpl
+argument_list|,
+name|TaskEvent
+argument_list|,
+name|TaskState
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|transition (TaskImpl task, TaskEvent event)
+specifier|public
+name|TaskState
+name|transition
+parameter_list|(
+name|TaskImpl
+name|task
+parameter_list|,
+name|TaskEvent
+name|event
+parameter_list|)
+block|{
+comment|// verify that this occurs only for map task
+comment|// TODO: consider moving it to MapTaskImpl
+if|if
+condition|(
+operator|!
+name|TaskType
+operator|.
+name|MAP
+operator|.
+name|equals
+argument_list|(
+name|task
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected event for REDUCE task "
+operator|+
+name|event
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|task
+operator|.
+name|internalError
+argument_list|(
+name|event
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|TaskTAttemptEvent
+name|attemptEvent
+init|=
+operator|(
+name|TaskTAttemptEvent
+operator|)
+name|event
+decl_stmt|;
+name|TaskAttemptId
+name|attemptId
+init|=
+name|attemptEvent
+operator|.
+name|getTaskAttemptID
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|task
+operator|.
+name|successfulAttempt
+operator|==
+name|attemptId
+condition|)
+block|{
+comment|// successful attempt is now killed. reschedule
+comment|// tell the job about the rescheduling
+name|unSucceed
+argument_list|(
+name|task
+argument_list|)
+expr_stmt|;
+name|task
+operator|.
+name|handleTaskAttemptCompletion
+argument_list|(
+name|attemptId
+argument_list|,
+name|TaskAttemptCompletionEventStatus
+operator|.
+name|KILLED
+argument_list|)
+expr_stmt|;
+name|task
+operator|.
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|JobMapTaskRescheduledEvent
+argument_list|(
+name|task
+operator|.
+name|taskId
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// typically we are here because this map task was run on a bad node and
+comment|// we want to reschedule it on a different node.
+comment|// Depending on whether there are previous failed attempts or not this
+comment|// can SCHEDULE or RESCHEDULE the container allocate request. If this
+comment|// SCHEDULE's then the dataLocal hosts of this taskAttempt will be used
+comment|// from the map splitInfo. So the bad node might be sent as a location
+comment|// to the RM. But the RM would ignore that just like it would ignore
+comment|// currently pending container requests affinitized to bad nodes.
+name|task
+operator|.
+name|addAndScheduleAttempt
+argument_list|()
+expr_stmt|;
+return|return
+name|TaskState
+operator|.
+name|SCHEDULED
+return|;
+block|}
+else|else
+block|{
+comment|// nothing to do
+return|return
+name|TaskState
+operator|.
+name|SUCCEEDED
+return|;
+block|}
 block|}
 block|}
 DECL|class|KillNewTransition

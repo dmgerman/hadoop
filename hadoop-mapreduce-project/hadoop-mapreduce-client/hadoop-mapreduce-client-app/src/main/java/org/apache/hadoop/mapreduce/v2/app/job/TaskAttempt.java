@@ -124,6 +124,24 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
+import|;
+end_import
+
 begin_comment
 comment|/**  * Read only view of TaskAttempt.  */
 end_comment
@@ -183,6 +201,12 @@ comment|/**    * @return container mgr address if a container is assigned, other
 DECL|method|getAssignedContainerMgrAddress ()
 name|String
 name|getAssignedContainerMgrAddress
+parameter_list|()
+function_decl|;
+comment|/**    * @return node's id if a container is assigned, otherwise null.    */
+DECL|method|getNodeId ()
+name|NodeId
+name|getNodeId
 parameter_list|()
 function_decl|;
 comment|/**    * @return node's http address if a container is assigned, otherwise null.    */
