@@ -1427,7 +1427,9 @@ name|INodeFile
 argument_list|(
 name|permissions
 argument_list|,
-literal|0
+name|BlockInfo
+operator|.
+name|EMPTY_ARRAY
 argument_list|,
 name|replication
 argument_list|,

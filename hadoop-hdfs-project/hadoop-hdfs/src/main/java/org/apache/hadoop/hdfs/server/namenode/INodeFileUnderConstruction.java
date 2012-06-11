@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|permission
@@ -173,8 +187,11 @@ comment|/**  * I-node for file being written.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|INodeFileUnderConstruction
-specifier|public
 class|class
 name|INodeFileUnderConstruction
 extends|extends
@@ -235,7 +252,9 @@ argument_list|(
 name|UMASK
 argument_list|)
 argument_list|,
-literal|0
+name|BlockInfo
+operator|.
+name|EMPTY_ARRAY
 argument_list|,
 name|replication
 argument_list|,
