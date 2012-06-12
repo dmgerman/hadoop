@@ -174,8 +174,6 @@ name|methodNameToPolicyMap
 parameter_list|)
 block|{
 return|return
-name|RetryProxy
-operator|.
 name|create
 argument_list|(
 name|iface
@@ -189,6 +187,10 @@ name|implementation
 argument_list|)
 argument_list|,
 name|methodNameToPolicyMap
+argument_list|,
+name|RetryPolicies
+operator|.
+name|TRY_ONCE_THEN_FAIL
 argument_list|)
 return|;
 block|}
@@ -199,7 +201,7 @@ comment|/**    * Create a proxy for an interface of implementations of that inte
 end_comment
 
 begin_function
-DECL|method|create (Class<?> iface, FailoverProxyProvider proxyProvider, Map<String,RetryPolicy> methodNameToPolicyMap)
+DECL|method|create (Class<?> iface, FailoverProxyProvider proxyProvider, Map<String,RetryPolicy> methodNameToPolicyMap, RetryPolicy defaultPolicy)
 specifier|public
 specifier|static
 name|Object
@@ -221,6 +223,9 @@ argument_list|,
 name|RetryPolicy
 argument_list|>
 name|methodNameToPolicyMap
+parameter_list|,
+name|RetryPolicy
+name|defaultPolicy
 parameter_list|)
 block|{
 return|return
@@ -250,6 +255,8 @@ operator|new
 name|RetryInvocationHandler
 argument_list|(
 name|proxyProvider
+argument_list|,
+name|defaultPolicy
 argument_list|,
 name|methodNameToPolicyMap
 argument_list|)

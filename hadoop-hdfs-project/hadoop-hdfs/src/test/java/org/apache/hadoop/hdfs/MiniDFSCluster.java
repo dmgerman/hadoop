@@ -156,38 +156,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMESERVICES
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMESERVICE_ID
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_HA_LOGROLL_PERIOD_KEY
 import|;
 end_import
@@ -365,6 +333,38 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMESERVICES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMESERVICE_ID
 import|;
 end_import
 
@@ -679,6 +679,8 @@ operator|.
 name|ha
 operator|.
 name|HAServiceProtocol
+operator|.
+name|RequestSource
 import|;
 end_import
 
@@ -708,53 +710,7 @@ name|hadoop
 operator|.
 name|ha
 operator|.
-name|HAServiceProtocolHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ha
-operator|.
 name|ServiceFailedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ha
-operator|.
-name|HAServiceProtocol
-operator|.
-name|RequestSource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ha
-operator|.
-name|protocolPB
-operator|.
-name|HAServiceProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -6182,13 +6138,6 @@ expr_stmt|;
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Cluster is active"
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Return the contents of the given block on the given datanode.    *    * @param block block to be corrupted    * @throws IOException on error accessing the file for the given block    */
@@ -7726,6 +7675,13 @@ block|}
 block|}
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cluster is active"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|shouldWait (DatanodeInfo[] dnInfo, InetSocketAddress addr)
 specifier|private

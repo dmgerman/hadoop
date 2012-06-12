@@ -94,6 +94,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Client
@@ -163,7 +179,7 @@ interface|interface
 name|RpcEngine
 block|{
 comment|/** Construct a client-side proxy object.     * @param<T>*/
-DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy)
 parameter_list|<
 name|T
 parameter_list|>
@@ -196,6 +212,9 @@ name|factory
 parameter_list|,
 name|int
 name|rpcTimeout
+parameter_list|,
+name|RetryPolicy
+name|connectionRetryPolicy
 parameter_list|)
 throws|throws
 name|IOException

@@ -232,6 +232,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Client
@@ -1315,6 +1331,8 @@ name|conf
 argument_list|,
 literal|0
 argument_list|,
+literal|null
+argument_list|,
 name|connTimeout
 argument_list|)
 return|;
@@ -1366,6 +1384,8 @@ name|conf
 argument_list|,
 name|rpcTimeout
 argument_list|,
+literal|null
+argument_list|,
 name|timeout
 argument_list|)
 operator|.
@@ -1374,7 +1394,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get a protocol proxy that contains a proxy connection to a remote server    * and a set of methods that are supported by the server    *     * @param protocol protocol class    * @param clientVersion client version    * @param addr remote address    * @param conf configuration to use    * @param rpcTimeout timeout for each RPC    * @param timeout time in milliseconds before giving up    * @return the proxy    * @throws IOException if the far end through a RemoteException    */
-DECL|method|waitForProtocolProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, int rpcTimeout, long timeout)
+DECL|method|waitForProtocolProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, Configuration conf, int rpcTimeout, RetryPolicy connectionRetryPolicy, long timeout)
 specifier|public
 specifier|static
 parameter_list|<
@@ -1403,6 +1423,9 @@ name|conf
 parameter_list|,
 name|int
 name|rpcTimeout
+parameter_list|,
+name|RetryPolicy
+name|connectionRetryPolicy
 parameter_list|,
 name|long
 name|timeout
@@ -1452,6 +1475,8 @@ name|conf
 argument_list|)
 argument_list|,
 name|rpcTimeout
+argument_list|,
+name|connectionRetryPolicy
 argument_list|)
 return|;
 block|}
@@ -1773,6 +1798,8 @@ argument_list|,
 name|factory
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1829,6 +1856,8 @@ argument_list|,
 name|factory
 argument_list|,
 name|rpcTimeout
+argument_list|,
+literal|null
 argument_list|)
 operator|.
 name|getProxy
@@ -1836,7 +1865,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get a protocol proxy that contains a proxy connection to a remote server    * and a set of methods that are supported by the server    *     * @param protocol protocol    * @param clientVersion client's version    * @param addr server address    * @param ticket security ticket    * @param conf configuration    * @param factory socket factory    * @param rpcTimeout max time for each rpc; 0 means no timeout    * @return the proxy    * @throws IOException if any error occurs    */
-DECL|method|getProtocolProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+DECL|method|getProtocolProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy)
 specifier|public
 specifier|static
 parameter_list|<
@@ -1871,6 +1900,9 @@ name|factory
 parameter_list|,
 name|int
 name|rpcTimeout
+parameter_list|,
+name|RetryPolicy
+name|connectionRetryPolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -1914,6 +1946,8 @@ argument_list|,
 name|factory
 argument_list|,
 name|rpcTimeout
+argument_list|,
+name|connectionRetryPolicy
 argument_list|)
 return|;
 block|}

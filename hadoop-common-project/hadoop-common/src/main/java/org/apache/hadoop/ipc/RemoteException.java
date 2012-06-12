@@ -332,6 +332,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -339,9 +341,17 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"("
+operator|+
 name|className
 operator|+
-literal|": "
+literal|"): "
 operator|+
 name|getMessage
 argument_list|()

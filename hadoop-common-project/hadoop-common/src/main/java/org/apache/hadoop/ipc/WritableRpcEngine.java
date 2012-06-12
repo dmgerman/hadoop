@@ -130,6 +130,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|Client
@@ -1290,7 +1306,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout)
+DECL|method|getProxy (Class<T> protocol, long clientVersion, InetSocketAddress addr, UserGroupInformation ticket, Configuration conf, SocketFactory factory, int rpcTimeout, RetryPolicy connectionRetryPolicy)
 specifier|public
 parameter_list|<
 name|T
@@ -1324,10 +1340,30 @@ name|factory
 parameter_list|,
 name|int
 name|rpcTimeout
+parameter_list|,
+name|RetryPolicy
+name|connectionRetryPolicy
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|connectionRetryPolicy
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported: connectionRetryPolicy="
+operator|+
+name|connectionRetryPolicy
+argument_list|)
+throw|;
+block|}
 name|T
 name|proxy
 init|=
