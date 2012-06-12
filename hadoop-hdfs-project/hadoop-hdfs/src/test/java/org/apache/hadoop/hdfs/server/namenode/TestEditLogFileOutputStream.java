@@ -311,6 +311,30 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testConstants ()
+specifier|public
+name|void
+name|testConstants
+parameter_list|()
+block|{
+comment|// Each call to FSEditLogOp#Reader#readOp can read at most MAX_OP_SIZE bytes
+comment|// before getting an exception.  So we don't want to preallocate a longer
+comment|// region than MAX_OP_SIZE, because then we'd get an IOException when reading
+comment|// through the padding at the end of the file.
+name|assertTrue
+argument_list|(
+name|EditLogFileOutputStream
+operator|.
+name|PREALLOCATION_LENGTH
+operator|<
+name|FSEditLogOp
+operator|.
+name|MAX_OP_SIZE
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testPreallocation ()
 specifier|public
 name|void

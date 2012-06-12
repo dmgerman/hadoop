@@ -3817,7 +3817,26 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-break|break;
+name|in
+operator|.
+name|resync
+argument_list|()
+expr_stmt|;
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"After resync, position is "
+operator|+
+name|in
+operator|.
+name|getPosition
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
 block|}
 if|if
 condition|(

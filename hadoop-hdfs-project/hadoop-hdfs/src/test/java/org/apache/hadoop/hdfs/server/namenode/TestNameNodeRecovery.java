@@ -1636,6 +1636,11 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
+name|enableManagedDfsDirsRedundancy
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -1851,6 +1856,11 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
+name|enableManagedDfsDirsRedundancy
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|format
 argument_list|(
 literal|false
@@ -1968,6 +1978,11 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
+name|enableManagedDfsDirsRedundancy
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|format
 argument_list|(
 literal|false
@@ -2053,6 +2068,11 @@ operator|.
 name|numDataNodes
 argument_list|(
 literal|0
+argument_list|)
+operator|.
+name|enableManagedDfsDirsRedundancy
+argument_list|(
+literal|false
 argument_list|)
 operator|.
 name|format

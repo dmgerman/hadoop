@@ -4773,54 +4773,6 @@ name|e
 throw|;
 block|}
 block|}
-comment|// This code will go away as soon as RedundantEditLogInputStream is
-comment|// introduced. (HDFS-3049)
-try|try
-block|{
-if|if
-condition|(
-operator|!
-name|streams
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|streams
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|skipUntil
-argument_list|(
-name|fromTxId
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// We don't want to throw an exception from here, because that would make
-comment|// recovery impossible even if the user requested it.  An exception will
-comment|// be thrown later, when we don't read the starting txid we expect.
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"error skipping until transaction "
-operator|+
-name|fromTxId
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|streams
 return|;

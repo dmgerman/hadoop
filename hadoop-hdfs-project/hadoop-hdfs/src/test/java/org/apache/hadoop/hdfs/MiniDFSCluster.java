@@ -1403,6 +1403,13 @@ name|manageNameDfsSharedDirs
 init|=
 literal|true
 decl_stmt|;
+DECL|field|enableManagedDfsDirsRedundancy
+specifier|private
+name|boolean
+name|enableManagedDfsDirsRedundancy
+init|=
+literal|true
+decl_stmt|;
 DECL|field|manageDataDfsDirs
 specifier|private
 name|boolean
@@ -1597,6 +1604,26 @@ block|{
 name|this
 operator|.
 name|manageNameDfsSharedDirs
+operator|=
+name|val
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Default: true      */
+DECL|method|enableManagedDfsDirsRedundancy (boolean val)
+specifier|public
+name|Builder
+name|enableManagedDfsDirsRedundancy
+parameter_list|(
+name|boolean
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableManagedDfsDirsRedundancy
 operator|=
 name|val
 expr_stmt|;
@@ -1897,6 +1924,10 @@ name|manageNameDfsSharedDirs
 argument_list|,
 name|builder
 operator|.
+name|enableManagedDfsDirsRedundancy
+argument_list|,
+name|builder
+operator|.
 name|manageDataDfsDirs
 argument_list|,
 name|builder
@@ -2183,6 +2214,8 @@ literal|false
 argument_list|,
 literal|false
 argument_list|,
+literal|false
+argument_list|,
 name|nameNodeOperation
 argument_list|,
 literal|null
@@ -2226,6 +2259,8 @@ argument_list|,
 name|numDataNodes
 argument_list|,
 name|format
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|,
@@ -2283,6 +2318,8 @@ literal|true
 argument_list|,
 literal|true
 argument_list|,
+literal|true
+argument_list|,
 literal|null
 argument_list|,
 name|racks
@@ -2335,6 +2372,8 @@ argument_list|,
 name|numDataNodes
 argument_list|,
 name|format
+argument_list|,
+name|manageDfsDirs
 argument_list|,
 name|manageDfsDirs
 argument_list|,
@@ -2401,6 +2440,8 @@ name|manageDfsDirs
 argument_list|,
 name|manageDfsDirs
 argument_list|,
+name|manageDfsDirs
+argument_list|,
 name|operation
 argument_list|,
 name|racks
@@ -2415,7 +2456,7 @@ comment|/**    * NOTE: if possible, the other constructors that don't have nameN
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
-DECL|method|MiniDFSCluster (int nameNodePort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String hosts[], long[] simulatedCapacities)
+DECL|method|MiniDFSCluster (int nameNodePort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String hosts[], long[] simulatedCapacities)
 specifier|public
 name|MiniDFSCluster
 parameter_list|(
@@ -2433,6 +2474,9 @@ name|format
 parameter_list|,
 name|boolean
 name|manageNameDfsDirs
+parameter_list|,
+name|boolean
+name|enableManagedDfsDirsRedundancy
 parameter_list|,
 name|boolean
 name|manageDataDfsDirs
@@ -2478,6 +2522,8 @@ name|manageNameDfsDirs
 argument_list|,
 literal|true
 argument_list|,
+name|enableManagedDfsDirsRedundancy
+argument_list|,
 name|manageDataDfsDirs
 argument_list|,
 name|operation
@@ -2505,7 +2551,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -2524,6 +2570,9 @@ name|manageNameDfsDirs
 parameter_list|,
 name|boolean
 name|manageNameDfsSharedDirs
+parameter_list|,
+name|boolean
+name|enableManagedDfsDirsRedundancy
 parameter_list|,
 name|boolean
 name|manageDataDfsDirs
@@ -2749,6 +2798,8 @@ name|manageNameDfsDirs
 argument_list|,
 name|manageNameDfsSharedDirs
 argument_list|,
+name|enableManagedDfsDirsRedundancy
+argument_list|,
 name|format
 argument_list|,
 name|operation
@@ -2833,7 +2884,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createNameNodesAndSetConf (MiniDFSNNTopology nnTopology, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean format, StartupOption operation, String clusterId, Configuration conf)
+DECL|method|createNameNodesAndSetConf (MiniDFSNNTopology nnTopology, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean format, StartupOption operation, String clusterId, Configuration conf)
 specifier|private
 name|void
 name|createNameNodesAndSetConf
@@ -2846,6 +2897,9 @@ name|manageNameDfsDirs
 parameter_list|,
 name|boolean
 name|manageNameDfsSharedDirs
+parameter_list|,
+name|boolean
+name|enableManagedDfsDirsRedundancy
 parameter_list|,
 name|boolean
 name|format
@@ -3197,6 +3251,8 @@ argument_list|()
 argument_list|,
 name|manageNameDfsDirs
 argument_list|,
+name|manageNameDfsDirs
+argument_list|,
 name|nnCounterForFormat
 argument_list|)
 expr_stmt|;
@@ -3349,6 +3405,8 @@ argument_list|()
 argument_list|,
 name|manageNameDfsDirs
 argument_list|,
+name|enableManagedDfsDirsRedundancy
+argument_list|,
 name|nnCounter
 argument_list|)
 expr_stmt|;
@@ -3453,7 +3511,7 @@ operator|.
 name|nameNodes
 return|;
 block|}
-DECL|method|initNameNodeConf (Configuration conf, String nameserviceId, String nnId, boolean manageNameDfsDirs, int nnIndex)
+DECL|method|initNameNodeConf (Configuration conf, String nameserviceId, String nnId, boolean manageNameDfsDirs, boolean enableManagedDfsDirsRedundancy, int nnIndex)
 specifier|private
 name|void
 name|initNameNodeConf
@@ -3469,6 +3527,9 @@ name|nnId
 parameter_list|,
 name|boolean
 name|manageNameDfsDirs
+parameter_list|,
+name|boolean
+name|enableManagedDfsDirsRedundancy
 parameter_list|,
 name|int
 name|nnIndex
@@ -3513,6 +3574,11 @@ block|}
 if|if
 condition|(
 name|manageNameDfsDirs
+condition|)
+block|{
+if|if
+condition|(
+name|enableManagedDfsDirsRedundancy
 condition|)
 block|{
 name|conf
@@ -3609,6 +3675,68 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_NAME_DIR_KEY
+argument_list|,
+name|fileAsURI
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|base_dir
+argument_list|,
+literal|"name"
+operator|+
+operator|(
+literal|2
+operator|*
+name|nnIndex
+operator|+
+literal|1
+operator|)
+argument_list|)
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_NAMENODE_CHECKPOINT_DIR_KEY
+argument_list|,
+name|fileAsURI
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|base_dir
+argument_list|,
+literal|"namesecondary"
+operator|+
+operator|(
+literal|2
+operator|*
+name|nnIndex
+operator|+
+literal|1
+operator|)
+argument_list|)
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|copyNameDirs (Collection<URI> srcDirs, Collection<URI> dstDirs, Configuration dstConf)
@@ -9050,6 +9178,8 @@ argument_list|,
 name|nameserviceId
 argument_list|,
 name|nnId
+argument_list|,
+literal|true
 argument_list|,
 literal|true
 argument_list|,
