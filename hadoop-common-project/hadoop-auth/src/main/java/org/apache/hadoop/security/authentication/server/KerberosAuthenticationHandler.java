@@ -1095,6 +1095,32 @@ return|return
 name|keytab
 return|;
 block|}
+comment|/**    * This is an empty implementation, it always returns<code>TRUE</code>.    *    *    *    * @param token the authentication token if any, otherwise<code>NULL</code>.    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return<code>TRUE</code>    * @throws IOException it is never thrown.    * @throws AuthenticationException it is never thrown.    */
+annotation|@
+name|Override
+DECL|method|managementOperation (AuthenticationToken token, HttpServletRequest request, HttpServletResponse response)
+specifier|public
+name|boolean
+name|managementOperation
+parameter_list|(
+name|AuthenticationToken
+name|token
+parameter_list|,
+name|HttpServletRequest
+name|request
+parameter_list|,
+name|HttpServletResponse
+name|response
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|AuthenticationException
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * It enforces the the Kerberos SPNEGO authentication sequence returning an {@link AuthenticationToken} only    * after the Kerberos SPNEGO sequence has completed successfully.    *<p/>    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the Kerberos SPNEGO sequence is complete and valid,    *<code>null</code> if it is in progress (in this case the handler handles the response to the client).    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if Kerberos SPNEGO sequence failed.    */
 annotation|@
 name|Override

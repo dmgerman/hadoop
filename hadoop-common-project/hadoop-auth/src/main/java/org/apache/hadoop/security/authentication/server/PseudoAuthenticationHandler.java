@@ -213,6 +213,32 @@ return|return
 name|TYPE
 return|;
 block|}
+comment|/**    * This is an empty implementation, it always returns<code>TRUE</code>.    *    *    *    * @param token the authentication token if any, otherwise<code>NULL</code>.    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return<code>TRUE</code>    * @throws IOException it is never thrown.    * @throws AuthenticationException it is never thrown.    */
+annotation|@
+name|Override
+DECL|method|managementOperation (AuthenticationToken token, HttpServletRequest request, HttpServletResponse response)
+specifier|public
+name|boolean
+name|managementOperation
+parameter_list|(
+name|AuthenticationToken
+name|token
+parameter_list|,
+name|HttpServletRequest
+name|request
+parameter_list|,
+name|HttpServletResponse
+name|response
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|AuthenticationException
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * Authenticates an HTTP client request.    *<p/>    * It extracts the {@link PseudoAuthenticator#USER_NAME} parameter from the query string and creates    * an {@link AuthenticationToken} with it.    *<p/>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to allow anonymous users it returns the {@link AuthenticationToken#ANONYMOUS}    * token.    *<p/>    * If the HTTP client request does not contain the {@link PseudoAuthenticator#USER_NAME} parameter and    * the handler is configured to disallow anonymous users it throws an {@link AuthenticationException}.    *    * @param request the HTTP client request.    * @param response the HTTP client response.    *    * @return an authentication token if the HTTP client request is accepted and credentials are valid.    *    * @throws IOException thrown if an IO error occurred.    * @throws AuthenticationException thrown if HTTP client request was not accepted as an authentication request.    */
 annotation|@
 name|Override
