@@ -344,7 +344,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|groupname
@@ -357,7 +357,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|permission
@@ -457,7 +457,7 @@ name|username
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|Text
@@ -470,7 +470,7 @@ name|groupname
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|permission

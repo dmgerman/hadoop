@@ -1119,6 +1119,94 @@ operator|=
 name|newLength
 expr_stmt|;
 block|}
+DECL|method|readFields (DataInput in, int maxLength)
+specifier|public
+name|void
+name|readFields
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|,
+name|int
+name|maxLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|newLength
+init|=
+name|WritableUtils
+operator|.
+name|readVInt
+argument_list|(
+name|in
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|newLength
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"tried to deserialize "
+operator|+
+name|newLength
+operator|+
+literal|" bytes of data!  newLength must be non-negative."
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|newLength
+operator|>=
+name|maxLength
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"tried to deserialize "
+operator|+
+name|newLength
+operator|+
+literal|" bytes of data, but maxLength = "
+operator|+
+name|maxLength
+argument_list|)
+throw|;
+block|}
+name|setCapacity
+argument_list|(
+name|newLength
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|in
+operator|.
+name|readFully
+argument_list|(
+name|bytes
+argument_list|,
+literal|0
+argument_list|,
+name|newLength
+argument_list|)
+expr_stmt|;
+name|length
+operator|=
+name|newLength
+expr_stmt|;
+block|}
 comment|/** Skips over one Text in the input. */
 DECL|method|skip (DataInput in)
 specifier|public
@@ -1164,6 +1252,66 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|WritableUtils
+operator|.
+name|writeVInt
+argument_list|(
+name|out
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|write
+argument_list|(
+name|bytes
+argument_list|,
+literal|0
+argument_list|,
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|write (DataOutput out, int maxLength)
+specifier|public
+name|void
+name|write
+parameter_list|(
+name|DataOutput
+name|out
+parameter_list|,
+name|int
+name|maxLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|length
+operator|>
+name|maxLength
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"data was too long to write!  Expected "
+operator|+
+literal|"less than or equal to "
+operator|+
+name|maxLength
+operator|+
+literal|" bytes, but got "
+operator|+
+name|length
+operator|+
+literal|" bytes."
+argument_list|)
+throw|;
+block|}
 name|WritableUtils
 operator|.
 name|writeVInt
@@ -1663,12 +1811,12 @@ return|return
 name|bytes
 return|;
 block|}
-DECL|field|ONE_MEGABYTE
+DECL|field|DEFAULT_MAX_LEN
 specifier|static
 specifier|final
 specifier|public
 name|int
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 init|=
 literal|1024
 operator|*
@@ -1753,8 +1901,6 @@ argument_list|,
 literal|0
 argument_list|,
 name|maxLength
-operator|-
-literal|1
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1882,7 +2028,7 @@ decl_stmt|;
 if|if
 condition|(
 name|length
-operator|>=
+operator|>
 name|maxLength
 condition|)
 block|{
@@ -1892,7 +2038,7 @@ name|IOException
 argument_list|(
 literal|"string was too long to write!  Expected "
 operator|+
-literal|"less than "
+literal|"less than or equal to "
 operator|+
 name|maxLength
 operator|+

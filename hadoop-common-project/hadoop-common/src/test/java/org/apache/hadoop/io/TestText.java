@@ -708,7 +708,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|doTestLimitedIO (String str, int strLen)
+DECL|method|doTestLimitedIO (String str, int len)
 specifier|public
 name|void
 name|doTestLimitedIO
@@ -717,7 +717,7 @@ name|String
 name|str
 parameter_list|,
 name|int
-name|strLen
+name|len
 parameter_list|)
 throws|throws
 name|IOException
@@ -751,7 +751,7 @@ name|out
 argument_list|,
 name|str
 argument_list|,
-name|strLen
+name|len
 argument_list|)
 expr_stmt|;
 name|fail
@@ -780,7 +780,7 @@ name|out
 argument_list|,
 name|str
 argument_list|,
-name|strLen
+name|len
 operator|+
 literal|1
 argument_list|)
@@ -805,7 +805,7 @@ name|in
 operator|.
 name|mark
 argument_list|(
-name|strLen
+name|len
 argument_list|)
 expr_stmt|;
 name|String
@@ -821,7 +821,7 @@ name|readString
 argument_list|(
 name|in
 argument_list|,
-name|strLen
+name|len
 argument_list|)
 expr_stmt|;
 name|fail
@@ -855,7 +855,7 @@ name|readString
 argument_list|(
 name|in
 argument_list|,
-name|strLen
+name|len
 operator|+
 literal|1
 argument_list|)
@@ -883,21 +883,21 @@ name|doTestLimitedIO
 argument_list|(
 literal|"abcd"
 argument_list|,
-literal|4
+literal|3
 argument_list|)
 expr_stmt|;
 name|doTestLimitedIO
 argument_list|(
-literal|""
+literal|"foo bar baz"
 argument_list|,
-literal|0
+literal|10
 argument_list|)
 expr_stmt|;
 name|doTestLimitedIO
 argument_list|(
 literal|"1"
 argument_list|,
-literal|1
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

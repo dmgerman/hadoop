@@ -805,7 +805,7 @@ argument_list|()
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|out
@@ -875,7 +875,7 @@ argument_list|()
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|Text
@@ -889,7 +889,7 @@ argument_list|()
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|out
@@ -920,7 +920,7 @@ argument_list|()
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 block|}
@@ -947,7 +947,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 decl_stmt|;
 name|this
@@ -1025,7 +1025,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 name|group
@@ -1038,7 +1038,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 expr_stmt|;
 if|if
@@ -1064,7 +1064,7 @@ name|in
 argument_list|,
 name|Text
 operator|.
-name|ONE_MEGABYTE
+name|DEFAULT_MAX_LEN
 argument_list|)
 argument_list|)
 expr_stmt|;
