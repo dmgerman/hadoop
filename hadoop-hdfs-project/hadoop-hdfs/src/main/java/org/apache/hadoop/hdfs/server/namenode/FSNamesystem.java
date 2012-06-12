@@ -6288,6 +6288,8 @@ argument_list|,
 literal|true
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -6318,7 +6320,7 @@ name|blocks
 return|;
 block|}
 comment|/**    * Get block locations within the specified range.    * @see ClientProtocol#getBlockLocations(String, long, long)    * @throws FileNotFoundException, UnresolvedLinkException, IOException    */
-DECL|method|getBlockLocations (String src, long offset, long length, boolean doAccessTime, boolean needBlockToken)
+DECL|method|getBlockLocations (String src, long offset, long length, boolean doAccessTime, boolean needBlockToken, boolean checkSafeMode)
 name|LocatedBlocks
 name|getBlockLocations
 parameter_list|(
@@ -6336,6 +6338,9 @@ name|doAccessTime
 parameter_list|,
 name|boolean
 name|needBlockToken
+parameter_list|,
+name|boolean
+name|checkSafeMode
 parameter_list|)
 throws|throws
 name|FileNotFoundException
@@ -6442,6 +6447,63 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|checkSafeMode
+operator|&&
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|LocatedBlock
+name|b
+range|:
+name|ret
+operator|.
+name|getLocatedBlocks
+argument_list|()
+control|)
+block|{
+comment|// if safemode& no block locations yet then throw safemodeException
+if|if
+condition|(
+operator|(
+name|b
+operator|.
+name|getLocations
+argument_list|()
+operator|==
+literal|null
+operator|)
+operator|||
+operator|(
+name|b
+operator|.
+name|getLocations
+argument_list|()
+operator|.
+name|length
+operator|==
+literal|0
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|SafeModeException
+argument_list|(
+literal|"Zero blocklocations for "
+operator|+
+name|src
+argument_list|,
+name|safeMode
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 return|return
 name|ret
