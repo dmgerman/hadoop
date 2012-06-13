@@ -182,6 +182,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|tools
+operator|.
+name|offlineEditsViewer
+operator|.
+name|OfflineEditsViewer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|XMLUtils
@@ -301,16 +319,19 @@ name|OfflineEditsLoader
 block|{
 DECL|field|fixTxIds
 specifier|private
+specifier|final
 name|boolean
 name|fixTxIds
 decl_stmt|;
 DECL|field|visitor
 specifier|private
+specifier|final
 name|OfflineEditsVisitor
 name|visitor
 decl_stmt|;
 DECL|field|fileReader
 specifier|private
+specifier|final
 name|FileReader
 name|fileReader
 decl_stmt|;
@@ -383,7 +404,7 @@ block|,
 DECL|enumConstant|EXPECT_END
 name|EXPECT_END
 block|,   }
-DECL|method|OfflineEditsXmlLoader (OfflineEditsVisitor visitor, File inputFile)
+DECL|method|OfflineEditsXmlLoader (OfflineEditsVisitor visitor, File inputFile, OfflineEditsViewer.Flags flags)
 specifier|public
 name|OfflineEditsXmlLoader
 parameter_list|(
@@ -392,6 +413,11 @@ name|visitor
 parameter_list|,
 name|File
 name|inputFile
+parameter_list|,
+name|OfflineEditsViewer
+operator|.
+name|Flags
+name|flags
 parameter_list|)
 throws|throws
 name|FileNotFoundException
@@ -411,6 +437,15 @@ name|FileReader
 argument_list|(
 name|inputFile
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|fixTxIds
+operator|=
+name|flags
+operator|.
+name|getFixTxIds
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Loads edits file, uses visitor to process all elements    */
@@ -1305,19 +1340,6 @@ name|start
 argument_list|,
 name|length
 argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|setFixTxIds ()
-specifier|public
-name|void
-name|setFixTxIds
-parameter_list|()
-block|{
-name|fixTxIds
-operator|=
-literal|true
 expr_stmt|;
 block|}
 block|}

@@ -78,6 +78,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|tools
+operator|.
+name|offlineEditsViewer
+operator|.
+name|OfflineEditsViewer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|HdfsConstants
@@ -146,19 +164,12 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|setFixTxIds ()
-specifier|public
-specifier|abstract
-name|void
-name|setFixTxIds
-parameter_list|()
-function_decl|;
 DECL|class|OfflineEditsLoaderFactory
 specifier|static
 class|class
 name|OfflineEditsLoaderFactory
 block|{
-DECL|method|createLoader (OfflineEditsVisitor visitor, String inputFileName, boolean xmlInput)
+DECL|method|createLoader (OfflineEditsVisitor visitor, String inputFileName, boolean xmlInput, OfflineEditsViewer.Flags flags)
 specifier|static
 name|OfflineEditsLoader
 name|createLoader
@@ -171,6 +182,11 @@ name|inputFileName
 parameter_list|,
 name|boolean
 name|xmlInput
+parameter_list|,
+name|OfflineEditsViewer
+operator|.
+name|Flags
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -191,6 +207,8 @@ name|File
 argument_list|(
 name|inputFileName
 argument_list|)
+argument_list|,
+name|flags
 argument_list|)
 return|;
 block|}
@@ -247,6 +265,8 @@ argument_list|(
 name|visitor
 argument_list|,
 name|elis
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 block|}
