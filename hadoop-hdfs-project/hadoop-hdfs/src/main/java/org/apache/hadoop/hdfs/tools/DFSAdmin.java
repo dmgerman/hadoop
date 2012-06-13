@@ -1411,6 +1411,8 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|quota
 operator|=
 name|StringUtils
@@ -1422,6 +1424,25 @@ argument_list|(
 name|str
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|nfe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"\""
+operator|+
+name|str
+operator|+
+literal|"\" is not a valid value for a quota."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|args
