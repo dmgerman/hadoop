@@ -1244,6 +1244,13 @@ operator|!=
 literal|null
 operator|&&
 name|token
+operator|.
+name|getExpires
+argument_list|()
+operator|!=
+literal|0
+operator|&&
+name|token
 operator|!=
 name|AuthenticationToken
 operator|.
@@ -1376,6 +1383,12 @@ expr_stmt|;
 if|if
 condition|(
 name|newToken
+operator|&&
+operator|!
+name|token
+operator|.
+name|isExpired
+argument_list|()
 operator|&&
 name|token
 operator|!=

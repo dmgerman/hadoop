@@ -453,7 +453,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|userName
+name|getUserName
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -475,7 +476,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|principal
+name|getName
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -497,7 +499,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|type
+name|getType
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -519,7 +522,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|expires
+name|getExpires
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|token
@@ -584,7 +588,8 @@ name|isExpired
 parameter_list|()
 block|{
 return|return
-name|expires
+name|getExpires
+argument_list|()
 operator|!=
 operator|-
 literal|1
@@ -594,7 +599,8 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 operator|>
-name|expires
+name|getExpires
+argument_list|()
 return|;
 block|}
 comment|/**    * Returns the string representation of the token.    *<p/>    * This string representation is parseable by the {@link #parse} method.    *    * @return the string representation of the token.    */
