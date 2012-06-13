@@ -834,18 +834,17 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|int
-name|written
-init|=
-name|fc
+name|IOUtils
 operator|.
-name|write
+name|writeFully
 argument_list|(
+name|fc
+argument_list|,
 name|fill
 argument_list|,
 name|position
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|FSNamesystem
@@ -871,7 +870,10 @@ argument_list|()
 operator|+
 literal|" written "
 operator|+
-name|written
+name|fill
+operator|.
+name|capacity
+argument_list|()
 operator|+
 literal|" bytes "
 operator|+
