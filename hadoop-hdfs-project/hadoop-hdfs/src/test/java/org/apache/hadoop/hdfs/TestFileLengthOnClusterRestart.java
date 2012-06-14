@@ -319,14 +319,19 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"Could not obtain the last block locations."
-argument_list|,
 name|e
 operator|.
 name|getLocalizedMessage
 argument_list|()
+operator|.
+name|indexOf
+argument_list|(
+literal|"Name node is in safe mode"
+argument_list|)
+operator|>=
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
