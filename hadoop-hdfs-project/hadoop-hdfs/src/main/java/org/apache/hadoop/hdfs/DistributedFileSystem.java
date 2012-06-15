@@ -741,7 +741,9 @@ name|getScheme
 parameter_list|()
 block|{
 return|return
-literal|"hdfs"
+name|HdfsConstants
+operator|.
+name|HDFS_URI_SCHEME
 return|;
 block|}
 annotation|@
