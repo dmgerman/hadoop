@@ -737,6 +737,13 @@ block|}
 block|}
 else|else
 block|{
+name|token
+operator|.
+name|set
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|AuthenticationException
