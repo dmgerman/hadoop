@@ -937,7 +937,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Client for Distributed Shell application submission to YARN.  *   *<p> The distributed shell client allows an application master to be launched that in turn would run   * the provided shell command on a set of containers.</p>  *   *<p>This client is meant to act as an example on how to write yarn-based applications.</p>  *   *<p> To submit an application, a client first needs to connect to the<code>ResourceManager</code>   * aka ApplicationsManager or ASM via the {@link ClientRMProtocol}. The {@link ClientRMProtocol}   * provides a way for the client to get access to cluster information and to request for a  * new {@link ApplicationId}.<p>  *   *<p> For the actual job submission, the client first has to create an {@link ApplicationSubmissionContext}.   * The {@link ApplicationSubmissionContext} defines the application details such as {@link ApplicationId}   * and application name, user submitting the application, the priority assigned to the application and the queue   * to which this application needs to be assigned. In addition to this, the {@link ApplicationSubmissionContext}  * also defines the {@link ContainerLaunchContext} which describes the<code>Container</code> with which   * the {@link ApplicationMaster} is launched.</p>  *   *<p> The {@link ContainerLaunchContext} in this scenario defines the resources to be allocated for the   * {@link ApplicationMaster}'s container, the local resources (jars, configuration files) to be made available   * and the environment to be set for the {@link ApplicationMaster} and the commands to be executed to run the   * {@link ApplicationMaster}.<p>  *   *<p> Using the {@link ApplicationSubmissionContext}, the client submits the application to the   *<code>ResourceManager</code> and then monitors the application by requesting the<code>ResourceManager</code>   * for an {@link ApplicationReport} at regular time intervals. In case of the application taking too long, the client   * kills the application by submitting a {@link KillApplicationRequest} to the<code>ResourceManager</code>.</p>  *  */
+comment|/**  * Client for Distributed Shell application submission to YARN.  *   *<p> The distributed shell client allows an application master to be launched that in turn would run   * the provided shell command on a set of containers.</p>  *   *<p>This client is meant to act as an example on how to write yarn-based applications.</p>  *   *<p> To submit an application, a client first needs to connect to the<code>ResourceManager</code>   * aka ApplicationsManager or ASM via the {@link ClientRMProtocol}. The {@link ClientRMProtocol}   * provides a way for the client to get access to cluster information and to request for a  * new {@link ApplicationId}.<p>  *   *<p> For the actual job submission, the client first has to create an {@link ApplicationSubmissionContext}.   * The {@link ApplicationSubmissionContext} defines the application details such as {@link ApplicationId}   * and application name, the priority assigned to the application and the queue  * to which this application needs to be assigned. In addition to this, the {@link ApplicationSubmissionContext}  * also defines the {@link ContainerLaunchContext} which describes the<code>Container</code> with which   * the {@link ApplicationMaster} is launched.</p>  *   *<p> The {@link ContainerLaunchContext} in this scenario defines the resources to be allocated for the   * {@link ApplicationMaster}'s container, the local resources (jars, configuration files) to be made available   * and the environment to be set for the {@link ApplicationMaster} and the commands to be executed to run the   * {@link ApplicationMaster}.<p>  *   *<p> Using the {@link ApplicationSubmissionContext}, the client submits the application to the   *<code>ResourceManager</code> and then monitors the application by requesting the<code>ResourceManager</code>   * for an {@link ApplicationReport} at regular time intervals. In case of the application taking too long, the client   * kills the application by submitting a {@link KillApplicationRequest} to the<code>ResourceManager</code>.</p>  *  */
 end_comment
 
 begin_class
@@ -1009,14 +1009,6 @@ DECL|field|amQueue
 specifier|private
 name|String
 name|amQueue
-init|=
-literal|""
-decl_stmt|;
-comment|// User to run app master as
-DECL|field|amUser
-specifier|private
-name|String
-name|amUser
 init|=
 literal|""
 decl_stmt|;
@@ -1337,7 +1329,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Parse command line options    * @param args Parsed command line options     * @return Whether the init was successful to run the client    */
+comment|/**    * Parse command line options    * @param args Parsed command line options     * @return Whether the init was successful to run the client    * @throws ParseException    */
 DECL|method|init (String[] args)
 specifier|public
 name|boolean
@@ -1388,17 +1380,6 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"RM Queue in which this application is to be submitted"
-argument_list|)
-expr_stmt|;
-name|opts
-operator|.
-name|addOption
-argument_list|(
-literal|"user"
-argument_list|,
-literal|true
-argument_list|,
-literal|"User to run the application as"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1659,17 +1640,6 @@ operator|.
 name|getOptionValue
 argument_list|(
 literal|"queue"
-argument_list|,
-literal|""
-argument_list|)
-expr_stmt|;
-name|amUser
-operator|=
-name|cliParser
-operator|.
-name|getOptionValue
-argument_list|(
-literal|"user"
 argument_list|,
 literal|""
 argument_list|)
@@ -3406,9 +3376,6 @@ argument_list|(
 name|commands
 argument_list|)
 expr_stmt|;
-comment|// For launching an AM Container, setting user here is not needed
-comment|// Set user in ApplicationSubmissionContext
-comment|// amContainer.setUser(amUser);
 comment|// Set up resource type requirements
 comment|// For now, only memory is supported so we set memory requirements
 name|Resource
@@ -3483,15 +3450,6 @@ operator|.
 name|setQueue
 argument_list|(
 name|amQueue
-argument_list|)
-expr_stmt|;
-comment|// Set the user submitting this application
-comment|// TODO can it be empty?
-name|appContext
-operator|.
-name|setUser
-argument_list|(
-name|amUser
 argument_list|)
 expr_stmt|;
 comment|// Create the request to send to the applications manager
