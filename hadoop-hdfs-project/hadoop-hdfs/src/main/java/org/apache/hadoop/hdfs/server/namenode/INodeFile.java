@@ -182,6 +182,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|INodeFile
+specifier|public
 class|class
 name|INodeFile
 extends|extends
