@@ -857,7 +857,7 @@ name|setCapacity
 argument_list|(
 name|A
 argument_list|,
-literal|10
+literal|10.5f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -885,7 +885,7 @@ name|setCapacity
 argument_list|(
 name|B
 argument_list|,
-literal|90
+literal|89.5f
 argument_list|)
 expr_stmt|;
 comment|// Define 2nd-level queues

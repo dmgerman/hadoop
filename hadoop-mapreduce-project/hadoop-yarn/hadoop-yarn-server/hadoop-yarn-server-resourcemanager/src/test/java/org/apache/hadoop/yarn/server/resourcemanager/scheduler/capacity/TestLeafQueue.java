@@ -1202,7 +1202,7 @@ name|setCapacity
 argument_list|(
 name|Q_A
 argument_list|,
-literal|9
+literal|8.5f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1288,7 +1288,7 @@ name|setCapacity
 argument_list|(
 name|Q_C
 argument_list|,
-literal|1
+literal|1.5f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1649,7 +1649,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|0.09
+literal|0.085
 argument_list|,
 name|a
 operator|.
@@ -1661,7 +1661,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0.09
+literal|0.085
 argument_list|,
 name|a
 operator|.
@@ -1774,7 +1774,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|0.01
+literal|0.015
 argument_list|,
 name|c
 operator|.
@@ -1786,7 +1786,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0.01
+literal|0.015
 argument_list|,
 name|c
 operator|.

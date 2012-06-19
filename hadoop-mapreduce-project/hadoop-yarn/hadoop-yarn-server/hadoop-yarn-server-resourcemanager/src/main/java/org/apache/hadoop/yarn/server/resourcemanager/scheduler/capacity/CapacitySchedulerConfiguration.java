@@ -397,7 +397,7 @@ DECL|field|UNDEFINED
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|float
 name|UNDEFINED
 init|=
 operator|-
@@ -409,7 +409,7 @@ DECL|field|MINIMUM_CAPACITY_VALUE
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|float
 name|MINIMUM_CAPACITY_VALUE
 init|=
 literal|1
@@ -420,7 +420,7 @@ DECL|field|MAXIMUM_CAPACITY_VALUE
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|float
 name|MAXIMUM_CAPACITY_VALUE
 init|=
 literal|100
@@ -595,17 +595,17 @@ return|;
 block|}
 DECL|method|getCapacity (String queue)
 specifier|public
-name|int
+name|float
 name|getCapacity
 parameter_list|(
 name|String
 name|queue
 parameter_list|)
 block|{
-name|int
+name|float
 name|capacity
 init|=
-name|getInt
+name|getFloat
 argument_list|(
 name|getQueuePrefix
 argument_list|(
@@ -664,7 +664,7 @@ return|return
 name|capacity
 return|;
 block|}
-DECL|method|setCapacity (String queue, int capacity)
+DECL|method|setCapacity (String queue, float capacity)
 specifier|public
 name|void
 name|setCapacity
@@ -672,11 +672,11 @@ parameter_list|(
 name|String
 name|queue
 parameter_list|,
-name|int
+name|float
 name|capacity
 parameter_list|)
 block|{
-name|setInt
+name|setFloat
 argument_list|(
 name|getQueuePrefix
 argument_list|(
@@ -707,17 +707,17 @@ expr_stmt|;
 block|}
 DECL|method|getMaximumCapacity (String queue)
 specifier|public
-name|int
+name|float
 name|getMaximumCapacity
 parameter_list|(
 name|String
 name|queue
 parameter_list|)
 block|{
-name|int
+name|float
 name|maxCapacity
 init|=
-name|getInt
+name|getFloat
 argument_list|(
 name|getQueuePrefix
 argument_list|(
@@ -733,7 +733,7 @@ return|return
 name|maxCapacity
 return|;
 block|}
-DECL|method|setMaximumCapacity (String queue, int maxCapacity)
+DECL|method|setMaximumCapacity (String queue, float maxCapacity)
 specifier|public
 name|void
 name|setMaximumCapacity
@@ -741,7 +741,7 @@ parameter_list|(
 name|String
 name|queue
 parameter_list|,
-name|int
+name|float
 name|maxCapacity
 parameter_list|)
 block|{
@@ -768,7 +768,7 @@ name|queue
 argument_list|)
 throw|;
 block|}
-name|setInt
+name|setFloat
 argument_list|(
 name|getQueuePrefix
 argument_list|(

@@ -550,23 +550,23 @@ decl_stmt|;
 DECL|field|A_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|A_CAPACITY
 init|=
-literal|10
+literal|10.5f
 decl_stmt|;
 DECL|field|B_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|B_CAPACITY
 init|=
-literal|90
+literal|89.5f
 decl_stmt|;
 DECL|field|A1_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|A1_CAPACITY
 init|=
 literal|30
@@ -574,7 +574,7 @@ decl_stmt|;
 DECL|field|A2_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|A2_CAPACITY
 init|=
 literal|70
@@ -582,7 +582,7 @@ decl_stmt|;
 DECL|field|B1_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|B1_CAPACITY
 init|=
 literal|50
@@ -590,7 +590,7 @@ decl_stmt|;
 DECL|field|B2_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|B2_CAPACITY
 init|=
 literal|30
@@ -598,7 +598,7 @@ decl_stmt|;
 DECL|field|B3_CAPACITY
 specifier|private
 specifier|static
-name|int
+name|float
 name|B3_CAPACITY
 init|=
 literal|20
@@ -1688,7 +1688,7 @@ name|setCapacity
 argument_list|(
 name|A
 argument_list|,
-literal|80
+literal|80f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1697,7 +1697,7 @@ name|setCapacity
 argument_list|(
 name|B
 argument_list|,
-literal|20
+literal|20f
 argument_list|)
 expr_stmt|;
 name|cs
@@ -1715,13 +1715,13 @@ name|checkQueueCapacities
 argument_list|(
 name|cs
 argument_list|,
-literal|80
+literal|80f
 argument_list|,
-literal|20
+literal|20f
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkQueueCapacities (CapacityScheduler cs, int capacityA, int capacityB)
+DECL|method|checkQueueCapacities (CapacityScheduler cs, float capacityA, float capacityB)
 specifier|private
 name|void
 name|checkQueueCapacities
@@ -1729,10 +1729,10 @@ parameter_list|(
 name|CapacityScheduler
 name|cs
 parameter_list|,
-name|int
+name|float
 name|capacityA
 parameter_list|,
-name|int
+name|float
 name|capacityB
 parameter_list|)
 block|{
@@ -1879,9 +1879,6 @@ name|checkQueueCapacity
 argument_list|(
 name|queueA2
 argument_list|,
-operator|(
-name|float
-operator|)
 name|A2_CAPACITY
 operator|/
 literal|100.0f
@@ -1903,9 +1900,6 @@ name|checkQueueCapacity
 argument_list|(
 name|queueB1
 argument_list|,
-operator|(
-name|float
-operator|)
 name|B1_CAPACITY
 operator|/
 literal|100.0f
@@ -1927,9 +1921,6 @@ name|checkQueueCapacity
 argument_list|(
 name|queueB2
 argument_list|,
-operator|(
-name|float
-operator|)
 name|B2_CAPACITY
 operator|/
 literal|100.0f
@@ -1951,9 +1942,6 @@ name|checkQueueCapacity
 argument_list|(
 name|queueB3
 argument_list|,
-operator|(
-name|float
-operator|)
 name|B3_CAPACITY
 operator|/
 literal|100.0f
@@ -2299,7 +2287,7 @@ name|ROOT
 operator|+
 literal|".a.a1.b1"
 argument_list|,
-literal|100
+literal|100.0f
 argument_list|)
 expr_stmt|;
 name|conf

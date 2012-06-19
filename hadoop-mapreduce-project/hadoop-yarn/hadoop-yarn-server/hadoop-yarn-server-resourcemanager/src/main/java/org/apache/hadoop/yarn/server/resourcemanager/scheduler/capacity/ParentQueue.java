@@ -813,7 +813,7 @@ name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|int
+name|float
 name|rawCapacity
 init|=
 name|cs
