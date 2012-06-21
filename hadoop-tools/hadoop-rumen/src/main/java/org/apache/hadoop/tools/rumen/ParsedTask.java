@@ -294,7 +294,9 @@ return|return
 name|failedDueToAttempt
 return|;
 block|}
+comment|/**    * @return the list of attempts of this task.    */
 DECL|method|obtainTaskAttempts ()
+specifier|public
 name|List
 argument_list|<
 name|ParsedTaskAttempt
