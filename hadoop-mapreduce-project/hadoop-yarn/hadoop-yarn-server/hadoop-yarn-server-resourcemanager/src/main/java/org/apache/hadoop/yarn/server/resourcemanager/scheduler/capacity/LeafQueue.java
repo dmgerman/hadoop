@@ -5717,6 +5717,8 @@ argument_list|,
 name|capability
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|containerToken
 operator|=
 name|BuilderUtils
@@ -5740,6 +5742,28 @@ argument_list|,
 name|tokenIdentifier
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// this could be because DNS is down - in which case we just want
+comment|// to retry and not bring RM down
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error trying to create new container"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 block|}
 comment|// Create the container
 name|Container
@@ -5888,6 +5912,21 @@ argument_list|,
 name|priority
 argument_list|)
 decl_stmt|;
+comment|// something went wrong getting/creating the container
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 comment|// Can we allocate a container on this node?
 name|int
 name|availableContainers
