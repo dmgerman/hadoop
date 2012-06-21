@@ -3802,6 +3802,90 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Gets the absolute path to the resource object (file, URL, etc.), for a given    * property name.    *    * @param name - The property name to get the source of.    * @return null - If the property or its source wasn't found or if the property    * was defined in code (i.e. in a Configuration instance, not from a physical    * resource). Otherwise, returns the absolute path of the resource that loaded    * the property name, as a String.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getPropertySource (String name)
+specifier|public
+specifier|synchronized
+name|String
+name|getPropertySource
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+if|if
+condition|(
+name|properties
+operator|==
+literal|null
+condition|)
+block|{
+comment|// If properties is null, it means a resource was newly added
+comment|// but the props were cleared so as to load it upon future
+comment|// requests. So lets force a load by asking a properties list.
+name|getProps
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Return a null right away if our properties still
+comment|// haven't loaded or the resource mapping isn't defined
+if|if
+condition|(
+name|properties
+operator|==
+literal|null
+operator|||
+name|updatingResource
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+name|String
+name|source
+init|=
+name|updatingResource
+operator|.
+name|get
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|source
+operator|==
+literal|null
+operator|||
+name|source
+operator|.
+name|equals
+argument_list|(
+name|UNKNOWN_RESOURCE
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|source
+return|;
+block|}
+block|}
+block|}
 comment|/**    * A class that represents a set of positive integer ranges. It parses     * strings of the form: "2-3,5,7-" where ranges are separated by comma and     * the lower/upper bounds are separated by dash. Either the lower or upper     * bound may be omitted meaning all values up to or over. So the string     * above means 2, 3, 5, and 7, 8, 9, ...    */
 DECL|class|IntegerRanges
 specifier|public
