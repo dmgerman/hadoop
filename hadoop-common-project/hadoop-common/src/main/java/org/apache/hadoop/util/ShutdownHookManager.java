@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a determistic order, higher priority first.  *<p/>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  */
+comment|/**  * The<code>ShutdownHookManager</code> enables running shutdownHook  * in a deterministic order, higher priority first.  *<p/>  * The JVM runs ShutdownHooks in a non-deterministic order or in parallel.  * This class registers a single JVM shutdownHook and run all the  * shutdownHooks registered to it (to this class) in order based on their  * priority.  */
 end_comment
 
 begin_class
@@ -605,7 +605,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Indicates if a shutdownHook is registered or nt.    *    * @param shutdownHook shutdownHook to check if registered.    * @return TRUE/FALSE depending if the shutdownHook is is registered.    */
+comment|/**    * Indicates if a shutdownHook is registered or not.    *    * @param shutdownHook shutdownHook to check if registered.    * @return TRUE/FALSE depending if the shutdownHook is is registered.    */
 DECL|method|hasShutdownHook (Runnable shutdownHook)
 specifier|public
 name|boolean
@@ -628,6 +628,20 @@ argument_list|,
 literal|0
 argument_list|)
 argument_list|)
+return|;
+block|}
+comment|/**    * Indicates if shutdown is in progress or not.    *     * @return TRUE if the shutdown is in progress, otherwise FALSE.    */
+DECL|method|isShutdownInProgress ()
+specifier|public
+name|boolean
+name|isShutdownInProgress
+parameter_list|()
+block|{
+return|return
+name|shutdownInProgress
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}
