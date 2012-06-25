@@ -17,7 +17,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Thrown when the config file for {@link CronNode} is malformed.    */
+comment|/**  * Thrown when the config file for {@link RaidNode} is malformed.  */
 end_comment
 
 begin_class

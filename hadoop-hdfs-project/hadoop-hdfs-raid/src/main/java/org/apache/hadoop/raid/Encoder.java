@@ -1602,7 +1602,7 @@ return|return
 name|blocks
 return|;
 block|}
-comment|/**    * The implementation of generating parity data for a stripe.    *    * @param blocks The streams to blocks in the stripe.    * @param srcFile The source file.    * @param stripeStartOffset The start offset of the stripe    * @param blockSize The maximum size of a block.    * @param outs output streams to the parity blocks.    * @param reporter progress indicator.    */
+comment|/**    * The implementation of generating parity data for a stripe.    *    * @param blocks The streams to blocks in the stripe.    * @param stripeStartOffset The start offset of the stripe    * @param blockSize The maximum size of a block.    * @param outs output streams to the parity blocks.    * @param reporter progress indicator.    */
 DECL|method|encodeStripe ( InputStream[] blocks, long stripeStartOffset, long blockSize, OutputStream[] outs, Progressable reporter)
 specifier|protected
 specifier|abstract

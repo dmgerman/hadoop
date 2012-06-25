@@ -222,7 +222,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDocs}    */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|join ()
@@ -259,7 +259,7 @@ block|{
 comment|// do nothing
 block|}
 block|}
-comment|/**    * {@inheritDocs}    */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -304,7 +304,7 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDocs}    */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|raidFiles (PolicyInfo info, List<FileStatus> paths)
@@ -371,7 +371,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDocs}    */
+comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|getRunningJobsForPolicy (String policyName)
