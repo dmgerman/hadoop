@@ -1641,7 +1641,7 @@ name|getOptionValue
 argument_list|(
 literal|"queue"
 argument_list|,
-literal|""
+literal|"default"
 argument_list|)
 expr_stmt|;
 name|amMemory
@@ -2173,6 +2173,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|queueInfoReq
+operator|.
+name|setQueueName
+argument_list|(
+name|this
+operator|.
+name|amQueue
+argument_list|)
+expr_stmt|;
 name|GetQueueInfoResponse
 name|queueInfoResp
 init|=
