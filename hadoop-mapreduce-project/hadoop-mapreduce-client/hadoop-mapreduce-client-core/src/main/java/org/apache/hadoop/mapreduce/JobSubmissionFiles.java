@@ -126,6 +126,34 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A utility to manage job submission files.  */
 end_comment
@@ -140,6 +168,22 @@ specifier|public
 class|class
 name|JobSubmissionFiles
 block|{
+DECL|field|LOG
+specifier|private
+specifier|final
+specifier|static
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|JobSubmissionFiles
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|// job submission directory is private!
 DECL|field|JOB_DIR_PERMISSION
 specifier|final
@@ -436,26 +480,13 @@ argument_list|(
 name|realUser
 argument_list|)
 operator|)
-operator|||
-operator|!
-name|fsStatus
-operator|.
-name|getPermission
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|JOB_DIR_PERMISSION
-argument_list|)
 condition|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"The ownership/permissions on the staging "
-operator|+
-literal|"directory "
+literal|"The ownership on the staging directory "
 operator|+
 name|stagingArea
 operator|+
@@ -464,13 +495,6 @@ operator|+
 literal|"It is owned by "
 operator|+
 name|owner
-operator|+
-literal|" and permissions are "
-operator|+
-name|fsStatus
-operator|.
-name|getPermission
-argument_list|()
 operator|+
 literal|". The directory must "
 operator|+
@@ -483,10 +507,56 @@ operator|+
 literal|"by "
 operator|+
 name|realUser
-operator|+
-literal|" and permissions must be rwx------"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|fsStatus
+operator|.
+name|getPermission
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|JOB_DIR_PERMISSION
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Permissions on staging directory "
+operator|+
+name|stagingArea
+operator|+
+literal|" are "
+operator|+
+literal|"incorrect: "
+operator|+
+name|fsStatus
+operator|.
+name|getPermission
+argument_list|()
+operator|+
+literal|". Fixing permissions "
+operator|+
+literal|"to correct value "
+operator|+
+name|JOB_DIR_PERMISSION
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|setPermission
+argument_list|(
+name|stagingArea
+argument_list|,
+name|JOB_DIR_PERMISSION
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
