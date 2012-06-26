@@ -648,7 +648,7 @@ operator|+
 literal|"/audit.log"
 decl_stmt|;
 comment|// Pattern for:
-comment|// ugi=name ip=/address cmd=FSCK src=/ dst=null perm=null
+comment|// allowed=true ugi=name ip=/address cmd=FSCK src=/ dst=null perm=null
 DECL|field|fsckPattern
 specifier|static
 specifier|final
@@ -659,6 +659,8 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
+literal|"allowed=.*?\\s"
+operator|+
 literal|"ugi=.*?\\s"
 operator|+
 literal|"ip=/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\s"
