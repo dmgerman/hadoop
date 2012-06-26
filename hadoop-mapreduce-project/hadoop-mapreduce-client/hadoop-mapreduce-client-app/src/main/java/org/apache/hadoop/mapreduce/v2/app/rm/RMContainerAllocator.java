@@ -2606,35 +2606,6 @@ argument_list|(
 literal|"Recalculating schedule..."
 argument_list|)
 expr_stmt|;
-comment|//if all maps are assigned, then ramp up all reduces irrespective of the
-comment|//headroom
-if|if
-condition|(
-name|scheduledMaps
-operator|==
-literal|0
-operator|&&
-name|numPendingReduces
-operator|>
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"All maps assigned. "
-operator|+
-literal|"Ramping up all remaining reduces:"
-operator|+
-name|numPendingReduces
-argument_list|)
-expr_stmt|;
-name|scheduleAllReduces
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
 comment|//check for slow start
 if|if
 condition|(
@@ -2694,6 +2665,35 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|//if all maps are assigned, then ramp up all reduces irrespective of the
+comment|//headroom
+if|if
+condition|(
+name|scheduledMaps
+operator|==
+literal|0
+operator|&&
+name|numPendingReduces
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"All maps assigned. "
+operator|+
+literal|"Ramping up all remaining reduces:"
+operator|+
+name|numPendingReduces
+argument_list|)
+expr_stmt|;
+name|scheduleAllReduces
+argument_list|()
+expr_stmt|;
+return|return;
 block|}
 name|float
 name|completedMapPercent
@@ -2953,8 +2953,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Private
 DECL|method|scheduleAllReduces ()
-specifier|private
+specifier|public
 name|void
 name|scheduleAllReduces
 parameter_list|()
