@@ -345,7 +345,7 @@ name|getName
 argument_list|()
 decl_stmt|;
 DECL|field|considerLoad
-specifier|private
+specifier|protected
 name|boolean
 name|considerLoad
 decl_stmt|;
@@ -357,7 +357,7 @@ init|=
 literal|true
 decl_stmt|;
 DECL|field|clusterMap
-specifier|private
+specifier|protected
 name|NetworkTopology
 name|clusterMap
 decl_stmt|;
@@ -367,14 +367,14 @@ name|FSClusterStats
 name|stats
 decl_stmt|;
 DECL|field|heartbeatInterval
-specifier|private
+specifier|protected
 name|long
 name|heartbeatInterval
 decl_stmt|;
 comment|// interval for DataNode heartbeats
 comment|/**    * A miss of that many heartbeats is tolerated for replica deletion policy.    */
 DECL|field|tolerateHeartbeatMultiplier
-specifier|private
+specifier|protected
 name|int
 name|tolerateHeartbeatMultiplier
 decl_stmt|;
@@ -488,7 +488,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|field|threadLocalBuilder
-specifier|private
+specifier|protected
 name|ThreadLocal
 argument_list|<
 name|StringBuilder
@@ -1180,7 +1180,7 @@ return|;
 block|}
 comment|/* choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen node    */
 DECL|method|chooseLocalNode ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
 parameter_list|(
@@ -1306,7 +1306,7 @@ return|;
 block|}
 comment|/* choose one node from the rack that<i>localMachine</i> is on.    * if no such node is available, choose one node from the rack where    * a second replica is on.    * if still no such node is available, choose a random node     * in the cluster.    * @return the chosen node    */
 DECL|method|chooseLocalRack ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
 parameter_list|(
@@ -1512,7 +1512,7 @@ block|}
 block|}
 comment|/* choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
 DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|void
 name|chooseRemoteRack
 parameter_list|(
@@ -1614,7 +1614,7 @@ block|}
 block|}
 comment|/* Randomly choose one target from<i>nodes</i>.    * @return the chosen node    */
 DECL|method|chooseRandom ( String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|DatanodeDescriptor
 name|chooseRandom
 parameter_list|(
@@ -1836,7 +1836,7 @@ throw|;
 block|}
 comment|/* Randomly choose<i>numOfReplicas</i> targets from<i>nodes</i>.    */
 DECL|method|chooseRandom (int numOfReplicas, String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|void
 name|chooseRandom
 parameter_list|(
@@ -2110,7 +2110,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerLoc, boolean considerLoad, List<DatanodeDescriptor> results)
-specifier|private
+specifier|protected
 name|boolean
 name|isGoodTarget
 parameter_list|(
@@ -2876,20 +2876,12 @@ name|DatanodeDescriptor
 argument_list|>
 name|iter
 init|=
+name|pickupReplicaSet
+argument_list|(
 name|first
-operator|.
-name|isEmpty
-argument_list|()
-condition|?
+argument_list|,
 name|second
-operator|.
-name|iterator
-argument_list|()
-else|:
-name|first
-operator|.
-name|iterator
-argument_list|()
+argument_list|)
 decl_stmt|;
 comment|// Pick the node with the oldest heartbeat or with the least free space,
 comment|// if all hearbeats are within the tolerable heartbeat interval
@@ -2966,6 +2958,53 @@ condition|?
 name|oldestHeartbeatNode
 else|:
 name|minSpaceNode
+return|;
+block|}
+comment|/**    * Pick up replica node set for deleting replica as over-replicated.     * First set contains replica nodes on rack with more than one    * replica while second set contains remaining replica nodes.    * So pick up first set if not empty. If first is empty, then pick second.    */
+DECL|method|pickupReplicaSet ( Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
+specifier|protected
+name|Iterator
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|pickupReplicaSet
+parameter_list|(
+name|Collection
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|first
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|second
+parameter_list|)
+block|{
+name|Iterator
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|iter
+init|=
+name|first
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+name|second
+operator|.
+name|iterator
+argument_list|()
+else|:
+name|first
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+return|return
+name|iter
 return|;
 block|}
 annotation|@
