@@ -337,8 +337,6 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|URISyntaxException
-throws|,
 name|InterruptedException
 block|{
 return|return
@@ -481,9 +479,8 @@ operator|.
 name|jsonParse
 argument_list|(
 name|conn
-operator|.
-name|getInputStream
-argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
