@@ -4888,6 +4888,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|host2DatanodeMap
+return|;
+block|}
 block|}
 end_class
 

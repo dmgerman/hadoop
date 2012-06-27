@@ -268,6 +268,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|createConf ()
+specifier|public
+specifier|static
+name|Configuration
+name|createConf
+parameter_list|()
+block|{
+specifier|final
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_WEBHDFS_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
 DECL|method|getWebHdfsFileSystem (final Configuration conf )
 specifier|public
 specifier|static
