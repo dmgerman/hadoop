@@ -933,29 +933,6 @@ return|return
 name|fs
 return|;
 block|}
-comment|/**    * Get JobStatus corresponding to jobId.    *     * @param jobId    * @return object of {@link JobStatus}    * @throws IOException    * @throws InterruptedException    */
-DECL|method|getJobStatus (JobID jobId)
-specifier|public
-name|JobStatus
-name|getJobStatus
-parameter_list|(
-name|JobID
-name|jobId
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|InterruptedException
-block|{
-return|return
-name|client
-operator|.
-name|getJobStatus
-argument_list|(
-name|jobId
-argument_list|)
-return|;
-block|}
 comment|/**    * Get job corresponding to jobid.    *     * @param jobId    * @return object of {@link Job}    * @throws IOException    * @throws InterruptedException    */
 DECL|method|getJob (JobID jobId)
 specifier|public
@@ -973,6 +950,8 @@ block|{
 name|JobStatus
 name|status
 init|=
+name|client
+operator|.
 name|getJobStatus
 argument_list|(
 name|jobId
