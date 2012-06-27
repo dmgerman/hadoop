@@ -34,16 +34,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -472,9 +462,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
-operator|.
-name|RMState
+name|StoreFactory
 import|;
 end_import
 
@@ -494,7 +482,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|StoreFactory
+name|Store
+operator|.
+name|RMState
 import|;
 end_import
 
@@ -2195,6 +2185,15 @@ expr_stmt|;
 if|if
 condition|(
 name|shouldExitOnError
+operator|&&
+operator|!
+name|ShutdownHookManager
+operator|.
+name|get
+argument_list|()
+operator|.
+name|isShutdownInProgress
+argument_list|()
 condition|)
 block|{
 name|LOG
