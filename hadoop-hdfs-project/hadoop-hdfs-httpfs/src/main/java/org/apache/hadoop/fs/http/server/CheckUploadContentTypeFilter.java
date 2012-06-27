@@ -136,16 +136,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|HashSet
@@ -199,7 +189,7 @@ name|add
 argument_list|(
 name|HttpFSFileSystem
 operator|.
-name|PostOpValues
+name|Operation
 operator|.
 name|APPEND
 operator|.
@@ -213,7 +203,7 @@ name|add
 argument_list|(
 name|HttpFSFileSystem
 operator|.
-name|PutOpValues
+name|Operation
 operator|.
 name|CREATE
 operator|.
@@ -343,7 +333,7 @@ name|httpReq
 operator|.
 name|getParameter
 argument_list|(
-name|HttpFSParams
+name|HttpFSParametersProvider
 operator|.
 name|DataParam
 operator|.

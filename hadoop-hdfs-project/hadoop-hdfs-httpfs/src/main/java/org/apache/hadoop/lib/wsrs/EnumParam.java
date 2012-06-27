@@ -69,35 +69,33 @@ name|E
 argument_list|>
 name|klass
 decl_stmt|;
-DECL|method|EnumParam (String label, String str, Class<E> e)
+DECL|method|EnumParam (String name, Class<E> e, E defaultValue)
 specifier|public
 name|EnumParam
 parameter_list|(
 name|String
-name|label
-parameter_list|,
-name|String
-name|str
+name|name
 parameter_list|,
 name|Class
 argument_list|<
 name|E
 argument_list|>
 name|e
+parameter_list|,
+name|E
+name|defaultValue
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|name
+argument_list|,
+name|defaultValue
+argument_list|)
+expr_stmt|;
 name|klass
 operator|=
 name|e
-expr_stmt|;
-name|value
-operator|=
-name|parseParam
-argument_list|(
-name|label
-argument_list|,
-name|str
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|parse (String str)

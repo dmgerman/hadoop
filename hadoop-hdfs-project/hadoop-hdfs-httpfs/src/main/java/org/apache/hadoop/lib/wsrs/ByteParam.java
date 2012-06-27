@@ -30,24 +30,22 @@ argument_list|<
 name|Byte
 argument_list|>
 block|{
-DECL|method|ByteParam (String name, String str)
+DECL|method|ByteParam (String name, Byte defaultValue)
 specifier|public
 name|ByteParam
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|String
-name|str
+name|Byte
+name|defaultValue
 parameter_list|)
 block|{
-name|value
-operator|=
-name|parseParam
+name|super
 argument_list|(
 name|name
 argument_list|,
-name|str
+name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}

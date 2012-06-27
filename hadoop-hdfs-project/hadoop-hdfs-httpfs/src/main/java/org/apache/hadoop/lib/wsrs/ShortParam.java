@@ -30,24 +30,22 @@ argument_list|<
 name|Short
 argument_list|>
 block|{
-DECL|method|ShortParam (String name, String str)
+DECL|method|ShortParam (String name, Short defaultValue)
 specifier|public
 name|ShortParam
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|String
-name|str
+name|Short
+name|defaultValue
 parameter_list|)
 block|{
-name|value
-operator|=
-name|parseParam
+name|super
 argument_list|(
 name|name
 argument_list|,
-name|str
+name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}

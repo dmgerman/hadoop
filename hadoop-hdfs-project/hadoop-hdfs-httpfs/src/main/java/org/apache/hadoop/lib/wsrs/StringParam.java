@@ -20,22 +20,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|lib
-operator|.
-name|util
-operator|.
-name|Check
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|text
@@ -73,7 +57,7 @@ specifier|private
 name|Pattern
 name|pattern
 decl_stmt|;
-DECL|method|StringParam (String name, String str)
+DECL|method|StringParam (String name, String defaultValue)
 specifier|public
 name|StringParam
 parameter_list|(
@@ -81,20 +65,20 @@ name|String
 name|name
 parameter_list|,
 name|String
-name|str
+name|defaultValue
 parameter_list|)
 block|{
 name|this
 argument_list|(
 name|name
 argument_list|,
-name|str
+name|defaultValue
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|StringParam (String name, String str, Pattern pattern)
+DECL|method|StringParam (String name, String defaultValue, Pattern pattern)
 specifier|public
 name|StringParam
 parameter_list|(
@@ -102,54 +86,40 @@ name|String
 name|name
 parameter_list|,
 name|String
-name|str
+name|defaultValue
 parameter_list|,
 name|Pattern
 name|pattern
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|name
+argument_list|,
+name|defaultValue
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|pattern
 operator|=
 name|pattern
 expr_stmt|;
-name|value
-operator|=
 name|parseParam
 argument_list|(
-name|name
-argument_list|,
-name|str
+name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|parseParam (String name, String str)
+DECL|method|parseParam (String str)
 specifier|public
 name|String
 name|parseParam
 parameter_list|(
 name|String
-name|name
-parameter_list|,
-name|String
 name|str
 parameter_list|)
 block|{
-name|String
-name|ret
-init|=
-literal|null
-decl_stmt|;
-name|Check
-operator|.
-name|notNull
-argument_list|(
-name|name
-argument_list|,
-literal|"name"
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 if|if
@@ -176,12 +146,13 @@ operator|>
 literal|0
 condition|)
 block|{
-return|return
+name|value
+operator|=
 name|parse
 argument_list|(
 name|str
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -201,7 +172,8 @@ name|format
 argument_list|(
 literal|"Parameter [{0}], invalid value [{1}], value must be [{2}]"
 argument_list|,
-name|name
+name|getName
+argument_list|()
 argument_list|,
 name|str
 argument_list|,
@@ -212,7 +184,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|ret
+name|value
 return|;
 block|}
 DECL|method|parse (String str)

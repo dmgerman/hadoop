@@ -3629,6 +3629,7 @@ argument_list|(
 name|ops
 argument_list|)
 return|;
+comment|//    return Arrays.asList(new Object[][]{ new Object[]{Operation.CREATE}});
 block|}
 DECL|field|operation
 specifier|private

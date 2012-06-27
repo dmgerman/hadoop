@@ -1078,93 +1078,6 @@ name|HTTP_TEMPORARY_REDIRECT
 init|=
 literal|307
 decl_stmt|;
-comment|/**    * Get operations.    */
-DECL|enum|GetOpValues
-specifier|public
-enum|enum
-name|GetOpValues
-block|{
-DECL|enumConstant|OPEN
-DECL|enumConstant|GETFILESTATUS
-DECL|enumConstant|LISTSTATUS
-DECL|enumConstant|GETHOMEDIRECTORY
-DECL|enumConstant|GETCONTENTSUMMARY
-DECL|enumConstant|GETFILECHECKSUM
-name|OPEN
-block|,
-name|GETFILESTATUS
-block|,
-name|LISTSTATUS
-block|,
-name|GETHOMEDIRECTORY
-block|,
-name|GETCONTENTSUMMARY
-block|,
-name|GETFILECHECKSUM
-block|,
-DECL|enumConstant|GETDELEGATIONTOKEN
-DECL|enumConstant|GETFILEBLOCKLOCATIONS
-DECL|enumConstant|INSTRUMENTATION
-name|GETDELEGATIONTOKEN
-block|,
-name|GETFILEBLOCKLOCATIONS
-block|,
-name|INSTRUMENTATION
-block|}
-comment|/**    * Post operations.    */
-DECL|enum|PostOpValues
-specifier|public
-specifier|static
-enum|enum
-name|PostOpValues
-block|{
-DECL|enumConstant|APPEND
-name|APPEND
-block|}
-comment|/**    * Put operations.    */
-DECL|enum|PutOpValues
-specifier|public
-specifier|static
-enum|enum
-name|PutOpValues
-block|{
-DECL|enumConstant|CREATE
-DECL|enumConstant|MKDIRS
-DECL|enumConstant|RENAME
-DECL|enumConstant|SETOWNER
-DECL|enumConstant|SETPERMISSION
-DECL|enumConstant|SETREPLICATION
-DECL|enumConstant|SETTIMES
-name|CREATE
-block|,
-name|MKDIRS
-block|,
-name|RENAME
-block|,
-name|SETOWNER
-block|,
-name|SETPERMISSION
-block|,
-name|SETREPLICATION
-block|,
-name|SETTIMES
-block|,
-DECL|enumConstant|RENEWDELEGATIONTOKEN
-DECL|enumConstant|CANCELDELEGATIONTOKEN
-name|RENEWDELEGATIONTOKEN
-block|,
-name|CANCELDELEGATIONTOKEN
-block|}
-comment|/**    * Delete operations.    */
-DECL|enum|DeleteOpValues
-specifier|public
-specifier|static
-enum|enum
-name|DeleteOpValues
-block|{
-DECL|enumConstant|DELETE
-name|DELETE
-block|}
 DECL|field|HTTP_GET
 specifier|private
 specifier|static
@@ -1201,8 +1114,148 @@ name|HTTP_DELETE
 init|=
 literal|"DELETE"
 decl_stmt|;
-DECL|field|authToken
+DECL|enum|Operation
+specifier|public
+enum|enum
+name|Operation
+block|{
+DECL|enumConstant|OPEN
+DECL|enumConstant|GETFILESTATUS
+DECL|enumConstant|LISTSTATUS
+name|OPEN
+parameter_list|(
+name|HTTP_GET
+parameter_list|)
+operator|,
+constructor|GETFILESTATUS(HTTP_GET
+block|)
+enum|,
+name|LISTSTATUS
+parameter_list|(
+name|HTTP_GET
+parameter_list|)
+operator|,
+DECL|enumConstant|GETHOMEDIRECTORY
+DECL|enumConstant|GETCONTENTSUMMARY
+constructor|GETHOMEDIRECTORY(HTTP_GET
+block|)
+operator|,
+name|GETCONTENTSUMMARY
+argument_list|(
+name|HTTP_GET
+argument_list|)
+operator|,
+DECL|enumConstant|GETFILECHECKSUM
+DECL|enumConstant|GETFILEBLOCKLOCATIONS
+name|GETFILECHECKSUM
+argument_list|(
+name|HTTP_GET
+argument_list|)
+operator|,
+name|GETFILEBLOCKLOCATIONS
+argument_list|(
+name|HTTP_GET
+argument_list|)
+operator|,
+DECL|enumConstant|INSTRUMENTATION
+name|INSTRUMENTATION
+argument_list|(
+name|HTTP_GET
+argument_list|)
+operator|,
+DECL|enumConstant|APPEND
+name|APPEND
+argument_list|(
+name|HTTP_POST
+argument_list|)
+operator|,
+DECL|enumConstant|CREATE
+DECL|enumConstant|MKDIRS
+DECL|enumConstant|RENAME
+DECL|enumConstant|SETOWNER
+name|CREATE
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+name|MKDIRS
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+name|RENAME
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+name|SETOWNER
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+DECL|enumConstant|SETPERMISSION
+DECL|enumConstant|SETREPLICATION
+DECL|enumConstant|SETTIMES
+name|SETPERMISSION
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+name|SETREPLICATION
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+name|SETTIMES
+argument_list|(
+name|HTTP_PUT
+argument_list|)
+operator|,
+DECL|enumConstant|DELETE
+name|DELETE
+argument_list|(
+name|HTTP_DELETE
+argument_list|)
+expr_stmt|;
+end_class
+
+begin_decl_stmt
+DECL|field|httpMethod
 specifier|private
+name|String
+name|httpMethod
+decl_stmt|;
+end_decl_stmt
+
+begin_expr_stmt
+DECL|method|Operation (String httpMethod)
+name|Operation
+argument_list|(
+name|String
+name|httpMethod
+argument_list|)
+block|{
+name|this
+operator|.
+name|httpMethod
+operator|=
+name|httpMethod
+block|;     }
+DECL|method|getMethod ()
+specifier|public
+name|String
+name|getMethod
+argument_list|()
+block|{
+return|return
+name|httpMethod
+return|;
+block|}
+end_expr_stmt
+
+begin_decl_stmt
+unit|}     private
+DECL|field|authToken
 name|AuthenticatedURL
 operator|.
 name|Token
@@ -1214,22 +1267,37 @@ operator|.
 name|Token
 argument_list|()
 decl_stmt|;
+end_decl_stmt
+
+begin_decl_stmt
 DECL|field|uri
 specifier|private
 name|URI
 name|uri
 decl_stmt|;
+end_decl_stmt
+
+begin_decl_stmt
 DECL|field|workingDir
 specifier|private
 name|Path
 name|workingDir
 decl_stmt|;
+end_decl_stmt
+
+begin_decl_stmt
 DECL|field|doAs
 specifier|private
 name|String
 name|doAs
 decl_stmt|;
+end_decl_stmt
+
+begin_comment
 comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the    * HttpFSServer file system operations.    *<p/>    * This methods performs and injects any needed authentication credentials    * via the {@link #getConnection(URL, String)} method    *    * @param method the HTTP method.    * @param params the query string parameters.    * @param path the file path    * @param makeQualified if the path should be 'makeQualified'    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server,    *         authenticated and ready to use for the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+end_comment
+
+begin_function
 DECL|method|getConnection (String method, Map<String, String> params, Path path, boolean makeQualified)
 specifier|private
 name|HttpURLConnection
@@ -1412,7 +1480,13 @@ name|method
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Convenience method that creates a<code>HttpURLConnection</code> for the specified URL.    *<p/>    * This methods performs and injects any needed authentication credentials.    *    * @param url url to connect to.    * @param method the HTTP method.    *    * @return a<code>HttpURLConnection</code> for the HttpFSServer server, authenticated and ready to use for    *         the specified path and file system operation.    *    * @throws IOException thrown if an IO error occurrs.    */
+end_comment
+
+begin_function
 DECL|method|getConnection (URL url, String method)
 specifier|private
 name|HttpURLConnection
@@ -1533,7 +1607,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Convenience method that JSON Parses the<code>InputStream</code> of a<code>HttpURLConnection</code>.    *    * @param conn the<code>HttpURLConnection</code>.    *    * @return the parsed JSON object.    *    * @throws IOException thrown if the<code>InputStream</code> could not be JSON parsed.    */
+end_comment
+
+begin_function
 DECL|method|jsonParse (HttpURLConnection conn)
 specifier|private
 specifier|static
@@ -1593,7 +1673,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Validates the status of an<code>HttpURLConnection</code> against an expected HTTP    * status code. If the current status code is not the expected one it throws an exception    * with a detail message using Server side error messages if available.    *    * @param conn the<code>HttpURLConnection</code>.    * @param expected the expected HTTP status code.    *    * @throws IOException thrown if the current status code does not match the expected one.    */
+end_comment
+
+begin_function
 DECL|method|validateResponse (HttpURLConnection conn, int expected)
 specifier|private
 specifier|static
@@ -1816,7 +1902,13 @@ throw|;
 block|}
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Called after a new FileSystem instance is constructed.    *    * @param name a uri whose authority section names the host, port, etc. for this FileSystem    * @param conf the configuration    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|initialize (URI name, Configuration conf)
@@ -1900,7 +1992,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Returns a URI whose scheme and authority identify this FileSystem.    *    * @return the URI whose scheme and authority identify this FileSystem.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getUri ()
@@ -1913,7 +2011,13 @@ return|return
 name|uri
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * HttpFSServer subclass of the<code>FSDataInputStream</code>.    *<p/>    * This implementation does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    */
+end_comment
+
+begin_class
 DECL|class|HttpFSDataInputStream
 specifier|private
 specifier|static
@@ -2085,7 +2189,13 @@ argument_list|()
 throw|;
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/**    * Opens an FSDataInputStream at the indicated Path.    *</p>    * IMPORTANT: the returned<code><FSDataInputStream/code> does not support the    *<code>PositionReadable</code> and<code>Seekable</code> methods.    *    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|open (Path f, int bufferSize)
@@ -2125,7 +2235,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|OPEN
 operator|.
@@ -2138,7 +2248,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|OPEN
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -2173,7 +2288,13 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * HttpFSServer subclass of the<code>FSDataOutputStream</code>.    *<p/>    * This implementation closes the underlying HTTP connection validating the Http connection status    * at closing time.    */
+end_comment
+
+begin_class
 DECL|class|HttpFSDataOutputStream
 specifier|private
 specifier|static
@@ -2261,7 +2382,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/**    * Converts a<code>FsPermission</code> to a Unix octal representation.    *    * @param p the permission.    *    * @return the Unix string symbolic reprentation.    */
+end_comment
+
+begin_function
 DECL|method|permissionToString (FsPermission p)
 specifier|public
 specifier|static
@@ -2294,7 +2421,13 @@ literal|8
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/*    * Common handling for uploading data for create and append operations.    */
+end_comment
+
+begin_function
 DECL|method|uploadData (String method, Path f, Map<String, String> params, int bufferSize, int expectedStatus)
 specifier|private
 name|FSDataOutputStream
@@ -2528,7 +2661,13 @@ throw|;
 block|}
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting.    *<p/>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the file name to open.    * @param permission file permission.    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size.    * @param progress progressable.    *    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -2583,7 +2722,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|CREATE
 operator|.
@@ -2648,7 +2787,12 @@ expr_stmt|;
 return|return
 name|uploadData
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|CREATE
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|f
 argument_list|,
@@ -2662,7 +2806,13 @@ name|HTTP_CREATED
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Append to an existing file (optional operation).    *<p/>    * IMPORTANT: The<code>Progressable</code> parameter is not used.    *    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    *    * @throws IOException    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
@@ -2705,7 +2855,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PostOpValues
+name|Operation
 operator|.
 name|APPEND
 operator|.
@@ -2716,7 +2866,12 @@ expr_stmt|;
 return|return
 name|uploadData
 argument_list|(
-name|HTTP_POST
+name|Operation
+operator|.
+name|APPEND
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|f
 argument_list|,
@@ -2730,7 +2885,13 @@ name|HTTP_OK
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|rename (Path src, Path dst)
@@ -2770,7 +2931,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|RENAME
 operator|.
@@ -2795,7 +2956,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|RENAME
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -2836,7 +3002,13 @@ name|RENAME_JSON
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Delete a file.    *    * @deprecated Use delete(Path, boolean) instead    */
+end_comment
+
+begin_function
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -2868,7 +3040,13 @@ literal|false
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Delete a file.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    *    * @return true if delete is successful else false.    *    * @throws IOException    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|delete (Path f, boolean recursive)
@@ -2908,7 +3086,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|DeleteOpValues
+name|Operation
 operator|.
 name|DELETE
 operator|.
@@ -2935,7 +3113,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_DELETE
+name|Operation
+operator|.
+name|DELETE
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -2976,7 +3159,13 @@ name|DELETE_JSON
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    *    * @param f given path    *    * @return the statuses of the files/directories in the given patch    *    * @throws IOException    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|listStatus (Path f)
@@ -3014,7 +3203,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|LISTSTATUS
 operator|.
@@ -3027,7 +3216,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|LISTSTATUS
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3144,7 +3338,13 @@ return|return
 name|array
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *    * @param newDir new directory.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|setWorkingDirectory (Path newDir)
@@ -3161,7 +3361,13 @@ operator|=
 name|newDir
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the current working directory for the given file system    *    * @return the directory pathname    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getWorkingDirectory ()
@@ -3187,7 +3393,13 @@ return|return
 name|workingDir
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Make the given file and all non-existent parents into    * directories. Has the semantics of Unix 'mkdir -p'.    * Existence of the directory hierarchy is not an error.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
@@ -3227,7 +3439,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|MKDIRS
 operator|.
@@ -3252,7 +3464,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|MKDIRS
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3293,7 +3510,13 @@ name|MKDIRS_JSON
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Return a file status object that represents the path.    *    * @param f The path we want information from    *    * @return a FileStatus object    *    * @throws FileNotFoundException when the path does not exist;    * IOException see specific implementation    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getFileStatus (Path f)
@@ -3330,7 +3553,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|GETFILESTATUS
 operator|.
@@ -3343,7 +3566,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|GETFILESTATUS
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3400,7 +3628,13 @@ name|json
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Return the current user's home directory in this filesystem.    * The default implementation returns "/user/$USER/".    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getHomeDirectory ()
@@ -3432,7 +3666,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|GETHOMEDIRECTORY
 operator|.
@@ -3447,7 +3681,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|GETHOMEDIRECTORY
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3517,7 +3756,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Set owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    *    * @param p The path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|setOwner (Path p, String username, String groupname)
@@ -3560,7 +3805,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|SETOWNER
 operator|.
@@ -3591,7 +3836,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|SETOWNER
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3610,7 +3860,13 @@ name|HTTP_OK
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Set permission of a path.    *    * @param p path.    * @param permission permission.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|setPermission (Path p, FsPermission permission)
@@ -3650,7 +3906,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|SETPERMISSION
 operator|.
@@ -3675,7 +3931,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|SETPERMISSION
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3694,7 +3955,13 @@ name|HTTP_OK
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Set access time of a file    *    * @param p The path    * @param mtime Set the modification time of this file.    * The number of milliseconds since Jan 1, 1970.    * A value of -1 means that this call should not set modification time.    * @param atime Set the access time of this file.    * The number of milliseconds since Jan 1, 1970.    * A value of -1 means that this call should not set access time.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|setTimes (Path p, long mtime, long atime)
@@ -3737,7 +4004,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|SETTIMES
 operator|.
@@ -3778,7 +4045,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|SETTIMES
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3797,7 +4069,13 @@ name|HTTP_OK
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Set replication for an existing file.    *    * @param src file name    * @param replication new replication    *    * @return true if successful;    *         false if file does not exist or is a directory    *    * @throws IOException    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|setReplication (Path src, short replication)
@@ -3837,7 +4115,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|PutOpValues
+name|Operation
 operator|.
 name|SETREPLICATION
 operator|.
@@ -3864,7 +4142,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_PUT
+name|Operation
+operator|.
+name|SETREPLICATION
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -3905,7 +4188,13 @@ name|SET_REPLICATION_JSON
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Creates a<code>FileStatus</code> object using a JSON file-status payload    * received from a HttpFSServer server.    *    * @param json a JSON file-status payload received from a HttpFSServer server    *    * @return the corresponding<code>FileStatus</code>    */
+end_comment
+
+begin_function
 DECL|method|createFileStatus (Path parent, JSONObject json)
 specifier|private
 name|FileStatus
@@ -4181,6 +4470,9 @@ return|return
 name|fileStatus
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getContentSummary (Path f)
@@ -4217,7 +4509,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|GETCONTENTSUMMARY
 operator|.
@@ -4230,7 +4522,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|GETCONTENTSUMMARY
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -4335,6 +4632,9 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_function
 annotation|@
 name|Override
 DECL|method|getFileChecksum (Path f)
@@ -4371,7 +4671,7 @@ name|put
 argument_list|(
 name|OP_PARAM
 argument_list|,
-name|GetOpValues
+name|Operation
 operator|.
 name|GETFILECHECKSUM
 operator|.
@@ -4384,7 +4684,12 @@ name|conn
 init|=
 name|getConnection
 argument_list|(
-name|HTTP_GET
+name|Operation
+operator|.
+name|GETFILECHECKSUM
+operator|.
+name|getMethod
+argument_list|()
 argument_list|,
 name|params
 argument_list|,
@@ -4536,8 +4841,8 @@ block|}
 block|}
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

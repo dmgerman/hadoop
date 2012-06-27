@@ -124,7 +124,7 @@ literal|"PUT"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PutOpValues
+name|Operation
 operator|.
 name|CREATE
 operator|.
@@ -155,7 +155,7 @@ literal|"POST"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PostOpValues
+name|Operation
 operator|.
 name|APPEND
 operator|.
@@ -186,7 +186,7 @@ literal|"PUT"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PutOpValues
+name|Operation
 operator|.
 name|CREATE
 operator|.
@@ -206,7 +206,7 @@ literal|"PUT"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PutOpValues
+name|Operation
 operator|.
 name|CREATE
 operator|.
@@ -237,7 +237,7 @@ literal|"POST"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PostOpValues
+name|Operation
 operator|.
 name|APPEND
 operator|.
@@ -257,7 +257,7 @@ literal|"POST"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PostOpValues
+name|Operation
 operator|.
 name|APPEND
 operator|.
@@ -288,7 +288,7 @@ literal|"GET"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|GetOpValues
+name|Operation
 operator|.
 name|GETHOMEDIRECTORY
 operator|.
@@ -319,7 +319,7 @@ literal|"PUT"
 argument_list|,
 name|HttpFSFileSystem
 operator|.
-name|PutOpValues
+name|Operation
 operator|.
 name|MKDIRS
 operator|.
@@ -430,7 +430,7 @@ name|request
 operator|.
 name|getParameter
 argument_list|(
-name|HttpFSParams
+name|HttpFSParametersProvider
 operator|.
 name|DataParam
 operator|.

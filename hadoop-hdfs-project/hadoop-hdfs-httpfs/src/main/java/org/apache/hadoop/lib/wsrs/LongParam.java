@@ -30,24 +30,22 @@ argument_list|<
 name|Long
 argument_list|>
 block|{
-DECL|method|LongParam (String name, String str)
+DECL|method|LongParam (String name, Long defaultValue)
 specifier|public
 name|LongParam
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|String
-name|str
+name|Long
+name|defaultValue
 parameter_list|)
 block|{
-name|value
-operator|=
-name|parseParam
+name|super
 argument_list|(
 name|name
 argument_list|,
-name|str
+name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}
