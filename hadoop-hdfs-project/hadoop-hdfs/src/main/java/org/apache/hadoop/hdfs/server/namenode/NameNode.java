@@ -1279,6 +1279,15 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|field|DEFAULT_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_PORT
+init|=
+literal|8020
+decl_stmt|;
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -1523,7 +1532,7 @@ name|createSocketAddr
 argument_list|(
 name|address
 argument_list|,
-name|DFS_NAMENODE_RPC_PORT_DEFAULT
+name|DEFAULT_PORT
 argument_list|)
 return|;
 block|}
@@ -1759,11 +1768,9 @@ decl_stmt|;
 name|String
 name|portString
 init|=
-operator|(
 name|port
 operator|==
-name|DFS_NAMENODE_RPC_PORT_DEFAULT
-operator|)
+name|DEFAULT_PORT
 condition|?
 literal|""
 else|:

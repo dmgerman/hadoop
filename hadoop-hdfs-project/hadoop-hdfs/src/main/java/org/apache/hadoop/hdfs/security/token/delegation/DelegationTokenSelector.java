@@ -80,7 +80,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
 import|;
 end_import
 
@@ -245,9 +249,9 @@ decl_stmt|;
 name|int
 name|nnRpcPort
 init|=
-name|DFSConfigKeys
+name|NameNode
 operator|.
-name|DFS_NAMENODE_RPC_PORT_DEFAULT
+name|DEFAULT_PORT
 decl_stmt|;
 if|if
 condition|(

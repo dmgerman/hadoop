@@ -3671,9 +3671,9 @@ name|getDefaultPort
 parameter_list|()
 block|{
 return|return
-name|DFSConfigKeys
+name|NameNode
 operator|.
-name|DFS_NAMENODE_RPC_PORT_DEFAULT
+name|DEFAULT_PORT
 return|;
 block|}
 annotation|@

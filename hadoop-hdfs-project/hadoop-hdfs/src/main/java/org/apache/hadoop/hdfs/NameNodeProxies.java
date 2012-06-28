@@ -2448,9 +2448,9 @@ literal|0
 operator|&&
 name|port
 operator|!=
-name|DFSConfigKeys
+name|NameNode
 operator|.
-name|DFS_NAMENODE_RPC_PORT_DEFAULT
+name|DEFAULT_PORT
 condition|)
 block|{
 throw|throw
