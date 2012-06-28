@@ -353,6 +353,15 @@ operator|>=
 name|initBufferSize
 return|;
 block|}
+DECL|method|getReadyBuf ()
+name|DataOutputBuffer
+name|getReadyBuf
+parameter_list|()
+block|{
+return|return
+name|bufReady
+return|;
+block|}
 DECL|method|getCurrentBuf ()
 name|DataOutputBuffer
 name|getCurrentBuf

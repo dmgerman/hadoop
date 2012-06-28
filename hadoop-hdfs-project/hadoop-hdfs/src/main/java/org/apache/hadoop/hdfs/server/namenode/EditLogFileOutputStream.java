@@ -209,12 +209,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|PREALLOCATION_LENGTH
+DECL|field|MIN_PREALLOCATION_LENGTH
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|PREALLOCATION_LENGTH
+name|MIN_PREALLOCATION_LENGTH
 init|=
 literal|1024
 operator|*
@@ -251,7 +251,7 @@ name|ByteBuffer
 operator|.
 name|allocateDirect
 argument_list|(
-name|PREALLOCATION_LENGTH
+name|MIN_PREALLOCATION_LENGTH
 argument_list|)
 decl_stmt|;
 static|static
@@ -531,7 +531,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|// remove the last INVALID marker from transaction log.
+comment|// remove any preallocated padding bytes from the transaction log.
 if|if
 condition|(
 name|fc
@@ -661,22 +661,6 @@ name|IOException
 block|{
 name|doubleBuf
 operator|.
-name|getCurrentBuf
-argument_list|()
-operator|.
-name|write
-argument_list|(
-name|FSEditLogOpCodes
-operator|.
-name|OP_INVALID
-operator|.
-name|getOpCode
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// insert eof marker
-name|doubleBuf
-operator|.
 name|setReadyToFlush
 argument_list|()
 expr_stmt|;
@@ -724,6 +708,10 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|preallocate
+argument_list|()
+expr_stmt|;
+comment|// preallocate file if necessay
 name|doubleBuf
 operator|.
 name|flushTo
@@ -739,23 +727,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// metadata updates not needed
-name|fc
-operator|.
-name|position
-argument_list|(
-name|fc
-operator|.
-name|position
-argument_list|()
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-comment|// skip back the end-of-file marker
-name|preallocate
-argument_list|()
-expr_stmt|;
-comment|// preallocate file if necessary
 block|}
 comment|/**    * @return true if the number of buffered data exceeds the intial buffer size    */
 annotation|@
@@ -773,7 +744,6 @@ name|shouldForceSync
 argument_list|()
 return|;
 block|}
-comment|// allocate a big chunk of data
 DECL|method|preallocate ()
 specifier|private
 name|void
@@ -790,43 +760,70 @@ operator|.
 name|position
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
+name|long
+name|size
+init|=
+name|fc
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+name|int
+name|bufSize
+init|=
+name|doubleBuf
+operator|.
+name|getReadyBuf
+argument_list|()
+operator|.
+name|getLength
+argument_list|()
+decl_stmt|;
+name|long
+name|need
+init|=
+name|bufSize
+operator|-
+operator|(
+name|size
+operator|-
 name|position
-operator|+
-literal|4096
-operator|>=
-name|fc
-operator|.
-name|size
-argument_list|()
-condition|)
-block|{
+operator|)
+decl_stmt|;
 if|if
 condition|(
-name|FSNamesystem
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
+name|need
+operator|<=
+literal|0
 condition|)
 block|{
-name|FSNamesystem
-operator|.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Preallocating Edit log, current size "
-operator|+
-name|fc
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
+return|return;
 block|}
+name|long
+name|oldSize
+init|=
+name|size
+decl_stmt|;
+name|long
+name|total
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|fillCapacity
+init|=
+name|fill
+operator|.
+name|capacity
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|need
+operator|>
+literal|0
+condition|)
+block|{
 name|fill
 operator|.
 name|position
@@ -842,9 +839,22 @@ name|fc
 argument_list|,
 name|fill
 argument_list|,
-name|position
+name|size
 argument_list|)
 expr_stmt|;
+name|need
+operator|-=
+name|fillCapacity
+expr_stmt|;
+name|size
+operator|+=
+name|fillCapacity
+expr_stmt|;
+name|total
+operator|+=
+name|fillCapacity
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|FSNamesystem
@@ -861,28 +871,19 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Edit log size is now "
+literal|"Preallocated "
 operator|+
-name|fc
-operator|.
-name|size
-argument_list|()
+name|total
 operator|+
-literal|" written "
+literal|" bytes at the end of "
 operator|+
-name|fill
-operator|.
-name|capacity
-argument_list|()
+literal|"the edit log (offset "
 operator|+
-literal|" bytes "
+name|oldSize
 operator|+
-literal|" at offset "
-operator|+
-name|position
+literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Returns the file associated with this stream.    */
