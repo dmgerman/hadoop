@@ -703,26 +703,45 @@ operator|+
 literal|"s "
 argument_list|)
 expr_stmt|;
+comment|// Do not use '%-0s' as a formatting conversion, since it will throw a
+comment|// a MissingFormatWidthException if it is used in String.format().
+comment|// http://docs.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html#intFlags
 name|fmt
 operator|.
 name|append
 argument_list|(
+operator|(
+name|maxOwner
+operator|>
+literal|0
+operator|)
+condition|?
 literal|"%-"
 operator|+
 name|maxOwner
 operator|+
 literal|"s "
+else|:
+literal|"%s"
 argument_list|)
 expr_stmt|;
 name|fmt
 operator|.
 name|append
 argument_list|(
+operator|(
+name|maxGroup
+operator|>
+literal|0
+operator|)
+condition|?
 literal|"%-"
 operator|+
 name|maxGroup
 operator|+
 literal|"s "
+else|:
+literal|"%s"
 argument_list|)
 expr_stmt|;
 name|fmt
