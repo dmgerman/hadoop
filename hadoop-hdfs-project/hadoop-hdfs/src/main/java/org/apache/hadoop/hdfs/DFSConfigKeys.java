@@ -549,6 +549,15 @@ name|DFS_NAMENODE_RPC_ADDRESS_KEY
 init|=
 literal|"dfs.namenode.rpc-address"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_RPC_PORT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
+init|=
+literal|8020
+decl_stmt|;
 DECL|field|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 specifier|public
 specifier|static

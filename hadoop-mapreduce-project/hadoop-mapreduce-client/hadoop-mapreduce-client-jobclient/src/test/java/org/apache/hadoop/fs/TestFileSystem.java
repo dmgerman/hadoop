@@ -228,6 +228,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|MiniDFSCluster
 import|;
 end_import
@@ -3186,9 +3200,9 @@ try|try
 block|{
 name|runTestCache
 argument_list|(
-name|NameNode
+name|DFSConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -3206,11 +3220,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot test NameNode.DEFAULT_PORT (="
+literal|"Cannot test NameNode's default RPC port (="
 operator|+
-name|NameNode
+name|DFSConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 operator|+
 literal|")"
 argument_list|,
@@ -3349,9 +3363,9 @@ if|if
 condition|(
 name|port
 operator|==
-name|NameNode
+name|DFSConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 condition|)
 block|{
 comment|//test explicit default port
@@ -3376,9 +3390,9 @@ operator|.
 name|getHost
 argument_list|()
 argument_list|,
-name|NameNode
+name|DFSConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|,
 name|uri
 operator|.

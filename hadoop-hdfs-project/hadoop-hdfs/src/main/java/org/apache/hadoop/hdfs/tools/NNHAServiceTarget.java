@@ -393,9 +393,9 @@ name|createSocketAddr
 argument_list|(
 name|serviceAddr
 argument_list|,
-name|NameNode
+name|DFSConfigKeys
 operator|.
-name|DEFAULT_PORT
+name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
