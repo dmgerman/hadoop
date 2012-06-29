@@ -2343,7 +2343,7 @@ case|case
 name|APPEND
 case|:
 block|{
-name|boolean
+name|Boolean
 name|hasData
 init|=
 name|params
@@ -2649,7 +2649,7 @@ case|case
 name|CREATE
 case|:
 block|{
-name|boolean
+name|Boolean
 name|hasData
 init|=
 name|params
@@ -2711,7 +2711,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|boolean
+name|Boolean
 name|override
 init|=
 name|params
@@ -2727,7 +2727,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|short
+name|Short
 name|replication
 init|=
 name|params
@@ -2743,7 +2743,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|long
+name|Long
 name|blockSize
 init|=
 name|params
@@ -3150,7 +3150,7 @@ case|case
 name|SETREPLICATION
 case|:
 block|{
-name|short
+name|Short
 name|replication
 init|=
 name|params
@@ -3222,7 +3222,7 @@ case|case
 name|SETTIMES
 case|:
 block|{
-name|long
+name|Long
 name|modifiedTime
 init|=
 name|params
@@ -3238,7 +3238,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|long
+name|Long
 name|accessTime
 init|=
 name|params
