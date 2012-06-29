@@ -3426,13 +3426,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|nodes
-operator|!=
-literal|null
-condition|)
-block|{
 name|FSDataOutputStream
 name|stm
 init|=
@@ -3443,6 +3436,13 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nodes
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|Iterator
@@ -3486,12 +3486,12 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 name|stm
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 DECL|method|cleanupFile (FileSystem fileSys, Path name)
 specifier|private

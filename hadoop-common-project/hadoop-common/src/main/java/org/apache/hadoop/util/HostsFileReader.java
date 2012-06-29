@@ -242,17 +242,6 @@ argument_list|(
 name|filename
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|file
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 name|FileInputStream
 name|fis
 init|=
