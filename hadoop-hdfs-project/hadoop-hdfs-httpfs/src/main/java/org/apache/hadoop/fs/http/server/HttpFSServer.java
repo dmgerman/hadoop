@@ -2695,7 +2695,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|String
+name|Short
 name|permission
 init|=
 name|params
@@ -2836,7 +2836,7 @@ case|case
 name|MKDIRS
 case|:
 block|{
-name|String
+name|Short
 name|permission
 init|=
 name|params
@@ -3083,7 +3083,7 @@ case|case
 name|SETPERMISSION
 case|:
 block|{
-name|String
+name|Short
 name|permission
 init|=
 name|params

@@ -674,10 +674,10 @@ DECL|field|DEFAULT_PERMISSION
 specifier|public
 specifier|static
 specifier|final
-name|String
+name|Short
 name|DEFAULT_PERMISSION
 init|=
-literal|"default"
+literal|0755
 decl_stmt|;
 DECL|field|RENAME_JSON
 specifier|public
@@ -2400,6 +2400,10 @@ name|p
 parameter_list|)
 block|{
 return|return
+name|Integer
+operator|.
+name|toString
+argument_list|(
 operator|(
 name|p
 operator|==
@@ -2408,10 +2412,6 @@ operator|)
 condition|?
 name|DEFAULT_PERMISSION
 else|:
-name|Integer
-operator|.
-name|toString
-argument_list|(
 name|p
 operator|.
 name|toShort

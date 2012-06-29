@@ -266,62 +266,6 @@ specifier|public
 class|class
 name|FSOperations
 block|{
-comment|/**    * Converts a Unix permission octal    * (i.e. 655 or 1777) into a FileSystemAccess permission.    *    * @param str Unix permission symbolic representation.    *    * @return the FileSystemAccess permission. If the given string was    *         'default', it returns<code>FsPermission.getDefault()</code>.    */
-DECL|method|getPermission (String str)
-specifier|private
-specifier|static
-name|FsPermission
-name|getPermission
-parameter_list|(
-name|String
-name|str
-parameter_list|)
-block|{
-name|FsPermission
-name|permission
-decl_stmt|;
-if|if
-condition|(
-name|str
-operator|.
-name|equals
-argument_list|(
-name|HttpFSFileSystem
-operator|.
-name|DEFAULT_PERMISSION
-argument_list|)
-condition|)
-block|{
-name|permission
-operator|=
-name|FsPermission
-operator|.
-name|getDefault
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|permission
-operator|=
-operator|new
-name|FsPermission
-argument_list|(
-name|Short
-operator|.
-name|parseShort
-argument_list|(
-name|str
-argument_list|,
-literal|8
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|permission
-return|;
-block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1142,7 +1086,7 @@ name|path
 decl_stmt|;
 DECL|field|permission
 specifier|private
-name|String
+name|short
 name|permission
 decl_stmt|;
 DECL|field|override
@@ -1161,7 +1105,7 @@ name|long
 name|blockSize
 decl_stmt|;
 comment|/**      * Creates a Create executor.      *      * @param is input stream to for the file to create.      * @param path path of the file to create.      * @param perm permission for the file.      * @param override if the file should be overriden if it already exist.      * @param repl the replication factor for the file.      * @param blockSize the block size for the file.      */
-DECL|method|FSCreate (InputStream is, String path, String perm, boolean override, short repl, long blockSize)
+DECL|method|FSCreate (InputStream is, String path, short perm, boolean override, short repl, long blockSize)
 specifier|public
 name|FSCreate
 parameter_list|(
@@ -1171,7 +1115,7 @@ parameter_list|,
 name|String
 name|path
 parameter_list|,
-name|String
+name|short
 name|perm
 parameter_list|,
 name|boolean
@@ -1278,7 +1222,8 @@ block|}
 name|FsPermission
 name|fsPermission
 init|=
-name|getPermission
+operator|new
+name|FsPermission
 argument_list|(
 name|permission
 argument_list|)
@@ -1789,18 +1734,18 @@ name|path
 decl_stmt|;
 DECL|field|permission
 specifier|private
-name|String
+name|short
 name|permission
 decl_stmt|;
 comment|/**      * Creates a mkdirs executor.      *      * @param path directory path to create.      * @param permission permission to use.      */
-DECL|method|FSMkdirs (String path, String permission)
+DECL|method|FSMkdirs (String path, short permission)
 specifier|public
 name|FSMkdirs
 parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|String
+name|short
 name|permission
 parameter_list|)
 block|{
@@ -1838,7 +1783,8 @@ block|{
 name|FsPermission
 name|fsPermission
 init|=
-name|getPermission
+operator|new
+name|FsPermission
 argument_list|(
 name|permission
 argument_list|)
@@ -2163,18 +2109,18 @@ name|path
 decl_stmt|;
 DECL|field|permission
 specifier|private
-name|String
+name|short
 name|permission
 decl_stmt|;
 comment|/**      * Creates a set-permission executor.      *      * @param path path to set the permission.      * @param permission permission to set.      */
-DECL|method|FSSetPermission (String path, String permission)
+DECL|method|FSSetPermission (String path, short permission)
 specifier|public
 name|FSSetPermission
 parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|String
+name|short
 name|permission
 parameter_list|)
 block|{
@@ -2212,7 +2158,8 @@ block|{
 name|FsPermission
 name|fsPermission
 init|=
-name|getPermission
+operator|new
+name|FsPermission
 argument_list|(
 name|permission
 argument_list|)

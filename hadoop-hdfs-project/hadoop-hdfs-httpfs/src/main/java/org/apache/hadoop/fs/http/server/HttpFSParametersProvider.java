@@ -1244,7 +1244,7 @@ specifier|static
 class|class
 name|PermissionParam
 extends|extends
-name|StringParam
+name|ShortParam
 block|{
 comment|/**      * Parameter name.      */
 DECL|field|NAME
@@ -1257,25 +1257,6 @@ init|=
 name|HttpFSFileSystem
 operator|.
 name|PERMISSION_PARAM
-decl_stmt|;
-comment|/**      * Symbolic Unix permissions regular expression pattern.      */
-DECL|field|PERMISSION_PATTERN
-specifier|private
-specifier|static
-specifier|final
-name|Pattern
-name|PERMISSION_PATTERN
-init|=
-name|Pattern
-operator|.
-name|compile
-argument_list|(
-name|HttpFSFileSystem
-operator|.
-name|DEFAULT_PERMISSION
-operator|+
-literal|"|[0-1]?[0-7][0-7][0-7]"
-argument_list|)
 decl_stmt|;
 comment|/**      * Constructor.      */
 DECL|method|PermissionParam ()
@@ -1291,7 +1272,7 @@ name|HttpFSFileSystem
 operator|.
 name|DEFAULT_PERMISSION
 argument_list|,
-name|PERMISSION_PATTERN
+literal|8
 argument_list|)
 expr_stmt|;
 block|}
