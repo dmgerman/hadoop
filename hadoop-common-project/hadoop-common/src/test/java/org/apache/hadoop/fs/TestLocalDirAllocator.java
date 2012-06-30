@@ -382,6 +382,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+comment|// absolute path in test environment
+comment|// /home/testuser/src/hadoop-common-project/hadoop-common/build/test/temp
 name|ABSOLUTE_DIR_ROOT
 operator|=
 operator|new
@@ -401,6 +403,7 @@ operator|.
 name|getPath
 argument_list|()
 expr_stmt|;
+comment|// file:/home/testuser/src/hadoop-common-project/hadoop-common/build/test/temp
 name|QUALIFIED_DIR_ROOT
 operator|=
 operator|new
@@ -757,10 +760,10 @@ block|}
 comment|/** Two buffer dirs. The first dir exists& is on a read-only disk;    * The second dir exists& is RW    * @throws Exception    */
 annotation|@
 name|Test
-DECL|method|test1 ()
+DECL|method|testROBufferDirAndRWBufferDir ()
 specifier|public
 name|void
-name|test1
+name|testROBufferDirAndRWBufferDir
 parameter_list|()
 throws|throws
 name|Exception
@@ -861,10 +864,10 @@ block|}
 comment|/** Two buffer dirs. Both do not exist but on a RW disk.    * Check if tmp dirs are allocated in a round-robin    */
 annotation|@
 name|Test
-DECL|method|test2 ()
+DECL|method|testDirsNotExist ()
 specifier|public
 name|void
-name|test2
+name|testDirsNotExist
 parameter_list|()
 throws|throws
 name|Exception
@@ -986,10 +989,10 @@ block|}
 comment|/** Two buffer dirs. Both exists and on a R/W disk.    * Later disk1 becomes read-only.    * @throws Exception    */
 annotation|@
 name|Test
-DECL|method|test3 ()
+DECL|method|testRWBufferDirBecomesRO ()
 specifier|public
 name|void
-name|test3
+name|testRWBufferDirBecomesRO
 parameter_list|()
 throws|throws
 name|Exception
@@ -1144,10 +1147,10 @@ literal|100
 decl_stmt|;
 annotation|@
 name|Test
-DECL|method|test4 ()
+DECL|method|testCreateManyFiles ()
 specifier|public
 name|void
-name|test4
+name|testCreateManyFiles
 parameter_list|()
 throws|throws
 name|Exception
@@ -1579,6 +1582,141 @@ name|dir
 argument_list|)
 operator|.
 name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|Shell
+operator|.
+name|execCommand
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"chmod"
+block|,
+literal|"u+w"
+block|,
+name|BUFFER_DIR_ROOT
+block|}
+argument_list|)
+expr_stmt|;
+name|rmBufferDirs
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Test getLocalPathToRead() returns correct filename and "file" schema.    *    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|testGetLocalPathToRead ()
+specifier|public
+name|void
+name|testGetLocalPathToRead
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|isWindows
+condition|)
+return|return;
+name|String
+name|dir
+init|=
+name|buildBufferDir
+argument_list|(
+name|ROOT
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CONTEXT
+argument_list|,
+name|dir
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|localFs
+operator|.
+name|mkdirs
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|dir
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|File
+name|f1
+init|=
+name|dirAllocator
+operator|.
+name|createTmpFileForWrite
+argument_list|(
+name|FILENAME
+argument_list|,
+name|SMALL_FILE_SIZE
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|Path
+name|p1
+init|=
+name|dirAllocator
+operator|.
+name|getLocalPathToRead
+argument_list|(
+name|f1
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|f1
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|p1
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"file"
+argument_list|,
+name|p1
+operator|.
+name|getFileSystem
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getScheme
 argument_list|()
 argument_list|)
 expr_stmt|;
