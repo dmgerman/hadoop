@@ -238,7 +238,7 @@ specifier|private
 name|String
 name|CONTEXT
 init|=
-literal|"fs.client.buffer.dir"
+literal|"mapred.local.dir"
 decl_stmt|;
 DECL|field|FILENAME
 specifier|final

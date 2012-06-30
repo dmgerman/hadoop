@@ -175,8 +175,8 @@ specifier|public
 class|class
 name|LocalDirAllocator
 block|{
-comment|//A Map from the config item names like "mapred.local.dir",
-comment|//"dfs.client.buffer.dir" to the instance of the AllocatorPerContext. This
+comment|//A Map from the config item names like "mapred.local.dir"
+comment|//to the instance of the AllocatorPerContext. This
 comment|//is a static object to make sure there exists exactly one instance per JVM
 DECL|field|contexts
 specifier|private

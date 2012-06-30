@@ -120,16 +120,6 @@ name|FS_PERMISSIONS_UMASK_DEFAULT
 init|=
 literal|0022
 decl_stmt|;
-comment|/** @deprecated not used, jira was created to remove this constant:    * https://issues.apache.org/jira/browse/HADOOP-6802    */
-DECL|field|FS_CLIENT_BUFFER_DIR_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FS_CLIENT_BUFFER_DIR_KEY
-init|=
-literal|"fs.client.buffer.dir"
-decl_stmt|;
 comment|/** How often does RPC client send pings to RPC server */
 DECL|field|IPC_PING_INTERVAL_KEY
 specifier|public
