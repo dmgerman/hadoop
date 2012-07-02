@@ -4770,38 +4770,32 @@ return|return;
 block|}
 name|markBlockAsCorrupt
 argument_list|(
+operator|new
+name|BlockToMarkCorrupt
+argument_list|(
 name|storedBlock
-argument_list|,
-name|dn
 argument_list|,
 name|reason
 argument_list|)
+argument_list|,
+name|dn
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|markBlockAsCorrupt (BlockInfo storedBlock, DatanodeInfo dn, String reason)
+DECL|method|markBlockAsCorrupt (BlockToMarkCorrupt b, DatanodeInfo dn)
 specifier|private
 name|void
 name|markBlockAsCorrupt
 parameter_list|(
-name|BlockInfo
-name|storedBlock
+name|BlockToMarkCorrupt
+name|b
 parameter_list|,
 name|DatanodeInfo
 name|dn
-parameter_list|,
-name|String
-name|reason
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-assert|assert
-name|storedBlock
-operator|!=
-literal|null
-operator|:
-literal|"storedBlock should not be null"
-assert|;
 name|DatanodeDescriptor
 name|node
 init|=
@@ -4824,25 +4818,24 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot mark block "
+literal|"Cannot mark "
 operator|+
-name|storedBlock
-operator|.
-name|getBlockName
-argument_list|()
+name|b
 operator|+
 literal|" as corrupt because datanode "
 operator|+
 name|dn
 operator|+
-literal|" does not exist. "
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}
 name|BlockCollection
 name|bc
 init|=
-name|storedBlock
+name|b
+operator|.
+name|corrupted
 operator|.
 name|getBlockCollection
 argument_list|()
@@ -4862,18 +4855,16 @@ name|info
 argument_list|(
 literal|"BLOCK markBlockAsCorrupt: "
 operator|+
-literal|"block "
+name|b
 operator|+
-name|storedBlock
-operator|+
-literal|" could not be marked as corrupt as it"
-operator|+
-literal|" does not belong to any file"
+literal|" cannot be marked as corrupt as it does not belong to any file"
 argument_list|)
 expr_stmt|;
 name|addToInvalidates
 argument_list|(
-name|storedBlock
+name|b
+operator|.
+name|corrupted
 argument_list|,
 name|node
 argument_list|)
@@ -4885,7 +4876,9 @@ name|node
 operator|.
 name|addBlock
 argument_list|(
-name|storedBlock
+name|b
+operator|.
+name|stored
 argument_list|)
 expr_stmt|;
 comment|// Add this replica to corruptReplicas Map
@@ -4893,10 +4886,14 @@ name|corruptReplicas
 operator|.
 name|addToCorruptReplicasMap
 argument_list|(
-name|storedBlock
+name|b
+operator|.
+name|corrupted
 argument_list|,
 name|node
 argument_list|,
+name|b
+operator|.
 name|reason
 argument_list|)
 expr_stmt|;
@@ -4904,7 +4901,9 @@ if|if
 condition|(
 name|countNodes
 argument_list|(
-name|storedBlock
+name|b
+operator|.
+name|stored
 argument_list|)
 operator|.
 name|liveReplicas
@@ -4919,7 +4918,7 @@ block|{
 comment|// the block is over-replicated so invalidate the replicas immediately
 name|invalidateBlock
 argument_list|(
-name|storedBlock
+name|b
 argument_list|,
 name|node
 argument_list|)
@@ -4937,7 +4936,9 @@ block|{
 comment|// add the block to neededReplication
 name|updateNeededReplications
 argument_list|(
-name|storedBlock
+name|b
+operator|.
+name|stored
 argument_list|,
 operator|-
 literal|1
@@ -4948,13 +4949,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Invalidates the given block on the given datanode.    */
-DECL|method|invalidateBlock (Block blk, DatanodeInfo dn)
+DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn )
 specifier|private
 name|void
 name|invalidateBlock
 parameter_list|(
-name|Block
-name|blk
+name|BlockToMarkCorrupt
+name|b
 parameter_list|,
 name|DatanodeInfo
 name|dn
@@ -4970,7 +4971,7 @@ name|info
 argument_list|(
 literal|"BLOCK* invalidateBlock: "
 operator|+
-name|blk
+name|b
 operator|+
 literal|" on "
 operator|+
@@ -4999,9 +5000,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot invalidate block "
+literal|"Cannot invalidate "
 operator|+
-name|blk
+name|b
 operator|+
 literal|" because datanode "
 operator|+
@@ -5017,7 +5018,9 @@ name|nr
 init|=
 name|countNodes
 argument_list|(
-name|blk
+name|b
+operator|.
+name|stored
 argument_list|)
 decl_stmt|;
 if|if
@@ -5038,9 +5041,9 @@ name|info
 argument_list|(
 literal|"BLOCK* invalidateBlocks: postponing "
 operator|+
-literal|"invalidation of block "
+literal|"invalidation of "
 operator|+
-name|blk
+name|b
 operator|+
 literal|" on "
 operator|+
@@ -5060,7 +5063,9 @@ argument_list|)
 expr_stmt|;
 name|postponeBlock
 argument_list|(
-name|blk
+name|b
+operator|.
+name|corrupted
 argument_list|)
 expr_stmt|;
 block|}
@@ -5078,14 +5083,18 @@ block|{
 comment|// If we have at least one copy on a live node, then we can delete it.
 name|addToInvalidates
 argument_list|(
-name|blk
+name|b
+operator|.
+name|corrupted
 argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
 name|removeStoredBlock
 argument_list|(
-name|blk
+name|b
+operator|.
+name|stored
 argument_list|,
 name|node
 argument_list|)
@@ -5108,7 +5117,7 @@ name|debug
 argument_list|(
 literal|"BLOCK* invalidateBlocks: "
 operator|+
-name|blk
+name|b
 operator|+
 literal|" on "
 operator|+
@@ -5129,7 +5138,7 @@ name|info
 argument_list|(
 literal|"BLOCK* invalidateBlocks: "
 operator|+
-name|blk
+name|b
 operator|+
 literal|" on "
 operator|+
@@ -6900,34 +6909,66 @@ specifier|static
 class|class
 name|BlockToMarkCorrupt
 block|{
-DECL|field|blockInfo
+comment|/** The corrupted block in a datanode. */
+DECL|field|corrupted
 specifier|final
 name|BlockInfo
-name|blockInfo
+name|corrupted
 decl_stmt|;
+comment|/** The corresponding block stored in the BlockManager. */
+DECL|field|stored
+specifier|final
+name|BlockInfo
+name|stored
+decl_stmt|;
+comment|/** The reason to mark corrupt. */
 DECL|field|reason
 specifier|final
 name|String
 name|reason
 decl_stmt|;
-DECL|method|BlockToMarkCorrupt (BlockInfo blockInfo, String reason)
+DECL|method|BlockToMarkCorrupt (BlockInfo corrupted, BlockInfo stored, String reason)
 name|BlockToMarkCorrupt
 parameter_list|(
 name|BlockInfo
-name|blockInfo
+name|corrupted
+parameter_list|,
+name|BlockInfo
+name|stored
 parameter_list|,
 name|String
 name|reason
 parameter_list|)
 block|{
-name|super
-argument_list|()
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|corrupted
+argument_list|,
+literal|"corrupted is null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|stored
+argument_list|,
+literal|"stored is null"
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|blockInfo
+name|corrupted
 operator|=
-name|blockInfo
+name|corrupted
+expr_stmt|;
+name|this
+operator|.
+name|stored
+operator|=
+name|stored
 expr_stmt|;
 name|this
 operator|.
@@ -6935,6 +6976,89 @@ name|reason
 operator|=
 name|reason
 expr_stmt|;
+block|}
+DECL|method|BlockToMarkCorrupt (BlockInfo stored, String reason)
+name|BlockToMarkCorrupt
+parameter_list|(
+name|BlockInfo
+name|stored
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|stored
+argument_list|,
+name|stored
+argument_list|,
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|BlockToMarkCorrupt (BlockInfo stored, long gs, String reason)
+name|BlockToMarkCorrupt
+parameter_list|(
+name|BlockInfo
+name|stored
+parameter_list|,
+name|long
+name|gs
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|BlockInfo
+argument_list|(
+name|stored
+argument_list|)
+argument_list|,
+name|stored
+argument_list|,
+name|reason
+argument_list|)
+expr_stmt|;
+comment|//the corrupted block in datanode has a different generation stamp
+name|corrupted
+operator|.
+name|setGenerationStamp
+argument_list|(
+name|gs
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|corrupted
+operator|+
+literal|"("
+operator|+
+operator|(
+name|corrupted
+operator|==
+name|stored
+condition|?
+literal|"same as stored"
+else|:
+literal|"stored="
+operator|+
+name|stored
+operator|)
+operator|+
+literal|")"
+return|;
 block|}
 block|}
 comment|/**    * The given datanode is reporting all its blocks.    * Update the (machine-->blocklist) and (block-->machinelist) maps.    */
@@ -7533,14 +7657,8 @@ block|{
 name|markBlockAsCorrupt
 argument_list|(
 name|b
-operator|.
-name|blockInfo
 argument_list|,
 name|node
-argument_list|,
-name|b
-operator|.
-name|reason
 argument_list|)
 expr_stmt|;
 block|}
@@ -7732,14 +7850,8 @@ block|{
 name|markBlockAsCorrupt
 argument_list|(
 name|c
-operator|.
-name|blockInfo
 argument_list|,
 name|node
-argument_list|,
-name|c
-operator|.
-name|reason
 argument_list|)
 expr_stmt|;
 block|}
@@ -8592,14 +8704,14 @@ operator|==
 literal|0
 assert|;
 block|}
-comment|/*    * The next two methods test the various cases under which we must conclude    * the replica is corrupt, or under construction.  These are laid out    * as switch statements, on the theory that it is easier to understand    * the combinatorics of reportedState and ucState that way.  It should be    * at least as efficient as boolean expressions.    *     * @return a BlockToMarkCorrupt object, or null if the replica is not corrupt    */
-DECL|method|checkReplicaCorrupt ( Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)
+comment|/**    * The next two methods test the various cases under which we must conclude    * the replica is corrupt, or under construction.  These are laid out    * as switch statements, on the theory that it is easier to understand    * the combinatorics of reportedState and ucState that way.  It should be    * at least as efficient as boolean expressions.    *     * @return a BlockToMarkCorrupt object, or null if the replica is not corrupt    */
+DECL|method|checkReplicaCorrupt ( Block reported, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)
 specifier|private
 name|BlockToMarkCorrupt
 name|checkReplicaCorrupt
 parameter_list|(
 name|Block
-name|iblk
+name|reported
 parameter_list|,
 name|ReplicaState
 name|reportedState
@@ -8640,17 +8752,28 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|!=
-name|iblk
+name|reported
 operator|.
 name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
+specifier|final
+name|long
+name|reportedGS
+init|=
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
 return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedGS
 argument_list|,
 literal|"block is "
 operator|+
@@ -8658,14 +8781,9 @@ name|ucState
 operator|+
 literal|" and reported genstamp "
 operator|+
-name|iblk
-operator|.
-name|getGenerationStamp
-argument_list|()
+name|reportedGS
 operator|+
-literal|" does not match "
-operator|+
-literal|"genstamp in block map "
+literal|" does not match genstamp in block map "
 operator|+
 name|storedBlock
 operator|.
@@ -8682,7 +8800,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|!=
-name|iblk
+name|reported
 operator|.
 name|getNumBytes
 argument_list|()
@@ -8700,7 +8818,7 @@ name|ucState
 operator|+
 literal|" and reported length "
 operator|+
-name|iblk
+name|reported
 operator|.
 name|getNumBytes
 argument_list|()
@@ -8756,17 +8874,28 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|!=
-name|iblk
+name|reported
 operator|.
 name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
+specifier|final
+name|long
+name|reportedGS
+init|=
+name|reported
+operator|.
+name|getGenerationStamp
+argument_list|()
+decl_stmt|;
 return|return
 operator|new
 name|BlockToMarkCorrupt
 argument_list|(
 name|storedBlock
+argument_list|,
+name|reportedGS
 argument_list|,
 literal|"reported "
 operator|+
@@ -8774,14 +8903,9 @@ name|reportedState
 operator|+
 literal|" replica with genstamp "
 operator|+
-name|iblk
-operator|.
-name|getGenerationStamp
-argument_list|()
+name|reportedGS
 operator|+
-literal|" does not match COMPLETE block's "
-operator|+
-literal|"genstamp in block map "
+literal|" does not match COMPLETE block's genstamp in block map "
 operator|+
 name|storedBlock
 operator|.
@@ -8873,8 +8997,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 decl_stmt|;
-comment|// log here at WARN level since this is really a broken HDFS
-comment|// invariant
+comment|// log here at WARN level since this is really a broken HDFS invariant
 name|LOG
 operator|.
 name|warn
@@ -9672,12 +9795,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
-DECL|method|invalidateCorruptReplicas (Block blk)
+DECL|method|invalidateCorruptReplicas (BlockInfo blk)
 specifier|private
 name|void
 name|invalidateCorruptReplicas
 parameter_list|(
-name|Block
+name|BlockInfo
 name|blk
 parameter_list|)
 block|{
@@ -9735,7 +9858,13 @@ try|try
 block|{
 name|invalidateBlock
 argument_list|(
+operator|new
+name|BlockToMarkCorrupt
+argument_list|(
 name|blk
+argument_list|,
+literal|null
+argument_list|)
 argument_list|,
 name|node
 argument_list|)
@@ -11501,14 +11630,8 @@ block|{
 name|markBlockAsCorrupt
 argument_list|(
 name|b
-operator|.
-name|blockInfo
 argument_list|,
 name|node
-argument_list|,
-name|b
-operator|.
-name|reason
 argument_list|)
 expr_stmt|;
 block|}
