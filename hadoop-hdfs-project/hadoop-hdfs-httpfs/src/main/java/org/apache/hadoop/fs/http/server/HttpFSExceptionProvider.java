@@ -421,9 +421,9 @@ block|,
 name|status
 block|,
 name|message
-block|,
-name|throwable
 block|}
+argument_list|,
+name|throwable
 argument_list|)
 expr_stmt|;
 block|}
