@@ -803,6 +803,16 @@ name|HADOOP_SECURITY_SERVICE_USER_NAME_KEY
 init|=
 literal|"hadoop.security.service.user.name.key"
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_AUTH_TO_LOCAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
+init|=
+literal|"hadoop.security.auth_to_local"
+decl_stmt|;
 block|}
 end_class
 

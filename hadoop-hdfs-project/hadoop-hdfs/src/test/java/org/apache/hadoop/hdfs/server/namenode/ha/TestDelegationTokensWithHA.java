@@ -506,6 +506,20 @@ name|Joiner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test case for client support of delegation tokens in an HA cluster.  * See HDFS-2904 for more info.  **/
 end_comment
@@ -604,7 +618,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"RULE:[2:$1@$0](JobTracker@.*FOO.COM)s/@.*//"
 operator|+

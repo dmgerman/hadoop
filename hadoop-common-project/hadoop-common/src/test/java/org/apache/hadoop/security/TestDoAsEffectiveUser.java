@@ -342,6 +342,20 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  *  */
 end_comment
@@ -460,7 +474,9 @@ name|masterConf
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"RULE:[2:$1@$0](.*@HADOOP.APACHE.ORG)s/@.*//"
 operator|+

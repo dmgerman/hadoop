@@ -414,6 +414,20 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineEditsViewerHelper is a helper class for TestOfflineEditsViewer,  * it performs NN operations that generate all op codes  */
 end_comment
@@ -657,7 +671,9 @@ name|config
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"RULE:[2:$1@$0](JobTracker@.*FOO.COM)s/@.*//"
 operator|+

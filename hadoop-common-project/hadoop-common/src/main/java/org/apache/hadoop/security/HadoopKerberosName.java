@@ -104,6 +104,20 @@ name|KerberosUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class implements parsing and handling of Kerberos principal names. In   * particular, it splits them apart and translates them down into local  * operating system names.  */
 end_comment
@@ -205,7 +219,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"DEFAULT"
 argument_list|)

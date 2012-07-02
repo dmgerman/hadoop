@@ -712,6 +712,20 @@ name|Answer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_class
 DECL|class|TestTokenCache
 specifier|public
@@ -1177,7 +1191,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"RULE:[2:$1]"
 argument_list|)

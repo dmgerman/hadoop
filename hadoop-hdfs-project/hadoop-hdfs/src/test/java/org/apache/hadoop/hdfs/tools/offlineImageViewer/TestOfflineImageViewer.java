@@ -384,6 +384,20 @@ name|HdfsConfiguration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test function of OfflineImageViewer by:  *   * confirming it can correctly process a valid fsimage file and that  *     the processing generates a correct representation of the namespace  *   * confirming it correctly fails to process an fsimage file with a layout  *     version it shouldn't be able to handle  *   * confirm it correctly bails on malformed image files, in particular, a  *     file that ends suddenly.  */
 end_comment
@@ -586,7 +600,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"hadoop.security.auth_to_local"
+name|CommonConfigurationKeysPublic
+operator|.
+name|HADOOP_SECURITY_AUTH_TO_LOCAL
 argument_list|,
 literal|"RULE:[2:$1@$0](JobTracker@.*FOO.COM)s/@.*//"
 operator|+
