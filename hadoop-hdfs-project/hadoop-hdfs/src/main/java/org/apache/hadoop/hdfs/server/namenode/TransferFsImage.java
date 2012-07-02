@@ -188,6 +188,42 @@ name|server
 operator|.
 name|common
 operator|.
+name|StorageErrorReporter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Storage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
 name|Util
 import|;
 end_import
@@ -364,7 +400,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|downloadImageToStorage ( String fsName, long imageTxId, NNStorage dstStorage, boolean needDigest)
+DECL|method|downloadImageToStorage ( String fsName, long imageTxId, Storage dstStorage, boolean needDigest)
 specifier|public
 specifier|static
 name|MD5Hash
@@ -376,7 +412,7 @@ parameter_list|,
 name|long
 name|imageTxId
 parameter_list|,
-name|NNStorage
+name|Storage
 name|dstStorage
 parameter_list|,
 name|boolean
@@ -678,7 +714,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param imageListenAddress the host/port where the local node is running an    *                           HTTPServer hosting GetImageServlet    * @param storage the storage directory to transfer the image from    * @param txid the transaction ID of the image to be uploaded    */
-DECL|method|uploadImageFromStorage (String fsName, InetSocketAddress imageListenAddress, NNStorage storage, long txid)
+DECL|method|uploadImageFromStorage (String fsName, InetSocketAddress imageListenAddress, Storage storage, long txid)
 specifier|public
 specifier|static
 name|void
@@ -690,7 +726,7 @@ parameter_list|,
 name|InetSocketAddress
 name|imageListenAddress
 parameter_list|,
-name|NNStorage
+name|Storage
 name|storage
 parameter_list|,
 name|long
@@ -1004,7 +1040,7 @@ block|}
 block|}
 block|}
 comment|/**    * Client-side Method to fetch file from a server    * Copies the response from the URL to a list of local files.    * @param dstStorage if an error occurs writing to one of the files,    *                   this storage object will be notified.     * @Return a digest of the received file if getChecksum is true    */
-DECL|method|getFileClient (String nnHostPort, String queryString, List<File> localPaths, NNStorage dstStorage, boolean getChecksum)
+DECL|method|getFileClient (String nnHostPort, String queryString, List<File> localPaths, Storage dstStorage, boolean getChecksum)
 specifier|static
 name|MD5Hash
 name|getFileClient
@@ -1021,7 +1057,7 @@ name|File
 argument_list|>
 name|localPaths
 parameter_list|,
-name|NNStorage
+name|Storage
 name|dstStorage
 parameter_list|,
 name|boolean
@@ -1030,18 +1066,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|byte
-index|[]
-name|buf
-init|=
-operator|new
-name|byte
-index|[
-name|HdfsConstants
-operator|.
-name|IO_FILE_BUFFER_SIZE
-index|]
-decl_stmt|;
 name|String
 name|str
 init|=
@@ -1065,14 +1089,6 @@ expr_stmt|;
 comment|//
 comment|// open connection to remote server
 comment|//
-name|long
-name|startTime
-init|=
-name|Util
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
 name|URL
 name|url
 init|=
@@ -1081,6 +1097,51 @@ name|URL
 argument_list|(
 name|str
 argument_list|)
+decl_stmt|;
+return|return
+name|doGetUrl
+argument_list|(
+name|url
+argument_list|,
+name|localPaths
+argument_list|,
+name|dstStorage
+argument_list|,
+name|getChecksum
+argument_list|)
+return|;
+block|}
+DECL|method|doGetUrl (URL url, List<File> localPaths, Storage dstStorage, boolean getChecksum)
+specifier|public
+specifier|static
+name|MD5Hash
+name|doGetUrl
+parameter_list|(
+name|URL
+name|url
+parameter_list|,
+name|List
+argument_list|<
+name|File
+argument_list|>
+name|localPaths
+parameter_list|,
+name|Storage
+name|dstStorage
+parameter_list|,
+name|boolean
+name|getChecksum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|long
+name|startTime
+init|=
+name|Util
+operator|.
+name|monotonicNow
+argument_list|()
 decl_stmt|;
 name|HttpURLConnection
 name|connection
@@ -1175,7 +1236,7 @@ literal|" header is not provided "
 operator|+
 literal|"by the namenode when trying to fetch "
 operator|+
-name|str
+name|url
 argument_list|)
 throw|;
 block|}
@@ -1376,7 +1437,7 @@ name|f
 operator|+
 literal|" with file downloaded from "
 operator|+
-name|str
+name|url
 argument_list|)
 expr_stmt|;
 block|}
@@ -1416,9 +1477,20 @@ condition|(
 name|dstStorage
 operator|!=
 literal|null
+operator|&&
+operator|(
+name|dstStorage
+operator|instanceof
+name|StorageErrorReporter
+operator|)
 condition|)
 block|{
+operator|(
+operator|(
+name|StorageErrorReporter
+operator|)
 name|dstStorage
+operator|)
 operator|.
 name|reportErrorOnFile
 argument_list|(
@@ -1449,6 +1521,18 @@ name|int
 name|num
 init|=
 literal|1
+decl_stmt|;
+name|byte
+index|[]
+name|buf
+init|=
+operator|new
+name|byte
+index|[
+name|HdfsConstants
+operator|.
+name|IO_FILE_BUFFER_SIZE
+index|]
 decl_stmt|;
 while|while
 condition|(
@@ -1553,7 +1637,7 @@ name|IOException
 argument_list|(
 literal|"File "
 operator|+
-name|str
+name|url
 operator|+
 literal|" received length "
 operator|+
@@ -1657,7 +1741,7 @@ name|IOException
 argument_list|(
 literal|"File "
 operator|+
-name|str
+name|url
 operator|+
 literal|" computed digest "
 operator|+

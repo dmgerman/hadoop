@@ -373,6 +373,59 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Close the atomic file, but do not "commit" the temporary file    * on top of the destination. This should be used if there is a failure    * in writing.    */
+DECL|method|abort ()
+specifier|public
+name|void
+name|abort
+parameter_list|()
+block|{
+try|try
+block|{
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to abort file "
+operator|+
+name|tmpFile
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|tmpFile
+operator|.
+name|delete
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to delete tmp file during abort "
+operator|+
+name|tmpFile
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

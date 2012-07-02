@@ -274,6 +274,24 @@ name|server
 operator|.
 name|common
 operator|.
+name|Storage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
 name|StorageInfo
 import|;
 end_import
@@ -1669,7 +1687,7 @@ name|toColonSeparatedString
 argument_list|()
 return|;
 block|}
-DECL|method|getParamStringToPutImage (long txid, InetSocketAddress imageListenAddress, NNStorage storage)
+DECL|method|getParamStringToPutImage (long txid, InetSocketAddress imageListenAddress, Storage storage)
 specifier|static
 name|String
 name|getParamStringToPutImage
@@ -1680,7 +1698,7 @@ parameter_list|,
 name|InetSocketAddress
 name|imageListenAddress
 parameter_list|,
-name|NNStorage
+name|Storage
 name|storage
 parameter_list|)
 block|{
