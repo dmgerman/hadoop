@@ -814,6 +814,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|RemoteEditLogManifest
 import|;
 end_import
@@ -1772,6 +1790,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|journalSet
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|journalSet
 operator|.
@@ -4224,6 +4246,15 @@ literal|" when current segment starts at "
 operator|+
 name|curSegmentTxId
 assert|;
+if|if
+condition|(
+name|minTxIdToKeep
+operator|==
+literal|0
+condition|)
+block|{
+return|return;
+block|}
 comment|// This could be improved to not need synchronization. But currently,
 comment|// journalSet is not threadsafe, so we need to synchronize this method.
 try|try
@@ -5117,6 +5148,10 @@ argument_list|,
 name|URI
 operator|.
 name|class
+argument_list|,
+name|NamespaceInfo
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 return|return
@@ -5127,6 +5162,11 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|storage
+operator|.
+name|getNamespaceInfo
+argument_list|()
 argument_list|)
 return|;
 block|}

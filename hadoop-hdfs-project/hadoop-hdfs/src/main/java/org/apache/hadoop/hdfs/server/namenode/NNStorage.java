@@ -4621,6 +4621,33 @@ return|return
 name|inspector
 return|;
 block|}
+DECL|method|getNamespaceInfo ()
+specifier|public
+name|NamespaceInfo
+name|getNamespaceInfo
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NamespaceInfo
+argument_list|(
+name|getNamespaceID
+argument_list|()
+argument_list|,
+name|getClusterID
+argument_list|()
+argument_list|,
+name|getBlockPoolID
+argument_list|()
+argument_list|,
+name|getCTime
+argument_list|()
+argument_list|,
+name|getDistributedUpgradeVersion
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

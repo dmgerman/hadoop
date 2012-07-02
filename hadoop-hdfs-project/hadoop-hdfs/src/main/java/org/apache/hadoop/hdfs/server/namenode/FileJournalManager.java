@@ -1240,38 +1240,6 @@ if|if
 condition|(
 name|elf
 operator|.
-name|lastTxId
-operator|<
-name|fromTxId
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"passing over "
-operator|+
-name|elf
-operator|+
-literal|" because it ends at "
-operator|+
-name|elf
-operator|.
-name|lastTxId
-operator|+
-literal|", but we only care about transactions "
-operator|+
-literal|"as new as "
-operator|+
-name|fromTxId
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
-if|if
-condition|(
-name|elf
-operator|.
 name|isInProgress
 argument_list|()
 condition|)
@@ -1326,6 +1294,47 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+block|}
+if|if
+condition|(
+name|elf
+operator|.
+name|lastTxId
+operator|<
+name|fromTxId
+condition|)
+block|{
+assert|assert
+name|elf
+operator|.
+name|lastTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+assert|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"passing over "
+operator|+
+name|elf
+operator|+
+literal|" because it ends at "
+operator|+
+name|elf
+operator|.
+name|lastTxId
+operator|+
+literal|", but we only care about transactions "
+operator|+
+literal|"as new as "
+operator|+
+name|fromTxId
+argument_list|)
+expr_stmt|;
+continue|continue;
 block|}
 name|EditLogFileInputStream
 name|elfis

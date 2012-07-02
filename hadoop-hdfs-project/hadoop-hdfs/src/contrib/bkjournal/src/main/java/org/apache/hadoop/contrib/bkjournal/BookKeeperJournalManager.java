@@ -114,6 +114,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -734,8 +752,34 @@ argument_list|)
 block|}
 return|;
 block|}
-comment|/**    * Construct a Bookkeeper journal manager.    */
 DECL|method|BookKeeperJournalManager (Configuration conf, URI uri)
+name|BookKeeperJournalManager
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|URI
+name|uri
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|uri
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+comment|// TODO(ivank): update BookKeeperJournalManager to do something
+comment|// with the NamespaceInfo. This constructor has been added
+comment|// for compatibility with the old tests, and may be removed
+comment|// when the tests are updated.
+block|}
+comment|/**    * Construct a Bookkeeper journal manager.    */
+DECL|method|BookKeeperJournalManager (Configuration conf, URI uri, NamespaceInfo nsInfo)
 specifier|public
 name|BookKeeperJournalManager
 parameter_list|(
@@ -744,6 +788,9 @@ name|conf
 parameter_list|,
 name|URI
 name|uri
+parameter_list|,
+name|NamespaceInfo
+name|nsInfo
 parameter_list|)
 throws|throws
 name|IOException
