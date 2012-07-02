@@ -30,18 +30,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Method
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -218,35 +206,6 @@ name|connectionRetryPolicy
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/** Expert: Make multiple, parallel calls to a set of servers. */
-DECL|method|call (Method method, Object[][] params, InetSocketAddress[] addrs, UserGroupInformation ticket, Configuration conf)
-name|Object
-index|[]
-name|call
-parameter_list|(
-name|Method
-name|method
-parameter_list|,
-name|Object
-index|[]
-index|[]
-name|params
-parameter_list|,
-name|InetSocketAddress
-index|[]
-name|addrs
-parameter_list|,
-name|UserGroupInformation
-name|ticket
-parameter_list|,
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|InterruptedException
 function_decl|;
 comment|/**     * Construct a server for a protocol implementation instance.    *     * @param protocol the class of protocol to use    * @param instance the instance of protocol whose methods will be called    * @param conf the configuration to use    * @param bindAddress the address to bind on to listen for connection    * @param port the port to listen for connections on    * @param numHandlers the number of method handler threads to run    * @param numReaders the number of reader threads to run    * @param queueSizePerHandler the size of the queue per hander thread    * @param verbose whether each call should be logged    * @param secretManager The secret manager to use to validate incoming requests.    * @param portRangeConfig A config parameter that can be used to restrict    *        the range of ports used when port is 0 (an ephemeral port)    * @return The Server instance    * @throws IOException on any error    */
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, int numReaders, int queueSizePerHandler, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig )
