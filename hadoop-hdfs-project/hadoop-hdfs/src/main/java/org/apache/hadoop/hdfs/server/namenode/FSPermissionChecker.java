@@ -511,6 +511,12 @@ name|WRITE
 argument_list|)
 operator|&&
 name|inodes
+operator|.
+name|length
+operator|>
+literal|1
+operator|&&
+name|inodes
 index|[
 name|inodes
 operator|.
@@ -521,6 +527,7 @@ index|]
 operator|!=
 literal|null
 condition|)
+block|{
 name|checkStickyBit
 argument_list|(
 name|inodes
@@ -542,6 +549,7 @@ literal|1
 index|]
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|ancestorAccess

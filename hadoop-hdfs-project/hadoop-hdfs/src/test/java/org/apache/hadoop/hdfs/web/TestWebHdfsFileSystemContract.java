@@ -1668,8 +1668,19 @@ name|toShort
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//delete root - disabled due to a sticky bit bug
-comment|//assertFalse(fs.delete(root, true));
+comment|//delete root
+name|assertFalse
+argument_list|(
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|root
+argument_list|,
+literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|//create file using root path
 try|try
 block|{
