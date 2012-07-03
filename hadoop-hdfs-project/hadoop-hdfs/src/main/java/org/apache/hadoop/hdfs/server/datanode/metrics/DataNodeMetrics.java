@@ -385,6 +385,18 @@ name|Metric
 name|MutableRate
 name|fsync
 decl_stmt|;
+DECL|field|sendDataPacketBlockedOnNetworkNanos
+annotation|@
+name|Metric
+name|MutableRate
+name|sendDataPacketBlockedOnNetworkNanos
+decl_stmt|;
+DECL|field|sendDataPacketTransferNanos
+annotation|@
+name|Metric
+name|MutableRate
+name|sendDataPacketTransferNanos
+decl_stmt|;
 DECL|field|registry
 specifier|final
 name|MetricsRegistry
@@ -874,6 +886,26 @@ operator|.
 name|incr
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getSendDataPacketBlockedOnNetworkNanos ()
+specifier|public
+name|MutableRate
+name|getSendDataPacketBlockedOnNetworkNanos
+parameter_list|()
+block|{
+return|return
+name|sendDataPacketBlockedOnNetworkNanos
+return|;
+block|}
+DECL|method|getSendDataPacketTransferNanos ()
+specifier|public
+name|MutableRate
+name|getSendDataPacketTransferNanos
+parameter_list|()
+block|{
+return|return
+name|sendDataPacketTransferNanos
+return|;
 block|}
 block|}
 end_class

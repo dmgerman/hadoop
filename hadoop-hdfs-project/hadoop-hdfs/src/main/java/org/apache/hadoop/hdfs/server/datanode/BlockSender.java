@@ -56,6 +56,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|EOFException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileDescriptor
 import|;
 end_import
@@ -227,6 +237,24 @@ operator|.
 name|datatransfer
 operator|.
 name|PacketHeader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
 import|;
 end_import
 
@@ -534,6 +562,11 @@ name|lastChunkChecksum
 init|=
 literal|null
 decl_stmt|;
+DECL|field|datanode
+specifier|private
+name|DataNode
+name|datanode
+decl_stmt|;
 comment|/** The file descriptor of the block being sent */
 DECL|field|blockInFd
 specifier|private
@@ -672,6 +705,12 @@ name|getDnConf
 argument_list|()
 operator|.
 name|dropCacheBehindReads
+expr_stmt|;
+name|this
+operator|.
+name|datanode
+operator|=
+name|datanode
 expr_stmt|;
 specifier|final
 name|Replica
@@ -2026,11 +2065,10 @@ name|dataOff
 argument_list|)
 expr_stmt|;
 comment|// First write checksum
-comment|// no need to flush. since we know out is not a buffered stream.
-name|sockOut
-operator|.
-name|transferToFully
-argument_list|(
+comment|// no need to flush since we know out is not a buffered stream
+name|FileChannel
+name|fileCh
+init|=
 operator|(
 operator|(
 name|FileInputStream
@@ -2040,10 +2078,30 @@ operator|)
 operator|.
 name|getChannel
 argument_list|()
+decl_stmt|;
+name|sockOut
+operator|.
+name|transferToFully
+argument_list|(
+name|fileCh
 argument_list|,
 name|blockInPosition
 argument_list|,
 name|dataLen
+argument_list|,
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|getSendDataPacketBlockedOnNetworkNanos
+argument_list|()
+argument_list|,
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|getSendDataPacketTransferNanos
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|blockInPosition
