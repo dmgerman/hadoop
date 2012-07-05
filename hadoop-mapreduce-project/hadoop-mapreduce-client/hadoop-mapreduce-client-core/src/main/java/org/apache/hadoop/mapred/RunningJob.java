@@ -202,7 +202,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Kill the running job.  Blocks until all job tasks have been    * killed as well.  If the job is no longer running, it simply returns.    *     * @throws IOException    */
+comment|/**    * Returns a snapshot of the current status, {@link JobStatus}, of the Job.    * Need to call again for latest information.    *     * @throws IOException    */
+DECL|method|getJobStatus ()
+specifier|public
+name|JobStatus
+name|getJobStatus
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Kill the running job. Blocks until all job tasks have been killed as well.    * If the job is no longer running, it simply returns.    *     * @throws IOException    */
 DECL|method|killJob ()
 specifier|public
 name|void
