@@ -202,7 +202,7 @@ specifier|public
 name|PipelineAck
 parameter_list|()
 block|{   }
-comment|/**    * Constructor    * @param seqno sequence number    * @param replies an array of replies    */
+comment|/**    * Constructor assuming no next DN in pipeline    * @param seqno sequence number    * @param replies an array of replies    */
 DECL|method|PipelineAck (long seqno, Status[] replies)
 specifier|public
 name|PipelineAck
@@ -213,6 +213,32 @@ parameter_list|,
 name|Status
 index|[]
 name|replies
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|seqno
+argument_list|,
+name|replies
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor    * @param seqno sequence number    * @param replies an array of replies    * @param downstreamAckTimeNanos ack RTT in nanoseconds, 0 if no next DN in pipeline    */
+DECL|method|PipelineAck (long seqno, Status[] replies, long downstreamAckTimeNanos)
+specifier|public
+name|PipelineAck
+parameter_list|(
+name|long
+name|seqno
+parameter_list|,
+name|Status
+index|[]
+name|replies
+parameter_list|,
+name|long
+name|downstreamAckTimeNanos
 parameter_list|)
 block|{
 name|proto
@@ -235,6 +261,11 @@ name|asList
 argument_list|(
 name|replies
 argument_list|)
+argument_list|)
+operator|.
+name|setDownstreamAckTimeNanos
+argument_list|(
+name|downstreamAckTimeNanos
 argument_list|)
 operator|.
 name|build
@@ -289,6 +320,20 @@ name|getStatus
 argument_list|(
 name|i
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the time elapsed for downstream ack RTT in nanoseconds    * @return time elapsed for downstream ack in nanoseconds, 0 if no next DN in pipeline    */
+DECL|method|getDownstreamAckTimeNanos ()
+specifier|public
+name|long
+name|getDownstreamAckTimeNanos
+parameter_list|()
+block|{
+return|return
+name|proto
+operator|.
+name|getDownstreamAckTimeNanos
+argument_list|()
 return|;
 block|}
 comment|/**    * Check if this ack contains error status    * @return true if all statuses are SUCCESS    */
