@@ -776,24 +776,9 @@ block|{
 comment|// create a new InnerNode
 name|parentNode
 operator|=
-operator|new
-name|InnerNode
+name|createParentNode
 argument_list|(
 name|parentName
-argument_list|,
-name|getPath
-argument_list|(
-name|this
-argument_list|)
-argument_list|,
-name|this
-argument_list|,
-name|this
-operator|.
-name|getLevel
-argument_list|()
-operator|+
-literal|1
 argument_list|)
 expr_stmt|;
 name|children
@@ -1310,7 +1295,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|isRack
+name|isLeafParent
 argument_list|()
 condition|)
 block|{
@@ -1506,6 +1491,17 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+DECL|method|isLeafParent ()
+specifier|protected
+name|boolean
+name|isLeafParent
+parameter_list|()
+block|{
+return|return
+name|isRack
+argument_list|()
+return|;
 block|}
 comment|/**       * Determine if children a leaves, default implementation calls {@link #isRack()}       *<p>To be overridden in subclasses for specific InnerNode implementations,       * as alternative to overriding the full {@link #getLeaf(int, Node)} method.       *        * @return true if children are leaves, false otherwise       */
 DECL|method|areChildrenLeaves ()
@@ -3186,6 +3182,72 @@ name|tree
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+comment|/**    * Divide networklocation string into two parts by last separator, and get     * the first part here.    *     * @param networkLocation    * @return    */
+DECL|method|getFirstHalf (String networkLocation)
+specifier|public
+specifier|static
+name|String
+name|getFirstHalf
+parameter_list|(
+name|String
+name|networkLocation
+parameter_list|)
+block|{
+name|int
+name|index
+init|=
+name|networkLocation
+operator|.
+name|lastIndexOf
+argument_list|(
+name|NodeBase
+operator|.
+name|PATH_SEPARATOR_STR
+argument_list|)
+decl_stmt|;
+return|return
+name|networkLocation
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+name|index
+argument_list|)
+return|;
+block|}
+comment|/**    * Divide networklocation string into two parts by last separator, and get     * the second part here.    *     * @param networkLocation    * @return    */
+DECL|method|getLastHalf (String networkLocation)
+specifier|public
+specifier|static
+name|String
+name|getLastHalf
+parameter_list|(
+name|String
+name|networkLocation
+parameter_list|)
+block|{
+name|int
+name|index
+init|=
+name|networkLocation
+operator|.
+name|lastIndexOf
+argument_list|(
+name|NodeBase
+operator|.
+name|PATH_SEPARATOR_STR
+argument_list|)
+decl_stmt|;
+return|return
+name|networkLocation
+operator|.
+name|substring
+argument_list|(
+name|index
+argument_list|)
 return|;
 block|}
 comment|/** swap two array items */

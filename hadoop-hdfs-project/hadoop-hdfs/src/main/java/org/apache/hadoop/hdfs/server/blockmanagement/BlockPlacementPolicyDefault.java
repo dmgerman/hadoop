@@ -776,6 +776,13 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
+name|adjustExcludedNodes
+argument_list|(
+name|excludedNodes
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1740,7 +1747,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// choosendNode was not in the excluded list
+comment|// chosenNode was not in the excluded list
 name|numOfAvailableNodes
 operator|--
 expr_stmt|;
@@ -1762,6 +1769,13 @@ name|results
 operator|.
 name|add
 argument_list|(
+name|chosenNode
+argument_list|)
+expr_stmt|;
+name|adjustExcludedNodes
+argument_list|(
+name|excludedNodes
+argument_list|,
 name|chosenNode
 argument_list|)
 expr_stmt|;
@@ -1996,6 +2010,13 @@ argument_list|(
 name|chosenNode
 argument_list|)
 expr_stmt|;
+name|adjustExcludedNodes
+argument_list|(
+name|excludedNodes
+argument_list|,
+name|chosenNode
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -2069,6 +2090,26 @@ name|detail
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * After choosing a node to place replica, adjust excluded nodes accordingly.    * It should do nothing here as chosenNode is already put into exlcudeNodes,     * but it can be overridden in subclass to put more related nodes into     * excludedNodes.    *     * @param excludedNodes    * @param chosenNode    */
+DECL|method|adjustExcludedNodes (HashMap<Node, Node> excludedNodes, Node chosenNode)
+specifier|protected
+name|void
+name|adjustExcludedNodes
+parameter_list|(
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
+name|Node
+name|chosenNode
+parameter_list|)
+block|{
+comment|// do nothing here.
 block|}
 comment|/* judge if a node is a good target.    * return true if<i>node</i> has enough space,     * does not have too much load, and the rack does not have too many nodes    */
 DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerLoc, List<DatanodeDescriptor> results)

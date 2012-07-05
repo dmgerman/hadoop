@@ -158,7 +158,7 @@ block|{
 name|nodeGroup
 operator|=
 operator|new
-name|InnerNode
+name|InnerNodeWithNodeGroup
 argument_list|(
 name|node
 operator|.
@@ -1522,6 +1522,19 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLeafParent ()
+specifier|protected
+name|boolean
+name|isLeafParent
+parameter_list|()
+block|{
+return|return
+name|isNodeGroup
+argument_list|()
 return|;
 block|}
 annotation|@
