@@ -878,6 +878,12 @@ argument_list|>
 argument_list|>
 name|pendingResources
 decl_stmt|;
+DECL|field|appCacheDirContextName
+specifier|private
+specifier|final
+name|String
+name|appCacheDirContextName
+decl_stmt|;
 DECL|method|ContainerLocalizer (FileContext lfs, String user, String appId, String localizerId, List<Path> localDirs, RecordFactory recordFactory)
 specifier|public
 name|ContainerLocalizer
@@ -982,11 +988,8 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|appDirs
+name|appCacheDirContextName
 operator|=
-operator|new
-name|LocalDirAllocator
-argument_list|(
 name|String
 operator|.
 name|format
@@ -995,6 +998,15 @@ name|APPCACHE_CTXT_FMT
 argument_list|,
 name|appId
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|appDirs
+operator|=
+operator|new
+name|LocalDirAllocator
+argument_list|(
+name|appCacheDirContextName
 argument_list|)
 expr_stmt|;
 name|this
@@ -1010,7 +1022,7 @@ name|format
 argument_list|(
 name|USERCACHE_CTXT_FMT
 argument_list|,
-name|appId
+name|user
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1068,6 +1080,11 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|runLocalization (final InetSocketAddress nmAddr)
 specifier|public
 name|int
@@ -1347,6 +1364,13 @@ name|shutdownNow
 argument_list|()
 expr_stmt|;
 block|}
+name|LocalDirAllocator
+operator|.
+name|removeContext
+argument_list|(
+name|appCacheDirContextName
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|createDownloadThreadPool ()
@@ -2485,7 +2509,7 @@ name|format
 argument_list|(
 name|USERCACHE_CTXT_FMT
 argument_list|,
-name|appId
+name|user
 argument_list|)
 argument_list|,
 name|usersFileCacheDirs

@@ -530,6 +530,42 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Removes the context from the context config items    *     * @param contextCfgItemName    */
+annotation|@
+name|Deprecated
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|}
+argument_list|)
+DECL|method|removeContext (String contextCfgItemName)
+specifier|public
+specifier|static
+name|void
+name|removeContext
+parameter_list|(
+name|String
+name|contextCfgItemName
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|contexts
+init|)
+block|{
+name|contexts
+operator|.
+name|remove
+argument_list|(
+name|contextCfgItemName
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** We search through all the configured dirs for the file's existence    *  and return true when we find      *  @param pathStr the requested file (this will be searched)    *  @param conf the Configuration object    *  @return true if files exist. false otherwise    *  @throws IOException    */
 DECL|method|ifExists (String pathStr,Configuration conf)
 specifier|public
