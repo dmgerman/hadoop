@@ -240,6 +240,14 @@ argument_list|(
 name|c
 argument_list|)
 operator|||
+operator|(
+name|c
+operator|.
+name|getPackage
+argument_list|()
+operator|!=
+literal|null
+operator|&&
 name|packages
 operator|.
 name|contains
@@ -252,6 +260,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+operator|)
 return|;
 block|}
 DECL|method|getPackages ()
