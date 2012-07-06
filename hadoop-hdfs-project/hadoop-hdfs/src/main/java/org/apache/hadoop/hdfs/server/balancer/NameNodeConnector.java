@@ -622,8 +622,6 @@ operator|=
 operator|new
 name|BlockTokenSecretManager
 argument_list|(
-literal|false
-argument_list|,
 name|blockKeyUpdateInterval
 argument_list|,
 name|blockTokenLifetime
@@ -633,7 +631,7 @@ name|this
 operator|.
 name|blockTokenSecretManager
 operator|.
-name|setKeys
+name|addKeys
 argument_list|(
 name|keys
 argument_list|)
@@ -1003,7 +1001,7 @@ try|try
 block|{
 name|blockTokenSecretManager
 operator|.
-name|setKeys
+name|addKeys
 argument_list|(
 name|namenode
 operator|.

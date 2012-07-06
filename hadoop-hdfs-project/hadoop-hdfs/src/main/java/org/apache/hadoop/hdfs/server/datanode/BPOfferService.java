@@ -1438,6 +1438,30 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Add the initial block token secret keys to the DN's secret manager.
+if|if
+condition|(
+name|dn
+operator|.
+name|isBlockTokenEnabled
+condition|)
+block|{
+name|dn
+operator|.
+name|blockPoolTokenSecretManager
+operator|.
+name|addKeys
+argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|reg
+operator|.
+name|getExportedKeys
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Verify equality of two namespace-related fields, throwing    * an exception if they are unequal.    */
 DECL|method|checkNSEquality ( Object ourID, Object theirID, String idHelpText)
@@ -2442,7 +2466,7 @@ name|dn
 operator|.
 name|blockPoolTokenSecretManager
 operator|.
-name|setKeys
+name|addKeys
 argument_list|(
 name|getBlockPoolId
 argument_list|()
@@ -2597,7 +2621,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"DatanodeCommand action: DNA_REGISTER"
+literal|"DatanodeCommand action from standby: DNA_REGISTER"
 argument_list|)
 expr_stmt|;
 name|actor
@@ -2605,9 +2629,48 @@ operator|.
 name|reRegister
 argument_list|()
 expr_stmt|;
-return|return
-literal|true
-return|;
+break|break;
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_ACCESSKEYUPDATE
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DatanodeCommand action from standby: DNA_ACCESSKEYUPDATE"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|dn
+operator|.
+name|isBlockTokenEnabled
+condition|)
+block|{
+name|dn
+operator|.
+name|blockPoolTokenSecretManager
+operator|.
+name|addKeys
+argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+operator|(
+operator|(
+name|KeyUpdateCommand
+operator|)
+name|cmd
+operator|)
+operator|.
+name|getExportedKeys
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
 case|case
 name|DatanodeProtocol
 operator|.
@@ -2631,11 +2694,6 @@ case|:
 case|case
 name|DatanodeProtocol
 operator|.
-name|DNA_ACCESSKEYUPDATE
-case|:
-case|case
-name|DatanodeProtocol
-operator|.
 name|DNA_BALANCERBANDWIDTHUPDATE
 case|:
 name|LOG
@@ -2650,9 +2708,7 @@ name|getAction
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-literal|true
-return|;
+break|break;
 default|default:
 name|LOG
 operator|.

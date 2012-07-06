@@ -2483,6 +2483,13 @@ DECL|field|blockPoolTokenSecretManager
 name|BlockPoolTokenSecretManager
 name|blockPoolTokenSecretManager
 decl_stmt|;
+DECL|field|hasAnyBlockPoolRegistered
+specifier|private
+name|boolean
+name|hasAnyBlockPoolRegistered
+init|=
+literal|false
+decl_stmt|;
 DECL|field|blockScanner
 specifier|volatile
 name|DataBlockScanner
@@ -4525,8 +4532,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * After the block pool has contacted the NN, registers that block pool    * with the secret manager, updating it with the secrets provided by the NN.    * @param bpRegistration    * @param blockPoolId    * @throws IOException    */
-DECL|method|registerBlockPoolWithSecretManager (DatanodeRegistration bpRegistration, String blockPoolId)
+DECL|method|registerBlockPoolWithSecretManager ( DatanodeRegistration bpRegistration, String blockPoolId)
 specifier|private
+specifier|synchronized
 name|void
 name|registerBlockPoolWithSecretManager
 parameter_list|(
@@ -4547,6 +4555,16 @@ operator|.
 name|getExportedKeys
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|hasAnyBlockPoolRegistered
+condition|)
+block|{
+name|hasAnyBlockPoolRegistered
+operator|=
+literal|true
+expr_stmt|;
 name|isBlockTokenEnabled
 operator|=
 name|keys
@@ -4554,6 +4572,32 @@ operator|.
 name|isBlockTokenEnabled
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|isBlockTokenEnabled
+operator|!=
+name|keys
+operator|.
+name|isBlockTokenEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Inconsistent configuration of block access"
+operator|+
+literal|" tokens. Either all block pools must be configured to use block"
+operator|+
+literal|" tokens, or none may be."
+argument_list|)
+throw|;
+block|}
+block|}
 comment|// TODO should we check that all federated nns are either enabled or
 comment|// disabled?
 if|if
@@ -4627,8 +4671,6 @@ init|=
 operator|new
 name|BlockTokenSecretManager
 argument_list|(
-literal|false
-argument_list|,
 literal|0
 argument_list|,
 name|blockTokenLifetime
@@ -4644,27 +4686,6 @@ name|secretMgr
 argument_list|)
 expr_stmt|;
 block|}
-name|blockPoolTokenSecretManager
-operator|.
-name|setKeys
-argument_list|(
-name|blockPoolId
-argument_list|,
-name|bpRegistration
-operator|.
-name|getExportedKeys
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|bpRegistration
-operator|.
-name|setExportedKeys
-argument_list|(
-name|ExportedBlockKeys
-operator|.
-name|DUMMY_KEYS
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Remove the given block pool from the block scanner, dataset, and storage.    */
 DECL|method|shutdownBlockPool (BPOfferService bpos)
@@ -10879,6 +10900,20 @@ block|{
 return|return
 name|id
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearAllBlockSecretKeys ()
+specifier|public
+name|void
+name|clearAllBlockSecretKeys
+parameter_list|()
+block|{
+name|blockPoolTokenSecretManager
+operator|.
+name|clearAllKeysForTesting
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Get current value of the max balancer bandwidth in bytes per second.    *    * @return bandwidth Blanacer bandwidth in bytes per second for this datanode.    */
 DECL|method|getBalancerBandwidth ()

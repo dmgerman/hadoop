@@ -672,27 +672,20 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Given the configuration for this node, return a Configuration object for    * the other node in an HA setup.    *     * @param myConf the configuration of this node    * @return the configuration of the other node in an HA setup    */
-DECL|method|getConfForOtherNode ( Configuration myConf)
+comment|/**    * Get the NN ID of the other node in an HA setup.    *     * @param conf the configuration of this node    * @return the NN ID of the other node in this nameservice    */
+DECL|method|getNameNodeIdOfOtherNode (Configuration conf, String nsId)
 specifier|public
 specifier|static
-name|Configuration
-name|getConfForOtherNode
+name|String
+name|getNameNodeIdOfOtherNode
 parameter_list|(
 name|Configuration
-name|myConf
-parameter_list|)
-block|{
+name|conf
+parameter_list|,
 name|String
 name|nsId
-init|=
-name|DFSUtil
-operator|.
-name|getNamenodeNameServiceId
-argument_list|(
-name|myConf
-argument_list|)
-decl_stmt|;
+parameter_list|)
+block|{
 name|Preconditions
 operator|.
 name|checkArgument
@@ -722,7 +715,7 @@ name|DFSUtil
 operator|.
 name|getNameNodeIds
 argument_list|(
-name|myConf
+name|conf
 argument_list|,
 name|nsId
 argument_list|)
@@ -730,7 +723,7 @@ decl_stmt|;
 name|String
 name|myNNId
 init|=
-name|myConf
+name|conf
 operator|.
 name|get
 argument_list|(
@@ -855,14 +848,44 @@ argument_list|()
 operator|==
 literal|1
 assert|;
-name|String
-name|activeNN
-init|=
+return|return
 name|nnSet
 operator|.
 name|get
 argument_list|(
 literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Given the configuration for this node, return a Configuration object for    * the other node in an HA setup.    *     * @param myConf the configuration of this node    * @return the configuration of the other node in an HA setup    */
+DECL|method|getConfForOtherNode ( Configuration myConf)
+specifier|public
+specifier|static
+name|Configuration
+name|getConfForOtherNode
+parameter_list|(
+name|Configuration
+name|myConf
+parameter_list|)
+block|{
+name|String
+name|nsId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|myConf
+argument_list|)
+decl_stmt|;
+name|String
+name|otherNn
+init|=
+name|getNameNodeIdOfOtherNode
+argument_list|(
+name|myConf
+argument_list|,
+name|nsId
 argument_list|)
 decl_stmt|;
 comment|// Look up the address of the active NN.
@@ -883,7 +906,7 @@ name|confForOtherNode
 argument_list|,
 name|nsId
 argument_list|,
-name|activeNN
+name|otherNn
 argument_list|)
 expr_stmt|;
 return|return

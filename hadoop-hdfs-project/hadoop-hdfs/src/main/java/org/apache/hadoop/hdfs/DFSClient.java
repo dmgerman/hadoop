@@ -1738,6 +1738,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Joiner
@@ -4662,6 +4676,39 @@ operator|.
 name|defaultReplication
 return|;
 block|}
+comment|/*    * This is just a wrapper around callGetBlockLocations, but non-static so that    * we can stub it out for tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getLocatedBlocks (String src, long start, long length)
+specifier|public
+name|LocatedBlocks
+name|getLocatedBlocks
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|long
+name|start
+parameter_list|,
+name|long
+name|length
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|callGetBlockLocations
+argument_list|(
+name|namenode
+argument_list|,
+name|src
+argument_list|,
+name|start
+argument_list|,
+name|length
+argument_list|)
+return|;
+block|}
 comment|/**    * @see ClientProtocol#getBlockLocations(String, long, long)    */
 DECL|method|callGetBlockLocations (ClientProtocol namenode, String src, long start, long length)
 specifier|static
@@ -4797,10 +4844,8 @@ block|{
 name|LocatedBlocks
 name|blocks
 init|=
-name|callGetBlockLocations
+name|getLocatedBlocks
 argument_list|(
-name|namenode
-argument_list|,
 name|src
 argument_list|,
 name|start

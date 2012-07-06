@@ -80,6 +80,26 @@ operator|.
 name|dfs
 return|;
 block|}
+DECL|method|setDFSClient (DistributedFileSystem dfs, DFSClient client)
+specifier|public
+specifier|static
+name|void
+name|setDFSClient
+parameter_list|(
+name|DistributedFileSystem
+name|dfs
+parameter_list|,
+name|DFSClient
+name|client
+parameter_list|)
+block|{
+name|dfs
+operator|.
+name|dfs
+operator|=
+name|client
+expr_stmt|;
+block|}
 DECL|method|stopLeaseRenewer (DistributedFileSystem dfs)
 specifier|public
 specifier|static

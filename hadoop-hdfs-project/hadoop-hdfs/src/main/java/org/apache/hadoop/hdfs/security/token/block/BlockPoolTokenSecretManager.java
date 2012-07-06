@@ -132,6 +132,20 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages a {@link BlockTokenSecretManager} per block pool. Routes the requests  * given a block pool Id to corresponding {@link BlockTokenSecretManager}  */
 end_comment
@@ -408,11 +422,11 @@ name|mode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#setKeys(ExportedBlockKeys)}    */
-DECL|method|setKeys (String bpid, ExportedBlockKeys exportedKeys)
+comment|/**    * See {@link BlockTokenSecretManager#addKeys(ExportedBlockKeys)}    */
+DECL|method|addKeys (String bpid, ExportedBlockKeys exportedKeys)
 specifier|public
 name|void
-name|setKeys
+name|addKeys
 parameter_list|(
 name|String
 name|bpid
@@ -428,7 +442,7 @@ argument_list|(
 name|bpid
 argument_list|)
 operator|.
-name|setKeys
+name|addKeys
 argument_list|(
 name|exportedKeys
 argument_list|)
@@ -471,6 +485,32 @@ argument_list|,
 name|of
 argument_list|)
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearAllKeysForTesting ()
+specifier|public
+name|void
+name|clearAllKeysForTesting
+parameter_list|()
+block|{
+for|for
+control|(
+name|BlockTokenSecretManager
+name|btsm
+range|:
+name|map
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|btsm
+operator|.
+name|clearAllKeysForTesting
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

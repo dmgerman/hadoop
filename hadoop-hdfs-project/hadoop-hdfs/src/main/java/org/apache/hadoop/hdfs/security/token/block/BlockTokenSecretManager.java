@@ -230,6 +230,34 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockTokenSecretManager can be instantiated in 2 modes, master mode and slave  * mode. Master can generate new block keys and export block keys to slaves,  * while slaves can only import and use block keys received from master. Both  * master and slave can generate and verify block tokens. Typically, master mode  * is used by NN and slave mode is used by DN.  */
 end_comment
@@ -265,6 +293,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// We use these in an HA setup to ensure that the pair of NNs produce block
+comment|// token serial numbers that are in different ranges.
+DECL|field|LOW_MASK
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|LOW_MASK
+init|=
+operator|~
+operator|(
+literal|1
+operator|<<
+literal|31
+operator|)
+decl_stmt|;
 DECL|field|DUMMY_TOKEN
 specifier|public
 specifier|static
@@ -288,10 +332,14 @@ specifier|final
 name|boolean
 name|isMaster
 decl_stmt|;
+DECL|field|nnIndex
+specifier|private
+name|int
+name|nnIndex
+decl_stmt|;
 comment|/**    * keyUpdateInterval is the interval that NN updates its block keys. It should    * be set long enough so that all live DN's and Balancer should have sync'ed    * their block keys with NN at least once during each interval.    */
 DECL|field|keyUpdateInterval
 specifier|private
-specifier|final
 name|long
 name|keyUpdateInterval
 decl_stmt|;
@@ -305,13 +353,6 @@ DECL|field|serialNo
 specifier|private
 name|int
 name|serialNo
-init|=
-operator|new
-name|SecureRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|()
 decl_stmt|;
 DECL|field|currentKey
 specifier|private
@@ -352,9 +393,87 @@ block|,
 name|REPLACE
 block|}
 empty_stmt|;
-comment|/**    * Constructor    *     * @param isMaster    * @param keyUpdateInterval    * @param tokenLifetime    * @throws IOException    */
-DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime)
+comment|/**    * Constructor for slaves.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
+DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime)
 specifier|public
+name|BlockTokenSecretManager
+parameter_list|(
+name|long
+name|keyUpdateInterval
+parameter_list|,
+name|long
+name|tokenLifetime
+parameter_list|)
+block|{
+name|this
+argument_list|(
+literal|false
+argument_list|,
+name|keyUpdateInterval
+argument_list|,
+name|tokenLifetime
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor for masters.    *     * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param isHaEnabled whether or not HA is enabled    * @param thisNnId the NN ID of this NN in an HA setup    * @param otherNnId the NN ID of the other NN in an HA setup    */
+DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex)
+specifier|public
+name|BlockTokenSecretManager
+parameter_list|(
+name|long
+name|keyUpdateInterval
+parameter_list|,
+name|long
+name|tokenLifetime
+parameter_list|,
+name|int
+name|nnIndex
+parameter_list|)
+block|{
+name|this
+argument_list|(
+literal|true
+argument_list|,
+name|keyUpdateInterval
+argument_list|,
+name|tokenLifetime
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|nnIndex
+operator|==
+literal|0
+operator|||
+name|nnIndex
+operator|==
+literal|1
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|nnIndex
+operator|=
+name|nnIndex
+expr_stmt|;
+name|setSerialNo
+argument_list|(
+operator|new
+name|SecureRandom
+argument_list|()
+operator|.
+name|nextInt
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|generateKeys
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime)
+specifier|private
 name|BlockTokenSecretManager
 parameter_list|(
 name|boolean
@@ -366,8 +485,6 @@ parameter_list|,
 name|long
 name|tokenLifetime
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 operator|.
@@ -400,8 +517,33 @@ name|BlockKey
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|generateKeys
-argument_list|()
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setSerialNo (int serialNo)
+specifier|public
+name|void
+name|setSerialNo
+parameter_list|(
+name|int
+name|serialNo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|serialNo
+operator|=
+operator|(
+name|serialNo
+operator|&
+name|LOW_MASK
+operator|)
+operator||
+operator|(
+name|nnIndex
+operator|<<
+literal|31
+operator|)
 expr_stmt|;
 block|}
 comment|/** Initialize block keys */
@@ -419,8 +561,12 @@ name|isMaster
 condition|)
 return|return;
 comment|/*      * Need to set estimated expiry dates for currentKey and nextKey so that if      * NN crashes, DN can still expire those keys. NN will stop using the newly      * generated currentKey after the first keyUpdateInterval, however it may      * still be used by DN and Balancer to generate new tokens before they get a      * chance to sync their keys with NN. Since we require keyUpdInterval to be      * long enough so that all live DN's and Balancer will sync their keys with      * NN at least once during the period, the estimated expiry date for      * currentKey is set to now() + 2 * keyUpdateInterval + tokenLifetime.      * Similarly, the estimated expiry date for nextKey is one keyUpdateInterval      * more.      */
+name|setSerialNo
+argument_list|(
 name|serialNo
-operator|++
+operator|+
+literal|1
+argument_list|)
 expr_stmt|;
 name|currentKey
 operator|=
@@ -444,8 +590,12 @@ name|generateSecret
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|setSerialNo
+argument_list|(
 name|serialNo
-operator|++
+operator|+
+literal|1
+argument_list|)
 expr_stmt|;
 name|nextKey
 operator|=
@@ -634,11 +784,11 @@ block|}
 block|}
 block|}
 comment|/**    * Set block keys, only to be used in slave mode    */
-DECL|method|setKeys (ExportedBlockKeys exportedKeys)
+DECL|method|addKeys (ExportedBlockKeys exportedKeys)
 specifier|public
 specifier|synchronized
 name|void
-name|setKeys
+name|addKeys
 parameter_list|(
 name|ExportedBlockKeys
 name|exportedKeys
@@ -863,8 +1013,12 @@ name|currentKey
 argument_list|)
 expr_stmt|;
 comment|// generate a new nextKey
+name|setSerialNo
+argument_list|(
 name|serialNo
-operator|++
+operator|+
+literal|1
+argument_list|)
 expr_stmt|;
 name|nextKey
 operator|=
@@ -1662,6 +1816,50 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setKeyUpdateIntervalForTesting (long millis)
+specifier|public
+name|void
+name|setKeyUpdateIntervalForTesting
+parameter_list|(
+name|long
+name|millis
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyUpdateInterval
+operator|=
+name|millis
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|clearAllKeysForTesting ()
+specifier|public
+name|void
+name|clearAllKeysForTesting
+parameter_list|()
+block|{
+name|allKeys
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSerialNoForTesting ()
+specifier|public
+name|int
+name|getSerialNoForTesting
+parameter_list|()
+block|{
+return|return
+name|serialNo
 return|;
 block|}
 block|}

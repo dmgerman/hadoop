@@ -4686,6 +4686,33 @@ operator|.
 name|isBlockTokenEnabled
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Checking block access token for block '"
+operator|+
+name|blk
+operator|.
+name|getBlockId
+argument_list|()
+operator|+
+literal|"' with mode '"
+operator|+
+name|mode
+operator|+
+literal|"'"
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|datanode
