@@ -2166,6 +2166,25 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+comment|// An error occurred, but we are shutting down anyway.
+comment|// If it was an InterruptedException, the very act of
+comment|// shutdown could have caused it and is probably harmless.
+if|if
+condition|(
+name|stopped
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception during shutdown: "
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 name|LOG
 operator|.
 name|fatal
