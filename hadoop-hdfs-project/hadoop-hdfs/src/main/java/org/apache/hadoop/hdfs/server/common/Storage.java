@@ -74,6 +74,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|lang
+operator|.
+name|management
+operator|.
+name|ManagementFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|channels
@@ -2234,6 +2246,17 @@ argument_list|,
 literal|"rws"
 argument_list|)
 decl_stmt|;
+name|String
+name|jvmName
+init|=
+name|ManagementFactory
+operator|.
+name|getRuntimeMXBean
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
 name|FileLock
 name|res
 init|=
@@ -2251,6 +2274,29 @@ operator|.
 name|tryLock
 argument_list|()
 expr_stmt|;
+name|file
+operator|.
+name|write
+argument_list|(
+name|jvmName
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Lock on "
+operator|+
+name|lockF
+operator|+
+literal|" acquired by nodename "
+operator|+
+name|jvmName
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2258,6 +2304,20 @@ name|OverlappingFileLockException
 name|oe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"It appears that another namenode "
+operator|+
+name|file
+operator|.
+name|readLine
+argument_list|()
+operator|+
+literal|" has already locked the storage directory"
+argument_list|)
+expr_stmt|;
 name|file
 operator|.
 name|close
@@ -2277,9 +2337,13 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot create lock on "
+literal|"Failed to acquire lock on "
 operator|+
 name|lockF
+operator|+
+literal|". If this storage directory is mounted via NFS, "
+operator|+
+literal|"ensure that the appropriate nfs lock services are running."
 argument_list|,
 name|e
 argument_list|)
