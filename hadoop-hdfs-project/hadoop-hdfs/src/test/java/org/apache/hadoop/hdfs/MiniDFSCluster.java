@@ -2170,8 +2170,6 @@ literal|false
 argument_list|,
 literal|false
 argument_list|,
-literal|false
-argument_list|,
 name|nameNodeOperation
 argument_list|,
 literal|null
@@ -2215,8 +2213,6 @@ argument_list|,
 name|numDataNodes
 argument_list|,
 name|format
-argument_list|,
-literal|true
 argument_list|,
 literal|true
 argument_list|,
@@ -2274,8 +2270,6 @@ literal|true
 argument_list|,
 literal|true
 argument_list|,
-literal|true
-argument_list|,
 literal|null
 argument_list|,
 name|racks
@@ -2328,8 +2322,6 @@ argument_list|,
 name|numDataNodes
 argument_list|,
 name|format
-argument_list|,
-name|manageDfsDirs
 argument_list|,
 name|manageDfsDirs
 argument_list|,
@@ -2396,8 +2388,6 @@ name|manageDfsDirs
 argument_list|,
 name|manageDfsDirs
 argument_list|,
-name|manageDfsDirs
-argument_list|,
 name|operation
 argument_list|,
 name|racks
@@ -2412,7 +2402,7 @@ comment|/**    * NOTE: if possible, the other constructors that don't have nameN
 annotation|@
 name|Deprecated
 comment|// in 22 to be removed in 24. Use MiniDFSCluster.Builder instead
-DECL|method|MiniDFSCluster (int nameNodePort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String hosts[], long[] simulatedCapacities)
+DECL|method|MiniDFSCluster (int nameNodePort, Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String hosts[], long[] simulatedCapacities)
 specifier|public
 name|MiniDFSCluster
 parameter_list|(
@@ -2430,9 +2420,6 @@ name|format
 parameter_list|,
 name|boolean
 name|manageNameDfsDirs
-parameter_list|,
-name|boolean
-name|enableManagedDfsDirsRedundancy
 parameter_list|,
 name|boolean
 name|manageDataDfsDirs
@@ -2478,7 +2465,7 @@ name|manageNameDfsDirs
 argument_list|,
 literal|true
 argument_list|,
-name|enableManagedDfsDirsRedundancy
+name|manageDataDfsDirs
 argument_list|,
 name|manageDataDfsDirs
 argument_list|,
