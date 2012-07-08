@@ -28,36 +28,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|extensions
-operator|.
-name|TestSetup
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestSuite
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -112,6 +82,36 @@ name|TestTrash
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests commands from Trash.  */
 end_comment
@@ -121,8 +121,6 @@ DECL|class|TestHDFSTrash
 specifier|public
 class|class
 name|TestHDFSTrash
-extends|extends
-name|TestTrash
 block|{
 DECL|field|cluster
 specifier|private
@@ -132,29 +130,11 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-DECL|method|suite ()
+annotation|@
+name|BeforeClass
+DECL|method|setUp ()
 specifier|public
 specifier|static
-name|Test
-name|suite
-parameter_list|()
-block|{
-name|TestSetup
-name|setup
-init|=
-operator|new
-name|TestSetup
-argument_list|(
-operator|new
-name|TestSuite
-argument_list|(
-name|TestHDFSTrash
-operator|.
-name|class
-argument_list|)
-argument_list|)
-block|{
-specifier|protected
 name|void
 name|setUp
 parameter_list|()
@@ -187,12 +167,14 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-specifier|protected
+annotation|@
+name|AfterClass
+DECL|method|tearDown ()
+specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 if|if
 condition|(
@@ -208,13 +190,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
-decl_stmt|;
-return|return
-name|setup
-return|;
-block|}
 comment|/**    * Tests Trash on HDFS    */
+annotation|@
+name|Test
 DECL|method|testTrash ()
 specifier|public
 name|void
@@ -223,6 +201,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|TestTrash
+operator|.
 name|trashShell
 argument_list|(
 name|cluster
@@ -238,6 +218,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNonDefaultFS ()
 specifier|public
 name|void
@@ -279,6 +261,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|TestTrash
+operator|.
 name|trashNonDefaultFS
 argument_list|(
 name|conf

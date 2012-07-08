@@ -453,7 +453,7 @@ expr_stmt|;
 block|}
 comment|/**    * Test trash for the shell's delete command for the file system fs    * @param fs    * @param base - the base path where files are created    * @throws IOException    */
 DECL|method|trashShell (final FileSystem fs, final Path base)
-specifier|protected
+specifier|public
 specifier|static
 name|void
 name|trashShell
