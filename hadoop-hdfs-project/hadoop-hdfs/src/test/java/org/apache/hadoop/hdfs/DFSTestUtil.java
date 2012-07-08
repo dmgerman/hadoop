@@ -1060,6 +1060,52 @@ operator|=
 name|minSize
 expr_stmt|;
 block|}
+comment|/** Creates a new instance of DFSTestUtil    *    * @param testName Name of the test from where this utility is used    * @param nFiles Number of files to be created    * @param maxLevels Maximum number of directory levels    * @param maxSize Maximum size for file    * @param minSize Minimum size for file    */
+DECL|method|DFSTestUtil (String testName, int nFiles, int maxLevels, int maxSize, int minSize)
+specifier|public
+name|DFSTestUtil
+parameter_list|(
+name|String
+name|testName
+parameter_list|,
+name|int
+name|nFiles
+parameter_list|,
+name|int
+name|maxLevels
+parameter_list|,
+name|int
+name|maxSize
+parameter_list|,
+name|int
+name|minSize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nFiles
+operator|=
+name|nFiles
+expr_stmt|;
+name|this
+operator|.
+name|maxLevels
+operator|=
+name|maxLevels
+expr_stmt|;
+name|this
+operator|.
+name|maxSize
+operator|=
+name|maxSize
+expr_stmt|;
+name|this
+operator|.
+name|minSize
+operator|=
+name|minSize
+expr_stmt|;
+block|}
 comment|/**    * when formating a namenode - we must provide clusterid.    * @param conf    * @throws IOException    */
 DECL|method|formatNameNode (Configuration conf)
 specifier|public

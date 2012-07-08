@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -203,6 +213,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|UnresolvedLinkException
 import|;
 end_import
 
@@ -460,6 +484,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -638,6 +676,14 @@ DECL|field|showCorruptFileBlocks
 specifier|private
 name|boolean
 name|showCorruptFileBlocks
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * True if we encountered an internal error during FSCK, such as not being    * able to delete a corrupt file.    */
+DECL|field|internalError
+specifier|private
+name|boolean
+name|internalError
 init|=
 literal|false
 decl_stmt|;
@@ -1169,6 +1215,22 @@ literal|" milliseconds"
 operator|)
 argument_list|)
 expr_stmt|;
+comment|// If there were internal errors during the fsck operation, we want to
+comment|// return FAILURE_STATUS, even if those errors were not immediately
+comment|// fatal.  Otherwise many unit tests will pass even when there are bugs.
+if|if
+condition|(
+name|internalError
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"fsck encountered internal errors!"
+argument_list|)
+throw|;
+block|}
 comment|// DFSck client scans for the string HEALTHY/CORRUPT to check the status
 comment|// of file system and return appropriate code. Changing the output
 comment|// string might break testcases. Also note this must be the last line
@@ -2378,19 +2440,27 @@ operator|.
 name|corruptFiles
 operator|++
 expr_stmt|;
-try|try
+if|if
+condition|(
+name|isOpen
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Fsck: ignoring open file "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 if|if
 condition|(
 name|doMove
 condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|isOpen
-condition|)
-block|{
 name|copyBlocksToLostFound
 argument_list|(
 name|parent
@@ -2400,63 +2470,13 @@ argument_list|,
 name|blocks
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 if|if
 condition|(
 name|doDelete
 condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|isOpen
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"\n - deleting corrupted file "
-operator|+
-name|path
-argument_list|)
-expr_stmt|;
-name|namenode
-operator|.
-name|getRpcServer
-argument_list|()
-operator|.
-name|delete
+name|deleteCorruptedFile
 argument_list|(
 name|path
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"error processing "
-operator|+
-name|path
-operator|+
-literal|": "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2529,6 +2549,110 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|deleteCorruptedFile (String path)
+specifier|private
+name|void
+name|deleteCorruptedFile
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+try|try
+block|{
+name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|delete
+argument_list|(
+name|path
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Fsck: deleted corrupt file "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Fsck: error deleting corrupted file "
+operator|+
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|internalError
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+DECL|method|hdfsPathExists (String path)
+name|boolean
+name|hdfsPathExists
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|IOException
+block|{
+try|try
+block|{
+name|HdfsFileStatus
+name|hfs
+init|=
+name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|getFileInfo
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|hfs
+operator|!=
+literal|null
+operator|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+block|}
 DECL|method|copyBlocksToLostFound (String parent, HdfsFileStatus file, LocatedBlocks blocks)
 specifier|private
 name|void
@@ -2563,6 +2687,22 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+specifier|final
+name|String
+name|fullName
+init|=
+name|file
+operator|.
+name|getFullName
+argument_list|(
+name|parent
+argument_list|)
+decl_stmt|;
+name|OutputStream
+name|fos
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -2583,18 +2723,14 @@ operator|!
 name|lfInitedOk
 condition|)
 block|{
-return|return;
-block|}
-name|String
-name|fullName
-init|=
-name|file
-operator|.
-name|getFullName
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-name|parent
+literal|"failed to initialize lost+found"
 argument_list|)
-decl_stmt|;
+throw|;
+block|}
 name|String
 name|target
 init|=
@@ -2602,17 +2738,33 @@ name|lostFound
 operator|+
 name|fullName
 decl_stmt|;
-name|String
-name|errmsg
-init|=
-literal|"Failed to move "
+if|if
+condition|(
+name|hdfsPathExists
+argument_list|(
+name|target
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Fsck: can't copy the remains of "
 operator|+
 name|fullName
 operator|+
-literal|" to /lost+found"
-decl_stmt|;
-try|try
-block|{
+literal|" to "
+operator|+
+literal|"lost+found, because "
+operator|+
+name|target
+operator|+
+literal|" already exists."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 if|if
 condition|(
 operator|!
@@ -2634,14 +2786,15 @@ literal|true
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-name|errmsg
+literal|"failed to create directory "
+operator|+
+name|target
 argument_list|)
-expr_stmt|;
-return|return;
+throw|;
 block|}
 comment|// create chains
 name|int
@@ -2649,10 +2802,10 @@ name|chain
 init|=
 literal|0
 decl_stmt|;
-name|OutputStream
-name|fos
+name|boolean
+name|copyError
 init|=
-literal|null
+literal|false
 decl_stmt|;
 for|for
 control|(
@@ -2741,26 +2894,27 @@ expr_stmt|;
 if|if
 condition|(
 name|fos
-operator|!=
+operator|==
 literal|null
 condition|)
-name|chain
-operator|++
-expr_stmt|;
-else|else
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|errmsg
+literal|"Failed to copy "
 operator|+
-literal|": could not store chain "
+name|fullName
+operator|+
+literal|" to /lost+found: could not store chain "
 operator|+
 name|chain
 argument_list|)
 throw|;
 block|}
+name|chain
+operator|++
+expr_stmt|;
 block|}
 comment|// copy the block. It's a pity it's not abstracted from DFSInputStream ...
 try|try
@@ -2781,17 +2935,11 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-comment|// something went wrong copying this block...
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
-literal|" - could not copy block "
+literal|"Fsck: could not copy block "
 operator|+
 name|lblock
 operator|.
@@ -2801,6 +2949,8 @@ operator|+
 literal|" to "
 operator|+
 name|target
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|fos
@@ -2817,8 +2967,74 @@ name|fos
 operator|=
 literal|null
 expr_stmt|;
+name|internalError
+operator|=
+literal|true
+expr_stmt|;
+name|copyError
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|copyError
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Fsck: there were errors copying the remains of the "
+operator|+
+literal|"corrupted file "
+operator|+
+name|fullName
+operator|+
+literal|" to /lost+found"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Fsck: copied the remains of the corrupted file "
+operator|+
+name|fullName
+operator|+
+literal|" to /lost+found"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"copyBlocksToLostFound: error processing "
+operator|+
+name|fullName
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|internalError
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
 if|if
 condition|(
 name|fos
@@ -2830,47 +3046,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"\n - copied corrupted file "
-operator|+
-name|fullName
-operator|+
-literal|" to /lost+found"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|errmsg
-operator|+
-literal|": "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
 name|dfs
 operator|.
 name|close
@@ -2998,6 +3173,8 @@ argument_list|(
 literal|"Could not obtain block "
 operator|+
 name|lblock
+argument_list|,
+name|ie
 argument_list|)
 throw|;
 block|}
@@ -3040,8 +3217,14 @@ try|try
 block|{
 name|s
 operator|=
-operator|new
-name|Socket
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|createSocket
 argument_list|()
 expr_stmt|;
 name|s
@@ -3286,10 +3469,14 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|e
+name|LOG
 operator|.
-name|printStackTrace
-argument_list|()
+name|error
+argument_list|(
+literal|"Error reading block"
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 name|success
 operator|=
@@ -3546,6 +3733,10 @@ expr_stmt|;
 name|lfInitedOk
 operator|=
 literal|false
+expr_stmt|;
+name|internalError
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
