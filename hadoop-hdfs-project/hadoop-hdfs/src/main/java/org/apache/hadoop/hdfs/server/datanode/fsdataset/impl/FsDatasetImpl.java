@@ -4629,6 +4629,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
+comment|// Don't allow data modifications from interrupted threads
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot finalize block from Interrupted Thread"
+argument_list|)
+throw|;
+block|}
 name|ReplicaInfo
 name|replicaInfo
 init|=
