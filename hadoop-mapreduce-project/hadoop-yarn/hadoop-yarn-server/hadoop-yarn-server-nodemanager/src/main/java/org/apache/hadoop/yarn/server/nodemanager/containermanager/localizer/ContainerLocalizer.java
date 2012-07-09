@@ -420,6 +420,20 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|YarnUncaughtExceptionHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|api
 operator|.
 name|records
@@ -2066,6 +2080,15 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
+name|Thread
+operator|.
+name|setDefaultUncaughtExceptionHandler
+argument_list|(
+operator|new
+name|YarnUncaughtExceptionHandler
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// usage: $0 user appId locId host port app_log_dir user_dir [user_dir]*
 comment|// let $x = $x/usercache for $local.dir
 comment|// MKDIR $x/$user/appcache/$appid
