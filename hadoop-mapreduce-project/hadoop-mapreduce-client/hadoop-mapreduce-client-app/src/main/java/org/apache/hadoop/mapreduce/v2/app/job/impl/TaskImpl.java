@@ -1686,6 +1686,10 @@ name|SCHEDULED
 argument_list|,
 name|TaskState
 operator|.
+name|SUCCEEDED
+argument_list|,
+name|TaskState
+operator|.
 name|FAILED
 argument_list|)
 argument_list|,
@@ -3532,7 +3536,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|internalError (TaskEventType type)
-specifier|private
+specifier|protected
 name|void
 name|internalError
 parameter_list|(
@@ -5060,6 +5064,55 @@ name|TaskEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|event
+operator|instanceof
+name|TaskTAttemptEvent
+condition|)
+block|{
+name|TaskTAttemptEvent
+name|castEvent
+init|=
+operator|(
+name|TaskTAttemptEvent
+operator|)
+name|event
+decl_stmt|;
+if|if
+condition|(
+name|task
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|TaskState
+operator|.
+name|SUCCEEDED
+operator|&&
+operator|!
+name|castEvent
+operator|.
+name|getTaskAttemptID
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|task
+operator|.
+name|successfulAttempt
+argument_list|)
+condition|)
+block|{
+comment|// don't allow a different task attempt to override a previous
+comment|// succeeded state
+return|return
+name|TaskState
+operator|.
+name|SUCCEEDED
+return|;
+block|}
+block|}
 comment|//verify that this occurs only for map task
 comment|//TODO: consider moving it to MapTaskImpl
 if|if
