@@ -4374,7 +4374,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Storage directories containe multiple layout versions: "
+literal|"Storage directories contain multiple layout versions: "
 operator|+
 name|layoutVersions
 argument_list|)
