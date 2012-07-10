@@ -439,6 +439,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|originalBlockSize
+operator|=
+literal|0
+expr_stmt|;
+name|noUncompressedBytes
+operator|=
+literal|0
+expr_stmt|;
 name|super
 operator|.
 name|resetState
