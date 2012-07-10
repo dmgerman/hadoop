@@ -849,6 +849,8 @@ name|getOptionValue
 argument_list|(
 literal|"jt"
 argument_list|)
+argument_list|,
+literal|"from -jt command line option"
 argument_list|)
 expr_stmt|;
 block|}
@@ -921,6 +923,8 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
+argument_list|,
+literal|"from -libjars command line option"
 argument_list|)
 expr_stmt|;
 comment|//setting libjars in client classpath
@@ -1013,6 +1017,8 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
+argument_list|,
+literal|"from -files command line option"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1043,6 +1049,8 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
+argument_list|,
+literal|"from -archives command line option"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1110,6 +1118,8 @@ name|keyval
 index|[
 literal|1
 index|]
+argument_list|,
+literal|"from command line"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1221,6 +1231,8 @@ argument_list|)
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+literal|"from -tokenCacheFile command line option"
 argument_list|)
 expr_stmt|;
 block|}

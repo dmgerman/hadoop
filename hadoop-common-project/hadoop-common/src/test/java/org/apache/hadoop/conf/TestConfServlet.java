@@ -415,9 +415,7 @@ argument_list|(
 name|val
 argument_list|)
 operator|&&
-name|Configuration
-operator|.
-name|UNKNOWN_RESOURCE
+literal|"programatically"
 operator|.
 name|equals
 argument_list|(
