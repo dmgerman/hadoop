@@ -238,6 +238,10 @@ name|BuilderUtils
 import|;
 end_import
 
+begin_comment
+comment|/**  * TokenIdentifier for a container. Encodes {@link ContainerId},  * {@link Resource} needed by the container and the target NMs host-address.  *   */
+end_comment
+
 begin_class
 DECL|class|ContainerTokenIdentifier
 specifier|public
@@ -289,7 +293,12 @@ specifier|private
 name|Resource
 name|resource
 decl_stmt|;
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, Resource r)
+DECL|field|expiryTimeStamp
+specifier|private
+name|long
+name|expiryTimeStamp
+decl_stmt|;
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, Resource r, long expiryTimeStamp)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
@@ -301,6 +310,9 @@ name|hostName
 parameter_list|,
 name|Resource
 name|r
+parameter_list|,
+name|long
+name|expiryTimeStamp
 parameter_list|)
 block|{
 name|this
@@ -321,7 +333,14 @@ name|resource
 operator|=
 name|r
 expr_stmt|;
+name|this
+operator|.
+name|expiryTimeStamp
+operator|=
+name|expiryTimeStamp
+expr_stmt|;
 block|}
+comment|/**    * Default constructor needed by RPC layer/SecretManager.    */
 DECL|method|ContainerTokenIdentifier ()
 specifier|public
 name|ContainerTokenIdentifier
@@ -361,6 +380,18 @@ return|return
 name|this
 operator|.
 name|resource
+return|;
+block|}
+DECL|method|getExpiryTimeStamp ()
+specifier|public
+name|long
+name|getExpiryTimeStamp
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|expiryTimeStamp
 return|;
 block|}
 annotation|@
@@ -466,6 +497,15 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|this
+operator|.
+name|expiryTimeStamp
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -552,6 +592,15 @@ name|readInt
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|expiryTimeStamp
+operator|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -587,6 +636,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|// TODO: Needed?
 annotation|@
 name|InterfaceAudience
 operator|.

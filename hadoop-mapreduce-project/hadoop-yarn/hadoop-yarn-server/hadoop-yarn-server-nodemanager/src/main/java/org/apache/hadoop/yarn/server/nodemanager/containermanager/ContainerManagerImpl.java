@@ -2467,6 +2467,45 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Ensure the token is not expired.
+comment|// Token expiry is not checked for stopContainer/getContainerStatus
+if|if
+condition|(
+name|tokenId
+operator|.
+name|getExpiryTimeStamp
+argument_list|()
+operator|<
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+condition|)
+block|{
+name|unauthorized
+operator|=
+literal|true
+expr_stmt|;
+name|messageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"\nThis token is expired. current time is "
+operator|+
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|+
+literal|" found "
+operator|+
+name|tokenId
+operator|.
+name|getExpiryTimeStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|Resource
 name|resource
 init|=

@@ -2487,7 +2487,9 @@ name|containerTokenSecretManager
 init|=
 operator|new
 name|ContainerTokenSecretManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 decl_stmt|;
 name|containerManager
 operator|=

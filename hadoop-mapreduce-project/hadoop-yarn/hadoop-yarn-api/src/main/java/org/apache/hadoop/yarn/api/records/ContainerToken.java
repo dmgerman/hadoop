@@ -132,8 +132,6 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getIdentifier ()
-specifier|public
-specifier|abstract
 name|ByteBuffer
 name|getIdentifier
 parameter_list|()
@@ -143,8 +141,6 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setIdentifier (ByteBuffer identifier)
-specifier|public
-specifier|abstract
 name|void
 name|setIdentifier
 parameter_list|(
@@ -158,8 +154,6 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getPassword ()
-specifier|public
-specifier|abstract
 name|ByteBuffer
 name|getPassword
 parameter_list|()
@@ -169,8 +163,6 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setPassword (ByteBuffer password)
-specifier|public
-specifier|abstract
 name|void
 name|setPassword
 parameter_list|(
@@ -184,8 +176,6 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getKind ()
-specifier|public
-specifier|abstract
 name|String
 name|getKind
 parameter_list|()
@@ -195,8 +185,6 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setKind (String kind)
-specifier|public
-specifier|abstract
 name|void
 name|setKind
 parameter_list|(
@@ -210,8 +198,6 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getService ()
-specifier|public
-specifier|abstract
 name|String
 name|getService
 parameter_list|()
@@ -221,8 +207,6 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setService (String service)
-specifier|public
-specifier|abstract
 name|void
 name|setService
 parameter_list|(

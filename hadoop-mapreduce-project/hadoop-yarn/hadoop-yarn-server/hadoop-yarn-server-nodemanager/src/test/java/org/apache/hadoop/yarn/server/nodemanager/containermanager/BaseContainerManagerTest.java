@@ -719,7 +719,11 @@ name|containerTokenSecretManager
 init|=
 operator|new
 name|ContainerTokenSecretManager
+argument_list|(
+operator|new
+name|Configuration
 argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|field|metrics
 specifier|protected

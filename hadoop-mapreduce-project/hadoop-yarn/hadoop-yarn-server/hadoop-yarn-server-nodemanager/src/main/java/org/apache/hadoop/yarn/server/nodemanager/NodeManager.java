@@ -858,7 +858,9 @@ name|containerTokenSecretManager
 operator|=
 operator|new
 name|ContainerTokenSecretManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 name|this

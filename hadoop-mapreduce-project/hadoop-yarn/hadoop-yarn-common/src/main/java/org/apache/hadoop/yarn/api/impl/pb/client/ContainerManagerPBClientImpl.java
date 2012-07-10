@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -511,6 +521,8 @@ class|class
 name|ContainerManagerPBClientImpl
 implements|implements
 name|ContainerManager
+implements|,
+name|Closeable
 block|{
 comment|// Not a documented config. Only used for tests
 DECL|field|NM_COMMAND_TIMEOUT
