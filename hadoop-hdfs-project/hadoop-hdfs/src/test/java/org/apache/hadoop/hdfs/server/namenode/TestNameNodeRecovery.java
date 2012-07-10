@@ -784,7 +784,7 @@ name|fail
 argument_list|(
 literal|"caught IOException while trying to skip over bad "
 operator|+
-literal|"transaction.  message was "
+literal|"transaction.   message was "
 operator|+
 name|e
 operator|.

@@ -516,6 +516,16 @@ name|DEFAULT_HADOOP_HTTP_STATIC_USER
 init|=
 literal|"dr.who"
 decl_stmt|;
+comment|/* Path to the Kerberos ticket cache.  Setting this will force    * UserGroupInformation to use only this ticket cache file when creating a    * FileSystem instance.    */
+DECL|field|KERBEROS_TICKET_CACHE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KERBEROS_TICKET_CACHE_PATH
+init|=
+literal|"hadoop.security.kerberos.ticket.cache.path"
+decl_stmt|;
 block|}
 end_class
 
