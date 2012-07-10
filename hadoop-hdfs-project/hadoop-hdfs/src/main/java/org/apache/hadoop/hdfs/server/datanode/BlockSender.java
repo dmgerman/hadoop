@@ -134,6 +134,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|SocketTimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -2133,7 +2143,27 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|/* Exception while writing to the client. Connection closure from        * the other end is mostly the case and we do not care much about        * it. But other things can go wrong, especially in transferTo(),        * which we do not want to ignore.        *        * The message parsing below should not be considered as a good        * coding example. NEVER do it to drive a program logic. NEVER.        * It was done here because the NIO throws an IOException for EPIPE.        */
+if|if
+condition|(
+name|e
+operator|instanceof
+name|SocketTimeoutException
+condition|)
+block|{
+comment|/*          * writing to client timed out.  This happens if the client reads          * part of a block and then decides not to read the rest (but leaves          * the socket open).          */
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BlockSender.sendChunks() exception: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|/* Exception while writing to the client. Connection closure from          * the other end is mostly the case and we do not care much about          * it. But other things can go wrong, especially in transferTo(),          * which we do not want to ignore.          *          * The message parsing below should not be considered as a good          * coding example. NEVER do it to drive a program logic. NEVER.          * It was done here because the NIO throws an IOException for EPIPE.          */
 name|String
 name|ioem
 init|=
@@ -2170,6 +2200,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 throw|throw
 name|ioeToSocketException
