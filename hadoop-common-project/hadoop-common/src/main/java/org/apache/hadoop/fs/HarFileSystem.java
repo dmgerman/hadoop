@@ -92,16 +92,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -132,7 +122,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -242,7 +234,7 @@ argument_list|>
 name|harMetaCache
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|URI
 argument_list|,
