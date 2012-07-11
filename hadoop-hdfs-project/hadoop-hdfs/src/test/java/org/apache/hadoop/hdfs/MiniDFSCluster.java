@@ -1158,6 +1158,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ExitUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|StringUtils
 import|;
 end_import
@@ -1431,6 +1445,13 @@ name|MiniDFSNNTopology
 name|nnTopology
 init|=
 literal|null
+decl_stmt|;
+DECL|field|checkExitOnShutdown
+specifier|private
+name|boolean
+name|checkExitOnShutdown
+init|=
+literal|true
 decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
@@ -1710,6 +1731,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Default: true      */
+DECL|method|checkExitOnShutdown (boolean val)
+specifier|public
+name|Builder
+name|checkExitOnShutdown
+parameter_list|(
+name|boolean
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|checkExitOnShutdown
+operator|=
+name|val
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Default: null      */
 DECL|method|clusterId (String cid)
 specifier|public
@@ -1917,6 +1958,10 @@ argument_list|,
 name|builder
 operator|.
 name|nnTopology
+argument_list|,
+name|builder
+operator|.
+name|checkExitOnShutdown
 argument_list|)
 expr_stmt|;
 block|}
@@ -2024,6 +2069,13 @@ DECL|field|federation
 specifier|private
 name|boolean
 name|federation
+decl_stmt|;
+DECL|field|checkExitOnShutdown
+specifier|private
+name|boolean
+name|checkExitOnShutdown
+init|=
+literal|true
 decl_stmt|;
 comment|/**    * A unique instance identifier for the cluster. This    * is used to disambiguate HA filesystems in the case where    * multiple MiniDFSClusters are used in the same test suite.     */
 DECL|field|instanceId
@@ -2491,10 +2543,12 @@ name|nameNodePort
 argument_list|,
 literal|0
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -2546,10 +2600,18 @@ name|setupHostsFile
 parameter_list|,
 name|MiniDFSNNTopology
 name|nnTopology
+parameter_list|,
+name|boolean
+name|checkExitOnShutdown
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|ExitUtil
+operator|.
+name|disableSystemExit
+argument_list|()
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|MiniDFSCluster
@@ -2593,6 +2655,12 @@ operator|.
 name|waitSafeMode
 operator|=
 name|waitSafeMode
+expr_stmt|;
+name|this
+operator|.
+name|checkExitOnShutdown
+operator|=
+name|checkExitOnShutdown
 expr_stmt|;
 name|int
 name|replication
@@ -5713,6 +5781,28 @@ argument_list|(
 literal|"Shutting down the Mini HDFS Cluster"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|checkExitOnShutdown
+condition|)
+block|{
+if|if
+condition|(
+name|ExitUtil
+operator|.
+name|terminateCalled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Test resulted in an unexpected exit"
+argument_list|)
+throw|;
+block|}
+block|}
 name|shutdownDataNodes
 argument_list|()
 expr_stmt|;

@@ -132,34 +132,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -324,9 +296,15 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|ExitException
 import|;
 end_import
 
@@ -334,9 +312,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Mockito
+name|Test
 import|;
 end_import
 
@@ -360,22 +338,6 @@ specifier|public
 class|class
 name|TestFailureOfSharedDir
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|TestFailureOfSharedDir
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 comment|/**    * Test that the shared edits dir is automatically added to the list of edits    * dirs that are marked required.    */
 annotation|@
 name|Test
@@ -842,6 +804,11 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
+name|checkExitOnShutdown
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -884,18 +851,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Blow away the shared edits dir.
-name|Runtime
-name|mockRuntime
-init|=
-name|Mockito
-operator|.
-name|mock
-argument_list|(
-name|Runtime
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 name|URI
 name|sharedEditsUri
 init|=
@@ -989,25 +944,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|nn0
-operator|.
-name|getNamesystem
-argument_list|()
-operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|getJournalSet
-argument_list|()
-operator|.
-name|setRuntimeForTesting
-argument_list|(
-name|mockRuntime
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 comment|// Make sure that subsequent operations on the NN fail.
@@ -1027,50 +963,17 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|ExitException
+name|ee
 parameter_list|)
 block|{
 name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Unable to start log segment 4: too few journals successfully started"
+literal|"finalize log segment 1, 3 failed for required journal"
 argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-comment|// By current policy the NN should exit upon this error.
-comment|// exit() should be called once, but since it is mocked, exit gets
-comment|// called once during FSEditsLog.endCurrentLogSegment() and then after
-comment|// that during FSEditsLog.startLogSegment(). So the check is atLeast(1)
-name|Mockito
-operator|.
-name|verify
-argument_list|(
-name|mockRuntime
-argument_list|,
-name|Mockito
-operator|.
-name|atLeastOnce
-argument_list|()
-argument_list|)
-operator|.
-name|exit
-argument_list|(
-name|Mockito
-operator|.
-name|anyInt
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got expected exception"
-argument_list|,
-name|ioe
+name|ee
 argument_list|)
 expr_stmt|;
 block|}

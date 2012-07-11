@@ -951,6 +951,38 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|ExitException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1363,16 +1395,6 @@ DECL|field|allowStaleStandbyReads
 specifier|protected
 name|boolean
 name|allowStaleStandbyReads
-decl_stmt|;
-DECL|field|runtime
-specifier|private
-name|Runtime
-name|runtime
-init|=
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
 decl_stmt|;
 comment|/** httpServer */
 DECL|field|httpServer
@@ -5384,9 +5406,7 @@ name|getInteractiveFormat
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 name|aborted
 condition|?
@@ -5425,9 +5445,7 @@ name|newClusterID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|0
 argument_list|)
@@ -5450,9 +5468,7 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 name|aborted
 condition|?
@@ -5499,9 +5515,7 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 name|rc
 argument_list|)
@@ -5527,9 +5541,7 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 name|aborted
 condition|?
@@ -5603,6 +5615,7 @@ literal|null
 return|;
 block|}
 default|default:
+block|{
 name|DefaultMetricsSystem
 operator|.
 name|initialize
@@ -5617,6 +5630,7 @@ argument_list|(
 name|conf
 argument_list|)
 return|;
+block|}
 block|}
 block|}
 comment|/**    * In federation configuration is set for a set of    * namenode and secondary namenode/backup/checkpointer, which are    * grouped under a logical nameservice ID. The configuration keys specific     * to them have suffix set to configured nameserviceId.    *     * This method copies the value from specific key of format key.nameserviceId    * to key, to set up the generic configuration. Once this is done, only    * generic version of the configuration is read in rest of the code, for    * backward compatibility and simpler code changes.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified    * @param nameserviceId name service Id (to distinguish federated NNs)    * @param namenodeId the namenode ID (to distinguish HA NNs)    * @see DFSUtil#setGenericConf(Configuration, String, String, String...)    */
@@ -5849,18 +5863,15 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|fatal
 argument_list|(
 literal|"Exception in namenode join"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;
@@ -6159,26 +6170,7 @@ name|getServiceState
 argument_list|()
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setRuntimeForTesting (Runtime runtime)
-specifier|public
-specifier|synchronized
-name|void
-name|setRuntimeForTesting
-parameter_list|(
-name|Runtime
-name|runtime
-parameter_list|)
-block|{
-name|this
-operator|.
-name|runtime
-operator|=
-name|runtime
-expr_stmt|;
-block|}
-comment|/**    * Shutdown the NN immediately in an ungraceful way. Used when it would be    * unsafe for the NN to continue operating, e.g. during a failed HA state    * transition.    *     * @param t exception which warrants the shutdown. Printed to the NN log    *          before exit.    * @throws ServiceFailedException thrown only for testing.    */
+comment|/**    * Shutdown the NN immediately in an ungraceful way. Used when it would be    * unsafe for the NN to continue operating, e.g. during a failed HA state    * transition.    *     * @param t exception which warrants the shutdown. Printed to the NN log    *          before exit.    * @throws ExitException thrown only for testing.    */
 DECL|method|doImmediateShutdown (Throwable t)
 specifier|private
 specifier|synchronized
@@ -6189,7 +6181,7 @@ name|Throwable
 name|t
 parameter_list|)
 throws|throws
-name|ServiceFailedException
+name|ExitException
 block|{
 name|String
 name|message
@@ -6218,23 +6210,16 @@ parameter_list|)
 block|{
 comment|// This is unlikely to happen, but there's nothing we can do if it does.
 block|}
-name|runtime
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|1
-argument_list|)
-expr_stmt|;
-comment|// This code is only reached during testing, when runtime is stubbed out.
-throw|throw
-operator|new
-name|ServiceFailedException
-argument_list|(
-name|message
 argument_list|,
 name|t
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 comment|/**    * Class used to expose {@link NameNode} as context to {@link HAState}    */
 DECL|class|NameNodeHAContext

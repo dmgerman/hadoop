@@ -48,11 +48,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Matchers
+name|Assert
 operator|.
-name|anyInt
+name|fail
 import|;
 end_import
 
@@ -65,18 +65,6 @@ operator|.
 name|Matchers
 operator|.
 name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|atLeast
 import|;
 end_import
 
@@ -113,30 +101,6 @@ operator|.
 name|Mockito
 operator|.
 name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|times
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
 import|;
 end_import
 
@@ -282,6 +246,50 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|ExitException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -318,18 +326,6 @@ name|Mockito
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|verification
-operator|.
-name|VerificationMode
-import|;
-end_import
-
 begin_class
 DECL|class|TestEditLogJournalFailures
 specifier|public
@@ -352,11 +348,6 @@ DECL|field|fs
 specifier|private
 name|FileSystem
 name|fs
-decl_stmt|;
-DECL|field|runtime
-specifier|private
-name|Runtime
-name|runtime
 decl_stmt|;
 comment|/**    * Create the mini cluster for testing and sub in a custom runtime so that    * edit log journal failures don't actually cause the JVM to exit.    */
 annotation|@
@@ -413,6 +404,11 @@ argument_list|(
 name|manageNameDfsDirs
 argument_list|)
 operator|.
+name|checkExitOnShutdown
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
@@ -427,50 +423,6 @@ name|cluster
 operator|.
 name|getFileSystem
 argument_list|()
-expr_stmt|;
-name|runtime
-operator|=
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-expr_stmt|;
-name|runtime
-operator|=
-name|spy
-argument_list|(
-name|runtime
-argument_list|)
-expr_stmt|;
-name|doNothing
-argument_list|()
-operator|.
-name|when
-argument_list|(
-name|runtime
-argument_list|)
-operator|.
-name|exit
-argument_list|(
-name|anyInt
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|getNameNode
-argument_list|()
-operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|setRuntimeForTesting
-argument_list|(
-name|runtime
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -500,11 +452,25 @@ name|cluster
 operator|!=
 literal|null
 condition|)
+block|{
+try|try
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ExitException
+name|ee
+parameter_list|)
+block|{
+comment|// Ignore ExitExceptions as the tests may result in the
+comment|// NameNode doing an immediate shutdown.
+block|}
+block|}
 block|}
 annotation|@
 name|Test
@@ -532,24 +498,14 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Make sure runtime.exit(...) hasn't been called at all yet.
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 name|assertTrue
 argument_list|(
 name|doAnEdit
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// A single journal failure should not result in a call to runtime.exit(...).
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// A single journal failure should not result in a call to terminate
 name|assertFalse
 argument_list|(
 name|cluster
@@ -597,25 +553,51 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Make sure runtime.exit(...) hasn't been called at all yet.
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
+comment|// The NN has not terminated (no ExitException thrown)
+try|try
+block|{
 name|doAnEdit
 argument_list|()
-argument_list|)
 expr_stmt|;
-comment|// The previous edit could not be synced to any persistent storage, should
-comment|// have halted the NN.
-name|assertExitInvocations
+name|fail
 argument_list|(
-literal|1
+literal|"The previous edit could not be synced to any persistent storage, "
+operator|+
+literal|"should have halted the NN"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|re
+operator|.
+name|getClassName
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"ExitException"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Could not sync enough journals to persistent storage. "
+operator|+
+literal|"Unsynced transactions: 1"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -652,28 +634,51 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Make sure runtime.exit(...) hasn't been called at all yet.
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
+comment|// The NN has not terminated (no ExitException thrown)
+try|try
+block|{
 name|doAnEdit
 argument_list|()
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"The previous edit could not be synced to any persistent storage, "
+operator|+
+literal|" should have halted the NN"
 argument_list|)
 expr_stmt|;
-comment|// The previous edit could not be synced to any persistent storage, should
-comment|// have halted the NN.
-name|assertExitInvocations
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|assertTrue
 argument_list|(
-name|atLeast
+name|re
+operator|.
+name|getClassName
+argument_list|()
+operator|.
+name|contains
 argument_list|(
-literal|1
+literal|"ExitException"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Could not sync enough journals to persistent storage. "
+operator|+
+literal|"Unsynced transactions: 1"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -701,24 +706,14 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Make sure runtime.exit(...) hasn't been called at all yet.
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 name|assertTrue
 argument_list|(
 name|doAnEdit
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// A single journal failure should not result in a call to runtime.exit(...).
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// A single journal failure should not result in a call to terminate
 name|assertFalse
 argument_list|(
 name|cluster
@@ -845,12 +840,7 @@ argument_list|(
 name|nonRequiredJas
 argument_list|)
 decl_stmt|;
-comment|// Make sure runtime.exit(...) hasn't been called at all yet.
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 comment|// ..and that the other stream is active.
 name|assertTrue
 argument_list|(
@@ -860,11 +850,46 @@ name|isActive
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// This will actually return true in the tests, since the NN will not in
-comment|// fact call Runtime.exit();
+try|try
+block|{
 name|doAnEdit
 argument_list|()
 expr_stmt|;
+name|fail
+argument_list|(
+literal|"A single failure of a required journal should have halted the NN"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|re
+operator|.
+name|getClassName
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"ExitException"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"setReadyToFlush failed for required journal"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Since the required directory failed setReadyToFlush, and that
 comment|// directory was listed prior to the non-required directory,
 comment|// we should not call setReadyToFlush on the non-required
@@ -890,16 +915,6 @@ name|nonRequiredJas
 operator|.
 name|isActive
 argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// A single failure of a required journal should result in a call to
-comment|// runtime.exit(...).
-name|assertExitInvocations
-argument_list|(
-name|atLeast
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1029,11 +1044,7 @@ name|doAnEdit
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 comment|// Invalidate 1/4 of the redundant journals.
 name|invalidateEditsDirAtIndex
 argument_list|(
@@ -1050,11 +1061,7 @@ name|doAnEdit
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 comment|// Invalidate 2/4 of the redundant journals.
 name|invalidateEditsDirAtIndex
 argument_list|(
@@ -1071,11 +1078,7 @@ name|doAnEdit
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertExitInvocations
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|// The NN has not terminated (no ExitException thrown)
 comment|// Invalidate 3/4 of the redundant journals.
 name|invalidateEditsDirAtIndex
 argument_list|(
@@ -1086,21 +1089,50 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// This will actually return true in the tests, since the NN will not in
-comment|// fact call Runtime.exit();
+try|try
+block|{
 name|doAnEdit
 argument_list|()
 expr_stmt|;
-comment|// A failure of more than the minimum number of redundant journals should
-comment|// result in a call to runtime.exit(...).
-name|assertExitInvocations
+name|fail
 argument_list|(
-name|atLeast
+literal|"A failure of more than the minimum number of redundant journals "
+operator|+
+literal|"should have halted "
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+name|assertTrue
 argument_list|(
-literal|1
+name|re
+operator|.
+name|getClassName
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"ExitException"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Could not sync enough journals to persistent storage. "
+operator|+
+literal|"Unsynced transactions: 1"
+argument_list|,
+name|re
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Replace the journal at index<code>index</code> with one that throws an    * exception on flush.    *     * @param index the index of the journal to take offline.    * @return the original<code>EditLogOutputStream</code> of the journal.    */
 DECL|method|invalidateEditsDirAtIndex (int index, boolean failOnFlush, boolean failOnWrite)
@@ -1329,49 +1361,6 @@ argument_list|)
 argument_list|)
 argument_list|)
 return|;
-block|}
-comment|/**    * Make sure that Runtime.exit(...) has been called exactly    *<code>expectedExits<code> number of times.    *     * @param expectedExits the exact number of times Runtime.exit(...) should    *                      have been called.    */
-DECL|method|assertExitInvocations (int expectedExits)
-specifier|private
-name|void
-name|assertExitInvocations
-parameter_list|(
-name|int
-name|expectedExits
-parameter_list|)
-block|{
-name|assertExitInvocations
-argument_list|(
-name|times
-argument_list|(
-name|expectedExits
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Make sure that Runtime.exit(...) has been called    *<code>expectedExits<code> number of times.    *     * @param expectedExits the number of times Runtime.exit(...) should have been called.    */
-DECL|method|assertExitInvocations (VerificationMode expectedExits)
-specifier|private
-name|void
-name|assertExitInvocations
-parameter_list|(
-name|VerificationMode
-name|expectedExits
-parameter_list|)
-block|{
-name|verify
-argument_list|(
-name|runtime
-argument_list|,
-name|expectedExits
-argument_list|)
-operator|.
-name|exit
-argument_list|(
-name|anyInt
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class

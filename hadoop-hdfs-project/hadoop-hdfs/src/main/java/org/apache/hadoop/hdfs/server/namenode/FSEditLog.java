@@ -263,6 +263,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1037,18 +1053,6 @@ name|isAutoSyncScheduled
 init|=
 literal|false
 decl_stmt|;
-comment|// Used to exit in the event of a failure to sync to all journals. It's a
-comment|// member variable so it can be swapped out for testing.
-DECL|field|runtime
-specifier|private
-name|Runtime
-name|runtime
-init|=
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-decl_stmt|;
 comment|// these are statistics counters.
 DECL|field|numTransactions
 specifier|private
@@ -1426,17 +1430,6 @@ operator|new
 name|JournalSet
 argument_list|(
 name|minimumRedundantJournals
-argument_list|)
-expr_stmt|;
-comment|// set runtime so we can test starting with a faulty or unavailable
-comment|// shared directory
-name|this
-operator|.
-name|journalSet
-operator|.
-name|setRuntimeForTesting
-argument_list|(
-name|runtime
 argument_list|)
 expr_stmt|;
 for|for
@@ -2325,10 +2318,10 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|fatal
-argument_list|(
+specifier|final
+name|String
+name|msg
+init|=
 literal|"Could not sync enough journals to persistent storage. "
 operator|+
 literal|"Unsynced transactions: "
@@ -2338,17 +2331,23 @@ name|txid
 operator|-
 name|synctxid
 operator|)
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|msg
 argument_list|,
 operator|new
 name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|runtime
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|1
+argument_list|,
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
@@ -2401,10 +2400,10 @@ init|(
 name|this
 init|)
 block|{
-name|LOG
-operator|.
-name|fatal
-argument_list|(
+specifier|final
+name|String
+name|msg
+init|=
 literal|"Could not sync enough journals to persistent storage. "
 operator|+
 literal|"Unsynced transactions: "
@@ -2414,17 +2413,23 @@ name|txid
 operator|-
 name|synctxid
 operator|)
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|msg
 argument_list|,
 operator|new
 name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|runtime
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|1
+argument_list|,
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
@@ -3647,35 +3652,6 @@ block|{
 return|return
 name|journalSet
 return|;
-block|}
-comment|/**    * Used only by unit tests.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setRuntimeForTesting (Runtime runtime)
-specifier|synchronized
-specifier|public
-name|void
-name|setRuntimeForTesting
-parameter_list|(
-name|Runtime
-name|runtime
-parameter_list|)
-block|{
-name|this
-operator|.
-name|runtime
-operator|=
-name|runtime
-expr_stmt|;
-name|this
-operator|.
-name|journalSet
-operator|.
-name|setRuntimeForTesting
-argument_list|(
-name|runtime
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Used only by tests.    */
 annotation|@

@@ -511,6 +511,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1829,7 +1845,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|fatal
 argument_list|(
 literal|"Throwable Exception in doCheckpoint"
 argument_list|,
@@ -1841,14 +1857,8 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;
@@ -2592,7 +2602,6 @@ comment|// This is a error returned by hadoop server. Print
 comment|// out the first line of the error mesage, ignore the stack trace.
 name|exitCode
 operator|=
-operator|-
 literal|1
 expr_stmt|;
 try|try
@@ -2661,7 +2670,6 @@ comment|// IO exception encountered locally.
 comment|//
 name|exitCode
 operator|=
-operator|-
 literal|1
 expr_stmt|;
 name|LOG
@@ -2773,11 +2781,15 @@ operator|==
 literal|null
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|exit
+name|fatal
 argument_list|(
-operator|-
+literal|"Failed to parse options"
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
@@ -2835,17 +2847,18 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
 if|if
 condition|(
+name|opts
+operator|!=
+literal|null
+operator|&&
 name|opts
 operator|.
 name|getCommand
@@ -2864,9 +2877,7 @@ argument_list|(
 name|opts
 argument_list|)
 decl_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 name|ret
 argument_list|)

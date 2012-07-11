@@ -499,6 +499,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -13788,21 +13804,15 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|fatal
 argument_list|(
 literal|"ReplicationMonitor thread received Runtime exception. "
 argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;

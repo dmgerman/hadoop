@@ -383,6 +383,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -466,17 +482,6 @@ DECL|field|editLog
 specifier|private
 name|FSEditLog
 name|editLog
-decl_stmt|;
-DECL|field|runtime
-specifier|private
-specifier|volatile
-name|Runtime
-name|runtime
-init|=
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
 decl_stmt|;
 DECL|field|activeAddr
 specifier|private
@@ -862,24 +867,6 @@ operator|.
 name|editLog
 operator|=
 name|editLog
-expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setRuntime (Runtime runtime)
-specifier|synchronized
-name|void
-name|setRuntime
-parameter_list|(
-name|Runtime
-name|runtime
-parameter_list|)
-block|{
-name|this
-operator|.
-name|runtime
-operator|=
-name|runtime
 expr_stmt|;
 block|}
 DECL|method|catchupDuringFailover ()
@@ -1390,7 +1377,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|fatal
 argument_list|(
 literal|"Unknown error encountered while tailing edits. "
 operator|+
@@ -1399,11 +1386,14 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-name|runtime
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|1
+argument_list|,
+name|t
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

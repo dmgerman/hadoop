@@ -112,16 +112,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|TreeSet
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -159,6 +149,22 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
 import|;
 end_import
 
@@ -727,17 +733,6 @@ specifier|final
 name|int
 name|minimumRedundantJournals
 decl_stmt|;
-DECL|field|runtime
-specifier|private
-specifier|volatile
-name|Runtime
-name|runtime
-init|=
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
-decl_stmt|;
 DECL|method|JournalSet (int minimumRedundantResources)
 name|JournalSet
 parameter_list|(
@@ -750,24 +745,6 @@ operator|.
 name|minimumRedundantJournals
 operator|=
 name|minimumRedundantResources
-expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setRuntimeForTesting (Runtime runtime)
-specifier|public
-name|void
-name|setRuntimeForTesting
-parameter_list|(
-name|Runtime
-name|runtime
-parameter_list|)
-block|{
-name|this
-operator|.
-name|runtime
-operator|=
-name|runtime
 expr_stmt|;
 block|}
 annotation|@
@@ -1359,6 +1336,7 @@ name|isRequired
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|String
 name|msg
 init|=
@@ -1392,20 +1370,13 @@ comment|// dir. There are many code paths to shared edits failures - syncs,
 comment|// roll of edits etc. All of them go through this common function
 comment|// where the isRequired() check is made. Applying exit policy here
 comment|// to catch all code paths.
-name|runtime
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|1
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
+argument_list|,
 name|msg
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 else|else
 block|{

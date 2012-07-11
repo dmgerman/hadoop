@@ -1533,6 +1533,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -8277,11 +8293,8 @@ operator|+
 literal|"resolution is handled by the NameNode."
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;
@@ -8509,28 +8522,25 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|fatal
 argument_list|(
 literal|"Exception in secureMain"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
-operator|-
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
 finally|finally
 block|{
-comment|// We need to add System.exit here because either shutdown was called or
-comment|// some disk related conditions like volumes tolerated or volumes required
+comment|// We need to terminate the process here because either shutdown was called
+comment|// or some disk related conditions like volumes tolerated or volumes required
 comment|// condition was not met. Also, In secure mode, control will go to Jsvc
-comment|// and Datanode process hangs without System.exit.
+comment|// and Datanode process hangs if it does not exit.
 name|LOG
 operator|.
 name|warn
@@ -8538,9 +8548,7 @@ argument_list|(
 literal|"Exiting Datanode"
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
+name|terminate
 argument_list|(
 literal|0
 argument_list|)
