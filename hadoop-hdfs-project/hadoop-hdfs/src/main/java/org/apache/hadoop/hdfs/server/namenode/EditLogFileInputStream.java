@@ -886,9 +886,17 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"skipping "
 operator|+
@@ -910,6 +918,7 @@ operator|+
 name|lastTxId
 argument_list|)
 expr_stmt|;
+block|}
 name|tracker
 operator|.
 name|clearLimit
