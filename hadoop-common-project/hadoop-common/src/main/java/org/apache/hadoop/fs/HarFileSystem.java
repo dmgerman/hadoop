@@ -92,16 +92,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -133,6 +123,18 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -242,7 +244,7 @@ argument_list|>
 name|harMetaCache
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|URI
 argument_list|,
@@ -4499,11 +4501,6 @@ argument_list|()
 expr_stmt|;
 name|LineReader
 name|aLin
-decl_stmt|;
-name|String
-name|retStr
-init|=
-literal|null
 decl_stmt|;
 comment|// now start reading the real index file
 for|for
