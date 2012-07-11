@@ -75,7 +75,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * A facility for Map-Reduce applications to report progress and update   * counters, status information etc.  *   *<p>{@link Mapper} and {@link Reducer} can use the<code>Reporter</code>  * provided to report progress or just indicate that they are alive. In   * scenarios where the application takes an insignificant amount of time to   * process individual key/value pairs, this is crucial since the framework   * might assume that the task has timed-out and kill that task.  *  *<p>Applications can also update {@link Counters} via the provided   *<code>Reporter</code> .</p>  *   * @see Progressable  * @see Counters  */
+comment|/**   * A facility for Map-Reduce applications to report progress and update   * counters, status information etc.  *   *<p>{@link Mapper} and {@link Reducer} can use the<code>Reporter</code>  * provided to report progress or just indicate that they are alive. In   * scenarios where the application takes significant amount of time to  * process individual key/value pairs, this is crucial since the framework   * might assume that the task has timed-out and kill that task.  *  *<p>Applications can also update {@link Counters} via the provided   *<code>Reporter</code> .</p>  *   * @see Progressable  * @see Counters  */
 end_comment
 
 begin_interface
