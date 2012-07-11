@@ -895,11 +895,23 @@ specifier|private
 name|Environment
 name|env
 decl_stmt|;
-DECL|field|HOST
+DECL|field|host
+specifier|private
 specifier|static
 name|String
-name|HOST
+name|host
 decl_stmt|;
+DECL|method|getHost ()
+specifier|public
+specifier|static
+name|String
+name|getHost
+parameter_list|()
+block|{
+return|return
+name|host
+return|;
+block|}
 static|static
 block|{
 try|try
@@ -910,7 +922,7 @@ operator|new
 name|Environment
 argument_list|()
 expr_stmt|;
-name|HOST
+name|host
 operator|=
 name|env
 operator|.

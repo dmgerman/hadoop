@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.streaming
+DECL|package|org.apache.hadoop.streaming.mapreduce
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|streaming
+operator|.
+name|mapreduce
 package|;
 end_package
 
@@ -22,7 +24,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|BufferedInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -34,7 +46,61 @@ name|util
 operator|.
 name|regex
 operator|.
-name|*
+name|Matcher
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystem
 import|;
 end_import
 
@@ -62,20 +128,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|Writable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|Text
 import|;
 end_import
@@ -88,9 +140,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|mapreduce
 operator|.
-name|WritableComparable
+name|InputSplit
 import|;
 end_import
 
@@ -102,9 +154,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapreduce
 operator|.
-name|FileSystem
+name|TaskAttemptContext
 import|;
 end_import
 
@@ -116,35 +168,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapreduce
 operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|lib
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Reporter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
+name|input
 operator|.
 name|FileSplit
 import|;
@@ -158,14 +186,14 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|streaming
 operator|.
-name|JobConf
+name|StreamUtil
 import|;
 end_import
 
 begin_comment
-comment|/** A way to interpret XML fragments as Mapper input records.  *  Values are XML subtrees delimited by configurable tags.  *  Keys could be the value of a certain attribute in the XML subtree,   *  but this is left to the stream processor application.  *  *  The name-value properties that StreamXmlRecordReader understands are:  *    String begin (chars marking beginning of record)  *    String end   (chars marking end of record)  *    int maxrec   (maximum record size)  *    int lookahead(maximum lookahead to sync CDATA)  *    boolean slowmatch  */
+comment|/**  * A way to interpret XML fragments as Mapper input records. Values are XML  * subtrees delimited by configurable tags. Keys could be the value of a certain  * attribute in the XML subtree, but this is left to the stream processor  * application.  *   * The name-value properties that StreamXmlRecordReader understands are: String  * begin (chars marking beginning of record) String end (chars marking end of  * record) int maxrec (maximum record size) int lookahead(maximum lookahead to  * sync CDATA) boolean slowmatch  */
 end_comment
 
 begin_class
@@ -176,7 +204,17 @@ name|StreamXmlRecordReader
 extends|extends
 name|StreamBaseRecordReader
 block|{
-DECL|method|StreamXmlRecordReader (FSDataInputStream in, FileSplit split, Reporter reporter, JobConf job, FileSystem fs)
+DECL|field|key
+specifier|private
+name|Text
+name|key
+decl_stmt|;
+DECL|field|value
+specifier|private
+name|Text
+name|value
+decl_stmt|;
+DECL|method|StreamXmlRecordReader (FSDataInputStream in, FileSplit split, TaskAttemptContext context, Configuration conf, FileSystem fs)
 specifier|public
 name|StreamXmlRecordReader
 parameter_list|(
@@ -186,11 +224,11 @@ parameter_list|,
 name|FileSplit
 name|split
 parameter_list|,
-name|Reporter
-name|reporter
+name|TaskAttemptContext
+name|context
 parameter_list|,
-name|JobConf
-name|job
+name|Configuration
+name|conf
 parameter_list|,
 name|FileSystem
 name|fs
@@ -204,9 +242,9 @@ name|in
 argument_list|,
 name|split
 argument_list|,
-name|reporter
+name|context
 argument_list|,
-name|job
+name|conf
 argument_list|,
 name|fs
 argument_list|)
@@ -231,7 +269,7 @@ argument_list|)
 expr_stmt|;
 name|maxRecSize_
 operator|=
-name|job_
+name|conf_
 operator|.
 name|getInt
 argument_list|(
@@ -246,7 +284,7 @@ argument_list|)
 expr_stmt|;
 name|lookAhead_
 operator|=
-name|job_
+name|conf_
 operator|.
 name|getInt
 argument_list|(
@@ -265,7 +303,7 @@ literal|false
 expr_stmt|;
 name|slowMatch_
 operator|=
-name|job_
+name|conf_
 operator|.
 name|getBoolean
 argument_list|(
@@ -662,7 +700,8 @@ operator|+
 literal|2
 argument_list|)
 expr_stmt|;
-comment|//mark to invalidate if we read more
+comment|// mark to invalidate if
+comment|// we read more
 name|read
 operator|=
 name|bin_
@@ -930,7 +969,8 @@ argument_list|(
 name|skiplen
 argument_list|)
 expr_stmt|;
-comment|// Skip succeeds as we have read this buffer
+comment|// Skip succeeds as we have read this
+comment|// buffer
 block|}
 name|pos_
 operator|+=
@@ -1028,7 +1068,7 @@ name|RECORD_MAYBE
 init|=
 literal|22
 decl_stmt|;
-comment|/* also updates firstMatchStart_;*/
+comment|/* also updates firstMatchStart_; */
 DECL|method|nextState (int state, int input, int bufPos)
 name|int
 name|nextState
@@ -1075,7 +1115,7 @@ operator|==
 name|CDATA_OUT
 condition|)
 block|{
-comment|//System.out.println("buggy XML " + bufPos);
+comment|// System.out.println("buggy XML " + bufPos);
 block|}
 return|return
 name|CDATA_OUT
@@ -1459,7 +1499,7 @@ block|{
 name|String
 name|val
 init|=
-name|job_
+name|conf_
 operator|.
 name|get
 argument_list|(
@@ -1511,7 +1551,8 @@ DECL|field|lookAhead_
 name|int
 name|lookAhead_
 decl_stmt|;
-comment|// bytes to read to try to synch CDATA/non-CDATA. Should be more than max record size
+comment|// bytes to read to try to synch CDATA/non-CDATA. Should be
+comment|// more than max record size
 DECL|field|maxRecSize_
 name|int
 name|maxRecSize_
@@ -1520,12 +1561,14 @@ DECL|field|bin_
 name|BufferedInputStream
 name|bin_
 decl_stmt|;
-comment|// Wrap FSDataInputStream for efficient backward seeks
+comment|// Wrap FSDataInputStream for efficient backward
+comment|// seeks
 DECL|field|pos_
 name|long
 name|pos_
 decl_stmt|;
-comment|// Keep track on position with respect encapsulated FSDataInputStream
+comment|// Keep track on position with respect encapsulated
+comment|// FSDataInputStream
 DECL|field|NA
 specifier|private
 specifier|final
@@ -1553,6 +1596,87 @@ DECL|field|synched_
 name|boolean
 name|synched_
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getCurrentKey ()
+specifier|public
+name|Text
+name|getCurrentKey
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+return|return
+name|key
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCurrentValue ()
+specifier|public
+name|Text
+name|getCurrentValue
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+return|return
+name|value
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|initialize (InputSplit arg0, TaskAttemptContext arg1)
+specifier|public
+name|void
+name|initialize
+parameter_list|(
+name|InputSplit
+name|arg0
+parameter_list|,
+name|TaskAttemptContext
+name|arg1
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{    }
+annotation|@
+name|Override
+DECL|method|nextKeyValue ()
+specifier|public
+name|boolean
+name|nextKeyValue
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+name|key
+operator|=
+name|createKey
+argument_list|()
+expr_stmt|;
+name|value
+operator|=
+name|createValue
+argument_list|()
+expr_stmt|;
+return|return
+name|next
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

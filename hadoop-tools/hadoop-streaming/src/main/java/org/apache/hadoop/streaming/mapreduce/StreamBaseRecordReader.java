@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.streaming
+DECL|package|org.apache.hadoop.streaming.mapreduce
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|streaming
+operator|.
+name|mapreduce
 package|;
 end_package
 
@@ -22,7 +24,35 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -34,65 +64,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|conf
 operator|.
-name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|Writable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableComparable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
+name|Configuration
 import|;
 end_import
 
@@ -118,9 +92,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|fs
 operator|.
-name|Reporter
+name|FileSystem
 import|;
 end_import
 
@@ -132,7 +106,21 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|io
+operator|.
+name|Text
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
 operator|.
 name|RecordReader
 import|;
@@ -146,7 +134,25 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|mapreduce
+operator|.
+name|TaskAttemptContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|lib
+operator|.
+name|input
 operator|.
 name|FileSplit
 import|;
@@ -160,28 +166,14 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
+name|streaming
 operator|.
-name|JobConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|*
+name|StreamUtil
 import|;
 end_import
 
 begin_comment
-comment|/**   * Shared functionality for hadoopStreaming formats.  * A custom reader can be defined to be a RecordReader with the constructor below  * and is selected with the option bin/hadoopStreaming -inputreader ...  * @see StreamXmlRecordReader   */
+comment|/**  * Shared functionality for hadoopStreaming formats. A custom reader can be  * defined to be a RecordReader with the constructor below and is selected with  * the option bin/hadoopStreaming -inputreader ...  *   * @see StreamXmlRecordReader  */
 end_comment
 
 begin_class
@@ -190,7 +182,7 @@ specifier|public
 specifier|abstract
 class|class
 name|StreamBaseRecordReader
-implements|implements
+extends|extends
 name|RecordReader
 argument_list|<
 name|Text
@@ -226,7 +218,7 @@ name|CONF_NS
 init|=
 literal|"stream.recordreader."
 decl_stmt|;
-DECL|method|StreamBaseRecordReader (FSDataInputStream in, FileSplit split, Reporter reporter, JobConf job, FileSystem fs)
+DECL|method|StreamBaseRecordReader (FSDataInputStream in, FileSplit split, TaskAttemptContext context, Configuration conf, FileSystem fs)
 specifier|public
 name|StreamBaseRecordReader
 parameter_list|(
@@ -236,11 +228,11 @@ parameter_list|,
 name|FileSplit
 name|split
 parameter_list|,
-name|Reporter
-name|reporter
+name|TaskAttemptContext
+name|context
 parameter_list|,
-name|JobConf
-name|job
+name|Configuration
+name|conf
 parameter_list|,
 name|FileSystem
 name|fs
@@ -286,13 +278,15 @@ operator|.
 name|getName
 argument_list|()
 expr_stmt|;
-name|reporter_
+name|this
+operator|.
+name|context_
 operator|=
-name|reporter
+name|context
 expr_stmt|;
-name|job_
+name|conf_
 operator|=
-name|job
+name|conf
 expr_stmt|;
 name|fs_
 operator|=
@@ -300,7 +294,7 @@ name|fs
 expr_stmt|;
 name|statusMaxRecordChars_
 operator|=
-name|job_
+name|conf
 operator|.
 name|getInt
 argument_list|(
@@ -312,8 +306,8 @@ literal|200
 argument_list|)
 expr_stmt|;
 block|}
-comment|/// RecordReader API
-comment|/** Read a record. Implementation should call numRecStats at the end    */
+comment|// / RecordReader API
+comment|/**    * Read a record. Implementation should call numRecStats at the end    */
 DECL|method|next (Text key, Text value)
 specifier|public
 specifier|abstract
@@ -346,7 +340,7 @@ name|getPos
 argument_list|()
 return|;
 block|}
-comment|/** Close this to future operations.*/
+comment|/** Close this to future operations. */
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -435,8 +429,8 @@ name|Text
 argument_list|()
 return|;
 block|}
-comment|/// StreamBaseRecordReader API
-comment|/** Implementation should seek forward in_ to the first byte of the next record.    *  The initial byte offset in the stream is arbitrary.    */
+comment|// / StreamBaseRecordReader API
+comment|/**    * Implementation should seek forward in_ to the first byte of the next    * record. The initial byte offset in the stream is arbitrary.    */
 DECL|method|seekNextRecordBoundary ()
 specifier|public
 specifier|abstract
@@ -499,7 +493,7 @@ name|nextStatusRec_
 operator|+=
 literal|100
 expr_stmt|;
-comment|//*= 10;
+comment|// *= 10;
 name|String
 name|status
 init|=
@@ -515,7 +509,7 @@ argument_list|(
 name|status
 argument_list|)
 expr_stmt|;
-name|reporter_
+name|context_
 operator|.
 name|setStatus
 argument_list|(
@@ -680,13 +674,13 @@ DECL|field|splitName_
 name|String
 name|splitName_
 decl_stmt|;
-DECL|field|reporter_
-name|Reporter
-name|reporter_
+DECL|field|context_
+name|TaskAttemptContext
+name|context_
 decl_stmt|;
-DECL|field|job_
-name|JobConf
-name|job_
+DECL|field|conf_
+name|Configuration
+name|conf_
 decl_stmt|;
 DECL|field|fs_
 name|FileSystem
