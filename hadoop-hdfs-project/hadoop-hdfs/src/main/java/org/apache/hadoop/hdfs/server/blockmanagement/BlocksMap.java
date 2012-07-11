@@ -338,11 +338,21 @@ literal|1
 operator|<<
 name|exponent
 decl_stmt|;
+if|if
+condition|(
 name|LightWeightGSet
 operator|.
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LightWeightGSet
+operator|.
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"VM type       = "
 operator|+
@@ -355,7 +365,7 @@ name|LightWeightGSet
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"2% max memory = "
 operator|+
@@ -374,7 +384,7 @@ name|LightWeightGSet
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"capacity      = 2^"
 operator|+
@@ -387,6 +397,7 @@ operator|+
 literal|" entries"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|c
 return|;

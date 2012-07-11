@@ -241,9 +241,17 @@ argument_list|(
 name|recommended_length
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"recommended="
 operator|+
@@ -254,6 +262,7 @@ operator|+
 name|actual
 argument_list|)
 expr_stmt|;
+block|}
 name|entries
 operator|=
 operator|new
