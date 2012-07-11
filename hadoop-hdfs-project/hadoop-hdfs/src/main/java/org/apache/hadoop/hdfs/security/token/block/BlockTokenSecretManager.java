@@ -522,6 +522,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|setSerialNo (int serialNo)
 specifier|public
+specifier|synchronized
 name|void
 name|setSerialNo
 parameter_list|(
@@ -885,6 +886,7 @@ block|}
 comment|/**    * Update block keys if update time> update interval.    * @return true if the keys are updated.    */
 DECL|method|updateKeys (final long updateTime)
 specifier|public
+specifier|synchronized
 name|boolean
 name|updateKeys
 parameter_list|(
@@ -1822,6 +1824,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|setKeyUpdateIntervalForTesting (long millis)
 specifier|public
+specifier|synchronized
 name|void
 name|setKeyUpdateIntervalForTesting
 parameter_list|(
@@ -1854,6 +1857,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|getSerialNoForTesting ()
 specifier|public
+specifier|synchronized
 name|int
 name|getSerialNoForTesting
 parameter_list|()
