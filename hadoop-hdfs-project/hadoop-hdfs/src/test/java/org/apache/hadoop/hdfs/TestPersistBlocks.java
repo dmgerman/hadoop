@@ -520,14 +520,46 @@ name|DATA_AFTER_RESTART
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** check if DFS remains in proper condition after a restart */
+comment|/** check if DFS remains in proper condition after a restart     **/
 annotation|@
 name|Test
-DECL|method|testRestartDfs ()
+DECL|method|TestRestartDfsWithFlush ()
 specifier|public
 name|void
-name|testRestartDfs
+name|TestRestartDfsWithFlush
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testRestartDfs
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** check if DFS remains in proper condition after a restart     **/
+DECL|method|TestRestartDfsWithSync ()
+specifier|public
+name|void
+name|TestRestartDfsWithSync
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testRestartDfs
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** check if DFS remains in proper condition after a restart    * @param useFlush - if true then flush is used instead of sync (ie hflush)    */
+DECL|method|testRestartDfs (boolean useFlush)
+name|void
+name|testRestartDfs
+parameter_list|(
+name|boolean
+name|useFlush
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -631,6 +663,16 @@ argument_list|(
 name|DATA_BEFORE_RESTART
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|useFlush
+condition|)
+name|stream
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+else|else
 name|stream
 operator|.
 name|hflush
