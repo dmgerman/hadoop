@@ -555,9 +555,9 @@ name|lastTime
 operator|+
 name|interval
 operator|>
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 return|return;
@@ -1032,9 +1032,9 @@ argument_list|()
 expr_stmt|;
 name|lastTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}

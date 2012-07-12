@@ -500,6 +500,20 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * ViewFileSystem (extends the FileSystem interface) implements a client-side  * mount table. Its spec and implementation is identical to {@link ViewFs}.  */
 end_comment
@@ -856,9 +870,9 @@ argument_list|()
 expr_stmt|;
 name|creationTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}

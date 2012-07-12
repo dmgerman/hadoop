@@ -338,6 +338,20 @@ name|SimulatedFSDataset
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the replication of a DFS file.  */
 end_comment
@@ -1654,9 +1668,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|//wait for all the blocks to be replicated;
@@ -1786,9 +1800,9 @@ operator|>
 literal|0
 operator|&&
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start

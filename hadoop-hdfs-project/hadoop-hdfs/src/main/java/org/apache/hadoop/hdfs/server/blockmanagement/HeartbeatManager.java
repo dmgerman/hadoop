@@ -176,6 +176,20 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manage the heartbeats received from datanodes.  * The datanode list and statistics are synchronized  * by the heartbeat manager lock.  */
 end_comment
@@ -1008,7 +1022,7 @@ specifier|final
 name|long
 name|now
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

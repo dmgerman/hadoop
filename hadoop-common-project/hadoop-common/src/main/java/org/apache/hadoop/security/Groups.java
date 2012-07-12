@@ -134,6 +134,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|commons
 operator|.
 name|logging
@@ -336,9 +350,9 @@ decl_stmt|;
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// if cache has a value and it hasn't expired
@@ -583,9 +597,9 @@ name|this
 operator|.
 name|timestamp
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}

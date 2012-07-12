@@ -742,6 +742,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -817,9 +831,9 @@ specifier|final
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 DECL|field|lastCheckpointTime
@@ -1785,9 +1799,9 @@ expr_stmt|;
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if

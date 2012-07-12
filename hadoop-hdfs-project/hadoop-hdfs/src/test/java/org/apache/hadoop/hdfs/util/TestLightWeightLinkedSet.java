@@ -134,6 +134,20 @@ name|LightWeightLinkedSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|TestLightWeightLinkedSet
 specifier|public
@@ -224,9 +238,9 @@ operator|=
 operator|new
 name|Random
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;

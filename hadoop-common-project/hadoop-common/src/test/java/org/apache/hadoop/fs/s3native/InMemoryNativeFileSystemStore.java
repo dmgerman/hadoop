@@ -222,6 +222,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A stub implementation of {@link NativeFileSystemStore} for testing  * {@link NativeS3FileSystem} without actually connecting to S3.  *</p>  */
 end_comment
@@ -323,9 +337,9 @@ name|key
 argument_list|,
 literal|0
 argument_list|,
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|)
@@ -462,9 +476,9 @@ operator|.
 name|length
 argument_list|()
 argument_list|,
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|)

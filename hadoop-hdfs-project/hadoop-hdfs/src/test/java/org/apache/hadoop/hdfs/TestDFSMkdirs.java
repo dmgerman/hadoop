@@ -108,6 +108,20 @@ name|FsPermission
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests that the DFS command mkdirs cannot create subdirectories  * from a file when passed an illegal path.  HADOOP-281.  */
 end_comment
@@ -395,9 +409,9 @@ name|Path
 argument_list|(
 literal|"/mkdir-"
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|,
@@ -419,9 +433,9 @@ name|filePath
 init|=
 literal|"/mkdir-file-"
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|writeFile
@@ -498,9 +512,9 @@ name|Path
 argument_list|(
 literal|"/non-exist/mkdir-"
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|,

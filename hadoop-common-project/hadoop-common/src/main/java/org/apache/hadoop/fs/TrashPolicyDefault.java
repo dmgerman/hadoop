@@ -272,6 +272,20 @@ name|FsPermission
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/** Provides a<i>trash</i> feature.  Files are moved to a user's trash  * directory, a subdirectory of their home directory named ".Trash".  Files are  * initially moved to a<i>current</i> sub-directory of the trash directory.  * Within that sub-directory their original path is preserved.  Periodically  * one may checkpoint the current trash and remove older checkpoints.  (This  * design permits trash management without enumeration of the full trash  * content, without date support in the filesystem, and without clock  * synchronization.)  */
 end_comment
@@ -793,9 +807,9 @@ name|Path
 argument_list|(
 name|orig
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1024,9 +1038,9 @@ block|}
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -1325,9 +1339,9 @@ comment|// trash disabled
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|long
@@ -1373,9 +1387,9 @@ try|try
 block|{
 name|now
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 if|if

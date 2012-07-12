@@ -566,6 +566,20 @@ name|MBeans
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * A base class for metrics system singletons  */
 end_comment
@@ -2255,9 +2269,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|bufferBuilder
@@ -2288,9 +2302,9 @@ name|snapshotStat
 operator|.
 name|add
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -2344,9 +2358,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|dropped
@@ -2368,9 +2382,9 @@ name|publishStat
 operator|.
 name|add
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime

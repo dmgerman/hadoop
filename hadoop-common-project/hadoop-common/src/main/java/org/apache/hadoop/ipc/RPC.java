@@ -366,6 +366,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1424,9 +1438,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|IOException
@@ -1536,9 +1550,9 @@ block|}
 comment|// check if timed out
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|timeout

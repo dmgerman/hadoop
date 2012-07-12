@@ -256,6 +256,20 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test verifies that block verification occurs on the datanode  */
 end_comment
@@ -366,9 +380,9 @@ decl_stmt|;
 name|long
 name|lastWarnTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -414,9 +428,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 else|:
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -432,9 +446,9 @@ if|if
 condition|(
 name|failtime
 operator|<
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 block|{
@@ -579,9 +593,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -646,9 +660,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|Configuration
@@ -1735,9 +1749,9 @@ expr_stmt|;
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
@@ -2169,9 +2183,9 @@ decl_stmt|;
 name|long
 name|failtime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 operator|(
@@ -2204,9 +2218,9 @@ if|if
 condition|(
 name|failtime
 operator|<
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 block|{

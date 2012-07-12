@@ -782,6 +782,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -7209,7 +7223,7 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -7367,7 +7381,7 @@ finally|finally
 block|{
 name|endTime
 operator|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

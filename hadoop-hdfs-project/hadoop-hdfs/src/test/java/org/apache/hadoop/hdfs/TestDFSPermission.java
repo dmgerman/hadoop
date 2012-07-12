@@ -264,6 +264,20 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/** Unit tests for permission */
 end_comment
@@ -534,7 +548,7 @@ comment|// Initiate the random number generator and logging the seed
 name|long
 name|seed
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

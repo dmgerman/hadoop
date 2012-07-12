@@ -110,6 +110,20 @@ name|RepeatingTestThread
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|TestMultithreadedTestUtil
 specifier|public
@@ -212,9 +226,9 @@ expr_stmt|;
 name|long
 name|st
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|ctx
@@ -227,9 +241,9 @@ expr_stmt|;
 name|long
 name|et
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// All threads should have run
@@ -318,9 +332,9 @@ expr_stmt|;
 name|long
 name|st
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 try|try
@@ -362,9 +376,9 @@ block|}
 name|long
 name|et
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// Test shouldn't have waited the full 30 seconds, since
@@ -444,9 +458,9 @@ expr_stmt|;
 name|long
 name|st
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 try|try
@@ -488,9 +502,9 @@ block|}
 name|long
 name|et
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// Test shouldn't have waited the full 30 seconds, since
@@ -576,9 +590,9 @@ expr_stmt|;
 name|long
 name|st
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|ctx
@@ -596,9 +610,9 @@ expr_stmt|;
 name|long
 name|et
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|long

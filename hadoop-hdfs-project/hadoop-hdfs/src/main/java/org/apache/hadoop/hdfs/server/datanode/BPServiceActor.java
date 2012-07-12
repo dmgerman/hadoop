@@ -28,13 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -509,6 +505,20 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -1142,9 +1152,9 @@ block|{
 comment|// send BR after random delay
 name|lastBlockReport
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 operator|(
@@ -2464,9 +2474,9 @@ operator|.
 name|heartBeatInterval
 operator|-
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|lastHeartbeat

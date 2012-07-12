@@ -382,6 +382,20 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * Periodically scans the data directories for block and block metadata files.  * Reconciles the differences with block information maintained in the dataset.  */
 end_comment
@@ -1257,9 +1271,9 @@ comment|//msec
 name|long
 name|firstScanTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|offset

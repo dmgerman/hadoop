@@ -476,6 +476,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -595,7 +609,7 @@ decl_stmt|;
 name|long
 name|start
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -677,7 +691,7 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -1429,9 +1443,9 @@ decl_stmt|;
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|long
@@ -1590,9 +1604,9 @@ block|}
 block|}
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|failtime
@@ -1679,9 +1693,9 @@ argument_list|(
 literal|"Achieved expected replication values in "
 operator|+
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|starttime

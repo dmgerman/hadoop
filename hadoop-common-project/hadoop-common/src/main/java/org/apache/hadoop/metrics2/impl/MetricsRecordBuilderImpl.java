@@ -152,6 +152,20 @@ name|Interns
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|MetricsRecordBuilderImpl
 class|class
@@ -237,9 +251,9 @@ name|parent
 expr_stmt|;
 name|timestamp
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|recInfo

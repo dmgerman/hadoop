@@ -190,6 +190,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This supports input and output streams for a socket channels.   * These streams can have a timeout.  */
 end_comment
@@ -609,9 +623,9 @@ literal|0
 operator|)
 condition|?
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -676,9 +690,9 @@ operator|=
 operator|(
 name|endTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|)
 operator|)
@@ -1050,9 +1064,9 @@ operator|)
 condition|?
 literal|0
 else|:
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|key
@@ -1100,9 +1114,9 @@ condition|)
 block|{
 name|timeout
 operator|-=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -1359,9 +1373,9 @@ expr_stmt|;
 block|}
 name|trimIdleSelectors
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1383,9 +1397,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|trimIdleSelectors

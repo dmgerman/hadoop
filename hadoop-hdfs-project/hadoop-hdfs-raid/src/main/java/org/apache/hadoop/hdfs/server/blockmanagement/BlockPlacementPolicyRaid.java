@@ -314,6 +314,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This BlockPlacementPolicy spreads out the group of blocks which used by RAID  * for recovering each other. This is important for the availability  * of the blocks. This class can be used by multiple threads. It has to be  * thread safe.  */
 end_comment
@@ -2951,9 +2965,9 @@ decl_stmt|;
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if

@@ -926,6 +926,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**************************************************  * FSDataset manages a set of data blocks.  Each block  * has a unique name and an extent on disk.  *  ***************************************************/
 end_comment
@@ -6105,9 +6119,9 @@ comment|// Otherwise remove blocks for the failed volumes
 name|long
 name|mlsec
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -6222,9 +6236,9 @@ block|}
 comment|// end of sync
 name|mlsec
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|mlsec

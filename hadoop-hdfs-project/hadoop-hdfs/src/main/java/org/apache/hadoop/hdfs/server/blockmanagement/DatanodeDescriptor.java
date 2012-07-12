@@ -162,6 +162,20 @@ name|LightWeightHashSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class extends the DatanodeInfo class with ephemeral information (eg  * health, capacity, what blocks are associated with the Datanode) that is  * private to the Namenode, ie this class is not exposed to clients.  */
 end_comment
@@ -1060,9 +1074,9 @@ name|this
 operator|.
 name|lastUpdate
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|this

@@ -750,6 +750,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Tool
 import|;
 end_import
@@ -3088,7 +3102,7 @@ block|{
 name|long
 name|startTime
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -3191,7 +3205,7 @@ block|}
 comment|// check if time is up or not
 if|if
 condition|(
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -4912,9 +4926,9 @@ specifier|private
 name|long
 name|lastCleanupTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 DECL|field|CUR_WIN
@@ -5105,9 +5119,9 @@ block|{
 name|long
 name|curTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// check if old win is older than winWidth
@@ -6473,7 +6487,7 @@ specifier|final
 name|long
 name|startTime
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -6599,7 +6613,7 @@ literal|"Balancing took "
 operator|+
 name|time2Str
 argument_list|(
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

@@ -740,6 +740,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/** A client for an IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Server  */
 end_comment
@@ -1749,9 +1763,9 @@ name|lastActivity
 operator|.
 name|set
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3479,9 +3493,9 @@ init|=
 name|maxIdleTime
 operator|-
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|lastActivity
@@ -3617,9 +3631,9 @@ block|{
 name|long
 name|curTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if

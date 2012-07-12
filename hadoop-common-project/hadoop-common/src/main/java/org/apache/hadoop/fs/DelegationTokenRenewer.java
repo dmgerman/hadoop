@@ -120,6 +120,20 @@ name|TokenIdentifier
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * A daemon thread that waits for the next file system to renew.  */
 end_comment
@@ -257,9 +271,9 @@ name|millisLeft
 init|=
 name|renewalTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -404,9 +418,9 @@ name|renewalTime
 operator|=
 name|RENEW_CYCLE
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}

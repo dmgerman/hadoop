@@ -28,13 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -803,6 +799,20 @@ operator|.
 name|util
 operator|.
 name|ReflectionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -1934,7 +1944,7 @@ name|getLastUpdate
 argument_list|()
 operator|<
 operator|(
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

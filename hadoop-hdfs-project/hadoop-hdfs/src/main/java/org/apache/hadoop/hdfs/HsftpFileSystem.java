@@ -274,6 +274,20 @@ name|URLUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * An implementation of a protocol for accessing filesystems over HTTPS. The  * following implementation provides a limited, read-only interface to a  * filesystem over HTTPS.  *   * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
 end_comment
@@ -887,9 +901,9 @@ name|warnDays
 operator|*
 name|MM_SECONDS_PER_DAY
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|X509Certificate
@@ -970,9 +984,9 @@ argument_list|(
 operator|(
 name|expTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|)
 operator|/

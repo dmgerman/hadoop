@@ -344,6 +344,20 @@ name|Entry
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|TestTFileSeqFileComparison
 specifier|public
@@ -583,9 +597,9 @@ name|IOException
 block|{
 name|startTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|System
@@ -611,9 +625,9 @@ name|IOException
 block|{
 name|finishTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|System
@@ -697,9 +711,9 @@ block|{
 return|return
 name|formatTime
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 return|;

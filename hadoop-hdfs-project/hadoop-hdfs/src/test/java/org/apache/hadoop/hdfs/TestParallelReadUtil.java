@@ -112,6 +112,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -287,9 +301,9 @@ expr_stmt|;
 name|long
 name|seed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -1605,9 +1619,9 @@ comment|// Start the workers and wait
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -1650,9 +1664,9 @@ block|}
 name|long
 name|endtime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// Cleanup

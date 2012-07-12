@@ -142,6 +142,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests commands from Trash.  */
 end_comment
@@ -3235,9 +3249,9 @@ argument_list|)
 expr_stmt|;
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 try|try
@@ -3293,9 +3307,9 @@ expr_stmt|;
 name|long
 name|iterTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start

@@ -352,13 +352,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -577,6 +573,20 @@ operator|.
 name|io
 operator|.
 name|MD5Hash
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -3446,9 +3456,9 @@ decl_stmt|;
 name|long
 name|checkpointAge
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|imageFile
@@ -3926,7 +3936,7 @@ name|setMostRecentCheckpointInfo
 argument_list|(
 name|txid
 argument_list|,
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -5271,7 +5281,7 @@ name|setMostRecentCheckpointInfo
 argument_list|(
 name|txid
 argument_list|,
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()

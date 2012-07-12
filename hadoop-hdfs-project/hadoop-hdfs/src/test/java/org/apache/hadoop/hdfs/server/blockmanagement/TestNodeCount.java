@@ -266,6 +266,20 @@ name|FSNamesystem
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test if live nodes count per node is correct   * so NN makes right decision for under/over-replicated blocks  *   * Two of the "while" loops below use "busy wait"  * because they are detecting transient states.  */
 end_comment
@@ -791,9 +805,9 @@ name|this
 operator|.
 name|failtime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 operator|(
@@ -846,9 +860,9 @@ name|TimeoutException
 block|{
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|failtime

@@ -235,9 +235,9 @@ expr_stmt|;
 comment|// interval equal to 10mins
 name|testInterval
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|/
 literal|60000
