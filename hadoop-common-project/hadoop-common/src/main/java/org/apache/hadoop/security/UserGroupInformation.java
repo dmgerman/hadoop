@@ -2332,17 +2332,6 @@ literal|null
 return|;
 block|}
 block|}
-DECL|field|HADOOP_LOGIN_CONFIG
-specifier|public
-specifier|static
-specifier|final
-name|HadoopConfiguration
-name|HADOOP_LOGIN_CONFIG
-init|=
-operator|new
-name|HadoopConfiguration
-argument_list|()
-decl_stmt|;
 comment|/**    * Represents a javax.security configuration that is created at runtime.    */
 DECL|class|DynamicConfiguration
 specifier|private
@@ -3075,7 +3064,9 @@ name|USER_KERBEROS_CONFIG_NAME
 argument_list|,
 name|subject
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3091,7 +3082,9 @@ name|SIMPLE_CONFIG_NAME
 argument_list|,
 name|subject
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3715,7 +3708,9 @@ name|KEYTAB_KERBEROS_CONFIG_NAME
 argument_list|,
 name|subject
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|start
@@ -4042,7 +4037,9 @@ argument_list|,
 name|getSubject
 argument_list|()
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -4250,7 +4247,9 @@ argument_list|,
 name|getSubject
 argument_list|()
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -4374,7 +4373,9 @@ name|KEYTAB_KERBEROS_CONFIG_NAME
 argument_list|,
 name|subject
 argument_list|,
-name|HADOOP_LOGIN_CONFIG
+operator|new
+name|HadoopConfiguration
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|start
