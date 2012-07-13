@@ -920,9 +920,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Use GenericOptionsParser for parsing the arguments. "
+literal|"Hadoop command-line option parsing not performed. "
 operator|+
-literal|"Applications should implement Tool for the same."
+literal|"Implement the Tool interface and execute your application "
+operator|+
+literal|"with ToolRunner to remedy this."
 argument_list|)
 expr_stmt|;
 block|}
