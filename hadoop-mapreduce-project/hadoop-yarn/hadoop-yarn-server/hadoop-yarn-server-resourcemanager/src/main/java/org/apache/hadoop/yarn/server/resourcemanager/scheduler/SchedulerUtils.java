@@ -232,6 +232,15 @@ name|LOST_CONTAINER
 init|=
 literal|"Container released on a *lost* node"
 decl_stmt|;
+DECL|field|PREEMPTED_CONTAINER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PREEMPTED_CONTAINER
+init|=
+literal|"Container preempted by scheduler"
+decl_stmt|;
 DECL|field|COMPLETED_APPLICATION
 specifier|public
 specifier|static

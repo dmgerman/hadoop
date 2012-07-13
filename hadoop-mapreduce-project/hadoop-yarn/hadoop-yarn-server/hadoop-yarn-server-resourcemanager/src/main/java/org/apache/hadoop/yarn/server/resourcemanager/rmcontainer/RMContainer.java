@@ -146,6 +146,10 @@ name|EventHandler
 import|;
 end_import
 
+begin_comment
+comment|/**  * Represents the ResourceManager's view of an application container. See   * {@link RMContainerImpl} for an implementation. Containers may be in one  * of several states, given in {@link RMContainerState}. An RMContainer  * instance may exist even if there is no actual running container, such as   * when resources are being reserved to fill space for a future container   * allocation.  */
+end_comment
+
 begin_interface
 DECL|interface|RMContainer
 specifier|public

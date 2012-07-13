@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmcontainer
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair
 package|package
 name|org
 operator|.
@@ -18,43 +18,63 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmcontainer
+name|scheduler
+operator|.
+name|fair
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_comment
+comment|/**  * Internal scheduling modes for queues.  */
+end_comment
+
 begin_enum
-DECL|enum|RMContainerEventType
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|enum|SchedulingMode
 specifier|public
 enum|enum
-name|RMContainerEventType
+name|SchedulingMode
 block|{
-comment|// Source: SchedulerApp
-DECL|enumConstant|START
-name|START
+DECL|enumConstant|FAIR
+DECL|enumConstant|FIFO
+name|FAIR
 block|,
-DECL|enumConstant|ACQUIRED
-name|ACQUIRED
-block|,
-DECL|enumConstant|KILL
-name|KILL
-block|,
-comment|// Also from Node on NodeRemoval
-DECL|enumConstant|RESERVED
-name|RESERVED
-block|,
-DECL|enumConstant|LAUNCHED
-name|LAUNCHED
-block|,
-DECL|enumConstant|FINISHED
-name|FINISHED
-block|,
-comment|// Source: ApplicationMasterService->Scheduler
-DECL|enumConstant|RELEASED
-name|RELEASED
-block|,
-comment|// Source: ContainerAllocationExpirer
-DECL|enumConstant|EXPIRE
-name|EXPIRE
+name|FIFO
 block|}
 end_enum
 
