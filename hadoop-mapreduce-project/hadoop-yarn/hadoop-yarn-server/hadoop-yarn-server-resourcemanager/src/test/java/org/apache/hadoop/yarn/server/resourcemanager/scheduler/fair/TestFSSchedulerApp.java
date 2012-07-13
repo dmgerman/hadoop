@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|resourcemanager
 operator|.
 name|scheduler
+operator|.
+name|fair
 package|;
 end_package
 
@@ -119,6 +121,46 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|NodeType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|Queue
 import|;
 end_import
 
