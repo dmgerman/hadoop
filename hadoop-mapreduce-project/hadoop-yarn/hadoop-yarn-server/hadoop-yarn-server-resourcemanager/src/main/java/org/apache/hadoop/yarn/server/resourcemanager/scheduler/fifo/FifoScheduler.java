@@ -2490,13 +2490,6 @@ block|}
 block|}
 block|}
 block|}
-name|application
-operator|.
-name|setHeadroom
-argument_list|(
-name|clusterResource
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -2525,8 +2518,36 @@ name|minimumAllocation
 argument_list|)
 condition|)
 block|{
-return|return;
+break|break;
 block|}
+block|}
+comment|// Update the applications' headroom to correctly take into
+comment|// account the containers assigned in this update.
+for|for
+control|(
+name|SchedulerApp
+name|application
+range|:
+name|applications
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|application
+operator|.
+name|setHeadroom
+argument_list|(
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|clusterResource
+argument_list|,
+name|usedResource
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|getMaxAllocatableContainers (SchedulerApp application, Priority priority, SchedulerNode node, NodeType type)
