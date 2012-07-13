@@ -3418,11 +3418,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Only one "
+literal|"Only one image storage directory ("
 operator|+
 name|DFS_NAMENODE_NAME_DIR_KEY
 operator|+
-literal|" directory configured , beware data loss!"
+literal|") configured. Beware of dataloss"
+operator|+
+literal|" due to lack of redundant storage directories!"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3440,11 +3442,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Only one "
+literal|"Only one namespace edits storage directory ("
 operator|+
 name|DFS_NAMENODE_EDITS_DIR_KEY
 operator|+
-literal|" directory configured , beware data loss!"
+literal|") configured. Beware of dataloss"
+operator|+
+literal|" due to lack of redundant storage directories!"
 argument_list|)
 expr_stmt|;
 block|}
