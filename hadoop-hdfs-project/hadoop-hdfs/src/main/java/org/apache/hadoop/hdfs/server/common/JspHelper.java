@@ -3529,9 +3529,6 @@ argument_list|)
 decl_stmt|;
 name|nn
 operator|.
-name|getNamesystem
-argument_list|()
-operator|.
 name|verifyToken
 argument_list|(
 name|id
