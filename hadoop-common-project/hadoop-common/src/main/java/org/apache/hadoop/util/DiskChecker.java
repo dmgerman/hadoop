@@ -294,7 +294,7 @@ operator|)
 operator|)
 return|;
 block|}
-comment|/**    * Create the directory if it doesn't exist and    * @param dir    * @throws DiskErrorException    */
+comment|/**    * Create the directory if it doesn't exist and check that dir is readable,    * writable and executable    *      * @param dir    * @throws DiskErrorException    */
 DECL|method|checkDir (File dir)
 specifier|public
 specifier|static
@@ -319,7 +319,7 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"can not create directory: "
+literal|"Can not create directory: "
 operator|+
 name|dir
 operator|.
@@ -339,7 +339,7 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"not a directory: "
+literal|"Not a directory: "
 operator|+
 name|dir
 operator|.
@@ -359,7 +359,7 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"directory is not readable: "
+literal|"Directory is not readable: "
 operator|+
 name|dir
 operator|.
@@ -379,7 +379,27 @@ throw|throw
 operator|new
 name|DiskErrorException
 argument_list|(
-literal|"directory is not writable: "
+literal|"Directory is not writable: "
+operator|+
+name|dir
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+if|if
+condition|(
+operator|!
+name|dir
+operator|.
+name|canExecute
+argument_list|()
+condition|)
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Directory is not executable: "
 operator|+
 name|dir
 operator|.
