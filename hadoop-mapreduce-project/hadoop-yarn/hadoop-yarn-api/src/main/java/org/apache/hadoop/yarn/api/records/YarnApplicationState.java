@@ -89,6 +89,10 @@ block|,
 comment|/** Application which was terminated by a user or admin. */
 DECL|enumConstant|KILLED
 name|KILLED
+block|,
+comment|/** Application has been accepted by the scheduler */
+DECL|enumConstant|ACCEPTED
+name|ACCEPTED
 block|}
 end_enum
 

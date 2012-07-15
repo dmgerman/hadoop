@@ -48,22 +48,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -278,6 +262,31 @@ name|setAMContainerSpec
 parameter_list|(
 name|ContainerLaunchContext
 name|amContainer
+parameter_list|)
+function_decl|;
+comment|/**    * Get if the RM should manage the execution of the AM.     * If true, then the RM     * will not allocate a container for the AM and start it. It will expect the     * AM to be launched and connect to the RM within the AM liveliness period and     * fail the app otherwise. The client should launch the AM only after the RM     * has ACCEPTED the application and changed the<code>YarnApplicationState</code>.    * Such apps will not be retried by the RM on app attempt failure.    * The default value is false.    * @return true if the AM is not managed by the RM    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getUnmanagedAM ()
+specifier|public
+name|boolean
+name|getUnmanagedAM
+parameter_list|()
+function_decl|;
+comment|/**    * @param value true if RM should not manage the AM    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setUnmanagedAM (boolean value)
+specifier|public
+name|void
+name|setUnmanagedAM
+parameter_list|(
+name|boolean
+name|value
 parameter_list|)
 function_decl|;
 comment|/**    * @return true if tokens should be canceled when the app completes.    */

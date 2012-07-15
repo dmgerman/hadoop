@@ -1839,6 +1839,15 @@ operator|==
 name|YarnApplicationState
 operator|.
 name|SUBMITTED
+operator|||
+name|application
+operator|.
+name|getYarnApplicationState
+argument_list|()
+operator|==
+name|YarnApplicationState
+operator|.
+name|ACCEPTED
 condition|)
 block|{
 name|realProxy

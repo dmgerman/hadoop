@@ -136,6 +136,28 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<code>ApplicationAttemptId</code> of the current    * attempt of the application    * @return<code>ApplicationAttemptId</code> of the attempt    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getCurrentApplicationAttemptId ()
+name|ApplicationAttemptId
+name|getCurrentApplicationAttemptId
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setCurrentApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
+name|void
+name|setCurrentApplicationAttemptId
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|)
+function_decl|;
 comment|/**    * Get the<em>user</em> who submitted the application.    * @return<em>user</em> who submitted the application    */
 annotation|@
 name|Public

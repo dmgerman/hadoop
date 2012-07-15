@@ -174,6 +174,28 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|ApplicationSubmissionContextPBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -919,11 +941,14 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|createNewTestApp ()
+DECL|method|createNewTestApp (ApplicationSubmissionContext submissionContext)
 specifier|protected
 name|RMApp
 name|createNewTestApp
-parameter_list|()
+parameter_list|(
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|)
 block|{
 name|ApplicationId
 name|applicationId
@@ -979,11 +1004,6 @@ argument_list|,
 name|maxRetries
 argument_list|)
 expr_stmt|;
-name|ApplicationSubmissionContext
-name|submissionContext
-init|=
-literal|null
-decl_stmt|;
 name|String
 name|clientTokenStr
 init|=
@@ -1020,6 +1040,20 @@ argument_list|,
 name|scheduler
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|submissionContext
+operator|==
+literal|null
+condition|)
+block|{
+name|submissionContext
+operator|=
+operator|new
+name|ApplicationSubmissionContextPBImpl
+argument_list|()
+expr_stmt|;
+block|}
 name|RMApp
 name|application
 init|=
@@ -1556,11 +1590,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testCreateAppSubmitted ()
+DECL|method|testCreateAppSubmitted ( ApplicationSubmissionContext submissionContext)
 specifier|protected
 name|RMApp
 name|testCreateAppSubmitted
-parameter_list|()
+parameter_list|(
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1568,7 +1605,9 @@ name|RMApp
 name|application
 init|=
 name|createNewTestApp
-argument_list|()
+argument_list|(
+name|submissionContext
+argument_list|)
 decl_stmt|;
 comment|// NEW => SUBMITTED event RMAppEventType.START
 name|RMAppEvent
@@ -1612,11 +1651,14 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|testCreateAppAccepted ()
+DECL|method|testCreateAppAccepted ( ApplicationSubmissionContext submissionContext)
 specifier|protected
 name|RMApp
 name|testCreateAppAccepted
-parameter_list|()
+parameter_list|(
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1624,7 +1666,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppSubmitted
-argument_list|()
+argument_list|(
+name|submissionContext
+argument_list|)
 decl_stmt|;
 comment|// SUBMITTED => ACCEPTED event RMAppEventType.APP_ACCEPTED
 name|RMAppEvent
@@ -1668,11 +1712,14 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|testCreateAppRunning ()
+DECL|method|testCreateAppRunning ( ApplicationSubmissionContext submissionContext)
 specifier|protected
 name|RMApp
 name|testCreateAppRunning
-parameter_list|()
+parameter_list|(
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1680,7 +1727,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppAccepted
-argument_list|()
+argument_list|(
+name|submissionContext
+argument_list|)
 decl_stmt|;
 comment|// ACCEPTED => RUNNING event RMAppEventType.ATTEMPT_REGISTERED
 name|RMAppEvent
@@ -1733,11 +1782,14 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|testCreateAppFinished ()
+DECL|method|testCreateAppFinished ( ApplicationSubmissionContext submissionContext)
 specifier|protected
 name|RMApp
 name|testCreateAppFinished
-parameter_list|()
+parameter_list|(
+name|ApplicationSubmissionContext
+name|submissionContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1745,7 +1797,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppRunning
-argument_list|()
+argument_list|(
+name|submissionContext
+argument_list|)
 decl_stmt|;
 comment|// RUNNING => FINISHED event RMAppEventType.ATTEMPT_FINISHED
 name|RMAppEvent
@@ -1801,6 +1855,115 @@ return|;
 block|}
 annotation|@
 name|Test
+DECL|method|testUnmanagedApp ()
+specifier|public
+name|void
+name|testUnmanagedApp
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|ApplicationSubmissionContext
+name|subContext
+init|=
+operator|new
+name|ApplicationSubmissionContextPBImpl
+argument_list|()
+decl_stmt|;
+name|subContext
+operator|.
+name|setUnmanagedAM
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// test success path
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"--- START: testUnmanagedAppSuccessPath ---"
+argument_list|)
+expr_stmt|;
+name|testCreateAppFinished
+argument_list|(
+name|subContext
+argument_list|)
+expr_stmt|;
+comment|// test app fails after 1 app attempt failure
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"--- START: testUnmanagedAppFailPath ---"
+argument_list|)
+expr_stmt|;
+name|RMApp
+name|application
+init|=
+name|testCreateAppRunning
+argument_list|(
+name|subContext
+argument_list|)
+decl_stmt|;
+name|RMAppEvent
+name|event
+init|=
+operator|new
+name|RMAppFailedAttemptEvent
+argument_list|(
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|ATTEMPT_FAILED
+argument_list|,
+literal|""
+argument_list|)
+decl_stmt|;
+name|application
+operator|.
+name|handle
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
+name|RMAppAttempt
+name|appAttempt
+init|=
+name|application
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+operator|.
+name|getAttemptId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertFailed
+argument_list|(
+name|application
+argument_list|,
+literal|".*Unmanaged application.*Failing the application.*"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testAppSuccessPath ()
 specifier|public
 name|void
@@ -1817,7 +1980,9 @@ literal|"--- START: testAppSuccessPath ---"
 argument_list|)
 expr_stmt|;
 name|testCreateAppFinished
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1841,7 +2006,9 @@ name|RMApp
 name|application
 init|=
 name|createNewTestApp
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// NEW => KILLED event RMAppEventType.KILL
 name|RMAppEvent
@@ -1894,7 +2061,9 @@ name|RMApp
 name|application
 init|=
 name|createNewTestApp
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// NEW => FAILED event RMAppEventType.APP_REJECTED
 name|String
@@ -1952,7 +2121,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppSubmitted
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// SUBMITTED => FAILED event RMAppEventType.APP_REJECTED
 name|String
@@ -2010,7 +2181,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppAccepted
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// SUBMITTED => KILLED event RMAppEventType.KILL
 name|RMAppEvent
@@ -2080,7 +2253,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppAccepted
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// ACCEPTED => ACCEPTED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
 for|for
@@ -2229,7 +2404,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppAccepted
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// ACCEPTED => KILLED event RMAppEventType.KILL
 name|RMAppEvent
@@ -2282,7 +2459,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppRunning
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// RUNNING => KILLED event RMAppEventType.KILL
 name|RMAppEvent
@@ -2335,7 +2514,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppRunning
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 name|RMAppAttempt
 name|appAttempt
@@ -2587,7 +2768,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppFinished
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// FINISHED => FINISHED event RMAppEventType.KILL
 name|RMAppEvent
@@ -2671,7 +2854,9 @@ name|RMApp
 name|application
 init|=
 name|testCreateAppRunning
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 comment|// RUNNING => KILLED event RMAppEventType.KILL
 name|RMAppEvent

@@ -962,6 +962,53 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getUnmanagedAM ()
+specifier|public
+name|boolean
+name|getUnmanagedAM
+parameter_list|()
+block|{
+name|ApplicationSubmissionContextProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+comment|//There is a default so cancelTokens should never be null
+return|return
+name|p
+operator|.
+name|getUnmanagedAm
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setUnmanagedAM (boolean value)
+specifier|public
+name|void
+name|setUnmanagedAM
+parameter_list|(
+name|boolean
+name|value
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setUnmanagedAm
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getCancelTokensWhenComplete ()
 specifier|public
 name|boolean
