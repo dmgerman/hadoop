@@ -752,6 +752,20 @@ name|SAXException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**   * Provides access to configuration parameters.  *  *<h4 id="Resources">Resources</h4>  *  *<p>Configurations are specified by resources. A resource contains a set of  * name/value pairs as XML data. Each resource is named by either a   *<code>String</code> or by a {@link Path}. If named by a<code>String</code>,   * then the classpath is examined for a file with that name.  If named by a   *<code>Path</code>, then the local filesystem is examined directly, without   * referring to the classpath.  *  *<p>Unless explicitly turned off, Hadoop by default specifies two   * resources, loaded in-order from the classpath:<ol>  *<li><tt><a href="{@docRoot}/../core-default.html">core-default.xml</a>  *</tt>: Read-only defaults for hadoop.</li>  *<li><tt>core-site.xml</tt>: Site-specific configuration for a given hadoop  * installation.</li>  *</ol>  * Applications may add additional resources, which are loaded  * subsequent to these resources in the order they are added.  *   *<h4 id="FinalParams">Final Parameters</h4>  *  *<p>Configuration parameters may be declared<i>final</i>.   * Once a resource declares a value final, no subsequently-loaded   * resource can alter that value.    * For example, one might define a final parameter with:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.hosts.include&lt;/name&gt;  *&lt;value&gt;/etc/hadoop/conf/hosts.include&lt;/value&gt;  *<b>&lt;final&gt;true&lt;/final&gt;</b>  *&lt;/property&gt;</pre></tt>  *  * Administrators typically define parameters as final in   *<tt>core-site.xml</tt> for values that user applications may not alter.  *  *<h4 id="VariableExpansion">Variable Expansion</h4>  *  *<p>Value strings are first processed for<i>variable expansion</i>. The  * available properties are:<ol>  *<li>Other properties defined in this Configuration; and, if a name is  * undefined here,</li>  *<li>Properties in {@link System#getProperties()}.</li>  *</ol>  *  *<p>For example, if a configuration resource contains the following property  * definitions:   *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;basedir&lt;/name&gt;  *&lt;value&gt;/user/${<i>user.name</i>}&lt;/value&gt;  *&lt;/property&gt;  *    *&lt;property&gt;  *&lt;name&gt;tempdir&lt;/name&gt;  *&lt;value&gt;${<i>basedir</i>}/tmp&lt;/value&gt;  *&lt;/property&gt;</pre></tt>  *  * When<tt>conf.get("tempdir")</tt> is called, then<tt>${<i>basedir</i>}</tt>  * will be resolved to another property in this Configuration, while  *<tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value  * of the System property with that name.  */
 end_comment
@@ -2851,7 +2865,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated or there is a deprecated name associated to it,    * it sets the value to both names.    *     * @param name property name.    * @param value property value.    * @param source the place that this configuration value came from     * (For debugging).    */
+comment|/**     * Set the<code>value</code> of the<code>name</code> property. If     *<code>name</code> is deprecated or there is a deprecated name associated to it,    * it sets the value to both names.    *     * @param name property name.    * @param value property value.    * @param source the place that this configuration value came from     * (For debugging).    * @throws IllegalArgumentException when the value or name is null.    */
 DECL|method|set (String name, String value, String source)
 specifier|public
 name|void
@@ -2867,6 +2881,28 @@ name|String
 name|source
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|name
+operator|!=
+literal|null
+argument_list|,
+literal|"Property name must not be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|value
+operator|!=
+literal|null
+argument_list|,
+literal|"Property value must not be null"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|deprecatedKeyMap
