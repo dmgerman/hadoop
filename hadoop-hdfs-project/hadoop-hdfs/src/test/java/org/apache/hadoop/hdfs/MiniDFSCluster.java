@@ -5794,6 +5794,18 @@ name|terminateCalled
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Test resulted in an unexpected exit"
+argument_list|,
+name|ExitUtil
+operator|.
+name|getFirstExitException
+argument_list|()
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|AssertionError
