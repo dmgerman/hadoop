@@ -2320,7 +2320,16 @@ specifier|final
 name|String
 name|msg
 init|=
-literal|"Could not sync enough journals to persistent storage. "
+literal|"Could not sync enough journals to persistent storage "
+operator|+
+literal|"due to "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|". "
 operator|+
 literal|"Unsynced transactions: "
 operator|+

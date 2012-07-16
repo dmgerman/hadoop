@@ -8550,6 +8550,8 @@ expr_stmt|;
 name|terminate
 argument_list|(
 literal|1
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

@@ -1387,9 +1387,6 @@ argument_list|(
 literal|1
 argument_list|,
 name|t
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

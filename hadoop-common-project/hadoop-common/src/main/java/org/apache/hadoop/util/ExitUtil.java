@@ -294,7 +294,34 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} without a message.    * @param status    * @throws ExitException    */
+comment|/**    * Like {@link terminate(int, String)} but takes an exception to    * @param status    * @param t Exception    * @throws ExitException if System.exit is disabled for test purposes    */
+DECL|method|terminate (int status, Throwable t)
+specifier|public
+specifier|static
+name|void
+name|terminate
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+throws|throws
+name|ExitException
+block|{
+name|terminate
+argument_list|(
+name|status
+argument_list|,
+name|t
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Like {@link terminate(int, String)} without a message.    * @param status    * @throws ExitException if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status)
 specifier|public
 specifier|static
