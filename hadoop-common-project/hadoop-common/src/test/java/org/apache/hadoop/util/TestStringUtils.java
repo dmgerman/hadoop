@@ -1802,6 +1802,58 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testStringToURI ()
+specifier|public
+name|void
+name|testStringToURI
+parameter_list|()
+block|{
+name|String
+index|[]
+name|str
+init|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"file://"
+block|}
+decl_stmt|;
+try|try
+block|{
+name|StringUtils
+operator|.
+name|stringToURI
+argument_list|(
+name|str
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Ignoring URISyntaxException while creating URI from string file://"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"Failed to create uri for file://"
+argument_list|,
+name|iae
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// Benchmark for StringUtils split
 DECL|method|main (String []args)
 specifier|public

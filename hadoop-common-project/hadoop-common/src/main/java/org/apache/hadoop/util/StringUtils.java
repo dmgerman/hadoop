@@ -946,7 +946,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    *     * @param str    */
+comment|/**    * @param str    *          The string array to be parsed into an URI array.    * @return<tt>null</tt> if str is<tt>null</tt>, else the URI array    *         equivalent to str.    * @throws IllegalArgumentException    *           If any string in str violates RFC&nbsp;2396.    */
 DECL|method|stringToURI (String[] str)
 specifier|public
 specifier|static
@@ -1020,30 +1020,20 @@ name|URISyntaxException
 name|ur
 parameter_list|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"Exception in specified URI's "
+literal|"Failed to create uri for "
 operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|ur
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|//making sure its asssigned to null in case of an error
-name|uris
+name|str
 index|[
 name|i
 index|]
-operator|=
-literal|null
-expr_stmt|;
+argument_list|,
+name|ur
+argument_list|)
+throw|;
 block|}
 block|}
 return|return
