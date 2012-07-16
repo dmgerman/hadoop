@@ -248,6 +248,8 @@ literal|0
 expr_stmt|;
 block|}
 comment|/**    * Push the delta  metrics to the mr.    * The delta is since the last push/interval.    *     * Note this does NOT push to JMX    * (JMX gets the info via {@link #previousIntervalValue}    *    * @param mr    */
+annotation|@
+name|Override
 DECL|method|pushMetric (final MetricsRecord mr)
 specifier|public
 specifier|synchronized

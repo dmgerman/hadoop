@@ -87,6 +87,8 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|/**    * The method sends metrics to Ganglia servers. The method has been taken from    * org.apache.hadoop.metrics.ganglia.GangliaContext31 with minimal changes in    * order to keep it in sync.    * @param groupName The group name of the metric    * @param name The metric name    * @param type The type of the metric    * @param value The value of the metric    * @param gConf The GangliaConf for this metric    * @param gSlope The slope for this metric    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|emitMetric (String groupName, String name, String type, String value, GangliaConf gConf, GangliaSlope gSlope)
 specifier|protected
 name|void

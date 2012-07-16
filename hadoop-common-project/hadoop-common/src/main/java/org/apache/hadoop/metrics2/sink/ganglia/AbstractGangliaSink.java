@@ -443,6 +443,8 @@ name|tmax
 block|}
 empty_stmt|;
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.metrics2.MetricsPlugin#init(org.apache.commons.configuration    * .SubsetConfiguration)    */
+annotation|@
+name|Override
 DECL|method|init (SubsetConfiguration conf)
 specifier|public
 name|void
@@ -631,6 +633,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * (non-Javadoc)    *    * @see org.apache.hadoop.metrics2.MetricsSink#flush()    */
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void

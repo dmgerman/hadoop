@@ -114,6 +114,8 @@ name|NoEmitMetricsContext
 parameter_list|()
 block|{     }
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -145,6 +147,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Do-nothing version of emitRecord      */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

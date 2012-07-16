@@ -160,6 +160,8 @@ argument_list|(
 literal|"org.apache.hadoop.util.GangliaContext31"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|init (String contextName, ContextFactory factory)
 specifier|public
 name|void
@@ -268,6 +270,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|emitMetric (String name, String type, String value)
 specifier|protected
 name|void

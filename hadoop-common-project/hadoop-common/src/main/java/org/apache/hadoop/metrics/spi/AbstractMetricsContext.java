@@ -536,6 +536,8 @@ name|AbstractMetricsContext
 parameter_list|()
 block|{   }
 comment|/**    * Initializes the context.    */
+annotation|@
+name|Override
 DECL|method|init (String contextName, ContextFactory factory)
 specifier|public
 name|void
@@ -698,6 +700,8 @@ name|result
 return|;
 block|}
 comment|/**    * Returns the context name.    */
+annotation|@
+name|Override
 DECL|method|getContextName ()
 specifier|public
 name|String
@@ -720,6 +724,8 @@ name|factory
 return|;
 block|}
 comment|/**    * Starts or restarts monitoring, the emitting of metrics records.    */
+annotation|@
+name|Override
 DECL|method|startMonitoring ()
 specifier|public
 specifier|synchronized
@@ -745,6 +751,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Stops monitoring.  This does not free buffered data.     * @see #close()    */
+annotation|@
+name|Override
 DECL|method|stopMonitoring ()
 specifier|public
 specifier|synchronized
@@ -767,6 +775,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns true if monitoring is currently in progress.    */
+annotation|@
+name|Override
 DECL|method|isMonitoring ()
 specifier|public
 name|boolean
@@ -778,6 +788,8 @@ name|isMonitoring
 return|;
 block|}
 comment|/**    * Stops monitoring and frees buffered data, returning this    * object to its initial state.      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -793,6 +805,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Creates a new AbstractMetricsRecord instance with the given<code>recordName</code>.    * Throws an exception if the metrics implementation is configured with a fixed    * set of record names and<code>recordName</code> is not in that set.    *     * @param recordName the name of the record    * @throws MetricsException if recordName conflicts with configuration data    */
+annotation|@
+name|Override
 DECL|method|createRecord (String recordName)
 specifier|public
 specifier|final
@@ -856,6 +870,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Registers a callback to be called at time intervals determined by    * the configuration.    *    * @param updater object to be run periodically; it should update    * some metrics records     */
+annotation|@
+name|Override
 DECL|method|registerUpdater (final Updater updater)
 specifier|public
 specifier|synchronized
@@ -888,6 +904,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Removes a callback, if it exists.    *    * @param updater object to be removed from the callback list    */
+annotation|@
+name|Override
 DECL|method|unregisterUpdater (Updater updater)
 specifier|public
 specifier|synchronized
@@ -954,6 +972,8 @@ operator|new
 name|TimerTask
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -1200,6 +1220,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Retrieves all the records managed by this MetricsContext.    * Useful for monitoring systems that are polling-based.    * @return A non-null collection of all monitoring records.    */
+annotation|@
+name|Override
 DECL|method|getAllRecords ()
 specifier|public
 specifier|synchronized
@@ -1847,6 +1869,8 @@ block|}
 block|}
 block|}
 comment|/**    * Returns the timer period.    */
+annotation|@
+name|Override
 DECL|method|getPeriod ()
 specifier|public
 name|int

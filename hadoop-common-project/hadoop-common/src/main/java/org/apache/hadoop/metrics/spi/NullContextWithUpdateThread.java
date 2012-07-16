@@ -114,6 +114,8 @@ name|NullContextWithUpdateThread
 parameter_list|()
 block|{   }
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -146,6 +148,8 @@ expr_stmt|;
 block|}
 comment|/**    * Do-nothing version of emitRecord    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -166,6 +170,8 @@ parameter_list|)
 block|{}
 comment|/**    * Do-nothing version of update    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -179,6 +185,8 @@ name|record
 parameter_list|)
 block|{   }
 comment|/**    * Do-nothing version of remove    */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

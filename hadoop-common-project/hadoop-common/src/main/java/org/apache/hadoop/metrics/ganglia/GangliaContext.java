@@ -550,6 +550,8 @@ name|GangliaContext
 parameter_list|()
 block|{   }
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -671,6 +673,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

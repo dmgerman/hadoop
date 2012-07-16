@@ -2080,6 +2080,8 @@ operator|new
 name|TimerTask
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -3402,6 +3404,8 @@ block|}
 end_function
 
 begin_function
+annotation|@
+name|Override
 DECL|method|getSource (String name)
 specifier|public
 name|MetricsSource
