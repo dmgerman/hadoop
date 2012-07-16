@@ -294,7 +294,7 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} but takes an exception to    * @param status    * @param t Exception    * @throws ExitException if System.exit is disabled for test purposes    */
+comment|/**    * Like {@link terminate(int, String)} but uses the given throwable to    * initialize the ExitException.    * @param status    * @param t throwable used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status, Throwable t)
 specifier|public
 specifier|static
