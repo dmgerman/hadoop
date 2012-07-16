@@ -4738,6 +4738,42 @@ argument_list|(
 name|keyClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|keySerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Key class: '"
+operator|+
+name|keyClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|keySerializer
@@ -4758,6 +4794,42 @@ argument_list|(
 name|valClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|uncompressedValSerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Value class: '"
+operator|+
+name|valClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|uncompressedValSerializer
@@ -4842,6 +4914,42 @@ argument_list|(
 name|valClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|compressedValSerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Value class: '"
+operator|+
+name|valClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|compressedValSerializer
@@ -8046,6 +8154,43 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|this
+operator|.
+name|keyDeserializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a deserializer for the Key class: '"
+operator|+
+name|getKeyClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using "
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|blockCompressed
 condition|)
@@ -8084,6 +8229,43 @@ name|getValueClass
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|valDeserializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a deserializer for the Value class: '"
+operator|+
+name|getValueClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using "
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|valDeserializer
