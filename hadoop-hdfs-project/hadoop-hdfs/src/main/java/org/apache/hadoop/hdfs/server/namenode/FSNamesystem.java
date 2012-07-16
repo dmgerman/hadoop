@@ -2778,6 +2778,8 @@ name|StringBuilder
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|StringBuilder
 name|initialValue
@@ -19077,6 +19079,8 @@ init|=
 literal|1000
 decl_stmt|;
 comment|/**      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -19475,6 +19479,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Adjust the total number of blocks safe and expected during safe mode.    * If safe mode is not currently on, this is a no-op.    * @param deltaSafe the change in number of safe blocks    * @param deltaTotal the change i nnumber of total blocks expected    */
+annotation|@
+name|Override
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
 specifier|public
 name|void
@@ -22287,6 +22293,8 @@ operator|=
 name|b
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -24436,6 +24444,8 @@ return|return
 name|blockManager
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isGenStampInFuture (long genStamp)
 specifier|public
 name|boolean

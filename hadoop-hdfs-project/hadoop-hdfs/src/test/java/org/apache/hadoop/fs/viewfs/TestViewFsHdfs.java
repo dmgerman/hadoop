@@ -319,6 +319,8 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public

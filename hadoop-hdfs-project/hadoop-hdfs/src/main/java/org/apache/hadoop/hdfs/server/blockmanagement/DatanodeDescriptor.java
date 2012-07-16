@@ -1148,6 +1148,8 @@ operator|=
 name|dn
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -1160,6 +1162,8 @@ operator|!=
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|BlockInfo
@@ -1189,6 +1193,8 @@ return|return
 name|res
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void
@@ -1866,6 +1872,8 @@ name|volumeFailures
 return|;
 block|}
 comment|/**    * @param nodeReg DatanodeID to update registration for.    */
+annotation|@
+name|Override
 DECL|method|updateRegInfo (DatanodeID nodeReg)
 specifier|public
 name|void

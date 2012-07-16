@@ -3666,6 +3666,8 @@ block|}
 block|}
 block|}
 comment|/**    * Close the file system, abandoning all of the leases and files being    * created and close connections to the namenode.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized

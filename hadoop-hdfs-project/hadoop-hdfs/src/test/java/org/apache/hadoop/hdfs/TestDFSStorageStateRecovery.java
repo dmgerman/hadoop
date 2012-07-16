@@ -2478,6 +2478,8 @@ comment|// end testCases loop
 block|}
 comment|// end numDirs loop
 block|}
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|protected
 name|void
@@ -2499,6 +2501,8 @@ name|initialize
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|protected
 name|void

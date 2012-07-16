@@ -1429,6 +1429,8 @@ name|datanode
 return|;
 block|}
 comment|/**    * close files.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -4919,6 +4921,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Thread to process incoming acks.      * @see java.lang.Runnable#run()      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

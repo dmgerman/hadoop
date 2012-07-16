@@ -1648,6 +1648,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -1750,6 +1752,8 @@ name|firstTime
 init|=
 literal|true
 decl_stmt|;
+annotation|@
+name|Override
 specifier|public
 name|void
 name|checkPermission
@@ -8538,6 +8542,8 @@ name|count
 init|=
 literal|0
 decl_stmt|;
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run

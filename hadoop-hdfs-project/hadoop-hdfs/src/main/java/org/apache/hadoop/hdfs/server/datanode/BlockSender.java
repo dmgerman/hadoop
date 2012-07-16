@@ -1416,6 +1416,8 @@ throw|;
 block|}
 block|}
 comment|/**    * close opened files.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -648,6 +648,8 @@ expr_stmt|;
 block|}
 comment|// end numDir loop
 block|}
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|protected
 name|void

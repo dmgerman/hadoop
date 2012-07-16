@@ -223,6 +223,8 @@ DECL|method|BlockPlacementPolicyWithNodeGroup ()
 name|BlockPlacementPolicyWithNodeGroup
 parameter_list|()
 block|{   }
+annotation|@
+name|Override
 DECL|method|initialize (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
 specifier|public
 name|void

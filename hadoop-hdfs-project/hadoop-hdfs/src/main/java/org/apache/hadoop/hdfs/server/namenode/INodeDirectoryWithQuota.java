@@ -269,6 +269,8 @@ literal|1
 expr_stmt|;
 block|}
 comment|/** Get this directory's namespace quota    * @return this directory's namespace quota    */
+annotation|@
+name|Override
 DECL|method|getNsQuota ()
 name|long
 name|getNsQuota
@@ -279,6 +281,8 @@ name|nsQuota
 return|;
 block|}
 comment|/** Get this directory's diskspace quota    * @return this directory's diskspace quota    */
+annotation|@
+name|Override
 DECL|method|getDsQuota ()
 name|long
 name|getDsQuota

@@ -261,6 +261,8 @@ literal|1
 expr_stmt|;
 block|}
 comment|/**    * Loads edits file, uses visitor to process all elements    */
+annotation|@
+name|Override
 DECL|method|loadEdits ()
 specifier|public
 name|void

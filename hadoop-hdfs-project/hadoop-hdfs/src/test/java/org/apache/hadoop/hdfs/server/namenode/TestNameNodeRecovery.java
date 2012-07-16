@@ -1058,6 +1058,8 @@ operator|=
 name|paddingLength
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1080,6 +1082,8 @@ name|paddingLength
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1091,6 +1095,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set
@@ -1223,6 +1229,8 @@ operator|=
 name|paddingLength
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1252,6 +1260,8 @@ name|cache
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1262,6 +1272,8 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set
@@ -1361,6 +1373,8 @@ name|MAX_TXID
 init|=
 literal|10
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1470,6 +1484,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1482,6 +1498,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set

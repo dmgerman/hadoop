@@ -544,6 +544,8 @@ block|}
 comment|//
 comment|// The main work loop
 comment|//
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

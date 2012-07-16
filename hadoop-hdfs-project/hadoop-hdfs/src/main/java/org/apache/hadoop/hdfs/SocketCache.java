@@ -531,6 +531,8 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|finalize ()
 specifier|protected
 name|void

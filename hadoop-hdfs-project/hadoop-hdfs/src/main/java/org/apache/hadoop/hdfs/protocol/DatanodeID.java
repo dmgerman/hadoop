@@ -376,6 +376,8 @@ return|return
 name|ipcPort
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object to)
 specifier|public
 name|boolean
@@ -445,6 +447,8 @@ argument_list|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -464,6 +468,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -522,6 +528,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Compare based on data transfer address.    *    * @param that    * @return as specified by Comparable    */
+annotation|@
+name|Override
 DECL|method|compareTo (DatanodeID that)
 specifier|public
 name|int

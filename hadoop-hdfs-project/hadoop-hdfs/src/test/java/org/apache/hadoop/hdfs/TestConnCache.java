@@ -502,6 +502,8 @@ name|sock
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
 name|RemoteBlockReader2

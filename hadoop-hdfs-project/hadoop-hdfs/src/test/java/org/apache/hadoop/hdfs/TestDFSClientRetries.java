@@ -2693,6 +2693,8 @@ operator|=
 name|preSpyNN
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
 name|LocatedBlocks
@@ -3904,6 +3906,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

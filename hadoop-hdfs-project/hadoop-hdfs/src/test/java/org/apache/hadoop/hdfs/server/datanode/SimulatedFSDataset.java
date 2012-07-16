@@ -871,6 +871,8 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getGenerationStamp ()
 specifier|synchronized
 specifier|public
@@ -885,6 +887,8 @@ name|getGenerationStamp
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getNumBytes ()
 specifier|synchronized
 specifier|public
@@ -912,6 +916,8 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|setNumBytes (long length)
 specifier|synchronized
 specifier|public
@@ -4297,6 +4303,8 @@ literal|"Registered FSDatasetState MBean"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|shutdown ()
 specifier|public
 name|void
@@ -4317,6 +4325,8 @@ name|mbeanName
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getStorageInfo ()
 specifier|public
 name|String
@@ -4329,6 +4339,8 @@ operator|+
 name|storageId
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasEnoughResource ()
 specifier|public
 name|boolean

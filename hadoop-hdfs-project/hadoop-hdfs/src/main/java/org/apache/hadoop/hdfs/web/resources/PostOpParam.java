@@ -129,6 +129,8 @@ name|expectedHttpResponseCode
 return|;
 block|}
 comment|/** @return a URI query string. */
+annotation|@
+name|Override
 DECL|method|toQueryString ()
 specifier|public
 name|String

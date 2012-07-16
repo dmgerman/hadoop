@@ -722,6 +722,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|protected
 name|void
@@ -914,6 +916,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * clean up    */
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|public
 name|void

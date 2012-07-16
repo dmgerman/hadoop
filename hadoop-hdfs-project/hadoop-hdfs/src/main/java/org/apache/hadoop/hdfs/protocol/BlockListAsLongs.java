@@ -498,6 +498,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -511,6 +513,8 @@ name|getNumberOfBlocks
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|Block
@@ -551,6 +555,8 @@ return|return
 name|block
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void
@@ -578,6 +584,8 @@ return|;
 block|}
 block|}
 comment|/**    * Returns an iterator over blocks in the block report.     */
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator

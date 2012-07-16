@@ -264,6 +264,8 @@ name|BLOCK_LENGTH_MULTIPLIER
 init|=
 literal|79
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|protected
 name|void
@@ -291,6 +293,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|protected
 name|void

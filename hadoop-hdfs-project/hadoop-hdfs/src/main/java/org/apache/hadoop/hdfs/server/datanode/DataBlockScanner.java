@@ -323,6 +323,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1285,6 +1287,8 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|doGet (HttpServletRequest request, HttpServletResponse response)
 specifier|public
 name|void

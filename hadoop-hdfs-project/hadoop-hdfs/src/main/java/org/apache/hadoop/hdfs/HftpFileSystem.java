@@ -873,6 +873,8 @@ name|SimpleDateFormat
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|SimpleDateFormat
 name|initialValue
@@ -1416,6 +1418,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Token
 argument_list|<
@@ -2208,6 +2212,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|startElement (String ns, String localname, String qname, Attributes attrs)
 specifier|public
 name|void
@@ -3218,6 +3224,8 @@ comment|/** This optional operation is not yet supported. */
 end_comment
 
 begin_function
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

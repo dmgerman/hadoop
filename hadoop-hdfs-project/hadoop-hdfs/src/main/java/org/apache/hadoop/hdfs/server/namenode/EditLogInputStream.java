@@ -149,6 +149,8 @@ name|getLastTxId
 parameter_list|()
 function_decl|;
 comment|/**    * Close the stream.    * @throws IOException if an error occurred while closing    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|abstract

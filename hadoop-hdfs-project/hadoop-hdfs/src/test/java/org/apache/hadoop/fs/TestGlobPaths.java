@@ -126,6 +126,8 @@ operator|=
 name|regex
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|accept (Path path)
 specifier|public
 name|boolean
@@ -196,6 +198,8 @@ index|[
 name|NUM_OF_PATHS
 index|]
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|protected
 name|void
@@ -249,6 +253,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|protected
 name|void

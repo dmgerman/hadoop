@@ -276,6 +276,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Check whether it's a directory    */
+annotation|@
+name|Override
 DECL|method|isDirectory ()
 specifier|public
 name|boolean
@@ -1650,6 +1652,8 @@ return|return
 name|children
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
 name|int
 name|collectSubtreeBlocksAndClear

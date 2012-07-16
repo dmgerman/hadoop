@@ -128,6 +128,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+annotation|@
+name|Override
 DECL|method|getType ()
 specifier|public
 name|HdfsServerConstants
@@ -145,6 +147,8 @@ name|NAME_NODE
 return|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|startUpgrade ()
 specifier|public
 name|UpgradeCommand

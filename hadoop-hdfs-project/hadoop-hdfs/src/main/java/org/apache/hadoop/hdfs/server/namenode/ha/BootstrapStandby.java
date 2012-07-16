@@ -676,6 +676,8 @@ name|ERR_CODE_LOGS_UNAVAILABLE
 init|=
 literal|6
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int

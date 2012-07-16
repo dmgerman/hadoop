@@ -192,6 +192,8 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|visit (ImageElement element, long value)
 name|void
 name|visit

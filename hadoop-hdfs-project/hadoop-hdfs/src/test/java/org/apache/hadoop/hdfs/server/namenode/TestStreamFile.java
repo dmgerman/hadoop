@@ -361,6 +361,8 @@ name|currentPos
 init|=
 literal|0
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -379,6 +381,8 @@ operator|++
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -387,6 +391,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{   }
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -403,6 +409,8 @@ operator|=
 name|pos
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -415,6 +423,8 @@ return|return
 name|currentPos
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -522,6 +532,8 @@ init|=
 operator|-
 literal|5513776238875189473L
 decl_stmt|;
+annotation|@
+name|Override
 specifier|public
 name|ServletContext
 name|getServletContext
@@ -1182,6 +1194,8 @@ name|serialVersionUID
 init|=
 literal|7715590481809562722L
 decl_stmt|;
+annotation|@
+name|Override
 specifier|public
 name|ServletContext
 name|getServletContext

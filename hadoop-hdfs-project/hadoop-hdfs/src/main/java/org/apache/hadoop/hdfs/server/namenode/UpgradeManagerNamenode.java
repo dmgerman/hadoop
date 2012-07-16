@@ -165,6 +165,8 @@ name|UpgradeManagerNamenode
 extends|extends
 name|UpgradeManager
 block|{
+annotation|@
+name|Override
 DECL|method|getType ()
 specifier|public
 name|HdfsServerConstants
@@ -202,6 +204,8 @@ name|namesystem
 expr_stmt|;
 block|}
 comment|/**    * Start distributed upgrade.    * Instantiates distributed upgrade objects.    *     * @return true if distributed upgrade is required or false otherwise    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|startUpgrade ()
 specifier|public
 specifier|synchronized
@@ -512,6 +516,8 @@ return|return
 name|reply
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|completeUpgrade ()
 specifier|public
 specifier|synchronized

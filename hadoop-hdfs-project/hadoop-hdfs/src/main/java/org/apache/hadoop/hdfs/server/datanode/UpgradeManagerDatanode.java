@@ -205,6 +205,8 @@ operator|=
 name|bpid
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getType ()
 specifier|public
 name|HdfsServerConstants
@@ -303,6 +305,8 @@ expr_stmt|;
 comment|// upgradeState is true if the data-node should start the upgrade itself
 block|}
 comment|/**    * Start distributed upgrade.    * Instantiates distributed upgrade objects.    *     * @return true if distributed upgrade is required or false otherwise    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|startUpgrade ()
 specifier|public
 specifier|synchronized
@@ -600,6 +604,8 @@ literal|"The upgrade object is not defined."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|completeUpgrade ()
 specifier|public
 specifier|synchronized

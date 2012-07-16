@@ -170,6 +170,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Close the journal manager, freeing any resources it may hold.    */
+annotation|@
+name|Override
 DECL|method|close ()
 name|void
 name|close

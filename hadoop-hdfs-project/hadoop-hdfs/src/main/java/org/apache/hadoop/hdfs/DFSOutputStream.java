@@ -1548,6 +1548,8 @@ operator|==
 name|HEART_BEAT_SEQNO
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -2046,6 +2048,8 @@ name|PIPELINE_SETUP_CREATE
 expr_stmt|;
 block|}
 comment|/*      * streamer thread is the only thread that opens streams to datanode,       * and closes them. Any error recovery is also done by this thread.      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -3093,6 +3097,8 @@ operator|=
 name|targets
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

@@ -712,6 +712,8 @@ block|,
 DECL|enumConstant|IMAGE_AND_EDITS
 name|IMAGE_AND_EDITS
 block|;
+annotation|@
+name|Override
 DECL|method|getStorageDirType ()
 specifier|public
 name|StorageDirType
@@ -722,6 +724,8 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isOfType (StorageDirType type)
 specifier|public
 name|boolean

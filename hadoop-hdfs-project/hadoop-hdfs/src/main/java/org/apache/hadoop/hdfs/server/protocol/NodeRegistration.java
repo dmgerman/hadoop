@@ -69,6 +69,8 @@ name|int
 name|getVersion
 parameter_list|()
 function_decl|;
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

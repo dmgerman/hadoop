@@ -245,6 +245,8 @@ operator|=
 name|v
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -690,6 +692,8 @@ name|adminState
 expr_stmt|;
 block|}
 comment|/** Network location name */
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
@@ -950,6 +954,8 @@ name|xceiverCount
 expr_stmt|;
 block|}
 comment|/** network location */
+annotation|@
+name|Override
 DECL|method|getNetworkLocation ()
 specifier|public
 specifier|synchronized
@@ -962,6 +968,8 @@ name|location
 return|;
 block|}
 comment|/** Sets the network location */
+annotation|@
+name|Override
 DECL|method|setNetworkLocation (String location)
 specifier|public
 specifier|synchronized
@@ -1655,6 +1663,8 @@ name|parent
 decl_stmt|;
 comment|//its parent
 comment|/** Return this node's parent */
+annotation|@
+name|Override
 DECL|method|getParent ()
 specifier|public
 name|Node
@@ -1665,6 +1675,8 @@ return|return
 name|parent
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setParent (Node parent)
 specifier|public
 name|void
@@ -1682,6 +1694,8 @@ name|parent
 expr_stmt|;
 block|}
 comment|/** Return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
+annotation|@
+name|Override
 DECL|method|getLevel ()
 specifier|public
 name|int
@@ -1692,6 +1706,8 @@ return|return
 name|level
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setLevel (int level)
 specifier|public
 name|void

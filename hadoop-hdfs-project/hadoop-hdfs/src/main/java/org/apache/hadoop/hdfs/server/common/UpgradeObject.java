@@ -86,6 +86,8 @@ specifier|protected
 name|short
 name|status
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getUpgradeStatus ()
 specifier|public
 name|short
@@ -96,6 +98,8 @@ return|return
 name|status
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDescription ()
 specifier|public
 name|String
@@ -114,6 +118,8 @@ name|getVersion
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getUpgradeStatusReport (boolean details)
 specifier|public
 name|UpgradeStatusReport
@@ -139,6 +145,8 @@ literal|false
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (Upgradeable o)
 specifier|public
 name|int
@@ -226,6 +234,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -263,6 +273,8 @@ operator|==
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

@@ -614,6 +614,8 @@ name|caught
 expr_stmt|;
 block|}
 comment|// add a bunch of transactions.
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1857,6 +1859,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -2349,6 +2353,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run

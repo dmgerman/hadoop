@@ -195,6 +195,8 @@ operator|=
 name|hash
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -516,6 +518,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check if the set is empty.    *    * @return true is set empty, false otherwise    */
+annotation|@
+name|Override
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
@@ -540,6 +544,8 @@ name|capacity
 return|;
 block|}
 comment|/**    * Return the number of stored elements.    */
+annotation|@
+name|Override
 DECL|method|size ()
 specifier|public
 name|int
@@ -726,6 +732,8 @@ literal|null
 return|;
 block|}
 comment|/**    * All all elements in the collection. Expand if necessary.    *    * @param toAdd - elements to add.    * @return true if the set has changed, false otherwise    */
+annotation|@
+name|Override
 DECL|method|addAll (Collection<? extends T> toAdd)
 specifier|public
 name|boolean
@@ -769,6 +777,8 @@ name|changed
 return|;
 block|}
 comment|/**    * Add given element to the hash table. Expand table if necessary.    *    * @return true if the element was not present in the table, false otherwise    */
+annotation|@
+name|Override
 DECL|method|add (final T element)
 specifier|public
 name|boolean
@@ -904,6 +914,8 @@ literal|true
 return|;
 block|}
 comment|/**    * Remove the element corresponding to the key.    *    * @return If such element exists, return true. Otherwise, return false.    */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1893,6 +1905,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator
@@ -2281,6 +2295,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Clear the set. Resize it to the original capacity.    */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(

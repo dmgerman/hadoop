@@ -1034,6 +1034,8 @@ name|DummyHostnameVerifier
 implements|implements
 name|HostnameVerifier
 block|{
+annotation|@
+name|Override
 DECL|method|verify (String hostname, SSLSession session)
 specifier|public
 name|boolean
@@ -1060,6 +1062,8 @@ name|DummyTrustManager
 implements|implements
 name|X509TrustManager
 block|{
+annotation|@
+name|Override
 DECL|method|checkClientTrusted (X509Certificate[] chain, String authType)
 specifier|public
 name|void
@@ -1073,6 +1077,8 @@ name|String
 name|authType
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
 DECL|method|checkServerTrusted (X509Certificate[] chain, String authType)
 specifier|public
 name|void
@@ -1086,6 +1092,8 @@ name|String
 name|authType
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
 DECL|method|getAcceptedIssuers ()
 specifier|public
 name|X509Certificate

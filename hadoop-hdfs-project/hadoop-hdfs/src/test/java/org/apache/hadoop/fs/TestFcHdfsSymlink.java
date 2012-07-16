@@ -331,6 +331,8 @@ specifier|static
 name|WebHdfsFileSystem
 name|webhdfs
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getScheme ()
 specifier|protected
 name|String
@@ -341,6 +343,8 @@ return|return
 literal|"hdfs"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir1 ()
 specifier|protected
 name|String
@@ -353,6 +357,8 @@ return|return
 literal|"/test1"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir2 ()
 specifier|protected
 name|String
@@ -365,6 +371,8 @@ return|return
 literal|"/test2"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testURI ()
 specifier|protected
 name|URI

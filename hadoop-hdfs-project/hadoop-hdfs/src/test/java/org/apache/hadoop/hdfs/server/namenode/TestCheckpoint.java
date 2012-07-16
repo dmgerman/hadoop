@@ -6759,6 +6759,8 @@ argument_list|(
 name|LOG
 argument_list|)
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|Object
 name|passThrough

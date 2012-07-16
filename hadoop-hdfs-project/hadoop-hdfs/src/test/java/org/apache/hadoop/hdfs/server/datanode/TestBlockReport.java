@@ -4397,6 +4397,8 @@ operator|=
 name|all
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|accept (File file, String s)
 specifier|public
 name|boolean
@@ -4843,6 +4845,8 @@ operator|=
 name|filePath
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

@@ -1106,6 +1106,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Shutdown the filestore    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -193,6 +193,8 @@ name|bpid
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getType ()
 specifier|public
 name|HdfsServerConstants
@@ -360,6 +362,8 @@ name|errorMsg
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -481,6 +485,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Complete upgrade and return a status complete command for broadcasting.    *     * Data-nodes finish upgrade at different times.    * The data-node needs to re-confirm with the name-node that the upgrade    * is complete while other nodes are still upgrading.    */
+annotation|@
+name|Override
 DECL|method|completeUpgrade ()
 specifier|public
 name|UpgradeCommand

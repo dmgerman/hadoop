@@ -5353,6 +5353,8 @@ name|InterDatanodeProtocol
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|InterDatanodeProtocol
 name|run
@@ -6918,6 +6920,8 @@ name|clientname
 expr_stmt|;
 block|}
 comment|/**      * Do the deed, write the bytes      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -8618,6 +8622,8 @@ name|Runnable
 argument_list|()
 block|{
 comment|/** Recover a list of blocks. It is run by the primary datanode. */
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run

@@ -302,6 +302,8 @@ name|Random
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|Random
 name|initialValue

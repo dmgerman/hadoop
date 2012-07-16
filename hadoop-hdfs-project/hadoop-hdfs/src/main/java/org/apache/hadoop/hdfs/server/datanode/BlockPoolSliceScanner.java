@@ -735,6 +735,8 @@ operator|=
 name|block
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -748,6 +750,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -792,6 +796,8 @@ else|:
 name|lastScanTime
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (BlockScanInfo other)
 specifier|public
 name|int

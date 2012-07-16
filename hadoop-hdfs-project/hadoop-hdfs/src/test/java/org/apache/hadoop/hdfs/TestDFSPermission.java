@@ -4818,6 +4818,8 @@ operator|!=
 name|requiredAncestorPermission
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|logPermissions ()
 specifier|protected
 name|void

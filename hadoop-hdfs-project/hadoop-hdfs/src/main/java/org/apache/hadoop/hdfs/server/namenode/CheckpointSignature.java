@@ -350,6 +350,8 @@ name|curSegmentTxId
 expr_stmt|;
 block|}
 comment|/**    * Get the cluster id from CheckpointSignature    * @return the cluster id    */
+annotation|@
+name|Override
 DECL|method|getClusterID ()
 specifier|public
 name|String
@@ -408,6 +410,8 @@ operator|=
 name|blockpoolID
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -604,6 +608,8 @@ block|}
 comment|//
 comment|// Comparable interface
 comment|//
+annotation|@
+name|Override
 DECL|method|compareTo (CheckpointSignature o)
 specifier|public
 name|int
@@ -686,6 +692,8 @@ name|result
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -721,6 +729,8 @@ operator|==
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

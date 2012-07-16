@@ -618,6 +618,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Service a GET request as described below.    * Request:    * {@code    * GET http://<nn>:<port>/data[/<path>] HTTP/1.1    * }    */
+annotation|@
+name|Override
 DECL|method|doGet (final HttpServletRequest request, final HttpServletResponse response)
 specifier|public
 name|void

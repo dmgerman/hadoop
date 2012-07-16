@@ -176,6 +176,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Close the journal.    * @throws IOException if the journal can't be closed,    *         or if there are unflushed edits    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|abstract
 specifier|public

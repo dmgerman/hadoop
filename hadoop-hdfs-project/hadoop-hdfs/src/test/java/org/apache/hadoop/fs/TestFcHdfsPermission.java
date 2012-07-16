@@ -291,6 +291,8 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public
@@ -341,6 +343,8 @@ operator|~
 literal|0666
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getFileMask ()
 name|FsPermission
 name|getFileMask

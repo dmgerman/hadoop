@@ -882,6 +882,8 @@ argument_list|<
 name|NodeRecord
 argument_list|>
 block|{
+annotation|@
+name|Override
 DECL|method|compare (NodeRecord o1, NodeRecord o2)
 specifier|public
 name|int
@@ -2108,6 +2110,8 @@ name|SORT_ORDER_ASC
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 specifier|public
 name|int
 name|compare
