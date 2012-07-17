@@ -2024,7 +2024,7 @@ name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
 literal|2000
 decl_stmt|;
-comment|/** Standard Hadoop classes */
+comment|/**    * CLASSPATH for YARN applications. A comma-separated list of CLASSPATH    * entries    */
 DECL|field|YARN_APPLICATION_CLASSPATH
 specifier|public
 specifier|static
@@ -2035,6 +2035,31 @@ init|=
 name|YARN_PREFIX
 operator|+
 literal|"application.classpath"
+decl_stmt|;
+comment|/**    * Default CLASSPATH for YARN applications. A comma-separated list of    * CLASSPATH entries    */
+DECL|field|DEFAULT_YARN_APPLICATION_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_YARN_APPLICATION_CLASSPATH
+init|=
+block|{
+literal|"$HADOOP_CONF_DIR"
+block|,
+literal|"$HADOOP_COMMON_HOME/share/hadoop/common/*"
+block|,
+literal|"$HADOOP_COMMON_HOME/share/hadoop/common/lib/*"
+block|,
+literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/*"
+block|,
+literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*"
+block|,
+literal|"$YARN_HOME/share/hadoop/mapreduce/*"
+block|,
+literal|"$YARN_HOME/share/hadoop/mapreduce/lib/*"
+block|}
 decl_stmt|;
 comment|/** Container temp directory */
 DECL|field|DEFAULT_CONTAINER_TEMP_DIR
