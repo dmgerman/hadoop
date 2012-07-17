@@ -2017,35 +2017,9 @@ parameter_list|)
 block|{
 comment|// A container is complete. Put this containers' logs up for aggregation if
 comment|// this containers' logs are needed.
-if|if
-condition|(
-operator|!
-name|this
-operator|.
-name|appLogAggregators
-operator|.
-name|containsKey
-argument_list|(
-name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Application is not initialized yet for "
-operator|+
-name|containerId
-argument_list|)
-throw|;
-block|}
+name|AppLogAggregator
+name|aggregator
+init|=
 name|this
 operator|.
 name|appLogAggregators
@@ -2060,6 +2034,28 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|aggregator
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Log aggregation is not initialized for "
+operator|+
+name|containerId
+operator|+
+literal|", did it fail to start?"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|aggregator
 operator|.
 name|startContainerLogAggregation
 argument_list|(
@@ -2082,29 +2078,9 @@ parameter_list|)
 block|{
 comment|// App is complete. Finish up any containers' pending log aggregation and
 comment|// close the application specific logFile.
-if|if
-condition|(
-operator|!
-name|this
-operator|.
-name|appLogAggregators
-operator|.
-name|containsKey
-argument_list|(
-name|appId
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Application is not initialized yet for "
-operator|+
-name|appId
-argument_list|)
-throw|;
-block|}
+name|AppLogAggregator
+name|aggregator
+init|=
 name|this
 operator|.
 name|appLogAggregators
@@ -2113,6 +2089,28 @@ name|get
 argument_list|(
 name|appId
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|aggregator
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Log aggregation is not initialized for "
+operator|+
+name|appId
+operator|+
+literal|", did it fail to start?"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|aggregator
 operator|.
 name|finishLogAggregation
 argument_list|()

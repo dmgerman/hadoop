@@ -2560,10 +2560,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|testLogAggregationInitFailsWithoutKillingNM ()
+DECL|method|testLogAggregationFailsWithoutKillingNM ()
 specifier|public
 name|void
-name|testLogAggregationInitFailsWithoutKillingNM
+name|testLogAggregationFailsWithoutKillingNM
 parameter_list|()
 throws|throws
 name|Exception
@@ -2796,6 +2796,60 @@ literal|"getApplicationID"
 argument_list|,
 literal|"getDiagnostic"
 argument_list|)
+expr_stmt|;
+comment|// verify trying to collect logs for containers/apps we don't know about
+comment|// doesn't blow up and tear down the NM
+name|logAggregationService
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|LogHandlerContainerFinishedEvent
+argument_list|(
+name|BuilderUtils
+operator|.
+name|newContainerId
+argument_list|(
+literal|4
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
+name|logAggregationService
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|LogHandlerAppFinishedEvent
+argument_list|(
+name|BuilderUtils
+operator|.
+name|newApplicationId
+argument_list|(
+literal|1
+argument_list|,
+literal|5
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|writeContainerLogs (File appLogDir, ContainerId containerId)
