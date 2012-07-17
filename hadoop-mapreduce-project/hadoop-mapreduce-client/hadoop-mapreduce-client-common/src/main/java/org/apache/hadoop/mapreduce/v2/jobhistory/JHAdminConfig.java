@@ -424,7 +424,7 @@ name|MR_HISTORY_STORAGE
 init|=
 name|MR_HISTORY_PREFIX
 operator|+
-literal|".store.class"
+literal|"store.class"
 decl_stmt|;
 block|}
 end_class
