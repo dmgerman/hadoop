@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.common.fica
 package|package
 name|org
 operator|.
@@ -19,6 +19,10 @@ operator|.
 name|resourcemanager
 operator|.
 name|scheduler
+operator|.
+name|common
+operator|.
+name|fica
 package|;
 end_package
 
@@ -129,6 +133,22 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -610,6 +630,106 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|ActiveUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|AppSchedulingInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|NodeType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|Queue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerApplication
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -646,10 +766,16 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|class|SchedulerApp
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|class|FiCaSchedulerApp
 specifier|public
 class|class
-name|SchedulerApp
+name|FiCaSchedulerApp
+extends|extends
+name|SchedulerApplication
 block|{
 DECL|field|LOG
 specifier|private
@@ -662,7 +788,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 operator|.
 name|class
 argument_list|)
@@ -828,9 +954,9 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|method|SchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, ApplicationStore store)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, ApplicationStore store)
 specifier|public
-name|SchedulerApp
+name|FiCaSchedulerApp
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -897,6 +1023,8 @@ name|getApplicationId
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getApplicationAttemptId ()
 specifier|public
 name|ApplicationAttemptId
@@ -1078,6 +1206,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Is this application pending?    * @return true if it is else false.    */
+annotation|@
+name|Override
 DECL|method|isPending ()
 specifier|public
 name|boolean
@@ -1109,6 +1239,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the list of live containers    * @return All of the live containers    */
+annotation|@
+name|Override
 DECL|method|getLiveContainers ()
 specifier|public
 specifier|synchronized
@@ -1361,7 +1493,7 @@ name|containerResource
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|allocate (NodeType type, SchedulerNode node, Priority priority, ResourceRequest request, Container container)
+DECL|method|allocate (NodeType type, FiCaSchedulerNode node, Priority priority, ResourceRequest request, Container container)
 specifier|synchronized
 specifier|public
 name|RMContainer
@@ -1370,7 +1502,7 @@ parameter_list|(
 name|NodeType
 name|type
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|Priority
@@ -1971,13 +2103,13 @@ return|return
 name|currentReservation
 return|;
 block|}
-DECL|method|reserve (SchedulerNode node, Priority priority, RMContainer rmContainer, Container container)
+DECL|method|reserve (FiCaSchedulerNode node, Priority priority, RMContainer rmContainer, Container container)
 specifier|public
 specifier|synchronized
 name|RMContainer
 name|reserve
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|Priority
@@ -2180,13 +2312,13 @@ return|return
 name|rmContainer
 return|;
 block|}
-DECL|method|unreserve (SchedulerNode node, Priority priority)
+DECL|method|unreserve (FiCaSchedulerNode node, Priority priority)
 specifier|public
 specifier|synchronized
 name|void
 name|unreserve
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|Priority
@@ -2300,13 +2432,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Has the application reserved the given<code>node</code> at the    * given<code>priority</code>?    * @param node node to be checked    * @param priority priority of reserved container    * @return true is reserved, false if not    */
-DECL|method|isReserved (SchedulerNode node, Priority priority)
+DECL|method|isReserved (FiCaSchedulerNode node, Priority priority)
 specifier|public
 specifier|synchronized
 name|boolean
 name|isReserved
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|Priority
@@ -2410,6 +2542,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the list of reserved containers    * @return All of the reserved containers.    */
+annotation|@
+name|Override
 DECL|method|getReservedContainers ()
 specifier|public
 specifier|synchronized

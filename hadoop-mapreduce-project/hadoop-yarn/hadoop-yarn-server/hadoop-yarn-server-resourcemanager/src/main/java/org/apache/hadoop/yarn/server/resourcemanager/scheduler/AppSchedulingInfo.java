@@ -1238,7 +1238,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateNodeLocal (SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, Container container)
+DECL|method|allocateNodeLocal ( SchedulerNode node, Priority priority, ResourceRequest nodeLocalRequest, Container container)
 specifier|synchronized
 specifier|private
 name|void
@@ -1381,7 +1381,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateRackLocal (SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, Container container)
+DECL|method|allocateRackLocal ( SchedulerNode node, Priority priority, ResourceRequest rackLocalRequest, Container container)
 specifier|synchronized
 specifier|private
 name|void
@@ -1466,7 +1466,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    *     * @param allocatedContainers    *          resources allocated to the application    */
-DECL|method|allocateOffSwitch (SchedulerNode node, Priority priority, ResourceRequest offSwitchRequest, Container container)
+DECL|method|allocateOffSwitch ( SchedulerNode node, Priority priority, ResourceRequest offSwitchRequest, Container container)
 specifier|synchronized
 specifier|private
 name|void

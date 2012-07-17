@@ -602,7 +602,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -725,7 +729,7 @@ name|resourceTrackerService
 decl_stmt|;
 DECL|field|schedulerNode
 specifier|final
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|schedulerNode
 decl_stmt|;
 DECL|field|containers
@@ -923,7 +927,7 @@ operator|.
 name|schedulerNode
 operator|=
 operator|new
-name|SchedulerNode
+name|FiCaSchedulerNode
 argument_list|(
 name|rmContext
 operator|.

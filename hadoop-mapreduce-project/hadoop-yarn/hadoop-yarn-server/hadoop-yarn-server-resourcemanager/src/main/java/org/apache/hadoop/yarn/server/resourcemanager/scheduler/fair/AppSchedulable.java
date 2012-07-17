@@ -370,46 +370,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|security
 operator|.
 name|ContainerTokenSecretManager
@@ -589,7 +549,7 @@ return|;
 block|}
 DECL|method|getApp ()
 specifier|public
-name|SchedulerApp
+name|FSSchedulerApp
 name|getApp
 parameter_list|()
 block|{
@@ -848,15 +808,15 @@ name|runnable
 expr_stmt|;
 block|}
 comment|/**    * Create and return a container object reflecting an allocation for the    * given appliction on the given node with the given capability and    * priority.    */
-DECL|method|createContainer (SchedulerApp application, SchedulerNode node, Resource capability, Priority priority)
+DECL|method|createContainer ( FSSchedulerApp application, FSSchedulerNode node, Resource capability, Priority priority)
 specifier|public
 name|Container
 name|createContainer
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 parameter_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
 name|Resource
@@ -966,19 +926,19 @@ return|return
 name|container
 return|;
 block|}
-comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in the {@link SchedulerNode} and {@link SchedulerApp} classes.    */
-DECL|method|reserve (SchedulerApp application, Priority priority, SchedulerNode node, Container container, boolean alreadyReserved)
+comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in the {@link FSSchedulerNode} and {@link SchedulerApp} classes.    */
+DECL|method|reserve (FSSchedulerApp application, Priority priority, FSSchedulerNode node, Container container, boolean alreadyReserved)
 specifier|private
 name|void
 name|reserve
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
 name|Container
@@ -1132,18 +1092,18 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Remove the reservation on {@code node} for {@ application} at the given    * {@link Priority}. This dispatches to the SchedulerApp and SchedulerNode    * handlers for an unreservation.    */
-DECL|method|unreserve (SchedulerApp application, Priority priority, SchedulerNode node)
+DECL|method|unreserve (FSSchedulerApp application, Priority priority, FSSchedulerNode node)
 specifier|private
 name|void
 name|unreserve
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -1213,15 +1173,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assign a container to this node to facilitate {@code request}. If node does    * not have enough memory, create a reservation. This is called once we are    * sure the particular request should be facilitated by this node.    */
-DECL|method|assignContainer (SchedulerNode node, SchedulerApp application, Priority priority, ResourceRequest request, NodeType type, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, FSSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, boolean reserved)
 specifier|private
 name|Resource
 name|assignContainer
 parameter_list|(
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -1429,12 +1389,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainer (SchedulerNode node, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|public
 name|Resource
 name|assignContainer
 parameter_list|(
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
 name|boolean

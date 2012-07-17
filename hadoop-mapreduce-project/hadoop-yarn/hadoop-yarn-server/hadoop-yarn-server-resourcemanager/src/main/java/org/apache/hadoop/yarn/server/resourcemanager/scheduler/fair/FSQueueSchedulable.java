@@ -406,46 +406,6 @@ name|QueueMetrics
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerNode
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Private
@@ -644,12 +604,12 @@ name|app
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeApp (SchedulerApp app)
+DECL|method|removeApp (FSSchedulerApp app)
 specifier|public
 name|void
 name|removeApp
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|app
 parameter_list|)
 block|{
@@ -944,12 +904,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainer (SchedulerNode node, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|public
 name|Resource
 name|assignContainer
 parameter_list|(
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
 name|boolean

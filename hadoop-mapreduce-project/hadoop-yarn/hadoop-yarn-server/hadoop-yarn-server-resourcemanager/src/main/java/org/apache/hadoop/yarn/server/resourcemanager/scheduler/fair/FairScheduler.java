@@ -776,47 +776,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|SchedulerAppReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerNode
 import|;
 end_import
 
@@ -1186,7 +1146,7 @@ name|Map
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 name|applications
 init|=
@@ -1195,7 +1155,7 @@ name|HashMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1206,7 +1166,7 @@ name|Map
 argument_list|<
 name|NodeId
 argument_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 argument_list|>
 name|nodes
 init|=
@@ -1215,7 +1175,7 @@ name|ConcurrentHashMap
 argument_list|<
 name|NodeId
 argument_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1376,7 +1336,7 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 init|=
 name|applications
@@ -1869,7 +1829,7 @@ name|Map
 argument_list|<
 name|RMContainer
 argument_list|,
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 name|apps
 init|=
@@ -1878,7 +1838,7 @@ name|HashMap
 argument_list|<
 name|RMContainer
 argument_list|,
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -3116,7 +3076,7 @@ operator|+
 name|rmAppAttemptFinalState
 argument_list|)
 expr_stmt|;
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 init|=
 name|applications
@@ -3312,7 +3272,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 init|=
 name|applications
@@ -3351,7 +3311,7 @@ expr_stmt|;
 return|return;
 block|}
 comment|// Get the node on which the container was allocated
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 init|=
 name|nodes
@@ -3464,7 +3424,7 @@ name|getNodeID
 argument_list|()
 argument_list|,
 operator|new
-name|SchedulerNode
+name|FSSchedulerNode
 argument_list|(
 name|node
 argument_list|)
@@ -3509,7 +3469,7 @@ name|RMNode
 name|rmNode
 parameter_list|)
 block|{
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 init|=
 name|this
@@ -3673,7 +3633,7 @@ name|release
 parameter_list|)
 block|{
 comment|// Make sure this application exists
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 init|=
 name|applications
@@ -3903,7 +3863,7 @@ return|;
 block|}
 block|}
 comment|/**    * Process a container which has launched on a node, as reported by the    * node.    */
-DECL|method|containerLaunchedOnNode (ContainerId containerId, SchedulerNode node)
+DECL|method|containerLaunchedOnNode (ContainerId containerId, FSSchedulerNode node)
 specifier|private
 name|void
 name|containerLaunchedOnNode
@@ -3911,7 +3871,7 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -3924,7 +3884,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
-name|SchedulerApp
+name|FSSchedulerApp
 name|application
 init|=
 name|applications
@@ -4021,7 +3981,7 @@ name|getHostName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 init|=
 name|nodes
@@ -4115,7 +4075,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|SchedulerApp
+name|FSSchedulerApp
 name|reservedApplication
 init|=
 name|applications
@@ -4320,7 +4280,7 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 init|=
 name|nodes

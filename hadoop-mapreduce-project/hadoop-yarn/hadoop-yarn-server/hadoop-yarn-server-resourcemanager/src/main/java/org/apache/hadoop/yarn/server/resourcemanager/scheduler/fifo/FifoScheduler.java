@@ -912,47 +912,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|SchedulerAppReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerNode
 import|;
 end_import
 
@@ -993,6 +953,54 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -1286,7 +1294,7 @@ name|Map
 argument_list|<
 name|NodeId
 argument_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 argument_list|>
 name|nodes
 init|=
@@ -1295,7 +1303,7 @@ name|ConcurrentHashMap
 argument_list|<
 name|NodeId
 argument_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1320,7 +1328,7 @@ name|Map
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|>
 name|applications
 init|=
@@ -1329,7 +1337,7 @@ name|TreeMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1851,7 +1859,7 @@ argument_list|>
 name|release
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|getApplication
@@ -2067,7 +2075,7 @@ block|}
 block|}
 DECL|method|getApplication ( ApplicationAttemptId applicationAttemptId)
 specifier|private
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|getApplication
 parameter_list|(
 name|ApplicationAttemptId
@@ -2094,7 +2102,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app
 init|=
 name|getApplication
@@ -2118,7 +2126,7 @@ return|;
 block|}
 DECL|method|getNode (NodeId nodeId)
 specifier|private
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|getNode
 parameter_list|(
 name|NodeId
@@ -2148,11 +2156,11 @@ name|user
 parameter_list|)
 block|{
 comment|// TODO: Fix store
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|schedulerApp
 init|=
 operator|new
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -2250,7 +2258,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|getApplication
@@ -2353,12 +2361,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Heart of the scheduler...    *     * @param node node on which resources are available to be allocated    */
-DECL|method|assignContainers (SchedulerNode node)
+DECL|method|assignContainers (FiCaSchedulerNode node)
 specifier|private
 name|void
 name|assignContainers
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -2395,7 +2403,7 @@ name|Entry
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|>
 name|e
 range|:
@@ -2405,7 +2413,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|e
@@ -2525,7 +2533,7 @@ comment|// Update the applications' headroom to correctly take into
 comment|// account the containers assigned in this update.
 for|for
 control|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 range|:
 name|applications
@@ -2550,18 +2558,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getMaxAllocatableContainers (SchedulerApp application, Priority priority, SchedulerNode node, NodeType type)
+DECL|method|getMaxAllocatableContainers (FiCaSchedulerApp application, Priority priority, FiCaSchedulerNode node, NodeType type)
 specifier|private
 name|int
 name|getMaxAllocatableContainers
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|NodeType
@@ -2577,7 +2585,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|ANY
 argument_list|)
@@ -2710,15 +2718,15 @@ return|return
 name|maxContainers
 return|;
 block|}
-DECL|method|assignContainersOnNode (SchedulerNode node, SchedulerApp application, Priority priority )
+DECL|method|assignContainersOnNode (FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority )
 specifier|private
 name|int
 name|assignContainersOnNode
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -2818,15 +2826,15 @@ name|offSwitchContainers
 operator|)
 return|;
 block|}
-DECL|method|assignNodeLocalContainers (SchedulerNode node, SchedulerApp application, Priority priority)
+DECL|method|assignNodeLocalContainers (FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority)
 specifier|private
 name|int
 name|assignNodeLocalContainers
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -2950,15 +2958,15 @@ return|return
 name|assignedContainers
 return|;
 block|}
-DECL|method|assignRackLocalContainers (SchedulerNode node, SchedulerApp application, Priority priority)
+DECL|method|assignRackLocalContainers (FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority)
 specifier|private
 name|int
 name|assignRackLocalContainers
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -3005,7 +3013,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|ANY
 argument_list|)
@@ -3074,15 +3082,15 @@ return|return
 name|assignedContainers
 return|;
 block|}
-DECL|method|assignOffSwitchContainers (SchedulerNode node, SchedulerApp application, Priority priority)
+DECL|method|assignOffSwitchContainers (FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority)
 specifier|private
 name|int
 name|assignOffSwitchContainers
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -3103,7 +3111,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|ANY
 argument_list|)
@@ -3142,15 +3150,15 @@ return|return
 name|assignedContainers
 return|;
 block|}
-DECL|method|assignContainer (SchedulerNode node, SchedulerApp application, Priority priority, int assignableContainers, ResourceRequest request, NodeType type)
+DECL|method|assignContainer (FiCaSchedulerNode node, FiCaSchedulerApp application, Priority priority, int assignableContainers, ResourceRequest request, NodeType type)
 specifier|private
 name|int
 name|assignContainer
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Priority
@@ -3443,7 +3451,7 @@ argument_list|>
 name|completedContainers
 parameter_list|)
 block|{
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 init|=
 name|getNode
@@ -3824,7 +3832,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|containerLaunchedOnNode (ContainerId containerId, SchedulerNode node)
+DECL|method|containerLaunchedOnNode (ContainerId containerId, FiCaSchedulerNode node)
 specifier|private
 name|void
 name|containerLaunchedOnNode
@@ -3832,7 +3840,7 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -3845,7 +3853,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|getApplication
@@ -3976,7 +3984,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 decl_stmt|;
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|getApplication
@@ -3985,7 +3993,7 @@ name|applicationAttemptId
 argument_list|)
 decl_stmt|;
 comment|// Get the node on which the container was allocated
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 init|=
 name|getNode
@@ -4125,7 +4133,7 @@ name|RMNode
 name|nodeInfo
 parameter_list|)
 block|{
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 init|=
 name|getNode
@@ -4281,7 +4289,7 @@ name|getNodeID
 argument_list|()
 argument_list|,
 operator|new
-name|SchedulerNode
+name|FiCaSchedulerNode
 argument_list|(
 name|nodeManager
 argument_list|)
@@ -4331,7 +4339,7 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 init|=
 name|getNode
@@ -4362,7 +4370,7 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|getApplication

@@ -76,26 +76,6 @@ name|Unstable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApp
-import|;
-end_import
-
 begin_comment
 comment|/**  * A queue containing several applications.  */
 end_comment
@@ -121,14 +101,14 @@ DECL|field|applications
 specifier|private
 name|Collection
 argument_list|<
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 name|applications
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -188,7 +168,7 @@ DECL|method|getApplications ()
 specifier|public
 name|Collection
 argument_list|<
-name|SchedulerApp
+name|FSSchedulerApp
 argument_list|>
 name|getApplications
 parameter_list|()
@@ -229,12 +209,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeJob (SchedulerApp app)
+DECL|method|removeJob (FSSchedulerApp app)
 specifier|public
 name|void
 name|removeJob
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|app
 parameter_list|)
 block|{

@@ -354,7 +354,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -374,7 +378,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -828,7 +836,7 @@ expr_stmt|;
 block|}
 DECL|method|getMockApplication (int appId, String user)
 specifier|private
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|getMockApplication
 parameter_list|(
 name|int
@@ -838,12 +846,12 @@ name|String
 name|user
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|mock
 argument_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 operator|.
 name|class
 argument_list|)
@@ -1480,7 +1488,7 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Submit first application
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_0
 init|=
 name|getMockApplication
@@ -1547,7 +1555,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit second application
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_1
 init|=
 name|getMockApplication
@@ -1614,7 +1622,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit third application, should remain pending
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_2
 init|=
 name|getMockApplication
@@ -1735,7 +1743,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit another one for user_0
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_3
 init|=
 name|getMockApplication
@@ -1816,7 +1824,7 @@ name|getMaximumActiveApplications
 argument_list|()
 expr_stmt|;
 comment|// Submit first app for user_1
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_4
 init|=
 name|getMockApplication
@@ -1907,7 +1915,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit second app for user_1, should block due to queue-limit
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_5
 init|=
 name|getMockApplication
@@ -2112,7 +2120,7 @@ name|getMaximumActiveApplications
 argument_list|()
 expr_stmt|;
 comment|// Submit first application
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_0
 init|=
 name|getMockApplication
@@ -2191,7 +2199,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit second application
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_1
 init|=
 name|getMockApplication
@@ -2270,7 +2278,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit third application, should remain pending
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_2
 init|=
 name|getMockApplication
@@ -2349,7 +2357,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Submit fourth application, should remain pending
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_3
 init|=
 name|getMockApplication
@@ -2949,7 +2957,7 @@ name|rack_0
 init|=
 literal|"rack_0"
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_0
 init|=
 name|TestUtils
@@ -3022,13 +3030,13 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_0_0
 init|=
 name|spy
 argument_list|(
 operator|new
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|(
 name|appAttemptId_0_0
 argument_list|,
@@ -3153,13 +3161,13 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_0_1
 init|=
 name|spy
 argument_list|(
 operator|new
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|(
 name|appAttemptId_0_1
 argument_list|,
@@ -3290,13 +3298,13 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app_1_0
 init|=
 name|spy
 argument_list|(
 operator|new
-name|SchedulerApp
+name|FiCaSchedulerApp
 argument_list|(
 name|appAttemptId_1_0
 argument_list|,

@@ -372,7 +372,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -392,7 +396,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -748,7 +756,7 @@ expr_stmt|;
 block|}
 DECL|method|getMockApplication (int appId, String user)
 specifier|private
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|getMockApplication
 parameter_list|(
 name|int
@@ -758,12 +766,12 @@ name|String
 name|user
 parameter_list|)
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 init|=
 name|mock
 argument_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 operator|.
 name|class
 argument_list|)
@@ -803,7 +811,7 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|stubQueueAllocation (final CSQueue queue, final Resource clusterResource, final SchedulerNode node, final int allocation)
+DECL|method|stubQueueAllocation (final CSQueue queue, final Resource clusterResource, final FiCaSchedulerNode node, final int allocation)
 specifier|private
 name|void
 name|stubQueueAllocation
@@ -817,7 +825,7 @@ name|Resource
 name|clusterResource
 parameter_list|,
 specifier|final
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 specifier|final
@@ -841,7 +849,7 @@ name|NODE_LOCAL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|stubQueueAllocation (final CSQueue queue, final Resource clusterResource, final SchedulerNode node, final int allocation, final NodeType type)
+DECL|method|stubQueueAllocation (final CSQueue queue, final Resource clusterResource, final FiCaSchedulerNode node, final int allocation, final NodeType type)
 specifier|private
 name|void
 name|stubQueueAllocation
@@ -855,7 +863,7 @@ name|Resource
 name|clusterResource
 parameter_list|,
 specifier|final
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 specifier|final
@@ -962,7 +970,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|app1
 init|=
 name|getMockApplication
@@ -1300,7 +1308,7 @@ name|numNodes
 init|=
 literal|2
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_0
 init|=
 name|TestUtils
@@ -1318,7 +1326,7 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_1
 init|=
 name|TestUtils
@@ -1513,7 +1521,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1535,7 +1543,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1625,7 +1633,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1647,7 +1655,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1737,7 +1745,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1759,7 +1767,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1849,7 +1857,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -1871,7 +1879,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -2440,7 +2448,7 @@ name|numNodes
 init|=
 literal|3
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_0
 init|=
 name|TestUtils
@@ -2458,7 +2466,7 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_1
 init|=
 name|TestUtils
@@ -2476,7 +2484,7 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_2
 init|=
 name|TestUtils
@@ -2912,7 +2920,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -2934,7 +2942,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -2956,7 +2964,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3142,7 +3150,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3164,7 +3172,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3186,7 +3194,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3208,7 +3216,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3343,7 +3351,7 @@ name|numNodes
 init|=
 literal|2
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_0
 init|=
 name|TestUtils
@@ -3361,7 +3369,7 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_1
 init|=
 name|TestUtils
@@ -3573,7 +3581,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3595,7 +3603,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3694,7 +3702,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3716,7 +3724,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -3826,7 +3834,7 @@ name|numNodes
 init|=
 literal|2
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_0
 init|=
 name|TestUtils
@@ -3844,7 +3852,7 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node_1
 init|=
 name|TestUtils
@@ -4056,7 +4064,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -4078,7 +4086,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -4177,7 +4185,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)
@@ -4199,7 +4207,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 operator|.
 name|class
 argument_list|)

@@ -452,7 +452,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -472,7 +476,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -936,7 +944,7 @@ block|}
 DECL|method|getMockNode ( String host, String rack, int port, int capability)
 specifier|public
 specifier|static
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|getMockNode
 parameter_list|(
 name|String
@@ -1072,13 +1080,13 @@ argument_list|(
 name|rack
 argument_list|)
 expr_stmt|;
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 init|=
 name|spy
 argument_list|(
 operator|new
-name|SchedulerNode
+name|FiCaSchedulerNode
 argument_list|(
 name|rmNode
 argument_list|)
@@ -1104,13 +1112,13 @@ return|return
 name|node
 return|;
 block|}
-DECL|method|getMockContainerId (SchedulerApp application)
+DECL|method|getMockContainerId (FiCaSchedulerApp application)
 specifier|public
 specifier|static
 name|ContainerId
 name|getMockContainerId
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|)
 block|{

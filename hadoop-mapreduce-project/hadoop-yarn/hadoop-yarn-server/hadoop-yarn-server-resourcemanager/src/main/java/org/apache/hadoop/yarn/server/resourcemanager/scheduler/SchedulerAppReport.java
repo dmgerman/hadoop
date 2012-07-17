@@ -125,11 +125,11 @@ specifier|final
 name|boolean
 name|pending
 decl_stmt|;
-DECL|method|SchedulerAppReport (SchedulerApp app)
+DECL|method|SchedulerAppReport (SchedulerApplication app)
 specifier|public
 name|SchedulerAppReport
 parameter_list|(
-name|SchedulerApp
+name|SchedulerApplication
 name|app
 parameter_list|)
 block|{

@@ -524,7 +524,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -544,7 +548,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -2280,12 +2288,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitApplication (SchedulerApp application, String user, String queue)
+DECL|method|submitApplication (FiCaSchedulerApp application, String user, String queue)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -2415,13 +2423,13 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|addApplication (SchedulerApp application, String user)
+DECL|method|addApplication (FiCaSchedulerApp application, String user)
 specifier|private
 specifier|synchronized
 name|void
 name|addApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -2462,12 +2470,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplication (SchedulerApp application, String queue)
+DECL|method|finishApplication (FiCaSchedulerApp application, String queue)
 specifier|public
 name|void
 name|finishApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -2509,13 +2517,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removeApplication (SchedulerApp application, String user)
+DECL|method|removeApplication (FiCaSchedulerApp application, String user)
 specifier|public
 specifier|synchronized
 name|void
 name|removeApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -2654,7 +2662,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers ( Resource clusterResource, SchedulerNode node)
+DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node)
 specifier|public
 specifier|synchronized
 name|CSAssignment
@@ -2663,7 +2671,7 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -2992,12 +3000,12 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|canAssign (SchedulerNode node)
+DECL|method|canAssign (FiCaSchedulerNode node)
 specifier|private
 name|boolean
 name|canAssign
 parameter_list|(
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -3024,7 +3032,7 @@ name|minimumAllocation
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainersToChildQueues (Resource cluster, SchedulerNode node)
+DECL|method|assignContainersToChildQueues (Resource cluster, FiCaSchedulerNode node)
 specifier|synchronized
 name|CSAssignment
 name|assignContainersToChildQueues
@@ -3032,7 +3040,7 @@ parameter_list|(
 name|Resource
 name|cluster
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 block|{
@@ -3310,7 +3318,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|void
 name|completedContainer
@@ -3318,10 +3326,10 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|RMContainer
@@ -3554,7 +3562,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recoverContainer (Resource clusterResource, SchedulerApp application, Container container)
+DECL|method|recoverContainer (Resource clusterResource, FiCaSchedulerApp application, Container container)
 specifier|public
 name|void
 name|recoverContainer
@@ -3562,7 +3570,7 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Container

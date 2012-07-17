@@ -112,26 +112,6 @@ name|Resources
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerNode
-import|;
-end_import
-
 begin_comment
 comment|/**  * A Schedulable represents an entity that can launch tasks, such as a job  * or a queue. It provides a common interface so that algorithms such as fair  * sharing can be applied both within a queue and across queues. There are  * currently two types of Schedulables: JobSchedulables, which represent a  * single job, and QueueSchedulables, which allocate among jobs in their queue.  *  * Separate sets of Schedulables are used for maps and reduces. Each queue has  * both a mapSchedulable and a reduceSchedulable, and so does each job.  *  * A Schedulable is responsible for three roles:  * 1) It can launch tasks through assignTask().  * 2) It provides information about the job/queue to the scheduler, including:  *    - Demand (maximum number of tasks required)  *    - Number of currently running tasks  *    - Minimum share (for queues)  *    - Job/queue weight (for fair sharing)  *    - Start time and priority (for FIFO)  * 3) It can be assigned a fair share, for use with fair scheduling.  *  * Schedulable also contains two methods for performing scheduling computations:  * - updateDemand() is called periodically to compute the demand of the various  *   jobs and queues, which may be expensive (e.g. jobs must iterate through all  *   their tasks to count failed tasks, tasks that can be speculated, etc).  * - redistributeShare() is called after demands are updated and a Schedulable's  *   fair share has been set by its parent to let it distribute its share among  *   the other Schedulables within it (e.g. for queues that want to perform fair  *   sharing among their jobs).  */
 end_comment
@@ -232,13 +212,13 @@ name|redistributeShare
 parameter_list|()
 function_decl|;
 comment|/**    * Assign a container on this node if possible, and return the amount of    * resources assigned. If {@code reserved} is true, it means a reservation    * already exists on this node, and the schedulable should fulfill that    * reservation if possible.    */
-DECL|method|assignContainer (SchedulerNode node, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|public
 specifier|abstract
 name|Resource
 name|assignContainer
 parameter_list|(
-name|SchedulerNode
+name|FSSchedulerNode
 name|node
 parameter_list|,
 name|boolean

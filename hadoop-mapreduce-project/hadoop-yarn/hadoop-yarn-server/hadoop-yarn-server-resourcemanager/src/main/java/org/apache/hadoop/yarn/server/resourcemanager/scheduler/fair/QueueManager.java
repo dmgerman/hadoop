@@ -326,26 +326,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApp
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|w3c
 operator|.
 name|dom
@@ -2748,13 +2728,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove an app    */
-DECL|method|removeJob (SchedulerApp app)
+DECL|method|removeJob (FSSchedulerApp app)
 specifier|public
 specifier|synchronized
 name|void
 name|removeJob
 parameter_list|(
-name|SchedulerApp
+name|FSSchedulerApp
 name|app
 parameter_list|)
 block|{

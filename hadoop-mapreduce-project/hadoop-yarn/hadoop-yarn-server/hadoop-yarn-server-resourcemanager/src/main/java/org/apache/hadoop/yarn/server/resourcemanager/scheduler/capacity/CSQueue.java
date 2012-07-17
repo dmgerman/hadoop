@@ -270,7 +270,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApp
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -290,7 +294,11 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerNode
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerNode
 import|;
 end_import
 
@@ -445,12 +453,12 @@ name|user
 parameter_list|)
 function_decl|;
 comment|/**    * Submit a new application to the queue.    * @param application application being submitted    * @param user user who submitted the application    * @param queue queue to which the application is submitted    */
-DECL|method|submitApplication (SchedulerApp application, String user, String queue)
+DECL|method|submitApplication (FiCaSchedulerApp application, String user, String queue)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -463,12 +471,12 @@ throws|throws
 name|AccessControlException
 function_decl|;
 comment|/**    * An application submitted to this queue has finished.    * @param application    * @param queue application queue     */
-DECL|method|finishApplication (SchedulerApp application, String queue)
+DECL|method|finishApplication (FiCaSchedulerApp application, String queue)
 specifier|public
 name|void
 name|finishApplication
 parameter_list|(
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|String
@@ -476,7 +484,7 @@ name|queue
 parameter_list|)
 function_decl|;
 comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param node node on which resources are available    * @return the assignment    */
-DECL|method|assignContainers ( Resource clusterResource, SchedulerNode node)
+DECL|method|assignContainers ( Resource clusterResource, FiCaSchedulerNode node)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -484,12 +492,12 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|)
 function_decl|;
 comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param event event to be sent to the container    */
-DECL|method|completedContainer (Resource clusterResource, SchedulerApp application, SchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event)
 specifier|public
 name|void
 name|completedContainer
@@ -497,10 +505,10 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
-name|SchedulerNode
+name|FiCaSchedulerNode
 name|node
 parameter_list|,
 name|RMContainer
@@ -553,7 +561,7 @@ name|getActiveUsersManager
 parameter_list|()
 function_decl|;
 comment|/**    * Recover the state of the queue    * @param clusterResource the resource of the cluster    * @param application the application for which the container was allocated    * @param container the container that was recovered.    */
-DECL|method|recoverContainer (Resource clusterResource, SchedulerApp application, Container container)
+DECL|method|recoverContainer (Resource clusterResource, FiCaSchedulerApp application, Container container)
 specifier|public
 name|void
 name|recoverContainer
@@ -561,7 +569,7 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|SchedulerApp
+name|FiCaSchedulerApp
 name|application
 parameter_list|,
 name|Container
