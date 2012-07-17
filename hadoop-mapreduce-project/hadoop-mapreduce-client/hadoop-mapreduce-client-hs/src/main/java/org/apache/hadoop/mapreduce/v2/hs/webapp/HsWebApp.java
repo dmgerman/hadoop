@@ -90,6 +90,24 @@ name|webapp
 operator|.
 name|YarnWebParams
 operator|.
+name|CONTAINER_LOG_TYPE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|YarnWebParams
+operator|.
 name|ENTITY_STRING
 import|;
 end_import
@@ -483,6 +501,8 @@ argument_list|,
 name|ENTITY_STRING
 argument_list|,
 name|APP_OWNER
+argument_list|,
+name|CONTAINER_LOG_TYPE
 argument_list|)
 argument_list|,
 name|HsController
@@ -505,6 +525,8 @@ argument_list|,
 name|ENTITY_STRING
 argument_list|,
 name|APP_OWNER
+argument_list|,
+name|CONTAINER_LOG_TYPE
 argument_list|)
 argument_list|,
 name|HsController
