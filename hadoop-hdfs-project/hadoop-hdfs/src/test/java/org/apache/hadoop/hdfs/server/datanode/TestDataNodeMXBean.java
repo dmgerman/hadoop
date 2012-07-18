@@ -70,9 +70,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|conf
 operator|.
-name|MiniDFSCluster
+name|Configuration
 import|;
 end_import
 
@@ -84,19 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|hdfs
 operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -107,6 +97,16 @@ operator|.
 name|junit
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 

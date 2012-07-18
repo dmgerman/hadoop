@@ -17,12 +17,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
 import|;
 end_import
 
@@ -32,7 +34,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
 import|;
 end_import
 
@@ -53,16 +65,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|*
 import|;
 end_import
 
@@ -260,6 +262,16 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the replication and injection of blocks of a DFS file for simulated storage.  */
 end_comment
@@ -269,8 +281,6 @@ DECL|class|TestInjectionForSimulatedStorage
 specifier|public
 class|class
 name|TestInjectionForSimulatedStorage
-extends|extends
-name|TestCase
 block|{
 DECL|field|checksumSize
 specifier|private
@@ -688,6 +698,8 @@ block|}
 block|}
 block|}
 comment|/* This test makes sure that NameNode retries all the available blocks     * for under replicated blocks. This test uses simulated storage and one    * of its features to inject blocks,    *     * It creates a file with several blocks and replication of 4.     * The cluster is then shut down - NN retains its state but the DNs are     * all simulated and hence loose their blocks.     * The blocks are then injected in one of the DNs. The  expected behaviour is    * that the NN will arrange for themissing replica will be copied from a valid source.    */
+annotation|@
+name|Test
 DECL|method|testInjection ()
 specifier|public
 name|void

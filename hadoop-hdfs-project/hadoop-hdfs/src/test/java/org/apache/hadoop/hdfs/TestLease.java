@@ -17,6 +17,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doNothing
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doThrow
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -98,20 +146,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FSDataOutputStream
 import|;
 end_import
@@ -126,7 +160,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|FileSystem
 import|;
 end_import
 
@@ -138,13 +172,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|SafeModeAction
+name|Path
 import|;
 end_import
 
@@ -224,11 +254,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|token
-operator|.
-name|SecretManager
-operator|.
-name|InvalidToken
+name|UserGroupInformation
 import|;
 end_import
 
@@ -242,7 +268,11 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
+name|token
+operator|.
+name|SecretManager
+operator|.
+name|InvalidToken
 import|;
 end_import
 
@@ -287,78 +317,6 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doThrow
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doNothing
 import|;
 end_import
 

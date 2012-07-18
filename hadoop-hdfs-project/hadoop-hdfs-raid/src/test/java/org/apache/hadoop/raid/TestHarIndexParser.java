@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -42,7 +54,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileOutputStream
+name|FileNotFoundException
 import|;
 end_import
 
@@ -52,7 +64,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
+name|FileOutputStream
 import|;
 end_import
 
@@ -110,16 +122,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -146,13 +148,41 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestHarIndexParser
 specifier|public
 class|class
 name|TestHarIndexParser
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|final
@@ -175,8 +205,10 @@ name|indexFile
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -274,8 +306,10 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -299,6 +333,8 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testHarIndexParser ()
 specifier|public
 name|void

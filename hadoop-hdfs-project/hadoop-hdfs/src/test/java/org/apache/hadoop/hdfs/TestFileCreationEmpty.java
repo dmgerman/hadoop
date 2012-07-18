@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -72,6 +84,16 @@ name|LeaseManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test empty file creation.  */
 end_comment
@@ -81,12 +103,6 @@ DECL|class|TestFileCreationEmpty
 specifier|public
 class|class
 name|TestFileCreationEmpty
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|isConcurrentModificationException
 specifier|private
@@ -96,6 +112,8 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * This test creates three empty files and lets their leases expire.    * This triggers release of the leases.     * The empty files are supposed to be closed by that     * without causing ConcurrentModificationException.    */
+annotation|@
+name|Test
 DECL|method|testLeaseExpireEmptyFiles ()
 specifier|public
 name|void

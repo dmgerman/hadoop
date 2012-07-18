@@ -17,6 +17,28 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -38,21 +60,11 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -61,8 +73,6 @@ DECL|class|TestGaloisField
 specifier|public
 class|class
 name|TestGaloisField
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_TIMES
 specifier|final
@@ -159,6 +169,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetInstance ()
 specifier|public
 name|void
@@ -255,6 +267,8 @@ name|gf6
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDistributivity ()
 specifier|public
 name|void
@@ -385,6 +399,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDevision ()
 specifier|public
 name|void
@@ -485,6 +501,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testPower ()
 specifier|public
 name|void
@@ -575,6 +593,8 @@ operator|)
 assert|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testPolynomialDistributivity ()
 specifier|public
 name|void
@@ -723,6 +743,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSubstitute ()
 specifier|public
 name|void
@@ -889,6 +911,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSolveVandermondeSystem ()
 specifier|public
 name|void
@@ -1126,6 +1150,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRemainder ()
 specifier|public
 name|void

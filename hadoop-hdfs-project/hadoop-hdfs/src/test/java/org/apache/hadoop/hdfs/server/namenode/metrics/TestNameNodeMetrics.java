@@ -78,7 +78,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
@@ -282,7 +282,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstants
+operator|.
+name|SafeModeAction
 import|;
 end_import
 
@@ -298,9 +300,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|SafeModeAction
+name|LocatedBlock
 import|;
 end_import
 

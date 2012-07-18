@@ -19,12 +19,38 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -153,8 +179,6 @@ operator|new
 name|MyService
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|service
@@ -163,8 +187,6 @@ name|getInterface
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|service
@@ -175,8 +197,6 @@ argument_list|,
 literal|"myservice"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|service
@@ -284,8 +304,6 @@ argument_list|(
 name|server
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|service
@@ -298,8 +316,6 @@ argument_list|,
 literal|"server.myservice.foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|service
@@ -313,8 +329,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|service
@@ -330,8 +344,6 @@ argument_list|,
 literal|"FOO"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|MyService

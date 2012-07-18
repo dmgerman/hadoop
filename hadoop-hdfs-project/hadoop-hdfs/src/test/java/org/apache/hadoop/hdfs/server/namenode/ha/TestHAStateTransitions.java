@@ -256,7 +256,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|StateChangeRequestInfo
+name|RequestSource
 import|;
 end_import
 
@@ -272,7 +272,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|RequestSource
+name|StateChangeRequestInfo
 import|;
 end_import
 
@@ -329,22 +329,6 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSNNTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
 import|;
 end_import
 

@@ -30,7 +30,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -148,7 +160,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|Storage
+name|HdfsServerConstants
+operator|.
+name|StartupOption
 import|;
 end_import
 
@@ -166,9 +180,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsServerConstants
-operator|.
-name|StartupOption
+name|Storage
 import|;
 end_import
 

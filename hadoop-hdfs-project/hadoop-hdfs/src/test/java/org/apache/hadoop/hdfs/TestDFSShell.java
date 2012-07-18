@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -165,16 +201,6 @@ operator|.
 name|zip
 operator|.
 name|GZIPOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -444,6 +470,16 @@ name|ToolRunner
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests commands from DFSShell.  */
 end_comment
@@ -453,8 +489,6 @@ DECL|class|TestDFSShell
 specifier|public
 class|class
 name|TestDFSShell
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -707,6 +741,8 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testZeroSizeFile ()
 specifier|public
 name|void
@@ -1003,6 +1039,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRecrusiveRm ()
 specifier|public
 name|void
@@ -1161,6 +1199,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDu ()
 specifier|public
 name|void
@@ -1488,6 +1528,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testPut ()
 specifier|public
 name|void
@@ -2179,6 +2221,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** check command error outputs and exit statuses. */
+annotation|@
+name|Test
 DECL|method|testErrOutPut ()
 specifier|public
 name|void
@@ -3253,6 +3297,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testURIPaths ()
 specifier|public
 name|void
@@ -4040,6 +4086,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testText ()
 specifier|public
 name|void
@@ -4620,6 +4668,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCopyToLocal ()
 specifier|public
 name|void
@@ -5187,6 +5237,8 @@ return|return
 name|path
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCount ()
 specifier|public
 name|void
@@ -6256,6 +6308,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFilePermissions ()
 specifier|public
 name|void
@@ -6641,6 +6695,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Tests various options of DFSShell.    */
+annotation|@
+name|Test
 DECL|method|testDFSShell ()
 specifier|public
 name|void
@@ -8104,6 +8160,8 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRemoteException ()
 specifier|public
 name|void
@@ -8378,6 +8436,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGet ()
 specifier|public
 name|void
@@ -8852,6 +8912,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testLsr ()
 specifier|public
 name|void
@@ -9218,6 +9280,8 @@ name|results
 return|;
 block|}
 comment|/**    * default setting is file:// which is not a DFS    * so DFSAdmin should throw and catch InvalidArgumentException    * and return -1 exit code.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testInvalidShell ()
 specifier|public
 name|void
@@ -9275,6 +9339,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// force Copy Option is -f
+annotation|@
+name|Test
 DECL|method|testCopyCommandsWithForceOption ()
 specifier|public
 name|void

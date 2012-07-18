@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -109,16 +145,6 @@ operator|.
 name|regex
 operator|.
 name|Pattern
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -270,6 +296,16 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test verifies that block verification occurs on the datanode  */
 end_comment
@@ -279,8 +315,6 @@ DECL|class|TestDatanodeBlockScanner
 specifier|public
 class|class
 name|TestDatanodeBlockScanner
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -647,6 +681,8 @@ return|return
 name|verificationTime
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDatanodeBlockScanner ()
 specifier|public
 name|void
@@ -931,6 +967,8 @@ name|blk
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionPolicy ()
 specifier|public
 name|void
@@ -1236,6 +1274,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * testBlockCorruptionRecoveryPolicy.    * This tests recovery of corrupt replicas, first for one corrupt replica    * then for two. The test invokes blockCorruptionRecoveryPolicy which    * 1. Creates a block with desired number of replicas    * 2. Corrupts the desired number of replicas and restarts the datanodes    *    containing the corrupt replica. Additionaly we also read the block    *    in case restarting does not report corrupt replicas.    *    Restarting or reading from the datanode would trigger reportBadBlocks     *    to namenode.    *    NameNode adds it to corruptReplicasMap and neededReplication    * 3. Test waits until all corrupt replicas are reported, meanwhile    *    Re-replciation brings the block back to healthy state    * 4. Test again waits until the block is reported with expected number    *    of good replicas.    */
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionRecoveryPolicy1 ()
 specifier|public
 name|void
@@ -1265,6 +1305,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionRecoveryPolicy2 ()
 specifier|public
 name|void
@@ -1667,6 +1709,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Test if NameNode handles truncated blocks in block report */
+annotation|@
+name|Test
 DECL|method|testTruncatedBlockReport ()
 specifier|public
 name|void

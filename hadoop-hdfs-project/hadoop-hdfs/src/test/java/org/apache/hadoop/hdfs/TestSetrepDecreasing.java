@@ -28,11 +28,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -41,9 +41,9 @@ DECL|class|TestSetrepDecreasing
 specifier|public
 class|class
 name|TestSetrepDecreasing
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testSetrepDecreasing ()
 specifier|public
 name|void

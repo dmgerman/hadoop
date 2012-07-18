@@ -24,7 +24,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertSame
 import|;
 end_import
 

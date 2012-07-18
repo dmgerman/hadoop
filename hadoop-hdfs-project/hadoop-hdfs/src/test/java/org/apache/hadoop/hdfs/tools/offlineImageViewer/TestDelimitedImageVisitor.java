@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -62,16 +98,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -90,6 +116,16 @@ name|ImageElement
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test that the DelimitedImageVisistor gives the expected output based  * on predetermined inputs  */
 end_comment
@@ -99,8 +135,6 @@ DECL|class|TestDelimitedImageVisitor
 specifier|public
 class|class
 name|TestDelimitedImageVisitor
-extends|extends
-name|TestCase
 block|{
 DECL|field|ROOT
 specifier|private
@@ -178,6 +212,8 @@ name|delim
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDelimitedImageVisistor ()
 specifier|public
 name|void

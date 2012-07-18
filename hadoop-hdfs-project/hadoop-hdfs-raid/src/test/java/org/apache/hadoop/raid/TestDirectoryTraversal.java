@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -53,16 +89,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -118,6 +144,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -133,20 +173,6 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
 import|;
 end_import
 
@@ -200,9 +226,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|raid
 operator|.
-name|Time
+name|protocol
+operator|.
+name|PolicyInfo
 import|;
 end_import
 
@@ -214,11 +242,19 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|raid
+name|util
 operator|.
-name|protocol
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|PolicyInfo
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -227,8 +263,6 @@ DECL|class|TestDirectoryTraversal
 specifier|public
 class|class
 name|TestDirectoryTraversal
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|final
@@ -284,6 +318,8 @@ init|=
 literal|null
 decl_stmt|;
 comment|/**    * Test basic enumeration.    */
+annotation|@
+name|Test
 DECL|method|testEnumeration ()
 specifier|public
 name|void
@@ -534,6 +570,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSuspension ()
 specifier|public
 name|void
@@ -778,6 +816,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFileFilter ()
 specifier|public
 name|void

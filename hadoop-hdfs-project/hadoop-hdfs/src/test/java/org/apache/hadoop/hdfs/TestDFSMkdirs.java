@@ -17,12 +17,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -32,7 +46,27 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -122,6 +156,16 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests that the DFS command mkdirs cannot create subdirectories  * from a file when passed an illegal path.  HADOOP-281.  */
 end_comment
@@ -131,8 +175,6 @@ DECL|class|TestDFSMkdirs
 specifier|public
 class|class
 name|TestDFSMkdirs
-extends|extends
-name|TestCase
 block|{
 DECL|method|writeFile (FileSystem fileSys, Path name)
 specifier|private
@@ -172,6 +214,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Tests mkdirs can create a directory that does not exist and will    * not create a subdirectory off a file.    */
+annotation|@
+name|Test
 DECL|method|testDFSMkdirs ()
 specifier|public
 name|void
@@ -350,6 +394,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Tests mkdir will not create directory when parent is missing.    */
+annotation|@
+name|Test
 DECL|method|testMkdir ()
 specifier|public
 name|void

@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -32,7 +68,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileNotFoundException
 import|;
 end_import
 
@@ -42,7 +78,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
+name|FileWriter
 import|;
 end_import
 
@@ -90,16 +126,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -134,9 +160,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|conf
 operator|.
-name|StringUtils
+name|Configuration
 import|;
 end_import
 
@@ -148,9 +174,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|fs
 operator|.
-name|Time
+name|FSDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSDataOutputStream
 import|;
 end_import
 
@@ -193,48 +233,6 @@ operator|.
 name|fs
 operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -366,13 +364,33 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|raid
+name|util
 operator|.
-name|protocol
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|PolicyInfo
+name|apache
 operator|.
-name|ErasureCodeType
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -385,8 +403,6 @@ DECL|class|TestRaidNode
 specifier|public
 class|class
 name|TestRaidNode
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_DIR
 specifier|final
@@ -1314,6 +1330,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test to run a filter    */
+annotation|@
+name|Test
 DECL|method|testPathFilter ()
 specifier|public
 name|void
@@ -2800,6 +2818,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test dist Raid    */
+annotation|@
+name|Test
 DECL|method|testDistRaid ()
 specifier|public
 name|void
@@ -3793,6 +3813,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSuspendTraversal ()
 specifier|public
 name|void

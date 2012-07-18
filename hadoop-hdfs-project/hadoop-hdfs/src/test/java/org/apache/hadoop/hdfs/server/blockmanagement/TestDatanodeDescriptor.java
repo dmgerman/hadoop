@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -80,11 +116,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -97,10 +133,10 @@ DECL|class|TestDatanodeDescriptor
 specifier|public
 class|class
 name|TestDatanodeDescriptor
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Test that getInvalidateBlocks observes the maxlimit.    */
+annotation|@
+name|Test
 DECL|method|testGetInvalidateBlocks ()
 specifier|public
 name|void
@@ -231,6 +267,8 @@ name|REMAINING_BLOCKS
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlocksCounter ()
 specifier|public
 name|void

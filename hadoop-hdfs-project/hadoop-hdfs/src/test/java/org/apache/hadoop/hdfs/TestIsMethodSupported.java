@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +57,6 @@ operator|.
 name|net
 operator|.
 name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -554,8 +568,6 @@ argument_list|(
 literal|"rollEditLog"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|exists
@@ -570,8 +582,6 @@ argument_list|(
 literal|"bogusMethod"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|exists
@@ -599,8 +609,6 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -646,8 +654,6 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|//Namenode doesn't implement ClientDatanodeProtocol
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|translator
@@ -680,8 +686,6 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -732,8 +736,6 @@ operator|.
 name|getProxy
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -785,8 +787,6 @@ name|getProxy
 argument_list|()
 decl_stmt|;
 comment|//Nameode doesn't implement JournalProtocol
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|translator
@@ -834,8 +834,6 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|//Not supported at namenode
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|translator
@@ -870,8 +868,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -922,8 +918,6 @@ operator|.
 name|getProxy
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -974,8 +968,6 @@ operator|.
 name|getProxy
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator
@@ -1026,8 +1018,6 @@ operator|.
 name|getProxy
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|translator

@@ -32,7 +32,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|*
+name|DFS_NAMENODE_EDITS_DIR_KEY
 import|;
 end_import
 
@@ -44,7 +44,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 

@@ -21,12 +21,94 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|StringWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
 import|;
 end_import
 
@@ -200,50 +282,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|StringWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
-import|;
-end_import
-
 begin_class
 DECL|class|TestInstrumentationService
 specifier|public
@@ -283,8 +321,6 @@ operator|.
 name|Cron
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -294,8 +330,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -305,8 +339,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -316,8 +348,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -335,8 +365,6 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -347,8 +375,6 @@ argument_list|,
 name|cron
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -359,8 +385,6 @@ argument_list|,
 name|cron
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -372,8 +396,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -390,8 +412,6 @@ argument_list|(
 literal|100
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -417,8 +437,6 @@ name|end
 operator|-
 name|begin
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -430,8 +448,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -441,8 +457,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -470,8 +484,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -483,8 +495,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -520,8 +530,6 @@ name|reEnd
 operator|-
 name|reStart
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -533,8 +541,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -544,8 +550,6 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -560,8 +564,6 @@ operator|.
 name|end
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|cron
@@ -582,8 +584,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -600,8 +600,6 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -613,8 +611,6 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -631,8 +627,6 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -813,8 +807,6 @@ operator|.
 name|getValues
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -831,8 +823,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -849,8 +839,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -867,8 +855,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1024,8 +1010,6 @@ operator|.
 name|getValues
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1042,8 +1026,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1060,8 +1042,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1078,8 +1058,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1248,8 +1226,6 @@ operator|.
 name|getValues
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1266,8 +1242,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1284,8 +1258,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1302,8 +1274,6 @@ argument_list|,
 literal|20
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|values
@@ -1338,8 +1308,6 @@ name|toJSONString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1350,8 +1318,6 @@ argument_list|,
 literal|4
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1371,8 +1337,6 @@ name|LAST_TOTAL
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1392,8 +1356,6 @@ name|LAST_OWN
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1413,8 +1375,6 @@ name|AVG_TOTAL
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1470,8 +1430,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1482,8 +1440,6 @@ argument_list|,
 literal|4
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1503,8 +1459,6 @@ name|LAST_TOTAL
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1524,8 +1478,6 @@ name|LAST_OWN
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1545,8 +1497,6 @@ name|AVG_TOTAL
 index|]
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1641,8 +1591,6 @@ argument_list|,
 name|var
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1660,8 +1608,6 @@ operator|.
 name|sample
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1686,8 +1632,6 @@ operator|.
 name|sample
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1718,8 +1662,6 @@ operator|.
 name|sample
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1752,8 +1694,6 @@ operator|.
 name|sample
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1788,8 +1728,6 @@ operator|.
 name|sample
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|sampler
@@ -1830,8 +1768,6 @@ name|toJSONString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1842,8 +1778,6 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1859,8 +1793,6 @@ name|getRate
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1909,8 +1841,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1921,8 +1851,6 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -1938,8 +1866,6 @@ name|getRate
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -2024,8 +1950,6 @@ name|toJSONString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -2036,8 +1960,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -2086,8 +2008,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -2098,8 +2018,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|json
@@ -2217,8 +2135,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|instrumentation
@@ -2423,8 +2339,6 @@ operator|.
 name|getSnapshot
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2435,8 +2349,6 @@ literal|"os-env"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2447,8 +2359,6 @@ literal|"sys-props"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2459,8 +2369,6 @@ literal|"jvm"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2471,8 +2379,6 @@ literal|"counters"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2483,8 +2389,6 @@ literal|"timers"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2495,8 +2399,6 @@ literal|"variables"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|snapshot
@@ -2507,8 +2409,6 @@ literal|"samplers"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2534,8 +2434,6 @@ literal|"PATH"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2561,8 +2459,6 @@ literal|"java.version"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2588,8 +2484,6 @@ literal|"free.memory"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2615,8 +2509,6 @@ literal|"max.memory"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2642,8 +2534,6 @@ literal|"total.memory"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2674,8 +2564,6 @@ literal|"g"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2706,8 +2594,6 @@ literal|"g"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2738,8 +2624,6 @@ literal|"g"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2770,8 +2654,6 @@ literal|"g"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2807,8 +2689,6 @@ literal|"c"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2844,8 +2724,6 @@ literal|"c1"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2881,8 +2759,6 @@ literal|"t"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -2918,8 +2794,6 @@ literal|"v"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 operator|(
@@ -3163,8 +3037,6 @@ operator|.
 name|get
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|i
@@ -3245,8 +3117,6 @@ argument_list|(
 literal|"s"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|sampler

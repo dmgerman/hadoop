@@ -17,6 +17,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -88,7 +136,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|FileSystem
 import|;
 end_import
 
@@ -102,7 +150,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
+name|Path
 import|;
 end_import
 
@@ -186,37 +234,11 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|common
 operator|.
-name|FSNamesystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|HdfsServerConstants
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RemoteException
+name|StartupOption
 import|;
 end_import
 
@@ -232,11 +254,9 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
+name|namenode
 operator|.
-name|HdfsServerConstants
-operator|.
-name|StartupOption
+name|FSNamesystem
 import|;
 end_import
 
@@ -302,21 +322,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|test
+name|io
 operator|.
-name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
+name|IOUtils
 import|;
 end_import
 
@@ -324,9 +332,27 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Before
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -337,6 +363,16 @@ operator|.
 name|junit
 operator|.
 name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 

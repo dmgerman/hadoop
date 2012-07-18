@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +45,6 @@ operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -124,6 +126,16 @@ name|DatanodeManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests DatanodeDescriptor.getBlocksScheduled() at the  * NameNode. This counter is supposed to keep track of blocks currently  * scheduled to a datanode.  */
 end_comment
@@ -133,9 +145,9 @@ DECL|class|TestBlocksScheduledCounter
 specifier|public
 class|class
 name|TestBlocksScheduledCounter
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testBlocksScheduledCounter ()
 specifier|public
 name|void

@@ -17,12 +17,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -32,7 +46,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
 import|;
 end_import
 
@@ -57,6 +71,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|BlockLocation
 import|;
 end_import
 
@@ -138,20 +166,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|BlockLocation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|server
@@ -159,6 +173,16 @@ operator|.
 name|datanode
 operator|.
 name|SimulatedFSDataset
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -171,8 +195,6 @@ DECL|class|TestSmallBlock
 specifier|public
 class|class
 name|TestSmallBlock
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|static
@@ -578,6 +600,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests small block size in in DFS.    */
+annotation|@
+name|Test
 DECL|method|testSmallBlock ()
 specifier|public
 name|void
@@ -686,6 +710,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSmallBlockSimulatedStorage ()
 specifier|public
 name|void

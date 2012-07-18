@@ -17,12 +17,24 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
 name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|text
+operator|.
+name|MessageFormat
 import|;
 end_import
 
@@ -59,16 +71,6 @@ operator|.
 name|rules
 operator|.
 name|MethodRule
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|text
-operator|.
-name|MessageFormat
 import|;
 end_import
 
@@ -442,8 +444,6 @@ condition|(
 name|failIfTimeout
 condition|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 name|MessageFormat

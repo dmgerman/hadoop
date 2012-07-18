@@ -19,12 +19,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -107,8 +121,6 @@ operator|.
 name|TC
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -121,8 +133,6 @@ operator|.
 name|TC
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -133,8 +143,6 @@ argument_list|,
 literal|"TC: {0}"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|ex
@@ -155,8 +163,6 @@ argument_list|,
 literal|"msg"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -169,8 +175,6 @@ operator|.
 name|TC
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -181,8 +185,6 @@ argument_list|,
 literal|"TC: msg"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|ex
@@ -210,8 +212,6 @@ argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -224,8 +224,6 @@ operator|.
 name|TC
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -241,8 +239,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -266,8 +262,6 @@ argument_list|(
 name|xcause
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -280,8 +274,6 @@ operator|.
 name|TC
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex
@@ -295,8 +287,6 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ex

@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -178,17 +190,21 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestRenameWhileOpen
 specifier|public
 class|class
 name|TestRenameWhileOpen
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 block|{
 operator|(
@@ -273,6 +289,8 @@ block|{
 comment|//TestFileCreation.checkFullFile(fs, p);
 block|}
 comment|/**    * open /user/dir1/file1 /user/dir2/file2    * mkdir /user/dir3    * move /user/dir1 /user/dir3    */
+annotation|@
+name|Test
 DECL|method|testWhileOpenRenameParent ()
 specifier|public
 name|void
@@ -775,6 +793,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * open /user/dir1/file1 /user/dir2/file2    * move /user/dir1 /user/dir3    */
+annotation|@
+name|Test
 DECL|method|testWhileOpenRenameParentToNonexistentDir ()
 specifier|public
 name|void
@@ -1206,6 +1226,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * open /user/dir1/file1     * mkdir /user/dir2    * move /user/dir1/file1 /user/dir2/    */
+annotation|@
+name|Test
 DECL|method|testWhileOpenRenameToExistentDirectory ()
 specifier|public
 name|void
@@ -1573,6 +1595,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * open /user/dir1/file1     * move /user/dir1/file1 /user/dir2/    */
+annotation|@
+name|Test
 DECL|method|testWhileOpenRenameToNonExistentDirectory ()
 specifier|public
 name|void

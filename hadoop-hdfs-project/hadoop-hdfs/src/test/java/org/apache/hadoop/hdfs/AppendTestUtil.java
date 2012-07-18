@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,26 +55,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -744,8 +736,6 @@ operator|.
 name|getFileLength
 argument_list|()
 decl_stmt|;
-name|TestCase
-operator|.
 name|assertEquals
 argument_list|(
 name|length
@@ -756,8 +746,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|TestCase
-operator|.
 name|assertEquals
 argument_list|(
 name|length
@@ -782,8 +770,6 @@ name|i
 operator|++
 control|)
 block|{
-name|TestCase
-operator|.
 name|assertEquals
 argument_list|(
 operator|(
@@ -809,8 +795,6 @@ name|int
 operator|)
 name|length
 expr_stmt|;
-name|TestCase
-operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -1053,8 +1037,6 @@ name|idx
 operator|++
 control|)
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|message
@@ -1161,8 +1143,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|bytes
@@ -1220,8 +1200,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|i

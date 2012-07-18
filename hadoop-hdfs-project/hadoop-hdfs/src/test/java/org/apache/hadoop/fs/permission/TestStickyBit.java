@@ -19,22 +19,60 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -192,13 +230,21 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestStickyBit
 specifier|public
 class|class
 name|TestStickyBit
-extends|extends
-name|TestCase
 block|{
 DECL|field|user1
 specifier|static
@@ -843,6 +889,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGeneralSBBehavior ()
 specifier|public
 name|void
@@ -1021,6 +1069,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that one user can't rename/move another user's file when the sticky    * bit is set.    */
+annotation|@
+name|Test
 DECL|method|testMovingFiles ()
 specifier|public
 name|void
@@ -1266,6 +1316,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Ensure that when we set a sticky bit and shut down the file system, we get    * the sticky bit back on re-start, and that no extra sticky bits appear after    * re-start.    */
+annotation|@
+name|Test
 DECL|method|testStickyBitPersistence ()
 specifier|public
 name|void

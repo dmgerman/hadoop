@@ -16,18 +16,24 @@ name|hdfs
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestFileCreationNamenodeRestart
 specifier|public
 class|class
 name|TestFileCreationNamenodeRestart
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testFileCreationNamenodeRestart ()
 specifier|public
 name|void

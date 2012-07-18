@@ -19,12 +19,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
 name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
@@ -144,8 +146,6 @@ argument_list|,
 literal|"/tmp"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ServerWebApp
@@ -158,8 +158,6 @@ argument_list|,
 literal|"/tmp"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ServerWebApp
@@ -185,8 +183,6 @@ argument_list|,
 literal|"/tmplog"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|ServerWebApp
@@ -273,8 +269,6 @@ literal|"TestServerWebApp1"
 argument_list|)
 block|{     }
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|server
@@ -296,8 +290,6 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|server
@@ -319,8 +311,6 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|server

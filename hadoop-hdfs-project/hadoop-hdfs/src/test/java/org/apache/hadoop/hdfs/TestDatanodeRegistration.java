@@ -48,7 +48,19 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
 import|;
 end_import
 

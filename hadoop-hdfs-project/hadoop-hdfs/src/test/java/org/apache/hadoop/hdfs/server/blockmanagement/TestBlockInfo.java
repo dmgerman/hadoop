@@ -21,12 +21,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
@@ -38,7 +40,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertNotNull
 import|;
 end_import
 
@@ -152,17 +154,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockInfo
+name|Test
 import|;
 end_import
 

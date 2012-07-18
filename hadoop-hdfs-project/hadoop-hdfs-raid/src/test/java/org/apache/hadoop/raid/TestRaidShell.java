@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -70,16 +94,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -114,9 +128,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|conf
 operator|.
-name|StringUtils
+name|Configuration
 import|;
 end_import
 
@@ -128,23 +142,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|fs
 operator|.
-name|Time
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|ToolRunner
+name|FSDataInputStream
 import|;
 end_import
 
@@ -198,23 +198,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdfs
 operator|.
-name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|DistributedFileSystem
 import|;
 end_import
 
@@ -229,6 +215,34 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|RaidDFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|TestRaidDfs
 import|;
 end_import
 
@@ -272,9 +286,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|DistributedFileSystem
+name|StringUtils
 import|;
 end_import
 
@@ -286,9 +300,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|TestRaidDfs
+name|Time
 import|;
 end_import
 
@@ -300,9 +314,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|RaidDFSUtil
+name|ToolRunner
 import|;
 end_import
 
@@ -310,13 +324,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|raid
-operator|.
-name|RaidNode
+name|Test
 import|;
 end_import
 
@@ -325,8 +335,6 @@ DECL|class|TestRaidShell
 specifier|public
 class|class
 name|TestRaidShell
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|final
@@ -439,6 +447,8 @@ name|Random
 argument_list|()
 decl_stmt|;
 comment|/**    * Create a file with three stripes, corrupt a block each in two stripes,    * and wait for the the file to be fixed.    */
+annotation|@
+name|Test
 DECL|method|testBlockFix ()
 specifier|public
 name|void

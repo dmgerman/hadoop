@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -48,11 +84,31 @@ end_import
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|apache
 operator|.
-name|TestCase
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|impl
+operator|.
+name|Log4JLogger
 import|;
 end_import
 
@@ -266,39 +322,19 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|impl
-operator|.
-name|Log4JLogger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|log4j
 operator|.
 name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -311,8 +347,6 @@ DECL|class|TestFileAppend2
 specifier|public
 class|class
 name|TestFileAppend2
-extends|extends
-name|TestCase
 block|{
 block|{
 operator|(
@@ -494,6 +528,8 @@ init|=
 literal|true
 decl_stmt|;
 comment|/**    * Creates one file, writes a few bytes to it and then closed it.    * Reopens the same file for appending, write all blocks and then close.    * Verify that all data exists in file.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testSimpleAppend ()
 specifier|public
 name|void
@@ -1833,6 +1869,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test that appends to files at random offsets.    * @throws IOException an exception might be thrown    */
+annotation|@
+name|Test
 DECL|method|testComplexAppend ()
 specifier|public
 name|void

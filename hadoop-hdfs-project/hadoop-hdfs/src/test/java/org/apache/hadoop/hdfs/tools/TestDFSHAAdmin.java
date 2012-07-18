@@ -26,7 +26,31 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -80,7 +104,7 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|LogFactory
+name|Log
 import|;
 end_import
 
@@ -94,7 +118,7 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|Log
+name|LogFactory
 import|;
 end_import
 
@@ -109,48 +133,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
 import|;
 end_import
 
@@ -196,7 +178,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|StateChangeRequestInfo
+name|RequestSource
 import|;
 end_import
 
@@ -212,7 +194,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|RequestSource
+name|StateChangeRequestInfo
 import|;
 end_import
 
@@ -269,6 +251,48 @@ operator|.
 name|ha
 operator|.
 name|ZKFCProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
 import|;
 end_import
 

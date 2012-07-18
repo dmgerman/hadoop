@@ -21,6 +21,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -82,16 +130,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -148,6 +186,16 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test makes sure that   *   CorruptReplicasMap::numBlocksWithCorruptReplicas and  *   CorruptReplicasMap::getCorruptReplicaBlockIds  *   return the correct values  */
 end_comment
@@ -157,8 +205,6 @@ DECL|class|TestCorruptReplicaInfo
 specifier|public
 class|class
 name|TestCorruptReplicaInfo
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -263,6 +309,8 @@ name|block_id
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCorruptReplicaInfo ()
 specifier|public
 name|void

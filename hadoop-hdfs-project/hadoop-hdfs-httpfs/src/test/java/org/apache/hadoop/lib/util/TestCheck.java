@@ -19,12 +19,34 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
 name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
 import|;
 end_import
 
@@ -52,26 +74,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
 begin_class
 DECL|class|TestCheck
 specifier|public
@@ -88,8 +90,6 @@ name|void
 name|notNullNotNull
 parameter_list|()
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -360,8 +360,6 @@ name|void
 name|notEmptyNotEmtpy
 parameter_list|()
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -437,8 +435,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -455,8 +451,6 @@ argument_list|,
 literal|"a"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -473,8 +467,6 @@ argument_list|,
 literal|"a1"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -491,8 +483,6 @@ argument_list|,
 literal|"a_"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -605,8 +595,6 @@ name|void
 name|checkGTZeroGreater
 parameter_list|()
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -681,8 +669,6 @@ name|void
 name|checkGEZero
 parameter_list|()
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check
@@ -697,8 +683,6 @@ argument_list|,
 literal|120
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|Check

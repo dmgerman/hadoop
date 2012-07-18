@@ -21,32 +21,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|Assert
 operator|.
-name|junit
-operator|.
-name|AfterClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
+name|assertTrue
 import|;
 end_import
 
@@ -66,16 +48,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|DataInputStream
 import|;
 end_import
@@ -86,7 +58,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|InputStreamReader
+name|FileInputStream
 import|;
 end_import
 
@@ -104,9 +76,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
+name|io
 operator|.
-name|InterruptedException
+name|InputStreamReader
 import|;
 end_import
 
@@ -117,18 +89,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
 import|;
 end_import
 
@@ -170,6 +130,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FSDataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -185,6 +159,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -220,17 +208,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
+name|AfterClass
 import|;
 end_import
 
@@ -238,13 +218,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
+name|BeforeClass
 import|;
 end_import
 
@@ -252,13 +228,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
+name|Test
 import|;
 end_import
 

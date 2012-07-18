@@ -220,9 +220,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|conf
 operator|.
-name|HdfsConfiguration
+name|Configuration
 import|;
 end_import
 
@@ -234,9 +234,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|hdfs
 operator|.
-name|Configuration
+name|HdfsConfiguration
 import|;
 end_import
 

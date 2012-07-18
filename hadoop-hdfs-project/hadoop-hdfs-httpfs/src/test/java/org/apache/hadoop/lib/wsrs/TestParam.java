@@ -19,22 +19,26 @@ package|;
 end_package
 
 begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -47,6 +51,16 @@ operator|.
 name|regex
 operator|.
 name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -91,8 +105,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|name
@@ -103,8 +115,6 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|domain
@@ -115,8 +125,6 @@ name|getDomain
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|defaultValue
@@ -127,8 +135,6 @@ name|value
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|defaultValue
@@ -141,8 +147,6 @@ literal|""
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|defaultValue
@@ -155,8 +159,6 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|validValue
@@ -188,8 +190,6 @@ argument_list|(
 name|invalidStrValue
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -208,8 +208,6 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -231,8 +229,6 @@ argument_list|(
 name|outOfRangeValue
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -251,8 +247,6 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -432,8 +426,6 @@ literal|8
 argument_list|)
 block|{     }
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 operator|new

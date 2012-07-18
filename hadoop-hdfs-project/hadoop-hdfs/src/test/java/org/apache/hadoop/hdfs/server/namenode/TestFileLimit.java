@@ -21,6 +21,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -37,16 +49,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -130,6 +132,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|HdfsConfiguration
 import|;
 end_import
@@ -170,13 +186,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
+name|Test
 import|;
 end_import
 
@@ -189,8 +201,6 @@ DECL|class|TestFileLimit
 specifier|public
 class|class
 name|TestFileLimit
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|static
@@ -377,6 +387,8 @@ block|{       }
 block|}
 block|}
 comment|/**    * Test that file data becomes available before file is closed.    */
+annotation|@
+name|Test
 DECL|method|testFileLimit ()
 specifier|public
 name|void
@@ -831,6 +843,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFileLimitSimulated ()
 specifier|public
 name|void

@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -32,7 +44,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileNotFoundException
 import|;
 end_import
 
@@ -42,7 +54,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
+name|FileWriter
 import|;
 end_import
 
@@ -63,38 +75,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
 import|;
 end_import
 
@@ -134,9 +114,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|conf
 operator|.
-name|Time
+name|Configuration
 import|;
 end_import
 
@@ -148,9 +128,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|fs
 operator|.
-name|ToolRunner
+name|FSDataOutputStream
 import|;
 end_import
 
@@ -204,23 +184,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdfs
 operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|DistributedFileSystem
 import|;
 end_import
 
@@ -235,6 +201,34 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|RaidDFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|TestRaidDfs
 import|;
 end_import
 
@@ -278,9 +272,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|DistributedFileSystem
+name|Time
 import|;
 end_import
 
@@ -292,9 +286,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|TestRaidDfs
+name|ToolRunner
 import|;
 end_import
 
@@ -302,13 +296,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|RaidDFSUtil
+name|After
 import|;
 end_import
 
@@ -316,27 +306,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|raid
-operator|.
-name|RaidNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|raid
-operator|.
-name|HarIndex
+name|Test
 import|;
 end_import
 

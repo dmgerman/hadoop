@@ -19,46 +19,50 @@ package|;
 end_package
 
 begin_import
-import|import
-name|junit
+import|import static
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|HTestCase
-import|;
-end_import
-
-begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|mockito
+name|io
 operator|.
-name|Mockito
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -114,25 +118,35 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|test
+operator|.
+name|HTestCase
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|junit
 operator|.
-name|concurrent
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|atomic
+name|mockito
 operator|.
-name|AtomicBoolean
+name|Mockito
 import|;
 end_import
 
@@ -225,8 +239,6 @@ name|IOException
 throws|,
 name|ServletException
 block|{
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|HostnameFilter
@@ -264,8 +276,6 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|HostnameFilter
@@ -285,8 +295,6 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|invoked
@@ -295,8 +303,6 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|HostnameFilter

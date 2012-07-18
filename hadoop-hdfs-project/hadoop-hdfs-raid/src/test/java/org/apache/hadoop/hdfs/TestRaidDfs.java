@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -117,16 +141,6 @@ operator|.
 name|zip
 operator|.
 name|CRC32
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -334,13 +348,21 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestRaidDfs
 specifier|public
 class|class
 name|TestRaidDfs
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_DIR
 specifier|final
@@ -1218,6 +1240,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a file, corrupt several blocks in it and ensure that the file can be    * read through DistributedRaidFileSystem by ReedSolomon coding.    */
+annotation|@
+name|Test
 DECL|method|testRaidDfsRs ()
 specifier|public
 name|void
@@ -1384,6 +1408,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test DistributedRaidFileSystem.readFully()    */
+annotation|@
+name|Test
 DECL|method|testReadFully ()
 specifier|public
 name|void
@@ -1668,6 +1694,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that access time and mtime of a source file do not change after    * raiding.    */
+annotation|@
+name|Test
 DECL|method|testAccessTime ()
 specifier|public
 name|void
@@ -1836,6 +1864,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a file, corrupt a block in it and ensure that the file can be    * read through DistributedRaidFileSystem by XOR code.    */
+annotation|@
+name|Test
 DECL|method|testRaidDfsXor ()
 specifier|public
 name|void

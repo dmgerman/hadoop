@@ -21,12 +21,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
 import|;
 end_import
 
@@ -36,7 +38,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -162,24 +174,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
-operator|.
-name|EditLogFileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|Storage
@@ -252,6 +246,16 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the creation and validation of a checkpoint.  */
 end_comment
@@ -261,8 +265,6 @@ DECL|class|TestSecurityTokenEditLog
 specifier|public
 class|class
 name|TestSecurityTokenEditLog
-extends|extends
-name|TestCase
 block|{
 DECL|field|NUM_DATA_NODES
 specifier|static
@@ -455,6 +457,8 @@ block|}
 block|}
 block|}
 comment|/**    * Tests transaction logging in dfs.    */
+annotation|@
+name|Test
 DECL|method|testEditLog ()
 specifier|public
 name|void

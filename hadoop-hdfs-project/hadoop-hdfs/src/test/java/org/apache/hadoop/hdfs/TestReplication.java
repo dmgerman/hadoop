@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -83,16 +107,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -282,6 +296,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -299,24 +331,6 @@ operator|.
 name|protocol
 operator|.
 name|LocatedBlocks
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|DatanodeReportType
 import|;
 end_import
 
@@ -352,6 +366,16 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the replication of a DFS file.  */
 end_comment
@@ -361,8 +385,6 @@ DECL|class|TestReplication
 specifier|public
 class|class
 name|TestReplication
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|private
@@ -1054,6 +1076,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*     * Test if Datanode reports bad blocks during replication request    */
+annotation|@
+name|Test
 DECL|method|testBadBlockReportOnTransfer ()
 specifier|public
 name|void
@@ -1616,6 +1640,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testReplicationSimulatedStorag ()
 specifier|public
 name|void
@@ -1630,6 +1656,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReplication ()
 specifier|public
 name|void
@@ -1846,6 +1874,8 @@ block|{}
 block|}
 block|}
 comment|/* This test makes sure that NameNode retries all the available blocks     * for under replicated blocks.     *     * It creates a file with one block and replication of 4. It corrupts     * two of the blocks and removes one of the replicas. Expected behavior is    * that missing replica will be copied from one valid source.    */
+annotation|@
+name|Test
 DECL|method|testPendingReplicationRetry ()
 specifier|public
 name|void
@@ -2398,6 +2428,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test if replication can detect mismatched length on-disk blocks    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testReplicateLenMismatchedBlock ()
 specifier|public
 name|void

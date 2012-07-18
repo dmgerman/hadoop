@@ -28,17 +28,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -59,16 +61,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -124,6 +116,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -152,20 +158,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|MiniDFSCluster
 import|;
 end_import
@@ -181,6 +173,16 @@ operator|.
 name|test
 operator|.
 name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -251,8 +253,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Should have throw the exception since the ports match"

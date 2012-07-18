@@ -246,6 +246,42 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
 name|Assume
 operator|.
 name|assumeTrue
@@ -766,6 +802,16 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests various cases during file creation.  */
 end_comment
@@ -775,12 +821,6 @@ DECL|class|TestFileCreation
 specifier|public
 class|class
 name|TestFileCreation
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|DIR
 specifier|static
@@ -1077,6 +1117,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that server default values can be retrieved on the client side    */
+annotation|@
+name|Test
 DECL|method|testServerDefaults ()
 specifier|public
 name|void
@@ -1252,6 +1294,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFileCreation ()
 specifier|public
 name|void
@@ -1267,6 +1311,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Same test but the client should bind to a local interface */
+annotation|@
+name|Test
 DECL|method|testFileCreationSetLocalInterface ()
 specifier|public
 name|void
@@ -1787,6 +1833,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test deleteOnExit    */
+annotation|@
+name|Test
 DECL|method|testDeleteOnExit ()
 specifier|public
 name|void
@@ -2087,6 +2135,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that file data does not become corrupted even in the face of errors.    */
+annotation|@
+name|Test
 DECL|method|testFileCreationError1 ()
 specifier|public
 name|void
@@ -2420,6 +2470,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that the filesystem removes the last block from a file if its    * lease expires.    */
+annotation|@
+name|Test
 DECL|method|testFileCreationError2 ()
 specifier|public
 name|void
@@ -2785,6 +2837,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** test addBlock(..) when replication<min and excludeNodes==null. */
+annotation|@
+name|Test
 DECL|method|testFileCreationError3 ()
 specifier|public
 name|void
@@ -3720,6 +3774,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that all open files are closed when client dies abnormally.    */
+annotation|@
+name|Test
 DECL|method|testDFSClientDeath ()
 specifier|public
 name|void
@@ -3874,6 +3930,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test file creation using createNonRecursive().    */
+annotation|@
+name|Test
 DECL|method|testFileCreationNonRecursive ()
 specifier|public
 name|void
@@ -4385,6 +4443,8 @@ name|stm
 return|;
 block|}
 comment|/**  * Test that file data becomes available before file is closed.  */
+annotation|@
+name|Test
 DECL|method|testFileCreationSimulated ()
 specifier|public
 name|void
@@ -4406,6 +4466,8 @@ literal|false
 expr_stmt|;
 block|}
 comment|/**    * Test creating two files at the same time.     */
+annotation|@
+name|Test
 DECL|method|testConcurrentFileCreation ()
 specifier|public
 name|void
@@ -4667,6 +4729,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test creating a file whose data gets sync when closed    */
+annotation|@
+name|Test
 DECL|method|testFileCreationSyncOnClose ()
 specifier|public
 name|void
@@ -4937,6 +5001,8 @@ block|}
 block|}
 block|}
 comment|/**    * Create a file, write something, hflush but not close.    * Then change lease period and wait for lease recovery.    * Finally, read the block directly from each Datanode and verify the content.    */
+annotation|@
+name|Test
 DECL|method|testLeaseExpireHardLimit ()
 specifier|public
 name|void
@@ -5353,6 +5419,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// test closing file system before all file handles are closed.
+annotation|@
+name|Test
 DECL|method|testFsClose ()
 specifier|public
 name|void
@@ -5494,6 +5562,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// test closing file after cluster is shutdown
+annotation|@
+name|Test
 DECL|method|testFsCloseAfterClusterShutdown ()
 specifier|public
 name|void

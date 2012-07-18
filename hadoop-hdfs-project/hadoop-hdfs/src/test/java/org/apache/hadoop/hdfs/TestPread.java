@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +67,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -122,7 +136,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|server
+operator|.
+name|datanode
+operator|.
+name|SimulatedFSDataset
 import|;
 end_import
 
@@ -130,17 +148,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|SimulatedFSDataset
+name|Test
 import|;
 end_import
 
@@ -153,8 +163,6 @@ DECL|class|TestPread
 specifier|public
 class|class
 name|TestPread
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|static
@@ -1265,6 +1273,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests positional read in DFS.    */
+annotation|@
+name|Test
 DECL|method|testPreadDFS ()
 specifier|public
 name|void
@@ -1437,6 +1447,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testPreadDFSSimulated ()
 specifier|public
 name|void
@@ -1458,6 +1470,8 @@ literal|false
 expr_stmt|;
 block|}
 comment|/**    * Tests positional read in LocalFS.    */
+annotation|@
+name|Test
 DECL|method|testPreadLocalFS ()
 specifier|public
 name|void

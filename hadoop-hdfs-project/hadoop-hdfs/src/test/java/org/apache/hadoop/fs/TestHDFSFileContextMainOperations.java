@@ -17,6 +17,38 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileContextTestHelper
+operator|.
+name|exists
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileContextTestHelper
+operator|.
+name|getTestRootPath
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -116,9 +148,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
+name|hdfs
 operator|.
-name|RemoteException
+name|protocol
+operator|.
+name|HdfsConstants
 import|;
 end_import
 
@@ -130,11 +164,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ipc
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
+name|RemoteException
 import|;
 end_import
 
@@ -209,22 +241,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileContextTestHelper
-operator|.
-name|*
 import|;
 end_import
 

@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -62,11 +86,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -75,8 +99,6 @@ DECL|class|TestErasureCodes
 specifier|public
 class|class
 name|TestErasureCodes
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_CODES
 specifier|final
@@ -101,6 +123,8 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testEncodeDecode ()
 specifier|public
 name|void
@@ -468,6 +492,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRSPerformance ()
 specifier|public
 name|void
@@ -1070,6 +1096,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testXorPerformance ()
 specifier|public
 name|void
@@ -1463,6 +1491,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testComputeErrorLocations ()
 specifier|public
 name|void

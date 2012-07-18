@@ -20,6 +20,54 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -219,16 +267,6 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -764,6 +802,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -833,8 +881,6 @@ DECL|class|TestDFSClientRetries
 specifier|public
 class|class
 name|TestDFSClientRetries
-extends|extends
-name|TestCase
 block|{
 DECL|field|ADDRESS
 specifier|private
@@ -1154,6 +1200,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * This makes sure that when DN closes clients socket after client had    * successfully connected earlier, the data can still be fetched.    */
+annotation|@
+name|Test
 DECL|method|testWriteTimeoutAtDataNode ()
 specifier|public
 name|void
@@ -1413,6 +1461,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"serial"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testNotYetReplicatedErrors ()
 specifier|public
 name|void
@@ -1645,6 +1695,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * This tests that DFSInputStream failures are counted for a given read    * operation, and not over the lifetime of the stream. It is a regression    * test for HDFS-127.    */
+annotation|@
+name|Test
 DECL|method|testFailuresArePerOperation ()
 specifier|public
 name|void
@@ -2070,6 +2122,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that getAdditionalBlock() and close() are idempotent. This allows    * a client to safely retry a call and still produce a correct    * file. See HDFS-3031.    */
+annotation|@
+name|Test
 DECL|method|testIdempotentAllocateBlockAndClose ()
 specifier|public
 name|void
@@ -2879,6 +2933,8 @@ return|;
 block|}
 block|}
 comment|/**    * Test that a DFSClient waits for random time before retry on busy blocks.    */
+annotation|@
+name|Test
 DECL|method|testDFSClientRetriesOnBusyBlocks ()
 specifier|public
 name|void
@@ -4128,6 +4184,8 @@ name|counter
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFileChecksum ()
 specifier|public
 name|void
@@ -4314,6 +4372,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Test that timeout occurs when DN does not respond to RPC.    * Start up a server and ask it to sleep for n seconds. Make an    * RPC to the server and set rpcTimeout to less than n and ensure    * that socketTimeoutException is obtained    */
+annotation|@
+name|Test
 DECL|method|testClientDNProtocolTimeout ()
 specifier|public
 name|void
@@ -4473,6 +4533,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that checksum failures are recovered from by the next read on the same    * DFSInputStream. Corruption information is not persisted from read call to    * read call, so the client should expect consecutive calls to behave the same    * way. See HDFS-3067.    */
+annotation|@
+name|Test
 DECL|method|testRetryOnChecksumFailure ()
 specifier|public
 name|void
@@ -4718,6 +4780,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Test client retry with namenode restarting. */
+annotation|@
+name|Test
 DECL|method|testNamenodeRestart ()
 specifier|public
 name|void
@@ -5439,6 +5503,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testMultipleLinearRandomRetry ()
 specifier|public
 name|void

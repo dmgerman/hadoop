@@ -17,6 +17,50 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|assertGauge
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getMetrics
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +87,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -185,18 +219,32 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|test
+name|junit
 operator|.
-name|MetricsAsserts
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|*
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -209,8 +257,6 @@ DECL|class|TestJMXGet
 specifier|public
 class|class
 name|TestJMXGet
-extends|extends
-name|TestCase
 block|{
 DECL|field|config
 specifier|private
@@ -336,9 +382,9 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -354,7 +400,7 @@ expr_stmt|;
 block|}
 comment|/**    * clean up    */
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -417,6 +463,8 @@ throw|;
 block|}
 block|}
 comment|/**    * test JMX connection to NameNode..    * @throws Exception     */
+annotation|@
+name|Test
 DECL|method|testNameNode ()
 specifier|public
 name|void
@@ -549,6 +597,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * test JMX connection to DataNode..    * @throws Exception     */
+annotation|@
+name|Test
 DECL|method|testDataNode ()
 specifier|public
 name|void

@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -37,16 +61,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -78,6 +92,16 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a unit test, which tests {@link Util#stringAsURI(String)}  * for Windows and Unix style file paths.  */
 end_comment
@@ -87,8 +111,6 @@ DECL|class|TestGetUriFromString
 specifier|public
 class|class
 name|TestGetUriFromString
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -187,6 +209,8 @@ operator|+
 name|URI_PATH_WINDOWS
 decl_stmt|;
 comment|/**    * Test for a relative path, os independent    * @throws IOException     */
+annotation|@
+name|Test
 DECL|method|testRelativePathAsURI ()
 specifier|public
 name|void
@@ -221,6 +245,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test for an OS dependent absolute paths.    * @throws IOException     */
+annotation|@
+name|Test
 DECL|method|testAbsolutePathAsURI ()
 specifier|public
 name|void
@@ -292,6 +318,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test for a URI    * @throws IOException     */
+annotation|@
+name|Test
 DECL|method|testURI ()
 specifier|public
 name|void

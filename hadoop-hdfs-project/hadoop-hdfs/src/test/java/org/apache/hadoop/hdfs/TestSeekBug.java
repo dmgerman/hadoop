@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +67,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -140,6 +154,16 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the presence of seek bug as described  * in HADOOP-508   */
 end_comment
@@ -149,8 +173,6 @@ DECL|class|TestSeekBug
 specifier|public
 class|class
 name|TestSeekBug
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|static
@@ -731,6 +753,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test if the seek bug exists in FSDataInputStream in DFS.    */
+annotation|@
+name|Test
 DECL|method|testSeekBugDFS ()
 specifier|public
 name|void
@@ -823,6 +847,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Tests if the seek bug exists in FSDataInputStream in LocalFS.    */
+annotation|@
+name|Test
 DECL|method|testSeekBugLocalFS ()
 specifier|public
 name|void
