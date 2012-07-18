@@ -446,7 +446,7 @@ init|=
 literal|"name.system.image"
 decl_stmt|;
 DECL|field|NAMENODE_ATTRIBUTE_KEY
-specifier|public
+specifier|protected
 specifier|static
 specifier|final
 name|String
