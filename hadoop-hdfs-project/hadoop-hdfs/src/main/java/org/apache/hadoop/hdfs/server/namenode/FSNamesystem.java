@@ -4444,6 +4444,13 @@ operator|.
 name|catchupDuringFailover
 argument_list|()
 expr_stmt|;
+name|blockManager
+operator|.
+name|setPostponeBlocksFromFuture
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -4752,6 +4759,13 @@ name|initSharedJournalsForRead
 argument_list|()
 expr_stmt|;
 block|}
+name|blockManager
+operator|.
+name|setPostponeBlocksFromFuture
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|editLogTailer
 operator|=
 operator|new

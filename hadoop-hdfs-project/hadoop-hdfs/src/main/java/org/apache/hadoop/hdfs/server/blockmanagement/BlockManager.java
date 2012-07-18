@@ -1229,6 +1229,14 @@ specifier|final
 name|boolean
 name|shouldCheckForEnoughRacks
 decl_stmt|;
+comment|/**    * When running inside a Standby node, the node may receive block reports    * from datanodes before receiving the corresponding namespace edits from    * the active NameNode. Thus, it will postpone them for later processing,    * instead of marking the blocks as corrupt.    */
+DECL|field|shouldPostponeBlocksFromFuture
+specifier|private
+name|boolean
+name|shouldPostponeBlocksFromFuture
+init|=
+literal|false
+decl_stmt|;
 comment|/** for block replicas placement */
 DECL|field|blockplacement
 specifier|private
@@ -5281,6 +5289,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|setPostponeBlocksFromFuture (boolean postpone)
+specifier|public
+name|void
+name|setPostponeBlocksFromFuture
+parameter_list|(
+name|boolean
+name|postpone
+parameter_list|)
+block|{
+name|this
+operator|.
+name|shouldPostponeBlocksFromFuture
+operator|=
+name|postpone
+expr_stmt|;
+block|}
 DECL|method|postponeBlock (Block blk)
 specifier|private
 name|void
@@ -7845,14 +7869,6 @@ operator|.
 name|getBlockReportIterator
 argument_list|()
 decl_stmt|;
-name|boolean
-name|isStandby
-init|=
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
-decl_stmt|;
 while|while
 condition|(
 name|itBR
@@ -7879,7 +7895,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|isStandby
+name|shouldPostponeBlocksFromFuture
 operator|&&
 name|namesystem
 operator|.
@@ -7957,10 +7973,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
+name|shouldPostponeBlocksFromFuture
 condition|)
 block|{
 comment|// In the Standby, we may receive a block report for a file that we
@@ -8359,10 +8372,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
+name|shouldPostponeBlocksFromFuture
 operator|&&
 name|namesystem
 operator|.
@@ -8498,10 +8508,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
+name|shouldPostponeBlocksFromFuture
 condition|)
 block|{
 comment|// If the block is an out-of-date generation stamp or state,
@@ -8616,10 +8623,7 @@ name|reason
 parameter_list|)
 block|{
 assert|assert
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
+name|shouldPostponeBlocksFromFuture
 assert|;
 if|if
 condition|(
@@ -8781,14 +8785,11 @@ name|IOException
 block|{
 assert|assert
 operator|!
-name|namesystem
-operator|.
-name|isInStandbyState
-argument_list|()
+name|shouldPostponeBlocksFromFuture
 operator|:
-literal|"processAllPendingDNMessages() should be called after exiting "
+literal|"processAllPendingDNMessages() should be called after disabling "
 operator|+
-literal|"standby state!"
+literal|"block postponement."
 assert|;
 name|int
 name|count

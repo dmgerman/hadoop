@@ -911,8 +911,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|doTailEdits ()
-specifier|private
 name|void
 name|doTailEdits
 parameter_list|()
