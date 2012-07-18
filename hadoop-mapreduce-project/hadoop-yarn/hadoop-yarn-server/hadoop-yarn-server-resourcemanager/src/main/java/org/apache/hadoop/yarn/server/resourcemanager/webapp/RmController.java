@@ -372,6 +372,13 @@ name|RUNNING
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
+name|FINISHING
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -37,7 +37,6 @@ DECL|enumConstant|ALLOCATED
 DECL|enumConstant|LAUNCHED
 DECL|enumConstant|FAILED
 DECL|enumConstant|RUNNING
-DECL|enumConstant|FINISHED
 name|NEW
 block|,
 name|SUBMITTED
@@ -52,9 +51,13 @@ name|FAILED
 block|,
 name|RUNNING
 block|,
+DECL|enumConstant|FINISHING
+DECL|enumConstant|FINISHED
+DECL|enumConstant|KILLED
+name|FINISHING
+block|,
 name|FINISHED
 block|,
-DECL|enumConstant|KILLED
 name|KILLED
 block|, }
 end_enum

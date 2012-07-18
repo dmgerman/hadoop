@@ -1378,6 +1378,17 @@ argument_list|(
 name|amLivelinessMonitor
 argument_list|)
 expr_stmt|;
+name|AMLivelinessMonitor
+name|amFinishingMonitor
+init|=
+name|createAMLivelinessMonitor
+argument_list|()
+decl_stmt|;
+name|addService
+argument_list|(
+name|amFinishingMonitor
+argument_list|)
+expr_stmt|;
 name|DelegationTokenRenewer
 name|tokenRenewer
 init|=
@@ -1409,6 +1420,8 @@ operator|.
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
+argument_list|,
+name|amFinishingMonitor
 argument_list|,
 name|tokenRenewer
 argument_list|,

@@ -306,6 +306,11 @@ name|AMLivelinessMonitor
 name|getAMLivelinessMonitor
 parameter_list|()
 function_decl|;
+DECL|method|getAMFinishingMonitor ()
+name|AMLivelinessMonitor
+name|getAMFinishingMonitor
+parameter_list|()
+function_decl|;
 DECL|method|getContainerAllocationExpirer ()
 name|ContainerAllocationExpirer
 name|getContainerAllocationExpirer

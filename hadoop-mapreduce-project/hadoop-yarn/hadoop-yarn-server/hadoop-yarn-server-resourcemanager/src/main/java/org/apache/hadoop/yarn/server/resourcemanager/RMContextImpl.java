@@ -363,6 +363,11 @@ specifier|private
 name|AMLivelinessMonitor
 name|amLivelinessMonitor
 decl_stmt|;
+DECL|field|amFinishingMonitor
+specifier|private
+name|AMLivelinessMonitor
+name|amFinishingMonitor
+decl_stmt|;
 DECL|field|containerAllocationExpirer
 specifier|private
 name|ContainerAllocationExpirer
@@ -380,7 +385,7 @@ specifier|final
 name|ApplicationTokenSecretManager
 name|appTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager)
+DECL|method|RMContextImpl (Store store, Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -395,6 +400,9 @@ name|containerAllocationExpirer
 parameter_list|,
 name|AMLivelinessMonitor
 name|amLivelinessMonitor
+parameter_list|,
+name|AMLivelinessMonitor
+name|amFinishingMonitor
 parameter_list|,
 name|DelegationTokenRenewer
 name|tokenRenewer
@@ -426,6 +434,12 @@ operator|.
 name|amLivelinessMonitor
 operator|=
 name|amLivelinessMonitor
+expr_stmt|;
+name|this
+operator|.
+name|amFinishingMonitor
+operator|=
+name|amFinishingMonitor
 expr_stmt|;
 name|this
 operator|.
@@ -561,6 +575,20 @@ return|return
 name|this
 operator|.
 name|amLivelinessMonitor
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAMFinishingMonitor ()
+specifier|public
+name|AMLivelinessMonitor
+name|getAMFinishingMonitor
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|amFinishingMonitor
 return|;
 block|}
 annotation|@

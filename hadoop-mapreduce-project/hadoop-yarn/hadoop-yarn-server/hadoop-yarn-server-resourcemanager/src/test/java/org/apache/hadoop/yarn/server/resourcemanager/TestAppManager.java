@@ -776,6 +776,15 @@ argument_list|(
 name|rmDispatcher
 argument_list|)
 decl_stmt|;
+name|AMLivelinessMonitor
+name|amFinishingMonitor
+init|=
+operator|new
+name|AMLivelinessMonitor
+argument_list|(
+name|rmDispatcher
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|RMContextImpl
@@ -789,6 +798,8 @@ argument_list|,
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
+argument_list|,
+name|amFinishingMonitor
 argument_list|,
 literal|null
 argument_list|,

@@ -45,6 +45,9 @@ block|,
 DECL|enumConstant|ATTEMPT_REGISTERED
 name|ATTEMPT_REGISTERED
 block|,
+DECL|enumConstant|ATTEMPT_FINISHING
+name|ATTEMPT_FINISHING
+block|,
 DECL|enumConstant|ATTEMPT_FINISHED
 name|ATTEMPT_FINISHED
 block|,
