@@ -459,43 +459,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testClientName ()
-specifier|public
-name|void
-name|testClientName
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|String
-name|clientName
-init|=
-name|renewer
-operator|.
-name|getClientName
-argument_list|(
-literal|"NONMAPREDUCE"
-argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-literal|"bad client name: "
-operator|+
-name|clientName
-argument_list|,
-name|clientName
-operator|.
-name|startsWith
-argument_list|(
-literal|"DFSClient_NONMAPREDUCE_"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testRenewal ()
 specifier|public
 name|void

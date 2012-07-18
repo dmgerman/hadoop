@@ -118,7 +118,8 @@ name|dfs
 operator|.
 name|dfs
 operator|.
-name|leaserenewer
+name|getLeaseRenewer
+argument_list|()
 operator|.
 name|interruptAndJoin
 argument_list|()

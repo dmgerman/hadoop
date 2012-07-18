@@ -7578,6 +7578,13 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|dfsClient
+operator|.
+name|endFileLease
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
 block|}
 comment|// shutdown datastreamer and responseprocessor threads.
 comment|// interrupt datastreamer if force is true
@@ -7761,13 +7768,9 @@ argument_list|)
 expr_stmt|;
 name|dfsClient
 operator|.
-name|leaserenewer
-operator|.
-name|closeFile
+name|endFileLease
 argument_list|(
 name|src
-argument_list|,
-name|dfsClient
 argument_list|)
 expr_stmt|;
 block|}

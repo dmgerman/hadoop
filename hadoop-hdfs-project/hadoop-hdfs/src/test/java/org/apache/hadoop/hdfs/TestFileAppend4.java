@@ -1073,7 +1073,8 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|leaserenewer
+name|getLeaseRenewer
+argument_list|()
 operator|.
 name|interruptAndJoin
 argument_list|()
@@ -1416,7 +1417,8 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|leaserenewer
+name|getLeaseRenewer
+argument_list|()
 operator|.
 name|interruptAndJoin
 argument_list|()
