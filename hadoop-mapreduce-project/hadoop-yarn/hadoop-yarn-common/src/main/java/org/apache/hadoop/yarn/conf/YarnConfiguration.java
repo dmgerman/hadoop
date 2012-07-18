@@ -2082,6 +2082,27 @@ name|YARN_PREFIX
 operator|+
 literal|".is.minicluster"
 decl_stmt|;
+comment|/** Whether to use fixed ports with the minicluster. */
+DECL|field|YARN_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_MINICLUSTER_FIXED_PORTS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"minicluster.fixed.ports"
+decl_stmt|;
+comment|/**    * Default is false to be able to run tests concurrently without port    * conflicts.    */
+DECL|field|DEFAULT_YARN_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+name|boolean
+name|DEFAULT_YARN_MINICLUSTER_FIXED_PORTS
+init|=
+literal|false
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

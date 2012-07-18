@@ -426,6 +426,27 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"store.class"
 decl_stmt|;
+comment|/** Whether to use fixed ports with the minicluster. */
+DECL|field|MR_HISTORY_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_MINICLUSTER_FIXED_PORTS
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"minicluster.fixed.ports"
+decl_stmt|;
+comment|/**    * Default is false to be able to run tests concurrently without port    * conflicts.    */
+DECL|field|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+name|boolean
+name|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

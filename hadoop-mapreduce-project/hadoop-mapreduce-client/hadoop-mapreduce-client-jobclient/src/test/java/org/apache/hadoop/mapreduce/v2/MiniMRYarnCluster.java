@@ -806,20 +806,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// Set config for JH Server
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JHAdminConfig
-operator|.
-name|MR_HISTORY_ADDRESS
-argument_list|,
-name|JHAdminConfig
-operator|.
-name|DEFAULT_MR_HISTORY_ADDRESS
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|init
@@ -862,6 +848,25 @@ parameter_list|()
 block|{
 try|try
 block|{
+if|if
+condition|(
+operator|!
+name|getConfig
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_MINICLUSTER_FIXED_PORTS
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
+argument_list|)
+condition|)
+block|{
+comment|// pick free random ports.
 name|getConfig
 argument_list|()
 operator|.
@@ -896,6 +901,7 @@ operator|+
 literal|":0"
 argument_list|)
 expr_stmt|;
+block|}
 name|historyServer
 operator|=
 operator|new
