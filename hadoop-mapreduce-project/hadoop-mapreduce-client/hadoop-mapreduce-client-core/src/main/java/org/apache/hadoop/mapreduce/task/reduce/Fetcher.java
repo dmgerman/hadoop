@@ -394,14 +394,21 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-block|{
-literal|"deprecation"
-block|}
-argument_list|)
 DECL|class|Fetcher
 class|class
 name|Fetcher
@@ -1088,9 +1095,32 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|openConnection (URL url)
+specifier|protected
+name|HttpURLConnection
+name|openConnection
+parameter_list|(
+name|URL
+name|url
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|(
+name|HttpURLConnection
+operator|)
+name|url
+operator|.
+name|openConnection
+argument_list|()
+return|;
+block|}
 comment|/**    * The crux of the matter...    *     * @param host {@link MapHost} from which we need to      *              shuffle available map-outputs.    */
 DECL|method|copyFromHost (MapHost host)
-specifier|private
+specifier|protected
 name|void
 name|copyFromHost
 parameter_list|(
@@ -1128,6 +1158,14 @@ condition|)
 block|{
 return|return;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1156,6 +1194,7 @@ argument_list|(
 name|tmp
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// List of maps to be fetched yet
 name|Set
@@ -1197,13 +1236,10 @@ decl_stmt|;
 name|HttpURLConnection
 name|connection
 init|=
-operator|(
-name|HttpURLConnection
-operator|)
-name|url
-operator|.
 name|openConnection
-argument_list|()
+argument_list|(
+name|url
+argument_list|)
 decl_stmt|;
 comment|// generate hash of the url
 name|String
@@ -1491,12 +1527,14 @@ block|}
 try|try
 block|{
 comment|// Loop through available map-outputs and fetch them
-comment|// On any error, good becomes false and we exit after putting back
-comment|// the remaining maps to the yet_to_be_fetched list
-name|boolean
-name|good
+comment|// On any error, faildTasks is not null and we exit
+comment|// after putting back the remaining maps to the
+comment|// yet_to_be_fetched list and marking the failed tasks.
+name|TaskAttemptID
+index|[]
+name|failedTasks
 init|=
-literal|true
+literal|null
 decl_stmt|;
 while|while
 condition|(
@@ -1506,10 +1544,12 @@ operator|.
 name|isEmpty
 argument_list|()
 operator|&&
-name|good
+name|failedTasks
+operator|==
+literal|null
 condition|)
 block|{
-name|good
+name|failedTasks
 operator|=
 name|copyMapOutput
 argument_list|(
@@ -1520,6 +1560,34 @@ argument_list|,
 name|remaining
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|failedTasks
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|TaskAttemptID
+name|left
+range|:
+name|failedTasks
+control|)
+block|{
+name|scheduler
+operator|.
+name|copyFailed
+argument_list|(
+name|left
+argument_list|,
+name|host
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|IOUtils
 operator|.
@@ -1533,7 +1601,9 @@ expr_stmt|;
 comment|// Sanity check
 if|if
 condition|(
-name|good
+name|failedTasks
+operator|==
+literal|null
 operator|&&
 operator|!
 name|remaining
@@ -1582,7 +1652,8 @@ block|}
 block|}
 DECL|method|copyMapOutput (MapHost host, DataInputStream input, Set<TaskAttemptID> remaining)
 specifier|private
-name|boolean
+name|TaskAttemptID
+index|[]
 name|copyMapOutput
 parameter_list|(
 name|MapHost
@@ -1710,8 +1781,21 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+comment|//Don't know which one was bad, so consider all of them as bad
 return|return
-literal|false
+name|remaining
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|TaskAttemptID
+index|[
+name|remaining
+operator|.
+name|size
+argument_list|()
+index|]
+argument_list|)
 return|;
 block|}
 comment|// Do some basic sanity verification
@@ -1733,7 +1817,12 @@ argument_list|)
 condition|)
 block|{
 return|return
-literal|false
+operator|new
+name|TaskAttemptID
+index|[]
+block|{
+name|mapId
+block|}
 return|;
 block|}
 name|LOG
@@ -1792,7 +1881,12 @@ literal|" - MergerManager returned Status.WAIT ..."
 argument_list|)
 expr_stmt|;
 return|return
-literal|false
+operator|new
+name|TaskAttemptID
+index|[]
+block|{
+name|mapId
+block|}
 return|;
 block|}
 comment|// Go!
@@ -1913,7 +2007,7 @@ name|successFetch
 argument_list|()
 expr_stmt|;
 return|return
-literal|true
+literal|null
 return|;
 block|}
 catch|catch
@@ -1963,9 +2057,40 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|mapId
+operator|==
+literal|null
+condition|)
+block|{
 return|return
-literal|false
+name|remaining
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|TaskAttemptID
+index|[
+name|remaining
+operator|.
+name|size
+argument_list|()
+index|]
+argument_list|)
 return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|TaskAttemptID
+index|[]
+block|{
+name|mapId
+block|}
+return|;
+block|}
 block|}
 name|LOG
 operator|.
@@ -1991,24 +2116,18 @@ operator|.
 name|abort
 argument_list|()
 expr_stmt|;
-name|scheduler
-operator|.
-name|copyFailed
-argument_list|(
-name|mapId
-argument_list|,
-name|host
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|metrics
 operator|.
 name|failedFetch
 argument_list|()
 expr_stmt|;
 return|return
-literal|false
+operator|new
+name|TaskAttemptID
+index|[]
+block|{
+name|mapId
+block|}
 return|;
 block|}
 block|}
