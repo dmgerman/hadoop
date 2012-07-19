@@ -120,24 +120,6 @@ name|PathIsNotDirectoryException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
-name|PathNotFoundException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Create the given dir  */
 end_comment
@@ -327,29 +309,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|item
-operator|.
-name|parentExists
-argument_list|()
-operator|&&
-operator|!
-name|createParents
-condition|)
-block|{
-throw|throw
-operator|new
-name|PathNotFoundException
-argument_list|(
-name|item
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
+comment|// TODO: should use createParents to control intermediate dir creation
 if|if
 condition|(
 operator|!
