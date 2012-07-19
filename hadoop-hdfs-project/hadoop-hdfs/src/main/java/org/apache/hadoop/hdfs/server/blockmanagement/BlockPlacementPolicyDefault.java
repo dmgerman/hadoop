@@ -116,9 +116,21 @@ name|commons
 operator|.
 name|logging
 operator|.
-name|impl
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|Log4JLogger
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -303,7 +315,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** The class is responsible for choosing the desired number of targets  * for placing block replicas.  * The replica placement strategy is that if the writer is on a datanode,  * the 1st replica is placed on the local machine,   * otherwise a random datanode. The 2nd replica is placed on a datanode  * that is on a different rack. The 3rd replica is placed on a datanode  * which is on a different node of the rack as the second replica.  */
+comment|/**  * The class is responsible for choosing the desired number of targets  * for placing block replicas.  * The replica placement strategy is that if the writer is on a datanode,  * the 1st replica is placed on the local machine,   * otherwise a random datanode. The 2nd replica is placed on a datanode  * that is on a different rack. The 3rd replica is placed on a datanode  * which is on a different node of the rack as the second replica.  */
 end_comment
 
 begin_class
@@ -318,6 +330,25 @@ name|BlockPlacementPolicyDefault
 extends|extends
 name|BlockPlacementPolicy
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|BlockPlacementPolicyDefault
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
 DECL|field|enableDebugLogging
 specifier|private
 specifier|static
@@ -327,14 +358,9 @@ name|enableDebugLogging
 init|=
 literal|"For more information, please enable DEBUG log level on "
 operator|+
-operator|(
-operator|(
-name|Log4JLogger
-operator|)
 name|LOG
-operator|)
 operator|.
-name|getLogger
+name|getClass
 argument_list|()
 operator|.
 name|getName
