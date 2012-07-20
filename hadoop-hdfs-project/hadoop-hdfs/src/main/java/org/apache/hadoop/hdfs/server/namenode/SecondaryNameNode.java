@@ -2284,31 +2284,40 @@ operator|.
 name|rollEditLog
 argument_list|()
 decl_stmt|;
-comment|// Make sure we're talking to the same NN!
 if|if
 condition|(
+operator|(
 name|checkpointImage
 operator|.
 name|getNamespaceID
 argument_list|()
-operator|!=
+operator|==
 literal|0
-condition|)
-block|{
-comment|// If the image actually has some data, make sure we're talking
-comment|// to the same NN as we did before.
+operator|)
+operator|||
+operator|(
 name|sig
 operator|.
-name|validateStorageInfo
+name|isSameCluster
 argument_list|(
 name|checkpointImage
 argument_list|)
-expr_stmt|;
-block|}
-else|else
+operator|&&
+operator|!
+name|sig
+operator|.
+name|storageVersionMatches
+argument_list|(
+name|checkpointImage
+operator|.
+name|getStorage
+argument_list|()
+argument_list|)
+operator|)
+condition|)
 block|{
-comment|// if we're a fresh 2NN, just take the storage info from the server
-comment|// we first talk to.
+comment|// if we're a fresh 2NN, or if we're on the same cluster and our storage
+comment|// needs an upgrade, just take the storage info from the server.
 name|dstStorage
 operator|.
 name|setStorageInfo
@@ -2337,6 +2346,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|sig
+operator|.
+name|validateStorageInfo
+argument_list|(
+name|checkpointImage
+argument_list|)
+expr_stmt|;
 comment|// error simulation code for junit test
 name|CheckpointFaultInjector
 operator|.
@@ -3379,7 +3395,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**      * Analyze checkpoint directories.      * Create directories if they do not exist.      * Recover from an unsuccessful checkpoint is necessary.      *      * @throws IOException      */
+comment|/**      * Analyze checkpoint directories.      * Create directories if they do not exist.      * Recover from an unsuccessful checkpoint if necessary.      *      * @throws IOException      */
 DECL|method|recoverCreate (boolean format)
 name|void
 name|recoverCreate
