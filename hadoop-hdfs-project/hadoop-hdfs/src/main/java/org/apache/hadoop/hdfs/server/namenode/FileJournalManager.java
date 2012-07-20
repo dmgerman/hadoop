@@ -140,6 +140,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -302,6 +316,20 @@ name|common
 operator|.
 name|base
 operator|.
+name|Joiner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
 name|Preconditions
 import|;
 end_import
@@ -339,7 +367,12 @@ comment|/**  * Journal manager for the common case of edits files being written 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FileJournalManager
+specifier|public
 class|class
 name|FileJournalManager
 implements|implements
@@ -798,6 +831,7 @@ block|}
 block|}
 comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
 DECL|method|getRemoteEditLogs (long firstTxId)
+specifier|public
 name|List
 argument_list|<
 name|RemoteEditLog
@@ -934,12 +968,20 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|Collections
+operator|.
+name|sort
+argument_list|(
+name|ret
+argument_list|)
+expr_stmt|;
 return|return
 name|ret
 return|;
 block|}
 comment|/**    * returns matching edit logs via the log directory. Simple helper function    * that lists the files in the logDir and calls matchEditLogs(File[])    *     * @param logDir    *          directory to match edit logs in    * @return matched edit logs    * @throws IOException    *           IOException thrown for invalid logDir    */
 DECL|method|matchEditLogs (File logDir)
+specifier|public
 specifier|static
 name|List
 argument_list|<
@@ -1141,7 +1183,9 @@ name|f
 argument_list|,
 name|startTxId
 argument_list|,
-name|startTxId
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
 argument_list|,
 literal|true
 argument_list|)
@@ -1619,6 +1663,7 @@ block|}
 block|}
 block|}
 DECL|method|getLogFiles (long fromTxId)
+specifier|public
 name|List
 argument_list|<
 name|EditLogFile
@@ -1710,6 +1755,157 @@ return|return
 name|logFiles
 return|;
 block|}
+DECL|method|getLogFile (long startTxId)
+specifier|public
+name|EditLogFile
+name|getLogFile
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getLogFile
+argument_list|(
+name|sd
+operator|.
+name|getCurrentDir
+argument_list|()
+argument_list|,
+name|startTxId
+argument_list|)
+return|;
+block|}
+DECL|method|getLogFile (File dir, long startTxId)
+specifier|public
+specifier|static
+name|EditLogFile
+name|getLogFile
+parameter_list|(
+name|File
+name|dir
+parameter_list|,
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|List
+argument_list|<
+name|EditLogFile
+argument_list|>
+name|files
+init|=
+name|matchEditLogs
+argument_list|(
+name|dir
+argument_list|)
+decl_stmt|;
+name|List
+argument_list|<
+name|EditLogFile
+argument_list|>
+name|ret
+init|=
+name|Lists
+operator|.
+name|newLinkedList
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|EditLogFile
+name|elf
+range|:
+name|files
+control|)
+block|{
+if|if
+condition|(
+name|elf
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|==
+name|startTxId
+condition|)
+block|{
+name|ret
+operator|.
+name|add
+argument_list|(
+name|elf
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|ret
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// no matches
+return|return
+literal|null
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|ret
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+return|return
+name|ret
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"More than one log segment in "
+operator|+
+name|dir
+operator|+
+literal|" starting at txid "
+operator|+
+name|startTxId
+operator|+
+literal|": "
+operator|+
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|ret
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -1733,7 +1929,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Record of an edit log that has been located and had its filename parsed.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|EditLogFile
+specifier|public
 specifier|static
 class|class
 name|EditLogFile
@@ -1933,6 +2134,20 @@ name|file
 operator|!=
 literal|null
 assert|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+name|isInProgress
+operator|||
+name|lastTxId
+operator|==
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|firstTxId
@@ -1959,6 +2174,7 @@ name|isInProgress
 expr_stmt|;
 block|}
 DECL|method|getFirstTxId ()
+specifier|public
 name|long
 name|getFirstTxId
 parameter_list|()
@@ -1968,6 +2184,7 @@ name|firstTxId
 return|;
 block|}
 DECL|method|getLastTxId ()
+specifier|public
 name|long
 name|getLastTxId
 parameter_list|()
@@ -1996,6 +2213,7 @@ return|;
 block|}
 comment|/**       * Find out where the edit log ends.      * This will update the lastTxId of the EditLogFile or      * mark it as corrupt if it is.      */
 DECL|method|validateLog ()
+specifier|public
 name|void
 name|validateLog
 parameter_list|()
@@ -2032,6 +2250,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|isInProgress ()
+specifier|public
 name|boolean
 name|isInProgress
 parameter_list|()
@@ -2041,6 +2260,7 @@ name|isInProgress
 return|;
 block|}
 DECL|method|getFile ()
+specifier|public
 name|File
 name|getFile
 parameter_list|()

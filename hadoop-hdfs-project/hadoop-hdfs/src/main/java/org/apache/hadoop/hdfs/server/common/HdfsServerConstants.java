@@ -115,6 +115,9 @@ name|NAME_NODE
 block|,
 DECL|enumConstant|DATA_NODE
 name|DATA_NODE
+block|,
+DECL|enumConstant|JOURNAL_NODE
+name|JOURNAL_NODE
 block|;   }
 comment|/** Startup options */
 DECL|enum|StartupOption

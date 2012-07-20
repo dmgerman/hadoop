@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -123,7 +137,12 @@ comment|/**  * A double-buffer for edits. New edits are written into the first b
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|EditsDoubleBuffer
+specifier|public
 class|class
 name|EditsDoubleBuffer
 block|{
@@ -194,6 +213,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|writeRaw (byte[] bytes, int offset, int length)
+specifier|public
 name|void
 name|writeRaw
 parameter_list|(
@@ -223,6 +243,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|close ()
+specifier|public
 name|void
 name|close
 parameter_list|()
@@ -289,6 +310,7 @@ literal|null
 expr_stmt|;
 block|}
 DECL|method|setReadyToFlush ()
+specifier|public
 name|void
 name|setReadyToFlush
 parameter_list|()
@@ -315,6 +337,7 @@ expr_stmt|;
 block|}
 comment|/**    * Writes the content of the "ready" buffer to the given output stream,    * and resets it. Does not swap any buffers.    */
 DECL|method|flushTo (OutputStream out)
+specifier|public
 name|void
 name|flushTo
 parameter_list|(
@@ -340,6 +363,7 @@ expr_stmt|;
 comment|// erase all data in the buffer
 block|}
 DECL|method|shouldForceSync ()
+specifier|public
 name|boolean
 name|shouldForceSync
 parameter_list|()
@@ -435,6 +459,20 @@ return|return
 name|bufReady
 operator|.
 name|numTxns
+return|;
+block|}
+comment|/**    * @return the number of bytes that are ready to be flushed    */
+DECL|method|countReadyBytes ()
+specifier|public
+name|int
+name|countReadyBytes
+parameter_list|()
+block|{
+return|return
+name|bufReady
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 DECL|class|TxnBuffer

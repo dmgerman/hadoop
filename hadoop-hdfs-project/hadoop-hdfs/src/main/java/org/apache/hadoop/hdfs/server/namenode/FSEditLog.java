@@ -4657,6 +4657,7 @@ name|ex
 parameter_list|)
 block|{
 comment|// All journals have failed, it is handled in logSync.
+comment|// TODO: are we sure this is OK?
 block|}
 block|}
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId)

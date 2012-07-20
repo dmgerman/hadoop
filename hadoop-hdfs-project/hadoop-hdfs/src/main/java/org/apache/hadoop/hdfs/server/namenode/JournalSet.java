@@ -998,6 +998,43 @@ name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
+name|chainAndMakeRedundantStreams
+argument_list|(
+name|streams
+argument_list|,
+name|allStreams
+argument_list|,
+name|fromTxId
+argument_list|,
+name|inProgressOk
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|chainAndMakeRedundantStreams ( Collection<EditLogInputStream> outStreams, PriorityQueue<EditLogInputStream> allStreams, long fromTxId, boolean inProgressOk)
+specifier|public
+specifier|static
+name|void
+name|chainAndMakeRedundantStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|outStreams
+parameter_list|,
+name|PriorityQueue
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|allStreams
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+block|{
 comment|// We want to group together all the streams that start on the same start
 comment|// transaction ID.  To do this, we maintain an accumulator (acc) of all
 comment|// the streams we've seen at a given start transaction ID.  When we see a
@@ -1094,7 +1131,7 @@ name|getFirstTxId
 argument_list|()
 condition|)
 block|{
-name|streams
+name|outStreams
 operator|.
 name|add
 argument_list|(
@@ -1161,7 +1198,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|streams
+name|outStreams
 operator|.
 name|add
 argument_list|(

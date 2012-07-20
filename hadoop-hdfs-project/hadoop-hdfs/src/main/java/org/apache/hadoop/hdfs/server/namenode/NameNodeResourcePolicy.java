@@ -76,6 +76,22 @@ name|int
 name|minimumRedundantResources
 parameter_list|)
 block|{
+comment|// TODO: workaround:
+comment|// - during startup, if there are no edits dirs on disk, then there is
+comment|// a call to areResourcesAvailable() with no dirs at all, which was
+comment|// previously causing the NN to enter safemode
+if|if
+condition|(
+name|resources
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 name|int
 name|requiredResourceCount
 init|=

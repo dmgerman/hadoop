@@ -306,6 +306,20 @@ name|VersionInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Storage information file.  *<p>  * Local storage information is stored in a separate file VERSION.  * It contains type of the node,   * the storage layout version, the namespace id, and   * the fs state creation time.  *<p>  * Local storage can reside in multiple directories.   * Each directory should contain the same VERSION file as the others.  * During startup Hadoop servers (name-node and data-nodes) read their local   * storage information from them.  *<p>  * The servers hold a lock for each storage directory while they run so that   * other nodes were not able to startup sharing the same storage.  * The locks are released when the servers stop (normally or abnormally).  *   */
 end_comment
@@ -391,7 +405,7 @@ literal|31
 block|}
 decl_stmt|;
 DECL|field|STORAGE_FILE_LOCK
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -2626,6 +2640,34 @@ operator|.
 name|get
 argument_list|(
 name|idx
+argument_list|)
+return|;
+block|}
+comment|/**    * @return the storage directory, with the precondition that this storage    * has exactly one storage directory    */
+DECL|method|getSingularStorageDir ()
+specifier|public
+name|StorageDirectory
+name|getSingularStorageDir
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|storageDirs
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+name|storageDirs
+operator|.
+name|get
+argument_list|(
+literal|0
 argument_list|)
 return|;
 block|}
