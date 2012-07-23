@@ -446,8 +446,13 @@ specifier|final
 name|long
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 init|=
-literal|0
+literal|4
+operator|*
+literal|1024
+operator|*
+literal|1024
 decl_stmt|;
+comment|// 4MB
 DECL|field|DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY
 specifier|public
 specifier|static
