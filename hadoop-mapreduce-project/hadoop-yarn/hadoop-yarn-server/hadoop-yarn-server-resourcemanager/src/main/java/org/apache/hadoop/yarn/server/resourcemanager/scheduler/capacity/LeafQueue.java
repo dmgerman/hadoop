@@ -874,10 +874,10 @@ specifier|private
 name|int
 name|maxApplicationsPerUser
 decl_stmt|;
-DECL|field|maxAMResourcePercent
+DECL|field|maxAMResourcePerQueuePercent
 specifier|private
 name|float
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 decl_stmt|;
 DECL|field|maxActiveApplications
 specifier|private
@@ -1282,7 +1282,28 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 name|int
-name|maxSystemJobs
+name|maxApplications
+init|=
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getMaximumApplicationsPerQueue
+argument_list|(
+name|getQueuePath
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|maxApplications
+operator|<
+literal|0
+condition|)
+block|{
+name|int
+name|maxSystemApps
 init|=
 name|cs
 operator|.
@@ -1292,21 +1313,20 @@ operator|.
 name|getMaximumSystemApplications
 argument_list|()
 decl_stmt|;
-name|int
 name|maxApplications
-init|=
+operator|=
 call|(
 name|int
 call|)
 argument_list|(
-name|maxSystemJobs
+name|maxSystemApps
 operator|*
 name|absoluteCapacity
 argument_list|)
-decl_stmt|;
-name|int
+expr_stmt|;
+block|}
 name|maxApplicationsPerUser
-init|=
+operator|=
 call|(
 name|int
 call|)
@@ -1321,18 +1341,21 @@ operator|)
 operator|*
 name|userLimitFactor
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|this
 operator|.
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 operator|=
 name|cs
 operator|.
 name|getConfiguration
 argument_list|()
 operator|.
-name|getMaximumApplicationMasterResourcePercent
+name|getMaximumApplicationMasterResourcePerQueuePercent
+argument_list|(
+name|getQueuePath
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|int
 name|maxActiveApplications
@@ -1350,7 +1373,7 @@ name|this
 operator|.
 name|minimumAllocation
 argument_list|,
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 argument_list|,
 name|absoluteMaxCapacity
 argument_list|)
@@ -1372,7 +1395,7 @@ name|this
 operator|.
 name|minimumAllocation
 argument_list|,
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 argument_list|,
 name|absoluteCapacity
 argument_list|)
@@ -1859,7 +1882,9 @@ literal|"maxApplications = "
 operator|+
 name|maxApplications
 operator|+
-literal|" [= (int)(configuredMaximumSystemApplications * absoluteCapacity) ]"
+literal|" [= configuredMaximumSystemApplicationsPerQueue or"
+operator|+
+literal|" (int)(configuredMaximumSystemApplications * absoluteCapacity)]"
 operator|+
 literal|"\n"
 operator|+
@@ -1879,9 +1904,9 @@ name|maxActiveApplications
 operator|+
 literal|" [= max("
 operator|+
-literal|"(int)ceil((clusterResourceMemory / minimumAllocation) *"
+literal|"(int)ceil((clusterResourceMemory / minimumAllocation) * "
 operator|+
-literal|"maxAMResourcePercent * absoluteMaxCapacity),"
+literal|"maxAMResourcePerQueuePercent * absoluteMaxCapacity),"
 operator|+
 literal|"1) ]"
 operator|+
@@ -1933,9 +1958,9 @@ literal|" [= usedResourcesMemory / clusterResourceMemory]"
 operator|+
 literal|"\n"
 operator|+
-literal|"maxAMResourcePercent = "
+literal|"maxAMResourcePerQueuePercent = "
 operator|+
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 operator|+
 literal|" [= configuredMaximumAMResourcePercent ]"
 operator|+
@@ -6650,7 +6675,7 @@ name|clusterResource
 argument_list|,
 name|minimumAllocation
 argument_list|,
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 argument_list|,
 name|absoluteMaxCapacity
 argument_list|)
@@ -6665,7 +6690,7 @@ name|clusterResource
 argument_list|,
 name|minimumAllocation
 argument_list|,
-name|maxAMResourcePercent
+name|maxAMResourcePerQueuePercent
 argument_list|,
 name|absoluteCapacity
 argument_list|)
