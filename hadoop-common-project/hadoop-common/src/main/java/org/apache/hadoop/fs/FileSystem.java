@@ -1159,9 +1159,13 @@ condition|(
 name|scheme
 operator|==
 literal|null
+operator|&&
+name|authority
+operator|==
+literal|null
 condition|)
 block|{
-comment|// no scheme: use default FS
+comment|// use default FS
 return|return
 name|get
 argument_list|(
@@ -1171,6 +1175,10 @@ return|;
 block|}
 if|if
 condition|(
+name|scheme
+operator|!=
+literal|null
+operator|&&
 name|authority
 operator|==
 literal|null
