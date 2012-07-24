@@ -808,6 +808,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -3004,6 +3014,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that file leases are persisted across namenode restarts.    * This test is currently not triggered because more HDFS work is     * is needed to handle persistent leases.    */
+annotation|@
+name|Ignore
+annotation|@
+name|Test
 DECL|method|xxxtestFileCreationNamenodeRestart ()
 specifier|public
 name|void

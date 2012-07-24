@@ -20,9 +20,9 @@ end_package
 
 begin_import
 import|import static
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 operator|.
@@ -32,9 +32,9 @@ end_import
 
 begin_import
 import|import static
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 operator|.
@@ -996,6 +996,16 @@ specifier|public
 class|class
 name|TestPBHelper
 block|{
+comment|/**    * Used for asserting equality on doubles.    */
+DECL|field|DELTA
+specifier|private
+specifier|static
+specifier|final
+name|double
+name|DELTA
+init|=
+literal|0.000001
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testConvertNamenodeRole ()
@@ -2560,6 +2570,8 @@ name|dn2
 operator|.
 name|getBlockPoolUsedPercent
 argument_list|()
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2612,6 +2624,8 @@ name|dn1
 operator|.
 name|getDfsUsedPercent
 argument_list|()
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals

@@ -88,16 +88,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|AssertionFailedError
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -820,7 +810,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Confirm that FSImage files in all StorageDirectory are the same,    * and non-empty, and there are the expected number of them.    * @param fsn - the FSNamesystem being checked.    * @param numImageDirs - the configured number of StorageDirectory of type IMAGE.     * @return - the md5 hash of the most recent FSImage files, which must all be the same.    * @throws AssertionFailedError if image files are empty or different,    *     if less than two StorageDirectory are provided, or if the    *     actual number of StorageDirectory is less than configured.    */
+comment|/**    * Confirm that FSImage files in all StorageDirectory are the same,    * and non-empty, and there are the expected number of them.    * @param fsn - the FSNamesystem being checked.    * @param numImageDirs - the configured number of StorageDirectory of type IMAGE.     * @return - the md5 hash of the most recent FSImage files, which must all be the same.    * @throws AssertionError if image files are empty or different,    *     if less than two StorageDirectory are provided, or if the    *     actual number of StorageDirectory is less than configured.    */
 DECL|method|checkImages ( FSNamesystem fsn, int numImageDirs)
 specifier|public
 specifier|static
