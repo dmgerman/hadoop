@@ -295,6 +295,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
+synchronized|synchronized
+init|(
+name|info
+init|)
+block|{
 while|while
 condition|(
 name|isUnderConstruction
@@ -305,14 +310,10 @@ condition|)
 block|{
 try|try
 block|{
-comment|// In case the entry is ready after the above check but
-comment|// before the following wait, we do timed wait.
 name|info
 operator|.
 name|wait
-argument_list|(
-literal|200
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -330,6 +331,7 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 name|LOG
@@ -471,6 +473,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|info
+init|)
+block|{
 while|while
 condition|(
 name|isUnderConstruction
@@ -481,14 +488,10 @@ condition|)
 block|{
 try|try
 block|{
-comment|// In case the entry is ready after the above check but
-comment|// before the following wait, we do timed wait.
 name|info
 operator|.
 name|wait
-argument_list|(
-literal|200
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -506,6 +509,7 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 name|LOG
