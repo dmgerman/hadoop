@@ -605,6 +605,8 @@ parameter_list|,
 name|String
 name|jid
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|JournalNode
 name|jn

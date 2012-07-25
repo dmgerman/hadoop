@@ -590,6 +590,8 @@ parameter_list|,
 name|StorageErrorReporter
 name|errorReporter
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|storage
 operator|=
@@ -828,7 +830,7 @@ comment|// If the storage is unformatted, format it with this NS.
 comment|// Otherwise, check that the NN's nsinfo matches the storage.
 name|storage
 operator|.
-name|analyzeStorage
+name|formatIfNecessary
 argument_list|(
 name|nsInfo
 argument_list|)

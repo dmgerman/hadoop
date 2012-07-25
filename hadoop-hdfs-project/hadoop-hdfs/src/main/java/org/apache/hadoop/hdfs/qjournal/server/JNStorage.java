@@ -170,6 +170,20 @@ name|NamespaceInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link Storage} implementation for the {@link JournalNode}.  *   * The JN has a storage directory for each namespace for which it stores  * metadata. There is only a single directory per JN in the current design.  */
 end_comment
@@ -193,14 +207,12 @@ specifier|final
 name|StorageDirectory
 name|sd
 decl_stmt|;
-DECL|field|lazyInitted
+DECL|field|state
 specifier|private
-name|boolean
-name|lazyInitted
-init|=
-literal|false
+name|StorageState
+name|state
 decl_stmt|;
-comment|/**    * @param logDir the path to the directory in which data will be stored    * @param errorReporter a callback to report errors    */
+comment|/**    * @param logDir the path to the directory in which data will be stored    * @param errorReporter a callback to report errors    * @throws IOException     */
 DECL|method|JNStorage (File logDir, StorageErrorReporter errorReporter)
 specifier|protected
 name|JNStorage
@@ -211,6 +223,8 @@ parameter_list|,
 name|StorageErrorReporter
 name|errorReporter
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|super
 argument_list|(
@@ -245,6 +259,9 @@ name|sd
 argument_list|,
 name|errorReporter
 argument_list|)
+expr_stmt|;
+name|analyzeStorage
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getJournalManager ()
@@ -466,9 +483,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|analyzeStorage (NamespaceInfo nsInfo)
+DECL|method|formatIfNecessary (NamespaceInfo nsInfo)
+specifier|public
 name|void
-name|analyzeStorage
+name|formatIfNecessary
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
@@ -478,19 +496,83 @@ name|IOException
 block|{
 if|if
 condition|(
-name|lazyInitted
+name|state
+operator|==
+name|StorageState
+operator|.
+name|NOT_FORMATTED
+operator|||
+name|state
+operator|==
+name|StorageState
+operator|.
+name|NON_EXISTENT
 condition|)
 block|{
+name|format
+argument_list|(
+name|nsInfo
+argument_list|)
+expr_stmt|;
+name|analyzeStorage
+argument_list|()
+expr_stmt|;
+assert|assert
+name|state
+operator|==
+name|StorageState
+operator|.
+name|NORMAL
+operator|:
+literal|"Unexpected state after formatting: "
+operator|+
+name|state
+assert|;
+block|}
+else|else
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|StorageState
+operator|.
+name|NORMAL
+argument_list|,
+literal|"Unhandled storage state in %s: %s"
+argument_list|,
+name|this
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
+assert|assert
+name|getNamespaceID
+argument_list|()
+operator|!=
+literal|0
+assert|;
 name|checkConsistentNamespace
 argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
-name|StorageState
+block|}
+DECL|method|analyzeStorage ()
+specifier|private
+name|void
+name|analyzeStorage
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|this
+operator|.
 name|state
-init|=
+operator|=
 name|sd
 operator|.
 name|analyzeStorage
@@ -501,68 +583,22 @@ name|REGULAR
 argument_list|,
 name|this
 argument_list|)
-decl_stmt|;
-switch|switch
+expr_stmt|;
+if|if
 condition|(
 name|state
+operator|==
+name|StorageState
+operator|.
+name|NORMAL
 condition|)
 block|{
-case|case
-name|NON_EXISTENT
-case|:
-case|case
-name|NOT_FORMATTED
-case|:
-name|format
-argument_list|(
-name|nsInfo
-argument_list|)
-expr_stmt|;
-comment|// In the NORMAL case below, analyzeStorage() has already locked the
-comment|// directory for us. But in the case that we format it, we have to
-comment|// lock it here.
-comment|// The directory is unlocked in close() when the node shuts down.
-name|sd
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|NORMAL
-case|:
-comment|// Storage directory is already locked by analyzeStorage() - no
-comment|// need to lock it here.
 name|readProperties
 argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
-name|checkConsistentNamespace
-argument_list|(
-name|nsInfo
-argument_list|)
-expr_stmt|;
-break|break;
-default|default:
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"TODO: unhandled state for storage dir "
-operator|+
-name|sd
-operator|+
-literal|": "
-operator|+
-name|state
-argument_list|)
-expr_stmt|;
 block|}
-name|lazyInitted
-operator|=
-literal|true
-expr_stmt|;
 block|}
 DECL|method|checkConsistentNamespace (NamespaceInfo nsInfo)
 specifier|private

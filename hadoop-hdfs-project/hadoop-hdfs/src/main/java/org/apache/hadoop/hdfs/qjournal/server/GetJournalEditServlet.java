@@ -752,6 +752,19 @@ name|theirStorageInfoString
 argument_list|)
 condition|)
 block|{
+name|String
+name|msg
+init|=
+literal|"This node has storage info '"
+operator|+
+name|myStorageInfoString
+operator|+
+literal|"' but the requesting node expected '"
+operator|+
+name|theirStorageInfoString
+operator|+
+literal|"'"
+decl_stmt|;
 name|response
 operator|.
 name|sendError
@@ -760,24 +773,23 @@ name|HttpServletResponse
 operator|.
 name|SC_FORBIDDEN
 argument_list|,
-literal|"This node has storage info "
-operator|+
-name|myStorageInfoString
-operator|+
-literal|" but the requesting node expected "
-operator|+
-name|theirStorageInfoString
+name|msg
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Received an invalid request file transfer request "
+literal|"Received an invalid request file transfer request from "
 operator|+
-literal|" with storage info "
+name|request
+operator|.
+name|getRemoteAddr
+argument_list|()
 operator|+
-name|theirStorageInfoString
+literal|": "
+operator|+
+name|msg
 argument_list|)
 expr_stmt|;
 return|return
