@@ -1221,11 +1221,9 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|mkdirs
-argument_list|(
+name|Path
+name|parent
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -1234,6 +1232,26 @@ argument_list|)
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parent
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Trying to add "/" as a file - this path has no
+comment|// parent -- avoids an NPE below.
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|mkdirs
+argument_list|(
+name|parent
 operator|.
 name|toString
 argument_list|()
