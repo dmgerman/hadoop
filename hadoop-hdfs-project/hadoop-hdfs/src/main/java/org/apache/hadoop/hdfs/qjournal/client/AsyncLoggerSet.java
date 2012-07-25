@@ -220,6 +220,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|RemoteEditLogManifest
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1094,7 +1112,7 @@ name|QuorumCall
 argument_list|<
 name|AsyncLogger
 argument_list|,
-name|GetEditLogManifestResponseProto
+name|RemoteEditLogManifest
 argument_list|>
 DECL|method|getEditLogManifest (long fromTxnId)
 name|getEditLogManifest
@@ -1109,7 +1127,7 @@ name|AsyncLogger
 argument_list|,
 name|ListenableFuture
 argument_list|<
-name|GetEditLogManifestResponseProto
+name|RemoteEditLogManifest
 argument_list|>
 argument_list|>
 name|calls
@@ -1129,7 +1147,7 @@ control|)
 block|{
 name|ListenableFuture
 argument_list|<
-name|GetEditLogManifestResponseProto
+name|RemoteEditLogManifest
 argument_list|>
 name|future
 init|=

@@ -1289,7 +1289,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO: check fencing info?
+comment|// No need to checkRequest() here - anyone may ask for the list
+comment|// of segments.
 name|RemoteEditLogManifest
 name|manifest
 init|=
