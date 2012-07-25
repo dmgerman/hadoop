@@ -216,6 +216,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|JournalManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|NamespaceInfo
@@ -341,7 +359,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Finalize the given log segment on the JournalNode. The segment    * is expected to be in-progress and starting at the given startTxId.    *    * @param startTxId the starting transaction ID of teh log    * @param endTxId the expected last transaction in the given log    * @throws IOException if no such segment exists    */
+comment|/**    * Finalize the given log segment on the JournalNode. The segment    * is expected to be in-progress and starting at the given startTxId.    *    * @param startTxId the starting transaction ID of the log    * @param endTxId the expected last transaction in the given log    * @throws IOException if no such segment exists    */
 DECL|method|finalizeLogSegment (RequestInfo reqInfo, long startTxId, long endTxId)
 specifier|public
 name|void
@@ -355,6 +373,21 @@ name|startTxId
 parameter_list|,
 name|long
 name|endTxId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @throws IOException     * @see JournalManager#purgeLogsOlderThan(long)    */
+DECL|method|purgeLogsOlderThan (RequestInfo requestInfo, long minTxIdToKeep)
+specifier|public
+name|void
+name|purgeLogsOlderThan
+parameter_list|(
+name|RequestInfo
+name|requestInfo
+parameter_list|,
+name|long
+name|minTxIdToKeep
 parameter_list|)
 throws|throws
 name|IOException

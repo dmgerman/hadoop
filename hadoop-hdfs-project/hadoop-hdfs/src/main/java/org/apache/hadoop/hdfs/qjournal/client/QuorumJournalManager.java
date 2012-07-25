@@ -1712,7 +1712,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO Auto-generated method stub
+comment|// This purges asynchronously -- there's no need to wait for a quorum
+comment|// here, because it's always OK to fail.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Purging remote journals older than txid "
+operator|+
+name|minTxIdToKeep
+argument_list|)
+expr_stmt|;
+name|loggers
+operator|.
+name|purgeLogsOlderThan
+argument_list|(
+name|minTxIdToKeep
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override

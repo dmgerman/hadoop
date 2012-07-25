@@ -241,6 +241,19 @@ name|long
 name|endTxId
 parameter_list|)
 function_decl|;
+comment|/**    * Allow the remote node to purge edit logs earlier than this.    * @param minTxIdToKeep the min txid which must be retained    */
+DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
+specifier|public
+name|ListenableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|purgeLogsOlderThan
+parameter_list|(
+name|long
+name|minTxIdToKeep
+parameter_list|)
+function_decl|;
 comment|/**    * @return the state of the last epoch on the target node.    */
 DECL|method|getJournalState ()
 specifier|public

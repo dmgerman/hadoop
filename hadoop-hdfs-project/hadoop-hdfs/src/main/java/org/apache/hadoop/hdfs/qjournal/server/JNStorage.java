@@ -388,7 +388,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|getPaxosDir ()
-specifier|private
 name|File
 name|getPaxosDir
 parameter_list|()

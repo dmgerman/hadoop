@@ -584,6 +584,31 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
+name|void
+name|purgeLogsOlderThan
+parameter_list|(
+name|long
+name|minTxIdToKeep
+parameter_list|)
+block|{
+for|for
+control|(
+name|AsyncLogger
+name|logger
+range|:
+name|loggers
+control|)
+block|{
+name|logger
+operator|.
+name|purgeLogsOlderThan
+argument_list|(
+name|minTxIdToKeep
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Wait for a quorum of loggers to respond to the given call. If a quorum    * can't be achieved, throws a QuorumException.    * @param q the quorum call    * @param timeoutMs the number of millis to wait    * @return a map of successful results    * @throws QuorumException if a quorum doesn't respond with success    * @throws IOException if the thread is interrupted or times out    */
 DECL|method|waitForWriteQuorum (QuorumCall<AsyncLogger, V> q, int timeoutMs)
 parameter_list|<
