@@ -373,7 +373,7 @@ name|File
 argument_list|(
 name|TEST_DIR_ROOT
 argument_list|,
-literal|"testdir"
+literal|"test-dir"
 argument_list|)
 operator|.
 name|getAbsolutePath
@@ -436,15 +436,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-name|System
-operator|.
-name|setProperty
-argument_list|(
-literal|"test.circus"
-argument_list|,
-literal|"true"
-argument_list|)
-expr_stmt|;
 name|System
 operator|.
 name|out

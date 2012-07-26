@@ -122,6 +122,24 @@ name|S11
 argument_list|(
 literal|"Service [{0}] exception during status change to [{1}] -server shutting down-, {2}"
 argument_list|)
+block|,
+DECL|enumConstant|S12
+name|S12
+argument_list|(
+literal|"Could not start service [{0}], {1}"
+argument_list|)
+block|,
+DECL|enumConstant|S13
+name|S13
+argument_list|(
+literal|"Missing system property [{0}]"
+argument_list|)
+block|,
+DECL|enumConstant|S14
+name|S14
+argument_list|(
+literal|"Could not initialize server, {0}"
+argument_list|)
 block|;
 DECL|field|msg
 specifier|private

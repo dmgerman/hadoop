@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.http.client
+DECL|package|org.apache.hadoop.fs.http.server
 package|package
 name|org
 operator|.
@@ -16,72 +16,62 @@ name|fs
 operator|.
 name|http
 operator|.
-name|client
+name|server
 package|;
 end_package
 
 begin_import
 import|import
-name|org
+name|javax
 operator|.
-name|apache
+name|servlet
 operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|authentication
-operator|.
-name|client
-operator|.
-name|Authenticator
+name|ServletException
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|authentication
-operator|.
-name|client
-operator|.
-name|KerberosAuthenticator
+name|Properties
 import|;
 end_import
 
-begin_comment
-comment|/**  * A<code>KerberosAuthenticator</code> subclass that fallback to  * {@link HttpPseudoAuthenticator}.  */
-end_comment
-
 begin_class
-DECL|class|HttpKerberosAuthenticator
+DECL|class|HttpFSKerberosAuthenticationHandlerForTesting
 specifier|public
 class|class
-name|HttpKerberosAuthenticator
+name|HttpFSKerberosAuthenticationHandlerForTesting
 extends|extends
-name|KerberosAuthenticator
+name|HttpFSKerberosAuthenticationHandler
 block|{
-comment|/**    * Returns the fallback authenticator if the server does not use    * Kerberos SPNEGO HTTP authentication.    *    * @return a {@link HttpPseudoAuthenticator} instance.    */
 annotation|@
 name|Override
-DECL|method|getFallBackAuthenticator ()
-specifier|protected
-name|Authenticator
-name|getFallBackAuthenticator
+DECL|method|init (Properties config)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Properties
+name|config
+parameter_list|)
+throws|throws
+name|ServletException
+block|{
+comment|//NOP overwrite to avoid Kerberos initialization
+block|}
+annotation|@
+name|Override
+DECL|method|destroy ()
+specifier|public
+name|void
+name|destroy
 parameter_list|()
 block|{
-return|return
-operator|new
-name|HttpPseudoAuthenticator
-argument_list|()
-return|;
+comment|//NOP overwrite to avoid Kerberos initialization
 block|}
 block|}
 end_class
