@@ -305,6 +305,24 @@ name|MAX_BLOCK_LOCATIONS_KEY
 init|=
 literal|"mapreduce.job.max.split.locations"
 decl_stmt|;
+DECL|field|SHUFFLE_SSL_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHUFFLE_SSL_ENABLED_KEY
+init|=
+literal|"mapreduce.shuffle.ssl.enabled"
+decl_stmt|;
+DECL|field|SHUFFLE_SSL_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|SHUFFLE_SSL_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_interface
 
