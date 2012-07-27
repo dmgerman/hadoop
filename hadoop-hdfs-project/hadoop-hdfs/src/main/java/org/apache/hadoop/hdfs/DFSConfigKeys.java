@@ -1495,6 +1495,15 @@ name|DFS_METRICS_SESSION_ID_KEY
 init|=
 literal|"dfs.metrics.session-id"
 decl_stmt|;
+DECL|field|DFS_METRICS_PERCENTILES_INTERVALS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_METRICS_PERCENTILES_INTERVALS_KEY
+init|=
+literal|"dfs.metrics.percentiles.intervals"
+decl_stmt|;
 DECL|field|DFS_DATANODE_HOST_NAME_KEY
 specifier|public
 specifier|static

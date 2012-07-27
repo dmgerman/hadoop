@@ -824,6 +824,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * DFSOutputStream creates files from a stream of bytes.  *  * The client application writes data that is cached internally by  * this stream. Data is broken up into packets, each packet is  * typically 64K in size. A packet comprises of chunks. Each chunk  * is typically 512 bytes and has an associated checksum with it.  *  * When a client application fills up the currentPacket, it is  * enqueued into dataQueue.  The DataStreamer thread picks up  * packets from the dataQueue, sends it to the first datanode in  * the pipeline and moves it from the dataQueue to the ackQueue.  * The ResponseProcessor receives acks from the datanodes. When an  * successful ack for a packet is received from all datanodes, the  * ResponseProcessor removes the corresponding packet from the  * ackQueue.  *  * In case of error, all outstanding packets and moved from  * ackQueue. A new pipeline is setup by eliminating the bad  * datanode from the original pipeline. The DataStreamer now  * starts sending packets from the dataQueue. ****************************************************************/
 end_comment
@@ -5692,7 +5706,10 @@ block|}
 comment|//
 comment|// returns the list of targets, if any, that is being currently used.
 comment|//
+annotation|@
+name|VisibleForTesting
 DECL|method|getPipeline ()
+specifier|public
 specifier|synchronized
 name|DatanodeInfo
 index|[]
@@ -7945,7 +7962,10 @@ block|{         }
 block|}
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setArtificialSlowdown (long period)
+specifier|public
 name|void
 name|setArtificialSlowdown
 parameter_list|(
@@ -7958,7 +7978,10 @@ operator|=
 name|period
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setChunksPerPacket (int value)
+specifier|public
 specifier|synchronized
 name|void
 name|setChunksPerPacket
