@@ -3675,15 +3675,6 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
-name|ugi
-operator|.
-name|setAuthenticationMethod
-argument_list|(
-name|AuthenticationMethod
-operator|.
-name|TOKEN
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
