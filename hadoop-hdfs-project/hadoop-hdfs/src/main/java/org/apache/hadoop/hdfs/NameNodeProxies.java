@@ -1622,11 +1622,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Return the default retry policy used in RPC.    *     * If dfs.client.retry.policy.enabled == false, use TRY_ONCE_THEN_FAIL.    *     * Otherwise, first unwrap ServiceException if possible, and then     * (1) use multipleLinearRandomRetry for    *     - SafeModeException, or    *     - IOException other than RemoteException, or    *     - ServiceException; and    * (2) use TRY_ONCE_THEN_FAIL for    *     - non-SafeMode RemoteException, or    *     - non-IOException.    *         * Note that dfs.client.retry.max< 0 is not allowed.    */
-DECL|method|getDefaultRpcRetryPolicy (Configuration conf)
-specifier|private
+DECL|method|getDefaultRetryPolicy (Configuration conf)
+specifier|public
 specifier|static
 name|RetryPolicy
-name|getDefaultRpcRetryPolicy
+name|getDefaultRetryPolicy
 parameter_list|(
 name|Configuration
 name|conf
@@ -1880,6 +1880,33 @@ name|isMethodIdempotent
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"RetryPolicy["
+operator|+
+name|multipleLinearRandomRetry
+operator|+
+literal|", "
+operator|+
+name|RetryPolicies
+operator|.
+name|TRY_ONCE_THEN_FAIL
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|"]"
+return|;
+block|}
 block|}
 return|;
 block|}
@@ -2011,7 +2038,7 @@ specifier|final
 name|RetryPolicy
 name|defaultPolicy
 init|=
-name|getDefaultRpcRetryPolicy
+name|getDefaultRetryPolicy
 argument_list|(
 name|conf
 argument_list|)

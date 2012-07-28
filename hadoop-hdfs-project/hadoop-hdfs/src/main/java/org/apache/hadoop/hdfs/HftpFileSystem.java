@@ -1877,8 +1877,6 @@ name|url
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|openConnection ()
 specifier|protected
 name|HttpURLConnection
@@ -1902,14 +1900,18 @@ block|}
 comment|/** Use HTTP Range header for specifying offset. */
 annotation|@
 name|Override
-DECL|method|openConnection (final long offset)
+DECL|method|connect (final long offset, final boolean resolved)
 specifier|protected
 name|HttpURLConnection
-name|openConnection
+name|connect
 parameter_list|(
 specifier|final
 name|long
 name|offset
+parameter_list|,
+specifier|final
+name|boolean
+name|resolved
 parameter_list|)
 throws|throws
 name|IOException
@@ -1948,6 +1950,68 @@ operator|+
 literal|"-"
 argument_list|)
 expr_stmt|;
+block|}
+name|conn
+operator|.
+name|connect
+argument_list|()
+expr_stmt|;
+comment|//Expects HTTP_OK or HTTP_PARTIAL response codes.
+specifier|final
+name|int
+name|code
+init|=
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|offset
+operator|!=
+literal|0L
+operator|&&
+name|code
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_PARTIAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"HTTP_PARTIAL expected, received "
+operator|+
+name|code
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|offset
+operator|==
+literal|0L
+operator|&&
+name|code
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"HTTP_OK expected, received "
+operator|+
+name|code
+argument_list|)
+throw|;
 block|}
 return|return
 name|conn
@@ -2005,82 +2069,6 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-comment|/** Expects HTTP_OK and HTTP_PARTIAL response codes. */
-annotation|@
-name|Override
-DECL|method|checkResponseCode (final HttpURLConnection connection )
-specifier|protected
-name|void
-name|checkResponseCode
-parameter_list|(
-specifier|final
-name|HttpURLConnection
-name|connection
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-specifier|final
-name|int
-name|code
-init|=
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|startPos
-operator|!=
-literal|0
-operator|&&
-name|code
-operator|!=
-name|HttpURLConnection
-operator|.
-name|HTTP_PARTIAL
-condition|)
-block|{
-comment|// We asked for a byte range but did not receive a partial content
-comment|// response...
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"HTTP_PARTIAL expected, received "
-operator|+
-name|code
-argument_list|)
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
-name|startPos
-operator|==
-literal|0
-operator|&&
-name|code
-operator|!=
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-condition|)
-block|{
-comment|// We asked for all bytes from the beginning but didn't receive a 200
-comment|// response (none of the other 2xx codes are valid here)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"HTTP_OK expected, received "
-operator|+
-name|code
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
