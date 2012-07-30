@@ -3890,6 +3890,14 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|exists
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
 name|delete
 argument_list|(
 name|path
@@ -3897,6 +3905,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
