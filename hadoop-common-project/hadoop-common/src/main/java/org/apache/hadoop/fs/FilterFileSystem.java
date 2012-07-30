@@ -695,27 +695,6 @@ name|recursive
 argument_list|)
 return|;
 block|}
-comment|/**    * Mark a path to be deleted when FileSystem is closed.    * When the JVM shuts down,    * all FileSystem objects will be closed automatically.    * Then,    * the marked path will be deleted as a result of closing the FileSystem.    *    * The path has to exist in the file system.    *     * @param f the path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException    */
-DECL|method|deleteOnExit (Path f)
-specifier|public
-name|boolean
-name|deleteOnExit
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|deleteOnExit
-argument_list|(
-name|f
-argument_list|)
-return|;
-block|}
 comment|/** List files in a directory. */
 DECL|method|listStatus (Path f)
 specifier|public
