@@ -228,7 +228,10 @@ name|MutableQuantiles
 extends|extends
 name|MutableMetric
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|quantiles
+specifier|public
 specifier|static
 specifier|final
 name|Quantile
@@ -457,10 +460,6 @@ init|=
 name|ucName
 operator|+
 literal|"%dthPercentile"
-operator|+
-name|interval
-operator|+
-literal|"sInterval"
 operator|+
 name|uvName
 decl_stmt|;

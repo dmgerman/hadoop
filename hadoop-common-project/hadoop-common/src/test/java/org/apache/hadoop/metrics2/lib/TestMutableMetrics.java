@@ -1046,7 +1046,7 @@ decl_stmt|;
 name|String
 name|name
 init|=
-literal|"Foo%dthPercentile5sIntervalLatency"
+literal|"Foo%dthPercentileLatency"
 decl_stmt|;
 name|String
 name|desc
@@ -1240,7 +1240,7 @@ decl_stmt|;
 name|String
 name|name
 init|=
-literal|"Foo%dthPercentile5sIntervalLatency"
+literal|"Foo%dthPercentileLatency"
 decl_stmt|;
 name|String
 name|desc

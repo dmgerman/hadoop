@@ -2823,19 +2823,12 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|compress
 condition|)
 block|{
-name|conf
+name|config
 operator|.
 name|setBoolean
 argument_list|(
@@ -2865,7 +2858,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes
@@ -3020,7 +3013,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes
@@ -3115,13 +3108,6 @@ decl_stmt|;
 name|Path
 name|excludeFile
 decl_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
 name|int
 name|HEARTBEAT_INTERVAL
 init|=
@@ -3135,7 +3121,7 @@ name|FileSystem
 operator|.
 name|getLocal
 argument_list|(
-name|conf
+name|config
 argument_list|)
 expr_stmt|;
 name|Path
@@ -3178,7 +3164,7 @@ literal|"exclude"
 argument_list|)
 expr_stmt|;
 comment|// Setup conf
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -3204,7 +3190,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -3292,7 +3278,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes

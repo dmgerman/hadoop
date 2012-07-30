@@ -8339,9 +8339,11 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Ignoring socket shutdown exception"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

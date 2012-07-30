@@ -201,7 +201,7 @@ expr_stmt|;
 block|}
 comment|/**    * Constructor used for testing purposes.    */
 DECL|method|HttpFSServerWebApp (String homeDir, String configDir, String logDir, String tempDir, Configuration config)
-specifier|protected
+specifier|public
 name|HttpFSServerWebApp
 parameter_list|(
 name|String

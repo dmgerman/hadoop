@@ -17,6 +17,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -280,6 +328,46 @@ name|Logger
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the cases of a concurrent reads/writes to a file;  * ie, one writer and one or more readers can see unfinsihed blocks  */
 end_comment
@@ -289,12 +377,6 @@ DECL|class|TestFileConcurrentReader
 specifier|public
 class|class
 name|TestFileConcurrentReader
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|enum|SyncType
 specifier|private
@@ -439,9 +521,9 @@ name|FileSystem
 name|fileSystem
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -461,9 +543,9 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -478,11 +560,6 @@ expr_stmt|;
 name|cluster
 operator|=
 literal|null
-expr_stmt|;
-name|super
-operator|.
-name|tearDown
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|init (Configuration conf)
@@ -768,6 +845,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test that that writes to an incomplete block are available to a reader    */
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockRead ()
 specifier|public
 name|void
@@ -832,6 +911,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * test case: if the BlockSender decides there is only one packet to send,    * the previous computation of the pktSize based on transferToAllowed    * would result in too small a buffer to do the buffer-copy needed    * for partial chunks.    */
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockPacketBufferOverrun ()
 specifier|public
 name|void
@@ -939,6 +1020,8 @@ block|}
 comment|// use a small block size and a large write so that DN is busy creating
 comment|// new blocks.  This makes it almost 100% sure we can reproduce
 comment|// case of client getting a DN that hasn't yet created the blocks
+annotation|@
+name|Test
 DECL|method|testImmediateReadOfNewFile ()
 specifier|public
 name|void
@@ -1319,6 +1402,8 @@ expr_stmt|;
 block|}
 comment|// for some reason, using tranferTo evokes the race condition more often
 comment|// so test separately
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockCRCErrorTransferTo ()
 specifier|public
 name|void
@@ -1339,6 +1424,8 @@ name|DEFAULT_WRITE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockCRCErrorTransferToVerySmallWrite ()
 specifier|public
 name|void
@@ -1360,6 +1447,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// fails due to issue w/append, disable
+annotation|@
+name|Ignore
+annotation|@
+name|Test
 DECL|method|_testUnfinishedBlockCRCErrorTransferToAppend ()
 specifier|public
 name|void
@@ -1380,6 +1471,8 @@ name|DEFAULT_WRITE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockCRCErrorNormalTransfer ()
 specifier|public
 name|void
@@ -1400,6 +1493,8 @@ name|DEFAULT_WRITE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUnfinishedBlockCRCErrorNormalTransferVerySmallWrite ()
 specifier|public
 name|void
@@ -1421,6 +1516,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// fails due to issue w/append, disable
+annotation|@
+name|Ignore
+annotation|@
+name|Test
 DECL|method|_testUnfinishedBlockCRCErrorNormalTransferAppend ()
 specifier|public
 name|void

@@ -666,6 +666,9 @@ block|{
 name|uri
 operator|=
 name|aUri
+operator|.
+name|normalize
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Construct a Path from components. */

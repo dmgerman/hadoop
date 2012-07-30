@@ -1200,6 +1200,36 @@ return|return
 literal|null
 return|;
 block|}
+DECL|method|deleteOnExit (Path f)
+specifier|public
+name|boolean
+name|deleteOnExit
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
+DECL|method|cancelDeleteOnExit (Path f)
+specifier|public
+name|boolean
+name|cancelDeleteOnExit
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|false
+return|;
+block|}
 DECL|method|getScheme ()
 specifier|public
 name|String

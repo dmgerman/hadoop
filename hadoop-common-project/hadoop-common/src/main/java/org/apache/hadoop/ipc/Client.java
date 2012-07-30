@@ -6219,6 +6219,22 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|serverPrincipal
+operator|+
+literal|"@"
+operator|+
+name|address
+return|;
+block|}
 block|}
 block|}
 end_class

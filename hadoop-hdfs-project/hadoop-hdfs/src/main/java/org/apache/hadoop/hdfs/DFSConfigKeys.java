@@ -446,8 +446,13 @@ specifier|final
 name|long
 name|DFS_DATANODE_READAHEAD_BYTES_DEFAULT
 init|=
-literal|0
+literal|4
+operator|*
+literal|1024
+operator|*
+literal|1024
 decl_stmt|;
+comment|// 4MB
 DECL|field|DFS_DATANODE_DROP_CACHE_BEHIND_WRITES_KEY
 specifier|public
 specifier|static
@@ -1489,6 +1494,15 @@ name|String
 name|DFS_METRICS_SESSION_ID_KEY
 init|=
 literal|"dfs.metrics.session-id"
+decl_stmt|;
+DECL|field|DFS_METRICS_PERCENTILES_INTERVALS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_METRICS_PERCENTILES_INTERVALS_KEY
+init|=
+literal|"dfs.metrics.percentiles.intervals"
 decl_stmt|;
 DECL|field|DFS_DATANODE_HOST_NAME_KEY
 specifier|public

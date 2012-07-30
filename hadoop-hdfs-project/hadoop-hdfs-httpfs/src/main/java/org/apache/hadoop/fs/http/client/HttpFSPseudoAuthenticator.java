@@ -67,10 +67,10 @@ comment|/**  * A<code>PseudoAuthenticator</code> subclass that uses FileSystemAc
 end_comment
 
 begin_class
-DECL|class|HttpPseudoAuthenticator
+DECL|class|HttpFSPseudoAuthenticator
 specifier|public
 class|class
-name|HttpPseudoAuthenticator
+name|HttpFSPseudoAuthenticator
 extends|extends
 name|PseudoAuthenticator
 block|{

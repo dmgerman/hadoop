@@ -81,6 +81,78 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -169,16 +241,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -748,6 +810,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|ArgumentMatcher
@@ -881,8 +963,6 @@ DECL|class|TestCheckpoint
 specifier|public
 class|class
 name|TestCheckpoint
-extends|extends
-name|TestCase
 block|{
 static|static
 block|{
@@ -965,7 +1045,7 @@ name|CheckpointFaultInjector
 name|faultInjector
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -1198,6 +1278,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Verify that namenode does not startup if one namedir is bad.    */
+annotation|@
+name|Test
 DECL|method|testNameDirError ()
 specifier|public
 name|void
@@ -1370,6 +1452,8 @@ block|}
 block|}
 block|}
 comment|/**    * Checks that an IOException in NNStorage.writeTransactionIdFile is handled    * correctly (by removing the storage directory)    * See https://issues.apache.org/jira/browse/HDFS-2011    */
+annotation|@
+name|Test
 DECL|method|testWriteTransactionIdHandlesIOE ()
 specifier|public
 name|void
@@ -1600,6 +1684,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Simulate namenode crashing after rolling edit log.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryNamenodeError1 ()
 specifier|public
 name|void
@@ -1865,6 +1951,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Simulate a namenode crash after uploading new image    */
+annotation|@
+name|Test
 DECL|method|testSecondaryNamenodeError2 ()
 specifier|public
 name|void
@@ -2130,6 +2218,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Simulate a secondary namenode crash after rolling the edit log.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryNamenodeError3 ()
 specifier|public
 name|void
@@ -2418,6 +2508,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Simulate a secondary node failure to transfer image    * back to the name-node.    * Used to truncate primary fsimage file.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryFailsToReturnImage ()
 specifier|public
 name|void
@@ -2457,6 +2549,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Similar to above test, but uses an unchecked Error, and causes it    * before even setting the length header. This used to cause image    * truncation. Regression test for HDFS-3330.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryFailsWithErrorBeforeSettingHeaders ()
 specifier|public
 name|void
@@ -2784,6 +2878,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Simulate 2NN failing to send the whole file (error type 3)    * The length header in the HTTP transfer should prevent    * this from corrupting the NN.    */
+annotation|@
+name|Test
 DECL|method|testNameNodeImageSendFailWrongSize ()
 specifier|public
 name|void
@@ -2826,6 +2922,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Simulate 2NN sending a corrupt image (error type 4)    * The digest header in the HTTP transfer should prevent    * this from corrupting the NN.    */
+annotation|@
+name|Test
 DECL|method|testNameNodeImageSendFailWrongDigest ()
 specifier|public
 name|void
@@ -2896,12 +2994,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"checkpoint-doSendFailTest-"
-operator|+
-name|getName
-argument_list|()
-operator|+
-literal|".dat"
+literal|"checkpoint-doSendFailTest-doSendFailTest.dat"
 argument_list|)
 decl_stmt|;
 name|MiniDFSCluster
@@ -3063,6 +3156,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that the NN locks its storage and edits directories, and won't start up    * if the directories are already locked    **/
+annotation|@
+name|Test
 DECL|method|testNameDirLocking ()
 specifier|public
 name|void
@@ -3168,6 +3263,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that, if the edits dir is separate from the name dir, it is    * properly locked.    **/
+annotation|@
+name|Test
 DECL|method|testSeparateEditsDirLocking ()
 specifier|public
 name|void
@@ -3321,6 +3418,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that the SecondaryNameNode properly locks its storage directories.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryNameNodeLocking ()
 specifier|public
 name|void
@@ -3521,6 +3620,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test that, an attempt to lock a storage that is already locked by a nodename,    * logs error message that includes JVM name of the namenode that locked it.    */
+annotation|@
+name|Test
 DECL|method|testStorageAlreadyLockedErrorMessage ()
 specifier|public
 name|void
@@ -3822,6 +3923,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test the importCheckpoint startup option. Verifies:    * 1. if the NN already contains an image, it will not be allowed    *   to import a checkpoint.    * 2. if the NN does not contain an image, importing a checkpoint    *    succeeds and re-saves the image    */
+annotation|@
+name|Test
 DECL|method|testImportCheckpoint ()
 specifier|public
 name|void
@@ -4298,6 +4401,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Tests checkpoint in HDFS.    */
+annotation|@
+name|Test
 DECL|method|testCheckpoint ()
 specifier|public
 name|void
@@ -4702,6 +4807,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Tests save namespace.    */
+annotation|@
+name|Test
 DECL|method|testSaveNamespace ()
 specifier|public
 name|void
@@ -5370,6 +5477,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testCheckpointSignature ()
 specifier|public
 name|void
@@ -5504,6 +5613,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Tests the following sequence of events:    * - secondary successfully makes a checkpoint    * - it then fails while trying to upload it    * - it then fails again for the same reason    * - it then tries to checkpoint a third time    */
+annotation|@
+name|Test
 DECL|method|testCheckpointAfterTwoFailedUploads ()
 specifier|public
 name|void
@@ -5714,6 +5825,8 @@ block|}
 block|}
 block|}
 comment|/**    * Starts two namenodes and two secondary namenodes, verifies that secondary    * namenodes are configured correctly to talk to their respective namenodes    * and can do the checkpoint.    *     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testMultipleSecondaryNamenodes ()
 specifier|public
 name|void
@@ -6019,6 +6132,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test that the secondary doesn't have to re-download image    * if it hasn't changed.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryImageDownload ()
 specifier|public
 name|void
@@ -6359,6 +6474,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test case where two secondary namenodes are checkpointing the same    * NameNode. This differs from {@link #testMultipleSecondaryNamenodes()}    * since that test runs against two distinct NNs.    *     * This case tests the following interleaving:    * - 2NN A downloads image (up to txid 2)    * - 2NN A about to save its own checkpoint    * - 2NN B downloads image (up to txid 4)    * - 2NN B uploads checkpoint (txid 4)    * - 2NN A uploads checkpoint (txid 2)    *     * It verifies that this works even though the earlier-txid checkpoint gets    * uploaded after the later-txid checkpoint.    */
+annotation|@
+name|Test
 DECL|method|testMultipleSecondaryNNsAgainstSameNN ()
 specifier|public
 name|void
@@ -6638,6 +6755,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test case where two secondary namenodes are checkpointing the same    * NameNode. This differs from {@link #testMultipleSecondaryNamenodes()}    * since that test runs against two distinct NNs.    *     * This case tests the following interleaving:    * - 2NN A) calls rollEdits()    * - 2NN B) calls rollEdits()    * - 2NN A) paused at getRemoteEditLogManifest()    * - 2NN B) calls getRemoteEditLogManifest() (returns up to txid 4)    * - 2NN B) uploads checkpoint fsimage_4    * - 2NN A) allowed to proceed, also returns up to txid 4    * - 2NN A) uploads checkpoint fsimage_4 as well, should fail gracefully    *     * It verifies that one of the two gets an error that it's uploading a    * duplicate checkpoint, and the other one succeeds.    */
+annotation|@
+name|Test
 DECL|method|testMultipleSecondaryNNsAgainstSameNN2 ()
 specifier|public
 name|void
@@ -7008,6 +7127,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test case where the name node is reformatted while the secondary namenode    * is running. The secondary should shut itself down if if talks to a NN    * with the wrong namespace.    */
+annotation|@
+name|Test
 DECL|method|testReformatNNBetweenCheckpoints ()
 specifier|public
 name|void
@@ -7240,6 +7361,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test that the primary NN will not serve any files to a 2NN who doesn't    * share its namespace ID, and also will not accept any files from one.    */
+annotation|@
+name|Test
 DECL|method|testNamespaceVerifiedOnFileTransfer ()
 specifier|public
 name|void
@@ -7596,6 +7719,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testCheckpointWithFailedStorageDir ()
 specifier|public
 name|void
@@ -7852,6 +7977,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testCheckpointWithSeparateDirsAfterNameFails ()
 specifier|public
 name|void
@@ -8191,6 +8318,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test that the 2NN triggers a checkpoint after the configurable interval    */
+annotation|@
+name|Test
 DECL|method|testCheckpointTriggerOnTxnCount ()
 specifier|public
 name|void
@@ -8441,6 +8570,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test case where the secondary does a checkpoint, then stops for a while.    * In the meantime, the NN saves its image several times, so that the    * logs that connect the 2NN's old checkpoint to the current txid    * get archived. Then, the 2NN tries to checkpoint again.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryHasVeryOutOfDateImage ()
 specifier|public
 name|void
@@ -8590,6 +8721,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCommandLineParsing ()
 specifier|public
 name|void
