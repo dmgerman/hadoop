@@ -3848,6 +3848,31 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Cancel the deletion of the path when the FileSystem is closed    * @param f the path to cancel deletion    */
+DECL|method|cancelDeleteOnExit (Path f)
+specifier|public
+name|boolean
+name|cancelDeleteOnExit
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|deleteOnExit
+init|)
+block|{
+return|return
+name|deleteOnExit
+operator|.
+name|remove
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+block|}
 comment|/**    * Delete all files that were marked as delete-on-exit. This recursively    * deletes all files in the specified paths.    */
 DECL|method|processDeleteOnExit ()
 specifier|protected
