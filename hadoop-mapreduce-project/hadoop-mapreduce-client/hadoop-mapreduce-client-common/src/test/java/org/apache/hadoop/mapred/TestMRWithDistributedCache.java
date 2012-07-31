@@ -724,11 +724,12 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//This last one is a difference between MRv2 and MRv1
 name|TestCase
 operator|.
-name|assertFalse
+name|assertTrue
 argument_list|(
-literal|"second file should not be symlinked"
+literal|"second file should be symlinked too"
 argument_list|,
 name|expectedAbsentSymlinkFile
 operator|.
