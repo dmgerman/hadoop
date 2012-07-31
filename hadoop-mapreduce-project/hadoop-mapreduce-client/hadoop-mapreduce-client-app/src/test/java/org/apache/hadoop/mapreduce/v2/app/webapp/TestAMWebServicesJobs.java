@@ -7305,6 +7305,11 @@ argument_list|,
 literal|"containerlogs"
 argument_list|,
 name|containerId
+argument_list|,
+name|job
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|assertTrue
