@@ -181,20 +181,24 @@ return|return
 name|url
 return|;
 block|}
-comment|/** Connect to server with a data offset. */
-DECL|method|connect (final long offset, final boolean resolved)
+DECL|method|openConnection ()
 specifier|protected
 specifier|abstract
 name|HttpURLConnection
-name|connect
+name|openConnection
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|openConnection (final long offset)
+specifier|protected
+specifier|abstract
+name|HttpURLConnection
+name|openConnection
 parameter_list|(
 specifier|final
 name|long
 name|offset
-parameter_list|,
-specifier|final
-name|boolean
-name|resolved
 parameter_list|)
 throws|throws
 name|IOException
@@ -280,6 +284,19 @@ operator|=
 name|r
 expr_stmt|;
 block|}
+DECL|method|checkResponseCode (final HttpURLConnection connection )
+specifier|protected
+specifier|abstract
+name|void
+name|checkResponseCode
+parameter_list|(
+specifier|final
+name|HttpURLConnection
+name|connection
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|getResolvedUrl (final HttpURLConnection connection )
 specifier|protected
 specifier|abstract
@@ -368,25 +385,21 @@ block|{
 comment|// Use the original url if no resolved url exists, eg. if
 comment|// it's the first time a request is made.
 specifier|final
-name|boolean
-name|resolved
+name|URLOpener
+name|opener
 init|=
+operator|(
 name|resolvedURL
 operator|.
 name|getURL
 argument_list|()
-operator|!=
+operator|==
 literal|null
-decl_stmt|;
-specifier|final
-name|URLOpener
-name|opener
-init|=
-name|resolved
+operator|)
 condition|?
-name|resolvedURL
-else|:
 name|originalURL
+else|:
+name|resolvedURL
 decl_stmt|;
 specifier|final
 name|HttpURLConnection
@@ -394,13 +407,21 @@ name|connection
 init|=
 name|opener
 operator|.
-name|connect
+name|openConnection
 argument_list|(
 name|startPos
-argument_list|,
-name|resolved
 argument_list|)
 decl_stmt|;
+name|connection
+operator|.
+name|connect
+argument_list|()
+expr_stmt|;
+name|checkResponseCode
+argument_list|(
+name|connection
+argument_list|)
+expr_stmt|;
 specifier|final
 name|String
 name|cl

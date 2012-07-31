@@ -168,22 +168,22 @@ operator|.
 name|HTTP_NOT_IMPLEMENTED
 argument_list|)
 block|;
-DECL|field|doOutputAndRedirect
+DECL|field|doOutput
 specifier|final
 name|boolean
-name|doOutputAndRedirect
+name|doOutput
 decl_stmt|;
 DECL|field|expectedHttpResponseCode
 specifier|final
 name|int
 name|expectedHttpResponseCode
 decl_stmt|;
-DECL|method|Op (final boolean doOutputAndRedirect, final int expectedHttpResponseCode)
+DECL|method|Op (final boolean doOutput, final int expectedHttpResponseCode)
 name|Op
 parameter_list|(
 specifier|final
 name|boolean
-name|doOutputAndRedirect
+name|doOutput
 parameter_list|,
 specifier|final
 name|int
@@ -192,9 +192,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|doOutputAndRedirect
+name|doOutput
 operator|=
-name|doOutputAndRedirect
+name|doOutput
 expr_stmt|;
 name|this
 operator|.
@@ -230,19 +230,7 @@ name|getDoOutput
 parameter_list|()
 block|{
 return|return
-name|doOutputAndRedirect
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getRedirect ()
-specifier|public
-name|boolean
-name|getRedirect
-parameter_list|()
-block|{
-return|return
-name|doOutputAndRedirect
+name|doOutput
 return|;
 block|}
 annotation|@

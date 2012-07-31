@@ -118,18 +118,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRedirect ()
-specifier|public
-name|boolean
-name|getRedirect
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getExpectedHttpResponseCode ()
 specifier|public
 name|int
