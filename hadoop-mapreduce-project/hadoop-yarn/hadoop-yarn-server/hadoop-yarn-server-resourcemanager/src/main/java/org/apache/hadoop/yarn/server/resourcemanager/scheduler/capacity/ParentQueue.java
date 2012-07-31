@@ -1284,7 +1284,7 @@ specifier|static
 name|float
 name|PRECISION
 init|=
-literal|0.005f
+literal|0.0005f
 decl_stmt|;
 comment|// 0.05% precision
 DECL|method|setChildQueues (Collection<CSQueue> childQueues)
