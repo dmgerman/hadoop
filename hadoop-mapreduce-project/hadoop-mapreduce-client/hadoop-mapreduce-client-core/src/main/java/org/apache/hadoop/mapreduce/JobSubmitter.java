@@ -1222,13 +1222,6 @@ name|ue
 argument_list|)
 throw|;
 block|}
-name|DistributedCache
-operator|.
-name|createSymlink
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 if|if
@@ -1444,13 +1437,6 @@ name|ue
 argument_list|)
 throw|;
 block|}
-name|DistributedCache
-operator|.
-name|createSymlink
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 if|if

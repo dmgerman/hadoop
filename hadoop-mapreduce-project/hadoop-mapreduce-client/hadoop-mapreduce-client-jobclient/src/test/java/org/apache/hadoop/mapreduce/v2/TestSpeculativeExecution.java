@@ -1726,11 +1726,6 @@ expr_stmt|;
 comment|// The AppMaster jar itself.
 name|job
 operator|.
-name|createSymlink
-argument_list|()
-expr_stmt|;
-name|job
-operator|.
 name|setMaxMapAttempts
 argument_list|(
 literal|2

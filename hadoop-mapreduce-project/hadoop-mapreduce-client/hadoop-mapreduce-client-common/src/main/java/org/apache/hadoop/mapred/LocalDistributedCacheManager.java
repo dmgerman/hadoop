@@ -635,16 +635,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|boolean
-name|mkLinks
-init|=
-name|DistributedCache
-operator|.
-name|getSymlink
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|File
 name|workDir
 init|=
@@ -1087,11 +1077,6 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|mkLinks
-condition|)
-block|{
 name|String
 name|link
 init|=
@@ -1124,7 +1109,6 @@ argument_list|,
 name|link
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|resource

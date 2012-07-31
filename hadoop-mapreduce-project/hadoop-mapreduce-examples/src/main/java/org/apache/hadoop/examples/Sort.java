@@ -1150,13 +1150,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|DistributedCache
-operator|.
-name|createSymlink
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 name|System
 operator|.

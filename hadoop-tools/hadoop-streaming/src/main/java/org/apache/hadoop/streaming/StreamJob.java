@@ -5641,13 +5641,6 @@ name|LINK_URI
 argument_list|)
 expr_stmt|;
 block|}
-name|DistributedCache
-operator|.
-name|createSymlink
-argument_list|(
-name|jobConf_
-argument_list|)
-expr_stmt|;
 comment|// set the jobconf for the caching parameters
 if|if
 condition|(

@@ -458,6 +458,9 @@ name|CACHE_ARCHIVES_VISIBILITIES
 init|=
 literal|"mapreduce.job.cache.archives.visibilities"
 decl_stmt|;
+comment|/**    * @deprecated Symlinks are always on and cannot be disabled.    */
+annotation|@
+name|Deprecated
 DECL|field|CACHE_SYMLINK
 specifier|public
 specifier|static

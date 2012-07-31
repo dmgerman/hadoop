@@ -3386,7 +3386,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method allows you to create symlinks in the current working directory    * of the task to all the cache files/archives    */
+comment|/**    * Originally intended to enable symlinks, but currently symlinks cannot be    * disabled.    */
+annotation|@
+name|Deprecated
 DECL|method|createSymlink ()
 specifier|public
 name|void
