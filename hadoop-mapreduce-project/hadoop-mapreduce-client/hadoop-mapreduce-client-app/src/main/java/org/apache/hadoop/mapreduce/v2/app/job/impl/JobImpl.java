@@ -7963,6 +7963,12 @@ block|}
 name|float
 name|failureRate
 init|=
+name|runningReduceTasks
+operator|==
+literal|0
+condition|?
+literal|1.0f
+else|:
 operator|(
 name|float
 operator|)
