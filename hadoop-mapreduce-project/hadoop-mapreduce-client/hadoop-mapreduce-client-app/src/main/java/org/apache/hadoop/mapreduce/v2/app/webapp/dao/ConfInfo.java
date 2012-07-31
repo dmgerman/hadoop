@@ -270,6 +270,16 @@ name|entry
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+name|jobConf
+operator|.
+name|getPropertySources
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
