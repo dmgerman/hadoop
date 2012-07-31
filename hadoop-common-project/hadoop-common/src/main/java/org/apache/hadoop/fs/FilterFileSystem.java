@@ -1279,7 +1279,7 @@ parameter_list|)
 block|{
 name|fs
 operator|.
-name|setVerifyChecksum
+name|setWriteChecksum
 argument_list|(
 name|writeChecksum
 argument_list|)
