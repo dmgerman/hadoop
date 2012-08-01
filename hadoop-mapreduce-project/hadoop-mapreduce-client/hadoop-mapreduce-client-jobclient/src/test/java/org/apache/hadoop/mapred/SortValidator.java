@@ -1777,14 +1777,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|jobConf
-operator|.
-name|get
-argument_list|(
-literal|"hadoop.tmp.dir"
-argument_list|,
 literal|"/tmp"
-argument_list|)
 argument_list|,
 literal|"sortvalidate"
 argument_list|)
