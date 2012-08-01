@@ -3546,7 +3546,7 @@ name|DFSTestUtil
 operator|.
 name|getLocalDatanodeInfo
 argument_list|(
-literal|"1.1.1.1"
+literal|"127.0.0.1"
 argument_list|,
 literal|"h1"
 argument_list|,
@@ -3559,7 +3559,7 @@ name|DFSTestUtil
 operator|.
 name|getLocalDatanodeInfo
 argument_list|(
-literal|"2.2.2.2"
+literal|"127.0.0.1"
 argument_list|,
 literal|"h2"
 argument_list|,
@@ -3572,7 +3572,7 @@ name|DFSTestUtil
 operator|.
 name|getLocalDatanodeInfo
 argument_list|(
-literal|"3.3.3.3"
+literal|"127.0.0.1"
 argument_list|,
 literal|"h3"
 argument_list|,
