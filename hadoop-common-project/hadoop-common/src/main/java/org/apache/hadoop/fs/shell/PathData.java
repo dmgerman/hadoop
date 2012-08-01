@@ -319,9 +319,7 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|URI
-operator|.
-name|create
+name|stringToUri
 argument_list|(
 name|pathString
 argument_list|)
@@ -671,11 +669,11 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns a temporary file for this PathData with the given extension.    * The file will be deleted on exit.    * @param extension for the temporary file    * @return PathData    * @throws IOException shouldn't happen    */
-DECL|method|createTempFile (String extension)
+comment|/**    * Returns a new PathData with the given extension.    * @param extension for the suffix    * @return PathData    * @throws IOException shouldn't happen    */
+DECL|method|suffix (String extension)
 specifier|public
 name|PathData
-name|createTempFile
+name|suffix
 parameter_list|(
 name|String
 name|extension
@@ -683,30 +681,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|PathData
-name|tmpFile
-init|=
+return|return
 operator|new
 name|PathData
 argument_list|(
 name|fs
 argument_list|,
-name|uri
+name|this
 operator|+
-literal|"._COPYING_"
+name|extension
 argument_list|)
-decl_stmt|;
-name|fs
-operator|.
-name|deleteOnExit
-argument_list|(
-name|tmpFile
-operator|.
-name|path
-argument_list|)
-expr_stmt|;
-return|return
-name|tmpFile
 return|;
 block|}
 comment|/**    * Test if the parent directory exists    * @return boolean indicating parent exists    * @throws IOException upon unexpected error    */
