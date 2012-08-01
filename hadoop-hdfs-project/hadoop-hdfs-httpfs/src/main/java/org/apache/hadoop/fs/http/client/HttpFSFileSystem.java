@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -573,6 +587,10 @@ comment|/**  * HttpFSServer implementation of the FileSystemAccess FileSystem.  
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HttpFSFileSystem
 specifier|public
 class|class
@@ -1149,8 +1167,13 @@ name|HTTP_DELETE
 init|=
 literal|"DELETE"
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|Operation
 specifier|public
+specifier|static
 enum|enum
 name|Operation
 block|{

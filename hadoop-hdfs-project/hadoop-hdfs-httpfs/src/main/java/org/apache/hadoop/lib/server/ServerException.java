@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|lang
@@ -39,6 +53,10 @@ comment|/**  * Exception thrown by the {@link Server} class.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ServerException
 specifier|public
 class|class
@@ -47,6 +65,10 @@ extends|extends
 name|XException
 block|{
 comment|/**    * Error codes use by the {@link Server} class.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|ERROR
 specifier|public
 specifier|static
