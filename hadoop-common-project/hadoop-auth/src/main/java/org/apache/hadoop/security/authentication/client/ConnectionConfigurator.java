@@ -36,48 +36,31 @@ name|java
 operator|.
 name|net
 operator|.
-name|URL
+name|HttpURLConnection
 import|;
 end_import
 
 begin_comment
-comment|/**  * Interface for client authentication mechanisms.  *<p/>  * Implementations are use-once instances, they don't need to be thread safe.  */
+comment|/**  * Interface to configure  {@link HttpURLConnection} created by  * {@link AuthenticatedURL} instances.  */
 end_comment
 
 begin_interface
-DECL|interface|Authenticator
+DECL|interface|ConnectionConfigurator
 specifier|public
 interface|interface
-name|Authenticator
-block|{
-comment|/**    * Sets a {@link ConnectionConfigurator} instance to use for    * configuring connections.    *    * @param configurator the {@link ConnectionConfigurator} instance.    */
-DECL|method|setConnectionConfigurator (ConnectionConfigurator configurator)
-specifier|public
-name|void
-name|setConnectionConfigurator
-parameter_list|(
 name|ConnectionConfigurator
-name|configurator
-parameter_list|)
-function_decl|;
-comment|/**    * Authenticates against a URL and returns a {@link AuthenticatedURL.Token} to be    * used by subsequent requests.    *    * @param url the URl to authenticate against.    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
-DECL|method|authenticate (URL url, AuthenticatedURL.Token token)
+block|{
+comment|/**    * Configures the given {@link HttpURLConnection} instance.    *    * @param conn the {@link HttpURLConnection} instance to configure.    * @return the configured {@link HttpURLConnection} instance.    *     * @throws IOException if an IO error occurred.    */
+DECL|method|configure (HttpURLConnection conn)
 specifier|public
-name|void
-name|authenticate
+name|HttpURLConnection
+name|configure
 parameter_list|(
-name|URL
-name|url
-parameter_list|,
-name|AuthenticatedURL
-operator|.
-name|Token
-name|token
+name|HttpURLConnection
+name|conn
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|AuthenticationException
 function_decl|;
 block|}
 end_interface

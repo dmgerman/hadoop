@@ -358,6 +358,11 @@ specifier|private
 name|Authenticator
 name|authenticator
 decl_stmt|;
+DECL|field|connConfigurator
+specifier|private
+name|ConnectionConfigurator
+name|connConfigurator
+decl_stmt|;
 comment|/**    * Creates an {@link AuthenticatedURL}.    */
 DECL|method|AuthenticatedURL ()
 specifier|public
@@ -377,6 +382,26 @@ name|AuthenticatedURL
 parameter_list|(
 name|Authenticator
 name|authenticator
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|authenticator
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates an<code>AuthenticatedURL</code>.    *    * @param authenticator the {@link Authenticator} instance to use, if<code>null</code> a {@link    * KerberosAuthenticator} is used.    * @param connConfigurator a connection configurator.    */
+DECL|method|AuthenticatedURL (Authenticator authenticator, ConnectionConfigurator connConfigurator)
+specifier|public
+name|AuthenticatedURL
+parameter_list|(
+name|Authenticator
+name|authenticator
+parameter_list|,
+name|ConnectionConfigurator
+name|connConfigurator
 parameter_list|)
 block|{
 try|try
@@ -413,6 +438,21 @@ name|ex
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
+name|connConfigurator
+operator|=
+name|connConfigurator
+expr_stmt|;
+name|this
+operator|.
+name|authenticator
+operator|.
+name|setConnectionConfigurator
+argument_list|(
+name|connConfigurator
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Returns an authenticated {@link HttpURLConnection}.    *    * @param url the URL to connect to. Only HTTP/S URLs are supported.    * @param token the authentication token being used for the user.    *    * @return an authenticated {@link HttpURLConnection}.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication exception occurred.    */
 DECL|method|openConnection (URL url, Token token)
@@ -514,6 +554,23 @@ operator|.
 name|openConnection
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|connConfigurator
+operator|!=
+literal|null
+condition|)
+block|{
+name|conn
+operator|=
+name|connConfigurator
+operator|.
+name|configure
+argument_list|(
+name|conn
+argument_list|)
+expr_stmt|;
+block|}
 name|injectToken
 argument_list|(
 name|conn
