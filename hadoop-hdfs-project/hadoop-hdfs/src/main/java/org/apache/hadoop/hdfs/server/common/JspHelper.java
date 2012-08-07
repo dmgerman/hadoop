@@ -400,6 +400,26 @@ name|token
 operator|.
 name|block
 operator|.
+name|DataEncryptionKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
 name|BlockTokenIdentifier
 import|;
 end_import
@@ -1384,7 +1404,7 @@ return|return
 name|chosenNode
 return|;
 block|}
-DECL|method|streamBlockInAscii (InetSocketAddress addr, String poolId, long blockId, Token<BlockTokenIdentifier> blockToken, long genStamp, long blockSize, long offsetIntoBlock, long chunkSizeToView, JspWriter out, Configuration conf)
+DECL|method|streamBlockInAscii (InetSocketAddress addr, String poolId, long blockId, Token<BlockTokenIdentifier> blockToken, long genStamp, long blockSize, long offsetIntoBlock, long chunkSizeToView, JspWriter out, Configuration conf, DataEncryptionKey encryptionKey)
 specifier|public
 specifier|static
 name|void
@@ -1422,6 +1442,9 @@ name|out
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|DataEncryptionKey
+name|encryptionKey
 parameter_list|)
 throws|throws
 name|IOException
@@ -1528,6 +1551,8 @@ argument_list|,
 name|offsetIntoBlock
 argument_list|,
 name|amtToRead
+argument_list|,
+name|encryptionKey
 argument_list|)
 decl_stmt|;
 name|byte

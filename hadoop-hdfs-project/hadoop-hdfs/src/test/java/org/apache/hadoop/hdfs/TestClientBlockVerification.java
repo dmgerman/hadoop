@@ -345,10 +345,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -420,10 +416,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -494,10 +486,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -625,10 +613,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK

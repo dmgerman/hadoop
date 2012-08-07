@@ -204,6 +204,24 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
+name|IOStreamPair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
 name|PacketHeader
 import|;
 end_import
@@ -2020,7 +2038,16 @@ name|RemoteBlockReader2
 operator|.
 name|writeReadResult
 argument_list|(
+name|NetUtils
+operator|.
+name|getOutputStream
+argument_list|(
 name|sock
+argument_list|,
+name|HdfsServerConstants
+operator|.
+name|WRITE_TIMEOUT
+argument_list|)
 argument_list|,
 name|statusCode
 argument_list|)
@@ -2117,6 +2144,20 @@ argument_list|(
 literal|"readDirect unsupported in RemoteBlockReader"
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStreams ()
+specifier|public
+name|IOStreamPair
+name|getStreams
+parameter_list|()
+block|{
+comment|// This class doesn't support encryption, which is the only thing this
+comment|// method is used for. See HDFS-3637.
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_class

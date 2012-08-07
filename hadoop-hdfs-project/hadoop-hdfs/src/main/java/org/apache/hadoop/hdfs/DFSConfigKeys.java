@@ -2850,6 +2850,34 @@ name|DFS_HA_ZKFC_PORT_DEFAULT
 init|=
 literal|8019
 decl_stmt|;
+comment|// Security-related configs
+DECL|field|DFS_ENCRYPT_DATA_TRANSFER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ENCRYPT_DATA_TRANSFER_KEY
+init|=
+literal|"dfs.encrypt.data.transfer"
+decl_stmt|;
+DECL|field|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+DECL|field|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
+init|=
+literal|"dfs.encrypt.data.transfer.algorithm"
+decl_stmt|;
 block|}
 end_class
 

@@ -200,6 +200,15 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|ENCRYPT_DATA_TRANSFER_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|ENCRYPT_DATA_TRANSFER_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|method|getServerDefaults ()
 specifier|public
 specifier|static
@@ -222,6 +231,8 @@ argument_list|,
 name|REPLICATION_DEFAULT
 argument_list|,
 name|STREAM_BUFFER_SIZE_DEFAULT
+argument_list|,
+name|ENCRYPT_DATA_TRANSFER_DEFAULT
 argument_list|)
 return|;
 block|}

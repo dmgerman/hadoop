@@ -80,6 +80,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|OutputStream
 import|;
 end_import
@@ -230,6 +240,42 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
+name|DataTransferEncryptor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|IOStreamPair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
 name|PacketHeader
 import|;
 end_import
@@ -329,6 +375,26 @@ operator|.
 name|DataTransferProtos
 operator|.
 name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
+name|DataEncryptionKey
 import|;
 end_import
 
@@ -513,7 +579,12 @@ DECL|field|dnSock
 name|Socket
 name|dnSock
 decl_stmt|;
-comment|//for now just sending the status code (e.g. checksumOk) after the read.
+comment|// for now just sending the status code (e.g. checksumOk) after the read.
+DECL|field|ioStreams
+specifier|private
+name|IOStreamPair
+name|ioStreams
+decl_stmt|;
 DECL|field|in
 specifier|private
 specifier|final
@@ -1058,8 +1129,6 @@ condition|)
 block|{
 name|sendReadResult
 argument_list|(
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -1070,8 +1139,6 @@ else|else
 block|{
 name|sendReadResult
 argument_list|(
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|SUCCESS
@@ -1466,7 +1533,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, ReadableByteChannel in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Socket dnSock)
+DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, ReadableByteChannel in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Socket dnSock, IOStreamPair ioStreams)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
@@ -1499,6 +1566,9 @@ name|bytesToRead
 parameter_list|,
 name|Socket
 name|dnSock
+parameter_list|,
+name|IOStreamPair
+name|ioStreams
 parameter_list|)
 block|{
 comment|// Path is used only for printing block and file information in debug
@@ -1507,6 +1577,12 @@ operator|.
 name|dnSock
 operator|=
 name|dnSock
+expr_stmt|;
+name|this
+operator|.
+name|ioStreams
+operator|=
+name|ioStreams
 expr_stmt|;
 name|this
 operator|.
@@ -1713,13 +1789,10 @@ name|sentStatusCode
 return|;
 block|}
 comment|/**    * When the reader reaches end of the read, it sends a status response    * (e.g. CHECKSUM_OK) to the DN. Failure to do so could lead to the DN    * closing our connection (which we will re-open), but won't affect    * data correctness.    */
-DECL|method|sendReadResult (Socket sock, Status statusCode)
+DECL|method|sendReadResult (Status statusCode)
 name|void
 name|sendReadResult
 parameter_list|(
-name|Socket
-name|sock
-parameter_list|,
 name|Status
 name|statusCode
 parameter_list|)
@@ -1730,13 +1803,15 @@ name|sentStatusCode
 operator|:
 literal|"already sent status code to "
 operator|+
-name|sock
+name|dnSock
 assert|;
 try|try
 block|{
 name|writeReadResult
 argument_list|(
-name|sock
+name|ioStreams
+operator|.
+name|out
 argument_list|,
 name|statusCode
 argument_list|)
@@ -1763,7 +1838,7 @@ name|statusCode
 operator|+
 literal|") to datanode "
 operator|+
-name|sock
+name|dnSock
 operator|.
 name|getInetAddress
 argument_list|()
@@ -1779,13 +1854,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Serialize the actual read result on the wire.    */
-DECL|method|writeReadResult (Socket sock, Status statusCode)
+DECL|method|writeReadResult (OutputStream out, Status statusCode)
 specifier|static
 name|void
 name|writeReadResult
 parameter_list|(
-name|Socket
-name|sock
+name|OutputStream
+name|out
 parameter_list|,
 name|Status
 name|statusCode
@@ -1793,20 +1868,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|OutputStream
-name|out
-init|=
-name|NetUtils
-operator|.
-name|getOutputStream
-argument_list|(
-name|sock
-argument_list|,
-name|HdfsServerConstants
-operator|.
-name|WRITE_TIMEOUT
-argument_list|)
-decl_stmt|;
 name|ClientReadStatusProto
 operator|.
 name|newBuilder
@@ -1936,7 +1997,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally.    *             This socket must have an associated Channel.    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader ( Socket sock, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName)
+DECL|method|newBlockReader (Socket sock, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, DataEncryptionKey encryptionKey, IOStreamPair ioStreams)
 specifier|public
 specifier|static
 name|BlockReader
@@ -1971,10 +2032,55 @@ name|verifyChecksum
 parameter_list|,
 name|String
 name|clientName
+parameter_list|,
+name|DataEncryptionKey
+name|encryptionKey
+parameter_list|,
+name|IOStreamPair
+name|ioStreams
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|ReadableByteChannel
+name|ch
+decl_stmt|;
+if|if
+condition|(
+name|ioStreams
+operator|.
+name|in
+operator|instanceof
+name|SocketInputWrapper
+condition|)
+block|{
+name|ch
+operator|=
+operator|(
+operator|(
+name|SocketInputWrapper
+operator|)
+name|ioStreams
+operator|.
+name|in
+operator|)
+operator|.
+name|getReadableByteChannel
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|ch
+operator|=
+operator|(
+name|ReadableByteChannel
+operator|)
+name|ioStreams
+operator|.
+name|in
+expr_stmt|;
+block|}
 comment|// in and out will be closed when sock is closed (by the caller)
 specifier|final
 name|DataOutputStream
@@ -1986,16 +2092,9 @@ argument_list|(
 operator|new
 name|BufferedOutputStream
 argument_list|(
-name|NetUtils
+name|ioStreams
 operator|.
-name|getOutputStream
-argument_list|(
-name|sock
-argument_list|,
-name|HdfsServerConstants
-operator|.
-name|WRITE_TIMEOUT
-argument_list|)
+name|out
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2019,33 +2118,17 @@ name|len
 argument_list|)
 expr_stmt|;
 comment|//
-comment|// Get bytes in block, set streams
+comment|// Get bytes in block
 comment|//
-name|SocketInputWrapper
-name|sin
-init|=
-name|NetUtils
-operator|.
-name|getInputStream
-argument_list|(
-name|sock
-argument_list|)
-decl_stmt|;
-name|ReadableByteChannel
-name|ch
-init|=
-name|sin
-operator|.
-name|getReadableByteChannel
-argument_list|()
-decl_stmt|;
 name|DataInputStream
 name|in
 init|=
 operator|new
 name|DataInputStream
 argument_list|(
-name|sin
+name|ioStreams
+operator|.
+name|in
 argument_list|)
 decl_stmt|;
 name|BlockOpResponseProto
@@ -2172,6 +2255,8 @@ argument_list|,
 name|len
 argument_list|,
 name|sock
+argument_list|,
+name|ioStreams
 argument_list|)
 return|;
 block|}
@@ -2312,6 +2397,18 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getStreams ()
+specifier|public
+name|IOStreamPair
+name|getStreams
+parameter_list|()
+block|{
+return|return
+name|ioStreams
+return|;
 block|}
 block|}
 end_class

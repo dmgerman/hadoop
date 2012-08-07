@@ -1387,6 +1387,10 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TestWritable
@@ -1674,6 +1678,10 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|BlockTokenSecretManager
@@ -1685,6 +1693,10 @@ argument_list|(
 name|blockKeyUpdateInterval
 argument_list|,
 name|blockTokenLifetime
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|ExportedBlockKeys
@@ -1903,6 +1915,10 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Token
@@ -2076,6 +2092,10 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Token
@@ -2430,6 +2450,10 @@ argument_list|,
 name|blockTokenLifetime
 argument_list|,
 literal|0
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|BlockTokenSecretManager
@@ -2441,6 +2465,10 @@ argument_list|(
 name|blockKeyUpdateInterval
 argument_list|,
 name|blockTokenLifetime
+argument_list|,
+literal|"fake-pool"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|bpMgr

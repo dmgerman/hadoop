@@ -683,6 +683,8 @@ name|get
 argument_list|(
 name|dnAddr
 argument_list|)
+operator|.
+name|sock
 decl_stmt|;
 name|assertNotNull
 argument_list|(

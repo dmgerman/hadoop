@@ -414,6 +414,26 @@ name|security
 operator|.
 name|token
 operator|.
+name|block
+operator|.
+name|DataEncryptionKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
@@ -1489,6 +1509,15 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|token
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @return encryption key so a client can encrypt data sent via the    *         DataTransferProtocol to/from DataNodes.    * @throws IOException    */
+DECL|method|getDataEncryptionKey ()
+specifier|public
+name|DataEncryptionKey
+name|getDataEncryptionKey
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

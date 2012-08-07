@@ -285,14 +285,14 @@ name|DataTransferProtocol
 block|{
 DECL|field|in
 specifier|protected
-specifier|final
 name|DataInputStream
 name|in
 decl_stmt|;
-comment|/** Create a receiver for DataTransferProtocol with a socket. */
-DECL|method|Receiver (final DataInputStream in)
+comment|/** Initialize a receiver for DataTransferProtocol with a socket. */
+DECL|method|initialize (final DataInputStream in)
 specifier|protected
-name|Receiver
+name|void
+name|initialize
 parameter_list|(
 specifier|final
 name|DataInputStream

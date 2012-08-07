@@ -1544,6 +1544,8 @@ literal|0
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// nothing - if it fails - it will throw and exception
