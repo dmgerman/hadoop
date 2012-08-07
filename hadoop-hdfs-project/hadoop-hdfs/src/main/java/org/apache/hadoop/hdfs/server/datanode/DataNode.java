@@ -1912,6 +1912,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|ReadaheadPool
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|ProtobufRpcEngine
@@ -2622,6 +2636,10 @@ specifier|private
 specifier|final
 name|String
 name|userWithLocalPathAccess
+decl_stmt|;
+DECL|field|readaheadPool
+name|ReadaheadPool
+name|readaheadPool
 decl_stmt|;
 comment|/**    * Create the DataNode given a configuration and an array of dataDirs.    * 'dataDirs' is where the blocks are stored.    */
 DECL|method|DataNode (final Configuration conf, final AbstractList<File> dataDirs)
@@ -4398,6 +4416,15 @@ name|refreshNamenodes
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+comment|// Create the ReadaheadPool from the DataNode context so we can
+comment|// exit without having to explicitly shutdown its thread pool.
+name|readaheadPool
+operator|=
+name|ReadaheadPool
+operator|.
+name|getInstance
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a DatanodeRegistration for a specific block pool.    * @param nsInfo the namespace info from the first part of the NN handshake    */

@@ -56,16 +56,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|EOFException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileDescriptor
 import|;
 end_import
@@ -247,24 +237,6 @@ operator|.
 name|datatransfer
 operator|.
 name|PacketHeader
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
 import|;
 end_import
 
@@ -642,17 +614,6 @@ init|=
 literal|256
 operator|*
 literal|1024
-decl_stmt|;
-DECL|field|readaheadPool
-specifier|private
-specifier|static
-name|ReadaheadPool
-name|readaheadPool
-init|=
-name|ReadaheadPool
-operator|.
-name|getInstance
-argument_list|()
 decl_stmt|;
 comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
 DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, DataNode datanode, String clientTraceFmt)
@@ -2905,6 +2866,8 @@ name|readaheadLength
 operator|>
 literal|0
 operator|&&
+name|datanode
+operator|.
 name|readaheadPool
 operator|!=
 literal|null
@@ -2912,6 +2875,8 @@ condition|)
 block|{
 name|curReadahead
 operator|=
+name|datanode
+operator|.
 name|readaheadPool
 operator|.
 name|readaheadStream
