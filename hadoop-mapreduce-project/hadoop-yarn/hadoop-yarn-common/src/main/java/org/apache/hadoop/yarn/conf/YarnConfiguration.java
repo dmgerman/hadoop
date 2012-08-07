@@ -2080,7 +2080,7 @@ name|IS_MINI_YARN_CLUSTER
 init|=
 name|YARN_PREFIX
 operator|+
-literal|".is.minicluster"
+literal|"is.minicluster"
 decl_stmt|;
 comment|/** Whether to use fixed ports with the minicluster. */
 DECL|field|YARN_MINICLUSTER_FIXED_PORTS
