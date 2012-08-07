@@ -22,16 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -54,7 +44,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
+name|CommonConfigurationKeysPublic
 import|;
 end_import
 
@@ -66,11 +56,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|web
-operator|.
-name|WebHdfsFileSystem
+name|Path
 import|;
 end_import
 
@@ -84,17 +72,7 @@ name|hadoop
 operator|.
 name|test
 operator|.
-name|TestJettyHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
+name|TestHdfsHelper
 import|;
 end_import
 
@@ -132,19 +110,17 @@ name|Parameterized
 operator|.
 name|class
 argument_list|)
-DECL|class|TestWebhdfsFileSystem
+DECL|class|TestHttpFSWithHttpFSFileSystem
 specifier|public
 class|class
-name|TestWebhdfsFileSystem
+name|TestHttpFSWithHttpFSFileSystem
 extends|extends
-name|TestHttpFSFileSystem
+name|BaseTestHttpFSWith
 block|{
-DECL|method|TestWebhdfsFileSystem (TestHttpFSFileSystem.Operation operation)
+DECL|method|TestHttpFSWithHttpFSFileSystem (Operation operation)
 specifier|public
-name|TestWebhdfsFileSystem
+name|TestHttpFSWithHttpFSFileSystem
 parameter_list|(
-name|TestHttpFSFileSystem
-operator|.
 name|Operation
 name|operation
 parameter_list|)
@@ -155,8 +131,6 @@ name|operation
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|getFileSystemClass ()
 specifier|protected
 name|Class
@@ -164,9 +138,55 @@ name|getFileSystemClass
 parameter_list|()
 block|{
 return|return
-name|WebHdfsFileSystem
+name|HttpFSFileSystem
 operator|.
 name|class
+return|;
+block|}
+DECL|method|getProxiedFSTestDir ()
+specifier|protected
+name|Path
+name|getProxiedFSTestDir
+parameter_list|()
+block|{
+return|return
+name|TestHdfsHelper
+operator|.
+name|getHdfsTestDir
+argument_list|()
+return|;
+block|}
+DECL|method|getProxiedFSURI ()
+specifier|protected
+name|String
+name|getProxiedFSURI
+parameter_list|()
+block|{
+return|return
+name|TestHdfsHelper
+operator|.
+name|getHdfsConf
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
+argument_list|)
+return|;
+block|}
+DECL|method|getProxiedFSConf ()
+specifier|protected
+name|Configuration
+name|getProxiedFSConf
+parameter_list|()
+block|{
+return|return
+name|TestHdfsHelper
+operator|.
+name|getHdfsConf
+argument_list|()
 return|;
 block|}
 block|}
