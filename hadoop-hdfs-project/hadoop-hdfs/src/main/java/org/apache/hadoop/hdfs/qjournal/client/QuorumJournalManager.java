@@ -596,6 +596,7 @@ name|AsyncLoggerSet
 name|loggers
 decl_stmt|;
 DECL|method|QuorumJournalManager (Configuration conf, URI uri, NamespaceInfo nsInfo)
+specifier|public
 name|QuorumJournalManager
 parameter_list|(
 name|Configuration
