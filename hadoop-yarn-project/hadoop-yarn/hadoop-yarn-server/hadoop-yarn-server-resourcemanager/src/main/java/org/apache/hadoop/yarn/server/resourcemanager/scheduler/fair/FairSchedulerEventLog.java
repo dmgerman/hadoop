@@ -554,6 +554,7 @@ block|}
 block|}
 comment|/**    * Flush and close the log.    */
 DECL|method|shutdown ()
+specifier|synchronized
 name|void
 name|shutdown
 parameter_list|()
@@ -577,13 +578,24 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-block|{}
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to close fair scheduler event log"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|logDisabled
 operator|=
 literal|true
 expr_stmt|;
 block|}
+block|}
 DECL|method|isEnabled ()
+specifier|synchronized
 name|boolean
 name|isEnabled
 parameter_list|()
