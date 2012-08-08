@@ -9504,19 +9504,6 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|recoverLeaseInternal
-argument_list|(
-name|myFile
-argument_list|,
-name|src
-argument_list|,
-name|holder
-argument_list|,
-name|clientMachine
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|blockManager
@@ -9606,7 +9593,22 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
+else|else
+block|{
+comment|// Opening an existing file for write - may need to recover lease.
+name|recoverLeaseInternal
+argument_list|(
+name|myFile
+argument_list|,
+name|src
+argument_list|,
+name|holder
+argument_list|,
+name|clientMachine
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -9628,6 +9630,7 @@ operator|+
 literal|" because the file exists"
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 specifier|final
