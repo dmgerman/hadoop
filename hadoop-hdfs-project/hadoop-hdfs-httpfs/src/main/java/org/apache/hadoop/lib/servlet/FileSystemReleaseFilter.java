@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileSystem
@@ -123,6 +137,10 @@ comment|/**  * The<code>FileSystemReleaseFilter</code> releases back to the  * {
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FileSystemReleaseFilter
 specifier|public
 specifier|abstract

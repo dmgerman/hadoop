@@ -3304,6 +3304,14 @@ literal|0
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|getDataEncryptionKey
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

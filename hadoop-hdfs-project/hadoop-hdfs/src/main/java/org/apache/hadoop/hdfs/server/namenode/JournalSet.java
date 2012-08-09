@@ -182,6 +182,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|RemoteEditLog
 import|;
 end_import
@@ -746,6 +764,42 @@ name|minimumRedundantJournals
 operator|=
 name|minimumRedundantResources
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|format (NamespaceInfo nsInfo)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+block|{
+comment|// The iteration is done by FSEditLog itself
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// This is called individually on the underlying journals,
+comment|// not on the JournalSet.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
 block|}
 annotation|@
 name|Override

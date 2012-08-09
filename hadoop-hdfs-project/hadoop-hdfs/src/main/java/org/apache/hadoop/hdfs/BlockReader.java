@@ -50,6 +50,24 @@ name|ByteBufferReadable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|IOStreamPair
+import|;
+end_import
+
 begin_comment
 comment|/**  * A BlockReader is responsible for reading a single block  * from a single datanode.  */
 end_comment
@@ -144,6 +162,12 @@ comment|/**    * Whether the BlockReader has reached the end of its input stream
 DECL|method|hasSentStatusCode ()
 name|boolean
 name|hasSentStatusCode
+parameter_list|()
+function_decl|;
+comment|/**    * @return a reference to the streams this block reader is using.    */
+DECL|method|getStreams ()
+name|IOStreamPair
+name|getStreams
 parameter_list|()
 function_decl|;
 block|}

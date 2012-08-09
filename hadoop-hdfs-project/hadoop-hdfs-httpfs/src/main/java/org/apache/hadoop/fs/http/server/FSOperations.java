@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|ContentSummary
@@ -261,6 +275,10 @@ comment|/**  * FileSystem operation executors used by {@link HttpFSServer}.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSOperations
 specifier|public
 class|class
@@ -873,6 +891,10 @@ name|json
 return|;
 block|}
 comment|/**    * Executor that performs an append FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSAppend
 specifier|public
 specifier|static
@@ -990,6 +1012,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a content-summary FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSContentSummary
 specifier|public
 specifier|static
@@ -1061,6 +1087,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a create FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSCreate
 specifier|public
 specifier|static
@@ -1289,6 +1319,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a delete FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSDelete
 specifier|public
 specifier|static
@@ -1383,6 +1417,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a file-checksum FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSFileChecksum
 specifier|public
 specifier|static
@@ -1454,6 +1492,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a file-status FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSFileStatus
 specifier|public
 specifier|static
@@ -1525,6 +1567,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a home-dir FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSHomeDir
 specifier|public
 specifier|static
@@ -1595,6 +1641,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a list-status FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSListStatus
 specifier|public
 specifier|static
@@ -1714,6 +1764,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a mkdirs FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSMkdirs
 specifier|public
 specifier|static
@@ -1814,6 +1868,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a open FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSOpen
 specifier|public
 specifier|static
@@ -1897,6 +1955,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a rename FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSRename
 specifier|public
 specifier|static
@@ -1992,6 +2054,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a set-owner FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSSetOwner
 specifier|public
 specifier|static
@@ -2089,6 +2155,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a set-permission FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSSetPermission
 specifier|public
 specifier|static
@@ -2179,6 +2249,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a set-replication FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSSetReplication
 specifier|public
 specifier|static
@@ -2286,6 +2360,10 @@ return|;
 block|}
 block|}
 comment|/**    * Executor that performs a set-times FileSystemAccess files system operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FSSetTimes
 specifier|public
 specifier|static

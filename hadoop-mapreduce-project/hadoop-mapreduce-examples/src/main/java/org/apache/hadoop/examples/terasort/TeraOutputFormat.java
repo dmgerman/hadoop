@@ -190,6 +190,22 @@ name|FileOutputFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|security
+operator|.
+name|TokenCache
+import|;
+end_import
+
 begin_comment
 comment|/**  * An output format that writes the key and value appended together.  */
 end_comment
@@ -440,6 +456,29 @@ literal|"Output directory not set in JobConf."
 argument_list|)
 throw|;
 block|}
+comment|// get delegation token for outDir's file system
+name|TokenCache
+operator|.
+name|obtainTokensForNamenodes
+argument_list|(
+name|job
+operator|.
+name|getCredentials
+argument_list|()
+argument_list|,
+operator|new
+name|Path
+index|[]
+block|{
+name|outDir
+block|}
+argument_list|,
+name|job
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getRecordWriter (TaskAttemptContext job )
 specifier|public

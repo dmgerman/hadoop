@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -223,6 +237,10 @@ comment|/**  * A Server class provides standard configuration, logging and {@lin
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Server
 specifier|public
 class|class
@@ -264,8 +282,13 @@ init|=
 literal|"startup.status"
 decl_stmt|;
 comment|/**    * Enumeration that defines the server status.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|Status
 specifier|public
+specifier|static
 enum|enum
 name|Status
 block|{

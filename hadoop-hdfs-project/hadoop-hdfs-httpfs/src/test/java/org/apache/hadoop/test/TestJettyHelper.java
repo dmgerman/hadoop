@@ -401,7 +401,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Could not stop embedded servlet container, "
+literal|"Could not start embedded servlet container, "
 operator|+
 name|ex
 operator|.

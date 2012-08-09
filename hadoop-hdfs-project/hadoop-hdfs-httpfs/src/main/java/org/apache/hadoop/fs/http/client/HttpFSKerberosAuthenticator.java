@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -273,6 +287,10 @@ comment|/**  * A<code>KerberosAuthenticator</code> subclass that fallback to  * 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HttpFSKerberosAuthenticator
 specifier|public
 class|class
@@ -386,6 +404,10 @@ init|=
 literal|"long"
 decl_stmt|;
 comment|/**    * DelegationToken operations.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|DelegationTokenOperation
 specifier|public
 specifier|static

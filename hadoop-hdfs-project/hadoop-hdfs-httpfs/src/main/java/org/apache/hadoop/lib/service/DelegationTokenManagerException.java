@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|lang
@@ -39,6 +53,10 @@ comment|/**  * Exception thrown by the {@link DelegationTokenManager} service im
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DelegationTokenManagerException
 specifier|public
 class|class

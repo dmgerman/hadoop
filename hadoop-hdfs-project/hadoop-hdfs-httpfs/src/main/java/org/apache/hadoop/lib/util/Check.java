@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|text
@@ -55,6 +69,10 @@ comment|/**  * Utility methods to check preconditions.  *<p/>  * Commonly used f
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Check
 specifier|public
 class|class

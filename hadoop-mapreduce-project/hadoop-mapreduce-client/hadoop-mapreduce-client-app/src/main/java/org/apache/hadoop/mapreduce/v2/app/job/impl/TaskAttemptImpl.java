@@ -3301,6 +3301,10 @@ argument_list|,
 name|TaskAttemptEventType
 operator|.
 name|TA_FAILMSG
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_TOO_MANY_FETCH_FAILURE
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLED state

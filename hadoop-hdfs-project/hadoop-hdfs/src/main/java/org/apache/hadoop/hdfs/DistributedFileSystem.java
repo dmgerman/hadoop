@@ -1517,7 +1517,7 @@ name|IOException
 block|{
 name|statistics
 operator|.
-name|incrementReadOps
+name|incrementWriteOps
 argument_list|(
 literal|1
 argument_list|)

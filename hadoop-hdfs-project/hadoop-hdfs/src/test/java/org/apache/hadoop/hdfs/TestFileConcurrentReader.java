@@ -1446,15 +1446,12 @@ name|SMALL_WRITE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
-comment|// fails due to issue w/append, disable
-annotation|@
-name|Ignore
 annotation|@
 name|Test
-DECL|method|_testUnfinishedBlockCRCErrorTransferToAppend ()
+DECL|method|testUnfinishedBlockCRCErrorTransferToAppend ()
 specifier|public
 name|void
-name|_testUnfinishedBlockCRCErrorTransferToAppend
+name|testUnfinishedBlockCRCErrorTransferToAppend
 parameter_list|()
 throws|throws
 name|IOException
@@ -1515,15 +1512,12 @@ name|SMALL_WRITE_SIZE
 argument_list|)
 expr_stmt|;
 block|}
-comment|// fails due to issue w/append, disable
-annotation|@
-name|Ignore
 annotation|@
 name|Test
-DECL|method|_testUnfinishedBlockCRCErrorNormalTransferAppend ()
+DECL|method|testUnfinishedBlockCRCErrorNormalTransferAppend ()
 specifier|public
 name|void
-name|_testUnfinishedBlockCRCErrorNormalTransferAppend
+name|testUnfinishedBlockCRCErrorNormalTransferAppend
 parameter_list|()
 throws|throws
 name|IOException

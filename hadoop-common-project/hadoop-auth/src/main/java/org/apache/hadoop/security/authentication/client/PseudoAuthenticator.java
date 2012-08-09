@@ -83,6 +83,28 @@ name|USER_NAME
 operator|+
 literal|"="
 decl_stmt|;
+DECL|field|connConfigurator
+specifier|private
+name|ConnectionConfigurator
+name|connConfigurator
+decl_stmt|;
+comment|/**    * Sets a {@link ConnectionConfigurator} instance to use for    * configuring connections.    *    * @param configurator the {@link ConnectionConfigurator} instance.    */
+annotation|@
+name|Override
+DECL|method|setConnectionConfigurator (ConnectionConfigurator configurator)
+specifier|public
+name|void
+name|setConnectionConfigurator
+parameter_list|(
+name|ConnectionConfigurator
+name|configurator
+parameter_list|)
+block|{
+name|connConfigurator
+operator|=
+name|configurator
+expr_stmt|;
+block|}
 comment|/**    * Performs simple authentication against the specified URL.    *<p/>    * If a token is given it does a NOP and returns the given token.    *<p/>    * If no token is given, it will perform an HTTP<code>OPTIONS</code> request injecting an additional    * parameter {@link #USER_NAME} in the query string with the value returned by the {@link #getUserName()}    * method.    *<p/>    * If the response is successful it will update the authentication token.    *    * @param url the URl to authenticate against.    * @param token the authencation token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
 annotation|@
 name|Override
@@ -156,6 +178,23 @@ operator|.
 name|openConnection
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|connConfigurator
+operator|!=
+literal|null
+condition|)
+block|{
+name|conn
+operator|=
+name|connConfigurator
+operator|.
+name|configure
+argument_list|(
+name|conn
+argument_list|)
+expr_stmt|;
+block|}
 name|conn
 operator|.
 name|setRequestMethod

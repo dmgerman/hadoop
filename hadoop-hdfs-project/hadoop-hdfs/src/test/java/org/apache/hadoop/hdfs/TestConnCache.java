@@ -927,6 +927,8 @@ operator|.
 name|put
 argument_list|(
 name|nnSock
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertSame
@@ -941,6 +943,8 @@ name|get
 argument_list|(
 name|nnAddr
 argument_list|)
+operator|.
+name|sock
 argument_list|)
 expr_stmt|;
 name|cache
@@ -948,6 +952,8 @@ operator|.
 name|put
 argument_list|(
 name|nnSock
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Insert DN socks
@@ -964,6 +970,8 @@ operator|.
 name|put
 argument_list|(
 name|dnSock
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1012,6 +1020,8 @@ name|get
 argument_list|(
 name|dnAddr
 argument_list|)
+operator|.
+name|sock
 argument_list|)
 expr_stmt|;
 name|dnSock

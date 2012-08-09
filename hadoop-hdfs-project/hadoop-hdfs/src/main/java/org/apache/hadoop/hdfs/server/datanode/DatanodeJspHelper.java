@@ -4065,6 +4065,11 @@ argument_list|,
 name|out
 argument_list|,
 name|conf
+argument_list|,
+name|dfs
+operator|.
+name|getDataEncryptionKey
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4661,6 +4666,11 @@ argument_list|,
 name|out
 argument_list|,
 name|conf
+argument_list|,
+name|dfs
+operator|.
+name|getDataEncryptionKey
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|out

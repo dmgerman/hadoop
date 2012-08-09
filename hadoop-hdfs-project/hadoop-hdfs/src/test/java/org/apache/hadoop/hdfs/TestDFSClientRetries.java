@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1763,7 +1779,7 @@ argument_list|(
 literal|"/testFile"
 argument_list|)
 decl_stmt|;
-comment|// Set short retry timeout so this test runs faster
+comment|// Set short retry timeouts so this test runs faster
 name|conf
 operator|.
 name|setInt
@@ -1773,6 +1789,17 @@ operator|.
 name|DFS_CLIENT_RETRY_WINDOW_BASE
 argument_list|,
 literal|10
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
+argument_list|,
+literal|2
+operator|*
+literal|1000
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
@@ -5708,7 +5735,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|createFsWithDifferentUsername ( final Configuration conf, final boolean isWebHDFS )
-specifier|public
+specifier|private
 specifier|static
 name|FileSystem
 name|createFsWithDifferentUsername
@@ -5726,19 +5753,21 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+specifier|final
 name|String
 name|username
 init|=
 name|UserGroupInformation
 operator|.
 name|getCurrentUser
-argument_list|()
+argument_list|(         )
 operator|.
 name|getShortUserName
 argument_list|()
 operator|+
 literal|"_XXX"
 decl_stmt|;
+specifier|final
 name|UserGroupInformation
 name|ugi
 init|=

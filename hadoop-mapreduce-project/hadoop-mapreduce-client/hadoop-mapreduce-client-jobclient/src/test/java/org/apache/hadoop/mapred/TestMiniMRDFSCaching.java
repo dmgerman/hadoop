@@ -206,8 +206,6 @@ argument_list|,
 literal|"The quick brown fox\nhas many silly\n"
 operator|+
 literal|"red fox sox\n"
-argument_list|,
-literal|false
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -240,8 +238,6 @@ argument_list|,
 literal|"The quick brown fox\nhas many silly\n"
 operator|+
 literal|"red fox sox\n"
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 name|assertTrue

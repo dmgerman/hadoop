@@ -7963,6 +7963,12 @@ block|}
 name|float
 name|failureRate
 init|=
+name|runningReduceTasks
+operator|==
+literal|0
+condition|?
+literal|1.0f
+else|:
 operator|(
 name|float
 operator|)
@@ -9006,6 +9012,11 @@ name|open
 argument_list|(
 name|confPath
 argument_list|)
+argument_list|,
+name|confPath
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

@@ -56,16 +56,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|EOFException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileDescriptor
 import|;
 end_import
@@ -260,24 +250,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|DataTransferThrottler
@@ -387,7 +359,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Reads a block from the disk and sends it to a recipient.  *   * Data sent from the BlockeSender in the following format:  *<br><b>Data format:</b><pre>  *    +--------------------------------------------------+  *    | ChecksumHeader | Sequence of data PACKETS...     |  *    +--------------------------------------------------+   *</pre>     *<b>ChecksumHeader format:</b><pre>  *    +--------------------------------------------------+  *    | 1 byte CHECKSUM_TYPE | 4 byte BYTES_PER_CHECKSUM |  *    +--------------------------------------------------+   *</pre>     * An empty packet is sent to mark the end of block and read completion.  *   *  PACKET Contains a packet header, checksum and data. Amount of data  *  carried is set by BUFFER_SIZE.  *<pre>  *    +-----------------------------------------------------+  *    | 4 byte packet length (excluding packet header)      |  *    +-----------------------------------------------------+  *    | 8 byte offset in the block | 8 byte sequence number |  *    +-----------------------------------------------------+  *    | 1 byte isLastPacketInBlock                          |  *    +-----------------------------------------------------+  *    | 4 byte Length of actual data                        |  *    +-----------------------------------------------------+  *    | x byte checksum data. x is defined below            |  *    +-----------------------------------------------------+  *    | actual data ......                                  |  *    +-----------------------------------------------------+  *      *    Data is made of Chunks. Each chunk is of length<= BYTES_PER_CHECKSUM.  *    A checksum is calculated for each chunk.  *      *    x = (length of data + BYTE_PER_CHECKSUM - 1)/BYTES_PER_CHECKSUM *  *        CHECKSUM_SIZE  *          *    CHECKSUM_SIZE depends on CHECKSUM_TYPE (usually, 4 for CRC32)   *</pre>  *    *  The client reads data until it receives a packet with   *  "LastPacketInBlock" set to true or with a zero length. If there is   *  no checksum error, it replies to DataNode with OP_STATUS_CHECKSUM_OK:   *<pre>  *    +------------------------------+  *    | 2 byte OP_STATUS_CHECKSUM_OK |  *    +------------------------------+  *</pre>  */
+comment|/**  * Reads a block from the disk and sends it to a recipient.  *   * Data sent from the BlockeSender in the following format:  *<br><b>Data format:</b><pre>  *    +--------------------------------------------------+  *    | ChecksumHeader | Sequence of data PACKETS...     |  *    +--------------------------------------------------+   *</pre>     *<b>ChecksumHeader format:</b><pre>  *    +--------------------------------------------------+  *    | 1 byte CHECKSUM_TYPE | 4 byte BYTES_PER_CHECKSUM |  *    +--------------------------------------------------+   *</pre>     * An empty packet is sent to mark the end of block and read completion.  *   * PACKET Contains a packet header, checksum and data. Amount of data  * carried is set by BUFFER_SIZE.  *<pre>  *   +-----------------------------------------------------+  *   | Variable length header. See {@link PacketHeader}    |  *   +-----------------------------------------------------+  *   | x byte checksum data. x is defined below            |  *   +-----------------------------------------------------+  *   | actual data ......                                  |  *   +-----------------------------------------------------+  *   *   Data is made of Chunks. Each chunk is of length<= BYTES_PER_CHECKSUM.  *   A checksum is calculated for each chunk.  *    *   x = (length of data + BYTE_PER_CHECKSUM - 1)/BYTES_PER_CHECKSUM *  *       CHECKSUM_SIZE  *    *   CHECKSUM_SIZE depends on CHECKSUM_TYPE (usually, 4 for CRC32)   *</pre>  *    *  The client reads data until it receives a packet with   *  "LastPacketInBlock" set to true or with a zero length. If there is   *  no checksum error, it replies to DataNode with OP_STATUS_CHECKSUM_OK.  */
 end_comment
 
 begin_class
@@ -642,17 +614,6 @@ init|=
 literal|256
 operator|*
 literal|1024
-decl_stmt|;
-DECL|field|readaheadPool
-specifier|private
-specifier|static
-name|ReadaheadPool
-name|readaheadPool
-init|=
-name|ReadaheadPool
-operator|.
-name|getInstance
-argument_list|()
 decl_stmt|;
 comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
 DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, DataNode datanode, String clientTraceFmt)
@@ -1918,6 +1879,18 @@ name|dataLen
 operator|>
 literal|0
 decl_stmt|;
+comment|// The packet buffer is organized as follows:
+comment|// _______HHHHCCCCD?D?D?D?
+comment|//        ^   ^
+comment|//        |   \ checksumOff
+comment|//        \ headerOff
+comment|// _ padding, since the header is variable-length
+comment|// H = header and length prefixes
+comment|// C = checksums
+comment|// D? = data, if transferTo is false.
+name|int
+name|headerLen
+init|=
 name|writePacketHeader
 argument_list|(
 name|pkt
@@ -1926,7 +1899,19 @@ name|dataLen
 argument_list|,
 name|packetLen
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+comment|// Per above, the header doesn't start at the beginning of the
+comment|// buffer
+name|int
+name|headerOff
+init|=
+name|pkt
+operator|.
+name|position
+argument_list|()
+operator|-
+name|headerLen
+decl_stmt|;
 name|int
 name|checksumOff
 init|=
@@ -2079,18 +2064,20 @@ name|SocketOutputStream
 operator|)
 name|out
 decl_stmt|;
+comment|// First write header and checksums
 name|sockOut
 operator|.
 name|write
 argument_list|(
 name|buf
 argument_list|,
-literal|0
+name|headerOff
 argument_list|,
 name|dataOff
+operator|-
+name|headerOff
 argument_list|)
 expr_stmt|;
-comment|// First write checksum
 comment|// no need to flush since we know out is not a buffered stream
 name|FileChannel
 name|fileCh
@@ -2172,11 +2159,13 @@ name|write
 argument_list|(
 name|buf
 argument_list|,
-literal|0
+name|headerOff
 argument_list|,
 name|dataOff
 operator|+
 name|dataLen
+operator|-
+name|headerOff
 argument_list|)
 expr_stmt|;
 block|}
@@ -2633,11 +2622,11 @@ name|int
 name|maxChunksPerPacket
 decl_stmt|;
 name|int
-name|pktSize
+name|pktBufSize
 init|=
 name|PacketHeader
 operator|.
-name|PKT_HEADER_LEN
+name|PKT_MAX_HEADER_LEN
 decl_stmt|;
 name|boolean
 name|transferTo
@@ -2692,7 +2681,7 @@ name|TRANSFERTO_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
 comment|// Smaller packet size to only hold checksum when doing transferTo
-name|pktSize
+name|pktBufSize
 operator|+=
 name|checksumSize
 operator|*
@@ -2718,7 +2707,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Packet size includes both checksum and data
-name|pktSize
+name|pktBufSize
 operator|+=
 operator|(
 name|chunkSize
@@ -2736,7 +2725,7 @@ name|ByteBuffer
 operator|.
 name|allocate
 argument_list|(
-name|pktSize
+name|pktBufSize
 argument_list|)
 decl_stmt|;
 while|while
@@ -2905,6 +2894,8 @@ name|readaheadLength
 operator|>
 literal|0
 operator|&&
+name|datanode
+operator|.
 name|readaheadPool
 operator|!=
 literal|null
@@ -2912,6 +2903,8 @@ condition|)
 block|{
 name|curReadahead
 operator|=
+name|datanode
+operator|.
 name|readaheadPool
 operator|.
 name|readaheadStream
@@ -3002,10 +2995,10 @@ operator|>
 name|LONG_READ_THRESHOLD_BYTES
 return|;
 block|}
-comment|/**    * Write packet header into {@code pkt}    */
+comment|/**    * Write packet header into {@code pkt},    * return the length of the header written.    */
 DECL|method|writePacketHeader (ByteBuffer pkt, int dataLen, int packetLen)
 specifier|private
-name|void
+name|int
 name|writePacketHeader
 parameter_list|(
 name|ByteBuffer
@@ -3047,6 +3040,25 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+name|int
+name|size
+init|=
+name|header
+operator|.
+name|getSerializedSize
+argument_list|()
+decl_stmt|;
+name|pkt
+operator|.
+name|position
+argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_MAX_HEADER_LEN
+operator|-
+name|size
+argument_list|)
+expr_stmt|;
 name|header
 operator|.
 name|putInBuffer
@@ -3054,6 +3066,9 @@ argument_list|(
 name|pkt
 argument_list|)
 expr_stmt|;
+return|return
+name|size
+return|;
 block|}
 DECL|method|didSendEntireByteRange ()
 name|boolean

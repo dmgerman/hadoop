@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|http
@@ -249,6 +263,10 @@ end_comment
 begin_class
 annotation|@
 name|Provider
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HttpFSParametersProvider
 specifier|public
 class|class
@@ -694,6 +712,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Class for access-time parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|AccessTimeParam
 specifier|public
 specifier|static
@@ -731,6 +753,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for block-size parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BlockSizeParam
 specifier|public
 specifier|static
@@ -768,6 +794,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for data parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DataParam
 specifier|public
 specifier|static
@@ -802,6 +832,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for operation parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OperationParam
 specifier|public
 specifier|static
@@ -862,6 +896,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for delete's recursive parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|RecursiveParam
 specifier|public
 specifier|static
@@ -898,6 +936,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for do-as parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DoAsParam
 specifier|public
 specifier|static
@@ -982,6 +1024,10 @@ return|;
 block|}
 block|}
 comment|/**    * Class for filter parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|FilterParam
 specifier|public
 specifier|static
@@ -1016,6 +1062,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for group parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|GroupParam
 specifier|public
 specifier|static
@@ -1056,6 +1106,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for len parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|LenParam
 specifier|public
 specifier|static
@@ -1091,6 +1145,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for modified-time parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ModifiedTimeParam
 specifier|public
 specifier|static
@@ -1128,6 +1186,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for offset parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OffsetParam
 specifier|public
 specifier|static
@@ -1162,6 +1224,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for overwrite parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OverwriteParam
 specifier|public
 specifier|static
@@ -1198,6 +1264,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for owner parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|OwnerParam
 specifier|public
 specifier|static
@@ -1238,6 +1308,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for permission parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|PermissionParam
 specifier|public
 specifier|static
@@ -1278,6 +1352,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for replication parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ReplicationParam
 specifier|public
 specifier|static
@@ -1318,6 +1396,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Class for to-path parameter.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DestinationParam
 specifier|public
 specifier|static

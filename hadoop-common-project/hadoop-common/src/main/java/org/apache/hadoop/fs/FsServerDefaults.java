@@ -191,12 +191,17 @@ specifier|private
 name|int
 name|fileBufferSize
 decl_stmt|;
+DECL|field|encryptDataTransfer
+specifier|private
+name|boolean
+name|encryptDataTransfer
+decl_stmt|;
 DECL|method|FsServerDefaults ()
 specifier|public
 name|FsServerDefaults
 parameter_list|()
 block|{   }
-DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize)
+DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize, boolean encryptDataTransfer)
 specifier|public
 name|FsServerDefaults
 parameter_list|(
@@ -214,6 +219,9 @@ name|replication
 parameter_list|,
 name|int
 name|fileBufferSize
+parameter_list|,
+name|boolean
+name|encryptDataTransfer
 parameter_list|)
 block|{
 name|this
@@ -245,6 +253,12 @@ operator|.
 name|fileBufferSize
 operator|=
 name|fileBufferSize
+expr_stmt|;
+name|this
+operator|.
+name|encryptDataTransfer
+operator|=
+name|encryptDataTransfer
 expr_stmt|;
 block|}
 DECL|method|getBlockSize ()
@@ -295,6 +309,16 @@ parameter_list|()
 block|{
 return|return
 name|fileBufferSize
+return|;
+block|}
+DECL|method|getEncryptDataTransfer ()
+specifier|public
+name|boolean
+name|getEncryptDataTransfer
+parameter_list|()
+block|{
+return|return
+name|encryptDataTransfer
 return|;
 block|}
 comment|// /////////////////////////////////////////

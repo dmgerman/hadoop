@@ -901,6 +901,11 @@ argument_list|,
 name|socketFactory
 argument_list|,
 name|socketTimeout
+argument_list|,
+name|dfs
+operator|.
+name|getDataEncryptionKey
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|MD5MD5CRC32FileChecksum

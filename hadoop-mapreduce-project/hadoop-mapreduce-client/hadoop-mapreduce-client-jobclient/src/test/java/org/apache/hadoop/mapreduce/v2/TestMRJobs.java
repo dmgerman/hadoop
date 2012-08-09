@@ -1585,6 +1585,13 @@ argument_list|)
 expr_stmt|;
 name|job
 operator|.
+name|setSpeculativeExecution
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
 name|addFileToClassPath
 argument_list|(
 name|APP_JAR
@@ -3253,11 +3260,6 @@ operator|.
 name|toUri
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|job
-operator|.
-name|createSymlink
-argument_list|()
 expr_stmt|;
 name|job
 operator|.
