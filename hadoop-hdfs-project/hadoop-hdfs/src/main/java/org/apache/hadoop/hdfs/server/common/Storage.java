@@ -302,6 +302,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ToolRunner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|VersionInfo
 import|;
 end_import
@@ -995,6 +1009,8 @@ specifier|public
 specifier|static
 class|class
 name|StorageDirectory
+implements|implements
+name|FormatConfirmable
 block|{
 DECL|field|root
 specifier|final
@@ -2127,6 +2143,68 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**      * @return true if the storage directory should prompt the user prior      * to formatting (i.e if the directory appears to contain some data)      * @throws IOException if the SD cannot be accessed due to an IO error      */
+annotation|@
+name|Override
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Its alright for a dir not to exist, or to exist (properly accessible)
+comment|// and be completely empty.
+if|if
+condition|(
+operator|!
+name|root
+operator|.
+name|exists
+argument_list|()
+condition|)
+return|return
+literal|false
+return|;
+if|if
+condition|(
+operator|!
+name|root
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// a file where you expect a directory should not cause silent
+comment|// formatting
+return|return
+literal|true
+return|;
+block|}
+if|if
+condition|(
+name|FileUtil
+operator|.
+name|listFiles
+argument_list|(
+name|root
+argument_list|)
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Empty dir can format without prompt.
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
 comment|/**      * Lock storage to provide exclusive access.      *       *<p> Locking is not supported by all file systems.      * E.g., NFS does not consistently support exclusive locks.      *       *<p> If locking is supported we guarantee exclusive access to the      * storage directory. Otherwise, no guarantee is given.      *       * @throws IOException if locking fails      */
 DECL|method|lock ()
 specifier|public
@@ -2762,6 +2840,154 @@ name|msg
 argument_list|)
 throw|;
 block|}
+block|}
+comment|/**    * Iterate over each of the {@link FormatConfirmable} objects,    * potentially checking with the user whether it should be formatted.    *     * If running in interactive mode, will prompt the user for each    * directory to allow them to format anyway. Otherwise, returns    * false, unless 'force' is specified.    *     * @param force format regardless of whether dirs exist    * @param interactive prompt the user when a dir exists    * @return true if formatting should proceed    * @throws IOException if some storage cannot be accessed    */
+DECL|method|confirmFormat ( Iterable<? extends FormatConfirmable> items, boolean force, boolean interactive)
+specifier|public
+specifier|static
+name|boolean
+name|confirmFormat
+parameter_list|(
+name|Iterable
+argument_list|<
+name|?
+extends|extends
+name|FormatConfirmable
+argument_list|>
+name|items
+parameter_list|,
+name|boolean
+name|force
+parameter_list|,
+name|boolean
+name|interactive
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|FormatConfirmable
+name|item
+range|:
+name|items
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|item
+operator|.
+name|hasSomeData
+argument_list|()
+condition|)
+continue|continue;
+if|if
+condition|(
+name|force
+condition|)
+block|{
+comment|// Don't confirm, always format.
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Data exists in "
+operator|+
+name|item
+operator|+
+literal|". Formatting anyway."
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+operator|!
+name|interactive
+condition|)
+block|{
+comment|// Don't ask - always don't format
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Running in non-interactive mode, and data appears to exist in "
+operator|+
+name|item
+operator|+
+literal|". Not formatting."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|ToolRunner
+operator|.
+name|confirmPrompt
+argument_list|(
+literal|"Re-format filesystem in "
+operator|+
+name|item
+operator|+
+literal|" ?"
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Format aborted in "
+operator|+
+name|item
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Interface for classes which need to have the user confirm their    * formatting during NameNode -format and other similar operations.    *     * This is currently a storage directory or journal manager.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|interface|FormatConfirmable
+specifier|public
+interface|interface
+name|FormatConfirmable
+block|{
+comment|/**      * @return true if the storage seems to have some valid data in it,      * and the user should be required to confirm the format. Otherwise,      * false.      * @throws IOException if the storage cannot be accessed at all.      */
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * @return a string representation of the formattable item, suitable      * for display to the user inside a prompt      */
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * Get common storage fields.    * Should be overloaded if additional fields need to be get.    *     * @param props    * @throws IOException    */
 DECL|method|setFieldsFromProperties ( Properties props, StorageDirectory sd)

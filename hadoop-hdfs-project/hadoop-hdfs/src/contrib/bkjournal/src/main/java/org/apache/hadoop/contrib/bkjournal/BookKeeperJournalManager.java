@@ -1384,6 +1384,52 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|format (NamespaceInfo ns)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|ns
+parameter_list|)
+block|{
+comment|// Currently, BKJM automatically formats itself when first accessed.
+comment|// TODO: change over to explicit formatting so that the admin can
+comment|// clear out the BK storage when reformatting a cluster.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not formatting "
+operator|+
+name|this
+operator|+
+literal|" - BKJM does not currently "
+operator|+
+literal|"support reformatting. If it has not been used before, it will"
+operator|+
+literal|"be formatted automatically upon first use."
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Don't confirm format on BKJM, since format() is currently a
+comment|// no-op anyway
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Start a new log segment in a BookKeeper ledger.    * First ensure that we have the write lock for this journal.    * Then create a ledger and stream based on that ledger.    * The ledger id is written to the inprogress znode, so that in the    * case of a crash, a recovery process can find the ledger we were writing    * to when we crashed.    * @param txId First transaction id to be written to the stream    */
 annotation|@
 name|Override

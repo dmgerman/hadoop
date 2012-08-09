@@ -274,6 +274,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|RemoteEditLog
 import|;
 end_import
@@ -477,6 +495,43 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Override
+DECL|method|format (NamespaceInfo ns)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|ns
+parameter_list|)
+block|{
+comment|// Formatting file journals is done by the StorageDirectory
+comment|// format code, since they may share their directory with
+comment|// checkpoints, etc.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+block|{
+comment|// Formatting file journals is done by the StorageDirectory
+comment|// format code, since they may share their directory with
+comment|// checkpoints, etc.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 annotation|@
 name|Override
 DECL|method|startLogSegment (long txid)
