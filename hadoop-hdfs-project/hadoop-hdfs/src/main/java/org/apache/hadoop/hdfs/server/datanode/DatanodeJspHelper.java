@@ -46,16 +46,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|InetSocketAddress
 import|;
 end_import
@@ -236,20 +226,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -359,6 +335,20 @@ operator|.
 name|common
 operator|.
 name|JspHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|HttpConfig
 import|;
 end_import
 
@@ -916,7 +906,10 @@ decl_stmt|;
 name|String
 name|redirectLocation
 init|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|fqdn
 operator|+
@@ -1556,7 +1549,12 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<br><a href=\"http://"
+literal|"<br><a href=\""
+operator|+
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|canonicalize
 argument_list|(
@@ -2003,7 +2001,10 @@ comment|// URL for downloading the full file
 name|String
 name|downloadUrl
 init|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|req
 operator|.
@@ -2134,7 +2135,10 @@ decl_stmt|;
 name|String
 name|tailUrl
 init|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|fqdn
 operator|+
@@ -2507,7 +2511,10 @@ expr_stmt|;
 name|String
 name|blockUrl
 init|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|fqdn
 operator|+
@@ -2583,7 +2590,10 @@ decl_stmt|;
 name|String
 name|blockInfoUrl
 init|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|nnCanonicalName
 operator|+
@@ -2643,7 +2653,12 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<br><a href=\"http://"
+literal|"<br><a href=\""
+operator|+
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|nnCanonicalName
 operator|+
@@ -3252,7 +3267,12 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<a href=\"http://"
+literal|"<a href=\""
+operator|+
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|req
 operator|.
@@ -3577,7 +3597,10 @@ condition|)
 block|{
 name|nextUrl
 operator|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|canonicalize
 argument_list|(
@@ -3937,7 +3960,10 @@ condition|)
 block|{
 name|prevUrl
 operator|=
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|canonicalize
 argument_list|(

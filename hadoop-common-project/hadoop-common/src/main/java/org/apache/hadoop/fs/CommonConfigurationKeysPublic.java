@@ -813,6 +813,24 @@ name|HADOOP_SECURITY_AUTH_TO_LOCAL
 init|=
 literal|"hadoop.security.auth_to_local"
 decl_stmt|;
+DECL|field|HADOOP_SSL_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SSL_ENABLED_KEY
+init|=
+literal|"hadoop.ssl.enabled"
+decl_stmt|;
+DECL|field|HADOOP_SSL_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HADOOP_SSL_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 
