@@ -156,6 +156,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
 import|;
 end_import
@@ -207,6 +227,16 @@ operator|.
 name|util
 operator|.
 name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -989,7 +1019,10 @@ name|Map
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|localPaths
 init|=
@@ -1019,7 +1052,10 @@ name|Entry
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|loc
 range|:
@@ -3802,13 +3838,16 @@ expr_stmt|;
 block|}
 comment|// Localize resources
 comment|// Skip some resources so as to consider them failed
-DECL|method|doLocalizeResources (boolean checkLocalizingState, int skipRsrcCount)
+DECL|method|doLocalizeResources ( boolean checkLocalizingState, int skipRsrcCount)
 specifier|public
 name|Map
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|doLocalizeResources
 parameter_list|(
@@ -3834,7 +3873,10 @@ name|Map
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|localPaths
 init|=
@@ -3843,7 +3885,10 @@ name|HashMap
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -3928,10 +3973,15 @@ name|put
 argument_list|(
 name|p
 argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
 name|rsrc
 operator|.
 name|getKey
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// rsrc copied to p
@@ -3967,7 +4017,10 @@ name|Map
 argument_list|<
 name|Path
 argument_list|,
+name|List
+argument_list|<
 name|String
+argument_list|>
 argument_list|>
 name|localizeResources
 parameter_list|()
