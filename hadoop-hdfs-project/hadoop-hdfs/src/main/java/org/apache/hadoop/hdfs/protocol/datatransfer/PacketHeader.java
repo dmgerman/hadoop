@@ -124,8 +124,62 @@ name|ByteBufferOutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Shorts
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Ints
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|InvalidProtocolBufferException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Header data for each packet that goes through the read/write pipelines.  */
+comment|/**  * Header data for each packet that goes through the read/write pipelines.  * Includes all of the information about the packet, excluding checksums and  * actual data.  *   * This data includes:  *  - the offset in bytes into the HDFS block of the data in this packet  *  - the sequence number of this packet in the pipeline  *  - whether or not this is the last packet in the pipeline  *  - the length of the data in this packet  *  - whether or not this packet should be synced by the DNs.  *    * When serialized, this header is written out as a protocol buffer, preceded  * by a 4-byte integer representing the full packet length, and a 2-byte short  * representing the header length.  */
 end_comment
 
 begin_class
@@ -142,13 +196,12 @@ specifier|public
 class|class
 name|PacketHeader
 block|{
-comment|/** Header size for a packet */
-DECL|field|PROTO_SIZE
+DECL|field|MAX_PROTO_SIZE
 specifier|private
 specifier|static
 specifier|final
 name|int
-name|PROTO_SIZE
+name|MAX_PROTO_SIZE
 init|=
 name|PacketHeaderProto
 operator|.
@@ -186,16 +239,31 @@ operator|.
 name|getSerializedSize
 argument_list|()
 decl_stmt|;
-DECL|field|PKT_HEADER_LEN
+DECL|field|PKT_LENGTHS_LEN
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|PKT_HEADER_LEN
+name|PKT_LENGTHS_LEN
 init|=
-literal|6
+name|Ints
+operator|.
+name|BYTES
 operator|+
-name|PROTO_SIZE
+name|Shorts
+operator|.
+name|BYTES
+decl_stmt|;
+DECL|field|PKT_MAX_HEADER_LEN
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|PKT_MAX_HEADER_LEN
+init|=
+name|PKT_LENGTHS_LEN
+operator|+
+name|MAX_PROTO_SIZE
 decl_stmt|;
 DECL|field|packetLen
 specifier|private
@@ -241,8 +309,26 @@ name|packetLen
 operator|=
 name|packetLen
 expr_stmt|;
-name|proto
-operator|=
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|packetLen
+operator|>=
+name|Ints
+operator|.
+name|BYTES
+argument_list|,
+literal|"packet len %s should always be at least 4 bytes"
+argument_list|,
+name|packetLen
+argument_list|)
+expr_stmt|;
+name|PacketHeaderProto
+operator|.
+name|Builder
+name|builder
+init|=
 name|PacketHeaderProto
 operator|.
 name|newBuilder
@@ -267,11 +353,27 @@ name|setDataLen
 argument_list|(
 name|dataLen
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|syncBlock
+condition|)
+block|{
+comment|// Only set syncBlock if it is specified.
+comment|// This is wire-incompatible with Hadoop 2.0.0-alpha due to HDFS-3721
+comment|// because it changes the length of the packet header, and BlockReceiver
+comment|// in that version did not support variable-length headers.
+name|builder
 operator|.
 name|setSyncBlock
 argument_list|(
 name|syncBlock
 argument_list|)
+expr_stmt|;
+block|}
+name|proto
+operator|=
+name|builder
 operator|.
 name|build
 argument_list|()
@@ -365,13 +467,44 @@ literal|"PacketHeader with packetLen="
 operator|+
 name|packetLen
 operator|+
-literal|"Header data: "
+literal|" header data: "
 operator|+
 name|proto
 operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+DECL|method|setFieldsFromData ( int packetLen, byte[] headerData)
+specifier|public
+name|void
+name|setFieldsFromData
+parameter_list|(
+name|int
+name|packetLen
+parameter_list|,
+name|byte
+index|[]
+name|headerData
+parameter_list|)
+throws|throws
+name|InvalidProtocolBufferException
+block|{
+name|this
+operator|.
+name|packetLen
+operator|=
+name|packetLen
+expr_stmt|;
+name|proto
+operator|=
+name|PacketHeaderProto
+operator|.
+name|parseFrom
+argument_list|(
+name|headerData
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|readFields (ByteBuffer buf)
 specifier|public
@@ -481,6 +614,22 @@ name|data
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the number of bytes necessary to write out this header,    * including the length-prefixing of the payload and header    */
+DECL|method|getSerializedSize ()
+specifier|public
+name|int
+name|getSerializedSize
+parameter_list|()
+block|{
+return|return
+name|PKT_LENGTHS_LEN
+operator|+
+name|proto
+operator|.
+name|getSerializedSize
+argument_list|()
+return|;
+block|}
 comment|/**    * Write the header into the buffer.    * This requires that PKT_HEADER_LEN bytes are available.    */
 DECL|method|putInBuffer (final ByteBuffer buf)
 specifier|public
@@ -497,13 +646,13 @@ name|proto
 operator|.
 name|getSerializedSize
 argument_list|()
-operator|==
-name|PROTO_SIZE
+operator|<=
+name|MAX_PROTO_SIZE
 operator|:
 literal|"Expected "
 operator|+
 operator|(
-name|PROTO_SIZE
+name|MAX_PROTO_SIZE
 operator|)
 operator|+
 literal|" got: "
@@ -578,13 +727,13 @@ name|proto
 operator|.
 name|getSerializedSize
 argument_list|()
-operator|==
-name|PROTO_SIZE
+operator|<=
+name|MAX_PROTO_SIZE
 operator|:
 literal|"Expected "
 operator|+
 operator|(
-name|PROTO_SIZE
+name|MAX_PROTO_SIZE
 operator|)
 operator|+
 literal|" got: "
@@ -618,6 +767,36 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getBytes ()
+specifier|public
+name|byte
+index|[]
+name|getBytes
+parameter_list|()
+block|{
+name|ByteBuffer
+name|buf
+init|=
+name|ByteBuffer
+operator|.
+name|allocate
+argument_list|(
+name|getSerializedSize
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|putInBuffer
+argument_list|(
+name|buf
+argument_list|)
+expr_stmt|;
+return|return
+name|buf
+operator|.
+name|array
+argument_list|()
+return|;
 block|}
 comment|/**    * Perform a sanity check on the packet, returning true if it is sane.    * @param lastSeqNo the previous sequence number received - we expect the current    * sequence number to be larger by 1.    */
 DECL|method|sanityCheck (long lastSeqNo)
