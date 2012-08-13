@@ -1394,6 +1394,8 @@ parameter_list|(
 name|NamespaceInfo
 name|ns
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Currently, BKJM automatically formats itself when first accessed.
 comment|// TODO: change over to explicit formatting so that the admin can

@@ -775,6 +775,8 @@ parameter_list|(
 name|NamespaceInfo
 name|nsInfo
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// The iteration is done by FSEditLog itself
 throw|throw

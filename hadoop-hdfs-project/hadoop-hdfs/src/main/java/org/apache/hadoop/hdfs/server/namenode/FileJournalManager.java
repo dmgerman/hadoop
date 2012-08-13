@@ -538,6 +538,8 @@ parameter_list|(
 name|NamespaceInfo
 name|ns
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Formatting file journals is done by the StorageDirectory
 comment|// format code, since they may share their directory with
