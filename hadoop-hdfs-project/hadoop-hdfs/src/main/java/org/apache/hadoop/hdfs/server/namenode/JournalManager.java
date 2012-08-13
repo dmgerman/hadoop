@@ -146,6 +146,8 @@ parameter_list|(
 name|NamespaceInfo
 name|ns
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Begin writing to a new segment of the log stream, which starts at    * the given transaction ID.    */
 DECL|method|startLogSegment (long txId)

@@ -742,6 +742,8 @@ parameter_list|(
 name|NamespaceInfo
 name|nsInfo
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|formatCalled
 operator|=
