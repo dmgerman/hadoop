@@ -3781,7 +3781,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Create a {@link ClientDatanodeProtocol} proxy */
-DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, LocatedBlock locatedBlock)
+DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname, LocatedBlock locatedBlock)
 specifier|public
 specifier|static
 name|ClientDatanodeProtocol
@@ -3795,6 +3795,9 @@ name|conf
 parameter_list|,
 name|int
 name|socketTimeout
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|,
 name|LocatedBlock
 name|locatedBlock
@@ -3812,12 +3815,14 @@ name|conf
 argument_list|,
 name|socketTimeout
 argument_list|,
+name|connectToDnViaHostname
+argument_list|,
 name|locatedBlock
 argument_list|)
 return|;
 block|}
 comment|/** Create {@link ClientDatanodeProtocol} proxy using kerberos ticket */
-DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout)
+DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname)
 specifier|static
 name|ClientDatanodeProtocol
 name|createClientDatanodeProtocolProxy
@@ -3830,6 +3835,9 @@ name|conf
 parameter_list|,
 name|int
 name|socketTimeout
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -3843,6 +3851,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|socketTimeout
+argument_list|,
+name|connectToDnViaHostname
 argument_list|)
 return|;
 block|}

@@ -494,7 +494,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDatanodeProxy ( DatanodeInfo node, Configuration conf, int socketTimeout)
+DECL|method|getDatanodeProxy ( DatanodeInfo node, Configuration conf, int socketTimeout, boolean connectToDnViaHostname)
 specifier|private
 specifier|synchronized
 name|ClientDatanodeProtocol
@@ -508,6 +508,9 @@ name|conf
 parameter_list|,
 name|int
 name|socketTimeout
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -530,6 +533,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|socketTimeout
+argument_list|,
+name|connectToDnViaHostname
 argument_list|)
 expr_stmt|;
 block|}
@@ -733,7 +738,7 @@ name|String
 name|filename
 decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
-DECL|method|newBlockReader (Configuration conf, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, int socketTimeout, long startOffset, long length)
+DECL|method|newBlockReader (Configuration conf, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, int socketTimeout, long startOffset, long length, boolean connectToDnViaHostname)
 specifier|static
 name|BlockReaderLocal
 name|newBlockReader
@@ -764,6 +769,9 @@ name|startOffset
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -810,6 +818,8 @@ argument_list|,
 name|socketTimeout
 argument_list|,
 name|token
+argument_list|,
+name|connectToDnViaHostname
 argument_list|)
 expr_stmt|;
 block|}
@@ -1184,7 +1194,7 @@ return|return
 name|ldInfo
 return|;
 block|}
-DECL|method|getBlockPathInfo (ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token)
+DECL|method|getBlockPathInfo (ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token, boolean connectToDnViaHostname)
 specifier|private
 specifier|static
 name|BlockLocalPathInfo
@@ -1207,6 +1217,9 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|token
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -1239,6 +1252,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|timeout
+argument_list|,
+name|connectToDnViaHostname
 argument_list|)
 decl_stmt|;
 try|try

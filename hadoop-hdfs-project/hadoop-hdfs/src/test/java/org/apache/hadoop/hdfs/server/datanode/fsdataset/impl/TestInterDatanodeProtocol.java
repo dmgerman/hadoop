@@ -152,6 +152,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSTestUtil
 import|;
 end_import
@@ -602,6 +616,18 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
 begin_comment
 comment|/**  * This tests InterDataNodeProtocol for block handling.   */
 end_comment
@@ -993,7 +1019,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * The following test first creates a file.    * It verifies the block information from a datanode.    * Then, it updates the block with new information and verifies again.     */
+comment|/** Test block MD access via a DN */
 annotation|@
 name|Test
 DECL|method|testBlockMetaDataInfo ()
@@ -1004,11 +1030,93 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|checkBlockMetaDataInfo
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** The same as above, but use hostnames for DN<->DN communication */
+annotation|@
+name|Test
+DECL|method|testBlockMetaDataInfoWithHostname ()
+specifier|public
+name|void
+name|testBlockMetaDataInfoWithHostname
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assumeTrue
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"os.name"
+argument_list|)
+operator|.
+name|startsWith
+argument_list|(
+literal|"Linux"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkBlockMetaDataInfo
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * The following test first creates a file.    * It verifies the block information from a datanode.    * Then, it updates the block with new information and verifies again.    * @param useDnHostname whether DNs should connect to other DNs by hostname    */
+DECL|method|checkBlockMetaDataInfo (boolean useDnHostname)
+specifier|private
+name|void
+name|checkBlockMetaDataInfo
+parameter_list|(
+name|boolean
+name|useDnHostname
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|MiniDFSCluster
 name|cluster
 init|=
 literal|null
 decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_USE_DN_HOSTNAME
+argument_list|,
+name|useDnHostname
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|useDnHostname
+condition|)
+block|{
+comment|// Since the mini cluster only listens on the loopback we have to
+comment|// ensure the hostname used to access DNs maps to the loopback. We
+comment|// do this by telling the DN to advertise localhost as its hostname
+comment|// instead of the default hostname.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HOST_NAME_KEY
+argument_list|,
+literal|"localhost"
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|cluster
@@ -1024,6 +1132,11 @@ operator|.
 name|numDataNodes
 argument_list|(
 literal|3
+argument_list|)
+operator|.
+name|checkDataNodeHostConfig
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build
@@ -1157,6 +1270,8 @@ literal|0
 index|]
 argument_list|,
 name|conf
+argument_list|,
+name|useDnHostname
 argument_list|)
 decl_stmt|;
 comment|//stop block scanner, so we could compare lastScanTime
@@ -2426,6 +2541,8 @@ argument_list|,
 name|conf
 argument_list|,
 literal|500
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|proxy

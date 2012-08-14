@@ -906,6 +906,8 @@ name|dfs
 operator|.
 name|getDataEncryptionKey
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|MD5MD5CRC32FileChecksum

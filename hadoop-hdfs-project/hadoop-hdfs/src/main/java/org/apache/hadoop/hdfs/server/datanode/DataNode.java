@@ -2637,6 +2637,11 @@ specifier|final
 name|String
 name|userWithLocalPathAccess
 decl_stmt|;
+DECL|field|connectToDnViaHostname
+specifier|private
+name|boolean
+name|connectToDnViaHostname
+decl_stmt|;
 DECL|field|readaheadPool
 name|ReadaheadPool
 name|readaheadPool
@@ -2707,6 +2712,23 @@ argument_list|(
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|connectToDnViaHostname
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_USE_DN_HOSTNAME
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_USE_DN_HOSTNAME_DEFAULT
 argument_list|)
 expr_stmt|;
 try|try
@@ -5221,7 +5243,7 @@ name|getXferPort
 argument_list|()
 return|;
 block|}
-comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be be a different address.    *     * @return socket address for data transfer    */
+comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be a different address.    *     * @return socket address for data transfer    */
 DECL|method|getXferAddress ()
 specifier|public
 name|InetSocketAddress
@@ -5351,7 +5373,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout)
+DECL|method|createInterDataNodeProtocolProxy ( DatanodeID datanodeid, final Configuration conf, final int socketTimeout, final boolean connectToDnViaHostname)
 specifier|public
 specifier|static
 name|InterDatanodeProtocol
@@ -5367,10 +5389,25 @@ parameter_list|,
 specifier|final
 name|int
 name|socketTimeout
+parameter_list|,
+specifier|final
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|dnAddr
+init|=
+name|datanodeid
+operator|.
+name|getIpcAddr
+argument_list|(
+name|connectToDnViaHostname
+argument_list|)
+decl_stmt|;
 specifier|final
 name|InetSocketAddress
 name|addr
@@ -5379,29 +5416,26 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|datanodeid
-operator|.
-name|getIpcAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|InterDatanodeProtocol
-operator|.
 name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|InterDatanodeProtocol
-operator|.
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"InterDatanodeProtocol addr="
+literal|"Connecting to datanode "
+operator|+
+name|dnAddr
+operator|+
+literal|" addr="
 operator|+
 name|addr
 argument_list|)
@@ -7043,6 +7077,20 @@ literal|0
 decl_stmt|;
 try|try
 block|{
+specifier|final
+name|String
+name|dnAddr
+init|=
+name|targets
+index|[
+literal|0
+index|]
+operator|.
+name|getXferAddr
+argument_list|(
+name|connectToDnViaHostname
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|curTarget
 init|=
@@ -7050,15 +7098,27 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|targets
-index|[
-literal|0
-index|]
-operator|.
-name|getXferAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to datanode "
+operator|+
+name|dnAddr
+argument_list|)
+expr_stmt|;
+block|}
 name|sock
 operator|=
 name|newSocket
@@ -9191,6 +9251,10 @@ argument_list|,
 name|dnConf
 operator|.
 name|socketTimeout
+argument_list|,
+name|dnConf
+operator|.
+name|connectToDnViaHostname
 argument_list|)
 decl_stmt|;
 name|ReplicaRecoveryInfo
