@@ -5993,6 +5993,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|this
+operator|.
+name|shouldRun
+operator|=
+literal|false
+expr_stmt|;
 name|shutdownPeriodicScanners
 argument_list|()
 expr_stmt|;
@@ -6041,12 +6047,6 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|shouldRun
-operator|=
-literal|false
-expr_stmt|;
 if|if
 condition|(
 name|dataXceiverServer
