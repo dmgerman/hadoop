@@ -1846,6 +1846,7 @@ expr_stmt|;
 block|}
 comment|/**    * Format all configured journals which are not file-based.    *     * File-based journals are skipped, since they are formatted by the    * Storage format code.    */
 DECL|method|formatNonFileJournals (NamespaceInfo nsInfo)
+specifier|synchronized
 name|void
 name|formatNonFileJournals
 parameter_list|(
@@ -1902,6 +1903,7 @@ block|}
 block|}
 block|}
 DECL|method|getFormatConfirmables ()
+specifier|synchronized
 name|List
 argument_list|<
 name|FormatConfirmable
