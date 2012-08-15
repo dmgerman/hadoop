@@ -427,6 +427,13 @@ operator|.
 name|FORCE_ALL
 argument_list|)
 expr_stmt|;
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|runEditLogTest (EditLogTestSetup elts)
 specifier|static

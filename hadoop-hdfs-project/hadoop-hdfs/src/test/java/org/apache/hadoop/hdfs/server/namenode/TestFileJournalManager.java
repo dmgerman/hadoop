@@ -415,6 +415,18 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+static|static
+block|{
+comment|// No need to fsync for the purposes of tests. This makes
+comment|// the tests run much faster.
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Find out how many transactions we can read from a    * FileJournalManager, starting at a given transaction ID.    *     * @param jm              The journal manager    * @param fromTxId        Transaction ID to start at    * @param inProgressOk    Should we consider edit logs that are not finalized?    * @return                The number of transactions    * @throws IOException    */
 DECL|method|getNumberOfTransactions (FileJournalManager jm, long fromTxId, boolean inProgressOk, boolean abortOnGap)
 specifier|static

@@ -254,6 +254,14 @@ argument_list|(
 name|MIN_PREALLOCATION_LENGTH
 argument_list|)
 decl_stmt|;
+DECL|field|shouldSkipFsyncForTests
+specifier|private
+specifier|static
+name|boolean
+name|shouldSkipFsyncForTests
+init|=
+literal|false
+decl_stmt|;
 static|static
 block|{
 name|fill
@@ -719,6 +727,12 @@ argument_list|(
 name|fp
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|shouldSkipFsyncForTests
+condition|)
+block|{
 name|fc
 operator|.
 name|force
@@ -727,6 +741,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// metadata updates not needed
+block|}
 block|}
 comment|/**    * @return true if the number of buffered data exceeds the intial buffer size    */
 annotation|@
@@ -954,6 +969,24 @@ block|{
 return|return
 name|fc
 return|;
+block|}
+comment|/**    * For the purposes of unit tests, we don't need to actually    * write durably to disk. So, we can skip the fsync() calls    * for a speed improvement.    * @param skip true if fsync should<em>not</em> be called    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setShouldSkipFsyncForTesting (boolean skip)
+specifier|public
+specifier|static
+name|void
+name|setShouldSkipFsyncForTesting
+parameter_list|(
+name|boolean
+name|skip
+parameter_list|)
+block|{
+name|shouldSkipFsyncForTests
+operator|=
+name|skip
+expr_stmt|;
 block|}
 block|}
 end_class
