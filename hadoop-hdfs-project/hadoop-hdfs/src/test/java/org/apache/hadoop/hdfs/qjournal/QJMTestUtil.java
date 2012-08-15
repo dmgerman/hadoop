@@ -446,7 +446,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|writeSegment (MiniJournalCluster cluster, QuorumJournalManager qjm, int startTxId, int numTxns, boolean finalize)
+DECL|method|writeSegment (MiniJournalCluster cluster, QuorumJournalManager qjm, long startTxId, int numTxns, boolean finalize)
 specifier|public
 specifier|static
 name|void
@@ -458,7 +458,7 @@ parameter_list|,
 name|QuorumJournalManager
 name|qjm
 parameter_list|,
-name|int
+name|long
 name|startTxId
 parameter_list|,
 name|int
@@ -569,7 +569,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeTxns (EditLogOutputStream stm, int startTxId, int numTxns)
+DECL|method|writeTxns (EditLogOutputStream stm, long startTxId, int numTxns)
 specifier|public
 specifier|static
 name|void
@@ -578,7 +578,7 @@ parameter_list|(
 name|EditLogOutputStream
 name|stm
 parameter_list|,
-name|int
+name|long
 name|startTxId
 parameter_list|,
 name|int
