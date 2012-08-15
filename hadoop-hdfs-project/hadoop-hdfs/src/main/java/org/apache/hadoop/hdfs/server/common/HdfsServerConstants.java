@@ -215,10 +215,9 @@ argument_list|)
 block|;
 DECL|field|name
 specifier|private
+specifier|final
 name|String
 name|name
-init|=
-literal|null
 decl_stmt|;
 comment|// Used only with format and upgrade options
 DECL|field|clusterId
