@@ -2828,6 +2828,28 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|opts
+operator|.
+name|shouldPrintHelp
+argument_list|()
+condition|)
+block|{
+name|opts
+operator|.
+name|usage
+argument_list|()
+expr_stmt|;
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 name|StringUtils
 operator|.
 name|startupShutdownMessage
@@ -2972,6 +2994,12 @@ specifier|final
 name|Option
 name|formatOpt
 decl_stmt|;
+DECL|field|helpOpt
+specifier|private
+specifier|final
+name|Option
+name|helpOpt
+decl_stmt|;
 DECL|field|cmd
 name|Command
 name|cmd
@@ -2995,6 +3023,11 @@ DECL|field|shouldFormat
 specifier|private
 name|boolean
 name|shouldFormat
+decl_stmt|;
+DECL|field|shouldPrintHelp
+specifier|private
+name|boolean
+name|shouldPrintHelp
 decl_stmt|;
 DECL|method|CommandLineOpts ()
 name|CommandLineOpts
@@ -3043,6 +3076,20 @@ argument_list|,
 literal|"format the local storage during startup"
 argument_list|)
 expr_stmt|;
+name|helpOpt
+operator|=
+operator|new
+name|Option
+argument_list|(
+literal|"h"
+argument_list|,
+literal|"help"
+argument_list|,
+literal|false
+argument_list|,
+literal|"get help information"
+argument_list|)
+expr_stmt|;
 name|options
 operator|.
 name|addOption
@@ -3064,6 +3111,13 @@ argument_list|(
 name|formatOpt
 argument_list|)
 expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|helpOpt
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|shouldFormat ()
 specifier|public
@@ -3073,6 +3127,16 @@ parameter_list|()
 block|{
 return|return
 name|shouldFormat
+return|;
+block|}
+DECL|method|shouldPrintHelp ()
+specifier|public
+name|boolean
+name|shouldPrintHelp
+parameter_list|()
+block|{
+return|return
+name|shouldPrintHelp
 return|;
 block|}
 DECL|method|parse (String .... argv)
@@ -3106,6 +3170,35 @@ argument_list|,
 name|argv
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|cmdLine
+operator|.
+name|hasOption
+argument_list|(
+name|helpOpt
+operator|.
+name|getOpt
+argument_list|()
+argument_list|)
+operator|||
+name|cmdLine
+operator|.
+name|hasOption
+argument_list|(
+name|helpOpt
+operator|.
+name|getLongOpt
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|shouldPrintHelp
+operator|=
+literal|true
+expr_stmt|;
+return|return;
+block|}
 name|boolean
 name|hasGetEdit
 init|=
@@ -3274,6 +3367,19 @@ name|void
 name|usage
 parameter_list|()
 block|{
+name|String
+name|header
+init|=
+literal|"The Secondary NameNode is a helper "
+operator|+
+literal|"to the primary NameNode. The Secondary is responsible "
+operator|+
+literal|"for supporting periodic checkpoints of the HDFS metadata. "
+operator|+
+literal|"The current design allows only one Secondary NameNode "
+operator|+
+literal|"per HDFS cluster."
+decl_stmt|;
 name|HelpFormatter
 name|formatter
 init|=
@@ -3287,7 +3393,13 @@ name|printHelp
 argument_list|(
 literal|"secondarynamenode"
 argument_list|,
+name|header
+argument_list|,
 name|options
+argument_list|,
+literal|""
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

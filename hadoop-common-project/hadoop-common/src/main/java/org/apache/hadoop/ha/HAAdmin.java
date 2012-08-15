@@ -492,6 +492,7 @@ operator|.
 name|err
 decl_stmt|;
 DECL|field|out
+specifier|protected
 name|PrintStream
 name|out
 init|=
@@ -2171,6 +2172,26 @@ condition|(
 name|argv
 operator|.
 name|length
+operator|==
+literal|1
+condition|)
+block|{
+comment|// only -help
+name|printUsage
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|argv
+operator|.
+name|length
 operator|!=
 literal|2
 condition|)
@@ -2249,7 +2270,7 @@ operator|-
 literal|1
 return|;
 block|}
-name|errOut
+name|out
 operator|.
 name|println
 argument_list|(
