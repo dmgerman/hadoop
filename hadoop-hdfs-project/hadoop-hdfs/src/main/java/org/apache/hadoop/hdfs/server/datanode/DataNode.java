@@ -469,6 +469,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -545,6 +561,16 @@ operator|.
 name|io
 operator|.
 name|OutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintStream
 import|;
 end_import
 
@@ -1110,7 +1136,7 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
-name|DataTransferProtocol
+name|DataTransferEncryptor
 import|;
 end_import
 
@@ -1128,7 +1154,7 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
-name|DataTransferEncryptor
+name|DataTransferProtocol
 import|;
 end_import
 
@@ -1575,22 +1601,6 @@ operator|.
 name|common
 operator|.
 name|Util
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|ExitUtil
-operator|.
-name|terminate
 import|;
 end_import
 
@@ -2292,6 +2302,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Joiner
@@ -2309,20 +2333,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
 import|;
 end_import
 
@@ -2437,6 +2447,15 @@ argument_list|()
 operator|+
 literal|".clienttrace"
 argument_list|)
+decl_stmt|;
+DECL|field|USAGE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|USAGE
+init|=
+literal|"Usage: java DataNode [-rollback | -regular]"
 decl_stmt|;
 comment|/**    * Use {@link NetUtils#createSocketAddr(String)} instead.    */
 annotation|@
@@ -7821,7 +7840,11 @@ argument_list|)
 condition|)
 block|{
 name|printUsage
-argument_list|()
+argument_list|(
+name|System
+operator|.
+name|err
+argument_list|)
 expr_stmt|;
 return|return
 literal|null
@@ -8383,29 +8406,23 @@ operator|+
 literal|"}"
 return|;
 block|}
-DECL|method|printUsage ()
+DECL|method|printUsage (PrintStream out)
 specifier|private
 specifier|static
 name|void
 name|printUsage
-parameter_list|()
+parameter_list|(
+name|PrintStream
+name|out
+parameter_list|)
 block|{
-name|System
-operator|.
-name|err
+name|out
 operator|.
 name|println
 argument_list|(
-literal|"Usage: java DataNode"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"           [-rollback]"
+name|USAGE
+operator|+
+literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
@@ -8770,6 +8787,34 @@ name|args
 index|[]
 parameter_list|)
 block|{
+if|if
+condition|(
+name|DFSUtil
+operator|.
+name|parseHelpArgument
+argument_list|(
+name|args
+argument_list|,
+name|DataNode
+operator|.
+name|USAGE
+argument_list|,
+name|System
+operator|.
+name|out
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 name|secureMain
 argument_list|(
 name|args
