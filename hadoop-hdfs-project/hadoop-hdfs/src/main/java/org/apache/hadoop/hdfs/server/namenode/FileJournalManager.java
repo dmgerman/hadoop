@@ -2352,6 +2352,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|moveAsideEmptyFile ()
+specifier|public
 name|void
 name|moveAsideEmptyFile
 parameter_list|()

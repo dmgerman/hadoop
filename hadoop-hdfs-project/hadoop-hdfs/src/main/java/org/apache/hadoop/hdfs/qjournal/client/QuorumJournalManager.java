@@ -1321,20 +1321,48 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|// TODO: can we get here? what about the following case:
-comment|// - 3 JNs, JN1, JN2, JN3
-comment|// - writer starts segment 101 on JN1, then crashes
-comment|// - during newEpoch(), we saw the segment on JN1 and decide to recover segment 101
-comment|// - during prepare(), JN1 has actually crashed, and we only talk to JN2 and JN3,
+comment|// None of the responses to prepareRecovery() had a segment at the given
+comment|// txid. This can happen for example in the following situation:
+comment|// - 3 JNs: JN1, JN2, JN3
+comment|// - writer starts segment 101 on JN1, then crashes before
+comment|//   writing to JN2 and JN3
+comment|// - during newEpoch(), we saw the segment on JN1 and decide to
+comment|//   recover segment 101
+comment|// - before prepare(), JN1 crashes, and we only talk to JN2 and JN3,
 comment|//   neither of which has any entry for this log.
-comment|// Write a test case.
-throw|throw
-operator|new
-name|AssertionError
-argument_list|(
-literal|"None of the responses "
+comment|// In this case, it is allowed to do nothing for recovery, since the
+comment|// segment wasn't started on a quorum of nodes.
+comment|// Sanity check: we should only get here if none of the responses had
+comment|// a log. This should be a postcondition of the recovery comparator,
+comment|// but a bug in the comparator might cause us to get here.
+for|for
+control|(
+name|PrepareRecoveryResponseProto
+name|resp
+range|:
+name|prepareResponses
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+assert|assert
+operator|!
+name|resp
+operator|.
+name|hasSegmentState
+argument_list|()
+operator|:
+literal|"One of the loggers had a response, but no best logger "
 operator|+
-literal|"had a log to recover: "
+literal|"was found."
+assert|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"None of the responders had a log to recover: "
 operator|+
 name|QuorumCall
 operator|.
@@ -1343,7 +1371,8 @@ argument_list|(
 name|prepareResponses
 argument_list|)
 argument_list|)
-throw|;
+expr_stmt|;
+return|return;
 block|}
 comment|// TODO: check that md5s match up between any "tied" logs
 name|SegmentStateProto

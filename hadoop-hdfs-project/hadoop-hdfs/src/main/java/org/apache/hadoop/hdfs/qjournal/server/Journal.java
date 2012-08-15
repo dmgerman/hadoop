@@ -711,13 +711,20 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|files
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|curSegmentTxId
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+expr_stmt|;
+return|return;
+block|}
 name|EditLogFile
 name|latestLog
 init|=
@@ -733,6 +740,11 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
+name|latestLog
+operator|.
+name|validateLog
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -742,6 +754,46 @@ operator|+
 name|latestLog
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|latestLog
+operator|.
+name|getLastTxId
+argument_list|()
+operator|==
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+condition|)
+block|{
+comment|// the log contains no transactions
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Latest log "
+operator|+
+name|latestLog
+operator|+
+literal|" has no transactions. "
+operator|+
+literal|"moving it aside"
+argument_list|)
+expr_stmt|;
+name|latestLog
+operator|.
+name|moveAsideEmptyFile
+argument_list|()
+expr_stmt|;
+name|curSegmentTxId
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+expr_stmt|;
+block|}
+else|else
+block|{
 name|curSegmentTxId
 operator|=
 name|latestLog
@@ -915,6 +967,12 @@ expr_stmt|;
 name|curSegment
 operator|=
 literal|null
+expr_stmt|;
+name|curSegmentTxId
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
 expr_stmt|;
 block|}
 name|NewEpochResponseProto
@@ -1187,42 +1245,120 @@ expr_stmt|;
 name|checkFormatted
 argument_list|()
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|curSegment
-operator|==
+operator|!=
 literal|null
-argument_list|,
-literal|"Can't start a log segment, already writing "
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Client is requesting a new log segment "
+operator|+
+name|txid
+operator|+
+literal|" though we are already writing "
 operator|+
 name|curSegment
+operator|+
+literal|". "
+operator|+
+literal|"Aborting the current segment in order to begin the new one."
 argument_list|)
 expr_stmt|;
-name|Preconditions
+comment|// The writer may have lost a connection to us and is now
+comment|// re-connecting after the connection came back.
+comment|// We should abort our own old segment.
+name|curSegment
 operator|.
-name|checkState
+name|abort
+argument_list|()
+expr_stmt|;
+name|curSegment
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|// Paranoid sanity check: we should never overwrite a finalized log file.
+comment|// Additionally, if it's in-progress, it should have at most 1 transaction.
+comment|// This can happen if the writer crashes exactly at the start of a segment.
+name|EditLogFile
+name|existing
+init|=
+name|fjm
+operator|.
+name|getLogFile
 argument_list|(
-name|nextTxId
-operator|==
 name|txid
-operator|||
-name|nextTxId
-operator|==
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-argument_list|,
-literal|"Can't start log segment "
-operator|+
-name|txid
-operator|+
-literal|" expecting nextTxId="
-operator|+
-name|nextTxId
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|existing
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|existing
+operator|.
+name|isInProgress
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Already have a finalized segment "
+operator|+
+name|existing
+operator|+
+literal|" beginning at "
+operator|+
+name|txid
+argument_list|)
+throw|;
+block|}
+comment|// If it's in-progress, it should only contain one transaction,
+comment|// because the "startLogSegment" transaction is written alone at the
+comment|// start of each segment.
+name|existing
+operator|.
+name|validateLog
+argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|existing
+operator|.
+name|getLastTxId
+argument_list|()
+operator|!=
+name|existing
+operator|.
+name|getFirstTxId
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"The log file "
+operator|+
+name|existing
+operator|+
+literal|" seems to contain valid transactions"
+argument_list|)
+throw|;
+block|}
+block|}
 name|curSegment
 operator|=
 name|fjm
@@ -1643,16 +1779,27 @@ operator|.
 name|INVALID_TXID
 condition|)
 block|{
-comment|// no transactions in file
-throw|throw
-operator|new
-name|AssertionError
+name|LOG
+operator|.
+name|info
 argument_list|(
-literal|"TODO: no transactions in file "
+literal|"Edit log file "
 operator|+
 name|elf
+operator|+
+literal|" appears to be empty. "
+operator|+
+literal|"Moving it aside..."
 argument_list|)
-throw|;
+expr_stmt|;
+name|elf
+operator|.
+name|moveAsideEmptyFile
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 name|SegmentStateProto
 name|ret
@@ -1981,13 +2128,12 @@ argument_list|(
 name|segmentTxId
 argument_list|)
 decl_stmt|;
-comment|// TODO: this can be null, in the case that one of the loggers started
-comment|// the next segment, but others did not! add regression test and null
-comment|// check in next condition below.
-comment|// TODO: what if they have the same length but one is finalized and the
-comment|// other isn't! cover that case.
 if|if
 condition|(
+name|currentSegment
+operator|==
+literal|null
+operator|||
 name|currentSegment
 operator|.
 name|getEndTxId
@@ -1999,6 +2145,60 @@ name|getEndTxId
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|currentSegment
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Synchronizing log "
+operator|+
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
+name|segment
+argument_list|)
+operator|+
+literal|": no current segment in place"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Synchronizing log "
+operator|+
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
+name|segment
+argument_list|)
+operator|+
+literal|": old segment "
+operator|+
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
+name|segment
+argument_list|)
+operator|+
+literal|" is "
+operator|+
+literal|"not the right length"
+argument_list|)
+expr_stmt|;
+block|}
 name|syncLog
 argument_list|(
 name|reqInfo
@@ -2192,35 +2392,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|success
-condition|)
-block|{
-comment|// If we're synchronizing the latest segment, update our cached
-comment|// info.
-comment|// TODO: can this be done more generally?
-if|if
-condition|(
-name|curSegmentTxId
-operator|==
-name|segment
-operator|.
-name|getStartTxId
-argument_list|()
-condition|)
-block|{
-name|nextTxId
-operator|=
-name|segment
-operator|.
-name|getEndTxId
-argument_list|()
-operator|+
-literal|1
-expr_stmt|;
-block|}
-block|}
 block|}
 finally|finally
 block|{

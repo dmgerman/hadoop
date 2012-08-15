@@ -820,9 +820,11 @@ argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
+comment|// Because the new segment is empty, it is equivalent to not having
+comment|// started writing it.
 name|assertEquals
 argument_list|(
-literal|3
+literal|0
 argument_list|,
 name|response
 operator|.
