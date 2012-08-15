@@ -2120,6 +2120,37 @@ name|void
 name|close
 parameter_list|()
 block|{
+try|try
+block|{
+if|if
+condition|(
+name|replicationThread
+operator|!=
+literal|null
+condition|)
+block|{
+name|replicationThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|replicationThread
+operator|.
+name|join
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{     }
+finally|finally
+block|{
 if|if
 condition|(
 name|pendingReplications
@@ -2141,17 +2172,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|replicationThread
-operator|!=
-literal|null
-condition|)
-name|replicationThread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 comment|/** @return the datanodeManager */
 DECL|method|getDatanodeManager ()
