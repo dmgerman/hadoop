@@ -1266,7 +1266,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sendEdits ( final long firstTxnId, final int numTxns, final byte[] data)
+DECL|method|sendEdits ( final long segmentTxId, final long firstTxnId, final int numTxns, final byte[] data)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -1274,6 +1274,10 @@ name|Void
 argument_list|>
 name|sendEdits
 parameter_list|(
+specifier|final
+name|long
+name|segmentTxId
+parameter_list|,
 specifier|final
 name|long
 name|firstTxnId
@@ -1352,6 +1356,8 @@ name|journal
 argument_list|(
 name|createReqInfo
 argument_list|()
+argument_list|,
+name|segmentTxId
 argument_list|,
 name|firstTxnId
 argument_list|,

@@ -1013,14 +1013,17 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Write a batch of edits to the journal.    * {@see QJournalProtocol#journal(RequestInfo, long, int, byte[])}    */
-DECL|method|journal (RequestInfo reqInfo, long firstTxnId, int numTxns, byte[] records)
+comment|/**    * Write a batch of edits to the journal.    * {@see QJournalProtocol#journal(RequestInfo, long, long, int, byte[])}    */
+DECL|method|journal (RequestInfo reqInfo, long segmentTxId, long firstTxnId, int numTxns, byte[] records)
 specifier|synchronized
 name|void
 name|journal
 parameter_list|(
 name|RequestInfo
 name|reqInfo
+parameter_list|,
+name|long
+name|segmentTxId
 parameter_list|,
 name|long
 name|firstTxnId
@@ -1060,6 +1063,42 @@ argument_list|,
 literal|"Can't write, no segment open"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|curSegmentTxId
+operator|!=
+name|segmentTxId
+condition|)
+block|{
+comment|// Sanity check: it is possible that the writer will fail IPCs
+comment|// on both the finalize() and then the start() of the next segment.
+comment|// This could cause us to continue writing to an old segment
+comment|// instead of rolling to a new one, which breaks one of the
+comment|// invariants in the design. If it happens, abort the segment
+comment|// and throw an exception.
+name|curSegment
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+name|curSegment
+operator|=
+literal|null
+expr_stmt|;
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Writer out of sync: it thinks it is writing segment "
+operator|+
+name|segmentTxId
+operator|+
+literal|" but current segment is "
+operator|+
+name|curSegmentTxId
+argument_list|)
+throw|;
+block|}
 name|Preconditions
 operator|.
 name|checkState

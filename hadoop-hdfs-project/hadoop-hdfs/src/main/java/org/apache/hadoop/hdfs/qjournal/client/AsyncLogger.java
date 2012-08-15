@@ -253,8 +253,8 @@ name|addr
 parameter_list|)
 function_decl|;
 block|}
-comment|/**    * Send a batch of edits to the logger.    * @param firstTxnId the first txid of the edits.    * @param numTxns the number of transactions in the batch    * @param data the actual data to be sent    */
-DECL|method|sendEdits ( final long firstTxnId, final int numTxns, final byte[] data)
+comment|/**    * Send a batch of edits to the logger.    * @param segmentTxId the first txid in the current segment    * @param firstTxnId the first txid of the edits.    * @param numTxns the number of transactions in the batch    * @param data the actual data to be sent    */
+DECL|method|sendEdits ( final long segmentTxId, final long firstTxnId, final int numTxns, final byte[] data)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -262,6 +262,10 @@ name|Void
 argument_list|>
 name|sendEdits
 parameter_list|(
+specifier|final
+name|long
+name|segmentTxId
+parameter_list|,
 specifier|final
 name|long
 name|firstTxnId

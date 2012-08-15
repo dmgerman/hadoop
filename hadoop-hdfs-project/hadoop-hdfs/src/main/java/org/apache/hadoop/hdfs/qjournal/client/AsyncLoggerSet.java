@@ -1278,7 +1278,7 @@ name|calls
 argument_list|)
 return|;
 block|}
-DECL|method|sendEdits ( long firstTxnId, int numTxns, byte[] data)
+DECL|method|sendEdits ( long segmentTxId, long firstTxnId, int numTxns, byte[] data)
 specifier|public
 name|QuorumCall
 argument_list|<
@@ -1288,6 +1288,9 @@ name|Void
 argument_list|>
 name|sendEdits
 parameter_list|(
+name|long
+name|segmentTxId
+parameter_list|,
 name|long
 name|firstTxnId
 parameter_list|,
@@ -1333,6 +1336,8 @@ name|logger
 operator|.
 name|sendEdits
 argument_list|(
+name|segmentTxId
+argument_list|,
 name|firstTxnId
 argument_list|,
 name|numTxns

@@ -120,12 +120,21 @@ specifier|private
 name|EditsDoubleBuffer
 name|buf
 decl_stmt|;
-DECL|method|QuorumOutputStream (AsyncLoggerSet loggers)
+DECL|field|segmentTxId
+specifier|private
+specifier|final
+name|long
+name|segmentTxId
+decl_stmt|;
+DECL|method|QuorumOutputStream (AsyncLoggerSet loggers, long txId)
 specifier|public
 name|QuorumOutputStream
 parameter_list|(
 name|AsyncLoggerSet
 name|loggers
+parameter_list|,
+name|long
+name|txId
 parameter_list|)
 throws|throws
 name|IOException
@@ -151,6 +160,12 @@ operator|.
 name|loggers
 operator|=
 name|loggers
+expr_stmt|;
+name|this
+operator|.
+name|segmentTxId
+operator|=
+name|txId
 expr_stmt|;
 block|}
 annotation|@
@@ -403,6 +418,8 @@ name|loggers
 operator|.
 name|sendEdits
 argument_list|(
+name|segmentTxId
+argument_list|,
 name|firstTxToFlush
 argument_list|,
 name|numReadyTxns

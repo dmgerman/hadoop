@@ -40,6 +40,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyLong
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|eq
 import|;
 end_import
@@ -1049,6 +1061,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L
@@ -1086,6 +1101,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L
@@ -1123,6 +1141,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L
@@ -1171,6 +1192,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|3L
@@ -1208,6 +1232,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|3L
@@ -1245,6 +1272,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|3L
@@ -1317,6 +1347,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L
@@ -1354,6 +1387,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L
@@ -1408,6 +1444,9 @@ argument_list|)
 operator|.
 name|sendEdits
 argument_list|(
+name|anyLong
+argument_list|()
+argument_list|,
 name|eq
 argument_list|(
 literal|1L

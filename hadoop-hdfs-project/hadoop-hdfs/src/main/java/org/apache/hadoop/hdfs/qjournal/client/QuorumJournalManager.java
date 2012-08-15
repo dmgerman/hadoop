@@ -1931,6 +1931,8 @@ operator|new
 name|QuorumOutputStream
 argument_list|(
 name|loggers
+argument_list|,
+name|txId
 argument_list|)
 return|;
 block|}

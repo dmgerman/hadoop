@@ -641,6 +641,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 literal|1
 argument_list|,
 literal|1
@@ -700,6 +702,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 literal|1
 argument_list|,
 literal|2
@@ -991,6 +995,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 literal|1
 argument_list|,
 literal|3
@@ -1230,6 +1236,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 literal|1L
 argument_list|,
 literal|1

@@ -827,6 +827,11 @@ argument_list|)
 argument_list|,
 name|req
 operator|.
+name|getSegmentTxnId
+argument_list|()
+argument_list|,
+name|req
+operator|.
 name|getFirstTxnId
 argument_list|()
 argument_list|,

@@ -498,6 +498,8 @@ name|sendEdits
 argument_list|(
 literal|1
 argument_list|,
+literal|1
+argument_list|,
 literal|3
 argument_list|,
 name|FAKE_DATA
@@ -522,6 +524,13 @@ name|RequestInfo
 operator|>
 name|any
 argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|eq
+argument_list|(
+literal|1L
+argument_list|)
 argument_list|,
 name|Mockito
 operator|.
@@ -600,6 +609,13 @@ name|Mockito
 operator|.
 name|eq
 argument_list|(
+literal|1L
+argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|eq
+argument_list|(
 literal|1
 argument_list|)
 argument_list|,
@@ -640,6 +656,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 operator|(
 name|long
 operator|)
@@ -669,6 +687,8 @@ name|ch
 operator|.
 name|sendEdits
 argument_list|(
+literal|1L
+argument_list|,
 name|numToQueue
 operator|+
 literal|1

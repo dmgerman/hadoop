@@ -338,13 +338,16 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Journal edit records.    * This message is sent by the active name-node to the JournalNodes    * to write edits to their local logs.    */
-DECL|method|journal (RequestInfo reqInfo, long firstTxnId, int numTxns, byte[] records)
+DECL|method|journal (RequestInfo reqInfo, long segmentTxId, long firstTxnId, int numTxns, byte[] records)
 specifier|public
 name|void
 name|journal
 parameter_list|(
 name|RequestInfo
 name|reqInfo
+parameter_list|,
+name|long
+name|segmentTxId
 parameter_list|,
 name|long
 name|firstTxnId
