@@ -394,6 +394,26 @@ argument_list|(
 name|JID
 argument_list|)
 decl_stmt|;
+name|QuorumJournalManager
+name|qjm
+init|=
+operator|new
+name|QuorumJournalManager
+argument_list|(
+name|conf
+argument_list|,
+name|uri
+argument_list|,
+name|FAKE_NSINFO
+argument_list|)
+decl_stmt|;
+name|qjm
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 comment|// With no failures or contention, epochs should increase one-by-one

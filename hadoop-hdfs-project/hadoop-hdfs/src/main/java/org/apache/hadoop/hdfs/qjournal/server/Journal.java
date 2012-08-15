@@ -172,6 +172,24 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
+name|JournalNotFormattedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|protocol
+operator|.
 name|QJournalProtocol
 import|;
 end_import
@@ -760,6 +778,19 @@ argument_list|,
 name|nsInfo
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Formatting "
+operator|+
+name|this
+operator|+
+literal|" with namespace info: "
+operator|+
+name|nsInfo
+argument_list|)
+expr_stmt|;
 name|storage
 operator|.
 name|format
@@ -804,6 +835,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkFormatted
+argument_list|()
+expr_stmt|;
 return|return
 name|lastPromisedEpoch
 operator|.
@@ -826,11 +860,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// If the storage is unformatted, format it with this NS.
-comment|// Otherwise, check that the NN's nsinfo matches the storage.
+name|checkFormatted
+argument_list|()
+expr_stmt|;
 name|storage
 operator|.
-name|formatIfNecessary
+name|checkConsistentNamespace
 argument_list|(
 name|nsInfo
 argument_list|)
@@ -946,6 +981,9 @@ name|checkRequest
 argument_list|(
 name|reqInfo
 argument_list|)
+expr_stmt|;
+name|checkFormatted
+argument_list|()
 expr_stmt|;
 comment|// TODO: if a JN goes down and comes back up, then it will throw
 comment|// this exception on every edit. We should instead send back
@@ -1090,6 +1128,36 @@ comment|// first calls
 comment|// TODO: some check on serial number that they only increase from a given
 comment|// client
 block|}
+DECL|method|checkFormatted ()
+specifier|private
+name|void
+name|checkFormatted
+parameter_list|()
+throws|throws
+name|JournalNotFormattedException
+block|{
+if|if
+condition|(
+operator|!
+name|storage
+operator|.
+name|isFormatted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|JournalNotFormattedException
+argument_list|(
+literal|"Journal "
+operator|+
+name|storage
+operator|+
+literal|" not formatted"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Start a new segment at the given txid. The previous segment    * must have already been finalized.    */
 DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
 specifier|public
@@ -1115,6 +1183,9 @@ name|checkRequest
 argument_list|(
 name|reqInfo
 argument_list|)
+expr_stmt|;
+name|checkFormatted
+argument_list|()
 expr_stmt|;
 name|Preconditions
 operator|.
@@ -1193,6 +1264,9 @@ name|checkRequest
 argument_list|(
 name|reqInfo
 argument_list|)
+expr_stmt|;
+name|checkFormatted
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1332,6 +1406,9 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
+name|checkFormatted
+argument_list|()
+expr_stmt|;
 name|fjm
 operator|.
 name|purgeLogsOlderThan
@@ -1467,6 +1544,9 @@ name|IOException
 block|{
 comment|// No need to checkRequest() here - anyone may ask for the list
 comment|// of segments.
+name|checkFormatted
+argument_list|()
+expr_stmt|;
 name|RemoteEditLogManifest
 name|manifest
 init|=
@@ -1642,6 +1722,9 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
+name|checkFormatted
+argument_list|()
+expr_stmt|;
 name|PrepareRecoveryResponseProto
 operator|.
 name|Builder
@@ -1765,6 +1848,9 @@ name|checkRequest
 argument_list|(
 name|reqInfo
 argument_list|)
+expr_stmt|;
+name|checkFormatted
+argument_list|()
 expr_stmt|;
 name|long
 name|segmentTxId

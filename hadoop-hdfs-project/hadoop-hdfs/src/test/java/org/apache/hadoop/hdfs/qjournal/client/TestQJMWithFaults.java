@@ -508,6 +508,13 @@ argument_list|(
 name|cluster
 argument_list|)
 decl_stmt|;
+name|qjm
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
+argument_list|)
+expr_stmt|;
 name|doWorkload
 argument_list|(
 name|cluster
@@ -695,6 +702,13 @@ operator|=
 name|createInjectableQJM
 argument_list|(
 name|cluster
+argument_list|)
+expr_stmt|;
+name|qjm
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
 argument_list|)
 expr_stmt|;
 name|List

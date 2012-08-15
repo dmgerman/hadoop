@@ -304,6 +304,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Format the underlying storage for the given namespace.    */
+DECL|method|format (String journalId, NamespaceInfo nsInfo)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|String
+name|journalId
+parameter_list|,
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Begin a new epoch. See the HDFS-3077 design doc for details.    */
 DECL|method|newEpoch (String journalId, NamespaceInfo nsInfo, long epoch)
 specifier|public

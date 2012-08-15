@@ -697,6 +697,35 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|format (String journalId, NamespaceInfo nsInfo)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|String
+name|journalId
+parameter_list|,
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|jn
+operator|.
+name|getOrCreateJournal
+argument_list|(
+name|journalId
+argument_list|)
+operator|.
+name|format
+argument_list|(
+name|nsInfo
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|journal (RequestInfo reqInfo, long firstTxnId, int numTxns, byte[] records)
 specifier|public
 name|void

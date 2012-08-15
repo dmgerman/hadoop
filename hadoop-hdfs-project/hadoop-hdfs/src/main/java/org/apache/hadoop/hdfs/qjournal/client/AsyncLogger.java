@@ -318,6 +318,19 @@ name|long
 name|minTxIdToKeep
 parameter_list|)
 function_decl|;
+comment|/**    * Format the log directory.    * @param nsInfo the namespace info to format with    */
+DECL|method|format (NamespaceInfo nsInfo)
+specifier|public
+name|ListenableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+function_decl|;
 comment|/**    * @return the state of the last epoch on the target node.    */
 DECL|method|getJournalState ()
 specifier|public

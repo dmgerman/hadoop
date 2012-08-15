@@ -435,6 +435,13 @@ argument_list|,
 name|mockErrorReporter
 argument_list|)
 expr_stmt|;
+name|journal
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -832,6 +839,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|journal
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getStorageDir
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|isLockSupported
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|StorageDirectory
 name|sd
 init|=
@@ -861,13 +886,12 @@ operator|.
 name|STORAGE_FILE_LOCK
 argument_list|)
 decl_stmt|;
-comment|// Journal should not be locked, since we lazily initialize it.
-name|assertFalse
+comment|// Journal should be locked, since the format() call locks it.
+name|GenericTestUtils
+operator|.
+name|assertExists
 argument_list|(
 name|lockFile
-operator|.
-name|exists
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|journal
@@ -877,32 +901,6 @@ argument_list|(
 name|FAKE_NSINFO
 argument_list|,
 literal|1
-argument_list|)
-expr_stmt|;
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|journal
-operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|getStorageDir
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|isLockSupported
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// Journal should be locked
-name|GenericTestUtils
-operator|.
-name|assertExists
-argument_list|(
-name|lockFile
 argument_list|)
 expr_stmt|;
 try|try
@@ -943,6 +941,7 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|// Journal should no longer be locked after the close() call.
+comment|// Hence, should be able to create a new Journal in the same dir.
 name|Journal
 name|journal2
 init|=

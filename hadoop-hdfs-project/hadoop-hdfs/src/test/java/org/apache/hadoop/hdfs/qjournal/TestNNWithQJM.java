@@ -168,6 +168,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -825,7 +843,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Start a NN, so the storage is formatted with its namespace info.
+comment|// Start a NN, so the storage is formatted -- both on-disk
+comment|// and QJM.
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -855,8 +874,34 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-comment|// Create a new (freshly-formatted) NN, which should not be able to
-comment|// reuse the same journal, since its journal ID would not match.
+comment|// Reformat just the on-disk portion
+name|Configuration
+name|onDiskOnly
+init|=
+operator|new
+name|Configuration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|onDiskOnly
+operator|.
+name|unset
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_DIR_KEY
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|format
+argument_list|(
+name|onDiskOnly
+argument_list|)
+expr_stmt|;
+comment|// Start the NN - should fail because the JNs are still formatted
+comment|// with the old namespace ID.
 try|try
 block|{
 name|cluster
@@ -875,6 +920,11 @@ literal|0
 argument_list|)
 operator|.
 name|manageNameDfsDirs
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|format
 argument_list|(
 literal|false
 argument_list|)

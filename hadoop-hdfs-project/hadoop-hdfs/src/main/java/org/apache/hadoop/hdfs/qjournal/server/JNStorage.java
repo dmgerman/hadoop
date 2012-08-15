@@ -451,6 +451,13 @@ name|getNamespaceID
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Unlock the directory before formatting, because we will
+comment|// re-analyze it after format(). The analyzeStorage() call
+comment|// below is reponsible for re-locking it. This is a no-op
+comment|// if the storage is not currently locked.
+name|unlockAll
+argument_list|()
+expr_stmt|;
 name|sd
 operator|.
 name|clearDirectory
@@ -482,87 +489,11 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-block|}
-DECL|method|formatIfNecessary (NamespaceInfo nsInfo)
-specifier|public
-name|void
-name|formatIfNecessary
-parameter_list|(
-name|NamespaceInfo
-name|nsInfo
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|state
-operator|==
-name|StorageState
-operator|.
-name|NOT_FORMATTED
-operator|||
-name|state
-operator|==
-name|StorageState
-operator|.
-name|NON_EXISTENT
-condition|)
-block|{
-name|format
-argument_list|(
-name|nsInfo
-argument_list|)
-expr_stmt|;
 name|analyzeStorage
 argument_list|()
 expr_stmt|;
-assert|assert
-name|state
-operator|==
-name|StorageState
-operator|.
-name|NORMAL
-operator|:
-literal|"Unexpected state after formatting: "
-operator|+
-name|state
-assert|;
-block|}
-else|else
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|state
-operator|==
-name|StorageState
-operator|.
-name|NORMAL
-argument_list|,
-literal|"Unhandled storage state in %s: %s"
-argument_list|,
-name|this
-argument_list|,
-name|state
-argument_list|)
-expr_stmt|;
-assert|assert
-name|getNamespaceID
-argument_list|()
-operator|!=
-literal|0
-assert|;
-name|checkConsistentNamespace
-argument_list|(
-name|nsInfo
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|analyzeStorage ()
-specifier|private
 name|void
 name|analyzeStorage
 parameter_list|()
@@ -601,7 +532,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|checkConsistentNamespace (NamespaceInfo nsInfo)
-specifier|private
 name|void
 name|checkConsistentNamespace
 parameter_list|(
@@ -708,6 +638,20 @@ expr_stmt|;
 name|unlockAll
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|isFormatted ()
+specifier|public
+name|boolean
+name|isFormatted
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|StorageState
+operator|.
+name|NORMAL
+return|;
 block|}
 block|}
 end_class
