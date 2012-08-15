@@ -348,49 +348,6 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
-DECL|field|USAGE
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|USAGE
-init|=
-literal|"Usage: DFSck<path> "
-operator|+
-literal|"[-list-corruptfileblocks | "
-operator|+
-literal|"[-move | -delete | -openforwrite] "
-operator|+
-literal|"[-files [-blocks [-locations | -racks]]]]\n"
-operator|+
-literal|"\t<path>\tstart checking from this path\n"
-operator|+
-literal|"\t-move\tmove corrupted files to /lost+found\n"
-operator|+
-literal|"\t-delete\tdelete corrupted files\n"
-operator|+
-literal|"\t-files\tprint out files being checked\n"
-operator|+
-literal|"\t-openforwrite\tprint out files opened for write\n"
-operator|+
-literal|"\t-list-corruptfileblocks\tprint out list of missing "
-operator|+
-literal|"blocks and files they belong to\n"
-operator|+
-literal|"\t-blocks\tprint out block report\n"
-operator|+
-literal|"\t-locations\tprint out locations for every block\n"
-operator|+
-literal|"\t-racks\tprint out network topology for data-node locations\n"
-operator|+
-literal|"\t\tBy default fsck ignores files opened for write, "
-operator|+
-literal|"use -openforwrite to report such files. They are usually "
-operator|+
-literal|" tagged CORRUPT or HEALTHY depending on their block "
-operator|+
-literal|"allocation status"
-decl_stmt|;
 DECL|field|ugi
 specifier|private
 specifier|final
@@ -459,29 +416,130 @@ name|out
 expr_stmt|;
 block|}
 comment|/**    * Print fsck usage information    */
-DECL|method|printUsage (PrintStream out)
+DECL|method|printUsage ()
 specifier|static
 name|void
 name|printUsage
-parameter_list|(
-name|PrintStream
-name|out
-parameter_list|)
+parameter_list|()
 block|{
-name|out
+name|System
+operator|.
+name|err
 operator|.
 name|println
 argument_list|(
-name|USAGE
+literal|"Usage: DFSck<path> [-list-corruptfileblocks | "
 operator|+
-literal|"\n"
+literal|"[-move | -delete | -openforwrite] "
+operator|+
+literal|"[-files [-blocks [-locations | -racks]]]]"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t<path>\tstart checking from this path"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-move\tmove corrupted files to /lost+found"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-delete\tdelete corrupted files"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-files\tprint out files being checked"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-openforwrite\tprint out files opened for write"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-list-corruptfileblocks\tprint out list of missing "
+operator|+
+literal|"blocks and files they belong to"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-blocks\tprint out block report"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-locations\tprint out locations for every block"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t-racks\tprint out network topology for data-node locations"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"\t\tBy default fsck ignores files opened for write, "
+operator|+
+literal|"use -openforwrite to report such files. They are usually "
+operator|+
+literal|" tagged CORRUPT or HEALTHY depending on their block "
+operator|+
+literal|"allocation status"
 argument_list|)
 expr_stmt|;
 name|ToolRunner
 operator|.
 name|printGenericCommandUsage
 argument_list|(
-name|out
+name|System
+operator|.
+name|err
 argument_list|)
 expr_stmt|;
 block|}
@@ -511,11 +569,7 @@ literal|0
 condition|)
 block|{
 name|printUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 operator|-
@@ -1362,11 +1416,7 @@ literal|"'"
 argument_list|)
 expr_stmt|;
 name|printUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 operator|-
@@ -1393,11 +1443,7 @@ literal|"'"
 argument_list|)
 expr_stmt|;
 name|printUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 operator|-
@@ -1651,50 +1697,10 @@ index|]
 argument_list|)
 operator|)
 condition|)
-block|{
 name|printUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
+argument_list|()
 expr_stmt|;
-name|ToolRunner
-operator|.
-name|printGenericCommandUsage
-argument_list|(
-name|System
-operator|.
-name|err
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|DFSUtil
-operator|.
-name|parseHelpArgument
-argument_list|(
-name|args
-argument_list|,
-name|USAGE
-argument_list|,
-name|System
-operator|.
-name|out
-argument_list|,
-literal|true
-argument_list|)
-condition|)
-block|{
-name|res
-operator|=
-literal|0
-expr_stmt|;
-block|}
 else|else
-block|{
 name|res
 operator|=
 name|ToolRunner
@@ -1712,7 +1718,6 @@ argument_list|,
 name|args
 argument_list|)
 expr_stmt|;
-block|}
 name|System
 operator|.
 name|exit
