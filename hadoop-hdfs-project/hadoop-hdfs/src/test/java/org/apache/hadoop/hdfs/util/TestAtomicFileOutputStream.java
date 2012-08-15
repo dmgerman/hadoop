@@ -124,9 +124,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|DFSTestUtil
+name|FileUtil
 import|;
 end_import
 
@@ -134,11 +134,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|aspectj
+name|apache
 operator|.
-name|util
+name|hadoop
 operator|.
-name|FileUtil
+name|hdfs
+operator|.
+name|DFSTestUtil
 import|;
 end_import
 
@@ -277,7 +279,7 @@ argument_list|)
 expr_stmt|;
 name|FileUtil
 operator|.
-name|deleteContents
+name|fullyDeleteContents
 argument_list|(
 name|TEST_DIR
 argument_list|)
