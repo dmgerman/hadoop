@@ -17700,6 +17700,39 @@ argument_list|,
 name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_THRESHOLD_PCT_KEY
+operator|+
+literal|" = "
+operator|+
+name|threshold
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_MIN_DATANODES_KEY
+operator|+
+literal|" = "
+operator|+
+name|datanodeThreshold
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
+operator|+
+literal|"     = "
+operator|+
+name|extension
+argument_list|)
+expr_stmt|;
 comment|// default to safe mode threshold (i.e., don't populate queues before leaving safe mode)
 name|this
 operator|.

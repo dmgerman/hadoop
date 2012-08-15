@@ -220,6 +220,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|EditLogFileOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSImageTestUtil
 import|;
 end_import
@@ -361,6 +379,18 @@ name|NUM_DIRS_IN_LOG
 init|=
 literal|5
 decl_stmt|;
+static|static
+block|{
+comment|// No need to fsync for the purposes of tests. This makes
+comment|// the tests run much faster.
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testStartup ()

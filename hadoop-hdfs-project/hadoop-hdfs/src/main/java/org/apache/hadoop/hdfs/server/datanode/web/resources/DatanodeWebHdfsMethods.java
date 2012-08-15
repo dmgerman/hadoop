@@ -3056,6 +3056,11 @@ name|in
 operator|.
 name|getVisibleLength
 argument_list|()
+operator|-
+name|offset
+operator|.
+name|getValue
+argument_list|()
 decl_stmt|;
 return|return
 name|Response

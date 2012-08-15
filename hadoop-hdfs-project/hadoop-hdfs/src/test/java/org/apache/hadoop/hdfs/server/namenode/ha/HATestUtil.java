@@ -397,6 +397,7 @@ literal|"ha-nn-uri-%d"
 decl_stmt|;
 comment|/**    * Trigger an edits log roll on the active and then wait for the standby to    * catch up to all the edits done by the active. This method will check    * repeatedly for up to NN_LAG_TIMEOUT milliseconds, and then fail throwing    * {@link CouldNotCatchUpException}    *     * @param active active NN    * @param standby standby NN which should catch up to active    * @throws IOException if an error occurs rolling the edit log    * @throws CouldNotCatchUpException if the standby doesn't catch up to the    *         active in NN_LAG_TIMEOUT milliseconds    */
 DECL|method|waitForStandbyToCatchUp (NameNode active, NameNode standby)
+specifier|public
 specifier|static
 name|void
 name|waitForStandbyToCatchUp

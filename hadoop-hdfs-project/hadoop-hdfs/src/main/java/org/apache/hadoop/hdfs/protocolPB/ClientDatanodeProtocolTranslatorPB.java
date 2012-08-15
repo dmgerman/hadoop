@@ -567,7 +567,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|method|ClientDatanodeProtocolTranslatorPB (DatanodeID datanodeid, Configuration conf, int socketTimeout, LocatedBlock locatedBlock)
+DECL|method|ClientDatanodeProtocolTranslatorPB (DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname, LocatedBlock locatedBlock)
 specifier|public
 name|ClientDatanodeProtocolTranslatorPB
 parameter_list|(
@@ -579,6 +579,9 @@ name|conf
 parameter_list|,
 name|int
 name|socketTimeout
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|,
 name|LocatedBlock
 name|locatedBlock
@@ -595,6 +598,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|socketTimeout
+argument_list|,
+name|connectToDnViaHostname
 argument_list|,
 name|locatedBlock
 argument_list|)
@@ -635,8 +640,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor.    * @param datanodeid Datanode to connect to.    * @param conf Configuration.    * @param socketTimeout Socket timeout to use.    * @throws IOException    */
-DECL|method|ClientDatanodeProtocolTranslatorPB (DatanodeID datanodeid, Configuration conf, int socketTimeout)
+comment|/**    * Constructor.    * @param datanodeid Datanode to connect to.    * @param conf Configuration.    * @param socketTimeout Socket timeout to use.    * @param connectToDnViaHostname connect to the Datanode using its hostname    * @throws IOException    */
+DECL|method|ClientDatanodeProtocolTranslatorPB (DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname)
 specifier|public
 name|ClientDatanodeProtocolTranslatorPB
 parameter_list|(
@@ -648,10 +653,24 @@ name|conf
 parameter_list|,
 name|int
 name|socketTimeout
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|dnAddr
+init|=
+name|datanodeid
+operator|.
+name|getIpcAddr
+argument_list|(
+name|connectToDnViaHostname
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
@@ -659,12 +678,31 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|datanodeid
-operator|.
-name|getIpcAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to datanode "
+operator|+
+name|dnAddr
+operator|+
+literal|" addr="
+operator|+
+name|addr
+argument_list|)
+expr_stmt|;
+block|}
 name|rpcProxy
 operator|=
 name|createClientDatanodeProtocolProxy
@@ -689,7 +727,7 @@ name|socketTimeout
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, LocatedBlock locatedBlock)
+DECL|method|createClientDatanodeProtocolProxy ( DatanodeID datanodeid, Configuration conf, int socketTimeout, boolean connectToDnViaHostname, LocatedBlock locatedBlock)
 specifier|static
 name|ClientDatanodeProtocolPB
 name|createClientDatanodeProtocolProxy
@@ -703,12 +741,26 @@ parameter_list|,
 name|int
 name|socketTimeout
 parameter_list|,
+name|boolean
+name|connectToDnViaHostname
+parameter_list|,
 name|LocatedBlock
 name|locatedBlock
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|dnAddr
+init|=
+name|datanodeid
+operator|.
+name|getIpcAddr
+argument_list|(
+name|connectToDnViaHostname
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
@@ -716,10 +768,7 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|datanodeid
-operator|.
-name|getIpcAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 decl_stmt|;
 if|if
@@ -734,7 +783,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ClientDatanodeProtocol addr="
+literal|"Connecting to datanode "
+operator|+
+name|dnAddr
+operator|+
+literal|" addr="
 operator|+
 name|addr
 argument_list|)

@@ -300,6 +300,18 @@ name|opsPerTrans
 init|=
 literal|3
 decl_stmt|;
+static|static
+block|{
+comment|// No need to fsync for the purposes of tests. This makes
+comment|// the tests run much faster.
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 comment|//
 comment|// an object that does a bunch of transactions
 comment|//

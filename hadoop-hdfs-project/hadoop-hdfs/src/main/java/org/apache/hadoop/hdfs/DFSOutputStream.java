@@ -5312,9 +5312,6 @@ name|nodes
 index|[
 literal|0
 index|]
-operator|.
-name|getXferAddr
-argument_list|()
 operator|+
 literal|" : "
 operator|+
@@ -5362,8 +5359,13 @@ name|i
 operator|++
 control|)
 block|{
+comment|// NB: Unconditionally using the xfer addr w/o hostname
 if|if
 condition|(
+name|firstBadLink
+operator|.
+name|equals
+argument_list|(
 name|nodes
 index|[
 name|i
@@ -5371,10 +5373,6 @@ index|]
 operator|.
 name|getXferAddr
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|firstBadLink
 argument_list|)
 condition|)
 block|{
@@ -5775,6 +5773,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|dnAddr
+init|=
+name|first
+operator|.
+name|getXferAddr
+argument_list|(
+name|client
+operator|.
+name|connectToDnViaHostname
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|DFSClient
@@ -5793,7 +5805,7 @@ name|debug
 argument_list|(
 literal|"Connecting to datanode "
 operator|+
-name|first
+name|dnAddr
 argument_list|)
 expr_stmt|;
 block|}
@@ -5805,10 +5817,7 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|first
-operator|.
-name|getXferAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 decl_stmt|;
 specifier|final

@@ -541,7 +541,7 @@ return|return
 name|spy
 return|;
 block|}
-DECL|method|createInterDatanodeProtocolProxy ( DataNode dn, DatanodeID datanodeid, final Configuration conf )
+DECL|method|createInterDatanodeProtocolProxy ( DataNode dn, DatanodeID datanodeid, final Configuration conf, boolean connectToDnViaHostname)
 specifier|public
 specifier|static
 name|InterDatanodeProtocol
@@ -556,10 +556,33 @@ parameter_list|,
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|connectToDnViaHostname
+operator|!=
+name|dn
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|connectToDnViaHostname
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Unexpected DN hostname configuration"
+argument_list|)
+throw|;
+block|}
 return|return
 name|DataNode
 operator|.
@@ -575,6 +598,13 @@ name|getDnConf
 argument_list|()
 operator|.
 name|socketTimeout
+argument_list|,
+name|dn
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|connectToDnViaHostname
 argument_list|)
 return|;
 block|}

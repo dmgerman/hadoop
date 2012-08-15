@@ -529,6 +529,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_USE_DN_HOSTNAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2178,6 +2210,11 @@ specifier|final
 name|boolean
 name|useLegacyBlockReader
 decl_stmt|;
+DECL|field|connectToDnViaHostname
+specifier|final
+name|boolean
+name|connectToDnViaHostname
+decl_stmt|;
 DECL|method|Conf (Configuration conf)
 name|Conf
 parameter_list|(
@@ -2422,6 +2459,17 @@ argument_list|(
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
 argument_list|,
 name|DFS_CLIENT_USE_LEGACY_BLOCKREADER_DEFAULT
+argument_list|)
+expr_stmt|;
+name|connectToDnViaHostname
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_CLIENT_USE_DN_HOSTNAME
+argument_list|,
+name|DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -3322,6 +3370,18 @@ return|return
 name|clientName
 return|;
 block|}
+comment|/**    * @return whether the client should use hostnames instead of IPs    *    when connecting to DataNodes    */
+DECL|method|connectToDnViaHostname ()
+name|boolean
+name|connectToDnViaHostname
+parameter_list|()
+block|{
+return|return
+name|dfsClientConf
+operator|.
+name|connectToDnViaHostname
+return|;
+block|}
 DECL|method|checkOpen ()
 name|void
 name|checkOpen
@@ -4191,7 +4251,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Get {@link BlockReader} for short circuited local reads.    */
-DECL|method|getLocalBlockReader (Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock)
+DECL|method|getLocalBlockReader (Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock, boolean connectToDnViaHostname)
 specifier|static
 name|BlockReader
 name|getLocalBlockReader
@@ -4219,6 +4279,9 @@ name|socketTimeout
 parameter_list|,
 name|long
 name|offsetIntoBlock
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -4252,6 +4315,8 @@ name|getNumBytes
 argument_list|()
 operator|-
 name|offsetIntoBlock
+argument_list|,
+name|connectToDnViaHostname
 argument_list|)
 return|;
 block|}
@@ -6801,6 +6866,10 @@ name|socketTimeout
 argument_list|,
 name|getDataEncryptionKey
 argument_list|()
+argument_list|,
+name|dfsClientConf
+operator|.
+name|connectToDnViaHostname
 argument_list|)
 return|;
 block|}
@@ -6932,7 +7001,7 @@ return|;
 block|}
 block|}
 comment|/**    * Get the checksum of a file.    * @param src The file path    * @return The checksum     */
-DECL|method|getFileChecksum (String src, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey)
+DECL|method|getFileChecksum (String src, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey, boolean connectToDnViaHostname)
 specifier|public
 specifier|static
 name|MD5MD5CRC32FileChecksum
@@ -6952,6 +7021,9 @@ name|socketTimeout
 parameter_list|,
 name|DataEncryptionKey
 name|encryptionKey
+parameter_list|,
+name|boolean
+name|connectToDnViaHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -7191,6 +7263,37 @@ operator|.
 name|createSocket
 argument_list|()
 expr_stmt|;
+name|String
+name|dnAddr
+init|=
+name|datanodes
+index|[
+name|j
+index|]
+operator|.
+name|getXferAddr
+argument_list|(
+name|connectToDnViaHostname
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to datanode "
+operator|+
+name|dnAddr
+argument_list|)
+expr_stmt|;
+block|}
 name|NetUtils
 operator|.
 name|connect
@@ -7201,13 +7304,7 @@ name|NetUtils
 operator|.
 name|createSocketAddr
 argument_list|(
-name|datanodes
-index|[
-name|j
-index|]
-operator|.
-name|getXferAddr
-argument_list|()
+name|dnAddr
 argument_list|)
 argument_list|,
 name|timeout

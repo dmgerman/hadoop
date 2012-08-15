@@ -600,6 +600,15 @@ block|,
 name|ZK_AUTH_KEY
 block|}
 decl_stmt|;
+DECL|field|USAGE
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|USAGE
+init|=
+literal|"Usage: java zkfc [ -formatZK [-force] [-nonInteractive] ]"
+decl_stmt|;
 comment|/** Unable to format the parent znode in ZK */
 DECL|field|ERR_CODE_FORMAT_DENIED
 specifier|static
@@ -1297,17 +1306,9 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: "
+name|USAGE
 operator|+
-name|this
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|" [-formatZK [-force | -nonInteractive]]"
+literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}

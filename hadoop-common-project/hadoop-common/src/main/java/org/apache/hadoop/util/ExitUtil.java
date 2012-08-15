@@ -233,6 +233,19 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|/**    * Reset the tracking of process termination. This is for use    * in unit tests where one test in the suite expects an exit    * but others do not.    */
+DECL|method|resetFirstExitException ()
+specifier|public
+specifier|static
+name|void
+name|resetFirstExitException
+parameter_list|()
+block|{
+name|firstExitException
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    * @param status exit code    * @param msg message used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status, String msg)
 specifier|public

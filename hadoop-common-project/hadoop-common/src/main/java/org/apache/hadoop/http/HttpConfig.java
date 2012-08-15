@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -119,6 +133,22 @@ name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SSL_ENABLED_DEFAULT
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setSecure (boolean secure)
+specifier|static
+name|void
+name|setSecure
+parameter_list|(
+name|boolean
+name|secure
+parameter_list|)
+block|{
+name|sslEnabled
+operator|=
+name|secure
 expr_stmt|;
 block|}
 DECL|method|isSecure ()

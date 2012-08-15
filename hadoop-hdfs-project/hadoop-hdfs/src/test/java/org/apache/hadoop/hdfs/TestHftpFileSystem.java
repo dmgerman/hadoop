@@ -582,17 +582,6 @@ operator|new
 name|Configuration
 argument_list|()
 expr_stmt|;
-name|config
-operator|.
-name|set
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_HOST_NAME_KEY
-argument_list|,
-literal|"localhost"
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 operator|new

@@ -1436,6 +1436,42 @@ block|{
 name|checkFileCreation
 argument_list|(
 literal|null
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Same test but the client should use DN hostnames */
+annotation|@
+name|Test
+DECL|method|testFileCreationUsingHostname ()
+specifier|public
+name|void
+name|testFileCreationUsingHostname
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assumeTrue
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"os.name"
+argument_list|)
+operator|.
+name|startsWith
+argument_list|(
+literal|"Linux"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkFileCreation
+argument_list|(
+literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1469,6 +1505,8 @@ comment|// The mini cluster listens on the loopback so we can use it here
 name|checkFileCreation
 argument_list|(
 literal|"lo"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 try|try
@@ -1476,6 +1514,8 @@ block|{
 name|checkFileCreation
 argument_list|(
 literal|"bogus-interface"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1502,14 +1542,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test if file creation and disk space consumption works right    * @param netIf the local interface, if any, clients should use to access DNs    */
-DECL|method|checkFileCreation (String netIf)
+comment|/**    * Test if file creation and disk space consumption works right    * @param netIf the local interface, if any, clients should use to access DNs    * @param useDnHostname whether the client should contact DNs by hostname    */
+DECL|method|checkFileCreation (String netIf, boolean useDnHostname)
 specifier|public
 name|void
 name|checkFileCreation
 parameter_list|(
 name|String
 name|netIf
+parameter_list|,
+name|boolean
+name|useDnHostname
 parameter_list|)
 throws|throws
 name|IOException
@@ -1540,6 +1583,38 @@ name|netIf
 argument_list|)
 expr_stmt|;
 block|}
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_USE_DN_HOSTNAME
+argument_list|,
+name|useDnHostname
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|useDnHostname
+condition|)
+block|{
+comment|// Since the mini cluster only listens on the loopback we have to
+comment|// ensure the hostname used to access DNs maps to the loopback. We
+comment|// do this by telling the DN to advertise localhost as its hostname
+comment|// instead of the default hostname.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HOST_NAME_KEY
+argument_list|,
+literal|"localhost"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|simulatedStorage
@@ -1562,6 +1637,11 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|checkDataNodeHostConfig
+argument_list|(
+literal|true
 argument_list|)
 operator|.
 name|build
