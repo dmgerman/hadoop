@@ -1308,6 +1308,25 @@ decl_stmt|;
 if|if
 condition|(
 name|elf
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"No log file to finalize at "
+operator|+
+literal|"transaction ID "
+operator|+
+name|startTxId
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|elf
 operator|.
 name|isInProgress
 argument_list|()
@@ -1340,7 +1359,7 @@ argument_list|()
 operator|==
 name|endTxId
 argument_list|,
-literal|"Trying to finalize log %s-%s, but current state of log"
+literal|"Trying to finalize log %s-%s, but current state of log "
 operator|+
 literal|"is %s"
 argument_list|,
