@@ -852,6 +852,9 @@ literal|"journalnode-"
 operator|+
 name|idx
 argument_list|)
+operator|.
+name|getAbsoluteFile
+argument_list|()
 return|;
 block|}
 DECL|method|getCurrentDir (int idx, String jid)
