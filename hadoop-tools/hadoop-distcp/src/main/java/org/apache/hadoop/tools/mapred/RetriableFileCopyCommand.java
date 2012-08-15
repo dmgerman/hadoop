@@ -494,6 +494,7 @@ name|bytesRead
 operator|!=
 literal|0
 condition|)
+block|{
 name|compareCheckSums
 argument_list|(
 name|sourceFS
@@ -508,6 +509,7 @@ argument_list|,
 name|tmpTargetPath
 argument_list|)
 expr_stmt|;
+block|}
 name|promoteTmpToTarget
 argument_list|(
 name|tmpTargetPath
