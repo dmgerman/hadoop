@@ -409,7 +409,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32
+name|Type
+operator|.
+name|CRC32
 argument_list|,
 name|Integer
 operator|.
