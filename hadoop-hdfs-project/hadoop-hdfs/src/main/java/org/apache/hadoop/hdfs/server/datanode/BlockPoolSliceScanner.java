@@ -2801,17 +2801,9 @@ name|void
 name|startNewPeriod
 parameter_list|()
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Starting a new period : work left in prev period : "
 operator|+
@@ -2837,7 +2829,6 @@ name|totalBytesToScan
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 comment|// reset the byte counts :
 name|bytesLeft
 operator|=
@@ -2856,9 +2847,6 @@ name|void
 name|scanBlockPoolSlice
 parameter_list|()
 block|{
-name|startNewPeriod
-argument_list|()
-expr_stmt|;
 comment|// Create a new processedBlocks structure
 name|processedBlocks
 operator|=
