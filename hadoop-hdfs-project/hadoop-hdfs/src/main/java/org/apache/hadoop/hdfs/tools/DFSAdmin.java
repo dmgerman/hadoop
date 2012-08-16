@@ -3768,7 +3768,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Dumps DFS data structures into specified file.    * Usage: java DFSAdmin -metasave filename    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if an error accoured wile accessing    *            the file or path.    */
+comment|/**    * Dumps DFS data structures into specified file.    * Usage: java DFSAdmin -metasave filename    * @param argv List of of command line parameters.    * @param idx The index of the command that is being processed.    * @exception IOException if an error occurred while accessing    *            the file or path.    */
 DECL|method|metaSave (String[] argv, int idx)
 specifier|public
 name|int
@@ -3811,11 +3811,13 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Created file "
+literal|"Created metasave file "
 operator|+
 name|pathname
 operator|+
-literal|" on server "
+literal|" in the log "
+operator|+
+literal|"directory of namenode "
 operator|+
 name|dfs
 operator|.
