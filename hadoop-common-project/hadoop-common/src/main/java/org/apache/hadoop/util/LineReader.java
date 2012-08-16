@@ -874,8 +874,18 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|delPosn
+operator|!=
+literal|0
+condition|)
 block|{
+name|bufferPosn
+operator|--
+expr_stmt|;
+comment|// recheck if bufferPosn matches start of delimiter
 name|delPosn
 operator|=
 literal|0
