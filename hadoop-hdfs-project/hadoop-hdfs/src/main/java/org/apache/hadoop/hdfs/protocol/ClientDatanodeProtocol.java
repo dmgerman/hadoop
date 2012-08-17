@@ -30,6 +30,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -246,6 +256,29 @@ argument_list|<
 name|BlockTokenIdentifier
 argument_list|>
 name|token
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Retrieves volume location information about a list of blocks on a datanode.    * This is in the form of an opaque {@link VolumeId} for each configured    * data directory, which is not guaranteed to be the same across DN restarts.    *     * @param blocks    *          list of blocks on the local datanode    * @param tokens    *          block access tokens corresponding to the requested blocks    * @return an HdfsBlocksMetadata that associates {@link ExtendedBlock}s with    *         data directories    * @throws IOException    *           if datanode is unreachable, or replica is not found on datanode    */
+DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks, List<Token<BlockTokenIdentifier>> tokens)
+name|HdfsBlocksMetadata
+name|getHdfsBlocksMetadata
+parameter_list|(
+name|List
+argument_list|<
+name|ExtendedBlock
+argument_list|>
+name|blocks
+parameter_list|,
+name|List
+argument_list|<
+name|Token
+argument_list|<
+name|BlockTokenIdentifier
+argument_list|>
+argument_list|>
+name|tokens
 parameter_list|)
 throws|throws
 name|IOException
