@@ -724,7 +724,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/*    * Expected deployment TLD will be 1777, owner=<NMOwner>, group=<NMGroup -    * Group to which NMOwner belongs> App dirs will be created as 750,    * owner=<AppOwner>, group=<NMGroup>: so that the owner and<NMOwner> can    * access / modify the files.    *<NMGroup> should obviously be a limited access group.    */
+comment|/*    * Expected deployment TLD will be 1777, owner=<NMOwner>, group=<NMGroup -    * Group to which NMOwner belongs> App dirs will be created as 770,    * owner=<AppOwner>, group=<NMGroup>: so that the owner and<NMOwner> can    * access / modify the files.    *<NMGroup> should obviously be a limited access group.    */
 comment|/**    * Permissions for the top level directory under which app directories will be    * created.    */
 DECL|field|TLDIR_PERMISSIONS
 specifier|private
@@ -758,7 +758,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|0750
+literal|0770
 argument_list|)
 decl_stmt|;
 DECL|field|context
