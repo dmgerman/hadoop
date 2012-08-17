@@ -272,11 +272,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -358,8 +366,9 @@ name|getExpectedDelegationTokenCount
 parameter_list|()
 block|{
 return|return
-literal|8
+literal|1
 return|;
+comment|// all point to the same fs so 1 unique token
 block|}
 annotation|@
 name|Override

@@ -330,26 +330,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
-name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -1114,24 +1094,27 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// OP_GET_DELEGATION_TOKEN 18
-specifier|final
-name|Token
-argument_list|<
-name|DelegationTokenIdentifier
-argument_list|>
-name|token
-init|=
-name|dfs
-operator|.
-name|getDelegationToken
-argument_list|(
-literal|"JobTracker"
-argument_list|)
-decl_stmt|;
 comment|// OP_RENEW_DELEGATION_TOKEN 19
 comment|// OP_CANCEL_DELEGATION_TOKEN 20
 comment|// see TestDelegationToken.java
 comment|// fake the user to renew token for
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+index|[]
+name|tokens
+init|=
+name|dfs
+operator|.
+name|addDelegationTokens
+argument_list|(
+literal|"JobTracker"
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
 name|UserGroupInformation
 name|longUgi
 init|=
@@ -1166,6 +1149,17 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+for|for
+control|(
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+range|:
+name|tokens
+control|)
+block|{
 name|token
 operator|.
 name|renew
@@ -1180,6 +1174,7 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;

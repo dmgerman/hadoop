@@ -399,6 +399,29 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Create an empty credentials instance    */
+DECL|method|Credentials ()
+specifier|public
+name|Credentials
+parameter_list|()
+block|{   }
+comment|/**    * Create a copy of the given credentials    * @param credentials to copy    */
+DECL|method|Credentials (Credentials credentials)
+specifier|public
+name|Credentials
+parameter_list|(
+name|Credentials
+name|credentials
+parameter_list|)
+block|{
+name|this
+operator|.
+name|addAll
+argument_list|(
+name|credentials
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns the key bytes for the alias    * @param alias the alias for the key    * @return key for this alias    */
 DECL|method|getSecretKey (Text alias)
 specifier|public

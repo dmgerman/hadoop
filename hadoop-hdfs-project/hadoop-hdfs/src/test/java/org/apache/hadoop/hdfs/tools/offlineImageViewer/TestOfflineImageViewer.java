@@ -833,20 +833,20 @@ expr_stmt|;
 block|}
 block|}
 comment|// Get delegation tokens so we log the delegation token op
-name|List
-argument_list|<
 name|Token
 argument_list|<
 name|?
 argument_list|>
-argument_list|>
+index|[]
 name|delegationTokens
 init|=
 name|hdfs
 operator|.
-name|getDelegationTokens
+name|addDelegationTokens
 argument_list|(
 name|TEST_RENEWER
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 for|for
