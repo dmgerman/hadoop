@@ -553,11 +553,11 @@ argument_list|)
 decl_stmt|;
 name|conf
 operator|.
-name|set
+name|setLong
 argument_list|(
 name|FS_TRASH_INTERVAL_KEY
 argument_list|,
-literal|"0"
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// disabled
@@ -575,11 +575,11 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|set
+name|setLong
 argument_list|(
 name|FS_TRASH_INTERVAL_KEY
 argument_list|,
-literal|"10"
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// 10 minute
@@ -2297,11 +2297,11 @@ name|IOException
 block|{
 name|conf
 operator|.
-name|set
+name|setLong
 argument_list|(
 name|FS_TRASH_INTERVAL_KEY
 argument_list|,
-literal|"10"
+literal|10
 argument_list|)
 expr_stmt|;
 comment|// 10 minute
@@ -3128,11 +3128,11 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|set
+name|setLong
 argument_list|(
 name|FS_TRASH_INTERVAL_KEY
 argument_list|,
-literal|"10"
+literal|10
 argument_list|)
 expr_stmt|;
 comment|//minutes..

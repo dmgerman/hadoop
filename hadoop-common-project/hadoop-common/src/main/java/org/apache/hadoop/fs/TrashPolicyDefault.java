@@ -218,20 +218,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configured
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|Options
@@ -405,6 +391,11 @@ specifier|private
 name|Path
 name|homesParent
 decl_stmt|;
+DECL|field|emptierInterval
+specifier|private
+name|long
+name|emptierInterval
+decl_stmt|;
 DECL|method|TrashPolicyDefault ()
 specifier|public
 name|TrashPolicyDefault
@@ -494,6 +485,51 @@ argument_list|,
 name|CURRENT
 argument_list|)
 expr_stmt|;
+name|long
+name|trashInterval
+init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|trashInterval
+operator|=
+name|fs
+operator|.
+name|getServerDefaults
+argument_list|(
+name|home
+argument_list|)
+operator|.
+name|getTrashInterval
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to get server defaults"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+comment|// If the trash interval is not configured or is disabled on the
+comment|// server side then check the config which may be client side.
+if|if
+condition|(
+literal|0
+operator|==
+name|trashInterval
+condition|)
+block|{
 name|this
 operator|.
 name|deletionInterval
@@ -509,6 +545,41 @@ argument_list|(
 name|FS_TRASH_INTERVAL_KEY
 argument_list|,
 name|FS_TRASH_INTERVAL_DEFAULT
+argument_list|)
+operator|*
+name|MSECS_PER_MINUTE
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|deletionInterval
+operator|=
+name|trashInterval
+operator|*
+name|MSECS_PER_MINUTE
+expr_stmt|;
+block|}
+comment|// For the checkpoint interval use the given config instead of
+comment|// checking the server as it's OK if a client starts an emptier
+comment|// with a different interval than the server.
+name|this
+operator|.
+name|emptierInterval
+operator|=
+call|(
+name|long
+call|)
+argument_list|(
+name|conf
+operator|.
+name|getFloat
+argument_list|(
+name|FS_TRASH_CHECKPOINT_INTERVAL_KEY
+argument_list|,
+name|FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT
 argument_list|)
 operator|*
 name|MSECS_PER_MINUTE
@@ -552,11 +623,9 @@ name|isEnabled
 parameter_list|()
 block|{
 return|return
-operator|(
 name|deletionInterval
 operator|!=
 literal|0
-operator|)
 return|;
 block|}
 annotation|@
@@ -1225,6 +1294,8 @@ name|Emptier
 argument_list|(
 name|getConf
 argument_list|()
+argument_list|,
+name|emptierInterval
 argument_list|)
 return|;
 block|}
@@ -1245,11 +1316,14 @@ specifier|private
 name|long
 name|emptierInterval
 decl_stmt|;
-DECL|method|Emptier (Configuration conf)
+DECL|method|Emptier (Configuration conf, long emptierInterval)
 name|Emptier
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|long
+name|emptierInterval
 parameter_list|)
 throws|throws
 name|IOException
@@ -1264,32 +1338,14 @@ name|this
 operator|.
 name|emptierInterval
 operator|=
-call|(
-name|long
-call|)
-argument_list|(
-name|conf
-operator|.
-name|getFloat
-argument_list|(
-name|FS_TRASH_CHECKPOINT_INTERVAL_KEY
-argument_list|,
-name|FS_TRASH_CHECKPOINT_INTERVAL_DEFAULT
-argument_list|)
-operator|*
-name|MSECS_PER_MINUTE
-argument_list|)
+name|emptierInterval
 expr_stmt|;
 if|if
 condition|(
-name|this
-operator|.
 name|emptierInterval
 operator|>
 name|deletionInterval
 operator|||
-name|this
-operator|.
 name|emptierInterval
 operator|==
 literal|0
@@ -1297,19 +1353,25 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-literal|"The configured interval for checkpoint is "
+literal|"The configured checkpoint interval is "
 operator|+
-name|this
-operator|.
+operator|(
 name|emptierInterval
+operator|/
+name|MSECS_PER_MINUTE
+operator|)
 operator|+
 literal|" minutes."
 operator|+
-literal|" Using interval of "
+literal|" Using an interval of "
 operator|+
+operator|(
 name|deletionInterval
+operator|/
+name|MSECS_PER_MINUTE
+operator|)
 operator|+
 literal|" minutes that is used for deletion instead"
 argument_list|)

@@ -2412,6 +2412,11 @@ literal|4096
 argument_list|)
 argument_list|,
 literal|false
+argument_list|,
+comment|// NB: ignoring the client trash configuration
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_TRASH_INTERVAL_DEFAULT
 argument_list|)
 return|;
 block|}

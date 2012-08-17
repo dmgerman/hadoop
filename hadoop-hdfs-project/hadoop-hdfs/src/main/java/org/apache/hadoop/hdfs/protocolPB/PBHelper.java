@@ -7813,6 +7813,11 @@ name|fs
 operator|.
 name|getEncryptDataTransfer
 argument_list|()
+argument_list|,
+name|fs
+operator|.
+name|getTrashInterval
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -7886,6 +7891,14 @@ argument_list|(
 name|fs
 operator|.
 name|getEncryptDataTransfer
+argument_list|()
+argument_list|)
+operator|.
+name|setTrashInterval
+argument_list|(
+name|fs
+operator|.
+name|getTrashInterval
 argument_list|()
 argument_list|)
 operator|.

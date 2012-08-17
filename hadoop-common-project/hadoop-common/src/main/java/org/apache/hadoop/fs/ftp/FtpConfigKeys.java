@@ -209,6 +209,15 @@ name|ENCRYPT_DATA_TRANSFER_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|FS_TRASH_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|FS_TRASH_INTERVAL_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 DECL|method|getServerDefaults ()
 specifier|protected
 specifier|static
@@ -233,6 +242,8 @@ argument_list|,
 name|STREAM_BUFFER_SIZE_DEFAULT
 argument_list|,
 name|ENCRYPT_DATA_TRANSFER_DEFAULT
+argument_list|,
+name|FS_TRASH_INTERVAL_DEFAULT
 argument_list|)
 return|;
 block|}
