@@ -1764,6 +1764,8 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|String
 name|contextCfgItemName
 init|=
@@ -1825,6 +1827,13 @@ name|contextCfgItemName
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|rmBufferDirs
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
