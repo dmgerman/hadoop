@@ -812,6 +812,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Lists
@@ -5183,6 +5197,116 @@ block|}
 block|}
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Get DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION from configuration.    *     * @param conf Configuration    * @return Value of DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION    */
+DECL|method|getInvalidateWorkPctPerIteration (Configuration conf)
+specifier|public
+specifier|static
+name|float
+name|getInvalidateWorkPctPerIteration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|float
+name|blocksInvalidateWorkPct
+init|=
+name|conf
+operator|.
+name|getFloat
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION_DEFAULT
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|blocksInvalidateWorkPct
+operator|>
+literal|0
+operator|)
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION
+operator|+
+literal|" = '"
+operator|+
+name|blocksInvalidateWorkPct
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive, non-zero float value "
+operator|+
+literal|"indicating a percentage."
+argument_list|)
+expr_stmt|;
+return|return
+name|blocksInvalidateWorkPct
+return|;
+block|}
+comment|/**    * Get DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION from    * configuration.    *     * @param conf Configuration    * @return Value of DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION    */
+DECL|method|getReplWorkMultiplier (Configuration conf)
+specifier|public
+specifier|static
+name|int
+name|getReplWorkMultiplier
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|int
+name|blocksReplWorkMultiplier
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION_DEFAULT
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|blocksReplWorkMultiplier
+operator|>
+literal|0
+operator|)
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION
+operator|+
+literal|" = '"
+operator|+
+name|blocksReplWorkMultiplier
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive, non-zero integer value."
+argument_list|)
+expr_stmt|;
+return|return
+name|blocksReplWorkMultiplier
 return|;
 block|}
 block|}

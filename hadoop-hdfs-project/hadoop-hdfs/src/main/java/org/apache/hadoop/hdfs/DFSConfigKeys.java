@@ -1306,10 +1306,10 @@ DECL|field|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION_DEFAULT
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|float
 name|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION_DEFAULT
 init|=
-literal|32
+literal|0.32f
 decl_stmt|;
 DECL|field|DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION
 specifier|public
