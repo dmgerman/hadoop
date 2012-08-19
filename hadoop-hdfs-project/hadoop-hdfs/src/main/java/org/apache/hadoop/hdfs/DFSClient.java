@@ -996,6 +996,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|ParentNotDirectoryException
 import|;
 end_import
@@ -2190,17 +2206,10 @@ specifier|final
 name|int
 name|ioBufferSize
 decl_stmt|;
-DECL|field|checksumType
+DECL|field|defaultChecksumOpt
 specifier|final
-name|DataChecksum
-operator|.
-name|Type
-name|checksumType
-decl_stmt|;
-DECL|field|bytesPerChecksum
-specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|defaultChecksumOpt
 decl_stmt|;
 DECL|field|writePacketSize
 specifier|final
@@ -2367,22 +2376,11 @@ operator|.
 name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
-name|checksumType
+name|defaultChecksumOpt
 operator|=
-name|getChecksumType
+name|getChecksumOptFromConf
 argument_list|(
 name|conf
-argument_list|)
-expr_stmt|;
-name|bytesPerChecksum
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFS_BYTES_PER_CHECKSUM_KEY
-argument_list|,
-name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 argument_list|)
 expr_stmt|;
 name|socketTimeout
@@ -2667,21 +2665,131 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|// Construct a checksum option from conf
+DECL|method|getChecksumOptFromConf (Configuration conf)
+specifier|private
+name|ChecksumOpt
+name|getChecksumOptFromConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|DataChecksum
+operator|.
+name|Type
+name|type
+init|=
+name|getChecksumType
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|int
+name|bytesPerChecksum
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFS_BYTES_PER_CHECKSUM_KEY
+argument_list|,
+name|DFS_BYTES_PER_CHECKSUM_DEFAULT
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|ChecksumOpt
+argument_list|(
+name|type
+argument_list|,
+name|bytesPerChecksum
+argument_list|)
+return|;
+block|}
+comment|// create a DataChecksum with the default option.
 DECL|method|createChecksum ()
 specifier|private
 name|DataChecksum
 name|createChecksum
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
+name|createChecksum
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|createChecksum (ChecksumOpt userOpt)
+specifier|private
+name|DataChecksum
+name|createChecksum
+parameter_list|(
+name|ChecksumOpt
+name|userOpt
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Fill in any missing field with the default.
+name|ChecksumOpt
+name|myOpt
+init|=
+name|ChecksumOpt
+operator|.
+name|processChecksumOpt
+argument_list|(
+name|defaultChecksumOpt
+argument_list|,
+name|userOpt
+argument_list|)
+decl_stmt|;
+name|DataChecksum
+name|dataChecksum
+init|=
 name|DataChecksum
 operator|.
 name|newDataChecksum
 argument_list|(
-name|checksumType
+name|myOpt
+operator|.
+name|getChecksumType
+argument_list|()
 argument_list|,
-name|bytesPerChecksum
+name|myOpt
+operator|.
+name|getBytesPerChecksum
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|dataChecksum
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid checksum type specified: "
+operator|+
+name|myOpt
+operator|.
+name|getChecksumType
+argument_list|()
+operator|.
+name|name
+argument_list|()
+argument_list|)
+throw|;
+block|}
+return|return
+name|dataChecksum
 return|;
 block|}
 block|}
@@ -5911,11 +6019,13 @@ argument_list|,
 name|progress
 argument_list|,
 name|buffersize
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, FsPermission, EnumSet, boolean, short,     * long, Progressable, int)} with<code>createParent</code> set to true.    */
-DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, short replication, long blockSize, Progressable progress, int buffersize)
+comment|/**    * Call {@link #create(String, FsPermission, EnumSet, boolean, short,     * long, Progressable, int, ChecksumOpt)} with<code>createParent</code>    *  set to true.    */
+DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
 name|create
@@ -5943,6 +6053,9 @@ name|progress
 parameter_list|,
 name|int
 name|buffersize
+parameter_list|,
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -5965,11 +6078,13 @@ argument_list|,
 name|progress
 argument_list|,
 name|buffersize
+argument_list|,
+name|checksumOpt
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
-DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize)
+comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpts checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
+DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
 name|create
@@ -6000,6 +6115,9 @@ name|progress
 parameter_list|,
 name|int
 name|buffersize
+parameter_list|,
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -6083,7 +6201,9 @@ argument_list|,
 name|dfsClientConf
 operator|.
 name|createChecksum
-argument_list|()
+argument_list|(
+name|checksumOpt
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|beginFileLease
@@ -6199,7 +6319,7 @@ literal|null
 return|;
 block|}
 comment|/**    * Same as {{@link #create(String, FsPermission, EnumSet, short, long,    *  Progressable, int)} except that the permission    *  is absolute (ie has already been masked with umask.    */
-DECL|method|primitiveCreate (String src, FsPermission absPermission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, int bytesPerChecksum)
+DECL|method|primitiveCreate (String src, FsPermission absPermission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
 name|primitiveCreate
@@ -6231,8 +6351,8 @@ parameter_list|,
 name|int
 name|buffersize
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -6273,15 +6393,11 @@ block|{
 name|DataChecksum
 name|checksum
 init|=
-name|DataChecksum
-operator|.
-name|newDataChecksum
-argument_list|(
 name|dfsClientConf
 operator|.
-name|checksumType
-argument_list|,
-name|bytesPerChecksum
+name|createChecksum
+argument_list|(
+name|checksumOpt
 argument_list|)
 decl_stmt|;
 name|result

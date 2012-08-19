@@ -116,6 +116,34 @@ name|WritableFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************  * Provides server default configuration values to clients.  *   ****************************************************/
 end_comment
@@ -201,12 +229,19 @@ specifier|private
 name|long
 name|trashInterval
 decl_stmt|;
+DECL|field|checksumType
+specifier|private
+name|DataChecksum
+operator|.
+name|Type
+name|checksumType
+decl_stmt|;
 DECL|method|FsServerDefaults ()
 specifier|public
 name|FsServerDefaults
 parameter_list|()
 block|{   }
-DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize, boolean encryptDataTransfer, long trashInterval)
+DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize, boolean encryptDataTransfer, long trashInterval, DataChecksum.Type checksumType)
 specifier|public
 name|FsServerDefaults
 parameter_list|(
@@ -230,6 +265,11 @@ name|encryptDataTransfer
 parameter_list|,
 name|long
 name|trashInterval
+parameter_list|,
+name|DataChecksum
+operator|.
+name|Type
+name|checksumType
 parameter_list|)
 block|{
 name|this
@@ -273,6 +313,12 @@ operator|.
 name|trashInterval
 operator|=
 name|trashInterval
+expr_stmt|;
+name|this
+operator|.
+name|checksumType
+operator|=
+name|checksumType
 expr_stmt|;
 block|}
 DECL|method|getBlockSize ()
@@ -345,6 +391,18 @@ return|return
 name|trashInterval
 return|;
 block|}
+DECL|method|getChecksumType ()
+specifier|public
+name|DataChecksum
+operator|.
+name|Type
+name|getChecksumType
+parameter_list|()
+block|{
+return|return
+name|checksumType
+return|;
+block|}
 comment|// /////////////////////////////////////////
 comment|// Writable
 comment|// /////////////////////////////////////////
@@ -398,6 +456,15 @@ argument_list|(
 name|fileBufferSize
 argument_list|)
 expr_stmt|;
+name|WritableUtils
+operator|.
+name|writeEnum
+argument_list|(
+name|out
+argument_list|,
+name|checksumType
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|InterfaceAudience
@@ -448,6 +515,21 @@ name|in
 operator|.
 name|readInt
 argument_list|()
+expr_stmt|;
+name|checksumType
+operator|=
+name|WritableUtils
+operator|.
+name|readEnum
+argument_list|(
+name|in
+argument_list|,
+name|DataChecksum
+operator|.
+name|Type
+operator|.
+name|class
+argument_list|)
 expr_stmt|;
 block|}
 block|}

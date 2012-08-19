@@ -176,6 +176,15 @@ name|CHECKSUM_CRC32C
 init|=
 literal|2
 decl_stmt|;
+DECL|field|CHECKSUM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CHECKSUM_DEFAULT
+init|=
+literal|3
+decl_stmt|;
 comment|/** The checksum types */
 DECL|enum|Type
 specifier|public
@@ -206,7 +215,16 @@ name|CHECKSUM_CRC32C
 argument_list|,
 literal|4
 argument_list|)
+block|,
+DECL|enumConstant|DEFAULT
+name|DEFAULT
+argument_list|(
+name|CHECKSUM_DEFAULT
+argument_list|,
+literal|0
+argument_list|)
 block|;
+comment|// This cannot be used to create DataChecksum
 DECL|field|id
 specifier|public
 specifier|final

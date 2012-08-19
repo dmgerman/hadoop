@@ -84,8 +84,22 @@ name|FsServerDefaults
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
+import|;
+end_import
+
 begin_comment
-comment|/**   * This class contains constants for configuration keys used  * in the ftp file system.  */
+comment|/**   * This class contains constants for configuration keys used  * in the ftp file system.  *  * Note that the settings for unimplemented features are ignored.   * E.g. checksum related settings are just place holders. Even when  * wrapped with {@link ChecksumFileSystem}, these settings are not  * used.   */
 end_comment
 
 begin_class
@@ -218,6 +232,21 @@ name|FS_TRASH_INTERVAL_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+DECL|field|CHECKSUM_TYPE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|DataChecksum
+operator|.
+name|Type
+name|CHECKSUM_TYPE_DEFAULT
+init|=
+name|DataChecksum
+operator|.
+name|Type
+operator|.
+name|CRC32
+decl_stmt|;
 DECL|method|getServerDefaults ()
 specifier|protected
 specifier|static
@@ -244,6 +273,8 @@ argument_list|,
 name|ENCRYPT_DATA_TRANSFER_DEFAULT
 argument_list|,
 name|FS_TRASH_INTERVAL_DEFAULT
+argument_list|,
+name|CHECKSUM_TYPE_DEFAULT
 argument_list|)
 return|;
 block|}

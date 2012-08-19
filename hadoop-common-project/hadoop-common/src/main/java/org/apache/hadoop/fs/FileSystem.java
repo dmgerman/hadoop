@@ -330,6 +330,22 @@ name|fs
 operator|.
 name|Options
 operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Options
+operator|.
 name|Rename
 import|;
 end_import
@@ -447,6 +463,20 @@ operator|.
 name|token
 operator|.
 name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DataChecksum
 import|;
 end_import
 
@@ -2379,6 +2409,9 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
+comment|// CRC32 is chosen as default as it is available in all
+comment|// releases that support checksum.
+comment|// The client trash configuration is ignored.
 return|return
 operator|new
 name|FsServerDefaults
@@ -2413,10 +2446,15 @@ argument_list|)
 argument_list|,
 literal|false
 argument_list|,
-comment|// NB: ignoring the client trash configuration
 name|CommonConfigurationKeysPublic
 operator|.
 name|FS_TRASH_INTERVAL_DEFAULT
+argument_list|,
+name|DataChecksum
+operator|.
+name|Type
+operator|.
+name|CRC32
 argument_list|)
 return|;
 block|}
@@ -2958,7 +2996,66 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// only DFS support this
+return|return
+name|create
+argument_list|(
+name|f
+argument_list|,
+name|permission
+argument_list|,
+name|flags
+argument_list|,
+name|bufferSize
+argument_list|,
+name|replication
+argument_list|,
+name|blockSize
+argument_list|,
+name|progress
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Create an FSDataOutputStream at the indicated Path with a custom    * checksum option    * @param f the file name to open    * @param permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize    * @param progress    * @param checksumOpt checksum parameter. If null, the values    *        found in conf will be used.    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
+specifier|public
+name|FSDataOutputStream
+name|create
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flags
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|long
+name|blockSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|,
+name|ChecksumOpt
+name|checksumOpt
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Checksum options are ignored by default. The file systems that
+comment|// implement checksum need to override this method. The full
+comment|// support is currently only available in DFS.
 return|return
 name|create
 argument_list|(
@@ -2988,7 +3085,7 @@ block|}
 comment|/*.    * This create has been added to support the FileContext that processes    * the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    */
 annotation|@
 name|Deprecated
-DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|protected
 name|FSDataOutputStream
 name|primitiveCreate
@@ -3017,8 +3114,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException

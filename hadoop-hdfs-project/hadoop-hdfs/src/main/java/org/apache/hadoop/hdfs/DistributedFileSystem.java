@@ -320,6 +320,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -1437,6 +1453,8 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|this
+operator|.
 name|create
 argument_list|(
 name|f
@@ -1474,12 +1492,14 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|progress
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> cflags, int bufferSize, short replication, long blockSize, Progressable progress)
+DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> cflags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|public
 name|HdfsDataOutputStream
 name|create
@@ -1507,6 +1527,9 @@ name|blockSize
 parameter_list|,
 name|Progressable
 name|progress
+parameter_list|,
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -1542,6 +1565,8 @@ argument_list|,
 name|progress
 argument_list|,
 name|bufferSize
+argument_list|,
+name|checksumOpt
 argument_list|)
 decl_stmt|;
 return|return
@@ -1561,7 +1586,7 @@ literal|"deprecation"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|protected
 name|HdfsDataOutputStream
 name|primitiveCreate
@@ -1590,8 +1615,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -1630,7 +1655,7 @@ name|progress
 argument_list|,
 name|bufferSize
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|)
 argument_list|,
 name|statistics
@@ -1727,6 +1752,8 @@ argument_list|,
 name|progress
 argument_list|,
 name|bufferSize
+argument_list|,
+literal|null
 argument_list|)
 argument_list|,
 name|statistics
