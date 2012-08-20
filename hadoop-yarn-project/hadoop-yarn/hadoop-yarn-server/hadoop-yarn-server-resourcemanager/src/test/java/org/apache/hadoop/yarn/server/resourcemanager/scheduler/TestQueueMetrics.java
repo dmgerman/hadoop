@@ -2333,6 +2333,11 @@ argument_list|(
 literal|"cache"
 argument_list|)
 decl_stmt|;
+name|ms
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|String
@@ -2345,11 +2350,6 @@ name|leafQueueName
 init|=
 literal|"root1.leaf"
 decl_stmt|;
-name|ms
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|QueueMetrics
 name|p1Metrics
 init|=
