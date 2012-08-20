@@ -1860,6 +1860,29 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|httpPort
+operator|<
+literal|0
+condition|)
+block|{
+comment|// If the HTTP port hasn't been set yet, force an RPC call so we know
+comment|// what the HTTP port should be.
+name|httpPort
+operator|=
+name|getProxy
+argument_list|()
+operator|.
+name|getJournalState
+argument_list|(
+name|journalId
+argument_list|)
+operator|.
+name|getHttpPort
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 name|getProxy
 argument_list|()
