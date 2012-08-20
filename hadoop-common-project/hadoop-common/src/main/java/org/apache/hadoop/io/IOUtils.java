@@ -711,9 +711,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|amt
+init|=
+name|len
+decl_stmt|;
 while|while
 condition|(
-name|len
+name|amt
 operator|>
 literal|0
 condition|)
@@ -725,25 +730,58 @@ name|in
 operator|.
 name|skip
 argument_list|(
-name|len
+name|amt
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
 name|ret
-operator|<
+operator|==
 literal|0
+condition|)
+block|{
+comment|// skip may return 0 even if we're not at EOF.  Luckily, we can
+comment|// use the read() method to figure out if we're at the end.
+name|int
+name|b
+init|=
+name|in
+operator|.
+name|read
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|==
+operator|-
+literal|1
 condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|EOFException
 argument_list|(
-literal|"Premature EOF from inputStream"
+literal|"Premature EOF from inputStream after "
+operator|+
+literal|"skipping "
+operator|+
+operator|(
+name|len
+operator|-
+name|amt
+operator|)
+operator|+
+literal|" byte(s)."
 argument_list|)
 throw|;
 block|}
-name|len
+name|ret
+operator|=
+literal|1
+expr_stmt|;
+block|}
+name|amt
 operator|-=
 name|ret
 expr_stmt|;
