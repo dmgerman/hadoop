@@ -2033,6 +2033,7 @@ expr_stmt|;
 block|}
 DECL|method|assertSafeMode (NameNode nn, int safe, int total)
 specifier|private
+specifier|static
 name|void
 name|assertSafeMode
 parameter_list|(
@@ -2049,7 +2050,7 @@ block|{
 name|String
 name|status
 init|=
-name|nn1
+name|nn
 operator|.
 name|getNamesystem
 argument_list|()
