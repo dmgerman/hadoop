@@ -1220,7 +1220,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovery prepare phase complete. Responses: "
+literal|"Recovery prepare phase complete. Responses:\n"
 operator|+
 name|QuorumCall
 operator|.
@@ -2334,15 +2334,6 @@ name|getStartTxId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"URL: "
-operator|+
-name|url
-argument_list|)
-expr_stmt|;
 name|EditLogInputStream
 name|elis
 init|=
