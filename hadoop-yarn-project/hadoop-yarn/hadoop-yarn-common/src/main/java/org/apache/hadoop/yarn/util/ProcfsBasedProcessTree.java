@@ -1807,7 +1807,7 @@ block|{
 comment|// The process vanished in the interim!
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"The process "
 operator|+
