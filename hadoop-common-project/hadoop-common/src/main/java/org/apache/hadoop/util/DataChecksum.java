@@ -185,6 +185,15 @@ name|CHECKSUM_DEFAULT
 init|=
 literal|3
 decl_stmt|;
+DECL|field|CHECKSUM_MIXED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|CHECKSUM_MIXED
+init|=
+literal|4
+decl_stmt|;
 comment|/** The checksum types */
 DECL|enum|Type
 specifier|public
@@ -220,6 +229,15 @@ DECL|enumConstant|DEFAULT
 name|DEFAULT
 argument_list|(
 name|CHECKSUM_DEFAULT
+argument_list|,
+literal|0
+argument_list|)
+block|,
+comment|// This cannot be used to create DataChecksum
+DECL|enumConstant|MIXED
+name|MIXED
+argument_list|(
+name|CHECKSUM_MIXED
 argument_list|,
 literal|0
 argument_list|)
