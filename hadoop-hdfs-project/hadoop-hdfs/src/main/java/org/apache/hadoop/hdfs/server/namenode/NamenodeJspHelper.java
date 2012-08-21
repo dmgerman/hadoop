@@ -951,67 +951,6 @@ return|return
 name|str
 return|;
 block|}
-DECL|method|getUpgradeStatusText (FSNamesystem fsn)
-specifier|static
-name|String
-name|getUpgradeStatusText
-parameter_list|(
-name|FSNamesystem
-name|fsn
-parameter_list|)
-block|{
-name|String
-name|statusText
-init|=
-literal|""
-decl_stmt|;
-try|try
-block|{
-name|UpgradeStatusReport
-name|status
-init|=
-name|fsn
-operator|.
-name|distributedUpgradeProgress
-argument_list|(
-name|UpgradeAction
-operator|.
-name|GET_STATUS
-argument_list|)
-decl_stmt|;
-name|statusText
-operator|=
-operator|(
-name|status
-operator|==
-literal|null
-condition|?
-literal|"There are no upgrades in progress."
-else|:
-name|status
-operator|.
-name|getStatusText
-argument_list|(
-literal|false
-argument_list|)
-operator|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|statusText
-operator|=
-literal|"Upgrade status unknown."
-expr_stmt|;
-block|}
-return|return
-name|statusText
-return|;
-block|}
 comment|/** Return a table containing version information. */
 DECL|method|getVersionTable (FSNamesystem fsn)
 specifier|static
@@ -1070,13 +1009,6 @@ name|VersionInfo
 operator|.
 name|getBranch
 argument_list|()
-operator|+
-literal|"</td></tr>\n<tr><td class='col1'>Upgrades:</td><td>"
-operator|+
-name|getUpgradeStatusText
-argument_list|(
-name|fsn
-argument_list|)
 operator|+
 literal|"</td></tr>\n<tr><td class='col1'>Cluster ID:</td><td>"
 operator|+

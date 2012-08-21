@@ -1185,7 +1185,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
+comment|/**    *<em>Method no longer used - retained only for backward compatibility</em>    *     * Report distributed upgrade progress or force current upgrade to proceed.    * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
 DECL|method|distributedUpgradeProgress (UpgradeAction action)
 specifier|public
 name|UpgradeStatusReport

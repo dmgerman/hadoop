@@ -1984,27 +1984,6 @@ argument_list|()
 condition|)
 return|return;
 comment|// regular startup
-comment|// verify necessity of a distributed upgrade
-name|UpgradeManagerDatanode
-name|um
-init|=
-name|datanode
-operator|.
-name|getUpgradeManagerDatanode
-argument_list|(
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|um
-argument_list|,
-name|nsInfo
-argument_list|)
-expr_stmt|;
 comment|// do upgrade
 if|if
 condition|(
@@ -3360,45 +3339,6 @@ argument_list|,
 name|oldLV
 argument_list|,
 name|hl
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|verifyDistributedUpgradeProgress (UpgradeManagerDatanode um, NamespaceInfo nsInfo )
-specifier|private
-name|void
-name|verifyDistributedUpgradeProgress
-parameter_list|(
-name|UpgradeManagerDatanode
-name|um
-parameter_list|,
-name|NamespaceInfo
-name|nsInfo
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|um
-operator|!=
-literal|null
-operator|:
-literal|"DataNode.upgradeManager is null."
-assert|;
-name|um
-operator|.
-name|setUpgradeState
-argument_list|(
-literal|false
-argument_list|,
-name|getLayoutVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|um
-operator|.
-name|initializeUpgrade
-argument_list|(
-name|nsInfo
 argument_list|)
 expr_stmt|;
 block|}

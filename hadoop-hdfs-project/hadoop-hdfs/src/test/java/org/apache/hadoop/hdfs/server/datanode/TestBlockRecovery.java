@@ -1387,8 +1387,6 @@ argument_list|,
 name|POOL_ID
 argument_list|,
 literal|1L
-argument_list|,
-literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

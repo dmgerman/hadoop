@@ -428,12 +428,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|datanode
-specifier|private
-specifier|final
-name|DataNode
-name|datanode
-decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
@@ -1141,12 +1135,9 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (DataNode dn, FsDatasetSpi<?> dataset, Configuration conf)
+DECL|method|DirectoryScanner (FsDatasetSpi<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
-name|DataNode
-name|dn
-parameter_list|,
 name|FsDatasetSpi
 argument_list|<
 name|?
@@ -1157,12 +1148,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|this
-operator|.
-name|datanode
-operator|=
-name|dn
-expr_stmt|;
 name|this
 operator|.
 name|dataset
@@ -1362,57 +1347,6 @@ literal|"this cycle terminating immediately because 'shouldRun' has been deactiv
 argument_list|)
 expr_stmt|;
 return|return;
-block|}
-name|String
-index|[]
-name|bpids
-init|=
-name|dataset
-operator|.
-name|getBlockPoolList
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|String
-name|bpid
-range|:
-name|bpids
-control|)
-block|{
-name|UpgradeManagerDatanode
-name|um
-init|=
-name|datanode
-operator|.
-name|getUpgradeManagerDatanode
-argument_list|(
-name|bpid
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|um
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|um
-operator|.
-name|isUpgradeCompleted
-argument_list|()
-condition|)
-block|{
-comment|//If distributed upgrades underway, exit and wait for next cycle.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"this cycle terminating immediately because Distributed Upgrade is in process"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 block|}
 comment|//We're are okay to run - do it
 name|reconcile

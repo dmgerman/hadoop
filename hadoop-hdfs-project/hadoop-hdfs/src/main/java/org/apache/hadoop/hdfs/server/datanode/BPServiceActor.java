@@ -1532,8 +1532,6 @@ DECL|method|triggerBlockReportForTests ()
 name|void
 name|triggerBlockReportForTests
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 synchronized|synchronized
 init|(
@@ -1587,8 +1585,6 @@ DECL|method|triggerHeartbeatForTests ()
 name|void
 name|triggerHeartbeatForTests
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 synchronized|synchronized
 init|(
@@ -1638,8 +1634,6 @@ DECL|method|triggerDeletionReportForTests ()
 name|void
 name|triggerDeletionReportForTests
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 synchronized|synchronized
 init|(
@@ -2874,11 +2868,6 @@ condition|)
 block|{
 try|try
 block|{
-name|bpos
-operator|.
-name|startDistributedUpgradeIfNeeded
-argument_list|()
-expr_stmt|;
 name|offerService
 argument_list|()
 expr_stmt|;

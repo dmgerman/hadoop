@@ -786,7 +786,7 @@ specifier|final
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
-comment|/**    * Construct an FSImage    * @param conf Configuration    * @see #FSImage(Configuration conf,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
+comment|/**    * Construct an FSImage    * @param conf Configuration    * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
 specifier|public
 name|FSImage
@@ -1131,15 +1131,6 @@ argument_list|(
 literal|"All specified directories are not accessible or do not exist."
 argument_list|)
 throw|;
-name|storage
-operator|.
-name|setUpgradeManager
-argument_list|(
-name|target
-operator|.
-name|upgradeManager
-argument_list|)
-expr_stmt|;
 comment|// 1. For each data directory calculate its state and
 comment|// check whether all is consistent before transitioning.
 name|Map
@@ -1307,14 +1298,6 @@ argument_list|(
 name|startOpt
 argument_list|,
 name|layoutVersion
-argument_list|)
-expr_stmt|;
-comment|// check whether distributed upgrade is required and/or should be continued
-name|storage
-operator|.
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|startOpt
 argument_list|)
 expr_stmt|;
 comment|// 2. Format unformatted dirs.
@@ -1708,32 +1691,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|storage
-operator|.
-name|getDistributedUpgradeState
-argument_list|()
-condition|)
-block|{
-comment|// only distributed upgrade need to continue
-comment|// don't do version upgrade
-name|this
-operator|.
-name|loadFSImage
-argument_list|(
-name|target
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|storage
-operator|.
-name|initializeDistributedUpgrade
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
 comment|// Upgrade is allowed only if there are
 comment|// no previous fs states in any of the directories
 for|for
@@ -2209,11 +2166,6 @@ literal|" storage directory(ies), previously logged."
 argument_list|)
 throw|;
 block|}
-name|storage
-operator|.
-name|initializeDistributedUpgrade
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|doRollback ()
 specifier|private
@@ -2544,16 +2496,6 @@ block|}
 name|isUpgradeFinalized
 operator|=
 literal|true
-expr_stmt|;
-comment|// check whether name-node can start in regular mode
-name|storage
-operator|.
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|StartupOption
-operator|.
-name|REGULAR
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|doFinalize (StorageDirectory sd)

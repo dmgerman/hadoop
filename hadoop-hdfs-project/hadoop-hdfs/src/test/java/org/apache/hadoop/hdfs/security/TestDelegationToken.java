@@ -1060,9 +1060,6 @@ decl_stmt|;
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1408,9 +1405,6 @@ specifier|final
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1521,9 +1515,6 @@ specifier|final
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1587,9 +1578,6 @@ specifier|final
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1633,9 +1621,6 @@ specifier|final
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1840,8 +1825,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue

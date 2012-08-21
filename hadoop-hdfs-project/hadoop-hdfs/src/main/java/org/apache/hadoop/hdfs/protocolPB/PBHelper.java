@@ -3833,11 +3833,6 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getDistUpgradeVersion
-argument_list|()
-argument_list|,
-name|info
-operator|.
 name|getBuildVersion
 argument_list|()
 argument_list|,
@@ -7086,12 +7081,9 @@ name|getBuildVersion
 argument_list|()
 argument_list|)
 operator|.
-name|setDistUpgradeVersion
+name|setUnused
 argument_list|(
-name|info
-operator|.
-name|getDistributedUpgradeVersion
-argument_list|()
+literal|0
 argument_list|)
 operator|.
 name|setStorageInfo

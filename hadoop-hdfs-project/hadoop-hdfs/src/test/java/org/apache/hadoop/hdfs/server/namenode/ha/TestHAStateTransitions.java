@@ -124,16 +124,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -1810,8 +1800,6 @@ name|testDelegationTokensAfterFailover
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|URISyntaxException
 block|{
 name|Configuration
 name|conf
@@ -2568,8 +2556,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -2732,8 +2718,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -2808,8 +2792,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertFalse

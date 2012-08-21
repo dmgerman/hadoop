@@ -4749,23 +4749,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|namesystem
-operator|.
-name|checkOperation
+throw|throw
+operator|new
+name|UnsupportedActionException
 argument_list|(
-name|OperationCategory
-operator|.
-name|READ
+literal|"Deprecated method. No longer supported"
 argument_list|)
-expr_stmt|;
-return|return
-name|namesystem
-operator|.
-name|distributedUpgradeProgress
-argument_list|(
-name|action
-argument_list|)
-return|;
+throw|;
 block|}
 annotation|@
 name|Override
@@ -5695,14 +5685,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
-name|namesystem
-operator|.
-name|processDistributedUpgradeCommand
+throw|throw
+operator|new
+name|UnsupportedActionException
 argument_list|(
-name|comm
+literal|"Deprecated method, no longer supported"
 argument_list|)
-return|;
+throw|;
 block|}
 comment|/**     * Verifies the given registration.    *     * @param nodeReg node registration    * @throws UnregisteredNodeException if the registration is invalid    */
 DECL|method|verifyRequest (NodeRegistration nodeReg)
