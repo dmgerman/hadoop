@@ -1356,7 +1356,7 @@ name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"$PWD:job.jar"
+literal|"$PWD:job.jar/:job.jar/classes/:job.jar/lib/*:$PWD/*"
 argument_list|)
 argument_list|,
 literal|0
@@ -1440,16 +1440,33 @@ argument_list|(
 literal|"CLASSPATH"
 argument_list|)
 decl_stmt|;
-name|assertNotSame
-argument_list|(
-literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, but taking effect!"
-argument_list|,
+name|int
+name|index
+init|=
 name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"$PWD:job.jar"
+literal|"job.jar/:job.jar/classes/:job.jar/lib/*:$PWD/*"
 argument_list|)
+decl_stmt|;
+name|assertNotSame
+argument_list|(
+literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, and job.jar is not"
+operator|+
+literal|" in the classpath!"
+argument_list|,
+name|index
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|assertNotSame
+argument_list|(
+literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, but taking effect!"
+argument_list|,
+name|index
 argument_list|,
 literal|0
 argument_list|)

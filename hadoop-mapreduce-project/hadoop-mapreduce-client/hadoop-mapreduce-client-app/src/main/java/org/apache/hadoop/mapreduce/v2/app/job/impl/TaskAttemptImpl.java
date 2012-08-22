@@ -4127,7 +4127,7 @@ name|remoteJobJar
 argument_list|,
 name|LocalResourceType
 operator|.
-name|FILE
+name|ARCHIVE
 argument_list|,
 name|LocalResourceVisibility
 operator|.
