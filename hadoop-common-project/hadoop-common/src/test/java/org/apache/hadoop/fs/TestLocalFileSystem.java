@@ -117,6 +117,7 @@ block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
 specifier|static
+specifier|final
 name|String
 name|TEST_ROOT_DIR
 init|=
@@ -126,8 +127,10 @@ name|getProperty
 argument_list|(
 literal|"test.build.data"
 argument_list|,
-literal|"build/test/data/work-dir/localfs"
+literal|"build/test/data"
 argument_list|)
+operator|+
+literal|"/work-dir/localfs"
 decl_stmt|;
 DECL|field|conf
 specifier|private
