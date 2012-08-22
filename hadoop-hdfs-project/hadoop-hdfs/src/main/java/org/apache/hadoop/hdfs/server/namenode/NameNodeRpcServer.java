@@ -2465,6 +2465,18 @@ operator|.
 name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT
 argument_list|)
 expr_stmt|;
+comment|// Set terse exception whose stack trace won't be logged
+name|this
+operator|.
+name|clientRpcServer
+operator|.
+name|addTerseExceptions
+argument_list|(
+name|SafeModeException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Actually start serving requests.    */
 DECL|method|start ()
