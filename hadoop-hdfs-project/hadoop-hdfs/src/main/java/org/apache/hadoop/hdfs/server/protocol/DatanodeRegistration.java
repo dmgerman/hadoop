@@ -331,41 +331,6 @@ operator|+
 literal|")"
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|equals (Object to)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|to
-parameter_list|)
-block|{
-return|return
-name|super
-operator|.
-name|equals
-argument_list|(
-name|to
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
 block|}
 end_class
 
