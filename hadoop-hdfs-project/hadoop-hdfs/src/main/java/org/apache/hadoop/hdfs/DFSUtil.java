@@ -5234,6 +5234,10 @@ operator|(
 name|blocksInvalidateWorkPct
 operator|>
 literal|0
+operator|&&
+name|blocksInvalidateWorkPct
+operator|<=
+literal|1.0f
 operator|)
 argument_list|,
 name|DFSConfigKeys
@@ -5246,9 +5250,9 @@ name|blocksInvalidateWorkPct
 operator|+
 literal|"' is invalid. "
 operator|+
-literal|"It should be a positive, non-zero float value "
+literal|"It should be a positive, non-zero float value, not greater than 1.0f, "
 operator|+
-literal|"indicating a percentage."
+literal|"to indicate a percentage."
 argument_list|)
 expr_stmt|;
 return|return
