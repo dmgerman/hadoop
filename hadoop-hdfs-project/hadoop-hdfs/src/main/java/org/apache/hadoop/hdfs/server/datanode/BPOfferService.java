@@ -394,24 +394,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|UpgradeCommand
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -2281,20 +2263,6 @@ operator|.
 name|finalizeUpgradeForPool
 argument_list|(
 name|bp
-argument_list|)
-expr_stmt|;
-break|break;
-case|case
-name|UpgradeCommand
-operator|.
-name|UC_ACTION_START_UPGRADE
-case|:
-comment|// start distributed upgrade here
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Distibuted upgrade is no longer supported"
 argument_list|)
 expr_stmt|;
 break|break;

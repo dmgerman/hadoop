@@ -622,24 +622,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|UpgradeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -1130,24 +1112,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
-operator|.
-name|UpgradeStatusReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|namenode
 operator|.
 name|NameNode
@@ -1465,24 +1429,6 @@ operator|.
 name|protocol
 operator|.
 name|StorageReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|UpgradeCommand
 import|;
 end_import
 
@@ -4750,28 +4696,6 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|distributedUpgradeProgress (UpgradeAction action)
-specifier|public
-name|UpgradeStatusReport
-name|distributedUpgradeProgress
-parameter_list|(
-name|UpgradeAction
-name|action
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"Deprecated method. No longer supported"
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-comment|// ClientProtocol
 DECL|method|metaSave (String filename)
 specifier|public
 name|void
@@ -5682,28 +5606,6 @@ operator|.
 name|getNamespaceInfo
 argument_list|()
 return|;
-block|}
-annotation|@
-name|Override
-comment|// DatanodeProtocol
-DECL|method|processUpgradeCommand (UpgradeCommand comm)
-specifier|public
-name|UpgradeCommand
-name|processUpgradeCommand
-parameter_list|(
-name|UpgradeCommand
-name|comm
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedActionException
-argument_list|(
-literal|"Deprecated method, no longer supported"
-argument_list|)
-throw|;
 block|}
 comment|/**     * Verifies the given registration.    *     * @param nodeReg node registration    * @throws UnregisteredNodeException if the registration is invalid    */
 DECL|method|verifyRequest (NodeRegistration nodeReg)

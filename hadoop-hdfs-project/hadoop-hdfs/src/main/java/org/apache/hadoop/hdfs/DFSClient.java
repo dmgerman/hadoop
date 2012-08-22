@@ -1282,24 +1282,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|UpgradeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -1629,24 +1611,6 @@ operator|.
 name|common
 operator|.
 name|HdfsServerConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|UpgradeStatusReport
 import|;
 end_import
 
@@ -6083,7 +6047,7 @@ name|checksumOpt
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpts checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
+comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -8779,27 +8743,6 @@ operator|.
 name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
-block|}
-comment|/**    * @see ClientProtocol#distributedUpgradeProgress(HdfsConstants.UpgradeAction)    */
-DECL|method|distributedUpgradeProgress (UpgradeAction action)
-specifier|public
-name|UpgradeStatusReport
-name|distributedUpgradeProgress
-parameter_list|(
-name|UpgradeAction
-name|action
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|namenode
-operator|.
-name|distributedUpgradeProgress
-argument_list|(
-name|action
-argument_list|)
-return|;
 block|}
 comment|/**    */
 annotation|@

@@ -186,7 +186,7 @@ name|MAX_PATH_DEPTH
 init|=
 literal|1000
 decl_stmt|;
-comment|// TODO mb@media-style.com: should be conf injected?
+comment|// TODO should be conf injected?
 DECL|field|DEFAULT_DATA_SOCKET_SIZE
 specifier|public
 specifier|static
@@ -297,22 +297,6 @@ init|=
 operator|-
 literal|12345
 decl_stmt|;
-comment|/**    * Distributed upgrade actions:    *     * 1. Get upgrade status. 2. Get detailed upgrade status. 3. Proceed with the    * upgrade if it is stuck, no matter what the status is.    */
-DECL|enum|UpgradeAction
-specifier|public
-specifier|static
-enum|enum
-name|UpgradeAction
-block|{
-DECL|enumConstant|GET_STATUS
-DECL|enumConstant|DETAILED_STATUS
-DECL|enumConstant|FORCE_PROCEED
-name|GET_STATUS
-block|,
-name|DETAILED_STATUS
-block|,
-name|FORCE_PROCEED
-block|;   }
 comment|/**    * URI Scheme for hdfs://namenode/ URIs.    */
 DECL|field|HDFS_URI_SCHEME
 specifier|public

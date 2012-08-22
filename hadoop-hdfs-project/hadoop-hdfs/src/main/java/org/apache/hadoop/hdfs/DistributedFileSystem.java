@@ -528,24 +528,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|UpgradeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -619,24 +601,6 @@ operator|.
 name|delegation
 operator|.
 name|DelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|UpgradeStatusReport
 import|;
 end_import
 
@@ -3257,26 +3221,6 @@ operator|.
 name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|distributedUpgradeProgress (UpgradeAction action )
-specifier|public
-name|UpgradeStatusReport
-name|distributedUpgradeProgress
-parameter_list|(
-name|UpgradeAction
-name|action
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|dfs
-operator|.
-name|distributedUpgradeProgress
-argument_list|(
-name|action
-argument_list|)
-return|;
 block|}
 comment|/*    * Requests the namenode to dump data strcutures into specified     * file.    */
 DECL|method|metaSave (String pathname)
