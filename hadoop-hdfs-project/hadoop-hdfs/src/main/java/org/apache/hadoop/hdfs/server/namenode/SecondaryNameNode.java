@@ -2048,6 +2048,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Image has changed. Downloading updated image from NN."
+argument_list|)
+expr_stmt|;
 name|MD5Hash
 name|downloadedHash
 init|=

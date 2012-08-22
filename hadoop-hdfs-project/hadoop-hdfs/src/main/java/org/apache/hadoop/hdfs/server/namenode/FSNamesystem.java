@@ -3202,7 +3202,6 @@ name|HOURS
 argument_list|)
 decl_stmt|;
 DECL|field|dtSecretManager
-specifier|private
 specifier|final
 name|DelegationTokenSecretManager
 name|dtSecretManager

@@ -2987,6 +2987,13 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
+name|target
+operator|.
+name|dtSecretManager
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
