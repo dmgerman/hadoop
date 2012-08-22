@@ -478,6 +478,25 @@ name|HA_FC_GRACEFUL_FENCE_TIMEOUT_DEFAULT
 init|=
 literal|5000
 decl_stmt|;
+comment|/* FC connection retries for graceful fencing */
+DECL|field|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES
+init|=
+literal|"ha.failover-controller.graceful-fence.connection.retries"
+decl_stmt|;
+DECL|field|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES_DEFAULT
+init|=
+literal|1
+decl_stmt|;
 comment|/* Timeout that the CLI (manual) FC waits for monitorHealth, getServiceState */
 DECL|field|HA_FC_CLI_CHECK_TIMEOUT_KEY
 specifier|public
