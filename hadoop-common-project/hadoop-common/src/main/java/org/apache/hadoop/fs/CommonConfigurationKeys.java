@@ -535,6 +535,25 @@ name|DEFAULT_HADOOP_HTTP_STATIC_USER
 init|=
 literal|"dr.who"
 decl_stmt|;
+comment|/** Enable/Disable aliases serving from jetty */
+DECL|field|HADOOP_JETTY_LOGS_SERVE_ALIASES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_JETTY_LOGS_SERVE_ALIASES
+init|=
+literal|"hadoop.jetty.logs.serve.aliases"
+decl_stmt|;
+DECL|field|DEFAULT_HADOOP_JETTY_LOGS_SERVE_ALIASES
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_HADOOP_JETTY_LOGS_SERVE_ALIASES
+init|=
+literal|true
+decl_stmt|;
 comment|/* Path to the Kerberos ticket cache.  Setting this will force    * UserGroupInformation to use only this ticket cache file when creating a    * FileSystem instance.    */
 DECL|field|KERBEROS_TICKET_CACHE_PATH
 specifier|public
