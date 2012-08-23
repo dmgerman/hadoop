@@ -902,16 +902,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -3472,15 +3462,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test that file leases are persisted across namenode restarts.    * This test is currently not triggered because more HDFS work is     * is needed to handle persistent leases.    */
-annotation|@
-name|Ignore
+comment|/**    * Test that file leases are persisted across namenode restarts.    */
 annotation|@
 name|Test
-DECL|method|xxxtestFileCreationNamenodeRestart ()
+DECL|method|testFileCreationNamenodeRestart ()
 specifier|public
 name|void
-name|xxxtestFileCreationNamenodeRestart
+name|testFileCreationNamenodeRestart
 parameter_list|()
 throws|throws
 name|IOException
