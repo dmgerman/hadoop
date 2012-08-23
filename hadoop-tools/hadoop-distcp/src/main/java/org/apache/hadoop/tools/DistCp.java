@@ -1651,6 +1651,9 @@ name|argv
 index|[]
 parameter_list|)
 block|{
+name|int
+name|exitCode
+decl_stmt|;
 try|try
 block|{
 name|DistCp
@@ -1681,10 +1684,8 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|exit
-argument_list|(
+name|exitCode
+operator|=
 name|ToolRunner
 operator|.
 name|run
@@ -1695,7 +1696,6 @@ argument_list|,
 name|distCp
 argument_list|,
 name|argv
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1714,16 +1714,20 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|exitCode
+operator|=
+name|DistCpConstants
+operator|.
+name|UNKNOWN_ERROR
+expr_stmt|;
+block|}
 name|System
 operator|.
 name|exit
 argument_list|(
-name|DistCpConstants
-operator|.
-name|UNKNOWN_ERROR
+name|exitCode
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Loads properties from distcp-default.xml into configuration    * object    * @return Configuration which includes properties from distcp-default.xml    */
 DECL|method|getDefaultConf ()
