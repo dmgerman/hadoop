@@ -1078,8 +1078,6 @@ init|=
 block|{
 literal|"bash"
 block|,
-literal|"-c"
-block|,
 name|wrapperScriptDst
 operator|.
 name|toUri
@@ -1319,13 +1317,6 @@ operator|.
 name|append
 argument_list|(
 literal|" /bin/bash "
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"-c "
 argument_list|)
 expr_stmt|;
 name|sb
