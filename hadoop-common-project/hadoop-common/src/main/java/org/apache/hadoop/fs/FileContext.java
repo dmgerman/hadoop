@@ -5124,6 +5124,8 @@ condition|)
 block|{
 comment|// last component has a pattern
 comment|// list parent directories and then glob the results
+try|try
+block|{
 name|results
 operator|=
 name|listStatus
@@ -5133,6 +5135,18 @@ argument_list|,
 name|fp
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|results
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|hasGlob
 index|[
 literal|0
@@ -5397,6 +5411,8 @@ name|hasPattern
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
 name|parents
 operator|=
 name|FileUtil
@@ -5411,6 +5427,18 @@ name|fp
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|parents
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|hasGlob
 index|[
 literal|0
