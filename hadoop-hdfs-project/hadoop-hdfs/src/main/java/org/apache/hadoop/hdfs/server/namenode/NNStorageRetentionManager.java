@@ -274,13 +274,13 @@ specifier|final
 name|StoragePurger
 name|purger
 decl_stmt|;
-DECL|field|editLog
+DECL|field|purgeableLogs
 specifier|private
 specifier|final
-name|FSEditLog
-name|editLog
+name|LogsPurgeable
+name|purgeableLogs
 decl_stmt|;
-DECL|method|NNStorageRetentionManager ( Configuration conf, NNStorage storage, FSEditLog editLog, StoragePurger purger)
+DECL|method|NNStorageRetentionManager ( Configuration conf, NNStorage storage, LogsPurgeable purgeableLogs, StoragePurger purger)
 specifier|public
 name|NNStorageRetentionManager
 parameter_list|(
@@ -290,8 +290,8 @@ parameter_list|,
 name|NNStorage
 name|storage
 parameter_list|,
-name|FSEditLog
-name|editLog
+name|LogsPurgeable
+name|purgeableLogs
 parameter_list|,
 name|StoragePurger
 name|purger
@@ -365,9 +365,9 @@ name|storage
 expr_stmt|;
 name|this
 operator|.
-name|editLog
+name|purgeableLogs
 operator|=
-name|editLog
+name|purgeableLogs
 expr_stmt|;
 name|this
 operator|.
@@ -376,7 +376,7 @@ operator|=
 name|purger
 expr_stmt|;
 block|}
-DECL|method|NNStorageRetentionManager (Configuration conf, NNStorage storage, FSEditLog editLog)
+DECL|method|NNStorageRetentionManager (Configuration conf, NNStorage storage, LogsPurgeable purgeableLogs)
 specifier|public
 name|NNStorageRetentionManager
 parameter_list|(
@@ -386,8 +386,8 @@ parameter_list|,
 name|NNStorage
 name|storage
 parameter_list|,
-name|FSEditLog
-name|editLog
+name|LogsPurgeable
+name|purgeableLogs
 parameter_list|)
 block|{
 name|this
@@ -396,7 +396,7 @@ name|conf
 argument_list|,
 name|storage
 argument_list|,
-name|editLog
+name|purgeableLogs
 argument_list|,
 operator|new
 name|DeletionStoragePurger
@@ -463,7 +463,7 @@ operator|-
 name|numExtraEditsToRetain
 argument_list|)
 decl_stmt|;
-name|editLog
+name|purgeableLogs
 operator|.
 name|purgeLogsOlderThan
 argument_list|(
@@ -504,15 +504,6 @@ operator|<
 name|minTxId
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Purging old image "
-operator|+
-name|image
-argument_list|)
-expr_stmt|;
 name|purger
 operator|.
 name|purgeImage
@@ -691,6 +682,15 @@ name|EditLogFile
 name|log
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Purging old edit log "
+operator|+
+name|log
+argument_list|)
+expr_stmt|;
 name|deleteOrWarn
 argument_list|(
 name|log
@@ -711,6 +711,15 @@ name|FSImageFile
 name|image
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Purging old image "
+operator|+
+name|image
+argument_list|)
+expr_stmt|;
 name|deleteOrWarn
 argument_list|(
 name|image

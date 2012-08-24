@@ -781,8 +781,7 @@ name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|archivalManager
-specifier|private
-specifier|final
+specifier|protected
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
