@@ -1478,7 +1478,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_NULL
+name|Type
+operator|.
+name|NULL
 argument_list|,
 literal|4
 argument_list|)

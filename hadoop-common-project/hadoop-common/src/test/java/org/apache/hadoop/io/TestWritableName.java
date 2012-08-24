@@ -371,6 +371,17 @@ literal|".alt"
 decl_stmt|;
 name|WritableName
 operator|.
+name|setName
+argument_list|(
+name|SimpleWritable
+operator|.
+name|class
+argument_list|,
+name|testName
+argument_list|)
+expr_stmt|;
+name|WritableName
+operator|.
 name|addName
 argument_list|(
 name|SimpleWritable

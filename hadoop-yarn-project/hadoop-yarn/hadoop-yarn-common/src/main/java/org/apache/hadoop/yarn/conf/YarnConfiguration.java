@@ -1424,6 +1424,28 @@ name|DEFAULT_LOG_AGGREGATION_ENABLED
 init|=
 literal|false
 decl_stmt|;
+comment|/**     * How long to wait before deleting aggregated logs, -1 disables.    * Be careful set this too small and you will spam the name node.    */
+DECL|field|LOG_AGGREGATION_RETAIN_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOG_AGGREGATION_RETAIN_SECONDS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"log-aggregation.retain-seconds"
+decl_stmt|;
+DECL|field|DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_LOG_AGGREGATION_RETAIN_SECONDS
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Number of seconds to retain logs on the NodeManager. Only applicable if Log    * aggregation is disabled    */
 DECL|field|NM_LOG_RETAIN_SECONDS
 specifier|public

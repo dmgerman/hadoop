@@ -1013,14 +1013,6 @@ operator|.
 name|getFSImage
 argument_list|()
 decl_stmt|;
-name|FSEditLog
-name|editLog
-init|=
-name|fsimage
-operator|.
-name|getEditLog
-argument_list|()
-decl_stmt|;
 name|StorageDirectory
 name|sd
 init|=
@@ -1636,9 +1628,7 @@ expr_stmt|;
 name|namesystem
 operator|.
 name|leaveSafeMode
-argument_list|(
-literal|false
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.

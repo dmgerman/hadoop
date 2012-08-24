@@ -333,8 +333,6 @@ argument_list|,
 literal|"my-bp"
 argument_list|,
 literal|0L
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 DECL|field|FAKE_NSINFO_2
@@ -354,8 +352,6 @@ argument_list|,
 literal|"my-bp"
 argument_list|,
 literal|0L
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 DECL|field|JID

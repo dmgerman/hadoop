@@ -401,20 +401,30 @@ name|Exception
 block|{
 if|if
 condition|(
-literal|null
-operator|!=
 name|fs
+operator|!=
+literal|null
 condition|)
+block|{
 name|fs
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|dfsCluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|dfsCluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 name|Thread
 operator|.
 name|sleep
@@ -499,8 +509,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|//TODO: The test is failing due to the change in HADOOP-7360.
-comment|//      HDFS-2038 is going to fix it.  Disable the test for the moment.
 annotation|@
 name|Test
 annotation|@

@@ -703,7 +703,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32C
+name|Type
+operator|.
+name|CRC32C
 argument_list|,
 literal|512
 argument_list|)

@@ -959,6 +959,8 @@ DECL|class|FSEditLog
 specifier|public
 class|class
 name|FSEditLog
+implements|implements
+name|LogsPurgeable
 block|{
 DECL|field|LOG
 specifier|static
@@ -4348,6 +4350,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Archive any log files that are older than the given txid.    */
+annotation|@
+name|Override
 DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
 specifier|public
 specifier|synchronized

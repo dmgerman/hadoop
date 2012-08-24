@@ -1856,7 +1856,7 @@ name|jobId
 argument_list|)
 return|;
 block|}
-DECL|method|createApplicationResource (FileContext fs, Path p)
+DECL|method|createApplicationResource (FileContext fs, Path p, LocalResourceType type)
 specifier|private
 name|LocalResource
 name|createApplicationResource
@@ -1866,6 +1866,9 @@ name|fs
 parameter_list|,
 name|Path
 name|p
+parameter_list|,
+name|LocalResourceType
+name|type
 parameter_list|)
 throws|throws
 name|IOException
@@ -1939,9 +1942,7 @@ name|rsrc
 operator|.
 name|setType
 argument_list|(
-name|LocalResourceType
-operator|.
-name|FILE
+name|type
 argument_list|)
 expr_stmt|;
 name|rsrc
@@ -2102,6 +2103,10 @@ argument_list|(
 name|defaultFileContext
 argument_list|,
 name|jobConfPath
+argument_list|,
+name|LocalResourceType
+operator|.
+name|FILE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2140,6 +2145,10 @@ name|MRJobConfig
 operator|.
 name|JOB_JAR
 argument_list|)
+argument_list|,
+name|LocalResourceType
+operator|.
+name|ARCHIVE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2205,6 +2214,10 @@ name|jobSubmitDir
 argument_list|,
 name|s
 argument_list|)
+argument_list|,
+name|LocalResourceType
+operator|.
+name|FILE
 argument_list|)
 argument_list|)
 expr_stmt|;

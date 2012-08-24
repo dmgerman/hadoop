@@ -188,6 +188,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsBlocksMetadata
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -996,6 +1012,21 @@ name|getBlockLocalPathInfo
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get a {@link HdfsBlocksMetadata} corresponding to the list of blocks in     *<code>blocks</code>.    *     * @param blocks List of blocks for which to return metadata    * @return metadata Metadata for the list of blocks    * @throws IOException    */
+DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks)
+specifier|public
+name|HdfsBlocksMetadata
+name|getHdfsBlocksMetadata
+parameter_list|(
+name|List
+argument_list|<
+name|ExtendedBlock
+argument_list|>
+name|blocks
 parameter_list|)
 throws|throws
 name|IOException

@@ -569,6 +569,21 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+comment|// propagate existing user credentials to job
+name|this
+operator|.
+name|credentials
+operator|.
+name|mergeAll
+argument_list|(
+name|this
+operator|.
+name|ugi
+operator|.
+name|getCredentials
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|cluster

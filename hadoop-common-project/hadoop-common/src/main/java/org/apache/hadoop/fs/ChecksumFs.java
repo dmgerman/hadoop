@@ -132,6 +132,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -1544,7 +1560,7 @@ name|CHKSUM_AS_FRACTION
 init|=
 literal|0.01f
 decl_stmt|;
-DECL|method|ChecksumFSOutputSummer (final ChecksumFs fs, final Path file, final EnumSet<CreateFlag> createFlag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final int bytesPerChecksum, final boolean createParent)
+DECL|method|ChecksumFSOutputSummer (final ChecksumFs fs, final Path file, final EnumSet<CreateFlag> createFlag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final boolean createParent)
 specifier|public
 name|ChecksumFSOutputSummer
 parameter_list|(
@@ -1584,8 +1600,8 @@ name|Progressable
 name|progress
 parameter_list|,
 specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 specifier|final
 name|boolean
@@ -1608,6 +1624,10 @@ argument_list|,
 literal|4
 argument_list|)
 expr_stmt|;
+comment|// checksumOpt is passed down to the raw fs. Unless it implements
+comment|// checksum impelemts internally, checksumOpt will be ignored.
+comment|// If the raw fs does checksum internally, we will end up with
+comment|// two layers of checksumming. i.e. checksumming checksum file.
 name|this
 operator|.
 name|datas
@@ -1633,7 +1653,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -1700,7 +1720,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -1794,7 +1814,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
+DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt, boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -1823,8 +1843,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 name|boolean
 name|createParent
@@ -1858,7 +1878,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)

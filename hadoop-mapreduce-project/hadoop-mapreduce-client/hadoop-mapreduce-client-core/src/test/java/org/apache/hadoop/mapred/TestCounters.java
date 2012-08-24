@@ -814,7 +814,7 @@ name|counters
 operator|.
 name|findCounter
 argument_list|(
-literal|"FileSystemCounter"
+literal|"FileSystemCounters"
 argument_list|,
 literal|"FILE_BYTES_READ"
 argument_list|)
@@ -1027,7 +1027,7 @@ name|counters
 operator|.
 name|findCounter
 argument_list|(
-literal|"FileSystemCounter"
+literal|"FileSystemCounters"
 argument_list|,
 literal|"FILE_BYTES_READ"
 argument_list|)
@@ -1401,7 +1401,7 @@ name|expectedGroups
 operator|.
 name|add
 argument_list|(
-literal|"FileSystemCounter"
+literal|"FileSystemCounters"
 argument_list|)
 expr_stmt|;
 comment|//Legacy Name

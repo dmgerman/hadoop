@@ -399,6 +399,29 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Create an empty credentials instance    */
+DECL|method|Credentials ()
+specifier|public
+name|Credentials
+parameter_list|()
+block|{   }
+comment|/**    * Create a copy of the given credentials    * @param credentials to copy    */
+DECL|method|Credentials (Credentials credentials)
+specifier|public
+name|Credentials
+parameter_list|(
+name|Credentials
+name|credentials
+parameter_list|)
+block|{
+name|this
+operator|.
+name|addAll
+argument_list|(
+name|credentials
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns the key bytes for the alias    * @param alias the alias for the key    * @return key for this alias    */
 DECL|method|getSecretKey (Text alias)
 specifier|public
@@ -1302,6 +1325,53 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|addTokensToUGI (UserGroupInformation ugi)
+specifier|public
+name|void
+name|addTokensToUGI
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Text
+argument_list|,
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|token
+range|:
+name|tokenMap
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|ugi
+operator|.
+name|addToken
+argument_list|(
+name|token
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|token
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

@@ -513,6 +513,33 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Reset all data structures and mutable state.    */
+DECL|method|reset ()
+specifier|public
+specifier|synchronized
+name|void
+name|reset
+parameter_list|()
+block|{
+name|currentId
+operator|=
+literal|0
+expr_stmt|;
+name|allKeys
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|delegationTokenSequenceNumber
+operator|=
+literal|0
+expr_stmt|;
+name|currentTokens
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().    * */
 DECL|method|addKey (DelegationKey key)
 specifier|public
@@ -836,15 +863,6 @@ name|TokenIdent
 name|identifier
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Creating password for identifier: "
-operator|+
-name|identifier
-argument_list|)
-expr_stmt|;
 name|int
 name|sequenceNum
 decl_stmt|;
@@ -889,6 +907,15 @@ operator|.
 name|setSequenceNumber
 argument_list|(
 name|sequenceNum
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating password for identifier: "
+operator|+
+name|identifier
 argument_list|)
 expr_stmt|;
 name|byte

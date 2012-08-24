@@ -487,6 +487,14 @@ argument_list|,
 name|bytesRead
 argument_list|)
 expr_stmt|;
+comment|//At this point, src&dest lengths are same. if length==0, we skip checksum
+if|if
+condition|(
+name|bytesRead
+operator|!=
+literal|0
+condition|)
+block|{
 name|compareCheckSums
 argument_list|(
 name|sourceFS
@@ -501,6 +509,7 @@ argument_list|,
 name|tmpTargetPath
 argument_list|)
 expr_stmt|;
+block|}
 name|promoteTmpToTarget
 argument_list|(
 name|tmpTargetPath

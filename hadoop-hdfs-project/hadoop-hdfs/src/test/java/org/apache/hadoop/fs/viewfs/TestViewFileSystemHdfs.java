@@ -535,8 +535,9 @@ name|getExpectedDelegationTokenCount
 parameter_list|()
 block|{
 return|return
-literal|9
+literal|2
 return|;
+comment|// Mount points to 2 unique hdfs
 block|}
 annotation|@
 name|Override

@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -146,25 +136,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|Credentials
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|Options
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
+name|ChecksumOpt
 import|;
 end_import
 
@@ -1414,7 +1390,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|protected
 name|FSDataOutputStream
 name|primitiveCreate
@@ -1443,8 +1419,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -1468,7 +1444,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|)
 return|;
 block|}
@@ -1507,111 +1483,20 @@ block|}
 annotation|@
 name|Override
 comment|// FileSystem
-DECL|method|getCanonicalServiceName ()
+DECL|method|getChildFileSystems ()
 specifier|public
-name|String
-name|getCanonicalServiceName
+name|FileSystem
+index|[]
+name|getChildFileSystems
 parameter_list|()
 block|{
 return|return
-name|fs
-operator|.
-name|getCanonicalServiceName
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FileSystem
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|getDelegationToken (String renewer)
-specifier|public
-name|Token
-argument_list|<
-name|?
-argument_list|>
-name|getDelegationToken
-parameter_list|(
-name|String
-name|renewer
-parameter_list|)
-throws|throws
-name|IOException
+operator|new
+name|FileSystem
+index|[]
 block|{
-return|return
 name|fs
-operator|.
-name|getDelegationToken
-argument_list|(
-name|renewer
-argument_list|)
-return|;
 block|}
-annotation|@
-name|Override
-comment|// FileSystem
-DECL|method|getDelegationTokens (String renewer)
-specifier|public
-name|List
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
-name|getDelegationTokens
-parameter_list|(
-name|String
-name|renewer
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|getDelegationTokens
-argument_list|(
-name|renewer
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FileSystem
-DECL|method|getDelegationTokens (String renewer, Credentials credentials)
-specifier|public
-name|List
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
-name|getDelegationTokens
-parameter_list|(
-name|String
-name|renewer
-parameter_list|,
-name|Credentials
-name|credentials
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|getDelegationTokens
-argument_list|(
-name|renewer
-argument_list|,
-name|credentials
-argument_list|)
 return|;
 block|}
 block|}

@@ -137,6 +137,8 @@ extends|extends
 name|Closeable
 extends|,
 name|FormatConfirmable
+extends|,
+name|LogsPurgeable
 block|{
 comment|/**    * Format the underlying storage, removing any previously    * stored data.    */
 DECL|method|format (NamespaceInfo ns)
@@ -200,17 +202,6 @@ parameter_list|(
 name|int
 name|size
 parameter_list|)
-function_decl|;
-comment|/**    * The JournalManager may archive/purge any logs for transactions less than    * or equal to minImageTxId.    *    * @param minTxIdToKeep the earliest txid that must be retained after purging    *                      old logs    * @throws IOException if purging fails    */
-DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
-name|void
-name|purgeLogsOlderThan
-parameter_list|(
-name|long
-name|minTxIdToKeep
-parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Recover segments which have not been finalized.    */
 DECL|method|recoverUnfinalizedSegments ()

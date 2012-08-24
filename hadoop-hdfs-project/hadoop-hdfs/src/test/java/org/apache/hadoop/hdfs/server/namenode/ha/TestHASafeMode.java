@@ -715,8 +715,6 @@ specifier|public
 name|void
 name|shutdownCluster
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -1988,8 +1986,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn0
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD for 2 blocks
@@ -2037,6 +2033,7 @@ expr_stmt|;
 block|}
 DECL|method|assertSafeMode (NameNode nn, int safe, int total)
 specifier|private
+specifier|static
 name|void
 name|assertSafeMode
 parameter_list|(
@@ -2053,7 +2050,7 @@ block|{
 name|String
 name|status
 init|=
-name|nn1
+name|nn
 operator|.
 name|getNamesystem
 argument_list|()

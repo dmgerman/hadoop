@@ -586,7 +586,7 @@ name|resourcesLow
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|leaveSafeMode (NameNode namenode, boolean checkForUpgrades)
+DECL|method|leaveSafeMode (NameNode namenode)
 specifier|public
 specifier|static
 name|void
@@ -594,12 +594,7 @@ name|leaveSafeMode
 parameter_list|(
 name|NameNode
 name|namenode
-parameter_list|,
-name|boolean
-name|checkForUpgrades
 parameter_list|)
-throws|throws
-name|SafeModeException
 block|{
 name|namenode
 operator|.
@@ -607,9 +602,7 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|leaveSafeMode
-argument_list|(
-name|checkForUpgrades
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|abortEditLogs (NameNode nn)

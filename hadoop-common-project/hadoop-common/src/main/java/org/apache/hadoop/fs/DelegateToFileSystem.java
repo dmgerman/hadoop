@@ -62,6 +62,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -115,6 +125,22 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Options
+operator|.
+name|ChecksumOpt
 import|;
 end_import
 
@@ -292,7 +318,7 @@ argument_list|(
 literal|"deprecation"
 argument_list|)
 comment|// call to primitiveCreate
-DECL|method|createInternal (Path f, EnumSet<CreateFlag> flag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
+DECL|method|createInternal (Path f, EnumSet<CreateFlag> flag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt, boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -321,8 +347,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 name|boolean
 name|createParent
@@ -416,7 +442,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|)
 return|;
 block|}
@@ -1014,11 +1040,18 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|Arrays
+operator|.
+name|asList
+argument_list|(
 name|fsImpl
 operator|.
-name|getDelegationTokens
+name|addDelegationTokens
 argument_list|(
 name|renewer
+argument_list|,
+literal|null
+argument_list|)
 argument_list|)
 return|;
 block|}

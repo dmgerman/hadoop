@@ -676,20 +676,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -724,7 +710,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/*    * Expected deployment TLD will be 1777, owner=<NMOwner>, group=<NMGroup -    * Group to which NMOwner belongs> App dirs will be created as 750,    * owner=<AppOwner>, group=<NMGroup>: so that the owner and<NMOwner> can    * access / modify the files.    *<NMGroup> should obviously be a limited access group.    */
+comment|/*    * Expected deployment TLD will be 1777, owner=<NMOwner>, group=<NMGroup -    * Group to which NMOwner belongs> App dirs will be created as 770,    * owner=<AppOwner>, group=<NMGroup>: so that the owner and<NMOwner> can    * access / modify the files.    *<NMGroup> should obviously be a limited access group.    */
 comment|/**    * Permissions for the top level directory under which app directories will be    * created.    */
 DECL|field|TLDIR_PERMISSIONS
 specifier|private
@@ -758,7 +744,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|0750
+literal|0770
 argument_list|)
 decl_stmt|;
 DECL|field|context
@@ -1366,7 +1352,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|createAppDir (final String user, final ApplicationId appId, UserGroupInformation userUgi)
-specifier|private
+specifier|protected
 name|void
 name|createAppDir
 parameter_list|(
@@ -1795,10 +1781,8 @@ name|eventResponse
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|initAppAggregator (final ApplicationId appId, String user, Credentials credentials, ContainerLogsRetentionPolicy logRetentionPolicy, Map<ApplicationAccessType, String> appAcls)
-specifier|public
+specifier|protected
 name|void
 name|initAppAggregator
 parameter_list|(
@@ -1825,6 +1809,7 @@ name|appAcls
 parameter_list|)
 block|{
 comment|// Get user's FileSystem credentials
+specifier|final
 name|UserGroupInformation
 name|userUgi
 init|=
@@ -1867,16 +1852,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Create the app dir
-name|createAppDir
-argument_list|(
-name|user
-argument_list|,
-name|appId
-argument_list|,
-name|userUgi
-argument_list|)
-expr_stmt|;
 comment|// New application
 specifier|final
 name|AppLogAggregator
@@ -1940,6 +1915,35 @@ name|appId
 argument_list|)
 throw|;
 block|}
+comment|// wait until check for existing aggregator to create dirs
+try|try
+block|{
+comment|// Create the app dir
+name|createAppDir
+argument_list|(
+name|user
+argument_list|,
+name|appId
+argument_list|,
+name|userUgi
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+name|closeFileSystems
+argument_list|(
+name|userUgi
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 comment|// TODO Get the user configuration for the list of containers that need log
 comment|// aggregation.
 comment|// Schedule the aggregator.
@@ -1972,6 +1976,11 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
+name|closeFileSystems
+argument_list|(
+name|userUgi
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1985,6 +1994,43 @@ argument_list|(
 name|aggregatorWrapper
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|closeFileSystems (final UserGroupInformation userUgi)
+specifier|protected
+name|void
+name|closeFileSystems
+parameter_list|(
+specifier|final
+name|UserGroupInformation
+name|userUgi
+parameter_list|)
+block|{
+try|try
+block|{
+name|FileSystem
+operator|.
+name|closeAllForUGI
+argument_list|(
+name|userUgi
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to close filesystems: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// for testing only
 annotation|@

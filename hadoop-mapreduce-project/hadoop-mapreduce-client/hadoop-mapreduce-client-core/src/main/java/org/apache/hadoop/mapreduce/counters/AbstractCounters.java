@@ -515,7 +515,7 @@ name|legacyMap
 operator|.
 name|put
 argument_list|(
-literal|"FileSystemCounter"
+literal|"FileSystemCounters"
 argument_list|,
 name|FileSystemCounter
 operator|.

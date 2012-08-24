@@ -809,7 +809,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Returing missing blocks for "
+literal|"Returning missing blocks for "
 operator|+
 name|fileWithMissingBlocks
 argument_list|)
@@ -819,6 +819,9 @@ index|[
 literal|0
 index|]
 operator|=
+operator|new
+name|HdfsBlockLocation
+argument_list|(
 operator|new
 name|BlockLocation
 argument_list|(
@@ -849,6 +852,9 @@ index|]
 operator|.
 name|getLength
 argument_list|()
+argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

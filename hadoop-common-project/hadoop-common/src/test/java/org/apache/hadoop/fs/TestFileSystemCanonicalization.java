@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +57,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -110,6 +124,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -119,8 +143,6 @@ DECL|class|TestFileSystemCanonicalization
 specifier|public
 class|class
 name|TestFileSystemCanonicalization
-extends|extends
-name|TestCase
 block|{
 DECL|field|authorities
 specifier|static
@@ -147,11 +169,12 @@ literal|"myfs://127.0.0.1"
 block|}
 decl_stmt|;
 annotation|@
-name|Test
-DECL|method|testSetupResolver ()
+name|BeforeClass
+DECL|method|initialize ()
 specifier|public
+specifier|static
 name|void
-name|testSetupResolver
+name|initialize
 parameter_list|()
 throws|throws
 name|Exception

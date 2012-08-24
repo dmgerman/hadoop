@@ -479,7 +479,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop file system.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop file system supports a URI name space and URI names.  * It offers a forest of file systems that can be referenced using fully  * qualified URIs.  * Two common Hadoop file systems implementations are  *<ul>  *<li> the local file system: file:///path  *<li> the hdfs file system hdfs://nnAddress:nnPort/path  *</ul>  *   * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  *   * To facilitate this, Hadoop supports a notion of a default file system.  * The user can set his default file system, although this is  * typically set up for you in your environment via your default config.  * A default file system implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI: scheme://authority/path  *<li> slash relative names: /path relative to the default file system  *<li> wd-relative names: path  relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *    *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *  in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *    *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All file system instances  *  (i.e. deployments of file systems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The file system related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> bytesPerChecksum (if used).  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); // configX is not changed,  *                                              // is passed down   *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
+comment|/**  * The FileContext class provides an interface to the application writer for  * using the Hadoop file system.  * It provides a set of methods for the usual operation: create, open,   * list, etc   *   *<p>  *<b> *** Path Names ***</b>  *<p>  *   * The Hadoop file system supports a URI name space and URI names.  * It offers a forest of file systems that can be referenced using fully  * qualified URIs.  * Two common Hadoop file systems implementations are  *<ul>  *<li> the local file system: file:///path  *<li> the hdfs file system hdfs://nnAddress:nnPort/path  *</ul>  *   * While URI names are very flexible, it requires knowing the name or address  * of the server. For convenience one often wants to access the default system  * in one's environment without knowing its name/address. This has an  * additional benefit that it allows one to change one's default fs  *  (e.g. admin moves application from cluster1 to cluster2).  *<p>  *   * To facilitate this, Hadoop supports a notion of a default file system.  * The user can set his default file system, although this is  * typically set up for you in your environment via your default config.  * A default file system implies a default scheme and authority; slash-relative  * names (such as /for/bar) are resolved relative to that default FS.  * Similarly a user can also have working-directory-relative names (i.e. names  * not starting with a slash). While the working directory is generally in the  * same default FS, the wd can be in a different FS.  *<p>  *  Hence Hadoop path names can be one of:  *<ul>  *<li> fully qualified URI: scheme://authority/path  *<li> slash relative names: /path relative to the default file system  *<li> wd-relative names: path  relative to the working dir  *</ul>     *  Relative paths with scheme (scheme:foo/bar) are illegal.  *    *<p>  *<b>****The Role of the FileContext and configuration defaults****</b>  *<p>  *  The FileContext provides file namespace context for resolving file names;  *  it also contains the umask for permissions, In that sense it is like the  *  per-process file-related state in Unix system.  *  These two properties  *<ul>   *<li> default file system i.e your slash)  *<li> umask  *</ul>  *  in general, are obtained from the default configuration file  *  in your environment,  (@see {@link Configuration}).  *    *  No other configuration parameters are obtained from the default config as   *  far as the file context layer is concerned. All file system instances  *  (i.e. deployments of file systems) have default properties; we call these  *  server side (SS) defaults. Operation like create allow one to select many   *  properties: either pass them in as explicit parameters or use  *  the SS properties.  *<p>  *  The file system related SS defaults are  *<ul>  *<li> the home directory (default is "/user/userName")  *<li> the initial wd (only for local fs)  *<li> replication factor  *<li> block size  *<li> buffer size  *<li> encryptDataTransfer   *<li> checksum option. (checksumType and  bytesPerChecksum)  *</ul>  *  *<p>  *<b> *** Usage Model for the FileContext class ***</b>  *<p>  * Example 1: use the default config read from the $HADOOP_CONFIG/core.xml.  *   Unspecified values come from core-defaults.xml in the release jar.  *<ul>    *<li> myFContext = FileContext.getFileContext(); // uses the default config  *                                                // which has your default FS   *<li>  myFContext.create(path, ...);  *<li>  myFContext.setWorkingDir(path)  *<li>  myFContext.open (path, ...);    *</ul>    * Example 2: Get a FileContext with a specific URI as the default FS  *<ul>    *<li> myFContext = FileContext.getFileContext(URI)  *<li> myFContext.create(path, ...);  *   ...  *</ul>   * Example 3: FileContext with local file system as the default  *<ul>   *<li> myFContext = FileContext.getLocalFSFileContext()  *<li> myFContext.create(path, ...);  *<li> ...  *</ul>   * Example 4: Use a specific config, ignoring $HADOOP_CONFIG  *  Generally you should not need use a config unless you are doing  *<ul>   *<li> configX = someConfigSomeOnePassedToYou.  *<li> myFContext = getFileContext(configX); // configX is not changed,  *                                              // is passed down   *<li> myFContext.create(path, ...);  *<li>...  *</ul>                                            *      */
 end_comment
 
 begin_class
@@ -1549,7 +1549,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create or overwrite file on indicated path and returns an output stream for    * writing into the file.    *     * @param f the file name to open    * @param createFlag gives the semantics of create; see {@link CreateFlag}    * @param opts file creation options; see {@link Options.CreateOpts}.    *<ul>    *<li>Progress - to report progress on the operation - default null    *<li>Permission - umask is applied against permisssion: default is    *          FsPermissions:getDefault()    *     *<li>CreateParent - create missing parent path; default is to not    *          to create parents    *<li>The defaults for the following are SS defaults of the file    *          server implementing the target path. Not all parameters make sense    *          for all kinds of file system - eg. localFS ignores Blocksize,    *          replication, checksum    *<ul>    *<li>BufferSize - buffersize used in FSDataOutputStream    *<li>Blocksize - block size for file blocks    *<li>ReplicationFactor - replication for blocks    *<li>BytesPerChecksum - bytes per checksum    *</ul>    *</ul>    *     * @return {@link FSDataOutputStream} for created file    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>f</code> already exists    * @throws FileNotFoundException If parent of<code>f</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>f</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
+comment|/**    * Create or overwrite file on indicated path and returns an output stream for    * writing into the file.    *     * @param f the file name to open    * @param createFlag gives the semantics of create; see {@link CreateFlag}    * @param opts file creation options; see {@link Options.CreateOpts}.    *<ul>    *<li>Progress - to report progress on the operation - default null    *<li>Permission - umask is applied against permisssion: default is    *          FsPermissions:getDefault()    *     *<li>CreateParent - create missing parent path; default is to not    *          to create parents    *<li>The defaults for the following are SS defaults of the file    *          server implementing the target path. Not all parameters make sense    *          for all kinds of file system - eg. localFS ignores Blocksize,    *          replication, checksum    *<ul>    *<li>BufferSize - buffersize used in FSDataOutputStream    *<li>Blocksize - block size for file blocks    *<li>ReplicationFactor - replication for blocks    *<li>ChecksumParam - Checksum parameters. server default is used    *          if not specified.    *</ul>    *</ul>    *     * @return {@link FSDataOutputStream} for created file    *     * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>f</code> already exists    * @throws FileNotFoundException If parent of<code>f</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>f</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for<code>f</code> is    *           not supported    * @throws IOException If an I/O error occurred    *     * Exceptions applicable to file systems accessed over RPC:    * @throws RpcClientException If an exception occurred in the RPC client    * @throws RpcServerException If an exception occurred in the RPC server    * @throws UnexpectedServerException If server implementation throws    *           undeclared exception to RPC server    *     * RuntimeExceptions:    * @throws InvalidPathException If path<code>f</code> is not valid    */
 DECL|method|create (final Path f, final EnumSet<CreateFlag> createFlag, Options.CreateOpts... opts)
 specifier|public
 name|FSDataOutputStream
@@ -5124,6 +5124,8 @@ condition|)
 block|{
 comment|// last component has a pattern
 comment|// list parent directories and then glob the results
+try|try
+block|{
 name|results
 operator|=
 name|listStatus
@@ -5133,6 +5135,18 @@ argument_list|,
 name|fp
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|results
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|hasGlob
 index|[
 literal|0
@@ -5397,6 +5411,8 @@ name|hasPattern
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
 name|parents
 operator|=
 name|FileUtil
@@ -5411,6 +5427,18 @@ name|fp
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|parents
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|hasGlob
 index|[
 literal|0

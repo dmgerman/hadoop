@@ -435,7 +435,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32
+name|Type
+operator|.
+name|CRC32
 argument_list|,
 literal|512
 argument_list|)
@@ -800,7 +802,9 @@ name|assertEquals
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_NULL
+name|Type
+operator|.
+name|NULL
 argument_list|,
 name|checksum
 operator|.

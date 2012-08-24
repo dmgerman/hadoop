@@ -1026,9 +1026,10 @@ try|try
 block|{
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
-name|token
+index|[]
+name|tokens
 init|=
 name|proxyUgi
 operator|.
@@ -1039,8 +1040,9 @@ name|PrivilegedExceptionAction
 argument_list|<
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
+index|[]
 argument_list|>
 argument_list|()
 block|{
@@ -1049,8 +1051,9 @@ name|Override
 specifier|public
 name|Token
 argument_list|<
-name|DelegationTokenIdentifier
+name|?
 argument_list|>
+index|[]
 name|run
 parameter_list|()
 throws|throws
@@ -1062,15 +1065,17 @@ operator|.
 name|getFileSystem
 argument_list|()
 operator|.
-name|getDelegationToken
+name|addDelegationTokens
 argument_list|(
 literal|"RenewerUser"
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 block|}
-argument_list|)
-decl_stmt|;
+block|)
+empty_stmt|;
 name|DelegationTokenIdentifier
 name|identifier
 init|=
@@ -1082,7 +1087,10 @@ name|byte
 index|[]
 name|tokenId
 init|=
-name|token
+name|tokens
+index|[
+literal|0
+index|]
 operator|.
 name|getIdentifier
 argument_list|()
@@ -1145,6 +1153,9 @@ block|{
 comment|//Do Nothing
 block|}
 block|}
+end_class
+
+begin_function
 annotation|@
 name|Test
 DECL|method|testWebHdfsDoAs ()
@@ -1771,8 +1782,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

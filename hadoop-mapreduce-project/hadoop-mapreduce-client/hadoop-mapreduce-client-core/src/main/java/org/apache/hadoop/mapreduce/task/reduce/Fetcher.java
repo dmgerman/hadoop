@@ -718,6 +718,11 @@ name|stopped
 init|=
 literal|false
 decl_stmt|;
+DECL|field|job
+specifier|private
+name|JobConf
+name|job
+decl_stmt|;
 DECL|field|sslShuffle
 specifier|private
 specifier|static
@@ -769,6 +774,12 @@ name|SecretKey
 name|jobTokenSecret
 parameter_list|)
 block|{
+name|this
+operator|.
+name|job
+operator|=
+name|job
+expr_stmt|;
 name|this
 operator|.
 name|reporter
@@ -2786,6 +2797,8 @@ argument_list|(
 name|input
 argument_list|,
 name|compressedLength
+argument_list|,
+name|job
 argument_list|)
 decl_stmt|;
 name|input

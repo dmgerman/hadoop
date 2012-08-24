@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -13,45 +13,46 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
 package|;
 end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|junit
+name|io
 operator|.
-name|Test
+name|IOException
 import|;
 end_import
 
-begin_class
-DECL|class|TestFileCreationNamenodeRestart
-specifier|public
-class|class
-name|TestFileCreationNamenodeRestart
+begin_comment
+comment|/**  * Interface used to abstract over classes which manage edit logs that may need  * to be purged.  */
+end_comment
+
+begin_interface
+DECL|interface|LogsPurgeable
+interface|interface
+name|LogsPurgeable
 block|{
-annotation|@
-name|Test
-DECL|method|testFileCreationNamenodeRestart ()
+comment|/**    * Remove all edit logs with transaction IDs lower than the given transaction    * ID.    *     * @param minTxIdToKeep the lowest transaction ID that should be retained    * @throws IOException in the event of error    */
+DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
 specifier|public
 name|void
-name|testFileCreationNamenodeRestart
-parameter_list|()
+name|purgeLogsOlderThan
+parameter_list|(
+name|long
+name|minTxIdToKeep
+parameter_list|)
 throws|throws
-name|Exception
-block|{
-operator|new
-name|TestFileCreation
-argument_list|()
-operator|.
-name|xxxtestFileCreationNamenodeRestart
-argument_list|()
-expr_stmt|;
+name|IOException
+function_decl|;
 block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

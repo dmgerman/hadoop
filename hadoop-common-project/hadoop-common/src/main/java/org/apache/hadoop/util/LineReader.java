@@ -561,10 +561,12 @@ if|if
 condition|(
 name|prevCharCR
 condition|)
+block|{
 operator|++
 name|bytesConsumed
 expr_stmt|;
 comment|//account for CR from previous read
+block|}
 name|bufferLength
 operator|=
 name|in
@@ -580,8 +582,10 @@ name|bufferLength
 operator|<=
 literal|0
 condition|)
+block|{
 break|break;
 comment|// EOF
+block|}
 block|}
 for|for
 control|(
@@ -660,10 +664,12 @@ name|newlineLength
 operator|==
 literal|0
 condition|)
+block|{
 operator|--
 name|readLength
 expr_stmt|;
 comment|//CR at the end of the buffer
+block|}
 name|bytesConsumed
 operator|+=
 name|readLength
@@ -737,6 +743,7 @@ name|Integer
 operator|.
 name|MAX_VALUE
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -746,6 +753,7 @@ operator|+
 name|bytesConsumed
 argument_list|)
 throw|;
+block|}
 return|return
 operator|(
 name|int
@@ -771,6 +779,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|/* We're reading data from inputStream, but the head of the stream may be     *  already captured in the previous buffer, so we have several cases:     *      * 1. The buffer tail does not contain any character sequence which     *    matches with the head of delimiter. We count it as a      *    ambiguous byte count = 0     *         * 2. The buffer tail contains a X number of characters,     *    that forms a sequence, which matches with the     *    head of delimiter. We count ambiguous byte count = X     *         *    // ***  eg: A segment of input file is as follows     *         *    " record 1792: I found this bug very interesting and     *     I have completely read about it. record 1793: This bug     *     can be solved easily record 1794: This ."      *         *    delimiter = "record";     *             *    supposing:- String at the end of buffer =     *    "I found this bug very interesting and I have completely re"     *    There for next buffer = "ad about it. record 179       ...."                *          *     The matching characters in the input     *     buffer tail and delimiter head = "re"      *     Therefore, ambiguous byte count = 2 ****   //     *          *     2.1 If the following bytes are the remaining characters of     *         the delimiter, then we have to capture only up to the starting      *         position of delimiter. That means, we need not include the      *         ambiguous characters in str.     *          *     2.2 If the following bytes are not the remaining characters of     *         the delimiter ( as mentioned in the example ),      *         then we have to include the ambiguous characters in str.      */
 name|str
 operator|.
 name|clear
@@ -792,6 +801,12 @@ name|delPosn
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|ambiguousByteCount
+init|=
+literal|0
+decl_stmt|;
+comment|// To capture the ambiguous characters count
 do|do
 block|{
 name|int
@@ -799,8 +814,7 @@ name|startPosn
 init|=
 name|bufferPosn
 decl_stmt|;
-comment|// starting from where we left off the last
-comment|// time
+comment|// Start from previous end position
 if|if
 condition|(
 name|bufferPosn
@@ -829,8 +843,21 @@ name|bufferLength
 operator|<=
 literal|0
 condition|)
+block|{
+name|str
+operator|.
+name|append
+argument_list|(
+name|recordDelimiterBytes
+argument_list|,
+literal|0
+argument_list|,
+name|ambiguousByteCount
+argument_list|)
+expr_stmt|;
 break|break;
 comment|// EOF
+block|}
 block|}
 for|for
 control|(
@@ -874,8 +901,17 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|delPosn
+operator|!=
+literal|0
+condition|)
 block|{
+name|bufferPosn
+operator|--
+expr_stmt|;
 name|delPosn
 operator|=
 literal|0
@@ -923,6 +959,34 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|ambiguousByteCount
+operator|>
+literal|0
+condition|)
+block|{
+name|str
+operator|.
+name|append
+argument_list|(
+name|recordDelimiterBytes
+argument_list|,
+literal|0
+argument_list|,
+name|ambiguousByteCount
+argument_list|)
+expr_stmt|;
+comment|//appending the ambiguous characters (refer case 2.2)
+name|bytesConsumed
+operator|+=
+name|ambiguousByteCount
+expr_stmt|;
+name|ambiguousByteCount
+operator|=
+literal|0
+expr_stmt|;
+block|}
 name|str
 operator|.
 name|append
@@ -938,6 +1002,37 @@ name|txtLength
 operator|+=
 name|appendLength
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|bufferPosn
+operator|>=
+name|bufferLength
+condition|)
+block|{
+if|if
+condition|(
+name|delPosn
+operator|>
+literal|0
+operator|&&
+name|delPosn
+operator|<
+name|recordDelimiterBytes
+operator|.
+name|length
+condition|)
+block|{
+name|ambiguousByteCount
+operator|=
+name|delPosn
+expr_stmt|;
+name|bytesConsumed
+operator|-=
+name|ambiguousByteCount
+expr_stmt|;
+comment|//to be consumed in next
+block|}
 block|}
 block|}
 do|while
@@ -964,6 +1059,7 @@ name|Integer
 operator|.
 name|MAX_VALUE
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -973,6 +1069,7 @@ operator|+
 name|bytesConsumed
 argument_list|)
 throw|;
+block|}
 return|return
 operator|(
 name|int

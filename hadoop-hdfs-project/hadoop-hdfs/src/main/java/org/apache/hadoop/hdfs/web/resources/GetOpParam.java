@@ -128,16 +128,6 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
-DECL|enumConstant|GETDELEGATIONTOKENS
-name|GETDELEGATIONTOKENS
-argument_list|(
-literal|false
-argument_list|,
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-argument_list|)
-block|,
 comment|/** GET_BLOCK_LOCATIONS is a private unstable op. */
 DECL|enumConstant|GET_BLOCK_LOCATIONS
 name|GET_BLOCK_LOCATIONS
