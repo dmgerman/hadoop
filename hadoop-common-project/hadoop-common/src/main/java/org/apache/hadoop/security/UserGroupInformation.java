@@ -3178,9 +3178,6 @@ condition|(
 name|fileLocation
 operator|!=
 literal|null
-operator|&&
-name|isSecurityEnabled
-argument_list|()
 condition|)
 block|{
 comment|// load the token storage file and put all of the tokens into the
