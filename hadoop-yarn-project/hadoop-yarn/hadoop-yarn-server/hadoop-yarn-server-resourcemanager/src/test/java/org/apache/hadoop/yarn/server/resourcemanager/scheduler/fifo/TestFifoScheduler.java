@@ -742,6 +742,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|FifoScheduler
@@ -758,8 +760,6 @@ argument_list|(
 operator|new
 name|Configuration
 argument_list|()
-argument_list|,
-literal|null
 argument_list|,
 name|rmContext
 argument_list|)

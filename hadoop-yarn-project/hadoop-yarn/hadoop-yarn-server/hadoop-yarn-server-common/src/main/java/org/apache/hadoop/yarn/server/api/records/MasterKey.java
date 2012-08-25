@@ -22,36 +22,46 @@ name|records
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
 begin_interface
-DECL|interface|RegistrationResponse
+DECL|interface|MasterKey
 specifier|public
 interface|interface
-name|RegistrationResponse
-block|{
-DECL|method|getMasterKey ()
 name|MasterKey
-name|getMasterKey
+block|{
+DECL|method|getKeyId ()
+name|int
+name|getKeyId
 parameter_list|()
 function_decl|;
-DECL|method|setMasterKey (MasterKey secretKey)
+DECL|method|setKeyId (int keyId)
 name|void
-name|setMasterKey
+name|setKeyId
 parameter_list|(
-name|MasterKey
-name|secretKey
+name|int
+name|keyId
 parameter_list|)
 function_decl|;
-DECL|method|getNodeAction ()
-name|NodeAction
-name|getNodeAction
+DECL|method|getBytes ()
+name|ByteBuffer
+name|getBytes
 parameter_list|()
 function_decl|;
-DECL|method|setNodeAction (NodeAction nodeAction)
+DECL|method|setBytes (ByteBuffer bytes)
 name|void
-name|setNodeAction
+name|setBytes
 parameter_list|(
-name|NodeAction
-name|nodeAction
+name|ByteBuffer
+name|bytes
 parameter_list|)
 function_decl|;
 block|}

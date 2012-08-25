@@ -438,6 +438,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|MasterKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|ClusterMetrics
@@ -873,6 +893,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|currentMasterKey
+specifier|private
+name|MasterKey
+name|currentMasterKey
+decl_stmt|;
 specifier|private
 specifier|static
 specifier|final
@@ -1184,7 +1209,7 @@ name|RMNodeEvent
 argument_list|>
 name|stateMachine
 decl_stmt|;
-DECL|method|RMNodeImpl (NodeId nodeId, RMContext context, String hostName, int cmPort, int httpPort, Node node, Resource capability)
+DECL|method|RMNodeImpl (NodeId nodeId, RMContext context, String hostName, int cmPort, int httpPort, Node node, Resource capability, MasterKey masterKey)
 specifier|public
 name|RMNodeImpl
 parameter_list|(
@@ -1208,6 +1233,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|MasterKey
+name|masterKey
 parameter_list|)
 block|{
 name|this
@@ -1271,6 +1299,12 @@ operator|.
 name|node
 operator|=
 name|node
+expr_stmt|;
+name|this
+operator|.
+name|currentMasterKey
+operator|=
+name|masterKey
 expr_stmt|;
 name|this
 operator|.
@@ -1733,6 +1767,40 @@ return|return
 name|this
 operator|.
 name|latestHeartBeatResponse
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getCurrentMasterKey ()
+specifier|public
+name|MasterKey
+name|getCurrentMasterKey
+parameter_list|()
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|currentMasterKey
 return|;
 block|}
 finally|finally
@@ -2614,6 +2682,15 @@ operator|.
 name|getLatestResponse
 argument_list|()
 expr_stmt|;
+name|rmNode
+operator|.
+name|currentMasterKey
+operator|=
+name|statusEvent
+operator|.
+name|getCurrentMasterKey
+argument_list|()
+expr_stmt|;
 name|NodeHealthStatus
 name|remoteNodeHealthStatus
 init|=
@@ -2915,6 +2992,7 @@ argument_list|)
 expr_stmt|;
 comment|// HeartBeat processing from our end is done, as node pulls the following
 comment|// lists before sending status-updates. Clear data-structures
+comment|// TODO: These lists could go to the NM multiple times, or never.
 name|rmNode
 operator|.
 name|containersToClean
@@ -2981,6 +3059,15 @@ operator|=
 name|statusEvent
 operator|.
 name|getLatestResponse
+argument_list|()
+expr_stmt|;
+name|rmNode
+operator|.
+name|currentMasterKey
+operator|=
+name|statusEvent
+operator|.
+name|getCurrentMasterKey
 argument_list|()
 expr_stmt|;
 name|NodeHealthStatus

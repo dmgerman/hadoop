@@ -92,11 +92,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
-operator|.
-name|capacity
-operator|.
-name|CapacityScheduler
+name|RMContextImpl
 import|;
 end_import
 
@@ -114,11 +110,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
+name|security
 operator|.
-name|capacity
-operator|.
-name|CapacitySchedulerConfiguration
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -214,9 +208,29 @@ name|reinitialize
 argument_list|(
 name|conf
 argument_list|,
+operator|new
+name|RMContextImpl
+argument_list|(
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+operator|new
+name|RMContainerTokenSecretManager
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|CSQueue
@@ -933,8 +947,6 @@ argument_list|(
 name|conf
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1073,8 +1085,6 @@ argument_list|(
 name|conf
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1128,8 +1138,6 @@ operator|.
 name|reinitialize
 argument_list|(
 name|conf
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)

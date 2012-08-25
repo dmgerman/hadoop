@@ -86,9 +86,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -118,7 +120,7 @@ name|getMaximumResourceCapability
 parameter_list|()
 function_decl|;
 DECL|method|getContainerTokenSecretManager ()
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
 parameter_list|()
 function_decl|;

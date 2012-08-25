@@ -44,12 +44,6 @@ name|NodeStatusUpdater
 extends|extends
 name|Service
 block|{
-DECL|method|getRMNMSharedSecret ()
-name|byte
-index|[]
-name|getRMNMSharedSecret
-parameter_list|()
-function_decl|;
 DECL|method|sendOutofBandHeartBeat ()
 name|void
 name|sendOutofBandHeartBeat

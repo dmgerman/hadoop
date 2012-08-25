@@ -986,9 +986,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -1021,11 +1023,6 @@ DECL|field|conf
 specifier|private
 name|FairSchedulerConfiguration
 name|conf
-decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|private
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 decl_stmt|;
 DECL|field|rmContext
 specifier|private
@@ -2606,14 +2603,17 @@ block|}
 block|}
 DECL|method|getContainerTokenSecretManager ()
 specifier|public
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|containerTokenSecretManager
+name|rmContext
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
 return|;
 block|}
 DECL|method|getAppWeight (AppSchedulable app)
@@ -4756,17 +4756,14 @@ comment|// NOT IMPLEMENTED
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (Configuration conf, ContainerTokenSecretManager containerTokenSecretManager, RMContext rmContext)
 specifier|public
 specifier|synchronized
 name|void
+DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|reinitialize
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -4808,12 +4805,6 @@ literal|true
 argument_list|,
 name|conf
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|=
-name|containerTokenSecretManager
 expr_stmt|;
 name|this
 operator|.

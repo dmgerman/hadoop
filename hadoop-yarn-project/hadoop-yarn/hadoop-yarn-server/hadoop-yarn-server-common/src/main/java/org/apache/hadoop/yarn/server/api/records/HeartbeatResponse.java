@@ -142,6 +142,19 @@ name|NodeAction
 name|action
 parameter_list|)
 function_decl|;
+DECL|method|getMasterKey ()
+name|MasterKey
+name|getMasterKey
+parameter_list|()
+function_decl|;
+DECL|method|setMasterKey (MasterKey secretKey)
+name|void
+name|setMasterKey
+parameter_list|(
+name|MasterKey
+name|secretKey
+parameter_list|)
+function_decl|;
 DECL|method|addAllContainersToCleanup (List<ContainerId> containers)
 name|void
 name|addAllContainersToCleanup

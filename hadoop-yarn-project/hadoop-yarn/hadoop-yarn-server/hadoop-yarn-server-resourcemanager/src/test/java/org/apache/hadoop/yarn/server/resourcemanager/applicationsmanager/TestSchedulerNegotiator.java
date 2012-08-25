@@ -590,7 +590,7 @@ name|server
 operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|BaseContainerTokenSecretManager
 import|;
 end_import
 

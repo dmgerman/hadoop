@@ -444,9 +444,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -507,6 +509,11 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|class|TestRMNMRPCResponseId
 specifier|public
 class|class
@@ -603,6 +610,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|dispatcher
@@ -645,11 +654,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 init|=
 operator|new
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)

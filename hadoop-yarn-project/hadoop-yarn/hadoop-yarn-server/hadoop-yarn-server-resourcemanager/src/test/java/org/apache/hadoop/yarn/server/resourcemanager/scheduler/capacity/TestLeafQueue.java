@@ -1087,8 +1087,6 @@ name|reinitialize
 argument_list|(
 name|csConf
 argument_list|,
-literal|null
-argument_list|,
 name|rmContext
 argument_list|)
 expr_stmt|;

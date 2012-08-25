@@ -600,9 +600,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|nodemanager
+operator|.
 name|security
 operator|.
-name|ApplicationACLsManager
+name|NMContainerTokenSecretManager
 import|;
 end_import
 
@@ -620,7 +622,7 @@ name|server
 operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|ApplicationACLsManager
 import|;
 end_import
 
@@ -711,19 +713,6 @@ specifier|protected
 specifier|static
 name|File
 name|tmpDir
-decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|protected
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
-init|=
-operator|new
-name|ContainerTokenSecretManager
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
 decl_stmt|;
 DECL|field|metrics
 specifier|protected
@@ -863,7 +852,13 @@ name|context
 init|=
 operator|new
 name|NMContext
-argument_list|()
+argument_list|(
+operator|new
+name|NMContainerTokenSecretManager
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
 decl_stmt|;
 DECL|field|exec
 specifier|protected
@@ -909,10 +904,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|metrics
-argument_list|,
-name|this
-operator|.
-name|containerTokenSecretManager
 argument_list|)
 block|{
 annotation|@
@@ -1242,10 +1233,6 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
-argument_list|,
-name|this
-operator|.
-name|containerTokenSecretManager
 argument_list|,
 operator|new
 name|ApplicationACLsManager

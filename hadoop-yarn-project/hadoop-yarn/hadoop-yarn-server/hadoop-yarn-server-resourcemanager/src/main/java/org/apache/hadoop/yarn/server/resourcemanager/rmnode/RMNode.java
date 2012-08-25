@@ -156,6 +156,26 @@ name|HeartbeatResponse
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|MasterKey
+import|;
+end_import
+
 begin_comment
 comment|/**  * Node managers information on available resources   * and other static information.  *  */
 end_comment
@@ -285,6 +305,12 @@ DECL|method|getLastHeartBeatResponse ()
 specifier|public
 name|HeartbeatResponse
 name|getLastHeartBeatResponse
+parameter_list|()
+function_decl|;
+DECL|method|getCurrentMasterKey ()
+specifier|public
+name|MasterKey
+name|getCurrentMasterKey
 parameter_list|()
 function_decl|;
 block|}

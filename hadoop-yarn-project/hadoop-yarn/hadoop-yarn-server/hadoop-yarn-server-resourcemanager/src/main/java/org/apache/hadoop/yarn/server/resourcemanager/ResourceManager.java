@@ -476,7 +476,9 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|StoreFactory
+name|Store
+operator|.
+name|RMState
 import|;
 end_import
 
@@ -496,9 +498,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
-operator|.
-name|RMState
+name|StoreFactory
 import|;
 end_import
 
@@ -870,6 +870,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|security
+operator|.
+name|RMContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|webapp
 operator|.
 name|RMWebApp
@@ -891,24 +911,6 @@ operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
 import|;
 end_import
 
@@ -1150,7 +1152,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|containerTokenSecretManager
 specifier|protected
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
 DECL|field|appTokenSecretManager
@@ -1357,16 +1359,6 @@ operator|.
 name|containerAllocationExpirer
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|=
-operator|new
-name|ContainerTokenSecretManager
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|AMLivelinessMonitor
 name|amLivelinessMonitor
 init|=
@@ -1402,6 +1394,16 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|containerTokenSecretManager
+operator|=
+operator|new
+name|RMContainerTokenSecretManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|rmContext
 operator|=
 operator|new
@@ -1428,6 +1430,10 @@ argument_list|,
 name|this
 operator|.
 name|appTokenSecretManager
+argument_list|,
+name|this
+operator|.
+name|containerTokenSecretManager
 argument_list|)
 expr_stmt|;
 comment|// Register event handler for NodesListManager
@@ -1595,10 +1601,6 @@ operator|.
 name|reinitialize
 argument_list|(
 name|conf
-argument_list|,
-name|this
-operator|.
-name|containerTokenSecretManager
 argument_list|,
 name|this
 operator|.
@@ -2978,6 +2980,13 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|containerTokenSecretManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|startWepApp
 argument_list|()
 expr_stmt|;
@@ -3171,6 +3180,13 @@ expr_stmt|;
 name|this
 operator|.
 name|appTokenSecretManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|containerTokenSecretManager
 operator|.
 name|stop
 argument_list|()
@@ -3444,10 +3460,10 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|getContainerTokenSecretManager ()
+DECL|method|getRMContainerTokenSecretManager ()
 specifier|public
-name|ContainerTokenSecretManager
-name|getContainerTokenSecretManager
+name|RMContainerTokenSecretManager
+name|getRMContainerTokenSecretManager
 parameter_list|()
 block|{
 return|return
