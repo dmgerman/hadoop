@@ -759,6 +759,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -909,6 +911,8 @@ name|position
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -980,6 +984,8 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|needsInput ()
 specifier|public
 specifier|synchronized
@@ -1066,6 +1072,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|finish ()
 specifier|public
 specifier|synchronized
@@ -1078,6 +1086,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|finished ()
 specifier|public
 specifier|synchronized
@@ -1100,6 +1110,8 @@ literal|0
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compress (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -1303,6 +1315,8 @@ name|n
 return|;
 block|}
 comment|/**    * Returns the total number of compressed bytes output so far.    *    * @return the total (non-negative) number of compressed bytes output so far    */
+annotation|@
+name|Override
 DECL|method|getBytesWritten ()
 specifier|public
 specifier|synchronized
@@ -1321,6 +1335,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the total number of uncompressed bytes input so far.</p>    *    * @return the total (non-negative) number of uncompressed bytes input so far    */
+annotation|@
+name|Override
 DECL|method|getBytesRead ()
 specifier|public
 specifier|synchronized
@@ -1338,6 +1354,8 @@ name|stream
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 specifier|synchronized
@@ -1397,6 +1415,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|end ()
 specifier|public
 specifier|synchronized

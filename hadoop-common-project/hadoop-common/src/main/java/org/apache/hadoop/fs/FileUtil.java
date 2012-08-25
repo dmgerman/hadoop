@@ -2057,6 +2057,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getExecString ()
 specifier|protected
 name|String
@@ -2068,6 +2070,8 @@ return|return
 name|command
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseExecResult (BufferedReader lines)
 specifier|protected
 name|void

@@ -127,6 +127,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -183,6 +185,8 @@ argument_list|,
 name|permission
 argument_list|)
 block|{
+annotation|@
+name|Override
 specifier|public
 name|PermissionStatus
 name|applyUMask
@@ -197,6 +201,8 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
 specifier|public
 name|void
 name|readFields
@@ -322,7 +328,8 @@ return|return
 name|this
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -370,7 +377,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -481,7 +489,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

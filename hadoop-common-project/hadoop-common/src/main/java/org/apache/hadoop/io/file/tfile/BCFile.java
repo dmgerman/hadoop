@@ -1012,6 +1012,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Close the BCFile Writer. Attempting to use the Writer after calling      *<code>close</code> is not allowed and may lead to undetermined results.      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1431,6 +1433,8 @@ operator|=
 name|compressAlgo
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|register (long raw, long begin, long end)
 specifier|public
 name|void
@@ -1487,6 +1491,8 @@ parameter_list|()
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
 DECL|method|register (long raw, long begin, long end)
 specifier|public
 name|void
@@ -2088,6 +2094,8 @@ name|API_VERSION
 return|;
 block|}
 comment|/**      * Finishing reading the BCFile. Release all resources.      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -64,6 +64,8 @@ name|JavaGenerator
 parameter_list|()
 block|{   }
 comment|/**    * Generate Java code for records. This method is only a front-end to    * JRecord, since one file is generated for each record.    *    * @param name possibly full pathname to the file    * @param ilist included files (as JFile)    * @param rlist List of records defined within this file    * @param destDir output directory    */
+annotation|@
+name|Override
 DECL|method|genCode (String name, ArrayList<JFile> ilist, ArrayList<JRecord> rlist, String destDir, ArrayList<String> options)
 name|void
 name|genCode

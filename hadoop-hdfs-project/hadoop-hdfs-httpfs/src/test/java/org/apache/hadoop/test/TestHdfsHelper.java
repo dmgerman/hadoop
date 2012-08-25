@@ -159,6 +159,8 @@ extends|extends
 name|TestDirHelper
 block|{
 annotation|@
+name|Override
+annotation|@
 name|Test
 DECL|method|dummy ()
 specifier|public

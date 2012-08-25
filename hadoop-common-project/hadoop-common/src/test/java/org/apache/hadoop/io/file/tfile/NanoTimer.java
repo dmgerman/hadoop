@@ -202,6 +202,8 @@ name|started
 return|;
 block|}
 comment|/**    * Format the elapsed time to a human understandable string.    *     * Note: If timer is never started, "ERR" will be returned.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

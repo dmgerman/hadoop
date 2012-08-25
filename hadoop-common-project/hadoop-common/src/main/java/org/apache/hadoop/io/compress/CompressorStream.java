@@ -235,6 +235,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -384,6 +386,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|finish ()
 specifier|public
 name|void
@@ -421,6 +425,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -435,6 +441,8 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -475,6 +483,8 @@ index|[
 literal|1
 index|]
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void

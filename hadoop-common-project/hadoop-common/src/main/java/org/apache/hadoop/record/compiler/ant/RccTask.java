@@ -319,6 +319,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Invoke the Hadoop record compiler on each record definition file    */
+annotation|@
+name|Override
 DECL|method|execute ()
 specifier|public
 name|void

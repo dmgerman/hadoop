@@ -246,6 +246,8 @@ name|ssl
 operator|.
 name|HostnameVerifier
 block|{
+annotation|@
+name|Override
 DECL|method|verify (String host, SSLSession session)
 name|boolean
 name|verify
@@ -361,6 +363,8 @@ operator|new
 name|AbstractVerifier
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|void
@@ -398,6 +402,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|String
@@ -422,6 +428,8 @@ operator|new
 name|AbstractVerifier
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|void
@@ -472,6 +480,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|String
@@ -496,6 +506,8 @@ operator|new
 name|AbstractVerifier
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|void
@@ -533,6 +545,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|String
@@ -557,6 +571,8 @@ operator|new
 name|AbstractVerifier
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|void
@@ -594,6 +610,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|String
@@ -618,6 +636,8 @@ operator|new
 name|AbstractVerifier
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|void
@@ -641,6 +661,8 @@ parameter_list|)
 block|{
 comment|// Allow everything - so never blowup.
 block|}
+annotation|@
+name|Override
 specifier|public
 specifier|final
 name|String
@@ -746,6 +768,8 @@ name|AbstractVerifier
 parameter_list|()
 block|{}
 comment|/**          * The javax.net.ssl.HostnameVerifier contract.          *          * @param host    'hostname' we used to create our socket          * @param session SSLSession with the remote server          * @return true if the host matched the one in the certificate.          */
+annotation|@
+name|Override
 DECL|method|verify (String host, SSLSession session)
 specifier|public
 name|boolean
@@ -807,6 +831,8 @@ literal|false
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|check (String host, SSLSocket ssl)
 specifier|public
 name|void
@@ -834,6 +860,8 @@ name|ssl
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|check (String host, X509Certificate cert)
 specifier|public
 name|void
@@ -861,6 +889,8 @@ name|cert
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|check (String host, String[] cns, String[] subjectAlts)
 specifier|public
 name|void
@@ -895,6 +925,8 @@ name|subjectAlts
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|check (String host[], SSLSocket ssl)
 specifier|public
 name|void
@@ -1049,6 +1081,8 @@ name|x509
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|check (String[] host, X509Certificate cert)
 specifier|public
 name|void

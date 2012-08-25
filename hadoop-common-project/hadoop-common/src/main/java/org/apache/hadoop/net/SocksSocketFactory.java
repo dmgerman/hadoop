@@ -205,7 +205,6 @@ operator|=
 name|proxy
 expr_stmt|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket ()
@@ -224,7 +223,6 @@ name|proxy
 argument_list|)
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (InetAddress addr, int port)
@@ -264,7 +262,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (InetAddress addr, int port, InetAddress localHostAddr, int localPort)
@@ -323,7 +320,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (String host, int port)
@@ -365,7 +361,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (String host, int port, InetAddress localHostAddr, int localPort)
@@ -426,7 +421,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -442,7 +436,6 @@ name|hashCode
 argument_list|()
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|equals (Object obj)
@@ -532,7 +525,8 @@ return|return
 literal|true
 return|;
 block|}
-comment|/* @inheritDoc */
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -545,7 +539,8 @@ operator|.
 name|conf
 return|;
 block|}
-comment|/* @inheritDoc */
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void

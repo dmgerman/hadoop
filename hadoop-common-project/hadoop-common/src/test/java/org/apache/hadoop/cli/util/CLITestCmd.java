@@ -78,6 +78,8 @@ operator|=
 name|type
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getExecutor (String tag)
 specifier|public
 name|CommandExecutor
@@ -118,6 +120,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|getType ()
 specifier|public
 name|CLICommandTypes
@@ -128,6 +132,8 @@ return|return
 name|type
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCmd ()
 specifier|public
 name|String
@@ -138,6 +144,8 @@ return|return
 name|cmd
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

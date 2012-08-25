@@ -304,7 +304,8 @@ return|return
 name|spaceQuota
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -363,7 +364,8 @@ name|spaceQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -536,7 +538,8 @@ else|:
 name|HEADER
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

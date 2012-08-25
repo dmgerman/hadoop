@@ -374,6 +374,8 @@ name|DEFAULT_DIRECT_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -524,6 +526,8 @@ operator|-=
 name|compressedDirectBufLen
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -599,6 +603,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|needsInput ()
 specifier|public
 specifier|synchronized
@@ -652,6 +658,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|needsDictionary ()
 specifier|public
 specifier|synchronized
@@ -663,6 +671,8 @@ return|return
 name|needDict
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|finished ()
 specifier|public
 specifier|synchronized
@@ -685,6 +695,8 @@ literal|0
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -888,6 +900,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns the number of bytes remaining in the input buffers; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.</p>    *    * @return the total (non-negative) number of unprocessed bytes in input    */
+annotation|@
+name|Override
 DECL|method|getRemaining ()
 specifier|public
 specifier|synchronized
@@ -909,6 +923,8 @@ return|;
 comment|// userBuf + compressedDirectBuf
 block|}
 comment|/**    * Resets everything including the input buffers (user and direct).</p>    */
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 specifier|synchronized
@@ -959,6 +975,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|end ()
 specifier|public
 specifier|synchronized
@@ -984,6 +1002,8 @@ literal|0
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|finalize ()
 specifier|protected
 name|void

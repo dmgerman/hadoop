@@ -1548,6 +1548,8 @@ name|versionID
 init|=
 literal|4L
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|echo (int value)
 name|int
 name|echo

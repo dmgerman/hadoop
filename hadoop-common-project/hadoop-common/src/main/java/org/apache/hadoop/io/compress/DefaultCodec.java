@@ -188,6 +188,8 @@ DECL|field|conf
 name|Configuration
 name|conf
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -204,6 +206,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -214,6 +218,8 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out)
 specifier|public
 name|CompressionOutputStream
@@ -260,6 +266,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
 specifier|public
 name|CompressionOutputStream
@@ -295,6 +303,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCompressorType ()
 specifier|public
 name|Class
@@ -315,6 +325,8 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createCompressor ()
 specifier|public
 name|Compressor
@@ -330,6 +342,8 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in)
 specifier|public
 name|CompressionInputStream
@@ -363,6 +377,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|CompressionInputStream
@@ -398,6 +414,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDecompressorType ()
 specifier|public
 name|Class
@@ -418,6 +436,8 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createDecompressor ()
 specifier|public
 name|Decompressor
@@ -433,6 +453,8 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String

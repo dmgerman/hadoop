@@ -253,6 +253,8 @@ operator|=
 name|m
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|magnitude ()
 specifier|public
 name|long

@@ -129,6 +129,8 @@ return|return
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -148,6 +150,8 @@ name|readFloat
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void

@@ -350,6 +350,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Moves files to a bad file directory on the same device, so that their    * storage will not be reused.    */
+annotation|@
+name|Override
 DECL|method|reportChecksumFailure (Path p, FSDataInputStream in, long inPos, FSDataInputStream sums, long sumsPos)
 specifier|public
 name|boolean

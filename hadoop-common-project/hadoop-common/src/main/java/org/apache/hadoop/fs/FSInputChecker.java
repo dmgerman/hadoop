@@ -395,6 +395,8 @@ literal|null
 return|;
 block|}
 comment|/**    * Read one checksum-verified byte    *     * @return     the next byte of data, or<code>-1</code> if the end of the    *             stream is reached.    * @exception  IOException  if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -438,6 +440,8 @@ literal|0xff
 return|;
 block|}
 comment|/**    * Read checksum verified bytes from this byte-input stream into     * the specified byte array, starting at the given offset.    *    *<p> This method implements the general contract of the corresponding    *<code>{@link InputStream#read(byte[], int, int) read}</code> method of    * the<code>{@link InputStream}</code> class.  As an additional    * convenience, it attempts to read as many bytes as possible by repeatedly    * invoking the<code>read</code> method of the underlying stream.  This    * iterated<code>read</code> continues until one of the following    * conditions becomes true:<ul>    *    *<li> The specified number of bytes have been read,    *    *<li> The<code>read</code> method of the underlying stream returns    *<code>-1</code>, indicating end-of-file.    *    *</ul> If the first<code>read</code> on the underlying stream returns    *<code>-1</code> to indicate end-of-file then this method returns    *<code>-1</code>.  Otherwise this method returns the number of bytes    * actually read.    *    * @param      b     destination buffer.    * @param      off   offset at which to start storing bytes.    * @param      len   maximum number of bytes to read.    * @return     the number of bytes read, or<code>-1</code> if the end of    *             the stream has been reached.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if any checksum error occurs    */
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -1179,6 +1183,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Skips over and discards<code>n</code> bytes of data from the    * input stream.    *    *<p>This method may skip more bytes than are remaining in the backing    * file. This produces no exception and the number of bytes skipped    * may include some number of bytes that were beyond the EOF of the    * backing file. Attempting to read from the stream after skipping past    * the end will result in -1 indicating the end of the file.    *    *<p>If<code>n</code> is negative, no bytes are skipped.    *    * @param      n   the number of bytes to be skipped.    * @return     the actual number of bytes skipped.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if the chunk to skip to is corrupted    */
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 specifier|synchronized
@@ -1215,6 +1221,8 @@ name|n
 return|;
 block|}
 comment|/**    * Seek to the given position in the stream.    * The next read() will be from that position.    *     *<p>This method may seek past the end of the file.    * This produces no exception and an attempt to read from    * the stream will result in -1 indicating the end of the file.    *    * @param      pos   the postion to seek to.    * @exception  IOException  if an I/O error occurs.    *             ChecksumException if the chunk to seek to is corrupted    */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -1508,6 +1516,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|markSupported ()
 specifier|final
 specifier|public
@@ -1519,6 +1529,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mark (int readlimit)
 specifier|final
 specifier|public
@@ -1529,6 +1541,8 @@ name|int
 name|readlimit
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|final
 specifier|public

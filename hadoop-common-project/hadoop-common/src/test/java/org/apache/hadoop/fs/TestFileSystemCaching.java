@@ -630,6 +630,8 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -701,6 +703,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -982,6 +986,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1021,6 +1027,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1068,6 +1076,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1138,6 +1148,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1192,6 +1204,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1495,6 +1509,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1535,6 +1551,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1588,6 +1606,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run

@@ -198,6 +198,8 @@ operator|=
 name|t
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -214,6 +216,8 @@ operator|+
 literal|")"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|genSetRTIFilter (CodeBuffer cb, Map<String, Integer> nestedStructMap)
 name|void
 name|genSetRTIFilter
@@ -240,6 +244,8 @@ name|nestedStructMap
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareTo (CodeBuffer cb, String fname, String other)
 name|void
 name|genCompareTo
@@ -552,6 +558,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genReadMethod (CodeBuffer cb, String fname, String tag, boolean decl)
 name|void
 name|genReadMethod
@@ -750,6 +758,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genWriteMethod (CodeBuffer cb, String fname, String tag)
 name|void
 name|genWriteMethod
@@ -966,6 +976,8 @@ name|decrLevel
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genSlurpBytes (CodeBuffer cb, String b, String s, String l)
 name|void
 name|genSlurpBytes
@@ -1122,6 +1134,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareBytes (CodeBuffer cb)
 name|void
 name|genCompareBytes
@@ -1387,6 +1401,8 @@ operator|=
 name|t
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -1403,6 +1419,8 @@ operator|+
 literal|")"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|genSetRTIFilter (CodeBuffer cb)
 name|void
 name|genSetRTIFilter
@@ -1465,6 +1483,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSignature ()
 name|String
 name|getSignature

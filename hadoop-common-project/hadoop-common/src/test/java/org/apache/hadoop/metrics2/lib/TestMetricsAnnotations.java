@@ -53,22 +53,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MockitoMaker
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -1092,6 +1076,8 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMetrics (MetricsCollector collector, boolean all)
 specifier|public
 name|void
@@ -1388,6 +1374,8 @@ name|Metric
 name|MutableCounterInt
 name|c1
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getMetrics (MetricsCollector collector, boolean all)
 specifier|public
 name|void

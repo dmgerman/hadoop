@@ -695,6 +695,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -735,6 +737,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -775,6 +779,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -1128,6 +1134,8 @@ DECL|field|total
 name|long
 name|total
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|start ()
 specifier|public
 name|Cron
@@ -1188,6 +1196,8 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|stop ()
 specifier|public
 name|Cron

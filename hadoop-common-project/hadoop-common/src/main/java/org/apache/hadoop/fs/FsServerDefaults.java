@@ -179,6 +179,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -407,6 +409,8 @@ comment|// /////////////////////////////////////////
 comment|// Writable
 comment|// /////////////////////////////////////////
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -466,6 +470,8 @@ name|checksumType
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

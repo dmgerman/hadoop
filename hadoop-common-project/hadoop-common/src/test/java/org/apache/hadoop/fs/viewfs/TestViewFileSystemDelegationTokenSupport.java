@@ -1036,6 +1036,8 @@ DECL|field|uri
 name|URI
 name|uri
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
 name|void
@@ -1074,6 +1076,8 @@ argument_list|)
 return|;
 comment|// ctor calls getUri before the uri is inited...
 block|}
+annotation|@
+name|Override
 DECL|method|getUri ()
 specifier|public
 name|URI

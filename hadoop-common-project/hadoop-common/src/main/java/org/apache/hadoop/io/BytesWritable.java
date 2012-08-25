@@ -225,6 +225,8 @@ name|result
 return|;
 block|}
 comment|/**    * Get the data backing the BytesWritable. Please use {@link #copyBytes()}    * if you need the returned array to be precisely the length of the data.    * @return The data is only valid between 0 and getLength() - 1.    */
+annotation|@
+name|Override
 DECL|method|getBytes ()
 specifier|public
 name|byte
@@ -252,6 +254,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the current size of the buffer.    */
+annotation|@
+name|Override
 DECL|method|getLength ()
 specifier|public
 name|int
@@ -461,6 +465,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -499,6 +505,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void

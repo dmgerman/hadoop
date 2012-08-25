@@ -102,6 +102,8 @@ literal|10
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|parse (String str)
 specifier|protected
 name|Short

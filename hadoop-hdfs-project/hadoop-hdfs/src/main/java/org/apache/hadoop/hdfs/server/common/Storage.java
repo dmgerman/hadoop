@@ -2992,6 +2992,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**      * @return a string representation of the formattable item, suitable      * for display to the user inside a prompt      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

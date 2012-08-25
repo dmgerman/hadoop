@@ -216,7 +216,6 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-comment|/**      * {@inheritDoc}      */
 annotation|@
 name|Override
 DECL|method|run (NodeBytes nb)

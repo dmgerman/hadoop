@@ -2422,6 +2422,8 @@ name|MyFsShell
 extends|extends
 name|FsShell
 block|{
+annotation|@
+name|Override
 DECL|method|registerCommands (CommandFactory factory)
 specifier|protected
 name|void

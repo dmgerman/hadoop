@@ -72,16 +72,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|AbstractCollection
 import|;
 end_import
@@ -204,6 +194,8 @@ DECL|method|EnumSetWritable ()
 name|EnumSetWritable
 parameter_list|()
 block|{   }
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator
@@ -220,6 +212,8 @@ name|iterator
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|size ()
 specifier|public
 name|int
@@ -233,6 +227,8 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|add (E e)
 specifier|public
 name|boolean
@@ -450,7 +446,8 @@ return|return
 name|value
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -603,7 +600,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -752,6 +750,8 @@ block|}
 block|}
 block|}
 comment|/**    * Returns true if<code>o</code> is an EnumSetWritable with the same value,    * or both are null.    */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -860,7 +860,8 @@ return|return
 name|elementType
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -886,7 +887,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -909,7 +911,6 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getConf ()
@@ -924,7 +925,6 @@ operator|.
 name|conf
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)

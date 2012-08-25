@@ -237,6 +237,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -267,6 +269,8 @@ name|tell
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 specifier|synchronized
@@ -305,6 +309,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long targetPos)
 specifier|public
 specifier|synchronized
@@ -340,6 +346,8 @@ name|targetPos
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 specifier|synchronized
@@ -356,6 +364,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -438,6 +448,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte b[], int off, int len)
 specifier|public
 specifier|synchronized
@@ -523,6 +535,8 @@ return|return
 name|res
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -551,6 +565,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|markSupported ()
 specifier|public
 name|boolean
@@ -561,6 +577,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mark (int readLimit)
 specifier|public
 name|void
@@ -572,6 +590,8 @@ parameter_list|)
 block|{
 comment|// Do nothing
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void

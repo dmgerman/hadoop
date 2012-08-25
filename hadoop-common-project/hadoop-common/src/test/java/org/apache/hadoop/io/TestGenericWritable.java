@@ -167,6 +167,8 @@ name|foo
 init|=
 literal|"foo"
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -188,6 +190,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -277,6 +281,8 @@ name|conf
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -296,6 +302,8 @@ name|readInt
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -315,6 +323,8 @@ name|bar
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -325,6 +335,8 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void

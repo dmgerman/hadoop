@@ -846,6 +846,8 @@ literal|"viewfs"
 return|;
 block|}
 comment|/**    * Called after a new FileSystem instance is constructed.    * @param theUri a uri whose authority section names the host, port, etc. for    *          this FileSystem    * @param conf the configuration    */
+annotation|@
+name|Override
 DECL|method|initialize (final URI theUri, final Configuration conf)
 specifier|public
 name|void

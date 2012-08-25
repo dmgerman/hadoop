@@ -77,6 +77,8 @@ name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|parse (String str)
 specifier|protected
 name|Boolean

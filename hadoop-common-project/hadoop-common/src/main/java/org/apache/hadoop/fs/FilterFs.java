@@ -773,7 +773,6 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listCorruptFileBlocks (Path path)

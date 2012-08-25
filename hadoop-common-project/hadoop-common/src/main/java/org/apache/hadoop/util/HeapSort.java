@@ -225,6 +225,8 @@ return|return;
 block|}
 block|}
 comment|/**    * Sort the given range of items using heap sort.    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|sort (IndexedSortable s, int p, int r)
 specifier|public
 name|void
@@ -252,7 +254,8 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|sort (final IndexedSortable s, final int p, final int r, final Progressable rep)
 specifier|public
 name|void

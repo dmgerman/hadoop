@@ -51,6 +51,8 @@ name|String
 name|getCmd
 parameter_list|()
 function_decl|;
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

@@ -1913,6 +1913,8 @@ operator|=
 name|length
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -1923,6 +1925,8 @@ return|return
 name|dataSize
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeUncompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -1946,6 +1950,8 @@ name|dataSize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeCompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2110,6 +2116,8 @@ operator|=
 name|length
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -2120,6 +2128,8 @@ return|return
 name|dataSize
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeUncompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2222,6 +2232,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|writeCompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2400,6 +2412,8 @@ name|theMetadata
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -2491,6 +2505,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -2596,6 +2612,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -2838,6 +2856,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -2854,6 +2874,8 @@ literal|42
 return|;
 comment|// any arbitrary constant will do
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -5131,6 +5153,8 @@ name|conf
 return|;
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -5602,6 +5626,8 @@ expr_stmt|;
 block|}
 comment|/** Append a key/value pair. */
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
@@ -5780,6 +5806,8 @@ expr_stmt|;
 comment|// data
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 DECL|method|appendRaw (byte[] keyData, int keyOffset, int keyLength, ValueBytes val)
 specifier|public
 specifier|synchronized
@@ -6064,6 +6092,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Compress and flush contents to dfs */
+annotation|@
+name|Override
 DECL|method|sync ()
 specifier|public
 specifier|synchronized
@@ -6151,6 +6181,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -6178,6 +6210,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -6357,6 +6391,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 DECL|method|appendRaw (byte[] keyData, int keyOffset, int keyLength, ValueBytes val)
 specifier|public
 specifier|synchronized
@@ -8304,6 +8340,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -10893,6 +10931,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Returns the name of the file. */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -12590,6 +12630,8 @@ argument_list|<
 name|IntWritable
 argument_list|>
 block|{
+annotation|@
+name|Override
 DECL|method|compare (IntWritable I, IntWritable J)
 specifier|public
 name|int
@@ -13703,6 +13745,8 @@ operator|=
 name|progress
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|lessThan (Object a, Object b)
 specifier|protected
 name|boolean
@@ -13790,6 +13834,8 @@ operator|<
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -13828,6 +13874,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKey ()
 specifier|public
 name|DataOutputBuffer
@@ -13840,6 +13888,8 @@ return|return
 name|rawKey
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|ValueBytes
@@ -13852,6 +13902,8 @@ return|return
 name|rawValue
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|boolean
@@ -13976,6 +14028,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProgress ()
 specifier|public
 name|Progress
@@ -14850,6 +14904,8 @@ return|return
 name|preserveInput
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (Object o)
 specifier|public
 name|int
@@ -14944,6 +15000,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -15019,6 +15077,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -15341,6 +15401,8 @@ name|parent
 expr_stmt|;
 block|}
 comment|/** The default cleanup. Subclasses can override this with a custom         * cleanup         */
+annotation|@
+name|Override
 DECL|method|cleanup ()
 specifier|public
 name|void
@@ -15368,6 +15430,8 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean

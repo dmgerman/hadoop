@@ -85,6 +85,8 @@ implements|,
 name|PositionedReadable
 block|{
 comment|/**    * Seek to the given offset from the start of the file.    * The next read() will be from that location.  Can't    * seek past the end of the file.    */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|abstract
@@ -98,6 +100,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Return the current offset from the start of the file    */
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 specifier|abstract
@@ -108,6 +112,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Seeks a different copy of the data.  Returns true if     * found a new source, false otherwise.    */
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 specifier|abstract
@@ -120,6 +126,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|int
@@ -190,6 +198,8 @@ name|nread
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void
@@ -264,6 +274,8 @@ name|nbytes
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void

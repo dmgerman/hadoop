@@ -138,6 +138,8 @@ return|return
 name|length
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -164,6 +166,8 @@ name|data
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -511,6 +515,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

@@ -127,6 +127,8 @@ name|URI
 name|schemeWithAuthority
 decl_stmt|;
 annotation|@
+name|Override
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public
@@ -183,6 +185,8 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|After
 DECL|method|tearDown ()
 specifier|public
@@ -198,6 +202,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|Test
 DECL|method|testBasicPaths ()

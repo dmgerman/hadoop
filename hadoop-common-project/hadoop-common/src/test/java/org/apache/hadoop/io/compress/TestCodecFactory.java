@@ -143,6 +143,8 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out)
 specifier|public
 name|CompressionOutputStream
@@ -158,6 +160,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCompressorType ()
 specifier|public
 name|Class
@@ -173,6 +177,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createCompressor ()
 specifier|public
 name|Compressor
@@ -183,6 +189,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|CompressionInputStream
@@ -201,6 +209,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in)
 specifier|public
 name|CompressionInputStream
@@ -216,6 +226,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
 specifier|public
 name|CompressionOutputStream
@@ -234,6 +246,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDecompressorType ()
 specifier|public
 name|Class
@@ -249,6 +263,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createDecompressor ()
 specifier|public
 name|Decompressor
@@ -259,6 +275,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String
@@ -278,6 +296,8 @@ name|BarCodec
 extends|extends
 name|BaseCodec
 block|{
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String
@@ -297,6 +317,8 @@ name|FooBarCodec
 extends|extends
 name|BaseCodec
 block|{
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String
@@ -316,6 +338,8 @@ name|FooCodec
 extends|extends
 name|BaseCodec
 block|{
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String
@@ -335,6 +359,8 @@ name|NewGzipCodec
 extends|extends
 name|BaseCodec
 block|{
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String

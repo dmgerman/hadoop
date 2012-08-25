@@ -32,27 +32,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|ByteArrayOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInputStream
 import|;
 end_import
 
@@ -441,6 +421,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Writes the specified byte to this output stream.    *     * @param b    *          the<code>byte</code>.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -488,6 +470,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Writes<code>b.length</code> bytes from the specified byte array to this    * output stream.    *<p>    * The<code>write</code> method of<code>SASLOutputStream</code> calls the    *<code>write</code> method of three arguments with the three arguments    *<code>b</code>,<code>0</code>, and<code>b.length</code>.    *     * @param b    *          the data.    * @exception NullPointerException    *              if<code>b</code> is null.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|write (byte[] b)
 specifier|public
 name|void
@@ -513,6 +497,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Writes<code>len</code> bytes from the specified byte array starting at    * offset<code>off</code> to this output stream.    *     * @param inBuf    *          the data.    * @param off    *          the start offset in the data.    * @param len    *          the number of bytes to write.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|write (byte[] inBuf, int off, int len)
 specifier|public
 name|void
@@ -676,6 +662,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Flushes this output stream    *     * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -691,6 +679,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Closes this output stream and releases any system resources associated with    * this stream.    *     * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -480,7 +480,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * {@inheritDoc}      */
 annotation|@
 name|Override
 DECL|method|getReconfigurableProperties ()
@@ -505,7 +504,6 @@ name|PROP4
 argument_list|)
 return|;
 block|}
-comment|/**      * {@inheritDoc}      */
 annotation|@
 name|Override
 DECL|method|reconfigurePropertyImpl (String property, String newVal)

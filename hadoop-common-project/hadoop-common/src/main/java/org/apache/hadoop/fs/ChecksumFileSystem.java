@@ -245,6 +245,8 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -286,6 +288,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Set whether to verify checksum.    */
+annotation|@
+name|Override
 DECL|method|setVerifyChecksum (boolean verifyChecksum)
 specifier|public
 name|void
@@ -321,6 +325,8 @@ name|writeChecksum
 expr_stmt|;
 block|}
 comment|/** get the raw file system */
+annotation|@
+name|Override
 DECL|method|getRawFileSystem ()
 specifier|public
 name|FileSystem
@@ -813,6 +819,8 @@ name|bytesPerSum
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getChunkPosition ( long dataPos )
 specifier|protected
 name|long
@@ -830,6 +838,8 @@ operator|*
 name|bytesPerSum
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -850,6 +860,8 @@ name|available
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] b, int off, int len)
 specifier|public
 name|int
@@ -975,6 +987,8 @@ return|return
 name|nread
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1437,6 +1451,8 @@ name|fileLen
 return|;
 block|}
 comment|/**      * Skips over and discards<code>n</code> bytes of data from the      * input stream.      *      *The<code>skip</code> method skips over some smaller number of bytes      * when reaching end of file before<code>n</code> bytes have been skipped.      * The actual number of bytes skipped is returned.  If<code>n</code> is      * negative, no bytes are skipped.      *      * @param      n   the number of bytes to be skipped.      * @return     the actual number of bytes skipped.      * @exception  IOException  if an I/O error occurs.      *             ChecksumException if the chunk to skip to is corrupted      */
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 specifier|synchronized
@@ -1487,6 +1503,8 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Seek to the given position in the stream.      * The next read() will be from that position.      *       *<p>This method does not allow seek past the end of the file.      * This produces IOException.      *      * @param      pos   the postion to seek to.      * @exception  IOException  if an I/O error occurs or seeks after EOF      *             ChecksumException if the chunk to seek to is corrupted      */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -1600,7 +1618,8 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -1880,6 +1899,8 @@ name|bytesPerSum
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1946,7 +1967,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -2197,7 +2217,6 @@ return|return
 name|out
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -2251,6 +2270,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Set replication for an existing file.    * Implement the abstract<tt>setReplication</tt> of<tt>FileSystem</tt>    * @param src file name    * @param replication new replication    * @throws IOException    * @return true if successful;    *         false if file does not exist or is a directory    */
+annotation|@
+name|Override
 DECL|method|setReplication (Path src, short replication)
 specifier|public
 name|boolean
@@ -2314,6 +2335,8 @@ literal|true
 return|;
 block|}
 comment|/**    * Rename files/dirs    */
+annotation|@
+name|Override
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -2464,6 +2487,8 @@ return|;
 block|}
 block|}
 comment|/**    * Implement the delete(Path, boolean) in checksum    * file system.    */
+annotation|@
+name|Override
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean
@@ -2580,6 +2605,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept

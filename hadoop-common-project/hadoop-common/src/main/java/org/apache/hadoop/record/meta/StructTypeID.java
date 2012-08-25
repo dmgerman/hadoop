@@ -265,6 +265,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (RecordOutput rout, String tag)
 name|void
 name|write
@@ -697,6 +699,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -715,6 +719,8 @@ name|o
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

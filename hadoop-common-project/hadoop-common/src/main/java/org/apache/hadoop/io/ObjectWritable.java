@@ -268,6 +268,8 @@ operator|=
 name|instance
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -286,6 +288,8 @@ operator|+
 literal|"]"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -309,6 +313,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -513,6 +519,8 @@ operator|=
 name|declaredClass
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -582,6 +590,8 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -2193,6 +2203,8 @@ return|return
 name|declaredClass
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -2209,6 +2221,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration

@@ -831,6 +831,8 @@ name|fastPingCounter
 init|=
 literal|0
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
 specifier|public
 name|long
@@ -849,6 +851,8 @@ operator|.
 name|versionID
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProtocolSignature (String protocol, long clientVersion, int hashcode)
 specifier|public
 name|ProtocolSignature
@@ -876,12 +880,16 @@ literal|null
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|ping ()
 specifier|public
 name|void
 name|ping
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|slowPing (boolean shouldSlow)
 specifier|public
 specifier|synchronized
@@ -933,6 +941,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|echo (String value)
 specifier|public
 name|String
@@ -948,6 +958,8 @@ return|return
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|echo (String[] values)
 specifier|public
 name|String
@@ -965,6 +977,8 @@ return|return
 name|values
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|echo (Writable writable)
 specifier|public
 name|Writable
@@ -978,6 +992,8 @@ return|return
 name|writable
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|add (int v1, int v2)
 specifier|public
 name|int
@@ -996,6 +1012,8 @@ operator|+
 name|v2
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|add (int[] values)
 specifier|public
 name|int
@@ -1040,6 +1058,8 @@ return|return
 name|sum
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|error ()
 specifier|public
 name|int
@@ -1056,6 +1076,8 @@ literal|"bobo"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|testServerGet ()
 specifier|public
 name|void
@@ -1088,6 +1110,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|exchange (int[] values)
 specifier|public
 name|int
@@ -1186,6 +1210,8 @@ name|datasize
 expr_stmt|;
 block|}
 comment|// do two RPC that transfers data.
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1348,6 +1374,8 @@ return|return
 name|done
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

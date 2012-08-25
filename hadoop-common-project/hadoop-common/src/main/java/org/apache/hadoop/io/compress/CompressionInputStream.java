@@ -176,6 +176,8 @@ operator|=
 name|in
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -191,6 +193,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Read bytes from the stream.    * Made abstract to prevent leakage to underlying stream.    */
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 specifier|abstract
@@ -221,6 +225,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * This method returns the current position in the stream.    *    * @return Current position in stream as a long    */
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -282,6 +288,8 @@ return|;
 block|}
 block|}
 comment|/**    * This method is current not supported.    *    * @throws UnsupportedOperationException    */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -300,6 +308,8 @@ argument_list|()
 throw|;
 block|}
 comment|/**    * This method is current not supported.    *    * @throws UnsupportedOperationException    */
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean

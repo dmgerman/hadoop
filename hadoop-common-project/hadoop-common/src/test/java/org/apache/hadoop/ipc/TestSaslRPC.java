@@ -1007,6 +1007,8 @@ argument_list|<
 name|TestTokenIdentifier
 argument_list|>
 block|{
+annotation|@
+name|Override
 DECL|method|createPassword (TestTokenIdentifier id)
 specifier|public
 name|byte
@@ -1024,6 +1026,8 @@ name|getBytes
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|retrievePassword (TestTokenIdentifier id)
 specifier|public
 name|byte
@@ -1043,6 +1047,8 @@ name|getBytes
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createIdentifier ()
 specifier|public
 name|TestTokenIdentifier
@@ -1064,6 +1070,8 @@ name|BadTokenSecretManager
 extends|extends
 name|TestTokenSecretManager
 block|{
+annotation|@
+name|Override
 DECL|method|retrievePassword (TestTokenIdentifier id)
 specifier|public
 name|byte
@@ -1235,6 +1243,8 @@ name|TestImpl
 implements|implements
 name|TestSaslProtocol
 block|{
+annotation|@
+name|Override
 DECL|method|getAuthMethod ()
 specifier|public
 name|AuthenticationMethod
@@ -2877,6 +2887,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run

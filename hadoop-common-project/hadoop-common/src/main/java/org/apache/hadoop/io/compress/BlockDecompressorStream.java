@@ -175,6 +175,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|protected
 name|int
@@ -336,6 +338,8 @@ return|return
 name|n
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCompressedData ()
 specifier|protected
 name|int
@@ -431,6 +435,8 @@ return|return
 name|len
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void

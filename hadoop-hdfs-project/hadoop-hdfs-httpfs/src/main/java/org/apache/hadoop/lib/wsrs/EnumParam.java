@@ -116,6 +116,8 @@ operator|=
 name|e
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|parse (String str)
 specifier|protected
 name|E

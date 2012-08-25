@@ -3071,6 +3071,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** convert a network tree to a string */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

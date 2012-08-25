@@ -259,6 +259,8 @@ name|BZip2Codec
 parameter_list|()
 block|{ }
 comment|/**   * Creates CompressionOutputStream for BZip2   *   * @param out   *            The output Stream   * @return The BZip2 CompressionOutputStream   * @throws java.io.IOException   *             Throws IO exception   */
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out)
 specifier|public
 name|CompressionOutputStream
@@ -279,6 +281,8 @@ argument_list|)
 return|;
 block|}
 comment|/**   * Creates a compressor using given OutputStream.    *   * @return CompressionOutputStream     @throws java.io.IOException    */
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
 specifier|public
 name|CompressionOutputStream
@@ -301,6 +305,8 @@ argument_list|)
 return|;
 block|}
 comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyCompressor.class   */
+annotation|@
+name|Override
 DECL|method|getCompressorType ()
 specifier|public
 name|Class
@@ -329,6 +335,8 @@ name|class
 return|;
 block|}
 comment|/**   * This functionality is currently not supported.   *   * @return Compressor   */
+annotation|@
+name|Override
 DECL|method|createCompressor ()
 specifier|public
 name|Compressor
@@ -342,6 +350,8 @@ argument_list|()
 return|;
 block|}
 comment|/**   * Creates CompressionInputStream to be used to read off uncompressed data.   *   * @param in   *            The InputStream   * @return Returns CompressionInputStream for BZip2   * @throws java.io.IOException   *             Throws IOException   */
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in)
 specifier|public
 name|CompressionInputStream
@@ -362,6 +372,8 @@ argument_list|)
 return|;
 block|}
 comment|/**   * This functionality is currently not supported.   *   * @return CompressionInputStream   */
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|CompressionInputStream
@@ -384,6 +396,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates CompressionInputStream to be used to read off uncompressed data    * in one of the two reading modes. i.e. Continuous or Blocked reading modes    *    * @param seekableIn The InputStream    * @param start The start offset into the compressed stream    * @param end The end offset into the compressed stream    * @param readMode Controls whether progress is reported continuously or    *                 only at block boundaries.    *    * @return CompressionInputStream for BZip2 aligned at block boundaries    */
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream seekableIn, Decompressor decompressor, long start, long end, READ_MODE readMode)
 specifier|public
 name|SplitCompressionInputStream
@@ -552,6 +566,8 @@ name|in
 return|;
 block|}
 comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyDecompressor.class   */
+annotation|@
+name|Override
 DECL|method|getDecompressorType ()
 specifier|public
 name|Class
@@ -580,6 +596,8 @@ name|class
 return|;
 block|}
 comment|/**   * This functionality is currently not supported.   *   * @return Decompressor   */
+annotation|@
+name|Override
 DECL|method|createDecompressor ()
 specifier|public
 name|Decompressor
@@ -593,6 +611,8 @@ argument_list|()
 return|;
 block|}
 comment|/**   * .bz2 is recognized as the default extension for compressed BZip2 files   *   * @return A String telling the default bzip2 file extension   */
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String
@@ -675,6 +695,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|finish ()
 specifier|public
 name|void
@@ -739,6 +761,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -754,6 +778,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -784,6 +810,8 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -825,6 +853,8 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1258,6 +1288,8 @@ name|bufferedIn
 return|;
 block|}
 comment|// end of method
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1284,6 +1316,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * This method updates compressed stream position exactly when the     * client of this code has read off at least one byte passed any BZip2     * end of block marker.     *     * This mechanism is very helpful to deal with data level record     * boundaries. Please see constructor and next methods of     * org.apache.hadoop.mapred.LineRecordReader as an example usage of this     * feature.  We elaborate it with an example in the following:     *     * Assume two different scenarios of the BZip2 compressed stream, where     * [m] represent end of block, \n is line delimiter and . represent compressed     * data.     *     * ............[m]......\n.......     *     * ..........\n[m]......\n.......     *     * Assume that end is right after [m].  In the first case the reading     * will stop at \n and there is no need to read one more line.  (To see the     * reason of reading one more line in the next() method is explained in LineRecordReader.)     * While in the second example LineRecordReader needs to read one more line     * (till the second \n).  Now since BZip2Codecs only update position     * at least one byte passed a maker, so it is straight forward to differentiate     * between the two cases mentioned.     *     */
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -1399,6 +1433,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -1487,6 +1523,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -1503,6 +1541,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long

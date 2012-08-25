@@ -855,6 +855,8 @@ name|countDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
 name|Object

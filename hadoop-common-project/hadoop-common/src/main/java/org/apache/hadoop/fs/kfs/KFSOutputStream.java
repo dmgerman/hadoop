@@ -32,26 +32,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -83,48 +63,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
 import|;
 end_import
 
@@ -303,6 +241,8 @@ name|tell
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (int v)
 specifier|public
 name|void
@@ -359,6 +299,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte b[], int off, int len)
 specifier|public
 name|void
@@ -415,6 +357,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -450,6 +394,8 @@ name|sync
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized

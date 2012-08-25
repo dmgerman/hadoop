@@ -298,22 +298,6 @@ name|*
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MetricsAsserts
-operator|.
-name|eqName
-import|;
-end_import
-
 begin_comment
 comment|/**  * Helpers for metrics source tests  */
 end_comment

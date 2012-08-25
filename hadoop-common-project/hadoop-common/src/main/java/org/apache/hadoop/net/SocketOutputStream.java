@@ -257,6 +257,8 @@ operator|=
 name|channel
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|performIO (ByteBuffer buf)
 name|int
 name|performIO
@@ -334,6 +336,8 @@ name|timeout
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -376,6 +380,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -469,6 +475,8 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -506,6 +514,8 @@ name|channel
 return|;
 block|}
 comment|//WritableByteChannle interface
+annotation|@
+name|Override
 DECL|method|isOpen ()
 specifier|public
 name|boolean
@@ -519,6 +529,8 @@ name|isOpen
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (ByteBuffer src)
 specifier|public
 name|int

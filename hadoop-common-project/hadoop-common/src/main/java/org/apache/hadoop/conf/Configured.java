@@ -97,6 +97,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -114,6 +116,8 @@ name|conf
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration

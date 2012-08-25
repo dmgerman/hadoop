@@ -232,6 +232,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|writeByte (byte b, String tag)
 specifier|public
 name|void
@@ -257,6 +259,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeBool (boolean b, String tag)
 specifier|public
 name|void
@@ -296,6 +300,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeInt (int i, String tag)
 specifier|public
 name|void
@@ -321,6 +327,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeLong (long l, String tag)
 specifier|public
 name|void
@@ -351,6 +359,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeFloat (float f, String tag)
 specifier|public
 name|void
@@ -376,6 +386,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeDouble (double d, String tag)
 specifier|public
 name|void
@@ -406,6 +418,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeString (String s, String tag)
 specifier|public
 name|void
@@ -441,6 +455,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeBuffer (Buffer buf, String tag)
 specifier|public
 name|void
@@ -476,6 +492,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|startRecord (Record r, String tag)
 specifier|public
 name|void
@@ -521,6 +539,8 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|endRecord (Record r, String tag)
 specifier|public
 name|void
@@ -576,6 +596,8 @@ literal|false
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|startVector (ArrayList v, String tag)
 specifier|public
 name|void
@@ -605,6 +627,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|endVector (ArrayList v, String tag)
 specifier|public
 name|void
@@ -631,6 +655,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|startMap (TreeMap v, String tag)
 specifier|public
 name|void
@@ -660,6 +686,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|endMap (TreeMap v, String tag)
 specifier|public
 name|void

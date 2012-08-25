@@ -1497,6 +1497,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Close the map. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -3201,6 +3203,8 @@ name|nextKey
 return|;
 block|}
 comment|/** Close the map. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized

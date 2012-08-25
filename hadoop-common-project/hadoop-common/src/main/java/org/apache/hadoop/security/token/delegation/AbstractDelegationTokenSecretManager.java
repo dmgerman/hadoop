@@ -1863,6 +1863,8 @@ specifier|private
 name|long
 name|lastTokenCacheCleanup
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

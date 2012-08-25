@@ -129,6 +129,8 @@ name|defaultValue
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseParam (String str)
 specifier|public
 name|String
@@ -205,6 +207,8 @@ return|return
 name|value
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parse (String str)
 specifier|protected
 name|String

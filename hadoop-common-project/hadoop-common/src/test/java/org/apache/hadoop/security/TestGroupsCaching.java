@@ -300,6 +300,8 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getGroups (String user)
 specifier|public
 name|List
@@ -353,6 +355,8 @@ name|allGroups
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|cacheGroupsRefresh ()
 specifier|public
 name|void
@@ -395,6 +399,8 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|cacheGroupsAdd (List<String> groups)
 specifier|public
 name|void

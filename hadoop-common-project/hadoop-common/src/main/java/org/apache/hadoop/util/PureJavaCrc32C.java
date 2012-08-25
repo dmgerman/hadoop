@@ -92,7 +92,8 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|long
@@ -113,7 +114,8 @@ operator|&
 literal|0xffffffffL
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void
@@ -125,7 +127,8 @@ operator|=
 literal|0xffffffff
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|update (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -339,7 +342,8 @@ operator|=
 name|localCrc
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|update (int b)
 specifier|final
 specifier|public

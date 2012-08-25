@@ -2064,6 +2064,8 @@ name|init
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (final int b)
 specifier|public
 name|void
@@ -2389,6 +2391,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**   * Overriden to close the stream.   */
+annotation|@
+name|Override
 DECL|method|finalize ()
 specifier|protected
 name|void
@@ -2467,6 +2471,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -2516,6 +2522,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -2863,6 +2871,8 @@ operator|.
 name|blockSize100k
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (final byte[] buf, int offs, final int len)
 specifier|public
 name|void

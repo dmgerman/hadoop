@@ -80,16 +80,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -113,20 +103,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|RawComparator
 import|;
 end_import
 
@@ -173,6 +149,8 @@ specifier|private
 name|ObjectInputStream
 name|ois
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|open (InputStream in)
 specifier|public
 name|void
@@ -204,6 +182,8 @@ block|}
 block|}
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -251,6 +231,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -281,6 +263,8 @@ specifier|private
 name|ObjectOutputStream
 name|oos
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|open (OutputStream out)
 specifier|public
 name|void
@@ -312,6 +296,8 @@ block|}
 block|}
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|serialize (Serializable object)
 specifier|public
 name|void
@@ -337,6 +323,8 @@ name|object
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -352,6 +340,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -380,6 +370,8 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -407,6 +399,8 @@ argument_list|>
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

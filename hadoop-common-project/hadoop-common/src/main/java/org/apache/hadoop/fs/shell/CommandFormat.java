@@ -605,6 +605,8 @@ operator|=
 name|got
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMessage ()
 specifier|public
 name|String
@@ -659,6 +661,8 @@ name|actual
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMessage ()
 specifier|public
 name|String
@@ -712,6 +716,8 @@ name|actual
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMessage ()
 specifier|public
 name|String

@@ -395,6 +395,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getUri ()
 specifier|public
 name|URI
@@ -405,6 +407,8 @@ return|return
 name|NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -456,6 +460,8 @@ name|f
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -492,6 +498,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] data)
 specifier|public
 name|int
@@ -534,6 +542,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] data, int offset, int length)
 specifier|public
 name|int
@@ -630,6 +640,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -658,6 +670,8 @@ operator|=
 name|pos
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -672,6 +686,8 @@ operator|.
 name|position
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -688,6 +704,8 @@ literal|false
 return|;
 block|}
 comment|/*      * Just forward to the fis      */
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -703,6 +721,8 @@ name|available
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -729,6 +749,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -781,6 +803,8 @@ throw|;
 comment|// assume native fs error
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -850,6 +874,8 @@ throw|;
 comment|// assume native fs error
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] b, int off, int len)
 specifier|public
 name|int
@@ -916,6 +942,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 name|long
@@ -973,6 +1001,8 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
 name|FSDataInputStream
@@ -1067,6 +1097,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*      * Just forward to the fos      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1081,6 +1113,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -1095,6 +1129,8 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -1144,6 +1180,8 @@ throw|;
 comment|// assume native fs error
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -1183,7 +1221,8 @@ comment|// assume native fs error
 block|}
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -1267,7 +1306,6 @@ name|statistics
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -1421,7 +1459,6 @@ name|statistics
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -1482,7 +1519,6 @@ return|return
 name|out
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -1545,6 +1581,8 @@ return|return
 name|out
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -1600,6 +1638,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Delete the given path to a file or directory.    * @param p the path to delete    * @param recursive to delete sub-directories    * @return true if the file or directory and all its contents were deleted    * @throws IOException if p is non-empty and recursive is false     */
+annotation|@
+name|Override
 DECL|method|delete (Path p, boolean recursive)
 specifier|public
 name|boolean
@@ -1687,6 +1727,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * {@inheritDoc}    *    * (<b>Note</b>: Returned list is not sorted in any given order,    * due to reliance on Java's {@link File#list()} API.)    */
+annotation|@
+name|Override
 DECL|method|listStatus (Path f)
 specifier|public
 name|FileStatus
@@ -1872,6 +1914,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates the specified directory hierarchy. Does not    * treat existence as an error.    */
+annotation|@
+name|Override
 DECL|method|mkdirs (Path f)
 specifier|public
 name|boolean
@@ -1983,7 +2027,6 @@ argument_list|()
 operator|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
@@ -2149,7 +2192,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getStatus (Path p)
@@ -2210,6 +2252,8 @@ argument_list|)
 return|;
 block|}
 comment|// In the case of the local filesystem, we can just rename the file.
+annotation|@
+name|Override
 DECL|method|moveFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -2233,6 +2277,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// We can write output directly to the final location
+annotation|@
+name|Override
 DECL|method|startLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|Path
@@ -2252,6 +2298,8 @@ name|fsOutputFile
 return|;
 block|}
 comment|// It's in the right place - nothing to do.
+annotation|@
+name|Override
 DECL|method|completeLocalOutput (Path fsWorkingFile, Path tmpLocalFile)
 specifier|public
 name|void
@@ -2266,6 +2314,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -2280,6 +2330,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -2290,6 +2342,8 @@ return|return
 literal|"LocalFS"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getFileStatus (Path f)
 specifier|public
 name|FileStatus

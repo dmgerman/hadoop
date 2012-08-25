@@ -415,6 +415,8 @@ name|getKind
 parameter_list|()
 function_decl|;
 comment|/**    * Get the username encoded in the token identifier    *     * @return the username or owner    */
+annotation|@
+name|Override
 DECL|method|getUser ()
 specifier|public
 name|UserGroupInformation
@@ -700,7 +702,8 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -807,7 +810,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -820,6 +824,8 @@ operator|.
 name|sequenceNumber
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -1003,6 +1009,8 @@ name|masterKeyId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -1080,6 +1088,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

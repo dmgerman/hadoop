@@ -415,6 +415,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Optimization hook.  Override this to make SequenceFile.Sorter's scream.    *    *<p>The default implementation reads the data into two {@link    * WritableComparable}s (using {@link    * Writable#readFields(DataInput)}, then calls {@link    * #compare(WritableComparable,WritableComparable)}.    */
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int
@@ -533,6 +535,8 @@ name|b
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (Object a, Object b)
 specifier|public
 name|int

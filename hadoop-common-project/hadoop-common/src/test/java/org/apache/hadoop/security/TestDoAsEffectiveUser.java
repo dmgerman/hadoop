@@ -277,20 +277,6 @@ operator|.
 name|ipc
 operator|.
 name|TestSaslRPC
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|TestSaslRPC
 operator|.
 name|TestTokenSecretManager
 import|;
@@ -714,6 +700,8 @@ name|UserGroupInformation
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|UserGroupInformation
 name|run
@@ -788,6 +776,8 @@ name|TestImpl
 implements|implements
 name|TestProtocol
 block|{
+annotation|@
+name|Override
 DECL|method|aMethod ()
 specifier|public
 name|String
@@ -806,6 +796,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProtocolVersion (String protocol, long clientVersion)
 specifier|public
 name|long
@@ -986,6 +978,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -1212,6 +1206,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -1447,6 +1443,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -1650,6 +1648,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -1846,6 +1846,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -2059,6 +2061,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run

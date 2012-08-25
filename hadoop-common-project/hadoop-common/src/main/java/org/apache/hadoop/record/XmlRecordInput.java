@@ -272,6 +272,8 @@ operator|=
 name|vlist
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|startDocument ()
 specifier|public
 name|void
@@ -280,6 +282,8 @@ parameter_list|()
 throws|throws
 name|SAXException
 block|{}
+annotation|@
+name|Override
 DECL|method|endDocument ()
 specifier|public
 name|void
@@ -288,6 +292,8 @@ parameter_list|()
 throws|throws
 name|SAXException
 block|{}
+annotation|@
+name|Override
 DECL|method|startElement (String ns, String sname, String qname, Attributes attrs)
 specifier|public
 name|void
@@ -418,6 +424,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|endElement (String ns, String sname, String qname)
 specifier|public
 name|void
@@ -471,6 +479,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|characters (char buf[], int offset, int len)
 specifier|public
 name|void
@@ -530,6 +540,8 @@ name|XmlIndex
 implements|implements
 name|Index
 block|{
+annotation|@
+name|Override
 DECL|method|done ()
 specifier|public
 name|boolean
@@ -582,6 +594,8 @@ literal|false
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|incr ()
 specifier|public
 name|void
@@ -740,6 +754,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|readByte (String tag)
 specifier|public
 name|byte
@@ -795,6 +811,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readBool (String tag)
 specifier|public
 name|boolean
@@ -850,6 +868,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readInt (String tag)
 specifier|public
 name|int
@@ -916,6 +936,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readLong (String tag)
 specifier|public
 name|long
@@ -971,6 +993,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFloat (String tag)
 specifier|public
 name|float
@@ -1026,6 +1050,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readDouble (String tag)
 specifier|public
 name|double
@@ -1081,6 +1107,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readString (String tag)
 specifier|public
 name|String
@@ -1136,6 +1164,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readBuffer (String tag)
 specifier|public
 name|Buffer
@@ -1191,6 +1221,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|startRecord (String tag)
 specifier|public
 name|void
@@ -1235,6 +1267,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|endRecord (String tag)
 specifier|public
 name|void
@@ -1279,6 +1313,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|startVector (String tag)
 specifier|public
 name|Index
@@ -1328,6 +1364,8 @@ name|XmlIndex
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|endVector (String tag)
 specifier|public
 name|void
@@ -1339,6 +1377,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Override
 DECL|method|startMap (String tag)
 specifier|public
 name|Index
@@ -1357,6 +1397,8 @@ name|tag
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|endMap (String tag)
 specifier|public
 name|void

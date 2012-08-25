@@ -37,54 +37,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_HTTPS_ADDRESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_DEFAULT
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -101,16 +53,6 @@ operator|.
 name|net
 operator|.
 name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|security
-operator|.
-name|PrivilegedExceptionAction
 import|;
 end_import
 
@@ -197,20 +139,6 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
 import|;
 end_import
 

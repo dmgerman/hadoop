@@ -1961,6 +1961,8 @@ name|StandardHostResolver
 implements|implements
 name|HostResolver
 block|{
+annotation|@
+name|Override
 DECL|method|getByName (String host)
 specifier|public
 name|InetAddress
@@ -2013,6 +2015,8 @@ name|searchlist
 argument_list|()
 decl_stmt|;
 comment|/**      * Create an InetAddress with a fully qualified hostname of the given      * hostname.  InetAddress does not qualify an incomplete hostname that      * is resolved via the domain search list.      * {@link InetAddress#getCanonicalHostName()} will fully qualify the      * hostname, but it always return the A record whereas the given hostname      * may be a CNAME.      *       * @param host a hostname or ip address      * @return InetAddress with the fully qualified hostname or ip      * @throws UnknownHostException if host does not exist      */
+annotation|@
+name|Override
 DECL|method|getByName (String host)
 specifier|public
 name|InetAddress

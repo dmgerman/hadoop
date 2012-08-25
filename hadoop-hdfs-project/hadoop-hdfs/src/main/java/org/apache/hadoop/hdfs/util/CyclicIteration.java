@@ -208,7 +208,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|iterator ()
@@ -390,7 +389,6 @@ name|next
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|hasNext ()
@@ -403,7 +401,6 @@ return|return
 name|hasnext
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|next ()

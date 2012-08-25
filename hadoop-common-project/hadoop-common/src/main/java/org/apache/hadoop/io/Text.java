@@ -253,6 +253,8 @@ name|CharsetEncoder
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|CharsetEncoder
 name|initialValue
@@ -302,6 +304,8 @@ name|CharsetDecoder
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|CharsetDecoder
 name|initialValue
@@ -454,6 +458,8 @@ name|result
 return|;
 block|}
 comment|/**    * Returns the raw bytes; however, only data up to {@link #getLength()} is    * valid. Please use {@link #copyBytes()} if you    * need the returned array to be precisely the length of the data.    */
+annotation|@
+name|Override
 DECL|method|getBytes ()
 specifier|public
 name|byte
@@ -466,6 +472,8 @@ name|bytes
 return|;
 block|}
 comment|/** Returns the number of bytes in the byte array */
+annotation|@
+name|Override
 DECL|method|getLength ()
 specifier|public
 name|int
@@ -1075,6 +1083,8 @@ throw|;
 block|}
 block|}
 comment|/** deserialize     */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -1241,6 +1251,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** serialize    * write this object to out    * length uses zero-compressed encoding    * @see Writable#write(DataOutput)    */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -1334,6 +1346,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Returns true iff<code>o</code> is a Text with the same contents.  */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -1398,6 +1412,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int

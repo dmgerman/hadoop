@@ -116,6 +116,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inheric JavaDoc
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 specifier|abstract

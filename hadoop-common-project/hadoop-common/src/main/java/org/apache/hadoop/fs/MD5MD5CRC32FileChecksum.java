@@ -311,7 +311,8 @@ operator|=
 name|md5
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getAlgorithmName ()
 specifier|public
 name|String
@@ -409,7 +410,8 @@ name|algorithm
 argument_list|)
 throw|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getLength ()
 specifier|public
 name|int
@@ -420,7 +422,8 @@ return|return
 name|LENGTH
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getBytes ()
 specifier|public
 name|byte
@@ -472,7 +475,8 @@ name|bytesPerCRC
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -508,7 +512,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -857,7 +862,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

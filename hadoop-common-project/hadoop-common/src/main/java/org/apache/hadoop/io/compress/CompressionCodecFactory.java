@@ -339,6 +339,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Print the extension map out as a string.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

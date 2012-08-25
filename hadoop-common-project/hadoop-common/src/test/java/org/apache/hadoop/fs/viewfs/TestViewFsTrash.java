@@ -156,18 +156,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|mortbay
-operator|.
-name|log
-operator|.
-name|Log
-import|;
-end_import
-
 begin_class
 DECL|class|TestViewFsTrash
 specifier|public
@@ -235,6 +223,8 @@ operator|=
 name|home
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getHomeDirectory ()
 specifier|public
 name|Path

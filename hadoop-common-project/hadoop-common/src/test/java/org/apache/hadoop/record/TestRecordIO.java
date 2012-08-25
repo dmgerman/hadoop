@@ -112,6 +112,8 @@ name|testName
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|protected
 name|void
@@ -120,6 +122,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{   }
+annotation|@
+name|Override
 DECL|method|tearDown ()
 specifier|protected
 name|void

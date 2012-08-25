@@ -1040,6 +1040,8 @@ name|MiniProtocol
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|MiniProtocol
 name|run
@@ -1203,6 +1205,8 @@ name|MiniProtocol
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|MiniProtocol
 name|run

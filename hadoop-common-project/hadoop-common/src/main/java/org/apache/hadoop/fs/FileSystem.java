@@ -778,6 +778,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -1408,6 +1410,8 @@ name|FileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileSystem
 name|run
@@ -4479,6 +4483,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -6463,6 +6469,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * No more filesystem operations are needed.  Will    * release any held locks.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -7674,6 +7682,8 @@ name|ClientFinalizer
 implements|implements
 name|Runnable
 block|{
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 specifier|synchronized
@@ -7976,7 +7986,8 @@ name|getCurrentUser
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -8035,7 +8046,8 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -8124,7 +8136,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -8436,6 +8449,8 @@ name|get
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
