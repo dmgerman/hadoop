@@ -1425,6 +1425,15 @@ operator|>
 name|REPLAY_TRANSACTION_LOG_INTERVAL
 condition|)
 block|{
+name|long
+name|deltaTxId
+init|=
+name|lastAppliedTxId
+operator|-
+name|expectedStartingTxId
+operator|+
+literal|1
+decl_stmt|;
 name|int
 name|percent
 init|=
@@ -1435,7 +1444,7 @@ argument_list|(
 operator|(
 name|float
 operator|)
-name|lastAppliedTxId
+name|deltaTxId
 operator|/
 name|numTxns
 operator|*
@@ -1448,7 +1457,7 @@ name|info
 argument_list|(
 literal|"replaying edit log: "
 operator|+
-name|lastAppliedTxId
+name|deltaTxId
 operator|+
 literal|"/"
 operator|+
