@@ -518,7 +518,7 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
-name|DataTransferProtocol
+name|DataTransferEncryptor
 import|;
 end_import
 
@@ -536,7 +536,7 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
-name|DataTransferEncryptor
+name|DataTransferProtocol
 import|;
 end_import
 
@@ -920,12 +920,6 @@ name|FSOutputSummer
 implements|implements
 name|Syncable
 block|{
-DECL|field|dfsClient
-specifier|private
-specifier|final
-name|DFSClient
-name|dfsClient
-decl_stmt|;
 DECL|field|MAX_PACKETS
 specifier|private
 specifier|static
@@ -936,6 +930,12 @@ init|=
 literal|80
 decl_stmt|;
 comment|// each packet 64K, total 5MB
+DECL|field|dfsClient
+specifier|private
+specifier|final
+name|DFSClient
+name|dfsClient
+decl_stmt|;
 DECL|field|s
 specifier|private
 name|Socket
@@ -1133,25 +1133,31 @@ decl_stmt|;
 comment|// force blocks to disk upon close
 DECL|class|Packet
 specifier|private
+specifier|static
 class|class
 name|Packet
 block|{
+DECL|field|HEART_BEAT_SEQNO
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|HEART_BEAT_SEQNO
+init|=
+operator|-
+literal|1L
+decl_stmt|;
 DECL|field|seqno
 name|long
 name|seqno
 decl_stmt|;
 comment|// sequencenumber of buffer in block
 DECL|field|offsetInBlock
+specifier|final
 name|long
 name|offsetInBlock
 decl_stmt|;
 comment|// offset in block
-DECL|field|lastPacketInBlock
-specifier|private
-name|boolean
-name|lastPacketInBlock
-decl_stmt|;
-comment|// is this the last packet in block?
 DECL|field|syncBlock
 name|boolean
 name|syncBlock
@@ -1163,6 +1169,7 @@ name|numChunks
 decl_stmt|;
 comment|// number of chunks currently in packet
 DECL|field|maxChunks
+specifier|final
 name|int
 name|maxChunks
 decl_stmt|;
@@ -1172,6 +1179,12 @@ name|byte
 index|[]
 name|buf
 decl_stmt|;
+DECL|field|lastPacketInBlock
+specifier|private
+name|boolean
+name|lastPacketInBlock
+decl_stmt|;
+comment|// is this the last packet in block?
 comment|/**      * buf is pointed into like follows:      *  (C is checksum data, D is payload data)      *      * [_________CCCCCCCCC________________DDDDDDDDDDDDDDDD___]      *           ^        ^               ^               ^      *           |        checksumPos     dataStart       dataPos      *           checksumStart      *       * Right before sending, we move the checksum data to immediately precede      * the actual data, and then insert the header into the buffer immediately      * preceding the checksum data, so we make sure to keep enough space in      * front of the checksum data to support the largest conceivable header.       */
 DECL|field|checksumStart
 name|int
@@ -1182,6 +1195,7 @@ name|int
 name|checksumPos
 decl_stmt|;
 DECL|field|dataStart
+specifier|final
 name|int
 name|dataStart
 decl_stmt|;
@@ -1189,74 +1203,30 @@ DECL|field|dataPos
 name|int
 name|dataPos
 decl_stmt|;
-DECL|field|HEART_BEAT_SEQNO
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|HEART_BEAT_SEQNO
-init|=
-operator|-
-literal|1L
-decl_stmt|;
 comment|/**      * Create a heartbeat packet.      */
-DECL|method|Packet ()
+DECL|method|Packet (int checksumSize)
 name|Packet
-parameter_list|()
+parameter_list|(
+name|int
+name|checksumSize
+parameter_list|)
 block|{
 name|this
-operator|.
-name|lastPacketInBlock
-operator|=
-literal|false
-expr_stmt|;
-name|this
-operator|.
-name|numChunks
-operator|=
+argument_list|(
 literal|0
-expr_stmt|;
-name|this
-operator|.
-name|offsetInBlock
-operator|=
+argument_list|,
 literal|0
-expr_stmt|;
-name|this
-operator|.
-name|seqno
-operator|=
+argument_list|,
+literal|0
+argument_list|,
 name|HEART_BEAT_SEQNO
-expr_stmt|;
-name|buf
-operator|=
-operator|new
-name|byte
-index|[
-name|PacketHeader
-operator|.
-name|PKT_MAX_HEADER_LEN
-index|]
-expr_stmt|;
-name|checksumStart
-operator|=
-name|checksumPos
-operator|=
-name|dataPos
-operator|=
-name|dataStart
-operator|=
-name|PacketHeader
-operator|.
-name|PKT_MAX_HEADER_LEN
-expr_stmt|;
-name|maxChunks
-operator|=
-literal|0
+argument_list|,
+name|checksumSize
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create a new packet.      *       * @param pktSize maximum size of the packet, including checksum data and actual data.      * @param chunksPerPkt maximum number of chunks per packet.      * @param offsetInBlock offset in bytes into the HDFS block.      */
-DECL|method|Packet (int pktSize, int chunksPerPkt, long offsetInBlock)
+comment|/**      * Create a new packet.      *       * @param pktSize maximum size of the packet,       *                including checksum data and actual data.      * @param chunksPerPkt maximum number of chunks per packet.      * @param offsetInBlock offset in bytes into the HDFS block.      */
+DECL|method|Packet (int pktSize, int chunksPerPkt, long offsetInBlock, long seqno, int checksumSize)
 name|Packet
 parameter_list|(
 name|int
@@ -1267,6 +1237,12 @@ name|chunksPerPkt
 parameter_list|,
 name|long
 name|offsetInBlock
+parameter_list|,
+name|long
+name|seqno
+parameter_list|,
+name|int
+name|checksumSize
 parameter_list|)
 block|{
 name|this
@@ -1291,10 +1267,7 @@ name|this
 operator|.
 name|seqno
 operator|=
-name|currentSeqno
-expr_stmt|;
-name|currentSeqno
-operator|++
+name|seqno
 expr_stmt|;
 name|buf
 operator|=
@@ -1325,10 +1298,7 @@ operator|+
 operator|(
 name|chunksPerPkt
 operator|*
-name|checksum
-operator|.
-name|getChecksumSize
-argument_list|()
+name|checksumSize
 operator|)
 expr_stmt|;
 name|dataPos
@@ -2206,7 +2176,19 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{           }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|Packet
 name|one
@@ -2358,7 +2340,19 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{               }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|doSleep
 operator|=
 literal|false
@@ -2398,7 +2392,12 @@ name|one
 operator|=
 operator|new
 name|Packet
+argument_list|(
+name|checksum
+operator|.
+name|getChecksumSize
 argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// heartbeat packet
 block|}
@@ -2583,7 +2582,19 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{                 }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -3005,7 +3016,19 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{         }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 finally|finally
 block|{
 name|response
@@ -5685,7 +5708,19 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{                 }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 else|else
@@ -6936,6 +6971,16 @@ argument_list|,
 name|chunksPerPacket
 argument_list|,
 name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|,
+name|this
+operator|.
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -7153,6 +7198,16 @@ argument_list|,
 literal|0
 argument_list|,
 name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|,
+name|this
+operator|.
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|currentPacket
@@ -7332,6 +7387,16 @@ argument_list|,
 name|chunksPerPacket
 argument_list|,
 name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|,
+name|this
+operator|.
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7373,6 +7438,16 @@ argument_list|,
 name|chunksPerPacket
 argument_list|,
 name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|,
+name|this
+operator|.
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7957,6 +8032,16 @@ argument_list|,
 literal|0
 argument_list|,
 name|bytesCurBlock
+argument_list|,
+name|currentSeqno
+operator|++
+argument_list|,
+name|this
+operator|.
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|currentPacket
@@ -8170,7 +8255,19 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{         }
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Caught exception "
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
