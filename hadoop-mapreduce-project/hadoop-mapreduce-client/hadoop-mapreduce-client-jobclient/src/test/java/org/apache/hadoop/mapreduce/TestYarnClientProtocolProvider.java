@@ -22,9 +22,9 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
-name|mock
+name|any
 import|;
 end_import
 
@@ -36,7 +36,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|any
+name|mock
 import|;
 end_import
 
@@ -628,6 +628,7 @@ argument_list|(
 name|rmDTToken
 argument_list|)
 expr_stmt|;
+specifier|final
 name|ClientRMProtocol
 name|cRMProtocol
 init|=
@@ -669,9 +670,24 @@ name|YarnConfiguration
 argument_list|(
 name|conf
 argument_list|)
-argument_list|,
-name|cRMProtocol
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|public
+specifier|synchronized
+name|void
+name|start
+parameter_list|()
+block|{
+name|this
+operator|.
+name|rmClient
+operator|=
+name|cRMProtocol
+expr_stmt|;
+block|}
+block|}
 decl_stmt|;
 name|yrunner
 operator|.
@@ -696,6 +712,16 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
+literal|"Token kind is instead "
+operator|+
+name|t
+operator|.
+name|getKind
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 literal|"Testclusterkind"
 operator|.
 name|equals

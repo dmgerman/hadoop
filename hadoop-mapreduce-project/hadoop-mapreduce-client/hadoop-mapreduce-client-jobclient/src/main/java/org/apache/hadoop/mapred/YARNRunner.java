@@ -1014,8 +1014,6 @@ block|{
 literal|"rawtypes"
 block|,
 literal|"unchecked"
-block|,
-literal|"deprecation"
 block|}
 argument_list|)
 DECL|class|YARNRunner
