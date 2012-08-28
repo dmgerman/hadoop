@@ -300,6 +300,17 @@ specifier|final
 name|DataInputBuffer
 name|buffer
 decl_stmt|;
+DECL|method|WritableComparator ()
+specifier|protected
+name|WritableComparator
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Construct for a {@link WritableComparable} implementation. */
 DECL|method|WritableComparator (Class<? extends WritableComparable> keyClass)
 specifier|protected
