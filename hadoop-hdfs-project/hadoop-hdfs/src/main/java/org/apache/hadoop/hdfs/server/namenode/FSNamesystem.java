@@ -3386,7 +3386,49 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
-comment|/**    * Instantiates an FSNamesystem loaded from the image and edits    * directories specified in the passed Configuration.    *     * @param conf the Configuration which specifies the storage directories    *             from which to load    * @return an FSNamesystem which contains the loaded namespace    * @throws IOException if loading fails    */
+comment|/**    * Clear all loaded data    */
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
+name|dir
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|dtSecretManager
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|generationStamp
+operator|.
+name|setStamp
+argument_list|(
+name|GenerationStamp
+operator|.
+name|FIRST_VALID_STAMP
+argument_list|)
+expr_stmt|;
+name|leaseManager
+operator|.
+name|removeAllLeases
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLeaseManager ()
+name|LeaseManager
+name|getLeaseManager
+parameter_list|()
+block|{
+return|return
+name|leaseManager
+return|;
+block|}
+comment|/**    /**    * Instantiates an FSNamesystem loaded from the image and edits    * directories specified in the passed Configuration.    *     * @param conf the Configuration which specifies the storage directories    *             from which to load    * @return an FSNamesystem which contains the loaded namespace    * @throws IOException if loading fails    */
 DECL|method|loadFromDisk (Configuration conf)
 specifier|public
 specifier|static

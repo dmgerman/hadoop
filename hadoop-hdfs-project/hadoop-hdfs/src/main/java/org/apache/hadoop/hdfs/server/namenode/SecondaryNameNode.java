@@ -1053,6 +1053,17 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getFSNamesystem ()
+name|FSNamesystem
+name|getFSNamesystem
+parameter_list|()
+block|{
+return|return
+name|namesystem
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setFSImage (CheckpointStorage image)
 name|void
 name|setFSImage
