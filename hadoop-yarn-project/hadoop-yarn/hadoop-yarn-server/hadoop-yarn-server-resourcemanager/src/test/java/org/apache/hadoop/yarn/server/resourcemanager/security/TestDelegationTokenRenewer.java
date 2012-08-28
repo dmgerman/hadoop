@@ -505,6 +505,26 @@ name|tokenToRenewIn2Sec
 init|=
 literal|null
 decl_stmt|;
+DECL|method|reset ()
+specifier|private
+specifier|static
+name|void
+name|reset
+parameter_list|()
+block|{
+name|counter
+operator|=
+literal|0
+expr_stmt|;
+name|lastRenewed
+operator|=
+literal|null
+expr_stmt|;
+name|tokenToRenewIn2Sec
+operator|=
+literal|null
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|handleKind (Text kind)
@@ -815,6 +835,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Renewer
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|delegationTokenRenewer
 operator|=
 operator|new
