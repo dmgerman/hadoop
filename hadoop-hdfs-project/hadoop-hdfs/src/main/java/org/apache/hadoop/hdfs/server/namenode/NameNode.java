@@ -2538,13 +2538,14 @@ block|{
 name|long
 name|trashInterval
 init|=
-name|namesystem
+name|conf
 operator|.
-name|getServerDefaults
-argument_list|()
-operator|.
-name|getTrashInterval
-argument_list|()
+name|getLong
+argument_list|(
+name|FS_TRASH_INTERVAL_KEY
+argument_list|,
+name|FS_TRASH_INTERVAL_DEFAULT
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -2571,13 +2572,9 @@ literal|"Cannot start tresh emptier with negative interval."
 operator|+
 literal|" Set "
 operator|+
-name|CommonConfigurationKeys
-operator|.
 name|FS_TRASH_INTERVAL_KEY
 operator|+
-literal|" to a"
-operator|+
-literal|" positive value."
+literal|" to a positive value."
 argument_list|)
 throw|;
 block|}
