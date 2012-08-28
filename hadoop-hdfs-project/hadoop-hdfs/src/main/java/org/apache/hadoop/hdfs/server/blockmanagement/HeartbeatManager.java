@@ -927,6 +927,8 @@ operator|.
 name|writeLock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|namesystem
@@ -937,8 +939,6 @@ condition|)
 block|{
 return|return;
 block|}
-try|try
-block|{
 synchronized|synchronized
 init|(
 name|this
