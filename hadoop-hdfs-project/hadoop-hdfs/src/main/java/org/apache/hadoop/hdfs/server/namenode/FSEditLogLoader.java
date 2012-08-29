@@ -1991,7 +1991,25 @@ name|path
 argument_list|)
 throw|;
 block|}
-comment|// Update in-memory data structures
+comment|// Update the salient file attributes.
+name|oldFile
+operator|.
+name|setAccessTime
+argument_list|(
+name|addCloseOp
+operator|.
+name|atime
+argument_list|)
+expr_stmt|;
+name|oldFile
+operator|.
+name|setModificationTimeForce
+argument_list|(
+name|addCloseOp
+operator|.
+name|mtime
+argument_list|)
+expr_stmt|;
 name|updateBlocks
 argument_list|(
 name|fsDir
