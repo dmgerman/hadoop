@@ -47,6 +47,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|JobConf
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -79,7 +93,7 @@ name|Configuration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|JobConf
 argument_list|()
 decl_stmt|;
 DECL|field|GROUP_NAME_MAX
