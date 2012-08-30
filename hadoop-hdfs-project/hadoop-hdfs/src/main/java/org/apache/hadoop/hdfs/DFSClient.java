@@ -3611,7 +3611,6 @@ block|}
 comment|/** Return the lease renewer instance. The renewer thread won't start    *  until the first output stream is created. The same instance will    *  be returned until all output streams are closed.    */
 DECL|method|getLeaseRenewer ()
 specifier|public
-specifier|synchronized
 name|LeaseRenewer
 name|getLeaseRenewer
 parameter_list|()
