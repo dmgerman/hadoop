@@ -1034,14 +1034,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Add tokens to new user so that it may execute its task correctly.
-name|job
-operator|.
-name|getCredentials
-argument_list|()
-operator|.
-name|addTokensToUGI
-argument_list|(
 name|childUGI
+operator|.
+name|addCredentials
+argument_list|(
+name|credentials
 argument_list|)
 expr_stmt|;
 comment|// Create a final reference to the task for the doAs block

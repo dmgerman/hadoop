@@ -3209,11 +3209,11 @@ operator|+
 name|jobTokenFile
 argument_list|)
 expr_stmt|;
-name|fsTokens
-operator|.
-name|addTokensToUGI
-argument_list|(
 name|currentUser
+operator|.
+name|addCredentials
+argument_list|(
+name|fsTokens
 argument_list|)
 expr_stmt|;
 comment|// For use by AppMaster itself.

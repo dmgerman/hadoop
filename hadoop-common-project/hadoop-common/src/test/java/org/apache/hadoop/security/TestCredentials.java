@@ -1591,11 +1591,11 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|creds
-operator|.
-name|addTokensToUGI
-argument_list|(
 name|ugi
+operator|.
+name|addCredentials
+argument_list|(
+name|creds
 argument_list|)
 expr_stmt|;
 name|creds
