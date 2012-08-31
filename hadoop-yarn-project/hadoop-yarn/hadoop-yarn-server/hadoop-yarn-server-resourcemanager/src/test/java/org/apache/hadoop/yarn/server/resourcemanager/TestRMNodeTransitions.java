@@ -1460,8 +1460,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|node
@@ -1554,8 +1552,6 @@ argument_list|<
 name|ContainerStatus
 argument_list|>
 argument_list|()
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,
