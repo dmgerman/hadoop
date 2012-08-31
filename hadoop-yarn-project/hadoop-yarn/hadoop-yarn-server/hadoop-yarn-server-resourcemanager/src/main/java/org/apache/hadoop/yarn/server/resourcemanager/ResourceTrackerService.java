@@ -1211,26 +1211,22 @@ return|return
 name|response
 return|;
 block|}
-name|MasterKey
-name|nextMasterKeyForNode
-init|=
-literal|null
-decl_stmt|;
 if|if
 condition|(
 name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
+name|MasterKey
 name|nextMasterKeyForNode
-operator|=
+init|=
 name|this
 operator|.
 name|containerTokenSecretManager
 operator|.
 name|getCurrentKey
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|regResponse
 operator|.
 name|setMasterKey
@@ -1261,8 +1257,6 @@ name|host
 argument_list|)
 argument_list|,
 name|capability
-argument_list|,
-name|nextMasterKeyForNode
 argument_list|)
 decl_stmt|;
 name|RMNode
@@ -1735,11 +1729,6 @@ operator|.
 name|NORMAL
 argument_list|)
 expr_stmt|;
-name|MasterKey
-name|nextMasterKeyForNode
-init|=
-literal|null
-decl_stmt|;
 comment|// Check if node's masterKey needs to be updated and if the currentKey has
 comment|// roller over, send it across
 if|if
@@ -1754,22 +1743,15 @@ init|=
 literal|false
 decl_stmt|;
 name|MasterKey
-name|nodeKnownMasterKey
-init|=
-name|rmNode
-operator|.
-name|getCurrentMasterKey
-argument_list|()
-decl_stmt|;
 name|nextMasterKeyForNode
-operator|=
+init|=
 name|this
 operator|.
 name|containerTokenSecretManager
 operator|.
 name|getNextKey
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|nextMasterKeyForNode
@@ -1779,6 +1761,14 @@ condition|)
 block|{
 comment|// nextMasterKeyForNode can be null if there is no outstanding key that
 comment|// is in the activation period.
+name|MasterKey
+name|nodeKnownMasterKey
+init|=
+name|request
+operator|.
+name|getLastKnownMasterKey
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|nodeKnownMasterKey
@@ -1846,8 +1836,6 @@ name|getKeepAliveApplications
 argument_list|()
 argument_list|,
 name|latestResponse
-argument_list|,
-name|nextMasterKeyForNode
 argument_list|)
 argument_list|)
 expr_stmt|;

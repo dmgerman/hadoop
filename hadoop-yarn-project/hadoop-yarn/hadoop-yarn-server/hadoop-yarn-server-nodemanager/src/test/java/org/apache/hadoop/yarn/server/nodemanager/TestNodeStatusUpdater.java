@@ -1947,11 +1947,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isSecurityEnabled ()
+DECL|method|isTokenKeepAliveEnabled (Configuration conf)
 specifier|protected
 name|boolean
-name|isSecurityEnabled
-parameter_list|()
+name|isTokenKeepAliveEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 return|return
 literal|true

@@ -124,26 +124,6 @@ name|HeartbeatResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|MasterKey
-import|;
-end_import
-
 begin_class
 DECL|class|RMNodeStatusEvent
 specifier|public
@@ -182,13 +162,7 @@ name|ApplicationId
 argument_list|>
 name|keepAliveAppIds
 decl_stmt|;
-DECL|field|currentMasterKey
-specifier|private
-specifier|final
-name|MasterKey
-name|currentMasterKey
-decl_stmt|;
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, HeartbeatResponse latestResponse, MasterKey currentMasterKey)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, HeartbeatResponse latestResponse)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -212,9 +186,6 @@ name|keepAliveAppIds
 parameter_list|,
 name|HeartbeatResponse
 name|latestResponse
-parameter_list|,
-name|MasterKey
-name|currentMasterKey
 parameter_list|)
 block|{
 name|super
@@ -249,12 +220,6 @@ operator|.
 name|latestResponse
 operator|=
 name|latestResponse
-expr_stmt|;
-name|this
-operator|.
-name|currentMasterKey
-operator|=
-name|currentMasterKey
 expr_stmt|;
 block|}
 DECL|method|getNodeHealthStatus ()
@@ -309,18 +274,6 @@ return|return
 name|this
 operator|.
 name|keepAliveAppIds
-return|;
-block|}
-DECL|method|getCurrentMasterKey ()
-specifier|public
-name|MasterKey
-name|getCurrentMasterKey
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|currentMasterKey
 return|;
 block|}
 block|}

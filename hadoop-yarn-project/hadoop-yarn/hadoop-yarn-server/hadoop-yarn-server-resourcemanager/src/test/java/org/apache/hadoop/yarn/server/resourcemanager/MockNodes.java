@@ -130,7 +130,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Resource
+name|NodeState
 import|;
 end_import
 
@@ -148,7 +148,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeState
+name|Resource
 import|;
 end_import
 
@@ -203,26 +203,6 @@ operator|.
 name|records
 operator|.
 name|HeartbeatResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|MasterKey
 import|;
 end_import
 
@@ -990,18 +970,6 @@ DECL|method|getLastHeartBeatResponse ()
 specifier|public
 name|HeartbeatResponse
 name|getLastHeartBeatResponse
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getCurrentMasterKey ()
-specifier|public
-name|MasterKey
-name|getCurrentMasterKey
 parameter_list|()
 block|{
 return|return

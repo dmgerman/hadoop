@@ -1396,8 +1396,7 @@ name|this
 operator|.
 name|containerTokenSecretManager
 operator|=
-operator|new
-name|RMContainerTokenSecretManager
+name|createContainerTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
@@ -1746,6 +1745,23 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createContainerTokenSecretManager ( Configuration conf)
+specifier|protected
+name|RMContainerTokenSecretManager
+name|createContainerTokenSecretManager
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|new
+name|RMContainerTokenSecretManager
+argument_list|(
+name|conf
+argument_list|)
+return|;
 block|}
 DECL|method|createSchedulerEventDispatcher ()
 specifier|protected

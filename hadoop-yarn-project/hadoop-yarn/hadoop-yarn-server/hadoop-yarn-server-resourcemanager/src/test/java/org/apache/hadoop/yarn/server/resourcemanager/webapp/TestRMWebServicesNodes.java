@@ -1157,8 +1157,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3019,8 +3017,6 @@ argument_list|<
 name|ContainerStatus
 argument_list|>
 argument_list|()
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,

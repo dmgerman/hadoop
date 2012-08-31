@@ -364,7 +364,7 @@ comment|/**    * Creates a new master-key and sets it as the primary.    */
 annotation|@
 name|Private
 DECL|method|rollMasterKey ()
-specifier|protected
+specifier|public
 name|void
 name|rollMasterKey
 parameter_list|()
@@ -411,6 +411,31 @@ name|nextMasterKey
 operator|=
 name|createNewMasterKey
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Going to activate master-key with key-id "
+operator|+
+name|this
+operator|.
+name|nextMasterKey
+operator|.
+name|getMasterKey
+argument_list|()
+operator|.
+name|getKeyId
+argument_list|()
+operator|+
+literal|" in "
+operator|+
+name|this
+operator|.
+name|activationDelay
+operator|+
+literal|"ms"
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -497,7 +522,7 @@ comment|/**    * Activate the new master-key    */
 annotation|@
 name|Private
 DECL|method|activateNextMasterKey ()
-specifier|protected
+specifier|public
 name|void
 name|activateNextMasterKey
 parameter_list|()

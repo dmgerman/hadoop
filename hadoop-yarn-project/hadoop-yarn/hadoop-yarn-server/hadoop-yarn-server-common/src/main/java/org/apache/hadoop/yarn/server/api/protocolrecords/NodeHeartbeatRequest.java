@@ -38,6 +38,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|MasterKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeStatus
 import|;
 end_import
@@ -49,20 +69,29 @@ interface|interface
 name|NodeHeartbeatRequest
 block|{
 DECL|method|getNodeStatus ()
-specifier|public
-specifier|abstract
 name|NodeStatus
 name|getNodeStatus
 parameter_list|()
 function_decl|;
 DECL|method|setNodeStatus (NodeStatus status)
-specifier|public
-specifier|abstract
 name|void
 name|setNodeStatus
 parameter_list|(
 name|NodeStatus
 name|status
+parameter_list|)
+function_decl|;
+DECL|method|getLastKnownMasterKey ()
+name|MasterKey
+name|getLastKnownMasterKey
+parameter_list|()
+function_decl|;
+DECL|method|setLastKnownMasterKey (MasterKey secretKey)
+name|void
+name|setLastKnownMasterKey
+parameter_list|(
+name|MasterKey
+name|secretKey
 parameter_list|)
 function_decl|;
 block|}
