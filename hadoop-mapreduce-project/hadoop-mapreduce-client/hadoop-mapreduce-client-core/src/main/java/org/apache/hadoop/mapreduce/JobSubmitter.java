@@ -2422,19 +2422,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Printing tokens for job: "
+literal|"Submitting tokens for job: "
 operator|+
 name|jobId
 argument_list|)
@@ -2453,33 +2445,13 @@ name|getAllTokens
 argument_list|()
 control|)
 block|{
-if|if
-condition|(
-name|token
-operator|.
-name|getKind
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"HDFS_DELEGATION_TOKEN"
-argument_list|)
-condition|)
-block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Submitting with "
-operator|+
 name|token
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 block|}
 annotation|@
