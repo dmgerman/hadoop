@@ -2358,7 +2358,7 @@ argument_list|)
 expr_stmt|;
 name|jheh
 operator|.
-name|setSignalled
+name|setForcejobCompletion
 argument_list|(
 literal|true
 argument_list|)

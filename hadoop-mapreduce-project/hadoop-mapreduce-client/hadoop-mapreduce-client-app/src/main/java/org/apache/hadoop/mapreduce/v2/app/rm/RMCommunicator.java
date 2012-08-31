@@ -758,6 +758,14 @@ name|isSignalled
 init|=
 literal|false
 decl_stmt|;
+DECL|field|shouldUnregister
+specifier|private
+specifier|volatile
+name|boolean
+name|shouldUnregister
+init|=
+literal|true
+decl_stmt|;
 DECL|method|RMCommunicator (ClientService clientService, AppContext context)
 specifier|public
 name|RMCommunicator
@@ -1435,9 +1443,15 @@ name|ie
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|shouldUnregister
+condition|)
+block|{
 name|unregister
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|stop
@@ -1791,6 +1805,31 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+DECL|method|setShouldUnregister (boolean shouldUnregister)
+specifier|public
+name|void
+name|setShouldUnregister
+parameter_list|(
+name|boolean
+name|shouldUnregister
+parameter_list|)
+block|{
+name|this
+operator|.
+name|shouldUnregister
+operator|=
+name|shouldUnregister
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RMCommunicator notified that shouldUnregistered is: "
+operator|+
+name|shouldUnregister
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|setSignalled (boolean isSignalled)
 specifier|public
 name|void
@@ -1810,7 +1849,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"RMCommunicator notified that iSignalled was : "
+literal|"RMCommunicator notified that iSignalled is: "
 operator|+
 name|isSignalled
 argument_list|)

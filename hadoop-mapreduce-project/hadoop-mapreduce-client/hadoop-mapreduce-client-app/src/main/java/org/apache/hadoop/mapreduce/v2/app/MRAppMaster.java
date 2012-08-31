@@ -1705,6 +1705,14 @@ name|UserGroupInformation
 name|currentUser
 decl_stmt|;
 comment|// Will be setup during init
+DECL|field|isLastAMRetry
+specifier|private
+specifier|volatile
+name|boolean
+name|isLastAMRetry
+init|=
+literal|false
+decl_stmt|;
 DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime)
 specifier|public
 name|MRAppMaster
@@ -1880,6 +1888,54 @@ expr_stmt|;
 name|downloadTokensAndSetupUGI
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+comment|//TODO this is a hack, we really need the RM to inform us when we
+comment|// are the last one.  This would allow us to configure retries on
+comment|// a per application basis.
+name|int
+name|numAMRetries
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_RETRIES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_RETRIES
+argument_list|)
+decl_stmt|;
+name|isLastAMRetry
+operator|=
+name|appAttemptID
+operator|.
+name|getAttemptId
+argument_list|()
+operator|>=
+name|numAMRetries
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"AM Retries: "
+operator|+
+name|numAMRetries
+operator|+
+literal|" attempt num: "
+operator|+
+name|appAttemptID
+operator|.
+name|getAttemptId
+argument_list|()
+operator|+
+literal|" is last retry: "
+operator|+
+name|isLastAMRetry
 argument_list|)
 expr_stmt|;
 name|context
@@ -2931,6 +2987,11 @@ expr_stmt|;
 block|}
 try|try
 block|{
+comment|//We are finishing cleanly so this is the last retry
+name|isLastAMRetry
+operator|=
+literal|true
+expr_stmt|;
 comment|// Stop all services
 comment|// This will also send the final report to the ResourceManager
 name|LOG
@@ -3957,7 +4018,29 @@ operator|)
 operator|.
 name|setSignalled
 argument_list|(
-literal|true
+name|isSignalled
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setShouldUnregister (boolean shouldUnregister)
+specifier|public
+name|void
+name|setShouldUnregister
+parameter_list|(
+name|boolean
+name|shouldUnregister
+parameter_list|)
+block|{
+operator|(
+operator|(
+name|RMCommunicator
+operator|)
+name|containerAllocator
+operator|)
+operator|.
+name|setShouldUnregister
+argument_list|(
+name|shouldUnregister
 argument_list|)
 expr_stmt|;
 block|}
@@ -4170,9 +4253,27 @@ parameter_list|()
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|isLastAMRetry
+condition|)
+block|{
 name|cleanupStagingDir
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping cleaning up the staging dir. "
+operator|+
+literal|"assuming AM will be retried."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -5516,6 +5617,22 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|ContainerAllocatorRouter
+operator|)
+name|appMaster
+operator|.
+name|containerAllocator
+operator|)
+operator|.
+name|setShouldUnregister
+argument_list|(
+name|appMaster
+operator|.
+name|isLastAMRetry
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -5530,9 +5647,11 @@ name|appMaster
 operator|.
 name|jobHistoryEventHandler
 operator|.
-name|setSignalled
+name|setForcejobCompletion
 argument_list|(
-literal|true
+name|appMaster
+operator|.
+name|isLastAMRetry
 argument_list|)
 expr_stmt|;
 block|}

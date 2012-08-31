@@ -698,12 +698,12 @@ argument_list|>
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Has a signal (SIGTERM etc) been issued?
-DECL|field|isSignalled
+comment|// should job completion be force when the AM shuts down?
+DECL|field|forceJobCompletion
 specifier|protected
 specifier|volatile
 name|boolean
-name|isSignalled
+name|forceJobCompletion
 init|=
 literal|false
 decl_stmt|;
@@ -1672,7 +1672,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|isSignalled
+name|forceJobCompletion
 condition|)
 block|{
 while|while
@@ -4628,28 +4628,28 @@ literal|4
 argument_list|)
 return|;
 block|}
-DECL|method|setSignalled (boolean isSignalled)
+DECL|method|setForcejobCompletion (boolean forceJobCompletion)
 specifier|public
 name|void
-name|setSignalled
+name|setForcejobCompletion
 parameter_list|(
 name|boolean
-name|isSignalled
+name|forceJobCompletion
 parameter_list|)
 block|{
 name|this
 operator|.
-name|isSignalled
+name|forceJobCompletion
 operator|=
-name|isSignalled
+name|forceJobCompletion
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"JobHistoryEventHandler notified that isSignalled was "
+literal|"JobHistoryEventHandler notified that forceJobCompletion is "
 operator|+
-name|isSignalled
+name|forceJobCompletion
 argument_list|)
 expr_stmt|;
 block|}
