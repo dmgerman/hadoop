@@ -9370,6 +9370,22 @@ name|FS_DEFAULT_NAME_KEY
 block|}
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+literal|"dfs.umaskmode"
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|CommonConfigurationKeys
+operator|.
+name|FS_PERMISSIONS_UMASK_KEY
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * A unique class which is used as a sentinel value in the caching    * for getClassByName. {@see Configuration#getClassByNameOrNull(String)}    */
 DECL|class|NegativeCacheSentinel
