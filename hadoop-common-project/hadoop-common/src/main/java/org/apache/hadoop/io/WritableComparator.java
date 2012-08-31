@@ -22,7 +22,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -32,7 +42,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|*
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -101,7 +113,8 @@ block|{
 DECL|field|comparators
 specifier|private
 specifier|static
-name|HashMap
+specifier|final
+name|ConcurrentHashMap
 argument_list|<
 name|Class
 argument_list|,
@@ -110,7 +123,7 @@ argument_list|>
 name|comparators
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|Class
 argument_list|,
@@ -120,10 +133,9 @@ argument_list|()
 decl_stmt|;
 comment|// registry
 comment|/** Get a comparator for a {@link WritableComparable} implementation. */
+DECL|method|get (Class<? extends WritableComparable> c)
 specifier|public
 specifier|static
-specifier|synchronized
-DECL|method|get (Class<? extends WritableComparable> c)
 name|WritableComparator
 name|get
 parameter_list|(
@@ -250,7 +262,6 @@ comment|/** Register an optimized comparator for a {@link WritableComparable}   
 DECL|method|define (Class c, WritableComparator comparator)
 specifier|public
 specifier|static
-specifier|synchronized
 name|void
 name|define
 parameter_list|(
