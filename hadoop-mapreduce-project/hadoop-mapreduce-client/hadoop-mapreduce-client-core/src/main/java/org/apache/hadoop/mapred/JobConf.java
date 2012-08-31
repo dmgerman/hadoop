@@ -3019,7 +3019,7 @@ name|JobContext
 operator|.
 name|MAX_TASK_FAILURES_PER_TRACKER
 argument_list|,
-literal|4
+literal|3
 argument_list|)
 return|;
 block|}
