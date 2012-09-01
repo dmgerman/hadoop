@@ -858,6 +858,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|GenericOptionsParser
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ServicePlugin
 import|;
 end_import
@@ -5202,6 +5216,26 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 expr_stmt|;
+comment|// Parse out some generic args into Configuration.
+name|GenericOptionsParser
+name|hParser
+init|=
+operator|new
+name|GenericOptionsParser
+argument_list|(
+name|conf
+argument_list|,
+name|argv
+argument_list|)
+decl_stmt|;
+name|argv
+operator|=
+name|hParser
+operator|.
+name|getRemainingArgs
+argument_list|()
+expr_stmt|;
+comment|// Parse the rest, NN specific args.
 name|StartupOption
 name|startOpt
 init|=
