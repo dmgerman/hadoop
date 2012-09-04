@@ -6579,6 +6579,15 @@ name|numOfReplicas
 argument_list|,
 name|client
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
+literal|false
+argument_list|,
 name|excludedNodes
 argument_list|,
 name|blocksize

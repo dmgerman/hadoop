@@ -110,6 +110,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -1613,7 +1623,7 @@ init|=
 name|bm
 operator|.
 name|getBlockPlacementPolicy
-argument_list|(             )
+argument_list|()
 operator|.
 name|chooseTarget
 argument_list|(
@@ -1622,6 +1632,15 @@ argument_list|,
 literal|1
 argument_list|,
 name|clientNode
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
+literal|false
 argument_list|,
 literal|null
 argument_list|,
