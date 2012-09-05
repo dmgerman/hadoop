@@ -561,6 +561,13 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+name|sched
+operator|!=
+literal|null
+condition|)
+block|{
 name|sched
 operator|.
 name|shutdown
@@ -614,6 +621,7 @@ operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 name|super
 operator|.
