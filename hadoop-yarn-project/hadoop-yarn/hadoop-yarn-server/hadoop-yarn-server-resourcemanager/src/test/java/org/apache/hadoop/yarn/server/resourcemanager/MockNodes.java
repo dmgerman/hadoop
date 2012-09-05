@@ -130,7 +130,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Resource
+name|NodeState
 import|;
 end_import
 
@@ -148,7 +148,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeState
+name|Resource
 import|;
 end_import
 

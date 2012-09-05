@@ -22,16 +22,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|ByteArrayOutputStream
 import|;
 end_import
@@ -57,20 +47,6 @@ operator|.
 name|avro
 operator|.
 name|Schema
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|avro
-operator|.
-name|io
-operator|.
-name|BinaryEncoder
 import|;
 end_import
 

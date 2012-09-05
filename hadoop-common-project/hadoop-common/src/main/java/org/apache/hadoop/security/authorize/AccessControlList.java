@@ -276,6 +276,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -1215,6 +1217,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Serializes the AccessControlList object    */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -1243,6 +1247,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Deserializes the AccessControlList object    */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

@@ -164,6 +164,8 @@ name|TestLocalFSFileContextSymlink
 extends|extends
 name|FileContextSymlinkBaseTest
 block|{
+annotation|@
+name|Override
 DECL|method|getScheme ()
 specifier|protected
 name|String
@@ -174,6 +176,8 @@ return|return
 literal|"file"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir1 ()
 specifier|protected
 name|String
@@ -191,6 +195,8 @@ operator|+
 literal|"/test1"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir2 ()
 specifier|protected
 name|String
@@ -208,6 +214,8 @@ operator|+
 literal|"/test2"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testURI ()
 specifier|protected
 name|URI
@@ -235,6 +243,8 @@ literal|null
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 annotation|@
 name|Before
 DECL|method|setUp ()

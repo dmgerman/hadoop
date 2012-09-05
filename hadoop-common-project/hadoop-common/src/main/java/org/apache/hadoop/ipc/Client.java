@@ -1874,6 +1874,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Read a byte from the stream.        * Send a ping if timeout on read. Retries if no failure is detected        * until a byte is read.        * @throws IOException for any IO problem other than socket timeout        */
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -1913,6 +1915,8 @@ condition|)
 do|;
 block|}
 comment|/** Read bytes into a buffer starting from offset<code>off</code>        * Send a ping if timeout on read. Retries if no failure is detected        * until a byte is read.        *         * @return the total number of bytes read; -1 if the connection is closed.        */
+annotation|@
+name|Override
 DECL|method|read (byte[] buf, int off, int len)
 specifier|public
 name|int
@@ -2467,6 +2471,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -3675,6 +3681,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

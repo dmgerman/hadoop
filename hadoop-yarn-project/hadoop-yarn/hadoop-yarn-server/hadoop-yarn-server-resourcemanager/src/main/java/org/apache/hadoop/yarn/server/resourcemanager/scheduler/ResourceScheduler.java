@@ -116,24 +116,6 @@ name|Recoverable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
-import|;
-end_import
-
 begin_comment
 comment|/**  * This interface is the one implemented by the schedulers. It mainly extends   * {@link YarnScheduler}.   *  */
 end_comment
@@ -155,16 +137,13 @@ name|YarnScheduler
 extends|,
 name|Recoverable
 block|{
-comment|/**    * Re-initialize the<code>ResourceScheduler</code>.    * @param conf configuration    * @param secretManager token-secret manager    * @throws IOException    */
-DECL|method|reinitialize (Configuration conf, ContainerTokenSecretManager secretManager, RMContext rmContext)
+comment|/**    * Re-initialize the<code>ResourceScheduler</code>.    * @param conf configuration    * @throws IOException    */
+DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|void
 name|reinitialize
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|ContainerTokenSecretManager
-name|secretManager
 parameter_list|,
 name|RMContext
 name|rmContext

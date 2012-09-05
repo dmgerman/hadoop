@@ -80,20 +80,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|nativeio
@@ -109,16 +95,6 @@ operator|.
 name|junit
 operator|.
 name|BeforeClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
 import|;
 end_import
 
@@ -173,16 +149,6 @@ operator|.
 name|io
 operator|.
 name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileInputStream
 import|;
 end_import
 

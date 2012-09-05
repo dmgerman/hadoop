@@ -30,34 +30,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|RawComparator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|WritableComparator
-import|;
-end_import
-
 begin_comment
 comment|/**  *   * Byte arrays test case class using GZ compression codec, base class of none  * and LZO compression classes.  *   */
 end_comment

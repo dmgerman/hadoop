@@ -1041,6 +1041,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * run    */
+annotation|@
+name|Override
 DECL|method|run (String argv[])
 specifier|public
 name|int

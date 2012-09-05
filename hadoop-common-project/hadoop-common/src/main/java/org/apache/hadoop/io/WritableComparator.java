@@ -22,7 +22,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -32,7 +42,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|*
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -101,7 +113,8 @@ block|{
 DECL|field|comparators
 specifier|private
 specifier|static
-name|HashMap
+specifier|final
+name|ConcurrentHashMap
 argument_list|<
 name|Class
 argument_list|,
@@ -110,7 +123,7 @@ argument_list|>
 name|comparators
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|Class
 argument_list|,
@@ -120,10 +133,9 @@ argument_list|()
 decl_stmt|;
 comment|// registry
 comment|/** Get a comparator for a {@link WritableComparable} implementation. */
+DECL|method|get (Class<? extends WritableComparable> c)
 specifier|public
 specifier|static
-specifier|synchronized
-DECL|method|get (Class<? extends WritableComparable> c)
 name|WritableComparator
 name|get
 parameter_list|(
@@ -250,7 +262,6 @@ comment|/** Register an optimized comparator for a {@link WritableComparable}   
 DECL|method|define (Class c, WritableComparator comparator)
 specifier|public
 specifier|static
-specifier|synchronized
 name|void
 name|define
 parameter_list|(
@@ -300,6 +311,17 @@ specifier|final
 name|DataInputBuffer
 name|buffer
 decl_stmt|;
+DECL|method|WritableComparator ()
+specifier|protected
+name|WritableComparator
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Construct for a {@link WritableComparable} implementation. */
 DECL|method|WritableComparator (Class<? extends WritableComparable> keyClass)
 specifier|protected
@@ -415,6 +437,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Optimization hook.  Override this to make SequenceFile.Sorter's scream.    *    *<p>The default implementation reads the data into two {@link    * WritableComparable}s (using {@link    * Writable#readFields(DataInput)}, then calls {@link    * #compare(WritableComparable,WritableComparable)}.    */
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int
@@ -533,6 +557,8 @@ name|b
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (Object a, Object b)
 specifier|public
 name|int

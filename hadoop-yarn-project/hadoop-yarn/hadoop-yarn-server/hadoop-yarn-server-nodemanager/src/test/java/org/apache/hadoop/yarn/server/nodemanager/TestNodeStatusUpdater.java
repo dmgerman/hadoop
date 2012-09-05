@@ -758,24 +758,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|Service
@@ -1839,7 +1821,7 @@ specifier|private
 name|Context
 name|context
 decl_stmt|;
-DECL|method|MyNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|MyNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
 name|MyNodeStatusUpdater
 parameter_list|(
@@ -1854,9 +1836,6 @@ name|healthChecker
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|super
@@ -1868,8 +1847,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 expr_stmt|;
 name|this
@@ -1909,7 +1886,7 @@ specifier|private
 name|Context
 name|context
 decl_stmt|;
-DECL|method|MyNodeStatusUpdater3 (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|MyNodeStatusUpdater3 (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
 name|MyNodeStatusUpdater3
 parameter_list|(
@@ -1924,9 +1901,6 @@ name|healthChecker
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|super
@@ -1938,8 +1912,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 expr_stmt|;
 name|this
@@ -1975,11 +1947,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isSecurityEnabled ()
+DECL|method|isTokenKeepAliveEnabled (Configuration conf)
 specifier|protected
 name|boolean
-name|isSecurityEnabled
-parameter_list|()
+name|isTokenKeepAliveEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 return|return
 literal|true
@@ -2000,7 +1975,7 @@ name|nodeStatusUpdater
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker)
 specifier|protected
 name|NodeStatusUpdater
 name|createNodeStatusUpdater
@@ -2013,9 +1988,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|this
@@ -2032,8 +2004,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 expr_stmt|;
 return|return
@@ -2647,9 +2617,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -2663,8 +2630,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -3360,9 +3325,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|MyNodeStatusUpdater
@@ -3378,8 +3340,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
 name|MyResourceTracker2
@@ -3446,9 +3406,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -3462,8 +3419,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -3485,9 +3440,6 @@ parameter_list|,
 name|NodeStatusUpdater
 name|nodeStatusUpdater
 parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
-parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
 parameter_list|,
@@ -3508,8 +3460,6 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|,
 name|aclsManager
 argument_list|,
@@ -4010,9 +3960,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 name|MyNodeStatusUpdater
@@ -4028,8 +3975,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
 name|MyResourceTracker2

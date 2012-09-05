@@ -42,18 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|zip
-operator|.
-name|GZIPInputStream
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -125,46 +113,6 @@ operator|.
 name|zlib
 operator|.
 name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|zlib
-operator|.
-name|ZlibCompressor
-operator|.
-name|CompressionLevel
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|zlib
-operator|.
-name|ZlibCompressor
-operator|.
-name|CompressionStrategy
 import|;
 end_import
 
@@ -275,6 +223,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -289,6 +239,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -303,6 +255,8 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -322,6 +276,8 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (byte[] data, int offset, int length)
 specifier|public
 name|void
@@ -352,6 +308,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|finish ()
 specifier|public
 name|void
@@ -371,6 +329,8 @@ name|finish
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -391,6 +351,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out)
 specifier|public
 name|CompressionOutputStream
@@ -439,6 +401,8 @@ name|out
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
 specifier|public
 name|CompressionOutputStream
@@ -485,6 +449,8 @@ name|out
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createCompressor ()
 specifier|public
 name|Compressor
@@ -510,6 +476,8 @@ else|:
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCompressorType ()
 specifier|public
 name|Class
@@ -536,6 +504,8 @@ else|:
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in)
 specifier|public
 name|CompressionInputStream
@@ -556,6 +526,8 @@ literal|null
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
 specifier|public
 name|CompressionInputStream
@@ -605,6 +577,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|createDecompressor ()
 specifier|public
 name|Decompressor
@@ -630,6 +604,8 @@ name|BuiltInGzipDecompressor
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDecompressorType ()
 specifier|public
 name|Class
@@ -658,6 +634,8 @@ operator|.
 name|class
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDefaultExtension ()
 specifier|public
 name|String

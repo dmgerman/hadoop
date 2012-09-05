@@ -370,9 +370,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -475,7 +477,7 @@ name|queue
 decl_stmt|;
 DECL|field|containerTokenSecretManager
 specifier|private
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
 DECL|method|AppSchedulable (FairScheduler scheduler, FSSchedulerApp app, FSQueue queue)

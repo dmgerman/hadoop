@@ -30,16 +30,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -169,6 +159,8 @@ operator|.
 name|typeIDValue
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (RecordOutput rout, String tag)
 name|void
 name|write
@@ -211,6 +203,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Two map  typeIDs are equal if their constituent elements have the     * same type    */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -266,6 +260,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * We use a basic hashcode implementation, since this class will likely not    * be used as a hashmap key     */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

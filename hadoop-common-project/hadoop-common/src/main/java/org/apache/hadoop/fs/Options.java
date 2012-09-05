@@ -88,18 +88,6 @@ name|Progressable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|HadoopIllegalArgumentException
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class contains options related to file system operations.  */
 end_comment

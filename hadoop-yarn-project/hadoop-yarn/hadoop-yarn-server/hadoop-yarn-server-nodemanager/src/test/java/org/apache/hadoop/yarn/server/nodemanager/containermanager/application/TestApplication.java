@@ -166,6 +166,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -185,24 +203,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAccessType
 import|;
 end_import
 
@@ -578,7 +578,7 @@ name|loghandler
 operator|.
 name|event
 operator|.
-name|LogHandlerEventType
+name|LogHandlerEvent
 import|;
 end_import
 
@@ -602,7 +602,7 @@ name|loghandler
 operator|.
 name|event
 operator|.
-name|LogHandlerEvent
+name|LogHandlerEventType
 import|;
 end_import
 

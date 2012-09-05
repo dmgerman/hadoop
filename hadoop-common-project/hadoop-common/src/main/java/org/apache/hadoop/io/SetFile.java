@@ -376,6 +376,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// javadoc inherited
+annotation|@
+name|Override
 DECL|method|seek (WritableComparable key)
 specifier|public
 name|boolean

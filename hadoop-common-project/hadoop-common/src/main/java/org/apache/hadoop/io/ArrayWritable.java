@@ -371,6 +371,8 @@ return|return
 name|values
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -439,6 +441,8 @@ expr_stmt|;
 comment|// store it in values
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void

@@ -311,6 +311,8 @@ specifier|private
 name|S3Bucket
 name|bucket
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -395,6 +397,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|storeFile (String key, File file, byte[] md5Hash)
 specifier|public
 name|void
@@ -530,6 +534,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|storeEmptyFile (String key)
 specifier|public
 name|void
@@ -604,6 +610,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|retrieveMetadata (String key)
 specifier|public
 name|FileMetadata
@@ -685,6 +693,8 @@ return|;
 comment|//never returned - keep compiler happy
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|retrieve (String key)
 specifier|public
 name|InputStream
@@ -736,6 +746,8 @@ return|;
 comment|//never returned - keep compiler happy
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|retrieve (String key, long byteRangeStart)
 specifier|public
 name|InputStream
@@ -802,6 +814,8 @@ return|;
 comment|//never returned - keep compiler happy
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|list (String prefix, int maxListingLength)
 specifier|public
 name|PartialListing
@@ -829,6 +843,8 @@ literal|false
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|list (String prefix, int maxListingLength, String priorLastKey, boolean recurse)
 specifier|public
 name|PartialListing
@@ -1038,6 +1054,8 @@ return|;
 comment|//never returned - keep compiler happy
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|delete (String key)
 specifier|public
 name|void
@@ -1076,6 +1094,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|copy (String srcKey, String dstKey)
 specifier|public
 name|void
@@ -1133,6 +1153,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|purge (String prefix)
 specifier|public
 name|void
@@ -1196,6 +1218,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|dump ()
 specifier|public
 name|void

@@ -247,6 +247,8 @@ name|filterConfig
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|init (FilterConfig filterConfig)
 specifier|public
 name|void
@@ -265,6 +267,8 @@ operator|=
 name|filterConfig
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|destroy ()
 specifier|public
 name|void
@@ -278,6 +282,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|doFilter (ServletRequest request, ServletResponse response, FilterChain chain)
 specifier|public
 name|void
@@ -349,6 +355,8 @@ specifier|public
 name|Initializer
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
 specifier|public
 name|void
@@ -769,6 +777,8 @@ specifier|public
 name|Initializer
 parameter_list|()
 block|{       }
+annotation|@
+name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
 specifier|public
 name|void

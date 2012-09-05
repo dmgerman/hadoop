@@ -209,6 +209,8 @@ name|operation
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSTestDir ()
 specifier|protected
 name|Path
@@ -232,6 +234,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSURI ()
 specifier|protected
 name|String
@@ -242,6 +246,8 @@ return|return
 literal|"file:///"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSConf ()
 specifier|protected
 name|Configuration

@@ -375,6 +375,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Two base typeIDs are equal if they refer to the same type    */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -438,6 +440,8 @@ operator|)
 return|;
 block|}
 comment|/**    * We use a basic hashcode implementation, since this class will likely not    * be used as a hashmap key     */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

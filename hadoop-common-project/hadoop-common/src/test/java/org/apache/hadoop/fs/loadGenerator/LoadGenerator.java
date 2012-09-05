@@ -672,6 +672,8 @@ name|id
 expr_stmt|;
 block|}
 comment|/** Main loop      * Each iteration decides what's the next operation and then pauses.      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1108,6 +1110,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Main function:    * It first initializes data by parsing the command line arguments.    * It then starts the number of DFSClient threads as specified by    * the user.    * It stops all the threads when the specified elapsed time is passed.    * Before exiting, it prints the average execution for     * each operation and operation throughput.    */
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int

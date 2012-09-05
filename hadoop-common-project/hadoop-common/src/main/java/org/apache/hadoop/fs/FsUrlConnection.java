@@ -221,7 +221,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|getInputStream ()

@@ -58,16 +58,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|InetSocketAddress
 import|;
 end_import
@@ -89,6 +79,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -1402,24 +1402,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|CompositeService
@@ -1507,13 +1489,6 @@ specifier|private
 name|Server
 name|server
 decl_stmt|;
-DECL|field|resolvedAddress
-specifier|private
-name|InetAddress
-name|resolvedAddress
-init|=
-literal|null
-decl_stmt|;
 DECL|field|rsrcLocalizationSrvc
 specifier|private
 specifier|final
@@ -1543,11 +1518,6 @@ specifier|private
 specifier|final
 name|NodeStatusUpdater
 name|nodeStatusUpdater
-decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|private
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 decl_stmt|;
 DECL|field|recordFactory
 specifier|private
@@ -1585,7 +1555,7 @@ specifier|final
 name|DeletionService
 name|deletionService
 decl_stmt|;
-DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
+DECL|method|ContainerManagerImpl (Context context, ContainerExecutor exec, DeletionService deletionContext, NodeStatusUpdater nodeStatusUpdater, NodeManagerMetrics metrics, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|public
 name|ContainerManagerImpl
 parameter_list|(
@@ -1603,9 +1573,6 @@ name|nodeStatusUpdater
 parameter_list|,
 name|NodeManagerMetrics
 name|metrics
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
@@ -1688,12 +1655,6 @@ operator|.
 name|nodeStatusUpdater
 operator|=
 name|nodeStatusUpdater
-expr_stmt|;
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|=
-name|containerTokenSecretManager
 expr_stmt|;
 name|this
 operator|.
@@ -2091,7 +2052,10 @@ name|conf
 argument_list|,
 name|this
 operator|.
-name|containerTokenSecretManager
+name|context
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
 argument_list|,
 name|conf
 operator|.
@@ -2260,40 +2224,18 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Authorize the request.    *     * @param containerID    *          of the container    * @param launchContext    *          passed if verifying the startContainer, null otherwise.    * @throws YarnRemoteException    */
-DECL|method|authorizeRequest (ContainerId containerID, ContainerLaunchContext launchContext)
+comment|// Get the remoteUGI corresponding to the api call.
+DECL|method|getRemoteUgi (String containerIDStr)
 specifier|private
-name|void
-name|authorizeRequest
+name|UserGroupInformation
+name|getRemoteUgi
 parameter_list|(
-name|ContainerId
-name|containerID
-parameter_list|,
-name|ContainerLaunchContext
-name|launchContext
+name|String
+name|containerIDStr
 parameter_list|)
 throws|throws
 name|YarnRemoteException
 block|{
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-name|String
-name|containerIDStr
-init|=
-name|containerID
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|UserGroupInformation
 name|remoteUgi
 decl_stmt|;
@@ -2345,6 +2287,96 @@ name|msg
 argument_list|)
 throw|;
 block|}
+return|return
+name|remoteUgi
+return|;
+block|}
+comment|// Obtain the needed ContainerTokenIdentifier from the remote-UGI. RPC layer
+comment|// currently sets only the required id, but iterate through anyways just to
+comment|// be sure.
+DECL|method|selectContainerTokenIdentifier ( UserGroupInformation remoteUgi)
+specifier|private
+name|ContainerTokenIdentifier
+name|selectContainerTokenIdentifier
+parameter_list|(
+name|UserGroupInformation
+name|remoteUgi
+parameter_list|)
+block|{
+name|Set
+argument_list|<
+name|TokenIdentifier
+argument_list|>
+name|tokenIdentifiers
+init|=
+name|remoteUgi
+operator|.
+name|getTokenIdentifiers
+argument_list|()
+decl_stmt|;
+name|ContainerTokenIdentifier
+name|resultId
+init|=
+literal|null
+decl_stmt|;
+for|for
+control|(
+name|TokenIdentifier
+name|id
+range|:
+name|tokenIdentifiers
+control|)
+block|{
+if|if
+condition|(
+name|id
+operator|instanceof
+name|ContainerTokenIdentifier
+condition|)
+block|{
+name|resultId
+operator|=
+operator|(
+name|ContainerTokenIdentifier
+operator|)
+name|id
+expr_stmt|;
+break|break;
+block|}
+block|}
+return|return
+name|resultId
+return|;
+block|}
+comment|/**    * Authorize the request.    *     * @param containerIDStr    *          of the container    * @param launchContext    *          passed if verifying the startContainer, null otherwise.    * @param remoteUgi    *          ugi corresponding to the remote end making the api-call    * @throws YarnRemoteException    */
+DECL|method|authorizeRequest (String containerIDStr, ContainerLaunchContext launchContext, UserGroupInformation remoteUgi)
+specifier|private
+name|void
+name|authorizeRequest
+parameter_list|(
+name|String
+name|containerIDStr
+parameter_list|,
+name|ContainerLaunchContext
+name|launchContext
+parameter_list|,
+name|UserGroupInformation
+name|remoteUgi
+parameter_list|)
+throws|throws
+name|YarnRemoteException
+block|{
+if|if
+condition|(
+operator|!
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|boolean
 name|unauthorized
 init|=
@@ -2394,6 +2426,7 @@ name|containerIDStr
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
 if|if
 condition|(
 name|launchContext
@@ -2401,7 +2434,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Verify other things for startContainer() request.
+comment|// Verify other things also for startContainer() request.
 if|if
 condition|(
 name|LOG
@@ -2426,23 +2459,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// We must and should get only one TokenIdentifier from the RPC.
+comment|// Get the tokenId from the remote user ugi
 name|ContainerTokenIdentifier
 name|tokenId
 init|=
-operator|(
-name|ContainerTokenIdentifier
-operator|)
+name|selectContainerTokenIdentifier
+argument_list|(
 name|remoteUgi
-operator|.
-name|getTokenIdentifiers
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -2467,6 +2491,42 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Is the container being relaunched? Or RPC layer let startCall with
+comment|//  tokens generated off old-secret through
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|context
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
+operator|.
+name|isValidStartContainerRequest
+argument_list|(
+name|tokenId
+argument_list|)
+condition|)
+block|{
+name|unauthorized
+operator|=
+literal|true
+expr_stmt|;
+name|messageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"\n Attempt to relaunch the same "
+operator|+
+literal|"container with id "
+operator|+
+name|containerIDStr
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Ensure the token is not expired.
 comment|// Token expiry is not checked for stopContainer/getContainerStatus
 if|if
@@ -2616,11 +2676,29 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+name|String
+name|containerIDStr
+init|=
+name|containerID
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|UserGroupInformation
+name|remoteUgi
+init|=
+name|getRemoteUgi
+argument_list|(
+name|containerIDStr
+argument_list|)
+decl_stmt|;
 name|authorizeRequest
 argument_list|(
-name|containerID
+name|containerIDStr
 argument_list|,
 name|launchContext
+argument_list|,
+name|remoteUgi
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2629,10 +2707,7 @@ name|info
 argument_list|(
 literal|"Start request for "
 operator|+
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
+name|containerIDStr
 operator|+
 literal|" by user "
 operator|+
@@ -2831,7 +2906,7 @@ name|getRemoteException
 argument_list|(
 literal|"Container "
 operator|+
-name|containerID
+name|containerIDStr
 operator|+
 literal|" already is running on this node!!"
 argument_list|)
@@ -2926,6 +3001,35 @@ name|container
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|ContainerTokenIdentifier
+name|tokenId
+init|=
+name|selectContainerTokenIdentifier
+argument_list|(
+name|remoteUgi
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|context
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
+operator|.
+name|startContainerSuccessful
+argument_list|(
+name|tokenId
+argument_list|)
+expr_stmt|;
+block|}
 name|NMAuditLogger
 operator|.
 name|logSuccess
@@ -3016,12 +3120,30 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+name|String
+name|containerIDStr
+init|=
+name|containerID
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 comment|// TODO: Only the container's owner can kill containers today.
+name|UserGroupInformation
+name|remoteUgi
+init|=
+name|getRemoteUgi
+argument_list|(
+name|containerIDStr
+argument_list|)
+decl_stmt|;
 name|authorizeRequest
 argument_list|(
-name|containerID
+name|containerIDStr
 argument_list|,
 literal|null
+argument_list|,
+name|remoteUgi
 argument_list|)
 expr_stmt|;
 name|StopContainerResponse
@@ -3171,12 +3293,30 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+name|String
+name|containerIDStr
+init|=
+name|containerID
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 comment|// TODO: Only the container's owner can get containers' status today.
+name|UserGroupInformation
+name|remoteUgi
+init|=
+name|getRemoteUgi
+argument_list|(
+name|containerIDStr
+argument_list|)
+decl_stmt|;
 name|authorizeRequest
 argument_list|(
-name|containerID
+name|containerIDStr
 argument_list|,
 literal|null
+argument_list|,
+name|remoteUgi
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3185,7 +3325,7 @@ name|info
 argument_list|(
 literal|"Getting container-status for "
 operator|+
-name|containerID
+name|containerIDStr
 argument_list|)
 expr_stmt|;
 name|Container
@@ -3257,7 +3397,7 @@ name|getRemoteException
 argument_list|(
 literal|"Container "
 operator|+
-name|containerID
+name|containerIDStr
 operator|+
 literal|" is not handled by this NodeManager"
 argument_list|)

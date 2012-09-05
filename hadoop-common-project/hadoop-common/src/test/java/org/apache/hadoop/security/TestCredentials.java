@@ -112,16 +112,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|ArrayList
 import|;
 end_import
@@ -143,18 +133,6 @@ operator|.
 name|util
 operator|.
 name|Collection
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
 import|;
 end_import
 
@@ -1613,11 +1591,11 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|creds
-operator|.
-name|addTokensToUGI
-argument_list|(
 name|ugi
+operator|.
+name|addCredentials
+argument_list|(
+name|creds
 argument_list|)
 expr_stmt|;
 name|creds

@@ -110,6 +110,8 @@ return|return
 name|count
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void

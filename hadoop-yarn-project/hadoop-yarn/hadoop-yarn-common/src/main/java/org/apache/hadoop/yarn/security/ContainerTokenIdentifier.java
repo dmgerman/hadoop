@@ -298,7 +298,12 @@ specifier|private
 name|long
 name|expiryTimeStamp
 decl_stmt|;
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, Resource r, long expiryTimeStamp)
+DECL|field|masterKeyId
+specifier|private
+name|int
+name|masterKeyId
+decl_stmt|;
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, Resource r, long expiryTimeStamp, int masterKeyId)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
@@ -313,6 +318,9 @@ name|r
 parameter_list|,
 name|long
 name|expiryTimeStamp
+parameter_list|,
+name|int
+name|masterKeyId
 parameter_list|)
 block|{
 name|this
@@ -338,6 +346,12 @@ operator|.
 name|expiryTimeStamp
 operator|=
 name|expiryTimeStamp
+expr_stmt|;
+name|this
+operator|.
+name|masterKeyId
+operator|=
+name|masterKeyId
 expr_stmt|;
 block|}
 comment|/**    * Default constructor needed by RPC layer/SecretManager.    */
@@ -392,6 +406,18 @@ return|return
 name|this
 operator|.
 name|expiryTimeStamp
+return|;
+block|}
+DECL|method|getMasterKeyId ()
+specifier|public
+name|int
+name|getMasterKeyId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|masterKeyId
 return|;
 block|}
 annotation|@
@@ -506,6 +532,15 @@ operator|.
 name|expiryTimeStamp
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|this
+operator|.
+name|masterKeyId
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -599,6 +634,15 @@ operator|=
 name|in
 operator|.
 name|readLong
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|masterKeyId
+operator|=
+name|in
+operator|.
+name|readInt
 argument_list|()
 expr_stmt|;
 block|}

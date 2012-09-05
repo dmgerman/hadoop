@@ -567,6 +567,8 @@ name|TryOnceThenFail
 implements|implements
 name|RetryPolicy
 block|{
+annotation|@
+name|Override
 DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
 specifier|public
 name|RetryAction
@@ -601,6 +603,8 @@ name|RetryForever
 implements|implements
 name|RetryPolicy
 block|{
+annotation|@
+name|Override
 DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
 specifier|public
 name|RetryAction
@@ -1865,6 +1869,8 @@ operator|=
 name|exceptionToPolicyMap
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
 specifier|public
 name|RetryAction
@@ -2027,6 +2033,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
 specifier|public
 name|RetryAction

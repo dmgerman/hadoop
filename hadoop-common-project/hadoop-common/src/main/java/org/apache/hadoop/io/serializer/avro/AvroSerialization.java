@@ -279,6 +279,8 @@ init|=
 literal|"Avro-Schema"
 decl_stmt|;
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -305,6 +307,8 @@ name|c
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

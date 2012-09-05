@@ -138,6 +138,8 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private

@@ -182,20 +182,6 @@ name|PureJavaCrc32
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Abstract Checksumed Fs.  * It provide a basic implementation of a Checksumed Fs,  * which creates a checksum file for each raw file.  * It generates& verifies checksums at the client side.  */
 end_comment
@@ -301,6 +287,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Set whether to verify checksum.    */
+annotation|@
+name|Override
 DECL|method|setVerifyChecksum (boolean inVerifyChecksum)
 specifier|public
 name|void
@@ -814,6 +802,8 @@ name|bytesPerSum
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getChunkPosition (long dataPos)
 specifier|protected
 name|long
@@ -831,6 +821,8 @@ operator|*
 name|bytesPerSum
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -851,6 +843,8 @@ name|available
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] b, int off, int len)
 specifier|public
 name|int
@@ -978,6 +972,8 @@ return|return
 name|nread
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1370,6 +1366,8 @@ name|fileLen
 return|;
 block|}
 comment|/**      * Skips over and discards<code>n</code> bytes of data from the      * input stream.      *      * The<code>skip</code> method skips over some smaller number of bytes      * when reaching end of file before<code>n</code> bytes have been skipped.      * The actual number of bytes skipped is returned.  If<code>n</code> is      * negative, no bytes are skipped.      *      * @param      n   the number of bytes to be skipped.      * @return     the actual number of bytes skipped.      * @exception  IOException  if an I/O error occurs.      *             ChecksumException if the chunk to skip to is corrupted      */
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 specifier|synchronized
@@ -1422,6 +1420,8 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Seek to the given position in the stream.      * The next read() will be from that position.      *       *<p>This method does not allow seek past the end of the file.      * This produces IOException.      *      * @param      pos   the postion to seek to.      * @exception  IOException  if an I/O error occurs or seeks after EOF      *             ChecksumException if the chunk to seek to is corrupted      */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -1746,6 +1746,8 @@ name|bytesPerSum
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -2149,6 +2151,8 @@ block|}
 block|}
 block|}
 comment|/**    * Implement the delete(Path, boolean) in checksum    * file system.    */
+annotation|@
+name|Override
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean

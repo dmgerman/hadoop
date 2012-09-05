@@ -581,7 +581,6 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|equals (Object obj)
@@ -682,7 +681,6 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|hashCode ()

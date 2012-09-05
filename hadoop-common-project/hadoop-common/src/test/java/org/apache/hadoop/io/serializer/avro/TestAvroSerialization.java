@@ -355,6 +355,8 @@ name|x
 init|=
 literal|7
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -365,6 +367,8 @@ return|return
 name|x
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -445,6 +449,8 @@ name|x
 init|=
 literal|7
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -455,6 +461,8 @@ return|return
 name|x
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean

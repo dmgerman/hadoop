@@ -174,6 +174,8 @@ index|[]
 name|tokenImage
 decl_stmt|;
 comment|/**    * This method has the standard behavior when this object has been    * created using the standard constructors.  Otherwise, it uses    * "currentToken" and "expectedTokenSequences" to generate a parse    * error message and returns it.  If this object has been created    * due to a parse error, and you do not catch it (it gets thrown    * from the parser), then this method is called during the printing    * of the final stack trace, and hence the correct error message    * gets displayed.    */
+annotation|@
+name|Override
 DECL|method|getMessage ()
 specifier|public
 name|String

@@ -311,6 +311,8 @@ operator|new
 name|Predicate
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|evaluate
@@ -388,6 +390,8 @@ operator|new
 name|Predicate
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|evaluate
@@ -462,6 +466,8 @@ operator|new
 name|Predicate
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|evaluate

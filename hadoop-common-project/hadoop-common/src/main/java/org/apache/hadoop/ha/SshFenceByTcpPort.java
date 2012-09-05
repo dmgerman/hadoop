@@ -1177,6 +1177,8 @@ operator|+
 literal|".jsch"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|isEnabled (int level)
 specifier|public
 name|boolean
@@ -1282,6 +1284,8 @@ literal|false
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|log (int level, String message)
 specifier|public
 name|void

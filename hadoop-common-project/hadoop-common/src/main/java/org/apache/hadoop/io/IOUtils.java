@@ -933,6 +933,8 @@ name|NullOutputStream
 extends|extends
 name|OutputStream
 block|{
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -951,6 +953,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{     }
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void

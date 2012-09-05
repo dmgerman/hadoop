@@ -2175,6 +2175,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
 name|void

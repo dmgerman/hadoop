@@ -238,22 +238,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|Lock
 import|;
 end_import
@@ -417,6 +401,22 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -1040,9 +1040,11 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -1296,11 +1298,6 @@ specifier|private
 name|YarnConfiguration
 name|yarnConf
 decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|private
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
-decl_stmt|;
 DECL|field|rmContext
 specifier|private
 name|RMContext
@@ -1452,12 +1449,17 @@ annotation|@
 name|Override
 DECL|method|getContainerTokenSecretManager ()
 specifier|public
-name|ContainerTokenSecretManager
+name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
 parameter_list|()
 block|{
 return|return
-name|containerTokenSecretManager
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getContainerTokenSecretManager
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -1525,17 +1527,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (Configuration conf, ContainerTokenSecretManager containerTokenSecretManager, RMContext rmContext)
 specifier|public
 specifier|synchronized
 name|void
+DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|reinitialize
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -1580,12 +1579,6 @@ name|conf
 operator|.
 name|getMaximumAllocation
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|containerTokenSecretManager
-operator|=
-name|containerTokenSecretManager
 expr_stmt|;
 name|this
 operator|.

@@ -131,6 +131,8 @@ name|operation
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getFileSystemClass ()
 specifier|protected
 name|Class
@@ -143,6 +145,8 @@ operator|.
 name|class
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSTestDir ()
 specifier|protected
 name|Path
@@ -156,6 +160,8 @@ name|getHdfsTestDir
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSURI ()
 specifier|protected
 name|String
@@ -176,6 +182,8 @@ name|FS_DEFAULT_NAME_KEY
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProxiedFSConf ()
 specifier|protected
 name|Configuration

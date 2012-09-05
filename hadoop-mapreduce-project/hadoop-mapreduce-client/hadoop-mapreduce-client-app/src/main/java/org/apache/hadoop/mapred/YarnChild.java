@@ -751,6 +751,35 @@ operator|.
 name|getCredentials
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Executing with tokens:"
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+range|:
+name|credentials
+operator|.
+name|getAllTokens
+argument_list|()
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|token
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Create TaskUmbilicalProtocol as actual task owner.
 name|UserGroupInformation
 name|taskOwner
@@ -1034,14 +1063,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Add tokens to new user so that it may execute its task correctly.
-name|job
-operator|.
-name|getCredentials
-argument_list|()
-operator|.
-name|addTokensToUGI
-argument_list|(
 name|childUGI
+operator|.
+name|addCredentials
+argument_list|(
+name|credentials
 argument_list|)
 expr_stmt|;
 comment|// Create a final reference to the task for the doAs block

@@ -930,6 +930,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** @return the conf */
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -944,6 +946,8 @@ argument_list|()
 return|;
 block|}
 comment|/** @param conf the conf to set */
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -963,7 +967,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -1021,7 +1026,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

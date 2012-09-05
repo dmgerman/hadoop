@@ -231,6 +231,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -244,6 +246,8 @@ name|pos
 return|;
 block|}
 comment|// We don't support seek.
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -263,6 +267,8 @@ literal|"Seek not supported"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -282,6 +288,8 @@ literal|"Seek not supported"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -346,6 +354,8 @@ return|return
 name|byteRead
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte buf[], int off, int len)
 specifier|public
 specifier|synchronized
@@ -427,6 +437,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -514,6 +526,8 @@ throw|;
 block|}
 block|}
 comment|// Not supported.
+annotation|@
+name|Override
 DECL|method|markSupported ()
 specifier|public
 name|boolean
@@ -524,6 +538,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mark (int readLimit)
 specifier|public
 name|void
@@ -535,6 +551,8 @@ parameter_list|)
 block|{
 comment|// Do nothing
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void

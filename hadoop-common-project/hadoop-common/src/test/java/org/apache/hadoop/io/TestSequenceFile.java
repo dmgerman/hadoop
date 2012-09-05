@@ -3520,6 +3520,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -3630,6 +3632,8 @@ name|conf
 argument_list|)
 block|{
 comment|// this method is called by the SequenceFile.Reader constructor, overwritten, so we can access the opened file
+annotation|@
+name|Override
 specifier|protected
 name|FSDataInputStream
 name|openFile

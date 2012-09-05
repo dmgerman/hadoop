@@ -112,34 +112,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -330,25 +302,6 @@ name|BlockPlacementPolicyDefault
 extends|extends
 name|BlockPlacementPolicy
 block|{
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|BlockPlacementPolicyDefault
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 DECL|field|enableDebugLogging
 specifier|private
 specifier|static
@@ -2134,7 +2087,7 @@ block|{
 comment|// do nothing here.
 block|}
 comment|/* judge if a node is a good target.    * return true if<i>node</i> has enough space,     * does not have too much load, and the rack does not have too many nodes    */
-DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerLoc, List<DatanodeDescriptor> results)
+DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, List<DatanodeDescriptor> results)
 specifier|private
 name|boolean
 name|isGoodTarget
@@ -2146,7 +2099,7 @@ name|long
 name|blockSize
 parameter_list|,
 name|int
-name|maxTargetPerLoc
+name|maxTargetPerRack
 parameter_list|,
 name|List
 argument_list|<
@@ -2162,7 +2115,7 @@ name|node
 argument_list|,
 name|blockSize
 argument_list|,
-name|maxTargetPerLoc
+name|maxTargetPerRack
 argument_list|,
 name|this
 operator|.
@@ -2172,7 +2125,8 @@ name|results
 argument_list|)
 return|;
 block|}
-DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerLoc, boolean considerLoad, List<DatanodeDescriptor> results)
+comment|/**    * Determine if a node is a good target.     *     * @param node The target node    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.     * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
+DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeDescriptor> results)
 specifier|protected
 name|boolean
 name|isGoodTarget
@@ -2184,7 +2138,7 @@ name|long
 name|blockSize
 parameter_list|,
 name|int
-name|maxTargetPerLoc
+name|maxTargetPerRack
 parameter_list|,
 name|boolean
 name|considerLoad
@@ -2514,7 +2468,7 @@ if|if
 condition|(
 name|counter
 operator|>
-name|maxTargetPerLoc
+name|maxTargetPerRack
 condition|)
 block|{
 if|if

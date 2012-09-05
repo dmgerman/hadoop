@@ -338,6 +338,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|fromString (String str)
 specifier|public
 name|T
@@ -410,6 +412,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString (T obj)
 specifier|public
 name|String
@@ -479,6 +483,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

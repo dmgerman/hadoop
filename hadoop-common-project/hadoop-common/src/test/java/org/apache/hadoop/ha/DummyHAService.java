@@ -777,6 +777,8 @@ name|DummyFencer
 implements|implements
 name|FenceMethod
 block|{
+annotation|@
+name|Override
 DECL|method|checkArgs (String args)
 specifier|public
 name|void

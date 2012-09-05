@@ -2480,7 +2480,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|addFilter (String name, String classname, Map<String, String> parameters)
 specifier|public
 name|void
@@ -2631,7 +2632,8 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|addGlobalFilter (String name, String classname, Map<String, String> parameters)
 specifier|public
 name|void

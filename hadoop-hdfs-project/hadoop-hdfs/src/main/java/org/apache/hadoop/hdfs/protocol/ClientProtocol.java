@@ -1117,6 +1117,19 @@ name|AccessControlException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Roll the edit log.    * Requires superuser privileges.    *     * @throws AccessControlException if the superuser privilege is violated    * @throws IOException if log roll fails    * @return the txid of the new segment    */
+annotation|@
+name|Idempotent
+DECL|method|rollEdits ()
+specifier|public
+name|long
+name|rollEdits
+parameter_list|()
+throws|throws
+name|AccessControlException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Enable/Disable restore failed storage.    *<p>    * sets flag to enable restore of failed storage replicas    *     * @throws AccessControlException if the superuser privilege is violated.    */
 DECL|method|restoreFailedStorage (String arg)
 specifier|public

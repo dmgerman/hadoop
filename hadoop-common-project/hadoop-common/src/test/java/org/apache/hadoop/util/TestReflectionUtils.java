@@ -47,20 +47,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -313,6 +299,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run

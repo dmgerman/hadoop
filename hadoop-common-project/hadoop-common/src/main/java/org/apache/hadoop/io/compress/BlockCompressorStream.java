@@ -153,6 +153,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Write the data provided to the compression codec, compressing no more    * than the buffer size less the compression overhead as specified during    * construction for each block.    *    * Each block contains the uncompressed length for the block, followed by    * one or more length-prefixed blocks of compressed data.    */
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -417,6 +419,8 @@ condition|)
 do|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|finish ()
 specifier|public
 name|void
@@ -465,6 +469,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|compress ()
 specifier|protected
 name|void

@@ -238,6 +238,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -265,6 +267,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept

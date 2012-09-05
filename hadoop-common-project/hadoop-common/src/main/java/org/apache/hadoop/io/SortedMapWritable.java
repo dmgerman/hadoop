@@ -226,7 +226,8 @@ name|other
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|comparator ()
 specifier|public
 name|Comparator
@@ -243,7 +244,8 @@ return|return
 literal|null
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|firstKey ()
 specifier|public
 name|WritableComparable
@@ -257,7 +259,8 @@ name|firstKey
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 specifier|public
 name|SortedMap
 argument_list|<
@@ -281,7 +284,8 @@ name|toKey
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|lastKey ()
 specifier|public
 name|WritableComparable
@@ -295,7 +299,8 @@ name|lastKey
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 specifier|public
 name|SortedMap
 argument_list|<
@@ -324,7 +329,8 @@ name|toKey
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 specifier|public
 name|SortedMap
 argument_list|<
@@ -348,7 +354,8 @@ name|fromKey
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|clear ()
 specifier|public
 name|void
@@ -361,7 +368,8 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|containsKey (Object key)
 specifier|public
 name|boolean
@@ -380,7 +388,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|containsValue (Object value)
 specifier|public
 name|boolean
@@ -399,7 +408,8 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|entrySet ()
 specifier|public
 name|Set
@@ -427,7 +437,8 @@ name|entrySet
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|get (Object key)
 specifier|public
 name|Writable
@@ -446,7 +457,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
@@ -460,7 +472,8 @@ name|isEmpty
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|keySet ()
 specifier|public
 name|Set
@@ -477,7 +490,8 @@ name|keySet
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|put (WritableComparable key, Writable value)
 specifier|public
 name|Writable
@@ -517,7 +531,8 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|putAll (Map<? extends WritableComparable, ? extends Writable> t)
 specifier|public
 name|void
@@ -575,7 +590,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|remove (Object key)
 specifier|public
 name|Writable
@@ -594,7 +610,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|size ()
 specifier|public
 name|int
@@ -608,7 +625,8 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|values ()
 specifier|public
 name|Collection
@@ -625,7 +643,6 @@ name|values
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -745,7 +762,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)

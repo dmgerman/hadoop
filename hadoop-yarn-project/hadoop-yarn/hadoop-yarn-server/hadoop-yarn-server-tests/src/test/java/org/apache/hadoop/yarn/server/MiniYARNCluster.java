@@ -54,16 +54,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|ServerSocket
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|UnknownHostException
 import|;
 end_import
@@ -527,24 +517,6 @@ operator|.
 name|recovery
 operator|.
 name|StoreFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
 import|;
 end_import
 
@@ -1801,7 +1773,7 @@ block|}
 empty_stmt|;
 annotation|@
 name|Override
-DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker)
 specifier|protected
 name|NodeStatusUpdater
 name|createNodeStatusUpdater
@@ -1814,9 +1786,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -1830,8 +1799,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 block|{
 annotation|@

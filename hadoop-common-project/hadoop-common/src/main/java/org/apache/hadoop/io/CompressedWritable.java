@@ -183,6 +183,8 @@ specifier|public
 name|CompressedWritable
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 specifier|final
@@ -297,6 +299,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 specifier|final

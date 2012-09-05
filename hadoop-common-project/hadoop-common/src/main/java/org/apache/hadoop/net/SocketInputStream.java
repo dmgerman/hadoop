@@ -173,6 +173,8 @@ operator|=
 name|channel
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|performIO (ByteBuffer buf)
 name|int
 name|performIO
@@ -350,6 +352,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -384,6 +388,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -421,6 +427,8 @@ name|channel
 return|;
 block|}
 comment|//ReadableByteChannel interface
+annotation|@
+name|Override
 DECL|method|isOpen ()
 specifier|public
 name|boolean
@@ -434,6 +442,8 @@ name|isOpen
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (ByteBuffer dst)
 specifier|public
 name|int

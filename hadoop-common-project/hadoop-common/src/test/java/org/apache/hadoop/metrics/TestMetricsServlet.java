@@ -187,6 +187,8 @@ name|OutputRecord
 name|outputRecord
 decl_stmt|;
 comment|/**    * Initializes, for testing, two NoEmitMetricsContext's, and adds one value     * to the first of them.    */
+annotation|@
+name|Override
 DECL|method|setUp ()
 specifier|public
 name|void

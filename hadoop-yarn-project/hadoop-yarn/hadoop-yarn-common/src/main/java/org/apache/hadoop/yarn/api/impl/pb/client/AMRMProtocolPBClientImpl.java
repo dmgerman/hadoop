@@ -30,6 +30,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -467,6 +477,8 @@ class|class
 name|AMRMProtocolPBClientImpl
 implements|implements
 name|AMRMProtocol
+implements|,
+name|Closeable
 block|{
 DECL|field|proxy
 specifier|private
@@ -525,6 +537,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

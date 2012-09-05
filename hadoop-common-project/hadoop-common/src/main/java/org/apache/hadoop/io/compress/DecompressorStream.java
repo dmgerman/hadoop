@@ -263,6 +263,8 @@ index|[
 literal|1
 index|]
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -304,6 +306,8 @@ literal|0xff
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -673,6 +677,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -699,6 +705,8 @@ index|[
 literal|512
 index|]
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 name|long
@@ -797,6 +805,8 @@ return|return
 name|skipped
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -818,6 +828,8 @@ else|:
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -843,6 +855,8 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|markSupported ()
 specifier|public
 name|boolean
@@ -853,6 +867,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mark (int readlimit)
 specifier|public
 specifier|synchronized
@@ -863,6 +879,8 @@ name|int
 name|readlimit
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 specifier|synchronized

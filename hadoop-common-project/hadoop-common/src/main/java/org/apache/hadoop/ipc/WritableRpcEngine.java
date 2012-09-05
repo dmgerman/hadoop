@@ -654,6 +654,8 @@ name|rpcVersion
 return|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
@@ -784,6 +786,8 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
@@ -887,6 +891,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -996,6 +1002,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -1012,6 +1020,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -1125,6 +1135,8 @@ name|factory
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|invoke (Object proxy, Method method, Object[] args)
 specifier|public
 name|Object
@@ -1234,6 +1246,8 @@ argument_list|()
 return|;
 block|}
 comment|/* close the IPC client that's responsible for this invoker's RPCs */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|synchronized
 specifier|public

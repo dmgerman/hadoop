@@ -182,6 +182,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|exists (String path)
 specifier|public
 name|boolean
@@ -206,6 +208,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isDirectory (String path)
 specifier|public
 name|boolean
@@ -230,6 +234,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isFile (String path)
 specifier|public
 name|boolean
@@ -254,6 +260,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readdir (String path)
 specifier|public
 name|String
@@ -359,6 +367,8 @@ return|return
 name|entries
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readdirplus (Path path)
 specifier|public
 name|FileStatus
@@ -380,6 +390,8 @@ name|path
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|mkdirs (String path)
 specifier|public
 name|int
@@ -412,6 +424,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|rename (String source, String dest)
 specifier|public
 name|int
@@ -453,6 +467,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|rmdir (String path)
 specifier|public
 name|int
@@ -516,6 +532,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|remove (String path)
 specifier|public
 name|int
@@ -557,6 +575,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|filesize (String path)
 specifier|public
 name|long
@@ -584,6 +604,8 @@ name|getLen
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getReplication (String path)
 specifier|public
 name|short
@@ -599,6 +621,8 @@ return|return
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setReplication (String path, short replication)
 specifier|public
 name|short
@@ -617,6 +641,8 @@ return|return
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDataLocation (String path, long start, long len)
 specifier|public
 name|String
@@ -757,6 +783,8 @@ return|return
 name|hints
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getModificationTime (String path)
 specifier|public
 name|long
@@ -798,6 +826,8 @@ name|getModificationTime
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|append (String path, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -830,6 +860,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|create (String path, short replication, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -865,6 +897,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|open (String path, int bufferSize)
 specifier|public
 name|FSDataInputStream

@@ -112,16 +112,6 @@ name|ThreadMXBean
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Timer
-import|;
-end_import
-
 begin_class
 DECL|class|TestShell
 specifier|public
@@ -159,6 +149,8 @@ name|interval
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getExecString ()
 specifier|protected
 name|String
@@ -177,6 +169,8 @@ literal|"hello"
 block|}
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseExecResult (BufferedReader lines)
 specifier|protected
 name|void

@@ -152,6 +152,8 @@ name|MessageDigest
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|MessageDigest
 name|initialValue
@@ -260,6 +262,8 @@ name|digest
 expr_stmt|;
 block|}
 comment|// javadoc from Writable
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -311,6 +315,8 @@ name|result
 return|;
 block|}
 comment|// javadoc from Writable
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -711,6 +717,8 @@ name|value
 return|;
 block|}
 comment|/** Returns true iff<code>o</code> is an MD5Hash whose digest contains the    * same values.  */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -756,6 +764,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Returns a hash code value for this object.    * Only uses the first 4 bytes, since md5s are evenly distributed.    */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -768,6 +778,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Compares this object with the specified object for order.*/
+annotation|@
+name|Override
 DECL|method|compareTo (MD5Hash that)
 specifier|public
 name|int
@@ -822,6 +834,8 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (byte[] b1, int s1, int l1, byte[] b2, int s2, int l2)
 specifier|public
 name|int
@@ -926,6 +940,8 @@ literal|'f'
 block|}
 decl_stmt|;
 comment|/** Returns a string representation of this object. */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

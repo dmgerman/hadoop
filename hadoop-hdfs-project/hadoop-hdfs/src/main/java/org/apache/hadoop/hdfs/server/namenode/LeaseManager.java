@@ -735,6 +735,28 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|removeAllLeases ()
+specifier|synchronized
+name|void
+name|removeAllLeases
+parameter_list|()
+block|{
+name|sortedLeases
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|sortedLeasesByPath
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|leases
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Reassign lease for file src to the new holder.    */
 DECL|method|reassignLease (Lease lease, String src, String newHolder)
 specifier|synchronized

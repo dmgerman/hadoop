@@ -393,6 +393,8 @@ name|expiryDate
 expr_stmt|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -463,6 +465,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

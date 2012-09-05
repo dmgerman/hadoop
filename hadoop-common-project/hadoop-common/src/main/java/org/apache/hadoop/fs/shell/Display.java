@@ -853,6 +853,8 @@ name|DataOutputBuffer
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -995,6 +997,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

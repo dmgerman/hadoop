@@ -36,16 +36,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|DataInput
 import|;
 end_import
@@ -372,20 +362,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Time
 import|;
 end_import
@@ -498,6 +474,8 @@ return|return
 name|KIND
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -517,6 +495,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -1382,6 +1362,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -1551,6 +1533,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -1657,6 +1641,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -1702,6 +1688,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -2160,6 +2148,8 @@ name|tokenIssuerThread
 implements|implements
 name|Runnable
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run

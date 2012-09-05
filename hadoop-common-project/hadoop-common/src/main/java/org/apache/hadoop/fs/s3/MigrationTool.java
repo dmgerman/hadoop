@@ -333,6 +333,8 @@ name|res
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int
@@ -1024,6 +1026,8 @@ name|UnversionedStore
 implements|implements
 name|Store
 block|{
+annotation|@
+name|Override
 DECL|method|listAllPaths ()
 specifier|public
 name|Set
@@ -1148,6 +1152,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|deleteINode (Path path)
 specifier|public
 name|void
@@ -1226,6 +1232,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|retrieveINode (Path path)
 specifier|public
 name|INode

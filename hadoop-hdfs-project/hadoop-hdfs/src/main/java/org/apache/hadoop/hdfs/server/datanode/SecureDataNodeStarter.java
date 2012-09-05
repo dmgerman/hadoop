@@ -21,22 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeys
-operator|.
-name|HADOOP_SECURITY_AUTHENTICATION
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.

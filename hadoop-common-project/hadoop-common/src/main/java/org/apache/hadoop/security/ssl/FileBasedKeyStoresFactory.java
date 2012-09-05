@@ -407,6 +407,8 @@ name|conf
 return|;
 block|}
 comment|/**    * Initializes the keystores of the factory.    *    * @param mode if the keystores are to be used in client or server mode.    * @throws IOException thrown if the keystores could not be initialized due    * to an IO error.    * @throws GeneralSecurityException thrown if the keystores could not be    * initialized due to a security error.    */
+annotation|@
+name|Override
 DECL|method|init (SSLFactory.Mode mode)
 specifier|public
 name|void

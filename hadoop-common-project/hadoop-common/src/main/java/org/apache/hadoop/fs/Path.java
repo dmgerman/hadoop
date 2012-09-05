@@ -1300,6 +1300,8 @@ name|suffix
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1477,6 +1479,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -1521,6 +1525,8 @@ name|uri
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -1534,6 +1540,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (Object o)
 specifier|public
 name|int

@@ -455,6 +455,8 @@ operator|=
 name|ctx
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -538,6 +540,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Repeats a given user action until the context is asked to stop      * or meets an error.      */
+annotation|@
+name|Override
 DECL|method|doWork ()
 specifier|public
 specifier|final

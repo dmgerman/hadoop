@@ -67,6 +67,8 @@ name|typeIDByteString
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareTo (CodeBuffer cb, String fname, String other)
 name|void
 name|genCompareTo
@@ -101,6 +103,8 @@ literal|");\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genEquals (CodeBuffer cb, String fname, String peer)
 name|void
 name|genEquals
@@ -135,6 +139,8 @@ literal|");\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genHashCode (CodeBuffer cb, String fname)
 name|void
 name|genHashCode
@@ -162,6 +168,8 @@ literal|".hashCode();\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genClone (CodeBuffer cb, String fname)
 name|void
 name|genClone
@@ -219,6 +227,8 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genGetSet (CodeBuffer cb, String fname)
 name|void
 name|genGetSet

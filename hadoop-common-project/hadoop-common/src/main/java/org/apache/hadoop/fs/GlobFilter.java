@@ -97,6 +97,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -227,6 +229,8 @@ name|hasWildcard
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|accept (Path path)
 specifier|public
 name|boolean

@@ -295,6 +295,8 @@ operator|new
 name|ThreadFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Thread
 name|newThread

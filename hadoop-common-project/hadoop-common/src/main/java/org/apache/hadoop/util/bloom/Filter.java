@@ -458,6 +458,8 @@ block|}
 block|}
 comment|//end add()
 comment|// Writable interface
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -504,6 +506,8 @@ name|vectorSize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

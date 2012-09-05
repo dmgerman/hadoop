@@ -458,6 +458,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|security
+operator|.
+name|NMContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|webapp
 operator|.
 name|WebServer
@@ -479,24 +499,6 @@ operator|.
 name|security
 operator|.
 name|ApplicationACLsManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|ContainerTokenSecretManager
 import|;
 end_import
 
@@ -611,11 +613,6 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
-DECL|field|containerTokenSecretManager
-specifier|protected
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
-decl_stmt|;
 DECL|field|aclsManager
 specifier|private
 name|ApplicationACLsManager
@@ -653,7 +650,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, ContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createNodeStatusUpdater (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker)
 specifier|protected
 name|NodeStatusUpdater
 name|createNodeStatusUpdater
@@ -666,9 +663,6 @@ name|dispatcher
 parameter_list|,
 name|NodeHealthCheckerService
 name|healthChecker
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -682,8 +676,6 @@ argument_list|,
 name|healthChecker
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -699,7 +691,7 @@ name|NodeResourceMonitorImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ContainerTokenSecretManager containerTokenSecretManager, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -715,9 +707,6 @@ name|del
 parameter_list|,
 name|NodeStatusUpdater
 name|nodeStatusUpdater
-parameter_list|,
-name|ContainerTokenSecretManager
-name|containerTokenSecretManager
 parameter_list|,
 name|ApplicationACLsManager
 name|aclsManager
@@ -739,8 +728,6 @@ argument_list|,
 name|nodeStatusUpdater
 argument_list|,
 name|metrics
-argument_list|,
-name|containerTokenSecretManager
 argument_list|,
 name|aclsManager
 argument_list|,
@@ -827,14 +814,12 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Context
-name|context
-init|=
-operator|new
-name|NMContext
-argument_list|()
-decl_stmt|;
 comment|// Create the secretManager if need be.
+name|NMContainerTokenSecretManager
+name|containerTokenSecretManager
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -852,17 +837,24 @@ operator|+
 literal|"Creating ContainerTokenSecretManager"
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|containerTokenSecretManager
 operator|=
 operator|new
-name|ContainerTokenSecretManager
+name|NMContainerTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
+name|Context
+name|context
+init|=
+operator|new
+name|NMContext
+argument_list|(
+name|containerTokenSecretManager
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|aclsManager
@@ -974,10 +966,6 @@ argument_list|,
 name|dispatcher
 argument_list|,
 name|nodeHealthChecker
-argument_list|,
-name|this
-operator|.
-name|containerTokenSecretManager
 argument_list|)
 decl_stmt|;
 name|nodeStatusUpdater
@@ -1010,10 +998,6 @@ argument_list|,
 name|del
 argument_list|,
 name|nodeStatusUpdater
-argument_list|,
-name|this
-operator|.
-name|containerTokenSecretManager
 argument_list|,
 name|this
 operator|.
@@ -1208,6 +1192,12 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|containerTokenSecretManager
+specifier|private
+specifier|final
+name|NMContainerTokenSecretManager
+name|containerTokenSecretManager
+decl_stmt|;
 DECL|field|nodeHealthStatus
 specifier|private
 specifier|final
@@ -1228,11 +1218,20 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|NMContext ()
+DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager)
 specifier|public
 name|NMContext
-parameter_list|()
+parameter_list|(
+name|NMContainerTokenSecretManager
+name|containerTokenSecretManager
+parameter_list|)
 block|{
+name|this
+operator|.
+name|containerTokenSecretManager
+operator|=
+name|containerTokenSecretManager
+expr_stmt|;
 name|this
 operator|.
 name|nodeHealthStatus
@@ -1315,6 +1314,20 @@ return|return
 name|this
 operator|.
 name|containers
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getContainerTokenSecretManager ()
+specifier|public
+name|NMContainerTokenSecretManager
+name|getContainerTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containerTokenSecretManager
 return|;
 block|}
 annotation|@

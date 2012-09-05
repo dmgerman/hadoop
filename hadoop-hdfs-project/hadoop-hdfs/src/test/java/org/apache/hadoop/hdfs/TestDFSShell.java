@@ -8530,6 +8530,21 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+comment|// Race can happen here: block scanner is reading the file when test tries
+comment|// to corrupt the test file, which will fail the test on Windows platform.
+comment|// Disable block scanner to avoid this race.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=

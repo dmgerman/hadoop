@@ -156,6 +156,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|// inheric javadoc
+annotation|@
+name|Override
 DECL|method|compareTo (final Object peer)
 specifier|public
 specifier|abstract
@@ -214,6 +216,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|write (final DataOutput out)
 specifier|public
 name|void
@@ -249,6 +253,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|readFields (final DataInput din)
 specifier|public
 name|void
@@ -284,6 +290,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

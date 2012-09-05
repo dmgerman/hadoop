@@ -30,6 +30,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -41,16 +51,6 @@ operator|.
 name|net
 operator|.
 name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|Closeable
 import|;
 end_import
 
@@ -537,7 +537,7 @@ name|YARN_PREFIX
 operator|+
 literal|"rpc.nm-command-timeout"
 decl_stmt|;
-comment|/**    *  Maximum of 1 minute timeout for a Node to react to the command    */
+comment|/**    * Maximum of 1 minute timeout for a Node to react to the command    */
 DECL|field|DEFAULT_COMMAND_TIMEOUT
 specifier|static
 specifier|final
@@ -634,6 +634,8 @@ name|expireIntvl
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

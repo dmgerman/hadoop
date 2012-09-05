@@ -1207,6 +1207,8 @@ return|;
 comment|// type byte, bytesPerChecksum int
 block|}
 comment|//Checksum Interface. Just a wrapper around member summer.
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|long
@@ -1220,6 +1222,8 @@ name|getValue
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void
@@ -1236,6 +1240,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|update ( byte[] b, int off, int len )
 specifier|public
 name|void
@@ -1276,6 +1282,8 @@ name|len
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|update ( int b )
 specifier|public
 name|void
@@ -2249,6 +2257,8 @@ name|ChecksumNull
 parameter_list|()
 block|{}
 comment|//Dummy interface
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|long
@@ -2259,12 +2269,16 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void
 name|reset
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|update (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -2281,6 +2295,8 @@ name|int
 name|len
 parameter_list|)
 block|{}
+annotation|@
+name|Override
 DECL|method|update (int b)
 specifier|public
 name|void

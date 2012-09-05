@@ -92,16 +92,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|LinkedList
 import|;
 end_import
@@ -486,6 +476,8 @@ name|NullWatcher
 implements|implements
 name|Watcher
 block|{
+annotation|@
+name|Override
 DECL|method|process (WatchedEvent event)
 specifier|public
 name|void
@@ -546,6 +538,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|process (WatchedEvent event)
 specifier|synchronized
 specifier|public

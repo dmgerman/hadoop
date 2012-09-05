@@ -112,6 +112,8 @@ name|Token
 name|specialToken
 decl_stmt|;
 comment|/**    * Returns the image.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

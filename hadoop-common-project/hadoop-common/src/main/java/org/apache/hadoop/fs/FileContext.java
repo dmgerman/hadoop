@@ -585,6 +585,8 @@ operator|new
 name|PathFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -1036,6 +1038,8 @@ name|AbstractFileSystem
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|AbstractFileSystem
 name|run
@@ -1674,6 +1678,8 @@ name|FSDataOutputStream
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FSDataOutputStream
 name|next
@@ -1781,6 +1787,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -1862,6 +1870,8 @@ name|Boolean
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Boolean
 name|next
@@ -1941,6 +1951,8 @@ name|FSDataInputStream
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FSDataInputStream
 name|next
@@ -2017,6 +2029,8 @@ name|FSDataInputStream
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FSDataInputStream
 name|next
@@ -2093,6 +2107,8 @@ name|Boolean
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Boolean
 name|next
@@ -2266,6 +2282,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -2348,6 +2366,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -2454,6 +2474,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -2539,6 +2561,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -2615,6 +2639,8 @@ name|FileChecksum
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileChecksum
 name|next
@@ -2733,6 +2759,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileStatus
 name|next
@@ -2877,6 +2905,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileStatus
 name|next
@@ -2980,6 +3010,8 @@ name|Path
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Path
 name|next
@@ -3085,6 +3117,8 @@ index|[]
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|BlockLocation
 index|[]
@@ -3176,6 +3210,8 @@ name|FsStatus
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FsStatus
 name|next
@@ -3259,6 +3295,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next
@@ -3343,6 +3381,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|RemoteIterator
 argument_list|<
@@ -3500,6 +3540,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|RemoteIterator
 argument_list|<
@@ -4297,6 +4339,8 @@ index|[]
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileStatus
 index|[]
@@ -6125,6 +6169,8 @@ name|FileContextFinalizer
 implements|implements
 name|Runnable
 block|{
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 specifier|synchronized
@@ -6164,6 +6210,8 @@ name|Path
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Path
 name|next
@@ -6221,6 +6269,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|FileStatus
 name|next
@@ -6305,6 +6355,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|next

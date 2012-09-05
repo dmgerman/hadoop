@@ -483,6 +483,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|StandbyException
+throws|,
+name|IOException
 block|{
 return|return
 name|namenode

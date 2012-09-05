@@ -42,16 +42,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -130,6 +120,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -156,6 +148,8 @@ name|pos
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 name|long
@@ -190,6 +184,8 @@ return|return
 name|n
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -283,6 +279,8 @@ name|pos
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -316,6 +314,8 @@ name|targetPos
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|int
@@ -357,6 +357,8 @@ name|length
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void
@@ -397,6 +399,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void

@@ -418,7 +418,6 @@ name|results
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|adjustExcludedNodes (HashMap<Node, Node> excludedNodes, Node chosenNode)
@@ -501,7 +500,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|chooseLocalRack ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
@@ -719,7 +717,6 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results)

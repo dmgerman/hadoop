@@ -267,6 +267,8 @@ literal|"/testLoadSpace"
 argument_list|)
 decl_stmt|;
 comment|/** Main function.    * It first parses the command line arguments.    * It then reads the directory structure from the input directory     * structure file and creates directory structure in the file system    * namespace. Afterwards it reads the file attributes and creates files     * in the file. All file content is filled with 'a'.    */
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int

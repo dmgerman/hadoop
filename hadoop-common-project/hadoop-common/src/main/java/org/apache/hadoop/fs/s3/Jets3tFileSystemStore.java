@@ -523,6 +523,8 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -652,6 +654,8 @@ name|S3_STREAM_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getVersion ()
 specifier|public
 name|String
@@ -722,6 +726,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|deleteINode (Path path)
 specifier|public
 name|void
@@ -742,6 +748,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|deleteBlock (Block block)
 specifier|public
 name|void
@@ -762,6 +770,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|inodeExists (Path path)
 specifier|public
 name|boolean
@@ -806,6 +816,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|blockExists (long blockId)
 specifier|public
 name|boolean
@@ -1159,6 +1171,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|retrieveINode (Path path)
 specifier|public
 name|INode
@@ -1187,6 +1201,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|retrieveBlock (Block block, long byteRangeStart)
 specifier|public
 name|File
@@ -1427,6 +1443,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|listSubPaths (Path path)
 specifier|public
 name|Set
@@ -1575,6 +1593,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|listDeepSubPaths (Path path)
 specifier|public
 name|Set
@@ -1833,6 +1853,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|storeINode (Path path, INode inode)
 specifier|public
 name|void
@@ -1868,6 +1890,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|storeBlock (Block block, File file)
 specifier|public
 name|void
@@ -2051,6 +2075,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|purge ()
 specifier|public
 name|void
@@ -2141,6 +2167,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|dump ()
 specifier|public
 name|void

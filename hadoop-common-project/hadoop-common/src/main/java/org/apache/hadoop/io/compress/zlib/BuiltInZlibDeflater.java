@@ -172,6 +172,8 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compress (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized

@@ -675,7 +675,9 @@ operator|new
 name|NodeManager
 operator|.
 name|NMContext
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 name|ResourceView
 name|resourceView
@@ -920,7 +922,9 @@ operator|new
 name|NodeManager
 operator|.
 name|NMContext
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 name|ResourceView
 name|resourceView

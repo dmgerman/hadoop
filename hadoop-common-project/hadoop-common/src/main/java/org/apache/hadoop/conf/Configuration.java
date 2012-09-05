@@ -6611,6 +6611,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Get an {@link Iterator} to go through the list of<code>String</code>     * key-value pairs in the configuration.    *     * @return an iterator over the entries.    */
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator
@@ -9001,6 +9003,8 @@ expr_stmt|;
 block|}
 block|}
 comment|//@Override
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -9363,6 +9367,22 @@ block|{
 name|CommonConfigurationKeys
 operator|.
 name|FS_DEFAULT_NAME_KEY
+block|}
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+literal|"dfs.umaskmode"
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|CommonConfigurationKeys
+operator|.
+name|FS_PERMISSIONS_UMASK_KEY
 block|}
 argument_list|)
 expr_stmt|;

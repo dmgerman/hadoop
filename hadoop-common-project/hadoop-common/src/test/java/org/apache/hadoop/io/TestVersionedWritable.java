@@ -109,6 +109,8 @@ name|VERSION
 init|=
 literal|1
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getVersion ()
 specifier|public
 name|byte
@@ -119,6 +121,8 @@ return|return
 name|VERSION
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -146,6 +150,8 @@ name|state
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -206,6 +212,8 @@ name|result
 return|;
 block|}
 comment|/** Required by test code, below. */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -309,6 +317,8 @@ block|,
 literal|"Dog"
 block|}
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -386,6 +396,8 @@ name|testStringArray
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -447,6 +459,8 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -640,6 +654,8 @@ name|VERSION
 init|=
 literal|2
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getVersion ()
 specifier|public
 name|byte

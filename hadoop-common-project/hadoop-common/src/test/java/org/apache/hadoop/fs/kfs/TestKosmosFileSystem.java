@@ -24,7 +24,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
 import|;
 end_import
 
@@ -34,7 +34,7 @@ name|java
 operator|.
 name|net
 operator|.
-name|*
+name|URI
 import|;
 end_import
 
@@ -100,20 +100,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileStatus
 import|;
 end_import
@@ -128,37 +114,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|kfs
-operator|.
-name|KosmosFileSystem
 import|;
 end_import
 

@@ -499,6 +499,16 @@ name|STORAGE_PREVIOUS_CKPT
 init|=
 literal|"previous.checkpoint"
 decl_stmt|;
+comment|/**    * The blocksBeingWritten directory which was used in some 1.x and earlier    * releases.    */
+DECL|field|STORAGE_1_BBW
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_1_BBW
+init|=
+literal|"blocksBeingWritten"
+decl_stmt|;
 DECL|enum|StorageState
 specifier|public
 enum|enum
@@ -3024,6 +3034,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**      * @return a string representation of the formattable item, suitable      * for display to the user inside a prompt      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

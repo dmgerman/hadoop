@@ -206,7 +206,8 @@ name|other
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|clear ()
 specifier|public
 name|void
@@ -219,7 +220,8 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|containsKey (Object key)
 specifier|public
 name|boolean
@@ -238,7 +240,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|containsValue (Object value)
 specifier|public
 name|boolean
@@ -257,7 +260,8 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|entrySet ()
 specifier|public
 name|Set
@@ -281,7 +285,8 @@ name|entrySet
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -349,7 +354,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|get (Object key)
 specifier|public
 name|Writable
@@ -368,7 +374,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -386,7 +393,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|isEmpty ()
 specifier|public
 name|boolean
@@ -400,7 +408,8 @@ name|isEmpty
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|keySet ()
 specifier|public
 name|Set
@@ -417,7 +426,8 @@ name|keySet
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -462,7 +472,8 @@ name|value
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|putAll (Map<? extends Writable, ? extends Writable> t)
 specifier|public
 name|void
@@ -518,7 +529,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|remove (Object key)
 specifier|public
 name|Writable
@@ -537,7 +549,8 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|size ()
 specifier|public
 name|int
@@ -551,7 +564,8 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|values ()
 specifier|public
 name|Collection
@@ -569,7 +583,6 @@ argument_list|()
 return|;
 block|}
 comment|// Writable
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|write (DataOutput out)
@@ -674,7 +687,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|SuppressWarnings
 argument_list|(

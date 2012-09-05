@@ -46,20 +46,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|Server
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|commons
 operator|.
 name|logging
@@ -107,6 +93,20 @@ operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Server
 import|;
 end_import
 
@@ -1226,13 +1226,11 @@ name|reinitialize
 argument_list|(
 name|conf
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|this
+operator|.
+name|rmContext
 argument_list|)
 expr_stmt|;
-comment|// ContainerTokenSecretManager can't
-comment|// be 'refreshed'
 name|RMAuditLogger
 operator|.
 name|logSuccess

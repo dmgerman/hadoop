@@ -385,7 +385,8 @@ return|return
 name|t
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

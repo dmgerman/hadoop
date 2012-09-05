@@ -52,6 +52,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|ConnectException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|HttpURLConnection
 import|;
 end_import
@@ -1458,43 +1468,38 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Couldn't get a delegation token from "
-operator|+
-name|nnHttpUrl
-operator|+
-literal|" using http."
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
-name|LOG
+name|e
 operator|.
-name|isDebugEnabled
+name|getCause
 argument_list|()
+operator|instanceof
+name|ConnectException
 condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
-literal|"error was "
-argument_list|,
-name|e
+literal|"Couldn't connect to "
+operator|+
+name|nnHttpUrl
+operator|+
+literal|", assuming security is disabled"
 argument_list|)
 expr_stmt|;
-block|}
-comment|//Maybe the server is in unsecure mode (that's bad but okay)
 return|return
 literal|null
 return|;
+block|}
+throw|throw
+name|e
+throw|;
 block|}
 for|for
 control|(

@@ -2156,6 +2156,22 @@ operator|.
 name|getPreviousDir
 argument_list|()
 decl_stmt|;
+name|File
+name|bbwDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|,
+name|Storage
+operator|.
+name|STORAGE_1_BBW
+argument_list|)
+decl_stmt|;
 assert|assert
 name|curDir
 operator|.
@@ -2270,6 +2286,8 @@ expr_stmt|;
 name|linkAllBlocks
 argument_list|(
 name|tmpDir
+argument_list|,
+name|bbwDir
 argument_list|,
 operator|new
 name|File
@@ -2713,6 +2731,23 @@ name|getFinalizedTmp
 argument_list|()
 decl_stmt|;
 comment|//finalized.tmp directory
+specifier|final
+name|File
+name|bbwDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|,
+name|Storage
+operator|.
+name|STORAGE_1_BBW
+argument_list|)
+decl_stmt|;
 comment|// 1. rename previous to finalized.tmp
 name|rename
 argument_list|(
@@ -2722,6 +2757,8 @@ name|tmpDir
 argument_list|)
 expr_stmt|;
 comment|// 2. delete finalized.tmp dir in a separate thread
+comment|// Also delete the blocksBeingWritten from HDFS 1.x and earlier, if
+comment|// it exists.
 operator|new
 name|Daemon
 argument_list|(
@@ -2743,6 +2780,20 @@ argument_list|(
 name|tmpDir
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|bbwDir
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|deleteDir
+argument_list|(
+name|bbwDir
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2867,14 +2918,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Hardlink all finalized and RBW blocks in fromDir to toDir    * @param fromDir directory where the snapshot is stored    * @param toDir the current data directory    * @throws IOException if error occurs during hardlink    */
-DECL|method|linkAllBlocks (File fromDir, File toDir)
+comment|/**    * Hardlink all finalized and RBW blocks in fromDir to toDir    *    * @param fromDir      The directory where the 'from' snapshot is stored    * @param fromBbwDir   In HDFS 1.x, the directory where blocks    *                     that are under construction are stored.    * @param toDir        The current data directory    *    * @throws IOException If error occurs during hardlink    */
+DECL|method|linkAllBlocks (File fromDir, File fromBbwDir, File toDir)
 specifier|private
 name|void
 name|linkAllBlocks
 parameter_list|(
 name|File
 name|fromDir
+parameter_list|,
+name|File
+name|fromBbwDir
 parameter_list|,
 name|File
 name|toDir
@@ -2936,7 +2990,7 @@ argument_list|,
 name|hardLink
 argument_list|)
 expr_stmt|;
-comment|// hardlink rbw blocks in tmpDir/finalized
+comment|// hardlink rbw blocks in tmpDir/rbw
 name|linkBlocks
 argument_list|(
 operator|new
@@ -2982,6 +3036,33 @@ argument_list|,
 name|hardLink
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|fromBbwDir
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+comment|/*          * We need to put the 'blocksBeingWritten' from HDFS 1.x into the rbw          * directory.  It's a little messy, because the blocksBeingWriten was          * NOT underneath the 'current' directory in those releases.  See          * HDFS-3731 for details.          */
+name|linkBlocks
+argument_list|(
+name|fromBbwDir
+argument_list|,
+operator|new
+name|File
+argument_list|(
+name|toDir
+argument_list|,
+name|STORAGE_DIR_RBW
+argument_list|)
+argument_list|,
+name|diskLayoutVersion
+argument_list|,
+name|hardLink
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|LOG
 operator|.

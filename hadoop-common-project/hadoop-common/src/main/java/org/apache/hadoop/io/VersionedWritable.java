@@ -104,6 +104,8 @@ name|getVersion
 parameter_list|()
 function_decl|;
 comment|// javadoc from Writable
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -126,6 +128,8 @@ expr_stmt|;
 comment|// store version
 block|}
 comment|// javadoc from Writable
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

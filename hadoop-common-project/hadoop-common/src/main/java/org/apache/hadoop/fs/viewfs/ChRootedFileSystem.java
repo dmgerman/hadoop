@@ -454,6 +454,8 @@ expr_stmt|;
 comment|// We don't use the wd of the myFs
 block|}
 comment|/**     * Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
+annotation|@
+name|Override
 DECL|method|initialize (final URI name, final Configuration conf)
 specifier|public
 name|void

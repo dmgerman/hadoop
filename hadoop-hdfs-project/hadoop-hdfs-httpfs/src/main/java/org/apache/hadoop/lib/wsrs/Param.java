@@ -196,6 +196,8 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

@@ -30,6 +30,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -1153,6 +1163,8 @@ class|class
 name|ClientRMProtocolPBClientImpl
 implements|implements
 name|ClientRMProtocol
+implements|,
+name|Closeable
 block|{
 DECL|field|proxy
 specifier|private
@@ -1210,6 +1222,34 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|proxy
+operator|!=
+literal|null
+condition|)
+block|{
+name|RPC
+operator|.
+name|stopProxy
+argument_list|(
+name|this
+operator|.
+name|proxy
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1567,9 +1607,9 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getClusterNodes ( GetClusterNodesRequest request)
 specifier|public
 name|GetClusterNodesResponse
+DECL|method|getClusterNodes (GetClusterNodesRequest request)
 name|getClusterNodes
 parameter_list|(
 name|GetClusterNodesRequest
