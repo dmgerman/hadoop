@@ -8776,6 +8776,43 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Rolls the edit log on the active NameNode.    * @return the txid of the new log segment     *    * @see ClientProtocol#rollEdits()    */
+DECL|method|rollEdits ()
+name|long
+name|rollEdits
+parameter_list|()
+throws|throws
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+try|try
+block|{
+return|return
+name|namenode
+operator|.
+name|rollEdits
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|(
+name|AccessControlException
+operator|.
+name|class
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * enable/disable restore failed storage.    *     * @see ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 name|boolean

@@ -4599,6 +4599,43 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|rollEdits ()
+specifier|public
+name|long
+name|rollEdits
+parameter_list|()
+throws|throws
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|JOURNAL
+argument_list|)
+expr_stmt|;
+name|CheckpointSignature
+name|sig
+init|=
+name|namesystem
+operator|.
+name|rollEditLog
+argument_list|()
+decl_stmt|;
+return|return
+name|sig
+operator|.
+name|getCurSegmentTxId
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|refreshNodes ()
 specifier|public
 name|void

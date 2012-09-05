@@ -2242,6 +2242,52 @@ return|return
 name|exitCode
 return|;
 block|}
+DECL|method|rollEdits ()
+specifier|public
+name|int
+name|rollEdits
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|DistributedFileSystem
+name|dfs
+init|=
+name|getDFS
+argument_list|()
+decl_stmt|;
+name|long
+name|txid
+init|=
+name|dfs
+operator|.
+name|rollEdits
+argument_list|()
+decl_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Successfully rolled edit logs."
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"New segment starts at txid "
+operator|+
+name|txid
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Command to enable/disable/check restoring of failed storage replicas in the namenode.    * Usage: java DFSAdmin -restoreFailedStorage true|false|check    * @exception IOException     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFaileStorage (String arg)
 specifier|public
@@ -2578,6 +2624,8 @@ literal|"hadoop dfsadmin [-report] [-safemode<enter | leave | get | wait>]\n"
 operator|+
 literal|"\t[-saveNamespace]\n"
 operator|+
+literal|"\t[-rollEdits]\n"
+operator|+
 literal|"\t[-restoreFailedStorage true|false|check]\n"
 operator|+
 literal|"\t[-refreshNodes]\n"
@@ -2666,6 +2714,15 @@ operator|+
 literal|"Save current namespace into storage directories and reset edits log.\n"
 operator|+
 literal|"\t\tRequires superuser permissions and safe mode.\n"
+decl_stmt|;
+name|String
+name|rollEdits
+init|=
+literal|"-rollEdits:\t"
+operator|+
+literal|"Rolls the edit log.\n"
+operator|+
+literal|"\t\tRequires superuser permissions.\n"
 decl_stmt|;
 name|String
 name|restoreFailedStorage
@@ -2877,6 +2934,27 @@ operator|.
 name|println
 argument_list|(
 name|saveNamespace
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"rollEdits"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|rollEdits
 argument_list|)
 expr_stmt|;
 block|}
@@ -3289,6 +3367,15 @@ operator|.
 name|println
 argument_list|(
 name|saveNamespace
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|rollEdits
 argument_list|)
 expr_stmt|;
 name|System
@@ -4113,6 +4200,29 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-rollEdits"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: java DFSAdmin"
+operator|+
+literal|" [-rollEdits]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-restoreFailedStorage"
 operator|.
 name|equals
@@ -4555,6 +4665,15 @@ name|err
 operator|.
 name|println
 argument_list|(
+literal|"           [-rollEdits]"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
 literal|"           [-restoreFailedStorage true|false|check]"
 argument_list|)
 expr_stmt|;
@@ -4864,6 +4983,36 @@ elseif|else
 if|if
 condition|(
 literal|"-saveNamespace"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|argv
+operator|.
+name|length
+operator|!=
+literal|1
+condition|)
+block|{
+name|printUsage
+argument_list|(
+name|cmd
+argument_list|)
+expr_stmt|;
+return|return
+name|exitCode
+return|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-rollEdits"
 operator|.
 name|equals
 argument_list|(
@@ -5337,6 +5486,23 @@ block|{
 name|exitCode
 operator|=
 name|saveNamespace
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-rollEdits"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|exitCode
+operator|=
+name|rollEdits
 argument_list|()
 expr_stmt|;
 block|}

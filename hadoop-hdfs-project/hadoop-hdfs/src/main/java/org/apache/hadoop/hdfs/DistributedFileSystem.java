@@ -3169,6 +3169,24 @@ name|saveNamespace
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Rolls the edit log on the active NameNode.    * Requires super-user privileges.    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#rollEdits()    * @return the transaction ID of the newly created segment    */
+DECL|method|rollEdits ()
+specifier|public
+name|long
+name|rollEdits
+parameter_list|()
+throws|throws
+name|AccessControlException
+throws|,
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|rollEdits
+argument_list|()
+return|;
+block|}
 comment|/**    * enable/disable/check restoreFaileStorage    *     * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 specifier|public

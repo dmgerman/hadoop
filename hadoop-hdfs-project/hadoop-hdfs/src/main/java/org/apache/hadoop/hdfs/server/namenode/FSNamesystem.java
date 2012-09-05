@@ -20061,6 +20061,9 @@ operator|.
 name|JOURNAL
 argument_list|)
 expr_stmt|;
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|isInSafeMode
