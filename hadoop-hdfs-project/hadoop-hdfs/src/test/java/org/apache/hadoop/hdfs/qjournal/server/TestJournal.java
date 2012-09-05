@@ -442,6 +442,8 @@ name|Journal
 argument_list|(
 name|TEST_LOG_DIR
 argument_list|,
+name|JID
+argument_list|,
 name|mockErrorReporter
 argument_list|)
 expr_stmt|;
@@ -907,6 +909,8 @@ name|Journal
 argument_list|(
 name|TEST_LOG_DIR
 argument_list|,
+name|JID
+argument_list|,
 name|mockErrorReporter
 argument_list|)
 expr_stmt|;
@@ -1230,6 +1234,8 @@ name|Journal
 argument_list|(
 name|TEST_LOG_DIR
 argument_list|,
+name|JID
+argument_list|,
 name|mockErrorReporter
 argument_list|)
 expr_stmt|;
@@ -1269,6 +1275,8 @@ operator|new
 name|Journal
 argument_list|(
 name|TEST_LOG_DIR
+argument_list|,
+name|JID
 argument_list|,
 name|mockErrorReporter
 argument_list|)
@@ -1392,6 +1400,8 @@ operator|new
 name|Journal
 argument_list|(
 name|TEST_LOG_DIR
+argument_list|,
+name|JID
 argument_list|,
 name|mockErrorReporter
 argument_list|)

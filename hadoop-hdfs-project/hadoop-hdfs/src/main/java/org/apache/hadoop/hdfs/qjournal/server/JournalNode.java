@@ -440,6 +440,8 @@ name|Journal
 argument_list|(
 name|logDir
 argument_list|,
+name|jid
+argument_list|,
 operator|new
 name|ErrorReporter
 argument_list|()
