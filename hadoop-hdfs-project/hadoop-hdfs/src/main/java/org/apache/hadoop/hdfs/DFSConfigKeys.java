@@ -2542,6 +2542,27 @@ init|=
 literal|0
 decl_stmt|;
 comment|//no throttling
+comment|// Image transfer timeout
+DECL|field|DFS_IMAGE_TRANSFER_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_IMAGE_TRANSFER_TIMEOUT_KEY
+init|=
+literal|"dfs.image.transfer.timeout"
+decl_stmt|;
+DECL|field|DFS_IMAGE_TRANSFER_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_IMAGE_TRANSFER_TIMEOUT_DEFAULT
+init|=
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 comment|//Keys with no defaults
 DECL|field|DFS_DATANODE_PLUGINS_KEY
 specifier|public
