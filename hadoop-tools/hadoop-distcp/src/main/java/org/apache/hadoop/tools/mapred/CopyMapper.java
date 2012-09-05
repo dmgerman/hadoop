@@ -1371,6 +1371,8 @@ operator|)
 operator|new
 name|RetriableFileCopyCommand
 argument_list|(
+name|skipCrc
+argument_list|,
 name|description
 argument_list|)
 operator|.
