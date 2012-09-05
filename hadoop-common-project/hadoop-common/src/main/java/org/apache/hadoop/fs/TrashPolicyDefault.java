@@ -485,51 +485,6 @@ argument_list|,
 name|CURRENT
 argument_list|)
 expr_stmt|;
-name|long
-name|trashInterval
-init|=
-literal|0
-decl_stmt|;
-try|try
-block|{
-name|trashInterval
-operator|=
-name|fs
-operator|.
-name|getServerDefaults
-argument_list|(
-name|home
-argument_list|)
-operator|.
-name|getTrashInterval
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unable to get server defaults"
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
-comment|// If the trash interval is not configured or is disabled on the
-comment|// server side then check the config which may be client side.
-if|if
-condition|(
-literal|0
-operator|==
-name|trashInterval
-condition|)
-block|{
 name|this
 operator|.
 name|deletionInterval
@@ -550,21 +505,6 @@ operator|*
 name|MSECS_PER_MINUTE
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|this
-operator|.
-name|deletionInterval
-operator|=
-name|trashInterval
-operator|*
-name|MSECS_PER_MINUTE
-expr_stmt|;
-block|}
-comment|// For the checkpoint interval use the given config instead of
-comment|// checking the server as it's OK if a client starts an emptier
-comment|// with a different interval than the server.
 name|this
 operator|.
 name|emptierInterval
