@@ -453,6 +453,46 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|generateHtmlReport ()
+specifier|public
+name|String
+name|generateHtmlReport
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Writing segment beginning at txid "
+operator|+
+name|segmentTxId
+operator|+
+literal|"<br/>\n"
+argument_list|)
+expr_stmt|;
+name|loggers
+operator|.
+name|appendHtmlReport
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

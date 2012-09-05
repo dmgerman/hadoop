@@ -112,6 +112,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CopyOnWriteArrayList
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -681,7 +693,6 @@ name|journal
 return|;
 block|}
 DECL|method|isDisabled ()
-specifier|private
 name|boolean
 name|isDisabled
 parameter_list|()
@@ -733,6 +744,9 @@ name|required
 return|;
 block|}
 block|}
+comment|// COW implementation is necessary since some users (eg the web ui) call
+comment|// getAllJournalStreams() and then iterate. Since this is rarely
+comment|// mutated, there is no performance concern.
 DECL|field|journals
 specifier|private
 name|List
@@ -741,9 +755,13 @@ name|JournalAndStream
 argument_list|>
 name|journals
 init|=
-name|Lists
+operator|new
+name|CopyOnWriteArrayList
+argument_list|<
+name|JournalSet
 operator|.
-name|newArrayList
+name|JournalAndStream
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|minimumRedundantJournals
@@ -2154,8 +2172,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getAllJournalStreams ()
 name|List
 argument_list|<
