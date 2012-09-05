@@ -823,10 +823,10 @@ literal|4
 argument_list|)
 expr_stmt|;
 comment|// Because the new segment is empty, it is equivalent to not having
-comment|// started writing it.
+comment|// started writing it. Hence, we should return the prior segment txid.
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|response
 operator|.

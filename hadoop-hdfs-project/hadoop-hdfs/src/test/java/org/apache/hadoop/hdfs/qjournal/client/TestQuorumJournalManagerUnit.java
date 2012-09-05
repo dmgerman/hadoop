@@ -1470,6 +1470,23 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|Mockito
+operator|.
+name|verify
+argument_list|(
+name|spyLoggers
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+operator|.
+name|setCommittedTxId
+argument_list|(
+literal|1L
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createLogSegment ()
 specifier|private

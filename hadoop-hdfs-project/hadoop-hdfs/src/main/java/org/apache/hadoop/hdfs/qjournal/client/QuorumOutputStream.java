@@ -437,6 +437,20 @@ literal|20000
 argument_list|)
 expr_stmt|;
 comment|// TODO: configurable timeout
+comment|// Since we successfully wrote this batch, let the loggers know. Any future
+comment|// RPCs will thus let the loggers know of the most recent transaction, even
+comment|// if a logger has fallen behind.
+name|loggers
+operator|.
+name|setCommittedTxId
+argument_list|(
+name|firstTxToFlush
+operator|+
+name|numReadyTxns
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

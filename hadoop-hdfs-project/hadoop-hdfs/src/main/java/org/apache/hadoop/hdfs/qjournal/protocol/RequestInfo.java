@@ -34,6 +34,22 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -59,7 +75,12 @@ specifier|private
 name|long
 name|ipcSerialNumber
 decl_stmt|;
-DECL|method|RequestInfo (String jid, long epoch, long ipcSerialNumber)
+DECL|field|committedTxId
+specifier|private
+name|long
+name|committedTxId
+decl_stmt|;
+DECL|method|RequestInfo (String jid, long epoch, long ipcSerialNumber, long committedTxId)
 specifier|public
 name|RequestInfo
 parameter_list|(
@@ -71,6 +92,9 @@ name|epoch
 parameter_list|,
 name|long
 name|ipcSerialNumber
+parameter_list|,
+name|long
+name|committedTxId
 parameter_list|)
 block|{
 name|this
@@ -90,6 +114,12 @@ operator|.
 name|ipcSerialNumber
 operator|=
 name|ipcSerialNumber
+expr_stmt|;
+name|this
+operator|.
+name|committedTxId
+operator|=
+name|committedTxId
 expr_stmt|;
 block|}
 DECL|method|getEpoch ()
@@ -153,6 +183,32 @@ name|ipcSerialNumber
 operator|=
 name|ipcSerialNumber
 expr_stmt|;
+block|}
+DECL|method|getCommittedTxId ()
+specifier|public
+name|long
+name|getCommittedTxId
+parameter_list|()
+block|{
+return|return
+name|committedTxId
+return|;
+block|}
+DECL|method|hasCommittedTxId ()
+specifier|public
+name|boolean
+name|hasCommittedTxId
+parameter_list|()
+block|{
+return|return
+operator|(
+name|committedTxId
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|)
+return|;
 block|}
 block|}
 end_class

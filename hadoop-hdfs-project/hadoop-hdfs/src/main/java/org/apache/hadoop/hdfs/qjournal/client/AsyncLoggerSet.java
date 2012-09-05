@@ -602,6 +602,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Set the highest successfully committed txid seen by the writer.    * This should be called after a successful write to a quorum, and is used    * for extra sanity checks against the protocol. See HDFS-3863.    */
+DECL|method|setCommittedTxId (long txid)
+specifier|public
+name|void
+name|setCommittedTxId
+parameter_list|(
+name|long
+name|txid
+parameter_list|)
+block|{
+for|for
+control|(
+name|AsyncLogger
+name|logger
+range|:
+name|loggers
+control|)
+block|{
+name|logger
+operator|.
+name|setCommittedTxId
+argument_list|(
+name|txid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * @return the epoch number for this writer. This may only be called after    * a successful call to {@link #createNewUniqueEpoch(NamespaceInfo)}.    */
 DECL|method|getEpoch ()
 name|long

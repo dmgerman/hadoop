@@ -410,6 +410,16 @@ name|long
 name|e
 parameter_list|)
 function_decl|;
+comment|/**    * Let the logger know the highest committed txid across all loggers in the    * set. This txid may be higher than the last committed txid for<em>this</em>    * logger. See HDFS-3863 for details.    */
+DECL|method|setCommittedTxId (long txid)
+specifier|public
+name|void
+name|setCommittedTxId
+parameter_list|(
+name|long
+name|txid
+parameter_list|)
+function_decl|;
 comment|/**    * Build an HTTP URL to fetch the log segment with the given startTxId.    */
 DECL|method|buildURLToFetchLogs (long segmentTxId)
 specifier|public
