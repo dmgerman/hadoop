@@ -695,6 +695,34 @@ argument_list|,
 name|errorReporter
 argument_list|)
 expr_stmt|;
+name|refreshCachedData
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|fjm
+operator|=
+name|storage
+operator|.
+name|getJournalManager
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Reload any data that may have been cached. This is necessary    * when we first load the Journal, but also after any formatting    * operation, since the cached data is no longer relevant.    */
+DECL|method|refreshCachedData ()
+specifier|private
+specifier|synchronized
+name|void
+name|refreshCachedData
+parameter_list|()
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|committedTxnId
+argument_list|)
+expr_stmt|;
 name|File
 name|currentDir
 init|=
@@ -761,15 +789,6 @@ name|HdfsConstants
 operator|.
 name|INVALID_TXID
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|fjm
-operator|=
-name|storage
-operator|.
-name|getJournalManager
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Iterate over the edit logs stored locally, and set    * {@link #curSegmentTxId} to refer to the most recently written    * one.    */
@@ -957,6 +976,9 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
+name|refreshCachedData
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Unlock and release resources.    */
 annotation|@
@@ -1006,6 +1028,25 @@ argument_list|()
 expr_stmt|;
 return|return
 name|lastPromisedEpoch
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getLastWriterEpoch ()
+specifier|synchronized
+specifier|public
+name|long
+name|getLastWriterEpoch
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkFormatted
+argument_list|()
+expr_stmt|;
+return|return
+name|lastWriterEpoch
 operator|.
 name|get
 argument_list|()
