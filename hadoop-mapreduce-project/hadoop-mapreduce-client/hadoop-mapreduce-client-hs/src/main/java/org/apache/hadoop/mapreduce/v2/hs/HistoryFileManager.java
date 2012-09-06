@@ -2204,6 +2204,15 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|doneDirFc
+operator|.
+name|setUMask
+argument_list|(
+name|JobHistoryUtils
+operator|.
+name|HISTORY_DONE_DIR_UMASK
+argument_list|)
+expr_stmt|;
 name|mkdir
 argument_list|(
 name|doneDirFc

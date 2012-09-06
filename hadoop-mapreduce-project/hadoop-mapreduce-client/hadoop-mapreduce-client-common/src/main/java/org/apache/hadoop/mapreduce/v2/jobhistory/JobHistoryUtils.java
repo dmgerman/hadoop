@@ -516,6 +516,28 @@ literal|0770
 argument_list|)
 decl_stmt|;
 comment|// rwx------
+comment|/**    * Umask for the done dir and derivatives.    */
+DECL|field|HISTORY_DONE_DIR_UMASK
+specifier|public
+specifier|static
+specifier|final
+name|FsPermission
+name|HISTORY_DONE_DIR_UMASK
+init|=
+name|FsPermission
+operator|.
+name|createImmutable
+argument_list|(
+call|(
+name|short
+call|)
+argument_list|(
+literal|0770
+operator|^
+literal|0777
+argument_list|)
+argument_list|)
+decl_stmt|;
 comment|/**    * Permissions for the intermediate done directory.    */
 DECL|field|HISTORY_INTERMEDIATE_DONE_DIR_PERMISSIONS
 specifier|public
