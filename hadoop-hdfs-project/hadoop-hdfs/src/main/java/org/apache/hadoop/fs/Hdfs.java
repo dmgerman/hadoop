@@ -1789,7 +1789,7 @@ name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
-name|mkdirs
+name|primitiveMkdir
 argument_list|(
 name|getUriPath
 argument_list|(
