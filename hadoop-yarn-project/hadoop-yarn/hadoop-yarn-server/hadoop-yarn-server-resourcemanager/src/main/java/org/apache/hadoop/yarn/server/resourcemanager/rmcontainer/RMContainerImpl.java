@@ -387,6 +387,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
+argument_list|)
 DECL|class|RMContainerImpl
 specifier|public
 class|class
@@ -760,6 +769,25 @@ operator|new
 name|KillTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|RMContainerState
+operator|.
+name|RELEASED
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|RELEASED
+argument_list|,
+operator|new
+name|KillTransition
+argument_list|()
+argument_list|)
 comment|// Transitions from COMPLETED state
 operator|.
 name|addTransition
@@ -833,6 +861,10 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|FINISHED
 argument_list|)
 argument_list|)
 comment|// Transitions from KILLED state
@@ -858,6 +890,10 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|FINISHED
 argument_list|)
 argument_list|)
 comment|// create the topology tables

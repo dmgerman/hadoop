@@ -348,7 +348,7 @@ name|void
 name|clearAsks
 parameter_list|()
 function_decl|;
-comment|/**    * Get the list of<code>ContainerId</code> of unused containers being     * released by the<code>ApplicationMaster</code>.    * @return list of<code>ContainerId</code> of unused containers being     *         released by the<code>ApplicationMaster</code>     */
+comment|/**    * Get the list of<code>ContainerId</code> of containers being     * released by the<code>ApplicationMaster</code>.    * @return list of<code>ContainerId</code> of containers being     *         released by the<code>ApplicationMaster</code>     */
 annotation|@
 name|Public
 annotation|@
@@ -382,7 +382,7 @@ name|int
 name|getReleaseCount
 parameter_list|()
 function_decl|;
-comment|/**    * Add the list of<code>ContainerId</code> of unused containers being     * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of unused     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
+comment|/**    * Add the list of<code>ContainerId</code> of containers being     * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
