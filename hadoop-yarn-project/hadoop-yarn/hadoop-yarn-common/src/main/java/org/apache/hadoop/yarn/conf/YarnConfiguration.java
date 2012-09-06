@@ -2092,9 +2092,9 @@ literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/*"
 block|,
 literal|"$HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*"
 block|,
-literal|"$YARN_HOME/share/hadoop/mapreduce/*"
+literal|"$YARN_HOME/share/hadoop/yarn/*"
 block|,
-literal|"$YARN_HOME/share/hadoop/mapreduce/lib/*"
+literal|"$YARN_HOME/share/hadoop/yarn/lib/*"
 block|}
 decl_stmt|;
 comment|/** Container temp directory */
