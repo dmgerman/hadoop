@@ -1296,17 +1296,15 @@ parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|List
 argument_list|<
 name|EditLogFile
 argument_list|>
 name|elfs
-decl_stmt|;
-try|try
-block|{
-name|elfs
-operator|=
+init|=
 name|matchEditLogs
 argument_list|(
 name|sd
@@ -1314,31 +1312,7 @@ operator|.
 name|getCurrentDir
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"error listing files in "
-operator|+
-name|this
-operator|+
-literal|". "
-operator|+
-literal|"Skipping all edit logs in this directory."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
+decl_stmt|;
 name|LOG
 operator|.
 name|debug

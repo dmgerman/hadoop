@@ -783,7 +783,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Interrupted waiting for quorum results"
+literal|"Interrupted waiting "
+operator|+
+name|timeoutMs
+operator|+
+literal|"ms for a "
+operator|+
+literal|"quorum of nodes to respond."
 argument_list|)
 throw|;
 block|}
@@ -801,7 +807,9 @@ literal|"Timed out waiting "
 operator|+
 name|timeoutMs
 operator|+
-literal|" for write quorum"
+literal|"ms for a "
+operator|+
+literal|"quorum of nodes to respond."
 argument_list|)
 throw|;
 block|}

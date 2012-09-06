@@ -1057,6 +1057,8 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+try|try
+block|{
 name|jas
 operator|.
 name|getManager
@@ -1071,6 +1073,30 @@ argument_list|,
 name|inProgressOk
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to determine input streams from "
+operator|+
+name|jas
+operator|.
+name|getManager
+argument_list|()
+operator|+
+literal|". Skipping."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|chainAndMakeRedundantStreams
 argument_list|(

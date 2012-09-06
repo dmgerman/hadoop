@@ -2056,6 +2056,8 @@ parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|QuorumCall
 argument_list|<
@@ -2079,11 +2081,7 @@ argument_list|,
 name|RemoteEditLogManifest
 argument_list|>
 name|resps
-decl_stmt|;
-try|try
-block|{
-name|resps
-operator|=
+init|=
 name|loggers
 operator|.
 name|waitForWriteQuorum
@@ -2092,23 +2090,7 @@ name|q
 argument_list|,
 name|selectInputStreamsTimeoutMs
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-comment|// TODO: can we do better here?
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
-block|}
+decl_stmt|;
 name|LOG
 operator|.
 name|debug

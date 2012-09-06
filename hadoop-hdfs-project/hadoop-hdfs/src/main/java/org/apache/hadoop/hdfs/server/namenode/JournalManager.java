@@ -176,7 +176,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    */
+comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    * @throws IOException if the underlying storage has an error or is otherwise    * inaccessible    */
 DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
 name|void
 name|selectInputStreams
@@ -193,6 +193,8 @@ parameter_list|,
 name|boolean
 name|inProgressOk
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Set the amount of memory that this stream should use to buffer edits    */
 DECL|method|setOutputBufferCapacity (int size)
