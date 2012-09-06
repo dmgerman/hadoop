@@ -94,6 +94,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -527,6 +537,20 @@ operator|.
 name|io
 operator|.
 name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SecurityUtil
 import|;
 end_import
 
@@ -3143,7 +3167,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Synchronize a log segment from another JournalNode.    * @param reqInfo the request info for the recovery IPC    * @param segment     * @param url    * @throws IOException    */
-DECL|method|syncLog (RequestInfo reqInfo, SegmentStateProto segment, URL url)
+DECL|method|syncLog (RequestInfo reqInfo, final SegmentStateProto segment, final URL url)
 specifier|private
 name|void
 name|syncLog
@@ -3151,9 +3175,11 @@ parameter_list|(
 name|RequestInfo
 name|reqInfo
 parameter_list|,
+specifier|final
 name|SegmentStateProto
 name|segment
 parameter_list|,
+specifier|final
 name|URL
 name|url
 parameter_list|)
@@ -3184,6 +3210,7 @@ operator|.
 name|getIpcSerialNumber
 argument_list|()
 decl_stmt|;
+specifier|final
 name|List
 argument_list|<
 name|File
@@ -3207,6 +3234,7 @@ argument_list|()
 operator|==
 literal|1
 assert|;
+specifier|final
 name|File
 name|tmpFile
 init|=
@@ -3216,11 +3244,6 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-decl_stmt|;
-name|boolean
-name|success
-init|=
-literal|false
 decl_stmt|;
 name|LOG
 operator|.
@@ -3240,6 +3263,26 @@ operator|+
 name|url
 argument_list|)
 expr_stmt|;
+name|SecurityUtil
+operator|.
+name|doAsLoginUser
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 name|TransferFsImage
 operator|.
 name|doGetUrl
@@ -3259,6 +3302,11 @@ operator|.
 name|exists
 argument_list|()
 assert|;
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 name|success
@@ -3308,6 +3356,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Retrieve the persisted data for recovering the given segment from disk.    */
 DECL|method|getPersistedPaxosData (long segmentTxId)

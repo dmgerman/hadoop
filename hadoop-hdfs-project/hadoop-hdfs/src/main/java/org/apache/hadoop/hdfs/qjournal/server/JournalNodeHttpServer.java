@@ -64,7 +64,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_JOURNALNODE_USER_NAME_KEY
+name|DFS_JOURNALNODE_INTERNAL_SPNEGO_USER_NAME_KEY
 import|;
 end_import
 
@@ -224,6 +224,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|authorize
+operator|.
+name|AccessControlList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -238,9 +254,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|authorize
-operator|.
-name|AccessControlList
+name|SecurityUtil
 import|;
 end_import
 
@@ -350,13 +364,22 @@ name|info
 argument_list|(
 literal|"Starting web server as: "
 operator|+
-name|UserGroupInformation
+name|SecurityUtil
 operator|.
-name|getCurrentUser
-argument_list|()
+name|getServerPrincipal
+argument_list|(
+name|conf
 operator|.
-name|getUserName
+name|get
+argument_list|(
+name|DFS_JOURNALNODE_INTERNAL_SPNEGO_USER_NAME_KEY
+argument_list|)
+argument_list|,
+name|bindAddr
+operator|.
+name|getHostName
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|int
@@ -414,7 +437,7 @@ name|initSpnego
 argument_list|(
 name|conf
 argument_list|,
-name|DFS_JOURNALNODE_USER_NAME_KEY
+name|DFS_JOURNALNODE_INTERNAL_SPNEGO_USER_NAME_KEY
 argument_list|,
 name|DFS_JOURNALNODE_KEYTAB_FILE_KEY
 argument_list|)

@@ -962,6 +962,8 @@ specifier|public
 name|void
 name|testDontOverWriteExistingDir
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|assertFalse
 argument_list|(
@@ -995,6 +997,8 @@ specifier|public
 name|void
 name|testInitializeSharedEditsConfiguresGenericConfKeys
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Configuration
 name|conf
