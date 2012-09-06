@@ -426,6 +426,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Scans the block files under a block pool and verifies that the  * files are not corrupt.  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
 end_comment
@@ -1447,6 +1461,17 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTotalScans ()
+name|long
+name|getTotalScans
+parameter_list|()
+block|{
+return|return
+name|totalScans
+return|;
 block|}
 comment|/** @return the last scan time for the block pool. */
 DECL|method|getLastScanTime ()
@@ -2842,11 +2867,91 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|workRemainingInCurrentPeriod ()
+specifier|private
+specifier|synchronized
+name|boolean
+name|workRemainingInCurrentPeriod
+parameter_list|()
+block|{
+if|if
+condition|(
+name|bytesLeft
+operator|<=
+literal|0
+operator|&&
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|<
+name|currentPeriodStart
+operator|+
+name|scanPeriod
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping scan since bytesLeft="
+operator|+
+name|bytesLeft
+operator|+
+literal|", Start="
+operator|+
+name|currentPeriodStart
+operator|+
+literal|", period="
+operator|+
+name|scanPeriod
+operator|+
+literal|", now="
+operator|+
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|+
+literal|" "
+operator|+
+name|blockPoolId
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
 DECL|method|scanBlockPoolSlice ()
 name|void
 name|scanBlockPoolSlice
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|workRemainingInCurrentPeriod
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 comment|// Create a new processedBlocks structure
 name|processedBlocks
 operator|=
@@ -3058,7 +3163,7 @@ throw|;
 block|}
 finally|finally
 block|{
-name|cleanUp
+name|rollVerificationLogs
 argument_list|()
 expr_stmt|;
 if|if
@@ -3081,11 +3186,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|cleanUp ()
+DECL|method|rollVerificationLogs ()
 specifier|private
 specifier|synchronized
 name|void
-name|cleanUp
+name|rollVerificationLogs
 parameter_list|()
 block|{
 if|if

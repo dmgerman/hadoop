@@ -204,6 +204,20 @@ name|FsVolumeSpi
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * DataBlockScanner manages block scanning for all the block pools. For each  * block pool a {@link BlockPoolSliceScanner} is created which runs in a separate  * thread to scan the blocks for that block pool. When a {@link BPOfferService}  * becomes alive or dies, blockPoolScannerMap in this class is updated.  */
 end_comment
@@ -258,6 +272,16 @@ specifier|private
 specifier|final
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|SLEEP_PERIOD_MS
+specifier|static
+specifier|final
+name|int
+name|SLEEP_PERIOD_MS
+init|=
+literal|5
+operator|*
+literal|1000
 decl_stmt|;
 comment|/**    * Map to find the BlockPoolScanner for a given block pool id. This is updated    * when a BPOfferService becomes alive or dies.    */
 DECL|field|blockPoolScannerMap
@@ -354,7 +378,7 @@ name|interrupted
 argument_list|()
 condition|)
 block|{
-comment|//Sleep everytime except in the first interation.
+comment|//Sleep everytime except in the first iteration.
 if|if
 condition|(
 operator|!
@@ -367,7 +391,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|5000
+name|SLEEP_PERIOD_MS
 argument_list|)
 expr_stmt|;
 block|}
@@ -491,7 +515,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|5000
+name|SLEEP_PERIOD_MS
 argument_list|)
 expr_stmt|;
 block|}
@@ -1146,7 +1170,8 @@ literal|" from blockPoolScannerMap"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// This method is used for testing
+annotation|@
+name|VisibleForTesting
 DECL|method|getBlocksScannedInLastRun (String bpid)
 name|long
 name|getBlocksScannedInLastRun
@@ -1190,6 +1215,55 @@ return|return
 name|bpScanner
 operator|.
 name|getBlocksScannedInLastRun
+argument_list|()
+return|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTotalScans (String bpid)
+name|long
+name|getTotalScans
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|BlockPoolSliceScanner
+name|bpScanner
+init|=
+name|getBPScanner
+argument_list|(
+name|bpid
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|bpScanner
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block Pool: "
+operator|+
+name|bpid
+operator|+
+literal|" is not running"
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+return|return
+name|bpScanner
+operator|.
+name|getTotalScans
 argument_list|()
 return|;
 block|}
