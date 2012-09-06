@@ -110,18 +110,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ScheduledExecutorService
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -191,6 +179,24 @@ operator|.
 name|protocolPB
 operator|.
 name|PBHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|protocol
+operator|.
+name|JournalOutOfSyncException
 import|;
 end_import
 
@@ -694,6 +700,14 @@ specifier|final
 name|int
 name|queueSizeLimitBytes
 decl_stmt|;
+comment|/**    * If this logger misses some edits, or restarts in the middle of    * a segment, the writer won't be able to write any more edits until    * the beginning of the next segment. Upon detecting this situation,    * the writer sets this flag to true to avoid sending useless RPCs.    */
+DECL|field|outOfSync
+specifier|private
+name|boolean
+name|outOfSync
+init|=
+literal|false
+decl_stmt|;
 DECL|field|FACTORY
 specifier|static
 specifier|final
@@ -1174,6 +1188,18 @@ return|return
 name|queuedEditsSizeBytes
 return|;
 block|}
+comment|/**    * @return true if the server has gotten out of sync from the client,    * and thus a log roll is required for this logger to successfully start    * logging more edits.    */
+DECL|method|isOutOfSync ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isOutOfSync
+parameter_list|()
+block|{
+return|return
+name|outOfSync
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|waitForAllPendingCalls ()
@@ -1420,6 +1446,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|throwIfOutOfSync
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|getProxy
 argument_list|()
 operator|.
@@ -1437,6 +1468,64 @@ argument_list|,
 name|data
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Remote journal "
+operator|+
+name|IPCLoggerChannel
+operator|.
+name|this
+operator|+
+literal|" failed to "
+operator|+
+literal|"write txns "
+operator|+
+name|firstTxnId
+operator|+
+literal|"-"
+operator|+
+operator|(
+name|firstTxnId
+operator|+
+name|numTxns
+operator|-
+literal|1
+operator|)
+operator|+
+literal|". Will try to write to this JN again after the next "
+operator|+
+literal|"log roll."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|IPCLoggerChannel
+operator|.
+name|this
+init|)
+block|{
+name|outOfSync
+operator|=
+literal|true
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 synchronized|synchronized
 init|(
 name|IPCLoggerChannel
@@ -1542,6 +1631,31 @@ block|}
 return|return
 name|ret
 return|;
+block|}
+DECL|method|throwIfOutOfSync ()
+specifier|private
+specifier|synchronized
+name|void
+name|throwIfOutOfSync
+parameter_list|()
+throws|throws
+name|JournalOutOfSyncException
+block|{
+if|if
+condition|(
+name|outOfSync
+condition|)
+block|{
+comment|// TODO: send a "heartbeat" here so that the remote node knows the newest
+comment|// committed txid, for metrics purposes
+throw|throw
+operator|new
+name|JournalOutOfSyncException
+argument_list|(
+literal|"Journal disabled until next roll"
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|reserveQueueSpace (int size)
 specifier|private
@@ -1713,6 +1827,41 @@ argument_list|,
 name|txid
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|IPCLoggerChannel
+operator|.
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|outOfSync
+condition|)
+block|{
+name|outOfSync
+operator|=
+literal|false
+expr_stmt|;
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restarting previously-stopped writes to "
+operator|+
+name|IPCLoggerChannel
+operator|.
+name|this
+operator|+
+literal|" in segment starting at txid "
+operator|+
+name|txid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 literal|null
 return|;
@@ -1761,6 +1910,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|throwIfOutOfSync
+argument_list|()
+expr_stmt|;
 name|getProxy
 argument_list|()
 operator|.
@@ -2114,6 +2266,19 @@ operator|+
 name|behind
 operator|+
 literal|" behind)"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|outOfSync
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" (will re-join on next segment)"
 argument_list|)
 expr_stmt|;
 block|}

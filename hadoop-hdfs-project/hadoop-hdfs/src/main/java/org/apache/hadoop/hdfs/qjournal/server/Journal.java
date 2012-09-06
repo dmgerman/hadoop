@@ -220,6 +220,24 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
+name|JournalOutOfSyncException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|protocol
+operator|.
 name|QJournalProtocolProtos
 operator|.
 name|NewEpochResponseProto
@@ -1308,15 +1326,7 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
-comment|// TODO: if a JN goes down and comes back up, then it will throw
-comment|// this exception on every edit. We should instead send back
-comment|// a response indicating the log needs to be rolled, which would
-comment|// mark the logger on the client side as "pending" -- and have the
-comment|// NN code look for this condition and trigger a roll when it happens.
-comment|// That way the node can catch back up and rejoin
-name|Preconditions
-operator|.
-name|checkState
+name|checkSync
 argument_list|(
 name|curSegment
 operator|!=
@@ -1361,9 +1371,7 @@ name|curSegmentTxId
 argument_list|)
 throw|;
 block|}
-name|Preconditions
-operator|.
-name|checkState
+name|checkSync
 argument_list|(
 name|nextTxId
 operator|==
@@ -1736,6 +1744,47 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * @throws JournalOutOfSyncException if the given expression is not true.    * The message of the exception is formatted using the 'msg' and    * 'formatArgs' parameters.    */
+DECL|method|checkSync (boolean expression, String msg, Object... formatArgs)
+specifier|private
+name|void
+name|checkSync
+parameter_list|(
+name|boolean
+name|expression
+parameter_list|,
+name|String
+name|msg
+parameter_list|,
+name|Object
+modifier|...
+name|formatArgs
+parameter_list|)
+throws|throws
+name|JournalOutOfSyncException
+block|{
+if|if
+condition|(
+operator|!
+name|expression
+condition|)
+block|{
+throw|throw
+operator|new
+name|JournalOutOfSyncException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|msg
+argument_list|,
+name|formatArgs
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Start a new segment at the given txid. The previous segment    * must have already been finalized.    */
 DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
 specifier|public
@@ -2020,7 +2069,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalStateException
+name|JournalOutOfSyncException
 argument_list|(
 literal|"No log file to finalize at "
 operator|+
@@ -2054,9 +2103,7 @@ operator|.
 name|validateLog
 argument_list|()
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkState
+name|checkSync
 argument_list|(
 name|elf
 operator|.

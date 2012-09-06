@@ -128,6 +128,24 @@ name|qjournal
 operator|.
 name|protocol
 operator|.
+name|JournalOutOfSyncException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|qjournal
+operator|.
+name|protocol
+operator|.
 name|QJournalProtocolProtos
 operator|.
 name|NewEpochResponseProto
@@ -1373,8 +1391,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalStateException
-name|ise
+name|JournalOutOfSyncException
+name|e
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -1383,7 +1401,7 @@ name|assertExceptionContains
 argument_list|(
 literal|"but current state of log is"
 argument_list|,
-name|ise
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1430,8 +1448,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalStateException
-name|ise
+name|JournalOutOfSyncException
+name|e
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -1440,7 +1458,7 @@ name|assertExceptionContains
 argument_list|(
 literal|"but current state of log is"
 argument_list|,
-name|ise
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1489,8 +1507,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IllegalStateException
-name|ise
+name|JournalOutOfSyncException
+name|e
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -1499,7 +1517,7 @@ name|assertExceptionContains
 argument_list|(
 literal|"No log file to finalize at transaction ID 1000"
 argument_list|,
-name|ise
+name|e
 argument_list|)
 expr_stmt|;
 block|}
