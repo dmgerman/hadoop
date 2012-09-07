@@ -1440,8 +1440,8 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Gets the timestamp component based on millisecond time.    * @param millisecondTime    * @param debugMode    * @return the timestamp component based on millisecond time    */
-DECL|method|timestampDirectoryComponent (long millisecondTime, boolean debugMode)
+comment|/**    * Gets the timestamp component based on millisecond time.    * @param millisecondTime    * @return the timestamp component based on millisecond time    */
+DECL|method|timestampDirectoryComponent (long millisecondTime)
 specifier|public
 specifier|static
 name|String
@@ -1449,9 +1449,6 @@ name|timestampDirectoryComponent
 parameter_list|(
 name|long
 name|millisecondTime
-parameter_list|,
-name|boolean
-name|debugMode
 parameter_list|)
 block|{
 name|Calendar
@@ -1491,18 +1488,12 @@ operator|.
 name|YEAR
 argument_list|)
 argument_list|,
-comment|// months are 0-based in Calendar, but people will expect January
-comment|// to be month #1.
+comment|// months are 0-based in Calendar, but people will expect January to
+comment|// be month #1.
 name|timestamp
 operator|.
 name|get
 argument_list|(
-name|debugMode
-condition|?
-name|Calendar
-operator|.
-name|HOUR
-else|:
 name|Calendar
 operator|.
 name|MONTH
@@ -1514,12 +1505,6 @@ name|timestamp
 operator|.
 name|get
 argument_list|(
-name|debugMode
-condition|?
-name|Calendar
-operator|.
-name|MINUTE
-else|:
 name|Calendar
 operator|.
 name|DAY_OF_MONTH
