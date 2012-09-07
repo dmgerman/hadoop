@@ -2250,7 +2250,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated protocol interface should be passed.    */
+comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (final Object instance, final String bindAddress, final int port, Configuration conf)
@@ -2294,7 +2294,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated protocol interface should be passed.    */
+comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (final Object instance, final String bindAddress, final int port, final int numHandlers, final boolean verbose, Configuration conf)
@@ -2356,7 +2356,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, Configuration conf)
 specifier|public
 specifier|static
@@ -2407,7 +2409,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance.    * @deprecated secretManager should be passed.    */
+comment|/** Construct a server for a protocol implementation instance.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
@@ -2466,7 +2468,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.     *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 specifier|static
@@ -2531,6 +2535,9 @@ literal|null
 argument_list|)
 return|;
 block|}
+comment|/**    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 specifier|static
@@ -2611,7 +2618,9 @@ name|portRangeConfig
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 specifier|public
 specifier|static
 parameter_list|<
