@@ -294,7 +294,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 import|;
 end_import
 
@@ -420,6 +420,21 @@ DECL|field|resourceCalculatorPlugin
 specifier|private
 name|ResourceCalculatorPlugin
 name|resourceCalculatorPlugin
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|field|processTreeClass
+specifier|private
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|ResourceCalculatorProcessTree
+argument_list|>
+name|processTreeClass
 decl_stmt|;
 DECL|field|maxVmemAllottedForContainers
 specifier|private
@@ -590,6 +605,40 @@ operator|+
 name|this
 operator|.
 name|resourceCalculatorPlugin
+argument_list|)
+expr_stmt|;
+name|processTreeClass
+operator|=
+name|conf
+operator|.
+name|getClass
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_CONTAINER_MON_PROCESS_TREE
+argument_list|,
+literal|null
+argument_list|,
+name|ResourceCalculatorProcessTree
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|" Using ResourceCalculatorProcessTree : "
+operator|+
+name|this
+operator|.
+name|processTreeClass
 argument_list|)
 expr_stmt|;
 name|long
@@ -766,7 +815,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Is the total physical memory check enabled?    *     * @return true if total physical memory check is enabled.    */
+comment|/**    * Is the total physical memory check enabled?    *    * @return true if total physical memory check is enabled.    */
 DECL|method|isPhysicalMemoryCheckEnabled ()
 name|boolean
 name|isPhysicalMemoryCheckEnabled
@@ -783,7 +832,7 @@ name|DISABLED_MEMORY_LIMIT
 operator|)
 return|;
 block|}
-comment|/**    * Is the total virtual memory check enabled?    *     * @return true if total virtual memory check is enabled.    */
+comment|/**    * Is the total virtual memory check enabled?    *    * @return true if total virtual memory check is enabled.    */
 DECL|method|isVirtualMemoryCheckEnabled ()
 name|boolean
 name|isVirtualMemoryCheckEnabled
@@ -808,18 +857,53 @@ parameter_list|()
 block|{
 if|if
 condition|(
-operator|!
-name|ProcfsBasedProcessTree
-operator|.
-name|isAvailable
-argument_list|()
+name|resourceCalculatorPlugin
+operator|==
+literal|null
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ProcessTree implementation is missing on this system. "
+literal|"ResourceCalculatorPlugin is unavailable on this system. "
+operator|+
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is disabled."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+name|ResourceCalculatorProcessTree
+operator|.
+name|getResourceCalculatorProcessTree
+argument_list|(
+literal|"0"
+argument_list|,
+name|processTreeClass
+argument_list|,
+name|conf
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ResourceCalculatorProcessTree is unavailable on this system. "
 operator|+
 name|this
 operator|.
@@ -963,7 +1047,7 @@ name|pid
 decl_stmt|;
 DECL|field|pTree
 specifier|private
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 decl_stmt|;
 DECL|field|vmemLimit
@@ -976,7 +1060,7 @@ specifier|private
 name|long
 name|pmemLimit
 decl_stmt|;
-DECL|method|ProcessTreeInfo (ContainerId containerId, String pid, ProcfsBasedProcessTree pTree, long vmemLimit, long pmemLimit)
+DECL|method|ProcessTreeInfo (ContainerId containerId, String pid, ResourceCalculatorProcessTree pTree, long vmemLimit, long pmemLimit)
 specifier|public
 name|ProcessTreeInfo
 parameter_list|(
@@ -986,7 +1070,7 @@ parameter_list|,
 name|String
 name|pid
 parameter_list|,
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 parameter_list|,
 name|long
@@ -1069,7 +1153,7 @@ expr_stmt|;
 block|}
 DECL|method|getProcessTree ()
 specifier|public
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|getProcessTree
 parameter_list|()
 block|{
@@ -1079,12 +1163,12 @@ operator|.
 name|pTree
 return|;
 block|}
-DECL|method|setProcessTree (ProcfsBasedProcessTree pTree)
+DECL|method|setProcessTree (ResourceCalculatorProcessTree pTree)
 specifier|public
 name|void
 name|setProcessTree
 parameter_list|(
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 parameter_list|)
 block|{
@@ -1121,7 +1205,7 @@ name|pmemLimit
 return|;
 block|}
 block|}
-comment|/**    * Check whether a container's process tree's current memory usage is over    * limit.    *     * When a java process exec's a program, it could momentarily account for    * double the size of it's memory, because the JVM does a fork()+exec()    * which at fork time creates a copy of the parent's memory. If the    * monitoring thread detects the memory used by the container tree at the    * same instance, it could assume it is over limit and kill the tree, for no    * fault of the process itself.    *     * We counter this problem by employing a heuristic check: - if a process    * tree exceeds the memory limit by more than twice, it is killed    * immediately - if a process tree has processes older than the monitoring    * interval exceeding the memory limit by even 1 time, it is killed. Else it    * is given the benefit of doubt to lie around for one more iteration.    *     * @param containerId    *          Container Id for the container tree    * @param currentMemUsage    *          Memory usage of a container tree    * @param curMemUsageOfAgedProcesses    *          Memory usage of processes older than an iteration in a container    *          tree    * @param vmemLimit    *          The limit specified for the container    * @return true if the memory usage is more than twice the specified limit,    *         or if processes in the tree, older than this thread's monitoring    *         interval, exceed the memory limit. False, otherwise.    */
+comment|/**    * Check whether a container's process tree's current memory usage is over    * limit.    *    * When a java process exec's a program, it could momentarily account for    * double the size of it's memory, because the JVM does a fork()+exec()    * which at fork time creates a copy of the parent's memory. If the    * monitoring thread detects the memory used by the container tree at the    * same instance, it could assume it is over limit and kill the tree, for no    * fault of the process itself.    *    * We counter this problem by employing a heuristic check: - if a process    * tree exceeds the memory limit by more than twice, it is killed    * immediately - if a process tree has processes older than the monitoring    * interval exceeding the memory limit by even 1 time, it is killed. Else it    * is given the benefit of doubt to lie around for one more iteration.    *    * @param containerId    *          Container Id for the container tree    * @param currentMemUsage    *          Memory usage of a container tree    * @param curMemUsageOfAgedProcesses    *          Memory usage of processes older than an iteration in a container    *          tree    * @param vmemLimit    *          The limit specified for the container    * @return true if the memory usage is more than twice the specified limit,    *         or if processes in the tree, older than this thread's monitoring    *         interval, exceed the memory limit. False, otherwise.    */
 DECL|method|isProcessTreeOverLimit (String containerId, long currentMemUsage, long curMemUsageOfAgedProcesses, long vmemLimit)
 name|boolean
 name|isProcessTreeOverLimit
@@ -1216,11 +1300,11 @@ name|isOverLimit
 return|;
 block|}
 comment|// method provided just for easy testing purposes
-DECL|method|isProcessTreeOverLimit (ProcfsBasedProcessTree pTree, String containerId, long limit)
+DECL|method|isProcessTreeOverLimit (ResourceCalculatorProcessTree pTree, String containerId, long limit)
 name|boolean
 name|isProcessTreeOverLimit
 parameter_list|(
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 parameter_list|,
 name|String
@@ -1587,17 +1671,18 @@ operator|+
 literal|" for the first time"
 argument_list|)
 expr_stmt|;
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pt
 init|=
-operator|new
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
+operator|.
+name|getResourceCalculatorProcessTree
 argument_list|(
 name|pId
 argument_list|,
-name|ContainerExecutor
-operator|.
-name|isSetsidAvailable
+name|processTreeClass
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|ptInfo
@@ -1640,7 +1725,7 @@ operator|+
 name|containerId
 argument_list|)
 expr_stmt|;
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 init|=
 name|ptInfo
@@ -1998,7 +2083,7 @@ break|break;
 block|}
 block|}
 block|}
-DECL|method|formatErrorMessage (String memTypeExceeded, long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit, String pId, ContainerId containerId, ProcfsBasedProcessTree pTree)
+DECL|method|formatErrorMessage (String memTypeExceeded, long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit, String pId, ContainerId containerId, ResourceCalculatorProcessTree pTree)
 specifier|private
 name|String
 name|formatErrorMessage
@@ -2024,7 +2109,7 @@ parameter_list|,
 name|ContainerId
 name|containerId
 parameter_list|,
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 parameter_list|)
 block|{

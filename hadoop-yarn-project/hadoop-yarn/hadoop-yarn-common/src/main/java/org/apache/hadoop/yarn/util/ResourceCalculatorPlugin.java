@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Plugin to calculate resource information on the system.  *   */
+comment|/**  * Plugin to calculate resource information on the system.  *  */
 end_comment
 
 begin_class
@@ -109,7 +109,7 @@ name|ResourceCalculatorPlugin
 extends|extends
 name|Configured
 block|{
-comment|/**    * Obtain the total size of the virtual memory present in the system.    *     * @return virtual memory size in bytes.    */
+comment|/**    * Obtain the total size of the virtual memory present in the system.    *    * @return virtual memory size in bytes.    */
 DECL|method|getVirtualMemorySize ()
 specifier|public
 specifier|abstract
@@ -117,7 +117,7 @@ name|long
 name|getVirtualMemorySize
 parameter_list|()
 function_decl|;
-comment|/**    * Obtain the total size of the physical memory present in the system.    *     * @return physical memory size bytes.    */
+comment|/**    * Obtain the total size of the physical memory present in the system.    *    * @return physical memory size bytes.    */
 DECL|method|getPhysicalMemorySize ()
 specifier|public
 specifier|abstract
@@ -280,7 +280,7 @@ name|cumulativeCpuTime
 return|;
 block|}
 block|}
-comment|/**    * Get the ResourceCalculatorPlugin from the class name and configure it. If    * class name is null, this method will try and return a memory calculator    * plugin available for this system.    *     * @param clazz class-name    * @param conf configure the plugin with this.    * @return ResourceCalculatorPlugin    */
+comment|/**    * Create the ResourceCalculatorPlugin from the class name and configure it. If    * class name is null, this method will try and return a memory calculator    * plugin available for this system.    *    * @param clazz ResourceCalculator plugin class-name    * @param conf configure the plugin with this.    * @return ResourceCalculatorPlugin or null if ResourceCalculatorPlugin is not    * 		 available for current system    */
 DECL|method|getResourceCalculatorPlugin ( Class<? extends ResourceCalculatorPlugin> clazz, Configuration conf)
 specifier|public
 specifier|static

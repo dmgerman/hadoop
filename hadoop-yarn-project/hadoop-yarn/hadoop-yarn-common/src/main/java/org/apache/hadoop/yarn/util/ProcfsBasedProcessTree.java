@@ -255,6 +255,8 @@ DECL|class|ProcfsBasedProcessTree
 specifier|public
 class|class
 name|ProcfsBasedProcessTree
+extends|extends
+name|ResourceCalculatorProcessTree
 block|{
 DECL|field|LOG
 specifier|static
@@ -544,13 +546,6 @@ name|cpuTime
 init|=
 literal|0L
 decl_stmt|;
-DECL|field|setsidUsed
-specifier|private
-name|boolean
-name|setsidUsed
-init|=
-literal|false
-decl_stmt|;
 DECL|field|processTree
 specifier|protected
 name|Map
@@ -582,41 +577,17 @@ name|this
 argument_list|(
 name|pid
 argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|ProcfsBasedProcessTree (String pid, boolean setsidUsed)
-specifier|public
-name|ProcfsBasedProcessTree
-parameter_list|(
-name|String
-name|pid
-parameter_list|,
-name|boolean
-name|setsidUsed
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|pid
-argument_list|,
-name|setsidUsed
-argument_list|,
 name|PROCFS
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Build a new process tree rooted at the pid.    *     * This method is provided mainly for testing purposes, where    * the root of the proc file system can be adjusted.    *     * @param pid root of the process tree    * @param setsidUsed true, if setsid was used for the root pid    * @param procfsDir the root of a proc file system - only used for testing.     */
-DECL|method|ProcfsBasedProcessTree (String pid, boolean setsidUsed, String procfsDir)
+comment|/**    * Build a new process tree rooted at the pid.    *    * This method is provided mainly for testing purposes, where    * the root of the proc file system can be adjusted.    *    * @param pid root of the process tree    * @param procfsDir the root of a proc file system - only used for testing.    */
+DECL|method|ProcfsBasedProcessTree (String pid, String procfsDir)
 specifier|public
 name|ProcfsBasedProcessTree
 parameter_list|(
 name|String
 name|pid
-parameter_list|,
-name|boolean
-name|setsidUsed
 parameter_list|,
 name|String
 name|procfsDir
@@ -633,18 +604,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|setsidUsed
-operator|=
-name|setsidUsed
-expr_stmt|;
-name|this
-operator|.
 name|procfsDir
 operator|=
 name|procfsDir
 expr_stmt|;
 block|}
-comment|/**    * Checks if the ProcfsBasedProcessTree is available on this system.    *     * @return true if ProcfsBasedProcessTree is available. False otherwise.    */
+comment|/**    * Checks if the ProcfsBasedProcessTree is available on this system.    *    * @return true if ProcfsBasedProcessTree is available. False otherwise.    */
 DECL|method|isAvailable ()
 specifier|public
 specifier|static
@@ -712,10 +677,12 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Get the process-tree with latest state. If the root-process is not alive,    * an empty tree will be returned.    *     * @return the process-tree with latest state.    */
+comment|/**    * Get the process-tree with latest state. If the root-process is not alive,    * an empty tree will be returned.    *    * @return the process-tree with latest state.    */
+annotation|@
+name|Override
 DECL|method|getProcessTree ()
 specifier|public
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|getProcessTree
 parameter_list|()
 block|{
@@ -1119,6 +1086,8 @@ name|this
 return|;
 block|}
 comment|/** Verify that the given process id is same as its process group id.    * @return true if the process id matches else return false.    */
+annotation|@
+name|Override
 DECL|method|checkPidPgrpidForMatch ()
 specifier|public
 name|boolean
@@ -1242,7 +1211,9 @@ return|return
 name|currentPIDs
 return|;
 block|}
-comment|/**    * Get a dump of the process-tree.    *     * @return a string concatenating the dump of information of all the processes    *         in the process-tree    */
+comment|/**    * Get a dump of the process-tree.    *    * @return a string concatenating the dump of information of all the processes    *         in the process-tree    */
+annotation|@
+name|Override
 DECL|method|getProcessTreeDump ()
 specifier|public
 name|String
@@ -1364,37 +1335,9 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree.    *     * @return cumulative virtual memory used by the process-tree in bytes.    */
-DECL|method|getCumulativeVmem ()
-specifier|public
-name|long
-name|getCumulativeVmem
-parameter_list|()
-block|{
-comment|// include all processes.. all processes will be older than 0.
-return|return
-name|getCumulativeVmem
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return cumulative rss memory used by the process-tree in bytes. return 0    *         if it cannot be calculated    */
-DECL|method|getCumulativeRssmem ()
-specifier|public
-name|long
-name|getCumulativeRssmem
-parameter_list|()
-block|{
-comment|// include all processes.. all processes will be older than 0.
-return|return
-name|getCumulativeRssmem
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *     * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age.    */
+comment|/**    * Get the cumulative virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative virtual memory used by the process-tree in bytes,    *          for processes older than this age.    */
+annotation|@
+name|Override
 DECL|method|getCumulativeVmem (int olderThanAge)
 specifier|public
 name|long
@@ -1452,6 +1395,8 @@ name|total
 return|;
 block|}
 comment|/**    * Get the cumulative resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                      memory addition    * @return cumulative rss memory used by the process-tree in bytes,    *          for processes older than this age. return 0 if it cannot be    *          calculated    */
+annotation|@
+name|Override
 DECL|method|getCumulativeRssmem (int olderThanAge)
 specifier|public
 name|long
@@ -1523,6 +1468,8 @@ return|;
 comment|// convert # pages to byte
 block|}
 comment|/**    * Get the CPU time in millisecond used by all the processes in the    * process-tree since the process-tree created    *    * @return cumulative CPU time in millisecond since the process-tree created    *         return 0 if it cannot be calculated    */
+annotation|@
+name|Override
 DECL|method|getCumulativeCpuTime ()
 specifier|public
 name|long
@@ -1567,7 +1514,8 @@ name|incJiffies
 operator|+=
 name|p
 operator|.
-name|dtime
+name|getDtime
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -1729,7 +1677,7 @@ return|return
 name|processList
 return|;
 block|}
-comment|/**    * Construct the ProcessInfo using the process' PID and procfs rooted at the    * specified directory and return the same. It is provided mainly to assist    * testing purposes.    *     * Returns null on failing to read from procfs,    *    * @param pinfo ProcessInfo that needs to be updated    * @param procfsDir root of the proc file system    * @return updated ProcessInfo, null on errors.    */
+comment|/**    * Construct the ProcessInfo using the process' PID and procfs rooted at the    * specified directory and return the same. It is provided mainly to assist    * testing purposes.    *    * Returns null on failing to read from procfs,    *    * @param pinfo ProcessInfo that needs to be updated    * @param procfsDir root of the proc file system    * @return updated ProcessInfo, null on errors.    */
 DECL|method|constructProcessInfo (ProcessInfo pinfo, String procfsDir)
 specifier|private
 specifier|static
@@ -2052,6 +2000,8 @@ name|ret
 return|;
 block|}
 comment|/**    * Returns a string printing PIDs of process present in the    * ProcfsBasedProcessTree. Output format : [pid pid ..]    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -2109,7 +2059,7 @@ operator|+
 literal|"]"
 return|;
 block|}
-comment|/**    *     * Class containing information of a process.    *     */
+comment|/**    *    * Class containing information of a process.    *    */
 DECL|class|ProcessInfo
 specifier|private
 specifier|static
@@ -2357,36 +2307,6 @@ parameter_list|()
 block|{
 return|return
 name|age
-return|;
-block|}
-DECL|method|isParent (ProcessInfo p)
-specifier|public
-name|boolean
-name|isParent
-parameter_list|(
-name|ProcessInfo
-name|p
-parameter_list|)
-block|{
-if|if
-condition|(
-name|pid
-operator|.
-name|equals
-argument_list|(
-name|p
-operator|.
-name|getPpid
-argument_list|()
-argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|updateProcessInfo (String name, String ppid, Integer pgrpId, Integer sessionId, Long utime, BigInteger stime, Long vmem, Long rssmem)

@@ -1654,6 +1654,18 @@ name|NM_PREFIX
 operator|+
 literal|"container-monitor.resource-calculator.class"
 decl_stmt|;
+comment|/** Class that calculates process tree resource utilization.*/
+DECL|field|NM_CONTAINER_MON_PROCESS_TREE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_MON_PROCESS_TREE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-monitor.process-tree.class"
+decl_stmt|;
 comment|/**    * Enable/Disable disks' health checker. Default is true.    * An expert level configuration property.    */
 DECL|field|NM_DISK_HEALTH_CHECK_ENABLE
 specifier|public

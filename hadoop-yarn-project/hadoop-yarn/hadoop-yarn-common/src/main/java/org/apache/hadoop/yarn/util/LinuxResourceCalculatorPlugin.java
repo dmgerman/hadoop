@@ -431,7 +431,7 @@ name|UNAVAILABLE
 decl_stmt|;
 DECL|field|pTree
 specifier|private
-name|ProcfsBasedProcessTree
+name|ResourceCalculatorProcessTree
 name|pTree
 init|=
 literal|null

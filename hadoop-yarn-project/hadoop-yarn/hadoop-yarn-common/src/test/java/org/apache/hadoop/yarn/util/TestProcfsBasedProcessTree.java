@@ -866,8 +866,6 @@ name|pid
 argument_list|)
 decl_stmt|;
 name|p
-operator|=
-name|p
 operator|.
 name|getProcessTree
 argument_list|()
@@ -923,8 +921,6 @@ block|{
 break|break;
 block|}
 block|}
-name|p
-operator|=
 name|p
 operator|.
 name|getProcessTree
@@ -1120,8 +1116,6 @@ expr_stmt|;
 block|}
 comment|// ProcessTree is gone now. Any further calls should be sane.
 name|p
-operator|=
-name|p
 operator|.
 name|getProcessTree
 argument_list|()
@@ -1189,22 +1183,16 @@ operator|new
 name|ProcfsBasedProcessTree
 argument_list|(
 name|pid
-argument_list|,
-name|isSetsidAvailable
-argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|createProcessTree (String pid, boolean setsidUsed, String procfsRootDir)
+DECL|method|createProcessTree (String pid, String procfsRootDir)
 specifier|protected
 name|ProcfsBasedProcessTree
 name|createProcessTree
 parameter_list|(
 name|String
 name|pid
-parameter_list|,
-name|boolean
-name|setsidUsed
 parameter_list|,
 name|String
 name|procfsRootDir
@@ -1215,8 +1203,6 @@ operator|new
 name|ProcfsBasedProcessTree
 argument_list|(
 name|pid
-argument_list|,
-name|setsidUsed
 argument_list|,
 name|procfsRootDir
 argument_list|)
@@ -1241,7 +1227,7 @@ literal|9
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get PID from a pid-file.    *     * @param pidFileName    *          Name of the pid-file.    * @return the PID string read from the pid-file. Returns null if the    *         pidFileName points to a non-existing file or if read fails from the    *         file.    */
+comment|/**    * Get PID from a pid-file.    *    * @param pidFileName    *          Name of the pid-file.    * @return the PID string read from the pid-file. Returns null if the    *         pidFileName points to a non-existing file or if read fails from the    *         file.    */
 DECL|method|getPidFromPidFile (String pidFileName)
 specifier|public
 specifier|static
@@ -1800,8 +1786,6 @@ name|createProcessTree
 argument_list|(
 literal|"100"
 argument_list|,
-literal|true
-argument_list|,
 name|procfsRootDir
 operator|.
 name|getAbsolutePath
@@ -2208,8 +2192,6 @@ init|=
 name|createProcessTree
 argument_list|(
 literal|"100"
-argument_list|,
-literal|true
 argument_list|,
 name|procfsRootDir
 operator|.
@@ -2650,21 +2632,16 @@ name|procfsRootDir
 argument_list|)
 expr_stmt|;
 comment|// crank up the process tree class.
-name|ProcfsBasedProcessTree
-name|processTree
-init|=
 name|createProcessTree
 argument_list|(
 name|pid
-argument_list|,
-literal|true
 argument_list|,
 name|procfsRootDir
 operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// Let us not create stat file for pid 100.
 name|Assert
 operator|.
@@ -2695,7 +2672,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test the correctness of process-tree dump.    *     * @throws IOException    */
+comment|/**    * Test the correctness of process-tree dump.    *    * @throws IOException    */
 annotation|@
 name|Test
 DECL|method|testProcessTreeDump ()
@@ -3035,8 +3012,6 @@ init|=
 name|createProcessTree
 argument_list|(
 literal|"100"
-argument_list|,
-literal|true
 argument_list|,
 name|procfsRootDir
 operator|.
