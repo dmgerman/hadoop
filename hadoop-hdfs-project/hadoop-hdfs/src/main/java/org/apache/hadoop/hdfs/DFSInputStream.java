@@ -1350,6 +1350,20 @@ operator|+
 name|lastBlockBeingWrittenLength
 return|;
 block|}
+DECL|method|blockUnderConstruction ()
+specifier|private
+specifier|synchronized
+name|boolean
+name|blockUnderConstruction
+parameter_list|()
+block|{
+return|return
+name|locatedBlocks
+operator|.
+name|isUnderConstruction
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the datanode from which the stream is currently reading.    */
 DECL|method|getCurrentDatanode ()
 specifier|public
@@ -4135,6 +4149,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Can't local read a block under construction, see HDFS-2757
 if|if
 condition|(
 name|dfsClient
@@ -4143,6 +4158,10 @@ name|shouldTryShortCircuitRead
 argument_list|(
 name|dnAddr
 argument_list|)
+operator|&&
+operator|!
+name|blockUnderConstruction
+argument_list|()
 condition|)
 block|{
 return|return

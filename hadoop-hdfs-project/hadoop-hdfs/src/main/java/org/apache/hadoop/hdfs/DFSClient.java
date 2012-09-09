@@ -9404,22 +9404,13 @@ name|InetSocketAddress
 name|targetAddr
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|shortCircuitLocalReads
 operator|&&
 name|isLocalAddress
 argument_list|(
 name|targetAddr
 argument_list|)
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|reportChecksumFailure (String file, ExtendedBlock blk, DatanodeInfo dn)
