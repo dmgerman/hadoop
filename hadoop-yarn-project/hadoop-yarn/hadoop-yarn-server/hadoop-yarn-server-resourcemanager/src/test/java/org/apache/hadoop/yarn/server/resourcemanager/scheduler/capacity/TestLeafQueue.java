@@ -104,6 +104,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|doNothing
 import|;
 end_import
@@ -9991,7 +10003,7 @@ literal|1
 operator|*
 name|GB
 argument_list|,
-literal|1
+literal|2
 argument_list|,
 comment|// one extra
 name|priority
@@ -10009,7 +10021,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|app_0
 operator|.
@@ -10043,6 +10055,70 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
+comment|// Rack-delay
+name|doReturn
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|a
+argument_list|)
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
+expr_stmt|;
+comment|// Shouldn't assign RACK_LOCAL yet
+name|assignment
+operator|=
+name|a
+operator|.
+name|assignContainers
+argument_list|(
+name|clusterResource
+argument_list|,
+name|node_3
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|app_0
+operator|.
+name|getSchedulingOpportunities
+argument_list|(
+name|priority
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|app_0
+operator|.
+name|getTotalRequiredResources
+argument_list|(
+name|priority
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|,
+name|assignment
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// None->NODE_LOCAL
+comment|// Should assign RACK_LOCAL now
 name|assignment
 operator|=
 name|a
@@ -10110,7 +10186,7 @@ expr_stmt|;
 comment|// should reset
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|app_0
 operator|.

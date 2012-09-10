@@ -519,7 +519,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *     * Test trash for the shell's delete command for the default file system    * specified in the paramter conf    * @param conf     * @param base - the base path where files are created    * @param trashRoot - the expected place where the trashbin resides    * @throws IOException    */
+comment|/**    * Test trash for the shell's delete command for the default file system    * specified in the paramter conf    * @param conf     * @param base - the base path where files are created    * @param trashRoot - the expected place where the trashbin resides    * @throws IOException    */
 DECL|method|trashShell (final Configuration conf, final Path base, FileSystem trashRootFs, Path trashRoot)
 specifier|public
 specifier|static
@@ -2269,14 +2269,24 @@ expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"skipTrash wasn't suggested as remedy to failed rm command"
+operator|+
+literal|" or we deleted / even though we could not get server defaults"
 argument_list|,
 name|output
 operator|.
 name|indexOf
 argument_list|(
-operator|(
 literal|"Consider using -skipTrash option"
-operator|)
+argument_list|)
+operator|!=
+operator|-
+literal|1
+operator|||
+name|output
+operator|.
+name|indexOf
+argument_list|(
+literal|"Failed to determine server trash configuration"
 argument_list|)
 operator|!=
 operator|-

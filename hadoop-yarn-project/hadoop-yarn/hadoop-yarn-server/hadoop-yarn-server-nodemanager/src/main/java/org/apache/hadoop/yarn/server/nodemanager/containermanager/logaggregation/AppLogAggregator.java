@@ -66,11 +66,6 @@ name|void
 name|finishLogAggregation
 parameter_list|()
 function_decl|;
-DECL|method|join ()
-name|void
-name|join
-parameter_list|()
-function_decl|;
 block|}
 end_interface
 

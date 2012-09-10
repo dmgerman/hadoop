@@ -848,6 +848,26 @@ name|trim
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|mapBandwidth
+operator|.
+name|intValue
+argument_list|()
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Bandwidth specified is not positive: "
+operator|+
+name|mapBandwidth
+argument_list|)
+throw|;
+block|}
 name|option
 operator|.
 name|setMapBandwidth

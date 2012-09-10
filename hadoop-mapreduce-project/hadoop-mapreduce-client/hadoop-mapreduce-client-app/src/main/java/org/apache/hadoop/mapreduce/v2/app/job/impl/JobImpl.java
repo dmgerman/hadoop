@@ -4874,8 +4874,34 @@ argument_list|)
 expr_stmt|;
 name|job
 operator|.
-name|logJobHistoryFinishedEvent
+name|addDiagnostic
+argument_list|(
+literal|"Job commit failed: "
+operator|+
+name|e
+operator|.
+name|getMessage
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|abortJob
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobStatus
+operator|.
+name|State
+operator|.
+name|FAILED
+argument_list|)
 expr_stmt|;
 return|return
 name|job
@@ -7035,7 +7061,7 @@ block|}
 block|}
 block|}
 DECL|method|abortJob ( org.apache.hadoop.mapreduce.JobStatus.State finalState)
-specifier|private
+specifier|protected
 name|void
 name|abortJob
 parameter_list|(
@@ -8665,7 +8691,7 @@ return|;
 block|}
 block|}
 DECL|method|addDiagnostic (String diag)
-specifier|private
+specifier|protected
 name|void
 name|addDiagnostic
 parameter_list|(

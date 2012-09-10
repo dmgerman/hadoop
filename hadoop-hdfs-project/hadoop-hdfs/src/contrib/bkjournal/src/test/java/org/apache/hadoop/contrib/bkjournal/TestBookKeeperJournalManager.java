@@ -134,6 +134,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Random
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -233,6 +243,24 @@ operator|.
 name|namenode
 operator|.
 name|JournalManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamespaceInfo
 import|;
 end_import
 
@@ -462,6 +490,37 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|newNSInfo ()
+specifier|private
+name|NamespaceInfo
+name|newNSInfo
+parameter_list|()
+block|{
+name|Random
+name|r
+init|=
+operator|new
+name|Random
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|NamespaceInfo
+argument_list|(
+name|r
+operator|.
+name|nextInt
+argument_list|()
+argument_list|,
+literal|"testCluster"
+argument_list|,
+literal|"TestBPID"
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Test
 DECL|method|testSimpleWrite ()
@@ -472,6 +531,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -486,6 +551,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-simplewrite"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -602,6 +669,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -616,6 +689,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-txncount"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -710,6 +785,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -724,6 +805,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-gaps"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|long
@@ -944,6 +1027,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -958,6 +1047,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-inprogressAtEnd"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|long
@@ -1187,6 +1278,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -1201,6 +1298,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-restartFrom1"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|long
@@ -1482,6 +1581,12 @@ name|start
 init|=
 literal|1
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm1
 init|=
@@ -1496,6 +1601,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-dualWriter"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|BookKeeperJournalManager
@@ -1512,6 +1619,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-dualWriter"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -1574,6 +1683,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -1588,6 +1703,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-simpleread"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1704,6 +1821,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -1718,6 +1841,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-simplerecovery"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -1951,6 +2076,12 @@ name|txid
 init|=
 literal|1
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -1965,6 +2096,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-allbookiefailure"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -2374,6 +2507,12 @@ name|txid
 init|=
 literal|1
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -2388,6 +2527,8 @@ name|createJournalURI
 argument_list|(
 literal|"/hdfsjournal-onebookiefailure"
 argument_list|)
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -2631,6 +2772,12 @@ argument_list|(
 literal|"/hdfsjournal-emptyInprogress"
 argument_list|)
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -2640,6 +2787,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -2757,6 +2906,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 expr_stmt|;
 try|try
@@ -2792,7 +2943,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Invalid ledger entry,"
+literal|"Invalid/Incomplete data in znode"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2827,6 +2978,12 @@ argument_list|(
 literal|"/hdfsjournal-corruptInprogress"
 argument_list|)
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -2836,6 +2993,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -2952,6 +3111,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 expr_stmt|;
 try|try
@@ -2987,7 +3148,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Invalid ledger entry,"
+literal|"has no field named"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3022,6 +3183,12 @@ argument_list|(
 literal|"/hdfsjournal-emptyInprogressLedger"
 argument_list|)
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -3031,6 +3198,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -3122,6 +3291,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 expr_stmt|;
 name|bkjm
@@ -3217,6 +3388,12 @@ argument_list|(
 literal|"/hdfsjournal-refinalizeInprogressLedger"
 argument_list|)
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -3226,6 +3403,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 name|EditLogOutputStream
@@ -3360,6 +3539,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 expr_stmt|;
 name|bkjm
@@ -3426,6 +3607,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 expr_stmt|;
 name|bkjm
@@ -3460,6 +3643,12 @@ argument_list|(
 literal|"/hdfsjournal-editlogfile"
 argument_list|)
 decl_stmt|;
+name|NamespaceInfo
+name|nsi
+init|=
+name|newNSInfo
+argument_list|()
+decl_stmt|;
 name|BookKeeperJournalManager
 name|bkjm
 init|=
@@ -3469,6 +3658,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|uri
+argument_list|,
+name|nsi
 argument_list|)
 decl_stmt|;
 try|try

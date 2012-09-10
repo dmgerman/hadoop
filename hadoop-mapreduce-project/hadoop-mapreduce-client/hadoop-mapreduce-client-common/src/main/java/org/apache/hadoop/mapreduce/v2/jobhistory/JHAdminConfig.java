@@ -192,19 +192,6 @@ name|DEFAULT_MR_HISTORY_DATESTRING_CACHE_SIZE
 init|=
 literal|200000
 decl_stmt|;
-comment|//TODO REMOVE debug-mode
-comment|/** Equivalent to 0.20 mapreduce.jobhistory.debug.mode */
-DECL|field|MR_HISTORY_DEBUG_MODE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|MR_HISTORY_DEBUG_MODE
-init|=
-name|MR_HISTORY_PREFIX
-operator|+
-literal|"debug-mode"
-decl_stmt|;
 comment|/** Path where history files should be stored for DONE jobs. **/
 DECL|field|MR_HISTORY_DONE_DIR
 specifier|public

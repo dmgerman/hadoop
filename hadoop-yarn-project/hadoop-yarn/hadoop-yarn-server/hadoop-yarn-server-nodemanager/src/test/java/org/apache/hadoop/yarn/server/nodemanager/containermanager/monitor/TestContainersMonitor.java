@@ -692,7 +692,7 @@ name|setup
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test to verify the check for whether a process tree is over limit or not.    *     * @throws IOException    *           if there was a problem setting up the fake procfs directories or    *           files.    */
+comment|/**    * Test to verify the check for whether a process tree is over limit or not.    *    * @throws IOException    *           if there was a problem setting up the fake procfs directories or    *           files.    */
 annotation|@
 name|Test
 DECL|method|testProcessTreeLimits ()
@@ -1010,8 +1010,6 @@ name|ProcfsBasedProcessTree
 argument_list|(
 literal|"100"
 argument_list|,
-literal|true
-argument_list|,
 name|procfsRootDir
 operator|.
 name|getAbsolutePath
@@ -1048,8 +1046,6 @@ operator|new
 name|ProcfsBasedProcessTree
 argument_list|(
 literal|"200"
-argument_list|,
-literal|true
 argument_list|,
 name|procfsRootDir
 operator|.
@@ -1110,8 +1106,6 @@ operator|new
 name|ProcfsBasedProcessTree
 argument_list|(
 literal|"600"
-argument_list|,
-literal|true
 argument_list|,
 name|procfsRootDir
 operator|.

@@ -4,9 +4,11 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client
 package|package
 name|org
+operator|.
+name|apache
 operator|.
 name|hadoop
 operator|.

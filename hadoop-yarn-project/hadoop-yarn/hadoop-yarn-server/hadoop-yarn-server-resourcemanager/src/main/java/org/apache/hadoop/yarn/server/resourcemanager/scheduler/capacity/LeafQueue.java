@@ -1056,6 +1056,12 @@ specifier|final
 name|ActiveUsersManager
 name|activeUsersManager
 decl_stmt|;
+DECL|field|nodeLocalityDelay
+specifier|private
+specifier|final
+name|int
+name|nodeLocalityDelay
+decl_stmt|;
 DECL|method|LeafQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, Comparator<FiCaSchedulerApp> applicationComparator, CSQueue old)
 specifier|public
 name|LeafQueue
@@ -1485,6 +1491,18 @@ name|getQueuePath
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|nodeLocalityDelay
+operator|=
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
+expr_stmt|;
 name|setupQueueConfigs
 argument_list|(
 name|cs
@@ -2702,6 +2720,18 @@ name|singletonList
 argument_list|(
 name|userAclInfo
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|getNodeLocalityDelay ()
+specifier|public
+name|int
+name|getNodeLocalityDelay
+parameter_list|()
+block|{
+return|return
+name|nodeLocalityDelay
 return|;
 block|}
 DECL|method|toString ()
@@ -5553,8 +5583,34 @@ operator|.
 name|RACK_LOCAL
 condition|)
 block|{
+comment|// 'Delay' rack-local just a little bit...
+name|long
+name|missedOpportunities
+init|=
+name|application
+operator|.
+name|getSchedulingOpportunities
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
 return|return
-literal|true
+operator|(
+name|Math
+operator|.
+name|min
+argument_list|(
+name|scheduler
+operator|.
+name|getNumClusterNodes
+argument_list|()
+argument_list|,
+name|getNodeLocalityDelay
+argument_list|()
+argument_list|)
+operator|<
+name|missedOpportunities
+operator|)
 return|;
 block|}
 comment|// Check if we need containers on this host
