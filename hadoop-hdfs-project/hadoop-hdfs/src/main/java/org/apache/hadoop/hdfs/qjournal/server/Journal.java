@@ -905,12 +905,12 @@ name|INVALID_TXID
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Iterate over the edit logs stored locally, and set    * {@link #curSegmentTxId} to refer to the most recently written    * one.    */
-DECL|method|scanStorage ()
+comment|/**    * Scan the local storage directory, and return the segment containing    * the highest transaction.    * @return the EditLogFile with the highest transactions, or null    * if no files exist.    */
+DECL|method|scanStorageForLatestEdits ()
 specifier|private
 specifier|synchronized
-name|void
-name|scanStorage
+name|EditLogFile
+name|scanStorageForLatestEdits
 parameter_list|()
 throws|throws
 name|IOException
@@ -930,7 +930,9 @@ name|exists
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+literal|null
+return|;
 block|}
 name|LOG
 operator|.
@@ -954,12 +956,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|curSegmentTxId
-operator|=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-expr_stmt|;
 while|while
 condition|(
 operator|!
@@ -1032,16 +1028,23 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|curSegmentTxId
-operator|=
+return|return
 name|latestLog
+return|;
+block|}
+block|}
+name|LOG
 operator|.
-name|getFirstTxId
-argument_list|()
+name|info
+argument_list|(
+literal|"No files in "
+operator|+
+name|fjm
+argument_list|)
 expr_stmt|;
-break|break;
-block|}
-block|}
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Format the local storage with the given namespace.    */
 DECL|method|format (NamespaceInfo nsInfo)
@@ -1256,29 +1259,9 @@ argument_list|(
 name|epoch
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|curSegment
-operator|!=
-literal|null
-condition|)
-block|{
-name|curSegment
-operator|.
-name|close
+name|abortCurSegment
 argument_list|()
 expr_stmt|;
-name|curSegment
-operator|=
-literal|null
-expr_stmt|;
-name|curSegmentTxId
-operator|=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
-expr_stmt|;
-block|}
 name|NewEpochResponseProto
 operator|.
 name|Builder
@@ -1289,24 +1272,27 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-comment|// TODO: we only need to do this once, not on writer switchover.
-name|scanStorage
+name|EditLogFile
+name|latestFile
+init|=
+name|scanStorageForLatestEdits
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
-name|curSegmentTxId
+name|latestFile
 operator|!=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
+literal|null
 condition|)
 block|{
 name|builder
 operator|.
 name|setLastSegmentTxId
 argument_list|(
-name|curSegmentTxId
+name|latestFile
+operator|.
+name|getFirstTxId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1316,6 +1302,39 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+DECL|method|abortCurSegment ()
+specifier|private
+name|void
+name|abortCurSegment
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|curSegment
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|curSegment
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+name|curSegment
+operator|=
+literal|null
+expr_stmt|;
+name|curSegmentTxId
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+expr_stmt|;
 block|}
 comment|/**    * Write a batch of edits to the journal.    * {@see QJournalProtocol#journal(RequestInfo, long, long, int, byte[])}    */
 DECL|method|journal (RequestInfo reqInfo, long segmentTxId, long firstTxnId, int numTxns, byte[] records)
@@ -1372,18 +1391,11 @@ comment|// This could cause us to continue writing to an old segment
 comment|// instead of rolling to a new one, which breaks one of the
 comment|// invariants in the design. If it happens, abort the segment
 comment|// and throw an exception.
-name|curSegment
-operator|.
-name|abort
-argument_list|()
-expr_stmt|;
-name|curSegment
-operator|=
-literal|null
-expr_stmt|;
-throw|throw
+name|JournalOutOfSyncException
+name|e
+init|=
 operator|new
-name|IllegalStateException
+name|JournalOutOfSyncException
 argument_list|(
 literal|"Writer out of sync: it thinks it is writing segment "
 operator|+
@@ -1393,6 +1405,12 @@ literal|" but current segment is "
 operator|+
 name|curSegmentTxId
 argument_list|)
+decl_stmt|;
+name|abortCurSegment
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
 throw|;
 block|}
 name|checkSync
@@ -1881,14 +1899,8 @@ expr_stmt|;
 comment|// The writer may have lost a connection to us and is now
 comment|// re-connecting after the connection came back.
 comment|// We should abort our own old segment.
-name|curSegment
-operator|.
-name|abort
+name|abortCurSegment
 argument_list|()
-expr_stmt|;
-name|curSegment
-operator|=
-literal|null
 expr_stmt|;
 block|}
 comment|// Paranoid sanity check: we should never overwrite a finalized log file.
@@ -2063,6 +2075,12 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
+name|boolean
+name|needsValidation
+init|=
+literal|true
+decl_stmt|;
+comment|// Finalizing the log that the writer was just writing.
 if|if
 condition|(
 name|startTxId
@@ -2086,7 +2104,40 @@ name|curSegment
 operator|=
 literal|null
 expr_stmt|;
+name|curSegmentTxId
+operator|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+expr_stmt|;
 block|}
+name|checkSync
+argument_list|(
+name|nextTxId
+operator|==
+name|endTxId
+operator|+
+literal|1
+argument_list|,
+literal|"Trying to finalize in-progress log segment %s to end at "
+operator|+
+literal|"txid %s but only written up to txid %s"
+argument_list|,
+name|startTxId
+argument_list|,
+name|endTxId
+argument_list|,
+name|nextTxId
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// No need to validate the edit log if the client is finalizing
+comment|// the log segment that it was just writing to.
+name|needsValidation
+operator|=
+literal|false
+expr_stmt|;
 block|}
 name|FileJournalManager
 operator|.
@@ -2127,15 +2178,25 @@ name|isInProgress
 argument_list|()
 condition|)
 block|{
-comment|// TODO: this is slow to validate when in non-recovery cases
-comment|// we already know the length here!
+if|if
+condition|(
+name|needsValidation
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Validating log about to be finalized: "
+literal|"Validating log segment "
 operator|+
 name|elf
+operator|.
+name|getFile
+argument_list|()
+operator|+
+literal|" about to be "
+operator|+
+literal|"finalized"
 argument_list|)
 expr_stmt|;
 name|elf
@@ -2152,17 +2213,26 @@ argument_list|()
 operator|==
 name|endTxId
 argument_list|,
-literal|"Trying to finalize log %s-%s, but current state of log "
+literal|"Trying to finalize in-progress log segment %s to end at "
 operator|+
-literal|"is %s"
+literal|"txid %s but log %s on disk only contains up to txid %s"
 argument_list|,
 name|startTxId
 argument_list|,
 name|endTxId
 argument_list|,
 name|elf
+operator|.
+name|getFile
+argument_list|()
+argument_list|,
+name|elf
+operator|.
+name|getLastTxId
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|fjm
 operator|.
 name|finalizeLogSegment
@@ -2610,6 +2680,9 @@ name|checkRequest
 argument_list|(
 name|reqInfo
 argument_list|)
+expr_stmt|;
+name|abortCurSegment
+argument_list|()
 expr_stmt|;
 name|PrepareRecoveryResponseProto
 operator|.

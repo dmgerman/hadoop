@@ -1399,7 +1399,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"but current state of log is"
+literal|"but only written up to txid 3"
 argument_list|,
 name|e
 argument_list|)
@@ -1456,7 +1456,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"but current state of log is"
+literal|"disk only contains up to txid 3"
 argument_list|,
 name|e
 argument_list|)
