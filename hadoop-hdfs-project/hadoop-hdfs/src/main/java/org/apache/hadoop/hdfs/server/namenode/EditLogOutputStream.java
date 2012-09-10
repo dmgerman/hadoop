@@ -221,13 +221,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Flush and sync all data that is ready to be flush     * {@link #setReadyToFlush()} into underlying persistent store.    * @throws IOException    */
-DECL|method|flushAndSync ()
+comment|/**    * Flush and sync all data that is ready to be flush     * {@link #setReadyToFlush()} into underlying persistent store.    * @param durable if true, the edits should be made truly durable before    * returning    * @throws IOException    */
+DECL|method|flushAndSync (boolean durable)
 specifier|abstract
 specifier|protected
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -237,6 +240,23 @@ specifier|public
 name|void
 name|flush
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|flush
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|flush (boolean durable)
+specifier|public
+name|void
+name|flush
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -250,7 +270,9 @@ name|now
 argument_list|()
 decl_stmt|;
 name|flushAndSync
-argument_list|()
+argument_list|(
+name|durable
+argument_list|)
 expr_stmt|;
 name|long
 name|end

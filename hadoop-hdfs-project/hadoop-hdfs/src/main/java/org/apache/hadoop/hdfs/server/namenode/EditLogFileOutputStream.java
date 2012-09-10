@@ -676,11 +676,14 @@ block|}
 comment|/**    * Flush ready buffer to persistent store. currentBuffer is not flushed as it    * accumulates new log records while readyBuffer will be flushed and synced.    */
 annotation|@
 name|Override
-DECL|method|flushAndSync ()
+DECL|method|flushAndSync (boolean durable)
 specifier|public
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -729,6 +732,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|durable
+operator|&&
 operator|!
 name|shouldSkipFsyncForTests
 condition|)

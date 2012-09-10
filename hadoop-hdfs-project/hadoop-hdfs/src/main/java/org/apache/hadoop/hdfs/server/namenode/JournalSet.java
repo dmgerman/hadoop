@@ -1951,11 +1951,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|flushAndSync ()
+DECL|method|flushAndSync (final boolean durable)
 specifier|protected
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+specifier|final
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1991,7 +1995,9 @@ name|getCurrentStream
 argument_list|()
 operator|.
 name|flushAndSync
-argument_list|()
+argument_list|(
+name|durable
+argument_list|)
 expr_stmt|;
 block|}
 block|}

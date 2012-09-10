@@ -1441,6 +1441,25 @@ name|lastTxnId
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If the edit has already been marked as committed, we know
+comment|// it has been fsynced on a quorum of other nodes, and we are
+comment|// "catching up" with the rest. Hence we do not need to fsync.
+name|boolean
+name|isLagging
+init|=
+name|lastTxnId
+operator|<=
+name|committedTxnId
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+name|boolean
+name|shouldFsync
+init|=
+operator|!
+name|isLagging
+decl_stmt|;
 name|curSegment
 operator|.
 name|writeRaw
@@ -1474,7 +1493,9 @@ expr_stmt|;
 name|curSegment
 operator|.
 name|flush
-argument_list|()
+argument_list|(
+name|shouldFsync
+argument_list|)
 expr_stmt|;
 name|sw
 operator|.
@@ -1497,12 +1518,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|committedTxnId
-operator|.
-name|get
-argument_list|()
-operator|>
-name|lastTxnId
+name|isLagging
 condition|)
 block|{
 comment|// This batch of edits has already been committed on a quorum of other

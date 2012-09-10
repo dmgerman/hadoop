@@ -220,7 +220,9 @@ expr_stmt|;
 name|elos
 operator|.
 name|flushAndSync
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
