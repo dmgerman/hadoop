@@ -2978,6 +2978,9 @@ argument_list|(
 name|reqInfo
 argument_list|)
 expr_stmt|;
+name|abortCurSegment
+argument_list|()
+expr_stmt|;
 name|long
 name|segmentTxId
 init|=
