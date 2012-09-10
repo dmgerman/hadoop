@@ -237,24 +237,6 @@ name|MutableQuantiles
 index|[]
 name|syncsQuantiles
 decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
-literal|"Transaction lag behind the most recent commit"
-argument_list|)
-DECL|field|currentLagTxns
-name|MutableGaugeLong
-name|currentLagTxns
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
-literal|"Last written txid"
-argument_list|)
-DECL|field|lastWrittenTxId
-name|MutableGaugeLong
-name|lastWrittenTxId
-decl_stmt|;
 DECL|field|journal
 specifier|private
 specifier|final
@@ -436,6 +418,56 @@ return|return
 name|journal
 operator|.
 name|getLastPromisedEpoch
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+return|return
+operator|-
+literal|1L
+return|;
+block|}
+block|}
+annotation|@
+name|Metric
+argument_list|(
+literal|"The highest txid stored on this JN"
+argument_list|)
+DECL|method|getLastWrittenTxId ()
+specifier|public
+name|long
+name|getLastWrittenTxId
+parameter_list|()
+block|{
+return|return
+name|journal
+operator|.
+name|getHighestWrittenTxId
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of transactions that this JN is lagging"
+argument_list|)
+DECL|method|getCurrentLagTxns ()
+specifier|public
+name|long
+name|getCurrentLagTxns
+parameter_list|()
+block|{
+try|try
+block|{
+return|return
+name|journal
+operator|.
+name|getCurrentLagTxns
 argument_list|()
 return|;
 block|}

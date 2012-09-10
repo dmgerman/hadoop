@@ -120,6 +120,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -528,6 +540,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Stopwatch
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -731,6 +757,22 @@ name|highestAckedTxId
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Nanotime of the last time we successfully journaled some edits    * to the remote node.    */
+DECL|field|lastAckNanos
+specifier|private
+name|long
+name|lastAckNanos
+init|=
+literal|0
+decl_stmt|;
+comment|/**    * Nanotime of the last time that committedTxId was update. Used    * to calculate the lag in terms of time, rather than just a number    * of txns.    */
+DECL|field|lastCommitNanos
+specifier|private
+name|long
+name|lastCommitNanos
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * The maximum number of bytes that can be pending in the queue.    * This keeps the writer from hitting OOME if one of the loggers    * starts responding really slowly. Eventually, the queue    * overflows and it starts to treat the logger as having errored.    */
 DECL|field|queueSizeLimitBytes
 specifier|private
@@ -745,6 +787,25 @@ name|boolean
 name|outOfSync
 init|=
 literal|false
+decl_stmt|;
+comment|/**    * Stopwatch which starts counting on each heartbeat that is sent    */
+DECL|field|lastHeartbeatStopwatch
+specifier|private
+name|Stopwatch
+name|lastHeartbeatStopwatch
+init|=
+operator|new
+name|Stopwatch
+argument_list|()
+decl_stmt|;
+DECL|field|HEARTBEAT_INTERVAL_MILLIS
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|HEARTBEAT_INTERVAL_MILLIS
+init|=
+literal|1000
 decl_stmt|;
 DECL|field|FACTORY
 specifier|static
@@ -919,6 +980,15 @@ operator|.
 name|committedTxId
 operator|=
 name|txid
+expr_stmt|;
+name|this
+operator|.
+name|lastCommitNanos
+operator|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1515,6 +1585,17 @@ name|e
 argument_list|)
 return|;
 block|}
+comment|// When this batch is acked, we use its submission time in order
+comment|// to calculate how far we are lagging.
+specifier|final
+name|long
+name|submitNanos
+init|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+decl_stmt|;
 name|ListenableFuture
 argument_list|<
 name|Void
@@ -1642,6 +1723,10 @@ name|numTxns
 operator|-
 literal|1
 expr_stmt|;
+name|lastAckNanos
+operator|=
+name|submitNanos
+expr_stmt|;
 block|}
 return|return
 literal|null
@@ -1735,20 +1820,25 @@ return|;
 block|}
 DECL|method|throwIfOutOfSync ()
 specifier|private
-specifier|synchronized
 name|void
 name|throwIfOutOfSync
 parameter_list|()
 throws|throws
 name|JournalOutOfSyncException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(
-name|outOfSync
+name|isOutOfSync
+argument_list|()
 condition|)
 block|{
-comment|// TODO: send a "heartbeat" here so that the remote node knows the newest
-comment|// committed txid, for metrics purposes
+comment|// Even if we're out of sync, it's useful to send an RPC
+comment|// to the remote node in order to update its lag metrics, etc.
+name|heartbeatIfNecessary
+argument_list|()
+expr_stmt|;
 throw|throw
 operator|new
 name|JournalOutOfSyncException
@@ -1756,6 +1846,58 @@ argument_list|(
 literal|"Journal disabled until next roll"
 argument_list|)
 throw|;
+block|}
+block|}
+comment|/**    * When we've entered an out-of-sync state, it's still useful to periodically    * send an empty RPC to the server, such that it has the up to date    * committedTxId. This acts as a sanity check during recovery, and also allows    * that node's metrics to be up-to-date about its lag.    *     * In the future, this method may also be used in order to check that the    * current node is still the current writer, even if no edits are being    * written.    */
+DECL|method|heartbeatIfNecessary ()
+specifier|private
+name|void
+name|heartbeatIfNecessary
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|lastHeartbeatStopwatch
+operator|.
+name|elapsedMillis
+argument_list|()
+operator|>
+name|HEARTBEAT_INTERVAL_MILLIS
+operator|||
+operator|!
+name|lastHeartbeatStopwatch
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|getProxy
+argument_list|()
+operator|.
+name|heartbeat
+argument_list|(
+name|createReqInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|// Don't send heartbeats more often than the configured interval,
+comment|// even if they fail.
+name|lastHeartbeatStopwatch
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|reserveQueueSpace (int size)
@@ -2342,15 +2484,9 @@ expr_stmt|;
 name|long
 name|behind
 init|=
-name|committedTxId
-operator|-
-name|highestAckedTxId
+name|getLagTxns
+argument_list|()
 decl_stmt|;
-assert|assert
-name|behind
-operator|>=
-literal|0
-assert|;
 if|if
 condition|(
 name|behind
@@ -2358,6 +2494,19 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|lastAckNanos
+operator|!=
+literal|0
+condition|)
+block|{
+name|long
+name|lagMillis
+init|=
+name|getLagTimeMillis
+argument_list|()
+decl_stmt|;
 name|sb
 operator|.
 name|append
@@ -2366,9 +2515,24 @@ literal|" ("
 operator|+
 name|behind
 operator|+
-literal|" behind)"
+literal|" txns/"
+operator|+
+name|lagMillis
+operator|+
+literal|"ms behind)"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" (never written"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2379,10 +2543,59 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|" (will re-join on next segment)"
+literal|" (will try to re-sync on next segment)"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getLagTxns ()
+specifier|private
+name|long
+name|getLagTxns
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|committedTxId
+operator|-
+name|highestAckedTxId
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+DECL|method|getLagTimeMillis ()
+specifier|private
+name|long
+name|getLagTimeMillis
+parameter_list|()
+block|{
+return|return
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|convert
+argument_list|(
+name|Math
+operator|.
+name|max
+argument_list|(
+name|lastCommitNanos
+operator|-
+name|lastAckNanos
+argument_list|,
+literal|0
+argument_list|)
+argument_list|,
+name|TimeUnit
+operator|.
+name|NANOSECONDS
+argument_list|)
+return|;
 block|}
 block|}
 end_class

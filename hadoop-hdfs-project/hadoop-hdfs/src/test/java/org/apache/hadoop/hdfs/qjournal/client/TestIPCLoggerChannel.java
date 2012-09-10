@@ -979,7 +979,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// It should have failed without even sending an RPC, since it was not sync.
+comment|// It should have failed without even sending the edits, since it was not sync.
 name|Mockito
 operator|.
 name|verify
@@ -1029,6 +1029,25 @@ name|same
 argument_list|(
 name|FAKE_DATA
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// It should have sent a heartbeat instead.
+name|Mockito
+operator|.
+name|verify
+argument_list|(
+name|mockProxy
+argument_list|)
+operator|.
+name|heartbeat
+argument_list|(
+name|Mockito
+operator|.
+expr|<
+name|RequestInfo
+operator|>
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// After a roll, sending new edits should not fail.

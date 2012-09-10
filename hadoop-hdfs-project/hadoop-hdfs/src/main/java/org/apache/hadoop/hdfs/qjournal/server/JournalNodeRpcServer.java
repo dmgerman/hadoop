@@ -865,6 +865,35 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|heartbeat (RequestInfo reqInfo)
+specifier|public
+name|void
+name|heartbeat
+parameter_list|(
+name|RequestInfo
+name|reqInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|jn
+operator|.
+name|getOrCreateJournal
+argument_list|(
+name|reqInfo
+operator|.
+name|getJournalId
+argument_list|()
+argument_list|)
+operator|.
+name|heartbeat
+argument_list|(
+name|reqInfo
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
 specifier|public
 name|void

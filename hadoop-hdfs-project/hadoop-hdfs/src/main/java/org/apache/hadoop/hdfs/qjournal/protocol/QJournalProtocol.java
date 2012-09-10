@@ -362,6 +362,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Heartbeat.    * This is a no-op on the server, except that it verifies that the    * caller is in fact still the active writer, and provides up-to-date    * information on the most recently committed txid.    */
+DECL|method|heartbeat (RequestInfo reqInfo)
+specifier|public
+name|void
+name|heartbeat
+parameter_list|(
+name|RequestInfo
+name|reqInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Start writing to a new log segment on the JournalNode.    * Before calling this, one should finalize the previous segment    * using {@link #finalizeLogSegment(RequestInfo, long, long)}.    *     * @param txid the first txid in the new log    */
 DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
 specifier|public
