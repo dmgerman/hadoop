@@ -142,6 +142,10 @@ name|MutableQuantiles
 import|;
 end_import
 
+begin_comment
+comment|/**  * The server-side metrics for a journal from the JournalNode's  * perspective.  */
+end_comment
+
 begin_class
 annotation|@
 name|Metrics
