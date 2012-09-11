@@ -251,6 +251,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|100000
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 comment|// wait for 1 response
@@ -265,6 +267,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|100000
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 comment|// wait for 1 success
@@ -327,6 +331,8 @@ argument_list|,
 literal|100
 argument_list|,
 literal|100000
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 comment|// wait for 3 responses
@@ -341,6 +347,8 @@ argument_list|,
 literal|100
 argument_list|,
 literal|100000
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 comment|// 2 successes
@@ -401,6 +409,8 @@ argument_list|,
 literal|100
 argument_list|,
 literal|10
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|fail

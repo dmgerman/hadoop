@@ -406,15 +406,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|NEWEPOCH_TIMEOUT_MS
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|NEWEPOCH_TIMEOUT_MS
-init|=
-literal|10000
-decl_stmt|;
 DECL|field|loggers
 specifier|private
 specifier|final
@@ -464,134 +455,7 @@ name|loggers
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Fence any previous writers, and obtain a unique epoch number    * for write-access to the journal nodes.    *    * @param nsInfo the expected namespace information. If the remote    * node does not match with this namespace, the request will be rejected.    * @return the new, unique epoch number    * @throws IOException    */
-DECL|method|createNewUniqueEpoch ( NamespaceInfo nsInfo)
-name|Map
-argument_list|<
-name|AsyncLogger
-argument_list|,
-name|NewEpochResponseProto
-argument_list|>
-name|createNewUniqueEpoch
-parameter_list|(
-name|NamespaceInfo
-name|nsInfo
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|myEpoch
-operator|==
-operator|-
-literal|1
-argument_list|,
-literal|"epoch already created: epoch="
-operator|+
-name|myEpoch
-argument_list|)
-expr_stmt|;
-name|Map
-argument_list|<
-name|AsyncLogger
-argument_list|,
-name|GetJournalStateResponseProto
-argument_list|>
-name|lastPromises
-init|=
-name|waitForWriteQuorum
-argument_list|(
-name|getJournalState
-argument_list|()
-argument_list|,
-name|NEWEPOCH_TIMEOUT_MS
-argument_list|)
-decl_stmt|;
-name|long
-name|maxPromised
-init|=
-name|Long
-operator|.
-name|MIN_VALUE
-decl_stmt|;
-for|for
-control|(
-name|GetJournalStateResponseProto
-name|resp
-range|:
-name|lastPromises
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|maxPromised
-operator|=
-name|Math
-operator|.
-name|max
-argument_list|(
-name|maxPromised
-argument_list|,
-name|resp
-operator|.
-name|getLastPromisedEpoch
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-assert|assert
-name|maxPromised
-operator|>=
-literal|0
-assert|;
-name|long
-name|myEpoch
-init|=
-name|maxPromised
-operator|+
-literal|1
-decl_stmt|;
-name|Map
-argument_list|<
-name|AsyncLogger
-argument_list|,
-name|NewEpochResponseProto
-argument_list|>
-name|resps
-init|=
-name|waitForWriteQuorum
-argument_list|(
-name|newEpoch
-argument_list|(
-name|nsInfo
-argument_list|,
-name|myEpoch
-argument_list|)
-argument_list|,
-name|NEWEPOCH_TIMEOUT_MS
-argument_list|)
-decl_stmt|;
-name|this
-operator|.
-name|myEpoch
-operator|=
-name|myEpoch
-expr_stmt|;
-name|setEpoch
-argument_list|(
-name|myEpoch
-argument_list|)
-expr_stmt|;
-return|return
-name|resps
-return|;
-block|}
 DECL|method|setEpoch (long e)
-specifier|private
 name|void
 name|setEpoch
 parameter_list|(
@@ -599,6 +463,23 @@ name|long
 name|e
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|isEpochEstablished
+argument_list|()
+argument_list|,
+literal|"Epoch already established: epoch=%s"
+argument_list|,
+name|myEpoch
+argument_list|)
+expr_stmt|;
+name|myEpoch
+operator|=
+name|e
+expr_stmt|;
 for|for
 control|(
 name|AsyncLogger
@@ -642,6 +523,18 @@ name|txid
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * @return true if an epoch has been established.    */
+DECL|method|isEpochEstablished ()
+name|boolean
+name|isEpochEstablished
+parameter_list|()
+block|{
+return|return
+name|myEpoch
+operator|!=
+name|INVALID_EPOCH
+return|;
 block|}
 comment|/**    * @return the epoch number for this writer. This may only be called after    * a successful call to {@link #createNewUniqueEpoch(NamespaceInfo)}.    */
 DECL|method|getEpoch ()
@@ -710,8 +603,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Wait for a quorum of loggers to respond to the given call. If a quorum    * can't be achieved, throws a QuorumException.    * @param q the quorum call    * @param timeoutMs the number of millis to wait    * @return a map of successful results    * @throws QuorumException if a quorum doesn't respond with success    * @throws IOException if the thread is interrupted or times out    */
-DECL|method|waitForWriteQuorum (QuorumCall<AsyncLogger, V> q, int timeoutMs)
+comment|/**    * Wait for a quorum of loggers to respond to the given call. If a quorum    * can't be achieved, throws a QuorumException.    * @param q the quorum call    * @param timeoutMs the number of millis to wait    * @param operationName textual description of the operation, for logging    * @return a map of successful results    * @throws QuorumException if a quorum doesn't respond with success    * @throws IOException if the thread is interrupted or times out    */
+DECL|method|waitForWriteQuorum (QuorumCall<AsyncLogger, V> q, int timeoutMs, String operationName)
 parameter_list|<
 name|V
 parameter_list|>
@@ -733,6 +626,9 @@ name|q
 parameter_list|,
 name|int
 name|timeoutMs
+parameter_list|,
+name|String
+name|operationName
 parameter_list|)
 throws|throws
 name|IOException
@@ -762,6 +658,8 @@ name|majority
 argument_list|,
 comment|// or we get a majority failures,
 name|timeoutMs
+argument_list|,
+name|operationName
 argument_list|)
 expr_stmt|;
 block|}
@@ -997,7 +895,7 @@ comment|// various IPC calls to the underlying AsyncLoggers and wrap the result
 comment|// in a QuorumCall.
 comment|///////////////////////////////////////////////////////////////////////////
 DECL|method|getJournalState ()
-specifier|private
+specifier|public
 name|QuorumCall
 argument_list|<
 name|AsyncLogger
@@ -1221,7 +1119,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|newEpoch ( NamespaceInfo nsInfo, long epoch)
-specifier|private
+specifier|public
 name|QuorumCall
 argument_list|<
 name|AsyncLogger

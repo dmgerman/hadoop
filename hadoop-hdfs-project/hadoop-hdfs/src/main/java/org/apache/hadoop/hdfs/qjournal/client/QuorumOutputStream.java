@@ -437,6 +437,8 @@ argument_list|(
 name|qcall
 argument_list|,
 literal|20000
+argument_list|,
+literal|"sendEdits"
 argument_list|)
 expr_stmt|;
 comment|// TODO: configurable timeout
