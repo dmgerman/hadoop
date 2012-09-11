@@ -3575,6 +3575,39 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// Make sure there are no errors initializing the context.
+name|Throwable
+name|unavailableException
+init|=
+name|webAppContext
+operator|.
+name|getUnavailableException
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|unavailableException
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Have to stop the webserver, or else its non-daemon threads
+comment|// will hang forever.
+name|webServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to initialize WebAppContext"
+argument_list|,
+name|unavailableException
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(
