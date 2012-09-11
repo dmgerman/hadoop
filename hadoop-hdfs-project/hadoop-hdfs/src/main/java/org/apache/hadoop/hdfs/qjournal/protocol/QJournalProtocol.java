@@ -292,6 +292,18 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
+comment|/**    * @return true if the given journal has been formatted and    * contains valid data.    */
+DECL|method|isFormatted (String journalId)
+specifier|public
+name|boolean
+name|isFormatted
+parameter_list|(
+name|String
+name|journalId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the current state of the journal, including the most recent    * epoch number and the HTTP port.    */
 DECL|method|getJournalState (String journalId)
 specifier|public

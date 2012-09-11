@@ -335,6 +335,16 @@ name|NamespaceInfo
 name|nsInfo
 parameter_list|)
 function_decl|;
+comment|/**    * @return whether or not the remote node has any valid data.    */
+DECL|method|isFormatted ()
+specifier|public
+name|ListenableFuture
+argument_list|<
+name|Boolean
+argument_list|>
+name|isFormatted
+parameter_list|()
+function_decl|;
 comment|/**    * @return the state of the last epoch on the target node.    */
 DECL|method|getJournalState ()
 specifier|public

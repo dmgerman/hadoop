@@ -1838,6 +1838,20 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|isFormatted ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isFormatted
+parameter_list|()
+block|{
+return|return
+name|storage
+operator|.
+name|isFormatted
+argument_list|()
+return|;
+block|}
 DECL|method|checkFormatted ()
 specifier|private
 name|void
@@ -1849,8 +1863,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|storage
-operator|.
 name|isFormatted
 argument_list|()
 condition|)
@@ -1862,6 +1874,9 @@ argument_list|(
 literal|"Journal "
 operator|+
 name|storage
+operator|.
+name|getSingularStorageDir
+argument_list|()
 operator|+
 literal|" not formatted"
 argument_list|)

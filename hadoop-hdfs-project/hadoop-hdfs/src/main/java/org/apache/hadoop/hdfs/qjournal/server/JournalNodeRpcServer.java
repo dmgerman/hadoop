@@ -699,6 +699,31 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|isFormatted (String journalId)
+specifier|public
+name|boolean
+name|isFormatted
+parameter_list|(
+name|String
+name|journalId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|jn
+operator|.
+name|getOrCreateJournal
+argument_list|(
+name|journalId
+argument_list|)
+operator|.
+name|isFormatted
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getJournalState (String journalId)
 specifier|public
 name|GetJournalStateResponseProto
