@@ -112,6 +112,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2508,6 +2520,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 specifier|final
 name|Path

@@ -82,6 +82,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -740,6 +752,10 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 specifier|final
 name|FileSystem
@@ -805,6 +821,10 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 specifier|final
 name|ExtendedBlock

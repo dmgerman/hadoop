@@ -1973,6 +1973,10 @@ name|value
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|Path
 name|root
@@ -3130,7 +3134,7 @@ name|fileNames
 return|;
 block|}
 block|}
-comment|/** wait for the file's replication to be done */
+comment|/**    * Wait for the given file to reach the given replication factor.    * @throws TimeoutException if we fail to sufficiently replicate the file    */
 DECL|method|waitReplication (FileSystem fs, Path fileName, short replFactor)
 specifier|public
 specifier|static
@@ -3148,13 +3152,28 @@ name|replFactor
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|boolean
-name|good
+name|correctReplFactor
+decl_stmt|;
+specifier|final
+name|int
+name|ATTEMPTS
+init|=
+literal|20
+decl_stmt|;
+name|int
+name|count
+init|=
+literal|0
 decl_stmt|;
 do|do
 block|{
-name|good
+name|correctReplFactor
 operator|=
 literal|true
 expr_stmt|;
@@ -3180,6 +3199,9 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 decl_stmt|;
+name|count
+operator|++
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -3218,23 +3240,9 @@ operator|!=
 name|replFactor
 condition|)
 block|{
-name|String
-name|hostNameList
-init|=
-literal|""
-decl_stmt|;
-for|for
-control|(
-name|String
-name|h
-range|:
-name|hostnames
-control|)
-name|hostNameList
-operator|+=
-name|h
-operator|+
-literal|" "
+name|correctReplFactor
+operator|=
+literal|false
 expr_stmt|;
 name|System
 operator|.
@@ -3256,46 +3264,38 @@ name|hostnames
 operator|.
 name|length
 operator|+
-literal|"; locations "
+literal|" (desired "
 operator|+
-name|hostNameList
-argument_list|)
-expr_stmt|;
-name|good
-operator|=
-literal|false
-expr_stmt|;
-try|try
-block|{
-name|System
+name|replFactor
+operator|+
+literal|"); locations "
+operator|+
+name|Joiner
 operator|.
-name|out
-operator|.
-name|println
+name|on
 argument_list|(
-literal|"Waiting for replication factor to drain"
+literal|' '
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|hostnames
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|100
+literal|1000
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{}
 break|break;
 block|}
 block|}
 if|if
 condition|(
-name|good
+name|correctReplFactor
 condition|)
 block|{
 name|System
@@ -3318,9 +3318,36 @@ block|}
 do|while
 condition|(
 operator|!
-name|good
+name|correctReplFactor
+operator|&&
+name|count
+operator|<
+name|ATTEMPTS
 condition|)
 do|;
+if|if
+condition|(
+name|count
+operator|==
+name|ATTEMPTS
+condition|)
+block|{
+throw|throw
+operator|new
+name|TimeoutException
+argument_list|(
+literal|"Timed out waiting for "
+operator|+
+name|fileName
+operator|+
+literal|" to reach "
+operator|+
+name|replFactor
+operator|+
+literal|" replicas"
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/** delete directory and everything underneath it.*/
 DECL|method|cleanup (FileSystem fs, String topdir)

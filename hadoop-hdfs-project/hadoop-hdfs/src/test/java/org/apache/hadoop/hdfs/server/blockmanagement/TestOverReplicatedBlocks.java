@@ -409,7 +409,7 @@ name|void
 name|testProcesOverReplicateBlock
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -870,7 +870,7 @@ name|void
 name|testChooseReplicaToDelete
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|cluster

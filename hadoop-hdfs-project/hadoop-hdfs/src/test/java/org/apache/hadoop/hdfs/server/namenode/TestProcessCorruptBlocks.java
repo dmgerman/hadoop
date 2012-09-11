@@ -237,7 +237,7 @@ name|void
 name|testWhenDecreasingReplication
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -503,7 +503,7 @@ name|void
 name|testByAddingAnExtraDataNode
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -768,7 +768,7 @@ name|void
 name|testWithReplicationFactorAsOne
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -1034,7 +1034,7 @@ name|void
 name|testWithAllCorruptReplicas
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf

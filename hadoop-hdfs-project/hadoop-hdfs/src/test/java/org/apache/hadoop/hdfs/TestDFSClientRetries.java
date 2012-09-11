@@ -4648,9 +4648,7 @@ name|void
 name|testRetryOnChecksumFailure
 parameter_list|()
 throws|throws
-name|UnresolvedLinkException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|HdfsConfiguration
 name|conf

@@ -88,6 +88,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -998,7 +1010,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * create a file with one block and corrupt some/all of the block replicas.    */
+comment|/**    * Create a file with one block and corrupt some/all of the block replicas.    */
 DECL|method|createAFileWithCorruptedBlockReplicas (Path filePath, short repl, int corruptBlockCount)
 specifier|private
 name|void
@@ -1021,6 +1033,10 @@ throws|,
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|DFSTestUtil
 operator|.

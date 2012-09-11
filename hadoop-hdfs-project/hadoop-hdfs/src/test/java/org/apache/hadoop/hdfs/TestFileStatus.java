@@ -96,6 +96,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -735,6 +747,10 @@ name|repl
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|DFSTestUtil
 operator|.
@@ -855,7 +871,7 @@ name|void
 name|testGetFileStatusOnFile
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|checkFile
 argument_list|(

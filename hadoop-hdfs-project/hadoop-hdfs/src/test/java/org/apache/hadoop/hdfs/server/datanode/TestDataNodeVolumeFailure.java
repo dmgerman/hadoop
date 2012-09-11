@@ -702,7 +702,7 @@ name|void
 name|testVolumeFailure
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|FileSystem
 name|fs
