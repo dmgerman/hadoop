@@ -460,7 +460,7 @@ name|setLevel
 argument_list|(
 name|Level
 operator|.
-name|OFF
+name|ERROR
 argument_list|)
 expr_stmt|;
 operator|(
@@ -479,7 +479,7 @@ name|setLevel
 argument_list|(
 name|Level
 operator|.
-name|OFF
+name|ERROR
 argument_list|)
 expr_stmt|;
 operator|(
@@ -503,7 +503,7 @@ name|setLevel
 argument_list|(
 name|Level
 operator|.
-name|OFF
+name|ERROR
 argument_list|)
 expr_stmt|;
 operator|(
