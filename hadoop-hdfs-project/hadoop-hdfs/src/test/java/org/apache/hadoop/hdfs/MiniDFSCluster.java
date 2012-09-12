@@ -4428,7 +4428,14 @@ specifier|public
 name|void
 name|waitClusterUp
 parameter_list|()
+throws|throws
+name|IOException
 block|{
+name|int
+name|i
+init|=
+literal|0
+decl_stmt|;
 if|if
 condition|(
 name|numDataNodes
@@ -4466,6 +4473,22 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{         }
+if|if
+condition|(
+operator|++
+name|i
+operator|>
+literal|10
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Timed out waiting for Mini HDFS Cluster to start"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 block|}
