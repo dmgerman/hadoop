@@ -5979,6 +5979,11 @@ name|getFirstExitException
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|ExitUtil
+operator|.
+name|resetFirstExitException
+argument_list|()
+expr_stmt|;
 throw|throw
 operator|new
 name|AssertionError
