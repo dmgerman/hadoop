@@ -24,6 +24,22 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|codec
+operator|.
+name|binary
+operator|.
+name|Base64
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|lang
 operator|.
 name|builder
@@ -100,6 +116,7 @@ DECL|field|id
 specifier|private
 specifier|final
 name|byte
+index|[]
 name|id
 decl_stmt|;
 DECL|field|isValid
@@ -108,11 +125,12 @@ specifier|final
 name|boolean
 name|isValid
 decl_stmt|;
-DECL|method|HdfsVolumeId (byte id, boolean isValid)
+DECL|method|HdfsVolumeId (byte[] id, boolean isValid)
 specifier|public
 name|HdfsVolumeId
 parameter_list|(
 name|byte
+index|[]
 name|id
 parameter_list|,
 name|boolean
@@ -265,9 +283,9 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|Byte
+name|Base64
 operator|.
-name|toString
+name|encodeBase64String
 argument_list|(
 name|id
 argument_list|)
