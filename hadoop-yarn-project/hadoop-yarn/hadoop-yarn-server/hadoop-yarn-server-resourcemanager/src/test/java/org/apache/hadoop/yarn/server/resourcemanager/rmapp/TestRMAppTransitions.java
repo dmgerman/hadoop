@@ -2028,13 +2028,16 @@ return|return
 name|application
 return|;
 block|}
-DECL|method|testCreateAppFinished ( ApplicationSubmissionContext submissionContext)
+DECL|method|testCreateAppFinished ( ApplicationSubmissionContext submissionContext, String diagnostics)
 specifier|protected
 name|RMApp
 name|testCreateAppFinished
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
+parameter_list|,
+name|String
+name|diagnostics
 parameter_list|)
 throws|throws
 name|IOException
@@ -2080,16 +2083,14 @@ name|RMAppEvent
 name|finishedEvent
 init|=
 operator|new
-name|RMAppEvent
+name|RMAppFinishedAttemptEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
 argument_list|,
-name|RMAppEventType
-operator|.
-name|ATTEMPT_FINISHED
+name|diagnostics
 argument_list|)
 decl_stmt|;
 name|application
@@ -2121,6 +2122,26 @@ operator|.
 name|FAILED
 argument_list|,
 name|application
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Finished app missing diagnostics"
+argument_list|,
+name|application
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|indexOf
+argument_list|(
+name|diagnostics
+argument_list|)
+operator|!=
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 return|return
@@ -2159,9 +2180,40 @@ argument_list|(
 literal|"--- START: testUnmanagedAppSuccessPath ---"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|diagMsg
+init|=
+literal|"some diagnostics"
+decl_stmt|;
+name|RMApp
+name|application
+init|=
 name|testCreateAppFinished
 argument_list|(
 name|subContext
+argument_list|,
+name|diagMsg
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Finished app missing diagnostics"
+argument_list|,
+name|application
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|indexOf
+argument_list|(
+name|diagMsg
+argument_list|)
+operator|!=
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 comment|// test app fails after 1 app attempt failure
@@ -2172,14 +2224,13 @@ argument_list|(
 literal|"--- START: testUnmanagedAppFailPath ---"
 argument_list|)
 expr_stmt|;
-name|RMApp
 name|application
-init|=
+operator|=
 name|testCreateAppRunning
 argument_list|(
 name|subContext
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|RMAppEvent
 name|event
 init|=
@@ -2258,9 +2309,40 @@ argument_list|(
 literal|"--- START: testAppSuccessPath ---"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|String
+name|diagMsg
+init|=
+literal|"some diagnostics"
+decl_stmt|;
+name|RMApp
+name|application
+init|=
 name|testCreateAppFinished
 argument_list|(
 literal|null
+argument_list|,
+name|diagMsg
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Finished application missing diagnostics"
+argument_list|,
+name|application
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|indexOf
+argument_list|(
+name|diagMsg
+argument_list|)
+operator|!=
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -3209,6 +3291,8 @@ init|=
 name|testCreateAppFinished
 argument_list|(
 literal|null
+argument_list|,
+literal|""
 argument_list|)
 decl_stmt|;
 comment|// FINISHED => FINISHED event RMAppEventType.KILL
@@ -3349,16 +3433,14 @@ comment|// KILLED => KILLED event RMAppEventType.ATTEMPT_FINISHED
 name|event
 operator|=
 operator|new
-name|RMAppEvent
+name|RMAppFinishedAttemptEvent
 argument_list|(
 name|application
 operator|.
 name|getApplicationId
 argument_list|()
 argument_list|,
-name|RMAppEventType
-operator|.
-name|ATTEMPT_FINISHED
+literal|""
 argument_list|)
 expr_stmt|;
 name|application
