@@ -490,6 +490,26 @@ name|DFS_NAMESERVICE_ID
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|main (String[] args)
+specifier|public
+specifier|static
+name|void
+name|main
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+block|{
+name|init
+argument_list|()
+expr_stmt|;
+name|Configuration
+operator|.
+name|dumpDeprecatedKeys
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 
