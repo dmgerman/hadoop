@@ -9422,7 +9422,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A unique class which is used as a sentinel value in the caching    * for getClassByName. {@see Configuration#getClassByNameOrNull(String)}    */
+comment|/**    * A unique class which is used as a sentinel value in the caching    * for getClassByName. {@link Configuration#getClassByNameOrNull(String)}    */
 DECL|class|NegativeCacheSentinel
 specifier|private
 specifier|static
@@ -9455,10 +9455,12 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|String
+name|StringBuilder
 name|newKeys
 init|=
-literal|""
+operator|new
+name|StringBuilder
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -9474,10 +9476,16 @@ name|newKeys
 control|)
 block|{
 name|newKeys
-operator|+=
+operator|.
+name|append
+argument_list|(
 name|newKey
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\t"
+argument_list|)
 expr_stmt|;
 block|}
 name|System
@@ -9494,6 +9502,9 @@ operator|+
 literal|"\t"
 operator|+
 name|newKeys
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
