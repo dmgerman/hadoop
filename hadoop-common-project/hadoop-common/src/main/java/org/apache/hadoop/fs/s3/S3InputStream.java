@@ -498,7 +498,7 @@ condition|(
 name|stats
 operator|!=
 literal|null
-operator|&
+operator|&&
 name|result
 operator|>=
 literal|0

@@ -336,7 +336,7 @@ condition|(
 name|stats
 operator|!=
 literal|null
-operator|&
+operator|&&
 name|byteRead
 operator|>=
 literal|0
@@ -419,7 +419,7 @@ condition|(
 name|stats
 operator|!=
 literal|null
-operator|&
+operator|&&
 name|result
 operator|>
 literal|0

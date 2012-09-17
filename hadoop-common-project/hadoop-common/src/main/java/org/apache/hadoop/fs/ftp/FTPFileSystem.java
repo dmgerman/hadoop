@@ -2638,7 +2638,7 @@ expr_stmt|;
 name|created
 operator|=
 name|created
-operator|&
+operator|&&
 name|client
 operator|.
 name|makeDirectory
