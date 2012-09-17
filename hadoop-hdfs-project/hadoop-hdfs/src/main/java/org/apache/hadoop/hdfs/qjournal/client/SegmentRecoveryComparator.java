@@ -323,8 +323,7 @@ name|getIsInProgress
 argument_list|()
 condition|)
 block|{
-comment|// If both are finalized, they should match lengths, and be considered
-comment|// equal
+comment|// If both are finalized, they should match lengths
 if|if
 condition|(
 name|r1Seg
@@ -336,20 +335,6 @@ name|r2Seg
 operator|.
 name|getEndTxId
 argument_list|()
-operator|||
-operator|!
-name|r1Seg
-operator|.
-name|getMd5Sum
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|r2Seg
-operator|.
-name|getMd5Sum
-argument_list|()
-argument_list|)
 condition|)
 block|{
 throw|throw

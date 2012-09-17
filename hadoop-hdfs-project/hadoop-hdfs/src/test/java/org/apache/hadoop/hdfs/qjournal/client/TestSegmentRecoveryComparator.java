@@ -129,18 +129,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|ByteString
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -241,13 +229,6 @@ argument_list|(
 literal|3L
 argument_list|)
 operator|.
-name|setMd5Sum
-argument_list|(
-name|ByteString
-operator|.
-name|EMPTY
-argument_list|)
-operator|.
 name|setIsInProgress
 argument_list|(
 literal|true
@@ -295,13 +276,6 @@ argument_list|(
 literal|4L
 argument_list|)
 operator|.
-name|setMd5Sum
-argument_list|(
-name|ByteString
-operator|.
-name|EMPTY
-argument_list|)
-operator|.
 name|setIsInProgress
 argument_list|(
 literal|true
@@ -347,13 +321,6 @@ operator|.
 name|setEndTxId
 argument_list|(
 literal|4L
-argument_list|)
-operator|.
-name|setMd5Sum
-argument_list|(
-name|ByteString
-operator|.
-name|EMPTY
 argument_list|)
 operator|.
 name|setIsInProgress
@@ -406,13 +373,6 @@ operator|.
 name|setEndTxId
 argument_list|(
 literal|3L
-argument_list|)
-operator|.
-name|setMd5Sum
-argument_list|(
-name|ByteString
-operator|.
-name|EMPTY
 argument_list|)
 operator|.
 name|setIsInProgress

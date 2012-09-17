@@ -632,18 +632,6 @@ name|google
 operator|.
 name|protobuf
 operator|.
-name|ByteString
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
 name|TextFormat
 import|;
 end_import
@@ -2701,14 +2689,6 @@ name|isInProgress
 argument_list|()
 argument_list|)
 operator|.
-name|setMd5Sum
-argument_list|(
-name|ByteString
-operator|.
-name|EMPTY
-argument_list|)
-comment|// TODO
-operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -2832,19 +2812,6 @@ name|segInfo
 operator|.
 name|getEndTxId
 argument_list|()
-operator|&&
-name|acceptedState
-operator|.
-name|getMd5Sum
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|segInfo
-operator|.
-name|getMd5Sum
-argument_list|()
-argument_list|)
 operator|:
 literal|"prev accepted: "
 operator|+
