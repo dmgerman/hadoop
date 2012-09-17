@@ -110,6 +110,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -138,6 +148,20 @@ name|FAILED_SERVICE_SEQ_NUMBER
 init|=
 literal|2
 decl_stmt|;
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+block|{
+name|CompositeServiceImpl
+operator|.
+name|resetCounter
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testCallSequence ()
@@ -995,6 +1019,19 @@ operator|=
 operator|-
 literal|1
 expr_stmt|;
+name|counter
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+block|}
+DECL|method|resetCounter ()
+specifier|public
+specifier|static
+name|void
+name|resetCounter
+parameter_list|()
+block|{
 name|counter
 operator|=
 operator|-
