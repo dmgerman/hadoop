@@ -537,15 +537,10 @@ block|}
 name|String
 name|addr
 init|=
-name|NetUtils
-operator|.
-name|getHostPortString
-argument_list|(
 name|nn
 operator|.
-name|getNameNodeAddress
+name|getNameNodeAddressHostPortString
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|String
 name|addrParam

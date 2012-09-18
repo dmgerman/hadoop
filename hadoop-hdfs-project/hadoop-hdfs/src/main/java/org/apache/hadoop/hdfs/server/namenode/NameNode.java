@@ -252,20 +252,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|CommonConfigurationKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileSystem
 import|;
 end_import
@@ -2426,7 +2412,7 @@ argument_list|(
 name|getRole
 argument_list|()
 operator|+
-literal|" up at: "
+literal|" RPC up at: "
 operator|+
 name|rpcServer
 operator|.
@@ -2451,7 +2437,7 @@ argument_list|(
 name|getRole
 argument_list|()
 operator|+
-literal|" service server is up at: "
+literal|" service RPC up at: "
 operator|+
 name|rpcServer
 operator|.
@@ -2927,8 +2913,6 @@ parameter_list|()
 block|{
 try|try
 block|{
-name|this
-operator|.
 name|rpcServer
 operator|.
 name|join
@@ -3076,7 +3060,7 @@ operator|.
 name|fsImage
 return|;
 block|}
-comment|/**    * Returns the address on which the NameNodes is listening to.    * @return namenode rpc address    */
+comment|/**    * @return NameNode RPC address    */
 DECL|method|getNameNodeAddress ()
 specifier|public
 name|InetSocketAddress
@@ -3090,33 +3074,55 @@ name|getRpcAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns namenode service rpc address, if set. Otherwise returns    * namenode rpc address.    * @return namenode service rpc address used by datanodes    */
+comment|/**    * @return NameNode RPC address in "host:port" string form    */
+DECL|method|getNameNodeAddressHostPortString ()
+specifier|public
+name|String
+name|getNameNodeAddressHostPortString
+parameter_list|()
+block|{
+return|return
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|rpcServer
+operator|.
+name|getRpcAddress
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * @return NameNode service RPC address if configured, the    *    NameNode RPC address otherwise    */
 DECL|method|getServiceRpcAddress ()
 specifier|public
 name|InetSocketAddress
 name|getServiceRpcAddress
 parameter_list|()
 block|{
-return|return
+specifier|final
+name|InetSocketAddress
+name|serviceAddr
+init|=
 name|rpcServer
 operator|.
 name|getServiceRpcAddress
 argument_list|()
-operator|!=
+decl_stmt|;
+return|return
+name|serviceAddr
+operator|==
 literal|null
 condition|?
 name|rpcServer
 operator|.
-name|getServiceRpcAddress
-argument_list|()
-else|:
-name|rpcServer
-operator|.
 name|getRpcAddress
 argument_list|()
+else|:
+name|serviceAddr
 return|;
 block|}
-comment|/**    * Returns the address of the NameNodes http server,     * which is used to access the name-node web UI.    *     * @return the http address.    */
+comment|/**    * @return NameNode HTTP address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like Hftp and WebHDFS    */
 DECL|method|getHttpAddress ()
 specifier|public
 name|InetSocketAddress
@@ -5681,6 +5687,7 @@ name|NAMESERVICE_SPECIFIC_KEYS
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If the RPC address is set use it to (re-)configure the default FS
 if|if
 condition|(
 name|conf
@@ -5720,6 +5727,22 @@ name|set
 argument_list|(
 name|FS_DEFAULT_NAME_KEY
 argument_list|,
+name|defaultUri
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Setting "
+operator|+
+name|FS_DEFAULT_NAME_KEY
+operator|+
+literal|" to "
+operator|+
 name|defaultUri
 operator|.
 name|toString
@@ -5820,11 +5843,13 @@ name|namenode
 operator|!=
 literal|null
 condition|)
+block|{
 name|namenode
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
