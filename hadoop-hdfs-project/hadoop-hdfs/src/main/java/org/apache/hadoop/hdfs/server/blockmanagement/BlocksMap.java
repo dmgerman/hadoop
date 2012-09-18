@@ -413,10 +413,7 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|blocks
-operator|=
-literal|null
-expr_stmt|;
+comment|// Empty blocks once GSet#clear is implemented (HDFS-3940)
 block|}
 DECL|method|getBlockCollection (Block b)
 name|BlockCollection
