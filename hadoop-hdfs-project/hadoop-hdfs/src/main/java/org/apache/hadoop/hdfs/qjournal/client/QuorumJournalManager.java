@@ -598,6 +598,12 @@ specifier|final
 name|int
 name|newEpochTimeoutMs
 decl_stmt|;
+DECL|field|writeTxnsTimeoutMs
+specifier|private
+specifier|final
+name|int
+name|writeTxnsTimeoutMs
+decl_stmt|;
 comment|// Since these don't occur during normal operation, we can
 comment|// use rather lengthy timeouts, and don't need to make them
 comment|// configurable.
@@ -647,6 +653,15 @@ specifier|private
 specifier|final
 name|AsyncLoggerSet
 name|loggers
+decl_stmt|;
+DECL|field|outputBufferCapacity
+specifier|private
+name|int
+name|outputBufferCapacity
+init|=
+literal|512
+operator|*
+literal|1024
 decl_stmt|;
 DECL|method|QuorumJournalManager (Configuration conf, URI uri, NamespaceInfo nsInfo)
 specifier|public
@@ -858,6 +873,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_QJOURNAL_NEW_EPOCH_TIMEOUT_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|writeTxnsTimeoutMs
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_QJOURNAL_WRITE_TXNS_TIMEOUT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_QJOURNAL_WRITE_TXNS_TIMEOUT_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -1574,7 +1606,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// TODO: check that md5s match up between any "tied" logs
 name|SegmentStateProto
 name|logToSync
 init|=
@@ -1716,10 +1747,10 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-comment|// TODO:
-comment|// we should only try to finalize loggers who successfully synced above
-comment|// eg if a logger was down, we don't want to send the finalize request.
-comment|// write a test for this!
+comment|// If one of the loggers above missed the synchronization step above, but
+comment|// we send a finalize() here, that's OK. It validates the log before
+comment|// finalizing. Hence, even if it is not "in sync", it won't incorrectly
+comment|// finalize.
 name|QuorumCall
 argument_list|<
 name|AsyncLogger
@@ -2066,6 +2097,10 @@ argument_list|(
 name|loggers
 argument_list|,
 name|txId
+argument_list|,
+name|outputBufferCapacity
+argument_list|,
+name|writeTxnsTimeoutMs
 argument_list|)
 return|;
 block|}
@@ -2134,7 +2169,10 @@ name|int
 name|size
 parameter_list|)
 block|{
-comment|// TODO Auto-generated method stub
+name|outputBufferCapacity
+operator|=
+name|size
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2188,6 +2226,13 @@ argument_list|,
 literal|"already active writer"
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting recovery process for unclosed journal segments..."
+argument_list|)
+expr_stmt|;
 name|Map
 argument_list|<
 name|AsyncLogger
@@ -2202,6 +2247,26 @@ decl_stmt|;
 name|LOG
 operator|.
 name|info
+argument_list|(
+literal|"Successfully started new epoch "
+operator|+
+name|loggers
+operator|.
+name|getEpoch
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"newEpoch("
 operator|+
@@ -2220,6 +2285,7 @@ name|resps
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|mostRecentSegmentTxId
 init|=
@@ -2515,9 +2581,9 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"Quorum journal manager "
+literal|"QJM to "
 operator|+
-name|uri
+name|loggers
 return|;
 block|}
 annotation|@

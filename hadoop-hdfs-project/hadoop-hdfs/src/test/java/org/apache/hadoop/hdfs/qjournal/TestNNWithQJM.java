@@ -1128,7 +1128,7 @@ name|contents
 operator|.
 name|contains
 argument_list|(
-literal|"Channel to journal node"
+literal|"QJM to ["
 argument_list|)
 argument_list|)
 expr_stmt|;

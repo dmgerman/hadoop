@@ -126,7 +126,13 @@ specifier|final
 name|long
 name|segmentTxId
 decl_stmt|;
-DECL|method|QuorumOutputStream (AsyncLoggerSet loggers, long txId)
+DECL|field|writeTimeoutMs
+specifier|private
+specifier|final
+name|int
+name|writeTimeoutMs
+decl_stmt|;
+DECL|method|QuorumOutputStream (AsyncLoggerSet loggers, long txId, int outputBufferCapacity, int writeTimeoutMs)
 specifier|public
 name|QuorumOutputStream
 parameter_list|(
@@ -135,6 +141,12 @@ name|loggers
 parameter_list|,
 name|long
 name|txId
+parameter_list|,
+name|int
+name|outputBufferCapacity
+parameter_list|,
+name|int
+name|writeTimeoutMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -149,12 +161,9 @@ operator|=
 operator|new
 name|EditsDoubleBuffer
 argument_list|(
-literal|256
-operator|*
-literal|1024
+name|outputBufferCapacity
 argument_list|)
 expr_stmt|;
-comment|// TODO: conf
 name|this
 operator|.
 name|loggers
@@ -166,6 +175,12 @@ operator|.
 name|segmentTxId
 operator|=
 name|txId
+expr_stmt|;
+name|this
+operator|.
+name|writeTimeoutMs
+operator|=
+name|writeTimeoutMs
 expr_stmt|;
 block|}
 annotation|@
@@ -436,12 +451,11 @@ name|waitForWriteQuorum
 argument_list|(
 name|qcall
 argument_list|,
-literal|20000
+name|writeTimeoutMs
 argument_list|,
 literal|"sendEdits"
 argument_list|)
 expr_stmt|;
-comment|// TODO: configurable timeout
 comment|// Since we successfully wrote this batch, let the loggers know. Any future
 comment|// RPCs will thus let the loggers know of the most recent transaction, even
 comment|// if a logger has fallen behind.
@@ -496,6 +510,20 @@ name|sb
 operator|.
 name|toString
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"QuorumOutputStream starting at txid "
+operator|+
+name|segmentTxId
 return|;
 block|}
 block|}

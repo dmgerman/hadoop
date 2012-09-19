@@ -548,6 +548,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|Server
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|SecurityUtil
@@ -710,6 +724,15 @@ DECL|field|lastPromisedEpoch
 specifier|private
 name|PersistentLongFile
 name|lastPromisedEpoch
+decl_stmt|;
+comment|/**    * Each IPC that comes from a given client contains a serial number    * which only increases from the client's perspective. Whenever    * we switch epochs, we reset this back to -1. Whenever an IPC    * comes from a client, we ensure that it is strictly higher    * than any previous IPC. This guards against any bugs in the IPC    * layer that would re-order IPCs or cause a stale retry from an old    * request to resurface and confuse things.    */
+DECL|field|currentEpochIpcSerial
+specifier|private
+name|long
+name|currentEpochIpcSerial
+init|=
+operator|-
+literal|1
 decl_stmt|;
 comment|/**    * The epoch number of the last writer to actually write a transaction.    * This is used to differentiate log segments after a crash at the very    * beginning of a segment. See the the 'testNewerVersionOfSegmentWins'    * test case.    */
 DECL|field|lastWriterEpoch
@@ -1295,6 +1318,8 @@ argument_list|(
 name|nsInfo
 argument_list|)
 expr_stmt|;
+comment|// Check that the new epoch being proposed is in fact newer than
+comment|// any other that we've promised.
 if|if
 condition|(
 name|epoch
@@ -1318,9 +1343,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-name|lastPromisedEpoch
-operator|.
-name|set
+name|updateLastPromisedEpoch
 argument_list|(
 name|epoch
 argument_list|)
@@ -1368,6 +1391,55 @@ operator|.
 name|build
 argument_list|()
 return|;
+block|}
+DECL|method|updateLastPromisedEpoch (long newEpoch)
+specifier|private
+name|void
+name|updateLastPromisedEpoch
+parameter_list|(
+name|long
+name|newEpoch
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Updating lastPromisedEpoch from "
+operator|+
+name|lastPromisedEpoch
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|newEpoch
+operator|+
+literal|" for client "
+operator|+
+name|Server
+operator|.
+name|getRemoteIp
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|lastPromisedEpoch
+operator|.
+name|set
+argument_list|(
+name|newEpoch
+argument_list|)
+expr_stmt|;
+comment|// Since we have a new writer, reset the IPC serial - it will start
+comment|// counting again from 0 for this writer.
+name|currentEpochIpcSerial
+operator|=
+operator|-
+literal|1
+expr_stmt|;
 block|}
 DECL|method|abortCurSegment ()
 specifier|private
@@ -1721,11 +1793,65 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// TODO: should other requests check the _exact_ epoch instead of
-comment|// the<= check?<= should probably only be necessary for the
-comment|// first calls
-comment|// TODO: some check on serial number that they only increase from a given
-comment|// client
+elseif|else
+if|if
+condition|(
+name|reqInfo
+operator|.
+name|getEpoch
+argument_list|()
+operator|>
+name|lastPromisedEpoch
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+comment|// A newer client has arrived. Fence any previous writers by updating
+comment|// the promise.
+name|updateLastPromisedEpoch
+argument_list|(
+name|reqInfo
+operator|.
+name|getEpoch
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Ensure that the IPCs are arriving in-order as expected.
+name|checkSync
+argument_list|(
+name|reqInfo
+operator|.
+name|getIpcSerialNumber
+argument_list|()
+operator|>
+name|currentEpochIpcSerial
+argument_list|,
+literal|"IPC serial %s from client %s was not higher than prior highest "
+operator|+
+literal|"IPC serial %s"
+argument_list|,
+name|reqInfo
+operator|.
+name|getIpcSerialNumber
+argument_list|()
+argument_list|,
+name|Server
+operator|.
+name|getRemoteIp
+argument_list|()
+argument_list|,
+name|currentEpochIpcSerial
+argument_list|)
+expr_stmt|;
+name|currentEpochIpcSerial
+operator|=
+name|reqInfo
+operator|.
+name|getIpcSerialNumber
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|reqInfo
@@ -1912,6 +2038,45 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * @throws AssertionError if the given expression is not true.    * The message of the exception is formatted using the 'msg' and    * 'formatArgs' parameters.    *     * This should be used in preference to Java's built-in assert in    * non-performance-critical paths, where a failure of this invariant    * might cause the protocol to lose data.     */
+DECL|method|alwaysAssert (boolean expression, String msg, Object... formatArgs)
+specifier|private
+name|void
+name|alwaysAssert
+parameter_list|(
+name|boolean
+name|expression
+parameter_list|,
+name|String
+name|msg
+parameter_list|,
+name|Object
+modifier|...
+name|formatArgs
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|expression
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|msg
+argument_list|,
+name|formatArgs
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Start a new segment at the given txid. The previous segment    * must have already been finalized.    */
 DECL|method|startLogSegment (RequestInfo reqInfo, long txid)
 specifier|public
@@ -2071,11 +2236,22 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recording lastWriterEpoch = "
+literal|"Updating lastWriterEpoch from "
+operator|+
+name|curLastWriterEpoch
+operator|+
+literal|" to "
 operator|+
 name|reqInfo
 operator|.
 name|getEpoch
+argument_list|()
+operator|+
+literal|" for client "
+operator|+
+name|Server
+operator|.
+name|getRemoteIp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2971,9 +3147,8 @@ operator|.
 name|getStartTxId
 argument_list|()
 decl_stmt|;
-comment|// TODO: right now, a recovery of a segment when the log is
-comment|// completely emtpy (ie startLogSegment() but no txns)
-comment|// will fail this assertion here, since endTxId< startTxId
+comment|// Basic sanity checks that the segment is well-formed and contains
+comment|// at least one transaction.
 name|Preconditions
 operator|.
 name|checkArgument
@@ -3036,6 +3211,9 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+comment|// If we previously acted on acceptRecovery() from a higher-numbered writer,
+comment|// this call is out of sync. We should never actually trigger this, since the
+comment|// checkRequest() call above should filter non-increasing epoch numbers.
 if|if
 condition|(
 name|oldData
@@ -3043,9 +3221,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|Preconditions
-operator|.
-name|checkState
+name|alwaysAssert
 argument_list|(
 name|oldData
 operator|.
@@ -3220,6 +3396,20 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+comment|// Another paranoid check: we should not be asked to synchronize a log
+comment|// on top of a finalized segment.
+name|alwaysAssert
+argument_list|(
+name|currentSegment
+operator|.
+name|getIsInProgress
+argument_list|()
+argument_list|,
+literal|"Should never be asked to synchronize a different log on top of an "
+operator|+
+literal|"already-finalized segment"
+argument_list|)
+expr_stmt|;
 comment|// If we're shortening the log, update our highest txid
 comment|// used for lag metrics.
 if|if

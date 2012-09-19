@@ -1158,7 +1158,7 @@ name|startLogSegment
 argument_list|(
 name|makeRI
 argument_list|(
-literal|3
+literal|4
 argument_list|)
 argument_list|,
 literal|3

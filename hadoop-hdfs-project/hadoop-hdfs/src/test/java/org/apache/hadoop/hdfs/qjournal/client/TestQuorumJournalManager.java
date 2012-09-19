@@ -3660,6 +3660,29 @@ literal|"3"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testToString ()
+specifier|public
+name|void
+name|testToString
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|GenericTestUtils
+operator|.
+name|assertMatches
+argument_list|(
+name|qjm
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"QJM to \\[127.0.0.1:\\d+, 127.0.0.1:\\d+, 127.0.0.1:\\d+\\]"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|createSpyingQJM ()
 specifier|private
 name|QuorumJournalManager

@@ -1577,7 +1577,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// accept() should save the accepted value in persistent storage
-comment|// TODO: should be able to accept without a URL here
 name|ch
 operator|.
 name|acceptRecovery
@@ -2044,6 +2043,8 @@ argument_list|(
 literal|"Time per batch: "
 operator|+
 name|avgRtt
+operator|+
+literal|"ms"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2060,9 +2061,6 @@ literal|" bytes/sec"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO:
-comment|// - add test that checks formatting behavior
-comment|// - add test that checks rejects newEpoch if nsinfo doesn't match
 block|}
 end_class
 

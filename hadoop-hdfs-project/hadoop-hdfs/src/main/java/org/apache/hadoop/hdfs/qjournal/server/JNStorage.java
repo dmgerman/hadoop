@@ -170,20 +170,6 @@ name|NamespaceInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
 comment|/**  * A {@link Storage} implementation for the {@link JournalNode}.  *   * The JN has a storage directory for each namespace for which it stores  * metadata. There is only a single directory per JN in the current design.  */
 end_comment
