@@ -447,7 +447,7 @@ block|}
 DECL|method|writeSegment (MiniJournalCluster cluster, QuorumJournalManager qjm, long startTxId, int numTxns, boolean finalize)
 specifier|public
 specifier|static
-name|void
+name|EditLogOutputStream
 name|writeSegment
 parameter_list|(
 name|MiniJournalCluster
@@ -523,6 +523,15 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|stm
+return|;
 block|}
 block|}
 DECL|method|writeOp (EditLogOutputStream stm, long txid)

@@ -365,6 +365,45 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * @param segmentTxId the first txid of the segment    * @param epoch the epoch number of the writer which is coordinating    * recovery    * @return the temporary path in which an edits log should be stored    * while it is being downloaded from a remote JournalNode    */
+DECL|method|getSyncLogTemporaryFile (long segmentTxId, long epoch)
+name|File
+name|getSyncLogTemporaryFile
+parameter_list|(
+name|long
+name|segmentTxId
+parameter_list|,
+name|long
+name|epoch
+parameter_list|)
+block|{
+name|String
+name|name
+init|=
+name|NNStorage
+operator|.
+name|getInProgressEditsFileName
+argument_list|(
+name|segmentTxId
+argument_list|)
+operator|+
+literal|".epoch="
+operator|+
+name|epoch
+decl_stmt|;
+return|return
+operator|new
+name|File
+argument_list|(
+name|sd
+operator|.
+name|getCurrentDir
+argument_list|()
+argument_list|,
+name|name
+argument_list|)
+return|;
+block|}
 comment|/**    * @return the path for the file which contains persisted data for the    * paxos-like recovery process for the given log segment.    */
 DECL|method|getPaxosFile (long segmentTxId)
 name|File

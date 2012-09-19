@@ -2931,6 +2931,19 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
+name|PersistedRecoveryPaxosData
+name|previouslyAccepted
+init|=
+name|getPersistedPaxosData
+argument_list|(
+name|segmentTxId
+argument_list|)
+decl_stmt|;
+name|completeHalfDoneAcceptRecovery
+argument_list|(
+name|previouslyAccepted
+argument_list|)
+expr_stmt|;
 name|SegmentStateProto
 name|segInfo
 init|=
@@ -2951,14 +2964,6 @@ name|segInfo
 operator|.
 name|getIsInProgress
 argument_list|()
-decl_stmt|;
-name|PersistedRecoveryPaxosData
-name|previouslyAccepted
-init|=
-name|getPersistedPaxosData
-argument_list|(
-name|segmentTxId
-argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3241,6 +3246,11 @@ name|newData
 argument_list|)
 expr_stmt|;
 block|}
+name|File
+name|syncedFile
+init|=
+literal|null
+decl_stmt|;
 name|SegmentStateProto
 name|currentSegment
 init|=
@@ -3434,6 +3444,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+name|syncedFile
+operator|=
 name|syncLog
 argument_list|(
 name|reqInfo
@@ -3463,8 +3475,33 @@ literal|": already have up-to-date logs"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: is it OK that this is non-atomic?
-comment|// we might be left with an older epoch recorded, but a newer log
+comment|// This is one of the few places in the protocol where we have a single
+comment|// RPC that results in two distinct actions:
+comment|//
+comment|// - 1) Downloads the new log segment data (above)
+comment|// - 2) Records the new Paxos data about the synchronized segment (below)
+comment|//
+comment|// These need to be treated as a transaction from the perspective
+comment|// of any external process. We do this by treating the persistPaxosData()
+comment|// success as the "commit" of an atomic transaction. If we fail before
+comment|// this point, the downloaded edit log will only exist at a temporary
+comment|// path, and thus not change any externally visible state. If we fail
+comment|// after this point, then any future prepareRecovery() call will see
+comment|// the Paxos data, and by calling completeHalfDoneAcceptRecovery() will
+comment|// roll forward the rename of the referenced log file.
+comment|//
+comment|// See also: HDFS-3955
+comment|//
+comment|// The fault points here are exercised by the randomized fault injection
+comment|// test case to ensure that this atomic "transaction" operates correctly.
+name|JournalFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|beforePersistPaxosData
+argument_list|()
+expr_stmt|;
 name|persistPaxosData
 argument_list|(
 name|segmentTxId
@@ -3472,6 +3509,36 @@ argument_list|,
 name|newData
 argument_list|)
 expr_stmt|;
+name|JournalFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|afterPersistPaxosData
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|syncedFile
+operator|!=
+literal|null
+condition|)
+block|{
+name|FileUtil
+operator|.
+name|replaceFile
+argument_list|(
+name|syncedFile
+argument_list|,
+name|storage
+operator|.
+name|getInProgressEditLog
+argument_list|(
+name|segmentTxId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -3534,10 +3601,10 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Synchronize a log segment from another JournalNode.    * @param reqInfo the request info for the recovery IPC    * @param segment     * @param url    * @throws IOException    */
+comment|/**    * Synchronize a log segment from another JournalNode. The log is    * downloaded from the provided URL into a temporary location on disk,    * which is named based on the current request's epoch.    *    * @return the temporary location of the downloaded file    */
 DECL|method|syncLog (RequestInfo reqInfo, final SegmentStateProto segment, final URL url)
 specifier|private
-name|void
+name|File
 name|syncLog
 parameter_list|(
 name|RequestInfo
@@ -3554,29 +3621,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|tmpFileName
+specifier|final
+name|File
+name|tmpFile
 init|=
-literal|"synclog_"
-operator|+
+name|storage
+operator|.
+name|getSyncLogTemporaryFile
+argument_list|(
 name|segment
 operator|.
 name|getStartTxId
 argument_list|()
-operator|+
-literal|"_"
-operator|+
+argument_list|,
 name|reqInfo
 operator|.
 name|getEpoch
 argument_list|()
-operator|+
-literal|"."
-operator|+
-name|reqInfo
-operator|.
-name|getIpcSerialNumber
-argument_list|()
+argument_list|)
 decl_stmt|;
 specifier|final
 name|List
@@ -3585,32 +3647,11 @@ name|File
 argument_list|>
 name|localPaths
 init|=
-name|storage
+name|ImmutableList
 operator|.
-name|getFiles
+name|of
 argument_list|(
-literal|null
-argument_list|,
-name|tmpFileName
-argument_list|)
-decl_stmt|;
-assert|assert
-name|localPaths
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|1
-assert|;
-specifier|final
-name|File
 name|tmpFile
-init|=
-name|localPaths
-operator|.
-name|get
-argument_list|(
-literal|0
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -3651,6 +3692,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
 name|TransferFsImage
 operator|.
 name|doGetUrl
@@ -3670,29 +3718,9 @@ operator|.
 name|exists
 argument_list|()
 assert|;
-name|boolean
-name|success
-init|=
-literal|false
-decl_stmt|;
-try|try
-block|{
 name|success
 operator|=
-name|tmpFile
-operator|.
-name|renameTo
-argument_list|(
-name|storage
-operator|.
-name|getInProgressEditLog
-argument_list|(
-name|segment
-operator|.
-name|getStartTxId
-argument_list|()
-argument_list|)
-argument_list|)
+literal|true
 expr_stmt|;
 block|}
 finally|finally
@@ -3731,6 +3759,103 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+return|return
+name|tmpFile
+return|;
+block|}
+comment|/**    * In the case the node crashes in between downloading a log segment    * and persisting the associated paxos recovery data, the log segment    * will be left in its temporary location on disk. Given the paxos data,    * we can check if this was indeed the case, and&quot;roll forward&quot;    * the atomic operation.    *     * See the inline comments in    * {@link #acceptRecovery(RequestInfo, SegmentStateProto, URL)} for more    * details.    *    * @throws IOException if the temporary file is unable to be renamed into    * place    */
+DECL|method|completeHalfDoneAcceptRecovery ( PersistedRecoveryPaxosData paxosData)
+specifier|private
+name|void
+name|completeHalfDoneAcceptRecovery
+parameter_list|(
+name|PersistedRecoveryPaxosData
+name|paxosData
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|paxosData
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+name|long
+name|segmentId
+init|=
+name|paxosData
+operator|.
+name|getSegmentState
+argument_list|()
+operator|.
+name|getStartTxId
+argument_list|()
+decl_stmt|;
+name|long
+name|epoch
+init|=
+name|paxosData
+operator|.
+name|getAcceptedInEpoch
+argument_list|()
+decl_stmt|;
+name|File
+name|tmp
+init|=
+name|storage
+operator|.
+name|getSyncLogTemporaryFile
+argument_list|(
+name|segmentId
+argument_list|,
+name|epoch
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|tmp
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|File
+name|dst
+init|=
+name|storage
+operator|.
+name|getInProgressEditLog
+argument_list|(
+name|segmentId
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Rolling forward previously half-completed synchronization: "
+operator|+
+name|tmp
+operator|+
+literal|" -> "
+operator|+
+name|dst
+argument_list|)
+expr_stmt|;
+name|FileUtil
+operator|.
+name|replaceFile
+argument_list|(
+name|tmp
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Retrieve the persisted data for recovering the given segment from disk.    */
 DECL|method|getPersistedPaxosData (long segmentTxId)
