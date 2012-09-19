@@ -752,8 +752,9 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getBPScanner (String bpid)
-specifier|private
 specifier|synchronized
 name|BlockPoolSliceScanner
 name|getBPScanner

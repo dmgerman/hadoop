@@ -646,6 +646,10 @@ name|nnIndex
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|FileSystem
 name|fs
@@ -705,6 +709,10 @@ name|numNodes
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|cluster
 operator|=

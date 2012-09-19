@@ -1292,6 +1292,47 @@ name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+comment|// Whether to enable datanode's stale state detection and usage
+DECL|field|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+init|=
+literal|"dfs.namenode.check.stale.datanode"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|// The default value of the time interval for marking datanodes as stale
+DECL|field|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+init|=
+literal|"dfs.namenode.stale.datanode.interval"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+init|=
+literal|30
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 30s
 comment|// Replication monitoring related keys
 DECL|field|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION
 specifier|public

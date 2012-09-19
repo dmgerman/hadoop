@@ -3721,7 +3721,7 @@ condition|(
 name|theInternalDir
 operator|.
 name|isRoot
-operator|&
+operator|&&
 name|dir
 operator|==
 literal|null

@@ -640,7 +640,7 @@ name|InetAddress
 operator|.
 name|getByName
 argument_list|(
-name|hostnameKey
+name|host
 argument_list|)
 decl_stmt|;
 name|int

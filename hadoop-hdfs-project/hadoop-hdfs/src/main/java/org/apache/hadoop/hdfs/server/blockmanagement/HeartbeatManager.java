@@ -329,6 +329,23 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+comment|// This will no effect if the thread hasn't yet been started.
+name|heartbeatThread
+operator|.
+name|join
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{     }
 block|}
 DECL|method|getLiveDatanodeCount ()
 specifier|synchronized

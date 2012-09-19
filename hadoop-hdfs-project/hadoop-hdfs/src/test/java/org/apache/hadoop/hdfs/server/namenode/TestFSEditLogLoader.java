@@ -820,7 +820,7 @@ name|void
 name|testReplicationAdjusted
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 comment|// start a cluster
 name|Configuration

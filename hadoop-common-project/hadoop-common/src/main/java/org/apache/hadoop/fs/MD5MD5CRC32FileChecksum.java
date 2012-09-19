@@ -735,8 +735,11 @@ operator|==
 literal|null
 operator|||
 name|crcType
-operator|==
+operator|.
+name|equals
+argument_list|(
 literal|""
+argument_list|)
 condition|)
 block|{
 name|finalCrcType

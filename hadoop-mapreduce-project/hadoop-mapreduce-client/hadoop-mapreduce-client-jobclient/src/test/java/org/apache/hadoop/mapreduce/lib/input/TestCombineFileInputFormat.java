@@ -84,6 +84,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -1547,7 +1559,7 @@ name|void
 name|testSplitPlacement
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|dfs
@@ -5630,6 +5642,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys
@@ -5703,6 +5719,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys
@@ -5791,6 +5811,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 for|for
 control|(
@@ -5838,7 +5862,7 @@ name|void
 name|testSplitPlacementForCompressedFiles
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|dfs
@@ -9313,7 +9337,7 @@ name|void
 name|testMissingBlocks
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|String
 name|namenode

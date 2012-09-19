@@ -744,26 +744,6 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|GetUserMappingsProtocolProtos
-operator|.
-name|GetUserMappingsProtocolService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
 name|NamenodeProtocolProtos
 operator|.
 name|NamenodeProtocolService
@@ -871,38 +851,6 @@ operator|.
 name|protocolPB
 operator|.
 name|DatanodeProtocolServerSideTranslatorPB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocolPB
-operator|.
-name|GetUserMappingsProtocolPB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocolPB
-operator|.
-name|GetUserMappingsProtocolServerSideTranslatorPB
 import|;
 end_import
 
@@ -1646,6 +1594,58 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|tools
+operator|.
+name|GetUserMappingsProtocolPB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|service
+operator|.
+name|GetUserMappingsProtocolPBServiceImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|proto
+operator|.
+name|GetUserMappingsProtocol
+operator|.
+name|GetUserMappingsProtocolService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|VersionInfo
@@ -1821,16 +1821,6 @@ argument_list|,
 name|DFS_NAMENODE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
-name|InetSocketAddress
-name|socAddr
-init|=
-name|nn
-operator|.
-name|getRpcServerAddress
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|RPC
 operator|.
 name|setProtocolEngine
@@ -1941,11 +1931,11 @@ argument_list|(
 name|refreshUserMappingXlator
 argument_list|)
 decl_stmt|;
-name|GetUserMappingsProtocolServerSideTranslatorPB
+name|GetUserMappingsProtocolPBServiceImpl
 name|getUserMappingXlator
 init|=
 operator|new
-name|GetUserMappingsProtocolServerSideTranslatorPB
+name|GetUserMappingsProtocolPBServiceImpl
 argument_list|(
 name|this
 argument_list|)
@@ -1985,7 +1975,7 @@ name|ensureInitialized
 argument_list|()
 expr_stmt|;
 name|InetSocketAddress
-name|dnSocketAddr
+name|serviceRpcAddr
 init|=
 name|nn
 operator|.
@@ -1996,7 +1986,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|dnSocketAddr
+name|serviceRpcAddr
 operator|!=
 literal|null
 condition|)
@@ -2013,9 +2003,6 @@ argument_list|,
 name|DFS_NAMENODE_SERVICE_HANDLER_COUNT_DEFAULT
 argument_list|)
 decl_stmt|;
-comment|// Add all the RPC protocols that the namenode implements
-name|this
-operator|.
 name|serviceRpcServer
 operator|=
 operator|new
@@ -2050,7 +2037,7 @@ argument_list|)
 operator|.
 name|setBindAddress
 argument_list|(
-name|dnSocketAddr
+name|serviceRpcAddr
 operator|.
 name|getHostName
 argument_list|()
@@ -2058,7 +2045,7 @@ argument_list|)
 operator|.
 name|setPort
 argument_list|(
-name|dnSocketAddr
+name|serviceRpcAddr
 operator|.
 name|getPort
 argument_list|()
@@ -2085,6 +2072,7 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+comment|// Add all the RPC protocols that the namenode implements
 name|DFSUtil
 operator|.
 name|addPBProtocol
@@ -2175,12 +2163,8 @@ argument_list|,
 name|serviceRpcServer
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|serviceRPCAddress
 operator|=
-name|this
-operator|.
 name|serviceRpcServer
 operator|.
 name|getListenerAddress
@@ -2207,9 +2191,16 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|// Add all the RPC protocols that the namenode implements
-name|this
+name|InetSocketAddress
+name|rpcAddr
+init|=
+name|nn
 operator|.
+name|getRpcServerAddress
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|clientRpcServer
 operator|=
 operator|new
@@ -2244,7 +2235,7 @@ argument_list|)
 operator|.
 name|setBindAddress
 argument_list|(
-name|socAddr
+name|rpcAddr
 operator|.
 name|getHostName
 argument_list|()
@@ -2252,7 +2243,7 @@ argument_list|)
 operator|.
 name|setPort
 argument_list|(
-name|socAddr
+name|rpcAddr
 operator|.
 name|getPort
 argument_list|()
@@ -2279,6 +2270,7 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+comment|// Add all the RPC protocols that the namenode implements
 name|DFSUtil
 operator|.
 name|addPBProtocol
@@ -2386,8 +2378,6 @@ literal|false
 argument_list|)
 condition|)
 block|{
-name|this
-operator|.
 name|clientRpcServer
 operator|.
 name|refreshServiceAcl
@@ -2401,15 +2391,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|this
-operator|.
 name|serviceRpcServer
 operator|!=
 literal|null
 condition|)
 block|{
-name|this
-operator|.
 name|serviceRpcServer
 operator|.
 name|refreshServiceAcl
@@ -2424,12 +2410,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// The rpc-server port can be ephemeral... ensure we have the correct info
-name|this
-operator|.
 name|clientRpcAddress
 operator|=
-name|this
-operator|.
 name|clientRpcServer
 operator|.
 name|getListenerAddress
@@ -2444,8 +2426,6 @@ argument_list|,
 name|clientRpcAddress
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|minimumDataNodeVersion
 operator|=
 name|conf
@@ -2462,8 +2442,6 @@ name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// Set terse exception whose stack trace won't be logged
-name|this
-operator|.
 name|clientRpcServer
 operator|.
 name|addTerseExceptions
@@ -2474,7 +2452,7 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Actually start serving requests.    */
+comment|/**    * Start client and service RPC servers.    */
 DECL|method|start ()
 name|void
 name|start
@@ -2485,7 +2463,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|//start RPC server
 if|if
 condition|(
 name|serviceRpcServer
@@ -2500,7 +2477,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Wait until the RPC server has shut down.    */
+comment|/**    * Wait until the client RPC server has shutdown.    */
 DECL|method|join ()
 name|void
 name|join
@@ -2508,14 +2485,13 @@ parameter_list|()
 throws|throws
 name|InterruptedException
 block|{
-name|this
-operator|.
 name|clientRpcServer
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Stop client and service RPC servers.    */
 DECL|method|stop ()
 name|void
 name|stop
@@ -2527,22 +2503,26 @@ name|clientRpcServer
 operator|!=
 literal|null
 condition|)
+block|{
 name|clientRpcServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|serviceRpcServer
 operator|!=
 literal|null
 condition|)
+block|{
 name|serviceRpcServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|getServiceRpcAddress ()
 name|InetSocketAddress
@@ -2696,6 +2676,7 @@ name|errorCode
 operator|==
 name|FATAL
 condition|)
+block|{
 name|namesystem
 operator|.
 name|releaseBackupNode
@@ -2703,6 +2684,7 @@ argument_list|(
 name|registration
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

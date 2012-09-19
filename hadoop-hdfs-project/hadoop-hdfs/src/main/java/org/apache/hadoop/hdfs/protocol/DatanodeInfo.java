@@ -140,6 +140,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**   * This class extends the primary identifier of a Datanode with ephemeral  * state, eg usage information, current administrative state, and the  * network location that is communicated to clients.  */
 end_comment
@@ -1614,6 +1628,29 @@ return|;
 block|}
 return|return
 name|adminState
+return|;
+block|}
+comment|/**    * Check if the datanode is in stale state. Here if     * the namenode has not received heartbeat msg from a     * datanode for more than staleInterval (default value is    * {@link DFSConfigKeys#DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT}),    * the datanode will be treated as stale node.    *     * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
+DECL|method|isStale (long staleInterval)
+specifier|public
+name|boolean
+name|isStale
+parameter_list|(
+name|long
+name|staleInterval
+parameter_list|)
+block|{
+return|return
+operator|(
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|lastUpdate
+operator|)
+operator|>=
+name|staleInterval
 return|;
 block|}
 comment|/**    * Sets the admin state of this node.    */

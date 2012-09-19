@@ -762,6 +762,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|TaskState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|TaskType
 import|;
 end_import
@@ -1063,6 +1083,28 @@ operator|.
 name|event
 operator|.
 name|TaskAttemptStatusUpdateEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|job
+operator|.
+name|event
+operator|.
+name|TaskEvent
 import|;
 end_import
 
@@ -1688,6 +1730,22 @@ name|yarn
 operator|.
 name|state
 operator|.
+name|MultipleArcTransition
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|state
+operator|.
 name|SingleArcTransition
 import|;
 end_import
@@ -1785,6 +1843,20 @@ operator|.
 name|util
 operator|.
 name|RackResolver
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -3169,9 +3241,18 @@ name|TaskAttemptState
 operator|.
 name|SUCCEEDED
 argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|TaskAttemptState
+operator|.
+name|SUCCEEDED
+argument_list|,
 name|TaskAttemptState
 operator|.
 name|KILLED
+argument_list|)
 argument_list|,
 name|TaskAttemptEventType
 operator|.
@@ -8494,6 +8575,27 @@ name|TaskAttemptEvent
 name|event
 parameter_list|)
 block|{
+comment|// too many fetch failure can only happen for map tasks
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|taskAttempt
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|getTaskId
+argument_list|()
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
 comment|//add to diagnostic
 name|taskAttempt
 operator|.
@@ -8612,11 +8714,13 @@ specifier|static
 class|class
 name|KilledAfterSuccessTransition
 implements|implements
-name|SingleArcTransition
+name|MultipleArcTransition
 argument_list|<
 name|TaskAttemptImpl
 argument_list|,
 name|TaskAttemptEvent
+argument_list|,
+name|TaskAttemptState
 argument_list|>
 block|{
 annotation|@
@@ -8628,7 +8732,7 @@ annotation|@
 name|Override
 DECL|method|transition (TaskAttemptImpl taskAttempt, TaskAttemptEvent event)
 specifier|public
-name|void
+name|TaskAttemptState
 name|transition
 parameter_list|(
 name|TaskAttemptImpl
@@ -8637,6 +8741,60 @@ parameter_list|,
 name|TaskAttemptEvent
 name|event
 parameter_list|)
+block|{
+if|if
+condition|(
+name|taskAttempt
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|getTaskId
+argument_list|()
+operator|.
+name|getTaskType
+argument_list|()
+operator|==
+name|TaskType
+operator|.
+name|REDUCE
+condition|)
+block|{
+comment|// after a reduce task has succeeded, its outputs are in safe in HDFS.
+comment|// logically such a task should not be killed. we only come here when
+comment|// there is a race condition in the event queue. E.g. some logic sends
+comment|// a kill request to this attempt when the successful completion event
+comment|// for this task is already in the event queue. so the kill event will
+comment|// get executed immediately after the attempt is marked successful and
+comment|// result in this transition being exercised.
+comment|// ignore this for reduce tasks
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ignoring killed event for successful reduce task attempt"
+operator|+
+name|taskAttempt
+operator|.
+name|getID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|TaskAttemptState
+operator|.
+name|SUCCEEDED
+return|;
+block|}
+if|if
+condition|(
+name|event
+operator|instanceof
+name|TaskAttemptKillEvent
+condition|)
 block|{
 name|TaskAttemptKillEvent
 name|msgEvent
@@ -8657,6 +8815,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// not setting a finish time since it was set on success
 assert|assert
 operator|(
@@ -8746,6 +8905,11 @@ name|T_ATTEMPT_KILLED
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+name|TaskAttemptState
+operator|.
+name|KILLED
+return|;
 block|}
 block|}
 DECL|class|KilledTransition

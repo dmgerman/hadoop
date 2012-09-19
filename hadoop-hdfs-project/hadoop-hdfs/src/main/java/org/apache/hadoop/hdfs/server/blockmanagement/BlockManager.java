@@ -2063,14 +2063,11 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{     }
-finally|finally
-block|{
-if|if
-condition|(
-name|pendingReplications
-operator|!=
-literal|null
-condition|)
+name|datanodeManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|pendingReplications
 operator|.
 name|stop
@@ -2081,12 +2078,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|datanodeManager
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** @return the datanodeManager */
 DECL|method|getDatanodeManager ()

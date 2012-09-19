@@ -2000,8 +2000,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|verifyBlock (ExtendedBlock block)
-specifier|private
 name|void
 name|verifyBlock
 parameter_list|(

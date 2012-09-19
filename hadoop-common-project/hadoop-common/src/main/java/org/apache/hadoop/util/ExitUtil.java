@@ -327,10 +327,12 @@ name|terminate
 argument_list|(
 name|status
 argument_list|,
-name|t
+name|StringUtils
 operator|.
-name|getMessage
-argument_list|()
+name|stringifyException
+argument_list|(
+name|t
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

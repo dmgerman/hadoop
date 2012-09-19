@@ -702,9 +702,7 @@ name|void
 name|testBlockReplacement
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
-name|TimeoutException
+name|Exception
 block|{
 specifier|final
 name|Configuration

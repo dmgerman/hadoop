@@ -549,6 +549,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testLargeFile ()
 specifier|public
 name|void
@@ -1431,6 +1436,11 @@ block|}
 comment|/** Test client retry with namenode restarting. */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testNamenodeRestart ()
 specifier|public
 name|void

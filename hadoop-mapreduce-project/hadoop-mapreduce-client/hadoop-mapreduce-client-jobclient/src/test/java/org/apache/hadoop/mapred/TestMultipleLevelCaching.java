@@ -352,7 +352,7 @@ name|void
 name|testMultiLevelCaching
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 for|for
 control|(
@@ -385,7 +385,7 @@ name|int
 name|level
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|String
 name|namenode
