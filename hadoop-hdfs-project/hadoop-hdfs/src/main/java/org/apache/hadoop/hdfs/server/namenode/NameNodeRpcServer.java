@@ -2477,7 +2477,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Wait until the client RPC server has shutdown.    */
+comment|/**    * Wait until the RPC servers have shutdown.    */
 DECL|method|join ()
 name|void
 name|join
@@ -2490,6 +2490,19 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|serviceRpcServer
+operator|!=
+literal|null
+condition|)
+block|{
+name|serviceRpcServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Stop client and service RPC servers.    */
 DECL|method|stop ()
