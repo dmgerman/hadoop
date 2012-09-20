@@ -1654,10 +1654,6 @@ argument_list|()
 operator|!=
 literal|null
 operator|&&
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|path
 operator|.
 name|toUri
@@ -1665,7 +1661,9 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 comment|// allow uris without trailing slash after bucket to refer to root,

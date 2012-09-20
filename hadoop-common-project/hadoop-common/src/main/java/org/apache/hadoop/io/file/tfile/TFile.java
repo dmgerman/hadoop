@@ -6145,10 +6145,8 @@ return|return
 operator|!
 name|strComparator
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 return|;
 block|}
 DECL|method|getComparatorString ()

@@ -801,10 +801,8 @@ literal|null
 operator|||
 name|attributeName
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 condition|)
 throw|throw
 operator|new
@@ -1177,10 +1175,8 @@ literal|null
 operator|||
 name|actionName
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 condition|)
 throw|throw
 operator|new

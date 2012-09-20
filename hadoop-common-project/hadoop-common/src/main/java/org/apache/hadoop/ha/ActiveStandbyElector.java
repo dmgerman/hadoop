@@ -889,15 +889,13 @@ name|length
 operator|>=
 literal|1
 operator|&&
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|pathParts
 index|[
 literal|0
 index|]
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|,
 literal|"Invalid path: %s"
 argument_list|,
