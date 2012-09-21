@@ -746,6 +746,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|FsPermission
+name|dirPerm
+init|=
+operator|new
+name|FsPermission
+argument_list|(
+name|APPDIR_PERM
+argument_list|)
+decl_stmt|;
 name|ContainerId
 name|containerId
 init|=
@@ -851,13 +860,11 @@ argument_list|,
 name|containerIdStr
 argument_list|)
 decl_stmt|;
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|containerDir
 argument_list|,
-literal|null
+name|dirPerm
 argument_list|,
 literal|false
 argument_list|)
@@ -886,13 +893,11 @@ operator|.
 name|DEFAULT_CONTAINER_TEMP_DIR
 argument_list|)
 decl_stmt|;
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|tmpDir
 argument_list|,
-literal|null
+name|dirPerm
 argument_list|,
 literal|false
 argument_list|)
@@ -1685,9 +1690,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** Permissions for user dir.    * $loaal.dir/usercache/$user */
+comment|/** Permissions for user dir.    * $local.dir/usercache/$user */
 DECL|field|USER_PERM
-specifier|private
 specifier|static
 specifier|final
 name|short
@@ -1698,9 +1702,8 @@ name|short
 operator|)
 literal|0750
 decl_stmt|;
-comment|/** Permissions for user appcache dir.    * $loaal.dir/usercache/$user/appcache */
+comment|/** Permissions for user appcache dir.    * $local.dir/usercache/$user/appcache */
 DECL|field|APPCACHE_PERM
-specifier|private
 specifier|static
 specifier|final
 name|short
@@ -1711,9 +1714,8 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-comment|/** Permissions for user filecache dir.    * $loaal.dir/usercache/$user/filecache */
+comment|/** Permissions for user filecache dir.    * $local.dir/usercache/$user/filecache */
 DECL|field|FILECACHE_PERM
-specifier|private
 specifier|static
 specifier|final
 name|short
@@ -1724,9 +1726,8 @@ name|short
 operator|)
 literal|0710
 decl_stmt|;
-comment|/** Permissions for user app dir.    * $loaal.dir/usercache/$user/filecache */
+comment|/** Permissions for user app dir.    * $local.dir/usercache/$user/appcache/$appId */
 DECL|field|APPDIR_PERM
-specifier|private
 specifier|static
 specifier|final
 name|short
@@ -1739,7 +1740,6 @@ literal|0710
 decl_stmt|;
 comment|/** Permissions for user log dir.    * $logdir/$user/$appId */
 DECL|field|LOGDIR_PERM
-specifier|private
 specifier|static
 specifier|final
 name|short
@@ -1906,9 +1906,66 @@ name|FILECACHE
 argument_list|)
 return|;
 block|}
-comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *</ul>    */
-DECL|method|createUserLocalDirs (List<String> localDirs, String user)
+DECL|method|createDir (Path dirPath, FsPermission perms, boolean createParent)
 specifier|private
+name|void
+name|createDir
+parameter_list|(
+name|Path
+name|dirPath
+parameter_list|,
+name|FsPermission
+name|perms
+parameter_list|,
+name|boolean
+name|createParent
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|lfs
+operator|.
+name|mkdir
+argument_list|(
+name|dirPath
+argument_list|,
+name|perms
+argument_list|,
+name|createParent
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|perms
+operator|.
+name|equals
+argument_list|(
+name|perms
+operator|.
+name|applyUMask
+argument_list|(
+name|lfs
+operator|.
+name|getUMask
+argument_list|()
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|lfs
+operator|.
+name|setPermission
+argument_list|(
+name|dirPath
+argument_list|,
+name|perms
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Initialize the local directories for a particular user.    *<ul>.mkdir    *<li>$local.dir/usercache/$user</li>    *</ul>    */
+DECL|method|createUserLocalDirs (List<String> localDirs, String user)
 name|void
 name|createUserLocalDirs
 parameter_list|(
@@ -1949,9 +2006,7 @@ block|{
 comment|// create $local.dir/usercache/$user and its immediate parent
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|getUserCacheDir
 argument_list|(
@@ -2015,7 +2070,6 @@ block|}
 block|}
 comment|/**    * Initialize the local cache directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user</li>    *<li>$local.dir/usercache/$user/appcache</li>    *<li>$local.dir/usercache/$user/filecache</li>    *</ul>    */
 DECL|method|createUserCacheDirs (List<String> localDirs, String user)
-specifier|private
 name|void
 name|createUserCacheDirs
 parameter_list|(
@@ -2099,9 +2153,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|appDir
 argument_list|,
@@ -2147,9 +2199,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|distDir
 argument_list|,
@@ -2221,7 +2271,6 @@ block|}
 block|}
 comment|/**    * Initialize the local directories for a particular user.    *<ul>    *<li>$local.dir/usercache/$user/appcache/$appid</li>    *</ul>    * @param localDirs     */
 DECL|method|createAppDirs (List<String> localDirs, String user, String appId)
-specifier|private
 name|void
 name|createAppDirs
 parameter_list|(
@@ -2281,9 +2330,7 @@ decl_stmt|;
 comment|// create $local.dir/usercache/$user/appcache/$appId
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|fullAppDir
 argument_list|,
@@ -2343,7 +2390,6 @@ block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
 DECL|method|createAppLogDirs (String appId, List<String> logDirs)
-specifier|private
 name|void
 name|createAppLogDirs
 parameter_list|(
@@ -2395,9 +2441,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|appLogDir
 argument_list|,
@@ -2452,7 +2496,6 @@ block|}
 block|}
 comment|/**    * Create application log directories on all disks.    */
 DECL|method|createContainerLogDirs (String appId, String containerId, List<String> logDirs)
-specifier|private
 name|void
 name|createContainerLogDirs
 parameter_list|(
@@ -2518,9 +2561,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|lfs
-operator|.
-name|mkdir
+name|createDir
 argument_list|(
 name|containerLogDir
 argument_list|,
