@@ -1109,7 +1109,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: secondarysrot<in><out>"
+literal|"Usage: secondarysort<in><out>"
 argument_list|)
 expr_stmt|;
 name|System
