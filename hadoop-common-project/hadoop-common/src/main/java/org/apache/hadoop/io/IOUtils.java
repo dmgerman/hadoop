@@ -90,6 +90,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -144,6 +158,22 @@ specifier|public
 class|class
 name|IOUtils
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|IOUtils
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Copies from one stream to another.    *    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param buffSize the size of the buffer     * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.      */
 DECL|method|copyBytes (InputStream in, OutputStream out, int buffSize, boolean close)
 specifier|public
@@ -835,7 +865,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Throwable
 name|e
 parameter_list|)
 block|{
@@ -921,7 +951,17 @@ parameter_list|(
 name|IOException
 name|ignored
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring exception while closing socket"
+argument_list|,
+name|ignored
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * The /dev/null of OutputStreams.    */
