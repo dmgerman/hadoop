@@ -142,6 +142,8 @@ name|rnd
 operator|=
 name|rnd
 expr_stmt|;
+comment|// Use a new Random instance so that the sequence of file names produced is
+comment|// the same even in case of unsuccessful operations
 name|this
 operator|.
 name|finder
@@ -151,7 +153,14 @@ name|PathFinder
 argument_list|(
 name|cfg
 argument_list|,
+operator|new
+name|Random
+argument_list|(
 name|rnd
+operator|.
+name|nextInt
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
