@@ -723,6 +723,23 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+literal|null
+operator|==
+name|newLocalDirs
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|contextCfgItemName
+operator|+
+literal|" not configured"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|newLocalDirs
 operator|.
