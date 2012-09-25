@@ -3178,7 +3178,7 @@ specifier|final
 name|int
 name|ATTEMPTS
 init|=
-literal|20
+literal|40
 decl_stmt|;
 name|int
 name|count

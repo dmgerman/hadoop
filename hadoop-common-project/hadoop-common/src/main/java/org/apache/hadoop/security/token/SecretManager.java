@@ -259,7 +259,7 @@ specifier|final
 name|int
 name|KEY_LENGTH
 init|=
-literal|20
+literal|64
 decl_stmt|;
 comment|/**    * A thread local store for the Macs.    */
 DECL|field|threadLocalMac

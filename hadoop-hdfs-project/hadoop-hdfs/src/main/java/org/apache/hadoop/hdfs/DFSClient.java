@@ -798,6 +798,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -4176,6 +4192,28 @@ expr_stmt|;
 comment|// close connections to the namenode
 name|closeConnectionToNamenode
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Close all open streams, abandoning all of the leases and files being    * created.    * @param abort whether streams should be gracefully closed    */
+DECL|method|closeOutputStreams (boolean abort)
+specifier|public
+name|void
+name|closeOutputStreams
+parameter_list|(
+name|boolean
+name|abort
+parameter_list|)
+block|{
+if|if
+condition|(
+name|clientRunning
+condition|)
+block|{
+name|closeAllFilesBeingWritten
+argument_list|(
+name|abort
+argument_list|)
 expr_stmt|;
 block|}
 block|}

@@ -2425,10 +2425,8 @@ operator|.
 name|getOwner
 argument_list|()
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 return|;
 block|}
 DECL|method|RawLocalFileStatus (File f, long defaultBlockSize, FileSystem fs)

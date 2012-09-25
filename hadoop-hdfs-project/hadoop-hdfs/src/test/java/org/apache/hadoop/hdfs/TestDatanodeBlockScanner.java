@@ -1499,6 +1499,17 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+argument_list|,
+literal|5L
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -1567,6 +1578,12 @@ argument_list|,
 name|file1
 argument_list|)
 decl_stmt|;
+specifier|final
+name|int
+name|ITERATIONS
+init|=
+literal|10
+decl_stmt|;
 comment|// Wait until block is replicated to numReplicas
 name|DFSTestUtil
 operator|.
@@ -1579,6 +1596,18 @@ argument_list|,
 name|numReplicas
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|int
+name|k
+init|=
+literal|0
+init|;
+condition|;
+name|k
+operator|++
+control|)
+block|{
 comment|// Corrupt numCorruptReplicas replicas of block
 name|int
 index|[]
@@ -1733,6 +1762,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Loop until all corrupt replicas are reported
+try|try
+block|{
 name|DFSTestUtil
 operator|.
 name|waitCorruptReplicas
@@ -1751,6 +1782,37 @@ argument_list|,
 name|numCorruptReplicas
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|k
+operator|>
+name|ITERATIONS
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Timed out waiting for corrupt replicas, trying again, iteration "
+operator|+
+name|k
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+break|break;
+block|}
 comment|// Loop until the block recovers after replication
 name|DFSTestUtil
 operator|.

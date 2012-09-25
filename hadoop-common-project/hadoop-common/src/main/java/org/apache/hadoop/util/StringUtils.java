@@ -1542,15 +1542,13 @@ literal|null
 operator|==
 name|str
 operator|||
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|str
 operator|.
 name|trim
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
@@ -1811,12 +1809,10 @@ comment|// String.split returns a single empty result for splitting the empty
 comment|// string.
 if|if
 condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|str
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return

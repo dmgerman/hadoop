@@ -759,6 +759,27 @@ comment|/** A client for an IPC service.  IPC calls take a single {@link Writabl
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+name|value
+operator|=
+block|{
+literal|"Common"
+block|,
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|,
+literal|"Yarn"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Client
 specifier|public
 class|class

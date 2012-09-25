@@ -1014,12 +1014,10 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|arg
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|Matcher

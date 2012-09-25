@@ -54,6 +54,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -431,6 +441,8 @@ literal|" [-refreshAdminAcls]"
 operator|+
 literal|" [-refreshServiceAcl]"
 operator|+
+literal|" [-getGroup [username]]"
+operator|+
 literal|" [-help [cmd]]\n"
 decl_stmt|;
 name|String
@@ -463,18 +475,23 @@ init|=
 literal|"-refreshAdminAcls: Refresh acls for administration of ResourceManager\n"
 decl_stmt|;
 name|String
-name|help
-init|=
-literal|"-help [cmd]: \tDisplays help for the given command or all commands if none\n"
-operator|+
-literal|"\t\tis specified.\n"
-decl_stmt|;
-name|String
 name|refreshServiceAcl
 init|=
 literal|"-refreshServiceAcl: Reload the service-level authorization policy file\n"
 operator|+
 literal|"\t\tResoureceManager will reload the authorization policy file.\n"
+decl_stmt|;
+name|String
+name|getGroups
+init|=
+literal|"-getGroups [username]: Get the groups which given user belongs to\n"
+decl_stmt|;
+name|String
+name|help
+init|=
+literal|"-help [cmd]: \tDisplays help for the given command or all commands if none\n"
+operator|+
+literal|"\t\tis specified.\n"
 decl_stmt|;
 if|if
 condition|(
@@ -604,6 +621,27 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"getGroups"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|getGroups
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"help"
 operator|.
 name|equals
@@ -685,6 +723,15 @@ operator|.
 name|println
 argument_list|(
 name|refreshServiceAcl
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|getGroups
 argument_list|)
 expr_stmt|;
 name|System
@@ -862,6 +909,29 @@ literal|" [-refreshServiceAcl]"
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+literal|"-getGroups"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: java RMAdmin"
+operator|+
+literal|" [-getGroups [username]]"
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|System
@@ -925,6 +995,15 @@ operator|.
 name|println
 argument_list|(
 literal|"           [-refreshServiceAcl]"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"           [-getGroups [username]]"
 argument_list|)
 expr_stmt|;
 name|System
@@ -1303,6 +1382,116 @@ return|return
 literal|0
 return|;
 block|}
+DECL|method|getGroups (String[] usernames)
+specifier|private
+name|int
+name|getGroups
+parameter_list|(
+name|String
+index|[]
+name|usernames
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Get groups users belongs to
+name|RMAdminProtocol
+name|adminProtocol
+init|=
+name|createAdminProtocol
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|usernames
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+name|usernames
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
+block|}
+expr_stmt|;
+block|}
+for|for
+control|(
+name|String
+name|username
+range|:
+name|usernames
+control|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+name|username
+operator|+
+literal|" :"
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|String
+name|group
+range|:
+name|adminProtocol
+operator|.
+name|getGroupsForUser
+argument_list|(
+name|username
+argument_list|)
+control|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+name|group
+argument_list|)
+expr_stmt|;
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|0
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|run (String[] args)
@@ -1528,6 +1717,42 @@ name|exitCode
 operator|=
 name|refreshServiceAcls
 argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-getGroups"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|String
+index|[]
+name|usernames
+init|=
+name|Arrays
+operator|.
+name|copyOfRange
+argument_list|(
+name|args
+argument_list|,
+name|i
+argument_list|,
+name|args
+operator|.
+name|length
+argument_list|)
+decl_stmt|;
+name|exitCode
+operator|=
+name|getGroups
+argument_list|(
+name|usernames
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else

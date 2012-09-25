@@ -4958,12 +4958,10 @@ decl_stmt|;
 comment|// path has only zero component
 if|if
 condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|filename
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 operator|||
 name|Path
 operator|.

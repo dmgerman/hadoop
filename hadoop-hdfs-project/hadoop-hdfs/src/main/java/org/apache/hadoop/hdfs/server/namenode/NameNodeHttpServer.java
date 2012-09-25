@@ -886,10 +886,15 @@ name|setAttribute
 argument_list|(
 name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
 argument_list|,
+name|NetUtils
+operator|.
+name|getConnectAddress
+argument_list|(
 name|nn
 operator|.
 name|getNameNodeAddress
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|httpServer

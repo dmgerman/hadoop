@@ -30,6 +30,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|tools
+operator|.
+name|GetUserMappingsProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|exceptions
@@ -307,6 +321,8 @@ DECL|interface|RMAdminProtocol
 specifier|public
 interface|interface
 name|RMAdminProtocol
+extends|extends
+name|GetUserMappingsProtocol
 block|{
 DECL|method|refreshQueues (RefreshQueuesRequest request)
 specifier|public

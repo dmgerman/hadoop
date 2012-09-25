@@ -1713,6 +1713,32 @@ name|policyProvider
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getGroupsForUser (String user)
+specifier|public
+name|String
+index|[]
+name|getGroupsForUser
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|user
+argument_list|)
+operator|.
+name|getGroupNames
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

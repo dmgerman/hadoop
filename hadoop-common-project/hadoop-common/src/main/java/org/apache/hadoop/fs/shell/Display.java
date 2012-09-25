@@ -879,6 +879,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|i
+operator|.
+name|seek
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 return|return
 name|codec
 operator|.
