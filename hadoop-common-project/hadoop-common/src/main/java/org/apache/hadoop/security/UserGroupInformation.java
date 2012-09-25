@@ -33,6 +33,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1149,26 +1181,19 @@ specifier|static
 name|Groups
 name|groups
 decl_stmt|;
+comment|/** Min time (in seconds) before relogin for Kerberos */
+DECL|field|kerberosMinSecondsBeforeRelogin
+specifier|private
+specifier|static
+name|long
+name|kerberosMinSecondsBeforeRelogin
+decl_stmt|;
 comment|/** The configuration to use */
 DECL|field|conf
 specifier|private
 specifier|static
 name|Configuration
 name|conf
-decl_stmt|;
-comment|/** Leave 10 minutes between relogin attempts. */
-DECL|field|MIN_TIME_BEFORE_RELOGIN
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|MIN_TIME_BEFORE_RELOGIN
-init|=
-literal|10
-operator|*
-literal|60
-operator|*
-literal|1000L
 decl_stmt|;
 comment|/**Environment variable pointing to the token cache file*/
 DECL|field|HADOOP_TOKEN_FILE_LOCATION
@@ -1336,6 +1361,47 @@ operator|+
 literal|" of "
 operator|+
 name|value
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
+name|kerberosMinSecondsBeforeRelogin
+operator|=
+literal|1000L
+operator|*
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
+argument_list|,
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|nfe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid attribute value for "
+operator|+
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
+operator|+
+literal|" of "
+operator|+
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -3557,7 +3623,7 @@ argument_list|)
 argument_list|,
 name|now
 operator|+
-name|MIN_TIME_BEFORE_RELOGIN
+name|kerberosMinSecondsBeforeRelogin
 argument_list|)
 expr_stmt|;
 block|}
@@ -4503,7 +4569,7 @@ operator|.
 name|getLastLogin
 argument_list|()
 operator|<
-name|MIN_TIME_BEFORE_RELOGIN
+name|kerberosMinSecondsBeforeRelogin
 condition|)
 block|{
 name|LOG
@@ -4515,14 +4581,12 @@ operator|+
 literal|"attempted less than "
 operator|+
 operator|(
-name|MIN_TIME_BEFORE_RELOGIN
+name|kerberosMinSecondsBeforeRelogin
 operator|/
 literal|1000
 operator|)
 operator|+
-literal|" seconds"
-operator|+
-literal|" before."
+literal|" seconds before."
 argument_list|)
 expr_stmt|;
 return|return
