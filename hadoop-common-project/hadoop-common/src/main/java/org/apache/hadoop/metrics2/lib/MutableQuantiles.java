@@ -208,6 +208,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
 begin_comment
 comment|/**  * Watches a stream of long values, maintaining online estimates of specific  * quantiles with provably low error bounds. This is particularly useful for  * accurate high-percentile (e.g. 95th, 99th) latency metrics.  */
 end_comment
@@ -327,6 +343,7 @@ literal|null
 decl_stmt|;
 DECL|field|scheduler
 specifier|private
+specifier|static
 specifier|final
 name|ScheduledExecutorService
 name|scheduler
@@ -336,6 +353,23 @@ operator|.
 name|newScheduledThreadPool
 argument_list|(
 literal|1
+argument_list|,
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"MutableQuantiles-%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|/**    * Instantiates a new {@link MutableQuantiles} for a metric that rolls itself    * over on the specified time interval.    *     * @param name    *          of the metric    * @param description    *          long-form textual description of the metric    * @param sampleName    *          type of items in the stream (e.g., "Ops")    * @param valueName    *          type of the values    * @param interval    *          rollover interval (in seconds) of the estimator    */
