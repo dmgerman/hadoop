@@ -276,11 +276,11 @@ argument_list|(
 literal|"MALLOC_ARENA_MAX"
 argument_list|)
 block|,
-comment|/**      * $YARN_HOME      */
-DECL|enumConstant|YARN_HOME
-name|YARN_HOME
+comment|/**      * $HADOOP_YARN_HOME      */
+DECL|enumConstant|HADOOP_YARN_HOME
+name|HADOOP_YARN_HOME
 argument_list|(
-literal|"YARN_HOME"
+literal|"HADOOP_YARN_HOME"
 argument_list|)
 block|;
 DECL|field|variable
