@@ -89,6 +89,10 @@ block|,
 comment|/**    * Regular file i.e. uninterpreted bytes.    */
 DECL|enumConstant|FILE
 name|FILE
+block|,
+comment|/**    * A hybrid between archive and file.  Only part of the file is unarchived,    * and the original file is left in place, but in the same directory as the    * unarchived part.  The part that is unarchived is determined by pattern    * in #{@link LocalResource}.  Currently only jars support pattern, all    * others will be treated like a #{@link LocalResourceType#ARCHIVE}.    */
+DECL|enumConstant|PATTERN
+name|PATTERN
 block|}
 end_enum
 

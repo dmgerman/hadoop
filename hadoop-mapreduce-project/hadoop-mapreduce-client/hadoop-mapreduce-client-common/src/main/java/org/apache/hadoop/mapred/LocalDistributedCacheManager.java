@@ -1150,6 +1150,35 @@ name|pathString
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|resource
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|LocalResourceType
+operator|.
+name|PATTERN
+condition|)
+block|{
+comment|//PATTERN is not currently used in local mode
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Resource type PATTERN is not "
+operator|+
+literal|"implemented yet. "
+operator|+
+name|resource
+operator|.
+name|getResource
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|Path
 name|resourcePath
 decl_stmt|;

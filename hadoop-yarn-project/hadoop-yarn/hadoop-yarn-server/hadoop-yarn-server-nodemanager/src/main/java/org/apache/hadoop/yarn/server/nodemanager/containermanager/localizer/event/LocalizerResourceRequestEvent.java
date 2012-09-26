@@ -156,7 +156,13 @@ specifier|final
 name|LocalResourceVisibility
 name|vis
 decl_stmt|;
-DECL|method|LocalizerResourceRequestEvent (LocalizedResource resource, LocalResourceVisibility vis, LocalizerContext context)
+DECL|field|pattern
+specifier|private
+specifier|final
+name|String
+name|pattern
+decl_stmt|;
+DECL|method|LocalizerResourceRequestEvent (LocalizedResource resource, LocalResourceVisibility vis, LocalizerContext context, String pattern)
 specifier|public
 name|LocalizerResourceRequestEvent
 parameter_list|(
@@ -168,6 +174,9 @@ name|vis
 parameter_list|,
 name|LocalizerContext
 name|context
+parameter_list|,
+name|String
+name|pattern
 parameter_list|)
 block|{
 name|super
@@ -205,6 +214,12 @@ name|resource
 operator|=
 name|resource
 expr_stmt|;
+name|this
+operator|.
+name|pattern
+operator|=
+name|pattern
+expr_stmt|;
 block|}
 DECL|method|getResource ()
 specifier|public
@@ -234,6 +249,16 @@ parameter_list|()
 block|{
 return|return
 name|vis
+return|;
+block|}
+DECL|method|getPattern ()
+specifier|public
+name|String
+name|getPattern
+parameter_list|()
+block|{
+return|return
+name|pattern
 return|;
 block|}
 block|}

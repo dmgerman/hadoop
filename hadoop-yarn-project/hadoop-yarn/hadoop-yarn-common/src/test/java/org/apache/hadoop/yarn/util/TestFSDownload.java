@@ -892,7 +892,7 @@ name|setType
 argument_list|(
 name|LocalResourceType
 operator|.
-name|ARCHIVE
+name|PATTERN
 argument_list|)
 expr_stmt|;
 name|ret
@@ -900,6 +900,13 @@ operator|.
 name|setVisibility
 argument_list|(
 name|vis
+argument_list|)
+expr_stmt|;
+name|ret
+operator|.
+name|setPattern
+argument_list|(
+literal|"classes/.*"
 argument_list|)
 expr_stmt|;
 return|return

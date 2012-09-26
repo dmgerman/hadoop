@@ -1408,7 +1408,7 @@ name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"$PWD:job.jar/:job.jar/classes/:job.jar/lib/*:$PWD/*"
+literal|"$PWD:job.jar/job.jar:job.jar/classes/:job.jar/lib/*:$PWD/*"
 argument_list|)
 argument_list|,
 literal|0
@@ -1499,7 +1499,7 @@ name|env_str
 operator|.
 name|indexOf
 argument_list|(
-literal|"job.jar/:job.jar/classes/:job.jar/lib/*:$PWD/*"
+literal|"job.jar/job.jar:job.jar/classes/:job.jar/lib/*:$PWD/*"
 argument_list|)
 decl_stmt|;
 name|assertNotSame
