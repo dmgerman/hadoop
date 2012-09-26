@@ -415,10 +415,13 @@ specifier|public
 name|TrashPolicyDefault
 parameter_list|()
 block|{ }
-DECL|method|TrashPolicyDefault (Path home, Configuration conf)
+DECL|method|TrashPolicyDefault (FileSystem fs, Path home, Configuration conf)
 specifier|private
 name|TrashPolicyDefault
 parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
 name|Path
 name|home
 parameter_list|,
@@ -432,12 +435,7 @@ name|initialize
 argument_list|(
 name|conf
 argument_list|,
-name|home
-operator|.
-name|getFileSystem
-argument_list|(
-name|conf
-argument_list|)
+name|fs
 argument_list|,
 name|home
 argument_list|)
@@ -1470,6 +1468,8 @@ init|=
 operator|new
 name|TrashPolicyDefault
 argument_list|(
+name|fs
+argument_list|,
 name|home
 operator|.
 name|getPath

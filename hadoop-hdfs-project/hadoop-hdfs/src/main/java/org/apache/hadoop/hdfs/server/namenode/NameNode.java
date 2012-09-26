@@ -64,6 +64,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -2524,11 +2534,12 @@ name|stopHttpServer
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|startTrashEmptier (Configuration conf)
+DECL|method|startTrashEmptier (final Configuration conf)
 specifier|private
 name|void
 name|startTrashEmptier
 parameter_list|(
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
@@ -2578,6 +2589,44 @@ literal|" to a positive value."
 argument_list|)
 throw|;
 block|}
+comment|// This may be called from the transitionToActive code path, in which
+comment|// case the current user is the administrator, not the NN. The trash
+comment|// emptier needs to run as the NN. See HDFS-3972.
+name|FileSystem
+name|fs
+init|=
+name|SecurityUtil
+operator|.
+name|doAsLoginUser
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|FileSystem
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|FileSystem
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+block|}
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|emptier
@@ -2588,6 +2637,8 @@ argument_list|(
 operator|new
 name|Trash
 argument_list|(
+name|fs
+argument_list|,
 name|conf
 argument_list|)
 operator|.
