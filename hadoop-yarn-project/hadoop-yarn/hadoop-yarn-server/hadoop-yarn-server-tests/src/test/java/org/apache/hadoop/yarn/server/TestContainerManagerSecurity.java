@@ -1789,6 +1789,8 @@ operator|.
 name|getNmHostAddress
 argument_list|()
 argument_list|,
+literal|"testUser"
+argument_list|,
 name|modifiedResource
 argument_list|,
 name|Long
@@ -2340,6 +2342,13 @@ argument_list|,
 name|tokenId
 argument_list|)
 expr_stmt|;
+name|callWithIllegalUserName
+argument_list|(
+name|client
+argument_list|,
+name|tokenId
+argument_list|)
+expr_stmt|;
 return|return
 name|client
 return|;
@@ -2347,7 +2356,8 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
-comment|/////////// End of testing for illegal containerIDs and illegal Resources
+comment|// ///////// End of testing for illegal containerIDs, illegal Resources and
+comment|// illegal users
 comment|/////////// Test calls with expired tokens
 name|RPC
 operator|.
@@ -2392,6 +2402,8 @@ name|tokenId
 operator|.
 name|getNmHostAddress
 argument_list|()
+argument_list|,
+literal|"testUser"
 argument_list|,
 name|tokenId
 operator|.
@@ -3753,6 +3765,129 @@ name|getResource
 argument_list|()
 operator|.
 name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|callWithIllegalUserName (ContainerManager client, ContainerTokenIdentifier tokenId)
+name|void
+name|callWithIllegalUserName
+parameter_list|(
+name|ContainerManager
+name|client
+parameter_list|,
+name|ContainerTokenIdentifier
+name|tokenId
+parameter_list|)
+block|{
+name|StartContainerRequest
+name|request
+init|=
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|StartContainerRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|// Authenticated but unauthorized, due to wrong resource
+name|ContainerLaunchContext
+name|context
+init|=
+name|createContainerLaunchContextForTest
+argument_list|(
+name|tokenId
+argument_list|)
+decl_stmt|;
+name|context
+operator|.
+name|setUser
+argument_list|(
+literal|"Saruman"
+argument_list|)
+expr_stmt|;
+comment|// Set a different user-name.
+name|request
+operator|.
+name|setContainerLaunchContext
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|client
+operator|.
+name|startContainer
+argument_list|(
+name|request
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Connection initiation with unauthorized "
+operator|+
+literal|"access is expected to fail."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got exception : "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Unauthorized request to start container. "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Expected user-name "
+operator|+
+name|tokenId
+operator|.
+name|getApplicationSubmitter
+argument_list|()
+operator|+
+literal|" but found "
+operator|+
+name|context
+operator|.
+name|getUser
 argument_list|()
 argument_list|)
 argument_list|)

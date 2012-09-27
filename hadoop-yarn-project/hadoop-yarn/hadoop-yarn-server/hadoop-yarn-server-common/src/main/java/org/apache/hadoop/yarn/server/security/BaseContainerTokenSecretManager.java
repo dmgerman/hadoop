@@ -670,6 +670,13 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|+
+literal|" for user "
+operator|+
+name|identifier
+operator|.
+name|getUser
+argument_list|()
+operator|+
 literal|" to be run on NM "
 operator|+
 name|identifier
@@ -809,6 +816,13 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|+
+literal|" for user "
+operator|+
+name|identifier
+operator|.
+name|getUser
+argument_list|()
+operator|+
 literal|" to be run on NM "
 operator|+
 name|identifier
@@ -848,8 +862,8 @@ name|ContainerTokenIdentifier
 argument_list|()
 return|;
 block|}
-comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param capability    * @return the container-token    */
-DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, Resource capability)
+comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @return the container-token    */
+DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability)
 specifier|public
 name|ContainerToken
 name|createContainerToken
@@ -859,6 +873,9 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
+parameter_list|,
+name|String
+name|appSubmitter
 parameter_list|,
 name|Resource
 name|capability
@@ -902,6 +919,8 @@ name|nodeId
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|appSubmitter
 argument_list|,
 name|capability
 argument_list|,
