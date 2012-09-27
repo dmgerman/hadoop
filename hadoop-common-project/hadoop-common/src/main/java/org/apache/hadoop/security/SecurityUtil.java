@@ -1967,6 +1967,12 @@ block|{
 if|if
 condition|(
 operator|!
+name|HttpConfig
+operator|.
+name|isSecure
+argument_list|()
+operator|&&
+operator|!
 name|UserGroupInformation
 operator|.
 name|isSecurityEnabled
