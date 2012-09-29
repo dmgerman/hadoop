@@ -1330,7 +1330,11 @@ operator|.
 name|nodesListManager
 operator|.
 name|refreshNodes
+argument_list|(
+operator|new
+name|YarnConfiguration
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|RMAuditLogger
 operator|.
