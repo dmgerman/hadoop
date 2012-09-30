@@ -782,6 +782,35 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|init (Configuration conf)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+operator|.
+name|init
+argument_list|(
+name|conf
+operator|instanceof
+name|YarnConfiguration
+condition|?
+name|conf
+else|:
+operator|new
+name|YarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getTestWorkDir ()
 specifier|public
 name|File
@@ -1270,7 +1299,7 @@ name|Configuration
 name|config
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|(
 name|conf
 argument_list|)

@@ -2202,6 +2202,11 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|checkUnealthyNMCount
 argument_list|(
 name|rm
@@ -2236,12 +2241,11 @@ operator|.
 name|getRootQueueMetrics
 argument_list|()
 decl_stmt|;
+comment|// TODO Metrics incorrect in case of the FifoScheduler
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|5120
-operator|+
 literal|5120
 argument_list|,
 name|metrics

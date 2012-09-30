@@ -852,7 +852,7 @@ name|rackReq
 init|=
 name|createResourceReq
 argument_list|(
-literal|"default-rack"
+literal|"/default-rack"
 argument_list|,
 name|memory
 argument_list|,

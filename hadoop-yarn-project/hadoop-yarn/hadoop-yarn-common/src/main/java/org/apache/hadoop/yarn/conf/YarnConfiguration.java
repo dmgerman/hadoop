@@ -857,6 +857,15 @@ name|RM_PREFIX
 operator|+
 literal|"scheduler.class"
 decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_RM_SCHEDULER
+init|=
+literal|"org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler"
+decl_stmt|;
 comment|//Delegation token related keys
 DECL|field|DELEGATION_KEY_UPDATE_INTERVAL_KEY
 specifier|public
