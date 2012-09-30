@@ -474,7 +474,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 init|=
-literal|128
+literal|1024
 decl_stmt|;
 comment|/** Maximum memory request grant-able by the RM scheduler. */
 DECL|field|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
@@ -495,7 +495,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
 init|=
-literal|10240
+literal|8192
 decl_stmt|;
 comment|/** Number of threads to handle scheduler interface.*/
 DECL|field|RM_SCHEDULER_CLIENT_THREAD_COUNT

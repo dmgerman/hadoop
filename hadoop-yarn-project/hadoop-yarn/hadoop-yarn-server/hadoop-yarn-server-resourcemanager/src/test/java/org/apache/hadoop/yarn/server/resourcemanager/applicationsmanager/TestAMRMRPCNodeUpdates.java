@@ -570,7 +570,7 @@ name|registerNode
 argument_list|(
 literal|"h1:1234"
 argument_list|,
-literal|5000
+literal|10000
 argument_list|)
 decl_stmt|;
 name|MockNM
@@ -582,7 +582,7 @@ name|registerNode
 argument_list|(
 literal|"h2:1234"
 argument_list|,
-literal|5000
+literal|10000
 argument_list|)
 decl_stmt|;
 name|MockNM
@@ -594,7 +594,7 @@ name|registerNode
 argument_list|(
 literal|"h3:1234"
 argument_list|,
-literal|5000
+literal|10000
 argument_list|)
 decl_stmt|;
 name|MockNM
@@ -606,7 +606,7 @@ name|registerNode
 argument_list|(
 literal|"h4:1234"
 argument_list|,
-literal|5000
+literal|10000
 argument_list|)
 decl_stmt|;
 name|RMApp

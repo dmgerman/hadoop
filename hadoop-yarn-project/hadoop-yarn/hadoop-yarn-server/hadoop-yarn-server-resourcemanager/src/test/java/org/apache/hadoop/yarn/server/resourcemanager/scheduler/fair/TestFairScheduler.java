@@ -1643,9 +1643,12 @@ argument_list|(
 name|updateEvent
 argument_list|)
 expr_stmt|;
+comment|// Asked for less than min_allocation.
 name|assertEquals
 argument_list|(
-literal|512
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
 name|scheduler
 operator|.
@@ -2632,7 +2635,14 @@ argument_list|,
 literal|"user1"
 argument_list|)
 expr_stmt|;
-comment|// First ask, queue1 requests 1024
+name|int
+name|minReqSize
+init|=
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+decl_stmt|;
+comment|// First ask, queue1 requests 1 large (minReqSize * 2).
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2651,7 +2661,9 @@ name|request1
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+name|minReqSize
+operator|*
+literal|2
 argument_list|,
 literal|"*"
 argument_list|,
@@ -2683,7 +2695,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Second ask, queue2 requests 1024 + (2 * 512)
+comment|// Second ask, queue2 requests 1 large + (2 * minReqSize)
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2702,7 +2714,9 @@ name|request2
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 literal|"foo"
 argument_list|,
@@ -2716,7 +2730,7 @@ name|request3
 init|=
 name|createResourceRequest
 argument_list|(
-literal|512
+name|minReqSize
 argument_list|,
 literal|"bar"
 argument_list|,
@@ -2755,7 +2769,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Third ask, queue2 requests 1024
+comment|// Third ask, queue2 requests 1 large
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2774,7 +2788,9 @@ name|request4
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 literal|"*"
 argument_list|,
@@ -2813,7 +2829,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 name|scheduler
 operator|.
@@ -2837,14 +2855,18 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 operator|+
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 operator|+
 operator|(
 literal|2
 operator|*
-literal|512
+name|minReqSize
 operator|)
 argument_list|,
 name|scheduler

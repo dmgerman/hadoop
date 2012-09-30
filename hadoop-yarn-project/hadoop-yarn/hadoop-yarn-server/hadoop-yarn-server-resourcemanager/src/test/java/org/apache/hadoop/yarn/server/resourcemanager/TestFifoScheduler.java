@@ -1604,7 +1604,7 @@ comment|// Set custom min-alloc to test tweaking it
 name|int
 name|allocMB
 init|=
-literal|512
+literal|1536
 decl_stmt|;
 name|YarnConfiguration
 name|conf
