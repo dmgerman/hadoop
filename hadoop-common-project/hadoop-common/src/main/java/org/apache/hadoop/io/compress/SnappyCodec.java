@@ -90,24 +90,6 @@ name|compress
 operator|.
 name|snappy
 operator|.
-name|LoadSnappy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|snappy
-operator|.
 name|SnappyCompressor
 import|;
 end_import
@@ -172,14 +154,6 @@ name|Configurable
 implements|,
 name|CompressionCodec
 block|{
-static|static
-block|{
-name|LoadSnappy
-operator|.
-name|isLoaded
-argument_list|()
-expr_stmt|;
-block|}
 DECL|field|conf
 name|Configuration
 name|conf
@@ -216,7 +190,74 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Are the native snappy libraries loaded& initialized?    *    * @return true if loaded& initialized, otherwise false    */
+comment|/**    * Are the native snappy libraries loaded& initialized?    */
+DECL|method|checkNativeCodeLoaded ()
+specifier|public
+specifier|static
+name|void
+name|checkNativeCodeLoaded
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|NativeCodeLoader
+operator|.
+name|buildSupportsSnappy
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"native snappy library not available: "
+operator|+
+literal|"this version of libhadoop was built without "
+operator|+
+literal|"snappy support."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|SnappyCompressor
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"native snappy library not available: "
+operator|+
+literal|"SnappyCompressor has not been loaded."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|SnappyDecompressor
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"native snappy library not available: "
+operator|+
+literal|"SnappyDecompressor has not been loaded."
+argument_list|)
+throw|;
+block|}
+block|}
 DECL|method|isNativeCodeLoaded ()
 specifier|public
 specifier|static
@@ -225,12 +266,12 @@ name|isNativeCodeLoaded
 parameter_list|()
 block|{
 return|return
-name|LoadSnappy
+name|SnappyCompressor
 operator|.
-name|isLoaded
+name|isNativeCodeLoaded
 argument_list|()
 operator|&&
-name|NativeCodeLoader
+name|SnappyDecompressor
 operator|.
 name|isNativeCodeLoaded
 argument_list|()
@@ -277,21 +318,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|int
 name|bufferSize
 init|=
@@ -347,21 +376,9 @@ argument_list|>
 name|getCompressorType
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 name|SnappyCompressor
 operator|.
@@ -377,21 +394,9 @@ name|Compressor
 name|createCompressor
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|int
 name|bufferSize
 init|=
@@ -457,21 +462,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 operator|new
 name|BlockDecompressorStream
@@ -509,21 +502,9 @@ argument_list|>
 name|getDecompressorType
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 name|SnappyDecompressor
 operator|.
@@ -539,21 +520,9 @@ name|Decompressor
 name|createDecompressor
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|isNativeCodeLoaded
+name|checkNativeCodeLoaded
 argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-literal|"native snappy library not available"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|int
 name|bufferSize
 init|=
