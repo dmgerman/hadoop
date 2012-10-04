@@ -106,6 +106,20 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Pattern
@@ -307,6 +321,17 @@ specifier|abstract
 class|class
 name|GenericTestUtils
 block|{
+DECL|field|sequence
+specifier|private
+specifier|static
+specifier|final
+name|AtomicInteger
+name|sequence
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
+decl_stmt|;
 comment|/**    * Extracts the name of the method where the invocation has happened    * @return String name of the invoking method    */
 DECL|method|getMethodName ()
 specifier|public
@@ -328,6 +353,21 @@ literal|2
 index|]
 operator|.
 name|getMethodName
+argument_list|()
+return|;
+block|}
+comment|/**    * Generates a process-wide unique sequence number.    * @return an unique sequence number    */
+DECL|method|uniqueSequenceId ()
+specifier|public
+specifier|static
+name|int
+name|uniqueSequenceId
+parameter_list|()
+block|{
+return|return
+name|sequence
+operator|.
+name|incrementAndGet
 argument_list|()
 return|;
 block|}
