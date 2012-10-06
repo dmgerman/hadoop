@@ -673,7 +673,7 @@ operator|.
 name|getUri
 argument_list|()
 operator|+
-literal|" is not a distributed file system"
+literal|" is not an HDFS file system"
 argument_list|)
 throw|;
 block|}
@@ -1576,7 +1576,7 @@ operator|.
 name|getUri
 argument_list|()
 operator|+
-literal|" is not a distributed file system"
+literal|" is not an HDFS file system"
 argument_list|)
 throw|;
 block|}
