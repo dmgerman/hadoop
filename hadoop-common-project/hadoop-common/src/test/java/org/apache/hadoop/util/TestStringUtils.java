@@ -1860,6 +1860,57 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
+DECL|method|testSimpleHostName ()
+specifier|public
+name|void
+name|testSimpleHostName
+parameter_list|()
+block|{
+name|assertEquals
+argument_list|(
+literal|"Should return hostname when FQDN is specified"
+argument_list|,
+literal|"hadoop01"
+argument_list|,
+name|StringUtils
+operator|.
+name|simpleHostname
+argument_list|(
+literal|"hadoop01.domain.com"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Should return hostname when only hostname is specified"
+argument_list|,
+literal|"hadoop01"
+argument_list|,
+name|StringUtils
+operator|.
+name|simpleHostname
+argument_list|(
+literal|"hadoop01"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Should not truncate when IP address is passed"
+argument_list|,
+literal|"10.10.5.68"
+argument_list|,
+name|StringUtils
+operator|.
+name|simpleHostname
+argument_list|(
+literal|"10.10.5.68"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Benchmark for StringUtils split
 DECL|method|main (String []args)
 specifier|public
