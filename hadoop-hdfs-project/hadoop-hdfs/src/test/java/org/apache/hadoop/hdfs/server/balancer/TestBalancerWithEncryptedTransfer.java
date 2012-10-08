@@ -130,6 +130,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testEncryptedBalancer0 ()
 specifier|public
 name|void
@@ -150,6 +155,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testEncryptedBalancer1 ()
 specifier|public
 name|void
@@ -170,6 +180,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testEncryptedBalancer2 ()
 specifier|public
 name|void
