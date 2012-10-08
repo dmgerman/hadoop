@@ -245,9 +245,6 @@ literal|1024
 operator|*
 literal|1024
 expr_stmt|;
-name|INodeFile
-name|inf
-init|=
 operator|new
 name|INodeFile
 argument_list|(
@@ -274,7 +271,7 @@ literal|0L
 argument_list|,
 name|preferredBlockSize
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 comment|/**    * Test for the PreferredBlockSize value. Sets a value and checks if it was    * set correct.    */
 annotation|@
@@ -426,9 +423,6 @@ operator|=
 operator|-
 literal|1
 expr_stmt|;
-name|INodeFile
-name|inf
-init|=
 operator|new
 name|INodeFile
 argument_list|(
@@ -455,7 +449,7 @@ literal|0L
 argument_list|,
 name|preferredBlockSize
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 comment|/**    * IllegalArgumentException is expected for setting above upper bound    * for PreferredBlockSize.    * @throws IllegalArgumentException as the result    */
 annotation|@
@@ -485,9 +479,6 @@ name|BLKSIZE_MAXVALUE
 operator|+
 literal|1
 expr_stmt|;
-name|INodeFile
-name|inf
-init|=
 operator|new
 name|INodeFile
 argument_list|(
@@ -514,7 +505,7 @@ literal|0L
 argument_list|,
 name|preferredBlockSize
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -793,43 +784,6 @@ argument_list|,
 literal|5L
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|origFile
-operator|.
-name|numBlocks
-argument_list|()
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|assertSame
-argument_list|(
-literal|"INodeFiles didn't Match"
-argument_list|,
-name|origFile
-argument_list|,
-name|origFile
-operator|.
-name|getBlocks
-argument_list|()
-index|[
-name|i
-index|]
-operator|.
-name|getINode
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**     * Gives the count of blocks for a given number of files    * @param files Array of INode files    * @return total count of blocks    */
 DECL|method|getTotalBlocks (INodeFile[] files)
