@@ -2260,19 +2260,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Setup security tokens
-name|ByteBuffer
-name|securityTokens
-init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|DataOutputBuffer
 name|dob
 init|=
@@ -2287,8 +2274,9 @@ argument_list|(
 name|dob
 argument_list|)
 expr_stmt|;
+name|ByteBuffer
 name|securityTokens
-operator|=
+init|=
 name|ByteBuffer
 operator|.
 name|wrap
@@ -2305,8 +2293,7 @@ operator|.
 name|getLength
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|// Setup the command to run the AM
 name|List
 argument_list|<

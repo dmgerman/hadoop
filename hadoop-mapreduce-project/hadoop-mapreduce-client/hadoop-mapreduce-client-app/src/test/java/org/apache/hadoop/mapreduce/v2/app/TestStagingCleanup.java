@@ -1338,6 +1338,17 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|downloadTokensAndSetupUGI (Configuration conf)
+specifier|protected
+name|void
+name|downloadTokensAndSetupUGI
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{      }
 block|}
 DECL|class|MRAppTestCleanup
 specifier|private

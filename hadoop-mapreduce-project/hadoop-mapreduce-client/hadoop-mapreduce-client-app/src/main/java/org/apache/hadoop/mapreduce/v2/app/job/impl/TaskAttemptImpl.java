@@ -4389,21 +4389,6 @@ name|localResources
 argument_list|)
 expr_stmt|;
 comment|// Setup up task credentials buffer
-name|Credentials
-name|taskCredentials
-init|=
-operator|new
-name|Credentials
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -4425,14 +4410,15 @@ operator|+
 literal|" secret keys for NM use for launching container"
 argument_list|)
 expr_stmt|;
+name|Credentials
 name|taskCredentials
-operator|.
-name|addAll
+init|=
+operator|new
+name|Credentials
 argument_list|(
 name|credentials
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|// LocalStorageToken is needed irrespective of whether security is enabled
 comment|// or not.
 name|TokenCache
