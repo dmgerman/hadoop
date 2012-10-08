@@ -188,12 +188,29 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
-comment|// Display warning if native-hadoop failed to load
+comment|// Ignore failure to load
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Continuing after failing to load native-hadoop - java.library.path="
+literal|"Failed to load native-hadoop with error: "
+operator|+
+name|t
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"java.library.path="
 operator|+
 name|System
 operator|.
@@ -201,12 +218,9 @@ name|getProperty
 argument_list|(
 literal|"java.library.path"
 argument_list|)
-operator|+
-literal|" with error:"
-argument_list|,
-name|t
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
