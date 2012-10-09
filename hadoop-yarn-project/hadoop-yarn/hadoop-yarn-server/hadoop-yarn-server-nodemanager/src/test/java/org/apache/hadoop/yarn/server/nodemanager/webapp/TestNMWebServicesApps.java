@@ -3204,7 +3204,7 @@ argument_list|(
 literal|"javaClassName"
 argument_list|)
 decl_stmt|;
-name|verifyStatInvalidException
+name|verifyStateInvalidException
 argument_list|(
 name|message
 argument_list|,
@@ -3442,7 +3442,7 @@ argument_list|(
 literal|"javaClassName"
 argument_list|)
 decl_stmt|;
-name|verifyStatInvalidException
+name|verifyStateInvalidException
 argument_list|(
 name|message
 argument_list|,
@@ -3738,7 +3738,7 @@ argument_list|,
 literal|"javaClassName"
 argument_list|)
 decl_stmt|;
-name|verifyStatInvalidException
+name|verifyStateInvalidException
 argument_list|(
 name|message
 argument_list|,
@@ -3749,10 +3749,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyStatInvalidException (String message, String type, String classname)
+DECL|method|verifyStateInvalidException (String message, String type, String classname)
 specifier|private
 name|void
-name|verifyStatInvalidException
+name|verifyStateInvalidException
 parameter_list|(
 name|String
 name|message
@@ -3766,11 +3766,11 @@ parameter_list|)
 block|{
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringContains
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"No enum const class org.apache.hadoop.yarn.server.nodemanager.containermanager.application.ApplicationState.FOO_STATE"
+literal|"org.apache.hadoop.yarn.server.nodemanager.containermanager.application.ApplicationState.FOO_STATE"
 argument_list|,
 name|message
 argument_list|)
