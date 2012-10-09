@@ -60,7 +60,7 @@ specifier|final
 name|String
 name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
-literal|"AppClientTokenEnv"
+literal|"AppClientSecretEnv"
 decl_stmt|;
 comment|/**    * The environment variable for CONTAINER_ID. Set in AppMaster environment    * only    */
 DECL|field|AM_CONTAINER_ID_ENV

@@ -270,24 +270,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|security
-operator|.
-name|client
-operator|.
-name|ClientToAMSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -499,6 +481,26 @@ operator|.
 name|capacity
 operator|.
 name|CapacityScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|ClientToAMTokenSecretManagerInRM
 import|;
 end_import
 
@@ -954,14 +956,14 @@ name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|TestRMAppManager (RMContext context, ClientToAMSecretManager clientToAMSecretManager, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
+DECL|method|TestRMAppManager (RMContext context, ClientToAMTokenSecretManagerInRM clientToAMSecretManager, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
 specifier|public
 name|TestRMAppManager
 parameter_list|(
 name|RMContext
 name|context
 parameter_list|,
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 name|clientToAMSecretManager
 parameter_list|,
 name|YarnScheduler
@@ -2200,7 +2202,7 @@ argument_list|(
 name|rmContext
 argument_list|,
 operator|new
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 argument_list|()
 argument_list|,
 name|scheduler
@@ -2528,7 +2530,7 @@ argument_list|(
 name|rmContext
 argument_list|,
 operator|new
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 argument_list|()
 argument_list|,
 name|scheduler
@@ -2867,7 +2869,7 @@ argument_list|(
 name|rmContext
 argument_list|,
 operator|new
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 argument_list|()
 argument_list|,
 name|scheduler
