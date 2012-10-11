@@ -528,6 +528,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ResourceScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|event
 operator|.
 name|AppAddedSchedulerEvent
@@ -801,8 +821,7 @@ expr_stmt|;
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 comment|// All tests assume only one assignment per node update
@@ -887,6 +906,40 @@ name|resourceManager
 operator|=
 literal|null
 expr_stmt|;
+block|}
+DECL|method|createConfiguration ()
+specifier|private
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setClass
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER
+argument_list|,
+name|FairScheduler
+operator|.
+name|class
+argument_list|,
+name|ResourceScheduler
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
 block|}
 DECL|method|createAppAttemptId (int appId, int attemptId)
 specifier|private
@@ -1590,9 +1643,12 @@ argument_list|(
 name|updateEvent
 argument_list|)
 expr_stmt|;
+comment|// Asked for less than min_allocation.
 name|assertEquals
 argument_list|(
-literal|512
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
 name|scheduler
 operator|.
@@ -2009,8 +2065,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -2228,8 +2283,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -2581,7 +2635,14 @@ argument_list|,
 literal|"user1"
 argument_list|)
 expr_stmt|;
-comment|// First ask, queue1 requests 1024
+name|int
+name|minReqSize
+init|=
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+decl_stmt|;
+comment|// First ask, queue1 requests 1 large (minReqSize * 2).
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2600,7 +2661,9 @@ name|request1
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+name|minReqSize
+operator|*
+literal|2
 argument_list|,
 literal|"*"
 argument_list|,
@@ -2632,7 +2695,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Second ask, queue2 requests 1024 + (2 * 512)
+comment|// Second ask, queue2 requests 1 large + (2 * minReqSize)
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2651,7 +2714,9 @@ name|request2
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 literal|"foo"
 argument_list|,
@@ -2665,7 +2730,7 @@ name|request3
 init|=
 name|createResourceRequest
 argument_list|(
-literal|512
+name|minReqSize
 argument_list|,
 literal|"bar"
 argument_list|,
@@ -2704,7 +2769,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Third ask, queue2 requests 1024
+comment|// Third ask, queue2 requests 1 large
 name|List
 argument_list|<
 name|ResourceRequest
@@ -2723,7 +2788,9 @@ name|request4
 init|=
 name|createResourceRequest
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 literal|"*"
 argument_list|,
@@ -2762,7 +2829,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 argument_list|,
 name|scheduler
 operator|.
@@ -2786,14 +2855,18 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 operator|+
-literal|1024
+literal|2
+operator|*
+name|minReqSize
 operator|+
 operator|(
 literal|2
 operator|*
-literal|512
+name|minReqSize
 operator|)
 argument_list|,
 name|scheduler
@@ -2953,8 +3026,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -3714,8 +3786,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -4475,8 +4546,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -4850,8 +4920,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -5227,8 +5296,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -6390,8 +6458,7 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf

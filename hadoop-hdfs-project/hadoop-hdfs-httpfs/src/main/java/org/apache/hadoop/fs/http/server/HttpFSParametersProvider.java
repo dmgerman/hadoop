@@ -1114,7 +1114,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"len"
+literal|"length"
 decl_stmt|;
 comment|/**      * Constructor.      */
 DECL|method|LenParam ()

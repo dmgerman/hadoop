@@ -643,7 +643,14 @@ throw|throw
 operator|new
 name|TimeoutException
 argument_list|(
-literal|"Timed out waiting for condition"
+literal|"Timed out waiting for condition. "
+operator|+
+literal|"Thread diagnostics:\n"
+operator|+
+name|TimedOutTestsListener
+operator|.
+name|buildThreadDiagnosticString
+argument_list|()
 argument_list|)
 throw|;
 block|}

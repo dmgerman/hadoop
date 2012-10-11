@@ -1852,11 +1852,11 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringContains
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"No enum const class org.apache.hadoop.yarn.api.records.NodeState.BOGUSSTATE"
+literal|"org.apache.hadoop.yarn.api.records.NodeState.BOGUSSTATE"
 argument_list|,
 name|message
 argument_list|)

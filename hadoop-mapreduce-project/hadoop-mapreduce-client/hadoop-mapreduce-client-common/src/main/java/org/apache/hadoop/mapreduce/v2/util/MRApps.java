@@ -1386,6 +1386,10 @@ operator|+
 name|Path
 operator|.
 name|SEPARATOR
+operator|+
+name|MRJobConfig
+operator|.
+name|JOB_JAR
 argument_list|)
 expr_stmt|;
 name|Apps
@@ -1816,6 +1820,12 @@ operator|==
 name|LocalResourceType
 operator|.
 name|ARCHIVE
+operator|||
+name|type
+operator|==
+name|LocalResourceType
+operator|.
+name|PATTERN
 condition|)
 block|{
 return|return

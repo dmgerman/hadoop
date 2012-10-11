@@ -1384,6 +1384,14 @@ name|getVisibility
 argument_list|()
 argument_list|,
 name|ctxt
+argument_list|,
+name|req
+operator|.
+name|getLocalResourceRequest
+argument_list|()
+operator|.
+name|getPattern
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

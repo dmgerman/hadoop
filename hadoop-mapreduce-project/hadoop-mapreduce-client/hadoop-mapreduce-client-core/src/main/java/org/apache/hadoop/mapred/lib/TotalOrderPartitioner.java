@@ -107,11 +107,6 @@ class|class
 name|TotalOrderPartitioner
 parameter_list|<
 name|K
-extends|extends
-name|WritableComparable
-parameter_list|<
-name|?
-parameter_list|>
 parameter_list|,
 name|V
 parameter_list|>

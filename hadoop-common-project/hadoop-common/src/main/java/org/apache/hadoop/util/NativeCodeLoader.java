@@ -251,6 +251,15 @@ return|return
 name|nativeCodeLoaded
 return|;
 block|}
+comment|/**    * Returns true only if this build was compiled with support for snappy.    */
+DECL|method|buildSupportsSnappy ()
+specifier|public
+specifier|static
+specifier|native
+name|boolean
+name|buildSupportsSnappy
+parameter_list|()
+function_decl|;
 comment|/**    * Return if native hadoop libraries, if present, can be used for this job.    * @param conf configuration    *     * @return<code>true</code> if native hadoop libraries, if present, can be     *         used for this job;<code>false</code> otherwise.    */
 DECL|method|getLoadNativeLibraries (Configuration conf)
 specifier|public

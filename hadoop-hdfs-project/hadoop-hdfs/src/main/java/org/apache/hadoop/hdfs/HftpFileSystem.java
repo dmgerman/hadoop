@@ -1497,6 +1497,24 @@ return|return
 literal|null
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception getting delegation token"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 name|e
 throw|;

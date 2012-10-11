@@ -18733,7 +18733,13 @@ condition|)
 block|{
 name|leaveMsg
 operator|=
-literal|"Resources are low on NN. Safe mode must be turned off manually"
+literal|"Resources are low on NN. "
+operator|+
+literal|"Please add or free up more resources then turn off safe mode manually.  "
+operator|+
+literal|"NOTE:  If you turn off safe mode before adding resources, "
+operator|+
+literal|"the NN will immediately return to safe mode."
 expr_stmt|;
 block|}
 else|else

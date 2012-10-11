@@ -3338,6 +3338,18 @@ name|RMAppAttemptRejectedEvent
 operator|)
 name|event
 decl_stmt|;
+comment|// Tell the AMS. Unregister from the ApplicationMasterService
+name|appAttempt
+operator|.
+name|masterService
+operator|.
+name|unregisterAttempt
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
 comment|// Save the diagnostic message
 name|String
 name|message

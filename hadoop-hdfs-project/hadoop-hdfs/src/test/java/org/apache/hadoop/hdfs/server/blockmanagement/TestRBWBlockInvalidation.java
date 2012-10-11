@@ -314,6 +314,11 @@ block|}
 comment|/**    * Test when a block's replica is removed from RBW folder in one of the    * datanode, namenode should ask to invalidate that corrupted block and    * schedule replication for one more replica for that under replicated block.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testBlockInvalidationWhenRBWReplicaMissedInDN ()
 specifier|public
 name|void

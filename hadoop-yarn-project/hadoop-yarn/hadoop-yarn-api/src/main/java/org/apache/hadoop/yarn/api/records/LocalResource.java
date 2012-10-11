@@ -167,6 +167,23 @@ name|LocalResourceVisibility
 name|visibility
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>pattern</em> that should be used to extract entries from the    * archive (only used when type is<code>PATTERN</code>).    * @return<em>pattern</em> that should be used to extract entries from the     * archive.     */
+DECL|method|getPattern ()
+specifier|public
+name|String
+name|getPattern
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>pattern</em> that should be used to extract entries from the    * archive (only used when type is<code>PATTERN</code>).    * @param pattern<em>pattern</em> that should be used to extract entries     * from the archive.    */
+DECL|method|setPattern (String pattern)
+specifier|public
+name|void
+name|setPattern
+parameter_list|(
+name|String
+name|pattern
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

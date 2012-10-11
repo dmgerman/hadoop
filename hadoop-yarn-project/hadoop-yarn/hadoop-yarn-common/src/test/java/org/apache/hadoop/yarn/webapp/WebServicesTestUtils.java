@@ -380,6 +380,43 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|checkStringContains (String print, String expected, String got)
+specifier|public
+specifier|static
+name|void
+name|checkStringContains
+parameter_list|(
+name|String
+name|print
+parameter_list|,
+name|String
+name|expected
+parameter_list|,
+name|String
+name|got
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|print
+operator|+
+literal|" doesn't contain expected string, got: "
+operator|+
+name|got
+operator|+
+literal|" expected: "
+operator|+
+name|expected
+argument_list|,
+name|got
+operator|.
+name|contains
+argument_list|(
+name|expected
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

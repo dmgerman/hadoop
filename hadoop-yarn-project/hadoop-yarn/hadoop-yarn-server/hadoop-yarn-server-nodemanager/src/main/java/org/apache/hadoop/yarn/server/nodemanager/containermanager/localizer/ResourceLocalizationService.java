@@ -4667,6 +4667,16 @@ name|getVisibility
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|next
+operator|.
+name|setPattern
+argument_list|(
+name|evt
+operator|.
+name|getPattern
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|scheduled
 operator|.
 name|put

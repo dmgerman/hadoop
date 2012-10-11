@@ -2047,6 +2047,20 @@ name|getFinalApplicationStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Check events
+name|verify
+argument_list|(
+name|masterService
+argument_list|)
+operator|.
+name|unregisterAttempt
+argument_list|(
+name|applicationAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// this works for unmanaged and managed AM's because this is actually doing
 comment|// verify(application).handle(anyObject());
 name|verify

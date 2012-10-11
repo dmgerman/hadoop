@@ -3310,6 +3310,11 @@ name|containerId
 argument_list|,
 name|nodeId
 argument_list|,
+name|application
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
 name|capability
 argument_list|)
 expr_stmt|;

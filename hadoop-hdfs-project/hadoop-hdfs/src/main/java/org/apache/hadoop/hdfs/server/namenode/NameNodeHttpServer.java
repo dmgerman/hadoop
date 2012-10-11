@@ -680,6 +680,29 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"WebHDFS and security are enabled, but configuration property '"
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+operator|+
+literal|"' is not set."
+argument_list|)
+expr_stmt|;
+block|}
 name|String
 name|httpKeytab
 init|=
@@ -733,6 +756,29 @@ operator|.
 name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
 argument_list|,
 name|httpKeytab
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"WebHDFS and security are enabled, but configuration property '"
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
+operator|+
+literal|"' is not set."
 argument_list|)
 expr_stmt|;
 block|}

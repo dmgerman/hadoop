@@ -507,6 +507,67 @@ DECL|field|lastTimeAtHalfFairShare
 name|long
 name|lastTimeAtHalfFairShare
 decl_stmt|;
+comment|// Constructor for tests
+DECL|method|FSQueueSchedulable (FairScheduler scheduler, FSQueue fsQueue, QueueManager qMgr, QueueMetrics metrics, long minShare, long fairShare)
+specifier|protected
+name|FSQueueSchedulable
+parameter_list|(
+name|FairScheduler
+name|scheduler
+parameter_list|,
+name|FSQueue
+name|fsQueue
+parameter_list|,
+name|QueueManager
+name|qMgr
+parameter_list|,
+name|QueueMetrics
+name|metrics
+parameter_list|,
+name|long
+name|minShare
+parameter_list|,
+name|long
+name|fairShare
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scheduler
+operator|=
+name|scheduler
+expr_stmt|;
+name|this
+operator|.
+name|queueMgr
+operator|=
+name|qMgr
+expr_stmt|;
+name|this
+operator|.
+name|queue
+operator|=
+name|fsQueue
+expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|metrics
+expr_stmt|;
+name|this
+operator|.
+name|lastTimeAtMinShare
+operator|=
+name|minShare
+expr_stmt|;
+name|this
+operator|.
+name|lastTimeAtHalfFairShare
+operator|=
+name|fairShare
+expr_stmt|;
+block|}
 DECL|method|FSQueueSchedulable (FairScheduler scheduler, FSQueue queue)
 specifier|public
 name|FSQueueSchedulable
@@ -669,6 +730,21 @@ name|void
 name|updateDemand
 parameter_list|()
 block|{
+comment|// Compute demand by iterating through apps in the queue
+comment|// Limit demand to maxResources
+name|Resource
+name|maxRes
+init|=
+name|queueMgr
+operator|.
+name|getMaxResources
+argument_list|(
+name|queue
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|demand
 operator|=
 name|Resources
@@ -699,6 +775,14 @@ operator|.
 name|getDemand
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -713,16 +797,8 @@ operator|+
 literal|" "
 operator|+
 name|toAdd
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Total resource consumption for "
+operator|+
+literal|"; Total resource consumption for "
 operator|+
 name|this
 operator|.
@@ -732,11 +808,9 @@ operator|+
 literal|" now "
 operator|+
 name|demand
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|demand
 operator|=
 name|Resources
@@ -748,26 +822,11 @@ argument_list|,
 name|toAdd
 argument_list|)
 expr_stmt|;
-block|}
-comment|// if demand exceeds the cap for this queue, limit to the max
-name|Resource
-name|maxRes
-init|=
-name|queueMgr
-operator|.
-name|getMaxResources
-argument_list|(
-name|queue
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|Resources
 operator|.
-name|greaterThan
+name|greaterThanOrEqual
 argument_list|(
 name|demand
 argument_list|,
@@ -778,6 +837,37 @@ block|{
 name|demand
 operator|=
 name|maxRes
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The updated demand for "
+operator|+
+name|this
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is "
+operator|+
+name|demand
+operator|+
+literal|"; the max is "
+operator|+
+name|maxRes
+argument_list|)
 expr_stmt|;
 block|}
 block|}

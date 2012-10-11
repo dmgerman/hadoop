@@ -578,6 +578,8 @@ argument_list|,
 name|LocalResourceVisibility
 operator|.
 name|PUBLIC
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final

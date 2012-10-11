@@ -1549,6 +1549,9 @@ block|{
 case|case
 name|ARCHIVE
 case|:
+case|case
+name|PATTERN
+case|:
 return|return
 literal|5
 operator|*

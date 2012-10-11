@@ -689,7 +689,7 @@ name|boolean
 name|commandLineKill
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 comment|// launch job with waiting setup/cleanup
 name|RunningJob
@@ -1082,7 +1082,7 @@ name|void
 name|testWithDFS
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|dfs

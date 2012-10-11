@@ -1702,6 +1702,8 @@ operator|.
 name|FILE
 argument_list|,
 name|vis
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

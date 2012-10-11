@@ -288,6 +288,11 @@ specifier|private
 name|String
 name|nmHostAddr
 decl_stmt|;
+DECL|field|appSubmitter
+specifier|private
+name|String
+name|appSubmitter
+decl_stmt|;
 DECL|field|resource
 specifier|private
 name|Resource
@@ -303,7 +308,7 @@ specifier|private
 name|int
 name|masterKeyId
 decl_stmt|;
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, Resource r, long expiryTimeStamp, int masterKeyId)
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
@@ -312,6 +317,9 @@ name|containerID
 parameter_list|,
 name|String
 name|hostName
+parameter_list|,
+name|String
+name|appSubmitter
 parameter_list|,
 name|Resource
 name|r
@@ -334,6 +342,12 @@ operator|.
 name|nmHostAddr
 operator|=
 name|hostName
+expr_stmt|;
+name|this
+operator|.
+name|appSubmitter
+operator|=
+name|appSubmitter
 expr_stmt|;
 name|this
 operator|.
@@ -370,6 +384,18 @@ return|return
 name|this
 operator|.
 name|containerId
+return|;
+block|}
+DECL|method|getApplicationSubmitter ()
+specifier|public
+name|String
+name|getApplicationSubmitter
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appSubmitter
 return|;
 block|}
 DECL|method|getNmHostAddress ()
@@ -513,6 +539,15 @@ argument_list|)
 expr_stmt|;
 name|out
 operator|.
+name|writeUTF
+argument_list|(
+name|this
+operator|.
+name|appSubmitter
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
 name|writeInt
 argument_list|(
 name|this
@@ -607,6 +642,15 @@ expr_stmt|;
 name|this
 operator|.
 name|nmHostAddr
+operator|=
+name|in
+operator|.
+name|readUTF
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|appSubmitter
 operator|=
 name|in
 operator|.

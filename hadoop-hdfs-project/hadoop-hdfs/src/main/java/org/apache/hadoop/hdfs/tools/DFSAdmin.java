@@ -52,6 +52,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -508,6 +518,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -649,7 +673,7 @@ operator|.
 name|getUri
 argument_list|()
 operator|+
-literal|" is not a distributed file system"
+literal|" is not an HDFS file system"
 argument_list|)
 throw|;
 block|}
@@ -1552,7 +1576,7 @@ operator|.
 name|getUri
 argument_list|()
 operator|+
-literal|" is not a distributed file system"
+literal|" is not an HDFS file system"
 argument_list|)
 throw|;
 block|}
@@ -2548,21 +2572,24 @@ name|exitCode
 return|;
 block|}
 comment|/**    * Download the most recent fsimage from the name node, and save it to a local    * file in the given directory.    *     * @param argv    *          List of of command line parameters.    * @param idx    *          The index of the command that is being processed.    * @return an exit code indicating success or failure.    * @throws IOException    */
-DECL|method|fetchImage (String[] argv, int idx)
+DECL|method|fetchImage (final String[] argv, final int idx)
 specifier|public
 name|int
 name|fetchImage
 parameter_list|(
+specifier|final
 name|String
 index|[]
 name|argv
 parameter_list|,
+specifier|final
 name|int
 name|idx
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|String
 name|infoServer
 init|=
@@ -2584,6 +2611,26 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+name|SecurityUtil
+operator|.
+name|doAsCurrentUser
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|TransferFsImage
 operator|.
 name|downloadMostRecentImageToDirectory
@@ -2598,6 +2645,13 @@ index|[
 name|idx
 index|]
 argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 return|return

@@ -254,6 +254,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|SecurityUtilTestHelper
+operator|.
+name|setTokenServiceUseIp
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 specifier|final
 name|Configuration
 name|conf

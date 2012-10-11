@@ -813,10 +813,11 @@ decl_stmt|;
 comment|// Main class to invoke application master
 DECL|field|appMasterMainClass
 specifier|private
+specifier|final
 name|String
 name|appMasterMainClass
 init|=
-literal|""
+literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
 decl_stmt|;
 comment|// Shell command to be executed
 DECL|field|shellCommand
@@ -922,6 +923,12 @@ name|debugFlag
 init|=
 literal|false
 decl_stmt|;
+comment|// Command line options
+DECL|field|opts
+specifier|private
+name|Options
+name|opts
+decl_stmt|;
 comment|/**    * @param args Command line arguments     */
 DECL|method|main (String[] args)
 specifier|public
@@ -955,6 +962,8 @@ argument_list|(
 literal|"Initializing Client"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|boolean
 name|doRun
 init|=
@@ -976,6 +985,39 @@ operator|.
 name|exit
 argument_list|(
 literal|0
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|client
+operator|.
+name|printUsage
+argument_list|()
+expr_stmt|;
+name|System
+operator|.
+name|exit
+argument_list|(
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -1070,65 +1112,12 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    */
-DECL|method|Client ()
-specifier|public
-name|Client
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|this
-argument_list|(
+name|opts
+operator|=
 operator|new
-name|Configuration
+name|Options
 argument_list|()
-argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Helper function to print out usage    * @param opts Parsed command line options     */
-DECL|method|printUsage (Options opts)
-specifier|private
-name|void
-name|printUsage
-parameter_list|(
-name|Options
-name|opts
-parameter_list|)
-block|{
-operator|new
-name|HelpFormatter
-argument_list|()
-operator|.
-name|printHelp
-argument_list|(
-literal|"Client"
-argument_list|,
-name|opts
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Parse command line options    * @param args Parsed command line options     * @return Whether the init was successful to run the client    * @throws ParseException    */
-DECL|method|init (String[] args)
-specifier|public
-name|boolean
-name|init
-parameter_list|(
-name|String
-index|[]
-name|args
-parameter_list|)
-throws|throws
-name|ParseException
-block|{
-name|Options
-name|opts
-init|=
-operator|new
-name|Options
-argument_list|()
-decl_stmt|;
 name|opts
 operator|.
 name|addOption
@@ -1193,17 +1182,6 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Jar file containing the application master"
-argument_list|)
-expr_stmt|;
-name|opts
-operator|.
-name|addOption
-argument_list|(
-literal|"class"
-argument_list|,
-literal|true
-argument_list|,
-literal|"Main class to  be run for the Application Master."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1316,6 +1294,55 @@ argument_list|,
 literal|"Print usage"
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    */
+DECL|method|Client ()
+specifier|public
+name|Client
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|this
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Helper function to print out usage    * @param opts Parsed command line options     */
+DECL|method|printUsage ()
+specifier|private
+name|void
+name|printUsage
+parameter_list|()
+block|{
+operator|new
+name|HelpFormatter
+argument_list|()
+operator|.
+name|printHelp
+argument_list|(
+literal|"Client"
+argument_list|,
+name|opts
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Parse command line options    * @param args Parsed command line options     * @return Whether the init was successful to run the client    * @throws ParseException    */
+DECL|method|init (String[] args)
+specifier|public
+name|boolean
+name|init
+parameter_list|(
+name|String
+index|[]
+name|args
+parameter_list|)
+throws|throws
+name|ParseException
+block|{
 name|CommandLine
 name|cliParser
 init|=
@@ -1339,11 +1366,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|printUsage
-argument_list|(
-name|opts
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|IllegalArgumentException
@@ -1363,9 +1385,7 @@ argument_list|)
 condition|)
 block|{
 name|printUsage
-argument_list|(
-name|opts
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 literal|false
@@ -1485,17 +1505,6 @@ operator|.
 name|getOptionValue
 argument_list|(
 literal|"jar"
-argument_list|)
-expr_stmt|;
-name|appMasterMainClass
-operator|=
-name|cliParser
-operator|.
-name|getOptionValue
-argument_list|(
-literal|"class"
-argument_list|,
-literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
 argument_list|)
 expr_stmt|;
 if|if

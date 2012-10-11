@@ -2491,8 +2491,50 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Is the container coming in with correct user-name?
+if|if
+condition|(
+operator|!
+name|tokenId
+operator|.
+name|getApplicationSubmitter
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|launchContext
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|unauthorized
+operator|=
+literal|true
+expr_stmt|;
+name|messageBuilder
+operator|.
+name|append
+argument_list|(
+literal|"\n Expected user-name "
+operator|+
+name|tokenId
+operator|.
+name|getApplicationSubmitter
+argument_list|()
+operator|+
+literal|" but found "
+operator|+
+name|launchContext
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Is the container being relaunched? Or RPC layer let startCall with
-comment|//  tokens generated off old-secret through
+comment|//  tokens generated off old-secret through?
 if|if
 condition|(
 operator|!

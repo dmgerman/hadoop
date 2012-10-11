@@ -3195,14 +3195,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 comment|// Read the file-system tokens from the localized tokens-file.
 name|Path
 name|jobSubmitDir
@@ -3278,7 +3270,6 @@ name|fsTokens
 argument_list|)
 expr_stmt|;
 comment|// For use by AppMaster itself.
-block|}
 block|}
 catch|catch
 parameter_list|(

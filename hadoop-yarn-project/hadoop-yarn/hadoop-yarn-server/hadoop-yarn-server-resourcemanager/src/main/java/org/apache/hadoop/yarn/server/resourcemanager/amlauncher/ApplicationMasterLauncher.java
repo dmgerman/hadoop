@@ -128,7 +128,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientToAMSecretManager
+name|BaseClientToAMTokenSecretManager
 import|;
 end_import
 
@@ -169,6 +169,26 @@ operator|.
 name|attempt
 operator|.
 name|RMAppAttempt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|ClientToAMTokenSecretManagerInRM
 import|;
 end_import
 
@@ -246,7 +266,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|clientToAMSecretManager
 specifier|private
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 name|clientToAMSecretManager
 decl_stmt|;
 DECL|field|context
@@ -255,11 +275,11 @@ specifier|final
 name|RMContext
 name|context
 decl_stmt|;
-DECL|method|ApplicationMasterLauncher ( ClientToAMSecretManager clientToAMSecretManager, RMContext context)
+DECL|method|ApplicationMasterLauncher ( ClientToAMTokenSecretManagerInRM clientToAMSecretManager, RMContext context)
 specifier|public
 name|ApplicationMasterLauncher
 parameter_list|(
-name|ClientToAMSecretManager
+name|ClientToAMTokenSecretManagerInRM
 name|clientToAMSecretManager
 parameter_list|,
 name|RMContext
