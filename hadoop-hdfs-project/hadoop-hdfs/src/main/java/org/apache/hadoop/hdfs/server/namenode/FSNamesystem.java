@@ -24703,6 +24703,26 @@ operator|=
 name|nnResourceChecker
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isAvoidingStaleDataNodesForWrite ()
+specifier|public
+name|boolean
+name|isAvoidingStaleDataNodesForWrite
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|isAvoidingStaleDataNodesForWrite
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

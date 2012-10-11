@@ -347,6 +347,12 @@ name|long
 name|heartbeatInterval
 decl_stmt|;
 comment|// interval for DataNode heartbeats
+DECL|field|staleInterval
+specifier|private
+name|long
+name|staleInterval
+decl_stmt|;
+comment|// interval used to identify stale DataNodes
 comment|/**    * A miss of that many heartbeats is tolerated for replica deletion policy.    */
 DECL|field|tolerateHeartbeatMultiplier
 specifier|protected
@@ -459,6 +465,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_TOLERATE_HEARTBEAT_MULTIPLIER_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|staleInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -775,6 +798,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+name|boolean
+name|avoidStaleNodes
+init|=
+operator|(
+name|stats
+operator|!=
+literal|null
+operator|&&
+name|stats
+operator|.
+name|isAvoidingStaleDataNodesForWrite
+argument_list|()
+operator|)
+decl_stmt|;
 name|DatanodeDescriptor
 name|localNode
 init|=
@@ -791,6 +828,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 decl_stmt|;
 if|if
@@ -838,7 +877,7 @@ argument_list|)
 return|;
 block|}
 comment|/* choose<i>numOfReplicas</i> from all data nodes */
-DECL|method|chooseTarget (int numOfReplicas, DatanodeDescriptor writer, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseTarget (int numOfReplicas, DatanodeDescriptor writer, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, final boolean avoidStaleNodes)
 specifier|private
 name|DatanodeDescriptor
 name|chooseTarget
@@ -868,6 +907,10 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+specifier|final
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 block|{
 if|if
@@ -930,6 +973,31 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Keep a copy of original excludedNodes
+specifier|final
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|oldExcludedNodes
+init|=
+name|avoidStaleNodes
+condition|?
+operator|new
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+argument_list|(
+name|excludedNodes
+argument_list|)
+else|:
+literal|null
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -952,6 +1020,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 if|if
@@ -992,6 +1062,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 if|if
@@ -1054,6 +1126,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1079,6 +1153,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1095,6 +1171,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1126,6 +1204,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1155,13 +1235,59 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|avoidStaleNodes
+condition|)
+block|{
+comment|// ecxludedNodes now has - initial excludedNodes, any nodes that were
+comment|// chosen and nodes that were tried but were not chosen because they
+comment|// were stale, decommissioned or for any other reason a node is not
+comment|// chosen for write. Retry again now not avoiding stale node
+for|for
+control|(
+name|Node
+name|node
+range|:
+name|results
+control|)
+block|{
+name|oldExcludedNodes
+operator|.
+name|put
+argument_list|(
+name|node
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|chooseTarget
+argument_list|(
+name|numOfReplicas
+argument_list|,
+name|writer
+argument_list|,
+name|oldExcludedNodes
+argument_list|,
+name|blocksize
+argument_list|,
+name|maxNodesPerRack
+argument_list|,
+name|results
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
 block|}
 return|return
 name|writer
 return|;
 block|}
 comment|/* choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen node    */
-DECL|method|chooseLocalNode ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseLocalNode ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
@@ -1188,6 +1314,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1213,6 +1342,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 if|if
@@ -1254,6 +1385,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 condition|)
 block|{
@@ -1283,11 +1416,13 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
 comment|/* choose one node from the rack that<i>localMachine</i> is on.    * if no such node is available, choose one node from the rack where    * a second replica is on.    * if still no such node is available, choose a random node     * in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalRack ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseLocalRack ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
@@ -1314,6 +1449,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1340,6 +1478,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1361,6 +1501,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1442,6 +1584,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1466,6 +1610,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1487,13 +1633,15 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
 block|}
 block|}
 comment|/* choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -1523,6 +1671,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1556,6 +1707,8 @@ argument_list|,
 name|maxReplicasPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1590,12 +1743,14 @@ argument_list|,
 name|maxReplicasPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/* Randomly choose one target from<i>nodes</i>.    * @return the chosen node    */
-DECL|method|chooseRandom ( String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseRandom ( String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseRandom
@@ -1622,6 +1777,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1737,6 +1895,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 condition|)
 block|{
@@ -1824,7 +1984,7 @@ argument_list|)
 throw|;
 block|}
 comment|/* Randomly choose<i>numOfReplicas</i> targets from<i>nodes</i>.    */
-DECL|method|chooseRandom (int numOfReplicas, String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseRandom (int numOfReplicas, String nodes, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRandom
@@ -1854,6 +2014,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1972,6 +2135,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 condition|)
 block|{
@@ -2087,7 +2252,7 @@ block|{
 comment|// do nothing here.
 block|}
 comment|/* judge if a node is a good target.    * return true if<i>node</i> has enough space,     * does not have too much load, and the rack does not have too many nodes    */
-DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, List<DatanodeDescriptor> results)
+DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|private
 name|boolean
 name|isGoodTarget
@@ -2106,6 +2271,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 block|{
 return|return
@@ -2122,11 +2290,13 @@ operator|.
 name|considerLoad
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
-comment|/**    * Determine if a node is a good target.     *     * @param node The target node    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.     * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
-DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeDescriptor> results)
+comment|/**    * Determine if a node is a good target.     *     * @param node The target node    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.    * @param avoidStaleNodes Whether or not to avoid choosing stale nodes    * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
+DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|boolean
 name|isGoodTarget
@@ -2148,6 +2318,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 block|{
 comment|// check if the node is (being) decommissed
@@ -2214,6 +2387,75 @@ block|}
 return|return
 literal|false
 return|;
+block|}
+if|if
+condition|(
+name|avoidStaleNodes
+condition|)
+block|{
+if|if
+condition|(
+name|node
+operator|.
+name|isStale
+argument_list|(
+name|this
+operator|.
+name|staleInterval
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|threadLocalBuilder
+operator|.
+name|get
+argument_list|()
+operator|.
+name|append
+argument_list|(
+name|node
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|": "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"Node "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|NodeBase
+operator|.
+name|getPath
+argument_list|(
+name|node
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" is not chosen because the node is staled "
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 block|}
 name|long
 name|remaining

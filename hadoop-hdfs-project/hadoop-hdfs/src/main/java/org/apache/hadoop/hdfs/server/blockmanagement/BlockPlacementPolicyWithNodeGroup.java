@@ -255,7 +255,7 @@ block|}
 comment|/** choose local node of localMachine as the target.    * if localMachine is not available, choose a node on the same nodegroup or     * rack instead.    * @return the chosen node    */
 annotation|@
 name|Override
-DECL|method|chooseLocalNode ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseLocalNode (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
@@ -282,6 +282,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -307,6 +310,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 comment|// otherwise try local machine first
@@ -343,6 +348,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 condition|)
 block|{
@@ -389,6 +396,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 decl_stmt|;
 if|if
@@ -415,6 +424,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -502,7 +513,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|chooseLocalRack ( DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseLocalRack (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
@@ -529,6 +540,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -555,6 +569,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -581,6 +597,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -667,6 +685,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -691,6 +711,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -712,6 +734,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -719,7 +743,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -749,6 +773,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -787,6 +814,8 @@ argument_list|,
 name|maxReplicasPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -821,12 +850,14 @@ argument_list|,
 name|maxReplicasPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/* choose one node from the nodegroup that<i>localMachine</i> is on.    * if no such node is available, choose one node from the nodegroup where    * a second replica is on.    * if still no such node is available, choose a random node in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalNodeGroup (NetworkTopologyWithNodeGroup clusterMap, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results)
+DECL|method|chooseLocalNodeGroup ( NetworkTopologyWithNodeGroup clusterMap, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|private
 name|DatanodeDescriptor
 name|chooseLocalNodeGroup
@@ -856,6 +887,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|results
+parameter_list|,
+name|boolean
+name|avoidStaleNodes
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -882,6 +916,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -908,6 +944,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -994,6 +1032,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1018,6 +1058,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}
@@ -1039,6 +1081,8 @@ argument_list|,
 name|maxNodesPerRack
 argument_list|,
 name|results
+argument_list|,
+name|avoidStaleNodes
 argument_list|)
 return|;
 block|}

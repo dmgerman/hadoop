@@ -55,6 +55,13 @@ name|int
 name|getTotalLoad
 parameter_list|()
 function_decl|;
+comment|/**    * Indicate whether or not the cluster is now avoiding     * to use stale DataNodes for writing.    *     * @return True if the cluster is currently avoiding using stale DataNodes     *         for writing targets, and false otherwise.    */
+DECL|method|isAvoidingStaleDataNodesForWrite ()
+specifier|public
+name|boolean
+name|isAvoidingStaleDataNodesForWrite
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

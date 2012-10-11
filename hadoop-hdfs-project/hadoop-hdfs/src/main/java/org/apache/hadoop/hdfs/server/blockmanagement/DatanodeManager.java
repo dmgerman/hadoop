@@ -830,6 +830,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|net
 operator|.
 name|InetAddresses
@@ -886,6 +900,13 @@ specifier|private
 specifier|final
 name|HeartbeatManager
 name|heartbeatManager
+decl_stmt|;
+DECL|field|decommissionthread
+specifier|private
+name|Daemon
+name|decommissionthread
+init|=
+literal|null
 decl_stmt|;
 comment|/**    * Stores the datanode -> block map.      *<p>    * Done by storing a set of {@link DatanodeDescriptor} objects, sorted by     * storage id. In order to keep the storage map consistent it tracks     * all storages ever registered with the namenode.    * A descriptor corresponding to a specific storage id can be    *<ul>     *<li>added to the map if it is a new storage id;</li>    *<li>updated with a new datanode started as a replacement for the old one     * with the same storage id; and</li>    *<li>removed if and only if an existing datanode is restarted to serve a    * different storage id.</li>    *</ul><br>     *<p>    * Mapping: StorageID -> DatanodeDescriptor    */
 DECL|field|datanodeMap
@@ -952,6 +973,34 @@ specifier|final
 name|int
 name|blockInvalidateLimit
 decl_stmt|;
+comment|/** Whether or not to check stale DataNodes for read/write */
+DECL|field|checkForStaleDataNodes
+specifier|private
+specifier|final
+name|boolean
+name|checkForStaleDataNodes
+decl_stmt|;
+comment|/** The interval for judging stale DataNodes for read/write */
+DECL|field|staleInterval
+specifier|private
+specifier|final
+name|long
+name|staleInterval
+decl_stmt|;
+comment|/** Whether or not to avoid using stale DataNodes for writing */
+DECL|field|avoidStaleDataNodesForWrite
+specifier|private
+specifier|volatile
+name|boolean
+name|avoidStaleDataNodesForWrite
+decl_stmt|;
+comment|/** The number of stale DataNodes */
+DECL|field|numStaleNodes
+specifier|private
+specifier|volatile
+name|int
+name|numStaleNodes
+decl_stmt|;
 comment|/**    * Whether or not this cluster has ever consisted of more than 1 rack,    * according to the NetworkTopology.    */
 DECL|field|hasClusterEverBeenMultiRack
 specifier|private
@@ -960,21 +1009,7 @@ name|hasClusterEverBeenMultiRack
 init|=
 literal|false
 decl_stmt|;
-comment|/** Whether or not to check the stale datanodes */
-DECL|field|checkForStaleNodes
-specifier|private
-specifier|volatile
-name|boolean
-name|checkForStaleNodes
-decl_stmt|;
-comment|/** The time interval for detecting stale datanodes */
-DECL|field|staleInterval
-specifier|private
-specifier|volatile
-name|long
-name|staleInterval
-decl_stmt|;
-DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf )
+DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf)
 name|DatanodeManager
 parameter_list|(
 specifier|final
@@ -1031,9 +1066,6 @@ argument_list|)
 decl_stmt|;
 name|networktopology
 operator|=
-operator|(
-name|NetworkTopology
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance
@@ -1244,10 +1276,7 @@ operator|.
 name|blockInvalidateLimit
 argument_list|)
 expr_stmt|;
-comment|// set the value of stale interval based on configuration
-name|this
-operator|.
-name|checkForStaleNodes
+name|checkForStaleDataNodes
 operator|=
 name|conf
 operator|.
@@ -1262,17 +1291,41 @@ operator|.
 name|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|checkForStaleNodes
-condition|)
-block|{
-name|this
-operator|.
 name|staleInterval
 operator|=
+name|getStaleIntervalFromConf
+argument_list|(
+name|conf
+argument_list|,
+name|heartbeatExpireInterval
+argument_list|)
+expr_stmt|;
+name|avoidStaleDataNodesForWrite
+operator|=
+name|getAvoidStaleForWriteFromConf
+argument_list|(
+name|conf
+argument_list|,
+name|checkForStaleDataNodes
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getStaleIntervalFromConf (Configuration conf, long heartbeatExpireInterval)
+specifier|private
+specifier|static
+name|long
+name|getStaleIntervalFromConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|long
+name|heartbeatExpireInterval
+parameter_list|)
+block|{
+name|long
+name|staleInterval
+init|=
 name|conf
 operator|.
 name|getLong
@@ -1283,18 +1336,75 @@ name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT
 argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|this
+decl_stmt|;
+name|Preconditions
 operator|.
+name|checkArgument
+argument_list|(
 name|staleInterval
-operator|<
+operator|>
+literal|0
+argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
+operator|+
+literal|" = '"
+operator|+
+name|staleInterval
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive non-zero value."
+argument_list|)
+expr_stmt|;
+specifier|final
+name|long
+name|heartbeatIntervalSeconds
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|)
+decl_stmt|;
+comment|// The stale interval value cannot be smaller than
+comment|// 3 times of heartbeat interval
+specifier|final
+name|long
+name|minStaleInterval
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_DEFAULT
+argument_list|)
+operator|*
+name|heartbeatIntervalSeconds
+operator|*
+literal|1000
+decl_stmt|;
+if|if
+condition|(
+name|staleInterval
+operator|<
+name|minStaleInterval
 condition|)
 block|{
 name|LOG
@@ -1303,29 +1413,124 @@ name|warn
 argument_list|(
 literal|"The given interval for marking stale datanode = "
 operator|+
-name|this
-operator|.
 name|staleInterval
 operator|+
-literal|", which is smaller than the default value "
+literal|", which is less than "
 operator|+
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+name|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_DEFAULT
+operator|+
+literal|" heartbeat intervals. This may cause too frequent changes of "
+operator|+
+literal|"stale states of DataNodes since a heartbeat msg may be missing "
+operator|+
+literal|"due to temporary short-term failures. Reset stale interval to "
+operator|+
+name|minStaleInterval
+operator|+
+literal|"."
+argument_list|)
+expr_stmt|;
+name|staleInterval
+operator|=
+name|minStaleInterval
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|staleInterval
+operator|>
+name|heartbeatExpireInterval
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The given interval for marking stale datanode = "
+operator|+
+name|staleInterval
+operator|+
+literal|", which is larger than heartbeat expire interval "
+operator|+
+name|heartbeatExpireInterval
 operator|+
 literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|staleInterval
+return|;
 block|}
-block|}
-DECL|field|decommissionthread
-specifier|private
-name|Daemon
-name|decommissionthread
+DECL|method|getAvoidStaleForWriteFromConf (Configuration conf, boolean checkForStale)
+specifier|static
+name|boolean
+name|getAvoidStaleForWriteFromConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|checkForStale
+parameter_list|)
+block|{
+name|boolean
+name|avoid
 init|=
-literal|null
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_DEFAULT
+argument_list|)
 decl_stmt|;
+name|boolean
+name|avoidStaleDataNodesForWrite
+init|=
+name|checkForStale
+operator|&&
+name|avoid
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|checkForStale
+operator|&&
+name|avoid
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot set "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+operator|+
+literal|" as false while setting "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+operator|+
+literal|" as true."
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|avoidStaleDataNodesForWrite
+return|;
+block|}
 DECL|method|activate (final Configuration conf)
 name|void
 name|activate
@@ -1572,7 +1777,7 @@ name|DatanodeInfo
 argument_list|>
 name|comparator
 init|=
-name|checkForStaleNodes
+name|checkForStaleDataNodes
 condition|?
 operator|new
 name|DFSUtil
@@ -3411,8 +3616,6 @@ specifier|private
 name|void
 name|refreshDatanodes
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 for|for
 control|(
@@ -3648,6 +3851,82 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/* Getter and Setter for stale DataNodes related attributes */
+comment|/**    * @return whether or not to avoid writing to stale datanodes    */
+DECL|method|isAvoidingStaleDataNodesForWrite ()
+specifier|public
+name|boolean
+name|isAvoidingStaleDataNodesForWrite
+parameter_list|()
+block|{
+return|return
+name|avoidStaleDataNodesForWrite
+return|;
+block|}
+comment|/**    * Set the value of {@link DatanodeManager#avoidStaleDataNodesForWrite}.     * The HeartbeatManager disable avoidStaleDataNodesForWrite when more than    * half of the DataNodes are marked as stale.    *     * @param avoidStaleDataNodesForWrite    *          The value to set to    *          {@link DatanodeManager#avoidStaleDataNodesForWrite}    */
+DECL|method|setAvoidStaleDataNodesForWrite (boolean avoidStaleDataNodesForWrite)
+name|void
+name|setAvoidStaleDataNodesForWrite
+parameter_list|(
+name|boolean
+name|avoidStaleDataNodesForWrite
+parameter_list|)
+block|{
+name|this
+operator|.
+name|avoidStaleDataNodesForWrite
+operator|=
+name|avoidStaleDataNodesForWrite
+expr_stmt|;
+block|}
+comment|/**    * @return Whether or not to check stale DataNodes for R/W    */
+DECL|method|isCheckingForStaleDataNodes ()
+name|boolean
+name|isCheckingForStaleDataNodes
+parameter_list|()
+block|{
+return|return
+name|checkForStaleDataNodes
+return|;
+block|}
+comment|/**    * @return The time interval used to mark DataNodes as stale.    */
+DECL|method|getStaleInterval ()
+name|long
+name|getStaleInterval
+parameter_list|()
+block|{
+return|return
+name|staleInterval
+return|;
+block|}
+comment|/**    * Set the number of current stale DataNodes. The HeartbeatManager got this    * number based on DataNodes' heartbeats.    *     * @param numStaleNodes    *          The number of stale DataNodes to be set.    */
+DECL|method|setNumStaleNodes (int numStaleNodes)
+name|void
+name|setNumStaleNodes
+parameter_list|(
+name|int
+name|numStaleNodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numStaleNodes
+operator|=
+name|numStaleNodes
+expr_stmt|;
+block|}
+comment|/**    * @return Return the current number of stale DataNodes (detected by    * HeartbeatManager).     */
+DECL|method|getNumStaleNodes ()
+name|int
+name|getNumStaleNodes
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numStaleNodes
+return|;
 block|}
 comment|/** Fetch live and dead datanodes. */
 DECL|method|fetchDatanodes (final List<DatanodeDescriptor> live, final List<DatanodeDescriptor> dead, final boolean removeDecommissionNode)
@@ -4511,8 +4790,6 @@ parameter_list|(
 name|DatanodeDescriptor
 name|node
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|node
 operator|.

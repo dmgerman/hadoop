@@ -2562,6 +2562,7 @@ name|dnConf
 decl_stmt|;
 DECL|field|heartbeatsDisabledForTests
 specifier|private
+specifier|volatile
 name|boolean
 name|heartbeatsDisabledForTests
 init|=

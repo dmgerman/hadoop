@@ -1333,6 +1333,25 @@ name|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|// Whether to enable datanode's stale state detection and usage
+DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+init|=
+literal|"dfs.namenode.avoid.write.stale.datanode"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// The default value of the time interval for marking datanodes as stale
 DECL|field|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
 specifier|public
@@ -1343,18 +1362,59 @@ name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_KEY
 init|=
 literal|"dfs.namenode.stale.datanode.interval"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+DECL|field|DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT
+name|DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT
 init|=
 literal|30
 operator|*
 literal|1000
 decl_stmt|;
 comment|// 30s
+comment|// The stale interval cannot be too small since otherwise this may cause too frequent churn on stale states.
+comment|// This value uses the times of heartbeat interval to define the minimum value for stale interval.
+DECL|field|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_KEY
+init|=
+literal|"dfs.namenode.stale.datanode.minimum.interval"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_STALE_DATANODE_MINIMUM_INTERVAL_DEFAULT
+init|=
+literal|3
+decl_stmt|;
+comment|// i.e. min_interval is 3 * heartbeat_interval = 9s
+comment|// When the number stale datanodes marked as stale reached this certian ratio,
+comment|// stop avoiding writing to stale nodes so as to prevent causing hotspots.
+DECL|field|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_KEY
+init|=
+literal|"dfs.namenode.write.stale.datanode.ratio"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_DEFAULT
+init|=
+literal|0.5f
+decl_stmt|;
 comment|// Replication monitoring related keys
 DECL|field|DFS_NAMENODE_INVALIDATE_WORK_PCT_PER_ITERATION
 specifier|public
