@@ -986,8 +986,12 @@ decl_stmt|;
 name|String
 name|servicePrincipal
 init|=
-literal|"HTTP/"
-operator|+
+name|KerberosUtil
+operator|.
+name|getServicePrincipal
+argument_list|(
+literal|"HTTP"
+argument_list|,
 name|KerberosAuthenticator
 operator|.
 name|this
@@ -996,6 +1000,7 @@ name|url
 operator|.
 name|getHost
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|Oid
 name|oid
