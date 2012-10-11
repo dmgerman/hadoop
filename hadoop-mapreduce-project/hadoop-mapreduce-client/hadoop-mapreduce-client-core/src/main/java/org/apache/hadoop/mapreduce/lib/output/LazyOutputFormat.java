@@ -171,7 +171,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A Convenience class that creates output lazily.    */
+comment|/**  * A Convenience class that creates output lazily.  * Use in conjuction with org.apache.hadoop.mapreduce.lib.output.MultipleOutputs to recreate the  * behaviour of org.apache.hadoop.mapred.lib.MultipleTextOutputFormat (etc) of the old Hadoop API.  * See {@link MultipleOutputs} documentation for more information.  */
 end_comment
 
 begin_class
