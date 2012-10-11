@@ -918,6 +918,20 @@ name|common
 operator|.
 name|base
 operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
 name|Joiner
 import|;
 end_import
@@ -3835,12 +3849,41 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Returns url content as string.
+comment|/**    * @return url content as string (UTF-8 encoding assumed)    */
 DECL|method|urlGet (URL url)
 specifier|public
 specifier|static
 name|String
 name|urlGet
+parameter_list|(
+name|URL
+name|url
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|String
+argument_list|(
+name|urlGetBytes
+argument_list|(
+name|url
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
+return|;
+block|}
+comment|/**    * @return URL contents as a byte array    */
+DECL|method|urlGetBytes (URL url)
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|urlGetBytes
 parameter_list|(
 name|URL
 name|url
@@ -3882,7 +3925,7 @@ expr_stmt|;
 return|return
 name|out
 operator|.
-name|toString
+name|toByteArray
 argument_list|()
 return|;
 block|}

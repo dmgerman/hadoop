@@ -112,6 +112,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CopyOnWriteArrayList
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -681,7 +693,6 @@ name|journal
 return|;
 block|}
 DECL|method|isDisabled ()
-specifier|private
 name|boolean
 name|isDisabled
 parameter_list|()
@@ -733,6 +744,9 @@ name|required
 return|;
 block|}
 block|}
+comment|// COW implementation is necessary since some users (eg the web ui) call
+comment|// getAllJournalStreams() and then iterate. Since this is rarely
+comment|// mutated, there is no performance concern.
 DECL|field|journals
 specifier|private
 name|List
@@ -741,9 +755,13 @@ name|JournalAndStream
 argument_list|>
 name|journals
 init|=
-name|Lists
+operator|new
+name|CopyOnWriteArrayList
+argument_list|<
+name|JournalSet
 operator|.
-name|newArrayList
+name|JournalAndStream
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|minimumRedundantJournals
@@ -1039,6 +1057,8 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+try|try
+block|{
 name|jas
 operator|.
 name|getManager
@@ -1054,6 +1074,67 @@ name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to determine input streams from "
+operator|+
+name|jas
+operator|.
+name|getManager
+argument_list|()
+operator|+
+literal|". Skipping."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|chainAndMakeRedundantStreams
+argument_list|(
+name|streams
+argument_list|,
+name|allStreams
+argument_list|,
+name|fromTxId
+argument_list|,
+name|inProgressOk
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|chainAndMakeRedundantStreams ( Collection<EditLogInputStream> outStreams, PriorityQueue<EditLogInputStream> allStreams, long fromTxId, boolean inProgressOk)
+specifier|public
+specifier|static
+name|void
+name|chainAndMakeRedundantStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|outStreams
+parameter_list|,
+name|PriorityQueue
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|allStreams
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+block|{
 comment|// We want to group together all the streams that start on the same start
 comment|// transaction ID.  To do this, we maintain an accumulator (acc) of all
 comment|// the streams we've seen at a given start transaction ID.  When we see a
@@ -1150,7 +1231,7 @@ name|getFirstTxId
 argument_list|()
 condition|)
 block|{
-name|streams
+name|outStreams
 operator|.
 name|add
 argument_list|(
@@ -1217,7 +1298,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|streams
+name|outStreams
 operator|.
 name|add
 argument_list|(
@@ -1870,11 +1951,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|flushAndSync ()
+DECL|method|flushAndSync (final boolean durable)
 specifier|protected
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+specifier|final
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1910,7 +1995,9 @@ name|getCurrentStream
 argument_list|()
 operator|.
 name|flushAndSync
-argument_list|()
+argument_list|(
+name|durable
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2117,8 +2204,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getAllJournalStreams ()
 name|List
 argument_list|<

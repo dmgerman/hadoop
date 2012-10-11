@@ -556,11 +556,14 @@ block|}
 annotation|@
 name|Override
 comment|// EditLogOutputStream
-DECL|method|flushAndSync ()
+DECL|method|flushAndSync (boolean durable)
 specifier|protected
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{

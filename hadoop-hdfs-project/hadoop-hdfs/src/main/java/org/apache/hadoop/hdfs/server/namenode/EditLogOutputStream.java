@@ -84,6 +84,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|jasper
+operator|.
+name|compiler
+operator|.
+name|JspUtil
+import|;
+end_import
+
 begin_comment
 comment|/**  * A generic abstract class to support journaling of edits logs into   * a persistent storage.  */
 end_comment
@@ -207,13 +221,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Flush and sync all data that is ready to be flush     * {@link #setReadyToFlush()} into underlying persistent store.    * @throws IOException    */
-DECL|method|flushAndSync ()
+comment|/**    * Flush and sync all data that is ready to be flush     * {@link #setReadyToFlush()} into underlying persistent store.    * @param durable if true, the edits should be made truly durable before    * returning    * @throws IOException    */
+DECL|method|flushAndSync (boolean durable)
 specifier|abstract
 specifier|protected
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -223,6 +240,23 @@ specifier|public
 name|void
 name|flush
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|flush
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|flush (boolean durable)
+specifier|public
+name|void
+name|flush
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -236,7 +270,9 @@ name|now
 argument_list|()
 decl_stmt|;
 name|flushAndSync
-argument_list|()
+argument_list|(
+name|durable
+argument_list|)
 expr_stmt|;
 name|long
 name|end
@@ -283,6 +319,25 @@ parameter_list|()
 block|{
 return|return
 name|numSync
+return|;
+block|}
+comment|/**    * @return a short HTML snippet suitable for describing the current    * status of the stream    */
+DECL|method|generateHtmlReport ()
+specifier|public
+name|String
+name|generateHtmlReport
+parameter_list|()
+block|{
+return|return
+name|JspUtil
+operator|.
+name|escapeXml
+argument_list|(
+name|this
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
