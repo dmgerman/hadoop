@@ -4822,7 +4822,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Return an array of FileStatus objects whose path names match pathPattern    * and is accepted by the user-supplied path filter. Results are sorted by    * their path names.    * Return null if pathPattern has no glob and the path does not exist.    * Return an empty array if pathPattern has a glob and no path matches it.     *     * @param pathPattern    *          a regular expression specifying the path pattern    * @param filter    *          a user-supplied path filter    * @return an array of FileStatus objects    * @throws IOException if any I/O error occurs when fetching file status    */
+comment|/**    * Return an array of FileStatus objects whose path names match    * {@code pathPattern} and is accepted by the user-supplied path filter.    * Results are sorted by their path names.    *     * @param pathPattern a regular expression specifying the path pattern    * @param filter a user-supplied path filter    * @return null if {@code pathPattern} has no glob and the path does not exist    *         an empty array if {@code pathPattern} has a glob and no path    *         matches it else an array of {@link FileStatus} objects matching the    *         pattern    * @throws IOException if any I/O error occurs when fetching file status    */
 DECL|method|globStatus (Path pathPattern, PathFilter filter)
 specifier|public
 name|FileStatus
