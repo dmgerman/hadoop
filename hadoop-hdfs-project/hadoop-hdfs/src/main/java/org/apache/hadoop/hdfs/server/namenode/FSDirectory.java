@@ -1175,7 +1175,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Add the given filename to the fs.    * @throws QuotaExceededException     * @throws FileAlreadyExistsException     */
+comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    */
 DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode, long generationStamp)
 name|INodeFileUnderConstruction
 name|addFile
@@ -1366,7 +1366,6 @@ return|return
 name|newNode
 return|;
 block|}
-comment|/**    */
 DECL|method|unprotectedAddFile ( String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
 name|INode
 name|unprotectedAddFile
@@ -1398,8 +1397,6 @@ parameter_list|,
 name|String
 name|clientMachine
 parameter_list|)
-throws|throws
-name|UnresolvedLinkException
 block|{
 name|INode
 name|newNode
