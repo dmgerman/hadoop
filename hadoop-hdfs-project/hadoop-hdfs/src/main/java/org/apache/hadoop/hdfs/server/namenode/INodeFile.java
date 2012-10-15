@@ -328,10 +328,10 @@ block|}
 comment|/** @return the replication factor of the file. */
 annotation|@
 name|Override
-DECL|method|getReplication ()
+DECL|method|getBlockReplication ()
 specifier|public
 name|short
-name|getReplication
+name|getBlockReplication
 parameter_list|()
 block|{
 return|return
@@ -1032,7 +1032,7 @@ block|}
 return|return
 name|size
 operator|*
-name|getReplication
+name|getBlockReplication
 argument_list|()
 return|;
 block|}

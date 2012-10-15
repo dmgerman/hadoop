@@ -1721,7 +1721,7 @@ argument_list|()
 operator|*
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -1738,7 +1738,7 @@ name|block
 argument_list|,
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|BlockUCState
@@ -2114,7 +2114,7 @@ argument_list|()
 operator|*
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -4067,7 +4067,7 @@ name|oldRepl
 init|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// check disk quota
@@ -9530,7 +9530,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 name|blocksize
@@ -9671,7 +9671,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 name|blocksize

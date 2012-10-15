@@ -3465,7 +3465,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3485,7 +3485,7 @@ name|newBlock
 argument_list|,
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

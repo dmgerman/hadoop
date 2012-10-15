@@ -447,7 +447,7 @@ argument_list|,
 name|getBlocks
 argument_list|()
 argument_list|,
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|getModificationTime

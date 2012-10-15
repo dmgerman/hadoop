@@ -5110,7 +5110,7 @@ argument_list|()
 operator|>=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 condition|)
 block|{
@@ -5708,7 +5708,7 @@ name|requiredReplication
 operator|=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 comment|// get a source data-node
@@ -6125,7 +6125,7 @@ name|requiredReplication
 operator|=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 comment|// do not schedule more if enough replicas is already pending
@@ -9780,7 +9780,7 @@ name|fileReplication
 init|=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 if|if
@@ -10384,7 +10384,7 @@ name|expectedReplication
 init|=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -12611,7 +12611,7 @@ name|expectedReplication
 init|=
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 name|NumberReplicas
@@ -13320,7 +13320,7 @@ block|}
 return|return
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 return|;
 block|}

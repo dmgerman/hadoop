@@ -226,7 +226,7 @@ name|from
 operator|.
 name|bc
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1486,7 +1486,7 @@ argument_list|,
 name|getBlockCollection
 argument_list|()
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|s

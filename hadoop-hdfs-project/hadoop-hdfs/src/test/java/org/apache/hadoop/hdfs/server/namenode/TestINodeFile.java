@@ -209,7 +209,7 @@ name|replication
 argument_list|,
 name|inf
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

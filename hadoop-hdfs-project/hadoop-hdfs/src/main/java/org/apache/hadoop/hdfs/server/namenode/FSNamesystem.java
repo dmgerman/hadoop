@@ -7865,7 +7865,7 @@ name|repl
 init|=
 name|trgInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// now check the srcs
@@ -7968,7 +7968,7 @@ name|repl
 operator|!=
 name|srcInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 condition|)
 block|{
@@ -7992,7 +7992,7 @@ literal|" vs. "
 operator|+
 name|srcInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 throw|;
@@ -10010,7 +10010,7 @@ argument_list|()
 argument_list|,
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|file
@@ -11355,7 +11355,7 @@ name|replication
 operator|=
 name|pendingFile
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 block|}
@@ -12493,7 +12493,7 @@ name|numExpectedReplicas
 init|=
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 name|Block
@@ -15646,7 +15646,7 @@ name|diff
 operator|*
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

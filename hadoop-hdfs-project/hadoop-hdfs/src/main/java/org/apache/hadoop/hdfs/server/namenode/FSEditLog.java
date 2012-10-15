@@ -2810,7 +2810,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -2911,7 +2911,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 operator|.
