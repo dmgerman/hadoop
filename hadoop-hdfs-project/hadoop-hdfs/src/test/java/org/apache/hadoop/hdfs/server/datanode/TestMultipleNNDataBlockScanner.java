@@ -569,6 +569,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testDataBlockScanner ()
 specifier|public
 name|void
@@ -705,6 +710,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testBlockScannerAfterRefresh ()
 specifier|public
 name|void
@@ -1003,6 +1013,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testBlockScannerAfterRestart ()
 specifier|public
 name|void
@@ -1155,6 +1170,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|test2NNBlockRescanInterval ()
 specifier|public
 name|void
@@ -1330,6 +1350,11 @@ block|}
 comment|/**    * HDFS-3828: DN rescans blocks too frequently    *     * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testBlockRescanInterval ()
 specifier|public
 name|void
