@@ -2234,6 +2234,11 @@ block|}
 comment|/**    * Test parse method in Balancer#Cli class with threshold value out of    * boundaries.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancerCliParseWithThresholdOutOfBoundaries ()
 specifier|public
 name|void
@@ -2343,6 +2348,11 @@ block|}
 comment|/** Test a cluster with even distribution,     * then a new empty node is added to the cluster*/
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer0 ()
 specifier|public
 name|void
@@ -2388,6 +2398,11 @@ block|}
 comment|/** Test unevenly distributed cluster */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer1 ()
 specifier|public
 name|void
@@ -2462,6 +2477,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer2 ()
 specifier|public
 name|void
@@ -2716,6 +2736,11 @@ block|}
 comment|/**    * Test parse method in Balancer#Cli class with wrong number of params    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancerCliParseWithWrongParams ()
 specifier|public
 name|void

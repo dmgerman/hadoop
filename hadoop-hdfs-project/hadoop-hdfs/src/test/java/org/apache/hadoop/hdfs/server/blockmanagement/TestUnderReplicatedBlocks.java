@@ -164,6 +164,12 @@ name|TestUnderReplicatedBlocks
 block|{
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
+comment|// 5 min timeout
 DECL|method|testSetrepIncWithUnderReplicatedBlocks ()
 specifier|public
 name|void
