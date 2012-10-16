@@ -243,23 +243,7 @@ specifier|final
 name|boolean
 name|useDirectBuffers
 decl_stmt|;
-comment|/**    * Internal buffer for reading the length prefixes at the start of    * the packet.    */
-DECL|field|lengthPrefixBuf
-specifier|private
-specifier|final
-name|ByteBuffer
-name|lengthPrefixBuf
-init|=
-name|ByteBuffer
-operator|.
-name|allocate
-argument_list|(
-name|PacketHeader
-operator|.
-name|PKT_LENGTHS_LEN
-argument_list|)
-decl_stmt|;
-comment|/**    * The entirety of the most recently read packet, excepting the    * length prefixes.    */
+comment|/**    * The entirety of the most recently read packet.    * The first PKT_LENGTHS_LEN bytes of this buffer are the    * length prefixes.    */
 DECL|field|curPacketBuf
 specifier|private
 name|ByteBuffer
@@ -302,6 +286,13 @@ operator|.
 name|useDirectBuffers
 operator|=
 name|useDirectBuffers
+expr_stmt|;
+name|reallocPacketBuf
+argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getHeader ()
@@ -419,10 +410,19 @@ name|isLastPacketInBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|lengthPrefixBuf
+name|curPacketBuf
 operator|.
 name|clear
 argument_list|()
+expr_stmt|;
+name|curPacketBuf
+operator|.
+name|limit
+argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+argument_list|)
 expr_stmt|;
 name|doReadFully
 argument_list|(
@@ -430,10 +430,10 @@ name|ch
 argument_list|,
 name|in
 argument_list|,
-name|lengthPrefixBuf
+name|curPacketBuf
 argument_list|)
 expr_stmt|;
-name|lengthPrefixBuf
+name|curPacketBuf
 operator|.
 name|flip
 argument_list|()
@@ -441,7 +441,7 @@ expr_stmt|;
 name|int
 name|payloadLen
 init|=
-name|lengthPrefixBuf
+name|curPacketBuf
 operator|.
 name|getInt
 argument_list|()
@@ -479,7 +479,7 @@ decl_stmt|;
 name|int
 name|headerLen
 init|=
-name|lengthPrefixBuf
+name|curPacketBuf
 operator|.
 name|getShort
 argument_list|()
@@ -557,6 +557,10 @@ comment|// Make sure we have space for the whole packet, and
 comment|// read it.
 name|reallocPacketBuf
 argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+operator|+
 name|dataPlusChecksumLen
 operator|+
 name|headerLen
@@ -569,8 +573,21 @@ argument_list|()
 expr_stmt|;
 name|curPacketBuf
 operator|.
+name|position
+argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+argument_list|)
+expr_stmt|;
+name|curPacketBuf
+operator|.
 name|limit
 argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+operator|+
 name|dataPlusChecksumLen
 operator|+
 name|headerLen
@@ -590,7 +607,16 @@ operator|.
 name|flip
 argument_list|()
 expr_stmt|;
-comment|// Extract the header from the front of the buffer.
+name|curPacketBuf
+operator|.
+name|position
+argument_list|(
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+argument_list|)
+expr_stmt|;
+comment|// Extract the header from the front of the buffer (after the length prefixes)
 name|byte
 index|[]
 name|headerBuf
@@ -698,36 +724,6 @@ operator|!
 name|useDirectBuffers
 argument_list|,
 literal|"Currently only supported for non-direct buffers"
-argument_list|)
-expr_stmt|;
-assert|assert
-name|lengthPrefixBuf
-operator|.
-name|capacity
-argument_list|()
-operator|==
-name|PacketHeader
-operator|.
-name|PKT_LENGTHS_LEN
-assert|;
-name|mirrorOut
-operator|.
-name|write
-argument_list|(
-name|lengthPrefixBuf
-operator|.
-name|array
-argument_list|()
-argument_list|,
-name|lengthPrefixBuf
-operator|.
-name|arrayOffset
-argument_list|()
-argument_list|,
-name|lengthPrefixBuf
-operator|.
-name|capacity
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|mirrorOut
@@ -858,6 +854,35 @@ name|int
 name|dataLen
 parameter_list|)
 block|{
+comment|// Packet structure (refer to doRead() for details):
+comment|//   PLEN    HLEN      HEADER     CHECKSUMS  DATA
+comment|//   32-bit  16-bit<protobuf><variable length>
+comment|//   |--- lenThroughHeader ----|
+comment|//   |----------- lenThroughChecksums   ----|
+comment|//   |------------------- lenThroughData    ------|
+name|int
+name|lenThroughHeader
+init|=
+name|PacketHeader
+operator|.
+name|PKT_LENGTHS_LEN
+operator|+
+name|headerLen
+decl_stmt|;
+name|int
+name|lenThroughChecksums
+init|=
+name|lenThroughHeader
+operator|+
+name|checksumsLen
+decl_stmt|;
+name|int
+name|lenThroughData
+init|=
+name|lenThroughChecksums
+operator|+
+name|dataLen
+decl_stmt|;
 assert|assert
 name|dataLen
 operator|>=
@@ -873,17 +898,15 @@ operator|.
 name|position
 argument_list|()
 operator|==
-name|headerLen
+name|lenThroughHeader
 assert|;
 assert|assert
-name|checksumsLen
-operator|+
-name|dataLen
-operator|==
 name|curPacketBuf
 operator|.
-name|remaining
+name|limit
 argument_list|()
+operator|==
+name|lenThroughData
 operator|:
 literal|"headerLen= "
 operator|+
@@ -904,20 +927,19 @@ operator|.
 name|remaining
 argument_list|()
 assert|;
+comment|// Slice the checksums.
 name|curPacketBuf
 operator|.
 name|position
 argument_list|(
-name|headerLen
+name|lenThroughHeader
 argument_list|)
 expr_stmt|;
 name|curPacketBuf
 operator|.
 name|limit
 argument_list|(
-name|headerLen
-operator|+
-name|checksumsLen
+name|lenThroughChecksums
 argument_list|)
 expr_stmt|;
 name|curChecksumSlice
@@ -927,24 +949,19 @@ operator|.
 name|slice
 argument_list|()
 expr_stmt|;
+comment|// Slice the data.
 name|curPacketBuf
 operator|.
 name|position
 argument_list|(
-name|headerLen
-operator|+
-name|checksumsLen
+name|lenThroughChecksums
 argument_list|)
 expr_stmt|;
 name|curPacketBuf
 operator|.
 name|limit
 argument_list|(
-name|headerLen
-operator|+
-name|checksumsLen
-operator|+
-name|dataLen
+name|lenThroughData
 argument_list|)
 expr_stmt|;
 name|curDataSlice
@@ -954,6 +971,8 @@ operator|.
 name|slice
 argument_list|()
 expr_stmt|;
+comment|// Reset buffer to point to the entirety of the packet (including
+comment|// length prefixes)
 name|curPacketBuf
 operator|.
 name|position
@@ -965,11 +984,7 @@ name|curPacketBuf
 operator|.
 name|limit
 argument_list|(
-name|headerLen
-operator|+
-name|checksumsLen
-operator|+
-name|dataLen
+name|lenThroughData
 argument_list|)
 expr_stmt|;
 block|}
@@ -1052,15 +1067,15 @@ operator|<
 name|atLeastCapacity
 condition|)
 block|{
-name|returnPacketBufToPool
-argument_list|()
-expr_stmt|;
+name|ByteBuffer
+name|newBuf
+decl_stmt|;
 if|if
 condition|(
 name|useDirectBuffers
 condition|)
 block|{
-name|curPacketBuf
+name|newBuf
 operator|=
 name|bufferPool
 operator|.
@@ -1072,7 +1087,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|curPacketBuf
+name|newBuf
 operator|=
 name|ByteBuffer
 operator|.
@@ -1082,6 +1097,35 @@ name|atLeastCapacity
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If reallocing an existing buffer, copy the old packet length
+comment|// prefixes over
+if|if
+condition|(
+name|curPacketBuf
+operator|!=
+literal|null
+condition|)
+block|{
+name|curPacketBuf
+operator|.
+name|flip
+argument_list|()
+expr_stmt|;
+name|newBuf
+operator|.
+name|put
+argument_list|(
+name|curPacketBuf
+argument_list|)
+expr_stmt|;
+block|}
+name|returnPacketBufToPool
+argument_list|()
+expr_stmt|;
+name|curPacketBuf
+operator|=
+name|newBuf
+expr_stmt|;
 block|}
 block|}
 DECL|method|returnPacketBufToPool ()
