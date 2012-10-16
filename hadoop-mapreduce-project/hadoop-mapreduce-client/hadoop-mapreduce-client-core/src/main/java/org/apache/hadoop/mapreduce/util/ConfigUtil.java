@@ -4094,6 +4094,17 @@ name|MR_AM_SECURITY_SERVICE_AUTHORIZATION_CLIENT
 block|}
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+literal|"mapreduce.user.classpath.first"
+argument_list|,
+name|MRJobConfig
+operator|.
+name|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
