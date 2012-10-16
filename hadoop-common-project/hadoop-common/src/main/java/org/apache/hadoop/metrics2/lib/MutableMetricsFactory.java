@@ -755,6 +755,7 @@ name|about
 argument_list|)
 return|;
 block|}
+comment|/**    * Remove the prefix "get", if any, from the method name. Return the    * capacitalized method name."    */
 DECL|method|getName (Method method)
 specifier|protected
 name|String
@@ -835,6 +836,7 @@ operator|==
 literal|2
 condition|)
 block|{
+comment|// Use name and description from the annotation
 return|return
 name|Interns
 operator|.
@@ -861,6 +863,7 @@ operator|==
 literal|1
 condition|)
 block|{
+comment|// Use description from the annotation and method name as metric name
 return|return
 name|Interns
 operator|.
@@ -875,6 +878,7 @@ index|]
 argument_list|)
 return|;
 block|}
+comment|// Use method name as metric name and description
 return|return
 name|Interns
 operator|.

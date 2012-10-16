@@ -59,7 +59,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Annotation interface for a single metric  */
+comment|/**  * Annotation interface for a single metric used to annotate a field or a method  * in the class.  */
 end_comment
 
 begin_annotation_defn

@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The metrics filter interface  */
+comment|/**  * The metrics filter interface. The MetricsFilter objects can be used either to  * filter the metrics from {@link MetricsSource}s or to filter metrics per  * {@link MetricsSink}.  */
 end_comment
 
 begin_class

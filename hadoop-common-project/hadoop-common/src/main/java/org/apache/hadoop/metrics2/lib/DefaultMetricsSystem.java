@@ -114,8 +114,22 @@ name|MetricsSystemImpl
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
-comment|/**  * The default metrics system singleton  */
+comment|/**  * The default metrics system singleton. This class is used by all the daemon  * processes(such as NameNode, DataNode, JobTracker etc.). During daemon process  * initialization the processes call {@link DefaultMetricsSystem#init(String)}  * to initialize the {@link MetricsSystem}.  */
 end_comment
 
 begin_enum
@@ -155,6 +169,8 @@ name|MetricsSystemImpl
 argument_list|()
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|miniClusterMode
 specifier|volatile
 name|boolean
@@ -343,9 +359,7 @@ argument_list|()
 return|;
 block|}
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|setMiniClusterMode (boolean choice)
 specifier|public
 specifier|static
@@ -364,9 +378,7 @@ name|choice
 expr_stmt|;
 block|}
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|VisibleForTesting
 DECL|method|inMiniClusterMode ()
 specifier|public
 specifier|static

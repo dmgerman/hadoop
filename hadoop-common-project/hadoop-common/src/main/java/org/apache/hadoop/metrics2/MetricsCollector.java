@@ -62,7 +62,7 @@ specifier|public
 interface|interface
 name|MetricsCollector
 block|{
-comment|/**    * Add a metrics record    * @param name  of the record    * @return  a metrics record builder for the record    */
+comment|/**    * Add a metrics record    * @param name  of the record    * @return  a {@link MetricsRecordBuilder} for the record {@code name}    */
 DECL|method|addRecord (String name)
 specifier|public
 name|MetricsRecordBuilder
@@ -72,7 +72,7 @@ name|String
 name|name
 parameter_list|)
 function_decl|;
-comment|/**    * Add a metrics record    * @param info  of the record    * @return  a metrics record builder for the record    */
+comment|/**    * Add a metrics record    * @param info  of the record    * @return  a {@link MetricsRecordBuilder} for metrics {@code info}    */
 DECL|method|addRecord (MetricsInfo info)
 specifier|public
 name|MetricsRecordBuilder

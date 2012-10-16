@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The metrics system interface  */
+comment|/**  * The metrics system interface.  *   * The following components are used for metrics.  *<ul>  *<li>{@link MetricsSource} generate and update metrics information.</li>  *<li>{@link MetricsSink} consume the metrics information</li>  *</ul>  *   * {@link MetricsSource} and {@link MetricsSink} register with the metrics  * system. Implementations of {@link MetricsSystem} polls the  * {@link MetricsSource}s periodically and pass the {@link MetricsRecord}s to  * {@link MetricsSink}.  */
 end_comment
 
 begin_class

@@ -166,6 +166,10 @@ name|Time
 import|;
 end_import
 
+begin_comment
+comment|/**  * {@link MetricsRecordBuilder} implementation used for building metrics records  * by the {@link MetricsCollector}. It provides the following functionality:  *<ul>  *<li>Allows configuring filters for metrics.  *</ul>  *  */
+end_comment
+
 begin_class
 DECL|class|MetricsRecordBuilderImpl
 class|class
@@ -224,6 +228,7 @@ specifier|final
 name|boolean
 name|acceptable
 decl_stmt|;
+comment|/**    * @param parent {@link MetricsCollector} using this record builder    * @param info metrics information    * @param rf    * @param mf    * @param acceptable    */
 DECL|method|MetricsRecordBuilderImpl (MetricsCollector parent, MetricsInfo info, MetricsFilter rf, MetricsFilter mf, boolean acceptable)
 name|MetricsRecordBuilderImpl
 parameter_list|(
