@@ -2736,6 +2736,15 @@ name|VersionInfo
 operator|.
 name|getDate
 argument_list|()
+block|,
+literal|"  java = "
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.version"
+argument_list|)
 block|}
 argument_list|)
 argument_list|)
