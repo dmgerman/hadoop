@@ -26,31 +26,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
+name|*
 import|;
 end_import
 
@@ -101,20 +77,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
 import|;
 end_import
 
@@ -246,35 +208,15 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+comment|// Snapshot should be null if there are no entries.
+name|assertNull
+argument_list|(
 name|estimator
 operator|.
 name|snapshot
 argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expected IOException from empty window"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"No samples"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Count increment correctly by 1
 name|estimator
 operator|.
@@ -306,6 +248,24 @@ name|getSampleCount
 argument_list|()
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"50.00 %ile +/- 5.00%: 1337\n"
+operator|+
+literal|"75.00 %ile +/- 2.50%: 1337\n"
+operator|+
+literal|"90.00 %ile +/- 1.00%: 1337\n"
+operator|+
+literal|"95.00 %ile +/- 0.50%: 1337\n"
+operator|+
+literal|"99.00 %ile +/- 0.10%: 1337"
+argument_list|,
+name|estimator
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -368,35 +328,14 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|assertNull
+argument_list|(
 name|estimator
 operator|.
 name|snapshot
 argument_list|()
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expected IOException for an empty window."
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"No samples"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Correctness test that checks that absolute error of the estimate is within    * specified error bounds for some randomly permuted streams of items.    */
 annotation|@
