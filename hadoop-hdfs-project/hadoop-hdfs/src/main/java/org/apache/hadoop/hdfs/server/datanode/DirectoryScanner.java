@@ -2220,23 +2220,20 @@ operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
-name|ArrayList
-argument_list|<
+comment|// Use an array since the threads may return out of order and
+comment|// compilersInProgress#keySet may return out of order as well.
 name|ScanInfoPerBlockPool
-argument_list|>
+index|[]
 name|dirReports
 init|=
 operator|new
-name|ArrayList
-argument_list|<
 name|ScanInfoPerBlockPool
-argument_list|>
-argument_list|(
+index|[
 name|volumes
 operator|.
 name|size
 argument_list|()
-argument_list|)
+index|]
 decl_stmt|;
 name|Map
 argument_list|<
@@ -2281,7 +2278,6 @@ control|)
 block|{
 if|if
 condition|(
-operator|!
 name|isValid
 argument_list|(
 name|dataset
@@ -2294,19 +2290,6 @@ name|i
 argument_list|)
 argument_list|)
 condition|)
-block|{
-comment|// volume is invalid
-name|dirReports
-operator|.
-name|add
-argument_list|(
-name|i
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-else|else
 block|{
 name|ReportCompiler
 name|reportCompiler
@@ -2368,14 +2351,13 @@ block|{
 try|try
 block|{
 name|dirReports
-operator|.
-name|add
-argument_list|(
+index|[
 name|report
 operator|.
 name|getKey
 argument_list|()
-argument_list|,
+index|]
+operator|=
 name|report
 operator|.
 name|getValue
@@ -2383,7 +2365,6 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -2458,11 +2439,9 @@ operator|.
 name|addAll
 argument_list|(
 name|dirReports
-operator|.
-name|get
-argument_list|(
+index|[
 name|i
-argument_list|)
+index|]
 argument_list|)
 expr_stmt|;
 block|}
