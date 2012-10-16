@@ -30,6 +30,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface used to abstract over classes which manage edit logs that may need  * to be purged.  */
 end_comment
@@ -47,6 +57,26 @@ name|purgeLogsOlderThan
 parameter_list|(
 name|long
 name|minTxIdToKeep
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    * @throws IOException if the underlying storage has an error or is otherwise    * inaccessible    */
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|streams
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException

@@ -4814,6 +4814,36 @@ comment|// All journals have failed, it is handled in logSync.
 comment|// TODO: are we sure this is OK?
 block|}
 block|}
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+specifier|public
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|streams
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+block|{
+name|journalSet
+operator|.
+name|selectInputStreams
+argument_list|(
+name|streams
+argument_list|,
+name|fromTxId
+argument_list|,
+name|inProgressOk
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId)
 specifier|public
 name|Collection
@@ -4882,8 +4912,6 @@ name|EditLogInputStream
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|journalSet
-operator|.
 name|selectInputStreams
 argument_list|(
 name|streams

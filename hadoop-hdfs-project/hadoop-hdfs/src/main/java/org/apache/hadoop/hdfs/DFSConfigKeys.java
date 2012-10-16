@@ -1206,6 +1206,25 @@ init|=
 literal|1000000
 decl_stmt|;
 comment|//1M
+DECL|field|DFS_NAMENODE_MAX_EXTRA_EDITS_SEGMENTS_RETAINED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_MAX_EXTRA_EDITS_SEGMENTS_RETAINED_KEY
+init|=
+literal|"dfs.namenode.max.extra.edits.segments.retained"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_MAX_EXTRA_EDITS_SEGMENTS_RETAINED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_MAX_EXTRA_EDITS_SEGMENTS_RETAINED_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
+comment|// 10k
 DECL|field|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_KEY
 specifier|public
 specifier|static
