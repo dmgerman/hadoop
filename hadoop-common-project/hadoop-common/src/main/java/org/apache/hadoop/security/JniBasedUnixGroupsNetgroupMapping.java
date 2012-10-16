@@ -216,7 +216,7 @@ throw|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Using JniBasedUnixGroupsNetgroupMapping for Netgroup resolution"
 argument_list|)
@@ -429,17 +429,45 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"error getting users for netgroup "
+literal|"Error getting users for netgroup "
 operator|+
 name|netgroup
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Error getting users for netgroup "
+operator|+
+name|netgroup
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
