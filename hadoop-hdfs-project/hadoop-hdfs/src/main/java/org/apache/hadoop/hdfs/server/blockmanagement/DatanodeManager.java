@@ -3918,6 +3918,7 @@ expr_stmt|;
 block|}
 comment|/**    * @return Return the current number of stale DataNodes (detected by    * HeartbeatManager).     */
 DECL|method|getNumStaleNodes ()
+specifier|public
 name|int
 name|getNumStaleNodes
 parameter_list|()

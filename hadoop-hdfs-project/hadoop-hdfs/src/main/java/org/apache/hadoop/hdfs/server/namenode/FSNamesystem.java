@@ -21073,6 +21073,35 @@ name|getNumDeadDataNodes
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"StaleDataNodes"
+block|,
+literal|"Number of datanodes marked stale due to delayed heartbeat"
+block|}
+argument_list|)
+DECL|method|getNumStaleDataNodes ()
+specifier|public
+name|int
+name|getNumStaleDataNodes
+parameter_list|()
+block|{
+return|return
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumStaleNodes
+argument_list|()
+return|;
+block|}
 comment|/**    * Sets the generation stamp for this filesystem    */
 DECL|method|setGenerationStamp (long stamp)
 name|void

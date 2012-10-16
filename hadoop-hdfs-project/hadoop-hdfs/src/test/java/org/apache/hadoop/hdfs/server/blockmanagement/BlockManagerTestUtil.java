@@ -787,6 +787,29 @@ name|prefer
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Call heartbeat check function of HeartbeatManager    * @param bm the BlockManager to manipulate    */
+DECL|method|checkHeartbeat (BlockManager bm)
+specifier|public
+specifier|static
+name|void
+name|checkHeartbeat
+parameter_list|(
+name|BlockManager
+name|bm
+parameter_list|)
+block|{
+name|bm
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getHeartbeatManager
+argument_list|()
+operator|.
+name|heartbeatCheck
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 
