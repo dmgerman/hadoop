@@ -788,7 +788,7 @@ argument_list|(
 literal|"failed to read from file"
 argument_list|,
 name|val
-operator|>
+operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
@@ -1066,7 +1066,7 @@ argument_list|(
 literal|"failed to read from file"
 argument_list|,
 name|val
-operator|>
+operator|>=
 literal|0
 argument_list|)
 expr_stmt|;
