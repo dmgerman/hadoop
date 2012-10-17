@@ -1282,7 +1282,7 @@ operator|.
 name|getBytesWritten
 argument_list|()
 operator|&
-literal|0xffffffff
+literal|0xffffffffL
 operator|)
 condition|)
 block|{
@@ -2010,7 +2010,7 @@ argument_list|)
 operator|)
 operator|)
 operator|&
-literal|0xffffffff
+literal|0xffffffffL
 operator|)
 return|;
 block|}
