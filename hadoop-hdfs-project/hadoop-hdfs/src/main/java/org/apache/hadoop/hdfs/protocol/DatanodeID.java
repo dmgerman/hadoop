@@ -80,37 +80,37 @@ init|=
 block|{}
 decl_stmt|;
 DECL|field|ipAddr
-specifier|protected
+specifier|private
 name|String
 name|ipAddr
 decl_stmt|;
 comment|// IP address
 DECL|field|hostName
-specifier|protected
+specifier|private
 name|String
 name|hostName
 decl_stmt|;
 comment|// hostname
 DECL|field|storageID
-specifier|protected
+specifier|private
 name|String
 name|storageID
 decl_stmt|;
 comment|// unique per cluster storageID
 DECL|field|xferPort
-specifier|protected
+specifier|private
 name|int
 name|xferPort
 decl_stmt|;
 comment|// data streaming port
 DECL|field|infoPort
-specifier|protected
+specifier|private
 name|int
 name|infoPort
 decl_stmt|;
 comment|// info server port
 DECL|field|ipcPort
-specifier|protected
+specifier|private
 name|int
 name|ipcPort
 decl_stmt|;

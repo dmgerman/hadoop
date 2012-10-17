@@ -2871,16 +2871,13 @@ operator|)
 return|;
 block|}
 comment|/**    * Decommission the node if it is in exclude list.    */
-DECL|method|checkDecommissioning (DatanodeDescriptor nodeReg, String ipAddr)
+DECL|method|checkDecommissioning (DatanodeDescriptor nodeReg)
 specifier|private
 name|void
 name|checkDecommissioning
 parameter_list|(
 name|DatanodeDescriptor
 name|nodeReg
-parameter_list|,
-name|String
-name|ipAddr
 parameter_list|)
 block|{
 comment|// If the registered node is in exclude list, then decommission it
@@ -3409,8 +3406,6 @@ expr_stmt|;
 name|checkDecommissioning
 argument_list|(
 name|nodeS
-argument_list|,
-name|dnAddress
 argument_list|)
 expr_stmt|;
 return|return;
@@ -3496,8 +3491,6 @@ expr_stmt|;
 name|checkDecommissioning
 argument_list|(
 name|nodeDescr
-argument_list|,
-name|dnAddress
 argument_list|)
 expr_stmt|;
 comment|// also treat the registration message as a heartbeat
