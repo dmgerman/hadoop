@@ -2676,6 +2676,11 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+name|ClusterMetrics
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|rm

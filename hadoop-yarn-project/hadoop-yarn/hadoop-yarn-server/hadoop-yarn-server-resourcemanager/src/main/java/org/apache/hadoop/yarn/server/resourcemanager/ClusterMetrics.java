@@ -176,21 +176,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|yarn
+name|annotations
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNodeEventType
+name|VisibleForTesting
 import|;
 end_import
 
@@ -401,6 +395,27 @@ name|INSTANCE
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|destroy ()
+specifier|synchronized
+specifier|static
+name|void
+name|destroy
+parameter_list|()
+block|{
+name|isInitialized
+operator|.
+name|set
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|INSTANCE
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|//Active Nodemanagers
 DECL|method|getNumActiveNMs ()
