@@ -602,7 +602,12 @@ name|ImageElement
 operator|.
 name|IS_COMPRESSED
 argument_list|,
-name|imageVersion
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|isCompressed
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
