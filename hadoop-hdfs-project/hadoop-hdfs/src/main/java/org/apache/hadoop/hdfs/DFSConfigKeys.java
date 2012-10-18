@@ -76,7 +76,7 @@ specifier|final
 name|long
 name|DFS_BLOCK_SIZE_DEFAULT
 init|=
-literal|64
+literal|128
 operator|*
 literal|1024
 operator|*
