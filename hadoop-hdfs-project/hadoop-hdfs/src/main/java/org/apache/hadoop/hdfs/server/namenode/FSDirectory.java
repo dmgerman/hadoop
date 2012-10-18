@@ -1474,6 +1474,32 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"DIR* FSDirectory.unprotectedAddFile: exception when add "
+operator|+
+name|path
+operator|+
+literal|" to the file system"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -1499,8 +1525,6 @@ parameter_list|,
 name|boolean
 name|propagateModTime
 parameter_list|)
-throws|throws
-name|UnresolvedLinkException
 block|{
 comment|// NOTE: This does not update space counts for parents
 name|INodeDirectory
