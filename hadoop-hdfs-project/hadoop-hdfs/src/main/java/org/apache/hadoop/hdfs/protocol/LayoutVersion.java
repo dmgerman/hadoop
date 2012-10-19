@@ -329,6 +329,15 @@ literal|"Serialize block lists with delta-encoded variable length ints, "
 operator|+
 literal|"add OP_UPDATE_BLOCKS"
 argument_list|)
+block|,
+DECL|enumConstant|SNAPSHOT
+name|SNAPSHOT
+argument_list|(
+operator|-
+literal|41
+argument_list|,
+literal|"Support for snapshot feature"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final
